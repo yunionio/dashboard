@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="任务"
+    :title="$t('compute.text_233')"
     icon="res-servicecatalog"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -36,7 +36,7 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

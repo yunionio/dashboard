@@ -9,7 +9,7 @@
             @change="cloudproviderChange"
             :params="cloudproviderParams"
             :isDefaultSelect="true"
-            :select-props="{ placeholder: '请选择云账号', disabled: imageCloudproviderDisabled }" />
+            :select-props="{ placeholder: $t('compute.text_149'), disabled: imageCloudproviderDisabled }" />
         </a-form-item>
       </a-col>
       <a-col :span="showCloudaccount ? 4 : 6">
@@ -30,7 +30,7 @@
         </a-form-item>
       </a-col>
     </a-row>
-    <span v-if="uefi" class="error-color">提示：创建windows虚拟机且同时绑定GPU卡时，会过滤不支持UEFI引导的镜像</span>
+    <span v-if="uefi" class="error-color">{{$t('compute.text_150')}}</span>
   </div>
 </template>
 
@@ -525,7 +525,7 @@ export default {
       }
       // make other os the last option
       if (isOther) {
-        osOpts.push({ label: '其他', key: 'other' })
+        osOpts.push({ label: this.$t('compute.text_151'), key: 'other' })
       }
       osOpts = osOpts.filter((item) => {
         if (this.osType) {

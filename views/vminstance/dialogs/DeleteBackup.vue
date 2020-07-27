@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">删除备份机</div>
+    <div slot="header">{{$t('compute.text_1209')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="删除备份机" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1209')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="强制清除" v-bind="formItemLayout" extra="强制清除备份机记录（适用于备份机宿主机离线的情况下）">
-          <a-switch checkedChildren="开" unCheckedChildren="关" :disabled="disableAutoPurge" v-decorator="decorators.purge" />
+        <a-form-item :label="$t('compute.text_1210')" v-bind="formItemLayout" :extra="$t('compute.text_1211')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" :disabled="disableAutoPurge" v-decorator="decorators.purge" />
         </a-form-item>
       </a-form>
     </div>
@@ -54,7 +54,7 @@ export default {
       const col = this.params.columns.slice(0, 3)
       col.push({
         field: 'backup_host_status',
-        title: '备份机的宿主机',
+        title: this.$t('compute.text_1163'),
         width: 120,
         showOverflow: 'ellipsis',
         slots: {

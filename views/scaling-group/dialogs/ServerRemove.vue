@@ -1,14 +1,14 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">移除</div>
+    <div slot="header">{{$t('compute.text_950')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="移除" name="虚拟机" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_950')" :name="$t('compute.text_91')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form v-bind="formItemLayout">
-        <a-form-item label="移除方式">
+        <a-form-item :label="$t('compute.text_951')">
           <a-radio-group v-model="isDelete">
-            <a-radio :value="true">移除且删除</a-radio>
-            <a-radio :value="false">仅移除</a-radio>
+            <a-radio :value="true">{{$t('compute.text_952')}}</a-radio>
+            <a-radio :value="false">{{$t('compute.text_953')}}</a-radio>
           </a-radio-group>
         </a-form-item>
       </a-form>

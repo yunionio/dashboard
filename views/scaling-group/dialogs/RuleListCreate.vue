@@ -1,26 +1,26 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建</div>
+    <div slot="header">{{$t('compute.text_18')}}</div>
     <div slot="body">
        <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="名称">
+        <a-form-item :label="$t('compute.text_228')">
           <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item label="策略类型">
+        <a-form-item :label="$t('compute.text_913')">
           <a-radio-group v-decorator="decorators.trigger_type">
             <a-radio-button v-for="(v, k) in $t('flexGrouTriggerType')" :key="k" :value="k">{{v}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <!-- 告警策略 -->
         <template v-if="form.fc.getFieldValue('trigger_type') === 'alarm' || !form.fc.getFieldValue('trigger_type')">
-          <a-form-item label="触发条件">
+          <a-form-item :label="$t('compute.text_914')">
             <a-input-group compact>
               <a-select style="width: 50%" v-decorator="decorators.indicator">
                 <a-select-option  v-for="(v, k) in $t('flexGroupIndicator')" :key="k" :value="k">{{v}}</a-select-option>
               </a-select>
               <a-select style="width: 25%" v-decorator="decorators.operator">
-                <a-select-option value="lt">小于</a-select-option>
-                <a-select-option value="gt">大于</a-select-option>
+                <a-select-option value="lt">{{$t('compute.text_915')}}</a-select-option>
+                <a-select-option value="gt">{{$t('compute.text_916')}}</a-select-option>
               </a-select>
               <a-input-number v-decorator="decorators.value" :min="0" :max="form.fc.getFieldValue('alarm.indicator') && form.fc.getFieldValue('alarm.indicator') !== 'cpu' ? 999999999 : 100" />
               <span style="margin:5px 0 0 5px">
@@ -28,23 +28,23 @@
               </span>
             </a-input-group>
           </a-form-item>
-          <a-form-item label="监控周期">
+          <a-form-item :label="$t('compute.text_917')">
             <a-select style="width: 50%" v-decorator="decorators.cycle">
               <a-select-option  v-for="(v, k) in $t('flexGroupCycles')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item label="连续出现次数">
-            <a-tooltip placement="top" title="范围在1 ～ 1000">
+          <a-form-item :label="$t('compute.text_918')">
+            <a-tooltip placement="top" :title="$t('compute.text_919')">
               <a-input-number  v-decorator="decorators.cumulate" :min="1" :max="1000" />
             </a-tooltip>
             <div slot="extra">
-              例如设置为 {{form.fc.getFieldValue('alarm.cumulate') || 3}}，则表示连续 {{form.fc.getFieldValue('alarm.cumulate') || 3}} 次超过阈值后才会触发告警
+              {{ $t('compute.text_920', [form.fc.getFieldValue('alarm.cumulate') || 3, form.fc.getFieldValue('alarm.cumulate') || 3]) }}
             </div>
           </a-form-item>
         </template>
         <!-- 定时策略 -->
         <template v-if="form.fc.getFieldValue('trigger_type') === 'timing'">
-          <a-form-item label="触发时间">
+          <a-form-item :label="$t('compute.text_923')">
             <a-date-picker
               :showTime="{
                 format: 'HH:mm',
@@ -57,32 +57,32 @@
         </template>
         <!-- 周期策略 -->
         <template v-if="form.fc.getFieldValue('trigger_type') === 'cycle'">
-          <a-form-item label="重复周期">
+          <a-form-item :label="$t('compute.text_924')">
             <a-select v-decorator="decorators.cycle_type">
               <a-select-option v-for="(v, k) in $t('flexGroupCycleType')" :key="k" :value="k">{{v}}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item label="触发星期" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'week'">
+          <a-form-item :label="$t('compute.text_925')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'week'">
             <a-select v-decorator="decorators.weekDays" mode="multiple">
               <a-select-option v-for="(v, k) in $t('flexGroupSubCycleTypeWeek')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item label="触发日期" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'month'">
+          <a-form-item :label="$t('compute.text_926')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'month'">
             <a-select v-decorator="decorators.monthDays" mode="multiple">
-              <a-select-option v-for="i in 31" :key="i" :value="parseInt(i)">{{i}}号</a-select-option>
+              <a-select-option v-for="i in 31" :key="i" :value="parseInt(i)">{{$t('compute.text_927', [i])}}</a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item label="触发时间">
+          <a-form-item :label="$t('compute.text_923')">
             <a-time-picker v-decorator="decorators.hourMinute" format="HH:mm" />
           </a-form-item>
-          <a-form-item label="有效时间">
+          <a-form-item :label="$t('compute.text_928')">
             <a-range-picker
               v-decorator="decorators.startEndTime"
               :disabledDate="disabledDate"
               format="YYYY-MM-DD" />
           </a-form-item>
         </template>
-        <a-form-item label="执行动作">
+        <a-form-item :label="$t('compute.text_929')">
           <a-input-group compact>
             <a-select style="width: 50%" v-decorator="decorators.action">
               <a-select-option v-for="(v, k) in $t('flexGroupRuleAction')" :key="k" :value="k">{{v}}</a-select-option>
@@ -93,20 +93,16 @@
               </span>
               <a-input-number v-bind="actionConfig(form.fc.getFieldValue('action')).number" v-decorator="decorators.number" />
             </a-tooltip>
-            <span style="margin:5px 0 0 5px">
-              个实例
-            </span>
+            <span style="margin:5px 0 0 5px">{{$t('compute.text_930')}}</span>
           </a-input-group>
         </a-form-item>
-        <a-form-item label="默认冷却时间">
-          <a-tooltip placement="top" title="范围在0 ～ 1000">
+        <a-form-item :label="$t('compute.text_931')">
+          <a-tooltip placement="top" :title="$t('compute.text_932')">
             <a-input-number v-decorator="decorators.cooling_time" :min="0" :max="1000" />
           </a-tooltip>
-          <span style="margin:5px 0 0 5px">
-             秒
-          </span>
+          <span style="margin:5px 0 0 5px">{{$t('compute.text_767')}}</span>
           <div slot="extra">
-           一个伸缩活动执行完成后的 {{form.fc.getFieldValue('cooling_time') || 180}}秒 内，该伸缩组不执行其它的伸缩活动(仅针对告警策略有效)
+            {{$t('compute.text_933', [form.fc.getFieldValue('cooling_time') || 180])}}
           </div>
         </a-form-item>
       </a-form>
@@ -145,7 +141,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('compute.text_210') },
               { validator: validateForm('serverCreateName') },
             ],
           },
@@ -155,7 +151,7 @@ export default {
           {
             initialValue: 'alarm',
             rules: [
-              { required: true, message: '请选择策略类型' },
+              { required: true, message: this.$t('compute.text_935') },
             ],
           },
         ],
@@ -164,7 +160,7 @@ export default {
           {
             initialValue: 'cpu',
             rules: [
-              { required: true, message: '请选择触发条件' },
+              { required: true, message: this.$t('compute.text_936') },
             ],
           },
         ],
@@ -185,7 +181,7 @@ export default {
           {
             initialValue: 3,
             rules: [
-              { required: true, message: '请输入连续出现次数' },
+              { required: true, message: this.$t('compute.text_937') },
             ],
           },
         ],
@@ -194,7 +190,7 @@ export default {
           {
             initialValue: 180,
             rules: [
-              { required: true, message: '请输入默认冷却时间' },
+              { required: true, message: this.$t('compute.text_938') },
             ],
           },
         ],
@@ -203,7 +199,7 @@ export default {
           {
             initialValue: 'add',
             rules: [
-              { required: true, message: '请选择执行动作' },
+              { required: true, message: this.$t('compute.text_939') },
             ],
           },
         ],
@@ -212,7 +208,7 @@ export default {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: '请输入实例数量' },
+              { required: true, message: this.$t('compute.text_940') },
             ],
           },
         ],
@@ -221,7 +217,7 @@ export default {
           {
             initialValue: 'day',
             rules: [
-              { required: true, message: '请选择重复周期' },
+              { required: true, message: this.$t('compute.text_941') },
             ],
           },
         ],
@@ -230,7 +226,7 @@ export default {
           {
             initialValue: [1, 2, 3, 4, 5],
             rules: [
-              { required: true, message: '请选择触发星期' },
+              { required: true, message: this.$t('compute.text_942') },
             ],
           },
         ],
@@ -239,7 +235,7 @@ export default {
           {
             initialValue: [1],
             rules: [
-              { required: true, message: '请选择触发日期' },
+              { required: true, message: this.$t('compute.text_943') },
             ],
           },
         ],
@@ -249,7 +245,7 @@ export default {
           {
             // initialValue: [1],
             rules: [
-              { required: true, message: '请选择触发时间' },
+              { required: true, message: this.$t('compute.text_944') },
             ],
           },
         ],
@@ -259,7 +255,7 @@ export default {
           {
             // initialValue: [1],
             rules: [
-              { required: true, message: '请选择有效期' },
+              { required: true, message: this.$t('compute.text_945') },
             ],
           },
         ],
@@ -267,7 +263,7 @@ export default {
           'timer.execTime',
           {
             rules: [
-              { required: true, message: '触发时间' },
+              { required: true, message: this.$t('compute.text_923') },
             ],
           },
         ],
@@ -276,7 +272,7 @@ export default {
           {
             initialValue: 300,
             rules: [
-              { required: true, message: '请选择监控周期' },
+              { required: true, message: this.$t('compute.text_946') },
             ],
           },
         ],
@@ -291,7 +287,7 @@ export default {
           min: resData.min_instance_number,
           max: resData.max_instance_number,
         }
-        const tooltip = `范围在最小值(${number.min}) ～ 最大值(${number.max})`
+        const tooltip = this.$t('compute.text_947', [number.min, number.max])
         return {
           number,
           tooltip,
@@ -301,7 +297,7 @@ export default {
           min: 1,
           max: resData.max_instance_number,
         }
-        const tooltip = `范围在1 ～ 最大值(${number.max})`
+        const tooltip = this.$t('compute.text_948', [number.max])
         return {
           number,
           tooltip,

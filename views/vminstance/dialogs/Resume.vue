@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '恢复',
+      action: this.$t('compute.text_478'),
     }
   },
   computed: {

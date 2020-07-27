@@ -34,7 +34,7 @@ export default {
         getParams: { ...this.getParams, 'filter.0': 'disk_type.notin(volume)', snapshotpolicy_id: this.resId },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -45,7 +45,7 @@ export default {
       columns: [
         getCopyWithContentTableColumn({
           field: 'name',
-          title: '名称',
+          title: this.$t('compute.text_228'),
           hideField: true,
           slotCallback: row => {
             return [<side-page-trigger permission="disks_get" name="DiskSidePage" id={row.id} vm={this}>{ row.name }</side-page-trigger>]
@@ -53,7 +53,7 @@ export default {
         }),
         {
           field: 'disk_size',
-          title: '容量',
+          title: this.$t('compute.text_397'),
           minWidth: 50,
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'M', 1024)
@@ -62,10 +62,10 @@ export default {
         getStatusTableColumn({ statusModule: 'disk' }),
         {
           field: 'disk_type',
-          title: '磁盘类型',
+          title: this.$t('compute.text_381'),
           width: 70,
           formatter: ({ cellValue }) => {
-            return cellValue === 'sys' ? '系统盘' : '数据盘'
+            return cellValue === 'sys' ? this.$t('compute.text_49') : this.$t('compute.text_50')
           },
         },
         getRegionTableColumn(),
@@ -88,12 +88,12 @@ export default {
       ],
       singleActions: [
         {
-          label: '解绑',
+          label: this.$t('compute.text_723'),
           action: obj => {
             this.createDialog('UnbindDisksDialog', {
               data: [obj],
               columns: this.columns,
-              title: '解绑',
+              title: this.$t('compute.text_723'),
               resId: this.resId,
               onManager: this.onManager,
               refresh: this.refresh,

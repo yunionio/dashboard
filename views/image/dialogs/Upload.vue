@@ -1,37 +1,30 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">上传系统镜像</div>
+    <div slot="header">{{$t('compute.text_664')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">
-          设置更多属性，请上传成功后，点击【修改属性】
-         <br />ISO格式镜像只有OneCloud平台可用
-        </div>
+        <div slot="message">{{$t('compute.text_665')}}<br />{{$t('compute.text_666')}}</div>
       </a-alert>
       <a-form
         :form="form.fc">
-        <a-form-item :label="`指定${$t('dictionary.project')}`" class="mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-        <a-form-item label="镜像名称" v-bind="formItemLayout">
-          <a-input placeholder="字母开头，数字和字母大小写组合，长度为2-128个字符，可含'.','-','_'" v-decorator="decorators.name" />
+        <a-form-item :label="$t('compute.text_627')" v-bind="formItemLayout">
+          <a-input :placeholder="$t('compute.text_416')" v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item label="上传方式" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_667')" v-bind="formItemLayout">
           <a-radio-group @change="handleUploadTypeChange" v-decorator="decorators.uploadType">
-            <a-radio-button value="file">
-              上传镜像文件
-            </a-radio-button>
-            <a-radio-button value="url">
-              输入镜像URL
-            </a-radio-button>
+            <a-radio-button value="file">{{$t('compute.text_668')}}</a-radio-button>
+            <a-radio-button value="url">{{$t('compute.text_669')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="镜像文件" v-bind="formItemLayout" v-if="show" help="上传过程中请勿刷新或者关闭页面，否则上传任务会中断。">
+        <a-form-item :label="$t('compute.text_670')" v-bind="formItemLayout" v-if="show" :help="$t('compute.text_671')">
           <a-upload
             @change="handleUploadChange"
             :fileList="fileList"
             :beforeUpload="beforeUpload">
-            <a-button> <a-icon type="upload" /> 选取文件 </a-button>
+            <a-button> <a-icon type="upload" />{{$t('compute.text_245')}}</a-button>
           </a-upload>
           <a-progress
             v-if="loading"
@@ -39,10 +32,10 @@
             :percent="imageUploadPercent"
             status="active" />
         </a-form-item>
-        <a-form-item label="镜像URL" v-bind="formItemLayout" v-if="!show">
-          <a-input placeholder="请输入镜像URL" v-decorator="decorators.copy_from" />
+        <a-form-item :label="$t('compute.text_672')" v-bind="formItemLayout" v-if="!show">
+          <a-input :placeholder="$t('compute.text_673')" v-decorator="decorators.copy_from" />
         </a-form-item>
-        <a-form-item label="操作系统" v-bind="formItemLayout" v-if="!show">
+        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout" v-if="!show">
           <a-radio-group v-decorator="decorators.os_type">
             <a-radio-button value="Linux">
               Linux
@@ -50,9 +43,7 @@
             <a-radio-button value="windows">
               Windows Server
             </a-radio-button>
-            <a-radio-button value="other">
-              其它
-            </a-radio-button>
+            <a-radio-button value="other">{{$t('compute.text_674')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
       </a-form>
@@ -108,7 +99,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入镜像名称' },
+              { required: true, message: this.$t('compute.text_660') },
               { validator: this.$validate('imageName') },
               { validator: this.checkTemplateName },
             ],
@@ -125,7 +116,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入镜像URL' },
+              { required: true, message: this.$t('compute.text_673') },
               { validator: this.validateUrl },
             ],
           },
@@ -182,7 +173,7 @@ export default {
     },
     checkTemplateName (rule, value, callback) {
       if (!value) {
-        return callback(new Error('请输入镜像名称'))
+        return callback(new Error(this.$t('compute.text_660')))
       }
       return new this.$Manager('images', 'v1').list({
         params: {
@@ -192,7 +183,7 @@ export default {
       }).then(res => {
         const data = res.data.data
         if (!R.isNil(data) && !R.isEmpty(data)) {
-          callback(new Error('输入的镜像名称已存在'))
+          callback(new Error(this.$t('compute.text_662')))
         } else {
           callback()
         }
@@ -202,7 +193,7 @@ export default {
       if (value.startsWith('http://') || value.startsWith('https://')) {
         callback()
       } else {
-        callback(new Error('镜像URL必须以http:// 或者 https:// 开头。'))
+        callback(new Error(this.$t('compute.text_675')))
       }
     },
     handleUpload (data) {
@@ -248,7 +239,7 @@ export default {
               formData.append('image', file.originFileObj)
             })
           } else {
-            this.$message.error('请先选中要上传的镜像文件!')
+            this.$message.error(this.$t('compute.text_676'))
             this.loading = false
             return false
           }

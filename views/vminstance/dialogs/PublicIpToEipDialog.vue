@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">公网IP转EIP</div>
+    <div slot="header">{{$t('compute.text_1121')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="公网IP转EIP" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1121')" />
       <dialog-table :data="params.data" :columns="columns" />
     </div>
     <div slot="footer">

@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="密钥"
+    :title="$t('compute.text_108')"
     icon="res-keypair"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -34,8 +34,8 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'key-pair-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'key-pair-detail' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

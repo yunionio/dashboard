@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
 import OsSelect from '../index'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import i18n from '@/locales'
 
 let setFieldsValue = null
 let decorator = null
@@ -18,7 +19,7 @@ beforeEach(() => {
       {
         initialValue: '',
         rules: [
-          { required: true, message: '请选择操作系统' },
+          { required: true, message: i18n.t('compute.text_153') },
         ],
       },
     ],

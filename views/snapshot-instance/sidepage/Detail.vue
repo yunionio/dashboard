@@ -31,7 +31,7 @@ export default {
       baseInfo: [
         {
           field: 'size',
-          title: '快照大小',
+          title: this.$t('compute.text_422'),
           formatter: ({ cellValue, row }) => {
             const size = row.snapshots.reduce((a, b) => a + b.size, 0)
             return sizestr(size, 'M', 1024)
@@ -39,21 +39,21 @@ export default {
         },
         {
           field: 'created_by',
-          title: '创建方式',
+          title: this.$t('compute.text_1070'),
           formatter: ({ cellValue }) => {
             return CREATE_METHODS[cellValue]
           },
         },
         {
           field: 'resource',
-          title: '快照类别',
+          title: this.$t('compute.text_1071'),
           formatter: ({ cellValue }) => {
-            return '主机快照'
+            return this.$t('compute.text_102')
           },
         },
         {
           field: 'rules',
-          title: '子快照',
+          title: this.$t('compute.text_1081'),
           slots: {
             default: ({ row }) => {
               const len = (row.snapshots && row.snapshots.length) || 0

@@ -25,15 +25,15 @@ export default {
       baseInfo: [
         getCopyWithContentTableColumn({
           field: 'fingerprint',
-          title: '指纹',
+          title: this.$t('compute.text_726'),
         }),
         {
           field: 'scheme',
-          title: '类型',
+          title: this.$t('compute.text_175'),
         },
         {
           field: 'linked_guest_count',
-          title: `关联${this.$t('dictionary.server')}数量`,
+          title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
         },
       ],
     }

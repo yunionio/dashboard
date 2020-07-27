@@ -27,10 +27,10 @@ export default {
         getEnabledTableColumn(),
         {
           filed: 'interval',
-          title: '时间间隔',
+          title: this.$t('compute.text_242'),
           slots: {
             default: ({ row }) => {
-              return row.hour + '小时'
+              return row.hour + this.$t('compute.text_172')
             },
           },
         },

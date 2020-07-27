@@ -12,11 +12,12 @@
 import { getMaintenanceTableColumn } from '../utils/columns'
 import { getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 const storageType = {
-  rotate: '机械硬盘',
-  ssd: '固态硬盘',
-  hybrid: '混合盘',
+  rotate: i18n.t('compute.text_577'),
+  ssd: i18n.t('compute.text_48'),
+  hybrid: i18n.t('compute.text_578'),
 }
 
 export default {
@@ -41,31 +42,31 @@ export default {
       storageColumns: [
         {
           field: 'adapter',
-          title: '适配器',
+          title: this.$t('compute.text_579'),
         },
         {
           field: 'driver',
-          title: '驱动',
+          title: this.$t('compute.text_378'),
           width: 80,
         },
         {
           field: 'model',
-          title: '型号',
+          title: this.$t('compute.text_580'),
           showOverflow: 'ellipsis',
           minWidth: 100,
         },
         {
           field: 'rotate',
-          title: '类型',
+          title: this.$t('compute.text_175'),
           width: 80,
           formatter: ({ cellValue, row }) => {
-            if (cellValue === true) return '普通硬盘'
+            if (cellValue === true) return this.$t('compute.text_581')
             return 'SSD'
           },
         },
         {
           field: 'size',
-          title: '容量',
+          title: this.$t('compute.text_397'),
           formatter: ({ cellValue, row }) => {
             return sizestr(cellValue, 'M', 1024)
           },
@@ -79,7 +80,7 @@ export default {
         },
         {
           field: 'mac',
-          title: 'MAC地址',
+          title: this.$t('compute.text_385'),
           showOverflow: 'ellipsis',
           minWidth: 100,
           formatter: ({ cellValue, row }) => {
@@ -88,15 +89,15 @@ export default {
         },
         {
           field: 'masklen',
-          title: '子网掩码',
+          title: this.$t('compute.text_583'),
         },
         {
           field: 'nic_type',
-          title: '类型',
+          title: this.$t('compute.text_175'),
         },
         {
           field: 'rate',
-          title: '速率',
+          title: this.$t('compute.text_584'),
         },
       ],
       baseInfo: [
@@ -108,7 +109,7 @@ export default {
         },
         getCopyWithContentTableColumn({
           field: 'server',
-          title: '分配',
+          title: this.$t('compute.text_602'),
           hideField: true,
           slotCallback: row => {
             if (!row.server) return '-'
@@ -117,17 +118,17 @@ export default {
             ]
           },
         }),
-        getCopyWithContentTableColumn({ field: 'server', title: '分配' }),
+        getCopyWithContentTableColumn({ field: 'server', title: this.$t('compute.text_602') }),
         {
           field: 'access_mac',
-          title: 'MAC地址',
+          title: this.$t('compute.text_385'),
           formatter: ({ cellValue, row }) => {
             return cellValue || '-'
           },
         },
         {
           field: 'schedtags',
-          title: '调度策略',
+          title: this.$t('compute.text_311'),
           formatter: ({ cellValue, row }) => {
             if (row.schedtags && row.schedtags.length > 0) {
               const schedtags = row.schedtags.map(v => v.name)
@@ -138,16 +139,16 @@ export default {
         },
         {
           field: 'version',
-          title: 'host 版本',
+          title: this.$t('compute.text_585'),
         },
         {
           field: 'kvm_module',
-          title: '硬件虚拟化',
+          title: this.$t('compute.text_586'),
           formatter: ({ cellData, row }) => {
             const kvmModuleMap = {
               'kvm-intel': 'Intel',
               'kvm-amd': 'AMD',
-              unsupport: '不支持',
+              unsupport: this.$t('compute.text_587'),
             }
             if (!row.sys_info) return '-'
             return kvmModuleMap[row.sys_info.kvm_module] || '-'
@@ -155,13 +156,13 @@ export default {
         },
         {
           field: 'cdrom_boot',
-          title: 'ISO启动',
+          title: this.$t('compute.text_588'),
           formatter: ({ cellData, row }) => {
             let ret = '-'
             if (row.ipmi_info && row.ipmi_info.cdrom_boot === 'true') {
-              ret = '支持'
+              ret = this.$t('compute.text_589')
             } else {
-              ret = '不支持'
+              ret = this.$t('compute.text_587')
             }
             return ret
           },
@@ -169,25 +170,25 @@ export default {
       ],
       extraInfo: [
         {
-          title: '品牌信息',
+          title: this.$t('compute.text_590'),
           items: [
             {
               field: 'manufacture',
-              title: '名称',
+              title: this.$t('compute.text_228'),
               formatter: ({ cellValue, row }) => {
                 return ((row.sys_info || {}).manufacture) || '-'
               },
             },
             {
               field: 'model',
-              title: '型号',
+              title: this.$t('compute.text_580'),
               formatter: ({ cellValue, row }) => {
                 return ((row.sys_info || {}).model) || '-'
               },
             },
             getCopyWithContentTableColumn({
               field: 'sn',
-              title: '序列号',
+              title: this.$t('compute.text_591'),
             }),
           ],
         },
@@ -196,65 +197,65 @@ export default {
           items: [
             {
               field: 'cpu_count',
-              title: '核数',
+              title: this.$t('compute.text_592'),
               formatter: ({ cellValue }) => {
-                return cellValue + '核'
+                return cellValue + this.$t('compute.text_167')
               },
             },
             {
               field: 'node_count',
-              title: '插槽数',
+              title: this.$t('compute.text_593'),
               formatter: ({ cellValue }) => {
-                return cellValue + '个'
+                return cellValue + this.$t('compute.text_200')
               },
             },
             {
               field: 'cpu_cmtbound',
-              title: '超售比',
+              title: this.$t('compute.text_594'),
             },
             {
               field: 'cpu_commit_rate',
-              title: '当前超售比例',
+              title: this.$t('compute.text_859'),
             },
             {
               field: 'cpu_desc',
-              title: '描述',
+              title: this.$t('compute.text_596'),
             },
           ],
         },
         {
-          title: '内存',
+          title: this.$t('compute.text_369'),
           items: [
             {
               field: 'mem_size',
-              title: '容量',
+              title: this.$t('compute.text_397'),
               formatter: ({ cellValue, row }) => {
                 return sizestr(cellValue, 'M', 1024)
               },
             },
             {
               field: 'mem_reserved',
-              title: '系统预留',
+              title: this.$t('compute.text_598'),
               formatter: ({ cellValue, row }) => {
                 return sizestr(cellValue, 'M', 1024)
               },
             },
             {
               field: 'mem_cmtbound',
-              title: '超售比',
+              title: this.$t('compute.text_594'),
             },
             {
               field: 'mem_commit_rate',
-              title: '当前超售比例',
+              title: this.$t('compute.text_859'),
             },
           ],
         },
         {
-          title: '存储',
+          title: this.$t('compute.text_99'),
           items: [
             {
               field: 'storage_size',
-              title: '容量',
+              title: this.$t('compute.text_397'),
               // formatter: ({ cellValue, row }) => {
               //   return sizestr(cellValue, 'M', 1024)
               // },
@@ -268,18 +269,18 @@ export default {
             },
             {
               field: 'storage_type',
-              title: '类型',
+              title: this.$t('compute.text_175'),
               formatter: ({ cellValue, row }) => {
                 return storageType[cellValue]
               },
             },
             {
               field: 'storage_commit_rate',
-              title: '当前超售比例',
+              title: this.$t('compute.text_859'),
             },
             {
               field: 'storage_waste',
-              title: '无效存储',
+              title: this.$t('compute.text_599'),
               formatter: ({ cellValue, row }) => {
                 return sizestr(cellValue || 0, 'M', 1024)
               },
@@ -298,7 +299,7 @@ export default {
           ],
         },
         {
-          title: '网络接口',
+          title: this.$t('compute.text_600'),
           field: 'nic_info',
           slots: {
             default: ({ row }, h) => {

@@ -29,14 +29,14 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           status: {
-            label: '上一次执行状态',
+            label: this.$t('compute.text_229'),
             dropdown: true,
             multiple: true,
             items: (function (t) {
@@ -60,10 +60,10 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '上一次执行状态', key: 'status' },
-          { label: '开始时间', key: 'start_time' },
-          { label: '结束时间', key: 'end_time' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_229'), key: 'status' },
+          { label: this.$t('compute.text_230'), key: 'start_time' },
+          { label: this.$t('compute.text_231'), key: 'end_time' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },

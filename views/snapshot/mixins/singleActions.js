@@ -1,10 +1,11 @@
 import { RollbackDiskValidate } from '../validate'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '回滚硬盘',
+        label: i18n.t('compute.text_1069'),
         permission: 'disks_perform_disk_reset',
         action: obj => {
           this.createDialog('DiskRollbackDialog', {
@@ -25,7 +26,7 @@ export default {
         },
       },
       {
-        label: '同步状态',
+        label: i18n.t('compute.text_282'),
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
@@ -40,16 +41,16 @@ export default {
         }),
       },
       {
-        label: '删除',
+        label: i18n.t('compute.text_261'),
         permission: 'snapshots_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除',
+            title: i18n.t('compute.text_261'),
             onManager: this.onManager,
-            name: '快照',
+            name: i18n.t('compute.text_462'),
           })
         },
         meta: obj => this.$getDeleteResult(obj),

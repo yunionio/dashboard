@@ -34,7 +34,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -43,7 +43,7 @@ export default {
           status: getStatusFilter('sku'),
           enabled: getEnabledFilter(),
           cpu_core_count: {
-            label: '虚拟CPU核数',
+            label: this.$t('compute.text_1051'),
             dropdown: true,
             multiple: false,
             distinctField: {
@@ -52,12 +52,12 @@ export default {
             },
             mapper: (data) => {
               return data.map(({ key }) => {
-                return { label: `${key}核`, key }
+                return { label: this.$t('compute.text_120', [key]), key }
               })
             },
           },
           memory_size_mb: {
-            label: '虚拟内存容量',
+            label: this.$t('compute.text_1052'),
             dropdown: true,
             multiple: false,
             distinctField: {
@@ -75,21 +75,21 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '虚拟CPU核数', key: 'cpu_core_count' },
-          { label: '虚拟内存容量', key: 'memory_size_mb' },
-          { label: '状态', key: 'status' },
-          { label: `关联${this.$t('dictionary.server')}数量`, key: 'total_guest_count' },
-          { label: '启用状态', key: 'enabled' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_1051'), key: 'cpu_core_count' },
+          { label: this.$t('compute.text_1052'), key: 'memory_size_mb' },
+          { label: this.$t('compute.text_268'), key: 'status' },
+          { label: this.$t('compute.text_699', [this.$t('dictionary.server')]), key: 'total_guest_count' },
+          { label: this.$t('compute.text_241'), key: 'enabled' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'skus_create',
           action: () => {
             this.createDialog('CreateSkuDialog', {
-              title: '新建',
+              title: this.$t('compute.text_18'),
               onManager: this.onManager,
             })
           },
@@ -103,14 +103,14 @@ export default {
             return [
               ...getEnabledSwitchActions(this, undefined, ['skus_update', 'skus_update']),
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'skus_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除账号',
+                    title: this.$t('compute.text_1053'),
                     name: this.$t('dictionary.sku'),
                     onManager: this.onManager,
                   })

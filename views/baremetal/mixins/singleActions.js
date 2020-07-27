@@ -5,6 +5,7 @@ import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/u
 import { typeClouds } from '@/utils/common/hypervisor'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
+import i18n from '@/locales'
 
 export default {
   computed: {
@@ -18,11 +19,11 @@ export default {
 
     this.singleActions = [
       {
-        label: '远程控制',
+        label: i18n.t('compute.text_341'),
         actions: obj => {
           let ret = []
           ret.push({
-            label: 'SOL 远程终端',
+            label: i18n.t('compute.text_342'),
             action: () => {
               this.webconsoleManager.objectRpc({
                 methodname: 'DoBaremetalConnect',
@@ -39,7 +40,7 @@ export default {
             },
           })
           const mapIpActions = (ipArr, type) => {
-            if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error('ssh 类型必须为 IP SSH,EIP SSH 中的一种')
+            if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error(i18n.t('compute.text_343'))
             const options = []
             ipArr.forEach(v => {
               const meta = () => {
@@ -48,7 +49,7 @@ export default {
                   tooltip: null,
                 }
                 if (obj.os_type === 'Windows') {
-                  ret.tooltip = 'Windows 不支持 SSH 连接'
+                  ret.tooltip = i18n.t('compute.text_344')
                 }
                 ret.validate = cloudEnabled(type, obj)
                 ret.tooltip = cloudUnabledTip(type, obj)
@@ -67,10 +68,10 @@ export default {
                 meta,
               })
               options.push({
-                label: `SSH ${v} 自定义端口`,
+                label: i18n.t('compute.text_345', [v]),
                 action: () => {
                   this.createDialog('SmartFormDialog', {
-                    title: '自定义端口',
+                    title: i18n.t('compute.text_346'),
                     data: [obj],
                     callback: async (data) => {
                       const response = await this.webconsoleManager.performAction({
@@ -86,12 +87,12 @@ export default {
                         {
                           validateFirst: true,
                           rules: [
-                            { required: true, message: '请输入端口' },
+                            { required: true, message: i18n.t('compute.text_347') },
                             {
                               validator: (rule, value, _callback) => {
                                 const num = parseFloat(value)
                                 if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                  _callback('端口范围在 0-65535 之间')
+                                  _callback(i18n.t('compute.text_348'))
                                 }
                                 _callback()
                               },
@@ -99,8 +100,8 @@ export default {
                           ],
                         },
                         {
-                          label: '端口',
-                          placeholder: '请输入端口号',
+                          label: i18n.t('compute.text_349'),
+                          placeholder: i18n.t('compute.text_350'),
                         },
                       ],
                     },
@@ -117,7 +118,7 @@ export default {
           ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
           ret = ret.concat(eips).concat(ips)
           ret.push({
-            label: 'Java控制台',
+            label: i18n.t('compute.text_351'),
             action: () => {
               const manager = new this.$Manager('servers', 'v2')
               manager.getSpecific({
@@ -141,14 +142,14 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('compute.text_352'),
         actions: (obj) => {
           return [
             {
-              label: '实例状态',
+              label: i18n.t('compute.text_353'),
               submenus: [
                 {
-                  label: '开机',
+                  label: i18n.t('compute.text_272'),
                   permission: 'server_perform_start',
                   action: () => {
                     this.onManager('performAction', {
@@ -166,7 +167,7 @@ export default {
                   },
                 },
                 {
-                  label: '关机',
+                  label: i18n.t('compute.text_273'),
                   permission: 'server_perform_stop',
                   action: () => {
                     this.createDialog('VmShutDownDialog', {
@@ -182,7 +183,7 @@ export default {
                   },
                 },
                 {
-                  label: '重启',
+                  label: i18n.t('compute.text_274'),
                   permission: 'server_perform_restart',
                   action: () => {
                     this.createDialog('VmRestartDialog', {
@@ -198,7 +199,7 @@ export default {
                   },
                 },
                 {
-                  label: '重置',
+                  label: i18n.t('compute.text_354'),
                   permission: 'server_perform_reset',
                   action: () => {
                     this.createDialog('VmResetDialog', {
@@ -213,7 +214,7 @@ export default {
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_355')
                       return ret
                     }
                     return {
@@ -224,10 +225,10 @@ export default {
               ],
             },
             {
-              label: '实例设置',
+              label: i18n.t('compute.text_356'),
               submenus: [
                 {
-                  label: '重装系统',
+                  label: i18n.t('compute.text_357'),
                   permission: 'server_perform_rebuild_root',
                   action: () => {
                     this.createDialog('VmRebuildRootDialog', {
@@ -246,7 +247,7 @@ export default {
                       return ret
                     }
                     if (obj.status !== 'ready') {
-                      ret.tooltip = '仅在云服务器状态为【关机】下可以进行该操作'
+                      ret.tooltip = i18n.t('compute.text_358')
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -256,7 +257,7 @@ export default {
                   },
                 },
                 {
-                  label: '同步状态',
+                  label: i18n.t('compute.text_282'),
                   permission: 'server_perform_syncstatus',
                   action: () => {
                     this.onManager('performAction', {
@@ -269,7 +270,7 @@ export default {
                   },
                 },
                 {
-                  label: `更改${this.$t('dictionary.project')}`,
+                  label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
                   permission: 'server_perform_change_owner',
                   action: () => {
                     this.createDialog('ChangeOwenrDialog', {
@@ -290,7 +291,7 @@ export default {
                   },
                 },
                 {
-                  label: '创建相同配置',
+                  label: i18n.t('compute.text_359'),
                   action: () => {
                     this.createDialog('VmCloneDialog', {
                       data: [obj],
@@ -311,10 +312,10 @@ export default {
               ],
             },
             {
-              label: '密码密钥',
+              label: i18n.t('compute.text_360'),
               submenus: [
                 {
-                  label: '重置密码',
+                  label: i18n.t('compute.text_276'),
                   permission: 'server_perform_deploy',
                   action: () => {
                     this.createDialog('VmResetPasswordDialog', {
@@ -331,7 +332,7 @@ export default {
                     if (obj.metadata.is_fake_baremetal_server === 'true') return ret
                     if (commonUnabled(obj)) return ret
                     if (obj.keypair_id && obj.keypair_id.toLowerCase() !== 'none') {
-                      ret.tooltip = '已绑定密钥的云服务器无法重置密码'
+                      ret.tooltip = i18n.t('compute.text_277')
                       return ret
                     }
                     ret.validate = cloudEnabled('resetPassword', obj)
@@ -340,7 +341,7 @@ export default {
                   },
                 },
                 {
-                  label: '绑定密钥',
+                  label: i18n.t('compute.text_361'),
                   permission: 'server_perform_deploy',
                   action: () => {
                     this.createDialog('VmBindKeypairDialog', {
@@ -357,11 +358,11 @@ export default {
                     if (obj.metadata.is_fake_baremetal_server === 'true') return ret
                     if (commonUnabled(obj)) return ret
                     if (obj.os_type === 'Windows') {
-                      ret.tooltip = 'Windows系统不支持该功能'
+                      ret.tooltip = i18n.t('compute.text_362')
                       return ret
                     }
                     if (obj.keypair) {
-                      ret.tooltip = '该服务器已关联密钥'
+                      ret.tooltip = i18n.t('compute.text_363')
                       return ret
                     }
                     ret.validate = cloudEnabled('bindKeyPair', obj)
@@ -370,7 +371,7 @@ export default {
                   },
                 },
                 {
-                  label: '解绑密钥',
+                  label: i18n.t('compute.text_364'),
                   permission: 'server_perform_deploy',
                   action: () => {
                     this.createDialog('VmUnbindKeypairDialog', {
@@ -387,11 +388,11 @@ export default {
                     if (obj.metadata.is_fake_baremetal_server === 'true') return ret
                     if (commonUnabled(obj)) return ret
                     if (obj.os_type === 'Windows') {
-                      ret.tooltip = 'Windows系统不支持该功能'
+                      ret.tooltip = i18n.t('compute.text_362')
                       return ret
                     }
                     if (!obj.keypair) {
-                      ret.tooltip = '该服务器未关联密钥'
+                      ret.tooltip = i18n.t('compute.text_365')
                       return ret
                     }
                     ret.validate = cloudEnabled('unBindKeyPair', obj)
@@ -402,10 +403,10 @@ export default {
               ],
             },
             {
-              label: '镜像',
+              label: i18n.t('compute.text_96'),
               submenus: [
                 {
-                  label: '挂载ISO',
+                  label: i18n.t('compute.text_366'),
                   permission: 'server_perform_insertiso',
                   action: () => {
                     this.createDialog('VmMountIsoDialog', {
@@ -422,7 +423,7 @@ export default {
                   },
                 },
                 {
-                  label: '卸载ISO',
+                  label: i18n.t('compute.text_367'),
                   permission: 'server_perform_ejectiso',
                   action: () => {
                     this.createDialog('VmUnmountIsoDialog', {
@@ -441,11 +442,11 @@ export default {
               ],
             },
             {
-              label: '删除',
+              label: i18n.t('compute.text_261'),
               submenus: [
                 disableDeleteAction(this),
                 {
-                  label: '删除',
+                  label: i18n.t('compute.text_261'),
                   permission: 'server_delete',
                   action: () => {
                     this.createDialog('DeleteResDialog', {
@@ -453,7 +454,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
-                      title: '删除',
+                      title: i18n.t('compute.text_261'),
                       success: () => {
                         this.destroySidePages()
                       },
@@ -465,11 +466,11 @@ export default {
                       tooltip: null,
                     }
                     if (this.isAdminMode && obj.billing_type === 'prepaid') {
-                      ret.tooltip = '包年包月机器，不支持此操作'
+                      ret.tooltip = i18n.t('compute.text_285')
                       return ret
                     }
                     if (!obj.can_delete) {
-                      ret.tooltip = '点击【修改属性】解除删除保护后，重试'
+                      ret.tooltip = i18n.t('compute.text_284')
                       return ret
                     }
                     ret.validate = true

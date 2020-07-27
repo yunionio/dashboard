@@ -14,6 +14,7 @@ import {
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
 import { findPlatform } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -69,7 +70,7 @@ export default {
         addLock: true,
         addBackup: true,
         formRules: [
-          { required: true, message: '请输入名称' },
+          { required: true, message: i18n.t('compute.text_210') },
           { validator: this.$validate('resourceCreateName') },
         ],
         slotCallback: row => {
@@ -80,11 +81,11 @@ export default {
       }),
       {
         field: 'is_gpu',
-        title: '类型',
+        title: i18n.t('compute.text_175'),
         width: 50,
         slots: {
           default: ({ row }) => {
-            let tooltip = `通用${this.$t('dictionary.server')}`
+            let tooltip = i18n.t('compute.text_291', [i18n.t('dictionary.server')])
             let icontype = 'cpu'
             if (row.is_gpu) {
               tooltip = `GPU${this.$t('dictionary.server')}`
@@ -98,7 +99,7 @@ export default {
       getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
       {
         field: 'instance_type',
-        title: '配置',
+        title: i18n.t('compute.text_295'),
         showOverflow: 'ellipsis',
         minWidth: 120,
         sortable: true,
@@ -115,7 +116,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: '系统',
+        title: i18n.t('compute.text_338'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -124,7 +125,7 @@ export default {
               name = 'Windows'
             }
             const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || i18n.t('compute.text_339') // 去重
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
@@ -133,7 +134,7 @@ export default {
       },
       {
         field: 'password',
-        title: '密码',
+        title: i18n.t('compute.text_340'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -143,7 +144,7 @@ export default {
       },
       {
         field: 'secgroups',
-        title: '安全组',
+        title: i18n.t('compute.text_105'),
         width: 80,
         showOverflow: 'ellipsis',
         formatter: ({ cellValue = [] }) => {
@@ -165,7 +166,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
       {
         field: 'host',
-        title: '宿主机',
+        title: i18n.t('compute.text_111'),
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 100,
@@ -181,7 +182,7 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'account', title: '云账号' }),
+      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('compute.text_269') }),
       getProjectTableColumn(),
       getBrandTableColumn(),
       getRegionTableColumn(),

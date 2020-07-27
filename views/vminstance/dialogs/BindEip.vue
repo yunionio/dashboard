@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">绑定弹性公网IP</div>
+    <div slot="header">{{$t('compute.text_1179')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="绑定弹性公网IP" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1179')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="绑定方式" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1180')" v-bind="formItemLayout">
           <eip-config
             hidden-none-type
             :decorators="decorators.eipConfig"
@@ -71,7 +71,7 @@ export default {
             'eip',
             {
               rules: [
-                { required: true, message: '请选择弹性公网IP', trigger: 'change' },
+                { required: true, message: this.$t('compute.text_145'), trigger: 'change' },
               ],
             },
           ],

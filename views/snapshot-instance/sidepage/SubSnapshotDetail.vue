@@ -21,24 +21,24 @@ export default {
   data () {
     return {
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: '快照名称' }),
+        getCopyWithContentTableColumn({ field: 'name', title: this.$t('compute.text_415') }),
         {
           field: 'size',
-          title: '快照大小',
+          title: this.$t('compute.text_422'),
           formatter: ({ row }) => {
             return sizestr(row.size, 'M', 1024)
           },
         },
         {
           field: 'disk_type',
-          title: '磁盘类型',
+          title: this.$t('compute.text_381'),
           formatter: ({ row }) => {
             return DISK_TYPES[row.disk_type] || row.disk_type
           },
         },
         {
           field: 'storage_type',
-          title: '存储类型',
+          title: this.$t('compute.text_380'),
           formatter: ({ row }) => {
             return STORAGE_TYPES[row.storage_type] || row.storage_type || '-'
           },
@@ -46,7 +46,7 @@ export default {
         // getStatusTableColumn({ statusModule: 'snapshot' }),
         {
           field: 'created_at',
-          title: '创建时间',
+          title: this.$t('compute.text_243'),
           formatter: ({ cellValue }) => {
             if (cellValue) {
               return this.$moment(cellValue).format()

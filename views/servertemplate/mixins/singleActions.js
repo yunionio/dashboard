@@ -1,8 +1,9 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: `新建${this.$t('dictionary.server')}`,
+        label: i18n.t('compute.text_1047', [i18n.t('dictionary.server')]),
         permission: 'server_create',
         action: obj => {
           this.$router.push({
@@ -16,19 +17,19 @@ export default {
           const isReady = obj.status === 'ready'
           return {
             validate: isReady,
-            tooltip: !isReady && '仅可用状态下支持此操作',
+            tooltip: !isReady && i18n.t('compute.text_1048'),
           }
         },
       },
       {
-        label: '删除',
+        label: i18n.t('compute.text_261'),
         permission: 'servertemplates_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除',
+            title: i18n.t('compute.text_261'),
             onManager: this.onManager,
             name: this.$t('dictionary.servertemplate'),
           })

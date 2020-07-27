@@ -1,14 +1,14 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{params.title === 'edit' ? '编辑' : params.title === 'create' ? '新建' : '克隆'}}规则</div>
+    <div slot="header">{{params.title === 'edit' ? $t('compute.text_982') : params.title === 'create' ? $t('compute.text_18') : $t('compute.text_983')}}规则</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="类型" v-bind="formItemLayout" v-if="params.title !== 'edit'">
+        <a-form-item :label="$t('compute.text_175')" v-bind="formItemLayout" v-if="params.title !== 'edit'">
           <a-select
             v-decorator="decorators.type"
             :disabled="typeDisabled"
-            placeholder="请选择"
+            :placeholder="$t('compute.text_219')"
             @change="typeChange">
             <a-select-option v-for="item in typeOptions" :key="item.value" :value="item.value">
               {{item.label}}
@@ -18,14 +18,14 @@
         <a-form-item v-bind="formItemLayout">
           <span slot="label">
             {{decLabel}}&nbsp;
-            <a-tooltip title="来源支持以下格式:单个IP: 192.168.0.1CIDR: 192.168.1.0/24">
+            <a-tooltip :title="$t('compute.text_995')">
               <a-icon type="question-circle-o" />
             </a-tooltip>
           </span>
-          <a-input :disabled="IPCheckboxDisabled" v-decorator="decorators.cidr" placeholder="请输入来源" />
-          <a-checkbox class="right-checkbox" @change="cidrChange" :checked="isIPChecked">任意IP</a-checkbox>
+          <a-input :disabled="IPCheckboxDisabled" v-decorator="decorators.cidr" :placeholder="$t('compute.text_996')" />
+          <a-checkbox class="right-checkbox" @change="cidrChange" :checked="isIPChecked">{{$t('compute.text_997')}}</a-checkbox>
         </a-form-item>
-        <a-form-item label="协议" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_980')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.protocol" @change="protocolChange" :disabled="protocolDisabled">
             <a-select-option v-for="item in protocolOptions" :key="item.value" :value="item.value">
               {{item.label}}
@@ -33,16 +33,14 @@
           </a-select>
         </a-form-item>
         <a-form-item v-bind="formItemLayout">
-          <span slot="label">
-            端口&nbsp;
-            <a-tooltip title="协议端口支持以下格式: 单个端口: 80 多个端口: 80,443 连续端口: 3306-20000">
+          <span slot="label">{{$t('compute.text_998')}}<a-tooltip :title="$t('compute.text_999')">
               <a-icon type="question-circle-o" />
             </a-tooltip>
           </span>
-          <a-input :disabled="portsDisabled" v-decorator="decorators.ports" placeholder="请输入端口号" />
-          <a-checkbox class="right-checkbox" @change="portsChange" :checked="portsChecked" :disabled="portsCheckboxDisabled">任意端口</a-checkbox>
+          <a-input :disabled="portsDisabled" v-decorator="decorators.ports" :placeholder="$t('compute.text_350')" />
+          <a-checkbox class="right-checkbox" @change="portsChange" :checked="portsChecked" :disabled="portsCheckboxDisabled">{{$t('compute.text_1000')}}</a-checkbox>
         </a-form-item>
-        <a-form-item label="策略" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_694')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.action">
             <a-select-option v-for="item in actionOptions" :key="item.value" :value="item.value">
               {{item.label}}
@@ -50,9 +48,7 @@
           </a-select>
         </a-form-item>
         <a-form-item v-bind="formItemLayout">
-          <span slot="label">
-            优先级&nbsp;
-            <a-tooltip title="从1到100优先级依次增大">
+          <span slot="label">{{$t('compute.text_1001')}}<a-tooltip :title="$t('compute.text_1002')">
               <a-icon type="question-circle-o" />
             </a-tooltip>
           </span>
@@ -92,7 +88,7 @@ export default {
             validateFirst: true,
             initialValue: selectItem.cidr || '',
             rules: [
-              { required: true, message: '请输入来源' },
+              { required: true, message: this.$t('compute.text_996') },
               { validator: this.$validate('cidr') },
             ],
           },
@@ -109,7 +105,7 @@ export default {
             validateFirst: true,
             initialValue: JSON.stringify(selectItem) === '{}' ? '' : selectItem.ports ? selectItem.ports : 'ALL',
             rules: [
-              { required: true, message: '请输入端口' },
+              { required: true, message: this.$t('compute.text_347') },
               { validator: this.validatePorts },
             ],
           },
@@ -139,22 +135,22 @@ export default {
         },
       },
       typeOptions: [
-        { label: '自定义', value: 'custom', description: '' },
-        { label: '微软远程桌面 (3389)', value: 'windows', description: 'Windows远程登录' },
-        { label: 'SSH (22)', value: 'linux', description: 'Linux SSH登录' },
-        { label: 'HTTP（80）', value: 'http', description: 'Web服务端口（http）' },
-        { label: 'HTTPS（443）', value: 'https', description: 'Web服务端口（https）' },
-        { label: 'Ping', value: 'ping', description: 'Ping服务' },
+        { label: this.$t('compute.text_144'), value: 'custom', description: '' },
+        { label: this.$t('compute.text_1003'), value: 'windows', description: this.$t('compute.text_1004') },
+        { label: 'SSH (22)', value: 'linux', description: this.$t('compute.text_1005') },
+        { label: 'HTTP（80）', value: 'http', description: this.$t('compute.text_1006') },
+        { label: 'HTTPS（443）', value: 'https', description: this.$t('compute.text_1007') },
+        { label: 'Ping', value: 'ping', description: this.$t('compute.text_1008') },
       ],
       protocolOptions: [
         { label: 'TCP', value: 'tcp' },
         { label: 'UDP', value: 'udp' },
         { label: 'ICMP', value: 'icmp' },
-        { label: '任意协议', value: 'any' },
+        { label: this.$t('compute.text_1009'), value: 'any' },
       ],
       actionOptions: [
-        { label: '允许', value: 'allow' },
-        { label: '拒绝', value: 'deny' },
+        { label: this.$t('compute.text_976'), value: 'allow' },
+        { label: this.$t('compute.text_977'), value: 'deny' },
       ],
       typeDisabled: false,
       isIPChecked: selectItem.cidr === '0.0.0.0/0',
@@ -162,7 +158,7 @@ export default {
       portsDisabled: JSON.stringify(selectItem) === '{}' ? false : !selectItem.ports,
       portsCheckboxDisabled: selectItem.protocol === 'any' || selectItem.protocol === 'icmp',
       portsChecked: JSON.stringify(selectItem) === '{}' ? false : !selectItem.ports,
-      decLabel: this.params.type === 'in' ? '来源' : '目标',
+      decLabel: this.params.type === 'in' ? this.$t('compute.text_979') : this.$t('compute.text_978'),
       protocolDisabled: this.params.title !== 'edit',
     }
   },

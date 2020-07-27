@@ -3,16 +3,14 @@
     <div slot="header">{{ title }}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <template v-slot:message>
-          此页面支持为每个GPU卡设置相同的预留资源,如需单独设置可在透传设备列表操作
-        </template>
+        <template v-slot:message>{{$t('compute.text_560')}}</template>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" :action="title" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc"
         hideRequiredMark>
-        <reserve-resource :decorators="decorators" label="每个GPU预留资源" />
+        <reserve-resource :decorators="decorators" :label="$t('compute.text_561')" />
       </a-form>
     </div>
     <div slot="footer">
@@ -44,7 +42,7 @@ export default {
       return Math.ceil(val / this.params.data[0].isolated_device_count)
     }
     return {
-      title: '设置GPU卡预留资源',
+      title: this.$t('compute.text_514'),
       loading: false,
       form: {
         fc: this.$form.createForm(this),
@@ -91,7 +89,7 @@ export default {
         getIsolatedDeviceCountColumns(),
         {
           field: '',
-          title: '宿主机预留资源',
+          title: this.$t('compute.text_501'),
           minWidth: 100,
           showOverflow: 'title',
           slots: {

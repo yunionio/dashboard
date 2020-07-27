@@ -1,9 +1,10 @@
 import { sizestr } from '@/utils/utils'
+import i18n from '@/locales'
 
 export const getReserveResourceColumn = () => {
   return {
     field: '',
-    title: '宿主机预留资源',
+    title: i18n.t('compute.text_501'),
     minWidth: 100,
     showOverflow: 'title',
     slots: {

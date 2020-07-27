@@ -1,11 +1,12 @@
+import i18n from '@/locales'
 export const getUnusedTableColumn = () => {
   return {
     field: 'unused',
-    title: '是否挂载',
+    title: i18n.t('compute.text_393'),
     width: 70,
     slots: {
       default: ({ row }, h) => {
-        return row.guest_count >= 1 ? [<span class="success-color">已挂载</span>] : [<span class="warning-color">待挂载</span>]
+        return row.guest_count >= 1 ? [<span class="success-color">{ i18n.t('compute.text_464') }</span>] : [<span class="warning-color">{ i18n.t('compute.text_281') }</span>]
       },
     },
   }

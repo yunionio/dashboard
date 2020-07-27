@@ -4,7 +4,7 @@
       <snapshot-list :list="list" v-bind="$props" />
     </template>
     <template v-else>
-      <page-header title="主机快照" />
+      <page-header :title="$t('compute.text_102')" />
       <page-body>
         <snapshot-list :list="list" v-bind="$props" />
       </page-body>
@@ -36,7 +36,7 @@ export default {
         steadyStatus,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`

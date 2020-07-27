@@ -1,7 +1,8 @@
+import i18n from '@/locales'
 export const getIsolatedDeviceCountColumns = () => {
   return {
     field: 'isolated_device_count',
-    title: 'GPU卡数量',
+    title: i18n.t('compute.text_609'),
     minWidth: 80,
     showOverflow: 'title',
     formatter: ({ row }) => {

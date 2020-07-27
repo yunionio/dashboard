@@ -27,7 +27,7 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'guest_count',
-          title: '绑定主机数量',
+          title: this.$t('compute.text_718'),
           slots: {
             default: ({ row }) => {
               if (row.guest_count > 0) {
@@ -41,16 +41,16 @@ export default {
         },
         {
           field: 'force_dispersion',
-          title: '策略',
+          title: this.$t('compute.text_694'),
           formatter: ({ cellValue }) => {
-            let ret = '非强制'
-            if (cellValue) ret = '强制'
+            let ret = this.$t('compute.text_696')
+            if (cellValue) ret = this.$t('compute.text_695')
             return ret
           },
         },
         {
           field: 'granularity',
-          title: '粒度',
+          title: this.$t('compute.text_697'),
         },
       ],
     }

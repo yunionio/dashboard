@@ -48,7 +48,7 @@ export default {
         steadyStatus: Object.values(expectStatus.image).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -63,12 +63,12 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '格式', key: 'disk_format' },
-          { label: '镜像大小', key: 'size' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_398'), key: 'disk_format' },
+          { label: this.$t('compute.text_610'), key: 'size' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '镜像类型', key: 'is_standard' },
-          { label: '创建时间', key: 'created_at' },
+          { label: this.$t('compute.text_611'), key: 'is_standard' },
+          { label: this.$t('compute.text_243'), key: 'created_at' },
         ],
       },
       groupActions: [
@@ -87,7 +87,7 @@ export default {
             if (this.list.selectedItems.some(item => item.is_standard)) {
               return {
                 validate: false,
-                tooltip: '公共镜像不支持设置',
+                tooltip: this.$t('compute.text_612'),
               }
             }
             if (this.list.selectedItems.some(item => !validateAction(item))) {
@@ -127,7 +127,7 @@ export default {
           actions: () => {
             return [
               {
-                label: `更改${this.$t('dictionary.project')}`,
+                label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -145,19 +145,19 @@ export default {
                   }
                   if (!this.isAdminMode && !this.isDomainMode) {
                     ret.validate = false
-                    ret.tooltip = '只有管理员支持该操作'
+                    ret.tooltip = this.$t('compute.text_613')
                     return ret
                   }
                   if (this.list.selectedItems.some(item => item.is_public)) {
                     ret.validate = false
-                    ret.tooltip = '只有不共享的镜像支持该操作'
+                    ret.tooltip = this.$t('compute.text_614')
                     return ret
                   }
                   return ret
                 },
               },
               {
-                label: '设置删除保护',
+                label: this.$t('compute.text_615'),
                 action: () => {
                   this.createDialog('ChangeDisableDelete', {
                     name: this.$t('dictionary.guestimage'),
@@ -170,19 +170,19 @@ export default {
                   const validate = this.list.selectedItems.length > 0
                   return {
                     validate: validate,
-                    tooltip: !validate && '请选择需要操作的主机镜像',
+                    tooltip: !validate && this.$t('compute.text_616'),
                   }
                 },
               },
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'images_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除镜像',
+                    title: this.$t('compute.text_617'),
                     name: this.$t('dictionary.guestimage'),
                     onManager: this.onManager,
                     requestData: {

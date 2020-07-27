@@ -61,25 +61,25 @@ export default {
       let type
       switch (this.type) {
         case 'idc':
-          type = '本地IDC'
+          type = this.$t('compute.text_1160')
           break
         case 'private':
-          type = '私有云'
+          type = this.$t('compute.text_400')
           break
         case 'public':
-          type = '公有云'
+          type = this.$t('compute.text_401')
           break
         default:
-          type = '本地IDC'
+          type = this.$t('compute.text_1160')
           break
       }
       let res
       if (this.$route.query.source === 'servertemplate') {
-        res = '模板'
+        res = this.$t('compute.text_257')
       } else {
-        res = '虚拟机'
+        res = this.$t('compute.text_91')
       }
-      return `新建${type}${res}`
+      return this.$t('compute.text_1161', [type, res])
     },
   },
   watch: {

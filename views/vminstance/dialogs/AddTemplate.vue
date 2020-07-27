@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">保存主机模版</div>
+    <div slot="header">{{$t('compute.text_1166')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="保存主机模版" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1166')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc"  v-bind="formItemLayout">
         <a-form-item :label="$t('common.name')">
-          <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+          <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_210')" />
           <name-repeated
             v-slot:extra
             res="servertemplates"
@@ -43,7 +43,7 @@ export default {
           'generate_name',
           {
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('compute.text_210') },
             ],
           },
         ],

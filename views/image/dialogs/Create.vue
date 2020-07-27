@@ -1,20 +1,20 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建</div>
+    <div slot="header">{{$t('compute.text_18')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <!-- <a-form-item label="名称" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
-          <a-input v-decorator="decorators.name" placeholder="名称" @change="handleChange" />
+        <!-- <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
+          <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_228')" @change="handleChange" />
         </a-form-item>
         <a-form-item label="IP" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
           <a-input v-decorator="decorators.access_ip" placeholder="IP" @change="handleChange" />
         </a-form-item>
-        <a-form-item label="序列号" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
-          <a-input v-decorator="decorators.sn" placeholder="序列号" @change="handleChange" />
+        <a-form-item :label="$t('compute.text_591')" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
+          <a-input v-decorator="decorators.sn" :placeholder="$t('compute.text_591')" @change="handleChange" />
         </a-form-item> -->
-        <a-form-item label="平台" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
-          <a-select v-decorator="decorators.platform" @change="handlePlatformChange" placeholder="请选择">
+        <a-form-item :label="$t('compute.text_176')" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
+          <a-select v-decorator="decorators.platform" @change="handlePlatformChange" :placeholder="$t('compute.text_219')">
             <a-select-option
               v-for="(item, index) in platformOptions"
               :key="index"
@@ -23,7 +23,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="云订阅" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
+        <a-form-item :label="$t('compute.text_653')" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
           <base-select
             :remote="true"
             class="w-100"
@@ -33,9 +33,9 @@
             :params="providerParams"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @change="handleManagerChange"
-            :select-props="{ placeholder: '请选择' }" />
+            :select-props="{ placeholder: $t('compute.text_219') }" />
         </a-form-item>
-        <a-form-item label="区域" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
+        <a-form-item :label="$t('compute.text_177')" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
           <base-select
             :remote="true"
             class="w-100"
@@ -45,7 +45,7 @@
             :params="regionParams"
             :remote-fn="q => ({ search: q })"
             @change="handleRegionChange"
-            :select-props="{ placeholder: '请选择' }" />
+            :select-props="{ placeholder: $t('compute.text_219') }" />
         </a-form-item>
       </a-form>
       <page-list
@@ -152,15 +152,15 @@ export default {
         return [
           {
             field: 'brand',
-            title: '平台',
+            title: this.$t('compute.text_176'),
           },
           {
             field: 'region',
-            title: '区域',
+            title: this.$t('compute.text_177'),
           },
           {
             field: 'zone',
-            title: '可用区',
+            title: this.$t('compute.text_270'),
           },
           {
             field: 'access_ip',
@@ -168,7 +168,7 @@ export default {
           },
           {
             field: 'name',
-            title: '缓存位置',
+            title: this.$t('compute.text_654'),
           },
           {
             field: 'sn',
@@ -185,23 +185,23 @@ export default {
         return [
           {
             field: 'brand',
-            title: '平台',
+            title: this.$t('compute.text_176'),
           },
           {
             field: 'account',
-            title: '云账号',
+            title: this.$t('compute.text_269'),
           },
           {
             field: 'manager',
-            title: '云订阅',
+            title: this.$t('compute.text_653'),
           },
           {
             field: 'region',
-            title: '区域',
+            title: this.$t('compute.text_177'),
           },
           {
             field: 'zone',
-            title: '可用区',
+            title: this.$t('compute.text_270'),
           },
         ]
       }
@@ -286,7 +286,7 @@ export default {
       this.loading = true
       try {
         if (this.list.selectedItems.length === 0) {
-          this.$message.info('请选择可用区')
+          this.$message.info(this.$t('compute.text_213'))
           this.loading = false
           return
         }

@@ -5,6 +5,7 @@ import {
   getProjectTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -21,23 +22,23 @@ export default {
       getEnabledTableColumn(),
       {
         field: 'force_dispersion',
-        title: '策略',
+        title: i18n.t('compute.text_694'),
         width: 70,
         formatter: ({ cellValue }) => {
-          let ret = '非强制'
-          if (cellValue) ret = '强制'
+          let ret = i18n.t('compute.text_696')
+          if (cellValue) ret = i18n.t('compute.text_695')
           return ret
         },
       },
       getStatusTableColumn({ statusModule: 'instanceGroup' }),
       {
         field: 'granularity',
-        title: '粒度',
+        title: i18n.t('compute.text_697'),
         width: 70,
       },
       {
         field: 'guest_count',
-        title: `绑定${this.$t('dictionary.server')}数量`,
+        title: i18n.t('compute.text_698', [i18n.t('dictionary.server')]),
         width: 120,
         slots: {
           default: ({ row }) => {

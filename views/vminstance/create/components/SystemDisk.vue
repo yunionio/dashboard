@@ -157,7 +157,7 @@ export default {
             ...opt,
             sysMin: Math.max(this.imageMinDisk, opt.sysMin, DISK_MIN_SIZE),
             sysMax: max,
-            label: opt.key === 'nova' ? '以镜像为系统盘' : opt.label,
+            label: opt.key === 'nova' ? this.$t('compute.text_1141') : opt.label,
           }
           if (this.hypervisor === HYPERVISORS_MAP.google.key) {
             ret[opt.key].sysMin = opt.sysMin
@@ -204,11 +204,11 @@ export default {
           const isAllEmpty = storages.capacity === 0
           allStorageTypes.push(storages)
           if (isAllEmpty && key === this.currentTypeObj.key) {
-            statusMap = { type: 'error', tooltip: `${key}存储的容量没有设置，无法创建虚拟机，请到存储--块存储进行设置，如无法查看请联系管理员设置`, isError: true }
+            statusMap = { type: 'error', tooltip: this.$t('compute.text_1142', [key]), isError: true }
           }
           if (key === this.currentTypeObj.key && storages.capacity) {
             if (storages.free_capacity === 0 || storages.free_capacity / 1024 < this.form.fd.systemDiskSize) {
-              statusMap = { type: 'error', tooltip: `${key}存储的容量不足，无法创建虚拟机，请到存储--块存储进行查看，如无法查看请联系管理员查看`, isError: true }
+              statusMap = { type: 'error', tooltip: this.$t('compute.text_1143', [key]), isError: true }
             }
           }
         })
@@ -217,7 +217,7 @@ export default {
           if (emptyStorageArr.length > 0) {
             const storageNames = (emptyStorageArr.map((v) => { return v.storages })).flat()
             const names = (storageNames.map((v) => { return v.name })).join(',')
-            statusMap = { type: 'warning', tooltip: `${names}存储的部分容量没有设置，但不影响本次创建，建议您在创建完成后进行检查` }
+            statusMap = { type: 'warning', tooltip: this.$t('compute.text_1144', [names]) }
           }
         }
         if (!statusMap.type) {
@@ -225,7 +225,7 @@ export default {
           if (freeStorageArr.length > 0) {
             const storageNames = (freeStorageArr.map((v) => { return v.storages })).flat()
             const names = (storageNames.map((v) => { return v.name })).join(',')
-            statusMap = { type: 'warning', tooltip: `${names}存储的容量部分不足100G，但不影响本次创建，建议您在创建完成后进行检查` }
+            statusMap = { type: 'warning', tooltip: this.$t('compute.text_1145', [names]) }
           }
         }
       }

@@ -27,7 +27,7 @@ export default {
       baseInfo: [
         {
           filed: 'binding_disk_count',
-          title: '关联硬盘数量',
+          title: this.$t('compute.text_1082'),
           width: 120,
           slots: {
             default: ({ row }) => {
@@ -38,7 +38,7 @@ export default {
         },
         {
           field: 'time_points',
-          title: '备份时间',
+          title: this.$t('compute.text_432'),
           formatter: ({ cellValue }) => {
             let text = ''
             if (cellValue && cellValue.length) {
@@ -49,23 +49,23 @@ export default {
         },
         {
           field: 'repeat_weekdays',
-          title: '备份日期',
+          title: this.$t('compute.text_431'),
           formatter: ({ cellValue }) => {
             let text = ''
             if (cellValue && cellValue.length) {
-              text += '每' + cellValue.map(item => weekOptions[item - 1]).join('、')
+              text += this.$t('compute.text_1098') + cellValue.map(item => weekOptions[item - 1]).join('、')
             }
             return text || '-'
           },
         },
         {
           field: 'retention_days',
-          title: '保留时间',
+          title: this.$t('compute.text_433'),
           formatter: ({ cellValue }) => {
             if (cellValue !== -1) {
-              return `${cellValue}天`
+              return this.$t('compute.text_438', [cellValue])
             }
-            return '永久保留'
+            return this.$t('compute.text_1094')
           },
         },
       ],

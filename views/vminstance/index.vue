@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="虚拟机" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <vm-instance-list :id="listId" :cloud-env="cloudEnv" />
     </page-body>

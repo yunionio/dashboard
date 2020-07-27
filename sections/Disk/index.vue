@@ -21,18 +21,18 @@
     </a-form-item>
     <!-- 快照和挂载点不能共存 -->
     <template v-if="!showMountpoint && has('snapshot') && !disabled">
-      <a-button class="mt-1" v-if="!showSnapshot" type="link" @click="() => showSnapshot = true">快照建磁盘</a-button>
+      <a-button class="mt-1" v-if="!showSnapshot" type="link" @click="() => showSnapshot = true">{{$t('compute.text_133')}}</a-button>
       <a-form-item v-else class="mx-1" :wrapperCol="{ span: 24 }">
         <base-select
           v-decorator="decorator.snapshot"
           resource="snapshots"
           :params="snapshotsParams"
           :item.sync="snapshotObj"
-          :select-props="{ placeholder: '请选择快照' }" />
+          :select-props="{ placeholder: $t('compute.text_124') }" />
       </a-form-item>
     </template>
     <template v-if="!showSnapshot && has('mount-point') && !disabled">
-      <a-button class="mt-1" v-if="!showMountpoint" type="link" @click="() => showMountpoint = true">设置挂载点</a-button>
+      <a-button class="mt-1" v-if="!showMountpoint" type="link" @click="() => showMountpoint = true">{{$t('compute.text_134')}}</a-button>
       <disk-mountpoint
         class="mx-1"
         v-else
@@ -40,7 +40,7 @@
     </template>
     <template v-if="has('schedtag')">
       <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
-      <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? '取消' : '设置' }}调度标签</a-button>
+      <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_136') }}调度标签</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
     <a-tooltip v-if="storageStatusMap.tooltip">
@@ -137,7 +137,7 @@ export default {
   },
   computed: {
     tooltip () {
-      return `容量范围 ${this.minSize} ~ ${this.max}GB`
+      return this.$t('compute.text_137', [this.minSize, this.max])
     },
     minSize () {
       let snapshotSize = this.snapshotObj.size || 0

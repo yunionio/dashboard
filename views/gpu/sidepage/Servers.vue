@@ -44,7 +44,7 @@ export default {
         },
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -68,7 +68,7 @@ export default {
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',
-          title: '配置',
+          title: this.$t('compute.text_295'),
           showOverflow: 'ellipsis',
           minWidth: 120,
           sortable: true,
@@ -85,7 +85,7 @@ export default {
         },
         {
           field: 'os_type',
-          title: '系统',
+          title: this.$t('compute.text_338'),
           width: 50,
           slots: {
             default: ({ row }) => {
@@ -94,7 +94,7 @@ export default {
                 name = 'Windows'
               }
               const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || this.$t('compute.text_339') // 去重
               return [
                 <SystemIcon tooltip={ tooltip } name={ name } />,
               ]
@@ -103,7 +103,7 @@ export default {
         },
         {
           field: 'password',
-          title: '密码',
+          title: this.$t('compute.text_340'),
           width: 50,
           slots: {
             default: ({ row }) => {
@@ -113,7 +113,7 @@ export default {
         },
         {
           field: 'secgroups',
-          title: '安全组',
+          title: this.$t('compute.text_105'),
           width: 80,
           showOverflow: 'ellipsis',
           formatter: ({ cellValue = [] }) => {
@@ -122,7 +122,7 @@ export default {
         },
         {
           field: 'billing_type',
-          title: '计费方式',
+          title: this.$t('compute.text_498'),
           width: 100,
           showOverflow: 'ellipsis',
           slots: {
@@ -138,7 +138,7 @@ export default {
                 const date = dateArr.join('')
                 const seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
                 const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-                const text = seconds < 0 ? '已过期' : `${date.substring(0, date.length - 1)}后到期`
+                const text = seconds < 0 ? this.$t('compute.text_499') : this.$t('compute.text_500', [date.substring(0, date.length - 1)])
                 ret.push(<div style={{ color: textColor }}>{ text }</div>)
               }
               return ret
@@ -147,14 +147,14 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'server' }),
         getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-        getCopyWithContentTableColumn({ field: 'host', title: '宿主机', sortable: true }),
+        getCopyWithContentTableColumn({ field: 'host', title: this.$t('compute.text_111'), sortable: true }),
         getProjectTableColumn(),
         getBrandTableColumn(),
         getRegionTableColumn(),
       ],
       singleActions: [
         {
-          label: '开机',
+          label: this.$t('compute.text_272'),
           permission: 'server_perform_start',
           action: (obj) => {
             this.list.onManager('performAction', {
@@ -172,7 +172,7 @@ export default {
           },
         },
         {
-          label: '关机',
+          label: this.$t('compute.text_273'),
           permission: 'server_perform_stop',
           action: (obj) => {
             this.createDialog('VmShutDownDialog', {

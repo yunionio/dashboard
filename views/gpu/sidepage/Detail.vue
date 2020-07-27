@@ -30,15 +30,15 @@ export default {
       baseInfo: [
         {
           field: 'model',
-          title: '设备型号',
+          title: this.$t('compute.text_482'),
         },
         {
           field: 'dev_type',
-          title: '设备类型',
+          title: this.$t('compute.text_481'),
         },
         {
           field: 'host',
-          title: '所在宿主机',
+          title: this.$t('compute.text_484'),
           slots: {
             default: ({ row }) => {
               return [
@@ -49,7 +49,7 @@ export default {
         },
         {
           field: 'guest',
-          title: `关联${this.$t('dictionary.server')}`,
+          title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
           formatter: function ({ row }) {
             return row.guest || row.guest_id
           },
@@ -58,7 +58,7 @@ export default {
       ],
       extraInfo: [
         {
-          title: '其他信息',
+          title: this.$t('compute.text_497'),
           items: [
             {
               field: 'addr',

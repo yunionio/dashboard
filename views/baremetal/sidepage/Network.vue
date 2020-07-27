@@ -38,19 +38,19 @@ export default {
       columns: [
         {
           field: 'index',
-          title: '序号',
+          title: this.$t('compute.text_375'),
           width: 50,
           formatter: (data) => {
             return data.seq
           },
         },
-        getCopyWithContentTableColumn({ field: 'network', title: '网卡名称', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'mac_addr', title: 'MAC地址', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'driver', title: '驱动' }),
+        getCopyWithContentTableColumn({ field: 'network', title: this.$t('compute.text_384'), sortable: true }),
+        getCopyWithContentTableColumn({ field: 'mac_addr', title: this.$t('compute.text_385'), sortable: true }),
+        getCopyWithContentTableColumn({ field: 'ip_addr', title: this.$t('compute.text_386'), sortable: true }),
+        getCopyWithContentTableColumn({ field: 'driver', title: this.$t('compute.text_378') }),
         {
           field: 'bw_limit',
-          title: '带宽限制',
+          title: this.$t('compute.text_387'),
           width: 100,
           formatter: ({ row }) => {
             return `${row.bw_limit}Mbps`
@@ -58,7 +58,7 @@ export default {
           slots: {
             header: ({ column }) => {
               return [
-                <a-tooltip title='"0"代表带宽没有限制'>
+                <a-tooltip title={this.$t('compute.text_388')}>
                   <span class='mr-1'>{ column.title }</span>
                   <icon type="question" />
                 </a-tooltip>,
@@ -69,7 +69,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '修改带宽',
+          label: this.$t('compute.text_389'),
           action: (obj) => {
             this.createDialog('VmChangeBandwidthDialog', {
               data: [obj],
@@ -80,7 +80,7 @@ export default {
           },
         },
         {
-          label: '更换IP',
+          label: this.$t('compute.text_390'),
           action: (obj) => {
             this.createDialog('VmChangeIpDialog', {
               data: [obj],
@@ -97,7 +97,7 @@ export default {
               tooltip: null,
             }
             if (isPrivate || isPublic) {
-              ret.tooltip = '私有云、公有云不支持此操作'
+              ret.tooltip = this.$t('compute.text_391')
               return ret
             }
             ret.validate = true

@@ -1,16 +1,16 @@
 <template>
   <div>
-    <page-header title="添加物理机" />
+    <page-header :title="$t('compute.text_804')" />
     <page-body>
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item label="添加方式" :extra="desc">
+        <a-form-item :label="$t('compute.text_805')" :extra="desc">
           <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
             <template v-for="(item, key) of types">
               <a-radio-button :value="key" :key="key">{{ item.label }}</a-radio-button>
             </template>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="`指定${$t('dictionary.domain')}`" v-if="isAdminMode && !isScriptAdd">
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.domain')])" v-if="isAdminMode && !isScriptAdd">
           <domain-select v-decorator="decorators.project_domain" />
         </a-form-item>
         <component
@@ -23,8 +23,8 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button type="primary" size="large" :loading="adding" @click="handleAdd" v-if="!isScriptAdd">确定</a-button>
-        <a-button class="ml-2" size="large" @click="handleBack">取消</a-button>
+        <a-button type="primary" size="large" :loading="adding" @click="handleAdd" v-if="!isScriptAdd">{{$t('compute.text_162')}}</a-button>
+        <a-button class="ml-2" size="large" @click="handleBack">{{$t('compute.text_135')}}</a-button>
       </template>
     </page-footer>
   </div>
@@ -137,7 +137,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请填写MAC地址' },
+              { required: true, message: this.$t('compute.text_806') },
               { validator: validateForm('mac') },
             ],
           },
@@ -147,7 +147,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入物理机名称' },
+              { required: true, message: this.$t('compute.text_807') },
               { validator: validateForm('serverName') },
             ],
           },
@@ -157,7 +157,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: this.ipmi_ip_addr_required, message: '请输入IPMI地址' },
+              { required: this.ipmi_ip_addr_required, message: this.$t('compute.text_808') },
               { validator: this.validateIpAddr },
               { validator: this.checkIpInNetwork },
             ],
@@ -167,7 +167,7 @@ export default {
           'ipmi_username',
           {
             rules: [
-              { required: this.ipmi_username_required, message: '请输入IPMI用户名' },
+              { required: this.ipmi_username_required, message: this.$t('compute.text_809') },
             ],
           },
         ],
@@ -175,7 +175,7 @@ export default {
           'ipmi_password',
           {
             rules: [
-              { required: this.ipmi_password_required, message: '请输入IPMI密码' },
+              { required: this.ipmi_password_required, message: this.$t('compute.text_810') },
             ],
           },
         ],
@@ -184,7 +184,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: this.net_required, message: '请选择管理口IP' },
+              { required: this.net_required, message: this.$t('compute.text_811') },
               { validator: this.validateNet },
             ],
           },
@@ -193,7 +193,7 @@ export default {
           'content',
           {
             rules: [
-              { required: true, message: '请输入内容' },
+              { required: true, message: this.$t('compute.text_797') },
             ],
           },
         ],
@@ -202,7 +202,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请选择文件' },
+              { required: true, message: this.$t('compute.text_812') },
               { validator: this.validateFile },
             ],
           },
@@ -461,7 +461,7 @@ export default {
     validateNet (rule, value, callback) {
       if (value && value.access_ip) {
         if (!isWithinRange(value.access_ip, value.access_net.guest_ip_start, value.access_net.guest_ip_end)) {
-          return callback(new Error('输入的IP不在选择子网网段中'))
+          return callback(new Error(this.$t('compute.text_205')))
         }
       }
       return callback()
@@ -469,7 +469,7 @@ export default {
     validateFile (rule, value, callback) {
       if (value) {
         if (value.file && !value.file.name.endsWith('.xlsx')) {
-          return callback(new Error('上传模板文件只能是 xlsx 格式'))
+          return callback(new Error(this.$t('compute.text_813')))
         }
       }
       return callback()

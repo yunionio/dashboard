@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">克隆</div>
+    <div slot="header">{{$t('compute.text_983')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.secgroup')" :count="params.data.length" action="克隆" />
+      <dialog-selected-tips :name="$t('dictionary.secgroup')" :count="params.data.length" :action="$t('compute.text_983')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_210')" />
         </a-form-item>
       </a-form>
     </div>
@@ -37,7 +37,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请填写名称' },
+              { required: true, message: this.$t('compute.text_333') },
               { validator: this.$validate('templateName') },
             ],
           },
@@ -52,9 +52,9 @@ export default {
         },
       },
       templateOps: {
-        1: '通用Web服务器',
-        2: '开放全部端口',
-        3: '自定义',
+        1: this.$t('compute.text_1010'),
+        2: this.$t('compute.text_1011'),
+        3: this.$t('compute.text_144'),
       },
     }
   },

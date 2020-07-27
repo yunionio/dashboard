@@ -1,20 +1,16 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">加入资源池</div>
+    <div slot="header">{{$t('compute.text_1215')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">
-          提示：加入资源池的公有云服务器可至基础设施-》服务器-》包年包月查询
-        </div>
+        <div slot="message">{{$t('compute.text_1216')}}</div>
       </a-alert>
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="加入资源池" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1215')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
         <a-form-item v-bind="formItemLayout">
-          <a-checkbox v-decorator="decorators.autoDestroy">
-            自动销毁该主机
-          </a-checkbox>
+          <a-checkbox v-decorator="decorators.autoDestroy">{{$t('compute.text_1217')}}</a-checkbox>
         </a-form-item>
       </a-form>
     </div>

@@ -9,9 +9,7 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item class="mb-0" v-if="isBind">
-      <div slot="extra">
-        {{ `最多支持选择${_max}个安全组。没有想要的安全组？可以前往` }}
-        <help-link :href="href"> 新建安全组</help-link>
+      <div slot="extra">{{$t('compute.text_188', [_max])}}<help-link :href="href">{{$t('compute.text_189')}}</help-link>
       </div>
       <base-select
         remote
@@ -20,7 +18,7 @@
         resource="secgroups"
         :params="params"
         :showSync="true"
-        :select-props="{ allowClear: true, placeholder: '请选择安全组', mode: 'multiple' }" />
+        :select-props="{ allowClear: true, placeholder: $t('compute.text_190'), mode: 'multiple' }" />
     </a-form-item>
   </div>
 </template>
@@ -60,8 +58,8 @@ export default {
   data () {
     const validateSecgroups = (rule, value, callback) => {
       const max = this._max
-      const maxError = `最多关联${max}个安全组`
-      const minError = '最少关联一个'
+      const maxError = this.$t('compute.text_191', [max])
+      const minError = this.$t('compute.text_192')
       if (value.length > max) {
         return callback(maxError)
       }

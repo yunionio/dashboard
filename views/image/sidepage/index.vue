@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="系统镜像"
+    :title="$t('compute.text_97')"
     icon="res-image"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -48,14 +48,14 @@ export default {
     detailTabs () {
       if (this.$store.getters.isAdminMode) {
         return [
-          { label: '详情', key: 'system-image-detail' },
-          { label: '缓存列表', key: 'cache-list' },
-          { label: '操作日志', key: 'event-drawer' },
+          { label: this.$t('compute.text_238'), key: 'system-image-detail' },
+          { label: this.$t('compute.text_692'), key: 'cache-list' },
+          { label: this.$t('compute.text_240'), key: 'event-drawer' },
         ]
       }
       return [
-        { label: '详情', key: 'system-image-detail' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'system-image-detail' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
     },
   },

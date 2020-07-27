@@ -1,4 +1,5 @@
-export const weekOptions = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+import i18n from '@/locales'
+export const weekOptions = [i18n.t('compute.text_83'), i18n.t('compute.text_84'), i18n.t('compute.text_85'), i18n.t('compute.text_86'), i18n.t('compute.text_87'), i18n.t('compute.text_88'), i18n.t('compute.text_89')]
 
 export const timeOptions = [
   '00:00',

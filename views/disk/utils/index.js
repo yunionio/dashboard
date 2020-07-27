@@ -1,6 +1,7 @@
 import { DISK_TYPES, ALL_STORAGE_LABEL } from '../../../constants'
 import status from '@/locales/zh-CN'
 import { PROVIDER_MAP } from '@/constants'
+import i18n from '@/locales'
 const { disk: diskStatus, server: serverStatus } = status.status
 
 const _tran = (enArr, status = diskStatus) => {
@@ -14,7 +15,7 @@ export const diskResizeConfig = {
     const validate = status.includes(obj.status)
     return {
       validate,
-      tooltip: validate ? '' : `仅在磁盘状态为【${_tran(status)}】下可以进行该操作`,
+      tooltip: validate ? '' : i18n.t('compute.text_465', [_tran(status)]),
     }
   },
   vmware (obj) {
@@ -35,7 +36,7 @@ export const diskResizeConfig = {
     if (obj.disk_type !== diskType) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[diskType]}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_466', [PROVIDER_MAP[provider].label, DISK_TYPES[diskType]]),
       }
     }
     return {
@@ -56,7 +57,7 @@ export const diskResizeConfig = {
     if (obj.guest_status === 'running' && obj.disk_type !== diskType) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}系统盘不支持开机扩容`,
+        tooltip: i18n.t('compute.text_467', [PROVIDER_MAP[provider].label]),
       }
     }
     return {
@@ -77,13 +78,13 @@ export const diskResizeConfig = {
     if (obj.guest_status === 'running') {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}不支持开机扩容`,
+        tooltip: i18n.t('compute.text_468', [PROVIDER_MAP[provider].label]),
       }
     }
     if (obj.disk_type !== diskType) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[diskType]}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_466', [PROVIDER_MAP[provider].label, DISK_TYPES[diskType]]),
       }
     }
     return {
@@ -104,7 +105,7 @@ export const diskResizeConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
       }
     }
     return {
@@ -125,7 +126,7 @@ export const diskResizeConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
       }
     }
     return {
@@ -147,13 +148,13 @@ export const diskResizeConfig = {
     if (obj.disk_type !== diskType) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[diskType]}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_466', [PROVIDER_MAP[provider].label, DISK_TYPES[diskType]]),
       }
     }
     if (!storageType.includes(obj.storage_type)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘在磁盘存储类型为【${_tran(storageType, ALL_STORAGE_LABEL)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_470', [PROVIDER_MAP[provider].label, _tran(storageType, ALL_STORAGE_LABEL)]),
       }
     }
     return {
@@ -176,19 +177,19 @@ export const diskResizeConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
       }
     }
     if (obj.disk_type !== diskType) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[diskType]}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_466', [PROVIDER_MAP[provider].label, DISK_TYPES[diskType]]),
       }
     }
     if (notInStorageType.includes(obj.storage_type)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘在磁盘存储类型为【${_tran(notInStorageType, ALL_STORAGE_LABEL)}】下不可以进行该操作`,
+        tooltip: i18n.t('compute.text_471', [PROVIDER_MAP[provider].label, _tran(notInStorageType, ALL_STORAGE_LABEL)]),
       }
     }
     return {
@@ -235,7 +236,7 @@ export const diskResizeConfig = {
     const azureValid = guestStatus.includes(obj.guest_status)
     return {
       validate: azureValid,
-      tooltip: azureValid ? '' : `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+      tooltip: azureValid ? '' : i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
     }
   },
   ucloud (obj) {
@@ -251,13 +252,13 @@ export const diskResizeConfig = {
     if (obj.disk_type !== diskType) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[diskType]}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_466', [PROVIDER_MAP[provider].label, DISK_TYPES[diskType]]),
       }
     }
     if (obj.guest) {
       return {
         validate: false,
-        tooltip: '请选择未挂载的磁盘',
+        tooltip: i18n.t('compute.text_472'),
       }
     }
     return {
@@ -299,7 +300,7 @@ export const diskCreateSnapshotConfig = {
     const provider = obj.provider
     return {
       validate: false,
-      tooltip: `【${PROVIDER_MAP[provider].label}}】不支持该操作`,
+      tooltip: i18n.t('compute.text_473', [PROVIDER_MAP[provider].label]),
     }
   },
   onecloud (obj) {
@@ -308,7 +309,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: `若${PROVIDER_MAP[provider].label}磁盘已挂载，仅在主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
       }
     }
     if (!obj.guest && obj.storage_type === 'local') {
@@ -328,13 +329,13 @@ export const diskCreateSnapshotConfig = {
     if (obj.storage_type === 'nova') {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}以镜像为系统盘不支持创建快照`,
+        tooltip: i18n.t('compute.text_475', [PROVIDER_MAP[provider].label]),
       }
     }
     if (obj.guest_status && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
       }
     }
     return {
@@ -348,7 +349,7 @@ export const diskCreateSnapshotConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
       }
     }
     return {
@@ -362,7 +363,7 @@ export const diskCreateSnapshotConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
       }
     }
     return {
@@ -376,7 +377,7 @@ export const diskCreateSnapshotConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在挂载主机状态为【${_tran(guestStatus, serverStatus)}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
       }
     }
     return {
@@ -415,13 +416,13 @@ export const diskCreateSnapshotConfig = {
     if (notInStorageType.includes(obj.storage_type)) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘在磁盘存储类型为【${_tran(notInStorageType, ALL_STORAGE_LABEL)}】下不可以进行该操作`,
+        tooltip: i18n.t('compute.text_471', [PROVIDER_MAP[provider].label, _tran(notInStorageType, ALL_STORAGE_LABEL)]),
       }
     }
     if (obj.disk_type !== diskType) {
       return {
         validate: false,
-        tooltip: `${PROVIDER_MAP[provider].label}磁盘仅在磁盘类型为【${DISK_TYPES[obj.disk_type]}】下可以进行该操作`,
+        tooltip: i18n.t('compute.text_466', [PROVIDER_MAP[provider].label, DISK_TYPES[obj.disk_type]]),
       }
     }
     return {
@@ -438,7 +439,7 @@ export const diskCreateSnapshotConfig = {
   ctyun () {
     return {
       validate: false,
-      tooltip: '天翼云暂不支持此操作',
+      tooltip: i18n.t('compute.text_476'),
     }
   },
 }

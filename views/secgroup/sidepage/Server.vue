@@ -51,7 +51,7 @@ export default {
           ips: getIpFilter(),
           status: getStatusFilter('server'),
           os_type: {
-            label: '系统类型',
+            label: this.$t('compute.text_721'),
             dropdown: true,
             multiple: true,
             items: [
@@ -66,21 +66,21 @@ export default {
           },
           tenant: getTenantFilter(),
           billing_type: {
-            label: '计费方式',
+            label: this.$t('compute.text_498'),
             dropdown: true,
             items: [
-              { label: '按量付费', key: 'postpaid' },
-              { label: '包年包月', key: 'prepaid' },
+              { label: this.$t('compute.text_22'), key: 'postpaid' },
+              { label: this.$t('compute.text_23'), key: 'prepaid' },
             ],
           },
           account: getAccountFilter(),
           host: getHostFilter(),
           gpu: {
-            label: '类型',
+            label: this.$t('compute.text_175'),
             dropdown: true,
             items: [
-              { label: '通用云服务器', key: false },
-              { label: 'GPU云服务器', key: true },
+              { label: this.$t('compute.text_1033'), key: false },
+              { label: this.$t('compute.text_1034'), key: true },
             ],
           },
         },
@@ -89,36 +89,36 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '外部ID', key: 'external_id' },
-          { label: '名称', key: 'name' },
-          { label: '私网IP', key: 'ips' },
-          { label: '外网IP', key: 'eip' },
+          { label: this.$t('compute.text_1035'), key: 'external_id' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_263'), key: 'ips' },
+          { label: this.$t('compute.text_1036'), key: 'eip' },
           { label: 'CPU', key: 'vcpu_count' },
-          { label: '内存(MB)', key: 'vmem_size' },
-          { label: '磁盘(MB)', key: 'disk' },
-          { label: '实例类型', key: 'instance_type' },
-          { label: '操作系统', key: 'os_distribution' },
-          { label: '状态', key: 'status' },
+          { label: this.$t('compute.text_264'), key: 'vmem_size' },
+          { label: this.$t('compute.text_265'), key: 'disk' },
+          { label: this.$t('compute.text_266'), key: 'instance_type' },
+          { label: this.$t('compute.text_267'), key: 'os_distribution' },
+          { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'hypervisor' },
-          { label: '宿主机', key: 'host' },
-          { label: '云账号', key: 'manager' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
-          { label: '计费方式', key: 'billing_type' },
-          { label: '用户标签', key: 'user_tags' },
+          { label: this.$t('compute.text_176'), key: 'hypervisor' },
+          { label: this.$t('compute.text_111'), key: 'host' },
+          { label: this.$t('compute.text_269'), key: 'manager' },
+          { label: this.$t('compute.text_177'), key: 'region' },
+          { label: this.$t('compute.text_270'), key: 'zone' },
+          { label: this.$t('compute.text_498'), key: 'billing_type' },
+          { label: this.$t('compute.text_271'), key: 'user_tags' },
         ],
       },
       singleActions: [
         {
-          label: '解绑',
+          label: this.$t('compute.text_723'),
           permission: 'server_perform_assign_secgroup',
           action: (obj) => {
             this.createDialog('UnbindSecgroupDialog', {
               data: [obj],
               detailData: this.data,
               columns: this.columns,
-              title: '解绑',
+              title: this.$t('compute.text_723'),
               onManager: this.onManager,
               refresh: this.refresh,
             })
@@ -126,7 +126,7 @@ export default {
           meta: (obj) => {
             const ret = { validate: false, tooltip: null }
             if (obj.secgroups && obj.secgroups.length === 1) {
-              ret.tooltip = '该虚拟机只有一个安全组，不支持该操作'
+              ret.tooltip = this.$t('compute.text_1026')
               return ret
             }
             ret.validate = ['running', 'ready'].includes(obj.status)
@@ -136,27 +136,27 @@ export default {
       ],
       groupActions: [
         {
-          label: `关联${this.$t('dictionary.server')}`,
+          label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
           permission: 'server_perform_assign_secgroup',
           action: () => {
             this.createDialog('SetServerDialog', {
               data: [this.data],
               columns: this.columns,
-              title: `关联${this.$t('dictionary.server')}`,
+              title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
               onManager: this.onManager,
               refresh: this.refresh,
             })
           },
         },
         {
-          label: '解绑',
+          label: this.$t('compute.text_723'),
           permission: 'server_perform_assign_secgroup',
           action: () => {
             this.createDialog('UnbindSecgroupDialog', {
               data: this.list.selectedItems,
               detailData: this.data,
               columns: this.columns,
-              title: '解绑',
+              title: this.$t('compute.text_723'),
               onManager: this.onManager,
               refresh: this.refresh,
             })
@@ -165,7 +165,7 @@ export default {
             const ret = { validate: false, tooltip: null }
             const isSomeOneSecgroup = this.list.selectedItems.some((obj) => obj.secgroups && obj.secgroups.length === 1)
             if (isSomeOneSecgroup) {
-              ret.tooltip = '选择的虚拟机只有一个安全组，不支持该操作'
+              ret.tooltip = this.$t('compute.text_1037')
               return ret
             }
             ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => ['running', 'ready'].includes(item.status))

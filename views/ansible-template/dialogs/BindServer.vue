@@ -5,8 +5,8 @@
       <dialog-selected-tips :name="$t('dictionary.ansibletemplate')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form class="mt-3" :form="form" v-bind="formItemLayout">
-        <a-form-item label="主机">
-          <a-select v-decorator="decorators.server_id"  mode="multiple" :loading="queryServerLoading" style="width: 100%" placeholder="请选择主机">
+        <a-form-item :label="$t('compute.text_90')">
+          <a-select v-decorator="decorators.server_id"  mode="multiple" :loading="queryServerLoading" style="width: 100%" :placeholder="$t('compute.text_256')">
             <a-select-option :key="item.id" v-for="item in serverList" :value="item.id">{{item.name}}</a-select-option>
           </a-select>
         </a-form-item>
@@ -46,7 +46,7 @@ export default {
           'server_id',
           {
             rules: [
-              { required: true, message: '请选择主机' },
+              { required: true, message: this.$t('compute.text_256') },
             ],
           },
         ],

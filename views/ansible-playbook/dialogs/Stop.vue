@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.ansibleplaybook')" :count="params.data.length" action="关联主机" />
+      <dialog-selected-tips :name="$t('dictionary.ansibleplaybook')" :count="params.data.length" :action="$t('compute.text_232')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

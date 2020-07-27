@@ -25,7 +25,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin, serverProps],
   data () {
     return {
-      action: `关联${this.$t('dictionary.server')}`,
+      action: this.$t('compute.text_483', [this.$t('dictionary.server')]),
       loading: false,
     }
   },

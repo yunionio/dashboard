@@ -1,18 +1,18 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置二层网络</div>
+    <div slot="header">{{$t('compute.text_843')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.physicalmachine')" :count="params.data.length" action="设置二层网络" />
+      <dialog-selected-tips :name="$t('dictionary.physicalmachine')" :count="params.data.length" :action="$t('compute.text_843')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="二层网络" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_844')" v-bind="formItemLayout">
           <base-select
             :filterable="true"
             v-decorator="decorators.wire"
             resource="wires"
             version="v1"
-            :select-props="{ placeholder: '选择二层网络' }" />
+            :select-props="{ placeholder: $t('compute.text_845') }" />
         </a-form-item>
       </a-form>
     </div>

@@ -5,7 +5,7 @@
       <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-    <a-button type="link" @click="add">添加调度标签</a-button>
+    <a-button type="link" @click="add">{{$t('compute.text_183')}}</a-button>
   </div>
 </template>
 

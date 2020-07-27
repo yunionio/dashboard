@@ -1,4 +1,5 @@
 import { getCopyWithContentTableColumn, getStatusTableColumn, getBrandTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -16,7 +17,7 @@ export default {
       getStatusTableColumn({ statusModule: 'scalinggroup', minWidth: 130 }),
       getCopyWithContentTableColumn({
         field: 'guest_template',
-        title: '主机模版',
+        title: i18n.t('compute.text_873'),
         hideField: true,
         showOverflow: 'ellipsis',
         width: 120,
@@ -27,25 +28,25 @@ export default {
       }),
       {
         field: 'instance_number',
-        title: '当前实例数',
+        title: i18n.t('compute.text_874'),
         width: 100,
         sortable: true,
       },
       {
         field: 'desire_instance_number',
-        title: '期望实例数',
+        title: i18n.t('compute.text_875'),
         width: 100,
         sortable: true,
       },
       {
         field: 'min_instance_number',
-        title: '最小实例数',
+        title: i18n.t('compute.text_876'),
         width: 100,
         sortable: true,
       },
       {
         field: 'max_instance_number',
-        title: '最大实例数',
+        title: i18n.t('compute.text_877'),
         width: 100,
         sortable: true,
       },

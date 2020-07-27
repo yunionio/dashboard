@@ -1,30 +1,29 @@
 <template>
   <a-form :form="form.fc" style="wdith: 400px;">
-    <a-form-item label="指标" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_732')" v-bind="formItemLayout">
       <a-select v-decorator="decorators.metric" :disabled="metricDisabled" @change="metricChange">
         <a-select-option v-for="item in metricOpts" :key="item.key" :value="item.key">
           {{ item.label }}
         </a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item label="查询周期" v-bind="formItemLayout">
-      <a-input-number v-decorator="decorators.window" :min="windowMin" /> 分钟
-    </a-form-item>
-    <a-form-item label="比较运算符" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_733')" v-bind="formItemLayout">
+      <a-input-number v-decorator="decorators.window" :min="windowMin" />{{$t('compute.text_734')}}</a-form-item>
+    <a-form-item :label="$t('compute.text_735')" v-bind="formItemLayout">
       <a-select v-decorator="decorators.comparator">
         <a-select-option v-for="item in comparatorOpts" :key="item.key" :value="item.key">
           {{ item.label }}
         </a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item label="阈值" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_736')" v-bind="formItemLayout">
       <a-input type="number" :min="0" v-decorator="[
           'threshold',
           {
             initialValue: fdInitailValue.threshold,
             normalize: value => Number(value),
             rules: [
-              { required: true, message: '请输入阈值' },
+              { required: true, message: $t('compute.text_737') },
               ...thresholdRules
             ]
           }
@@ -32,21 +31,21 @@
         <div slot="addonAfter" v-if="thresholdUnit">{{ thresholdUnit }}</div>
       </a-input>
     </a-form-item>
-    <a-form-item label="报警级别" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_738')" v-bind="formItemLayout">
       <a-select v-decorator="decorators.level">
         <a-select-option v-for="item in levelOpts" :key="item.key" :value="item.key">
           {{ item.label }}
         </a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item label="报警方式" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_739')" v-bind="formItemLayout">
       <a-select v-decorator="decorators.channel">
         <a-select-option v-for="item in channelOpts" :key="item.key" :value="item.key">
           {{ item.label }}
         </a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item label="报警接收人" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_740')" v-bind="formItemLayout">
       <a-spin v-show="!recipientsLoaded" />
       <base-select
         v-show="recipientsLoaded"
@@ -59,7 +58,7 @@
         :params="recipientParams"
         :resList.sync="recipientOpts"
         :initLoaded.sync="recipientsLoaded"
-        :select-props="{ placeholder: '请选择报警接收人', allowClear: true, mode: 'multiple' }" />
+        :select-props="{ placeholder: $t('compute.text_741'), allowClear: true, mode: 'multiple' }" />
     </a-form-item>
   </a-form>
 </template>
@@ -114,7 +113,7 @@ export default {
           {
             initialValue: metric,
             rules: [
-              { required: true, message: '请输入指标' },
+              { required: true, message: this.$t('compute.text_742') },
             ],
           },
         ],
@@ -148,7 +147,7 @@ export default {
           {
             initialValue: this.fdInitailValue.recipients,
             rules: [
-              { required: true, message: '请输入指标', type: 'array' },
+              { required: true, message: this.$t('compute.text_742'), type: 'array' },
             ],
           },
         ],
@@ -173,7 +172,7 @@ export default {
         { key: 'fatal', label: `${LEVEL_CN.fatal.label}（fatal）` },
       ],
       channelOpts: [
-        { key: 'email', label: '邮件' },
+        { key: 'email', label: this.$t('compute.text_743') },
         // { key: 'moblie', label: '短信' },
         // { key: 'dingtalk', label: '钉钉通知' }
       ],

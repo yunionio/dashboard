@@ -1,11 +1,12 @@
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
+import i18n from '@/locales'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
   created () {
     this.singleActions = [
       {
-        label: '扩容',
+        label: i18n.t('compute.text_402'),
         permission: 'disks_perform_resize',
         action: obj => {
           this.createDialog('DiskCapacityUpdateDialog', {
@@ -28,11 +29,11 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('compute.text_352'),
         actions: obj => {
           return [
             {
-              label: '挂载',
+              label: i18n.t('compute.text_424'),
               permission: 'disks_perform_attachdisk',
               action: () => {
                 this.createDialog('DiskMountUpdateDialog', {
@@ -48,17 +49,17 @@ export default {
                 }
                 if (obj.cloud_env === 'onpremise' || obj.cloud_env === 'private' || obj.cloud_env === 'public') {
                   if (obj.storage_type === 'local') {
-                    ret.tooltip = '本地硬盘不允许挂载'
+                    ret.tooltip = i18n.t('compute.text_442')
                     return ret
                   }
                   ret.validate = !obj.guest && obj.status === 'ready'
                   if (obj.guest) {
-                    ret.tooltip = '该磁盘已挂载'
+                    ret.tooltip = i18n.t('compute.text_443')
                   } else {
                     if (obj.status === 'ready') {
                       ret.tooltip = ''
                     } else {
-                      ret.tooltip = '磁盘状态为 ready 时才可以挂载'
+                      ret.tooltip = i18n.t('compute.text_444')
                     }
                   }
                   return ret
@@ -68,7 +69,7 @@ export default {
               },
             },
             {
-              label: '卸载',
+              label: i18n.t('compute.text_439'),
               permission: 'disks_perform_detachdisk',
               action: () => {
                 this.createDialog('DiskUnMountUpdateDialog', {
@@ -82,25 +83,25 @@ export default {
                 if (!obj.guest) {
                   return {
                     validate: !!obj.guest,
-                    tooltip: '请先挂载',
+                    tooltip: i18n.t('compute.text_445'),
                   }
                 }
                 if (obj.cloud_env === 'onpremise' && obj.storage_type === 'local') {
                   return {
                     validate: false,
-                    tooltip: '本地盘不支持卸载',
+                    tooltip: i18n.t('compute.text_446'),
                   }
                 }
                 if (obj.disk_type === 'sys') {
                   return {
                     validate: false,
-                    tooltip: '系统盘不支持卸载',
+                    tooltip: i18n.t('compute.text_447'),
                   }
                 } else {
                   if (obj.portable && obj.portable === false) {
                     return {
                       validate: false,
-                      tooltip: '该磁盘类型不允许卸载',
+                      tooltip: i18n.t('compute.text_448'),
                     }
                   }
                 }
@@ -111,7 +112,7 @@ export default {
               },
             },
             {
-              label: '新建快照',
+              label: i18n.t('compute.text_414'),
               permission: 'disks_perform_create_snapshot',
               action: () => {
                 this.createDialog('DiskCreateSnapshotDialog', {
@@ -129,7 +130,7 @@ export default {
               },
             },
             {
-              label: '设置自动快照',
+              label: i18n.t('compute.text_426'),
               action: () => {
                 this.createDialog('DiskSetSnapshotDialog', {
                   vm: this,
@@ -142,7 +143,7 @@ export default {
                 if (obj.status !== 'ready') {
                   return {
                     validate: false,
-                    tooltip: '状态不可用的磁盘不支持该操作',
+                    tooltip: i18n.t('compute.text_449'),
                   }
                 }
                 if (obj.brand) {
@@ -150,27 +151,27 @@ export default {
                   if (brand === 'vmware') {
                     return {
                       validate: false,
-                      tooltip: 'VMware暂不支持该操作',
+                      tooltip: i18n.t('compute.text_450'),
                     }
                   }
                   if (brand === 'ctyun') {
                     return {
                       validate: false,
-                      tooltip: '天翼云暂不支持该操作',
+                      tooltip: i18n.t('compute.text_451'),
                     }
                   }
                   if (brand === 'openstack') {
                     if (obj.storage_type !== 'local' && obj.storage_type !== 'iscsi') {
                       return {
                         validate: false,
-                        tooltip: '私有云非本地盘不支持该操作',
+                        tooltip: i18n.t('compute.text_452'),
                       }
                     }
                   } else {
                     if (!obj.guest_count) {
                       return {
                         validate: false,
-                        tooltip: '未挂载的磁盘不支持该操作',
+                        tooltip: i18n.t('compute.text_453'),
                       }
                     }
                   }
@@ -178,7 +179,7 @@ export default {
                     if (obj.storage_type !== 'CLOUD_NORMAL') {
                       return {
                         validate: false,
-                        tooltip: '只有存储类型为CLOUD_NORMAL的支持该操作',
+                        tooltip: i18n.t('compute.text_454'),
                       }
                     }
                   }
@@ -186,19 +187,19 @@ export default {
                 if (obj.guest_status !== 'running' && obj.guest_status !== 'ready') {
                   return {
                     validate: false,
-                    tooltip: '主机状态异常不支持该操作',
+                    tooltip: i18n.t('compute.text_455'),
                   }
                 }
                 if (!supportShpolcyBrand.includes(obj.brand)) {
                   return {
                     validate: false,
-                    tooltip: `设置自动快照仅支持${supportShpolcyBrand.join('、')}`,
+                    tooltip: i18n.t('compute.text_456', [supportShpolcyBrand.join('、')]),
                   }
                 }
                 if (obj.snapshotpolicy_status === 'deleting' || obj.snapshotpolicy_status === 'init') {
                   return {
                     validate: false,
-                    tooltip: '自动快照策略解绑中，请稍后重试',
+                    tooltip: i18n.t('compute.text_457'),
                   }
                 }
                 return {
@@ -207,14 +208,14 @@ export default {
               },
             },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
                   resource: 'disks',
-                  name: '硬盘',
+                  name: i18n.t('compute.text_100'),
                 })
               },
               meta: () => {
@@ -223,17 +224,17 @@ export default {
                   tooltip: '',
                 }
                 if (this.isProjectMode) {
-                  ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                  ret.tooltip = this.$t('compute.text_1279', [this.$t('dictionary.domain')])
                   return ret
                 }
                 return {
                   validate: obj.guest_count < 1,
-                  tooltip: obj.guest ? `已挂载的硬盘不可以更改${this.$t('dictionary.project')}，请卸载后重试` : '',
+                  tooltip: obj.guest ? i18n.t('compute.text_458', [i18n.t('dictionary.project')]) : '',
                 }
               },
             },
             {
-              label: '同步状态',
+              label: i18n.t('compute.text_282'),
               permission: 'disks_perform_syncstatus',
               action: () => {
                 this.onManager('performAction', {
@@ -249,13 +250,13 @@ export default {
               }),
             },
             {
-              label: '删除',
+              label: i18n.t('compute.text_261'),
               permission: 'disks_delete',
               action: () => {
                 this.createDialog('DiskDeleteDialog', {
                   data: [obj],
                   columns: this.columns,
-                  title: '删除',
+                  title: i18n.t('compute.text_261'),
                   onManager: this.onManager,
                   success: () => {
                     this.destroySidePages()
@@ -268,7 +269,7 @@ export default {
                   tooltip: null,
                 }
                 if (obj.billing_type === 'prepaid') {
-                  ret.tooltip = '包年包月硬盘不支持删除'
+                  ret.tooltip = i18n.t('compute.text_460')
                   return ret
                 }
                 return this.$getDeleteResult(obj)

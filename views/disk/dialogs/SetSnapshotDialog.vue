@@ -1,16 +1,16 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">设置自动快照</div>
+    <div slot="header">{{$t('compute.text_426')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" action="设置自动快照" />
+      <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" :action="$t('compute.text_426')" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="自动快照" v-bind="formItemLayout">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.isOpen" />
+        <a-form-item :label="$t('compute.text_427')" v-bind="formItemLayout">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.isOpen" />
         </a-form-item>
         <template v-if="enable">
-          <a-form-item label="策略名称" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.text_428')" v-bind="formItemLayout">
             <a-row :gutter="8">
               <a-col :span="12">
                 <a-select v-decorator="decorators.snapshotpolicy">
@@ -21,22 +21,22 @@
               </a-col>
               <a-col :span="12">
                 <a-icon type="sync" class="mr-1" @click="refresh" />
-                <!-- <router-link target="_blank" :to="{ path: '/snapshotpolicy' }" style="color: #409EFF;">创建自定快照策略</router-link> -->
-                <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain }" name="创建自定义快照策略" value="CreateSnapshotPolicyDialog" resource="snapshotpolicies" @success="successCallback" />
+                <!-- <router-link target="_blank" :to="{ path: '/snapshotpolicy' }" style="color: #409EFF;">{{$t('compute.text_429')}}</router-link> -->
+                <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain }" :name="$t('compute.text_430')" value="CreateSnapshotPolicyDialog" resource="snapshotpolicies" @success="successCallback" />
               </a-col>
             </a-row>
           </a-form-item>
-          <a-form-item label="备份日期" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.text_431')" v-bind="formItemLayout">
             <span class="ant-form-text">
               {{ weekTips }}
             </span>
           </a-form-item>
-          <a-form-item label="备份时间" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.text_432')" v-bind="formItemLayout">
             <span class="ant-form-text">
               {{ timeTips }}
             </span>
           </a-form-item>
-          <a-form-item label="保留时间" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.text_433')" v-bind="formItemLayout">
             <span class="ant-form-text">
               {{ dayTips }}
             </span>
@@ -176,15 +176,15 @@ export default {
     getPolicyLabel (item) {
       let text = item.name
       if (item.repeat_weekdays && item.repeat_weekdays.length) {
-        text += ' -- 每' + item.repeat_weekdays.map(item => weekOptions[item - 1]).join('、')
+        text += this.$t('compute.text_434') + item.repeat_weekdays.map(item => weekOptions[item - 1]).join('、')
       }
       if (item.time_points && item.time_points.length) {
         text += '，' + item.time_points.map(item => timeOptions[item]).join('、')
       }
       if (item.retention_days === -1) {
-        text += '，永久'
+        text += this.$t('compute.text_435')
       } else if (item.retention_days) {
-        text += `，${item.retention_days}天`
+        text += this.$t('compute.text_436', [item.retention_days])
       }
       if (text.length > 24) {
         return text.substring(0, 24) + '...'
@@ -220,9 +220,9 @@ export default {
       ) || '-'
       let ret = '-'
       if (selectItem.retention_days === -1) {
-        ret = '永久'
+        ret = this.$t('compute.text_437')
       } else if (selectItem.retention_days) {
-        ret = `${selectItem.retention_days}天`
+        ret = this.$t('compute.text_438', [selectItem.retention_days])
       }
       this.dayTips = ret
     },

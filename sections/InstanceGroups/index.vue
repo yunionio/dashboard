@@ -1,12 +1,12 @@
 <template>
   <div>
     <a-form-item class="mb-0">
-      <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.groupsEnable" @change="change" />
+      <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.groupsEnable" @change="change" />
     </a-form-item>
     <a-form-item v-if="showGroups">
       <base-select
         v-decorator="decorators.groups"
-        :select-props="{ placeholder: `请选择${$t('dictionary.instancegroup')}`, mode: 'multiple' }"
+        :select-props="{ placeholder: $t('compute.text_148', [$t('dictionary.instancegroup')]), mode: 'multiple' }"
         resource="instancegroups"
         :params="params"
         :need-params="true" />

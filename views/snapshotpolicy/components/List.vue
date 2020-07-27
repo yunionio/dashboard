@@ -34,7 +34,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -48,22 +48,22 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '关联硬盘数量', key: 'binding_disk_count' },
-          { label: '策略详情', key: 'repeat_weekdays' },
-          { label: '状态', key: 'status' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_1082'), key: 'binding_disk_count' },
+          { label: this.$t('compute.text_1083'), key: 'repeat_weekdays' },
+          { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'snapshotpolicy_create',
           action: () => {
             this.createDialog('CreateSnapshotPolicyDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '新建',
+              title: this.$t('compute.text_18'),
               refresh: this.refresh,
             })
           },
@@ -74,14 +74,14 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           permission: 'snapshotpolicies_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
+              title: this.$t('compute.text_261'),
               name: this.$t('dictionary.snapshotpolicy'),
               onManager: this.onManager,
             })

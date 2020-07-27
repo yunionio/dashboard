@@ -23,7 +23,7 @@
       <template v-slot:right>
         <div class="d-flex align-items-center">
           <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
-            <div class="text-truncate">费用估算：</div>
+            <div class="text-truncate">{{$t('compute.text_286')}}</div>
             <div class="ml-2 prices">
               <div class="hour text-truncate">
                 <template v-if="price">
@@ -45,7 +45,7 @@
             :loading="loading"
             :disabled="disabled || !!errors.length">{{ confirmText }}</a-button>
         </div>
-        <side-errors error-title="创建主机失败" :errors="errors" @update:errors="changeErrors" />
+        <side-errors error-:title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
       </template>
     </page-footer>
   </div>
@@ -137,7 +137,7 @@ export default {
       return ret
     },
     vmType () {
-      let ret = `通用${this.$t('dictionary.server')}`
+      let ret = this.$t('compute.text_291', [this.$t('dictionary.server')])
       if (this.fd.gpuEnable) {
         ret = `GPU${this.$t('dictionary.server')}`
       }
@@ -154,18 +154,18 @@ export default {
       const ret = []
       const { gpu, gpuCount, vcpu, vmem } = this.fd
       if (this.fd.gpuEnable) {
-        ret.push(`${gpuCount}块GPU（${gpu}）`)
+        ret.push(this.$t('compute.text_1134', [gpuCount, gpu]))
       }
       if (this.isPublic && this.isPrepaid) {
         if (!R.isNil(this.fd.spec) && !R.isEmpty(this.fd.spec)) {
-          ret.push(`${this.fd.spec.vcpu_count}核CPU`)
-          ret.push(`${this.fd.spec.vmem_size}GB内存`)
+          ret.push(this.$t('compute.text_292', [this.fd.spec.vcpu_count]))
+          ret.push(this.$t('compute.text_1135', [this.fd.spec.vmem_size]))
         }
       } else {
-        ret.push(`${vcpu}核CPU`)
-        ret.push(`${sizestrWithUnit(vmem, 'M', 1024)}内存`)
+        ret.push(this.$t('compute.text_292', [vcpu]))
+        ret.push(this.$t('compute.text_293', [sizestrWithUnit(vmem, 'M')]))
       }
-      ret.push(`${this.disk || 0}GB磁盘（${_.get(this.fd, 'systemDiskType.label') || '-'}）`)
+      ret.push(this.$t('compute.text_1136', [this.disk || 0, _.get(this.fd, 'systemDiskType.label') || '-']))
       return ret.join('、')
     },
     image () {
@@ -174,16 +174,16 @@ export default {
     tips () {
       const ret = [
         [
-          { label: '名称', labelClass: 'label-w-50', value: this.name, valueClass: 'name-value' },
-          { label: '数量', labelClass: 'label-w-50', value: this.fd.count },
+          { label: this.$t('compute.text_228'), labelClass: 'label-w-50', value: this.name, valueClass: 'name-value' },
+          { label: this.$t('compute.text_294'), labelClass: 'label-w-50', value: this.fd.count },
         ],
         [
-          { label: '区域', labelClass: 'label-w-50', value: this.zone },
-          { label: '类型', labelClass: 'label-w-50', value: this.vmType },
+          { label: this.$t('compute.text_177'), labelClass: 'label-w-50', value: this.zone },
+          { label: this.$t('compute.text_175'), labelClass: 'label-w-50', value: this.vmType },
         ],
         [
-          { label: '配置', labelClass: 'label-w-80', value: this.config },
-          { label: '操作系统', labelClass: 'label-w-80', value: this.image },
+          { label: this.$t('compute.text_295'), labelClass: 'label-w-80', value: this.config },
+          { label: this.$t('compute.text_267'), labelClass: 'label-w-80', value: this.image },
         ],
       ]
       return ret
@@ -228,18 +228,18 @@ export default {
         if (this.isPackage && this.durationNum) {
           const _day = (this.price / 30 / this.durationNum).toFixed(2)
           const _hour = (parseFloat(_day) / 24).toFixed(2)
-          return `(合${this.currency}${_day}/天  ${this.currency}${_hour}/小时)`
+          return this.$t('compute.text_1137', [this.currency, _day, this.currency, _hour])
         } else {
           const _day = (this.price * 24).toFixed(2)
           const _month = (parseFloat(_day) * 30).toFixed(2)
-          return `(合${this.currency}${_day}/天 ${this.currency}${_month}/月)`
+          return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
         }
       }
       return '--'
     },
     confirmText () {
-      if (this.isServertemplate) return '保存模板'
-      return this.isOpenWorkflow ? '提交工单' : '新 建'
+      if (this.isServertemplate) return this.$t('compute.text_1139')
+      return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_289')
     },
     dataDiskType () {
       if (R.is(Object, this.fd.dataDiskTypes)) {
@@ -262,7 +262,7 @@ export default {
     priceTips: {
       handler (val) {
         let ret = `${this.currency} ${this.price && this.price.toFixed(2)}`
-        ret += !this.isPackage ? ' / 时' : ''
+        ret += !this.isPackage ? this.$t('compute.text_296') : ''
         this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
       },
       immediate: true,
@@ -298,7 +298,7 @@ export default {
     },
     formatToPrice (val) {
       let ret = `${this.currency} ${val.toFixed(2)}`
-      ret += !this.isPackage ? ' / 时' : ''
+      ret += !this.isPackage ? this.$t('compute.text_296') : ''
       return ret
     },
     baywatch (props, watcher) {

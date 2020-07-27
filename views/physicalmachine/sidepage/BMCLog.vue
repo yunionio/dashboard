@@ -29,7 +29,7 @@ export default {
           field: 'id',
           title: 'ID',
         },
-        getStatusTableColumn({ field: 'severity', title: '级别', statusModule: 'severity' }),
+        getStatusTableColumn({ field: 'severity', title: this.$t('compute.text_746'), statusModule: 'severity' }),
         // {
         //   field: 'severity',
         //   title: '严重性',
@@ -53,10 +53,10 @@ export default {
         // },
         {
           field: 'type',
-          title: '类型',
+          title: this.$t('compute.text_175'),
           formatter: ({ row }) => {
             if (row.type === 'system') {
-              return '硬件'
+              return this.$t('compute.text_855')
             } else if (row.type === 'manager') {
               return 'BMC'
             }
@@ -65,12 +65,12 @@ export default {
         },
         {
           field: 'created',
-          title: '时间',
+          title: this.$t('compute.text_856'),
           formatter: ({ row }) => {
-            return this.$moment(row.created).format('YYYY年MM月DD日 HH:mm:ss')
+            return this.$moment(row.created).format(this.$t('compute.text_857'))
           },
         },
-        getCopyWithContentTableColumn({ field: 'message', title: '说明' }),
+        getCopyWithContentTableColumn({ field: 'message', title: this.$t('compute.text_858') }),
       ],
     }
   },

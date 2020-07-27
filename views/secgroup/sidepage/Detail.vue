@@ -28,20 +28,20 @@ export default {
       PUBLIC_SCOPE_ZH: {
         system: this.$t('shareScope.system'),
         project: this.$t('shareScope.project'),
-        none: '不共享',
+        none: this.$t('compute.text_1029'),
         domain: this.$t('shareScope.domain'),
       },
       baseInfo: [
         {
           field: 'guest_cnt',
-          title: '关联虚拟机',
+          title: this.$t('compute.text_1023'),
           formatter: ({ row }) => {
             return <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a>
           },
         },
         {
           field: 'cache_cnt',
-          title: '缓存份数',
+          title: this.$t('compute.text_1030'),
           formatter: ({ row }) => {
             return <a onClick={ () => this.$emit('tab-change', 'cache-list') }>{row.cache_cnt}</a>
           },

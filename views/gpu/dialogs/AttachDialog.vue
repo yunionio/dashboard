@@ -6,15 +6,15 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="`选择${this.$t('dictionary.server')}`" v-bind="formItemLayout" extra="只能选择与GPU卡同一宿主机处于关机状态的虚拟机">
+        <a-form-item :label="$t('compute.text_492', [this.$t('dictionary.server')])" v-bind="formItemLayout" :extra="$t('compute.text_493')">
           <a-select v-decorator="decorators.guest">
             <a-select-option v-for="item in guestesOpts" :key="item.id">
               {{item.name}}
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_495')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>
@@ -44,7 +44,12 @@ export default {
           'guest',
           {
             rules: [
-              { required: true, message: `请选择关联${this.$t('dictionary.server')}` },
+              {
+                required: true,
+                message: this.$t('compute.text_496', [
+                  this.$t('dictionary.server'),
+                ]),
+              },
             ],
           },
         ],

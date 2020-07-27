@@ -34,7 +34,7 @@ export default {
       columns: [
         {
           field: 'index',
-          title: '序号',
+          title: this.$t('compute.text_375'),
           width: 50,
           formatter: ({ row }) => {
             return row.index ? row.index : '0'
@@ -42,7 +42,7 @@ export default {
         },
         {
           field: 'disk',
-          title: '磁盘',
+          title: this.$t('compute.text_376'),
           sortable: true,
           showOverflow: 'ellipsis',
           minWidth: 100,
@@ -59,7 +59,7 @@ export default {
         },
         {
           field: 'disk_size',
-          title: '大小',
+          title: this.$t('compute.text_377'),
           sortable: true,
           showOverflow: 'ellipsis',
           minWidth: 60,
@@ -69,12 +69,12 @@ export default {
         },
         {
           field: 'driver',
-          title: '驱动',
+          title: this.$t('compute.text_378'),
           width: 80,
         },
         {
           field: 'cache_mode',
-          title: '缓存模式(cache mode)',
+          title: this.$t('compute.text_379'),
           width: 150,
           formatter: ({ row }) => {
             return row.cache_mode ? row.cache_mode : '-'
@@ -83,11 +83,11 @@ export default {
         getStatusTableColumn({ statusModule: 'disk' }),
         {
           field: 'storage_type',
-          title: '存储类型',
+          title: this.$t('compute.text_380'),
           width: 80,
           formatter: ({ row }) => {
             if (row.storage_type) {
-              if (row.storage_type === 'baremetal') return '裸金属'
+              if (row.storage_type === 'baremetal') return this.$t('compute.text_92')
               return (ALL_STORAGE[row.storage_type] && ALL_STORAGE[row.storage_type].label) || row.storage_type
             }
             return '-'
@@ -95,12 +95,12 @@ export default {
         },
         {
           field: 'disk_type',
-          title: '磁盘类型',
+          title: this.$t('compute.text_381'),
           width: 80,
           formatter: ({ row }) => {
             const diskType = {
-              sys: '系统盘',
-              data: '数据盘',
+              sys: this.$t('compute.text_49'),
+              data: this.$t('compute.text_50'),
             }
             if (row.disk_type) {
               return diskType[row.disk_type] || row.disk_type

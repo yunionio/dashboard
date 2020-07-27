@@ -6,15 +6,15 @@
       v-model="networkId"
       :item.sync="network"
       :params="networkParams"
-      :select-props="{ placeholder: '请选择IP子网' }"
+      :select-props="{ placeholder: $t('compute.text_195') }"
       @change="handleChange" />
     <a-input
       class="ml-2"
       v-if="ipShow"
-      placeholder="请输入子网内的IP地址"
+      :placeholder="$t('compute.text_197')"
       v-model="ip"
       @change="handleChange" />
-    <a-button v-else type="link" @click="handleShowIp" class="pl-0 pr-0 ml-2">手动配置IP</a-button>
+    <a-button v-else type="link" @click="handleShowIp" class="pl-0 pr-0 ml-2">{{$t('compute.text_198')}}</a-button>
   </div>
 </template>
 

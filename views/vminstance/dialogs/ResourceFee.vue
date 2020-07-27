@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">续费</div>
+    <div slot="header">{{$t('compute.text_1117')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="续费" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1117')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="购买时长" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1230')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.buyDuration">
             <a-radio-button
               v-for="i in options.buyDurations"
@@ -44,7 +44,7 @@ export default {
           'buyDuration',
           {
             rules: [
-              { required: true, message: '请选择购买时长', trigger: 'change' },
+              { required: true, message: this.$t('compute.text_1231'), trigger: 'change' },
             ],
             initialValue: '1M',
           },

@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建报警</div>
+    <div slot="header">{{$t('compute.text_770')}}</div>
     <div slot="body">
       <dialog-table v-if="params.data" :data="params.data" :columns="params.columns.slice(0, 2)" />
       <node-alert-form
@@ -75,7 +75,7 @@ export default {
         }
         this.loading = false
         this.cancelDialog()
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('compute.text_423'))
       } catch (error) {
         this.loading = false
         throw error

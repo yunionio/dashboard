@@ -1,16 +1,16 @@
 <template>
   <div>
-    <a-tooltip v-if="isGpuEmpty" title="当前可用区未接入GPU云服务器">
-      <span><a-switch checkedChildren="开" unCheckedChildren="关" :value="gpuEnable" :disabled="true" /></span>
+    <a-tooltip v-if="isGpuEmpty" :title="$t('compute.text_146')">
+      <span><a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" :value="gpuEnable" :disabled="true" /></span>
     </a-tooltip>
     <a-form-item class="mb-0" v-else>
-      <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.gpuEnable" @change="change" />
+      <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.gpuEnable" @change="change" />
     </a-form-item>
     <template v-if="gpuEnable">
       <a-form-item>
         <base-select
           class="w-50"
-          :selectProps="{ placeholder: '请选择GPU型号' }"
+          :selectProps="{ placeholder: $t('compute.text_147') }"
           :options="gpuOptions"
           v-decorator="decorators.gpu" />
       </a-form-item>

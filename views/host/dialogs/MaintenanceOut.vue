@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">退出维护模式</div>
+    <div slot="header">{{$t('compute.text_559')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" action="进入维护模式" />
+      <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" :action="$t('compute.text_550')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
     </div>
     <div slot="footer">

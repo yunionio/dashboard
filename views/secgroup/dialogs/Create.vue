@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建安全组</div>
+    <div slot="header">{{$t('compute.text_189')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item :label="`指定${$t('dictionary.project')}`" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-bind="formItemLayout" class="mb-0">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-        <a-form-item label="模版" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1016')" v-bind="formItemLayout">
           <a-select
             v-decorator="decorators.template"
             @change="handleSelectChange">
@@ -16,18 +16,18 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="请输入名称" />
+        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_210')" />
         </a-form-item>
       </a-form>
       <a-tabs defaultActiveKey="in" @change="tabCallback">
-        <a-tab-pane tab="入方向" key="in">
+        <a-tab-pane :tab="$t('compute.text_993')" key="in">
           <a-table
           :columns="columns"
           :dataSource="ruleData[templateType]['in']"
           :pagination="false" />
         </a-tab-pane>
-        <a-tab-pane tab="出方向" key="out" forceRender>
+        <a-tab-pane :tab="$t('compute.text_994')" key="out" forceRender>
           <a-table
           :columns="columns"
           :dataSource="ruleData[templateType]['out']"
@@ -92,7 +92,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请填写名称' },
+              { required: true, message: this.$t('compute.text_333') },
               { validator: this.$validate('templateName') },
             ],
           },
@@ -107,34 +107,34 @@ export default {
         },
       },
       templateOps: {
-        1: '通用Web服务器',
-        2: '开放全部端口',
-        3: '自定义',
+        1: this.$t('compute.text_1010'),
+        2: this.$t('compute.text_1011'),
+        3: this.$t('compute.text_144'),
       },
       columns: [
         {
           dataIndex: 'cidr',
-          title: '来源',
+          title: this.$t('compute.text_979'),
           width: 100,
         },
         {
           dataIndex: 'protocol',
-          title: '协议类型',
+          title: this.$t('compute.text_1017'),
           width: 150,
         },
         {
           dataIndex: 'ports',
-          title: '端口',
+          title: this.$t('compute.text_349'),
           width: 100,
         },
         {
           dataIndex: 'action',
-          title: '策略',
+          title: this.$t('compute.text_694'),
           width: 100,
         },
         {
           dataIndex: 'description',
-          title: '备注',
+          title: this.$t('compute.text_312'),
         },
       ],
       ruleData: {
@@ -144,36 +144,36 @@ export default {
               cidr: '0.0.0.0/0',
               protocol: 'TCP',
               ports: '80',
-              action: '允许',
-              description: 'Web服务端口（http）',
+              action: this.$t('compute.text_976'),
+              description: this.$t('compute.text_1006'),
             },
             {
               cidr: '0.0.0.0/0',
               protocol: 'TCP',
               ports: '443',
-              action: '允许',
-              description: 'Web服务端口（https）',
+              action: this.$t('compute.text_976'),
+              description: this.$t('compute.text_1007'),
             },
             {
               cidr: '0.0.0.0/0',
               protocol: 'TCP',
               ports: '3389',
-              action: '允许',
-              description: 'Windows远程登录',
+              action: this.$t('compute.text_976'),
+              description: this.$t('compute.text_1004'),
             },
             {
               cidr: '0.0.0.0/0',
               protocol: 'TCP',
               ports: '22',
-              action: '允许',
-              description: 'Linux SSH登录',
+              action: this.$t('compute.text_976'),
+              description: this.$t('compute.text_1005'),
             },
             {
               cidr: '0.0.0.0/0',
               protocol: 'ICMP',
               ports: 'ALL',
-              action: '允许',
-              description: 'Ping服务',
+              action: this.$t('compute.text_976'),
+              description: this.$t('compute.text_1008'),
             },
           ],
           out: [
@@ -181,7 +181,7 @@ export default {
               cidr: '0.0.0.0/0',
               protocol: 'ALL',
               ports: 'ALL',
-              action: '允许',
+              action: this.$t('compute.text_976'),
               description: '',
             },
           ],
@@ -192,8 +192,8 @@ export default {
               cidr: '0.0.0.0/0',
               protocol: 'ALL',
               ports: 'ALL',
-              action: '允许',
-              description: '开放全部端口有一定安全风险，请谨慎选择',
+              action: this.$t('compute.text_976'),
+              description: this.$t('compute.text_1018'),
             },
           ],
           out: [
@@ -201,7 +201,7 @@ export default {
               cidr: '0.0.0.0/0',
               protocol: 'ALL',
               ports: 'ALL',
-              action: '允许',
+              action: this.$t('compute.text_976'),
               description: '',
             },
           ],
@@ -213,7 +213,7 @@ export default {
               cidr: '',
               ports: '',
               protocol: '',
-              description: '入方向不放通任何端口，您可在安全组创建后，根据实际访问需求添加或修改安全组规则',
+              description: this.$t('compute.text_1019'),
             },
           ],
           out: [],

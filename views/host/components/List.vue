@@ -45,7 +45,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -54,7 +54,7 @@ export default {
           status: getStatusFilter('host'),
           enabled: getEnabledFilter(),
           host_status: {
-            label: '服务',
+            label: this.$t('compute.text_502'),
             dropdown: true,
             items: Object.keys(this.$t('status.host_status')).map(key => {
               return { label: this.$t('status.host_status')[key], key }
@@ -89,22 +89,22 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '启用状态', key: 'enabled' },
-          { label: '状态', key: 'status' },
-          { label: '管理IP', key: 'access_ip' },
-          { label: '带外IP', key: 'ipmi_ip' },
-          { label: '服务', key: 'host_status' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_241'), key: 'enabled' },
+          { label: this.$t('compute.text_268'), key: 'status' },
+          { label: this.$t('compute.text_503'), key: 'access_ip' },
+          { label: this.$t('compute.text_504'), key: 'ipmi_ip' },
+          { label: this.$t('compute.text_502'), key: 'host_status' },
           { label: '#VM', key: 'nonsystem_guests' },
           { label: 'CPU', key: 'cpu_count' },
-          { label: '内存', key: 'mem_size' },
-          { label: '存储', key: 'storage_size' },
+          { label: this.$t('compute.text_369'), key: 'mem_size' },
+          { label: this.$t('compute.text_99'), key: 'storage_size' },
           { label: 'SN', key: 'sn' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
-          { label: '共享范围', key: 'public_scope' },
-          { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
+          { label: this.$t('compute.text_177'), key: 'region' },
+          { label: this.$t('compute.text_270'), key: 'zone' },
+          { label: this.$t('compute.text_505'), key: 'public_scope' },
+          { label: this.$t('compute.text_506', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
     }
@@ -129,7 +129,7 @@ export default {
                   resource: 'hosts',
                 }),
                 {
-                  label: '调整标签',
+                  label: this.$t('compute.text_507'),
                   action: (obj) => {
                     this.createDialog('HostsAdjustLabelDialog', {
                       data: this.list.selectedItems,
@@ -143,7 +143,7 @@ export default {
                   }),
                 },
                 {
-                  label: '回收为物理机',
+                  label: this.$t('compute.text_508'),
                   action: (obj) => {
                     // this.list.batchPerformAction('disable', null)
                     this.createDialog('HostUnconvertDialog', {
@@ -158,7 +158,7 @@ export default {
                     if (!this.list.selectedItems.length) {
                       return {
                         validate: false,
-                        tooltip: '请选择要操作的数据',
+                        tooltip: this.$t('compute.text_509'),
                       }
                     }
                     for (let i = 0; i < this.list.selectedItems.length; i++) {
@@ -166,17 +166,17 @@ export default {
                       if (obj.host_type !== 'hypervisor') {
                         return {
                           validate: false,
-                          tooltip: '必须为KVM类型的宿主机才可回收',
+                          tooltip: this.$t('compute.text_510'),
                         }
                       } else if (obj.nonsystem_guests > 0) {
                         return {
                           validate: false,
-                          tooltip: '虚拟化机器大于0不可回收',
+                          tooltip: this.$t('compute.text_511'),
                         }
                       } else if (obj.enabled) {
                         return {
                           validate: false,
-                          tooltip: '已启用的宿主机不可回收',
+                          tooltip: this.$t('compute.text_512'),
                         }
                       } else if (!obj.is_baremetal) {
                         return {
@@ -192,7 +192,7 @@ export default {
                   },
                 },
                 {
-                  label: '调整超售比',
+                  label: this.$t('compute.text_513'),
                   action: () => {
                     this.createDialog('HostAdjustOversoldRatioDialog', {
                       data: this.list.selectedItems,
@@ -207,7 +207,7 @@ export default {
                   }),
                 },
                 {
-                  label: '设置GPU卡预留资源',
+                  label: this.$t('compute.text_514'),
                   action: () => {
                     this.createDialog('SetHostReserveResourceDialog', {
                       onManager: this.onManager,
@@ -223,12 +223,12 @@ export default {
                     }
                     const isAllOneCloud = this.list.selectedItems.every((item) => { return item.provider === typeClouds.providerMap.OneCloud.key })
                     if (!isAllOneCloud) {
-                      ret.tooltip = '只有OneCloud宿主机支持此操作'
+                      ret.tooltip = this.$t('compute.text_515')
                       return ret
                     }
                     const isAllReservedResource = this.list.selectedItems.every((item) => { return item.reserved_resource_for_gpu })
                     if (!isAllReservedResource) {
-                      ret.tooltip = '该宿主机没有GPU资源，暂不支持该操作'
+                      ret.tooltip = this.$t('compute.text_516')
                       return ret
                     }
                     return {
@@ -237,14 +237,14 @@ export default {
                   },
                 },
                 {
-                  label: '删除',
+                  label: this.$t('compute.text_261'),
                   permission: 'hosts_delete',
                   action: () => {
                     this.createDialog('DeleteResDialog', {
                       vm: this,
                       data: this.list.selectedItems,
                       columns: this.columns,
-                      title: '删除',
+                      title: this.$t('compute.text_261'),
                       name: this.$t('dictionary.host'),
                       onManager: this.onManager,
                     })

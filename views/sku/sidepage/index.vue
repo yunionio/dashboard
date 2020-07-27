@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="套餐"
+    :title="$t('compute.text_109')"
     icon="res-sku"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -41,9 +41,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'sku-detail' },
-        { label: '关联虚拟机', key: 'vminstance-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'sku-detail' },
+        { label: this.$t('compute.text_1023'), key: 'vminstance-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

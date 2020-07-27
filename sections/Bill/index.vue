@@ -10,7 +10,7 @@
       </a-radio-group>
     </a-form-item>
     <template v-if="showDuration">
-      <a-form-item :extra="duration === '1W' ? '目前只有阿里云支持创建一周的包年包月机器，因此系统会自动选择阿里云平台' : ''">
+      <a-form-item :extra="duration === '1W' ? $t('compute.text_118') : ''">
         <a-radio-group v-decorator="decorators.duration" @change="durationChange">
           <a-radio-button
             v-for="item in buyDurationOptions"
@@ -18,9 +18,7 @@
             :value="item.key"
             :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
-        <a-checkbox class="ml-4" v-decorator="decorators.autoRenew">
-        到期自动续费
-        </a-checkbox>
+        <a-checkbox class="ml-4" v-decorator="decorators.autoRenew">{{$t('compute.text_119')}}</a-checkbox>
       </a-form-item>
     </template>
   </div>

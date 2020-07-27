@@ -28,19 +28,19 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '镜像名称',
+          title: this.$t('compute.text_627'),
           width: 150,
         },
         {
           field: 'type',
-          title: '类别',
+          title: this.$t('compute.text_628'),
           formatter: ({ cellValue }) => {
-            return cellValue === 'data' ? '数据盘' : '系统盘'
+            return cellValue === 'data' ? this.$t('compute.text_50') : this.$t('compute.text_49')
           },
         },
         {
           field: 'size',
-          title: '大小',
+          title: this.$t('compute.text_377'),
           formatter: ({ cellValue }) => {
             return sizestr(cellValue, 'B', 1024)
           },
@@ -48,7 +48,7 @@ export default {
         getStatusTableColumn({ statusModule: 'image' }),
         {
           field: 'disk_format',
-          title: '格式',
+          title: this.$t('compute.text_398'),
           formatter: ({ cellValue }) => {
             return (cellValue && cellValue.toUpperCase()) || '-'
           },

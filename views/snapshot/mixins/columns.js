@@ -12,6 +12,7 @@ import {
   getRegionTableColumn,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -28,11 +29,11 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'snapshot', columns: () => this.columns }),
       getCopyWithContentTableColumn({
         field: 'disk_name',
-        title: '硬盘',
+        title: i18n.t('compute.text_100'),
       }),
       {
         field: 'disk_type',
-        title: '磁盘类型',
+        title: i18n.t('compute.text_381'),
         width: 70,
         formatter: ({ row }) => {
           return DISK_TYPES[row.disk_type] || row.disk_type
@@ -40,7 +41,7 @@ export default {
       },
       {
         field: 'size',
-        title: '快照大小',
+        title: i18n.t('compute.text_422'),
         width: 70,
         formatter: ({ row }) => {
           return sizestr(row.size, 'M', 1024)
@@ -51,7 +52,7 @@ export default {
       getBrandTableColumn(),
       {
         field: 'guest',
-        title: '虚拟机',
+        title: i18n.t('compute.text_91'),
         minWidth: 70,
         showOverflow: 'ellipsis',
         slots: {

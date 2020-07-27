@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="系统镜像" />
+    <page-header :title="$t('compute.text_97')" />
     <page-body>
       <image-list :id="listId" />
     </page-body>

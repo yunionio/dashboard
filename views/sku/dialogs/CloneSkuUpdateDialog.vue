@@ -1,15 +1,14 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">克隆</div>
+    <div slot="header">{{$t('compute.text_983')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.sku')" :count="params.data.length" action="克隆" />
+      <dialog-selected-tips :name="$t('dictionary.sku')" :count="params.data.length" :action="$t('compute.text_983')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="虚拟CPU核数" v-bind="formItemLayout">
-          <a-input-number :min="1" :max="100000" v-decorator="decorators.cpu_core_count" /> 核
-        </a-form-item>
-        <a-form-item label="虚拟内存容量" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1051')" v-bind="formItemLayout">
+          <a-input-number :min="1" :max="100000" v-decorator="decorators.cpu_core_count" />{{$t('compute.text_167')}}</a-form-item>
+        <a-form-item :label="$t('compute.text_1052')" v-bind="formItemLayout">
           <a-input-number :min="1" :max="100000" v-decorator="decorators.memory_size_mb" /> GB
         </a-form-item>
       </a-form>

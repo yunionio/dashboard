@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="裸金属" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('compute.text_92')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <baremetal-list :id="listId" :cloud-env="cloudEnv" />
     </page-body>
@@ -19,7 +19,7 @@ export default {
     return {
       listId: 'BaremetalList',
       cloudEnvOptions: [
-        { key: '', label: '全部' },
+        { key: '', label: this.$t('compute.text_4') },
       ],
       cloudEnv: '',
     }

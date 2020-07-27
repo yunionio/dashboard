@@ -44,9 +44,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'instance-group-detail' },
-        { label: `已绑定${this.$t('dictionary.server')}`, key: 'v-m-instance-list-for-instance-group' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'instance-group-detail' },
+        { label: this.$t('compute.text_724', [this.$t('dictionary.server')]), key: 'v-m-instance-list-for-instance-group' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

@@ -3,26 +3,24 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message" v-if="params.data.length === 1">
-          开关打开时可关联或解绑多个GPU卡，关闭后则解绑所有GPU卡
-        </div>
+        <div slot="message" v-if="params.data.length === 1">{{$t('compute.text_1167')}}</div>
         <div slot="message" v-else>
-          <p>批量关联只支持同时关联同种型号及同样数量的GPU卡</p>
-          <p>批量取消会同时取消所有实例已关联的GPU卡</p>
+          <p>{{$t('compute.text_1168')}}</p>
+          <p>{{$t('compute.text_1169')}}</p>
         </div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
-        <a-form-item label="是否绑定" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1170')" v-bind="formItemLayout">
           <a-radio-group name="radioGroup" :defaultValue="true" v-if="isGroupAction" v-model="isOpenGpu">
-            <a-radio :value="true">绑定</a-radio>
-            <a-radio :value="false">解绑</a-radio>
+            <a-radio :value="true">{{$t('compute.text_902')}}</a-radio>
+            <a-radio :value="false">{{$t('compute.text_723')}}</a-radio>
           </a-radio-group>
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-model="isOpenGpu" v-else />
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="isOpenGpu" v-else />
         </a-form-item>
-        <a-form-item label="GPU卡" v-bind="formItemLayout" v-show="isOpenGpu" extra="只能关联与主机处于同一宿主机的GPU卡,且已被使用的GPU不可选择">
+        <a-form-item :label="$t('compute.text_607')" v-bind="formItemLayout" v-show="isOpenGpu" :extra="$t('compute.text_1171')">
           <!-- 批量设置 -->
           <base-select
             v-if="isGroupAction"
@@ -35,13 +33,13 @@
             :resList.sync="gpuOpt"
             :mapper="mapper"
             resource="isolated_devices"
-            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'default' }">
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }">
             <template v-slot:optionTemplate>
               <a-select-option v-for="item in gpuOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
                 <div class="d-flex">
                   <span class="text-truncate flex-fill mr-2" :title="item.model">{{ item.model }}</span>
-                  <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount > item.usedCount">可用: {{ item.totalCount - item.usedCount }} 个，总量: {{ item.totalCount }} 个</span>
-                  <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount === item.usedCount">已被使用</span>
+                  <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount > item.usedCount">{{$t('compute.text_1173', [ item.totalCount - item.usedCount , item.totalCount ])}}</span>
+                  <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount === item.usedCount">{{$t('compute.text_1174')}}</span>
                 </div>
               </a-select-option>
             </template>
@@ -57,13 +55,13 @@
             filterable
             :resList.sync="gpuOpt"
             resource="isolated_devices"
-            :select-props="{ allowClear: true, placeholder: '请选择GPU设备', mode: 'multiple' }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'multiple' }" />
         </a-form-item>
-        <a-form-item label="数量" v-bind="formItemLayout" v-show="isOpenGpu && isGroupAction" extra="数量为每台机器要绑定GPU卡数量">
+        <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout" v-show="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="设置成功后是否自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_495')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>
@@ -88,7 +86,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '关联GPU卡',
+      action: this.$t('compute.text_1176'),
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
@@ -100,7 +98,7 @@ export default {
           'device',
           {
             rules: [
-              { required: true, type: 'any', message: '请选择GPU设备', trigger: 'change' },
+              { required: true, type: 'any', message: this.$t('compute.text_1172'), trigger: 'change' },
             ],
           },
         ],
@@ -132,7 +130,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('compute.text_228'),
         },
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
@@ -230,8 +228,8 @@ export default {
         const model = gpuItem[0].model
         const remain = gpuItem[0].totalCount - gpuItem[0].usedCount
         if (selectedNum * count > remain) {
-          this.$message.warning('GPU卡数量不足')
-          throw new Error('数量不足')
+          this.$message.warning(this.$t('compute.text_1177'))
+          throw new Error(this.$t('compute.text_1178'))
         }
         return this.params.onManager('batchPerformAction', {
           id: ids,

@@ -39,23 +39,23 @@ export default {
       columns: [
         {
           field: 'host.name',
-          title: '缓存位置',
+          title: this.$t('compute.text_654'),
           minWidth: 150,
           showOverflow: 'title',
         },
         getStatusTableColumn({ statusModule: 'imageCache' }),
-        getTimeTableColumn({ title: '更新时间', field: 'updated_at' }),
+        getTimeTableColumn({ title: this.$t('compute.text_691'), field: 'updated_at' }),
         getBrandTableColumn({ field: 'host.brand' }),
         getRegionTableColumn({ field: 'host.region' }),
         {
           field: 'host.account',
-          title: '云账号',
+          title: this.$t('compute.text_269'),
           width: 100,
         },
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           actions: (obj) => {
             return [
               {
@@ -65,13 +65,13 @@ export default {
                 },
               },
               {
-                label: '私有云',
+                label: this.$t('compute.text_400'),
                 action: () => {
                   this.createCache('private', obj)
                 },
               },
               {
-                label: '公有云',
+                label: this.$t('compute.text_401'),
                 action: () => {
                   this.createCache('public', obj)
                 },
@@ -85,12 +85,12 @@ export default {
       ],
       singleActions: [
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           action: (obj) => {
             this.createDialog('DeleteCacheDialog', {
               data: [obj],
               columns: this.columns,
-              title: '删除',
+              title: this.$t('compute.text_261'),
               onManager: this.onManager,
               imageId: this.resId,
               refresh: this.refresh,

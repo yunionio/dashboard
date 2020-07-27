@@ -33,7 +33,7 @@ export default {
     return {
       singleActions: [
         {
-          label: '设置报警',
+          label: this.$t('compute.text_382'),
           action: async obj => {
             const alertManager = new this.$Manager('nodealerts', 'v1')
             const { metric } = obj.constants
@@ -52,7 +52,7 @@ export default {
                   alertManager,
                 })
               } else {
-                throw Error('后端返回数据错误，同个指标返回多个数据')
+                throw Error(this.$t('compute.text_383'))
               }
             } else { // 新建报警
               this.createDialog('CreateNodeAlert', {

@@ -1,5 +1,6 @@
 import { SERVER_TYPE } from '@Compute/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -8,7 +9,7 @@ export default {
     const isPrivate = type === SERVER_TYPE.public
     this.singleActions = [
       {
-        label: '修改带宽',
+        label: i18n.t('compute.text_389'),
         action: (obj) => {
           this.createDialog('VmChangeBandwidthDialog', {
             data: [obj],
@@ -18,7 +19,7 @@ export default {
         },
       },
       {
-        label: '更换IP',
+        label: i18n.t('compute.text_390'),
         action: (obj) => {
           this.createDialog('VmChangeIpDialog', {
             data: [obj],
@@ -35,7 +36,7 @@ export default {
             tooltip: null,
           }
           if (isPrivate || isPublic) {
-            ret.tooltip = '私有云、公有云不支持此操作'
+            ret.tooltip = i18n.t('compute.text_391')
             return ret
           }
           ret.validate = true

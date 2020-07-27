@@ -14,7 +14,7 @@
             resource="servers"
             :mapper="mapperServers"
             :params="requestParams"
-            :select-props="{ allowClear: true, placeholder: `请选择${$t('dictionary.server')}`, mode: 'multiple', defaultValue }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1022', [$t('dictionary.server')]), mode: 'multiple', defaultValue }" />
         </a-form-item>
       </a-form>
     </div>
@@ -127,7 +127,7 @@ export default {
         }),
         {
           field: 'guest_cnt',
-          title: '关联虚拟机',
+          title: this.$t('compute.text_1023'),
           width: 80,
         },
         getProjectTableColumn(),

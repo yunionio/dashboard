@@ -1,13 +1,13 @@
 <template>
   <div>
-    <page-header title="调整配置" style="margin-bottom: 7px;" />
+    <page-header :title="$t('compute.text_1100')" style="margin-bottom: 7px;" />
     <a-alert class="mb-2" type="warning" v-if="tips">
       <div slot="message">
         {{ tips }}
       </div>
     </a-alert>
     <div class="h-desc-bg">
-      <h5 class="h-title">以下<em>{{params.data.length}}台</em>虚拟机将进行调整配置</h5>
+      <h5 class="h-title">{{$t('compute.text_1101')}}<em>{{$t('compute.text_1102', [params.data.length])}}</em>{{$t('compute.text_1103')}}</h5>
       <div class="pl-4 pr-4 pb-2">
         <a-row>
           <a-col :span="24">
@@ -16,17 +16,17 @@
         </a-row>
       </div>
     </div>
-    <h5 class="h-title">请选择要调整的配置</h5>
+    <h5 class="h-title">{{$t('compute.text_1104')}}</h5>
     <div class="form-wrapper">
       <a-form
         :form="form.fc">
-        <a-form-item label="CPU核数" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('compute.text_1058')" v-bind="formItemLayout" class="mb-0">
           <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" />
         </a-form-item>
-        <a-form-item label="内存" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('compute.text_369')" v-bind="formItemLayout" class="mb-0">
           <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" />
         </a-form-item>
-        <a-form-item label="套餐" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_109')" v-bind="formItemLayout">
           <sku
             v-decorator="decorators.sku"
             :type="type"
@@ -34,7 +34,7 @@
             :instance-type="instanceType"
             :hypervisor="hypervisor" />
         </a-form-item>
-        <a-form-item label="系统盘" v-bind="formItemLayout" v-show="selectedItems.length === 1 && form.fd.defaultType">
+        <a-form-item :label="$t('compute.text_49')" v-bind="formItemLayout" v-show="selectedItems.length === 1 && form.fd.defaultType">
           <system-disk
             v-if="hypervisor && form.fi.capability.storage_types && form.fd.defaultType"
             :decorator="decorators.systemDisk"
@@ -47,7 +47,7 @@
             :capability-data="form.fi.capability"
             :disabled="true" />
         </a-form-item>
-        <a-form-item label="数据盘" v-bind="formItemLayout" v-show="selectedItems.length === 1">
+        <a-form-item :label="$t('compute.text_50')" v-bind="formItemLayout" v-show="selectedItems.length === 1">
           <data-disk
             v-if="hypervisor && form.fi.capability.storage_types"
             ref="dataDiskRef"
@@ -60,18 +60,18 @@
             :image="form.fi.imageMsg"
             :domain="domain" />
         </a-form-item>
-        <a-form-item label="申请原因" v-bind="formItemLayout" v-if="isOpenWorkflow">
-          <a-input v-decorator="decorators.reason" placeholder="请输入申请原因" />
+        <a-form-item :label="$t('compute.text_1041')" v-bind="formItemLayout" v-if="isOpenWorkflow">
+          <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
         </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="调整配置后是否自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1106')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
         </a-form-item>
       </a-form>
     </div>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">确 定</a-button>
-        <a-button @click="cancel">取 消</a-button>
+        <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{$t('compute.text_907')}}</a-button>
+        <a-button @click="cancel">{{$t('compute.text_908')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -122,20 +122,20 @@ export default {
   data () {
     function diskValidator (rule, value, callback) {
       if (R.isNil(value) || R.isEmpty(value)) {
-        return callback(new Error('请填写合法的路径'))
+        return callback(new Error(this.$t('compute.text_206')))
       }
       if (!value.startsWith('/')) {
-        return callback(new Error('路径必须以 / 开头'))
+        return callback(new Error(this.$t('compute.text_207')))
       }
       if (value === '/') {
-        return callback(new Error('不能挂载到 / 目录下'))
+        return callback(new Error(this.$t('compute.text_208')))
       }
       callback()
     }
     const itemData = this.params.data[0]
     return {
       loading: false,
-      action: '调整配置',
+      action: this.$t('compute.text_1100'),
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: this.onValuesChange,
@@ -169,7 +169,7 @@ export default {
           'sku',
           {
             rules: [
-              { required: true, message: '请选择套餐' },
+              { required: true, message: this.$t('compute.text_216') },
             ],
           },
         ],
@@ -178,7 +178,7 @@ export default {
             'systemDiskType',
             {
               rules: [
-                { validator: isRequired(), message: '请选择磁盘类型' },
+                { validator: isRequired(), message: this.$t('compute.text_121') },
               ],
             },
           ],
@@ -186,7 +186,7 @@ export default {
             'systemDiskSize',
             {
               rules: [
-                { required: true, message: '请输入磁盘大小' },
+                { required: true, message: this.$t('compute.text_122') },
               ],
             },
           ],
@@ -196,7 +196,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               rules: [{
                 required: true,
-                message: '请选择调度标签',
+                message: this.$t('compute.text_123'),
               }],
             },
           ],
@@ -206,7 +206,7 @@ export default {
               validateTrigger: ['blur', 'change'],
               rules: [{
                 required: true,
-                message: '请选择调度标签',
+                message: this.$t('compute.text_123'),
               }],
             },
           ],
@@ -216,7 +216,7 @@ export default {
             `dataDiskTypes[${i}]`,
             {
               rules: [
-                { validator: isRequired(), message: '请选择磁盘类型' },
+                { validator: isRequired(), message: this.$t('compute.text_121') },
               ],
             },
           ],
@@ -224,7 +224,7 @@ export default {
             `dataDiskSizes[${i}]`,
             {
               rules: [
-                { required: true, message: '请输入磁盘大小' },
+                { required: true, message: this.$t('compute.text_122') },
               ],
             },
           ],
@@ -234,7 +234,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               rules: [{
                 required: true,
-                message: '请选择调度标签',
+                message: this.$t('compute.text_123'),
               }],
             },
           ],
@@ -244,7 +244,7 @@ export default {
               validateTrigger: ['blur', 'change'],
               rules: [{
                 required: true,
-                message: '请选择调度标签',
+                message: this.$t('compute.text_123'),
               }],
             },
           ],
@@ -254,7 +254,7 @@ export default {
               validateTrigger: ['blur', 'change'],
               rules: [{
                 required: true,
-                message: '请选择快照',
+                message: this.$t('compute.text_124'),
               }],
             },
           ],
@@ -264,7 +264,7 @@ export default {
               validateTrigger: ['blur', 'change'],
               rules: [{
                 required: true,
-                message: '请选择文件系统',
+                message: this.$t('compute.text_125'),
               }],
             },
           ],
@@ -274,7 +274,7 @@ export default {
               validateTrigger: ['blur', 'change'],
               rules: [{
                 required: true,
-                message: '请填写挂载点',
+                message: this.$t('compute.text_126'),
               }, {
                 validator: diskValidator,
               }],
@@ -350,10 +350,10 @@ export default {
     },
     tips () {
       if (this.hotplug) {
-        return '提示：所选云服务器中部分不支持在开机状态下调整CPU和内存'
+        return this.$t('compute.text_1107')
       }
       if ([HYPERVISORS_MAP.kvm.hypervisor, HYPERVISORS_MAP.azure.hypervisor].includes(this.hypervisor)) {
-        return '提示：开机调整配置时CPU和内存的大小只能往上调整'
+        return this.$t('compute.text_1108')
       }
       return ''
     },
@@ -424,7 +424,7 @@ export default {
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'instance_type',
-          title: '配置',
+          title: this.$t('compute.text_295'),
           showOverflow: 'ellipsis',
           minWidth: 120,
           sortable: true,
@@ -441,7 +441,7 @@ export default {
         },
         {
           field: 'os_type',
-          title: '系统',
+          title: this.$t('compute.text_338'),
           width: 50,
           slots: {
             default: ({ row }) => {
@@ -450,7 +450,7 @@ export default {
                 name = 'Windows'
               }
               const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || '未知' // 去重
+              const tooltip = (version.includes(name) ? version : `${name} ${version}`) || this.$t('compute.text_339') // 去重
               return [
                 <SystemIcon tooltip={ tooltip } name={ name } />,
               ]
@@ -585,7 +585,7 @@ export default {
         description: values.reason,
       }
       await this.createWorkflow(variables)
-      this.$message.success('主机调整配置请求流程已提交')
+      this.$message.success(this.$t('compute.text_1109'))
       this.$router.push('/workflow')
     },
     async doChangeSettingsSubmit (values) {
@@ -614,7 +614,7 @@ export default {
           const res = await this.doChangeSettingsSubmit(values)
           const isOk = res.data.data.every(item => item.status === 200)
           if (isOk) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('compute.text_423'))
             this.cancel()
           }
         }

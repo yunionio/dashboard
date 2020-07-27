@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="套餐" />
+    <page-header :title="$t('compute.text_109')" />
     <page-body>
       <sku-list :id="listId" />
     </page-body>

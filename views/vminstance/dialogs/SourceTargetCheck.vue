@@ -6,8 +6,8 @@
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
-        <a-form-item label="源/目标检查" v-bind="formItemLayout" help="虚拟机源/目标检查开关（MAC地址检查）">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.open" />
+        <a-form-item :label="$t('compute.text_1257')" v-bind="formItemLayout" :help="$t('compute.text_1258')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.open" />
         </a-form-item>
       </a-form>
     </div>
@@ -29,7 +29,7 @@ export default {
     const isAllClose = this.params.data.every((item) => { return !(item.src_ip_check && item.src_mac_check) })
     return {
       loading: false,
-      action: '设置源/目标检查',
+      action: this.$t('compute.text_1124'),
       form: {
         fc: this.$form.createForm(this),
       },

@@ -32,7 +32,7 @@ export default {
         getBrandTableColumn(),
         {
           field: 'scaling_policy_number',
-          title: '伸缩策略',
+          title: this.$t('compute.text_949'),
           slots: {
             default: ({ row }) => {
               return [
@@ -44,11 +44,11 @@ export default {
       ],
       extraInfo: [
         {
-          title: '伸缩组信息',
+          title: this.$t('compute.text_959'),
           items: [
             {
               field: 'guest_template',
-              title: '主机模板',
+              title: this.$t('compute.text_94'),
               slots: {
                 default: ({ row }) => {
                   return [
@@ -59,7 +59,7 @@ export default {
             },
             {
               field: 'instance_number',
-              title: '当前实例数',
+              title: this.$t('compute.text_874'),
               slots: {
                 default: ({ row }) => {
                   return [
@@ -70,22 +70,22 @@ export default {
             },
             {
               field: 'desire_instance_number',
-              title: '期望实例数',
+              title: this.$t('compute.text_875'),
               formatter: ({ row }) => {
                 return row.desire_instance_number
               },
             },
             {
               field: 'min_instance_number',
-              title: '最小实例数',
+              title: this.$t('compute.text_876'),
             },
             {
               field: 'max_instance_number',
-              title: '最大实例数',
+              title: this.$t('compute.text_877'),
             },
             {
               field: 'shrink_principle',
-              title: '移除策略',
+              title: this.$t('compute.text_960'),
               formatter: ({ row }) => {
                 return this.$t('flexGrouPprinciple')[row.shrink_principle]
               },
@@ -103,25 +103,25 @@ export default {
             }),
             {
               field: 'loadbalancer',
-              title: '负载均衡',
+              title: this.$t('compute.text_899'),
             },
             {
               field: 'health_check_mode',
-              title: '健康检查方式',
+              title: this.$t('compute.text_903'),
               formatter: ({ row }) => {
                 return this.$t('flexGroupHealthCheckMode')[row.health_check_mode]
               },
             },
             {
               field: 'health_check_cycle',
-              title: '检查周期',
+              title: this.$t('compute.text_904'),
               formatter: ({ row }) => {
                 return this.$t('flexGroupCycles')[row.health_check_cycle]
               },
             },
             {
               field: 'health_check_gov',
-              title: '健康状态检查宽限期',
+              title: this.$t('compute.text_905'),
               formatter: ({ row }) => {
                 return `${row.health_check_gov}s`
               },

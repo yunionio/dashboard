@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="弹性伸缩组" />
+    <page-header :title="$t('compute.text_95')" />
     <page-body>
       <list :id="listId" />
     </page-body>

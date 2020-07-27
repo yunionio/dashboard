@@ -1,19 +1,19 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改属性</div>
+    <div slot="header">{{$t('compute.text_247')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" plcaeholder="镜像名称" />
+        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :plcaeholder="$t('compute.text_627')" />
         </a-form-item>
-        <!-- <a-form-item label="删除保护" v-bind="formItemLayout">
+        <!-- <a-form-item :label="$t('compute.text_372')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.protected">
-            <a-radio-button value="true">启用</a-radio-button>
-            <a-radio-button value="false">禁用</a-radio-button>
+            <a-radio-button value="true">{{$t('compute.text_656')}}</a-radio-button>
+            <a-radio-button value="false">{{$t('compute.text_569')}}</a-radio-button>
           </a-radio-group>
         </a-form-item> -->
-        <a-form-item label="操作系统" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout">
           <a-radio-group @change="osTypeChangeHandle" v-decorator="decorators.osType">
             <a-radio-button value="Linux">
               Linux
@@ -21,30 +21,28 @@
             <a-radio-button value="Windows">
               Windows Server
             </a-radio-button>
-            <a-radio-button value="Other">
-              其他
-            </a-radio-button>
+            <a-radio-button value="Other">{{$t('compute.text_151')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="发行版" v-bind="formItemLayout">
-          <a-select placeholder="请选择发行版" v-decorator="decorators.osDistribution" @change="osDistributionChange">
+        <a-form-item :label="$t('compute.text_657')" v-bind="formItemLayout">
+          <a-select :placeholder="$t('compute.text_658')" v-decorator="decorators.osDistribution" @change="osDistributionChange">
             <a-select-option v-for="item in osNewDisOptions" :key="item.value" :value="item.value">
               {{item.text}}
             </a-select-option>
           </a-select>
-          <a-input v-if="isDisOther" v-decorator="decorators.osOtherDistribution" placeholder="例如: CentOS" />
+          <a-input v-if="isDisOther" v-decorator="decorators.osOtherDistribution" :placeholder="$t('compute.text_659')" />
         </a-form-item>
-        <a-form-item label="最小磁盘要求" v-bind="formItemLayout" v-if="!isHostImage">
+        <a-form-item :label="$t('compute.text_633')" v-bind="formItemLayout" v-if="!isHostImage">
           <a-input-number :min="1" :max="1000" :step="50" :precision="0" v-decorator="decorators.minDisk" /> GB
         </a-form-item>
-        <a-form-item label="磁盘驱动" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_634')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.diskDriver">
             <a-radio-button v-for="(item, index) in diskDriverOptions" :value="item.value" :key="index">
               {{item.text}}
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item label="网卡驱动" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_635')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.netDriver">
             <a-radio-button v-for="(item, index) in netDriverOptions" :value="item.value" :key="index">
               {{item.text}}
@@ -81,7 +79,7 @@ export default {
             initialValue: this.params.data[0].name,
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入镜像名称' },
+              { required: true, message: this.$t('compute.text_660') },
               { validator: this.$validate('imageName') },
               { validator: this.checkTemplateName },
             ],
@@ -137,7 +135,7 @@ export default {
           { text: 'Windows Server 2012 R2', value: 'Windows Server 2012 R2' },
           { text: 'Windows Server 2016', value: 'Windows Server 2016' },
           { text: 'Windows Server 2019', value: 'Windows Server 2019' },
-          { text: '其他', value: 'Other' },
+          { text: this.$t('compute.text_151'), value: 'Other' },
         ],
         Linux: [
           { text: 'CentOS', value: 'CentOS' },
@@ -149,10 +147,10 @@ export default {
           { text: 'RedHat', value: 'RedHat' },
           { text: 'SUSE Linux', value: 'SUSE Linux' },
           { text: 'Ubuntu', value: 'Ubuntu' },
-          { text: '其他', value: 'Other' },
+          { text: this.$t('compute.text_151'), value: 'Other' },
         ],
         Other: [
-          { text: '其他', value: 'Other' },
+          { text: this.$t('compute.text_151'), value: 'Other' },
         ],
       },
       osNewDisOptions: [
@@ -165,12 +163,12 @@ export default {
         { text: 'RedHat', value: 'RedHat' },
         { text: 'SUSE Linux', value: 'SUSE Linux' },
         { text: 'Ubuntu', value: 'Ubuntu' },
-        { text: '其他', value: 'Other' },
+        { text: this.$t('compute.text_151'), value: 'Other' },
       ],
       isDisOther: false,
       initName: '',
       diskDriverOptions: [
-        { text: '系统自动选择', value: '' },
+        { text: this.$t('compute.text_661'), value: '' },
         { text: 'virtio', value: 'virtio' },
         { text: 'scsi', value: 'scsi' },
         { text: 'pvscsi', value: 'pvscsi' },
@@ -178,7 +176,7 @@ export default {
         { text: 'sata', value: 'sata' },
       ],
       netDriverOptions: [
-        { text: '系统自动选择', value: '' },
+        { text: this.$t('compute.text_661'), value: '' },
         { text: 'virtio', value: 'virtio' },
         { text: 'e1000', value: 'e1000' },
         { text: 'vmxnet3', value: 'vmxnet3' },
@@ -225,7 +223,7 @@ export default {
           if (data[0].name === this.initName) {
             callback()
           } else {
-            callback(new Error('输入的镜像名称已存在'))
+            callback(new Error(this.$t('compute.text_662')))
           }
         } else {
           callback()

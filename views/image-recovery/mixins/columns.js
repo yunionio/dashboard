@@ -2,18 +2,19 @@ import * as R from 'ramda'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
-      getCopyWithContentTableColumn({ field: 'name', title: '名称' }),
+      getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228') }),
       {
         field: 'os_type',
-        title: '操作系统',
+        title: i18n.t('compute.text_267'),
         width: 70,
         slots: {
           default: ({ row }) => {
-            if (!row.properties || R.isEmpty(row.properties)) return '未知'
+            if (!row.properties || R.isEmpty(row.properties)) return i18n.t('compute.text_339')
             let name = !row.properties.os_distribution ? row.properties.os_type : decodeURI(row.properties.os_distribution || '')
             name = name || ''
             if (name.includes('Windows') || name.includes('windows')) {
@@ -28,12 +29,12 @@ export default {
       },
       {
         field: 'disk_format',
-        title: '格式',
+        title: i18n.t('compute.text_398'),
         width: 100,
       },
       {
         field: 'size',
-        title: '镜像大小',
+        title: i18n.t('compute.text_610'),
         width: 100,
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'B', 1024)
@@ -41,7 +42,7 @@ export default {
       },
       getStatusTableColumn({ statusModule: 'image' }),
       getProjectTableColumn(),
-      getTimeTableColumn({ field: 'auto_delete_at', title: '自动清除时间' }),
+      getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
     ]
   },
 }

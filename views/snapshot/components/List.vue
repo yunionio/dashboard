@@ -33,23 +33,23 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '硬盘', key: 'disk_name' },
-          { label: '磁盘类型', key: 'disk_type' },
-          { label: '快照大小', key: 'size' },
-          { label: '状态', key: 'status' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_100'), key: 'disk_name' },
+          { label: this.$t('compute.text_381'), key: 'disk_type' },
+          { label: this.$t('compute.text_422'), key: 'size' },
+          { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '平台', key: 'provider' },
-          { label: '虚拟机', key: 'guest' },
-          { label: '创建时间', key: 'create_at' },
-          { label: '区域', key: 'region' },
-          { label: '可用区', key: 'zone' },
-          { label: '存储方式', key: 'storage_type' },
+          { label: this.$t('compute.text_176'), key: 'provider' },
+          { label: this.$t('compute.text_91'), key: 'guest' },
+          { label: this.$t('compute.text_243'), key: 'create_at' },
+          { label: this.$t('compute.text_177'), key: 'region' },
+          { label: this.$t('compute.text_270'), key: 'zone' },
+          { label: this.$t('compute.text_1061'), key: 'storage_type' },
         ],
       },
       groupActions: [
         {
-          label: '同步状态',
+          label: this.$t('compute.text_282'),
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['running', 'ready'],
@@ -63,7 +63,7 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           permission: 'snapshots_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
@@ -71,8 +71,8 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
-              title: '删除',
-              name: '快照',
+              title: this.$t('compute.text_261'),
+              name: this.$t('compute.text_462'),
             })
           },
           meta: () => {
@@ -86,7 +86,7 @@ export default {
             }
             if (this.list.selectedItems.some(item => item.is_sub_snapshot)) {
               ret.validate = false
-              ret.tooltip = '此快照为主机快照子快照，不可操作'
+              ret.tooltip = this.$t('compute.text_1062')
               return ret
             }
             return ret

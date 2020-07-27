@@ -30,21 +30,21 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
         filterOptions: {
           name: {
-            label: '实例名称',
+            label: this.$t('compute.text_719'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
             },
           },
           status: {
-            label: '实例状态',
+            label: this.$t('compute.text_353'),
             dropdown: true,
             multiple: true,
             items: [
-              { label: '运行中', key: 'running' },
-              { label: '关机', key: 'ready' },
-              { label: '未知', key: 'unknown' },
-              { label: '调度失败', key: 'sched_fail' },
+              { label: this.$t('compute.text_574'), key: 'running' },
+              { label: this.$t('compute.text_273'), key: 'ready' },
+              { label: this.$t('compute.text_339'), key: 'unknown' },
+              { label: this.$t('compute.text_720'), key: 'sched_fail' },
             ],
             filter: true,
             formatter: val => {
@@ -52,7 +52,7 @@ export default {
             },
           },
           os_type: {
-            label: '系统类型',
+            label: this.$t('compute.text_721'),
             dropdown: true,
             multiple: true,
             items: [
@@ -71,7 +71,7 @@ export default {
         getNameDescriptionTableColumn({ addLock: true, vm: this }),
         {
           field: 'os_type',
-          title: '系统',
+          title: this.$t('compute.text_338'),
           width: 50,
           slots: {
             default: ({ row }) => {
@@ -90,7 +90,7 @@ export default {
         getStatusTableColumn({ statusModule: 'server' }),
         {
           field: 'instance_type',
-          title: '配置',
+          title: this.$t('compute.text_295'),
           showOverflow: 'ellipsis',
           minWidth: 120,
           slots: {
@@ -106,13 +106,13 @@ export default {
         },
         getTimeTableColumn({
           field: 'attach_time',
-          title: '关联时间',
+          title: this.$t('compute.text_722'),
         }),
-        getCopyWithContentTableColumn({ field: 'host', title: '宿主机' }),
+        getCopyWithContentTableColumn({ field: 'host', title: this.$t('compute.text_111') }),
       ],
       singleActions: [
         {
-          label: '解绑',
+          label: this.$t('compute.text_723'),
           action: obj => {
             this.createDialog('InstanceGroupUnbindServerDialog', {
               instanceGroupId: this.resId,

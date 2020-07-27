@@ -1,5 +1,6 @@
 import { status } from '@/locales/zh-CN'
 import { typeClouds } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 const hypervisorMap = typeClouds.hypervisorMap
 
@@ -18,7 +19,7 @@ const _tran = enArr => {
 
 const actionEableMap = {
   rebuildRoot: {
-    cn: '重装系统',
+    cn: i18n.t('compute.text_357'),
     brand: {
       azure: ['ready', 'running'],
       qcloud: ['ready', 'running'],
@@ -37,7 +38,7 @@ const actionEableMap = {
     },
   },
   resetPassword: {
-    cn: '重置密码',
+    cn: i18n.t('compute.text_276'),
     brand: {
       azure: ['running'],
       qcloud: ['ready'],
@@ -56,7 +57,7 @@ const actionEableMap = {
     },
   },
   bindKeyPair: {
-    cn: '绑定密钥',
+    cn: i18n.t('compute.text_361'),
     brand: {
       azure: ['running'],
       qcloud: ['ready'],
@@ -75,7 +76,7 @@ const actionEableMap = {
     },
   },
   unBindKeyPair: {
-    cn: '解绑密钥',
+    cn: i18n.t('compute.text_364'),
     brand: {
       azure: ['running'],
       qcloud: ['ready'],
@@ -94,7 +95,7 @@ const actionEableMap = {
     },
   },
   adjustConfig: {
-    cn: '调整配置',
+    cn: i18n.t('compute.text_1100'),
     brand: {
       azure: ['ready', 'running'],
       qcloud: ['ready'],
@@ -170,7 +171,7 @@ const actionEableMap = {
     },
   },
   createSnapshot: {
-    cn: '创建快照',
+    cn: i18n.t('compute.text_1276'),
     brand: {
       azure: ['running', 'ready'],
       qcloud: ['running', 'ready'],
@@ -189,7 +190,7 @@ const actionEableMap = {
     },
   },
   transfer: {
-    cn: '迁移',
+    cn: i18n.t('compute.text_1127'),
     brand: {
       azure: false,
       qcloud: false,
@@ -208,7 +209,7 @@ const actionEableMap = {
     },
   },
   assignSecgroup: {
-    cn: '关联安全组',
+    cn: i18n.t('compute.text_1116'),
     brand: {
       azure: true,
       qcloud: true,
@@ -227,7 +228,7 @@ const actionEableMap = {
     },
   },
   insertiso: {
-    cn: '挂载ISO',
+    cn: i18n.t('compute.text_366'),
     brand: {
       azure: true,
       qcloud: true,
@@ -246,7 +247,7 @@ const actionEableMap = {
     },
   },
   ejectiso: {
-    cn: '卸载ISO',
+    cn: i18n.t('compute.text_367'),
     brand: {
       azure: true,
       qcloud: true,
@@ -265,7 +266,7 @@ const actionEableMap = {
     },
   },
   bindEip: {
-    cn: '绑定EIP',
+    cn: i18n.t('compute.text_1302'),
     brand: {
       azure: ['running', 'ready'],
       qcloud: ['running', 'ready'],
@@ -284,7 +285,7 @@ const actionEableMap = {
     },
   },
   unbindEip: {
-    cn: '解绑EIP',
+    cn: i18n.t('compute.text_1303'),
     brand: {
       azure: ['running', 'ready'],
       qcloud: ['running', 'ready'],
@@ -303,14 +304,14 @@ const actionEableMap = {
     },
   },
   acttachGpu: {
-    cn: '绑定GPU卡',
+    cn: i18n.t('compute.text_1304'),
     brand: {
       onecloud: ['ready'],
       vmware: false,
     },
   },
   publicIpToEip: {
-    cn: '公有IP转EIP',
+    cn: i18n.t('compute.text_1305'),
     brand: {
       qcloud: ['running', 'ready'],
       aliyun: ['running', 'ready'],
@@ -328,7 +329,7 @@ export const commonTip = (obj, statusArr = ['ready']) => {
   if (statusArr.includes(obj.status)) {
     return null
   } else {
-    return `仅状态为【${_tran(statusArr)}】的机器进行操作`
+    return i18n.t('compute.text_1306', [_tran(statusArr)])
   }
 }
 
@@ -364,7 +365,7 @@ export const cloudEnabled = (action, value, othersEabledStatus = ['ready']) => {
 
 export const cloudUnabledTip = (action, value, othersEabledStatus = ['ready']) => {
   value = _toArr(value)
-  if (!value || !value.length) return '请先选择要操作的机器'
+  if (!value || !value.length) return i18n.t('compute.text_1307')
   let errorMsg = null
   const actionItem = actionEableMap[action] && actionEableMap[action].brand
   const valid = value.every(obj => {
@@ -375,14 +376,14 @@ export const cloudUnabledTip = (action, value, othersEabledStatus = ['ready']) =
       if (commonEnabled(obj)) {
         return true
       } else {
-        errorMsg = '请关机后操作'
+        errorMsg = i18n.t('compute.text_1308')
         return false
       }
     } else if (Array.isArray(actionItem[H])) { // 是 actionEnableMap 中的一种，且状态是数组
       if (actionItem[H].includes(obj.status)) {
         return true
       } else {
-        errorMsg = `仅在云服务器状态为【${_tran(actionItem[H])}】下可以进行该操作`
+        errorMsg = i18n.t('compute.text_1309', [_tran(actionItem[H])])
         return false
       }
     } else if (actionItem[H] === undefined) { // 新接入的平台
@@ -402,7 +403,7 @@ export const cloudUnabledTip = (action, value, othersEabledStatus = ['ready']) =
         if (H === 'onecloud') H = 'kvm'
         if (H === 'vmware') H = 'esxi'
         const tooltip = hypervisorMap[H].label
-        errorMsg = `${tooltip}暂不支持该操作`
+        errorMsg = i18n.t('compute.text_1287', [tooltip])
         return false
       }
     }

@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建快照</div>
+    <div slot="header">{{$t('compute.text_414')}}</div>
     <div slot="body">
       <a-alert :message="errorInfo" banner v-if="errorInfo !== ''" />
-      <dialog-selected-tips :count="params.data.length" action="新建快照" :name="$t('dictionary.disk')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_414')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="快照名称" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_415')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
       </a-form>
@@ -39,7 +39,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '字母开头，数字和字母大小写组合，长度为2-128个字符，可含".","-","_"' },
+              { required: true, message: this.$t('compute.text_416') },
               { validator: this.$validate('snapshotName') },
             ],
           },
@@ -61,9 +61,9 @@ export default {
       if (this.isKvm) {
         if (this.isCeph) return ''
         if (this.manualSnapshotCount === this.maxManualSnapshotCount) {
-          return '友情提示：该硬盘快照额度已满，请先删除后再创建'
+          return this.$t('compute.text_417')
         }
-        return `友情提示：该硬盘已创建快照${this.manualSnapshotCount}个，还可创建${this.maxManualSnapshotCount - this.manualSnapshotCount}个`
+        return this.$t('compute.text_418', [this.manualSnapshotCount, this.maxManualSnapshotCount - this.manualSnapshotCount])
       }
       return ''
     },

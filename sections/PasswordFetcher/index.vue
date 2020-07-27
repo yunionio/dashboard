@@ -7,11 +7,11 @@
           <template v-if="error">
             <template v-if="error.response && error.response.status === 404">
               <a-icon type="exclamation-circle" theme="twoTone" twoToneColor="#faad14" />
-              <span class="ml-2" style="color: #faad14;">无密钥信息</span>
+              <span class="ml-2" style="color: #faad14;">{{$t('compute.text_154')}}</span>
             </template>
             <template v-else>
               <a-icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
-              <span class="ml-2" style="color: #f5222d;">获取失败</span>
+              <span class="ml-2" style="color: #f5222d;">{{$t('compute.text_155')}}</span>
             </template>
           </template>
           <template v-else>
@@ -34,7 +34,7 @@
                   <div><span>{{ loginInfos.password.value }}</span><copy class="ml-1" :message="loginInfos.password.value" /></div>
                 </template>
                 <template v-if="!loginInfos.password.value && loginInfos.password.keypair && loginInfos.password.loginKey">
-                  <div><a @click="handleDecryptSecret">输入私钥获取密码</a></div>
+                  <div><a @click="handleDecryptSecret">{{$t('compute.text_156')}}</a></div>
                 </template>
               </div>
             </div>
@@ -59,25 +59,25 @@
     <a-modal
       :visible="dialog.visible"
       :closable="false"
-      title="获取密码"
+      :title="$t('compute.text_157')"
       @cancel="handleDialogCacel">
       <div>
         <div class="mb-2">
-          <a-alert type="warning" message="仅支持 OpenSSL's PEM 格式" />
+          <a-alert type="warning" :message="$t('compute.text_158')" />
         </div>
         <a-row :gutter="20" class="mb-2">
-          <a-col :span="5" class="text-right">密钥名称：</a-col>
+          <a-col :span="5" class="text-right">{{$t('compute.text_159')}}</a-col>
           <a-col :span="19">{{ loginInfos.password.keypair }}</a-col>
         </a-row>
         <a-row :gutter="20" class="mb-2">
-          <a-col :span="5" class="text-right">密钥：</a-col>
+          <a-col :span="5" class="text-right">{{$t('compute.text_160')}}</a-col>
           <a-col :span="19">
             <a-textarea v-model="dialog.value" :rows="7" />
           </a-col>
         </a-row>
         <template v-if="dialog.password">
           <a-row :gutter="20">
-            <a-col :span="5" class="text-right">密码：</a-col>
+            <a-col :span="5" class="text-right">{{$t('compute.text_161')}}</a-col>
             <a-col :span="19">
               <span>{{ dialog.password }}</span><copy class="ml-1" :message="dialog.password" />
             </a-col>
@@ -85,8 +85,8 @@
         </template>
       </div>
       <template #footer>
-        <a-button type="primary" @click="handleDialogConfirm">确定</a-button>
-        <a-button @click="handleDialogCacel">取消</a-button>
+        <a-button type="primary" @click="handleDialogConfirm">{{$t('compute.text_162')}}</a-button>
+        <a-button @click="handleDialogCacel">{{$t('compute.text_135')}}</a-button>
       </template>
     </a-modal>
   </div>
@@ -159,11 +159,11 @@ export default {
           value: '',
         },
         username: {
-          label: '用户名：',
+          label: this.$t('compute.text_163'),
           value: '',
         },
         password: {
-          label: '密&emsp;码：',
+          label: this.$t('compute.text_164'),
           value: '',
           keypair: '',
           loginKey: '',
@@ -214,9 +214,9 @@ export default {
     handleDialogConfirm () {
       if (R.isNil(this.dialog.value) || R.isEmpty(this.dialog.value)) return
       try {
-        this.dialog.password = passwordDecrypt(this.login_key, this.dialog.value) || '暂无'
+        this.dialog.password = passwordDecrypt(this.login_key, this.dialog.value) || this.$t('compute.text_165')
       } catch (error) {
-        this.$message.error('获取密码失败')
+        this.$message.error(this.$t('compute.text_166'))
         throw error
       }
     },

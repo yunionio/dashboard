@@ -1,5 +1,5 @@
 <template>
-  <a-form-item label="录入方式">
+  <a-form-item :label="$t('compute.text_827')">
     <a-radio-group v-decorator="decorators.mode">
       <template v-for="(item, key) of modes">
         <a-radio-button :value="key" :key="key" v-if="!ignores.includes(key)">{{ item }}</a-radio-button>

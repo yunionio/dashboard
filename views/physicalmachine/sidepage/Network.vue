@@ -26,32 +26,32 @@ export default {
       columns: [
         {
           field: 'index',
-          title: '序号',
+          title: this.$t('compute.text_375'),
           formatter: ({ row }) => {
             return row.index
           },
         },
-        getCopyWithContentTableColumn({ field: 'mac', title: 'MAC地址' }),
+        getCopyWithContentTableColumn({ field: 'mac', title: this.$t('compute.text_385') }),
         {
           field: 'nic_type',
-          title: '网卡类型',
+          title: this.$t('compute.text_860'),
           width: 80,
           formatter: ({ row }) => {
             if (row.nic_type === 'admin') {
-              return '管理口'
+              return this.$t('compute.text_861')
             } else if (row.nic_type === 'ipmi') {
-              return '带外口'
+              return this.$t('compute.text_862')
             } else {
               return '-'
             }
           },
         },
-        getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址' }),
-        getCopyWithContentTableColumn({ field: 'net', title: 'IP子网' }),
-        getCopyWithContentTableColumn({ field: 'wire', title: '二层网络' }),
+        getCopyWithContentTableColumn({ field: 'ip_addr', title: this.$t('compute.text_386') }),
+        getCopyWithContentTableColumn({ field: 'net', title: this.$t('compute.text_106') }),
+        getCopyWithContentTableColumn({ field: 'wire', title: this.$t('compute.text_844') }),
         {
           field: 'action',
-          title: '操作',
+          title: this.$t('compute.text_863'),
           slots: {
             default: ({ row }, h) => {
               const ret = []

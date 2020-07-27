@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import Disk from '../index'
 import { diskValidator } from '@Compute/utils/createServer'
 import { isRequired } from '@/utils/validate'
+import i18n from '@/locales'
 
 let decorator = null
 let typesMap = null
@@ -14,7 +15,7 @@ beforeEach(() => {
       'dataDiskTypes',
       {
         rules: [
-          { validator: isRequired(), message: '请选择磁盘类型' },
+          { validator: isRequired(), message: i18n.t('compute.text_121') },
         ],
       },
     ],
@@ -22,7 +23,7 @@ beforeEach(() => {
       'dataDiskSizes',
       {
         rules: [
-          { required: true, message: '请输入磁盘大小' },
+          { required: true, message: i18n.t('compute.text_122') },
         ],
       },
     ],
@@ -32,7 +33,7 @@ beforeEach(() => {
         validateTrigger: ['change', 'blur'],
         rules: [{
           required: true,
-          message: '请选择调度标签',
+          message: i18n.t('compute.text_123'),
         }],
       },
     ],
@@ -42,7 +43,7 @@ beforeEach(() => {
         validateTrigger: ['blur', 'change'],
         rules: [{
           required: true,
-          message: '请选择调度标签',
+          message: i18n.t('compute.text_123'),
         }],
       },
     ],
@@ -52,7 +53,7 @@ beforeEach(() => {
         validateTrigger: ['blur', 'change'],
         rules: [{
           required: true,
-          message: '请选择快照',
+          message: i18n.t('compute.text_124'),
         }],
       },
     ],
@@ -62,7 +63,7 @@ beforeEach(() => {
         validateTrigger: ['blur', 'change'],
         rules: [{
           required: true,
-          message: '请选择文件系统',
+          message: i18n.t('compute.text_125'),
         }],
       },
     ],
@@ -72,7 +73,7 @@ beforeEach(() => {
         validateTrigger: ['blur', 'change'],
         rules: [{
           required: true,
-          message: '请填写挂载点',
+          message: i18n.t('compute.text_126'),
         }, {
           validator: diskValidator,
         }],
@@ -81,7 +82,7 @@ beforeEach(() => {
   }
   typesMap = {
     local: {
-      label: '本地硬盘',
+      label: i18n.t('compute.text_70'),
       key: 'local',
       min: 1,
       max: 3072,

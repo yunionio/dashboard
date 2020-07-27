@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">回收为物理机</div>
+    <div slot="header">{{$t('compute.text_508')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" action="回收为物理机" />
+      <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" :action="$t('compute.text_508')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
     </div>
     <div slot="footer">

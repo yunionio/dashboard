@@ -2,6 +2,7 @@ import { Base64 } from 'js-base64'
 import qs from 'qs'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   destroyed () {
@@ -15,12 +16,12 @@ export default {
       const _frontSingleActions = this.frontSingleActions ? this.frontSingleActions.bind(this)() || [] : []
       return _frontSingleActions.concat([
         {
-          label: '远程终端',
+          label: i18n.t('compute.text_567'),
           actions: obj => {
             const ret = []
             if (obj.host_type === 'baremetal') {
               ret.push({
-                label: 'SOL远程终端',
+                label: i18n.t('compute.text_568'),
                 action: () => {
                   this.webconsoleManager.objectRpc({ methodname: 'DoBaremetalConnect', objId: obj.id }).then((res) => {
                     this.openWebConsole(obj, res.data)
@@ -56,10 +57,10 @@ export default {
                 meta,
               })
               ret.push({
-                label: `SSH ${ip} 自定义端口`,
+                label: i18n.t('compute.text_345', [ip]),
                 action: () => {
                   this.createDialog('SmartFormDialog', {
-                    title: '自定义端口',
+                    title: i18n.t('compute.text_346'),
                     data: [obj],
                     list: this.list,
                     callback: async (data) => {
@@ -76,12 +77,12 @@ export default {
                         {
                           validateFirst: true,
                           rules: [
-                            { required: true, message: '请输入端口' },
+                            { required: true, message: i18n.t('compute.text_347') },
                             {
                               validator: (rule, value, _callback) => {
                                 const num = parseFloat(value)
                                 if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                  _callback('端口范围在 0-65535 之间')
+                                  _callback(i18n.t('compute.text_348'))
                                 }
                                 _callback()
                               },
@@ -89,8 +90,8 @@ export default {
                           ],
                         },
                         {
-                          label: '端口',
-                          placeholder: '请输入端口号',
+                          label: i18n.t('compute.text_349'),
+                          placeholder: i18n.t('compute.text_350'),
                         },
                       ],
                     },
@@ -103,20 +104,20 @@ export default {
           },
         },
         {
-          label: '更多',
+          label: i18n.t('compute.text_352'),
           actions: (obj) => {
             return [
               {
-                label: '禁用',
+                label: i18n.t('compute.text_569'),
                 submenus: [
                   ...getEnabledSwitchActions(this, obj),
                 ],
               },
               {
-                label: '设置',
+                label: i18n.t('compute.text_136'),
                 submenus: [
                   {
-                    label: '调整标签',
+                    label: i18n.t('compute.text_507'),
                     action: () => {
                       this.createDialog('HostsAdjustLabelDialog', {
                         data: [obj],
@@ -127,7 +128,7 @@ export default {
                     },
                   },
                   {
-                    label: '调整超售比',
+                    label: i18n.t('compute.text_513'),
                     action: () => {
                       this.createDialog('HostAdjustOversoldRatioDialog', {
                         data: [obj],
@@ -151,13 +152,13 @@ export default {
                     resource: 'hosts',
                   }),
                   {
-                    label: '宕机自动迁移',
+                    label: i18n.t('compute.text_547'),
                     action: () => {
                       this.createDialog('DowntimeMigrateDialog', {
                         data: [obj],
                         columns: this.columns,
                         onManager: this.onManager,
-                        name: '宕机自动迁移',
+                        name: i18n.t('compute.text_547'),
                         refresh: this.refresh,
                       })
                     },
@@ -169,12 +170,12 @@ export default {
                       }
                       return {
                         validate: false,
-                        tooltip: obj.provider.toLowerCase() !== 'onecloud' ? '只有OneCloud平台宿主机支持该操作' : '',
+                        tooltip: obj.provider.toLowerCase() !== 'onecloud' ? i18n.t('compute.text_570') : '',
                       }
                     },
                   },
                   {
-                    label: '回收为物理机',
+                    label: i18n.t('compute.text_508'),
                     action: () => {
                       this.createDialog('HostUnconvertDialog', {
                         data: [obj],
@@ -188,17 +189,17 @@ export default {
                       if (obj.host_type !== 'hypervisor') {
                         return {
                           validate: false,
-                          tooltip: '必须为KVM类型的宿主机才可回收',
+                          tooltip: i18n.t('compute.text_510'),
                         }
                       } else if (obj.nonsystem_guests > 0) {
                         return {
                           validate: false,
-                          tooltip: '虚拟化机器大于0不可回收',
+                          tooltip: i18n.t('compute.text_511'),
                         }
                       } else if (obj.enabled) {
                         return {
                           validate: false,
-                          tooltip: '已启用的宿主机不可回收',
+                          tooltip: i18n.t('compute.text_512'),
                         }
                       }
                       return {
@@ -207,7 +208,7 @@ export default {
                     },
                   },
                   {
-                    label: '进入维护模式',
+                    label: i18n.t('compute.text_550'),
                     action: () => {
                       this.createDialog('HostMaintenanceInDialog', {
                         data: [obj],
@@ -225,12 +226,12 @@ export default {
                       }
                       return {
                         validate: ['running', 'maintain_fail'].includes(obj.status),
-                        tooltip: obj.status !== 'running' ? '状态为运行中的宿主机支持该操作' : '',
+                        tooltip: obj.status !== 'running' ? i18n.t('compute.text_571') : '',
                       }
                     },
                   },
                   {
-                    label: '退出维护模式',
+                    label: i18n.t('compute.text_559'),
                     action: () => {
                       this.createDialog('HostMaintenanceOutDialog', {
                         data: [obj],
@@ -252,7 +253,7 @@ export default {
                     },
                   },
                   {
-                    label: '设置GPU卡预留资源',
+                    label: i18n.t('compute.text_514'),
                     action: obj => {
                       this.createDialog('SetHostReserveResourceDialog', {
                         onManager: this.onManager,
@@ -267,11 +268,11 @@ export default {
                         tooltip: null,
                       }
                       if (obj.provider !== typeClouds.providerMap.OneCloud.key) {
-                        ret.tooltip = '只有OneCloud宿主机支持此操作'
+                        ret.tooltip = i18n.t('compute.text_515')
                         return ret
                       }
                       if (!obj.reserved_resource_for_gpu) {
-                        ret.tooltip = '该宿主机没有GPU资源，暂不支持该操作'
+                        ret.tooltip = i18n.t('compute.text_516')
                         return ret
                       }
                       return {
@@ -282,16 +283,16 @@ export default {
                 ],
               },
               {
-                label: '删除',
+                label: i18n.t('compute.text_261'),
                 submenus: [
                   {
-                    label: '删除',
+                    label: i18n.t('compute.text_261'),
                     action: () => {
                       this.createDialog('DeleteResDialog', {
                         vm: this,
                         data: [obj],
                         columns: this.columns,
-                        title: '删除',
+                        title: i18n.t('compute.text_261'),
                         name: this.$t('dictionary.host'),
                         onManager: this.onManager,
                       })

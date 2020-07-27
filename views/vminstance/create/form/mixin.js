@@ -30,6 +30,7 @@ import HypervisorRadio from '@/sections/HypervisorRadio'
 import DomainProject from '@/sections/DomainProject'
 import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import i18n from '@/locales'
 
 const CreateServerForm = {
   wrapperCol: {
@@ -311,7 +312,7 @@ export default {
       this.servertemplateM.create({ data: templateData })
         .then(() => {
           this.submiting = false
-          this.$message.success('操作成功')
+          this.$message.success(i18n.t('compute.text_423'))
           this.$router.push('/servertemplate')
         })
         .catch(() => {
@@ -333,7 +334,7 @@ export default {
         .create({ data: { variables } })
         .then(() => {
           this.submiting = false
-          this.$message.success(`主机 ${data.generate_name} 创建请求流程已提交`)
+          this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
           this.$router.push('/workflow')
         })
         .catch(() => {
@@ -364,7 +365,7 @@ export default {
             }
           })
           .catch(err => {
-            this.$message.error(`创建失败: ${err}`)
+            this.$message.error(i18n.t('compute.text_321', [err]))
             this.submiting = false
             reject(err)
           })
@@ -384,7 +385,7 @@ export default {
           }
           this.submiting = false
           if (isSuccess(res)) {
-            this.$message.success('操作成功，开始创建')
+            this.$message.success(i18n.t('compute.text_322'))
           }
           this.$router.push('/vminstance')
         })

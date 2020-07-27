@@ -1,13 +1,14 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '关联硬盘',
+        label: i18n.t('compute.text_1084'),
         action: obj => {
           this.createDialog('AttachDiskDialog', {
             data: [obj],
             columns: this.columns,
-            title: '关联硬盘',
+            title: i18n.t('compute.text_1084'),
             refresh: this.refresh,
           })
         },
@@ -18,14 +19,14 @@ export default {
         },
       },
       {
-        label: '删除',
+        label: i18n.t('compute.text_261'),
         permission: 'snapshotpolicy_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除',
+            title: i18n.t('compute.text_261'),
             name: this.$t('dictionary.snapshotpolicy'),
             onManager: this.onManager,
           })

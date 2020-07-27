@@ -1,14 +1,14 @@
 <template>
-  <a-form-item label="文件">
+  <a-form-item :label="$t('compute.text_244')">
     <a-upload
       name="files"
       :fileList="fileList"
       :multiple="true"
       :remove="handleRemove"
       :beforeUpload="beforeUpload">
-      <a-button> <a-icon type="upload" /> 选取文件</a-button>
+      <a-button> <a-icon type="upload" />{{$t('compute.text_245')}}</a-button>
     </a-upload>
-    <span slot="extra" :class="err ? 'error-color' : 'text-color-help'">上传总文件大小不得超过 64 KB</span>
+    <span slot="extra" :class="err ? 'error-color' : 'text-color-help'">{{$t('compute.text_246')}}</span>
   </a-form-item>
 </template>
 <script>

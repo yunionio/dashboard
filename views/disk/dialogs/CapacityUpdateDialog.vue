@@ -1,23 +1,23 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">扩容</div>
+    <div slot="header">{{$t('compute.text_402')}}</div>
     <div slot="body">
       <a-alert type="warning" class="mb-2">
         <template #message>
           <div>
-            <p>扩容须知：</p>
-            <p>1.扩容时，容量只能增加不能减小；</p>
-            <p v-show="params.data[0].provider === 'Aliyun'">2.阿里云扩容后须重启服务器生效；</p>
-            <p v-show="params.data[0].provider === 'Aws'">2.AWS扩容后，下次扩容需要6个小时之后操作，否则会扩容失败；</p>
-            <p v-show="!params.data[0].provider">2.私有云扩容后立即生效，无需重启服务器。</p>
+            <p>{{$t('compute.text_403')}}</p>
+            <p>{{$t('compute.text_404')}}</p>
+            <p v-show="params.data[0].provider === 'Aliyun'">{{$t('compute.text_405')}}</p>
+            <p v-show="params.data[0].provider === 'Aws'">{{$t('compute.text_406')}}</p>
+            <p v-show="!params.data[0].provider">{{$t('compute.text_407')}}</p>
           </div>
         </template>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" action="扩容" :name="$t('dictionary.disk')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_402')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item label="容量" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_397')" v-bind="formItemLayout">
           <a-input-number :min="(params.data[0].disk_size / 1024) || 1" :max="100000" step="10" v-decorator="decorators.size" /> GB
         </a-form-item>
       </a-form>
@@ -48,7 +48,7 @@ export default {
           {
             initialValue: this.params.data[0].disk_size / 1024,
             rules: [
-              { required: true, message: '请输入容量大小' },
+              { required: true, message: this.$t('compute.text_408') },
             ],
           },
         ],

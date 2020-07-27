@@ -22,7 +22,7 @@ export default {
       if (!parseInt(size)) {
         size = '0 MB'
       }
-      return ` (已上传${size})`
+      return this.$t('compute.text_639', [size])
     },
   },
 }

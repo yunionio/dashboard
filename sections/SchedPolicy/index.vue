@@ -62,7 +62,7 @@
         :params="cloudproviderParams"
         :isDefaultSelect="true"
         :showSync="true"
-        :select-props="{ placeholder: '请选择云账号' }" />
+        :select-props="{ placeholder: $t('compute.text_149') }" />
     </a-form-item>
   </div>
 </template>
@@ -221,13 +221,13 @@ export default {
       let label = item.name
       if (!this.usableCloudproviderMaps[item.id]) {
         if (item.status !== 'connected') {
-          label += '(该云订阅的状态不是【已连接】)'
+          label += this.$t('compute.text_184')
         } else if (item.health_status !== 'normal') {
-          label += '(该云订阅的健康状态不是【正常】)'
+          label += this.$t('compute.text_185')
         } else if (item.enabled === false) {
-          label += '(该云订阅未启用)'
+          label += this.$t('compute.text_186')
         } else {
-          label += '(该云订阅在指定的区域下没有可用的IP子网)'
+          label += this.$t('compute.text_187')
         }
       }
       return label

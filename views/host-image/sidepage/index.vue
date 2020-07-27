@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="主机镜像"
+    :title="$t('compute.text_98')"
     icon="res-image"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -46,9 +46,9 @@ export default {
   computed: {
     detailTabs () {
       return [
-        { label: '详情', key: 'host-image-detail' },
-        { label: '子镜像', key: 'children-image-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'host-image-detail' },
+        { label: this.$t('compute.text_618'), key: 'children-image-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
     },
   },

@@ -1,12 +1,13 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: `关联${this.$t('dictionary.server')}`,
+        label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
         action: obj => {
           this.createDialog('AttachGpuDialog', {
             data: [obj],
-            title: `关联${this.$t('dictionary.server')}`,
+            title: this.$t('compute.text_483', [this.$t('dictionary.server')]),
             columns: this.columns,
             refresh: this.refresh,
           })
@@ -18,11 +19,11 @@ export default {
         },
       },
       {
-        label: `取消关联${this.$t('dictionary.server')}`,
+        label: this.$t('compute.text_485', [this.$t('dictionary.server')]),
         action: obj => {
           this.createDialog('DetachGpuDialog', {
             data: [obj],
-            title: `取消关联${this.$t('dictionary.server')}`,
+            title: this.$t('compute.text_485', [this.$t('dictionary.server')]),
             columns: this.columns,
             refresh: this.refresh,
           })
@@ -31,13 +32,13 @@ export default {
           if (!obj.guest_id) {
             return {
               validate: false,
-              tooltip: `请选择已关联${this.$t('dictionary.server')}的GPU卡`,
+              tooltip: this.$t('compute.text_487', [this.$t('dictionary.server')]),
             }
           }
           if (obj.guest_status !== 'ready') {
             return {
               validate: false,
-              tooltip: `关联${this.$t('dictionary.server')}在【关机】的状态下支持该操作`,
+              tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
             }
           }
           return {
@@ -46,7 +47,7 @@ export default {
         },
       },
       {
-        label: '设置预留资源',
+        label: i18n.t('compute.text_490'),
         action: obj => {
           this.createDialog('SetReserveResourceDialog', {
             onManager: this.onManager,

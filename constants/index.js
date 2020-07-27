@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import { skuCategoryOptions } from '@/locales/zh-CN'
 import { HYPERVISORS_MAP } from '@/constants'
+import i18n from '@/locales'
 
 export const CreateServerForm = {
   labelCol: 3,
@@ -18,15 +19,15 @@ export const SERVER_TYPE = {
 // 网络配置选项
 export const NETWORK_OPTIONS_MAP = {
   default: {
-    label: '默认',
+    label: i18n.t('compute.text_1'),
     key: 'default',
   },
   manual: {
-    label: '指定IP子网',
+    label: i18n.t('compute.text_2'),
     key: 'manual',
   },
   schedtag: {
-    label: '指定调度标签',
+    label: i18n.t('compute.text_3'),
     key: 'schedtag',
   },
 }
@@ -124,7 +125,7 @@ export const DEFAULT_PARAMS = {
 // 套餐全部的配置。这个配置则是对应key value配置
 export const ALL_SKU_CATEGORY_OPT = {
   key: 'all',
-  label: '全部',
+  label: i18n.t('compute.text_4'),
 }
 
 // 套餐类型
@@ -132,7 +133,7 @@ export const SKU_CATEGORY_MAP = R.map(item => Object.keys(item), skuCategoryOpti
 
 // 自动选择的存储类型
 export const STORAGE_AUTO = {
-  label: '自动选择',
+  label: i18n.t('compute.text_5'),
   key: 'auto',
   min: 10,
   max: 3 * 1024,
@@ -142,37 +143,37 @@ export const STORAGE_AUTO = {
 
 // GPU 块数选择配置
 export const GPU_COUNT_OPTIONS = [
-  { label: '1块', key: 1 },
-  { label: '2块', key: 2 },
-  { label: '3块', key: 3 },
-  { label: '4块', key: 4 },
-  { label: '5块', key: 5 },
-  { label: '6块', key: 6 },
-  { label: '7块', key: 7 },
-  { label: '8块', key: 8 },
+  { label: i18n.t('compute.text_6'), key: 1 },
+  { label: i18n.t('compute.text_7'), key: 2 },
+  { label: i18n.t('compute.text_8'), key: 3 },
+  { label: i18n.t('compute.text_9'), key: 4 },
+  { label: i18n.t('compute.text_10'), key: 5 },
+  { label: i18n.t('compute.text_11'), key: 6 },
+  { label: i18n.t('compute.text_12'), key: 7 },
+  { label: i18n.t('compute.text_13'), key: 8 },
 ]
 
 // 调度策略配置选项
 export const SCHED_POLICY_OPTIONS_MAP = {
   default: {
-    label: '默认',
+    label: i18n.t('compute.text_1'),
     key: 'default',
   },
   host: {
     label: {
-      [SERVER_TYPE.idc]: '指定宿主机',
-      [SERVER_TYPE.private]: '指定宿主机',
-      [SERVER_TYPE.public]: '指定云订阅',
-      [SERVER_TYPE.baremetal]: '指定物理机',
+      [SERVER_TYPE.idc]: i18n.t('compute.text_14'),
+      [SERVER_TYPE.private]: i18n.t('compute.text_14'),
+      [SERVER_TYPE.public]: i18n.t('compute.text_15'),
+      [SERVER_TYPE.baremetal]: i18n.t('compute.text_16'),
     },
     key: 'host',
   },
   cloudprovider: {
-    label: '指定云订阅',
+    label: i18n.t('compute.text_15'),
     key: 'cloudprovider',
   },
   schedtag: {
-    label: '指定调度标签',
+    label: i18n.t('compute.text_3'),
     key: 'schedtag',
   },
 }
@@ -180,15 +181,15 @@ export const SCHED_POLICY_OPTIONS_MAP = {
 // 弹性IP配置选项
 export const EIP_TYPES_MAP = {
   none: {
-    label: '暂不需要',
+    label: i18n.t('compute.text_17'),
     key: 'none',
   },
   new: {
-    label: '新建',
+    label: i18n.t('compute.text_18'),
     key: 'new',
   },
   bind: {
-    label: '绑定已有',
+    label: i18n.t('compute.text_19'),
     key: 'bind',
   },
 }
@@ -196,11 +197,11 @@ export const EIP_TYPES_MAP = {
 // 新建弹性IP配置选项
 export const EIP_CHARGE_TYPES_MAP = {
   traffic: {
-    label: '按流量计费',
+    label: i18n.t('compute.text_20'),
     key: 'traffic',
   },
   bandwidth: {
-    label: '按固定带宽',
+    label: i18n.t('compute.text_21'),
     key: 'bandwidth',
   },
 }
@@ -284,11 +285,11 @@ export const EIP_RANGES_MAP = {
 // 公有云计费方式配置选项
 export const BILL_TYPES_MAP = {
   quantity: {
-    label: '按量付费',
+    label: i18n.t('compute.text_22'),
     key: 'quantity',
   },
   package: {
-    label: '包年包月',
+    label: i18n.t('compute.text_23'),
     key: 'package',
   },
 }
@@ -296,43 +297,43 @@ export const BILL_TYPES_MAP = {
 // 包年包月购买时长选项配置
 export const BUY_DURATION_OPTIONS = [
   {
-    label: '1周',
+    label: i18n.t('compute.text_24'),
     key: '1W',
     unit: 'W',
     includes: [HYPERVISORS_MAP.aliyun.key], // 仅阿里云支持
   },
   {
-    label: '1个月',
+    label: i18n.t('compute.text_25'),
     key: '1M',
     unit: 'M',
   },
   {
-    label: '2个月',
+    label: i18n.t('compute.text_26'),
     key: '2M',
     unit: 'M',
   },
   {
-    label: '3个月',
+    label: i18n.t('compute.text_27'),
     key: '3M',
     unit: 'M',
   },
   {
-    label: '半年',
+    label: i18n.t('compute.text_28'),
     key: '6M',
     unit: 'M',
   },
   {
-    label: '1年',
+    label: i18n.t('compute.text_29'),
     key: '1Y',
     unit: 'Y',
   },
   {
-    label: '2年',
+    label: i18n.t('compute.text_30'),
     key: '2Y',
     unit: 'Y',
   },
   {
-    label: '3年',
+    label: i18n.t('compute.text_31'),
     key: '3Y',
     unit: 'Y',
   },
@@ -341,19 +342,19 @@ export const BUY_DURATION_OPTIONS = [
 // 管理员密码选择配置
 export const LOGIN_TYPES_MAP = {
   random: {
-    label: '随机生成',
+    label: i18n.t('compute.text_32'),
     key: 'random',
   },
   keypair: {
-    label: '关联密钥',
+    label: i18n.t('compute.text_33'),
     key: 'keypair',
   },
   image: {
-    label: '保留镜像设置',
+    label: i18n.t('compute.text_34'),
     key: 'image',
   },
   password: {
-    label: '手工输入',
+    label: i18n.t('compute.text_35'),
     key: 'password',
   },
 }
@@ -362,48 +363,48 @@ export const LOGIN_TYPES_MAP = {
 export const SECGROUP_OPTIONS_MAP = {
   none: {
     key: 'default',
-    label: '默认',
+    label: i18n.t('compute.text_1'),
   },
   bind: {
     key: 'bind',
-    label: '指定安全组',
+    label: i18n.t('compute.text_36'),
   },
 }
 
 // 创建预测错误过滤类型映射表
 export const FORECAST_FILTERS_MAP = {
-  host_cpu: '宿主机 cpu 空闲个数不满足请求个数',
-  host_isolated_device: '宿主机 gpu 空闲个数不满足请求个数',
-  host_memory: '宿主机空闲内存不满足请求数量',
-  host_network: '网络剩余 ip 数量不满足',
-  host_storage: '宿主机磁盘不足',
-  host_status: '宿主机状态异常',
-  host_aggregate: '宿主机被标签过滤',
-  disk_schedtag: '磁盘被标签过滤',
+  host_cpu: i18n.t('compute.text_37'),
+  host_isolated_device: i18n.t('compute.text_38'),
+  host_memory: i18n.t('compute.text_39'),
+  host_network: i18n.t('compute.text_40'),
+  host_storage: i18n.t('compute.text_41'),
+  host_status: i18n.t('compute.text_42'),
+  host_aggregate: i18n.t('compute.text_43'),
+  disk_schedtag: i18n.t('compute.text_44'),
 }
 
 // 资源池配置选项
 export const RESOURCE_TYPES_MAP = {
   shared: {
-    label: '通用资源池',
+    label: i18n.t('compute.text_45'),
     key: 'shared',
   },
   prepaid: {
-    label: '预付费资源池',
+    label: i18n.t('compute.text_46'),
     key: 'prepaid',
   },
 }
 
 // 介质过滤类型映射表
 export const MEDIUM_MAP = {
-  rotate: '机械盘',
-  ssd: '固态硬盘',
+  rotate: i18n.t('compute.text_47'),
+  ssd: i18n.t('compute.text_48'),
 }
 
 export const DISK_TYPES = {
-  sys: '系统盘',
-  data: '数据盘',
-  'swap-swap': '分区',
+  sys: i18n.t('compute.text_49'),
+  data: i18n.t('compute.text_50'),
+  'swap-swap': i18n.t('compute.text_51'),
 }
 
 // 支持自定义的存储类型
@@ -412,7 +413,7 @@ export const CUSTOM_STORAGE_TYPES = ['openstack', 'kvm']
 export const STORAGE_TYPES = {
   aliyun: {
     cloud: {
-      label: '普通云盘',
+      label: i18n.t('compute.text_52'),
       value: 'cloud',
       min: 5, // 数据盘或者新建云硬盘的取值范围【G】
       max: 2000, // 数据盘或者新建云硬盘的取值范围【G】
@@ -420,7 +421,7 @@ export const STORAGE_TYPES = {
       sysMax: 500, // 系统盘取值范围【G】
     },
     cloud_ssd: {
-      label: 'SSD 云盘',
+      label: i18n.t('compute.text_53'),
       value: 'cloud_ssd',
       min: 20,
       max: 32768,
@@ -428,7 +429,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     cloud_essd: {
-      label: 'ESSD云盘PL1',
+      label: i18n.t('compute.text_54'),
       value: 'cloud_essd',
       min: 20,
       max: 32768,
@@ -436,7 +437,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     cloud_essd_pl2: {
-      label: 'ESSD云盘PL2',
+      label: i18n.t('compute.text_55'),
       value: 'cloud_essd_pl2',
       min: 461,
       max: 32768,
@@ -444,7 +445,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     cloud_essd_pl3: {
-      label: 'ESSD云盘PL3',
+      label: i18n.t('compute.text_56'),
       value: 'cloud_essd_pl3',
       min: 1261,
       max: 32768,
@@ -452,7 +453,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     cloud_efficiency: {
-      label: '高效云盘',
+      label: i18n.t('compute.text_57'),
       value: 'cloud_efficiency',
       min: 20,
       max: 32768,
@@ -461,7 +462,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     ephemeral_ssd: {
-      label: '本地 SSD 盘',
+      label: i18n.t('compute.text_58'),
       value: 'ephemeral_ssd',
       min: 5,
       max: 800,
@@ -471,7 +472,7 @@ export const STORAGE_TYPES = {
   },
   aws: {
     gp2: {
-      label: '通用型 SSD',
+      label: i18n.t('compute.text_59'),
       value: 'gp2',
       min: 1,
       max: 16384,
@@ -480,7 +481,7 @@ export const STORAGE_TYPES = {
       sysMax: 16384,
     },
     io1: {
-      label: '预配置 IOPS SSD',
+      label: i18n.t('compute.text_60'),
       value: 'io1',
       min: 4,
       max: 16384,
@@ -488,7 +489,7 @@ export const STORAGE_TYPES = {
       sysMax: 16384,
     },
     st1: {
-      label: '吞吐优化 HDD',
+      label: i18n.t('compute.text_61'),
       value: 'st1',
       sysUnusable: true, // 系统盘不可用
       min: 500,
@@ -502,7 +503,7 @@ export const STORAGE_TYPES = {
       max: 16384,
     },
     standard: {
-      label: '磁介质',
+      label: i18n.t('compute.text_62'),
       value: 'standard',
       min: 1,
       max: 1024,
@@ -512,7 +513,7 @@ export const STORAGE_TYPES = {
   },
   qcloud: {
     local_basic: { // 公有云下架了这两款磁盘类型
-      label: '普通本地盘',
+      label: i18n.t('compute.text_63'),
       value: 'local_basic',
       min: 10,
       max: 1600,
@@ -521,7 +522,7 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
     cloud_basic: {
-      label: '普通云硬盘',
+      label: i18n.t('compute.text_64'),
       value: 'cloud_basic',
       min: 10,
       max: 16000,
@@ -531,7 +532,7 @@ export const STORAGE_TYPES = {
       resizeStep: 10,
     },
     cloud_premium: {
-      label: '高性能云硬盘',
+      label: i18n.t('compute.text_65'),
       value: 'cloud_premium',
       min: 50,
       max: 16000,
@@ -540,7 +541,7 @@ export const STORAGE_TYPES = {
       resizeStep: 10,
     },
     cloud_ssd: {
-      label: 'SSD 云硬盘',
+      label: i18n.t('compute.text_66'),
       value: 'cloud_ssd',
       min: 100,
       max: 16000,
@@ -551,7 +552,7 @@ export const STORAGE_TYPES = {
   },
   azure: {
     standard_lrs: {
-      label: '标准 HDD',
+      label: i18n.t('compute.text_67'),
       value: 'standard_lrs',
       min: 1,
       max: 4095,
@@ -560,7 +561,7 @@ export const STORAGE_TYPES = {
       sysMax: 4095,
     },
     standardssd_lrs: {
-      label: '标准 SSD',
+      label: i18n.t('compute.text_68'),
       value: 'standardssd_lrs',
       min: 1,
       max: 4095,
@@ -568,7 +569,7 @@ export const STORAGE_TYPES = {
       sysMax: 4095,
     },
     premium_lrs: {
-      label: '高级 SSD',
+      label: i18n.t('compute.text_69'),
       value: 'premium_lrs',
       min: 1,
       max: 4095,
@@ -578,7 +579,7 @@ export const STORAGE_TYPES = {
   },
   kvm: {
     local: {
-      label: '本地硬盘',
+      label: i18n.t('compute.text_70'),
       value: 'local',
       min: 1,
       max: 3 * 1024, // 鹏博士需求，数据盘上限扩大到 3T
@@ -615,7 +616,7 @@ export const STORAGE_TYPES = {
   },
   onecloud: {
     local: {
-      label: '本地硬盘',
+      label: i18n.t('compute.text_70'),
       value: 'local',
       min: 1,
       max: 3 * 1024, // 鹏博士需求，数据盘上限扩大到 3T
@@ -652,7 +653,7 @@ export const STORAGE_TYPES = {
   },
   esxi: {
     local: {
-      label: '本地硬盘',
+      label: i18n.t('compute.text_70'),
       value: 'local',
       min: 1,
       // max: 500,
@@ -663,7 +664,7 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
     nas: {
-      label: 'nas 云盘',
+      label: i18n.t('compute.text_71'),
       value: 'nas',
       min: 1,
       max: 3072,
@@ -672,7 +673,7 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
     vsan: {
-      label: 'vsan 云盘',
+      label: i18n.t('compute.text_72'),
       value: 'vsan',
       min: 1,
       max: 3072,
@@ -683,7 +684,7 @@ export const STORAGE_TYPES = {
   },
   huawei: {
     SSD: {
-      label: '超高IO云硬盘',
+      label: i18n.t('compute.text_73'),
       value: 'SSD',
       min: 10,
       max: 32768,
@@ -692,7 +693,7 @@ export const STORAGE_TYPES = {
       sort: 3,
     },
     SAS: {
-      label: '高IO云硬盘',
+      label: i18n.t('compute.text_74'),
       value: 'SAS',
       min: 10,
       max: 32768,
@@ -701,7 +702,7 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
     SATA: {
-      label: '普通IO云硬盘',
+      label: i18n.t('compute.text_75'),
       value: 'SATA',
       min: 10,
       max: 32768,
@@ -723,7 +724,7 @@ export const STORAGE_TYPES = {
   },
   ucloud: {
     CLOUD_NORMAL: {
-      label: '普通云盘',
+      label: i18n.t('compute.text_52'),
       value: 'CLOUD_NORMAL',
       min: 20,
       max: 8000,
@@ -731,7 +732,7 @@ export const STORAGE_TYPES = {
       skuFamily: ['N2', 'N3'],
     },
     CLOUD_SSD: {
-      label: 'SSD云盘',
+      label: i18n.t('compute.text_76'),
       value: 'CLOUD_SSD',
       min: 20,
       max: 4000,
@@ -740,7 +741,7 @@ export const STORAGE_TYPES = {
       skuFamily: ['N3', 'C1', 'N2', 'I2', 'G2', 'G3'],
     },
     EXCLUSIVE_LOCAL_DISK: {
-      label: '独享本地盘',
+      label: i18n.t('compute.text_77'),
       value: 'EXCLUSIVE_LOCAL_DISK',
       min: 4096,
       max: 4096,
@@ -750,7 +751,7 @@ export const STORAGE_TYPES = {
   },
   zstack: {
     localstorage: {
-      label: '本地盘',
+      label: i18n.t('compute.text_78'),
       value: 'localstorage',
       min: 1,
       max: 3 * 1024,
@@ -758,7 +759,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     ceph: {
-      label: '共享云盘',
+      label: i18n.t('compute.text_79'),
       value: 'ceph',
       min: 1,
       max: 3 * 1024,
@@ -768,7 +769,7 @@ export const STORAGE_TYPES = {
   },
   ctyun: {
     SSD: {
-      label: '超高IO云硬盘',
+      label: i18n.t('compute.text_73'),
       value: 'SSD',
       min: 10,
       max: 32768,
@@ -777,7 +778,7 @@ export const STORAGE_TYPES = {
       sort: 3,
     },
     SAS: {
-      label: '高IO云硬盘',
+      label: i18n.t('compute.text_74'),
       value: 'SAS',
       min: 10,
       max: 32768,
@@ -786,7 +787,7 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
     SATA: {
-      label: '普通IO云硬盘',
+      label: i18n.t('compute.text_75'),
       value: 'SATA',
       min: 10,
       max: 32768,
@@ -798,7 +799,7 @@ export const STORAGE_TYPES = {
   },
   google: {
     'pd-ssd': {
-      label: 'SSD永久性磁盘',
+      label: i18n.t('compute.text_80'),
       value: 'pd-ssd',
       min: 10,
       max: 65536,
@@ -807,7 +808,7 @@ export const STORAGE_TYPES = {
       sort: 1,
     },
     'pd-standard': {
-      label: '标准永久性磁盘',
+      label: i18n.t('compute.text_81'),
       value: 'pd-standard',
       min: 10,
       max: 65536,
@@ -816,7 +817,7 @@ export const STORAGE_TYPES = {
       sort: 2,
     },
     'local-ssd': {
-      label: '本地SSD',
+      label: i18n.t('compute.text_82'),
       value: 'local-ssd',
       min: 375,
       max: 375,
@@ -836,7 +837,7 @@ Object.keys(ALL_STORAGE).forEach(sType => {
   ALL_STORAGE_LABEL[sType] = ALL_STORAGE[sType].label
 })
 
-export const weekOptions = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+export const weekOptions = [i18n.t('compute.text_83'), i18n.t('compute.text_84'), i18n.t('compute.text_85'), i18n.t('compute.text_86'), i18n.t('compute.text_87'), i18n.t('compute.text_88'), i18n.t('compute.text_89')]
 
 export const timeOptions = [
   '00:00',
@@ -869,48 +870,48 @@ export const timeOptions = [
 export const DISK_TYPE = {
   data: {
     value: 'data',
-    text: '数据盘',
+    text: i18n.t('compute.text_50'),
   },
   sys: {
     value: 'sys',
-    text: '系统盘',
+    text: i18n.t('compute.text_49'),
   },
 }
 
 // 购买时长
 export const BUY_DURATIONS_OPTIONS = [
   {
-    label: '1个月',
+    label: i18n.t('compute.text_25'),
     value: '1M',
     unit: 'M',
   },
   {
-    label: '2个月',
+    label: i18n.t('compute.text_26'),
     value: '2M',
     unit: 'M',
   },
   {
-    label: '3个月',
+    label: i18n.t('compute.text_27'),
     value: '3M',
     unit: 'M',
   },
   {
-    label: '半年',
+    label: i18n.t('compute.text_28'),
     value: '6M',
     unit: 'M',
   },
   {
-    label: '1年',
+    label: i18n.t('compute.text_29'),
     value: '1Y',
     unit: 'Y',
   },
   {
-    label: '2年',
+    label: i18n.t('compute.text_30'),
     value: '2Y',
     unit: 'Y',
   },
   {
-    label: '3年',
+    label: i18n.t('compute.text_31'),
     value: '3Y',
     unit: 'Y',
   },

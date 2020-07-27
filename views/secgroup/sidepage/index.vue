@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="安全组"
+    :title="$t('compute.text_105')"
     icon="res-secgroup"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -51,12 +51,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'secgroup-detail' },
-        { label: '入方向', key: 'in-direction' },
-        { label: '出方向', key: 'out-direction' },
-        { label: '关联虚拟机', key: 'vminstance-list' },
-        { label: '缓存列表', key: 'cache-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'secgroup-detail' },
+        { label: this.$t('compute.text_993'), key: 'in-direction' },
+        { label: this.$t('compute.text_994'), key: 'out-direction' },
+        { label: this.$t('compute.text_1023'), key: 'vminstance-list' },
+        { label: this.$t('compute.text_692'), key: 'cache-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

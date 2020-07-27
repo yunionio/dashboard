@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="硬盘回收站" />
+    <page-header :title="$t('compute.text_479')" />
     <page-body>
       <disk-recovery-list :id="listId" />
     </page-body>

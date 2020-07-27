@@ -43,25 +43,25 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
-          { label: '格式', key: 'disk_format' },
-          { label: '镜像大小', key: 'size' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_398'), key: 'disk_format' },
+          { label: this.$t('compute.text_610'), key: 'size' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '镜像类型', key: 'is_standard' },
-          { label: '创建时间', key: 'created_at' },
-          { label: '检验和', key: 'checksum' },
+          { label: this.$t('compute.text_611'), key: 'is_standard' },
+          { label: this.$t('compute.text_243'), key: 'created_at' },
+          { label: this.$t('compute.text_641'), key: 'checksum' },
         ],
       },
       groupActions: [
         {
-          label: '清除',
+          label: this.$t('compute.text_477'),
           permission: 'images_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '清除',
+              title: this.$t('compute.text_477'),
               name: this.$t('dictionary.image'),
               requestParams: { override_pending_delete: true },
               onManager: this.onManager,
@@ -74,11 +74,11 @@ export default {
           },
         },
         {
-          label: '恢复',
+          label: this.$t('compute.text_478'),
           permission: 'images_perform_cancel_delete',
           action: () => {
             this.createDialog('ImageRestoreDialog', {
-              title: '恢复',
+              title: this.$t('compute.text_478'),
               data: this.list.selectedItems,
               columns: this.columns,
               refresh: this.refresh,

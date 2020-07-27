@@ -1,8 +1,9 @@
 // import { metricItems } from '@Compute/views/node-alert/constants'
+import i18n from '@/locales'
 
 export const GAUGEMSG = [
   {
-    label: '系统负载',
+    label: i18n.t('compute.text_517'),
     sql: {
       key: 'load1_pcore',
       db: 'system',
@@ -11,7 +12,7 @@ export const GAUGEMSG = [
     max: 4, // 最大长度
   },
   {
-    label: '内存使用率',
+    label: i18n.t('compute.text_518'),
     option: 'mem',
     sql: {
       key: 'used_percent',
@@ -19,7 +20,7 @@ export const GAUGEMSG = [
     },
   },
   {
-    label: '磁盘IO使用率',
+    label: i18n.t('compute.text_519'),
     option: 'diskio',
     sql: {
       key: 'ioutil',
@@ -27,7 +28,7 @@ export const GAUGEMSG = [
     },
   },
   {
-    label: '磁盘空间使用率',
+    label: i18n.t('compute.text_520'),
     option: 'disk',
     sql: {
       key: 'used_percent',
@@ -35,7 +36,7 @@ export const GAUGEMSG = [
     },
   },
   {
-    label: '网卡入带宽使用率',
+    label: i18n.t('compute.text_521'),
     option: 'net_in',
     sql: {
       key: 'if_in_percent',
@@ -43,7 +44,7 @@ export const GAUGEMSG = [
     },
   },
   {
-    label: '网卡出带宽使用率',
+    label: i18n.t('compute.text_522'),
     option: 'net_out',
     sql: {
       key: 'if_out_percent',
@@ -56,35 +57,35 @@ export const HOST_TOP5 = {
   isKvm: [
     {
       name: 'cpu',
-      label: 'CPU使用率',
+      label: i18n.t('compute.text_523'),
       seleteItem: 'cpu_usage_pcore',
       fromItem: 'vm_cpu',
       unit: '%',
     },
     {
       name: 'netio',
-      label: '网络入流量',
+      label: i18n.t('compute.text_524'),
       seleteItem: 'bps_recv',
       fromItem: 'vm_netio',
       unit: 'bps',
     },
     {
       name: 'netio',
-      label: '网络出流量',
+      label: i18n.t('compute.text_525'),
       seleteItem: 'bps_sent',
       fromItem: 'vm_netio',
       unit: 'bps',
     },
     {
       name: 'diskio',
-      label: '磁盘读速率',
+      label: i18n.t('compute.text_526'),
       seleteItem: 'read_bps',
       fromItem: 'vm_diskio',
       unit: 'bps',
     },
     {
       name: 'diskio',
-      label: '磁盘写速率',
+      label: i18n.t('compute.text_527'),
       seleteItem: 'write_bps',
       fromItem: 'vm_diskio',
       unit: 'bps',
@@ -93,34 +94,34 @@ export const HOST_TOP5 = {
   noKvm: [
     {
       name: 'cpu',
-      label: 'CPU使用率',
+      label: i18n.t('compute.text_523'),
       seleteItem: 'usage_active',
       fromItem: 'vm_cpu',
     },
     {
       name: 'netio',
-      label: '网络入流量',
+      label: i18n.t('compute.text_524'),
       seleteItem: 'bps_recv',
       fromItem: 'vm_netio',
       unit: 'bps',
     },
     {
       name: 'netio',
-      label: '网络出流量',
+      label: i18n.t('compute.text_525'),
       seleteItem: 'bps_sent',
       fromItem: 'vm_netio',
       unit: 'bps',
     },
     {
       name: 'diskio',
-      label: '磁盘读速率',
+      label: i18n.t('compute.text_526'),
       seleteItem: 'read_bps',
       fromItem: 'vm_diskio',
       unit: 'bps',
     },
     {
       name: 'diskio',
-      label: '磁盘写速率',
+      label: i18n.t('compute.text_527'),
       seleteItem: 'write_bps',
       fromItem: 'vm_diskio',
       unit: 'bps',
@@ -132,19 +133,19 @@ export const HOST_TOP5 = {
 export const KVM_MONITOR_OPTS = [
   {
     name: 'cpu',
-    label: 'CPU使用率',
+    label: i18n.t('compute.text_523'),
     seleteItem: 'usage_active,usage_idle,usage_user,usage_system,usage_iowait',
     fromItem: 'cpu',
-    as: 'CPU使用率,CPU空闲率,用户空间占用CPU,内核空间占用CPU,等待输入输出的CPU时间占比',
+    as: i18n.t('compute.text_528'),
     unit: '%',
     transfer: 1,
     // metric: metricItems['usage_active,usage_idle,usage_user,usage_system,usage_iowait'].key, // 报警指标
   },
   {
     name: 'system',
-    label: '系统负载情况',
+    label: i18n.t('compute.text_529'),
     seleteItem: 'load1,load5,load15,load1_pcore,load5_pcore,load15_pcore',
-    as: '系统1分钟平均负载,系统5分钟平均负载,系统15分钟平均负载,平均每个CPU核的系统1分钟平均负载,平均每个CPU核的系统5分钟平均负载,平均每个CPU核的系统15分钟平均负载',
+    as: i18n.t('compute.text_530'),
     fromItem: 'system',
     unit: '',
     transfer: 1,
@@ -152,9 +153,9 @@ export const KVM_MONITOR_OPTS = [
   },
   {
     name: 'mem',
-    label: '内存使用率',
+    label: i18n.t('compute.text_518'),
     seleteItem: 'used_percent',
-    as: '内存使用率',
+    as: i18n.t('compute.text_518'),
     fromItem: 'mem',
     unit: '%',
     transfer: 1,
@@ -162,9 +163,9 @@ export const KVM_MONITOR_OPTS = [
   },
   {
     name: 'memCondition',
-    label: '内存使用情况',
+    label: i18n.t('compute.text_531'),
     seleteItem: 'used,free,total',
-    as: '内存使用量,内存剩余量,内存总量',
+    as: i18n.t('compute.text_532'),
     fromItem: 'mem',
     unit: 'B',
     transfer: 1024,
@@ -172,9 +173,9 @@ export const KVM_MONITOR_OPTS = [
   },
   {
     name: 'disk',
-    label: '磁盘使用率',
+    label: i18n.t('compute.text_533'),
     seleteItem: 'used_percent',
-    as: '磁盘使用率',
+    as: i18n.t('compute.text_533'),
     fromItem: 'disk',
     unit: '%',
     transfer: 1,
@@ -182,9 +183,9 @@ export const KVM_MONITOR_OPTS = [
   },
   {
     name: 'diskCondition',
-    label: '磁盘使用情况',
+    label: i18n.t('compute.text_534'),
     seleteItem: 'used,free,total',
-    as: '磁盘使用量,磁盘剩余量,磁盘总量',
+    as: i18n.t('compute.text_535'),
     fromItem: 'disk',
     unit: 'B',
     transfer: 1024,
@@ -192,9 +193,9 @@ export const KVM_MONITOR_OPTS = [
   },
   {
     name: 'disk',
-    label: '磁盘IO使用率',
+    label: i18n.t('compute.text_519'),
     seleteItem: 'ioutil',
-    as: '磁盘IO使用率',
+    as: i18n.t('compute.text_519'),
     fromItem: 'diskio',
     unit: '%',
     transfer: 1,
@@ -202,9 +203,9 @@ export const KVM_MONITOR_OPTS = [
   },
   {
     name: 'disk',
-    label: '磁盘IOPS',
+    label: i18n.t('compute.text_536'),
     seleteItem: 'read_iops,write_iops',
-    as: '磁盘当前每秒平均读IO次数,磁盘当前每秒平均写IO次数',
+    as: i18n.t('compute.text_537'),
     fromItem: 'diskio',
     unit: 'iops',
     transfer: 1,
@@ -212,9 +213,9 @@ export const KVM_MONITOR_OPTS = [
   },
   {
     name: 'bps_recv',
-    label: '网络入流量',
+    label: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
-    as: '网络入流量',
+    as: i18n.t('compute.text_524'),
     fromItem: 'net',
     unit: 'bps',
     transfer: 1024,
@@ -222,9 +223,9 @@ export const KVM_MONITOR_OPTS = [
   },
   {
     name: 'bps_sent',
-    label: '网络出流量',
+    label: i18n.t('compute.text_525'),
     seleteItem: 'bps_sent',
-    as: '网络出流量',
+    as: i18n.t('compute.text_525'),
     fromItem: 'net',
     unit: 'bps',
     transfer: 1024,
@@ -236,8 +237,8 @@ export const KVM_MONITOR_OPTS = [
 export const VMWARE_MONITOR_OPTS = [
   {
     name: 'cpu',
-    label: 'CPU使用率',
-    as: 'CPU使用率',
+    label: i18n.t('compute.text_523'),
+    as: i18n.t('compute.text_523'),
     seleteItem: 'usage_active',
     fromItem: 'cpu',
     unit: '%',
@@ -246,8 +247,8 @@ export const VMWARE_MONITOR_OPTS = [
   },
   {
     name: 'mem',
-    label: '内存使用率',
-    as: '内存使用率',
+    label: i18n.t('compute.text_518'),
+    as: i18n.t('compute.text_518'),
     seleteItem: 'used_percent',
     fromItem: 'mem',
     unit: '%',
@@ -256,8 +257,8 @@ export const VMWARE_MONITOR_OPTS = [
   },
   {
     name: 'read_bps',
-    label: '磁盘读取速率',
-    as: '磁盘读取速率',
+    label: i18n.t('compute.text_538'),
+    as: i18n.t('compute.text_538'),
     seleteItem: 'read_bps',
     fromItem: 'diskio',
     unit: 'bps',
@@ -266,8 +267,8 @@ export const VMWARE_MONITOR_OPTS = [
   },
   {
     name: 'write_bps',
-    label: '磁盘写入速率',
-    as: '磁盘写入速率',
+    label: i18n.t('compute.text_539'),
+    as: i18n.t('compute.text_539'),
     seleteItem: 'write_bps',
     fromItem: 'diskio',
     unit: 'bps',
@@ -276,8 +277,8 @@ export const VMWARE_MONITOR_OPTS = [
   },
   {
     name: 'bps_recv',
-    label: '网络入流量',
-    as: '网络入流量',
+    label: i18n.t('compute.text_524'),
+    as: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
     fromItem: 'net',
     unit: 'bps',
@@ -286,8 +287,8 @@ export const VMWARE_MONITOR_OPTS = [
   },
   {
     name: 'bps_sent',
-    label: '网络出流量',
-    as: '网络出流量',
+    label: i18n.t('compute.text_525'),
+    as: i18n.t('compute.text_525'),
     seleteItem: 'bps_sent',
     fromItem: 'net',
     unit: 'bps',

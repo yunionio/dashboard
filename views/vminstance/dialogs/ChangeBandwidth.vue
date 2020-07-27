@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">更改带宽</div>
+    <div slot="header">{{$t('compute.text_1185')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="更改带宽" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1185')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="带宽" v-bind="formItemLayout" extra="Mbps，请输入0~10000的整数">
+        <a-form-item :label="$t('compute.text_1186')" v-bind="formItemLayout" :extra="$t('compute.text_1187')">
           <a-input-number
             v-decorator="decorators.bandwidth"
             :parser="Math.round"
@@ -40,7 +40,7 @@ export default {
           {
             initialValue: this.params.data[0].bw_limit || 0,
             rules: [
-              { required: true, message: '请输入带宽限制' },
+              { required: true, message: this.$t('compute.text_1188') },
             ],
           },
         ],

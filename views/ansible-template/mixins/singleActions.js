@@ -1,4 +1,5 @@
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -12,17 +13,17 @@ export default {
       // },
       ...getEnabledSwitchActions(this),
       {
-        label: '关联主机',
+        label: i18n.t('compute.text_232'),
         action: obj => {
           this.createDialog('AnsibleTemplateBindServerDialog', {
             data: [obj],
             columns: this.columns,
-            title: '关联主机',
+            title: i18n.t('compute.text_232'),
           })
         },
         meta: (obj) => ({
           validate: obj.enabled,
-          tooltip: !obj.enabled ? '请选择已启用的实例' : '',
+          tooltip: !obj.enabled ? i18n.t('compute.text_259') : '',
         }),
       },
       // {

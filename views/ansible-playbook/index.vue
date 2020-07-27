@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="任务" />
+    <page-header :title="$t('compute.text_233')" />
     <page-body>
       <list :getParams="getParams" :id="listId" />
     </page-body>

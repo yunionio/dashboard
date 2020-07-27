@@ -1,13 +1,13 @@
 <template>
   <div>
     <a-form-item class="mb-0">
-      <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorator.backupEnable" @change="change" :disabled="switchDisabled" />
+      <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorator.backupEnable" @change="change" :disabled="switchDisabled" />
     </a-form-item>
     <a-form-item class="mt-2" v-if="backupEnable && $store.getters.isAdminMode">
       <base-select
         v-decorator="decorator.backup"
         :options="hostList"
-        :select-props="{ placeholder: '请选择备份机的宿主机' }"
+        :select-props="{ placeholder: $t('compute.text_117') }"
         :disabled-items="disabledItems" />
     </a-form-item>
   </div>

@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="硬盘"
+    :title="$t('compute.text_100')"
     icon="res-disk"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -40,9 +40,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'disk-detail' },
-        { label: '快照', key: 'snapshot-list' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_238'), key: 'disk-detail' },
+        { label: this.$t('compute.text_462'), key: 'snapshot-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

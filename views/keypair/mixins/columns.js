@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -15,15 +16,15 @@ export default {
           )
         },
       }),
-      getCopyWithContentTableColumn({ field: 'public_key', title: '公钥内容' }),
-      getCopyWithContentTableColumn({ field: 'fingerprint', title: '指纹' }),
+      getCopyWithContentTableColumn({ field: 'public_key', title: i18n.t('compute.text_725') }),
+      getCopyWithContentTableColumn({ field: 'fingerprint', title: i18n.t('compute.text_726') }),
       {
         field: 'scheme',
-        title: '类型',
+        title: i18n.t('compute.text_175'),
       },
       {
         field: 'linked_guest_count',
-        title: `关联${this.$t('dictionary.server')}数量`,
+        title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
         width: 120,
       },
     ]

@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   computed: {
@@ -16,7 +17,7 @@ export default {
 
     const validateActionTooltip = function (obj) {
       if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
-        return '主机镜像的子镜像无法操作'
+        return i18n.t('compute.text_622')
       }
       return ''
     }
@@ -26,7 +27,7 @@ export default {
     const isOwnerProject = project => project === this.$store.getters.userInfo.projectId || project === this.$store.getters.userInfo.projectName
     this.singleActions = [
       {
-        label: '新建虚拟机',
+        label: i18n.t('compute.text_663'),
         action: obj => {
           this.createDialog('ImageCreateServerDialog', {
             data: [obj],
@@ -40,17 +41,17 @@ export default {
           }
           if (obj.status !== 'active') {
             ret.validate = false
-            ret.tooltip = '只有状态为可用的镜像才支持该操作'
+            ret.tooltip = i18n.t('compute.text_681')
           }
           return ret
         },
       },
       {
-        label: '更多',
+        label: i18n.t('compute.text_352'),
         actions: obj => {
           return [
             {
-              label: '修改属性',
+              label: i18n.t('compute.text_247'),
               permission: 'images_update',
               action: obj => {
                 this.createDialog('ImageEditAttributesDialog', {
@@ -74,17 +75,17 @@ export default {
                 } else if (this.isDomainMode) {
                   return {
                     validate: ownerDomain(obj),
-                    tooltip: '非当前域下面的镜像无法修改属性',
+                    tooltip: i18n.t('compute.text_682'),
                   }
                 }
                 return {
                   validate: isOwnerProject(obj.tenant_id),
-                  tooltip: !isOwnerProject(obj.tenant_id) ? `非当前${this.$t('dictionary.project')}下面的镜像无法修改属性` : '',
+                  tooltip: !isOwnerProject(obj.tenant_id) ? i18n.t('compute.text_623', [i18n.t('dictionary.domain')]) : '',
                 }
               },
             },
             {
-              label: '设置为公共镜像',
+              label: i18n.t('compute.text_683'),
               permission: 'images_update',
               action: () => {
                 this.updateStandard(true, [obj])
@@ -97,16 +98,16 @@ export default {
                 const actions = new Map([
                   ['admin', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像不支持该操作'
+                      ret.tooltip = i18n.t('compute.text_644')
                     }
                     return ret
                   }],
                   ['domain', () => {
-                    ret.tooltip = '只有系统管理员支持该操作'
+                    ret.tooltip = i18n.t('compute.text_646')
                     return ret
                   }],
                   ['user', () => {
-                    ret.tooltip = '只有系统管理员支持该操作'
+                    ret.tooltip = i18n.t('compute.text_646')
                     return ret
                   }],
                 ])
@@ -117,7 +118,7 @@ export default {
               },
             },
             {
-              label: '设置为自定义镜像',
+              label: i18n.t('compute.text_684'),
               permission: 'images_update',
               action: () => {
                 this.updateStandard(false, [obj])
@@ -130,16 +131,16 @@ export default {
                 const actions = new Map([
                   ['admin', () => {
                     if (!this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '自定义镜像不支持该操作'
+                      ret.tooltip = i18n.t('compute.text_685')
                     }
                     return ret
                   }],
                   ['domain', () => {
-                    ret.tooltip = '只有系统管理员支持该操作'
+                    ret.tooltip = i18n.t('compute.text_646')
                     return ret
                   }],
                   ['user', () => {
-                    ret.tooltip = '只有系统管理员支持该操作'
+                    ret.tooltip = i18n.t('compute.text_646')
                     return ret
                   }],
                 ])
@@ -163,25 +164,25 @@ export default {
                 const actions = new Map([
                   ['admin', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像不支持该操作'
+                      ret.tooltip = i18n.t('compute.text_644')
                     }
                     return ret
                   }],
                   ['domain', () => {
                     if ((obj.shared_domains && obj.shared_domains.length > 0) || obj.public_scope === 'system') {
-                      ret.tooltip = '共享范围超出本域,不支持再设置共享'
+                      ret.tooltip = i18n.t('compute.text_686')
                       return ret
                     }
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像不支持该操作'
+                      ret.tooltip = i18n.t('compute.text_644')
                       return ret
                     }
                     return ret
                   }],
                   ['user', () => {
-                    ret.tooltip = '只有管理员支持该操作'
+                    ret.tooltip = i18n.t('compute.text_613')
                     if (!this.booleanTransfer(obj.is_standard) && obj.public_scope === 'system') {
-                      ret.tooltip = '只有系统管理员支持该操作'
+                      ret.tooltip = i18n.t('compute.text_646')
                       return ret
                     }
                     return ret
@@ -242,7 +243,7 @@ export default {
             //   },
             // },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
@@ -260,23 +261,23 @@ export default {
                 }
                 if (!this.isAdminMode && !this.isDomainMode) {
                   ret.validate = false
-                  ret.tooltip = '只有管理员支持该操作'
+                  ret.tooltip = i18n.t('compute.text_613')
                   return ret
                 }
                 if (obj.is_public) {
                   ret.validate = false
-                  ret.tooltip = '只有不共享的镜像支持该操作'
+                  ret.tooltip = i18n.t('compute.text_614')
                   return ret
                 }
                 return ret
               },
             },
             {
-              label: '设置删除保护',
+              label: i18n.t('compute.text_615'),
               permission: 'images_delete',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
-                  name: '系统镜像',
+                  name: i18n.t('compute.text_97'),
                   columns: this.columns,
                   onManager: this.onManager,
                   data: [row],
@@ -290,29 +291,29 @@ export default {
                 const actions = new Map([
                   ['admin', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像禁止设置删除保护，请切换为自定义镜像后重试'
+                      ret.tooltip = i18n.t('compute.text_687')
                       return ret
                     }
                     return ret
                   }],
                   ['domain', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像禁止设置删除保护'
+                      ret.tooltip = i18n.t('compute.text_688')
                       return ret
                     }
                     if (!ownerDomain(obj)) {
-                      ret.tooltip = '非当前域下的镜像无法设置删除保护'
+                      ret.tooltip = i18n.t('compute.text_689')
                       return ret
                     }
                     return ret
                   }],
                   ['user', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像禁止设置删除保护'
+                      ret.tooltip = i18n.t('compute.text_688')
                       return ret
                     }
                     if (!isOwnerProject(obj.tenant_id)) {
-                      ret.tooltip = '非当前项目下的镜像无法设置删除保护'
+                      ret.tooltip = i18n.t('compute.text_690')
                       return ret
                     }
                     return ret
@@ -325,14 +326,14 @@ export default {
               },
             },
             {
-              label: '删除',
+              label: i18n.t('compute.text_261'),
               permission: 'images_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除',
+                  title: i18n.t('compute.text_261'),
                   name: this.$t('dictionary.image'),
                   onManager: this.onManager,
                 })
@@ -345,41 +346,41 @@ export default {
                 const actions = new Map([
                   ['admin', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像禁止删除，请切换为自定义镜像后重试'
+                      ret.tooltip = i18n.t('compute.text_648')
                       return ret
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {
-                      ret.tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                      ret.tooltip = i18n.t('compute.text_652')
                       return ret
                     }
                     return ret
                   }],
                   ['domain', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像禁止删除'
+                      ret.tooltip = i18n.t('compute.text_649')
                       return ret
                     }
                     if (!ownerDomain(obj)) {
-                      ret.tooltip = '非当前域下的镜像无法删除'
+                      ret.tooltip = i18n.t('compute.text_650')
                       return ret
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {
-                      ret.tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                      ret.tooltip = i18n.t('compute.text_652')
                       return ret
                     }
                     return ret
                   }],
                   ['user', () => {
                     if (this.booleanTransfer(obj.is_standard)) {
-                      ret.tooltip = '公共镜像禁止删除'
+                      ret.tooltip = i18n.t('compute.text_649')
                       return ret
                     }
                     if (!isOwnerProject(obj.tenant_id)) {
-                      ret.tooltip = '非当前项目下的镜像无法删除'
+                      ret.tooltip = i18n.t('compute.text_651')
                       return ret
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {
-                      ret.tooltip = '删除保护，如需解除，请点击【设置删除保护】'
+                      ret.tooltip = i18n.t('compute.text_652')
                       return ret
                     }
                     return ret

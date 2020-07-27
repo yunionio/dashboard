@@ -1,9 +1,9 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">启用</div>
+    <div slot="header">{{$t('compute.text_656')}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" message="启用弹性伸缩组之后，将会根据策略触发伸缩，可能会进行虚拟机创建或删除" />
-      <dialog-selected-tips :count="params.data.length" action="启用" name="弹性伸缩组" />
+      <a-alert class="mb-2" type="warning" :message="$t('compute.text_912')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_656')" :name="$t('compute.text_95')" />
       <dialog-table :data="params.data" :columns="columns" />
     </div>
     <div slot="footer">
@@ -45,7 +45,7 @@ export default {
           },
         })
         this.cancelDialog()
-        this.$message.success('执行成功')
+        this.$message.success(this.$t('compute.text_911'))
       } catch (err) {
         throw err
       } finally {

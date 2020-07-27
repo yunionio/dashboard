@@ -11,9 +11,9 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item v-bind="formItemLayout" v-show="!imgHidden" label="操作系统">
+        <a-form-item v-bind="formItemLayout" v-show="!imgHidden" :label="$t('compute.text_267')">
           <div slot="help">
-            <div class="help-color">操作系统会根据选择的虚拟化平台和可用区域的变化而变化，公共镜像的维护请联系管理员</div>
+            <div class="help-color">{{$t('compute.text_302')}}</div>
           </div>
           <os-select
             :type="type"
@@ -32,14 +32,14 @@
             :imageTypeMap="imageTypeMap"
             :edit="true" />
         </a-form-item>
-        <a-form-item v-bind="formItemLayout" v-show="imgHidden" label="操作系统">
+        <a-form-item v-bind="formItemLayout" v-show="imgHidden" :label="$t('compute.text_267')">
           <div>{{ imgHidden.text }}</div>
         </a-form-item>
-        <a-form-item label="管理员密码" v-bind="formItemLayout" v-if="!isZStack">
+        <a-form-item :label="$t('compute.text_308')" v-bind="formItemLayout" v-if="!isZStack">
           <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
         </a-form-item>
-        <a-form-item label="自动启动" v-bind="formItemLayout" extra="重装系统后是否自动启动">
-          <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoStart" />
+        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1220')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
     </div>
@@ -78,7 +78,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: '重装系统',
+      action: this.$t('compute.text_357'),
       form: {
         fc: this.$form.createForm(this),
         fd: {},
@@ -153,7 +153,7 @@ export default {
             {
               initialValue: _.get(this.params, 'data[0].manager_id') || '',
               rules: [
-                { required: true, message: '请选择云账号' },
+                { required: true, message: this.$t('compute.text_149') },
               ],
             },
           ],
@@ -162,7 +162,7 @@ export default {
             {
               initialValue: '',
               rules: [
-                { required: !this.isZStack, message: '请选择操作系统' },
+                { required: !this.isZStack, message: this.$t('compute.text_153') },
               ],
             },
           ],
@@ -171,7 +171,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { validator: validateToImage(this.isZStack), message: '请选择镜像' },
+                { validator: validateToImage(this.isZStack), message: this.$t('compute.text_214') },
               ],
             },
           ],
@@ -194,7 +194,7 @@ export default {
             {
               initialValue: undefined,
               rules: [
-                { required: true, message: '请选择关联密钥' },
+                { required: true, message: this.$t('compute.text_203') },
               ],
             },
           ],
@@ -203,7 +203,7 @@ export default {
             {
               initialValue: '',
               rules: [
-                { required: true, message: '请输入密码' },
+                { required: true, message: this.$t('compute.text_204') },
                 { validator: passwordValidator, trigger: 'blur' },
               ],
             },
@@ -247,7 +247,7 @@ export default {
             }
           } else {
             return {
-              text: '未找到系统盘镜像，无法重装系统',
+              text: this.$t('compute.text_1221'),
               isImage: false,
             }
           }
@@ -259,13 +259,13 @@ export default {
     },
     tips () {
       if (this.hypervisor === HYPERVISORS_MAP.openstack.key) {
-        return '由于OpenStack本身原因，重装系统时可能会出现新密码没有生效现象，建议在重装系统后重置密码或使用原密码登录'
+        return this.$t('compute.text_1222')
       }
       if (this.hypervisor === HYPERVISORS_MAP.zstack.key) {
-        return '由于ZStack/DStack本身不支持重装系统设定新密码，您可以在重装系统完成后在主机列表进行密码重置'
+        return this.$t('compute.text_1223')
       }
       if (this.params.data.length === 1) {
-        return '所选镜像容量最小磁盘要求需小于虚拟机系统盘大小'
+        return this.$t('compute.text_1224')
       }
       return ''
     },
@@ -405,7 +405,7 @@ export default {
           public_customize: {
             ...IMAGES_TYPE_MAP.public_customize,
             disabled: true,
-            tooltip: `所选的多台${this.$t('dictionary.server')}不在同一个订阅下, 无法选择${IMAGES_TYPE_MAP.public_customize.label}`,
+            tooltip: this.$t('compute.text_1225', [this.$t('dictionary.server'), IMAGES_TYPE_MAP.public_customize.label]),
           },
         }
       }

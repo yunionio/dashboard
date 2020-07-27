@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import VmPublicCreateBill from '../index.vue'
+import i18n from '@/locales'
 
 describe('VmPublicCreateBill', () => {
   it('check buyDurationOptions in aliyun, first item is 1W', () => {
@@ -26,7 +27,7 @@ describe('VmPublicCreateBill', () => {
     })
     wrapper.vm.$nextTick(() => {
       expect(wrapper.vm.buyDurationOptions[0]).toEqual({
-        label: '1周',
+        label: i18n.t('compute.text_24'),
         key: '1W',
         unit: 'W',
         includes: ['aliyun'],

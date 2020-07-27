@@ -1,14 +1,14 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建密钥</div>
+    <div slot="header">{{$t('compute.text_202')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="密钥名称" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" placeholder="请输入密钥名称" />
+        <a-form-item :label="$t('compute.text_727')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_728')" />
         </a-form-item>
-        <a-form-item label="公钥内容" v-bind="formItemLayout">
-          <a-textarea v-decorator="decorators.public_key" placeholder="请输入公钥内容" :rows="4" />
+        <a-form-item :label="$t('compute.text_725')" v-bind="formItemLayout">
+          <a-textarea v-decorator="decorators.public_key" :placeholder="$t('compute.text_729')" :rows="4" />
         </a-form-item>
       </a-form>
     </div>
@@ -38,7 +38,7 @@ export default {
         if (len === 0) {
           callback()
         } else {
-          msg = '公钥名称重复'
+          msg = this.$t('compute.text_730')
           callback(msg)
         }
       }).catch((e) => {
@@ -57,7 +57,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入密钥名称' },
+              { required: true, message: this.$t('compute.text_728') },
               { validator: this.$validate('secretKeyName') },
               { validator: publicKeyNameDuplicate },
             ],
@@ -68,7 +68,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入公钥内容' },
+              { required: true, message: this.$t('compute.text_729') },
               { validator: this.$validate('publicKey') },
             ],
           },

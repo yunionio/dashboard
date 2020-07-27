@@ -1,18 +1,18 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">添加备份机</div>
+    <div slot="header">{{$t('compute.text_1162')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="添加备份机" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1162')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item label="备份机的宿主机" v-bind="formItemLayout" extra="提示信息：宿主机为空时，系统会自动选择宿主机">
+        <a-form-item :label="$t('compute.text_1163')" v-bind="formItemLayout" :extra="$t('compute.text_1164')">
           <base-select
             class="w-100"
             v-decorator="decorators.prefer_host_id"
             resource="hosts"
             :params="selectParams"
             :disabled-items="disabledItems"
-            :select-props="{ placeholder: '请选择宿主机' }" />
+            :select-props="{ placeholder: $t('compute.text_314') }" />
         </a-form-item>
       </a-form>
     </div>
@@ -45,7 +45,7 @@ export default {
           'prefer_host_id',
           {
             rules: [
-              { required: false, message: '请选择备份机', trigger: 'blur' },
+              { required: false, message: this.$t('compute.text_1165'), trigger: 'blur' },
             ],
           },
         ],

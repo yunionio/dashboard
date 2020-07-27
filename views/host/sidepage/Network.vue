@@ -31,7 +31,7 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           network: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `network.contains("${val}")`
@@ -42,14 +42,14 @@ export default {
       columns: [
         {
           field: 'index',
-          title: '序号',
+          title: this.$t('compute.text_375'),
           formatter: ({ row }) => {
             return row.index ? row.index : '0'
           },
         },
         getCopyWithContentTableColumn({
           field: 'network',
-          title: '网卡名称',
+          title: this.$t('compute.text_384'),
           hideField: true,
           slotCallback: row => {
             return [
@@ -58,9 +58,9 @@ export default {
           },
         }),
         // getCopyWithContentTableColumn({ field: 'network', title: '网卡名称', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'mac_addr', title: 'MAC地址', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'driver', title: '驱动' }),
+        getCopyWithContentTableColumn({ field: 'mac_addr', title: this.$t('compute.text_385'), sortable: true }),
+        getCopyWithContentTableColumn({ field: 'ip_addr', title: this.$t('compute.text_386'), sortable: true }),
+        getCopyWithContentTableColumn({ field: 'driver', title: this.$t('compute.text_378') }),
         // {
         //   field: 'bw_limit',
         //   title: '带宽限制',

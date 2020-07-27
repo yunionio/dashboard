@@ -1,7 +1,7 @@
 <template>
   <div class="network-config">
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in networkList" :key="item.key">
-      <a-tag color="blue" class="mr-1" style="margin-top: 10px;">{{ isBonding ? 'bond' : '网卡'}}{{i + count}}</a-tag>
+      <a-tag color="blue" class="mr-1" style="margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
       <a-form-item
         :wrapperCol="{ span: 24 }"
         style="min-width: 200px;"
@@ -18,7 +18,7 @@
           :need-params="true"
           :params="vpcParams"
           :mapper="vpcResourceMapper"
-          :select-props="{ allowClear: true, placeholder: '请选择VPC', disabled: vpcObj && !!vpcObj.id }" />
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_194'), disabled: vpcObj && !!vpcObj.id }" />
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
       <a-form-item
@@ -36,28 +36,26 @@
           :need-params="true"
           :params="{ ...networkParamsC, $t: item.key }"
           :mapper="networkResourceMapper"
-          :select-props="{ allowClear: true, placeholder: '请选择IP子网' }" />
-          <div slot="extra" v-if="i === 0">
-            没有您想要的？可以
-            <help-link href="/network2"> 新建</help-link>
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
+          <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.text_18')}}</help-link>
           </div>
       </a-form-item>
       <template v-if="item.ipShow">
         <a-form-item class="mb-0 mr-2" :wrapperCol="{ span: 24 }">
           <a-input
-            placeholder="请输入子网内的IP地址"
+            :placeholder="$t('compute.text_197')"
             @change="e => ipChange(e, i)"
             v-decorator="decorator.ips(item.key, item.network)" />
         </a-form-item>
-        <a-button type="link" class="mr-1 mt-1" @click="triggerShowIp(item)">取消</a-button>
+        <a-button type="link" class="mr-1 mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
       </template>
-      <a-button v-else type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">手动配置IP</a-button>
+      <a-button v-else type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
       <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-      <a-button type="link" @click="add">添加网卡</a-button>
-      <span class="network-count-tips">您还可以添加 <span class="remain-num">{{ networkCountRemaining }}</span> 个</span>
+      <a-button type="link" @click="add">{{$t('compute.text_199')}}</a-button>
+      <span class="network-count-tips">{{$t('compute.text_130')}}<span class="remain-num">{{ networkCountRemaining }}</span>{{$t('compute.text_200')}}</span>
     </div>
   </div>
 </template>

@@ -40,7 +40,7 @@ export default {
         steadyStatus: Object.values(expectStatus.scalingpolicie).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -49,7 +49,7 @@ export default {
           status: getStatusFilter('scalingpolicie'),
           enabled: getEnabledFilter(),
           trigger_type: {
-            label: '策略类型',
+            label: this.$t('compute.text_913'),
             dropdown: true,
             items: Object.keys(this.$t('flexGrouTriggerType')).map(k => {
               return {
@@ -74,7 +74,7 @@ export default {
         getStatusTableColumn({ statusModule: 'scalingpolicie' }),
         {
           field: 'trigger_type',
-          title: '策略类型',
+          title: this.$t('compute.text_913'),
           width: 120,
           formatter: ({ cellValue }) => {
             return this.$t('flexGrouTriggerType')[cellValue]
@@ -82,7 +82,7 @@ export default {
         },
         {
           field: 'cycle',
-          title: '触发条件',
+          title: this.$t('compute.text_914'),
           width: 300,
           formatter: ({ row }) => {
             return this.formatTriggerType(row)
@@ -90,19 +90,19 @@ export default {
         },
         {
           field: 'action',
-          title: '执行动作',
+          title: this.$t('compute.text_929'),
           width: 100,
           formatter: ({ row }) => {
             const acn = this.$t('flexGroupRuleAction')[row.action]
-            return `${acn}${row.number}个实例`
+            return this.$t('compute.text_961', [acn, row.number])
           },
         },
         {
           field: 'cooling_time',
-          title: '冷却时间',
+          title: this.$t('compute.text_962'),
           width: 100,
           formatter: ({ row }) => {
-            return `${row.cooling_time}秒`
+            return this.$t('compute.text_963', [row.cooling_time])
           },
         },
         // {
@@ -127,12 +127,12 @@ export default {
       ],
       singleActions: [
         {
-          label: '立即执行',
+          label: this.$t('compute.text_249'),
           action: obj => {
             this.createDialog('FlexRuleStartDialog', {
               data: [obj],
               columns: this.columns,
-              title: '立即执行',
+              title: this.$t('compute.text_249'),
               onManager: this.onManager,
               refresh: this.refresh,
             })
@@ -140,13 +140,13 @@ export default {
           meta: (obj) => {
             let tooltip = ''
             if (!this.data.enabled) {
-              tooltip = '弹性伸缩组禁用状态下不支持该操作'
+              tooltip = this.$t('compute.text_964')
             }
             if (!obj.enabled) {
-              tooltip = '仅启用状态下支持此操作'
+              tooltip = this.$t('compute.text_965')
             }
             if (obj.status !== 'ready') {
-              tooltip = '仅正常状态下支持此操作'
+              tooltip = this.$t('compute.text_966')
             }
             return {
               validate: !tooltip,
@@ -155,18 +155,18 @@ export default {
           },
         },
         {
-          label: '更多',
+          label: this.$t('compute.text_352'),
           actions: obj => {
             return [
               ...getEnabledSwitchActions(this, obj, ['scalingpolicies_perform_enable', 'scalingpolicies_perform_disable']),
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'scalingpolicies_delete',
                 action: (obj) => {
                   this.createDialog('DeleteResDialog', {
                     data: [obj],
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('compute.text_261'),
                     onManager: this.onManager,
                     refresh: this.refresh,
                   })
@@ -174,7 +174,7 @@ export default {
                 meta: (obj) => {
                   return {
                     validate: !obj.enabled,
-                    tooltip: obj.enabled && '仅禁用状态下支持此操作',
+                    tooltip: obj.enabled && this.$t('compute.text_967'),
                   }
                 },
               },
@@ -184,11 +184,11 @@ export default {
       ],
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'scalingpolicies_create',
           action: () => {
             this.createDialog('FiexRuleListCreateDialog', {
-              title: '新建',
+              title: this.$t('compute.text_18'),
               resData: this.data,
               refresh: this.refresh,
               onManager: this.onManager,
@@ -203,7 +203,7 @@ export default {
           actions: () => {
             return [
               {
-                label: '启用',
+                label: this.$t('compute.text_656'),
                 permission: 'scalingpolicies_perform_enable',
                 action: () => {
                   this.list.batchPerformAction('enable', null)
@@ -213,7 +213,7 @@ export default {
                 }),
               },
               {
-                label: '禁用',
+                label: this.$t('compute.text_569'),
                 permission: 'scalingpolicies_perform_disable',
                 action: () => {
                   this.list.batchPerformAction('disable', null)
@@ -223,13 +223,13 @@ export default {
                 }),
               },
               {
-                label: '删除',
+                label: this.$t('compute.text_261'),
                 permission: 'scalingpolicies_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: '删除',
+                    title: this.$t('compute.text_261'),
                     onManager: this.onManager,
                   })
                 },
@@ -266,13 +266,13 @@ export default {
           gt: '>',
         }
         const unit = indicator === 'cpu' ? '%' : 'b/s'
-        const cumulateTxt = `连续满足${cumulate}次后触发`
+        const cumulateTxt = this.$t('compute.text_968', [cumulate])
         return `${this.$t('flexGroupIndicator')[indicator]} ${wrapperType[operator]} ${value} ${unit}，${cumulateTxt}`
       }
       // 定时策略
       if (type === 'timing' && row.timer) {
         const timeTxt = this.$moment(row.timer.exec_time).format()
-        return `${timeTxt} 触发`
+        return this.$t('compute.text_969', [timeTxt])
       }
       // 周期策略
       if (type === 'cycle' && row.cycle_timer) {
@@ -289,14 +289,14 @@ export default {
         // 月
         if (timer.cycle_type === 'month') {
           itemsTxt = '【' + timer.month_days.map(v => {
-            return `${v}号`
+            return this.$t('compute.text_927', [v])
           }).join('|') + '】'
         }
         let tiemStr = ''
         if (startTime && endTime) {
-          tiemStr = `，有效时间为${this.$moment(startTime).format('YYYY-MM-DD')}至${this.$moment(endTime).format('YYYY-MM-DD')}`
+          tiemStr = this.$t('compute.text_970', [this.$moment(startTime).format('YYYY-MM-DD'), this.$moment(endTime).format('YYYY-MM-DD')])
         }
-        return `${typeTxt}${itemsTxt}${`${numerify(hour, '00')}:${numerify(minute, '00')}`}触发 ${tiemStr}`
+        return this.$t('compute.text_972', [typeTxt, itemsTxt, numerify(hour, '00'), numerify(minute, '00'), tiemStr])
       }
       return '-'
     },

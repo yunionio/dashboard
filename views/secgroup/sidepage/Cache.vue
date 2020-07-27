@@ -33,7 +33,7 @@ export default {
         },
         filterOptions: {
           name: {
-            label: '安全组名称',
+            label: this.$t('compute.text_988'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -44,14 +44,14 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '安全组名称',
+          title: this.$t('compute.text_988'),
           minWidth: 100,
           showOverflow: 'ellipsis',
         },
         getStatusTableColumn({ statusModule: 'secgroupCache' }),
         {
           field: 'created_at',
-          title: '创建时间',
+          title: this.$t('compute.text_243'),
           width: 150,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
@@ -59,7 +59,7 @@ export default {
         },
         {
           field: 'updated_at',
-          title: '更新时间',
+          title: this.$t('compute.text_691'),
           width: 150,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
@@ -78,20 +78,20 @@ export default {
         getRegionTableColumn(),
         {
           field: 'account',
-          title: '云账号',
+          title: this.$t('compute.text_269'),
           width: 100,
         },
       ],
       singleActions: [
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           permission: 'secgroups_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
               columns: this.columns,
-              title: '删除',
+              title: this.$t('compute.text_261'),
               onManager: this.onManager,
               refresh: this.refresh,
             })

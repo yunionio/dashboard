@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   computed: {
@@ -21,7 +22,7 @@ export default {
       //   },
       // },
       {
-        label: '配置规则',
+        label: i18n.t('compute.text_1027'),
         action: (obj) => {
           this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
             id: obj.id,
@@ -30,7 +31,7 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('compute.text_352'),
         actions: obj => {
           return [
             // {
@@ -83,7 +84,7 @@ export default {
             //   },
             // },
             {
-              label: '管理虚拟机',
+              label: i18n.t('compute.text_1028'),
               action: (obj) => {
                 this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
                   id: obj.id,
@@ -92,13 +93,13 @@ export default {
               },
             },
             {
-              label: '克隆',
+              label: i18n.t('compute.text_983'),
               // permission: 'secgroups_create',
               action: () => {
                 this.createDialog('CloneSecgroupDialog', {
                   data: [obj],
                   columns: this.columns,
-                  title: '克隆',
+                  title: i18n.t('compute.text_983'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
@@ -110,13 +111,13 @@ export default {
               },
             },
             {
-              label: '合并安全组',
+              label: i18n.t('compute.text_1012'),
               permission: 'secgroups_create',
               action: () => {
                 this.createDialog('ConcatSecgroupDialog', {
                   data: [obj],
                   columns: this.columns,
-                  title: '合并安全组',
+                  title: i18n.t('compute.text_1012'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
@@ -128,7 +129,7 @@ export default {
               },
             },
             {
-              label: `更改${this.$t('dictionary.project')}`,
+              label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
               permission: 'secgroups_create',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
@@ -160,14 +161,14 @@ export default {
               permission: 'secgroups_performAction',
             }),
             {
-              label: '删除',
+              label: i18n.t('compute.text_261'),
               permission: 'secgroups_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: '删除',
+                  title: i18n.t('compute.text_261'),
                   name: this.$t('dictionary.secgroup'),
                   onManager: this.onManager,
                 })

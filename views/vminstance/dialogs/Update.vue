@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">修改属性</div>
+    <div slot="header">{{$t('compute.text_247')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" action="修改属性" />
+      <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_247')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <!-- <a-form-item label="删除保护" v-bind="formItemLayout">
+        <!-- <a-form-item :label="$t('compute.text_372')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.disable_delete">
             <a-radio-button
               v-for="item of disableDeleteOptions"
@@ -15,7 +15,7 @@
           </a-radio-group>
         </a-form-item> -->
         <template v-if="isKvm">
-          <a-form-item label="启动介质" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.text_1269')" v-bind="formItemLayout">
             <a-radio-group v-decorator="decorators.boot_order">
               <a-radio-button
                 v-for="item of bootOrderOptions"
@@ -23,7 +23,7 @@
                 :value="item.key">{{ item.label }}</a-radio-button>
             </a-radio-group>
           </a-form-item>
-          <a-form-item label="引导方式" v-bind="formItemLayout">
+          <a-form-item :label="$t('compute.text_1155')" v-bind="formItemLayout">
             <a-radio-group v-decorator="decorators.bios">
               <a-radio-button
                 v-for="item of biosOptions"
@@ -59,7 +59,7 @@ export default {
           'disable_delete',
           {
             rules: [
-              { required: true, message: '请选择删除保护' },
+              { required: true, message: this.$t('compute.text_1270') },
             ],
           },
         ],
@@ -67,7 +67,7 @@ export default {
           'boot_order',
           {
             rules: [
-              { required: true, message: '请选择启动介质' },
+              { required: true, message: this.$t('compute.text_1271') },
             ],
           },
         ],
@@ -75,32 +75,32 @@ export default {
           'bios',
           {
             rules: [
-              { required: true, message: '请选择引导方式选项' },
+              { required: true, message: this.$t('compute.text_1272') },
             ],
           },
         ],
       },
       bootOrderOptions: [
         {
-          label: '硬盘',
+          label: this.$t('compute.text_100'),
           key: 'cdn',
         },
         {
-          label: '光驱',
+          label: this.$t('compute.text_1273'),
           key: 'dcn',
         },
         {
-          label: '网络',
+          label: this.$t('compute.text_104'),
           key: 'ncd',
         },
       ],
       disableDeleteOptions: [
         {
-          label: '启用',
+          label: this.$t('compute.text_656'),
           key: true,
         },
         {
-          label: '禁用',
+          label: this.$t('compute.text_569'),
           key: false,
         },
       ],

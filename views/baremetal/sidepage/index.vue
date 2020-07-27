@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="裸金属"
+    :title="$t('compute.text_92')"
     icon="res-baremetal"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
@@ -51,12 +51,12 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: '详情', key: 'baremetal-detail' },
-        { label: '网络', key: 'network-list-for-baremetal-sidepage' },
-        { label: '磁盘', key: 'disk-list-for-baremetal-sidepage' },
+        { label: this.$t('compute.text_238'), key: 'baremetal-detail' },
+        { label: this.$t('compute.text_104'), key: 'network-list-for-baremetal-sidepage' },
+        { label: this.$t('compute.text_376'), key: 'disk-list-for-baremetal-sidepage' },
         // { label: '监控', key: 'baremetal-monitor-sidepage' },
         // { label: '报警', key: 'baremetal-alert-sidepage' },
-        { label: '操作日志', key: 'event-drawer' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

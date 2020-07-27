@@ -1,10 +1,11 @@
 import { metricItems } from '@Compute/views/node-alert/constants'
+import i18n from '@/locales'
 
 // OneCloud 虚拟机监控数据
 export const ONECLOUD_MONITOR = [
   {
     name: 'cpu',
-    label: 'CPU使用率',
+    label: i18n.t('compute.text_523'),
     seleteItem: 'usage_active',
     fromItem: 'vm_cpu',
     unit: '%',
@@ -13,7 +14,7 @@ export const ONECLOUD_MONITOR = [
   },
   {
     name: 'netio',
-    label: '网络入流量',
+    label: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
     fromItem: 'vm_netio',
     unit: 'bps',
@@ -22,7 +23,7 @@ export const ONECLOUD_MONITOR = [
   },
   {
     name: 'netio',
-    label: '网络出流量',
+    label: i18n.t('compute.text_525'),
     seleteItem: 'bps_sent',
     fromItem: 'vm_netio',
     unit: 'bps',
@@ -31,7 +32,7 @@ export const ONECLOUD_MONITOR = [
   },
   {
     name: 'diskio',
-    label: '磁盘读速率',
+    label: i18n.t('compute.text_526'),
     seleteItem: 'read_bps',
     fromItem: 'vm_diskio',
     unit: 'bps',
@@ -40,7 +41,7 @@ export const ONECLOUD_MONITOR = [
   },
   {
     name: 'diskio',
-    label: '磁盘写速率',
+    label: i18n.t('compute.text_527'),
     seleteItem: 'write_bps',
     fromItem: 'vm_diskio',
     unit: 'bps',
@@ -53,7 +54,7 @@ export const ONECLOUD_MONITOR = [
 export const VMWARE_MONITOR = [
   {
     name: 'cpu',
-    label: 'CPU使用率',
+    label: i18n.t('compute.text_523'),
     seleteItem: 'usage_active',
     fromItem: 'vm_cpu',
     unit: '%',
@@ -62,7 +63,7 @@ export const VMWARE_MONITOR = [
   },
   {
     name: 'mem',
-    label: '内存使用率',
+    label: i18n.t('compute.text_518'),
     seleteItem: 'used_percent',
     fromItem: 'vm_mem',
     unit: '%',
@@ -71,7 +72,7 @@ export const VMWARE_MONITOR = [
   },
   {
     name: 'netio',
-    label: '网络入流量',
+    label: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
     fromItem: 'vm_netio',
     unit: 'bps',
@@ -80,7 +81,7 @@ export const VMWARE_MONITOR = [
   },
   {
     name: 'netio',
-    label: '网络出流量',
+    label: i18n.t('compute.text_525'),
     seleteItem: 'bps_sent',
     fromItem: 'vm_netio',
     unit: 'bps',
@@ -89,7 +90,7 @@ export const VMWARE_MONITOR = [
   },
   {
     name: 'diskio',
-    label: '磁盘读速率',
+    label: i18n.t('compute.text_526'),
     seleteItem: 'read_bps',
     fromItem: 'vm_diskio',
     unit: 'bps',
@@ -98,7 +99,7 @@ export const VMWARE_MONITOR = [
   },
   {
     name: 'diskio',
-    label: '磁盘写速率',
+    label: i18n.t('compute.text_527'),
     seleteItem: 'write_bps',
     fromItem: 'vm_diskio',
     unit: 'bps',
@@ -111,7 +112,7 @@ export const VMWARE_MONITOR = [
 export const OTHER_MONITOR = [
   {
     name: 'cpu',
-    label: 'CPU使用率',
+    label: i18n.t('compute.text_523'),
     seleteItem: 'usage_active',
     transfer: 1,
     fromItem: 'vm_cpu',
@@ -120,7 +121,7 @@ export const OTHER_MONITOR = [
   },
   {
     name: 'netio',
-    label: '网络入流量',
+    label: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
     fromItem: 'vm_netio',
     unit: 'bps',
@@ -129,7 +130,7 @@ export const OTHER_MONITOR = [
   },
   {
     name: 'netio',
-    label: '网络出流量',
+    label: i18n.t('compute.text_525'),
     seleteItem: 'bps_sent',
     fromItem: 'vm_netio',
     unit: 'bps',
@@ -138,7 +139,7 @@ export const OTHER_MONITOR = [
   },
   {
     name: 'diskio',
-    label: '磁盘读速率',
+    label: i18n.t('compute.text_526'),
     seleteItem: 'read_bps',
     fromItem: 'vm_diskio',
     unit: 'bps',
@@ -147,7 +148,7 @@ export const OTHER_MONITOR = [
   },
   {
     name: 'diskio',
-    label: '磁盘写速率',
+    label: i18n.t('compute.text_527'),
     seleteItem: 'write_bps',
     fromItem: 'vm_diskio',
     unit: 'bps',

@@ -5,6 +5,7 @@ import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip 
 import { SERVER_TYPE } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 export default {
   computed: {
@@ -17,11 +18,11 @@ export default {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
     this.singleActions = [
       {
-        label: '远程控制',
+        label: i18n.t('compute.text_341'),
         actions: obj => {
           let ret = []
           ret.push({
-            label: 'VNC 远程终端',
+            label: i18n.t('compute.text_1274'),
             action: () => {
               const isValidURL = str => {
                 const regex = /(\w+):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!-/]))?/
@@ -51,7 +52,7 @@ export default {
             },
           })
           const mapIpActions = (ipArr, type) => {
-            if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error('ssh 类型必须为 IP SSH,EIP SSH 中的一种')
+            if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error(i18n.t('compute.text_343'))
             const options = []
             ipArr.forEach(v => {
               const meta = () => {
@@ -60,7 +61,7 @@ export default {
                   tooltip: null,
                 }
                 if (obj.os_type === 'Windows') {
-                  ret.tooltip = 'Windows 不支持 SSH 连接'
+                  ret.tooltip = i18n.t('compute.text_344')
                   return ret
                 }
                 ret.validate = cloudEnabled(type, obj)
@@ -80,10 +81,10 @@ export default {
                 meta,
               })
               options.push({
-                label: `SSH ${v} 自定义端口`,
+                label: i18n.t('compute.text_345', [v]),
                 action: () => {
                   this.createDialog('SmartFormDialog', {
-                    title: '自定义端口',
+                    title: i18n.t('compute.text_346'),
                     data: [obj],
                     callback: async (data) => {
                       const response = await this.webconsoleManager.performAction({
@@ -99,12 +100,12 @@ export default {
                         {
                           validateFirst: true,
                           rules: [
-                            { required: true, message: '请输入端口' },
+                            { required: true, message: i18n.t('compute.text_347') },
                             {
                               validator: (rule, value, _callback) => {
                                 const num = parseFloat(value)
                                 if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                  _callback('端口范围在 0-65535 之间')
+                                  _callback(i18n.t('compute.text_348'))
                                 }
                                 _callback()
                               },
@@ -112,8 +113,8 @@ export default {
                           ],
                         },
                         {
-                          label: '端口',
-                          placeholder: '请输入端口号',
+                          label: i18n.t('compute.text_349'),
+                          placeholder: i18n.t('compute.text_350'),
                         },
                       ],
                     },
@@ -135,14 +136,14 @@ export default {
         },
       },
       {
-        label: '更多',
+        label: i18n.t('compute.text_352'),
         actions: (obj) => {
           return [
             {
-              label: '实例状态',
+              label: i18n.t('compute.text_353'),
               submenus: [
                 {
-                  label: '开机',
+                  label: i18n.t('compute.text_272'),
                   permission: 'server_perform_start',
                   action: () => {
                     this.onManager('performAction', {
@@ -160,7 +161,7 @@ export default {
                   },
                 },
                 {
-                  label: '关机',
+                  label: i18n.t('compute.text_273'),
                   permission: 'server_perform_stop',
                   action: () => {
                     this.createDialog('VmShutDownDialog', {
@@ -176,7 +177,7 @@ export default {
                   },
                 },
                 {
-                  label: '重启',
+                  label: i18n.t('compute.text_274'),
                   permission: 'server_perform_restart',
                   action: () => {
                     this.createDialog('VmRestartDialog', {
@@ -192,7 +193,7 @@ export default {
                   },
                 },
                 {
-                  label: '重置',
+                  label: i18n.t('compute.text_354'),
                   permission: 'server_perform_reset',
                   action: () => {
                     this.createDialog('VmResetDialog', {
@@ -207,7 +208,7 @@ export default {
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_355')
                       return ret
                     }
                     return {
@@ -216,7 +217,7 @@ export default {
                   },
                 },
                 {
-                  label: '挂起',
+                  label: i18n.t('compute.text_1128'),
                   permission: 'server_perform_suspend',
                   action: () => {
                     this.createDialog('VmSuspendDialog', {
@@ -231,12 +232,12 @@ export default {
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
-                      ret.tooltip = '只有VMware主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1275')
                       return ret
                     }
                     if (obj.status !== 'running') {
                       ret.validate = false
-                      ret.tooltip = '请选择开机的机器进行操作'
+                      ret.tooltip = i18n.t('compute.text_1130')
                       return ret
                     }
                     ret.validate = true
@@ -244,7 +245,7 @@ export default {
                   },
                 },
                 {
-                  label: '恢复',
+                  label: i18n.t('compute.text_478'),
                   permission: 'server_perform_resume',
                   action: () => {
                     this.createDialog('VmResumeDialog', {
@@ -259,12 +260,12 @@ export default {
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
-                      ret.tooltip = '只有VMware主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1275')
                       return ret
                     }
                     if (obj.status !== 'suspend') {
                       ret.validate = false
-                      ret.tooltip = '请选择挂起的机器进行操作'
+                      ret.tooltip = i18n.t('compute.text_1131')
                       return ret
                     }
                     ret.validate = true
@@ -274,10 +275,10 @@ export default {
               ],
             },
             {
-              label: '实例设置',
+              label: i18n.t('compute.text_356'),
               submenus: [
                 {
-                  label: '修改属性',
+                  label: i18n.t('compute.text_247'),
                   action: () => {
                     this.createDialog('VmUpdateDialog', {
                       data: [obj],
@@ -289,12 +290,12 @@ export default {
                     const isOneCloud = row.brand === 'OneCloud'
                     return {
                       validate: isOneCloud,
-                      tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
+                      tooltip: !isOneCloud && i18n.t('compute.text_355'),
                     }
                   },
                 },
                 {
-                  label: '重装系统',
+                  label: i18n.t('compute.text_357'),
                   permission: 'server_perform_rebuild_root',
                   action: () => {
                     this.createDialog('VmRebuildRootDialog', {
@@ -315,7 +316,7 @@ export default {
                   },
                 },
                 {
-                  label: '调整配置',
+                  label: i18n.t('compute.text_1100'),
                   permission: 'server_perform_change_config',
                   action: () => {
                     this.$router.push({
@@ -331,11 +332,11 @@ export default {
                       tooltip: null,
                     }
                     if (obj.billing_type === 'prepaid') {
-                      ret.tooltip = this.isAdminMode ? '包年包月机器，不支持此操作' : '包年包月资源池的资源不支持此操作'
+                      ret.tooltip = this.isAdminMode ? i18n.t('compute.text_285') : i18n.t('compute.text_1110')
                       return ret
                     }
                     if (obj.backup_host_id) {
-                      ret.tooltip = '高可用机器，不支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1111')
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -345,7 +346,7 @@ export default {
                   },
                 },
                 {
-                  label: `更改${this.$t('dictionary.project')}`,
+                  label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
                   action: () => {
                     this.createDialog('ChangeOwenrDialog', {
                       data: [obj],
@@ -361,7 +362,7 @@ export default {
                       tooltip: null,
                     }
                     if (!this.isAdminMode && !this.isDomainMode) {
-                      ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                      ret.tooltip = i18n.t('compute.text_613')
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -370,7 +371,7 @@ export default {
                   },
                 },
                 {
-                  label: '同步状态',
+                  label: i18n.t('compute.text_282'),
                   action: () => {
                     this.onManager('performAction', {
                       steadyStatus: ['running', 'ready'],
@@ -391,7 +392,7 @@ export default {
                   },
                 },
                 {
-                  label: '创建快照',
+                  label: i18n.t('compute.text_1276'),
                   action: () => {
                     this.createDialog('VmSnapshotCreateDialog', {
                       data: [obj],
@@ -406,11 +407,11 @@ export default {
                       tooltip: null,
                     }
                     if (obj.is_prepaid_recycle) {
-                      ret.tooltip = '包年包月机器，不支持此操作'
+                      ret.tooltip = i18n.t('compute.text_285')
                       return ret
                     }
                     if (obj.backup_host_id) {
-                      ret.tooltip = '高可用的机器不支持创建快照'
+                      ret.tooltip = i18n.t('compute.text_1277')
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -450,7 +451,7 @@ export default {
                 //   },
                 // },
                 {
-                  label: '创建相同配置',
+                  label: i18n.t('compute.text_359'),
                   action: () => {
                     this.createDialog('VmCloneDialog', {
                       data: [obj],
@@ -464,11 +465,11 @@ export default {
                       tooltip: null,
                     }
                     if (obj.is_prepaid_recycle) {
-                      ret.tooltip = '包年包月机器，不支持此操作'
+                      ret.tooltip = i18n.t('compute.text_285')
                       return ret
                     }
                     if (obj.hypervisor !== 'kvm' && findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                      ret.tooltip = '仅公有云、OneCloud支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1278')
                       return ret
                     }
                     ret.validate = true
@@ -476,7 +477,7 @@ export default {
                   },
                 },
                 {
-                  label: '设置GPU卡',
+                  label: i18n.t('compute.text_1112'),
                   action: () => {
                     this.createDialog('VmAttachGpuDialog', {
                       data: [obj],
@@ -490,11 +491,11 @@ export default {
                       tooltip: null,
                     }
                     if (!this.isAdminMode && !this.isDomainMode) {
-                      ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                      ret.tooltip = i18n.t('compute.text_1279', [i18n.t('dictionary.domain')])
                       return ret
                     }
                     if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
-                      ret.tooltip = '仅本地IDC支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1281')
                       return ret
                     }
                     ret.validate = cloudEnabled('acttachGpu', obj)
@@ -503,7 +504,7 @@ export default {
                   },
                 },
                 {
-                  label: '设置磁盘速度',
+                  label: i18n.t('compute.text_1249'),
                   action: () => {
                     this.createDialog('VmSetSpeedDialog', {
                       data: [obj],
@@ -517,11 +518,11 @@ export default {
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_355')
                       return ret
                     }
                     if (obj.status !== 'running') {
-                      ret.tooltip = '仅在运行中状态下支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1282')
                       return ret
                     }
                     ret.validate = true
@@ -529,7 +530,7 @@ export default {
                   },
                 },
                 {
-                  label: '到期释放',
+                  label: i18n.t('compute.text_1132'),
                   permission: 'server_perform_cancel_expire',
                   action: () => {
                     this.createDialog('SetDurationDialog', {
@@ -545,7 +546,7 @@ export default {
                       tooltip: null,
                     }
                     if (obj.billing_type === 'prepaid') {
-                      ret.tooltip = '包年包月机器，不支持此操作'
+                      ret.tooltip = i18n.t('compute.text_285')
                       return ret
                     }
                     ret.validate = true
@@ -553,7 +554,7 @@ export default {
                   },
                 },
                 {
-                  label: '主机克隆',
+                  label: i18n.t('compute.text_1208'),
                   action: () => {
                     this.createDialog('VmCloneDeepDialog', {
                       data: [obj],
@@ -568,15 +569,15 @@ export default {
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_355')
                       return ret
                     }
                     if (!['running', 'ready'].includes(obj.status)) {
-                      ret.tooltip = '只有运行中或关机状态的主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1126')
                       return ret
                     }
                     if (obj.backup_host_id) {
-                      ret.tooltip = '高可用的主机不支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1283')
                       return ret
                     }
                     ret.validate = true
@@ -584,7 +585,7 @@ export default {
                   },
                 },
                 {
-                  label: `加入${this.$t('dictionary.instancegroup')}`,
+                  label: i18n.t('compute.text_1181', [i18n.t('dictionary.instancegroup')]),
                   action: () => {
                     this.createDialog('VmBindInstanceGroupDialog', {
                       data: [obj],
@@ -600,15 +601,15 @@ export default {
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_355')
                       return ret
                     }
                     if (!['running', 'ready'].includes(obj.status)) {
-                      ret.tooltip = '只有运行中或关机状态的主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1126')
                       return ret
                     }
                     if (obj.backup_host_id) {
-                      ret.tooltip = '高可用的主机不支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1283')
                       return ret
                     }
                     ret.validate = true
@@ -616,7 +617,7 @@ export default {
                   },
                 },
                 {
-                  label: '续费',
+                  label: i18n.t('compute.text_1117'),
                   action: () => {
                     this.createDialog('VmResourceFeeDialog', {
                       data: [obj],
@@ -633,11 +634,11 @@ export default {
                       return ret
                     }
                     if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                      ret.tooltip = '仅公有云支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1118')
                       return ret
                     }
                     if (obj.billing_type !== 'prepaid') {
-                      ret.tooltip = '仅包年包月的资源支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1119')
                       return ret
                     }
                     ret.validate = true
@@ -645,7 +646,7 @@ export default {
                   },
                 },
                 {
-                  label: '自动续费设置',
+                  label: i18n.t('compute.text_1120'),
                   action: () => {
                     this.createDialog('VmResourceRenewFeeDialog', {
                       data: [obj],
@@ -663,11 +664,11 @@ export default {
                       return ret
                     }
                     if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
-                      ret.tooltip = '仅公有云支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1118')
                       return ret
                     }
                     if (obj.billing_type !== 'prepaid') {
-                      ret.tooltip = '仅包年包月的资源支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1119')
                       return ret
                     }
                     ret.validate = true
@@ -688,10 +689,10 @@ export default {
               ],
             },
             {
-              label: '密码密钥',
+              label: i18n.t('compute.text_360'),
               submenus: [
                 {
-                  label: '重置密码',
+                  label: i18n.t('compute.text_276'),
                   permission: 'server_perform_deploy',
                   action: () => {
                     this.createDialog('VmResetPasswordDialog', {
@@ -707,7 +708,7 @@ export default {
                     }
                     if (commonUnabled(obj)) return ret
                     if (obj.keypair_id && obj.keypair_id.toLowerCase() !== 'none') {
-                      ret.tooltip = '已绑定密钥的云服务器无法重置密码'
+                      ret.tooltip = i18n.t('compute.text_277')
                       return ret
                     }
                     ret.validate = cloudEnabled('resetPassword', obj)
@@ -716,7 +717,7 @@ export default {
                   },
                 },
                 {
-                  label: '绑定密钥',
+                  label: i18n.t('compute.text_361'),
                   permission: 'server_perform_deploy',
                   action: () => {
                     this.createDialog('VmBindKeypairDialog', {
@@ -731,17 +732,17 @@ export default {
                       tooltip: null,
                     }
                     if (obj.hypervisor === typeClouds.hypervisorMap.openstack.key) {
-                      ret.tooltip = 'OpenStack机器在创建后不支持该操作'
+                      ret.tooltip = i18n.t('compute.text_1284')
                       return ret
                     }
                     const osType = obj.metadata && obj.metadata.os_name
                     if (['aws', 'azure', 'google', 'aliyun'].includes(obj.hypervisor) && osType === 'Windows') {
-                      ret.tooltip = 'Windows操作系统不支持该功能'
+                      ret.tooltip = i18n.t('compute.text_1285')
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
                     if (obj.keypair) {
-                      ret.tooltip = '该服务器已关联密钥'
+                      ret.tooltip = i18n.t('compute.text_363')
                       return ret
                     }
                     ret.validate = cloudEnabled('bindKeyPair', obj)
@@ -750,7 +751,7 @@ export default {
                   },
                 },
                 {
-                  label: '解绑密钥',
+                  label: i18n.t('compute.text_364'),
                   permission: 'server_perform_deploy',
                   action: () => {
                     this.createDialog('VmUnbindKeypairDialog', {
@@ -766,7 +767,7 @@ export default {
                     }
                     if (commonUnabled(obj)) return ret
                     if (!obj.keypair) {
-                      ret.tooltip = '该服务器未关联密钥'
+                      ret.tooltip = i18n.t('compute.text_365')
                       return ret
                     }
                     ret.validate = cloudEnabled('unBindKeyPair', obj)
@@ -777,10 +778,10 @@ export default {
               ],
             },
             {
-              label: '镜像',
+              label: i18n.t('compute.text_96'),
               submenus: [
                 {
-                  label: '保存镜像',
+                  label: i18n.t('compute.text_1236'),
                   permission: 'server_perform_save_image',
                   action: () => {
                     this.createDialog('VmSaveImageDialog', {
@@ -795,7 +796,7 @@ export default {
                       tooltip: null,
                     }
                     if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
-                      ret.tooltip = '公有云不支持该操作'
+                      ret.tooltip = i18n.t('compute.text_1286')
                       return ret
                     }
                     const noSupportBrand = [
@@ -804,7 +805,7 @@ export default {
                       typeClouds.hypervisorMap.dstack.brand,
                     ]
                     if (noSupportBrand.includes(obj.brand)) {
-                      ret.tooltip = `${obj.brand}暂不支持该操作`
+                      ret.tooltip = i18n.t('compute.text_1287', [obj.brand])
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -814,7 +815,7 @@ export default {
                   },
                 },
                 {
-                  label: '挂载ISO',
+                  label: i18n.t('compute.text_366'),
                   permission: 'server_perform_insertiso',
                   action: () => {
                     this.createDialog('VmMountIsoDialog', {
@@ -834,7 +835,7 @@ export default {
                     }
                     if (commonUnabled(obj)) return ret
                     if (obj.cdrom) {
-                      ret.tooltip = '该服务器已经挂载ISO镜像'
+                      ret.tooltip = i18n.t('compute.text_1288')
                       return ret
                     }
                     ret.validate = cloudEnabled('insertiso', obj)
@@ -843,7 +844,7 @@ export default {
                   },
                 },
                 {
-                  label: '卸载ISO',
+                  label: i18n.t('compute.text_367'),
                   permission: 'server_perform_ejectiso',
                   action: () => {
                     this.createDialog('VmUnmountIsoDialog', {
@@ -863,7 +864,7 @@ export default {
                     }
                     if (commonUnabled(obj)) return ret
                     if (!obj.cdrom) {
-                      ret.tooltip = '该服务器未挂载ISO镜像'
+                      ret.tooltip = i18n.t('compute.text_1289')
                       return ret
                     }
                     ret.validate = cloudEnabled('ejectiso', obj)
@@ -874,10 +875,10 @@ export default {
               ],
             },
             {
-              label: '网络安全',
+              label: i18n.t('compute.text_1290'),
               submenus: [
                 {
-                  label: '关联安全组',
+                  label: i18n.t('compute.text_1116'),
                   permission: 'server_perform_add_secgroup',
                   action: () => {
                     this.createDialog('VmSetSecgroupDialog', {
@@ -897,7 +898,7 @@ export default {
                   },
                 },
                 {
-                  label: '绑定弹性公网IP',
+                  label: i18n.t('compute.text_1179'),
                   action: () => {
                     this.createDialog('VmBindEipDialog', {
                       data: [obj],
@@ -913,11 +914,11 @@ export default {
                     }
                     if (commonUnabled(obj)) return ret
                     if (obj.eip && obj.eip_mode !== 'public_ip') {
-                      ret.tooltip = '已绑定，解绑后重试'
+                      ret.tooltip = i18n.t('compute.text_1291')
                       return ret
                     }
                     if (obj.brand === 'OneCloud' && obj.vpc_id === 'default') {
-                      ret.tooltip = '经典网络的虚拟机不支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1292')
                       return ret
                     }
                     ret.validate = cloudEnabled('bindEip', obj)
@@ -926,7 +927,7 @@ export default {
                   },
                 },
                 {
-                  label: '解绑弹性公网IP',
+                  label: i18n.t('compute.text_1264'),
                   action: () => {
                     this.createDialog('VmUnbindEipDialog', {
                       data: [obj],
@@ -942,11 +943,11 @@ export default {
                     }
                     if (commonUnabled(obj)) return ret
                     if (obj.eip_mode !== 'elastic_ip') {
-                      ret.tooltip = '未绑定，无法解绑'
+                      ret.tooltip = i18n.t('compute.text_1293')
                       return ret
                     }
                     if (obj.eip_mode === 'public_ip') {
-                      ret.tooltip = 'Public IP无法解绑'
+                      ret.tooltip = i18n.t('compute.text_1294')
                       return ret
                     }
                     ret.validate = cloudEnabled('unbindEip', obj)
@@ -955,7 +956,7 @@ export default {
                   },
                 },
                 {
-                  label: '公网IP转EIP',
+                  label: i18n.t('compute.text_1121'),
                   action: () => {
                     this.createDialog('VmPublicIpToEipDialog', {
                       data: [obj],
@@ -970,11 +971,11 @@ export default {
                       tooltip: null,
                     }
                     if (obj.eip && obj.eip_mode === 'elastic_ip') {
-                      ret.tooltip = '已绑定弹性公网IP的虚拟机不支持该操作'
+                      ret.tooltip = i18n.t('compute.text_1122')
                       return ret
                     }
                     if (obj.eip_mode !== 'public_ip') {
-                      ret.tooltip = '只有已分配公网IP的虚拟机支持该操作'
+                      ret.tooltip = i18n.t('compute.text_1123')
                       return ret
                     }
                     ret.validate = cloudEnabled('publicIpToEip', obj)
@@ -983,7 +984,7 @@ export default {
                   },
                 },
                 {
-                  label: '设置源/目标检查',
+                  label: i18n.t('compute.text_1124'),
                   action: () => {
                     this.createDialog('VmSourceTargetCheckDialog', {
                       data: [obj],
@@ -996,12 +997,12 @@ export default {
                     const ret = { validate: true, tooltip: null }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                       ret.validate = false
-                      ret.tooltip = '暂只有OneCloud平台支持该操作'
+                      ret.tooltip = i18n.t('compute.text_1125')
                       return ret
                     }
                     if (!['running', 'ready'].includes(obj.status)) {
                       ret.validate = false
-                      ret.tooltip = '只有运行中或关机状态的主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_1126')
                       return ret
                     }
                     return ret
@@ -1010,10 +1011,10 @@ export default {
               ],
             },
             {
-              label: '高可用',
+              label: i18n.t('compute.text_1295'),
               submenus: [
                 {
-                  label: '添加备份机',
+                  label: i18n.t('compute.text_1162'),
                   action: () => {
                     this.createDialog('VmAddBackupDialog', {
                       data: [obj],
@@ -1030,11 +1031,11 @@ export default {
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_355')
                       return ret
                     }
                     if (obj.backup_host_id) {
-                      ret.tooltip = '已经添加备份机'
+                      ret.tooltip = i18n.t('compute.text_1296')
                       return ret
                     }
                     ret.validate = true
@@ -1042,7 +1043,7 @@ export default {
                   },
                 },
                 {
-                  label: '删除备份机',
+                  label: i18n.t('compute.text_1209'),
                   action: () => {
                     this.createDialog('VmDeleteBackupDialog', {
                       data: [obj],
@@ -1062,7 +1063,7 @@ export default {
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_355')
                       return ret
                     }
                     ret.validate = true
@@ -1070,7 +1071,7 @@ export default {
                   },
                 },
                 {
-                  label: '迁移',
+                  label: i18n.t('compute.text_1127'),
                   action: () => {
                     this.createDialog('VmTransferDialog', {
                       data: [obj],
@@ -1084,18 +1085,18 @@ export default {
                       tooltip: null,
                     }
                     if (obj.backup_host_id) {
-                      ret.tooltip = '高可用机器不允许迁移'
+                      ret.tooltip = i18n.t('compute.text_1299')
                       return ret
                     }
                     if (obj.is_gpu) {
-                      ret.tooltip = '仅通用型云服务器支持该操作'
+                      ret.tooltip = i18n.t('compute.text_1300')
                       return ret
                     }
                     if (!this.isAdminMode && !this.isDomainMode) {
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
+                      ret.tooltip = i18n.t('compute.text_355')
                       return ret
                     }
                     ret.validate = true
@@ -1106,13 +1107,13 @@ export default {
               ],
             },
             {
-              label: '删除',
+              label: i18n.t('compute.text_261'),
               submenus: [
                 disableDeleteAction(this, {
                   name: this.$t('dictionary.server'),
                 }),
                 {
-                  label: '删除',
+                  label: i18n.t('compute.text_261'),
                   permission: 'server_delete',
                   action: () => {
                     this.createDialog('DeleteVmDialog', {
@@ -1120,7 +1121,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
-                      title: '删除',
+                      title: i18n.t('compute.text_261'),
                       success: () => {
                         this.destroySidePages()
                       },

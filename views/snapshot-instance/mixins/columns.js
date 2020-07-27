@@ -6,6 +6,7 @@ import {
   getTimeTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -22,13 +23,13 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instance_snapshot', columns: () => this.columns }),
       {
         field: 'rules',
-        title: '子快照',
+        title: i18n.t('compute.text_1081'),
         minWidth: 220,
         type: 'expand',
         slots: {
           default: ({ row }) => {
             const len = (row.snapshots && row.snapshots.length) || 0
-            return `${len}个`
+            return i18n.t('compute.text_619', [len])
           },
           content: ({ row }) => {
             const list = row.snapshots.map(val => (
@@ -40,7 +41,7 @@ export default {
       },
       {
         field: 'size',
-        title: '快照大小',
+        title: i18n.t('compute.text_422'),
         width: 70,
         formatter: ({ row }) => {
           const size = row.snapshots.reduce((a, b) => a + b.size, 0)
@@ -51,7 +52,7 @@ export default {
       getProjectTableColumn(),
       {
         field: 'guest',
-        title: '虚拟机',
+        title: i18n.t('compute.text_91'),
         minWidth: 70,
         showOverflow: 'ellipsis',
         slots: {

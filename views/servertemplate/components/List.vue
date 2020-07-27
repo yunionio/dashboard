@@ -48,7 +48,7 @@ export default {
         steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('compute.text_228'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -59,7 +59,7 @@ export default {
           status: getStatusFilter('servertemplate'),
           brand: getBrandFilter(),
           os_type: {
-            label: '系统类型',
+            label: this.$t('compute.text_721'),
             dropdown: true,
             multiple: true,
             items: [
@@ -76,10 +76,10 @@ export default {
             label: 'VPC',
           },
           region: {
-            label: '区域',
+            label: this.$t('compute.text_177'),
           },
           billing_type: {
-            label: '计费类型',
+            label: this.$t('compute.text_1046'),
             dropdown: true,
             items: Object.keys(this.$t('billingType')).map((k) => {
               return {
@@ -93,14 +93,14 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '名称', key: 'name' },
+          { label: this.$t('compute.text_228'), key: 'name' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: '创建时间', key: 'created_at' },
+          { label: this.$t('compute.text_243'), key: 'created_at' },
         ],
       },
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('compute.text_18'),
           permission: 'servertemplates_create',
           action: () => {
             this.$router.push({
@@ -119,14 +119,14 @@ export default {
           },
         },
         {
-          label: '删除',
+          label: this.$t('compute.text_261'),
           permission: 'servertemplates_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: '删除',
+              title: this.$t('compute.text_261'),
               name: this.$t('dictionary.servertemplate'),
               onManager: this.onManager,
             })

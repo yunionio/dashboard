@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">挂载</div>
+    <div slot="header">{{$t('compute.text_424')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" action="挂载" :name="$t('dictionary.disk')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_424')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
@@ -41,7 +41,7 @@ export default {
           'server',
           {
             rules: [
-              { required: true, message: '请选择云服务器' },
+              { required: true, message: this.$t('compute.text_425') },
             ],
           },
         ],
