@@ -1,13 +1,13 @@
 <template>
   <div>
-    <a-form-item label="总量指标" v-if="decorators.all_usage_key">
+    <a-form-item :label="$t('dashboard.text_96')" v-if="decorators.all_usage_key">
       <usage-select
         class="w-100"
         v-decorator="decorators.all_usage_key"
         :usages="usages"
         @change="allUsageChange" />
     </a-form-item>
-    <a-form-item :label="usageLabel || '使用量指标'" v-if="decorators.usage_key">
+    <a-form-item :label="usageLabel || $t('dashboard.text_97')" v-if="decorators.usage_key">
       <usage-select
         class="w-100"
         v-decorator="decorators.usage_key"

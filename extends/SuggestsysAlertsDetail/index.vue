@@ -5,20 +5,20 @@
         <div class="dashboard-card-header-left">{{ fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="() => visible = true" />
-          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">更多</router-link>
+          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">{{$t('dashboard.text_13')}}</router-link>
         </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center">
         <e-chart :options="chartOptions" style="height: 214px; width: 385px;" autoresize />
       </div>
     </div>
-    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form-model
         ref="form"
         hideRequiredMark
         :model="fd"
         :rules="rules">
-        <a-form-model-item label="磁贴名称" prop="name">
+        <a-form-model-item :label="$t('dashboard.text_6')" prop="name">
           <a-input v-model="fd.name" />
         </a-form-model-item>
       </a-form-model>
@@ -49,7 +49,7 @@ export default {
     edit: Boolean,
   },
   data () {
-    const initNameValue = (this.params && this.params.name) || '费用优化资源类型成本分布'
+    const initNameValue = (this.params && this.params.name) || this.$t('dashboard.text_47')
     return {
       data: [],
       visible: false,
@@ -59,7 +59,7 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入磁贴名称' },
+          { required: true, message: this.$t('dashboard.text_8') },
         ],
       },
     }
@@ -86,7 +86,7 @@ export default {
       return {
         title: [
           {
-            text: '成本优化',
+            text: this.$t('dashboard.text_48'),
             subtext: `￥${numerify(this.allData.amount, '0,0.00')}`,
             textStyle: {
               fontSize: 12,
@@ -143,7 +143,7 @@ export default {
         },
         series: [
           {
-            name: '标题',
+            name: this.$t('dashboard.text_49'),
             type: 'pie',
             center: ['25%', '50%'],
             radius: ['50%', '65%'],

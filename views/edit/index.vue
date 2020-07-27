@@ -2,7 +2,7 @@
   <div class="edit-wrap d-flex flex-column position-fixed">
     <!-- header -->
     <div class="edit-topbar position-relative d-flex justify-content-center align-items-center flex-grow-0 flex-shrink-0">
-      <div class="mr-2">添加、 固定、 移动并调整磁贴大小</div>
+      <div class="mr-2">{{$t('dashboard.text_118')}}</div>
       <a-button size="small" type="primary" @click="handleConfirm" :loading="submiting">{{ $t('dialog.ok') }}</a-button>
       <a-button size="small" @click="handleBack" class="ml-2">{{ $t('dialog.cancel') }}</a-button>
     </div>
@@ -15,7 +15,7 @@
       <!-- edit main -->
       <main class="edit-content flex-fill position-relative">
         <div class="edit-content-inner w-100 h-100 position-absolute d-flex flex-column flex-nowrap">
-          <div class="edit-header mb-2"><a-input ref="input" v-model="dashboardName" placeholder="输入仪表盘名称" /></div>
+          <div class="edit-header mb-2"><a-input ref="input" v-model="dashboardName" :placeholder="$t('dashboard.text_119')" /></div>
           <grid-shadow
             class="flex-fill"
             ref="grid-shadow">
@@ -354,7 +354,7 @@ export default {
     },
     async handleConfirm () {
       if (!R.trim(this.dashboardName)) {
-        this.$message.warn('请输入面板名称')
+        this.$message.warn(this.$t('dashboard.text_120'))
         this.$refs.input.focus()
         return
       }

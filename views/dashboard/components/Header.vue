@@ -17,12 +17,12 @@
         <icon type="more" style="font-size: 18px;" />
       </a>
       <a-menu slot="overlay" @click="handleActionClick">
-        <a-menu-item key="handleCreate"><a-icon type="plus" />新建</a-menu-item>
-        <a-menu-item key="handleEdit" :disabled="isDefaultOption"><a-icon type="edit" />编辑</a-menu-item>
-        <a-menu-item key="handleDownload"><a-icon type="download" />导出</a-menu-item>
-        <a-menu-item key="handleImport"><a-icon type="file" />导入</a-menu-item>
-        <a-menu-item key="handleCopy"><a-icon type="copy" />克隆</a-menu-item>
-        <a-menu-item key="handleDelete" :disabled="isDefaultOption"><a-icon type="delete" />删除</a-menu-item>
+        <a-menu-item key="handleCreate"><a-icon type="plus" />{{$t('dashboard.text_103')}}</a-menu-item>
+        <a-menu-item key="handleEdit" :disabled="isDefaultOption"><a-icon type="edit" />{{$t('dashboard.text_104')}}</a-menu-item>
+        <a-menu-item key="handleDownload"><a-icon type="download" />{{$t('dashboard.text_105')}}</a-menu-item>
+        <a-menu-item key="handleImport"><a-icon type="file" />{{$t('dashboard.text_106')}}</a-menu-item>
+        <a-menu-item key="handleCopy"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
+        <a-menu-item key="handleDelete" :disabled="isDefaultOption"><a-icon type="delete" />{{$t('dashboard.text_108')}}</a-menu-item>
       </a-menu>
     </a-dropdown>
   </div>
@@ -113,7 +113,7 @@ export default {
     },
     handleImport () {
       this.createDialog('DashboardImport', {
-        title: '导入',
+        title: this.$t('dashboard.text_106'),
         options: this.options,
         genName: name => this.genName(name),
         checkOptionsCreated: () => this.checkOptionsCreated(),
@@ -126,7 +126,7 @@ export default {
     },
     handleDelete () {
       this.createDialog('CommonDialog', {
-        header: '删除',
+        header: this.$t('dashboard.text_108'),
         body: () => {
           let number
           if (R.is(Array, this.data)) {
@@ -139,7 +139,7 @@ export default {
             number,
           }]
           return [
-            <dialog-selected-tips count={1} action="删除" name="面板" />,
+            <dialog-selected-tips count={1} action={this.$t('dashboard.text_108')} name={this.$t('dashboard.text_109')} />,
             <dialog-table
               vxeGridProps={{ showOverflow: 'title' }}
               data={ data }
@@ -147,11 +147,11 @@ export default {
                 [
                   {
                     field: 'name',
-                    title: '名称',
+                    title: this.$t('dashboard.text_110'),
                   },
                   {
                     field: 'number',
-                    title: '磁贴数量',
+                    title: this.$t('dashboard.text_111'),
                   },
                 ]
               } />,

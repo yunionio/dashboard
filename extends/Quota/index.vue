@@ -11,16 +11,16 @@
         <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
       </div>
     </div>
-    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form-model
         ref="form"
         hideRequiredMark
         :model="fd"
         :rules="rules">
-        <a-form-model-item label="磁贴名称" prop="name">
+        <a-form-model-item :label="$t('dashboard.text_6')" prop="name">
           <a-input v-model="fd.name" />
         </a-form-model-item>
-        <a-form-model-item label="指标" prop="field">
+        <a-form-model-item :label="$t('dashboard.text_20')" prop="field">
           <a-select v-model="fd.field">
             <template v-for="(item, key) of quotaConfig">
               <a-select-option :value="key" :key="key">{{ item.desc }}</a-select-option>
@@ -57,8 +57,8 @@ export default {
     if (this.$store.getters.isAdminMode) {
       name = this.$t('dictionary.domain')
     }
-    const genDesc = function (title) {
-      return `各${name}${title}配额使用情况`
+    const genDesc = (title) => {
+      return this.$t('dashboard.text_27', [name, title])
     }
     const titleKey = this.$store.getters.isAdminMode ? 'domain' : 'tenant'
     const initNameValue = (this.params && this.params.name) || genDesc('CPU')
@@ -77,53 +77,53 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入磁贴名称' },
+          { required: true, message: this.$t('dashboard.text_8') },
         ],
         field: [
-          { required: true, message: '请选择指标' },
+          { required: true, message: this.$t('dashboard.text_22') },
         ],
       },
       quotaConfig: {
         cpu: {
-          unit: '核',
+          unit: this.$t('dashboard.text_3'),
           desc: genDesc('CPU'),
           resource: 'quotas',
         },
         memory: {
           format: 'sizestr',
           unit: 'M',
-          desc: genDesc('内存'),
+          desc: genDesc(this.$t('dashboard.text_28')),
           resource: 'quotas',
         },
         storage: {
           format: 'sizestr',
           unit: 'M',
-          desc: genDesc('存储'),
+          desc: genDesc(this.$t('dashboard.text_29')),
           resource: 'quotas',
         },
         eip: {
-          unit: '个',
-          desc: genDesc('公网IP'),
+          unit: this.$t('dashboard.text_1'),
+          desc: genDesc(this.$t('dashboard.text_30')),
           resource: 'region_quotas',
         },
         port: {
-          unit: '个',
+          unit: this.$t('dashboard.text_1'),
           desc: genDesc('IP'),
           resource: 'region_quotas',
         },
         isolated_device: {
-          unit: '块',
+          unit: this.$t('dashboard.text_4'),
           desc: genDesc('GPU'),
           resource: 'quotas',
         },
         image: {
-          unit: '个',
-          desc: genDesc('镜像'),
+          unit: this.$t('dashboard.text_1'),
+          desc: genDesc(this.$t('dashboard.text_31')),
           resource: 'image_quotas',
         },
         snapshot: {
-          unit: '个',
-          desc: genDesc('快照'),
+          unit: this.$t('dashboard.text_1'),
+          desc: genDesc(this.$t('dashboard.text_32')),
           resource: 'region_quotas',
         },
       },
@@ -157,7 +157,7 @@ export default {
       return {
         legend: {
           right: 5,
-          data: ['已使用', '未使用'],
+          data: [this.$t('dashboard.text_33'), this.$t('dashboard.text_34')],
         },
         grid: {
           left: 10,
@@ -187,13 +187,13 @@ export default {
             R.forEach(item => {
               if (item.axisValueLabel) label = item.axisValueLabel
               if (qc.format === 'sizestr') {
-                if (item.seriesName === '未使用') {
+                if (item.seriesName === this.$t('dashboard.text_34')) {
                   allUage = sizestr(params[1].value, qc.unit, 1024)
                 } else {
                   usage = sizestr(params[0].value, qc.unit, 1024)
                 }
               } else {
-                if (item.seriesName === '未使用') {
+                if (item.seriesName === this.$t('dashboard.text_34')) {
                   allUage = `${params[1].value}${qc.unit}`
                 } else {
                   usage = `${params[0].value}${qc.unit}`
@@ -202,8 +202,8 @@ export default {
             }, params)
             const ret = []
             if (label) ret.push(label)
-            if (usage) ret.push(`已使用：${usage}`)
-            if (allUage) ret.push(`未使用：${allUage}`)
+            if (usage) ret.push(this.$t('dashboard.text_35', [usage]))
+            if (allUage) ret.push(this.$t('dashboard.text_36', [allUage]))
             return ret.join('<br>')
           },
         },
@@ -275,7 +275,7 @@ export default {
         },
         series: [
           {
-            name: '已使用',
+            name: this.$t('dashboard.text_33'),
             type: 'bar',
             itemStyle: {
               normal: {
@@ -305,7 +305,7 @@ export default {
             },
           },
           {
-            name: '未使用',
+            name: this.$t('dashboard.text_34'),
             type: 'bar',
             itemStyle: {
               normal: {
@@ -365,16 +365,17 @@ export default {
     },
     async fetchData () {
       this.loading = true
+      const params = {
+        ...this.genParams(),
+      }
+      params.$t = getRequestT()
       try {
         const data = await load({
           res: 'quotas',
           actionArgs: {
             url: `/v2/rpc/${this.fd.resource}/quota-list`,
             method: 'GET',
-            params: {
-              $t: getRequestT(),
-              ...this.genParams(),
-            },
+            params,
           },
           useManager: false,
           resPath: 'data.data',

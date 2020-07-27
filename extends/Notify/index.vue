@@ -2,10 +2,10 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
-          <router-link v-if="!edit && isAdminMode" to="/notice" class="ml-2">更多</router-link>
+          <router-link v-if="!edit && isAdminMode" to="/notice" class="ml-2">{{$t('dashboard.text_13')}}</router-link>
         </div>
       </div>
       <div class="dashboard-card-body flex-column mini-text justify-content-center">
@@ -20,12 +20,12 @@
         </template>
       </div>
     </div>
-    <base-drawer :visible.sync="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form
         hideRequiredMark
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item label="磁贴名称">
+        <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
       </a-form>
@@ -53,7 +53,7 @@ export default {
     edit: Boolean,
   },
   data () {
-    const initialNameValue = (this.params && this.params.name) || '公告'
+    const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.text_19')
     return {
       data: [],
       readmarkData: {},
@@ -71,7 +71,7 @@ export default {
           {
             initialValue: initialNameValue,
             rules: [
-              { required: true, message: '请输入磁贴名称' },
+              { required: true, message: this.$t('dashboard.text_8') },
             ],
           },
         ],

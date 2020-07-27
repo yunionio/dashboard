@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item label="云环境和平台">
+    <a-form-item :label="$t('dashboard.text_98')">
       <a-row :gutter="8">
         <a-col :span="12">
           <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
@@ -9,7 +9,7 @@
               class="w-100"
               :labelInValue="labelInValue"
               v-decorator="decorators.cloud_env"
-              placeholder="全部"
+              :placeholder="$t('dashboard.text_99')"
               @change="cloudEnvChange"
               :filterOption="filterOption">
               <a-select-option v-for="item of cloudEnvs" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
@@ -23,7 +23,7 @@
               class="w-100"
               :labelInValue="labelInValue"
               v-decorator="decorators.brand"
-              placeholder="全部"
+              :placeholder="$t('dashboard.text_99')"
               @change="brandChange"
               :filterOption="filterOption">
               <a-select-option v-for="item of brands" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
@@ -32,10 +32,10 @@
         </a-col>
       </a-row>
     </a-form-item>
-    <a-form-item label="区域或云账号" class="mb-0">
+    <a-form-item :label="$t('dashboard.text_100')" class="mb-0">
       <a-radio-group v-model="regionAccountType">
-        <a-radio-button value="region">区域</a-radio-button>
-        <a-radio-button value="account">云账号</a-radio-button>
+        <a-radio-button value="region">{{$t('dashboard.text_101')}}</a-radio-button>
+        <a-radio-button value="account">{{$t('dashboard.text_102')}}</a-radio-button>
       </a-radio-group>
       <a-form-item :wrapperCol="{ span: 24 }" v-if="regionAccountType === 'region'">
         <a-select
@@ -43,7 +43,7 @@
           class="w-100"
           :labelInValue="labelInValue"
           v-decorator="decorators.region"
-          placeholder="全部"
+          :placeholder="$t('dashboard.text_99')"
           @change="regionChange"
           :filterOption="filterOption">
           <a-select-option v-for="item of regions" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
@@ -55,14 +55,14 @@
           class="w-100"
           :labelInValue="labelInValue"
           v-decorator="decorators.account"
-          placeholder="全部"
+          :placeholder="$t('dashboard.text_99')"
           @change="accountChange"
           :filterOption="filterOption">
           <a-select-option v-for="item of accounts" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
         </a-select>
       </a-form-item>
     </a-form-item>
-    <a-form-item label="总量指标" class="mb-0" v-if="decorators.all_usage_key">
+    <a-form-item :label="$t('dashboard.text_96')" class="mb-0" v-if="decorators.all_usage_key">
       <a-form-item :wrapperCol="{ span: 24 }">
         <usage-select
           class="w-100"
@@ -71,7 +71,7 @@
           @change="allUsageChange" />
       </a-form-item>
     </a-form-item>
-    <a-form-item :label="usageLabel || '使用量指标'" class="mb-0" v-if="decorators.usage_key">
+    <a-form-item :label="usageLabel || $t('dashboard.text_97')" class="mb-0" v-if="decorators.usage_key">
       <a-form-item :wrapperCol="{ span: 24 }">
         <usage-select
           class="w-100"

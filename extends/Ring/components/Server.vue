@@ -2,7 +2,7 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || '磁贴名称' }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
         </div>
@@ -13,27 +13,27 @@
         </a-progress>
         <div class="flex-fill ml-4">
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">已用</div>
+            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_43')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.usage }}</div>
           </div>
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">未使用</div>
+            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_34')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.displayUnUsage }}</div>
           </div>
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">总量</div>
+            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_44')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.allUsage }}</div>
           </div>
         </div>
       </div>
     </div>
-    <base-drawer class="ring-drawer-wrapper" @update:visible="updateVisible" :visible="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer class="ring-drawer-wrapper" @update:visible="updateVisible" :visible="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <slot />
       <a-form
         hideRequiredMark
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item label="磁贴名称">
+        <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
         <quota-config :fc="form.fc" :decorators="decorators" />
@@ -58,7 +58,7 @@ export default {
   },
   mixins: [mixin],
   data () {
-    const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || '内存使用率'
+    const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || this.$t('dashboard.text_46')
     const initialCloudEnvValue = ((this.params && this.params.type !== 'k8s') && this.params.cloud_env) || 'onpremise'
     const initialBrandValue = ((this.params && this.params.type !== 'k8s') && this.params.brand) || 'OneCloud'
     const initialRegionValue = ((this.params && this.params.type !== 'k8s') && this.params.region) || 'default'
@@ -84,7 +84,7 @@ export default {
           {
             initialValue: initialNameValue,
             rules: [
-              { required: true, message: '请输入磁贴名称' },
+              { required: true, message: this.$t('dashboard.text_8') },
             ],
           },
         ],
@@ -117,7 +117,7 @@ export default {
           {
             initialValue: initialAllUsageKeyValue,
             rules: [
-              { required: true, message: '请选择指标' },
+              { required: true, message: this.$t('dashboard.text_22') },
             ],
           },
         ],
@@ -126,7 +126,7 @@ export default {
           {
             initialValue: initialUsageKeyValue,
             rules: [
-              { required: true, message: '请选择指标' },
+              { required: true, message: this.$t('dashboard.text_22') },
             ],
           },
         ],
