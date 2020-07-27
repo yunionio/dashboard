@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="虚拟机实例" />
+    <page-header :title="$t('helm.text_3')" />
     <page-body>
       <release-list :id="listId" />
     </page-body>

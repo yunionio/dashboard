@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="部署发布(Release)" />
+    <page-header :title="$t('helm.text_25')" />
     <page-body>
       <div>
         <template v-if="!chartDetail.name">
@@ -12,16 +12,16 @@
             :img="chartDetail.chart.metadata.icon"
             :page-title="chartDetail.name"
             :description="chartDetail.chart.metadata.description">
-            <div class="mt-1" style="font-size: 12px; color: #555; font-weight: 500;">{{ isVm ? '虚拟机应用' : '容器应用' }}</div>
+            <div class="mt-1" style="font-size: 12px; color: #555; font-weight: 500;">{{ isVm ? $t('helm.text_26') : $t('helm.text_27') }}</div>
           </page-card-detail>
           <a-form
             v-bind="formItemLayout"
             :form="form.fc">
-            <a-form-item label="名称">
-              <a-input v-decorator="decorators.release_name" placeholder="请输入名称" />
+            <a-form-item :label="$t('helm.text_16')">
+              <a-input v-decorator="decorators.release_name" :placeholder="$t('helm.text_28')" />
             </a-form-item>
-            <a-form-item label="商店-模板版本">
-              <a-select v-decorator="decorators.version" placeholder="请选择版本">
+            <a-form-item :label="$t('helm.text_29')">
+              <a-select v-decorator="decorators.version" :placeholder="$t('helm.text_30')">
                 <a-select-option
                   v-for="item in versions"
                   :key="item.key"
@@ -31,15 +31,15 @@
               </a-select>
             </a-form-item>
             <template v-if="isVm">
-              <a-form-item :label="`资源归属${$t('dictionary.project')}`">
+              <a-form-item :label="$t('helm.text_24', [$t('dictionary.project')])">
                 <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
               </a-form-item>
             </template>
             <template v-else>
-              <a-form-item label="集群">
+              <a-form-item :label="$t('helm.text_31')">
                 <cluster-select v-decorator="decorators.cluster" @input="setCluster" />
               </a-form-item>
-              <a-form-item label="命名空间">
+              <a-form-item :label="$t('helm.text_32')">
                 <namespace-select v-decorator="decorators.namespace"  @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
               </a-form-item>
             </template>
@@ -50,10 +50,10 @@
               :valueSearch="valueSearch" />
           </a-form>
           <a-collapse v-model="activeKey">
-            <a-collapse-panel v-if="chartDetail.yaml !== ''" header="详细描述" key="desc">
+            <a-collapse-panel v-if="chartDetail.yaml !== ''" :header="$t('helm.text_33')" key="desc">
               <div v-html="compiledMarkdown" />
             </a-collapse-panel>
-            <a-collapse-panel header="YAML模板" key="yaml">
+            <a-collapse-panel :header="$t('helm.text_34')" key="yaml">
               <template-preview :previewFiles="previewFiles" />
             </a-collapse-panel>
           </a-collapse>
@@ -62,8 +62,8 @@
     </page-body>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" @click="confirm" :loading="loading">确 定</a-button>
-        <a-button @click="cancel">取 消</a-button>
+        <a-button class="mr-3" type="primary" @click="confirm" :loading="loading">{{$t('helm.text_35')}}</a-button>
+        <a-button @click="cancel">{{$t('helm.text_36')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -99,7 +99,7 @@ export default {
           return _callback()
         })
         .catch(() => {
-          return _callback('请输入正确的yaml地址')
+          return _callback(this.$t('helm.text_37'))
         })
     }
     return {
@@ -136,8 +136,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
-              { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
+              { required: true, message: this.$t('helm.text_28') },
+              { min: 2, max: 24, message: this.$t('helm.text_38'), trigger: 'blur' },
               { validator: this.$validate('k8sName') },
             ],
           },
@@ -146,7 +146,7 @@ export default {
           'version',
           {
             rules: [
-              { required: true, message: '请选择版本', trigger: 'blur' },
+              { required: true, message: this.$t('helm.text_30'), trigger: 'blur' },
             ],
           },
         ],
@@ -171,7 +171,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.cluster,
             rules: [
-              { required: true, message: '请选择集群', trigger: 'blur' },
+              { required: true, message: this.$t('helm.text_39'), trigger: 'blur' },
             ],
           },
         ],
@@ -180,7 +180,7 @@ export default {
           {
             initialValue: this.$store.state.common.k8s.namespace,
             rules: [
-              { required: true, message: '请选择命名空间', trigger: 'blur' },
+              { required: true, message: this.$t('helm.text_40'), trigger: 'blur' },
             ],
           },
         ],
@@ -189,7 +189,7 @@ export default {
             `keys[${i}]`,
             {
               rules: [
-                { required: true, message: '请输入，例如：image或者image.pullSecrets' },
+                { required: true, message: this.$t('helm.text_41') },
               ],
             },
           ],
@@ -197,7 +197,7 @@ export default {
             `values[${i}]`,
             {
               rules: [
-                { required: true, message: '请输入值' },
+                { required: true, message: this.$t('helm.text_42') },
               ],
             },
           ],
@@ -207,7 +207,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入Yaml' },
+              { required: true, message: this.$t('helm.text_43') },
               { validator },
             ],
           },
@@ -265,7 +265,7 @@ export default {
         },
       })
       if (data.length === 0) {
-        this.$message.error('该应用模板目前无可用版本，请联系管理员')
+        this.$message.error(this.$t('helm.text_44'))
         return
       }
       this.versions = data.map(v => {
@@ -320,7 +320,7 @@ export default {
         this.loading = true
         const values = await this.form.fc.validateFields()
         await this.doCreate(values)
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('helm.text_45'))
         this.loading = false
         this.cancel(true)
       } catch (error) {

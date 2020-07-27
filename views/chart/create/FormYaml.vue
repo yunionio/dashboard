@@ -1,15 +1,15 @@
 <template>
   <div>
     <a-tabs v-model="activeTab" @change="tabChange">
-      <a-tab-pane tab="表单" key="form" />
-      <a-tab-pane tab="编辑YAML" key="yaml" />
+      <a-tab-pane :tab="$t('helm.text_19')" key="form" />
+      <a-tab-pane :tab="$t('helm.text_20')" key="yaml" />
     </a-tabs>
     <labels-complete
       v-if="activeTab === 'form'"
       ref="labelRef"
       :decorators="decorators.config"
-      title="配置"
-      keyLabel="变量"
+      :title="$t('helm.text_21')"
+      :keyLabel="$t('helm.text_22')"
       :localData="localData"
       :valueSearch="valueSearch"
       :keyAutoCompleteProps="keyAutoCompleteProps" />
@@ -53,7 +53,7 @@ export default {
         theme: 'material',
       },
       keyAutoCompleteProps: {
-        placeholder: '例如：image或者image.pullSecrets',
+        placeholder: this.$t('helm.text_23'),
       },
     }
   },

@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="发布(Release)"
+    :title="$t('helm.text_77')"
     icon="res-k8s-release"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     detailTabs () {
-      const detailTabs = [{ label: '详情', key: 'detail' }]
+      const detailTabs = [{ label: this.$t('helm.text_78'), key: 'detail' }]
       if (!this.detailData.resources) return detailTabs
       const allResourceArr = [
         { label: this.$t('dictionary.server'), key: 'virtualmachine' },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="更新发布(Release)" />
+    <page-header :title="$t('helm.text_87')" />
     <page-body>
       <div>
         <template v-if="!chartDetail.metadata">
@@ -15,11 +15,11 @@
           <a-form
             v-bind="formItemLayout"
             :form="form.fc">
-            <a-form-item label="名称">
-              <a-input v-decorator="decorators.release_name" placeholder="请输入名称" disabled />
+            <a-form-item :label="$t('helm.text_16')">
+              <a-input v-decorator="decorators.release_name" :placeholder="$t('helm.text_28')" disabled />
             </a-form-item>
-            <a-form-item label="商店-模板版本">
-              <a-select v-decorator="decorators.version" placeholder="请选择版本" @change="versionChange">
+            <a-form-item :label="$t('helm.text_29')">
+              <a-select v-decorator="decorators.version" :placeholder="$t('helm.text_30')" @change="versionChange">
                 <a-select-option
                   v-for="item in versions"
                   :key="item.key"
@@ -28,7 +28,7 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-            <a-form-item label="Yaml配置">
+            <a-form-item :label="$t('helm.text_88')">
               <code-mirror v-decorator="decorators.yaml" :options="cmOptions" />
             </a-form-item>
           </a-form>
@@ -38,8 +38,8 @@
     </page-body>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" @click="confirm" :loading="loading">确 定</a-button>
-        <a-button @click="cancel">取 消</a-button>
+        <a-button class="mr-3" type="primary" @click="confirm" :loading="loading">{{$t('helm.text_35')}}</a-button>
+        <a-button @click="cancel">{{$t('helm.text_36')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -65,7 +65,7 @@ export default {
           return _callback()
         })
         .catch(() => {
-          return _callback('请输入正确的yaml地址')
+          return _callback(this.$t('helm.text_37'))
         })
     }
     return {
@@ -109,8 +109,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
-              { min: 2, max: 24, message: '长度在 2 到 24 个字符', trigger: 'blur' },
+              { required: true, message: this.$t('helm.text_28') },
+              { min: 2, max: 24, message: this.$t('helm.text_38'), trigger: 'blur' },
               { validator: this.$validate('k8sName') },
             ],
           },
@@ -119,7 +119,7 @@ export default {
           'version',
           {
             rules: [
-              { required: true, message: '请选择版本', trigger: 'blur' },
+              { required: true, message: this.$t('helm.text_30'), trigger: 'blur' },
             ],
           },
         ],
@@ -128,7 +128,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入Yaml' },
+              { required: true, message: this.$t('helm.text_43') },
               { validator },
             ],
           },
@@ -195,7 +195,7 @@ export default {
         },
       })
       if (data.length === 0) {
-        this.$message.error('该应用模板目前无可用版本，请联系管理员')
+        this.$message.error(this.$t('helm.text_44'))
         return
       }
       this.versions = data.map(v => {
@@ -240,7 +240,7 @@ export default {
         this.loading = true
         const values = await this.form.fc.validateFields()
         await this.doUpdate(values)
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('helm.text_45'))
         this.loading = false
         this.cancel()
       } catch (error) {

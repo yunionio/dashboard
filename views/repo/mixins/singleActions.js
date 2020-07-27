@@ -1,14 +1,15 @@
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
     this.singleActions = [
       getSetPublicAction(this, {
-        name: 'Helm仓库地址',
+        name: i18n.t('helm.text_6'),
         scope: 'project',
       }),
       {
-        label: '删除',
+        label: i18n.t('helm.text_69'),
         permission: 'k8s_repos_delete',
         action: (obj) => {
           const requestParams = {
@@ -21,8 +22,8 @@ export default {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '删除',
-            name: 'Helm仓库地址',
+            title: i18n.t('helm.text_69'),
+            name: i18n.t('helm.text_6'),
             onManager: this.onManager,
             idKey: 'name',
             requestParams,
@@ -33,7 +34,7 @@ export default {
           let tooltip = ''
           if (obj.mountedBy && obj.mountedBy.length > 0) {
             validate = false
-            tooltip = '请选择【未被使用】的存储卷'
+            tooltip = i18n.t('helm.text_97')
           }
           return {
             validate,

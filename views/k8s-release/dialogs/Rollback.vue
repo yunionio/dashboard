@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">回滚</div>
+    <div slot="header">{{$t('helm.text_72')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" name="发布" action="回滚" />
+      <dialog-selected-tips :count="params.data.length" :name="$t('helm.text_73')" :action="$t('helm.text_72')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item label="回滚到版本">
+        <a-form-item :label="$t('helm.text_74')">
           <base-select
             v-decorator="decorators.revision"
             need-params
@@ -15,7 +15,7 @@
             :options="options"
             id-key="revision"
             name-key="label"
-            :select-props="{ placeholder: '请选择版本' }" />
+            :select-props="{ placeholder: $t('helm.text_30') }" />
         </a-form-item>
       </a-form>
     </div>
@@ -48,7 +48,7 @@ export default {
           'revision',
           {
             rules: [
-              { required: true, message: '请选择版本' },
+              { required: true, message: this.$t('helm.text_30') },
             ],
           },
         ],

@@ -20,7 +20,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '名称',
+          title: this.$t('helm.text_16'),
           minWidth: 100,
           slots: {
             default: ({ row }) => {

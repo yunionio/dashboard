@@ -1,5 +1,6 @@
 import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 import { getNameDescriptionTableColumn, getTimeTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -17,7 +18,7 @@ export default {
       }),
       {
         field: 'metadata',
-        title: '应用',
+        title: i18n.t('helm.text_75'),
         minWidth: 200,
         formatter: ({ row }) => {
           let text = row.chart || '-'

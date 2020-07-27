@@ -1,4 +1,5 @@
 import { getNameDescriptionTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -16,22 +17,22 @@ export default {
       }),
       {
         field: 'url',
-        title: '类型',
+        title: i18n.t('helm.text_92'),
         minWidth: 80,
         formatter: ({ row }) => {
-          if (row.type === 'internal') return '虚拟机类型'
-          if (row.type === 'external') return '容器类型'
+          if (row.type === 'internal') return i18n.t('helm.text_14')
+          if (row.type === 'external') return i18n.t('helm.text_15')
           return '-'
         },
       },
       {
         field: 'url',
-        title: 'URL地址',
+        title: i18n.t('helm.text_96'),
         minWidth: '200px',
         slots: {
           default: ({ row }, h) => {
             const formRules = [
-              { required: true, message: '请输入URL', trigger: 'blur' },
+              { required: true, message: i18n.t('helm.text_94'), trigger: 'blur' },
               { validator: this.$validate('url') },
             ]
             return [h('list-body-cell-wrap', {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="容器实例" />
+    <page-header :title="$t('helm.text_4')" />
     <page-body>
       <release-list :id="listId" />
     </page-body>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="应用市场(Chart)" />
+    <page-header :title="$t('helm.text_65')" />
     <page-body>
       <chart-list :id="listId" />
     </page-body>

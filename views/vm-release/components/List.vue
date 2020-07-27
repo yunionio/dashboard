@@ -33,7 +33,7 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: {
-            label: '名称',
+            label: this.$t('helm.text_16'),
           },
         },
         steadyStatus: {
@@ -46,7 +46,7 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
+          label: this.$t('helm.text_68'),
           permission: 'k8s_releases_create',
           action: () => {
             this.$router.push({
@@ -61,7 +61,7 @@ export default {
           }),
         },
         {
-          label: '删除',
+          label: this.$t('helm.text_69'),
           permission: 'k8s_releases_delete',
           action: () => {
             const data = this.list.selectedItems
@@ -69,8 +69,8 @@ export default {
               vm: this,
               data,
               columns: this.columns,
-              title: '删除',
-              name: '虚拟机实例',
+              title: this.$t('helm.text_69'),
+              name: this.$t('helm.text_3'),
               onManager: this.onManager,
             })
           },
