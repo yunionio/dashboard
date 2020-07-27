@@ -13,25 +13,6 @@ let messages
 let rootPath
 
 /**
- * 初始化国际化的消息对象
- */
-const initMessage = () => {
-  if (fs.existsSync(i18nFile)) {
-    try {
-      messages = require(i18nFile)
-      Object.keys(messages).forEach(key => {
-        messagesHash[messages[key]] = key
-      })
-      // 获取最大的index
-      generate = Math.max(...Object.keys(messages).map(item => item.replace(/^[^\d]+/, '') - 0)) || 1
-    } catch (e) {
-    }
-  }
-  if (!messages || !Object.keys(messages).length) {
-    messages = {}
-  }
-}
-/**
  * 写入国际化消息文件
  */
 const writeMessage = () => {
@@ -292,7 +273,6 @@ module.exports.generate = (src, options) => {
   const i18nPath = path.join(process.cwd(), options.path ? options.path : '')
   i18nFile = path.join(i18nPath, `${options.filename}.json`)
   const files = getAllFiles(rootPath)
-  initMessage()
   files.forEach(item => {
     /* eslint-disable no-mixed-operators */
     if (!item.includes(selfPath) && item !== i18nFile && (!config.path || config.path && item.indexOf(i18nPath) < 0)) {
