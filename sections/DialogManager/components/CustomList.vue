@@ -11,13 +11,24 @@
             :checked="columnsCheckAll">{{$t('common.checkAll')}}</a-checkbox>
           <a-checkbox-group v-decorator="decorators.columnsSelected" @change="handleColumnsSelectedChange" class="w-100">
             <a-row>
-              <a-col
-                v-for="item of columnFields"
-                :span="6"
-                :key="item.property"
-                class="mb-2 checkbox-item">
-                <a-checkbox :value="item.property"><span :title="item.title">{{ item.title }}</span></a-checkbox>
-              </a-col>
+              <draggable
+                handle=".drag-icon"
+                ghost-class="ghost"
+                v-model="columnFields">
+                <transition-group type="transition" name="flip-list">
+                  <template v-for="item of columnFields">
+                    <a-col
+                      :span="6"
+                      :key="item.property"
+                      class="mb-2 checkbox-item d-flex align-items-center">
+                      <a-checkbox :value="item.property" :disabled="item.disabled">
+                        <span :title="item.title">{{ item.title }}</span>
+                      </a-checkbox>
+                      <a-icon type="drag" class="drag-icon pr-3" @click="iconClick" />
+                    </a-col>
+                  </template>
+                </transition-group>
+              </draggable>
             </a-row>
           </a-checkbox-group>
         </a-form-item>
@@ -52,17 +63,22 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import draggable from 'vuedraggable'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { getTagTitle, isUserTag } from '@/utils/common/tag'
+import { arrToObjByKey } from '@/utils/utils'
 
 export default {
   name: 'CustomListDialog',
+  components: {
+    draggable,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     // 普通的列
     const columnFields = this.params.customs.filter(item => {
-      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== 'action' && !isUserTag(item.property)
+      return item.type !== 'checkbox' && item.type !== 'radio' && item.property !== 'action' && !isUserTag(item.property) && !this.params.hidenColumns.includes(item.property)
     })
     const initialColumnsSelected = columnFields.filter(item => item.visible).map(item => item.property)
     // 标签列
@@ -168,12 +184,14 @@ export default {
       try {
         const { columnsSelected = [], tagsSelected = [] } = await this.validateForm()
         this.loading = true
+        const sortColumnsMap = arrToObjByKey(this.columnFields, 'property', (item, i) => ({ ...item, $index: i }))
         const unSelect = this.columnFields.filter(item => !columnsSelected.includes(item.property)).map(item => item.property)
         const showTagKeys = this.tagFields.filter(item => tagsSelected.includes(item.property)).map(item => item.property)
         await this.params.update({
           ...this.params.config,
           hiddenColumns: unSelect,
           showTagKeys,
+          sortColumnsMap,
         })
         this.cancelDialog()
       } catch (error) {
@@ -193,11 +211,16 @@ export default {
       this.columnsCheckAll = e.target.checked
       this.columnsIndeterminate = false
     },
+    iconClick (e) {
+      e.preventDefault()
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
+@import '../../../styles/less/theme.less';
+
 .tag-fields-wrap {
   max-height: 100px;
   overflow: auto;
@@ -216,6 +239,33 @@ export default {
           white-space: nowrap;
         }
       }
+    }
+    .drag-icon {
+      visibility: hidden;
+    }
+  }
+  &:hover {
+    ::v-deep {
+      &.drag-icon {
+        visibility: visible;
+      }
+    }
+  }
+}
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.drag-icon {
+  position: absolute;
+  right: 0;
+  cursor: move;
+}
+.ghost {
+  opacity: 0.7;
+  background: @primary-color;
+  ::v-deep {
+    label span {
+      color: #fff;
     }
   }
 }

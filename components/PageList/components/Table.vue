@@ -31,6 +31,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import Actions from '../Actions'
 import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
 import { getTagTitle } from '@/utils/common/tag'
@@ -186,6 +187,13 @@ export default {
         })
       }
     },
+    'config.sortColumnsMap' (val, oldVal) {
+      if (!R.equals(val, oldVal)) {
+        this.$nextTick(() => {
+          this.tableColumns = this.genTableColumns()
+        })
+      }
+    },
   },
   mounted () {
     this.initFloatingScrollListener()
@@ -217,6 +225,14 @@ export default {
         if (R.is(Function, item.hidden)) return !item.hidden()
         return !item.hidden
       })
+      const maps = this.config.sortColumnsMap
+      if (!R.isNil(maps) && !R.isEmpty(maps)) {
+        defaultColumns.sort((prev, next) => {
+          const prevColumnIndex = _.get(maps, `[${prev.field}].$index`) || 0
+          const nextColumnIndex = _.get(maps, `[${next.field}].$index`) || 0
+          return prevColumnIndex - nextColumnIndex
+        })
+      }
       if (this.checkboxEnabled) {
         defaultColumns.unshift({ type: 'checkbox', width: 40 })
       } else if (this.radioEnabled) {
