@@ -19,7 +19,7 @@
         <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <quota-config :fc="form.fc" :decorators="decorators" usage-:label="$t('dashboard.text_20')" @update:usage_key="setDefaultName" />
+        <quota-config :fc="form.fc" :decorators="decorators" :usage-label="$t('dashboard.text_20')" @update:usage_key="setDefaultName" />
       </a-form>
     </base-drawer>
   </div>
