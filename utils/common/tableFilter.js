@@ -3,7 +3,7 @@ import store from '@/store'
 import i18n from '@/locales'
 import { HYPERVISORS_MAP } from '@/constants'
 
-export function getBrandItems (key = 'brands') {
+export function getBrandItems (key = 'brands', outBrands = []) {
   let brands = store.getters.capability[key] || []
   if (store.getters.capability[`disabled_${key}`]) {
     brands = brands.concat(store.getters.capability[`disabled_${key}`] || [])
@@ -12,6 +12,11 @@ export function getBrandItems (key = 'brands') {
   return brands.map(item => {
     const brandConfig = HYPERVISORS_MAP[item.toLowerCase()] || {}
     return { key: item, label: brandConfig.label || item }
+  }).filter(({ key }) => {
+    if (R.type(outBrands) === 'Array' && !R.isEmpty(outBrands)) {
+      return outBrands.indexOf(key) === -1
+    }
+    return true
   })
 }
 
@@ -41,12 +46,12 @@ export function getNameFilter ({ field = 'name', label = '名称' } = {}) {
   }
 }
 
-export function getBrandFilter (key) {
+export function getBrandFilter (key, outBrands) {
   return {
     label: '平台',
     dropdown: true,
     multiple: true,
-    items: getBrandItems(key),
+    items: getBrandItems(key, outBrands),
   }
 }
 
