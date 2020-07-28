@@ -52,7 +52,7 @@ export default {
       return this.params.data ? this.params.data[0] : {}
     },
     isGoogle () {
-      return this.backupItem.provider === 'Aliyun'
+      return this.backupItem.provider === 'Google'
     },
   },
   watch: {
