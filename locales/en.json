@@ -1415,7 +1415,10 @@
     "cloudpolicy":"Cloud Permission",
     "commonalert":"Alarm Strategy",
     "monitor_commonalert":"Monitor Alarm",
-    "explorer":"Monitoring query"
+    "explorer":"Monitoring query",
+    "instance_snapshot": "Host Snapshot",
+    "dbinstance": "RDS instance",
+    "loadbalancerclusters": "Load Balance-Cluster"
   },
   "shareScope":{
     "system":"System",
