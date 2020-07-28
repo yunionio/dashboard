@@ -2911,6 +2911,7 @@
   "compute.text_696": "Not mandatory",
   "compute.text_697": "Granularity",
   "compute.text_698": "Number of binding association {0}",
+  "compute.text_699": "Number of associated {0}",
   "compute.text_700": "Delete {0}",
   "compute.text_701": "Binding {0}",
   "compute.text_702": "Please select {0} to bind",
