@@ -7,6 +7,7 @@
         :key="item.resource" />
     </a-tabs>
     <page-list
+      :key="currentResource"
       :list="list"
       :columns="columns"
       :single-actions="singleActions" />
@@ -23,6 +24,8 @@ import ListMixin from '@/mixins/list'
 
 const expectStatusAlias = {
   guestimage: 'image',
+  instance_snapshot: 'snapshot',
+  elasticcache: 'redis',
 }
 
 export default {
@@ -180,7 +183,7 @@ export default {
                 key: 'status',
               },
               mapper: data => {
-                return mapperStatusToItems(data, `status.${statusAlias}`)
+                return mapperStatusToItems(data, statusAlias)
               },
               filter: true,
               formatter: val => {
