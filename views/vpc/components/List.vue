@@ -51,7 +51,7 @@ export default {
           },
           status: getStatusFilter('vpc'),
           cloudaccount: getAccountFilter(),
-          brand: getBrandFilter(),
+          brand: getBrandFilter('brands', ['VMware']),
           cidr_block: {
             label: '目标网段',
           },
