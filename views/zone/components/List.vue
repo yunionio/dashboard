@@ -52,6 +52,8 @@ export default {
         ],
         getParams: {
           cloud_env: 'private_or_onpremise',
+          with_meta: true,
+          show_emulated: true,
         },
       },
       groupActions: [

@@ -40,6 +40,7 @@ export default {
         ],
         getParams: {
           cloud_env: 'private_or_onpremise',
+          show_fail_reason: true,
         },
       },
     }
