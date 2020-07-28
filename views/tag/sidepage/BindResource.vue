@@ -109,8 +109,7 @@ export default {
       return ret
     },
     columns () {
-      return [
-        // getNameDescriptionTableColumn({ addLock: true, onManager: this.onManager }),
+      let ret = [
         getNameDescriptionTableColumn({
           onManager: this.onManager,
           hideField: true,
@@ -136,9 +135,12 @@ export default {
           },
         }),
         getStatusTableColumn({ statusModule: this.currentResource }),
-        getBrandTableColumn(),
         getProjectTableColumn(),
       ]
+      if (this.cloudEnv === 'local_image') {
+        ret = R.insert(2, getBrandTableColumn(), ret)
+      }
+      return ret
     },
   },
   watch: {
