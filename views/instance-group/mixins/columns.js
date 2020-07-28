@@ -14,7 +14,7 @@ export default {
         hideField: true,
         slotCallback: row => {
           return (
-            <side-page-trigger vm={this} name='InstanceGroupSidePage' id={row.id} list={this.list}>{ row.name }</side-page-trigger>
+            <side-page-trigger vm={this} name='InstanceGroupSidePage' id={row.id} list={this.list} tab='instance-group-detail'>{ row.name }</side-page-trigger>
           )
         },
       }),
@@ -41,7 +41,6 @@ export default {
         width: 120,
         slots: {
           default: ({ row }) => {
-            if (row.guest_count <= 0) return row.guest_count
             return [<side-page-trigger vm={this} name='InstanceGroupSidePage' id={row.id} list={this.list} tab='v-m-instance-list-for-instance-group'>{ row.guest_count }</side-page-trigger>]
           },
         },
