@@ -69,98 +69,124 @@ export default {
           { label: '云账号', key: 'account' },
         ],
       },
-      groupActions: [
-        {
+    }
+  },
+  computed: {
+    ...mapGetters(['userInfo', 'capability']),
+    groupActions () {
+      let createBtn = {
+        label: '新建',
+        permission: 'lb_loadbalancers_create',
+        actions: () => [
+          {
+            label: 'OneCloud',
+            action: () => {
+              this.$router.push({
+                path: '/lb/create',
+                query: {
+                  type: 'Onecloud',
+                },
+              })
+            },
+            meta: () => {
+              return {
+                validate: this.hasService(this.userInfo, 'lbagent'),
+              }
+            },
+          },
+          {
+            label: '阿里云',
+            action: () => {
+              this.$router.push({
+                path: '/lb/create',
+                query: {
+                  type: 'Aliyun',
+                },
+              })
+            },
+            meta: () => {
+              return {
+                validate: this.hasHypervisors('aliyun'),
+              }
+            },
+          },
+          {
+            label: '腾讯云',
+            action: () => {
+              this.$router.push({
+                path: '/lb/create',
+                query: {
+                  type: 'Qcloud',
+                },
+              })
+            },
+            meta: () => {
+              return {
+                validate: this.hasHypervisors('qcloud'),
+              }
+            },
+          },
+          {
+            label: '华为云',
+            action: () => {
+              this.$router.push({
+                path: '/lb/create',
+                query: {
+                  type: 'Huawei',
+                },
+              })
+            },
+            meta: () => {
+              return {
+                validate: this.hasHypervisors('huawei'),
+              }
+            },
+          },
+          {
+            label: 'AWS',
+            action: () => {
+              this.$router.push({
+                path: '/lb/create',
+                query: {
+                  type: 'Aws',
+                },
+              })
+            },
+            meta: () => {
+              return {
+                validate: this.hasHypervisors('aws'),
+              }
+            },
+          },
+        ],
+        meta: () => {
+          return {
+            buttonType: 'primary',
+          }
+        },
+      }
+      if (this.getParams.cluster) {
+        createBtn = {
           label: '新建',
           permission: 'lb_loadbalancers_create',
-          actions: () => [
-            {
-              label: 'OneCloud',
-              action: () => {
-                this.$router.push({
-                  path: '/lb/create',
-                  query: {
-                    type: 'Onecloud',
-                  },
-                })
+          action: () => {
+            this.$router.push({
+              path: '/lb/create',
+              query: {
+                type: 'Onecloud',
               },
-              meta: () => {
-                return {
-                  validate: this.hasService(this.userInfo, 'lbagent'),
-                }
-              },
-            },
-            {
-              label: '阿里云',
-              action: () => {
-                this.$router.push({
-                  path: '/lb/create',
-                  query: {
-                    type: 'Aliyun',
-                  },
-                })
-              },
-              meta: () => {
-                return {
-                  validate: this.hasHypervisors('aliyun'),
-                }
-              },
-            },
-            {
-              label: '腾讯云',
-              action: () => {
-                this.$router.push({
-                  path: '/lb/create',
-                  query: {
-                    type: 'Qcloud',
-                  },
-                })
-              },
-              meta: () => {
-                return {
-                  validate: this.hasHypervisors('qcloud'),
-                }
-              },
-            },
-            {
-              label: '华为云',
-              action: () => {
-                this.$router.push({
-                  path: '/lb/create',
-                  query: {
-                    type: 'Huawei',
-                  },
-                })
-              },
-              meta: () => {
-                return {
-                  validate: this.hasHypervisors('huawei'),
-                }
-              },
-            },
-            {
-              label: 'AWS',
-              action: () => {
-                this.$router.push({
-                  path: '/lb/create',
-                  query: {
-                    type: 'Aws',
-                  },
-                })
-              },
-              meta: () => {
-                return {
-                  validate: this.hasHypervisors('aws'),
-                }
-              },
-            },
-          ],
+            })
+          },
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: this.hasService(this.userInfo, 'lbagent'),
             }
           },
-        },
+        }
+      }
+      const actions = [
+        createBtn,
         {
           label: '批量操作',
           actions: () => {
@@ -263,11 +289,9 @@ export default {
             }
           },
         },
-      ],
-    }
-  },
-  computed: {
-    ...mapGetters(['userInfo', 'capability']),
+      ]
+      return actions
+    },
   },
   watch: {
     cloudEnv (val) {

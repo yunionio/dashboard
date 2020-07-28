@@ -29,7 +29,6 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import NetworkList from '../../network/components/List'
-import RouteTableList from '../../route-table/components/List'
 import VpcDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -41,7 +40,6 @@ export default {
     VpcDetail,
     NetworkList,
     Actions,
-    RouteTableList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -49,7 +47,6 @@ export default {
       detailTabs: [
         { label: '详情', key: 'vpc-detail' },
         { label: 'IP子网', key: 'network-list' },
-        { label: this.$t('dictionary.route_table'), key: 'route-table-list' },
         { label: '操作日志', key: 'event-drawer' },
       ],
     }
