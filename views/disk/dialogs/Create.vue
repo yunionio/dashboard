@@ -49,6 +49,7 @@ import WindowsMixin from '@/mixins/windows'
 import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
+import { PROVIDER_MAP } from '@/constants'
 
 export default {
   name: 'DiskCreateDialog',
@@ -332,9 +333,10 @@ export default {
       try {
         let values = await this.validateForm()
         const { project, domain, ...rest } = values
+        const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
         values = {
           ...rest,
-          hypervisor: this.provider,
+          hypervisor: oProvider ? oProvider.hypervisor : this.provider,
           size: values.size * 1024,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
           project_id: (project && project.key) || this.userInfo.projectId,
