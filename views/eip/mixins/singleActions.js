@@ -114,10 +114,13 @@ export default {
                   resource: 'eips',
                 })
               },
-              meta: () => ({
-                validate: this.$store.getters.isAdminMode,
-                tooltip: !this.$store.getters.isAdminMode && '仅管理员支持该操作',
-              }),
+              meta: () => {
+                const validate = this.$store.getters.isAdminMode || this.$store.getters.isDomainMode
+                return {
+                  validate,
+                  tooltip: !validate && '普通项目支持该操作',
+                }
+              },
             },
             {
               label: '删除',
