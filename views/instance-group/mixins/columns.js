@@ -38,7 +38,7 @@ export default {
       },
       {
         field: 'guest_count',
-        title: i18n.t('compute.text_698', [i18n.t('dictionary.server')]),
+        title: i18n.t('common_460', [i18n.t('dictionary.server')]),
         width: 120,
         slots: {
           default: ({ row }) => {
