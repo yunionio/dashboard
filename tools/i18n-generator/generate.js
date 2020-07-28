@@ -119,7 +119,9 @@ const generateVueFile = file => {
       hasReplaced = true
       return result
     })
-    return match.replace(/(\w+='|\w+="|>|'|")([^'"<>]*[\u4e00-\u9fa5]+[^'"<>]*)(['"<])/gim, (_, prev, match, after) => {
+    // 未匹配props中带有'-'的正则
+    // /(\w+='|\w+="|>|'|")([^'"<>]*[\u4e00-\u9fa5]+[^'"<>]*)(['"<])/gim
+    return match.replace(/(\w+='|\w+[-\w+]*="|>|'|")([^'"<>]*[\u4e00-\u9fa5]+[^'"<>]*)(['"<])/gim, (_, prev, match, after) => {
       match = match.trim()
       let result = ''
       let currentKey
@@ -139,10 +141,10 @@ const generateVueFile = file => {
         }
       } else {
         currentKey = getCurrentKey(match, file)
-        if (prev.match(/^\w+='$/)) {
+        if (prev.match(/^\w+[-\w+]*='$/)) {
           // 对于属性中普通文本的替换
           result = `:${prev}$t("${currentKey}")${after}`
-        } else if (prev.match(/^\w+="$/)) {
+        } else if (prev.match(/^\w+[-\w+]*="$/)) {
           // 对于属性中普通文本的替换
           result = `:${prev}$t('${currentKey}')${after}`
         } else if (prev === '"' || prev === '\'') {
