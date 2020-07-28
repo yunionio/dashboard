@@ -44,7 +44,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          brand: getBrandFilter(),
+          brand: getBrandFilter('brands', ['VMware']),
           ip_addr: {
             label: this.$t('network.text_191'),
             filter: true,
