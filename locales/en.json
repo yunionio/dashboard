@@ -8126,5 +8126,6 @@
   "common_457":"No comment",
   "common_458":"Error log",
   "common_459": "Switch language",
-  "common_460": "Attached {0}"
+  "common_460": "Attached {0}",
+  "common_461": "There are no data, please select cluster and namespace refresh, if there is no cluster, please create first"
 }
