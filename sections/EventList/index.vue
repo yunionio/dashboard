@@ -56,6 +56,7 @@ export default {
         label: '操作',
       },
     }
+    if (this.$store.getters.isProjectMode) delete filterOptions.tenant
     return {
       rangeTime: [null, null],
       list: this.$list.createList(this, {
