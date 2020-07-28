@@ -3,6 +3,7 @@
   <page-list
     :list="list"
     :columns="columns"
+    :noDataText="noDataText"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
