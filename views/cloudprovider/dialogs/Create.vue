@@ -8,7 +8,8 @@
             新建订阅需要满足以下2个条件：
           </div>
           <div>1.国际区的云账号，中国大陆地区的云账号不支持该操作 </div>
-          <div>2.录入的APP必须被授予Owner的权限，操作步骤请点击查看帮助  <help-link href="/">详情</help-link></div>
+          <!-- <div>2.录入的APP必须被授予Owner的权限，操作步骤请点击查看帮助  <help-link href="/">详情</help-link></div> -->
+          <div>2.录入的APP必须被授予Owner的权限</div>
         </template>
       </a-alert>
       <a-form :form="form.fc" v-bind="formItemLayout">

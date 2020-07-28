@@ -96,6 +96,7 @@ export default {
           action: () => {
             if (isAccountDomain(this.data)) {
               this.createDialog('ChangeProjectDialog', {
+                name: this.$t('dictionary.cloudprovider'),
                 data: this.list.selectedItems,
                 columns: this.columns,
                 onManager: this.onManager,
@@ -103,6 +104,7 @@ export default {
               })
             } else {
               this.createDialog('ChangeOwenrDialog', {
+                name: this.$t('dictionary.cloudprovider'),
                 data: this.list.selectedItems,
                 columns: this.columns,
                 onManager: this.onManager,
