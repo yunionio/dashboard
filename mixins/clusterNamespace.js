@@ -14,6 +14,13 @@ export default {
       default: false,
     },
   },
+  computed: {
+    noDataText () {
+      const { cluster, namespace } = this.list.getParams
+      if (!cluster && !namespace) return '暂无数据，请选择选择集群和命名空间后刷新，如无集群请先创建'
+      return '暂无数据'
+    },
+  },
   data () {
     return {
       namespaceMap: {},
