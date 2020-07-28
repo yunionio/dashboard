@@ -21,6 +21,10 @@ import WindowsMixin from '@/mixins/windows'
 import { getBrandItems, mapperStatusToItems } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 
+const expectStatusAlias = {
+  guestimage: 'image',
+}
+
 export default {
   name: 'BindResource',
   mixins: [WindowsMixin, ListMixin],
@@ -109,6 +113,7 @@ export default {
       return ret
     },
     columns () {
+      const statusAlias = expectStatusAlias[this.currentResource] || this.currentResource
       let ret = [
         getNameDescriptionTableColumn({
           onManager: this.onManager,
@@ -134,10 +139,10 @@ export default {
             }
           },
         }),
-        getStatusTableColumn({ statusModule: this.currentResource }),
+        getStatusTableColumn({ statusModule: statusAlias }),
         getProjectTableColumn(),
       ]
-      if (this.cloudEnv === 'local_image') {
+      if (this.cloudEnv !== 'local_image') {
         ret = R.insert(2, getBrandTableColumn(), ret)
       }
       return ret
@@ -146,11 +151,12 @@ export default {
   watch: {
     currentResource: {
       handler (val) {
+        const statusAlias = expectStatusAlias[val] || val
         this.list = this.$list.createList(this, {
           resource: `${val}s`,
           apiVersion: this.cloudEnv === 'local_image' ? 'v1' : 'v2',
           getParams: this.getParams,
-          steadyStatus: expectStatus[val] && Object.values(expectStatus[val]) && Object.values(expectStatus[val]).flat(),
+          steadyStatus: expectStatus[statusAlias] && Object.values(expectStatus[statusAlias]) && Object.values(expectStatus[statusAlias]).flat(),
           filterOptions: {
             name: {
               label: '名称',
@@ -174,7 +180,7 @@ export default {
                 key: 'status',
               },
               mapper: data => {
-                return mapperStatusToItems(data, `status.${val}`)
+                return mapperStatusToItems(data, `status.${statusAlias}`)
               },
               filter: true,
               formatter: val => {
