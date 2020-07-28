@@ -4,7 +4,6 @@ import K8sRelease from '@Helm/views/k8s-release'
 import K8sReleaseUpdate from '@Helm/views/k8s-release/update'
 import Chart from '@Helm/views/chart'
 import K8sChartCreate from '@Helm/views/chart/create1'
-import K8sChartCreateDemo from '@Helm/views/chart/create1/jsonschema-form-demo'
 import Repo from '@Helm/views/repo'
 import Scheduledtask from '@Cloudenv/views/scheduledtask'
 import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
@@ -93,11 +92,6 @@ export default {
               name: 'K8sChartCreate',
               path: 'create',
               component: K8sChartCreate,
-            },
-            {
-              name: 'K8sChartCreate',
-              path: 'jsonschema-form-demo',
-              component: K8sChartCreateDemo,
             },
           ],
         },
