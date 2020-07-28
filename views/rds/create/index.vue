@@ -12,7 +12,7 @@
           v-slot:extra
           res="dbinstances"
           :name="form.getFieldValue('generate_name')"
-          default-:text="$t('db.text_142')"  />
+          :default-text="$t('db.text_142')"  />
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
