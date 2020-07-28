@@ -1,77 +1,122 @@
-import vue from 'vue'
-import maskLoading from './mask.vue'
-import i18n from '@/locales'
+import Vue from 'vue'
+import Loading from './mask.vue'
+import { addClass, removeClass, getStyle } from '@/utils/dom'
+import afterLeave from '@/utils/after-leave'
 
-const Mask = vue.extend(maskLoading)
+const Mask = Vue.extend(Loading)
 
-const toggleLoading = function (el, binding) {
+const toggleLoading = (el, binding) => {
   if (binding.value) {
-    vue.nextTick(() => {
+    Vue.nextTick(() => {
       if (binding.modifiers.fullscreen) {
-        // 全屏情况下
-        // el.instance.fullscreen = true;
-        // document.body.style.overflow = "hidden";
-        document.body.appendChild(el.mask)
+        el.originalPosition = getStyle(document.body, 'position')
+        el.originalOverflow = getStyle(document.body, 'overflow')
+        el.maskStyle.zIndex = 2400
+
+        addClass(el.mask, 'oc-mask-fullscreen')
+        insertDom(document.body, el, binding)
       } else {
-        // el.instance.fullscreen = false;
-        // 非全屏情况下
-        const rect = el.getBoundingClientRect();
-        ['height', 'width'].forEach(property => {
-          el.maskStyle[property] = rect[property] + 'px'
-        })
-        Object.keys(el.maskStyle).forEach(property => {
-          el.mask.style[property] = el.maskStyle[property]
-        })
-        el.appendChild(el.mask)
+        removeClass(el.mask, 'oc-mask-fullscreen')
+
+        if (binding.modifiers.body) {
+          el.originalPosition = getStyle(document.body, 'position');
+
+          ['top', 'left'].forEach(property => {
+            const scroll = property === 'top' ? 'scrollTop' : 'scrollLeft'
+            el.maskStyle[property] = el.getBoundingClientRect()[property] +
+              document.body[scroll] +
+              document.documentElement[scroll] -
+              parseInt(getStyle(document.body, `margin-${property}`), 10) +
+              'px'
+          });
+          ['height', 'width'].forEach(property => {
+            el.maskStyle[property] = el.getBoundingClientRect()[property] + 'px'
+          })
+
+          insertDom(document.body, el, binding)
+        } else {
+          el.originalPosition = getStyle(el, 'position')
+          insertDom(el, el, binding)
+        }
       }
     })
   } else {
-    // 移除节点
-    el.mask && el.mask.parentNode && el.mask.parentNode.removeChild(el.mask)
-    el.instance && el.instance.$destroy()
+    afterLeave(el.instance, _ => {
+      if (!el.instance.hiding) return
+      el.domVisible = false
+      const target = binding.modifiers.fullscreen || binding.modifiers.body
+        ? document.body
+        : el
+      removeClass(target, 'position-relative')
+      removeClass(target, 'overflow-hidden')
+      el.instance.hiding = false
+    }, 300, true)
+    el.instance.visible = false
+    el.instance.hiding = true
+  }
+}
+const insertDom = (parent, el, binding) => {
+  if (!el.domVisible && getStyle(el, 'display') !== 'none' && getStyle(el, 'visibility') !== 'hidden') {
+    Object.keys(el.maskStyle).forEach(property => {
+      el.mask.style[property] = el.maskStyle[property]
+    })
+
+    if (el.originalPosition !== 'absolute' && el.originalPosition !== 'fixed') {
+      addClass(parent, 'position-relative')
+    }
+    if (binding.modifiers.fullscreen && binding.modifiers.lock) {
+      addClass(parent, 'overflow-hidden')
+    }
+    el.domVisible = true
+
+    parent.appendChild(el.mask)
+    Vue.nextTick(() => {
+      if (el.instance.hiding) {
+        el.instance.$emit('after-leave')
+      } else {
+        el.instance.visible = true
+      }
+    })
+    el.domInserted = true
+  } else if (el.domVisible && el.instance.hiding === true) {
+    el.instance.visible = true
+    el.instance.hiding = false
   }
 }
 
 export default {
-  bind (el, binding) {
-    const background = binding.value.background
-    const text = binding.value.text
-    const color = binding.value.color
-    const fontSize = binding.value.fontSize
+  bind: function (el, binding, vnode) {
+    const textExr = binding.value.text
+    const backgroundExr = binding.value.background
+    const vm = vnode.context
     const mask = new Mask({
       el: document.createElement('div'),
       data: {
+        text: (vm && vm[textExr]) || textExr,
+        background: (vm && vm[backgroundExr]) || backgroundExr,
         fullscreen: !!binding.modifiers.fullscreen,
-        background: background || '255, 255, 255, 1',
-        text: text || i18n.t('common_67'),
-        color: color || null,
-        fontSize: fontSize || null,
       },
     })
-    el.instance = mask // 将mask存入
-    el.mask = mask.$el // dom存入，方便获取
+    el.instance = mask
+    el.mask = mask.$el
     el.maskStyle = {}
-    toggleLoading(el, binding)
+
+    binding.value && toggleLoading(el, binding)
   },
-  // 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
-  // eslint-disable-next-line no-unused-vars
-  inserted: function (el, binding, vnode, oldVnode) {
-    // console.log("元素插入的时候");
-  },
-  // 所在组件的 VNode 更新时调用
-  update (el, binding) {
-    // console.log("更新了", binding);
+
+  update: function (el, binding) {
     if (binding.oldValue !== binding.value) {
       toggleLoading(el, binding)
     }
   },
-  // 指令所在组件的 VNode 及其子 VNode 全部更新后调用
-  componentUpdated () {
-    // console.log("渲染完成了");
-  },
-  // 只调用一次，指令与元素解绑时调用
-  unbind (el) {
-    el.mask && el.mask.parentNode && el.mask.parentNode.removeChild(el.mask)
+
+  unbind: function (el, binding) {
+    if (el.domInserted) {
+      el.mask &&
+      el.mask.parentNode &&
+      el.mask.parentNode.removeChild(el.mask)
+      toggleLoading(el, { value: false, modifiers: binding.modifiers })
+    }
     el.instance && el.instance.$destroy()
   },
 }
