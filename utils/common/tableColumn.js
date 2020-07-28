@@ -313,7 +313,7 @@ export const getTagTableColumn = ({
             props: {
               row,
               onManager,
-              metadata: row[field] || {},
+              metadata: _.get(row, field) || {},
               ignoreKeys,
               needExt,
               resource,
