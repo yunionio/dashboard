@@ -9,19 +9,19 @@
          v-bind="formItemLayout">
         <a-form-item label="AppID" v-if="isQcloud">
           <a-input v-decorator="decorators.app_id" placeholder="请输入App ID" />
-          <div slot="extra" class="text-right">
+          <div slot="extra">
             <help-link :href="doc">如何获取腾讯云的 App ID 和密钥？</help-link>
           </div>
         </a-form-item>
         <a-form-item label="租户（Tenant） ID" v-if="isAzure">
           <a-input v-decorator="decorators.directory_id" placeholder="请输入租户（Tenant）ID" />
-          <div slot="extra" class="text-right">
+          <div slot="extra">
             <help-link :href="doc">如何获取Azure的租户（Tenant） ID ？</help-link>
           </div>
         </a-form-item>
         <upload-json-file :fc="form.fc" v-if="isGoogle">
           <a-form-item :label="field.label.k">
-            <a-textarea v-if="isGoogle" :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
+            <a-textarea :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
           </a-form-item>
           <a-form-item :label="field.label.s">
             <a-input-password v-decorator="decorators.keySecret" :placeholder="field.placeholder.s" type="password" />
@@ -30,7 +30,7 @@
         <div v-else>
           <a-form-item :label="field.label.k">
             <a-input v-decorator="decorators.keyId" :disabled="isVMware" :placeholder="field.placeholder.k" />
-            <div slot="extra" class="text-right d-flex">
+            <div slot="extra" class="d-flex">
               <span v-if="isVMware">VMware平台暂不支持更新账号</span>
               <div class="flex-grow-1">
                 <help-link :href="doc">如何获取{{ field.text }} {{ field.label.k }} 和 {{ field.label.s }}？</help-link>
