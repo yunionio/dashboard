@@ -325,7 +325,7 @@ export default {
       }
       const children = []
       if (renderTitle && item.title) {
-        children.push(h('div', { class: 'detail-item-title' }, item.title))
+        children.push(h('div', { class: 'detail-item-title', attrs: { title: item.title } }, item.title))
       }
       children.push(<div class={classNames('detail-item-value', { 'ml-0': !renderTitle || !item.title })}>{val}</div>)
       return h('div', {

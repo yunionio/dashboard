@@ -24,6 +24,9 @@
       width: 140px;
       color: #5e6978;
       position: absolute;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     &-value {
       color: #1a2736;
