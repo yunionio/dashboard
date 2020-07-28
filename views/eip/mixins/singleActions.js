@@ -115,10 +115,16 @@ export default {
                 })
               },
               meta: () => {
-                const validate = this.$store.getters.isAdminMode || this.$store.getters.isDomainMode
+                const ret = {
+                  validate: false,
+                  tooltip: '',
+                }
+                if (this.isProjectMode) {
+                  ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                  return ret
+                }
                 return {
-                  validate,
-                  tooltip: !validate && '普通项目支持该操作',
+                  validate: true,
                 }
               },
             },

@@ -6,7 +6,8 @@
     :columns="columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -28,6 +29,10 @@ export default {
       type: [Function, Object],
     },
     cloudEnv: String,
+    showGroupActions: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {

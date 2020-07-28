@@ -25,6 +25,7 @@ export default {
     this.singleActions = [
       {
         label: '调整标签',
+        permission: 'schedtags_list,networks_perform_set_schedtag',
         action: (obj) => {
           this.createDialog('AdjustLabelDialog', {
             data: [obj],
@@ -95,6 +96,14 @@ export default {
                 })
               },
               meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: '',
+                }
+                if (this.isProjectMode) {
+                  ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                  return ret
+                }
                 return {
                   validate: this.isPower(obj),
                 }

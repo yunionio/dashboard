@@ -154,6 +154,7 @@ export default {
             return [
               {
                 label: `更改${this.$t('dictionary.project')}`,
+                permission: 'networks_perform_change_owner',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -164,6 +165,14 @@ export default {
                   })
                 },
                 meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: '',
+                  }
+                  if (this.isProjectMode) {
+                    ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                    return ret
+                  }
                   const f = this.eachValidates((obj) => {
                     return this.isPower(obj)
                   })
@@ -320,7 +329,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
     allowConcat () {
       if (this.list.selectedItems.length === 2) {
         if (this.list.selectedItems.every(v => v.external_id && v.external_id.length > 0)) { // 是公网 IP

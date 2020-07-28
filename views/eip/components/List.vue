@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
@@ -145,6 +146,9 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    ...mapGetters(['isProjectMode']),
   },
   created () {
     this.initSidePageTab('eip-detail')
