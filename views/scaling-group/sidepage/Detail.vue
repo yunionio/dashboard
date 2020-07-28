@@ -72,7 +72,7 @@ export default {
               field: 'desire_instance_number',
               title: '期望实例数',
               formatter: ({ row }) => {
-                return row['desire_instance_number']
+                return row.desire_instance_number
               },
             },
             {
@@ -101,6 +101,18 @@ export default {
                 ]
               },
             }),
+            getCopyWithContentTableColumn({
+              field: 'network',
+              title: 'IP子网',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.networks || !row.networks.length) return '-'
+                const [{ id, name }] = row.networks
+                return [
+                  <side-page-trigger permission='networks_get' name='NetworkSidePage' id={id} vm={this}>{ name }</side-page-trigger>,
+                ]
+              },
+            }),
             {
               field: 'loadbalancer',
               title: '负载均衡',
@@ -123,7 +135,7 @@ export default {
               field: 'health_check_gov',
               title: '健康状态检查宽限期',
               formatter: ({ row }) => {
-                return `${row['health_check_gov']}s`
+                return `${row.health_check_gov}s`
               },
             },
           ],
