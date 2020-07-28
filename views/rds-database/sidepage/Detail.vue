@@ -1,5 +1,9 @@
 <template>
-  <detail :base-info="baseInfo" :data="data" statusModule="rdsDatabase" />
+  <detail
+   statusModule="rdsDatabase"
+  :base-info="baseInfo"
+  :data="data"
+  :on-manager="onManager" />
 </template>
 
 <script>
@@ -10,6 +14,10 @@ export default {
   props: {
     data: {
       type: Object,
+      required: true,
+    },
+    onManager: {
+      type: Function,
       required: true,
     },
   },
