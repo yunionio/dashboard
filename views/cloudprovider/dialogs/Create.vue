@@ -4,9 +4,12 @@
     <div slot="body">
       <a-alert class="mb-3" type="warning">
         <template slot="message">
-          <div>{{$t('cloudenv.text_341')}}</div>
-          <div>{{$t('cloudenv.text_342')}}</div>
-          <div>{{$t('cloudenv.text_343')}}<help-link href="/">{{$t('cloudenv.text_237')}}</help-link></div>
+          <div>
+            {{$t('cloudenv.text_341')}}
+          </div>
+          <div>{{$t('cloudenv.text_342')}} </div>
+          <!-- <div>2.录入的APP必须被授予Owner的权限，操作步骤请点击查看帮助  <help-link href="/">详情</help-link></div> -->
+          <div>{{$t('cloudenv.text_343')}}</div>
         </template>
       </a-alert>
       <a-form :form="form.fc" v-bind="formItemLayout">

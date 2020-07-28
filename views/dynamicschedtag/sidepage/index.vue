@@ -15,7 +15,7 @@
     <component
       :is="params.windowData.currentTab"
       :data="detailData"
-      :res-id="data.id"
+      :res-id="detailData.id"
       :onManager="onManager"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
