@@ -38,30 +38,32 @@ export default {
     },
   },
   data () {
+    const filterOptions = {
+      obj_name: {
+        label: this.$t('common_151'),
+      },
+      tenant: {
+        label: this.$t('common_152') + this.$t('dictionary.project'),
+      },
+      user: {
+        label: this.$t('common_153'),
+        filter: true,
+        formatter: val => {
+          return `user.contains("${val}")`
+        },
+      },
+      action: {
+        label: this.$t('common_154'),
+      },
+    }
+    if (this.$store.getters.isProjectMode) delete filterOptions.tenant
     return {
       rangeTime: [null, null],
       list: this.$list.createList(this, {
         resource: 'actions',
         apiVersion: 'v1',
         getParams: this.getParam,
-        filterOptions: {
-          obj_name: {
-            label: this.$t('common_151'),
-          },
-          tenant: {
-            label: this.$t('common_152') + this.$t('dictionary.project'),
-          },
-          user: {
-            label: this.$t('common_153'),
-            filter: true,
-            formatter: val => {
-              return `user.contains("${val}")`
-            },
-          },
-          action: {
-            label: this.$t('common_154'),
-          },
-        },
+        filterOptions,
       }),
       exportDataOptions: {
         items: [
