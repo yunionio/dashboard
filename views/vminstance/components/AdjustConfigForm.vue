@@ -568,7 +568,7 @@ export default {
             disk: item.disk,
           },
           after: {
-            cpu: this.form.fd.vcpu_count,
+            cpu: this.form.fd.vcpu,
             memory: this.form.fd.vmem,
             disk: +item.disk + (+diskSize - beforeDiskSize) * 1024,
           },
