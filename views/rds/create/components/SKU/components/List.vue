@@ -8,9 +8,8 @@
       :loading="loading"
       @cell-click="handleSkuChange"
       @radio-change="handleSkuChange"
-      max-height="500"
       ref="tableRef">
-      <div slot="empty" style="min-height: 200px">
+      <div slot="empty" style="height: 100px">
         <page-list-empty :loading="loading" />
       </div>
     </vxe-grid>

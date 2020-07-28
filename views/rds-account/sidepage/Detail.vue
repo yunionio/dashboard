@@ -1,5 +1,9 @@
 <template>
-  <detail :base-info="baseInfo" statusModule="rdsAccount" :data="data" />
+  <detail
+    statusModule="rdsAccount"
+    :base-info="baseInfo"
+    :data="data"
+    :on-manager="onManager" />
 </template>
 
 <script>
@@ -8,12 +12,12 @@ import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 export default {
   name: 'RDSDetail',
   props: {
-    list: {
+    data: {
       type: Object,
       required: true,
     },
-    data: {
-      type: Object,
+    onManager: {
+      type: Function,
       required: true,
     },
   },
