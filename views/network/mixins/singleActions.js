@@ -47,8 +47,7 @@ export default {
               label: i18n.t('network.text_606'),
               permission: 'networks_update',
               action: () => {
-                const updatePath = this.$router.resolve(this.$route.path)
-                this.$router.push({ path: updatePath.resolved.path + '/edit', query: { network_id: obj.id } })
+                this.$router.push({ path: '/network/edit', query: { network_id: obj.id } })
               },
               meta: () => {
                 let tooltip = ''
