@@ -31,7 +31,10 @@
         </a-form-item>
         <a-form-item :label="$t('network.text_641')" v-bind="formItemLayout">
           <a-textarea v-decorator="['notes', {
-            rules: [{ max: 200, message: $t('network.text_642')}],
+            rules: [
+              { required: true, message: this.$t('network.text_643') },
+              { max: 200, message: $t('network.text_642')}
+            ],
           }]" :placeholder="$t('network.text_643')" :rows="2" />
         </a-form-item>
       </a-form>
