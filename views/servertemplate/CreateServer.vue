@@ -21,7 +21,7 @@
             style="width: 120px;"
             :loading="loading">{{ isOpenWorkflow ? $t('compute.text_288') : $t('dialog.ok') }}</a-button>
           <a-button size="large" style="width: 120px;" @click="goBack">{{$t('compute.text_135')}}</a-button>
-          <side-errors error-:title="$t('compute.text_290')" :errors.sync="errors" />
+          <side-errors :error-title="$t('compute.text_290')" :errors.sync="errors" />
         </template>
       </page-footer>
     </a-form>

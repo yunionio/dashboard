@@ -11,7 +11,7 @@
             v-slot:extra
             res="servers"
             :name="form.fi.generate_name"
-            default-:text="$t('compute.text_893')" />
+            :default-text="$t('compute.text_893')" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout">
           <a-input-number v-decorator="decorators.__count__" :min="1" :max="10" :step="1" :parser="Math.round" />

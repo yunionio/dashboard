@@ -46,7 +46,7 @@
             :loading="loading"
             :disabled="!!errors.length">{{ isOpenWorkflow && !isInstallOperationSystem ? $t('compute.text_288') : $t('compute.text_289') }}</a-button>
         </div>
-        <side-errors error-:title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
+        <side-errors :error-title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
       </template>
     </page-footer>
   </div>
