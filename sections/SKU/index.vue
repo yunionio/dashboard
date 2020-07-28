@@ -61,7 +61,7 @@ export default {
       },
       default: () => ({
         key: 'hour_price',
-        unit: this.$t('compute.text_172'),
+        unit: i18n.t('compute.text_172'),
       }),
     },
     skuParams: {
