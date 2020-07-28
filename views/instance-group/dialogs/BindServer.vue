@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_703', [$t('dictionary.server')])}}</div>
+    <div slot="header">{{$t('compute.text_483', [$t('dictionary.server')])}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
@@ -8,7 +8,7 @@
           <div class="mt-2">{{$t('compute.text_707', [$t('dictionary.instancegroup') ])}}</div>
         </template>
       </a-alert>
-      <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="$t('compute.text_701', [this.$t('dictionary.server')])" />
+      <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="$t('compute.text_483', [this.$t('dictionary.server')])" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
         <a-select

@@ -5,7 +5,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: this.$t('compute.text_701', [this.$t('dictionary.server')]),
+        label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
         action: (obj) => {
           this.createDialog('InstanceGroupBindServerDialog', {
             columns: this.columns,

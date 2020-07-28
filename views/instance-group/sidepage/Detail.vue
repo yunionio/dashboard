@@ -27,7 +27,7 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'guest_count',
-          title: this.$t('compute.text_718'),
+          title: `${this.$t('common_460', [this.$t('dictionary.server')])}`,
           slots: {
             default: ({ row }) => {
               if (row.guest_count > 0) {
