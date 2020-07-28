@@ -1,9 +1,9 @@
 <template>
   <detail
-   statusModule="rdsDatabase"
-  :base-info="baseInfo"
-  :data="data"
-  :on-manager="onManager" />
+    statusModule="rdsDatabase"
+    :base-info="baseInfo"
+    :data="data"
+    :on-manager="onManager" />
 </template>
 
 <script>
