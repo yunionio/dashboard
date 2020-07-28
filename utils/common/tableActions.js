@@ -62,7 +62,7 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) 
       if (!store.getters.l3PermissionEnable || !store.getters.isAdminMode) ret.validate = false
       if (data.some(item => item.is_public && item.public_scope !== 'none')) {
         ret.validate = false
-        ret.tooltip = '只有共享范围为不共享的才支持该操作'
+        ret.tooltip = '只有共享范围为私有的才支持该操作'
       }
       return ret
     },
