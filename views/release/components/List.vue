@@ -21,10 +21,9 @@ import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
-  name: 'K8SPersistentvolumeclaimList',
+  name: 'K8SReleaseList',
   components: {
     ClusterNamespace,
   },
@@ -40,23 +39,17 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'persistentvolumeclaims',
+        resource: 'releases',
         apiVersion: 'v1',
         getParams: this.getParams,
         idKey: 'name',
         filterOptions: {
-          name: getNameFilter(),
-          unused: {
-            label: '使用情况',
-            dropdown: true,
-            items: [
-              { label: '被使用', key: false },
-              { label: '未被使用', key: true },
-            ],
+          name: {
+            label: '名称',
           },
         },
         steadyStatus: {
-          status: Object.values(expectStatus.k8s_resource).flat(),
+          status: Object.values(expectStatus.release).flat(),
         },
         itemGetParams: {
           cluster: '',
@@ -65,10 +58,10 @@ export default {
       }),
       groupActions: [
         {
-          label: '新建',
-          permission: 'k8s_persistentvolumeclaims_create',
+          label: '应用目录',
+          permission: 'k8s_releases_create',
           action: () => {
-            this.$router.push({ path: '/k8s-persistentvolumeclaim/create' })
+            this.$router.push({ path: '/k8s-chart' })
           },
           meta: () => ({
             buttonType: 'primary',
@@ -76,7 +69,7 @@ export default {
         },
         {
           label: '删除',
-          permission: 'k8s_persistentvolumeclaims_delete',
+          permission: 'k8s_releases_delete',
           action: () => {
             const data = this.list.selectedItems
             const requestData = {
@@ -89,7 +82,7 @@ export default {
               data,
               columns: this.columns,
               title: '删除',
-              name: '存储声明',
+              name: '发布',
               onManager: this.onManager,
               idKey: 'name',
               requestData,
@@ -104,10 +97,6 @@ export default {
               if (unique.length > 1) {
                 validate = false
                 tooltip = '请选择同一个命名空间下的资源'
-              }
-              if (this.list.selectedItems.some(item => item.mountedBy && item.mountedBy.length !== 0)) {
-                validate = false
-                tooltip = '请选择【未被使用】的存储卷'
               }
             } else {
               validate = false
@@ -124,9 +113,9 @@ export default {
   },
   methods: {
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SPersistentvolumeclaimSidePage', {
+      this.sidePageTriggerHandle(this, 'K8SReleaseSidePage', {
         id: row.name,
-        resource: 'persistentvolumeclaims',
+        resource: 'releases',
         getParams: () => {
           const params = R.clone(this.list.getParams)
           if (row.namespace) {
