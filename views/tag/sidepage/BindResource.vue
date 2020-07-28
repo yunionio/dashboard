@@ -26,6 +26,7 @@ const expectStatusAlias = {
   guestimage: 'image',
   instance_snapshot: 'snapshot',
   elasticcache: 'redis',
+  dbinstance: 'rds',
 }
 
 export default {
@@ -57,6 +58,8 @@ export default {
         snapshot: this.$t('dictionary.snapshot'),
         dbinstance: 'RDS',
         host: this.$t('dictionary.physicalmachine'),
+        dbinstancebackup: this.$t('dictionary.dbinstancebackups'),
+        loadbalancerclusters: '负载均衡集群',
       },
       resourceSidePageTriggerOptions: {
         disk: {
@@ -208,7 +211,7 @@ export default {
   },
   methods: {
     getTab (item) {
-      const resourceName = this.resources[item.resource] || this.$t('dictionary')[item.resource]
+      const resourceName = this.resources[item.resource] || this.$t('dictionary')[item.resource] || item.resource
       return `${resourceName}(${item.count})`
     },
   },
