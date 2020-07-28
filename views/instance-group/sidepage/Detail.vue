@@ -27,7 +27,7 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'guest_count',
-          title: '绑定主机数量',
+          title: '已关联虚拟机',
           slots: {
             default: ({ row }) => {
               if (row.guest_count > 0) {

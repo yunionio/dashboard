@@ -37,7 +37,7 @@ export default {
       },
       {
         field: 'guest_count',
-        title: `绑定${this.$t('dictionary.server')}数量`,
+        title: `已关联${this.$t('dictionary.server')}`,
         width: 120,
         slots: {
           default: ({ row }) => {
