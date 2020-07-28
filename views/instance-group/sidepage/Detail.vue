@@ -30,12 +30,9 @@ export default {
           title: `${this.$t('common_460', [this.$t('dictionary.server')])}`,
           slots: {
             default: ({ row }) => {
-              if (row.guest_count > 0) {
-                return [(
-                  <a onClick={ () => this.$emit('tab-change', 'v-m-instance-list-for-instance-group') }>{ row.guest_count }</a>
-                )]
-              }
-              return `${row.guest_count}`
+              return [(
+                <a onClick={ () => this.$emit('tab-change', 'v-m-instance-list-for-instance-group') }>{ row.guest_count }</a>
+              )]
             },
           },
         },

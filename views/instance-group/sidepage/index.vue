@@ -45,7 +45,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'instance-group-detail' },
-        { label: this.$t('compute.text_724', [this.$t('dictionary.server')]), key: 'v-m-instance-list-for-instance-group' },
+        { label: this.$t('common_460', [this.$t('dictionary.server')]), key: 'v-m-instance-list-for-instance-group' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
