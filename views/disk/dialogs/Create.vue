@@ -49,6 +49,7 @@ import WindowsMixin from '@/mixins/windows'
 import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
+import { PROVIDER_MAP } from '@/constants'
 
 export default {
   name: 'DiskCreateDialog',
@@ -109,6 +110,11 @@ export default {
         ],
         backend: [
           'backend',
+          {
+            rules: [
+              { required: true, message: '请选择存储类型' },
+            ],
+          },
         ],
         storage_id: [
           'storage_id',
@@ -283,7 +289,8 @@ export default {
           try {
             this.storageOpts = data.data_storage_types.map((item) => {
               const type = item.split('/')[0]
-              const storageType = CommonConstants.STORAGE_TYPES[this.provider][type]
+              const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
+              const storageType = CommonConstants.STORAGE_TYPES[provider][type]
               const getLabel = (type) => { return type.includes('rbd') ? 'Ceph' : type }
               return {
                 value: type,
@@ -332,9 +339,11 @@ export default {
       try {
         let values = await this.validateForm()
         const { project, domain, ...rest } = values
+        const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
+        const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
           ...rest,
-          hypervisor: this.provider,
+          hypervisor: oProvider ? oProvider.hypervisor : provider,
           size: values.size * 1024,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
           project_id: (project && project.key) || this.userInfo.projectId,
