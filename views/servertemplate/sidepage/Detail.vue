@@ -18,6 +18,7 @@ import {
   getBrandTableColumn,
   getBillingTypeTableColumn,
   getCopyWithContentTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -36,7 +37,8 @@ export default {
   },
   data () {
     const getDiskObj = (row, type) => {
-      const { disks, hypervisor } = row.config_info
+      const { disks } = row.config_info
+      const { hypervisor } = row.content
       const diskList = disks.filter(val => val.disk_type === type)
       if (!diskList.length) return ''
       const diskObj = STORAGE_TYPES[hypervisor][diskList[0].backend]
@@ -192,6 +194,7 @@ export default {
                 return '-'
               },
             },
+            getTagTableColumn({ field: 'config_info.metadata', resource: 'servertemplates', tipName: this.$t('dictionary.servertemplate') }),
           ],
         },
       ],
