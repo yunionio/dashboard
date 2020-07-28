@@ -183,8 +183,8 @@ export default {
     },
     typeOptions () {
       const none = { key: 'none', label: this.$t('common_103') }
-      const project = { key: 'project', label: this.$t('dictionary.projectthis') + this.$t('common_104') }
-      const domain = { key: 'domain', label: this.$t('dictionary.domainthis') + this.$t('common_104') }
+      const project = { key: 'project', label: this.$t('common_104', [this.$t('dictionary.project')]) }
+      const domain = { key: 'domain', label: this.$t('common_104', [this.$t('dictionary.domain')]) }
       if (this.resScope === 'domain') {
         return [none, domain]
       }

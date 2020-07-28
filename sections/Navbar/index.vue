@@ -248,7 +248,7 @@ export default {
       let managerLabel = ''
       if (this.$store.getters['auth/isDomain']) {
         ret = this.userInfo.projectDomain || '-'
-        managerLabel = this.isOperation ? this.$t('common_213') : this.$t('dictionary.domain') + this.$t('dictionary.common_213')
+        managerLabel = this.isOperation ? this.$t('common_213') : ' ' + this.$t('dictionary.domain') + this.$t('common_213')
       }
       return ret + managerLabel
     },
