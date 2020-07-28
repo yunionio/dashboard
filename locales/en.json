@@ -5834,7 +5834,7 @@
   "cloudenv.text_340": "New Subscription",
   "cloudenv.text_341": "New subscription needs to meet the following 2 conditions:",
   "cloudenv.text_342": "1. Cloud accounts in the international zone, cloud accounts in mainland China do not support this operation",
-  "cloudenv.text_343": "2. The entered APP must be granted Owner permission, please click to view help for the operation steps",
+  "cloudenv.text_343": "2. The entered APP must be granted Owner permission",
   "cloudenv.text_344": "EA Account",
   "cloudenv.text_345": "Please select an EA account",
   "cloudenv.text_346": "Need to specify which EA account to use to create a new subscription",
