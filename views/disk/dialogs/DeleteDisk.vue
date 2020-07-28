@@ -9,13 +9,12 @@
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc" v-show="isShowAutoDelete">
-        <a-form-item label="$t('compute.text_420')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_420')" v-bind="formItemLayout">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
         </a-form-item>
         <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
           {{ $t('compute.text_1310', [snapshot.list.length]) }}
         </a-form-item>
-        <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">{{$t('compute.text_421', [ snapshot.list.length ])}}</a-form-item>
       </a-form>
       <dialog-table v-if="form.fd.autoDelete" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
@@ -107,7 +106,7 @@ export default {
     },
     isShowAutoDelete () {
       const brand = this.params.data[0].brand
-      return this.type === SERVER_TYPE.idc || brand === BRAND_MAP.openstack.brand
+      return this.type === SERVER_TYPE.idc || brand === BRAND_MAP.OpenStack.brand
     },
     isCeph () {
       const isSomeCeph = this.params.data.some((item) => {
