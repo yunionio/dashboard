@@ -94,9 +94,9 @@ export default {
           'conditionVals',
           {
             initialValue: initValue.conditionVals,
-            rules: [
-              { required: true, message: '请填入条件' },
-            ],
+            // rules: [
+            //   { required: true, message: '请填入条件' },
+            // ],
           },
         ],
       },
