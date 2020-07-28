@@ -678,6 +678,9 @@ export default {
     genDiskData (values) {
       const dataDisk = []
       let index = 0
+      if (this.selectedItems.length === 1 && _.get(this.params, 'data[0].disks_info.disk_type') === 'data') {
+        index = -1 // 因为第一块盘的disk_type是data，说明无系统盘，第一块盘是ISO启动的，++index后传到后端要从0开始
+      }
       const dataDisks = this.$refs.dataDiskRef.dataDisks
       R.forEachObjIndexed((value, key) => {
         const diskObj = {
