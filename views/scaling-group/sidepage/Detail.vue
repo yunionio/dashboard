@@ -101,6 +101,18 @@ export default {
                 ]
               },
             }),
+            getCopyWithContentTableColumn({
+              field: 'network',
+              title: 'IP子网',
+              hideField: true,
+              slotCallback: row => {
+                if (!row.networks || !row.networks.length) return '-'
+                const [{ id, name }] = row.networks
+                return [
+                  <side-page-trigger permission='networks_get' name='NetworkSidePage' id={id} vm={this}>{ name }</side-page-trigger>,
+                ]
+              },
+            }),
             {
               field: 'loadbalancer',
               title: this.$t('compute.text_899'),
