@@ -52,12 +52,6 @@ export default {
   },
   data () {
     return {
-      zoneParams: {
-        usable: true,
-        show_emulated: true,
-        order_by: 'created_at',
-        order: 'asc',
-      },
       zoneObj: {},
       hadVpc: false,
     }
