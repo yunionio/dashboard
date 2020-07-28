@@ -13,7 +13,7 @@
         </a-divider>
         <div class="tag-list">
           <template v-if="extTags.length <= 0">
-            <loader no-data-:text="$t('common_107')" />
+            <loader :no-data-text="$t('common_107')" />
           </template>
           <template v-else>
             <template v-for="item of extTags">
@@ -35,7 +35,7 @@
         </a-divider>
         <div class="tag-list">
           <template v-if="userTags.length <= 0">
-            <loader no-data-:text="$t('common_108')" />
+            <loader :no-data-text="$t('common_108')" />
           </template>
           <template v-else>
             <template v-for="item of userTags">
@@ -58,7 +58,7 @@
         <div style="line-height: 40px;">
           <tag-select
             global
-            button-:text="$t('common_110')"
+            :button-text="$t('common_110')"
             resource="server"
             v-model="checked"
             :params="params.params" />

@@ -11,7 +11,7 @@
     <template slot="content">
       <div class="tag-table-column">
         <template v-if="tags.length <= 0">
-          <loader no-data-:text="$t('common_268')" />
+          <loader :no-data-text="$t('common_268')" />
         </template>
         <template v-else>
           <template v-for="item of tags">
