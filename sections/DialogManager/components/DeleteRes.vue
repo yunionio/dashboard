@@ -90,7 +90,7 @@ export default {
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(response)
           }
-          this.$message.success(this.$t('common.success'))
+          // this.$message.success(this.$t('common.success'))
         }
         this.cancelDialog()
       } finally {

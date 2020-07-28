@@ -5,7 +5,7 @@
     <template slot="title">
       <div class="d-flex align-items-center">
         <div class="flex-fill">{{$t('common_267')}}</div>
-        <a class="font-weight-normal" @click="handleEdit" v-if="!inBaseDialog">{{$t('common_105')}}</a>
+        <a class="font-weight-normal" @click="handleEdit" v-if="!inBaseDialog && !!onManager">{{$t('common_105')}}</a>
       </div>
     </template>
     <template slot="content">
@@ -55,7 +55,6 @@ export default {
     },
     onManager: {
       type: Function,
-      required: true,
     },
     columns: [Array, Function],
     tipName: String,
