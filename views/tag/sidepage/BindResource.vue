@@ -180,7 +180,7 @@ export default {
                 key: 'status',
               },
               mapper: data => {
-                return mapperStatusToItems(data, `status.${val}`)
+                return mapperStatusToItems(data, `status.${statusAlias}`)
               },
               filter: true,
               formatter: val => {
