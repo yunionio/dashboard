@@ -45,7 +45,7 @@ export default {
         id: this.id,
         resource: 'servertemplates',
         getParams: this.getParam,
-        steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
+        steadyStatus: Object.values(expectStatus.servertemplate).flat(),
         filterOptions: {
           name: {
             label: this.$t('compute.text_228'),
