@@ -109,7 +109,7 @@ export default {
     },
     isShowAutoDelete () {
       const brand = this.params.data[0].brand
-      return this.type === SERVER_TYPE.idc || brand === BRAND_MAP.openstack.brand
+      return this.type === SERVER_TYPE.idc || brand === BRAND_MAP.OpenStack.brand
     },
     isCeph () {
       const isSomeCeph = this.params.data.some((item) => {
