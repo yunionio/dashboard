@@ -39,7 +39,7 @@ export default {
         default_strategy: [
           'default_strategy',
           {
-            initialValue: this.params.data[0].default_strategy,
+            initialValue: this.params.data[0].default_strategy || '',
           },
         ],
       },
