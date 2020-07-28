@@ -66,6 +66,9 @@
         @change-next-marker="changeNextMarker"
         @radio-change="radioChange" />
     </template>
+    <template v-if="!loading && !configLoaded">
+      <loader :loading="loading" :noDataText="noDataText" />
+    </template>
   </div>
 </template>
 
