@@ -283,11 +283,22 @@ export default {
           try {
             this.storageOpts = data.data_storage_types.map((item) => {
               const type = item.split('/')[0]
+              const storageType = CommonConstants.STORAGE_TYPES[this.provider][type]
+              const getLabel = (type) => { return type.includes('rbd') ? 'Ceph' : type }
               return {
                 value: type,
-                label: CommonConstants.STORAGE_TYPES[this.provider][type].label,
+                label: storageType ? storageType.label : getLabel(type),
               }
             })
+            if (this.diskType === 'idc') {
+              this.storageOpts = this.storageOpts.filter((item) => {
+                return item.value !== 'local'
+              })
+            } else if (this.diskType === 'private') {
+              this.storageOpts = this.storageOpts.filter((item) => {
+                return item.value !== 'nova'
+              })
+            }
             this.form.fc.setFieldsValue({ backend: '' })
             if (this.storageOpts.length > 0) {
               this.form.fc.setFieldsValue({ backend: this.storageOpts[0].value })
