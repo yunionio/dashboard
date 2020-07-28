@@ -34,7 +34,10 @@
         </a-form-item>
         <a-form-item label="预留原因" v-bind="formItemLayout">
           <a-textarea v-decorator="['notes', {
-            rules: [{ max: 200, message: '输入的字符长度不能大于200'}],
+            rules: [
+              { required: true, message: '请填写预留原因' },
+              { max: 200, message: '输入的字符长度不能大于200'}
+            ],
           }]" placeholder="请填写预留原因" :rows="2" />
         </a-form-item>
       </a-form>
