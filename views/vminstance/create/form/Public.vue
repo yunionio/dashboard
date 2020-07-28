@@ -21,7 +21,7 @@
           v-slot:extra
           res="servers"
           :name="form.fd.name"
-          default-:text="$t('compute.text_893')" />
+          :default-text="$t('compute.text_893')" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />

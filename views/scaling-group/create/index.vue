@@ -10,7 +10,7 @@
         <!-- <name-repeated
           v-slot:extra
           res="scalinggroups"
-          default-:text="$t('compute.text_893')"  /> -->
+          :default-text="$t('compute.text_893')"  /> -->
       </a-form-item>
       <a-form-item :label="$t('compute.text_176')">
         <a-radio-group v-decorator="decorators.brand">

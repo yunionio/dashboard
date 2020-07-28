@@ -45,7 +45,7 @@
             :loading="loading"
             :disabled="disabled || !!errors.length">{{ confirmText }}</a-button>
         </div>
-        <side-errors error-:title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
+        <side-errors :error-title="$t('compute.text_290')" :errors="errors" @update:errors="changeErrors" />
       </template>
     </page-footer>
   </div>
