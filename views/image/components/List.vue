@@ -71,7 +71,7 @@ export default {
             ],
           },
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           // tenant: getTenantFilter(),
           // os_type: getOsTypeFilter(),
         },

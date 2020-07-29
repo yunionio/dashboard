@@ -79,7 +79,7 @@ export default {
             },
           },
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           billing_type: {
             label: this.$t('compute.text_498'),
             dropdown: true,

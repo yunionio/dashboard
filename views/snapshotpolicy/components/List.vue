@@ -42,7 +42,7 @@ export default {
           },
           status: getStatusFilter('snapshotpolicy'),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
         },
       }),
       exportDataOptions: {

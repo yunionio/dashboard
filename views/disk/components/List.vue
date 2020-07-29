@@ -69,7 +69,7 @@ export default {
           },
           brand: getBrandFilter(),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           account: getAccountFilter(),
           region: {
             label: '区域',

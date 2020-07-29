@@ -59,7 +59,7 @@ export default {
             label: this.$t('compute.text_349'),
           },
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
         },
         responseData: this.responseData,
       }),

@@ -73,7 +73,7 @@ export default {
             label: '可用区',
           },
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           status: getStatusFilter({ statusModule: 'server' }),
           os_type: getOsTypeFilter(),
         },

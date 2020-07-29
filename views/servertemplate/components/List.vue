@@ -55,7 +55,7 @@ export default {
             },
           },
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           status: getStatusFilter('servertemplate'),
           brand: getBrandFilter(),
           os_type: {
