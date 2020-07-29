@@ -75,15 +75,6 @@ export default {
       //   callback()
       // }
     }
-<<<<<<< HEAD
-    const urlRules = [
-      { pattern: /^\/.+/, message: this.$t('network.text_529'), trigger: 'blur' },
-    ]
-    if (this.params.lbListenerData.provider && this.params.lbListenerData.provider.toLowerCase() === 'qcloud') {
-      urlRules.unshift({ required: true, message: this.$t('network.text_530') })
-    }
-=======
->>>>>>> 9bddfe5938a284ab40256d90831f7cd4ccc8bf4f
     return {
       isRedirect: false,
       loading: false,
@@ -106,13 +97,8 @@ export default {
           'domain',
           {
             rules: [
-<<<<<<< HEAD
-              // { required: true, message: '请输入域名' },
+              { required: provider === 'qcloud', message: this.$t('network.text_530') },
               { validator: customDomain, message: this.$t('network.text_531'), trigger: 'blur' },
-=======
-              { required: provider === 'qcloud', message: '请输入域名' },
-              { validator: customDomain, message: '请根据提示输入规范域名', trigger: 'blur' },
->>>>>>> 9bddfe5938a284ab40256d90831f7cd4ccc8bf4f
             ],
           },
         ],
@@ -121,8 +107,8 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: provider === 'qcloud', message: '请输入URL' },
-              { pattern: /^\/.+/, message: '请根据提示输入规范URL', trigger: 'blur' },
+              { required: provider === 'qcloud', message: this.$t('network.text_530') },
+              { pattern: /^\/.+/, message: this.$t('network.text_529'), trigger: 'blur' },
             ],
           },
         ],
