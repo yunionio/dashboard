@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo', 'capability']),
-     groupActions () {
+    groupActions () {
       let createBtn = {
         label: this.$t('network.text_26'),
         permission: 'lb_loadbalancers_create',
