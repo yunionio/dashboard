@@ -16,7 +16,8 @@
         @cell-mouseenter="tableMouseenter"
         @cell-click="cellClick"
         :columns="columns"
-        :data="tableData" />
+        :data="tableData"
+        :row-style="getRowStyle" />
     </template>
   </a-card>
 </template>
@@ -70,6 +71,10 @@ export default {
       lineChartOptionsC: {},
       chartInstance: null,
       seriesOldClickName: null,
+      highlight: {
+        index: null,
+        color: '',
+      },
     }
   },
   computed: {
@@ -77,12 +82,16 @@ export default {
       return _.get(this.metricInfo, 'model.group_by')
     },
     tableData () {
-      return this.series.map(val => {
+      return this.series.map((val, i) => {
         const ret = { ...val.tags }
         const showMetric = !!this.groupBy
         if (showMetric) {
           ret.__metric = val.name
         }
+        const { series, color = [] } = this.chartInstanceOption
+        const colors = series.map(val => val.itemStyle.color)
+        const c = colors[i] || color[0]
+        ret.__color = c
         return ret
       })
     },
@@ -92,11 +101,11 @@ export default {
           field: 'color',
           width: 50,
           slots: {
-            default: ({ rowIndex }) => {
-              const { series, color } = this.chartInstanceOption
-              const colors = series.map(val => val.itemStyle.color)
-              const c = colors[rowIndex] || color[0]
-              return [<div class="mx-auto" style={{ width: '10px', height: '10px', 'border-radius': '50%', background: c }} />]
+            default: ({ row, rowIndex }) => {
+              // const { series, color } = this.chartInstanceOption
+              // const colors = series.map(val => val.itemStyle.color)
+              // const c = colors[rowIndex] || color[0]
+              return [<div class="mx-auto" style={{ width: '10px', height: '10px', 'border-radius': '50%', background: row.__color }} />]
             },
           },
         },
@@ -157,11 +166,10 @@ export default {
       this._setHighlight()
     },
     tableMouseenter ({ row, rowIndex }) {
-      if (this.oldRowIndex === rowIndex) return
       this.tableSetHighlight({ row, rowIndex, click: false })
-      this.oldRowIndex = rowIndex
     },
     cellClick ({ row, rowIndex }) {
+      this.highlight = { index: rowIndex, color: row.__color }
       this.tableSetHighlight({ row, rowIndex, click: true })
     },
     tableSetHighlight ({ row, rowIndex, click }) {
@@ -281,6 +289,14 @@ export default {
       this.lineChartOptionsC = lineChartOptions
       this.lineChartRows = rows
       this.lineChartColumns = columns
+    },
+    getRowStyle ({ $rowIndex, column, columnIndex, $columnIndex }) {
+      if ($rowIndex === this.highlight.index) {
+        return {
+          color: this.highlight.color,
+        }
+      }
+      return null
     },
   },
 }
