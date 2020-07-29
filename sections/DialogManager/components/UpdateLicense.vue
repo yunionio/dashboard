@@ -69,7 +69,6 @@ export default {
       fileList: [],
       updateInfo: {},
       // allSn: [],
-      license: undefined,
       formItemLayout: {
         wrapperCol: {
           span: 17,
@@ -97,7 +96,6 @@ export default {
       'logo',
     ]),
     ...mapState({
-      license: state => state.app.license.compute,
       serviceNumbers: state => state.app.license.service_numbers,
       status: state => state.app.license.status,
       oemInfo: state => state.app.oem,
@@ -114,10 +112,15 @@ export default {
       }
       return null
     },
+    license () {
+      if (!R.isNil(this.oemInfo.license) && !R.isEmpty(this.oemInfo.license)) {
+        return this.oemInfo.license
+      }
+      return null
+    },
   },
   created () {
     this.getUpdateInfo()
-    this.getInfo()
   },
   methods: {
     hanldeRemoveFile (file) {
@@ -153,16 +156,6 @@ export default {
         return
       }
       this.$router.push('/guide')
-    },
-    async getInfo () {
-      try {
-        const { data } = await new this.$Manager('infos', 'v1').get({
-          id: 'copyright',
-        })
-        this.license = data.license
-      } catch (err) {
-        throw err
-      }
     },
     async handleConfirm () {
       this.loading = true
