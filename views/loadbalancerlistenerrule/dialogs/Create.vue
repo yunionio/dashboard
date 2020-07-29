@@ -14,7 +14,10 @@
           <a-input v-decorator="decorators.domain" :placeholder="$t('network.text_522')" />
         </a-form-item>
         <a-form-item :label="$t('network.text_524')">
-          <div slot="extra">{{$t('network.text_525')}}</div>
+          <div slot="extra">
+            {{$t('network.text_525')}}
+            <span v-if="provider === 'huawei' || provider === 'aliyun'" :class="{'error-color': !isDomainOrPath}">{{$t('common_462')}}</span>
+          </div>
           <a-input v-decorator="decorators.path" :placeholder="$t('network.text_522')" />
         </a-form-item>
          <redirect-form-items v-if="isOneCloud" :form="form" @redirectChange="handleRedirectChange" />
@@ -59,6 +62,7 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const provider = this.params.lbListenerData.provider.toLowerCase()
     const customDomain = (rule, value, callback) => {
       // 泛解析域名：*.test.com，*一定在第一个字符，并且是*.或者*aaa.的格式，*不能在最后。
       // const reg = /^\*.*\..[a-zA-Z]+/
@@ -71,15 +75,10 @@ export default {
       //   callback()
       // }
     }
-    const urlRules = [
-      { pattern: /^\/.+/, message: this.$t('network.text_529'), trigger: 'blur' },
-    ]
-    if (this.params.lbListenerData.provider && this.params.lbListenerData.provider.toLowerCase() === 'qcloud') {
-      urlRules.unshift({ required: true, message: this.$t('network.text_530') })
-    }
     return {
       isRedirect: false,
       loading: false,
+      isDomainOrPath: true,
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
       },
@@ -98,7 +97,7 @@ export default {
           'domain',
           {
             rules: [
-              // { required: true, message: '请输入域名' },
+              { required: provider === 'qcloud', message: this.$t('network.text_530') },
               { validator: customDomain, message: this.$t('network.text_531'), trigger: 'blur' },
             ],
           },
@@ -107,7 +106,10 @@ export default {
           'path',
           {
             validateFirst: true,
-            rules: urlRules,
+            rules: [
+              { required: provider === 'qcloud', message: this.$t('network.text_530') },
+              { pattern: /^\/.+/, message: this.$t('network.text_529'), trigger: 'blur' },
+            ],
           },
         ],
         backend_group: [
@@ -155,8 +157,11 @@ export default {
       }
       return params
     },
+    provider () {
+      return this.params.lbListenerData.provider.toLowerCase()
+    },
     isOneCloud () {
-      return this.params.lbListenerData.provider === 'OneCloud'
+      return this.provider === 'onecloud'
     },
   },
   created () {
@@ -176,6 +181,8 @@ export default {
         this.form.fc.resetFields(['check'])
         this.form.fc.validateFields(['check'])
       }
+      const { path, domain } = this.form.fc.getFieldsValue(['path', 'domain'])
+      this.isDomainOrPath = (this.provider === 'huawei' || this.provider === 'aliyun') && (path || domain)
     },
     async doCreate (values) {
       const data = {
@@ -187,9 +194,14 @@ export default {
       })
     },
     async handleConfirm () {
-      this.loading = true
       try {
+        const { path, domain } = this.form.fc.getFieldsValue(['path', 'domain'])
+        this.isDomainOrPath = (this.provider === 'huawei' || this.provider === 'aliyun') && (path || domain)
         const values = await this.form.fc.validateFields()
+        if (!this.isDomainOrPath) {
+          return false
+        }
+        this.loading = true
         values.redirect = values.redirect ? 'raw' : 'off'
         if (!values.redirect_host) {
           delete values.redirect_host
