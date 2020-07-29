@@ -112,7 +112,6 @@ export default {
   },
   created () {
     this.getUpdateInfo()
-    this.getInfo()
   },
   methods: {
     hanldeRemoveFile (file) {
@@ -149,16 +148,6 @@ export default {
       }
       this.$router.push('/guide')
     },
-    // async getInfo () {
-    //   try {
-    //     const { data } = await new this.$Manager('infos', 'v1').get({
-    //       id: 'copyright',
-    //     })
-    //     this.license = data.license
-    //   } catch (err) {
-    //     throw err
-    //   }
-    // },
     async handleConfirm () {
       this.loading = true
       try {
