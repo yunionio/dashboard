@@ -148,6 +148,7 @@ export const getNameDescriptionTableColumn = ({
   field = 'name',
   slotCallback,
   onManager,
+  steadyStatus,
   addLock,
   hideField,
   showDesc = true,
@@ -176,6 +177,7 @@ export const getNameDescriptionTableColumn = ({
               field,
               row,
               onManager,
+              steadyStatus,
               hideField,
               addLock,
               addBackup,
@@ -194,6 +196,7 @@ export const getNameDescriptionTableColumn = ({
               field: 'description',
               row,
               onManager,
+              steadyStatus,
               formRules: descriptionRules,
             },
           }))
