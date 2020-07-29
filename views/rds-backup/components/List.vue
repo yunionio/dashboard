@@ -87,6 +87,7 @@ export default {
       groupActions: [
         {
           label: this.$t('db.text_41'),
+          permission: 'rds_dbinstancebackups_create',
           action: () => {
             this.createDialog('RDSBackupCreate', {
               rdsItem: this.data,

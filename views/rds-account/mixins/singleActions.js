@@ -76,6 +76,7 @@ export default {
       },
       {
         label: this.$t('db.text_42'),
+        permission: 'rds_dbinstanceaccounts_delete',
         action: (obj) => {
           this.createDialog('RedisWhiteListDeleteDialog', {
             data: [obj],
