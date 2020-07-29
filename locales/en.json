@@ -8181,7 +8181,7 @@
   "common_460": "Linked {0}",
   "common_461": "There is currently no data, please select the cluster and namespace and refresh, if there is no cluster, please create it first",
 	"common_21": "Certification System",
-	"common_27": "Recipient Management",
-	"common_462": "Creation time:{0}",
-	"common_463": "Transaction Type:"
+"common_27": "Recipient Management",
+"common_462": "Creation time:{0}",
+"common_463": "Transaction Type:"
 }
