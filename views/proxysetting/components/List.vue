@@ -32,7 +32,7 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           // https_proxy: {
           //   label: 'https代理',
           // },
