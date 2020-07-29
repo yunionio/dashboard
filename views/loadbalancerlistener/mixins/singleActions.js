@@ -94,6 +94,7 @@ export default {
               actions: [
                 (row) => {
                   this.onManager('performAction', {
+                    steadyStatus: this.steadyStatus,
                     id: row.id,
                     managerArgs: {
                       action: 'status',
@@ -105,6 +106,7 @@ export default {
                 },
                 (row) => {
                   this.onManager('performAction', {
+                    steadyStatus: this.steadyStatus,
                     id: row.id,
                     managerArgs: {
                       action: 'status',
@@ -136,6 +138,7 @@ export default {
               permission: 'lb_loadbalancerlisteners_udpate',
               action: (row) => {
                 this.onManager('update', {
+                  steadyStatus: this.steadyStatus,
                   id: row.id,
                   managerArgs: {
                     data: { health_check: 'on' },
@@ -157,6 +160,7 @@ export default {
               permission: 'lb_loadbalancerlisteners_udpate',
               action: (row) => {
                 this.onManager('update', {
+                  steadyStatus: this.steadyStatus,
                   id: row.id,
                   managerArgs: {
                     data: { health_check: 'off' },

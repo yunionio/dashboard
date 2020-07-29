@@ -15,6 +15,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        steadyStatus: this.steadyStatus,
         title: '名称',
         slotCallback: row => {
           return (
