@@ -57,7 +57,7 @@ export default {
       type: String,
     },
     steadyStatus: {
-      type: Array,
+      type: [Array, Object, String],
     },
     onManager: {
       type: Function,
@@ -171,8 +171,8 @@ export default {
       } else {
         if (this.onManager) {
           this.onManager('update', {
-            steadyStatus: this.steadyStatus,
             id: this.row.id,
+            steadyStatus: this.steadyStatus,
             managerArgs: {
               id: this.row.id,
               data: {
