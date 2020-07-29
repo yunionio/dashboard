@@ -3,7 +3,7 @@
     <div slot="header">{{$t('compute.text_1179')}}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1179')" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item :label="$t('compute.text_1180')" v-bind="formItemLayout">
           <eip-config
@@ -97,6 +97,13 @@ export default {
         usable_eip_for_associate_id: this.params.data[0].id,
         scope: this.$store.getters.scope,
       }
+    },
+    columns () {
+      const fields = ['name', 'metadata', 'ip']
+      return this.params.columns.filter(item => {
+        const { field } = item
+        return fields.indexOf(field) > -1
+      })
     },
   },
   methods: {
