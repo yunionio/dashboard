@@ -546,11 +546,35 @@ export const PERMISSION = {
   rds_dbinstancebackups_delete: ['compute', 'dbinstancebackups', 'delete'],
   rds_dbinstancebackups_create: ['compute', 'dbinstancebackups', 'create'],
   /**
+   * 数据库-RDS账号
+   */
+  'rds_dbinstanceaccounts_list': ['compute', 'dbinstanceaccounts', 'list'],
+  'rds_dbinstanceaccounts_delete': ['compute', 'dbinstanceaccounts', 'delete'],
+  'rds_dbinstanceaccounts_create': ['compute', 'dbinstanceaccounts', 'create'],
+  /**
+   * 数据库-RDS数据库管理
+   */
+  'rds_dbinstancedatabases_list': ['compute', 'dbinstancedatabases', 'list'],
+  'rds_dbinstancedatabases_delete': ['compute', 'dbinstancedatabases', 'delete'],
+  'rds_dbinstancedatabases_create': ['compute', 'dbinstancedatabases', 'create'],
+  /**
    * 数据库-redis
    */
   redis_elasticcaches_list: ['compute', 'elasticcaches', 'list'],
   redis_elasticcaches_delete: ['compute', 'elasticcaches', 'delete'],
   redis_elasticcaches_create: ['compute', 'elasticcaches', 'create'],
+  /**
+   * 数据库-redis账号
+   */
+  'redis_elasticcacheaccounts_list': ['compute', 'elasticcacheaccounts', 'list'],
+  'redis_elasticcacheaccounts_delete': ['compute', 'elasticcacheaccounts', 'delete'],
+  'redis_elasticcacheaccounts_create': ['compute', 'elasticcacheaccounts', 'create'],
+  /**
+   * 数据库-redis白名单
+   */
+  'redis_elasticcacheacls_list': ['compute', 'elasticcacheacls', 'list'],
+  'redis_elasticcacheacls_delete': ['compute', 'elasticcacheacls', 'delete'],
+  'redis_elasticcacheacls_create': ['compute', 'elasticcacheacls', 'create'],
   /**
    * 预留IP
    */
