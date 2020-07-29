@@ -79,7 +79,7 @@ export default {
         const oldQuota = this.$refs.quotaSetRef.quotaOptions
         const isChange = this.checkQuotaChangeHandle(oldQuota, quota)
         if (!isChange) {
-          this.$message.error('')
+          this.$message.error(`${this.$t('common.text00072')}`)
           return
         }
         if (this.isOpenWorkflow) {
@@ -106,7 +106,6 @@ export default {
             break
         }
         if (quota[item.key] !== item.originQuota) {
-          console.log(item.key)
           isChange = true
         }
       }
