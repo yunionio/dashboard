@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import i18n from '@/locales'
+
 export default {
   name: 'LbAcl',
   props: {
@@ -33,8 +35,8 @@ export default {
     aclTypeOpts: {
       type: Array,
       default: () => [
-        { key: 'white', label: this.$t('network.text_364') },
-        { key: 'black', label: this.$t('network.text_365') },
+        { key: 'white', label: i18n.t('network.text_364') },
+        { key: 'black', label: i18n.t('network.text_365') },
       ],
     },
     form: {
