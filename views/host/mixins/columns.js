@@ -6,6 +6,24 @@ import i18n from '@/locales'
 
 export default {
   created () {
+    const getStatusToolTip = (row) => {
+      if (row.metadata) {
+        const sysWarn = row.metadata.sys_warn
+        const sysError = row.metadata.sys_error
+        const titleCon = sysWarn || sysError
+        if (titleCon) {
+          const aLink = <side-page-trigger vm={this} name='HostSidePage' id={row.id} list={this.list} tab='event-drawer'>查看日志</side-page-trigger>
+          const aIcon = <a-icon type="exclamation-circle" class={ { 'ml-1 oc-pointer': true, 'warning-color': sysWarn, 'error-color': sysError } } />
+          return <a-tooltip placement="right">
+            <template slot="title">
+              { titleCon } { aLink }
+            </template>
+            { aIcon }
+          </a-tooltip>
+        }
+      }
+      return null
+    }
     this.columns = [
       getNameDescriptionTableColumn({
         onManager: this.onManager,
@@ -17,7 +35,7 @@ export default {
         ],
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            <side-page-trigger vm={this} name='HostSidePage' id={row.id} list={this.list} tab='host-detail'>{ row.name }</side-page-trigger>
           )
         },
         cellWrapSlots: row => {
@@ -28,7 +46,18 @@ export default {
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
       getEnabledTableColumn(),
-      getStatusTableColumn({ statusModule: 'host' }),
+      getStatusTableColumn({
+        statusModule: 'host',
+        minWidth: 100,
+        slotCallback: row => {
+          return [
+            <div class='d-flex align-items-center text-truncate'>
+              <status status={ row.status } statusModule='host' />
+              { getStatusToolTip(row) }
+            </div>,
+          ]
+        },
+      }),
       {
         field: 'custom_ip',
         title: 'IP',
@@ -55,7 +84,11 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ field: 'host_status', title: i18n.t('compute.text_502'), statusModule: 'host_status' }),
+      getStatusTableColumn({
+        field: 'host_status',
+        title: i18n.t('compute.text_502'),
+        statusModule: 'host_status',
+      }),
       {
         field: 'nonsystem_guests',
         title: '#VM',

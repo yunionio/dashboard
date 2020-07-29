@@ -107,6 +107,9 @@ export default {
               key: 'region',
             },
           },
+          vpc: {
+            label: 'VPC',
+          },
         },
         responseData: this.responseData,
       }),
