@@ -140,6 +140,7 @@ export default {
             delete params.name
           }
           await this.params.list.onManager('update', {
+            steadyStatus: this.params.steadyStatus,
             id: this.params.data[0].id,
             managerArgs: {
               data: params,
@@ -147,6 +148,7 @@ export default {
           })
         } else {
           await this.params.list.onManager('create', {
+            steadyStatus: this.params.steadyStatus,
             managerArgs: {
               data: {
                 ...values,

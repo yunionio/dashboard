@@ -25,11 +25,13 @@ export default {
     },
   },
   data () {
+    const steadyStatus = Object.values(expectStatus.redisACL).flat()
     return {
+      steadyStatus,
       list: this.$list.createList(this, {
         resource: 'elasticcacheacls',
         getParams: this.params,
-        steadyStatus: Object.values(expectStatus.redisACL).flat(),
+        steadyStatus,
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('redisACL'),
@@ -88,6 +90,7 @@ export default {
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
               title: this.$t('db.text_328'),
+              steadyStatus: this.steadyStatus,
               initialValues: {
                 name: obj.name,
                 ip_list: obj.ip_list,
@@ -108,12 +111,8 @@ export default {
           },
         },
         {
-<<<<<<< HEAD
           label: this.$t('db.text_42'),
-=======
-          label: '删除',
           permission: 'redis_elasticcacheacls_delete',
->>>>>>> 5a41e1a0b1e2cafbd2150e021b34fe4d9f4540ad
           action: (obj) => {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],

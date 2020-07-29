@@ -25,11 +25,13 @@ export default {
     },
   },
   data () {
+    const steadyStatus = Object.values(expectStatus.redisAccount).flat()
     return {
+      steadyStatus,
       list: this.$list.createList(this, {
         resource: 'elasticcacheaccounts',
         getParams: this.params,
-        steadyStatus: Object.values(expectStatus.redisAccount).flat(),
+        steadyStatus,
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('redisAccount'),
@@ -104,6 +106,7 @@ export default {
           action: (obj) => {
             this.createDialog('RedisAccountLisResetPwdDialog', {
               data: [obj],
+              steadyStatus: this.steadyStatus,
               list: this.list,
               columns: this.columns,
               redisItem: this.data,
@@ -116,6 +119,7 @@ export default {
           action: (obj) => {
             this.createDialog('RedisAccountListSetPrivilegeDialog', {
               title: this.$t('db.text_203'),
+              steadyStatus: this.steadyStatus,
               initialValues: {
                 account_privilege: obj.account_privilege,
               },
