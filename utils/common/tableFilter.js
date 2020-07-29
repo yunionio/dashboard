@@ -209,7 +209,7 @@ export function getDomainFilter () {
     label: i18n.t('dictionary.domain'),
     dropdown: true,
     distinctField: {
-      type: 'field',
+      type: 'extra_field',
       key: 'domain',
     },
   }
