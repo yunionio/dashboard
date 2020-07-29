@@ -38,6 +38,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'rds_dbinstanceaccounts_create',
           action: () => {
             this.createDialog('RDSAccountCreateDialog', {
               list: this.list,

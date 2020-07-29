@@ -57,6 +57,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'redis_elasticcacheacls_create',
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
               title: '新建',
@@ -108,6 +109,7 @@ export default {
         },
         {
           label: '删除',
+          permission: 'redis_elasticcacheacls_delete',
           action: (obj) => {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
