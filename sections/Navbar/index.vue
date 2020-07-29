@@ -61,7 +61,7 @@
             <!-- 域管理后台 -->
             <template v-if="domainProjects && domainProjects.length">
               <li>
-                <div>{{ isOperation ? $t('common_213') : `${$t('dictionary.domain')}${$t('common_214')}` }}</div>
+                <div>{{ isOperation ? $t('common_213') : `${$t('dictionary.domain')} ${$t('common_214')}` }}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
