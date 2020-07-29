@@ -52,7 +52,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo', 'isDomainMode']),
     isOpenWorkflow () {
-      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_PROJECT_QUOTA)
+      return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_DOMAIN_QUOTA)
     },
   },
   methods: {
