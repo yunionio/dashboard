@@ -61,7 +61,7 @@ export default {
           },
           enable_auto_sync: getEnabledFilter({ label: this.$t('cloudenv.text_83') }),
           share_mode: getPublicFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
         },
       }),
       exportDataOptions: {
