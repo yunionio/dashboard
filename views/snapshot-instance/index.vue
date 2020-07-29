@@ -44,7 +44,7 @@ export default {
           },
           status: getStatusFilter('snapshot'),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           region: {
             label: '区域',
           },

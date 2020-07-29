@@ -56,7 +56,7 @@ export default {
           },
           status: getStatusFilter('image'),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
         },
         responseData: this.responseData,
       }),

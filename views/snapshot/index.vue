@@ -45,7 +45,7 @@ export default {
           status: getStatusFilter('snapshot'),
           brand: getBrandFilter(),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           account: getAccountFilter(),
           disk_name: {
             label: this.$t('compute.text_100'),

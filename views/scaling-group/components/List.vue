@@ -47,7 +47,7 @@ export default {
           status: getStatusFilter('scalinggroup'),
           enabled: getEnabledFilter(),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           brand: {
             label: this.$t('compute.text_176'),
             dropdown: true,

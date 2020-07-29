@@ -58,7 +58,7 @@ export default {
           tenant: {
             label: this.$t('dictionary.project'),
           },
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
         },
       }),
       exportDataOptions: {
