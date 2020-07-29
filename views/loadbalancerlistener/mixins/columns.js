@@ -16,6 +16,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        steadyStatus: this.steadyStatus,
         title: i18n.t('network.text_21'),
         slotCallback: row => {
           return (
