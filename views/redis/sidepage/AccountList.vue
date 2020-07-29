@@ -72,6 +72,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'redis_elasticcacheaccounts_create',
           action: () => {
             this.createDialog('RedisAccountDialog', {
               list: this.list,
@@ -134,6 +135,7 @@ export default {
         },
         {
           label: '删除',
+          permission: 'redis_elasticcacheaccounts_delete',
           action: (obj) => {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],

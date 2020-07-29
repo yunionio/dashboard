@@ -76,6 +76,7 @@ export default {
       },
       {
         label: '删除',
+        permission: 'rds_dbinstanceaccounts_delete',
         action: (obj) => {
           this.createDialog('RedisWhiteListDeleteDialog', {
             data: [obj],
