@@ -57,6 +57,7 @@ export default {
       groupActions: [
         {
           label: this.$t('db.text_41'),
+          permission: 'redis_elasticcacheacls_create',
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
               title: this.$t('db.text_41'),
@@ -107,7 +108,12 @@ export default {
           },
         },
         {
+<<<<<<< HEAD
           label: this.$t('db.text_42'),
+=======
+          label: '删除',
+          permission: 'redis_elasticcacheacls_delete',
+>>>>>>> 5a41e1a0b1e2cafbd2150e021b34fe4d9f4540ad
           action: (obj) => {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
