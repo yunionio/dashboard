@@ -55,7 +55,7 @@ export default {
           status: getStatusFilter('eip'),
           cloudaccount: getAccountFilter(),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           region: {
             label: '区域',
           },

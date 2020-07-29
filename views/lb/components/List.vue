@@ -50,7 +50,7 @@ export default {
           name: getNameFilter(),
           brand: surpportLbBrandsFilter,
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           cloudaccount: getAccountFilter(),
           region: {
             label: '区域',

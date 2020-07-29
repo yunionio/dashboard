@@ -100,7 +100,7 @@ export default {
           brand: brandFilter,
           cloudaccount: getAccountFilter(),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           region: {
             label: this.$t('network.text_199'),
           },
