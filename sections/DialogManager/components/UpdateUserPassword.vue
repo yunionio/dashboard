@@ -18,7 +18,7 @@
       </a-form>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" :loading="loading" @click="handleConfirm">{{ $t('dialog.ok') }}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -165,7 +165,7 @@ export default {
         await this.doUpdatePassword(data)
         this.$message.success(this.$t('common.success'))
         this.cancelDialog()
-        this.$store.dispatch('auth/logout')
+        await this.$store.dispatch('auth/logout')
         this.$router.push('/auth')
       } finally {
         this.loading = false
