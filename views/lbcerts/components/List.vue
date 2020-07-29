@@ -40,7 +40,7 @@ export default {
             },
           },
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
         },
       }),
       exportDataOptions: {
