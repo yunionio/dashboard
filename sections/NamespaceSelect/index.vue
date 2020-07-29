@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     addNum () {
-      if (R.isEmpty(this.namespaceMap)) return
+      if (R.isNil(this.namespaceMap)) return
       this.options = this.options.map(val => {
         const item = R.clone(val)
         if (R.is(Array, this.namespaceMap[item.name])) {
