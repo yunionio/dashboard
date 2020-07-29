@@ -25,11 +25,13 @@ export default {
     },
   },
   data () {
+    const steadyStatus = Object.values(expectStatus.redisACL).flat()
     return {
+      steadyStatus,
       list: this.$list.createList(this, {
         resource: 'elasticcacheacls',
         getParams: this.params,
-        steadyStatus: Object.values(expectStatus.redisACL).flat(),
+        steadyStatus,
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('redisACL'),
@@ -88,6 +90,7 @@ export default {
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
               title: '修改',
+              steadyStatus: this.steadyStatus,
               initialValues: {
                 name: obj.name,
                 ip_list: obj.ip_list,
