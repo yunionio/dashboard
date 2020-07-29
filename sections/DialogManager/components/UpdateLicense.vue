@@ -35,7 +35,7 @@
             <p class="ant-upload-text">单击或将文件拖到该区域以上传</p>
             <p class="ant-upload-hint">license文件扩展名为.lic,大小不超过10KB</p>
           </a-upload-dragger>
-          <div slot="extra">
+          <div slot="extra" v-if="license || email">
             <div class="mt-2 mb-1">还没有License? 您可以通过以下途径获取：</div>
             <ul>
               <li v-if="license">线上<help-link :href="license">申请免费License</help-link></li>
@@ -66,7 +66,6 @@ export default {
       fileList: [],
       updateInfo: {},
       // allSn: [],
-      license: undefined,
       formItemLayout: {
         wrapperCol: {
           span: 19,
@@ -88,7 +87,6 @@ export default {
       'logo',
     ]),
     ...mapState({
-      license: state => state.app.license.compute,
       serviceNumbers: state => state.app.license.service_numbers,
       status: state => state.app.license.status,
       oemInfo: state => state.app.oem,
@@ -105,10 +103,15 @@ export default {
       }
       return null
     },
+    license () {
+      if (!R.isNil(this.oemInfo.license) && !R.isEmpty(this.oemInfo.license)) {
+        return this.oemInfo.license
+      }
+      return null
+    },
   },
   created () {
     this.getUpdateInfo()
-    this.getInfo()
   },
   methods: {
     hanldeRemoveFile (file) {
@@ -144,16 +147,6 @@ export default {
         return
       }
       this.$router.push('/guide')
-    },
-    async getInfo () {
-      try {
-        const { data } = await new this.$Manager('infos', 'v1').get({
-          id: 'copyright',
-        })
-        this.license = data.license
-      } catch (err) {
-        throw err
-      }
     },
     async handleConfirm () {
       this.loading = true
