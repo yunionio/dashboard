@@ -29,7 +29,11 @@ export default {
     },
   },
   data () {
+    const steadyStatus = {
+      status: Object.values(expectStatus.lb).flat(),
+    }
     return {
+      steadyStatus,
       list: this.$list.createList(this, {
         id: 'LoadbalancerListenerList',
         resource: 'loadbalancerlisteners',
@@ -37,9 +41,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
         },
-        steadyStatus: {
-          status: Object.values(expectStatus.lb).flat(),
-        },
+        steadyStatus,
       }),
     }
   },
