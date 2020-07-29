@@ -89,7 +89,7 @@ export default {
           region: {
             label: this.$t('db.text_40'),
           },
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
         },
         responseData: this.responseData,
       }),

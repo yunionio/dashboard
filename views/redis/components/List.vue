@@ -51,7 +51,7 @@ export default {
           },
           // account: getAccountFilter(),
           projects: getTenantFilter(),
-          domain: getDomainFilter(),
+          project_domains: getDomainFilter(),
           billing_type: getFilter({
             field: 'billing_type',
             title: this.$t('db.text_54'),
