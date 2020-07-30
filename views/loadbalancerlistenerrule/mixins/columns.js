@@ -14,6 +14,8 @@ export default {
         onManager: this.onManager,
         hideField: true,
         title: '名称',
+        edit: false,
+        editDesc: false,
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
