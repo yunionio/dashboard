@@ -2227,24 +2227,24 @@
 	"dashboard.text_178": "CPU使用率TOP5（本地IDC）",
 	"dashboard.text_179": "磁盘写入速度TOP5（本地IDC）",
 	"dashboard.text_180": "磁盘读取速度TOP5（本地IDC）",
-	"cloudenv.ScheduledtaskGroupCycleType": {
+	"cloudenvScheduledtaskGroupCycleType": {
 		"one": "单次",
 		"day": "每天",
 		"week": "每周",
 		"month": "每月"
 	},
-	"cloudenv.ScheduledtaskRuleAction": {
+	"cloudenvScheduledtaskRuleAction": {
 		"start": "开机",
 		"stop": "关机",
 		"restart": "重启"
 	},
-	"cloudenv.ScheduledtaskResourceType": {
+	"cloudenvScheduledtaskResourceType": {
 		"server": "虚拟机"
 	},
-	"cloudenv.ScheduledtaskLabelType": {
+	"cloudenvScheduledtaskLabelType": {
 		"id": "指定虚拟机"
 	},
-	"cloudenv.ScheduledtaskType": {
+	"cloudenvScheduledtaskType": {
 		"cycle": "周期策略",
 		"timing": "定时策略"
 	},
