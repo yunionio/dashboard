@@ -1,7 +1,6 @@
 <template>
   <div class="redis-create-index">
     <page-header title="新建Redis" />
-    <a-divider orientation="left">基础配置</a-divider>
     <a-form
       class="mt-3"
       v-bind="formItemLayout"
