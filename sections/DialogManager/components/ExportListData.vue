@@ -149,6 +149,7 @@ export default {
           }
         }
       } else if (formValues.type === this.exportType.all.key) { // 导出范围选择全部时
+        if (listParams.cloud_env) params.cloud_env = listParams.cloud_env
         if (listParams.is_on_premise) params.is_on_premise = listParams.is_on_premise
         if (listParams.private_cloud) params.private_cloud = listParams.private_cloud
         if (listParams.public_cloud) params.public_cloud = listParams.public_cloud
