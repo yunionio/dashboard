@@ -72,8 +72,8 @@
         <template v-if="(showBandwidth && selectedPlatform === 'public_cloud') || selectedPlatform === 'idc'">
           <a-form-item label="带宽" v-bind="formItemLayout">
             <div class="d-flex align-items-center">
-              <a-input-number v-if="selectedPlatform === 'idc'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
-               <a-tooltip v-else placement="top" :title="`范围在 1～${maxBandwidth}Mbps`">
+                <a-input-number v-if="selectedPlatform === 'idc'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
+                <a-tooltip v-else placement="top" :title="`范围在 1～${maxBandwidth}Mbps`">
                 <a-input-number
                   style="width: 120px"
                   :min="1"
@@ -82,8 +82,8 @@
                   :formatter="format"
                   :parse="format"
                   v-decorator="decorators.bandwidth" />
-                  <span class="ml-2">Mbps</span>
                 </a-tooltip>
+                <span class="ml-2">Mbps</span>
             </div>
           </a-form-item>
           <a-form-item label="计费方式" v-bind="formItemLayout" v-if="selectedPlatform !== 'idc' ">
