@@ -8183,5 +8183,7 @@
   "common_21": "Certification System",
   "common_27": "Recipient Management",
   "common_462": "Creation time:{0}",
-  "common_463": "Transaction Type:"
+  "common_463": "Transaction Type:",
+  "common_464": "AWS does not currently support this operation",
+  "common_465": "Domain and URL must fill in one item"
 }
