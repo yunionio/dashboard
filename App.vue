@@ -15,6 +15,7 @@
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import enUS from 'ant-design-vue/es/locale/en_US'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
 import DialogManager from '@/sections/DialogManager'
@@ -23,6 +24,11 @@ import WindowResizeListener from '@/sections/WindowResizeListener'
 import notificationListener from '@/utils/notificationListener'
 import i18n from '@/locales'
 import { updateThemeColor } from '@/utils/theme/utils'
+
+const antdLocales = {
+  'zh-CN': zhCN,
+  en: enUS,
+}
 
 export default {
   name: 'App',
@@ -35,7 +41,7 @@ export default {
   },
   data () {
     return {
-      locale: zhCN,
+      locale: antdLocales[this.$store.getters.setting.language],
     }
   },
   computed: {
