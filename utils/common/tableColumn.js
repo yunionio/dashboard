@@ -397,9 +397,9 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n
       default: ({ row }, h) => {
         const ret = []
         if (row[field] === 'postpaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('common_454')}</div>)
         } else if (row[field] === 'prepaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('common_455')}</div>)
         }
         if (row.expired_at) {
           const dateArr = moment(row.expired_at).fromNow().split(' ')
@@ -554,7 +554,7 @@ export const getBillingTableColumn = ({
         if (billingType === 'postpaid') {
           ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('common_454') }</div>)
         } else if (billingType === 'prepaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('包年包月') }</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('bill.text_7') }</div>)
         }
         if (row.expired_at) {
           const time = vm.$moment(row.expired_at).format()
