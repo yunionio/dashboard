@@ -97,7 +97,7 @@ export default {
     mapperDisks (data) {
       data = data.concat(this.bindedDisks)
       data = R.uniqBy(item => item.id, data)
-      data = data.filter((item) => { return ['OneCloud', 'Qcloud', 'Aliyun'].includes(item.brand) && !(item.snapshotpolicies && item.snapshotpolicies.length > 0) && item.guest_count > 0 })
+      data = data.filter((item) => { return ['OneCloud', 'Qcloud', 'Aliyun'].includes(item.brand) && item.guest_count > 0 })
       return data
     },
     async fetchBindedDisks () {
