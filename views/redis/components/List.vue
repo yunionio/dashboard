@@ -68,7 +68,7 @@ export default {
               key: 'engine_version',
             },
           },
-          arch_type: {
+          local_category: {
             label: '实例类型',
             dropdown: true,
             multiple: true,
