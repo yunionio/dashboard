@@ -189,15 +189,17 @@ export default {
     SecgroupConfig,
   },
   mixins: [mixin],
+  data () {
+    return {
+      isLocalDisk: true,
+    }
+  },
   computed: {
     isKvm () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key
     },
     isIso () {
       return this.form.fd.imageType === IMAGES_TYPE_MAP.iso.key
-    },
-    isLocalDisk () {
-      return _.get(this.form, 'fd.systemDiskType.key') === 'local'
     },
     hypervisors () {
       const { hypervisors = [] } = this.form.fi.capability
@@ -434,7 +436,20 @@ export default {
         if (keys.includes('cloudregion')) {
           this.$nextTick(this.fetchInstanceSpecs)
         }
+        this.setIsLocalDisk()
       })
+    },
+    setIsLocalDisk () {
+      const isSysLocal = _.get(this.form, 'fd.systemDiskType.key') === 'local'
+      const fd = this.form.fc.getFieldsValue()
+      let isDiskLocal = true
+      const { dataDiskTypes } = fd
+      if (!R.is(Object, dataDiskTypes)) return
+      const diskTypeItem = dataDiskTypes[Object.keys(dataDiskTypes)[0]]
+      if (diskTypeItem && diskTypeItem.key) {
+        isDiskLocal = diskTypeItem.key === 'local'
+      }
+      this.isLocalDisk = isSysLocal && isDiskLocal
     },
     fetchCapability () {
       const params = {
