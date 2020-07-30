@@ -21,7 +21,7 @@
             {{ item.label }}
           </a-radio-button>
         </a-radio-group>
-        <div v-else>无可用平台，请联系管理员</div>
+        <div v-else>{{ $t('common_467') }}</div>
       </a-form-item>
       <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout">
         <cloudregion-zone
@@ -413,7 +413,7 @@ export default {
     },
     async handleConfirm () {
       if (!this.hypervisorsC || !this.hypervisorsC.length) {
-        this.$message.error('无可用平台，无法创建集群，请联系管理员')
+        this.$message.error(this.$t('common_468'))
         return
       }
       this.loading = true
