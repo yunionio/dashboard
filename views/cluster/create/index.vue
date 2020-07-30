@@ -290,13 +290,6 @@ export default {
       const opts = hyperOpts.filter(item => {
         return (this.userInfo.hypervisors || []).find(val => val === item.value.toLowerCase())
       })
-<<<<<<< HEAD
-      this.form.fc.getFieldDecorator('hypervisor', { preserve: true, initialValue: opts.length ? opts[0].value : '' })
-      if (!opts.length) {
-        this.$message.error(this.$t('k8s.text_171'))
-      }
-=======
->>>>>>> 4a8ac5ade713eab40e80871062d681ed7dfb6f11
       return opts
     },
   },
