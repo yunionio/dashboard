@@ -16,11 +16,12 @@
       <a-form-item
         label="平台"
         v-bind="formItemLayout">
-        <a-radio-group v-decorator="decorators.hypervisor" @change="hypervisorChange">
+        <a-radio-group v-if="hypervisorsC.length" v-decorator="decorators.hypervisor" @change="hypervisorChange">
           <a-radio-button v-for="item in hypervisorsC" :key="item.value" :value="item.value">
             {{ item.label }}
           </a-radio-button>
         </a-radio-group>
+        <div v-else>无可用平台，请联系管理员</div>
       </a-form-item>
       <a-form-item label="区域" class="mb-0" v-bind="formItemLayout">
         <cloudregion-zone
@@ -112,6 +113,7 @@ export default {
         hypervisor: [
           'hypervisor',
           {
+            initialValue: hyperOpts[0].value,
             rules: [
               { required: true, message: '请选择平台' },
             ],
@@ -284,13 +286,20 @@ export default {
     ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
     hypervisorsC () {
       const opts = hyperOpts.filter(item => {
-        return this.userInfo.hypervisors.find(val => val === item.value.toLowerCase() || item.external)
+        return (this.userInfo.hypervisors || []).find(val => val === item.value.toLowerCase())
       })
-      this.form.fc.getFieldDecorator('hypervisor', { preserve: true, initialValue: opts.length ? opts[0].value : '' })
-      if (!opts.length) {
-        this.$message.error('无可用平台')
-      }
       return opts
+    },
+  },
+  watch: {
+    hypervisorsC (val) {
+      if (val && val.length) {
+        if (val[0].value !== this.decorators.hypervisor[1].initialValue) {
+          this.form.fc.setFieldsValue({
+            [this.decorators.hypervisor[0]]: val[0].value,
+          })
+        }
+      }
     },
   },
   created () {
@@ -401,6 +410,10 @@ export default {
       return values
     },
     async handleConfirm () {
+      if (!this.hypervisorsC || !this.hypervisorsC.length) {
+        this.$message.error('无可用平台，无法创建集群，请联系管理员')
+        return
+      }
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
