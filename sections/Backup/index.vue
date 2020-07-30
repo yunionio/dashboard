@@ -52,6 +52,22 @@ export default {
   methods: {
     change (val) {
       this.backupEnable = val
+      if (val) this.fetchBackupHosts()
+    },
+    async fetchBackupHosts () {
+      const params = {
+        hypervisor: 'kvm',
+        enabled: true,
+      }
+      if (this.isAdminMode && this.domain && this.domain.key) {
+        params.project_domain = this.domain.key
+      }
+      try {
+        const { data: { data = [] } } = await new this.$Manager('hosts', 'v2').list({ params })
+        this.hostList = data
+      } catch (error) {
+        throw error
+      }
     },
   },
 }
