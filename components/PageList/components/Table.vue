@@ -118,7 +118,7 @@ export default {
     gridStyle () {
       if (!this.inBaseSidePage && this.isSidepageOpen) return {} // 如果打开抽屉，且列表是最外层列表，则禁用横向滚动条
       return {
-        width: `${this.tableWidth}px`,
+        width: R.is(Number, this.tableWidth) ? `${this.tableWidth}px` : this.tableWidth,
       }
     },
     tableData (val, oldVal) {
@@ -176,21 +176,30 @@ export default {
     'config.hiddenColumns' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
         this.$nextTick(() => {
-          this.tableColumns = this.genTableColumns()
+          this.tableWidth = 'auto'
+          this.$nextTick(() => {
+            this.tableColumns = this.genTableColumns()
+          })
         })
       }
     },
     'config.showTagKeys' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
         this.$nextTick(() => {
-          this.tableColumns = this.genTableColumns()
+          this.tableWidth = 'auto'
+          this.$nextTick(() => {
+            this.tableColumns = this.genTableColumns()
+          })
         })
       }
     },
     'config.sortColumnsMap' (val, oldVal) {
       if (!R.equals(val, oldVal)) {
         this.$nextTick(() => {
-          this.tableColumns = this.genTableColumns()
+          this.tableWidth = 'auto'
+          this.$nextTick(() => {
+            this.tableColumns = this.genTableColumns()
+          })
         })
       }
     },
