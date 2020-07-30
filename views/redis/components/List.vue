@@ -69,7 +69,7 @@ export default {
               key: 'engine_version',
             },
           },
-          arch_type: {
+          local_category: {
             label: this.$t('db.text_119'),
             dropdown: true,
             multiple: true,
