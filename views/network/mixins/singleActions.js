@@ -101,12 +101,12 @@ export default {
                   tooltip: '',
                 }
                 if (this.isProjectMode) {
-                  ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                  ret.tooltip = i18n.t('monitor.text_9', [this.$t('dictionary.domain')])
                   return ret
                 }
                 if (obj.is_public && obj.public_scope !== 'none') {
                   ret.validate = false
-                  ret.tooltip = '只有共享范围为私有的才支持该操作'
+                  ret.tooltip = this.$t('common_280')
                   return ret
                 }
                 return {
