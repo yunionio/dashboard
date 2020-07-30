@@ -56,7 +56,7 @@ export default {
         { label: this.$t('network.text_565'), key: 'network-list' },
         { label: this.$t('network.text_598'), key: 'baremetals-list' },
         { label: this.$t('network.text_70'), key: 'hosts-list' },
-        { label: this.$t('network.text_710'), key: 'dashboarde' },
+        { label: this.$t('network.text_710'), key: 'dashboard' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
