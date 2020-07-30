@@ -265,7 +265,7 @@ export default {
       this.mouseenterType = type
       this.$nextTick(() => {
         const { top: tagWrapTop, bottom: tagWrapBottom } = this.$refs['tag-wrap'].getBoundingClientRect()
-        const valueWrapHeight = this.$refs['value-wrap'].getBoundingClientRect().height
+        const valueWrapHeight = (this.$refs['value-wrap'] && this.$refs['value-wrap'].getBoundingClientRect().height) || 0
         const documentClientHeight = document.documentElement.clientHeight
         const { top: targetTop, bottom: targetBottom } = evt.target.getBoundingClientRect()
         // 计算剩余的高度是否足够显示值的内容
