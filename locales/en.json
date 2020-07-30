@@ -2227,24 +2227,24 @@
   "dashboard.text_178": "CPU Usage TOP5 (Local IDC)",
   "dashboard.text_179": "Disk write speed TOP5 (local IDC)",
   "dashboard.text_180": "Disk read speed TOP5 (local IDC)",
-  "cloudenv.ScheduledtaskGroupCycleType": {
+  "cloudenvScheduledtaskGroupCycleType": {
     "one": "Single time",
     "day": "Everyday",
     "week": "Weekly",
     "month": "Monthly"
   },
-  "cloudenv.ScheduledtaskRuleAction": {
+  "cloudenvScheduledtaskRuleAction": {
     "start": "Start",
     "stop": "Shutdown",
     "restart": "Restart"
   },
-  "cloudenv.ScheduledtaskResourceType": {
+  "cloudenvScheduledtaskResourceType": {
     "server": "Virtual Machine"
   },
-  "cloudenv.ScheduledtaskLabelType": {
+  "cloudenvScheduledtaskLabelType": {
     "id": "Specify virtual machine"
   },
-  "cloudenv.ScheduledtaskType": {
+  "cloudenvScheduledtaskType": {
     "cycle": "cycle strategy",
     "timing": "timing strategy"
   },
