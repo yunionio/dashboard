@@ -51,7 +51,12 @@ export default {
       for (let i = 0; i < _.length; i++) {
         const row = _[i]
         row.ips = formatIps(row)
-        this.$set(row, 'isSuitable', !!row.suitable_network || formatSuitable(row))
+        const { ip_nets } = row
+        let isSuitableNetwork = false
+        if (ip_nets && ip_nets.length) {
+          isSuitableNetwork = ip_nets.every(o => o.suitable_network)
+        }
+        this.$set(row, 'isSuitable', isSuitableNetwork || !!row.suitable_network || formatSuitable(row))
         items.push(_[i])
         if (_.length === 1) {
           _listData.push(items)
