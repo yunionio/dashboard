@@ -16,7 +16,13 @@ export default {
           if (provider.toLowerCase() === 'huawei') {
             return {
               validate: false,
-              tooltip: '华为云暂不支持端口',
+              tooltip: '华为云暂不支持此操作',
+            }
+          }
+          if (provider.toLowerCase() === 'aws') {
+            return {
+              validate: false,
+              tooltip: 'AWS暂不支持此操作',
             }
           }
           return {
@@ -33,6 +39,18 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
           })
+        },
+        meta: obj => {
+          const { provider } = this.data
+          if (provider.toLowerCase() === 'aws') {
+            return {
+              validate: false,
+              tooltip: 'AWS暂不支持此操作',
+            }
+          }
+          return {
+            validate: true,
+          }
         },
       },
       {
