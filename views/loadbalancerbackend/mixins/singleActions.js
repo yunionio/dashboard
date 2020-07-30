@@ -20,6 +20,12 @@ export default {
               tooltip: i18n.t('network.text_354'),
             }
           }
+          if (provider.toLowerCase() === 'aws') {
+            return {
+              validate: false,
+              tooltip: i18n.t('common_464'),
+            }
+          }
           return {
             validate: true,
           }
@@ -34,6 +40,18 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
           })
+        },
+        meta: obj => {
+          const { provider } = this.data
+          if (provider.toLowerCase() === 'aws') {
+            return {
+              validate: false,
+              tooltip: i18n.t('common_464'),
+            }
+          }
+          return {
+            validate: true,
+          }
         },
       },
       {
