@@ -93,7 +93,7 @@ export default {
               {
                 validator: (rule, value, _callback) => {
                   const isAzure = this.cloudregion.provider === 'Azure'
-                  if (isAzure && (value && value.indexOf('-'))) {
+                  if (isAzure && (value && value.indexOf('-') > -1)) {
                     _callback(new Error('Azure名称不允许出现 -'))
                   }
                   return this.$validate('bucketName')(rule, value, _callback)
