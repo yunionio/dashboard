@@ -529,7 +529,7 @@ export default {
         {
           path: '/serverrecovery',
           meta: {
-            label: i18n.t('dictionary.serverrecovery'),
+            label: i18n.t('compute.text_91'),
             permission: 'servers_list,server_delete',
             hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
           },
