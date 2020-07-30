@@ -20,7 +20,7 @@
           <template v-if="!isAdminMode && isShowWorkflow">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
             <ul class="work-list">
-              <li @click="joinProjectHandle" v-if="projectEnabled">{{$t('common_205')}}{{$t('dictionary.project')}} }}</li>
+              <li @click="joinProjectHandle" v-if="projectEnabled">{{$t('common_205')}}{{$t('dictionary.project')}}</li>
               <li @click="customeServiceHandle" v-if="customerServiceEnabled">{{$t('common_206')}}</li>
               <li @click="applyProjectQuotaHandle" v-if="projectQuotaEnabled">{{$t('common_207')}}{{$t('dictionary.project')}}{{$t('common_208')}}</li>
               <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">{{$t('common_207')}}{{$t('dictionary.domain')}}{{$t('common_208')}}</li>

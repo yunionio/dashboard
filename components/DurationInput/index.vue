@@ -9,6 +9,7 @@
 
 <script>
 import * as R from 'ramda'
+import i18n from '@/locales'
 
 export default {
   name: 'DurationInput',
@@ -20,10 +21,10 @@ export default {
     durationOptions: {
       type: Array,
       default: () => [
-        { label: this.$t('common_11'), key: 'h' },
-        { label: this.$t('common_12'), key: 'd' },
-        { label: this.$t('common_13'), key: 'm' },
-        { label: this.$t('common_14'), key: 'y' },
+        { label: i18n.t('common_11'), key: 'h' },
+        { label: i18n.t('common_12'), key: 'd' },
+        { label: i18n.t('common_13'), key: 'm' },
+        { label: i18n.t('common_14'), key: 'y' },
       ],
     },
   },
