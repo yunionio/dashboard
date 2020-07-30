@@ -14,7 +14,9 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        title: i18n.t('network.text_21'),
+        title: 18n.t('network.text_21'),
+        edit: false,
+        editDesc: false,
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
