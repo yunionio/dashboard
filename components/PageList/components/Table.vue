@@ -221,11 +221,15 @@ export default {
     updateFloatingScroll () {
       const gridEl = this.$refs.grid && this.$refs.grid.$el
       if (!gridEl) return
-      const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
-      const tableBodyWidth = tableBodyEl.getBoundingClientRect().width - 15
-      if (tableBodyWidth) this.tableWidth = tableBodyWidth
-      gridEl && this.$bus.$emit('FloatingScrollUpdate', {
-        sourceElement: gridEl,
+      this.tableWidth = 'auto'
+      this.$nextTick(async () => {
+        await this.$refs.grid.recalculate(true)
+        const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
+        const tableBodyWidth = tableBodyEl.getBoundingClientRect().width - 15
+        if (tableBodyWidth) this.tableWidth = tableBodyWidth
+        gridEl && this.$bus.$emit('FloatingScrollUpdate', {
+          sourceElement: gridEl,
+        })
       })
     },
     // 生成 table columns
