@@ -51,9 +51,9 @@ export default {
           operation: {
             label: this.$t('cloudenv.text_425'),
             dropdown: true,
-            items: Object.keys(this.$t('cloudenv.ScheduledtaskRuleAction')).map((k) => {
+            items: Object.keys(this.$t('cloudenvScheduledtaskRuleAction')).map((k) => {
               return {
-                label: this.$t('cloudenv.ScheduledtaskRuleAction')[k],
+                label: this.$t('cloudenvScheduledtaskRuleAction')[k],
                 key: k,
               }
             }),

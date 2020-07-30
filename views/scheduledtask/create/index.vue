@@ -10,7 +10,7 @@
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_433')">
         <a-radio-group v-decorator="decorators.cycle_type">
-          <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskGroupCycleType')" :key="k" :value="k">{{v}}</a-radio-button>
+          <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskGroupCycleType')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_434')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'week'">
@@ -50,17 +50,17 @@
       </template>
       <a-form-item :label="$t('cloudenv.text_384')">
         <a-select v-decorator="decorators.resourceType">
-          <a-select-option v-for="(v, k) in $t('cloudenv.ScheduledtaskResourceType')" :key="k" :value="k">{{v}}</a-select-option>
+          <a-select-option v-for="(v, k) in $t('cloudenvScheduledtaskResourceType')" :key="k" :value="k">{{v}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_425')">
         <a-radio-group v-decorator="decorators.action">
-          <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskRuleAction')" :key="k" :value="k">{{v}}</a-radio-button>
+          <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskRuleAction')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_439')" v-show="false">
         <a-radio-group v-decorator="decorators.labelType">
-          <a-radio-button v-for="(v, k) in $t('cloudenv.ScheduledtaskLabelType')" :key="k" :value="k">{{v}}</a-radio-button>
+          <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskLabelType')" :key="k" :value="k">{{v}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_440')" v-if="form.fc.getFieldValue('labelType') === 'id'">

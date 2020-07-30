@@ -8,7 +8,7 @@ export const getOperationColumns = () => {
     width: 80,
     showOverflow: 'title',
     formatter: ({ row }) => {
-      return i18n.t('cloudenv.ScheduledtaskRuleAction')[row.operation] || '-'
+      return i18n.t('cloudenvScheduledtaskRuleAction')[row.operation] || '-'
     },
   }
 }
@@ -32,7 +32,7 @@ export const getResourceTypeColumns = () => {
     width: 110,
     showOverflow: 'title',
     formatter: ({ row }) => {
-      return i18n.t('cloudenv.ScheduledtaskResourceType')[row.resource_type] || '-'
+      return i18n.t('cloudenvScheduledtaskResourceType')[row.resource_type] || '-'
     },
   }
 }
@@ -56,7 +56,7 @@ export const getLabelTypeColumns = () => {
     width: 110,
     showOverflow: 'title',
     formatter: ({ row }) => {
-      return i18n.t('cloudenv.ScheduledtaskLabelType')[row.label_type] || '-'
+      return i18n.t('cloudenvScheduledtaskLabelType')[row.label_type] || '-'
     },
   }
 }
@@ -70,7 +70,7 @@ export const getCycleTypeCloumns = () => {
       if (row.scheduled_type === 'timing') {
         row.cycle_timer.cycle_type = 'one'
       }
-      return i18n.t('cloudenv.ScheduledtaskGroupCycleType')[row.cycle_timer.cycle_type]
+      return i18n.t('cloudenvScheduledtaskGroupCycleType')[row.cycle_timer.cycle_type]
     },
   }
 }
@@ -87,7 +87,7 @@ export const getCycleTimerColumns = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss' } = {}
         const minute = row.cycle_timer.minute
         const timer = i18n.t('cloudenv.text_465', [`${hour > 9 ? hour : `0${hour}`}:${minute > 9 ? minute : `0${minute}`}`])
         if (row.scheduled_type === 'cycle') {
-          const cycleType = i18n.t('cloudenv.ScheduledtaskGroupCycleType')[row.cycle_timer.cycle_type]
+          const cycleType = i18n.t('cloudenvScheduledtaskGroupCycleType')[row.cycle_timer.cycle_type]
           const startEndTime = i18n.t('cloudenv.text_466', [moment(row.cycle_timer.start_time).format(timeFormat), moment(row.cycle_timer.end_time).format(timeFormat)])
           if (row.cycle_timer.cycle_type === 'day') {
             return `${cycleType} ${timer} ${startEndTime}`
