@@ -46,7 +46,7 @@ export default {
           if (provider.toLowerCase() === 'aws') {
             return {
               validate: false,
-              tooltip: 'AWS暂不支持此操作',
+              tooltip: i18n.t('common_464'),
             }
           }
           return {
