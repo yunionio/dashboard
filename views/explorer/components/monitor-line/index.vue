@@ -169,13 +169,12 @@ export default {
       this.tableSetHighlight({ row, rowIndex, click: false })
     },
     cellClick ({ row, rowIndex }) {
-      this.highlight = { index: rowIndex, color: row.__color }
       this.tableSetHighlight({ row, rowIndex, click: true })
     },
     tableSetHighlight ({ row, rowIndex, click }) {
       let seriesName = _.get(this.chartInstanceOption, `series[${rowIndex}].name`)
       seriesName = seriesName || `series${rowIndex}`
-      this.highlightSeries(seriesName, click, row)
+      this.highlightSeries(seriesName, click, row, rowIndex)
     },
     setChartInstance (v) {
       this.chartInstanceOption = v.getOption()
@@ -187,20 +186,22 @@ export default {
           this.seriesOldClickName = null
         }
         this._cancelHighlight()
-        this.highlightSeries(params.seriesName, true, this.tableData[params.seriesIndex])
+        this.highlightSeries(params.seriesName, true, this.tableData[params.seriesIndex], params.seriesIndex)
       })
     },
-    highlightSeries (seriesName, isClick = false, row) {
+    highlightSeries (seriesName, isClick = false, row, rowIndex) {
       if (this.chartInstance) {
         if (isClick) {
           this._cancelHighlight()
           if (seriesName === this.seriesOldClickName) { // 如果上一次高亮是click触发的，那么只能通过click切换或者取消
             this.seriesOldClickName = null
             this.$refs.tableRef.clearCurrentRow()
+            this.highlight = { index: null, color: '' }
           } else {
             this.$refs.tableRef.setCurrentRow(row)
             this._setHighlight(seriesName)
             this.seriesOldClickName = seriesName
+            this.highlight = { index: rowIndex, color: row.__color }
           }
         } else {
           this._cancelHighlight()
