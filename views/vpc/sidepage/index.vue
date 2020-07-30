@@ -29,6 +29,7 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import NetworkList from '../../network/components/List'
+import RouteTableList from '../../route-table/components/List'
 import VpcDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -40,18 +41,25 @@ export default {
     VpcDetail,
     NetworkList,
     Actions,
+    RouteTableList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
-      detailTabs: [
-        { label: this.$t('network.text_67'), key: 'vpc-detail' },
-        { label: this.$t('network.text_565'), key: 'network-list' },
-        { label: this.$t('network.text_150'), key: 'event-drawer' },
-      ],
     }
   },
   computed: {
+    detailTabs () {
+      const tabs = [
+        { label: this.$t('network.text_67'), key: 'vpc-detail' },
+        { label: this.$t('network.text_565'), key: 'network-list' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
+      ]
+      if (this.detailData.brand === 'Huawei' || this.detailData.brand === 'Aliyun') {
+        tabs.splice(2, 0, { label: this.$t('dictionary.route_table'), key: 'route-table-list' })
+      }
+      return tabs
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'network-list') {
         return {

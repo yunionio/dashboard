@@ -8,7 +8,7 @@
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('network.text_43')" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.proj" :placeholder="$t('network.text_44')" />
+          <a-input v-decorator="decorators.proj" disabled :placeholder="$t('network.text_44')" />
         </a-form-item>
         <a-form-item v-bind="formItemLayout">
           <template slot="label">
@@ -219,6 +219,7 @@ export default {
       },
       userParams: {
         system: true,
+        tenant: 'system',
       },
       nameServers: [
         { label: this.$t('dictionary.server'), value: 'server' },
