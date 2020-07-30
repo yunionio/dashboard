@@ -16,11 +16,12 @@
       <a-form-item
         :label="$t('k8s.text_150')"
         v-bind="formItemLayout">
-        <a-radio-group v-decorator="decorators.hypervisor" @change="hypervisorChange">
+        <a-radio-group v-if="hypervisorsC.length" v-decorator="decorators.hypervisor" @change="hypervisorChange">
           <a-radio-button v-for="item in hypervisorsC" :key="item.value" :value="item.value">
             {{ item.label }}
           </a-radio-button>
         </a-radio-group>
+        <div v-else>无可用平台，请联系管理员</div>
       </a-form-item>
       <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout">
         <cloudregion-zone
@@ -59,11 +60,13 @@
       <a-form-item v-if="isConfigImage" :wrapper-col="{ span: 20, offset: 3 }">
         <a-checkbox v-decorator="decorators.image_repository_insecure">{{$t('k8s.text_161')}}</a-checkbox>
       </a-form-item>
-      <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
-        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
-        <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
-      </a-form-item>
     </a-form>
+    <page-footer>
+      <div slot="right">
+        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
+        <a-button @click="cancel">{{ $t('dialog.cancel') }}</a-button>
+      </div>
+    </page-footer>
   </div>
 </template>
 
@@ -112,6 +115,7 @@ export default {
         hypervisor: [
           'hypervisor',
           {
+            initialValue: hyperOpts[0].value,
             rules: [
               { required: true, message: this.$t('k8s.text_164') },
             ],
@@ -284,13 +288,27 @@ export default {
     ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
     hypervisorsC () {
       const opts = hyperOpts.filter(item => {
-        return this.userInfo.hypervisors.find(val => val === item.value.toLowerCase() || item.external)
+        return (this.userInfo.hypervisors || []).find(val => val === item.value.toLowerCase())
       })
+<<<<<<< HEAD
       this.form.fc.getFieldDecorator('hypervisor', { preserve: true, initialValue: opts.length ? opts[0].value : '' })
       if (!opts.length) {
         this.$message.error(this.$t('k8s.text_171'))
       }
+=======
+>>>>>>> 4a8ac5ade713eab40e80871062d681ed7dfb6f11
       return opts
+    },
+  },
+  watch: {
+    hypervisorsC (val) {
+      if (val && val.length) {
+        if (val[0].value !== this.decorators.hypervisor[1].initialValue) {
+          this.form.fc.setFieldsValue({
+            [this.decorators.hypervisor[0]]: val[0].value,
+          })
+        }
+      }
     },
   },
   created () {
@@ -401,6 +419,10 @@ export default {
       return values
     },
     async handleConfirm () {
+      if (!this.hypervisorsC || !this.hypervisorsC.length) {
+        this.$message.error('无可用平台，无法创建集群，请联系管理员')
+        return
+      }
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
