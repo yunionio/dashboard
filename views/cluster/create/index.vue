@@ -60,11 +60,13 @@
       <a-form-item v-if="isConfigImage" :wrapper-col="{ span: 20, offset: 3 }">
         <a-checkbox v-decorator="decorators.image_repository_insecure">是否为不安全</a-checkbox>
       </a-form-item>
-      <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
-        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
-        <a-button @click="cancel">取消</a-button>
-      </a-form-item>
     </a-form>
+    <page-footer>
+      <div slot="right">
+        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
+        <a-button @click="cancel">{{ $t('dialog.cancel') }}</a-button>
+      </div>
+    </page-footer>
   </div>
 </template>
 
