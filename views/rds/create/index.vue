@@ -1,7 +1,6 @@
 <template>
   <div class="server-create-index">
     <page-header :title="$t('db.text_140')" />
-    <a-divider orientation="left">{{$t('db.text_141')}}</a-divider>
     <a-form hideRequiredMark :form="form.fc" class="mt-3"  v-bind="formItemLayout">
       <a-form-item class="mb-0" :label="$t('db.text_139', [$t('dictionary.project')])" v-bind="formItemLayout">
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
