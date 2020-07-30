@@ -1,7 +1,6 @@
 <template>
   <div class="redis-create-index">
     <page-header :title="$t('db.text_280')" />
-    <a-divider orientation="left">{{$t('db.text_141')}}</a-divider>
     <a-form
       class="mt-3"
       v-bind="formItemLayout"
