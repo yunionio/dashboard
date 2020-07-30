@@ -8185,5 +8185,8 @@
   "common_462": "Creation time:{0}",
   "common_463": "Transaction Type:",
   "common_464": "AWS does not currently support this operation",
-  "common_465": "Domain and URL must fill in one item"
+  "common_465": "Domain and URL must fill in one item",
+  "common_466": "The input value must be greater than 0",
+	"common_467": "The platform is not available. Please contact the administrator",
+	"common_468": "No platform available. Cluster cannot be created. Please contact your administrator"
 }
