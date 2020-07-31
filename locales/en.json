@@ -1994,6 +1994,18 @@
     "SNAPSHOT_UNUSED": "Unused snapshot",
     "OSS_SEC_ACL": "Object storage permissions are open to read and write buckets and files"
   },
+  "idpTmplTitles": {
+    "dex_oidc": "通用OIDC",
+    "oidc": "通用OIDC",
+    "github_oidc": "Github",
+    "azure_oidc": "Azure AD OAuth2",
+    "saml": "通用SAML",
+    "azure_ad_saml": "Azure AD SAML 2.0",
+    "cas": "通用CAS",
+    "feishu_oauth2": "飞书",
+    "dingtalk_oauth2": "钉钉",
+    "qywechat_oauth2": "企业微信"
+  },
   "login.desc1": "Next generation unified cloud management platform (CMP)",
   "login.desc2": "Simple·Open·Integrated·Smart",
   "login.desc3": "Provide one-click deployment and productized solutions for all the needs of enterprises on cloud, cloud use, and multi-cloud management",
@@ -8188,5 +8200,7 @@
   "common_465": "Domain and URL must fill in one item",
   "common_466": "The input value must be greater than 0",
   "common_467": "The platform is not available. Please contact the administrator",
-  "common_468": "No platform available. Cluster cannot be created. Please contact your administrator"
+  "common_468": "No platform available. Cluster cannot be created. Please contact your administrator",
+  "common_469": "Regional Level",
+  "common_470": "Single area"
 }
