@@ -71,12 +71,14 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { hyperOpts, KUBE_PROVIDER } from '../constants'
 import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionZone from '@/sections/CloudregionZone'
 import { isWithinRange } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { HYPERVISORS_MAP } from '@/constants'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
@@ -107,9 +109,16 @@ export default {
                 filter: 'server_type.notin(ipmi, pxe)',
                 scope: this.scope,
               }
+              this.fetchCapability(values.zone.key, 'zone')
+            }
+            if (values.cloudregion && values.cloudregion.key) {
+              this.fetchCapability(values.cloudregion.key, 'cloudregion')
             }
           },
         }),
+        fi: {
+          hypervisors: ['kvm'],
+        },
       },
       decorators: {
         hypervisor: [
@@ -288,7 +297,7 @@ export default {
     ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
     hypervisorsC () {
       const opts = hyperOpts.filter(item => {
-        return (this.userInfo.hypervisors || []).find(val => val === item.value.toLowerCase())
+        return (this.form.fi.hypervisors || []).find(val => val === item.value.toLowerCase())
       })
       return opts
     },
@@ -310,6 +319,27 @@ export default {
     this.fetchK8sVersions()
   },
   methods: {
+    async fetchCapability (id, resource) {
+      const params = {
+        show_emulated: true,
+        resource_type: 'shared',
+        scope: this.scope,
+      }
+      const capabilityParams = { id, spec: 'capability', params }
+      if (!id) return
+      this.capabilityParams = capabilityParams
+      try {
+        const { data } = await new this.$Manager(`${resource}s`).getSpecific(this.capabilityParams)
+        let hypervisors = R.is(Object, data) ? (data.hypervisors || []) : []
+        if (hypervisors.includes(HYPERVISORS_MAP.kvm.key)) { // kvm 排序为第一个
+          hypervisors = [HYPERVISORS_MAP.kvm.key].concat(hypervisors).filter(val => val !== 'baremetal')
+        }
+        hypervisors = Array.from(new Set(hypervisors))
+        this.form.fi.hypervisors = hypervisors
+      } catch (error) {
+        throw error
+      }
+    },
     hypervisorChange (e) {
       const type = findPlatform(e.target.value, 'hypervisor') || 'idc'
       let param = {}
