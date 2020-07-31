@@ -4,6 +4,7 @@ export default {
     this.singleActions = [
       {
         label: '删除',
+        permission: 'rds_dbinstancedatabases_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
