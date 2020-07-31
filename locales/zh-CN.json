@@ -6601,7 +6601,7 @@
 	"system.policy_edit_type_yaml": "YAML编辑视图",
 	"scope.text_1": "实例列表",
 	"scope.text_2": "用户信息",
-	"scope.text_3": "公有云子账号",
+	"scope.text_3": "云上用户",
 	"scope.text_4": "AccessKey 管理",
 	"scope.text_5": "更改密码",
 	"scope.text_6": "退出",
