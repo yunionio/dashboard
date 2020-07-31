@@ -177,7 +177,15 @@ export default {
                   onManager: this.onManager,
                 })
               },
-              meta: () => this.$getDeleteResult(obj),
+              meta: () => {
+                const deleteResult = this.$getDeleteResult(obj)
+                if (!deleteResult.validate) {
+                  return deleteResult
+                }
+                return {
+                  validate: ownerDomain,
+                }
+              },
             },
           ]
         },

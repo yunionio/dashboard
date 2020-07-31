@@ -157,7 +157,15 @@ export default {
                     onManager: this.onManager,
                   })
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
+                meta: () => {
+                  const deleteResult = this.$getDeleteResult(this.list.selectedItems)
+                  if (!deleteResult.validate) {
+                    return deleteResult
+                  }
+                  return {
+                    validate: ownerDomain,
+                  }
+                },
               },
             ]
           },
