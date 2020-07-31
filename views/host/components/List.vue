@@ -17,7 +17,8 @@ import { getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilt
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'HostList',
@@ -138,11 +139,11 @@ export default {
                   name: this.$t('dictionary.host'),
                   resource: 'hosts',
                 }),
-                getSetPublicAction(this, {
-                  name: this.$t('dictionary.host'),
-                  scope: 'domain',
-                  resource: 'hosts',
-                }),
+                // getSetPublicAction(this, {
+                //   name: this.$t('dictionary.host'),
+                //   scope: 'domain',
+                //   resource: 'hosts',
+                // }),
                 {
                   label: '调整标签',
                   action: (obj) => {

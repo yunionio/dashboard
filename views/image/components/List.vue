@@ -18,7 +18,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { getSetPublicAction } from '@/utils/common/tableActions'
+// import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'ImageList',
@@ -116,50 +116,50 @@ export default {
           label: '批量操作',
           actions: obj => {
             return [
-              getSetPublicAction(this, {
-                name: this.$t('dictionary.image'),
-                scope: 'project',
-                resource: 'images',
-                apiVersion: 'v1',
-              }, {
-                meta: () => {
-                  let ret = {
-                    validate: false,
-                    tooltip: '',
-                  }
-                  const actions = new Map([
-                    ['admin', () => {
-                      if (this.list.selectedItems.some(item => this.booleanTransfer(item.is_standard))) {
-                        ret.tooltip = '公共镜像不支持该操作'
-                      }
-                      return ret
-                    }],
-                    ['domain', () => {
-                      if (this.list.selectedItems.some(item => this.booleanTransfer(item.is_standard))) {
-                        ret.tooltip = '公共镜像不支持该操作'
-                        return ret
-                      }
-                      if (this.list.selectedItems.some(item => item.public_scope === 'system')) {
-                        ret.tooltip = '系统共享镜像不支持该操作'
-                        return ret
-                      }
-                      return ret
-                    }],
-                    ['user', () => {
-                      ret.tooltip = '只有管理员支持该操作'
-                      if (this.list.selectedItems.some(item => !this.booleanTransfer(item.is_standard) && item.public_scope === 'system')) {
-                        ret.tooltip = '只有系统管理员支持该操作'
-                        return ret
-                      }
-                      return ret
-                    }],
-                  ])
-                  let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
-                  ret = action.call(this)
-                  if (ret.tooltip) return ret
-                  return { validate: true }
-                },
-              }),
+              // getSetPublicAction(this, {
+              //   name: this.$t('dictionary.image'),
+              //   scope: 'project',
+              //   resource: 'images',
+              //   apiVersion: 'v1',
+              // }, {
+              //   meta: () => {
+              //     let ret = {
+              //       validate: false,
+              //       tooltip: '',
+              //     }
+              //     const actions = new Map([
+              //       ['admin', () => {
+              //         if (this.list.selectedItems.some(item => this.booleanTransfer(item.is_standard))) {
+              //           ret.tooltip = '公共镜像不支持该操作'
+              //         }
+              //         return ret
+              //       }],
+              //       ['domain', () => {
+              //         if (this.list.selectedItems.some(item => this.booleanTransfer(item.is_standard))) {
+              //           ret.tooltip = '公共镜像不支持该操作'
+              //           return ret
+              //         }
+              //         if (this.list.selectedItems.some(item => item.public_scope === 'system')) {
+              //           ret.tooltip = '系统共享镜像不支持该操作'
+              //           return ret
+              //         }
+              //         return ret
+              //       }],
+              //       ['user', () => {
+              //         ret.tooltip = '只有管理员支持该操作'
+              //         if (this.list.selectedItems.some(item => !this.booleanTransfer(item.is_standard) && item.public_scope === 'system')) {
+              //           ret.tooltip = '只有系统管理员支持该操作'
+              //           return ret
+              //         }
+              //         return ret
+              //       }],
+              //     ])
+              //     let action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+              //     ret = action.call(this)
+              //     if (ret.tooltip) return ret
+              //     return { validate: true }
+              //   },
+              // }),
               {
                 label: `更改${this.$t('dictionary.project')}`,
                 action: () => {
