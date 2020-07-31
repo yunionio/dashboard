@@ -8,7 +8,7 @@
           :value="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item class="mb-0" v-if="isNew && !hiddenNoneType">
+    <a-form-item class="mb-0" v-if="isNew">
       <a-radio-group v-decorator="decorators.charge_type" @change="handleChargeTypeChange">
         <a-radio-button
           v-for="item of chargeTypes"
@@ -18,17 +18,16 @@
     </a-form-item>
     <a-form-item class="mb-0" v-if="isNew">
       <div class="d-flex">
-        <div class="flex-fill">
-          <a-slider :min="1" :max="maxBindWidth" :step="1" :marks="sliderMarks" v-decorator="decorators.bandwidth" />
-        </div>
-        <a-input-number
-          class="ml-4"
-          :min="1"
-          :max="maxBindWidth"
-          :step="1"
-          :formatter="format"
-          :parse="format"
-          v-decorator="decorators.bandwidth" />
+        <a-tooltip placement="top" :title="`范围在 1～${maxBindWidth}Mbps`">
+          <a-input-number
+            :min="1"
+            :max="maxBindWidth"
+            :step="1"
+            :formatter="format"
+            :parse="format"
+            v-decorator="decorators.bandwidth" />
+            Mbps
+          </a-tooltip>
       </div>
     </a-form-item>
     <a-form-item class="mb-0" v-if="isBind">
