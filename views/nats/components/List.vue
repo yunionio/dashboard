@@ -15,7 +15,8 @@ import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 const BillingType = {
   'postpaid': '后付费',
@@ -107,11 +108,11 @@ export default {
           name: this.$t('dictionary.nat'),
           resource: 'natgateways',
         }),
-        getSetPublicAction(this, {
-          name: this.$t('dictionary.nat'),
-          scope: 'domain',
-          resource: 'natgateways',
-        }),
+        // getSetPublicAction(this, {
+        //   name: this.$t('dictionary.nat'),
+        //   scope: 'domain',
+        //   resource: 'natgateways',
+        // }),
       ],
     }
   },
