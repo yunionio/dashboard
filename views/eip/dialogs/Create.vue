@@ -69,21 +69,21 @@
             <a-input v-if="inputIpType === 'password'" v-decorator="decorators.ip_addr" placeholder="请输入子网内IP" />
           </a-form-item>
         </template>
-        <template v-if="(showBandwidth && selectedPlatform === 'public_cloud') || selectedPlatform === 'idc'">
-          <a-form-item label="带宽" v-bind="formItemLayout">
+        <template v-if="selectedPlatform !== 'private_cloud'">
+          <a-form-item label="带宽峰值" v-bind="formItemLayout">
             <div class="d-flex align-items-center">
-                <a-input-number v-if="selectedPlatform === 'idc'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
-                <a-tooltip v-else placement="top" :title="`范围在 1～${maxBandwidth}Mbps`">
-                <a-input-number
-                  style="width: 120px"
-                  :min="1"
-                  :max="maxBandwidth"
-                  :step="50"
-                  :formatter="format"
-                  :parse="format"
-                  v-decorator="decorators.bandwidth" />
-                </a-tooltip>
-                <span class="ml-2">Mbps</span>
+              <a-input-number v-if="selectedPlatform === 'idc'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
+              <a-tooltip v-else placement="top" :title="`范围在 1～${maxBandwidth}Mbps`">
+              <a-input-number
+                style="width: 120px"
+                :min="1"
+                :max="maxBandwidth"
+                :step="50"
+                :formatter="format"
+                :parse="format"
+                v-decorator="decorators.bandwidth" />
+              </a-tooltip>
+              <span class="ml-2">Mbps</span>
             </div>
           </a-form-item>
           <a-form-item label="计费方式" v-bind="formItemLayout" v-if="selectedPlatform !== 'idc' ">
@@ -377,10 +377,8 @@ export default {
         this.manager = e.id
         if (e.provider.toLowerCase() === 'azure') {
           this.form.fc.setFieldsValue({ bandwidth: 0 })
-          this.showBandwidth = false
         } else {
           this.form.fc.setFieldsValue({ bandwidth: 30 })
-          this.showBandwidth = true
         }
         this.hiddenBrandwidthHandle(e.provider)
         this.providerC = e.provider.toLowerCase()
@@ -397,8 +395,8 @@ export default {
     },
     hiddenBrandwidthHandle (selectedProvider) {
       const providers = ['Azure', 'Aws', 'Qcloud', 'Google']
-      if (providers.some((v) => { return v === selectedProvider })) {
-        this.form.fc.setFieldsValue({ bandwidth: 0 })
+      if (providers.some(v => v === selectedProvider)) {
+        this.form.fc.setFieldsValue({ bandwidth: 1 })
         this.showBandwidth = false
       } else {
         this.form.fc.setFieldsValue({ bandwidth: 30 })
