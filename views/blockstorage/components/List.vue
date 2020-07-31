@@ -14,7 +14,8 @@ import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
@@ -165,17 +166,17 @@ export default {
                   }
                 },
               }),
-              getSetPublicAction(this, {
-                name: this.$t('dictionary.storages'),
-                scope: 'domain',
-                resource: 'storages',
-              }, {
-                meta: () => {
-                  return {
-                    validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
-                  }
-                },
-              }),
+              // getSetPublicAction(this, {
+              //   name: this.$t('dictionary.storages'),
+              //   scope: 'domain',
+              //   resource: 'storages',
+              // }, {
+              //   meta: () => {
+              //     return {
+              //       validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
+              //     }
+              //   },
+              // }),
               // {
               //   label: '同步状态',
               //   action: () => {
