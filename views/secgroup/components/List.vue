@@ -19,7 +19,7 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getTenantFilter } from '@/utils/common/tableFilter'
 import globalSearchMixins from '@/mixins/globalSearch'
-import { getSetPublicAction } from '@/utils/common/tableActions'
+// import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'SecgroupList',
@@ -145,18 +145,18 @@ export default {
               }
             },
           },
-          getSetPublicAction(this, {
-            name: this.$t('dictionary.secgroup'),
-            scope: 'project',
-            resource: 'secgroups',
-          }, {
-            permission: 'secgroups_performAction',
-            meta: () => {
-              return {
-                validate: this.list.selectedItems.length,
-              }
-            },
-          }),
+          // getSetPublicAction(this, {
+          //   name: this.$t('dictionary.secgroup'),
+          //   scope: 'project',
+          //   resource: 'secgroups',
+          // }, {
+          //   permission: 'secgroups_performAction',
+          //   meta: () => {
+          //     return {
+          //       validate: this.list.selectedItems.length,
+          //     }
+          //   },
+          // }),
           {
             index: 3,
             label: '删除',
