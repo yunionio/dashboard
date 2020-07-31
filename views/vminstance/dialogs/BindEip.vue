@@ -41,6 +41,7 @@ export default {
     if (findPlatform(hypervisor) === SERVER_TYPE.private) {
       typeInitialValue = 'bind'
     }
+    console.log(findPlatform(hypervisor))
     return {
       loading: false,
       form: {
@@ -90,6 +91,9 @@ export default {
   computed: {
     hypervisor () {
       return this.params.data[0].hypervisor
+    },
+    isPublic () {
+      return findPlatform(this.hypervisor) === 'public'
     },
     eipParams () {
       return {
