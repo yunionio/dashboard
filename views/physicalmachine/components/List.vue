@@ -20,7 +20,8 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
-import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
 
 export default {
@@ -315,11 +316,11 @@ export default {
                 name: this.$t('dictionary.host'),
                 resource: 'hosts',
               }),
-              getSetPublicAction(this, {
-                name: this.$t('dictionary.host'),
-                scope: 'domain',
-                resource: 'hosts',
-              }),
+              // getSetPublicAction(this, {
+              //   name: this.$t('dictionary.host'),
+              //   scope: 'domain',
+              //   resource: 'hosts',
+              // }),
               {
                 label: '同步硬件配置',
                 action: () => {
