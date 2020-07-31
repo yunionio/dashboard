@@ -11,8 +11,8 @@ export const DBINSTANCE_CATEGORY = {
   gr: i18n.t('db.text_79'),
   SECOND_GEN: i18n.t('db.text_80'),
   FIRST_GEN: i18n.t('db.text_81'),
-  Regional: i18n.t('common_466'),
-  Zonal: i18n.t('common_467'),
+  Regional: i18n.t('common_469'),
+  Zonal: i18n.t('common_470'),
 }
 
 export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd', 'cloud_essd2', 'cloud_essd3', 'PD_SSD', 'PD_HDD', 'HIGH', 'ULTRAHIGH', 'ULTRAHIGHPRO', 'COMMON']
