@@ -62,7 +62,6 @@ export default {
                 })
               },
               meta: obj => {
-                const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
                 let tooltip
                 if (!obj.enabled) tooltip = i18n.t('cloudenv.text_312')
                 return {
@@ -204,7 +203,7 @@ export default {
         }
         return true
       })
-      const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
+      const ownerDomain = this.$store.getters.isAdminMode || items.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
       return {
         validate: enabledValid && autoSyncValid && ownerDomain,
         tooltip,
