@@ -91,6 +91,9 @@ export default {
     hypervisor () {
       return this.params.data[0].hypervisor
     },
+    isPublic () {
+      return findPlatform(this.hypervisor) === 'public'
+    },
     eipParams () {
       return {
         usable_eip_for_associate_type: 'server',
