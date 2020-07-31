@@ -118,7 +118,7 @@ export default {
                     steadyStatus: this.list.steadyStatus,
                   })
                 },
-                meta: () => this.setAutoSyncPolicy(this.list.selectedItems),
+                meta: () => this.setAutoSyncPolicy(this.list.selectedItems, ownerDomain),
               },
               {
                 label: '连接测试',
