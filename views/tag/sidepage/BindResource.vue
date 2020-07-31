@@ -27,7 +27,10 @@ const expectStatusAlias = {
   instance_snapshot: 'snapshot',
   elasticcache: 'redis',
   dbinstance: 'rds',
+  loadbalancer: 'lb',
 }
+
+const noStatusRes = ['loadbalanceragent', 'loadbalancercluster']
 
 export default {
   name: 'BindResource',
@@ -145,11 +148,13 @@ export default {
             }
           },
         }),
-        getStatusTableColumn({ statusModule: statusAlias }),
         getProjectTableColumn(),
       ]
       if (this.cloudEnv !== 'local_image') {
         ret = R.insert(2, getBrandTableColumn(), ret)
+      }
+      if (!noStatusRes.includes(this.currentResource)) {
+        ret = R.insert(1, getStatusTableColumn({ statusModule: statusAlias }), ret)
       }
       return ret
     },
@@ -158,51 +163,55 @@ export default {
     currentResource: {
       handler (val) {
         const statusAlias = expectStatusAlias[val] || val
+        const filterOptions = {
+          name: {
+            label: this.$t('cloudenv.text_95'),
+            filter: true,
+            formatter: val => {
+              return `name.contains("${val}")`
+            },
+          },
+          brand: {
+            label: this.$t('cloudenv.text_102'),
+            dropdown: true,
+            multiple: true,
+            items: getBrandItems('brands'),
+          },
+          status: {
+            label: this.$t('cloudenv.text_98'),
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'field',
+              key: 'status',
+            },
+            mapper: data => {
+              return mapperStatusToItems(data, statusAlias)
+            },
+            filter: true,
+            formatter: val => {
+              return `status.in(${val.join(',')})`
+            },
+          },
+          tenant: {
+            label: this.$t('dictionary.project'),
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'extra_field',
+              key: 'tenant',
+            },
+          },
+        }
+        if (noStatusRes.includes[val]) {
+          delete filterOptions.status
+        }
         this.list = this.$list.createList(this, {
           resource: `${val}s`,
           apiVersion: this.cloudEnv === 'local_image' ? 'v1' : 'v2',
           getParams: this.getParams,
           steadyStatus: expectStatus[statusAlias] && Object.values(expectStatus[statusAlias]) && Object.values(expectStatus[statusAlias]).flat(),
-          filterOptions: {
-            name: {
-              label: this.$t('cloudenv.text_95'),
-              filter: true,
-              formatter: val => {
-                return `name.contains("${val}")`
-              },
-            },
-            brand: {
-              label: this.$t('cloudenv.text_102'),
-              dropdown: true,
-              multiple: true,
-              items: getBrandItems('brands'),
-            },
-            status: {
-              label: this.$t('cloudenv.text_98'),
-              dropdown: true,
-              multiple: true,
-              distinctField: {
-                type: 'field',
-                key: 'status',
-              },
-              mapper: data => {
-                return mapperStatusToItems(data, statusAlias)
-              },
-              filter: true,
-              formatter: val => {
-                return `status.in(${val.join(',')})`
-              },
-            },
-            tenant: {
-              label: this.$t('dictionary.project'),
-              dropdown: true,
-              multiple: true,
-              distinctField: {
-                type: 'extra_field',
-                key: 'tenant',
-              },
-            },
-          },
+          filterOptions,
         })
         this.list.fetchData(0)
       },
