@@ -242,6 +242,9 @@ export default {
       if (this.isProjectMode && this.userInfo.projectId !== row.tenant_id) {
         return
       }
+      if (this.isDomainMode && this.userInfo.domain.id !== row.domain_id) {
+        return
+      }
       this.createDialog('EditRulesDialog', {
         data: [rule],
         title: 'edit',
