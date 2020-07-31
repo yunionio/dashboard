@@ -98,9 +98,9 @@ export default {
           'columnsSelected',
           {
             initialValue: initialColumnsSelected,
-            rules: [
-              { required: true, message: this.$t('common.text00087') },
-            ],
+            // rules: [
+            //   { required: true, message: this.$t('common.text00087') },
+            // ],
           },
         ],
         tagsSelected: [

@@ -29,4 +29,5 @@ export default {
     const profile = state.profile.data
     return (profile.value && profile.value.themeColor) || state.setting.themeColor
   },
+  setting: state => state.setting,
 }

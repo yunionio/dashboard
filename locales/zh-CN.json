@@ -2239,24 +2239,24 @@
 	"dashboard.text_178": "CPU使用率TOP5（本地IDC）",
 	"dashboard.text_179": "磁盘写入速度TOP5（本地IDC）",
 	"dashboard.text_180": "磁盘读取速度TOP5（本地IDC）",
-	"cloudenv.ScheduledtaskGroupCycleType": {
+	"cloudenvScheduledtaskGroupCycleType": {
 		"one": "单次",
 		"day": "每天",
 		"week": "每周",
 		"month": "每月"
 	},
-	"cloudenv.ScheduledtaskRuleAction": {
+	"cloudenvScheduledtaskRuleAction": {
 		"start": "开机",
 		"stop": "关机",
 		"restart": "重启"
 	},
-	"cloudenv.ScheduledtaskResourceType": {
+	"cloudenvScheduledtaskResourceType": {
 		"server": "虚拟机"
 	},
-	"cloudenv.ScheduledtaskLabelType": {
+	"cloudenvScheduledtaskLabelType": {
 		"id": "指定虚拟机"
 	},
-	"cloudenv.ScheduledtaskType": {
+	"cloudenvScheduledtaskType": {
 		"cycle": "周期策略",
 		"timing": "定时策略"
 	},
@@ -6613,7 +6613,7 @@
 	"system.policy_edit_type_yaml": "YAML编辑视图",
 	"scope.text_1": "实例列表",
 	"scope.text_2": "用户信息",
-	"scope.text_3": "公有云子账号",
+	"scope.text_3": "云上用户",
 	"scope.text_4": "AccessKey 管理",
 	"scope.text_5": "更改密码",
 	"scope.text_6": "退出",
@@ -6920,7 +6920,7 @@
 	"scope.text_310": "更新时间",
 	"scope.text_311": "企业实名认证",
 	"scope.text_312": "账户中心",
-	"scope.text_313": "公有云子账号",
+	"scope.text_313": "云上用户",
 	"scope.text_314": "访问控制（IAM）",
 	"scope.text_315": "合作伙伴注册",
 	"scope.text_316": "加入OneCloud合作伙伴计划，拥抱产业智能化时代！",
@@ -8063,7 +8063,7 @@
 	"common_319": "极客蓝",
 	"common_320": "酱紫",
 	"common_321": "正在切换主题！",
-	"common_322": "已加入权限组",
+	"common_322": "已加入云用户组",
 	"common_323": "{0}个",
 	"common_324": "无关联权限",
 	"common_325": "公有云子账号",
@@ -8198,6 +8198,9 @@
 	"common_463": "交易类型：",
 	"common_464": "AWS暂不支持此操作",
 	"common_465": "域名和URL必须填写一项",
-	"common_466": "区域级",
-	"common_467": "单个地区"
+	"common_466": "输入的值必须大于0",
+	"common_467": "无可用平台，请联系管理员",
+	"common_468": "无可用平台，无法创建集群，请联系管理员",
+	"common_469": "区域级",
+	"common_470": "单个地区"
 }

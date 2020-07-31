@@ -10,8 +10,8 @@
           <div class="setting-item">
             <h3 class="setting-title">{{$t('common_459')}}</h3>
             <a-button-group size="small">
-              <a-button :type="language.value === 'zh-CN' ? 'primary' : 'default'" @click="() => handleChangeLanguage('zh-CN')">简</a-button>
-              <a-button :type="language.value === 'en' ? 'primary' : 'default'" @click="() => handleChangeLanguage('en')">En</a-button>
+              <a-button :type="language === 'zh-CN' ? 'primary' : 'default'" @click="() => handleChangeLanguage('zh-CN')">简</a-button>
+              <a-button :type="language === 'en' ? 'primary' : 'default'" @click="() => handleChangeLanguage('en')">En</a-button>
             </a-button-group>
           </div>
           <div class="setting-item">
@@ -47,9 +47,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['common']),
+    ...mapGetters(['setting']),
     language () {
-      return this.common.language
+      return this.setting.language
     },
   },
   methods: {

@@ -185,9 +185,11 @@ export default {
       handler (val) {
         if (val && val.length) {
           const resOpts = val.map(item => {
+            const key = item[this.idKey] || item.key || item.value
             return {
               ...item,
-              id: item[this.idKey] || item.key || item.value,
+              key,
+              id: key,
               name: item.name || item.label,
             }
           })
@@ -262,8 +264,8 @@ export default {
       }
       // 同步当前选择项obj
       if (changeValue) {
-        let syncValue = R.is(Object, changeValue) ? this.resOpts[changeValue.key] : this.resOpts[changeValue]
-        if (this.options && this.options.length) syncValue = changeValue // 外面传递 options
+        const syncValue = R.is(Object, changeValue) ? this.resOpts[changeValue.key] : this.resOpts[changeValue]
+        // if (this.options && this.options.length) syncValue = changeValue // 外面传递 options
         this.$emit('update:item', syncValue)
       }
       this.$emit('input', changeValue)

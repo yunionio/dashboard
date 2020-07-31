@@ -1,13 +1,9 @@
 import Vue from 'vue'
 import storage from '@/utils/storage'
 import { Manager } from '@/utils/manager'
-import { getLanguage } from '@/utils/common/cookie'
 
 export default {
   state: {
-    language: {
-      value: getLanguage(),
-    },
     recentMenus: storage.get('__oc_recent_menus__') || [],
     topAlert: {},
     bill: {

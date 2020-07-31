@@ -44,7 +44,7 @@ class Client {
           if (obj.broadcast === true && obj.user_id === '') {
             store.dispatch('getAllOpenWorkflowKeys')
           }
-          store.dispatch('fetchWorkflowStatistics')
+          store.dispatch('app/fetchWorkflowStatistics')
           if (obj.notes.startsWith('priority=silence')) {
             return
           }

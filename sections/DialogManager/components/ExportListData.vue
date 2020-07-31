@@ -149,9 +149,6 @@ export default {
           }
         }
       } else if (formValues.type === this.exportType.all.key) { // 导出范围选择全部时
-        if (listParams.is_on_premise) params.is_on_premise = listParams.is_on_premise
-        if (listParams.private_cloud) params.private_cloud = listParams.private_cloud
-        if (listParams.public_cloud) params.public_cloud = listParams.public_cloud
         if (listParams.scope) params.scope = listParams.scope
         // 如果没有自定义limit，导出全部直接把limt重置为0
         if (R.isNil(this.params.options.limit) || R.isEmpty(this.params.options.limit)) {

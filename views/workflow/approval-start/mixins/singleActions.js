@@ -42,10 +42,9 @@ export default {
           })
         },
         meta: (obj) => {
-          const id = this.userInfo.id
           function checkValidate (obj) {
             if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              if (obj.process_instance.start_user_id !== id) {
+              if (!obj.variables.initiator_to_do) {
                 return true
               }
             }
@@ -91,7 +90,7 @@ export default {
           const id = this.userInfo.id
           function checkValidate (obj) {
             if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              if (obj.process_instance.start_user_id === id) {
+              if (obj.variables.initiator_to_do && obj.process_instance.start_user_id === id) {
                 return true
               }
             }
@@ -117,7 +116,7 @@ export default {
           const id = this.userInfo.id
           function checkValidate (obj) {
             if (obj.process_instance.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
-              if (obj.process_instance.start_user_id === id) {
+              if (obj.variables.initiator_to_do && obj.process_instance.start_user_id === id) {
                 return true
               }
             }
