@@ -18,7 +18,7 @@ import { ACL_TYPE } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter } from '@/utils/common/tableFilter'
-import { getSetPublicAction } from '@/utils/common/tableActions'
+// import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
@@ -92,11 +92,11 @@ export default {
           label: '批量操作',
           actions: () => {
             return [
-              getSetPublicAction(this, {
-                name: this.$t('dictionary.bucket'),
-                scope: 'project',
-                resource: 'buckets',
-              }),
+              // getSetPublicAction(this, {
+              //   name: this.$t('dictionary.bucket'),
+              //   scope: 'project',
+              //   resource: 'buckets',
+              // }),
               {
                 label: `更改${this.$t('dictionary.project')}`,
                 permission: 'buckets_perform_change_owner',
