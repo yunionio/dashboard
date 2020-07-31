@@ -194,16 +194,18 @@ export default {
             }
           })
           this.resOpts = arrayToObj(resOpts)
+          this.disabledOpts()
         } else {
           this.resOpts = {}
         }
       },
       immediate: true,
     },
-    disabledItems (val) {
-      if (val && val.length) {
+    disabledItems: {
+      handler (val) {
         this.disabledOpts()
-      }
+      },
+      immediate: true,
     },
   },
   mounted () {
@@ -272,16 +274,18 @@ export default {
       this.$emit('change', changeValue)
     },
     disabledOpts () {
-      if (this.disabledItems && this.disabledItems.length) { // 禁用某些选项
+      if (!R.is(Array, this.disabledItems)) return
+      this.$nextTick(() => {
         R.forEachObjIndexed((value, key) => {
           this.$set(this.resOpts[key], '__disabled', false)
         }, this.resOpts)
-        this.disabledItems.forEach(disabledId => {
+        const disabledItems = this.disabledItems || []
+        disabledItems.forEach(disabledId => {
           if (R.is(Object, this.resOpts[disabledId])) {
             this.$set(this.resOpts[disabledId], '__disabled', true)
           }
         })
-      }
+      })
     },
     genParams (query, offset) {
       const manager = new Manager(this.resource, this.version)
