@@ -141,7 +141,7 @@ export default {
           label: this.$t('network.text_26'),
           permission: 'networks_create',
           action: () => {
-            this.$router.push('/network/create')
+            this.$router.push(`${this.$route.path}/create`)
           },
           meta: () => {
             return {
