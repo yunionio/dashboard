@@ -5,6 +5,8 @@ import NoProject from '@/views/no-project'
 import NoProjectStatus from '@/views/no-project/Status'
 import Workflow from '@/views/workflow'
 import Clouduser from '@/views/clouduser'
+import WorkflowSuccess from '@/views/workflow/success'
+import WorkflowError from '@/views/workflow/error'
 
 export const menusConfig = getModulesRouteConfig()
 
@@ -30,6 +32,8 @@ const routes = [
     },
     component: EmailVerify,
   },
+  { name: 'WorkflowSuccess', path: '/workflow/success', component: WorkflowSuccess, meta: { layout: 'full-screen', auth: false } },
+  { name: 'WorkflowError', path: '/workflow/error', component: WorkflowError, meta: { layout: 'full-screen', auth: false } },
   { name: 'NoProject', path: '/no-project', component: NoProject, meta: { layout: 'full-screen' } },
   { name: 'NoProjectStatus', path: '/no-project-status', component: NoProjectStatus, meta: { layout: 'full-screen' } },
   { name: '404', path: '/404', component: NotFoundPage, meta: { layout: 'full-screen', auth: false } },
