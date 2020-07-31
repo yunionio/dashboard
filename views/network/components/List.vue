@@ -140,7 +140,7 @@ export default {
           label: '新建',
           permission: 'networks_create',
           action: () => {
-            this.$router.push('/network/create')
+            this.$router.push(`${this.$route.path}/create`)
           },
           meta: () => {
             return {
