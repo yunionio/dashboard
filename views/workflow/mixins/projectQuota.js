@@ -232,14 +232,18 @@ export default {
       this.extraInfo.push(...projectQuota)
     },
     getProjectQuotaData (tenant) {
-      new this.$Manager('process-instances', 'v1')
-        .get({ id: 'quotas', params: { tenant, $t: getRequestT() } })
-        .then((res) => {
-          this.detailsData.projectQuota = res.data.project
-        })
-        .catch(() => {
-          this.detailsData.projectQuota = {}
-        })
+      if (this.detailsData.variables.project_source_quota) {
+        this.detailsData.projectQuota = this.detailsData.variables.project_source_quota
+      } else {
+        new this.$Manager('process-instances', 'v1')
+          .get({ id: 'quotas', params: { tenant, $t: getRequestT() } })
+          .then((res) => {
+            this.detailsData.projectQuota = res.data.project
+          })
+          .catch(() => {
+            this.detailsData.projectQuota = {}
+          })
+      }
     },
     getProjectDomainQuotaData (domain) {
       new this.$Manager('process-instances', 'v1')
