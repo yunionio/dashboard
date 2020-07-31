@@ -354,9 +354,10 @@ export default {
     },
     async handleConfirm () {
       if (!R.trim(this.dashboardName)) {
-        this.$message.warn(this.$t('dashboard.text_120'))
-        this.$refs.input.focus()
-        return
+        // this.$message.warn(this.$t('dashboard.text_120'))
+        // this.$refs.input.focus()
+        // return
+        this.dashboardName = this.genDashboardName()
       }
       this.submting = true
       try {
@@ -411,6 +412,24 @@ export default {
     },
     handleBack () {
       this.$router.push('/')
+    },
+    // 根据现有的dashboard名称，生成新的dashboard名称（dashboard-1，dashboard-2，...)
+    genDashboardName () {
+      const reg = /^dashboard-\d+$/g
+      const numbers = []
+      let max = 1
+      for (let i = 0, len = this.dashboardOptions.length; i < len; i++) {
+        const item = this.dashboardOptions[i]
+        if (reg.test(item.name)) {
+          const nameArr = item.name.split('-')
+          numbers.push(parseInt(nameArr[1]))
+        }
+      }
+      if (numbers.length > 0) {
+        max = Math.max(numbers)
+        max += 1
+      }
+      return `dashboard-${max}`
     },
   },
 }
