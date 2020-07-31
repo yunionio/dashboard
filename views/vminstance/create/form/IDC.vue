@@ -436,6 +436,12 @@ export default {
         if (keys.includes('cloudregion')) {
           this.$nextTick(this.fetchInstanceSpecs)
         }
+        if (changedFields.schedPolicyType === 'host') {
+          this.$set(this.form.fd, 'schedPolicyHost', undefined)
+        }
+        if (changedFields.backupEnable) {
+          this.$set(this.form.fd, 'backup', undefined)
+        }
         this.setIsLocalDisk()
       })
     },
