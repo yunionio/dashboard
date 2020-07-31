@@ -39,7 +39,7 @@ export default {
           return [
             {
               label: '设置自动同步',
-              permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
+              permission: 'cloudaccounts_update,cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
               action: () => {
                 this.createDialog('CloudaccountSetAutoSyncDialog', {
                   data: [obj],
@@ -61,7 +61,6 @@ export default {
                 })
               },
               meta: obj => {
-                const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
                 let tooltip
                 if (!obj.enabled) tooltip = '请先启用云账号'
                 return {
@@ -203,7 +202,7 @@ export default {
         }
         return true
       })
-      const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
+      const ownerDomain = this.$store.getters.isAdminMode || items.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
       return {
         validate: enabledValid && autoSyncValid && ownerDomain,
         tooltip,
