@@ -976,6 +976,7 @@
     "loadbalancerbackendgroup": "负载均衡-后端服务器组",
     "loadbalancerbackend": "负载均衡-后端服务器",
     "loadbalancerlistenerrule": "负载均衡-转发策略",
+    "loadbalancercluster": "Load Balance-Cluster",
     "snapshot": "快照",
     "route_table": "路由表",
     "storagecachedimage": "存储镜像缓存",
