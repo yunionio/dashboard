@@ -15,7 +15,8 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import { getProjectDomainFilter } from '@/utils/common/tableFilter'
 
 export default {
@@ -94,11 +95,11 @@ export default {
                 name: this.$t('dictionary.wire'),
                 resource: 'wires',
               }),
-              getSetPublicAction(this, {
-                name: this.$t('dictionary.wire'),
-                scope: 'domain',
-                resource: 'wires',
-              }),
+              // getSetPublicAction(this, {
+              //   name: this.$t('dictionary.wire'),
+              //   scope: 'domain',
+              //   resource: 'wires',
+              // }),
               {
                 label: this.$t('network.text_131'),
                 permission: 'wires_delete',

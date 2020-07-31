@@ -19,7 +19,8 @@ import { getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'FlexNetworkList',
@@ -102,17 +103,17 @@ export default {
           name: this.$t('dictionary.networkinterface'),
           resource: 'networkinterfaces',
         }),
-        getSetPublicAction(this, {
-          name: this.$t('dictionary.networkinterface'),
-          scope: 'domain',
-          resource: 'networkinterfaces',
-        }, {
-          meta: () => {
-            return {
-              validate: this.list.selectedItems.length,
-            }
-          },
-        }),
+        // getSetPublicAction(this, {
+        //   name: this.$t('dictionary.networkinterface'),
+        //   scope: 'domain',
+        //   resource: 'networkinterfaces',
+        // }, {
+        //   meta: () => {
+        //     return {
+        //       validate: this.list.selectedItems.length,
+        //     }
+        //   },
+        // }),
       ],
     }
   },
