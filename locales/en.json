@@ -1358,6 +1358,7 @@
     "loadbalancercertificate": "Load Balance-Certificate",
     "loadbalancerlistener": "Load Balancer Listening",
     "loadbalancerlistenerrule": "Load Balance-Forwarding Strategy",
+    "loadbalancercluster": "Load Balance-Cluster",
     "mail_config": "Notification Channel",
     "meter": "Billing Metering",
     "meter_baremetal": "Bare Metal Server Rate",

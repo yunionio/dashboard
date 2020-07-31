@@ -1358,6 +1358,7 @@
     "loadbalancercertificate": "负载均衡-证书",
     "loadbalancerlistener": "负载均衡-监听",
     "loadbalancerlistenerrule": "负载均衡-转发策略",
+    "loadbalancercluster": "负载均衡-集群",
     "mail_config": "通知渠道",
     "meter": "计费计量",
     "meter_baremetal": "裸金属服务器费率",
