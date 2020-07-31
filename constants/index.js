@@ -126,4 +126,6 @@ export const whiteRoutesName = authRoutesName.concat([
   '404',
   'NotFound',
   'EmailVerification',
+  'WorkflowSuccess',
+  'WorkflowError',
 ])
