@@ -203,7 +203,7 @@ export default {
             },
           },
         }
-        if (noStatusRes.includes[val]) {
+        if (noStatusRes.includes(val)) {
           delete filterOptions.status
         }
         this.list = this.$list.createList(this, {
