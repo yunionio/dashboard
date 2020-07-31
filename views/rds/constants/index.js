@@ -1,4 +1,4 @@
-export const DBINSTANCE_CATEGORY_KEYS = ['replica', 'basic', 'single', 'high_availability', 'ha', 'finance', 'gr', 'always_on', 'FIRST_GEN', 'SECOND_GEN']
+export const DBINSTANCE_CATEGORY_KEYS = ['replica', 'basic', 'single', 'high_availability', 'ha', 'finance', 'gr', 'always_on', 'FIRST_GEN', 'SECOND_GEN', 'Zonal', 'Regional']
 export const DBINSTANCE_CATEGORY = {
   basic: '基础版',
   high_availability: '高可用',
@@ -10,6 +10,8 @@ export const DBINSTANCE_CATEGORY = {
   gr: '金融版',
   SECOND_GEN: '第二代',
   FIRST_GEN: '第一代',
+  Regional: '区域级',
+  Zonal: '单个地区',
 }
 
 export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd', 'cloud_essd2', 'cloud_essd3', 'PD_SSD', 'PD_HDD', 'HIGH', 'ULTRAHIGH', 'ULTRAHIGHPRO', 'COMMON']
