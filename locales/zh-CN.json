@@ -1994,6 +1994,18 @@
 		"SNAPSHOT_UNUSED": "未使用的快照",
 		"OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件"
 	},
+	"idpTmplTitles": {
+		"dex_oidc": "通用OIDC",
+		"oidc": "通用OIDC",
+		"github_oidc": "Github",
+		"azure_oidc": "Azure AD OAuth2",
+		"saml": "通用SAML",
+		"azure_ad_saml": "Azure AD SAML 2.0",
+		"cas": "通用CAS",
+		"feishu_oauth2": "飞书",
+		"dingtalk_oauth2": "钉钉",
+		"qywechat_oauth2": "企业微信"
+	},
 	"login.desc1": "新一代产品化融合云",
 	"login.desc2": "简单 · 开放 · 融合 · 智能",
 	"login.desc3": "为企业上云、用云、多云管理等全部需求提供一键部署、产品化解决方案",
