@@ -156,7 +156,8 @@
               :disabled="form.fd.systemDiskType"
               :disabled-items="backupDisableds"
               :domain="form.fd.domain"
-              :availableHostCount="availableHostCount" />
+              :availableHostCount="availableHostCount"
+              :hostParams="policyHostParams" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />

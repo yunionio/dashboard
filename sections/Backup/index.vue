@@ -34,6 +34,9 @@ export default {
     },
     domain: Object,
     availableHostCount: Number, // 可用的宿主机数量
+    hostParams: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -55,15 +58,9 @@ export default {
       if (val) this.fetchBackupHosts()
     },
     async fetchBackupHosts () {
-      const params = {
-        hypervisor: 'kvm',
-        enabled: true,
-      }
-      if (this.isAdminMode && this.domain && this.domain.key) {
-        params.project_domain = this.domain.key
-      }
+      if (!R.is(Object, this.hostParams)) return
       try {
-        const { data: { data = [] } } = await new this.$Manager('hosts', 'v2').list({ params })
+        const { data: { data = [] } } = await new this.$Manager('hosts', 'v2').list({ params: this.hostParams })
         this.hostList = data
       } catch (error) {
         throw error
