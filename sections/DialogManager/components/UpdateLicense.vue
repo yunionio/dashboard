@@ -104,10 +104,10 @@ export default {
       return null
     },
     license () {
-      if (!R.isNil(this.oemInfo.license) && !R.isEmpty(this.oemInfo.license)) {
+      if (!R.isNil(this.oemInfo.license)) {
         return this.oemInfo.license
       }
-      return null
+      return 'https://cloud.yunion.cn/account/license'
     },
   },
   created () {
