@@ -58,7 +58,7 @@ export default {
       if (val) this.fetchBackupHosts()
     },
     async fetchBackupHosts () {
-      if (!R.is(Object, this.hostParams)) return
+      if (!R.is(Object, this.hostParams) || !this.isAdminMode) return
       try {
         const { data: { data = [] } } = await new this.$Manager('hosts', 'v2').list({ params: this.hostParams })
         this.hostList = data
