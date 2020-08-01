@@ -530,3 +530,22 @@ export const genReferRouteQuery = (route) => {
   }
   return query
 }
+
+/*
+ * 去除对象中所有符合条件的对象，默认是去除对象属性为空值
+ * @param {Object} obj 来源对象
+ * @param {Function} fn 函数验证每个字段
+ * e.g. { a: '', b: 123, c: { d: 1, e: {}} } => { b: 123, c: { d: 1 } }
+ */
+export const compactObj = (obj, fn = R.isEmpty) => {
+  const newObj = _.cloneDeep(obj)
+  for (var i in newObj) {
+    if (typeof newObj[i] === 'object') {
+      compactObj(newObj[i], fn)
+    }
+    if (fn(newObj[i])) {
+      delete newObj[i]
+    }
+  }
+  return newObj
+}
