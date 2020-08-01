@@ -156,7 +156,8 @@
               :disabled="form.fd.systemDiskType"
               :disabled-items="backupDisableds"
               :domain="form.fd.domain"
-              :availableHostCount="availableHostCount" />
+              :availableHostCount="availableHostCount"
+              :hostParams="policyHostParams" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
