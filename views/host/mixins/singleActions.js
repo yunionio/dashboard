@@ -203,7 +203,7 @@ export default {
                         }
                       }
                       return {
-                        validate: true,
+                        validate: obj.is_baremetal && obj.guests === 0,
                       }
                     },
                   },
