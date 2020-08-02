@@ -359,6 +359,13 @@ export default {
           })
         } else {
           this.serverTemplateList = []
+          this.networlDisabled = false
+          this.form.fc.setFieldsValue({
+            vpc: undefined,
+            network: undefined,
+          })
+          this.$refs.NETWORK.networkList = []
+          this.$refs.NETWORK.vpcList = []
         }
       } catch (err) {
         throw err
