@@ -246,14 +246,18 @@ export default {
       }
     },
     getProjectDomainQuotaData (domain) {
-      new this.$Manager('process-instances', 'v1')
-        .get({ id: 'quotas', params: { domain, $t: getRequestT() } })
-        .then((res) => {
-          this.detailsData.projectDomainQuota = res.data.domain
-        })
-        .catch(() => {
-          this.detailsData.projectDomainQuota = {}
-        })
+      if (this.detailsData.variables.domain_source_quota) {
+        this.detailsData.projectDomainQuota = this.detailsData.variables.domain_source_quota
+      } else {
+        new this.$Manager('process-instances', 'v1')
+          .get({ id: 'quotas', params: { domain, $t: getRequestT() } })
+          .then((res) => {
+            this.detailsData.projectDomainQuota = res.data.domain
+          })
+          .catch(() => {
+            this.detailsData.projectDomainQuota = {}
+          })
+      }
     },
   },
 }

@@ -355,14 +355,18 @@ export default {
       this.extraInfo.push(...domainQuota)
     },
     getDomainQuotaData (domain) {
-      new this.$Manager('process-instances', 'v1')
-        .get({ id: 'quotas', params: { domain } })
-        .then((res) => {
-          this.detailsData.domainQuota = res.data.domain || {}
-        })
-        .catch(() => {
-          this.detailsData.domainQuota = {}
-        })
+      if (this.detailsData.variables.domain_source_quota) {
+        this.detailsData.domainQuota = this.detailsData.variables.domain_source_quota
+      } else {
+        new this.$Manager('process-instances', 'v1')
+          .get({ id: 'quotas', params: { domain } })
+          .then((res) => {
+            this.detailsData.domainQuota = res.data.domain || {}
+          })
+          .catch(() => {
+            this.detailsData.domainQuota = {}
+          })
+      }
     },
   },
 }
