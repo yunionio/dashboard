@@ -201,9 +201,14 @@ export default {
                           validate: false,
                           tooltip: i18n.t('compute.text_512'),
                         }
+                      } else if (!obj.is_baremetal) {
+                        return {
+                          validate: false,
+                          tooltip: '',
+                        }
                       }
                       return {
-                        validate: obj.is_baremetal && obj.guests === 0,
+                        validate: true,
                       }
                     },
                   },
