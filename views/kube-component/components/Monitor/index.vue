@@ -33,8 +33,8 @@ export default {
   data () {
     let formData = {
       grafana: {
-        adminUser: 'prom-operator',
-        adminPassword: 'admin',
+        adminUser: 'admin',
+        adminPassword: 'prom-operator',
         storage: {
           enabled: false,
           sizeMB: 1,
