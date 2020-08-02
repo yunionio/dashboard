@@ -200,9 +200,14 @@ export default {
                           validate: false,
                           tooltip: '已启用的宿主机不可回收',
                         }
+                      } else if (!obj.is_baremetal) {
+                        return {
+                          validate: false,
+                          tooltip: '',
+                        }
                       }
                       return {
-                        validate: obj.is_baremetal && obj.guests === 0,
+                        validate: true,
                       }
                     },
                   },
