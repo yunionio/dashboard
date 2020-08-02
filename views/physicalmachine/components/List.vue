@@ -20,7 +20,9 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
-import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { hasServices } from '@/utils/auth'
 
 export default {
   name: 'PhysicalmachineList',
@@ -107,8 +109,15 @@ export default {
             this.$router.push('/physicalmachine/add')
           },
           meta: () => {
+            const ret = { validate: true, tooltip: '' }
+            const hasBMAgent = hasServices('bmagent')
+            if (!hasBMAgent) {
+              ret.validate = false
+              ret.tooltip = 'Baremetal服务未开启'
+            }
             return {
               buttonType: 'primary',
+              ...ret,
             }
           },
         },
@@ -307,11 +316,11 @@ export default {
                 name: this.$t('dictionary.host'),
                 resource: 'hosts',
               }),
-              getSetPublicAction(this, {
-                name: this.$t('dictionary.host'),
-                scope: 'domain',
-                resource: 'hosts',
-              }),
+              // getSetPublicAction(this, {
+              //   name: this.$t('dictionary.host'),
+              //   scope: 'domain',
+              //   resource: 'hosts',
+              // }),
               {
                 label: '同步硬件配置',
                 action: () => {

@@ -357,8 +357,9 @@ export default {
         params.reset_password = false // 如果登录方式为创建后设置, 则增加参数 reset_password = false
       } else if (loginType === 'password') {
         params.password = loginPassword
-      } else {
-        params.reset_password = false
+      }
+      if (this.isZStack) {
+        params.password = false
       }
       return this.params.onManager('batchPerformAction', {
         steadyStatus: ['running', 'ready'],

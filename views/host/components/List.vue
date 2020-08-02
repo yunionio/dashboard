@@ -20,7 +20,8 @@ import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
 import { typeClouds } from '@/utils/common/hypervisor'
-import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   name: 'HostList',
@@ -75,7 +76,7 @@ export default {
             },
           },
           brand: getBrandFilter(),
-          project_domain: getProjectDomainFilter(),
+          project_domains: getProjectDomainFilter(),
         },
         responseData: this.responseData,
       }),
@@ -116,11 +117,11 @@ export default {
                   name: this.$t('dictionary.host'),
                   resource: 'hosts',
                 }),
-                getSetPublicAction(this, {
-                  name: this.$t('dictionary.host'),
-                  scope: 'domain',
-                  resource: 'hosts',
-                }),
+                // getSetPublicAction(this, {
+                //   name: this.$t('dictionary.host'),
+                //   scope: 'domain',
+                //   resource: 'hosts',
+                // }),
                 {
                   label: '调整标签',
                   action: (obj) => {

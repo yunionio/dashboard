@@ -21,7 +21,7 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getTenantFilter } from '@/utils/common/tableFilter'
 import globalSearchMixins from '@/mixins/globalSearch'
-import { getSetPublicAction } from '@/utils/common/tableActions'
+// import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'SecgroupList',
@@ -58,7 +58,7 @@ export default {
           ports: {
             label: '端口',
           },
-          tenant: getTenantFilter(),
+          projects: getTenantFilter(),
         },
         responseData: this.responseData,
       }),
@@ -97,7 +97,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'isProjectMode']),
     groupActions () {
       const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
       return _frontGroupActions.concat(
@@ -148,18 +148,18 @@ export default {
               }
             },
           },
-          getSetPublicAction(this, {
-            name: this.$t('dictionary.secgroup'),
-            scope: 'project',
-            resource: 'secgroups',
-          }, {
-            permission: 'secgroups_performAction',
-            meta: () => {
-              return {
-                validate: this.list.selectedItems.length,
-              }
-            },
-          }),
+          // getSetPublicAction(this, {
+          //   name: this.$t('dictionary.secgroup'),
+          //   scope: 'project',
+          //   resource: 'secgroups',
+          // }, {
+          //   permission: 'secgroups_performAction',
+          //   meta: () => {
+          //     return {
+          //       validate: this.list.selectedItems.length,
+          //     }
+          //   },
+          // }),
           {
             index: 3,
             label: '删除',
@@ -238,9 +238,15 @@ export default {
         manager = null
       }
     },
-    openEditRulesDialog (obj) {
+    openEditRulesDialog (rule, row) {
+      if (this.isProjectMode && this.userInfo.projectId !== row.tenant_id) {
+        return
+      }
+      if (this.isDomainMode && this.userInfo.domain.id !== row.domain_id) {
+        return
+      }
       this.createDialog('EditRulesDialog', {
-        data: [obj],
+        data: [rule],
         title: 'edit',
         columns: this.columns,
         refresh: () => {

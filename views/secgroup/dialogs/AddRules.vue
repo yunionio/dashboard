@@ -36,7 +36,7 @@
           <a-checkbox class="right-checkbox" @change="cidrChange">任意IP</a-checkbox>
         </a-form-item>
         <a-form-item label="协议" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.protocol" @change="protocolChange">
+          <a-select v-decorator="decorators.protocol" @change="protocolChange" :disabled="protocolDisabled">
             <a-select-option v-for="item in protocolOptions" :key="item.value" :value="item.value">
               {{item.label}}
             </a-select-option>
@@ -175,6 +175,7 @@ export default {
       portsDisabled: false,
       portsCheckboxDisabled: false,
       portsChecked: false,
+      protocolDisabled: this.params.title !== 'edit',
       decLabel: '来源',
     }
   },
@@ -207,22 +208,40 @@ export default {
     typeChange (e) {
       if (e === 'windows') {
         this.form.fc.setFieldsValue({ ports: '3389' })
+        this.portsChecked = false
+        this.portsDisabled = true
+        this.portsCheckboxDisabled = true
+        this.protocolDisabled = true
       } else if (e === 'linux') {
         this.form.fc.setFieldsValue({ ports: '22' })
+        this.portsChecked = false
+        this.portsDisabled = true
+        this.portsCheckboxDisabled = true
+        this.protocolDisabled = true
       } else if (e === 'http') {
         this.form.fc.setFieldsValue({ ports: '80' })
+        this.portsChecked = false
+        this.portsDisabled = true
+        this.portsCheckboxDisabled = true
+        this.protocolDisabled = true
       } else if (e === 'https') {
         this.form.fc.setFieldsValue({ ports: '443' })
+        this.portsChecked = false
+        this.portsDisabled = true
+        this.portsCheckboxDisabled = true
+        this.protocolDisabled = true
       } else if (e === 'ping') {
+        this.form.fc.setFieldsValue({ ports: 'ALL', protocol: 'icmp' })
         this.portsChecked = true
         this.portsDisabled = true
-        this.form.fc.setFieldsValue({ ports: 'ALL' })
         this.portsCheckboxDisabled = true
+        this.protocolDisabled = true
       } else {
         this.portsChecked = false
         this.portsDisabled = false
         this.form.fc.resetFields(['ports'])
         this.portsCheckboxDisabled = false
+        this.protocolDisabled = false
       }
     },
     protocolChange (e) {

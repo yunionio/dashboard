@@ -49,9 +49,15 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
+        refreshInterval: 5,
         resource: 'servers',
         getParams: this.getParam,
-        steadyStatus: Object.values(expectStatus.server).flat(),
+        steadyStatus: {
+          status: Object.values(expectStatus.server).flat(),
+          checkBackup: (val) => {
+            return val.metadata.create_backup || val.metadata.switch_backup
+          },
+        },
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter('compute_engine_brands'),
@@ -312,6 +318,11 @@ export default {
                     validate: true,
                     tooltip: null,
                   }
+                  if (!this.isAdminMode && !this.isDomainMode) {
+                    ret.validate = false
+                    ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                    return ret
+                  }
                   const domains = this.list.selectedItems.map(item => item.domain_id)
                   if (R.uniq(domains).length !== 1) {
                     ret.validate = false
@@ -543,6 +554,7 @@ export default {
                     return ret
                   }
                   if (!isOk) {
+                    ret.validate = false
                     ret.tooltip = '只有运行中或关机状态的主机支持此操作'
                     return ret
                   }
@@ -751,6 +763,7 @@ export default {
           },
         },
       ],
+      execLoading: false,
     }
   },
   computed: {

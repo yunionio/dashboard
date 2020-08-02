@@ -126,7 +126,7 @@
           v-decorator="decorators.tag" />
       </a-form-item>
       <!-- <a-divider orientation="left" v-if="showAdvanceConfig">高级配置</a-divider> -->
-      <a-collapse :bordered="false">
+      <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel header="高级配置" key="1">
           <a-form-item label="安全组" v-if="isKvm">
             <secgroup-config
@@ -155,7 +155,9 @@
               :decorator="decorators.backup"
               :disabled="form.fd.systemDiskType"
               :disabled-items="backupDisableds"
-              :domain="form.fd.domain" />
+              :domain="form.fd.domain"
+              :availableHostCount="availableHostCount"
+              :hostParams="policyHostParams" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" extra="对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
@@ -188,15 +190,17 @@ export default {
     SecgroupConfig,
   },
   mixins: [mixin],
+  data () {
+    return {
+      isLocalDisk: true,
+    }
+  },
   computed: {
     isKvm () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key
     },
     isIso () {
       return this.form.fd.imageType === IMAGES_TYPE_MAP.iso.key
-    },
-    isLocalDisk () {
-      return _.get(this.form, 'fd.systemDiskType.key') === 'local'
     },
     hypervisors () {
       const { hypervisors = [] } = this.form.fi.capability
@@ -259,6 +263,7 @@ export default {
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
+          ...this.scopeParams,
         }
       }
       return {}
@@ -327,6 +332,12 @@ export default {
         return 30
       }
       return null
+    },
+    availableHostCount () { // 可用的宿主机数量
+      if (R.is(Object, this.form.fi.capability)) {
+        return this.form.fi.capability.available_host_count || 0
+      }
+      return 0
     },
   },
   watch: {
@@ -426,7 +437,26 @@ export default {
         if (keys.includes('cloudregion')) {
           this.$nextTick(this.fetchInstanceSpecs)
         }
+        if (changedFields.schedPolicyType === 'host') {
+          this.$set(this.form.fd, 'schedPolicyHost', undefined)
+        }
+        if (changedFields.backupEnable) {
+          this.$set(this.form.fd, 'backup', undefined)
+        }
+        this.setIsLocalDisk()
       })
+    },
+    setIsLocalDisk () {
+      const isSysLocal = _.get(this.form, 'fd.systemDiskType.key') === 'local'
+      const fd = this.form.fc.getFieldsValue()
+      let isDiskLocal = true
+      const { dataDiskTypes } = fd
+      if (!R.is(Object, dataDiskTypes)) return
+      const diskTypeItem = dataDiskTypes[Object.keys(dataDiskTypes)[0]]
+      if (diskTypeItem && diskTypeItem.key) {
+        isDiskLocal = diskTypeItem.key === 'local'
+      }
+      this.isLocalDisk = isSysLocal && isDiskLocal
     },
     fetchCapability () {
       const params = {

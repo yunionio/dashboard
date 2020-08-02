@@ -128,6 +128,7 @@ export default {
       isLoadbalancer: false,
       serverTemplateListLoading: false,
       serverTemplateList: [],
+      serverTemplate: {},
       healthCheckModeList: [],
       networlDisabled: false,
       form: {
@@ -303,11 +304,13 @@ export default {
       return {
         brand,
         ...this.scopeParams,
+        region: this.serverTemplate.region_id,
       }
     },
     networkParams () {
       return {
         ...this.scopeParams,
+        zone: this.serverTemplate.zone_id,
       }
     },
     setNetworkValues (row) {
@@ -330,6 +333,7 @@ export default {
     },
     handleServerTemplateChange (e, { data }) {
       const { row } = data.attrs
+      this.serverTemplate = row
       this.setNetworkValues(row)
       this.form.fc.setFieldsValue({
         cloudregion: row.cloudregion_id,
@@ -355,6 +359,7 @@ export default {
             const isNats = t.config_info && t.config_info.nets && t.config_info.nets.length === 1
             return isNats
           })
+          this.serverTemplate = this.serverTemplateList[0]
           this.setNetworkValues(this.serverTemplateList[0])
           this.form.fc.setFieldsValue({
             cloudregion: this.serverTemplateList[0].cloudregion_id,

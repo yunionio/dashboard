@@ -310,14 +310,15 @@ export default {
       return originVal
     },
     async fetchSkuList () {
-      if (R.isEmpty(this.skuParams)) return
-      this.skuLoading = true
       try {
+        this.skuLoading = true
         const { data: { data = [] } } = await this.skusM.list({ params: this.skuParams })
-        this.skuList = data
         this.skuLoading = false
-        if (this.skuList && this.skuList.length) {
-          this.setSku(this.skuResults[0])
+        if (this.skuParams && !R.isEmpty(this.skuParams)) { // 防止网络延迟导致 skuParams 已经为空了，但却赋值了
+          this.skuList = data
+          if (this.skuList && this.skuList.length) {
+            this.setSku(this.skuResults[0])
+          }
         }
         return data
       } catch (error) {

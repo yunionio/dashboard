@@ -27,15 +27,12 @@ export default {
         getEnabledTableColumn(),
         {
           field: 'guest_count',
-          title: '绑定主机数量',
+          title: '已关联虚拟机',
           slots: {
             default: ({ row }) => {
-              if (row.guest_count > 0) {
-                return [(
-                  <a onClick={ () => this.$emit('tab-change', 'v-m-instance-list-for-instance-group') }>{ row.guest_count }</a>
-                )]
-              }
-              return `${row.guest_count}`
+              return [(
+                <a onClick={ () => this.$emit('tab-change', 'v-m-instance-list-for-instance-group') }>{ row.guest_count }</a>
+              )]
             },
           },
         },

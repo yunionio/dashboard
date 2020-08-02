@@ -568,7 +568,7 @@ export default {
             disk: item.disk,
           },
           after: {
-            cpu: this.form.fd.vcpu_count,
+            cpu: this.form.fd.vcpu,
             memory: this.form.fd.vmem,
             disk: +item.disk + (+diskSize - beforeDiskSize) * 1024,
           },
@@ -715,6 +715,9 @@ export default {
         }
         dataDisk.push(diskObj)
       }, values.dataDiskSizes)
+      if (this.selectedItems.length === 1 && _.get(this.params, 'data[0].disks_info[0].disk_type') === 'data') {
+        dataDisk.shift() // 因为第一块盘的disk_type是data，说明无系统盘，第一块盘是ISO启动的，需要去掉
+      }
       return dataDisk
     },
     cancel () {

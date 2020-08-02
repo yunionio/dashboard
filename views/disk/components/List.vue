@@ -14,6 +14,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import { MEDIUM_MAP } from '../../../constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -191,6 +192,9 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    ...mapGetters(['isProjectMode']),
   },
   watch: {
     cloudEnv (val) {

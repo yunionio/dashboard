@@ -18,11 +18,11 @@
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
         </a-form-item>
         <a-form-item :label="storageLabel" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.storage_id" @change="__storageChange">
+          <a-select v-decorator="decorators.backend" @change="__newStorageChange">
             <a-select-option v-for="item in storageOpts" :key="item.value">
               <div class="d-flex">
                 <span class="text-truncate flex-fill mr-2" :title="item.label">{{ item.label }}</span>
-                <span style="color: #8492a6; font-size: 13px" v-if="item.manager">云订阅: {{ item.manager }}</span>
+                <!-- <span style="color: #8492a6; font-size: 13px" v-if="item.manager">云订阅: {{ item.manager }}</span> -->
               </div>
             </a-select-option>
           </a-select>
@@ -49,6 +49,7 @@ import WindowsMixin from '@/mixins/windows'
 import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
+import { PROVIDER_MAP } from '@/constants'
 
 export default {
   name: 'DiskCreateDialog',
@@ -69,7 +70,8 @@ export default {
             })
             if (values.hasOwnProperty('zone')) {
               if (values.zone && values.zone.key) {
-                this.fetchStorageList(values.zone.key)
+                // this.fetchStorageList(values.zone.key)
+                this.fetchNewStorageList(values.zone.key)
               }
             }
           },
@@ -108,6 +110,11 @@ export default {
         ],
         backend: [
           'backend',
+          {
+            rules: [
+              { required: true, message: '请选择存储类型' },
+            ],
+          },
         ],
         storage_id: [
           'storage_id',
@@ -256,7 +263,8 @@ export default {
         share: true,
         details: true,
         show_emulated: true,
-        project_domain: this.form.fd.domain.key || this.userInfo.domain.id,
+        // project_domain: this.form.fd.domain.key || this.userInfo.domain.id,
+        scope: this.scope,
       }
       this.storageOpts = []
       new this.$Manager('storages').list({ ctx: [['zones', zoneId]], params })
@@ -270,6 +278,41 @@ export default {
             }
           } catch (error) {
             throw new Error('存储类型解析出错：' + error)
+          }
+        })
+    },
+    fetchNewStorageList (zoneId) {
+      const params = { show_emulated: true, scope: this.scope }
+      this.storageOpts = []
+      new this.$Manager('capability').list({ ctx: [['zones', zoneId]], params })
+        .then(({ data }) => {
+          try {
+            this.storageOpts = data.data_storage_types.map((item) => {
+              const type = item.split('/')[0]
+              const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
+              const storageType = CommonConstants.STORAGE_TYPES[provider][type]
+              const getLabel = (type) => { return type.includes('rbd') ? 'Ceph' : type }
+              return {
+                value: type,
+                label: storageType ? storageType.label : getLabel(type),
+              }
+            })
+            if (this.diskType === 'idc') {
+              this.storageOpts = this.storageOpts.filter((item) => {
+                return item.value !== 'local'
+              })
+            } else if (this.diskType === 'private') {
+              this.storageOpts = this.storageOpts.filter((item) => {
+                return item.value !== 'nova'
+              })
+            }
+            this.form.fc.setFieldsValue({ backend: '' })
+            if (this.storageOpts.length > 0) {
+              this.form.fc.setFieldsValue({ backend: this.storageOpts[0].value })
+              this.__newStorageChange(this.storageOpts[0].value)
+            }
+          } catch (error) {
+            throw new Error('存储类型获取出错：' + error)
           }
         })
     },
@@ -296,23 +339,23 @@ export default {
       try {
         let values = await this.validateForm()
         const { project, domain, ...rest } = values
-        const storageOpts = R.indexBy(R.prop('value'), this.storageOpts)
+        const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
+        const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
           ...rest,
+          hypervisor: oProvider ? oProvider.hypervisor : provider,
           size: values.size * 1024,
-          backend: storageOpts[values.storage_id].storage_type,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
           project_id: (project && project.key) || this.userInfo.projectId,
         }
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
-        this.loading = true
         await this.doCreate(values)
-        this.loading = false
         this.cancelDialog()
       } catch (error) {
-        this.loading = false
         throw error
+      } finally {
+        this.loading = false
       }
     },
     _translateStorageOps (data) {
@@ -385,6 +428,29 @@ export default {
         }
       } catch (error) {
         console.warn(`没有找到 ${CommonConstants.STORAGE_TYPES[provider]} 下面的 ${item.storage_type}`)
+      }
+      this.form.fc.setFieldsValue({ size: 10 })
+      const size = this.form.fc.getFieldValue('size')
+      if (size > this.maxDiskData) { // 如果当前容量大于当前集群的最大值，那么取最大值
+        this.form.fc.setFieldsValue({ size: this.maxDiskData })
+      } else if (size < this.minDiskData) { // 如果当前容量小于当前集群的最大值，那么取最小值
+        this.form.fc.setFieldsValue({ size: this.minDiskData })
+      }
+    },
+    __newStorageChange (val) {
+      const item = this.storageOpts.find(v => v.value === val)
+      this.storageItem = item
+      try {
+        const storageItem = CommonConstants.STORAGE_TYPES[this.provider]
+        if (storageItem && storageItem[item.value]) {
+          this.minDiskData = CommonConstants.STORAGE_TYPES[this.provider][item.value].min
+          this.maxDiskData = CommonConstants.STORAGE_TYPES[this.provider][item.value].max
+        } else {
+          this.minDiskData = 1
+          this.maxDiskData = 2048
+        }
+      } catch (error) {
+        console.warn(`没有找到 ${CommonConstants.STORAGE_TYPES[this.provider]} 下面的 ${item.storage_type}`)
       }
       this.form.fc.setFieldsValue({ size: 10 })
       const size = this.form.fc.getFieldValue('size')

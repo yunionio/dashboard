@@ -16,7 +16,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
-import { Manager } from '@/utils/manager'
 
 export default {
   name: 'Backup',
@@ -34,6 +33,10 @@ export default {
       type: String,
     },
     domain: Object,
+    availableHostCount: Number, // 可用的宿主机数量
+    hostParams: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -45,37 +48,23 @@ export default {
     ...mapGetters(['isAdminMode']),
     switchDisabled () {
       if (this.diskType === 'gpfs') return true
-      if (this.hostList.length < 2) return true
+      if (this.availableHostCount < 2) return true
       return false
     },
-  },
-  watch: {
-    domain (val) {
-      if (val && val.key) {
-        this.getBackupHosts()
-      }
-    },
-  },
-  created () {
-    this.getBackupHosts()
   },
   methods: {
     change (val) {
       this.backupEnable = val
+      if (val) this.fetchBackupHosts()
     },
-    getBackupHosts () {
-      const params = {
-        hypervisor: 'kvm',
-        enabled: 1,
+    async fetchBackupHosts () {
+      if (!R.is(Object, this.hostParams) || !this.isAdminMode) return
+      try {
+        const { data: { data = [] } } = await new this.$Manager('hosts', 'v2').list({ params: this.hostParams })
+        this.hostList = data
+      } catch (error) {
+        throw error
       }
-      if (this.isAdminMode && this.domain && this.domain.key) {
-        params.project_domain = this.domain.key
-      }
-      new Manager('hosts', 'v2')
-        .list({ params })
-        .then(({ data: { data = [] } }) => {
-          this.hostList = data
-        })
     },
   },
 }

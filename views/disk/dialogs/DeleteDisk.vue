@@ -10,7 +10,7 @@
       <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" :action="this.params.title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        :form="form.fc" v-show="isIDC">
+        :form="form.fc" v-show="isShowAutoDelete">
         <a-form-item label="同时删除快照" v-bind="formItemLayout">
           <a-switch checkedChildren="开" unCheckedChildren="关" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
         </a-form-item>
@@ -34,6 +34,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { BRAND_MAP } from '@/constants'
 
 export default {
   name: 'DiskDeleteDialog',
@@ -106,8 +107,9 @@ export default {
       const brand = this.params.data[0].brand
       return findPlatform(brand)
     },
-    isIDC () {
-      return this.type === SERVER_TYPE.idc
+    isShowAutoDelete () {
+      const brand = this.params.data[0].brand
+      return this.type === SERVER_TYPE.idc || brand === BRAND_MAP.OpenStack.brand
     },
     isCeph () {
       const isSomeCeph = this.params.data.some((item) => {
@@ -117,7 +119,7 @@ export default {
     },
   },
   created () {
-    if (this.isIDC) {
+    if (this.isShowAutoDelete) {
       const ids = this.params.data.map((item) => { return item.id })
       this.fetchSnapshotsByDiskId(ids.join(','))
     }
@@ -135,7 +137,7 @@ export default {
             ...params,
             ...this.params.requestParams,
           }
-          if (this.isIDC) {
+          if (this.isShowAutoDelete) {
             params.delete_snapshots = this.form.fd.autoDelete
           }
           const res = await this.params.onManager('batchDelete', {

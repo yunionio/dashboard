@@ -360,8 +360,8 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (!this.isAdminMode) {
-                      ret.tooltip = '只有管理员支持该操作'
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -1000,6 +1000,7 @@ export default {
                       return ret
                     }
                     if (!['running', 'ready'].includes(obj.status)) {
+                      ret.validate = false
                       ret.tooltip = '只有运行中或关机状态的主机支持此操作'
                       return ret
                     }
@@ -1055,38 +1056,6 @@ export default {
                       tooltip: null,
                     }
                     if (!obj.backup_host_id) {
-                      return ret
-                    }
-                    if (!this.isAdminMode && !this.isDomainMode) {
-                      return ret
-                    }
-                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = '只有OneCloud主机支持此操作'
-                      return ret
-                    }
-                    ret.validate = true
-                    return ret
-                  },
-                },
-                {
-                  label: '切换',
-                  action: () => {
-                    this.createDialog('VmSwitchBackupDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (!obj.backup_host_id) {
-                      return ret
-                    }
-                    if (obj.backup_host_status !== 'online') {
-                      ret.tooltip = '备份机的宿主机离线不允许切换'
                       return ret
                     }
                     if (!this.isAdminMode && !this.isDomainMode) {

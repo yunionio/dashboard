@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">绑定{{this.$t('dictionary.server')}}</div>
+    <div slot="header">关联{{this.$t('dictionary.server')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <template v-slot:message>
@@ -8,7 +8,7 @@
           <div class="mt-2">已创建的虚拟机加入{{ $t('dictionary.instancegroup') }}后虚拟机所属宿主机不会变化。</div>
         </template>
       </a-alert>
-      <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="`绑定${this.$t('dictionary.server')}`" />
+      <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="`关联${this.$t('dictionary.server')}`" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
         <a-select
