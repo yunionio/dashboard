@@ -1,5 +1,17 @@
 <template>
-  <div class="navbar-wrap d-flex align-items-center">
+  <div class="navbar-wrap d-flex align-items-center" @click.stop.prevent="handleCloseSidebar">
+    <template v-if="authInfoLoaded">
+      <a-tooltip :title="$t('common_209')" placement="right">
+        <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
+          <icon type="menu" style="font-size: 24px;" />
+        </div>
+      </a-tooltip>
+    </template>
+    <template v-else>
+      <div class="d-flex align-items-center h-100 navbar-item-trigger flex-shrink-0 flex-grow-0">
+        <icon type="menu" style="font-size: 24px; cursor: default;" />
+      </div>
+    </template>
     <div class="flex-fill d-flex align-items-center h-100">
       <div class="header-logo ml-2">
         <img class="logo" :src="logo" />
@@ -75,13 +87,14 @@
 </template>
 
 <script>
+import get from 'lodash/get'
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Navbar',
   computed: {
-    ...mapGetters(['userInfo', 'scope', 'logo']),
+    ...mapGetters(['userInfo', 'scope', 'logo', 'permission', 'scopeResource']),
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
         const menus = this.userInfo.menus.map(item => {
@@ -114,6 +127,10 @@ export default {
         ret = `${this.$t('dictionary.domain')}${this.$t('common_213')}`
       }
       return ret
+    },
+    // 认证信息加载完毕
+    authInfoLoaded () {
+      return !!this.userInfo.roles && !!this.permission && !!this.scopeResource
     },
   },
   methods: {
@@ -169,6 +186,23 @@ export default {
         this.reLogging = false
       }
     },
+    handleToggleSidebar () {
+      const drawerVisible = !(get(this.$store.getters, 'common.sidebar.drawerVisible', false))
+      this.$store.dispatch('common/updateObject', {
+        name: 'sidebar',
+        data: {
+          drawerVisible,
+        },
+      })
+    },
+    handleCloseSidebar () {
+      this.$store.dispatch('common/updateObject', {
+        name: 'sidebar',
+        data: {
+          drawerVisible: false,
+        },
+      })
+    },
   },
 }
 </script>
@@ -207,5 +241,28 @@ export default {
   padding: 0;
   font-weight: 400;
   font-size: 18px;
+}
+.global-map-btn {
+  width: 50px;
+  height: 50px;
+  padding: 0 !important;
+  position: relative;
+  &::after {
+    content: "";
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    z-index: -1;
+    transition: all .3s ease;
+  }
+  &:hover {
+    &::after {
+      background-color: rgb(241, 241, 241);
+    }
+  }
 }
 </style>
