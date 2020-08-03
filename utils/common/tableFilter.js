@@ -225,3 +225,15 @@ export function getProjectDomainFilter () {
     },
   }
 }
+
+export function getVpcFilter () {
+  return {
+    label: 'VPC',
+    dropdown: true,
+    multiple: true,
+    distinctField: {
+      type: 'extra_field',
+      key: 'vpc',
+    },
+  }
+}
