@@ -362,11 +362,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.scheduletask {
-  .ant-row {
-    margin-left: 20px;
-  }
-}
-</style>
