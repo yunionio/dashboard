@@ -3,7 +3,7 @@
     <div slot="header">{{$t('compute.text_1264')}}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1264')" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item :label="$t('compute.text_1265')" v-bind="formItemLayout" :extra="$t('compute.text_1266')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_delete" />
@@ -48,6 +48,15 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    columns () {
+      const fields = ['name', 'metadata', 'ip']
+      return this.params.columns.filter(item => {
+        const { field } = item
+        return fields.indexOf(field) > -1
+      })
+    },
   },
   methods: {
     async handleConfirm () {
