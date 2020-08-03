@@ -86,11 +86,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.redis-create-index {
-  ::v-deep .ant-form{
-    padding-left: 20px;
-  }
-}
-</style>
