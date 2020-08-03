@@ -1863,8 +1863,7 @@
 		"loadbalancers.disable": "禁用后，禁用状态的实例无法提供负载均衡服务。",
 		"loadbalancerlisteners.disable": "禁用状态的监听无法提供服务。"
 	},
-	"authCarouselOptions": [
-		{
+	"authCarouselOptions": [{
 			"title": "统一",
 			"messages": [
 				"统一模版/API/调度/账号体系/监控/控制台/计费计量",
@@ -1897,8 +1896,7 @@
 		}
 	],
 	"authSecretQuestion": {
-		"group1": [
-			{
+		"group1": [{
 				"label": "我出生的城市?"
 			},
 			{
@@ -1917,8 +1915,7 @@
 				"label": "我第一份工作的城市？"
 			}
 		],
-		"group2": [
-			{
+		"group2": [{
 				"label": "我小学母校的名字？"
 			},
 			{
@@ -1937,8 +1934,7 @@
 				"label": "我家狗狗的名字？"
 			}
 		],
-		"group3": [
-			{
+		"group3": [{
 				"label": "我的生日？"
 			},
 			{
