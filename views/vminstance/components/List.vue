@@ -28,6 +28,7 @@ import {
   getAccountFilter,
   getIpFilter,
   getHostFilter,
+  getVpcFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -107,9 +108,7 @@ export default {
               key: 'region',
             },
           },
-          vpc: {
-            label: 'VPC',
-          },
+          vpc: getVpcFilter(),
         },
         responseData: this.responseData,
       }),
