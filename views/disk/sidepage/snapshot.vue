@@ -1,7 +1,9 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns" />
+    :columns="columns"
+    :group-actions="groupActions"
+    :single-actions="singleActions" />
 </template>
 
 <script>
@@ -14,6 +16,8 @@ import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
+import SingleActionsMixin from '@Compute/views/snapshot/mixins/singleActions'
+import ListMixin from '@/mixins/list'
 
 const DISK_TYPES = {
   sys: i18n.t('compute.text_49'),
@@ -23,7 +27,7 @@ const DISK_TYPES = {
 
 export default {
   name: 'snapshotListSidepage',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, SingleActionsMixin, ListMixin],
   props: {
     resId: String,
     data: {
@@ -101,6 +105,52 @@ export default {
           minWidth: 70,
           formatter: ({ cellValue }) => {
             return this.$moment(cellValue).format()
+          },
+        },
+      ],
+      groupActions: [
+        {
+          label: this.$t('compute.text_282'),
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['running', 'ready'],
+              managerArgs: {
+                action: 'syncstatus',
+              },
+            })
+          },
+          meta: () => ({
+            validate: this.list.selected.length,
+          }),
+        },
+        {
+          label: this.$t('compute.text_261'),
+          permission: 'snapshots_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              title: this.$t('compute.text_261'),
+              name: this.$t('compute.text_462'),
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: this.list.selected.length,
+              tooltip: null,
+            }
+            if (this.list.selectedItems.some(item => !item.can_delete)) {
+              ret.validate = false
+              return ret
+            }
+            if (this.list.selectedItems.some(item => item.is_sub_snapshot)) {
+              ret.validate = false
+              ret.tooltip = this.$t('compute.text_1062')
+              return ret
+            }
+            return ret
           },
         },
       ],
