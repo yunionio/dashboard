@@ -143,4 +143,7 @@ export default {
   LoadbalancerbackendgroupSidePage: {
     resource: 'loadbalancerbackendgroups',
   },
+  LbcertSidePage: {
+    resource: 'loadbalancercertificates',
+  },
 }
