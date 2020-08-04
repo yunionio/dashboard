@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center">
-        <e-chart :options="chartOptions" style="height: 214px; width: 385px;" autoresize />
+        <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
       </div>
     </div>
     <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
