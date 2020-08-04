@@ -194,6 +194,7 @@ export default {
       .l2-menu-item {
         color: @sidebar-light-text-color;
         &:hover {
+          background-color: @primary-1;
           color: @sidebar-light-hover-text-color;
         }
         &.active {
@@ -225,10 +226,11 @@ export default {
     font-size: 14px;
     color: @sidebar-dark-text-color;
     &:hover {
+      background-color: @primary-color;
       color: @sidebar-dark-hover-text-color;
     }
     &.active {
-      background-color: @primary-color !important;
+      background-color: @primary-7 !important;
       color: @sidebar-dark-active-text-color;
     }
   }
