@@ -17,7 +17,7 @@
                     <div class="flex-fill text-truncate" :title="item.host">{{ item.host }}</div>
                     <div class="flex-grow-0 flex-shrink-0 text-color-help ml-2">{{ getLabel(item.value) }}</div>
                   </div>
-                  <a-progress :percent="getPercent(item.value)" :showInfo="false" status="normal" :strokeWidth="4" />
+                  <a-progress :percent="getPercent(item.value)" :showInfo="false" status="normal" :strokeWidth="4" stroke-color="rgb(82, 196, 26)" />
                 </div>
               </template>
             </div>
