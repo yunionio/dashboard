@@ -1,7 +1,7 @@
 <template>
   <a-row v-loading="loading">
     <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 11 }" class="mb-5">
-      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" @resetChart="resetChart" />
+      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" @resetChart="resetChart" :timeRangeParams="timeRangeParams" />
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
@@ -95,6 +95,18 @@ export default {
           },
         }],
       }
+    },
+    timeRangeParams () {
+      const params = {}
+      if (this.time === 'custom') { // 自定义时间
+        if (this.customTime && this.customTime.from && this.customTime.to) {
+          params.from = this.customTime.from
+          params.to = this.customTime.to
+        }
+      } else {
+        params.from = this.time
+      }
+      return params
     },
   },
   watch: {

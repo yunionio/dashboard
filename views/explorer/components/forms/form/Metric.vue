@@ -18,7 +18,7 @@
           minWidth="196px"
           filterable
           v-decorator="decorators.metric_value"
-          :options="metricOptsC"
+          :options="metricOpts"
           :label-format="metricValueLabelFormat"
           @change="metricValueChange"
           :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
@@ -42,32 +42,47 @@ export default {
       type: Array,
       default: () => [],
     },
-    metricOpts: {
-      type: Array,
-      default: () => [],
+    form: {
+      type: Object,
+      required: true,
+      validator: val => val.fc,
     },
   },
   data () {
     return {
       metric_key: _.get(this.decorators.metric_key, '[1].initialValue'),
       metricKeyItem: {},
+      metricOpts: [],
     }
   },
-  computed: {
-    metricOptsC () {
-      return this.metricOpts.map(v => {
-        return {
-          key: v,
-          label: v,
+  watch: {
+    metricKeyOpts (val) {
+      if (!val) {
+        this.resetMetric()
+      } else {
+        const metricKey = this.form.fc.getFieldValue(this.decorators.metric_key[0])
+        if (metricKey) {
+          const validMetric = val.find(val => val.key === metricKey)
+          if (!validMetric) {
+            this.resetMetric()
+          }
         }
-      })
+      }
     },
   },
   methods: {
     metricKeyChange (val) {
       this.metric_key = val
       this.metricKeyItem = metricMaps[val]
-      this.$emit('metricKeyChange', val)
+      const metricKeyItem = this.metricKeyOpts.find(item => item.key === val)
+      if (metricKeyItem && _.isArray(metricKeyItem.field_key)) {
+        this.metricOpts = metricKeyItem.field_key.map(val => ({ key: val, label: val }))
+      }
+      if (this.form && this.form.fc) {
+        this.form.fc.setFieldsValue({
+          [this.decorators.metric_value[0]]: undefined,
+        })
+      }
     },
     metricKeyLabelFormat (item) {
       let label = item.name
@@ -88,7 +103,16 @@ export default {
     metricValueChange (val) {
       if (!val) {
         this.$emit('metricClear')
+      } else {
+        this.$emit('metricChange', { metricKey: this.metricKeyItem.key, mertric: val })
       }
+    },
+    resetMetric () {
+      this.form.fc.setFieldsValue({
+        [this.decorators.metric_key[0]]: undefined,
+        [this.decorators.metric_value[0]]: undefined,
+      })
+      this.$emit('metricClear')
     },
   },
 }

@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
-      <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" />
+      <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" />
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
@@ -55,6 +55,18 @@ export default {
   computed: {
     timeFormatStr () {
       return this.timeOpts[this.time].timeFormat
+    },
+    timeRangeParams () {
+      const params = {}
+      if (this.time === 'custom') { // 自定义时间
+        if (this.customTime && this.customTime.from && this.customTime.to) {
+          params.from = this.customTime.from
+          params.to = this.customTime.to
+        }
+      } else {
+        params.from = this.time
+      }
+      return params
     },
   },
   watch: {
@@ -119,14 +131,7 @@ export default {
         const data = {
           metric_query,
           interval: this.timeGroup,
-        }
-        if (this.time === 'custom') { // 自定义时间
-          if (this.customTime && this.customTime.from && this.customTime.to) {
-            data.from = this.customTime.from
-            data.to = this.customTime.to
-          }
-        } else {
-          data.from = this.time
+          ...this.timeRangeParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
         const { data: resdata } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })

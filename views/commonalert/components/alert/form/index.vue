@@ -1,16 +1,17 @@
 <template>
   <a-form v-bind="formItemLayout" :form="form.fc">
-    <scope-radio :decorators="decorators" :project.sync="projectItem" :formScopeInit="formScopeInit" />
+    <scope-radio :decorators="decorators" @change="getMeasurement" :formScopeInit="formScopeParams.formScopeInit" />
     <a-form-item :label="$t('common.name')">
       <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
       <name-repeated v-slot:extra res="commonalerts" :name="form.fd.name" />
     </a-form-item>
     <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
       <metric
-        :metricOpts="metricInfo.field_key"
+        :form="form"
         :decorators="decorators"
         :metricKeyOpts="metricKeyOpts"
-        @metricKeyChange="getMetricInfo" />
+        @metricClear="resetChart"
+        @metricChange="getMetricInfo" />
     </a-form-item>
     <a-form-item :label="$t('monitor.monitor_filters')">
       <filters
@@ -79,6 +80,10 @@ export default {
       }),
     },
     alertData: {},
+    timeRangeParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     let tags = []
@@ -122,7 +127,9 @@ export default {
         fd: {
         },
       },
-      formScopeInit,
+      formScopeParams: {
+        formScopeInit,
+      },
       decorators: {
         domain: [
           'domain',
@@ -254,8 +261,6 @@ export default {
           },
         ],
       },
-      domain: undefined,
-      project: undefined,
       tags,
       oldParams: {},
       metricKeyOpts: [],
@@ -271,39 +276,37 @@ export default {
     }
   },
   watch: {
-    domain () {
-      this.domainProjectChange()
-    },
-    project () {
-      this.domainProjectChange()
+    timeRangeParams () {
+      this.getMeasurement(this.formScopeParams)
     },
   },
   created () {
-    this.getMeasurement()
+    const scope = this.formScopeParams.formScopeInit
+    const params = {
+      scope,
+    }
+    if (scope !== 'system') {
+      params[`${scope}_id`] = this.decorators[scope][1].initialValue
+    }
+    this.formScopeParams = params
+    this.getMeasurement(params)
   },
   mounted () {
     if (R.is(Object, this.alertData)) {
       this.$emit('update:threshold', this.decorators.threshold[1].initialValue)
-      this.getMetricInfo(this.decorators.metric_key[1].initialValue, false)
+      const params = {
+        metricKey: this.decorators.metric_key[1].initialValue,
+        mertric: this.decorators.metric_value[1].initialValue,
+        isResetForm: false,
+      }
+      this.getMetricInfo(params)
     }
   },
   methods: {
-    domainProjectChange () {
-      const params = {}
-      if (this.domain) {
-        params.scope = 'domain'
-        params.domain_id = this.domain
-      }
-      if (this.project) {
-        params.scope = 'project'
-        params.project_id = this.project
-      }
-      this.getMeasurement(params)
-    },
     async getMeasurement (params = {}) {
       try {
-        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { database: 'telegraf', ...params } })
-        this.metricKeyOpts = measurements.map(val => ({ key: val.measurement, label: val.measurement }))
+        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { database: 'telegraf', ...params, ...this.timeRangeParams } })
+        this.metricKeyOpts = measurements.map(val => ({ ...val, key: val.measurement, label: val.measurement }))
         if (R.is(Object, this.alertData)) { // 说明是 更新
           this.toParams()
         }
@@ -334,7 +337,7 @@ export default {
       }, newField)
       this.$nextTick(this.toParams)
     },
-    async getMetricInfo (metricKey, isResetForm = true) {
+    async getMetricInfo ({ metricKey, mertric, isResetForm = true }) {
       try {
         if (isResetForm) {
           this.$refs.filtersRef.reset()
@@ -342,17 +345,14 @@ export default {
             [this.decorators.metric_value[0]]: undefined,
           })
         }
-        const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params: { database: 'telegraf', measurement: metricKey } })
+        const params = {
+          database: 'telegraf',
+          measurement: metricKey,
+          field: mertric,
+          ...this.timeRangeParams,
+        }
+        const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params })
         this.metricInfo = data
-        // 暂时去掉 分组 和 函数
-        // if (R.is(Array, this.metricInfo.tag_key)) {
-        //   this.groupbyOpts = this.metricInfo.tag_key.map(v => ({ key: v, label: v }))
-        // }
-        // const Aggregations = _.get(this.metricInfo, 'func.field_opt_value.Aggregations')
-        // if (R.is(Array, Aggregations)) {
-        //   this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
-        // }
-        this.$emit('resetChart')
       } catch (error) {
         this.metricInfo = {
           field_key: [],
@@ -403,6 +403,9 @@ export default {
       if (needEmit) this.$emit('refresh', params)
       this.oldParams = params // 记录为上一次 params
       return params
+    },
+    resetChart () {
+      this.$emit('resetChart')
     },
   },
 }
