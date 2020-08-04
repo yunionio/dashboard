@@ -10,10 +10,10 @@
       :form="form.fc">
       <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
         <metric
-          :metricOpts="metricInfo.field_key"
+          :form="form"
           :decorators="decorators"
           :metricKeyOpts="metricKeyOpts"
-          @metricKeyChange="getMetricInfo"
+          @metricChange="getMetricInfo"
           @metricClear="resetChart" />
       </a-form-item>
       <a-form-item :label="$t('monitor.monitor_filters')">
@@ -76,6 +76,10 @@ export default {
     },
     defaultPanelShow: {
       type: Boolean,
+    },
+    timeRangeParams: {
+      type: Object,
+      default: () => ({}),
     },
   },
   data () {
@@ -166,6 +170,9 @@ export default {
     defaultPanelShow (val) {
       this.panelShow = val
     },
+    timeRangeParams () {
+      this.getMeasurement()
+    },
   },
   created () {
     this.getMeasurement()
@@ -198,17 +205,28 @@ export default {
     },
     async getMeasurement () {
       try {
-        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { database: 'telegraf' } })
-        this.metricKeyOpts = measurements.map(val => ({ key: val.measurement, label: val.measurement }))
+        const params = { database: 'telegraf', scope: this.$store.getters.scope, ...this.timeRangeParams }
+        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params })
+        this.metricKeyOpts = measurements.map(val => ({ ...val, key: val.measurement, label: val.measurement }))
       } catch (error) {
         throw error
       }
     },
-    async getMetricInfo (metricKey) {
+    async getMetricInfo ({ metricKey, mertric }) {
       try {
         this.$refs.filtersRef.reset()
-        this.form.fc.resetFields()
-        const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params: { database: 'telegraf', measurement: metricKey, $t: getRequestT() } })
+        this.form.fc.setFieldsValue({
+          [this.decorators.group_by[0]]: undefined,
+          [this.decorators.function[0]]: undefined,
+        })
+        const params = {
+          $t: getRequestT(),
+          database: 'telegraf',
+          measurement: metricKey,
+          field: mertric,
+          ...this.timeRangeParams,
+        }
+        const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params })
         this.metricInfo = data
         if (R.is(Array, this.metricInfo.tag_key)) {
           this.groupbyOpts = this.metricInfo.tag_key.map(v => ({ key: v, label: v }))

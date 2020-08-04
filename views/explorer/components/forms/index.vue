@@ -12,6 +12,7 @@
         :defaultPanelShow="item.show"
         :showDelete="formList.length > 1"
         :formItemLayout="formItemLayout"
+        :timeRangeParams="timeRangeParams"
         @resetChart="() => resetChart(i)"
         @paramsChange="val => paramsChange(val, i)"
         @remove="() => remove(i)" />
@@ -31,6 +32,12 @@ export default {
   name: 'MonitorForms',
   components: {
     MonitorForm,
+  },
+  props: {
+    timeRangeParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
