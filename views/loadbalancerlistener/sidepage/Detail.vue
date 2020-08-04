@@ -64,6 +64,18 @@ export default {
                 ]
               },
             }),
+            getCopyWithContentTableColumn({
+              field: 'certificate',
+              title: '证书',
+              hideField: true,
+              slotCallback: row => {
+                if (this.isRedirect) return '-'
+                if (!row.certificate) return '-'
+                return [
+                  <side-page-trigger name='LbcertSidePage' id={row.certificate_id} vm={this}>{ row.certificate }</side-page-trigger>,
+                ]
+              },
+            }),
           ],
         },
         {
@@ -119,7 +131,7 @@ export default {
               formatter: ({ row }) => {
                 if (row.acl_status === 'on') {
                   return [
-                    <div>{row.acl_type === 'white' ? '白名单' : '黑名单'} <side-page-trigger permission='lb_loadbalanceracls_get' name='LbaclSidePage' id={row.acl_id} vm={this}>{ row.acl_name }</side-page-trigger></div>,
+                    <div>{row.acl_type === 'white' ? '白名单' : '黑名单'} （<side-page-trigger permission='lb_loadbalanceracls_get' name='LbaclSidePage' id={row.acl_id} vm={this}>{ row.acl }</side-page-trigger>）</div>,
                   ]
                 }
                 return '未开启'
