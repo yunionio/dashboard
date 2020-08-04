@@ -118,6 +118,7 @@ export default {
         color: @sidebar-light-text-color;
       }
       &:hover {
+        background-color: @primary-1;
         > a {
           color: @sidebar-light-hover-text-color;
         }
@@ -152,12 +153,13 @@ export default {
     }
   }
   &:hover {
+    background-color: @primary-color;
     > a {
       color: @sidebar-dark-hover-text-color;
     }
   }
   &.active {
-    background-color: @primary-color !important;
+    background-color: @primary-7 !important;
     > a {
       color: @sidebar-dark-active-text-color;
     }
