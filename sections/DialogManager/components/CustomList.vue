@@ -243,6 +243,9 @@ export default {
     .drag-icon {
       visibility: hidden;
     }
+    .text-truncate {
+      padding-right: 15px;
+    }
   }
   &:hover {
     ::v-deep {
