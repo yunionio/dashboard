@@ -23,6 +23,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import publicDefaultConfig from './config/public-default'
 import defaultConfig from './config/default'
 import DashboardHeader from './components/Header'
 import DashboardContent from './components/Content'
@@ -38,12 +39,14 @@ export default {
     DashboardContent,
   },
   data () {
+    const isPrivate = process.env.VUE_APP_IS_PRIVATE
     return {
+      isPrivate,
       loading: false,
       // 面板配置是否加载完毕
       optionsLoaded: false,
       // 默认面板配置 -> [{ id: 'xxx', name: 'xxx' }]
-      defaultOptions: defaultConfig[this.$store.getters.scope]['options'],
+      defaultOptions: isPrivate ? defaultConfig[this.$store.getters.scope].options : publicDefaultConfig[this.$store.getters.scope].options,
       // 自定义面板配置
       customOptions: [],
       // 当前面板配置 -> { id: 'xxx', name: 'xxx' }
@@ -120,7 +123,7 @@ export default {
       const id = this.currentOption.id
       // 如果是预设默认面板，直接返回配置
       if (this.isDefault) {
-        return defaultConfig[this.scope][id]
+        return this.isPrivate ? defaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id]
       }
       this.loading = true
       try {
