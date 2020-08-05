@@ -38,6 +38,8 @@ import VmInstanceDetail from './Detail'
 import VmInstanceMonitorSidepage from './Monitor'
 import VmInstanceAlertSidepage from './Alert'
 import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
+import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
+import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
 import DiskListForVmInstanceSidepage from '@Compute/views/disk/components/List'
 import SecgroupList from '@Compute/views/secgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
@@ -50,6 +52,8 @@ export default {
     Actions,
     VmInstanceDetail,
     NetworkListForVmInstanceSidepage,
+    DiskSnapshotListForVmInstanceSidepage,
+    InstanceSnapshotListForVmInstanceSidepage,
     DiskListForVmInstanceSidepage,
     SecgroupList,
     // HostList,
@@ -65,6 +69,8 @@ export default {
         // { label: '宿主机', key: 'host-list' },
         { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
         { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
+        { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
+        { label: this.$t('compute.text_102'), key: 'instance-snapshot-list-for-vm-instance-sidepage' },
         { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
         { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
@@ -74,6 +80,7 @@ export default {
   computed: {
     componentParams () {
       const tabs = ['secgroup-list', 'disk-list-for-vm-instance-sidepage']
+      const snapshotsTabs = ['disk-snapshot-list-for-vm-instance-sidepage', 'instance-snapshot-list-for-vm-instance-sidepage']
       if (tabs.includes(this.params.windowData.currentTab)) {
         return {
           detail: true,
@@ -89,6 +96,11 @@ export default {
       if (this.params.windowData.currentTab === 'network-list-for-vm-instance-sidepage') {
         return {
           detail: true,
+        }
+      }
+      if (snapshotsTabs.includes(this.params.windowData.currentTab)) {
+        return {
+          server: this.detailData.id,
         }
       }
       return null

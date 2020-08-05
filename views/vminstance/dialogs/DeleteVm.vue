@@ -12,7 +12,6 @@
         <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
           {{ $t('compute.text_1212', [snapshot.list.length]) }}
         </a-form-item>
-        <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">{{$t('compute.text_1212', [ snapshot.list.length ])}}</a-form-item>
       </a-form>
       <dialog-table v-if="form.fd.autoDelete" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
