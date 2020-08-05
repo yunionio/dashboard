@@ -105,3 +105,7 @@ body {
 .custom-date-time.ant-popover .ant-popover-message-title {
   padding-left: 0;
 }
+
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
+  font-family: consolas !important;
+}
