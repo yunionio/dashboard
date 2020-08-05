@@ -158,7 +158,7 @@ export default {
           return [
             <div class='d-flex align-items-center text-truncate'>
               <status status={ row.status } statusModule='server' />
-              { getToolTip(row) }
+              { row.metadata && getToolTip(row) }
             </div>,
           ]
         },
