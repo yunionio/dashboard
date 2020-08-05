@@ -27,6 +27,10 @@ export default {
       default: () => ({}),
     },
     cloudEnv: String,
+    isAllowCreate: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -91,6 +95,7 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: this.isAllowCreate,
             }
           },
         },
