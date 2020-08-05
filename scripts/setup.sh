@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function show_br_commit(){
+show_br_commit () {
   local path="$1"; shift
   local branch
   local commit
@@ -18,8 +18,7 @@ function show_br_commit(){
 echo "🗃 Initializing git repository..."
 
 DEFAULT_GIT_PREFIX="https://github.com/yunionio"
-br=`git branch | grep "\*"`
-BRANCH=${br/* /}
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [ $DEV_SETUP ]
   then
