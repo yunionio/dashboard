@@ -33,7 +33,12 @@ export default {
   },
   created () {
     if (!this.$store.getters['auth/currentHistoryUserKey']) {
-      this.$router.push('/auth/login')
+      this.$router.replace({
+        path: '/auth/login',
+        query: {
+          rf: this.$route.query.rf,
+        },
+      })
     } else {
       this.getRecovery()
     }
@@ -60,7 +65,12 @@ export default {
           },
         })
         this.$message.success(this.$t('auth.question.reset.success'))
-        this.$router.replace('/auth/bindsecret')
+        this.$router.replace({
+          path: '/auth/bindsecret',
+          query: {
+            rf: this.$route.query.rf,
+          },
+        })
       }).catch(error => {
         this.loading = false
         throw error

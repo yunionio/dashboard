@@ -404,17 +404,32 @@ export default {
         try {
           const recovery = await dispatch('getRecovery')
           if (recovery) {
-            router.replace('/auth/bindsecret')
+            router.replace({
+              path: '/auth/bindsecret',
+              query: {
+                rf: router.currentRoute.query.rf,
+              },
+            })
           }
         } catch (error) {
           if (error.response.status === 404) {
-            router.replace('/auth/setsecretquestion')
+            router.replace({
+              path: '/auth/setsecretquestion',
+              query: {
+                rf: router.currentRoute.query.rf,
+              },
+            })
           }
           throw error
         }
       } else if (totp_on) {
         // 如果开启了认证则进入输入秘钥页面
-        router.replace('/auth/secretverify')
+        router.replace({
+          path: '/auth/secretverify',
+          query: {
+            rf: router.currentRoute.query.rf,
+          },
+        })
       } else {
         const { rf, pathAuthPage, pathAuth, path, pathQuery } = router.currentRoute.query
         if (rf) {
