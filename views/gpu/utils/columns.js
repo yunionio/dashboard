@@ -3,7 +3,7 @@ import i18n from '@/locales'
 
 export const getReserveResourceColumn = () => {
   return {
-    field: '',
+    field: 'reserved_memory',
     title: i18n.t('compute.text_501'),
     minWidth: 100,
     showOverflow: 'title',
