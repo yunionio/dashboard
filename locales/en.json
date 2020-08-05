@@ -518,7 +518,8 @@
       "connected": "Connected",
       "disconnected": "Disconnected",
       "init": "Initialize",
-      "deleting": "Deleting"
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed"
     },
     "notification": {
       "received": "Received",
