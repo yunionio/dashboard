@@ -12,24 +12,70 @@
 </template>
 
 <script>
+import { steadyStatus } from '../constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import {
+  getTenantFilter,
+  getStatusFilter,
+  getBrandFilter,
+  getDomainFilter,
+  getAccountFilter,
+} from '@/utils/common/tableFilter'
 
 export default {
   name: 'SnapshotList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
-    list: {
-      type: Object,
-      default: () => ({}),
+    id: String,
+    getParams: {
+      type: [Function, Object],
     },
+    cloudEnv: String,
   },
   data () {
     return {
-      mixinType: 'disk',
+      list: this.$list.createList(this, {
+        id: this.id,
+        resource: 'snapshots',
+        getParams: this.getParam,
+        steadyStatus,
+        filterOptions: {
+          name: {
+            label: this.$t('compute.text_228'),
+            filter: true,
+            formatter: val => {
+              return `name.contains("${val}")`
+            },
+          },
+          status: getStatusFilter('snapshot'),
+          brand: getBrandFilter(),
+          projects: getTenantFilter(),
+          project_domains: getDomainFilter(),
+          account: getAccountFilter(),
+          disk_name: {
+            label: this.$t('compute.text_100'),
+            jointFilter: true,
+            filter: true,
+            formatter: val => {
+              return `disks.id(disk_id).name.contains("${val}")`
+            },
+          },
+          disk_type: {
+            label: this.$t('compute.text_381'),
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: this.$t('compute.text_50'), key: 'data' },
+              { label: this.$t('compute.text_49'), key: 'sys' },
+            ],
+          },
+        },
+        responseData: this.responseData,
+      }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
@@ -100,11 +146,21 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    getParam () {
+      const ret = {
+        details: true,
+        with_meta: true,
+        is_instance_snapshot: false,
+        ...this.getParams,
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'SnapshotSidePage', {
         id: row.id,
         resource: 'snapshots',
-        getParams: this.list.params,
+        getParams: this.getParam,
         steadyStatus: this.list.steadyStatus,
       }, {
         list: this.list,
