@@ -43,13 +43,13 @@ const writeMessage = () => {
         file = path.join(localeDir, file)
         if (file !== i18nFile) {
           const oldMessages = require(file)
-          fs.writeFileSync(file, `${JSON.stringify(Object.assign({}, messages, oldMessages), null, '\t')}`, 'utf8')
+          fs.writeFileSync(file, JSON.stringify(Object.assign({}, messages, oldMessages), null, '2'), 'utf8')
         }
       })
     } catch (e) {
     }
   }
-  fs.writeFileSync(i18nFile, `${JSON.stringify(messages, null, '\t')}`, 'utf8')
+  fs.writeFileSync(i18nFile, JSON.stringify(messages, null, '2'), 'utf8')
 }
 
 /**

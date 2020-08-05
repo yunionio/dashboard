@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form-item :label="$t('common.text00105')">
-      <a-radio-group v-model="formScope">
+      <a-radio-group v-model="formScope" @change="e => emit(e.target.value, 'scope')">
         <a-radio-button
           v-for="item in scopeOptions"
           :value="item.key"
@@ -15,6 +15,7 @@
         :params="domainParams"
         filterable
         version="v1"
+        @change="v => emit(v, 'domainId')"
         :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.domain')}` }" />
     </a-form-item>
     <a-form-item :label="$t('dictionary.project')" key="project" v-if="isProjectScope">
@@ -27,6 +28,7 @@
         filterable
         version="v1"
         :need-params="true"
+        @change="v => emit(v, 'projectId')"
         :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.project')}` }" />
     </a-form-item>
   </div>
@@ -87,15 +89,22 @@ export default {
       return ret
     },
   },
-  watch: {
-    project (val) {
-      this.$emit('update:project', val)
-    },
-  },
   created () {
     this.formScope = this.formScopeInit || this.scopeOptions[0].key
   },
   methods: {
+    emit (val, field) {
+      const value = {
+        scope: this.formScope,
+      }
+      if (field === 'domainId') {
+        value.domain_id = val
+      }
+      if (field === 'projectId') {
+        value.project_id = val
+      }
+      this.$emit('change', value)
+    },
     projectsLabelFormat (item) {
       return <div class='d-flex'>
         <span class='text-truncate flex-fill mr-2' title={ item.name }>{ item.name }</span>

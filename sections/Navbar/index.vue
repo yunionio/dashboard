@@ -34,7 +34,7 @@
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
-          <a-menu-item v-for="item of products" :key="item.key">{{ item.label }}</a-menu-item>
+          <a-menu-item v-for="(item, idx) of products" :key="`${item.key}$$${idx}`">{{ item.label }}</a-menu-item>
         </a-menu>
       </a-dropdown>
     </div>
@@ -420,7 +420,8 @@ export default {
     productChange (item) {
       // 打开的常用系统是同域下的，则设置一个临时的session（供其他系统使用）
       const hostname = window.location.hostname
-      if (item.key.includes(hostname)) {
+      const href = item.key.split('$$')[0]
+      if (href.includes(hostname)) {
         const obj = {
           projectId: this.userInfo.projectId,
           projectName: this.userInfo.projectName,
@@ -432,7 +433,7 @@ export default {
         const bStr = window.encodeURI(JSON.stringify(obj))
         Cookies.set('timeauth', bStr)
       }
-      window.open(item.key, '_blank')
+      window.open(href, '_blank')
     },
     async reLogin (projectId, scope) {
       this.reLogging = true
