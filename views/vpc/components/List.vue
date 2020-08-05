@@ -83,6 +83,7 @@ export default {
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
+              createType: this.cloudEnv,
             })
           },
           meta: () => {
