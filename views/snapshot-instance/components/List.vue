@@ -12,24 +12,52 @@
 </template>
 
 <script>
+import { steadyStatus } from '../constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import {
+  getTenantFilter,
+  getStatusFilter,
+  getDomainFilter,
+} from '@/utils/common/tableFilter'
 
 export default {
   name: 'SnapshotList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
-    list: {
-      type: Object,
-      default: () => ({}),
+    id: String,
+    getParams: {
+      type: [Function, Object],
     },
+    cloudEnv: String,
   },
   data () {
     return {
-      mixinType: 'instance',
+      list: this.$list.createList(this, {
+        id: this.id,
+        resource: 'instance_snapshots',
+        getParams: this.getParam,
+        steadyStatus,
+        filterOptions: {
+          name: {
+            label: this.$t('compute.text_228'),
+            filter: true,
+            formatter: val => {
+              return `name.contains("${val}")`
+            },
+          },
+          status: getStatusFilter('snapshot'),
+          projects: getTenantFilter(),
+          project_domains: getDomainFilter(),
+          region: {
+            label: '区域',
+          },
+        },
+        responseData: this.responseData,
+      }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
@@ -75,16 +103,31 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('snapshot-detail')
     this.list.fetchData()
   },
   methods: {
+    getParam () {
+      const ret = {
+        details: true,
+        ...this.getParams,
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'SnapshotInstanceSidePage', {
         id: row.id,
         resource: 'instance_snapshots',
-        getParams: this.list.params,
+        getParams: this.getParam,
         steadyStatus: this.list.steadyStatus,
       }, {
         list: this.list,
