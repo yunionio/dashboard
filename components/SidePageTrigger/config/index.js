@@ -135,6 +135,11 @@ export default {
     resource: 'cloudusers',
     apiVersion: 'v1',
   },
+  // 用户
+  UserSidePage: {
+    resource: 'users',
+    apiVersion: 'v1',
+  },
   // 权限组缓存
   CloudgroupcacheSidePage: {
     resource: 'cloudgroupcaches',
