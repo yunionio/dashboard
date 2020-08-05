@@ -197,7 +197,9 @@ export default {
     },
     handleCustomList () {
       const grid = this.getGrid()
-      const hidenColumns = ['name']
+      const cols = grid.getTableColumn().collectColumn || []
+      const firstCol = cols.length > 0 ? cols[0].property : ''
+      const hidenColumns = [firstCol]
       this.createDialog('CustomListDialog', {
         title: this.$t('common.text00011'),
         config: this.config,
