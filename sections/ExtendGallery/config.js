@@ -28,8 +28,8 @@ const options = [
     label: i18n.t('dashboard.text_47'),
     desc: i18n.t('dashboard.text_83'),
     icon: 'dashboard-usage',
-    h: 4,
-    w: 6,
+    h: 5,
+    w: 8,
     component: 'SuggestsysAlertsDetail',
   },
   {
