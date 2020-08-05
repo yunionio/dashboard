@@ -66,7 +66,7 @@ export default {
             }),
             getCopyWithContentTableColumn({
               field: 'certificate',
-              title: '证书',
+              title: this.$t('network.text_143'),
               hideField: true,
               slotCallback: row => {
                 if (this.isRedirect) return '-'
