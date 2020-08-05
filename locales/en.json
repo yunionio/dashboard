@@ -518,7 +518,8 @@
       "connected": "Connected",
       "disconnected": "Disconnected",
       "init": "Initialize",
-      "deleting": "Deleting"
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed"
     },
     "notification": {
       "received": "Received",
@@ -1996,16 +1997,19 @@
     "OSS_SEC_ACL": "Object storage permissions are open to read and write buckets and files"
   },
   "idpTmplTitles": {
-    "dex_oidc": "通用OIDC",
-    "oidc": "通用OIDC",
+    "msad_one_domain": "Microsoft Active Directory Import order @:dictionary.domain",
+    "msad_multi_domain": "Microsoft Active Directory Import multiple @:dictionary.domain",
+    "openldap_one_domain": "OpenLDAP/FreeIPA Import order @:dictionary.domain",
+    "dex_oidc": "OIDC",
+    "oidc": "OIDC",
     "github_oidc": "Github",
     "azure_oidc": "Azure AD OAuth2",
-    "saml": "通用SAML",
+    "saml": "SAML",
     "azure_ad_saml": "Azure AD SAML 2.0",
-    "cas": "通用CAS",
-    "feishu_oauth2": "飞书",
-    "dingtalk_oauth2": "钉钉",
-    "qywechat_oauth2": "企业微信"
+    "cas": "CAS",
+    "feishu_oauth2": "FeiShu",
+    "dingtalk_oauth2": "Dingtalk",
+    "qywechat_oauth2": "Wechat"
   },
   "login.desc1": "Next generation unified cloud management platform (CMP)",
   "login.desc2": "Simple·Open·Integrated·Smart",

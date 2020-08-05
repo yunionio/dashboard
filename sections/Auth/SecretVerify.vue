@@ -35,7 +35,12 @@ export default {
   },
   created () {
     if (!this.$store.getters['auth/currentHistoryUserKey']) {
-      this.$router.push('/auth/login')
+      this.$router.replace({
+        path: '/auth/login',
+        query: {
+          rf: this.$route.query.rf,
+        },
+      })
     }
   },
   mounted () {
@@ -49,7 +54,11 @@ export default {
           passcode: this.securityCode,
         })
         this.loading = false
-        this.$router.replace('/')
+        if (this.$route.query.rf) {
+          document.location.href = this.$route.query.rf
+        } else {
+          this.$router.replace('/')
+        }
       } catch (error) {
         this.error = true
         this.loading = false
@@ -60,7 +69,12 @@ export default {
       this.$refs['security-code'].focusInput(1)
     },
     resetSecret () {
-      this.$router.replace('/auth/resetsecretquestion')
+      this.$router.replace({
+        path: '/auth/resetsecretquestion',
+        query: {
+          rf: this.$route.query.rf,
+        },
+      })
     },
   },
 }

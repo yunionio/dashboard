@@ -67,11 +67,11 @@
         </a-form-model-item>
       </template>
       <!-- 确定按钮 -->
-      <a-form-model-item>
+      <a-form-model-item class="mb-0">
         <a-button type="primary" html-type="submit" :loading="submiting" block>{{ $t('auth.login.submit') }}</a-button>
       </a-form-model-item>
       <!-- 额外操作 -->
-      <a-form-model-item>
+      <a-form-model-item class="mb-0">
         <div class="d-flex">
           <div class="flex-shrink-1 flex-grow-1 text-left" style="margin-left: -15px;">
             <template v-if="hasLoggedUsers && showUsernameInput">

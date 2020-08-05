@@ -3,7 +3,7 @@
     <a-result status="403" title="403" :subTitle="$t('common_346', [$t('dictionary.project')])">
       <template v-slot:extra>
         <div>
-          <a-button type="primary" @click="joinProject" v-if="showJoinBtn">{{$t('common_205')}}{{$t('dictionary.project')}} }}</a-button>
+          <a-button type="primary" @click="joinProject" v-if="showJoinBtn">{{$t('common_205')}}{{$t('dictionary.project')}}</a-button>
           <a-button class="ml-2" @click="handleLogout">{{$t('common_347')}}</a-button>
           <a-button class="ml-2" @click="handleLogout">{{$t('common_348')}}</a-button>
         </div>

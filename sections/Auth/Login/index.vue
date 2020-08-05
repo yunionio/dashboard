@@ -16,22 +16,22 @@
         </div>
       </div>
       <!-- 第三方登录 -->
-      <div class="flex-shrink-0 flex-grow-0" style="display: none;">
+      <div class="flex-shrink-0 flex-grow-0">
         <template v-if="idps.length > 0">
           <div class="fast-login-wrap">
             <div class="fast-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />{{ $t('auth.login.fast.login.title') }}<span class="ml-2" /></div>
-            <template v-for="(item, idx) of idps">
-              <div class="fast-login-items mt-2 mb-2" :key="idx">
+            <div class="d-flex justify-content-center flex-wrap px-2">
+              <div class="fast-login-items" :key="idx" v-for="(item, idx) of idps">
                 <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2" @click="handleClickIdp(item)">
-                  <a-tooltip placement="top">
+                  <a-tooltip placement="top" :title="$t(`idpTmplTitles.${item.template || item.driver}`)">
                     <template slot="title">
                       <span>{{ item.tooltip }}</span>
                     </template>
-                    <img :src="item.icon_uri" />
+                    <img :src="getIcon(item)" />
                   </a-tooltip>
                 </a>
               </div>
-            </template>
+            </div>
           </div>
         </template>
       </div>
@@ -65,25 +65,6 @@ export default {
       }
       return '-'
     },
-    casConfig () {
-      const cas = this.regions.idps.find(item => item.driver === 'cas')
-      return cas && cas.config
-    },
-    casServerUrl () {
-      return this.casConfig && `${this.casConfig.cas.cas_server_url}?service=${this.casConfig.cas.service}`
-    },
-    fastLoginOptions () {
-      console.log(this.regions)
-      const ret = []
-      if (this.casServerUrl) {
-        ret.push({
-          tooltip: this.$t('auth.login.cas.tooltip'),
-          serverUrl: this.casServerUrl,
-          logo: require('../assets/cas.png'),
-        })
-      }
-      return ret
-    },
     idps () {
       return this.regions.idps || []
     },
@@ -96,16 +77,30 @@ export default {
         return v[1].domain.name === this.$route.query.domain
       })
     }
+    const { query } = this.$route
+    const { result, error_class, error_details } = query
+    if (result === 'error') {
+      this.$notification.error({
+        class: 'error-notification',
+        message: error_class,
+        description: error_details,
+        icon: h => <a-icon type="info-circle" class="error-color" />,
+      })
+    }
     if (!R.isEmpty(data)) {
       this.$router.replace({
         path: '/auth/login/chooser',
-        query: this.$route.query,
+        query,
       })
     }
   },
   methods: {
+    getIcon (idp) {
+      const { template, driver } = idp
+      const key = (template || driver).toLocaleLowerCase()
+      return require(`../../../assets/images/idp-icons/block/${key}.png`)
+    },
     handleClickIdp (idpItem) {
-      console.log(idpItem)
       const { origin } = window.location
       const { id } = idpItem
       window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}`
@@ -162,7 +157,7 @@ export default {
   height: 35px;
   overflow: hidden;
   img {
-    height: 100%;
+    height: 50%;
   }
 }
 </style>

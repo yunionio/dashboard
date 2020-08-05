@@ -518,7 +518,8 @@
       "connected": "已连接",
       "disconnected": "连接断开",
       "init": "初始化",
-      "deleting": "删除中"
+      "deleting": "删除中",
+      "delete_failed": "删除失败"
     },
     "notification": {
       "received": "已接收",
@@ -1996,6 +1997,9 @@
     "OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件"
   },
   "idpTmplTitles": {
+    "msad_one_domain": "Microsoft Active Directory导入单@:dictionary.domain",
+    "msad_multi_domain": "Microsoft Active Directory导入多个@:dictionary.domain",
+    "openldap_one_domain": "OpenLDAP/FreeIPA导入单@:dictionary.domain",
     "dex_oidc": "通用OIDC",
     "oidc": "通用OIDC",
     "github_oidc": "Github",
