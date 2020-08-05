@@ -111,7 +111,6 @@ export default {
         keys.forEach(k => {
           if (!data[k] || !values[k] || R.type(data[k]) !== 'Object') return false
           const { ok, reason } = data[k]
-          console.log(ok)
           if (ok) {
             this.$notification.success({
               message: this.$t('cloudenv.text_407', [this.$t('proxysettings')[k]]),
