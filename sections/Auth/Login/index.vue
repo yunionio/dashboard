@@ -20,8 +20,8 @@
         <template v-if="idps.length > 0">
           <div class="fast-login-wrap">
             <div class="fast-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />{{ $t('auth.login.fast.login.title') }}<span class="ml-2" /></div>
-            <div class="d-flex justify-content-center flex-wrap px-4">
-              <div class="fast-login-items mt-4 mb-4" :key="idx" v-for="(item, idx) of idps">
+            <div class="d-flex justify-content-center flex-wrap px-2">
+              <div class="fast-login-items" :key="idx" v-for="(item, idx) of idps">
                 <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2" @click="handleClickIdp(item)">
                   <a-tooltip placement="top" :title="$t(`idpTmplTitles.${item.template || item.driver}`)">
                     <template slot="title">
@@ -77,10 +77,20 @@ export default {
         return v[1].domain.name === this.$route.query.domain
       })
     }
+    const { query } = this.$route
+    const { result, error_class, error_details } = query
+    if (result === 'error') {
+      this.$notification.error({
+        class: 'error-notification',
+        message: error_class,
+        description: error_details,
+        icon: h => <a-icon type="info-circle" class="error-color" />,
+      })
+    }
     if (!R.isEmpty(data)) {
       this.$router.replace({
         path: '/auth/login/chooser',
-        query: this.$route.query,
+        query,
       })
     }
   },
@@ -147,7 +157,7 @@ export default {
   height: 35px;
   overflow: hidden;
   img {
-    height: 85%;
+    height: 50%;
   }
 }
 </style>
