@@ -3479,7 +3479,7 @@
   "compute.text_1209": "删除备份机",
   "compute.text_1210": "强制清除",
   "compute.text_1211": "强制清除备份机记录（适用于备份机宿主机离线的情况下）",
-  "compute.text_1212": "该主机包含快照 {0} 个",
+  "compute.text_1212": "上述主机包含快照 {0} 个",
   "compute.text_1213": "快照类型",
   "compute.text_1214": "主机删除流程已提交",
   "compute.text_1215": "加入资源池",
