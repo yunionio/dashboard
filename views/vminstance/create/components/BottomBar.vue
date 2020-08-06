@@ -54,7 +54,7 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
-import { RESOURCE_TYPES_MAP, SERVER_TYPE, BILL_TYPES_MAP } from '@Compute/constants'
+import { SERVER_TYPE, BILL_TYPES_MAP } from '@Compute/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import { HYPERVISORS_MAP, PROVIDER_MAP } from '@/constants'
 import SideErrors from '@/sections/SideErrors'
