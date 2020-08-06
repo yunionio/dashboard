@@ -72,7 +72,11 @@ export default {
         }),
         getCopyWithContentTableColumn({
           title: this.$t('cloudenv.text_322'),
-          field: 'action',
+          field: 'logAction',
+          hideField: true,
+          slotCallback: (row) => {
+            return row.action
+          },
         }),
         {
           title: this.$t('cloudenv.text_323'),
