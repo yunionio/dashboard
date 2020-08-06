@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import moment from 'moment'
 import _ from 'lodash'
 import i18n from '@/locales'
+import { numerify } from '@/filters'
 
 let tIndex = 0
 
@@ -594,4 +595,53 @@ export const compactObj = (obj, fn = R.isEmpty) => {
     }
   }
   return newObj
+}
+
+/*
+ * 去除对象中所有符合条件的对象，默认是去除对象属性为空值
+ * @param {String|Number} value
+ * @param {String} unit e.g: "%", "bps", "Mbps", "Bps", "cps", "count", "ms", "byte"
+ * @param {Number} base
+ * @return {Object} e.g: { text: '123 MB', value: '123', unit: 'MB'  }
+ */
+export const transformUnit = (value, unit = '', base = 1000) => {
+  const number = Number(value)
+  if (!R.is(Number, number) || Number.isNaN(number)) {
+    console.error('onecloud: value must be Number type by used transformUnit util')
+    return null
+  }
+  let obj = {
+    text: `${number} ${unit}`,
+    value: numerify(number, '0.00'),
+    unit,
+  }
+  if (~UNITS.indexOf(unit)) {
+    obj = splitUnit(sizestr(value, unit, base))
+  } else if (unit.toLowerCase().endsWith('bps')) { // bps、Mbps、Bps
+    let sizestrUnit = 'B'
+    let base = 1000
+    let b = 'b'
+    if (unit.replace(/bps/, '')) { // Mbps
+      sizestrUnit = unit.replace(/bps/, '') // M
+    }
+    if (unit === 'Bps') {
+      base = 1024
+      b = 'B'
+    }
+    obj = splitUnit(sizestr(value, sizestrUnit, base))
+    if (obj.text.endsWith('B')) {
+      obj.text = `${obj.value} ${b}ps`
+    } else {
+      obj.text += `${b}ps`
+    }
+  } else if (unit === 'byte') {
+    obj = splitUnit(sizestr(value, 'B', 1024))
+    if (!obj.text.endsWith('B')) {
+      obj.text += 'B'
+    }
+  } else if (~unit.indexOf('ms')) {
+    const text = numerify(number, unit)
+    obj.text = text
+  }
+  return obj
 }

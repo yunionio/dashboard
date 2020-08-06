@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form-item :label="$t('common.text00105')">
-      <a-radio-group v-model="formScope" @change="e => emit(e.target.value, 'scope')">
+      <a-radio-group v-model="formScope" @change="e => emit(e.target.value, 'scope')" :disabled="disabled">
         <a-radio-button
           v-for="item in scopeOptions"
           :value="item.key"
@@ -15,6 +15,7 @@
         :params="domainParams"
         filterable
         version="v1"
+        :disabled="disabled"
         @change="v => emit(v, 'domainId')"
         :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.domain')}` }" />
     </a-form-item>
@@ -28,6 +29,7 @@
         filterable
         version="v1"
         :need-params="true"
+        :disabled="disabled"
         @change="v => emit(v, 'projectId')"
         :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.project')}` }" />
     </a-form-item>
@@ -47,6 +49,10 @@ export default {
     },
     formScopeInit: {
       type: String,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
