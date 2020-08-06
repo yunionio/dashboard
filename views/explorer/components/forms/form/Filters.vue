@@ -7,6 +7,7 @@
             minWidth="70px"
             v-decorator="decorators.tagCondition(item.key)"
             :options="conditionOpts"
+            :disabled="disabled"
             :select-props="{ placeholder: $t('common.select') }" />
         </a-form-item>
         <a-form-item class="mr-1" :style="{ width: `calc(100% - ${i === 0 ? 0 : 70}px)` }">
@@ -16,8 +17,9 @@
             v-decorator="decorators.tagKey(item.key)"
             :options="tagKeyOpts"
             filterable
+            :disabled="disabled"
             @change="val => tagKeyChange(val, i, item)"
-            :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
+            :select-props="{ placeholder: $t('common.select'), allowClear: true, loading }" />
         </a-form-item>
       </a-col>
       <a-col :span="3">
@@ -26,6 +28,7 @@
             minWidth="50px"
             v-decorator="decorators.tagOperator(item.key)"
             :options="tagOperatorOpts"
+            :disabled="disabled"
             :select-props="{ placeholder: $t('common.select') }" />
         </a-form-item>
       </a-col>
@@ -36,7 +39,8 @@
             v-decorator="decorators.tagValue(item.key)"
             :options="item.tagValueOpts"
             filterable
-            :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
+            :disabled="disabled"
+            :select-props="{ placeholder: $t('common.select'), allowClear: true, loading }" />
         </a-form-item>
         <a-form-item style="width: 20px;" v-if="i !== 0">
           <a-icon
@@ -46,7 +50,7 @@
         </a-form-item>
       </a-col>
     </a-row>
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center" v-if="!disabled">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
       <a-button type="link" @click="add">{{ $t('monitor.monitor_add_filters') }}</a-button>
     </div>
@@ -89,6 +93,14 @@ export default {
     },
     tags: {
       type: Array,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {

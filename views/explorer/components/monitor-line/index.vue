@@ -12,8 +12,6 @@
         ref="tableRef"
         highlight-hover-row
         highlight-current-row
-        @mouseleave.native="tableMouseleave"
-        @cell-mouseenter="tableMouseenter"
         @cell-click="cellClick"
         :columns="columns"
         :data="tableData"
@@ -29,6 +27,7 @@ import { colors } from '@/sections/Charts/constants'
 import { tableColumnMaps } from '@Monitor/constants'
 import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
+import { transformUnit } from '@/utils/utils'
 
 export default {
   name: 'ExplorerMonitorLine',
@@ -59,6 +58,9 @@ export default {
     loading: {
       type: Boolean,
       default: false,
+    },
+    description: {
+      type: Object,
     },
   },
   data () {
@@ -102,9 +104,6 @@ export default {
           width: 50,
           slots: {
             default: ({ row, rowIndex }) => {
-              // const { series, color } = this.chartInstanceOption
-              // const colors = series.map(val => val.itemStyle.color)
-              // const c = colors[rowIndex] || color[0]
               return [<div class="mx-auto" style={{ width: '10px', height: '10px', 'border-radius': '50%', background: row.__color }} />]
             },
           },
@@ -146,6 +145,11 @@ export default {
         }
       },
     },
+    description (val, oldV) {
+      if (!R.equals(val, oldV)) {
+        this.getMonitorLine()
+      }
+    },
   },
   created () {
     this.colorHash = new ColorHash({
@@ -161,20 +165,13 @@ export default {
     this.colorHash = null
   },
   methods: {
-    tableMouseleave () {
-      this._cancelHighlight()
-      this._setHighlight()
-    },
-    tableMouseenter ({ row, rowIndex }) {
-      this.tableSetHighlight({ row, rowIndex, click: false })
-    },
     cellClick ({ row, rowIndex }) {
-      this.tableSetHighlight({ row, rowIndex, click: true })
+      this.tableSetHighlight({ row, rowIndex })
     },
     tableSetHighlight ({ row, rowIndex, click }) {
       let seriesName = _.get(this.chartInstanceOption, `series[${rowIndex}].name`)
       seriesName = seriesName || `series${rowIndex}`
-      this.highlightSeries(seriesName, click, row, rowIndex)
+      this.highlightSeries(seriesName, row, rowIndex)
     },
     setChartInstance (v) {
       this.chartInstanceOption = v.getOption()
@@ -186,26 +183,21 @@ export default {
           this.seriesOldClickName = null
         }
         this._cancelHighlight()
-        this.highlightSeries(params.seriesName, true, this.tableData[params.seriesIndex], params.seriesIndex)
+        this.highlightSeries(params.seriesName, this.tableData[params.seriesIndex], params.seriesIndex)
       })
     },
-    highlightSeries (seriesName, isClick = false, row, rowIndex) {
+    highlightSeries (seriesName, row, rowIndex) {
       if (this.chartInstance) {
-        if (isClick) {
-          this._cancelHighlight()
-          if (seriesName === this.seriesOldClickName) { // 如果上一次高亮是click触发的，那么只能通过click切换或者取消
-            this.seriesOldClickName = null
-            this.$refs.tableRef.clearCurrentRow()
-            this.highlight = { index: null, color: '' }
-          } else {
-            this.$refs.tableRef.setCurrentRow(row)
-            this._setHighlight(seriesName)
-            this.seriesOldClickName = seriesName
-            this.highlight = { index: rowIndex, color: row.__color }
-          }
-        } else {
-          this._cancelHighlight()
+        this._cancelHighlight()
+        this.$refs.tableRef.clearCurrentRow()
+        this.highlight = { index: null, color: '' }
+        if (seriesName !== this.seriesOldClickName) {
+          this.$refs.tableRef.setCurrentRow(row)
           this._setHighlight(seriesName)
+          this.seriesOldClickName = seriesName
+          this.highlight = { index: rowIndex, color: row.__color }
+        } else {
+          this.seriesOldClickName = null
         }
       }
     },
@@ -233,7 +225,7 @@ export default {
             name,
             symbolSize: 3,
             lineStyle: {
-              width: 3,
+              width: 4,
               shadowBlur: 6,
               opacity: 1,
               shadowOffsetX: 8,
@@ -241,12 +233,6 @@ export default {
             },
           },
         })
-      }
-      if (this.seriesOldClickName || seriesName) {
-        this._setOptionForOpacity(0.5) // 先把其他数据线变灰
-      }
-      if (this.seriesOldClickName) {
-        _setOption(this.seriesOldClickName)
       }
       if (seriesName) {
         _setOption(seriesName)
@@ -283,10 +269,39 @@ export default {
           })
         } else {
           item.points.forEach((row, i) => {
-            rows[i][name] = row[0] || 0
+            if (rows[i]) {
+              rows[i][name] = row[0] || 0
+            }
           })
         }
       })
+      lineChartOptions.yAxis = {
+        axisLabel: {
+          formatter: (value, index) => {
+            let unit = _.get(this.description, 'description.unit')
+            if (unit === 'ms') unit = 'intms' // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
+            const val = transformUnit(value, unit)
+            return val.text
+          },
+        },
+      }
+      lineChartOptions.tooltip = {
+        trigger: 'axis',
+        position: (point, params, dom, rect, size) => {
+          const series = params.map(line => {
+            const val = transformUnit(line.value, _.get(this.description, 'description.unit'))
+            const value = _.get(val, 'text') || line.value
+            return `<div style="color: #616161;" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${line.seriesName || ' '}</span>:  <span>${value}</span></div>`
+          }).join('')
+          const wrapper = `<div class="chart-tooltip-wrapper">
+                        <div style="color: #5D6F80;">${params[0].name}</div>
+                        <div class="lines-wrapper">${series}</div>
+                      </div>`
+          dom.style.border = 'none'
+          dom.style.backgroundColor = 'transparent'
+          dom.innerHTML = wrapper
+        },
+      }
       this.lineChartOptionsC = lineChartOptions
       this.lineChartRows = rows
       this.lineChartColumns = columns

@@ -9,6 +9,9 @@ export default {
         action: obj => {
           this.$router.push({
             path: `commonalerts/${obj.id}/update`,
+            query: {
+              alertType: obj.alert_type,
+            },
           })
         },
       },

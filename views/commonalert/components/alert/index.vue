@@ -1,7 +1,7 @@
 <template>
   <a-row v-loading="loading">
     <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 11 }" class="mb-5">
-      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" @resetChart="resetChart" :timeRangeParams="timeRangeParams" />
+      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" @resetChart="resetChart" @mertricItemChange="mertricItemChange" :timeRangeParams="timeRangeParams" />
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
@@ -16,7 +16,7 @@
       </monitor-header>
       <div>
         <template v-if="chartLoading"><loader loading /></template>
-        <monitor-line v-else class="mb-3" :series="series" :timeFormatStr="timeFormatStr" :lineChartOptions="lineChartOptions" />
+        <monitor-line v-else class="mb-3" :series="series" :timeFormatStr="timeFormatStr" :lineChartOptions="lineChartOptions" :description="lineDescription" />
       </div>
     </a-col>
   </a-row>
@@ -61,6 +61,7 @@ export default {
       loading: false,
       loaded: false,
       chartLoading: false,
+      lineDescription: {},
     }
   },
   computed: {
@@ -229,6 +230,9 @@ export default {
         this.chartLoading = false
         throw error
       }
+    },
+    mertricItemChange (val) {
+      this.lineDescription = val
     },
   },
 }

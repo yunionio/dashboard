@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
-      <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" />
+      <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
@@ -15,7 +15,7 @@
         </template>
       </monitor-header>
       <div v-for="(item, i) in seriesList" :key="i">
-        <monitor-line :loading="loadingList[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+        <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
       </div>
     </a-col>
   </a-row>
@@ -49,6 +49,7 @@ export default {
       seriesList: [],
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
+      seriesDescription: [],
       get,
     }
   },
@@ -95,6 +96,9 @@ export default {
       if (this.seriesList && this.seriesList.length && this.seriesList[i]) {
         this.$set(this.seriesList, i, [])
       }
+    },
+    mertricItemChange (item, i) {
+      this.$set(this.seriesDescription, i, item)
     },
     async fetchAllData () {
       const jobs = []
