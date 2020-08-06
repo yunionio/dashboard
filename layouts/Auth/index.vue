@@ -74,7 +74,7 @@ export default {
     },
   },
   created () {
-    if (this.$route.query.ticket) {
+    if (this.$route.query.result === 'success') {
       this.ticketLogin()
     } else {
       this.checkRegistersStatus()
@@ -98,10 +98,10 @@ export default {
     async ticketLogin () {
       this.ticketLogging = true
       try {
-        const response = await this.$store.dispatch('auth/login', {
-          cas_ticket: this.$route.query.ticket,
-        })
-        await this.$store.dispatch('auth/onAfterLogin', response)
+        // const response = await this.$store.dispatch('auth/login', {
+        //   cas_ticket: this.$route.query.ticket,
+        // })
+        await this.$store.dispatch('auth/onAfterLogin')
       } catch (error) {
         this.$message.error(this.$t('auth.login.fast.login.fail'))
         this.ticketLogging = false
