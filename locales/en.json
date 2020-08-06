@@ -8312,5 +8312,12 @@
   "common_485": "Reserve deposit (resources on demand)",
   "common_486": "Please choose to reserve a deposit",
   "common_487": "Initial Cloud Account Settings",
-  "common_488": "Modify initial settings of cloud account"
+  "common_488": "Modify initial settings of cloud account",
+  "common_489": "Please select user",
+  "common_490": "Modify Role",
+  "common_491": "Manage users/groups",
+  "common_492": "User/group has been added",
+  "common_493": "Manage Project",
+  "common_494": "Project has been added",
+  "common_495": "Already joined the group"
 }
