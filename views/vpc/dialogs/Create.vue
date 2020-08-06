@@ -89,9 +89,9 @@ export default {
         ],
         platform: [
           'platform',
-          {
-            initialValue: 'public_cloud',
-          },
+          // {
+          //   initialValue: this.platformInitialValue,
+          // },
         ],
         cloudprovider: [
           'cloudprovider',
@@ -189,11 +189,25 @@ export default {
       }
       return res
     },
+    platformInitialValue () {
+      switch (this.params.createType) {
+        case 'onpremise':
+          return 'idc'
+        case 'private':
+          return 'private_cloud'
+        case 'public':
+          return 'public_cloud'
+      }
+      return 'public_cloud'
+    },
   },
   provide () {
     return {
       form: this.form,
     }
+  },
+  created () {
+    this.form.fc.getFieldDecorator('platform', { initialValue: this.platformInitialValue, preserve: true })
   },
   methods: {
     handleRegionChange (item) {
