@@ -77,15 +77,22 @@ export default {
         return v[1].domain.name === this.$route.query.domain
       })
     }
-    const { query } = this.$route
-    const { result, error_class, error_details } = query
+    const { query, path } = this.$route
+    const { result, error_class } = query
     if (result === 'error') {
       this.$notification.error({
         class: 'error-notification',
         message: error_class,
-        description: error_details,
         icon: h => <a-icon type="info-circle" class="error-color" />,
       })
+      this.$router.replace({
+        path,
+        query: {
+          pathAuth: query.pathAuth,
+          path: query.path,
+        },
+      })
+      return false
     }
     if (!R.isEmpty(data)) {
       this.$router.replace({
@@ -101,9 +108,9 @@ export default {
       return require(`../../../assets/images/idp-icons/block/${key}.png`)
     },
     handleClickIdp (idpItem) {
-      const { origin } = window.location
+      const { origin, search } = window.location
       const { id } = idpItem
-      window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}`
+      window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}${search || ''}`
     },
   },
 }
