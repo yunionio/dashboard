@@ -338,7 +338,7 @@ export default {
       this.loading = true
       try {
         let values = await this.validateForm()
-        const { project, domain, ...rest } = values
+        const { project, domain, cloudregion, zone, ...rest } = values
         const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
         const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
@@ -347,6 +347,8 @@ export default {
           size: values.size * 1024,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
           project_id: (project && project.key) || this.userInfo.projectId,
+          prefer_region: cloudregion && cloudregion.key,
+          prefer_zone: zone && zone.key,
         }
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
