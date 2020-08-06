@@ -21,7 +21,7 @@
                       :span="6"
                       :key="item.property"
                       class="mb-2 checkbox-item d-flex align-items-center">
-                      <a-checkbox :value="item.property" :disabled="item.disabled" class="text-truncate">
+                      <a-checkbox :value="item.property" :disabled="item.disabled" class="text-truncate checkbox-property">
                         <span :title="item.title">{{ item.title }}</span>
                       </a-checkbox>
                       <a-icon type="drag" class="drag-icon pr-3" @click="iconClick" />
@@ -243,7 +243,7 @@ export default {
     .drag-icon {
       visibility: hidden;
     }
-    .text-truncate {
+    .checkbox-property {
       padding-right: 15px;
     }
   }
