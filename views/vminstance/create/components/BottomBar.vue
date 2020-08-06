@@ -118,10 +118,6 @@ export default {
     isPublic () {
       return this.type === SERVER_TYPE.public
     },
-    // 是否为预付费资源池
-    isPrepaid () {
-      return this.resourceType === RESOURCE_TYPES_MAP.prepaid.key
-    },
     // 是否为包年包月
     isPackage () {
       return this.fd.billType === BILL_TYPES_MAP.package.key
@@ -131,7 +127,7 @@ export default {
     },
     zone () {
       let ret = this.fd.zone ? this.fd.zone.label : ''
-      if (this.isPublic && !this.isPrepaid) {
+      if (this.isPublic) {
         ret = this.fd.sku ? this.fd.sku.zone : ''
       }
       return ret
@@ -156,14 +152,14 @@ export default {
       if (this.fd.gpuEnable) {
         ret.push(this.$t('compute.text_1134', [gpuCount, gpu]))
       }
-      if (this.isPublic && this.isPrepaid) {
+      if (this.isPublic) {
         if (!R.isNil(this.fd.spec) && !R.isEmpty(this.fd.spec)) {
           ret.push(this.$t('compute.text_292', [this.fd.spec.vcpu_count]))
           ret.push(this.$t('compute.text_1135', [this.fd.spec.vmem_size]))
         }
       } else {
         ret.push(this.$t('compute.text_292', [vcpu]))
-        ret.push(this.$t('compute.text_293', [sizestrWithUnit(vmem, 'M')]))
+        ret.push(this.$t('compute.text_293', [sizestrWithUnit(vmem, 'M', 1024)]))
       }
       ret.push(this.$t('compute.text_1136', [this.disk || 0, _.get(this.fd, 'systemDiskType.label') || '-']))
       return ret.join('、')
