@@ -1,51 +1,47 @@
 <template>
-  <div class="d-flex flex-column h-100 w-100">
-    <div class="flex-grow-0 flex-shrink-0">
-      <!-- auth layout header -->
-      <div class="border-bottom primary-color-border">
-        <div class="container">
-          <div class="auth-header d-flex align-items-center">
-            <div class="auth-header-left flex-shrink-0 flex-grow-0">
-              <img class="auth-header-logo" :src="loginLogo" />
-            </div>
-            <!-- 多语言切换按钮 -->
-            <div class="auth-header-right flex-fill d-flex justify-content-end">
-              <a-dropdown :trigger="['click']">
-                <a-icon type="global" class="oc-pointer" />
-                <a-menu slot="overlay" @click="handleChangeLanguage">
-                  <a-menu-item key="zh-CN">
-                    <a>{{$t('common_68')}}</a>
-                  </a-menu-item>
-                  <a-menu-item key="en">
-                    <a>English</a>
-                  </a-menu-item>
-                </a-menu>
-              </a-dropdown>
-            </div>
+  <div class="h-100 w-100">
+    <!-- auth layout header -->
+    <div class="w-100 position-fixed border-bottom primary-color-border header">
+      <div class="container">
+        <div class="auth-header d-flex align-items-center">
+          <div class="auth-header-left flex-shrink-0 flex-grow-0">
+            <img class="auth-header-logo" :src="loginLogo" />
+          </div>
+          <!-- 多语言切换按钮 -->
+          <div class="auth-header-right flex-fill d-flex justify-content-end">
+            <a-dropdown :trigger="['click']">
+              <a-icon type="global" class="oc-pointer" />
+              <a-menu slot="overlay" @click="handleChangeLanguage">
+                <a-menu-item key="zh-CN">
+                  <a>{{$t('common_68')}}</a>
+                </a-menu-item>
+                <a-menu-item key="en">
+                  <a>English</a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
           </div>
         </div>
       </div>
     </div>
     <!-- auth layout content -->
-    <div class="flex-fill position-relative overflow-auto">
-      <div class="position-absolute w-100 h-100 pt-2 pb-2" style="left: 0; top: 0;">
-        <div class="container h-100">
-          <div class="d-flex align-items-center justify-content-center h-100 w-100">
-            <template v-if="!statusLoaded">
-              <div class="text-white">{{ $t('common.text00111') }}</div>
-            </template>
-            <template v-else-if="ticketLogging">
-              <div class="text-white">{{ $t('auth.logging') }}</div>
-            </template>
-            <template v-else>
-              <router-view />
-            </template>
-          </div>
+    <div class="w-100 h-100 content d-flex overflow-auto">
+      <div class="container" style="margin: auto">
+        <div class="d-flex align-items-center justify-content-center w-100">
+          <template v-if="!statusLoaded">
+            <div class="text-white">{{ $t('common.text00111') }}</div>
+          </template>
+          <template v-else-if="ticketLogging">
+            <div class="text-white">{{ $t('auth.logging') }}</div>
+          </template>
+          <template v-else>
+            <router-view />
+          </template>
         </div>
       </div>
     </div>
     <!-- auth layout footer -->
-    <div class="flex-grow-0 flex-shrink-0 p-4 text-center text-color-help">
+    <div class="position-fixed w-100 text-center text-color-help footer">
       <p class="text-color-help m-0 p-0">{{ copyright }}</p>
       <template v-if="!isChrome">
         <p class="mini-text m-0 p-0 pt-2" style="color: rgba(255, 255, 255, .2);">{{ $t('common.text00110') }}</p>
@@ -117,10 +113,28 @@ export default {
 </script>
 
 <style lang="less">
-.auth-header {
-  padding: 15px 0;
+.header {
+  height: 70px;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background-color: #fff;
+  .auth-header {
+    padding: 15px 0;
+  }
+  .auth-header-logo {
+    height: 39px;
+  }
 }
-.auth-header-logo {
-  height: 39px;
+.content {
+  padding: 70px 0;
+  box-sizing: border-box;
+}
+.footer {
+  height: 70px;
+  line-height: 70px;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
 }
 </style>
