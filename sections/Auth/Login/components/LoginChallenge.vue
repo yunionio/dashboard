@@ -232,9 +232,9 @@ export default {
         if (fd.domain) data.domain = fd.domain
         // ------------ 拼接请求所需数据 end ------------
         await this.$store.commit('auth/SET_LOGIN_FORM_DATA', data)
-        const response = await this.$store.dispatch('auth/login', data)
+        await this.$store.dispatch('auth/login', data)
         await this.$emit('after-login')
-        await this.$store.dispatch('auth/onAfterLogin', response)
+        await this.$store.dispatch('auth/onAfterLogin')
       } catch (error) {
         // 登录失败，如果domain已存在则清除domain，主要是应对历史账号存储的domain被更改的情况。（异常情况）
         if (this.fd.domain) {

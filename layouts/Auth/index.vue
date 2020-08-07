@@ -70,8 +70,13 @@ export default {
     },
   },
   created () {
+    // if (this.$route.query.ticket) {
+    //   this.ticketLogin()
+    // } else {
+    //   this.checkRegistersStatus()
+    // }
     if (this.$route.query.result === 'success') {
-      this.ticketLogin()
+      this.$store.dispatch('auth/onAfterLogin')
     } else {
       this.checkRegistersStatus()
     }
@@ -91,19 +96,19 @@ export default {
       }
     },
     // ticket login
-    async ticketLogin () {
-      this.ticketLogging = true
-      try {
-        // const response = await this.$store.dispatch('auth/login', {
-        //   cas_ticket: this.$route.query.ticket,
-        // })
-        await this.$store.dispatch('auth/onAfterLogin')
-      } catch (error) {
-        this.$message.error(this.$t('auth.login.fast.login.fail'))
-        this.ticketLogging = false
-        throw error
-      }
-    },
+    // async ticketLogin () {
+    //   this.ticketLogging = true
+    //   try {
+    //     const response = await this.$store.dispatch('auth/login', {
+    //       cas_ticket: this.$route.query.ticket,
+    //     })
+    //     await this.$store.dispatch('auth/onAfterLogin', response)
+    //   } catch (error) {
+    //     this.$message.error(this.$t('auth.login.fast.login.fail'))
+    //     this.ticketLogging = false
+    //     throw error
+    //   }
+    // },
     handleChangeLanguage (e) {
       setLanguage(e.key)
       window.location.reload()

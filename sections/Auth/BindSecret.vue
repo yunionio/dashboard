@@ -90,6 +90,8 @@ export default {
           rf: this.$route.query.rf,
         },
       })
+    } else {
+      !this.auth.auth.totp_init && this.$store.dispatch('auth/initcredential')
     }
   },
   mounted () {
