@@ -621,7 +621,7 @@ export const transformUnit = (value, unit = '', base = 1000) => {
     let sizestrUnit = 'B'
     let base = 1000
     let b = 'b'
-    if (unit.replace(/bps/, '')) { // Mbps
+    if (unit.indexOf('bps') === 1) { // Mbps
       sizestrUnit = unit.replace(/bps/, '') // M
     }
     if (unit === 'Bps') {
