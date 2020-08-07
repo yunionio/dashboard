@@ -8,6 +8,7 @@
           :options="metricKeyOpts"
           filterable
           :disabled="disabled"
+          :item.sync="metricKeyItem"
           :select-props="{ placeholder: $t('common.select'), loading }"
           @change="metricKeyChange" />
       </a-form-item>
@@ -61,6 +62,7 @@ export default {
     return {
       metric_key: _.get(this.decorators.metric_key, '[1].initialValue'),
       metricValueItem: {},
+      metricKeyItem: {},
       metricOpts: [],
     }
   },
@@ -76,7 +78,7 @@ export default {
           if (!validMetric) {
             this.resetMetric()
           } else {
-            this.metricKeyChange(this.metric_key)
+            this.metricKeyChange(this.metric_key, false)
             this.$nextTick(() => {
               if (metricValue) this.metricValueChange(metricValue)
             })
@@ -86,7 +88,7 @@ export default {
     },
   },
   methods: {
-    metricKeyChange (val) {
+    metricKeyChange (val, isNative = true) {
       this.metric_key = val
       const metricKeyItem = this.metricKeyOpts.find(item => item.key === val)
       if (metricKeyItem && _.isArray(metricKeyItem.field_key)) {
@@ -106,7 +108,7 @@ export default {
           }
         })
       }
-      if (this.form && this.form.fc && !_.get(this.decorators.metric_value, '[1].initialValue')) {
+      if (this.form && this.form.fc && isNative) {
         this.form.fc.setFieldsValue({
           [this.decorators.metric_value[0]]: undefined,
         })
@@ -116,7 +118,7 @@ export default {
       if (!val) {
         this.$emit('metricClear')
       } else {
-        this.$emit('metricChange', { metricKey: this.metric_key, mertric: val, mertricItem: this.metricValueItem })
+        this.$emit('metricChange', { metricKey: this.metric_key, mertric: val, mertricItem: this.metricValueItem, metricKeyItem: this.metricKeyItem })
       }
     },
     resetMetric () {

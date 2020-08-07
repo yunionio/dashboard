@@ -97,6 +97,7 @@ export default {
   watch: {
     alertType (val) {
       this.$nextTick(() => {
+        console.log(val, 'val')
         this.list.fetchData(0)
       })
     },
@@ -114,6 +115,7 @@ export default {
       return ret
     },
     fetchData () {
+      console.log('fetchData')
       this.list.fetchData()
     },
     handleOpenSidepage (row) {

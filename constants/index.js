@@ -211,8 +211,6 @@ export const metricMaps = {
   },
 }
 
-export const DATABASE = 'telegraf'
-
 // 顺序决定在 tableColumn 的顺序
 export const tableColumnMaps = {
   __metric: {
@@ -238,6 +236,14 @@ export const tableColumnMaps = {
   host_ip: {
     title: `${i18n.t('dictionary.host')}IP`,
     field: 'host_ip',
+  },
+  cloudaccount_name: {
+    title: i18n.t('common_295'),
+    field: 'cloudaccount_name',
+  },
+  health_status: {
+    title: i18n.t('cloudenv.text_93'),
+    field: 'health_status',
   },
 }
 
@@ -359,4 +365,6 @@ export const metric_zh = {
   'Memory': i18n.t('monitor_metric_73'),
   'CPU usage': i18n.t('monitor_metric_74'),
   'Rds CPU usage': i18n.t('monitor_metric_75'),
+  'Cloud account balance': i18n.t('monitor_metric_76'),
+  'balance': i18n.t('monitor_metric_77'),
 }

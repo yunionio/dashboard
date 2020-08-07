@@ -42,7 +42,7 @@
             :disabled="disabled"
             :select-props="{ placeholder: $t('common.select'), allowClear: true, loading }" />
         </a-form-item>
-        <a-form-item style="width: 20px;" v-if="i !== 0">
+        <a-form-item style="width: 20px;" v-if="!disabled && i !== 0">
           <a-icon
             class="dynamic-delete-button ml-1"
             type="minus-circle-o"

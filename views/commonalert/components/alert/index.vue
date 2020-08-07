@@ -26,8 +26,8 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import AlertForm from './form'
-import MonitorLine from '@Monitor/views/explorer/components/monitor-line'
-import CustomDate from '@Monitor/views/explorer/components/monitor-line/CustomDate'
+import MonitorLine from '@Monitor/sections/MonitorLine'
+import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
 import { timeOpts } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
 
@@ -137,7 +137,15 @@ export default {
           })
         this.alertData = data
         const time = _.get(this.alertData, 'settings.conditions[0].query.from')
-        this.time = this.timeOpts[time] ? time : '1h'
+        if (~time.indexOf('now-')) {
+          this.time = 'custom'
+          this.customTime = {
+            from: time,
+            to: _.get(this.alertData, 'settings.conditions[0].query.to') || 'now',
+          }
+        } else {
+          this.time = this.timeOpts[time] ? time : '1h'
+        }
         this.timeGroup = _.get(this.alertData, 'settings.conditions[0].query.model.interval')
         this.loading = false
       } catch (error) {
@@ -176,6 +184,11 @@ export default {
         }
         if (fd.domain || fd.domain_id) data.domain_id = (fd.domain || fd.domain_id)
         if (fd.project) data.project_id = fd.project
+        if (fd.scope === 'domain' || fd.scope === 'project') {
+          if (!data.domain_id && !data.project_id) {
+            data.scope = fd.scope
+          }
+        }
         if (this.time === 'custom') { // 自定义时间
           if (this.customTime && this.customTime.from && this.customTime.to) {
             data.from = this.customTime.from
@@ -221,7 +234,7 @@ export default {
         } else {
           data.from = this.time
         }
-        if (!data.metric_query || !data.from) return
+        if (!data.metric_query || !data.from || !_.get(data.metric_query, '[0].model.measurement') || !_.get(data.metric_query, '[0].model.select')) return
         this.chartLoading = true
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
         this.series = series

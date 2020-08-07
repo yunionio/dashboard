@@ -12,7 +12,7 @@
     </a-col>
     <a-col :span="6">
       <a-form-item>
-        <a-input v-decorator="decorators.threshold" :addon-after="unit" :disabled="disabled" />
+        <a-input v-decorator="decorators.threshold" :addon-after="unit" :disabled="disabled" @blur="blur" />
       </a-form-item>
     </a-col>
   </a-row>
@@ -48,6 +48,11 @@ export default {
     unit () { // 3.3 暂时不加 单位
       // % bps iops
       return ''
+    },
+  },
+  methods: {
+    blur (e) {
+      this.$emit('thresholdChange', e.target.value)
     },
   },
 }

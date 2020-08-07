@@ -23,12 +23,6 @@ export default {
             label: this.$t('common.delete'),
             permission: 'commonalerts_delete',
             action: (obj) => {
-              const requestParams = {
-                cluster: obj.clusterID,
-              }
-              if (obj.namespace) {
-                requestParams.namespace = obj.namespace
-              }
               this.createDialog('DeleteResDialog', {
                 vm: this,
                 data: [obj],
@@ -36,8 +30,6 @@ export default {
                 title: this.$t('common.delete'),
                 name: this.$t('dictionary.commonalert'),
                 onManager: this.onManager,
-                idKey: 'name',
-                requestParams,
               })
             },
             meta: (obj) => this.$getDeleteResult(obj),

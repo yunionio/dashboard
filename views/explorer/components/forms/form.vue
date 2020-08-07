@@ -48,9 +48,9 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import Metric from './Metric'
-import Filters from './Filters'
-import { DATABASE, metric_zh } from '@Monitor/constants'
+import Metric from '@Monitor/sections/Metric'
+import Filters from '@Monitor/sections/Filters'
+import { metric_zh } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { getRequestT } from '@/utils/utils'
 
@@ -156,6 +156,7 @@ export default {
       functionOpts: [],
       metricKeyOpts: [],
       metricInfo: {},
+      metricKeyItem: {},
       panelShow: this.defaultPanelShow,
       oldParams: {},
       metricLoading: false,
@@ -211,7 +212,7 @@ export default {
     async getMeasurement () {
       try {
         this.metricLoading = true
-        const params = { database: 'telegraf', scope: this.$store.getters.scope, ...this.timeRangeParams }
+        const params = { scope: this.$store.getters.scope, ...this.timeRangeParams }
         const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params })
         this.metricKeyOpts = measurements.map(val => {
           let label = val.measurement
@@ -231,8 +232,9 @@ export default {
         throw error
       }
     },
-    async getMetricInfo ({ metricKey, mertric, mertricItem }) {
+    async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
+        this.metricKeyItem = metricKeyItem
         this.$emit('mertricItemChange', mertricItem)
         this.form.fc.setFieldsValue({
           [this.decorators.group_by[0]]: undefined,
@@ -240,7 +242,7 @@ export default {
         })
         const params = {
           $t: getRequestT(),
-          database: 'telegraf',
+          database: metricKeyItem.database,
           measurement: metricKey,
           field: mertric,
           ...this.timeRangeParams,
@@ -269,7 +271,7 @@ export default {
     toParams () {
       const fd = this.form.fc.getFieldsValue()
       const params = {
-        database: DATABASE,
+        database: this.metricKeyItem.database,
       }
       const tags = []
       if (fd.metric_key) params.measurement = fd.metric_key
@@ -313,7 +315,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../../../../../src/styles/less/theme';
+@import '../../../../../../src/styles/less/theme';
 
 .monitor-form {
   &.hideBody ::v-deep .ant-card-body {

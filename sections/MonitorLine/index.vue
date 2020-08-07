@@ -303,6 +303,8 @@ export default {
         },
       }
       this.lineChartOptionsC = lineChartOptions
+      this.seriesOldClickName = null
+      this.highlight = { index: null, color: '' }
       this.lineChartRows = rows
       this.lineChartColumns = columns
     },
