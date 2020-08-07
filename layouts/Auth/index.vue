@@ -69,14 +69,15 @@ export default {
       return isChrome()
     },
   },
-  created () {
+  async created () {
     // if (this.$route.query.ticket) {
     //   this.ticketLogin()
     // } else {
     //   this.checkRegistersStatus()
     // }
     if (this.$route.query.result === 'success') {
-      this.$store.dispatch('auth/onAfterLogin')
+      await this.$store.dispatch('auth/onAfterLogin')
+      this.statusLoaded = true
     } else {
       this.checkRegistersStatus()
     }
