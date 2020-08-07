@@ -9,7 +9,6 @@
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />
           <name-repeated
             v-if="form.fi.generate_name"
-            v-slot:extra
             res="servers"
             version="v1"
             :name="form.fi.generate_name"
@@ -30,7 +29,7 @@
           <list-select
             v-decorator="decorators.cloudpolicy_ids"
             :listProps="policySelectProps"
-            :multiple="false"
+            multiple
             :formatter="row => `${row.name} / ${row.description || ''}`"
             :dialog-params="{ mask: false, width: 900, title: $t('rules.policy') }" />
         </a-form-item>
