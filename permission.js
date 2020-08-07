@@ -31,6 +31,14 @@ router.beforeEach(async (to, from, next) => {
   // 如果是登录页面，则直接跳转
   // 不需要认证的页面直接next
   if (to.path.includes('/auth/login')) {
+    const authInfo = store.getters.auth.auth
+    if (
+      authInfo.totp_on &&
+      authInfo.system_totp_on &&
+      !authInfo.totp_verified
+    ) {
+      return next()
+    }
     return next('/')
   }
   if (!auth) {

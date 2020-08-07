@@ -239,7 +239,7 @@ export default {
       return `${state.info.name}@${state.info.domain.name}`
     },
     currentHistoryUserKey (state) {
-      return state.loginFormData.username
+      return state.auth.user || state.loginFormData.username
     },
   },
   actions: {
@@ -383,22 +383,16 @@ export default {
     },
     // 登录后所做的后续处理
     async onAfterLogin ({ commit, state, dispatch, getters }, payload) {
-      // 如果 data 不为空，则是 server 返回的首次绑定秘钥的二维码，存入 storage，以免刷新后重新登录丢失的问题
-      if (payload) {
-        await commit('UPDATE_HISTORY_USERS', {
-          key: getters.currentHistoryUserKey,
-          value: {
-            secret: payload,
-          },
-        })
-      }
-      const totp_on = state.auth.totp_on && state.auth.system_totp_on
+      const totp_on = state.auth.totp_on
+      const system_totp_on = state.auth.system_totp_on
+      const totp_verified = state.auth.totp_verified
+      const totp_init = state.auth.totp_init
       // 如果获取到有效的二维码且开启了totp则进入首次初始化页面
       if (
-        (
-          payload ||
-          _.get(state.historyUsers, `${getters.currentHistoryUserKey}.secret`)
-        ) && totp_on
+        totp_on &&
+        system_totp_on &&
+        !totp_verified &&
+        !totp_init
       ) {
         // 获取密码问题，如果设置过则直接进入绑定秘钥页面，没有跳转至设置密码问题页面
         try {
@@ -422,10 +416,28 @@ export default {
           }
           throw error
         }
-      } else if (totp_on) {
-        // 如果开启了认证则进入输入秘钥页面
+      } else if (
+        !_.get(state.historyUsers, `${getters.currentHistoryUserKey}.secret`) &&
+        totp_on &&
+        system_totp_on &&
+        !totp_verified &&
+        totp_init
+      ) {
         router.replace({
           path: '/auth/secretverify',
+          query: {
+            rf: router.currentRoute.query.rf,
+          },
+        })
+      } else if (
+        _.get(state.historyUsers, `${getters.currentHistoryUserKey}.secret`) &&
+        totp_on &&
+        system_totp_on &&
+        !totp_verified &&
+        totp_init
+      ) {
+        router.replace({
+          path: '/auth/bindsecret',
           query: {
             rf: router.currentRoute.query.rf,
           },
@@ -473,6 +485,20 @@ export default {
     async credential ({ commit }, data) {
       try {
         const response = await http.post('/v1/auth/credential', data)
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async initcredential ({ commit, getters }, data) {
+      try {
+        const response = await http.post('/v1/auth/initcredential', data)
+        await await commit('UPDATE_HISTORY_USERS', {
+          key: getters.currentHistoryUserKey,
+          value: {
+            secret: response.data.qrcode,
+          },
+        })
         return response.data
       } catch (error) {
         throw error
