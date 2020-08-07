@@ -7,11 +7,7 @@
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_253')">
         <a-input v-decorator="decorators.auth_url" />
-        <div slot="extra">
-            {{
-              isOpenstack ? $t('cloudenv.text_256') : $t('cloudenv.text_257')
-            }}
-        </div>
+        <div slot="extra">{{urlPlaceholder}}</div>
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
@@ -62,6 +58,12 @@ export default {
   computed: {
     isOpenstack () {
       return this.provider.toLowerCase() === 'openstack'
+    },
+    urlPlaceholder () {
+      if (this.isOpenstack) {
+        return this.$t('cloudenv.text_256')
+      }
+      return this.$t('cloudenv.text_257')
     },
   },
   deactivated () {
