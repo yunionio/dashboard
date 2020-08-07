@@ -198,8 +198,13 @@ export default {
     handleCustomList () {
       const grid = this.getGrid()
       const cols = grid.getTableColumn().collectColumn || []
-      const firstCol = cols.length > 0 ? cols[0].property : ''
-      const hidenColumns = [firstCol]
+      let nameIndex = 0
+      const hidenColumns = []
+      if (cols.length) {
+        const colType = cols[0].type
+        nameIndex = colType === 'checkbox' ? 1 : 0
+        hidenColumns.push(cols[nameIndex].property)
+      }
       this.createDialog('CustomListDialog', {
         title: this.$t('common.text00011'),
         config: this.config,
