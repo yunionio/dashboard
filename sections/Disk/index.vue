@@ -166,7 +166,7 @@ export default {
       return value.replace(/[GB]*/g, '')
     },
     formatter (num) {
-      const n = this.parse(num)
+      const n = this.parser(num)
       if (this.hypervisor === HYPERVISORS_MAP.qcloud.key) {
         num = Math.floor(num / 10) * 10
       }
