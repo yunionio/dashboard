@@ -13,8 +13,8 @@
           :step="10"
           :min="minSize"
           :max="max"
-          :formatter="format"
-          :parser="format"
+          :formatter="formatter"
+          :parser="parser"
           :disabled="sizeDisabled" />
       </a-tooltip>
       GB
@@ -162,12 +162,15 @@ export default {
     has (element) {
       return this.elements.includes(element)
     },
-    format (num) {
-      const n = num
+    parser (value) {
+      return value.replace(/[GB]*/g, '')
+    },
+    formatter (num) {
+      const n = this.parse(num)
       if (this.hypervisor === HYPERVISORS_MAP.qcloud.key) {
         num = Math.floor(num / 10) * 10
       }
-      return n
+      return `${n}GB`
     },
     typeChange (val) {
       this.$emit('diskTypeChange', val)
