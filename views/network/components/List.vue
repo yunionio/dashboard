@@ -86,6 +86,13 @@ export default {
               return `status.in(${val})`
             },
           },
+          is_auto_alloc: {
+            label: '自动分配IP地址池',
+            dropdown: true,
+            items: Object.keys(this.$t('status.networIsAutoAlloc')).map(k => {
+              return { label: this.$t('status.networIsAutoAlloc')[k], key: k }
+            }),
+          },
           server_type: {
             label: this.$t('network.text_249'),
             dropdown: true,

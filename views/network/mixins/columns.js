@@ -71,6 +71,7 @@ export default {
         },
       },
       getStatusTableColumn({ statusModule: 'network' }),
+      getStatusTableColumn({ field: 'is_auto_alloc', statusModule: 'networIsAutoAlloc', title: '自动分配IP地址池', minWidth: 140 }),
       {
         field: 'ports',
         title: i18n.t('network.text_622'),
