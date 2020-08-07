@@ -6,7 +6,12 @@
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_253')">
-        <a-input v-decorator="decorators.auth_url" :placeholder="urlPlaceholder" />
+        <a-input v-decorator="decorators.auth_url" />
+        <div slot="extra">
+            {{
+              isOpenstack ? $t('cloudenv.text_256') : $t('cloudenv.text_257')
+            }}
+        </div>
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
@@ -58,12 +63,6 @@ export default {
     isOpenstack () {
       return this.provider.toLowerCase() === 'openstack'
     },
-    urlPlaceholder () {
-      if (this.isOpenstack) {
-        return this.$t('cloudenv.text_256')
-      }
-      return this.$t('cloudenv.text_257')
-    },
   },
   deactivated () {
     this.form.fc.resetFields()
@@ -85,8 +84,10 @@ export default {
         auth_url: [
           'auth_url',
           {
+            validateFirst: true,
             rules: [
               { required: true, message: this.$t('cloudenv.text_258') },
+              { validator: this.$validate('url') },
             ],
           },
         ],
