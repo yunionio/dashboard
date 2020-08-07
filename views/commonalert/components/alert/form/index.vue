@@ -1,8 +1,8 @@
 <template>
   <a-form v-bind="formItemLayout" :form="form.fc">
-    <scope-radio :decorators="decorators" @change="getMeasurement" :formScopeInit="formScopeParams.formScopeInit" />
+    <scope-radio :decorators="decorators" @change="getMeasurement" :form="form" :disabled="disabled" />
     <a-form-item :label="$t('common.name')">
-      <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
+      <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" :disabled="disabled" />
       <name-repeated v-slot:extra res="commonalerts" :name="form.fd.name" />
     </a-form-item>
     <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
@@ -10,6 +10,8 @@
         :form="form"
         :decorators="decorators"
         :metricKeyOpts="metricKeyOpts"
+        :disabled="disabled"
+        :loading="metricLoading"
         @metricClear="resetChart"
         @metricChange="getMetricInfo" />
     </a-form-item>
@@ -18,15 +20,17 @@
         :form="form"
         ref="filtersRef"
         :tags="tags"
+        :disabled="disabled"
         :decorators="decorators.filters"
         @remove="$nextTick(toParams)"
+        :loading="metricInfoLoading"
         :metricInfo="metricInfo" />
     </a-form-item>
     <a-form-item :label="$t('monitor.condition')" class="mb-0">
-      <condition :decorators="decorators" />
+      <condition :decorators="decorators" :disabled="disabled" @thresholdChange="emitThreshold" />
     </a-form-item>
     <a-form-item :label="$t('monitor.level')">
-      <a-radio-group v-decorator="decorators.level">
+      <a-radio-group v-decorator="decorators.level" :disabled="disabled">
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
@@ -51,11 +55,11 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import Condition from './Condition'
-import Metric from '@Monitor/views/explorer/components/forms/form/Metric'
-import Filters from '@Monitor/views/explorer/components/forms/form/Filters'
+import Metric from '@Monitor/sections/Metric'
+import Filters from '@Monitor/sections/Filters'
 import ScopeRadio from '@/sections/ScopeRadio'
 import NameRepeated from '@/sections/NameRepeated'
-import { DATABASE, channelMaps, levelMaps } from '@Monitor/constants'
+import { channelMaps, levelMaps, metric_zh } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 
 export default {
@@ -92,6 +96,7 @@ export default {
       comparator: '>=',
       channel: ['webconsole'],
       level: 'normal',
+      scope: this.$store.getters.scope,
     }
     if (R.is(Object, this.alertData)) {
       initialValue.name = this.alertData.name
@@ -108,16 +113,15 @@ export default {
       const comparator = _.get(this.alertData, 'settings.conditions[0].evaluator.type')
       if (comparator === 'lt') initialValue.comparator = '<='
       if (comparator === 'gt') initialValue.comparator = '>='
-    }
-    let formScopeInit
-    if (!initialValue.project && !initialValue.domain) {
-      formScopeInit = 'system'
-    }
-    if (!initialValue.project && initialValue.domain) {
-      formScopeInit = 'domain'
-    }
-    if (initialValue.project) {
-      formScopeInit = 'project'
+      if (!initialValue.project && !initialValue.domain) {
+        initialValue.scope = 'system'
+      }
+      if (!initialValue.project && initialValue.domain) {
+        initialValue.scope = 'domain'
+      }
+      if (initialValue.project) {
+        initialValue.scope = 'project'
+      }
     }
     return {
       form: {
@@ -128,9 +132,15 @@ export default {
         },
       },
       formScopeParams: {
-        formScopeInit,
+        scope: initialValue.scope,
       },
       decorators: {
+        scope: [
+          'scope',
+          {
+            initialValue: initialValue.scope,
+          },
+        ],
         domain: [
           'domain',
           {
@@ -265,6 +275,7 @@ export default {
       oldParams: {},
       metricKeyOpts: [],
       metricInfo: {},
+      metricKeyItem: {},
       contactParams: {
         scope: this.$store.getters.scope,
         with_meta: true,
@@ -273,7 +284,14 @@ export default {
       channelOpts: Object.values(channelMaps),
       levelOpts: Object.values(levelMaps),
       projectItem: {},
+      metricLoading: false,
+      metricInfoLoading: false,
     }
+  },
+  computed: {
+    disabled () {
+      return this.$route.query.alertType === 'system'
+    },
   },
   watch: {
     timeRangeParams () {
@@ -281,11 +299,11 @@ export default {
     },
   },
   created () {
-    const scope = this.formScopeParams.formScopeInit
+    const scope = this.formScopeParams.scope
     const params = {
       scope,
     }
-    if (scope !== 'system') {
+    if (scope !== 'system' && this.decorators[scope][1].initialValue) {
       params[`${scope}_id`] = this.decorators[scope][1].initialValue
     }
     this.formScopeParams = params
@@ -293,24 +311,33 @@ export default {
   },
   mounted () {
     if (R.is(Object, this.alertData)) {
-      this.$emit('update:threshold', this.decorators.threshold[1].initialValue)
-      const params = {
-        metricKey: this.decorators.metric_key[1].initialValue,
-        mertric: this.decorators.metric_value[1].initialValue,
-        isResetForm: false,
-      }
-      this.getMetricInfo(params)
+      this.emitThreshold(this.decorators.threshold[1].initialValue)
     }
   },
   methods: {
     async getMeasurement (params = {}) {
       try {
-        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { database: 'telegraf', ...params, ...this.timeRangeParams } })
-        this.metricKeyOpts = measurements.map(val => ({ ...val, key: val.measurement, label: val.measurement }))
+        this.metricLoading = true
+        this.formScopeParams = params
+        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { ...params, ...this.timeRangeParams } })
+        this.metricKeyOpts = measurements.map(val => {
+          let label = val.measurement
+          const displayName = val.measurement_display_name
+          if (displayName && metric_zh[displayName]) {
+            label = metric_zh[displayName]
+          }
+          return {
+            ...val,
+            key: val.measurement,
+            label,
+          }
+        })
         if (R.is(Object, this.alertData)) { // 说明是 更新
           this.toParams()
         }
+        this.metricLoading = false
       } catch (error) {
+        this.metricLoading = false
         throw error
       }
     },
@@ -323,36 +350,37 @@ export default {
         fd,
       }
     },
+    emitThreshold (val) {
+      this.$emit('update:threshold', val)
+    },
     onValuesChange (props, values) {
       const newField = resolveValueChangeField(values)
       R.forEachObjIndexed((item, key) => {
-        if (key === this.decorators.threshold[0]) {
-          this.$emit('update:threshold', values[this.decorators.threshold[0]])
-        }
         if (R.is(Object, this.form.fd[key]) && R.is(Object, item)) {
           this.$set(this.form.fd, key, { ...this.form.fd[key], ...item })
         } else {
           this.$set(this.form.fd, key, item)
         }
+        if (values[this.decorators.metric_value[0]]) {
+          this.$refs.filtersRef.reset()
+        }
       }, newField)
       this.$nextTick(this.toParams)
     },
-    async getMetricInfo ({ metricKey, mertric, isResetForm = true }) {
+    async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
-        if (isResetForm) {
-          this.$refs.filtersRef.reset()
-          this.form.fc.setFieldsValue({
-            [this.decorators.metric_value[0]]: undefined,
-          })
-        }
+        this.metricKeyItem = metricKeyItem
+        this.$emit('mertricItemChange', mertricItem)
         const params = {
-          database: 'telegraf',
+          database: metricKeyItem.database || 'telegraf',
           measurement: metricKey,
           field: mertric,
           ...this.timeRangeParams,
         }
+        this.metricInfoLoading = true
         const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params })
         this.metricInfo = data
+        this.metricInfoLoading = false
       } catch (error) {
         this.metricInfo = {
           field_key: [],
@@ -362,13 +390,14 @@ export default {
         }
         const params = this.toParams()
         this.$emit('paramsChange', params)
+        this.metricInfoLoading = false
         throw error
       }
     },
     toParams (needEmit = true) {
       const fd = this.form.fc.getFieldsValue()
       const params = {
-        database: DATABASE,
+        database: this.metricKeyItem.database || 'telegraf',
       }
       const tags = []
       if (fd.metric_key) params.measurement = fd.metric_key
@@ -395,8 +424,10 @@ export default {
         // eslint-disable-next-line no-template-curly-in-string
         params.group_by = [{ type: 'tag', params: [fd.group_by] }]
       }
-      if (!fd.metric_key || !fd.metric_value) return params
-      if (R.is(String, fd.function)) {
+      if (!fd.metric_key || !fd.metric_value) {
+        this.resetChart()
+      }
+      if (params.select && R.is(String, fd.function)) {
         params.select[0].push({ type: fd.function.toLowerCase(), params: [] })
       }
       if (R.equals(this.oldParams, params)) return params
@@ -406,6 +437,7 @@ export default {
     },
     resetChart () {
       this.$emit('resetChart')
+      this.$refs.filtersRef.reset()
     },
   },
 }

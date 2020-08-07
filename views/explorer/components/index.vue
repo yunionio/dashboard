@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
-      <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" />
+      <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
@@ -15,8 +15,11 @@
         </template>
       </monitor-header>
       <div v-for="(item, i) in seriesList" :key="i">
-        <monitor-line :loading="loadingList[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+        <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
       </div>
+      <a-card v-if="!seriesList.length && loadingList[0]" class="explorer-monitor-line d-flex align-items-center justify-content-center">
+        <loader :loading="true" />
+      </a-card>
     </a-col>
   </a-row>
 </template>
@@ -25,8 +28,8 @@
 import get from 'lodash/get'
 import echarts from 'echarts'
 import MonitorForms from './forms'
-import MonitorLine from './monitor-line'
-import CustomDate from './monitor-line/CustomDate'
+import MonitorLine from '@Monitor/sections/MonitorLine'
+import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
 import { timeOpts } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT } from '@/utils/utils'
@@ -49,6 +52,7 @@ export default {
       seriesList: [],
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
+      seriesDescription: [],
       get,
     }
   },
@@ -96,6 +100,9 @@ export default {
         this.$set(this.seriesList, i, [])
       }
     },
+    mertricItemChange (item, i) {
+      this.$set(this.seriesDescription, i, item)
+    },
     async fetchAllData () {
       const jobs = []
       this.loadingList = []
@@ -109,6 +116,7 @@ export default {
         this.seriesList = res.map(val => get(val, 'series') || [])
         this.loadingList = this.loadingList.map(v => false)
       } catch (error) {
+        this.loadingList = this.loadingList.map(v => false)
         throw error
       }
     },
@@ -119,7 +127,8 @@ export default {
         this.$set(this.loadingList, i, true)
         const { series = [] } = await this.fetchData(metric_query)
         this.$set(this.seriesList, i, series)
-        this.$set(this.loadingList, i, false)
+        this.loadingList[i] = false
+        // this.$set(this.loadingList, i, false)
       } catch (error) {
         this.$set(this.seriesList, i, [])
         this.$set(this.loadingList, i, false)

@@ -7,7 +7,6 @@
           <a-date-picker
             v-model="formData.startValue"
             :disabled-date="disabledStartDate"
-            :disabled-time="disabledDateTime"
             :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
             format="YYYY-MM-DD HH:mm"
             :open="startOpen"
@@ -18,7 +17,6 @@
           <a-date-picker
             v-model="formData.endValue"
             :disabled-date="disabledEndDate"
-            :disabled-time="disabledDateTime"
             :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
             format="YYYY-MM-DD HH:mm"
             :placeholder="$t('common.text00120')"
@@ -32,6 +30,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import moment from 'moment'
 
 export default {
@@ -40,6 +39,10 @@ export default {
     endTime: {
       type: Object,
       default: () => moment(),
+    },
+    customTime: {
+      type: Object,
+      validator: val => val.from,
     },
   },
   data () {
@@ -64,6 +67,18 @@ export default {
         ],
       },
     }
+  },
+  watch: {
+    customTime (val) {
+      if (val && val.from) {
+        const hours = +val.from.replace(/^now-(\w+)h$/, '$1')
+        if (R.is(Number, hours) && !Number.isNaN(hours)) this.formData.startValue = this.$moment().subtract(hours, 'hours')
+      }
+      if (val && val.to) {
+        const hours = +val.to.replace(/^now-(\w+)h$/, '$1')
+        if (R.is(Number, hours) && !Number.isNaN(hours)) this.formData.endValue = this.$moment().subtract(hours, 'hours')
+      }
+    },
   },
   methods: {
     cancel () {
@@ -111,11 +126,6 @@ export default {
     },
     handleEndOpenChange (open) {
       this.endOpen = open
-    },
-    disabledDateTime () {
-      return {
-        disabledSeconds: () => this._range(1, 60),
-      }
     },
     _range (start, end) {
       const result = []

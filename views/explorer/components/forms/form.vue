@@ -13,6 +13,7 @@
           :form="form"
           :decorators="decorators"
           :metricKeyOpts="metricKeyOpts"
+          :loading="metricLoading"
           @metricChange="getMetricInfo"
           @metricClear="resetChart" />
       </a-form-item>
@@ -22,6 +23,7 @@
           ref="filtersRef"
           :decorators="decorators.filters"
           @remove="$nextTick(toParams)"
+          :loading="metricInfoLoading"
           :metricInfo="metricInfo" />
       </a-form-item>
       <a-form-item :label="$t('monitor.monitor_group')">
@@ -46,9 +48,9 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import Metric from './Metric'
-import Filters from './Filters'
-import { DATABASE } from '@Monitor/constants'
+import Metric from '@Monitor/sections/Metric'
+import Filters from '@Monitor/sections/Filters'
+import { metric_zh } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { getRequestT } from '@/utils/utils'
 
@@ -154,8 +156,11 @@ export default {
       functionOpts: [],
       metricKeyOpts: [],
       metricInfo: {},
+      metricKeyItem: {},
       panelShow: this.defaultPanelShow,
       oldParams: {},
+      metricLoading: false,
+      metricInfoLoading: false,
     }
   },
   computed: {
@@ -180,6 +185,7 @@ export default {
   methods: {
     resetChart () {
       this.$emit('resetChart')
+      this.$refs.filtersRef.reset()
     },
     remove () {
       this.$emit('remove')
@@ -205,27 +211,43 @@ export default {
     },
     async getMeasurement () {
       try {
-        const params = { database: 'telegraf', scope: this.$store.getters.scope, ...this.timeRangeParams }
+        this.metricLoading = true
+        const params = { scope: this.$store.getters.scope, ...this.timeRangeParams }
         const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params })
-        this.metricKeyOpts = measurements.map(val => ({ ...val, key: val.measurement, label: val.measurement }))
+        this.metricKeyOpts = measurements.map(val => {
+          let label = val.measurement
+          const displayName = val.measurement_display_name
+          if (displayName && metric_zh[displayName]) {
+            label = metric_zh[displayName]
+          }
+          return {
+            ...val,
+            key: val.measurement,
+            label,
+          }
+        })
+        this.metricLoading = false
       } catch (error) {
+        this.metricLoading = false
         throw error
       }
     },
-    async getMetricInfo ({ metricKey, mertric }) {
+    async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
-        this.$refs.filtersRef.reset()
+        this.metricKeyItem = metricKeyItem
+        this.$emit('mertricItemChange', mertricItem)
         this.form.fc.setFieldsValue({
           [this.decorators.group_by[0]]: undefined,
           [this.decorators.function[0]]: undefined,
         })
         const params = {
           $t: getRequestT(),
-          database: 'telegraf',
+          database: metricKeyItem.database,
           measurement: metricKey,
           field: mertric,
           ...this.timeRangeParams,
         }
+        this.metricInfoLoading = true
         const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params })
         this.metricInfo = data
         if (R.is(Array, this.metricInfo.tag_key)) {
@@ -235,16 +257,11 @@ export default {
         if (R.is(Array, Aggregations)) {
           this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
         }
-        this.resetChart()
+        this.metricInfoLoading = false
       } catch (error) {
-        this.metricInfo = {
-          field_key: [],
-          func: {},
-          tag_key: [],
-          tag_value: {},
-        }
-        const params = this.toParams()
-        this.$emit('paramsChange', params)
+        this.metricInfo.tag_key = []
+        this.metricInfo.func = {}
+        this.metricInfoLoading = false
         throw error
       }
     },
@@ -254,7 +271,7 @@ export default {
     toParams () {
       const fd = this.form.fc.getFieldsValue()
       const params = {
-        database: DATABASE,
+        database: this.metricKeyItem.database,
       }
       const tags = []
       if (fd.metric_key) params.measurement = fd.metric_key
@@ -298,7 +315,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../../../../../src/styles/less/theme';
+@import '../../../../../../src/styles/less/theme';
 
 .monitor-form {
   &.hideBody ::v-deep .ant-card-body {

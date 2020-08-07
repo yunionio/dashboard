@@ -1,5 +1,7 @@
-import { metricMaps, channelMaps, alertStrategyMaps, preiodMaps, levelMaps } from '@Monitor/constants'
+import _ from 'lodash'
+import { metric_zh, channelMaps, alertStrategyMaps, preiodMaps, levelMaps } from '@Monitor/constants'
 import i18n from '@/locales'
+import { transformUnit } from '@/utils/utils'
 
 export const levelColumn = {
   field: 'level',
@@ -35,10 +37,16 @@ export const strategyColumn = {
   formatter: ({ row }) => {
     if (row.common_alert_metric_details && row.common_alert_metric_details[0]) {
       const detail = row.common_alert_metric_details[0]
-      const measurement = ((metricMaps[detail.measurement] || {}).label) || detail.measurement
+      let measurement = detail.measurement_display_name || detail.measurement
+      if (metric_zh[measurement]) measurement = metric_zh[measurement]
+      let metric = _.get(detail, 'field_description.display_name')
+      if (metric) {
+        metric = metric_zh[metric] || _.get(detail, 'field_description.name') || detail.field
+      }
       const reduce = (alertStrategyMaps[detail.reduce]) || detail.reduce
       const preiod = ((preiodMaps[row.period] || {}).label) || row.period
-      return i18n.t('monitor.text_6', [measurement, detail.field, reduce, detail.comparator, detail.threshold, preiod])
+      const threshold = transformUnit(detail.threshold, _.get(detail, 'field_description.unit'))
+      return i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text, preiod])
     }
     return '-'
   },

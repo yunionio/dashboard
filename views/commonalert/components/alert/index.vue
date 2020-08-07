@@ -1,7 +1,7 @@
 <template>
   <a-row v-loading="loading">
     <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 11 }" class="mb-5">
-      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" @resetChart="resetChart" :timeRangeParams="timeRangeParams" />
+      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" @resetChart="resetChart" @mertricItemChange="mertricItemChange" :timeRangeParams="timeRangeParams" />
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
@@ -16,7 +16,7 @@
       </monitor-header>
       <div>
         <template v-if="chartLoading"><loader loading /></template>
-        <monitor-line v-else class="mb-3" :series="series" :timeFormatStr="timeFormatStr" :lineChartOptions="lineChartOptions" />
+        <monitor-line v-else class="mb-3" :series="series" :timeFormatStr="timeFormatStr" :lineChartOptions="lineChartOptions" :description="lineDescription" />
       </div>
     </a-col>
   </a-row>
@@ -26,8 +26,8 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import AlertForm from './form'
-import MonitorLine from '@Monitor/views/explorer/components/monitor-line'
-import CustomDate from '@Monitor/views/explorer/components/monitor-line/CustomDate'
+import MonitorLine from '@Monitor/sections/MonitorLine'
+import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
 import { timeOpts } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
 
@@ -61,6 +61,7 @@ export default {
       loading: false,
       loaded: false,
       chartLoading: false,
+      lineDescription: {},
     }
   },
   computed: {
@@ -136,7 +137,15 @@ export default {
           })
         this.alertData = data
         const time = _.get(this.alertData, 'settings.conditions[0].query.from')
-        this.time = this.timeOpts[time] ? time : '1h'
+        if (~time.indexOf('now-')) {
+          this.time = 'custom'
+          this.customTime = {
+            from: time,
+            to: _.get(this.alertData, 'settings.conditions[0].query.to') || 'now',
+          }
+        } else {
+          this.time = this.timeOpts[time] ? time : '1h'
+        }
         this.timeGroup = _.get(this.alertData, 'settings.conditions[0].query.model.interval')
         this.loading = false
       } catch (error) {
@@ -175,6 +184,11 @@ export default {
         }
         if (fd.domain || fd.domain_id) data.domain_id = (fd.domain || fd.domain_id)
         if (fd.project) data.project_id = fd.project
+        if (fd.scope === 'domain' || fd.scope === 'project') {
+          if (!data.domain_id && !data.project_id) {
+            data.scope = fd.scope
+          }
+        }
         if (this.time === 'custom') { // 自定义时间
           if (this.customTime && this.customTime.from && this.customTime.to) {
             data.from = this.customTime.from
@@ -220,7 +234,7 @@ export default {
         } else {
           data.from = this.time
         }
-        if (!data.metric_query || !data.from) return
+        if (!data.metric_query || !data.from || !_.get(data.metric_query, '[0].model.measurement') || !_.get(data.metric_query, '[0].model.select')) return
         this.chartLoading = true
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
         this.series = series
@@ -229,6 +243,9 @@ export default {
         this.chartLoading = false
         throw error
       }
+    },
+    mertricItemChange (val) {
+      this.lineDescription = val
     },
   },
 }

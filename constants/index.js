@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 import i18n from '@/locales'
 
 export const timeOpts = {
@@ -210,8 +211,6 @@ export const metricMaps = {
   },
 }
 
-export const DATABASE = 'telegraf'
-
 // 顺序决定在 tableColumn 的顺序
 export const tableColumnMaps = {
   __metric: {
@@ -238,6 +237,14 @@ export const tableColumnMaps = {
     title: `${i18n.t('dictionary.host')}IP`,
     field: 'host_ip',
   },
+  cloudaccount_name: {
+    title: i18n.t('common_295'),
+    field: 'cloudaccount_name',
+  },
+  health_status: {
+    title: i18n.t('cloudenv.text_93'),
+    field: 'health_status',
+  },
 }
 
 // 报警通知方式，配合 a-checkbox-group 用 value 而非 key
@@ -260,7 +267,7 @@ export const preiodMaps = {
   '15m': { key: '15m', label: i18n.t('monitor.text00020') },
   '30m': { key: '30m', label: i18n.t('monitor.text00021') },
   '60m': { key: '60m', label: i18n.t('monitor.text00022') },
-  '180m': { key: '180m', label: i18n.t('monitor.text00022') },
+  '180m': { key: '180m', label: i18n.t('monitor.text00023') },
 }
 
 export const levelMaps = {
@@ -279,4 +286,85 @@ export const levelMaps = {
     key: 'fatal',
     label: i18n.t('monitor.fatal'),
   },
+}
+
+export const metric_zh = {
+  'CPU idle rate per core': i18n.t('monitor_metric_1'),
+  'CPU usage per core': i18n.t('monitor_metric_2'),
+  'CPU user state time': i18n.t('monitor_metric_3'),
+  'CPU system state time': i18n.t('monitor_metric_4'),
+  'CPU active state utilization rate': i18n.t('monitor_metric_5'),
+  'CPU guest usage': i18n.t('monitor_metric_6'),
+  'CPU guest_ Nice usage': i18n.t('monitor_metric_7'),
+  'CPU idle state utilization rate': i18n.t('monitor_metric_8'),
+  'CPU IO usage': i18n.t('monitor_metric_9'),
+  'CPU IRQ usage': i18n.t('monitor_metric_10'),
+  'CPU priority switch utilization': i18n.t('monitor_metric_11'),
+  'CPU softirq usage': i18n.t('monitor_metric_12'),
+  'Utilization rate of CPU steel': i18n.t('monitor_metric_13'),
+  'CPU system state utilization rate': i18n.t('monitor_metric_14'),
+  'CPU user mode utilization rate': i18n.t('monitor_metric_15'),
+  'Free space size': i18n.t('monitor_metric_16'),
+  'Available inode': i18n.t('monitor_metric_17'),
+  'Total inodes': i18n.t('monitor_metric_18'),
+  'Number of inodes used': i18n.t('monitor_metric_19'),
+  'Total disk size': i18n.t('monitor_metric_20'),
+  'Used disk size': i18n.t('monitor_metric_21'),
+  'Percentage of used disks': i18n.t('monitor_metric_22'),
+  'Number of reads': i18n.t('monitor_metric_23'),
+  'Number of writes': i18n.t('monitor_metric_24'),
+  'Bytes read': i18n.t('monitor_metric_25'),
+  'Time to wait for read': i18n.t('monitor_metric_26'),
+  'I / O request queuing time': i18n.t('monitor_metric_27'),
+  'I / O request waiting time': i18n.t('monitor_metric_28'),
+  'Number of I / O requests issued but not yet completed': i18n.t('monitor_metric_29'),
+  'Available memory rate': i18n.t('monitor_metric_30'),
+  'Buffer memory': i18n.t('monitor_metric_31'),
+  'Cache memory': i18n.t('monitor_metric_32'),
+  'Free memory': i18n.t('monitor_metric_33'),
+  'Number of kernel caches': i18n.t('monitor_metric_34'),
+  'The total number of bytes sent by the network interface': i18n.t('monitor_metric_35'),
+  'The total number of bytes received by the network interface': i18n.t('monitor_metric_36'),
+  'The total number of packets sent by the network interface': i18n.t('monitor_metric_37'),
+  'The total number of receive errors detected by the network interface': i18n.t('monitor_metric_38'),
+  'The total number of transmission errors detected by the network interface': i18n.t('monitor_metric_39'),
+  'The total number of received packets dropped by the network interface': i18n.t('monitor_metric_40'),
+  'System disk total read BPS': i18n.t('monitor_metric_41'),
+  'System disk read IOPs': i18n.t('monitor_metric_42'),
+  'Virtual memory consumption': i18n.t('monitor_metric_43'),
+  'Actual use of physical memory': i18n.t('monitor_metric_44'),
+  'Object storage latency': i18n.t('monitor_metric_45'),
+  'Request average E2E delay': i18n.t('monitor_metric_46'),
+  'Object storage network traffic': i18n.t('monitor_metric_47'),
+  'Receive byte': i18n.t('monitor_metric_48'),
+  'Object store request': i18n.t('monitor_metric_49'),
+  'Connection usage': i18n.t('db.text_18'),
+  'Average memory usage': i18n.t('monitor_metric_50'),
+  'Received traffic per second': i18n.t('monitor_metric_51'),
+  'Send traffic per second': i18n.t('monitor_metric_52'),
+  'Number of commands processed per second': i18n.t('monitor_metric_53'),
+  'Number of cache keys': i18n.t('monitor_metric_54'),
+  'Data node memory usage': i18n.t('monitor_metric_55'),
+  'Disk traffic and timing': i18n.t('monitor_metric_56'),
+  'Guest memory': i18n.t('monitor_metric_57'),
+  'Redis operator': i18n.t('monitor_metric_58'),
+  'Disk usage': i18n.t('monitor_metric_59'),
+  'Network interface and protocol usage': i18n.t('monitor_metric_60'),
+  'Guest CPU usage': i18n.t('monitor_metric_61'),
+  'Guest disk traffic': i18n.t('monitor_metric_62'),
+  'Redis keys': i18n.t('monitor_metric_63'),
+  'Redis data memory': i18n.t('monitor_metric_64'),
+  'Rds connect': i18n.t('monitor_metric_65'),
+  'Rds disk usage': i18n.t('monitor_metric_66'),
+  'Rds network traffic': i18n.t('monitor_metric_67'),
+  'Redis connect': i18n.t('monitor_metric_68'),
+  'Rds memory': i18n.t('monitor_metric_69'),
+  'Redis network traffic': i18n.t('monitor_metric_70'),
+  'Redis memory': i18n.t('monitor_metric_71'),
+  'Redis CPU usage': i18n.t('monitor_metric_72'),
+  'Memory': i18n.t('monitor_metric_73'),
+  'CPU usage': i18n.t('monitor_metric_74'),
+  'Rds CPU usage': i18n.t('monitor_metric_75'),
+  'Cloud account balance': i18n.t('monitor_metric_76'),
+  'balance': i18n.t('monitor_metric_77'),
 }

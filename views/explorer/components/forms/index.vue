@@ -13,6 +13,7 @@
         :showDelete="formList.length > 1"
         :formItemLayout="formItemLayout"
         :timeRangeParams="timeRangeParams"
+        @mertricItemChange="val => mertricItemChange(val, i)"
         @resetChart="() => resetChart(i)"
         @paramsChange="val => paramsChange(val, i)"
         @remove="() => remove(i)" />
@@ -93,6 +94,9 @@ export default {
     },
     resetChart (i) {
       this.$emit('resetChart', i)
+    },
+    mertricItemChange (val, i) {
+      this.$emit('mertricItemChange', val, i)
     },
   },
 }
