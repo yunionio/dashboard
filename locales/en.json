@@ -7702,6 +7702,8 @@
   "monitor_metric_73": "Memory",
   "monitor_metric_74": "CPU usage",
   "monitor_metric_75": "Rds CPU usage",
+  "monitor_metric_76": "Cloud account balance",
+  "monitor_metric_77": "balance",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": "a",

@@ -7702,6 +7702,8 @@
   "monitor_metric_73": "内存",
   "monitor_metric_74": "CPU使用情况",
   "monitor_metric_75": "Rds CPU使用情况",
+  "monitor_metric_77": "余额",
+  "monitor_metric_76": "云账号余额",
   "common.text00001": "可用",
   "common.text00002": "你所选的",
   "common.text00003": "个",
