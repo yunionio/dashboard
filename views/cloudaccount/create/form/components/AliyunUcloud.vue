@@ -95,6 +95,7 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
+            initialValue: false,
             valuePropName: 'checked',
           },
         ],

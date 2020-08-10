@@ -26,7 +26,7 @@
         showSearch>
         <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
       </a-select>
-      <div class="d-flex">
+      <div class="d-flex" v-if="!isOpenstack">
         <div class="flex-shrink-0 flex-grow-0">
           <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange">{{$t('cloudenv.text_92', [$t('dictionary.project')])}}</a-checkbox>
         </div>
@@ -61,6 +61,9 @@ export default {
     },
     allowClear: Boolean,
     formLayout: Object,
+    provider: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -72,7 +75,15 @@ export default {
       disableProjectSelect: false,
     }
   },
-  computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+  computed: {
+    ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+    isOpenstack () {
+      if (this.provider) {
+        return this.provider.toLowerCase() === 'openstack'
+      }
+      return false
+    },
+  },
   mounted () {
     this.dm = new Manager('domains', 'v1')
     this.pm = new Manager('projects', 'v1')
