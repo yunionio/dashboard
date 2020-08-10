@@ -27,7 +27,7 @@
     <!-- auth layout content -->
     <div class="w-100 h-100 content d-flex overflow-auto">
       <div class="container" style="margin: auto">
-        <div class="d-flex align-items-center justify-content-center w-100">
+        <div class="container-wrap d-flex align-items-center justify-content-center w-100">
           <template v-if="!statusLoaded">
             <div class="text-white">{{ $t('common.text00111') }}</div>
           </template>
@@ -35,7 +35,7 @@
             <div class="text-white">{{ $t('auth.logging') }}</div>
           </template>
           <template v-else>
-            <router-view />
+            <router-view class="content-wrap" />
           </template>
         </div>
       </div>
@@ -135,6 +135,11 @@ export default {
 .content {
   padding: 70px 0;
   box-sizing: border-box;
+  .container-wrap {
+    background-image: url(/img/bg.eee05042.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
 }
 .footer {
   height: 70px;

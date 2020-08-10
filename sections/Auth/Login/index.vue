@@ -121,6 +121,7 @@ export default {
   background-image: url('./assets/bg.png');
   background-repeat: no-repeat;
   background-position: center left;
+  background-color: #fff;
 }
 .login-index-left {
   h2 {

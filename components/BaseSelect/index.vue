@@ -9,7 +9,7 @@
       @blur="onBlur"
       @change="change"
       @search="loadOptsDebounce"
-      :loading="loading">
+      :loading="loadingC">
       <div slot="dropdownRender" slot-scope="menu">
         <v-nodes :vnodes="menu" />
         <div class="d-flex justify-content-center mb-2">
@@ -170,6 +170,10 @@ export default {
         filterOption: false,
       }
     },
+    loadingC () {
+      if (this.selectProps && R.is(Boolean, this.selectProps.loading)) return this.selectProps.loading
+      return this.loading
+    },
   },
   watch: {
     params (val, oldV) {
@@ -195,6 +199,7 @@ export default {
           })
           this.resOpts = arrayToObj(resOpts)
           this.disabledOpts()
+          if (this.value) this.syncItem(this.value)
         } else {
           this.resOpts = {}
         }
@@ -265,13 +270,15 @@ export default {
         }
       }
       // 同步当前选择项obj
-      if (changeValue) {
-        const syncValue = R.is(Object, changeValue) ? this.resOpts[changeValue.key] : this.resOpts[changeValue]
-        // if (this.options && this.options.length) syncValue = changeValue // 外面传递 options
-        this.$emit('update:item', syncValue)
-      }
+      this.syncItem(changeValue)
       this.$emit('input', changeValue)
       this.$emit('change', changeValue)
+    },
+    syncItem (value) {
+      if (value) {
+        const syncValue = R.is(Object, value) ? this.resOpts[value.key] : this.resOpts[value]
+        this.$emit('update:item', syncValue)
+      }
     },
     disabledOpts () {
       if (!R.is(Array, this.disabledItems)) return
