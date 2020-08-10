@@ -4,13 +4,13 @@
       <div class="loading-image">
         <a-icon type="sync" spin />
       </div>
-      <div class="loading-description">{{this.$t('common.loding')}}</div>
+      <div class="loading-description">{{$t('common.loding')}}</div>
     </div>
     <div v-else>
       <div class="empty-image">
         <img src="../../assets/images/empty.svg" />
       </div>
-      <div class="empty-description">{{this.$t('common.notData')}}</div>
+      <div class="empty-description">{{$t('common.notData')}}</div>
     </div>
   </div>
 </template>
