@@ -87,6 +87,13 @@ export default {
           { label: this.$t('network.text_537'), key: 'billing_type' },
           { label: this.$t('network.text_313'), key: 'created_at' },
           { label: this.$t('network.text_232'), key: 'public_scope' },
+          {
+            label: this.$t('network.text_232'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('natgateways'))
+            },
+          },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },

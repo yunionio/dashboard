@@ -57,7 +57,13 @@ export default {
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('network.text_196'), key: 'manager' },
           { label: this.$t('network.text_672'), key: 'routes' },
-          { label: this.$t('network.text_232'), key: 'public_scope' },
+          {
+            label: this.$t('network.text_232'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('route_tables'))
+            },
+          },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },

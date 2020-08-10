@@ -51,6 +51,13 @@ export default {
           { label: this.$t('network.text_21'), key: 'name' },
           { label: this.$t('network.text_27'), key: 'status' },
           { label: this.$t('network.text_232'), key: 'public_scope' },
+          {
+            label: this.$t('network.text_232'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('globalvpcs'))
+            },
+          },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },

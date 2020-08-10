@@ -73,7 +73,13 @@ export default {
           { label: this.$t('network.text_196'), key: 'manager' },
           { label: this.$t('network.text_571'), key: 'wire_count' },
           { label: this.$t('network.text_682'), key: 'network_count' },
-          { label: this.$t('network.text_232'), key: 'public_scope' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('vpcs'))
+            },
+          },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
@@ -86,6 +92,7 @@ export default {
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
+              createType: this.cloudEnv,
             })
           },
           meta: () => {

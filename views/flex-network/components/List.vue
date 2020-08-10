@@ -81,6 +81,13 @@ export default {
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('network.text_24'), key: 'zone' },
           { label: this.$t('network.text_232'), key: 'public_scope' },
+          {
+            label: this.$t('network.text_232'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('networkinterfaces'))
+            },
+          },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
