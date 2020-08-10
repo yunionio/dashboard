@@ -17,7 +17,9 @@
             @change="domainChange"
             :filterOption="filterOption"
             showSearch>
-            <a-select-option v-for="item of domains" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
+            <a-select-option v-for="item of domains" :value="item.key" :key="item.key">
+              <span class="text-color-secondary">{{ $t('dictionary.domain') }}: </span>{{ item.label }}
+            </a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
@@ -33,7 +35,9 @@
             @change="projectChange"
             :filterOption="filterOption"
             showSearch>
-            <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
+            <a-select-option v-for="item of projects" :value="item.key" :key="item.key">
+              <span class="text-color-secondary">{{ $t('dictionary.project') }}: </span>{{ item.label }}
+            </a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
