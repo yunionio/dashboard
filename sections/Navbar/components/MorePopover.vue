@@ -74,7 +74,7 @@ export default {
 <style lang="less" scoped>
 .trigger {
   height: 100%;
-  padding: 0 20px;
+  // padding: 0 20px;
   cursor: pointer;
   text-decoration: none;
 }
