@@ -50,6 +50,13 @@ export default {
           { label: 'https代理', key: 'https_proxy' },
           { label: 'http代理', key: 'http_proxy' },
           { label: '不走代理', key: 'no_proxy' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('proxysettings'))
+            },
+          },
         ],
       },
       groupActions: [

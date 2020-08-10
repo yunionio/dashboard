@@ -79,6 +79,13 @@ export default {
           { label: '平台', key: 'brand' },
           { label: '自动同步', key: 'enable_auto_sync' },
           { label: '同步时间', key: 'last_auto_sync' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cloudaccounts'))
+            },
+          },
         ],
       },
       groupActions: [
