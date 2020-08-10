@@ -311,7 +311,7 @@ export default {
       }
       const cloudProvidersMap = this.$t('cloudPrvidersMap')
       return (
-        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.prvider}>
+        <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.provider}>
           {this.providerList.map(provider => {
             const { name } = provider
             return <a-select-option key={name} value={name}>{cloudProvidersMap[name] || name}</a-select-option>
