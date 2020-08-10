@@ -126,6 +126,7 @@ export default {
   bottom: 0;
   background-color: @sidebar-dark-bg-color;
   box-shadow: 1px 0 6px 0 rgba(165,192,207,.3);
+  z-index: 1;
   ::v-deep {
     .scrollbar-wrap {
       overflow-x: hidden;
