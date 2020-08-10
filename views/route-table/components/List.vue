@@ -56,7 +56,13 @@ export default {
           { label: '区域', key: 'region' },
           { label: '云账号', key: 'manager' },
           { label: '条目（路由表类型 目标网段 下一跳）', key: 'routes' },
-          { label: '共享范围', key: 'public_scope' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('route_tables'))
+            },
+          },
           { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },

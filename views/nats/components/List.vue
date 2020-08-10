@@ -84,7 +84,13 @@ export default {
           { label: '云账号', key: 'manager' },
           { label: '付费类型', key: 'billing_type' },
           { label: '创建时间', key: 'created_at' },
-          { label: '共享范围', key: 'public_scope' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('natgateways'))
+            },
+          },
           { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
