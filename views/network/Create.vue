@@ -73,11 +73,9 @@
           <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
         </div>
       </a-form-item>
-      <a-form-item label="是否加入自动分配IP地址池">
-        <a-switch v-decorator="decorators.is_auto_alloc">是否自动创建用户</a-switch>
-        <template slot="extra">
-          加入后，该IP子网属于自动分配IP地址池，后续用户创建虚拟机不指定网络时，将从属于自动分配IP地址池的IP子网中为虚拟机分配IP地址
-        </template>
+      <a-form-item :label="$t('common_498')">
+        <a-switch v-decorator="decorators.is_auto_alloc">{{$t('common_499')}}</a-switch>
+        <template slot="extra">{{$t('common_500')}}</template>
       </a-form-item>
       <a-collapse :bordered="false"  v-if="show">
         <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
