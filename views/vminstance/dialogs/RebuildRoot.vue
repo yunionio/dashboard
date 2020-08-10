@@ -359,7 +359,7 @@ export default {
         params.password = loginPassword
       }
       if (this.isZStack) {
-        params.password = false
+        params.reset_password = false
       }
       return this.params.onManager('batchPerformAction', {
         steadyStatus: ['running', 'ready'],
