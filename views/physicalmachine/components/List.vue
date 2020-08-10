@@ -104,7 +104,13 @@ export default {
           { label: this.$t('compute.text_820'), key: 'is_maintenance' },
           { label: this.$t('compute.text_177'), key: 'region' },
           { label: this.$t('compute.text_270'), key: 'zone' },
-          { label: this.$t('compute.text_505'), key: 'public_scope' },
+          {
+            label: this.$t('compute.text_505'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cloudaccounts'))
+            },
+          },
           { label: this.$t('compute.text_506', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
