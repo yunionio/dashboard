@@ -284,8 +284,8 @@ export default {
         if (this.isAdminMode) {
           batchActions.unshift(ImageImport)
         }
-        batchActions.unshift(ImageUpload)
       }
+      batchActions.unshift(ImageUpload)
       return batchActions
     },
   },
