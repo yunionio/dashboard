@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('network.text_570')" />
-    <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
+    <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit" v-bind="formItemLayout">
       <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
       </a-form-item>
@@ -72,6 +72,10 @@
           <a-button type="link" @click="addGuestIpPrefix">{{$t('network.text_582')}}</a-button>
           <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
         </div>
+      </a-form-item>
+      <a-form-item :label="$t('common_498')">
+        <a-switch v-decorator="decorators.is_auto_alloc">{{$t('common_499')}}</a-switch>
+        <template slot="extra">{{$t('common_500')}}</template>
       </a-form-item>
       <a-collapse :bordered="false"  v-if="show">
         <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
@@ -358,6 +362,9 @@ export default {
             ],
           },
         ],
+        is_auto_alloc: ['is_auto_alloc', {
+          valuePropName: 'checked',
+        }],
       },
       serverTypeOpts: [
         { label: this.$t('network.text_226'), key: 'guest' },
@@ -568,6 +575,7 @@ export default {
               vpc: values.vpc.key,
               zone: values.zone,
               project_id: values.project.key,
+              is_auto_alloc: values.is_auto_alloc,
             }
             data.push(obj)
           }, values.guest_ip_prefix)
@@ -598,6 +606,7 @@ export default {
           guest_ip_prefix: values.guest_ip_prefix[0],
           name: values.name,
           wire_id: values.wire,
+          is_auto_alloc: values.is_auto_alloc,
         }
       }
       return {
@@ -606,6 +615,7 @@ export default {
         name: values.name,
         vpc: values.vpc.key,
         zone: values.zone,
+        is_auto_alloc: values.is_auto_alloc,
       }
     },
     clearIpSubnetsError () {
