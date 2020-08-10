@@ -98,7 +98,13 @@ export default {
           { label: '维护模式', key: 'is_maintenance' },
           { label: '区域', key: 'region' },
           { label: '可用区', key: 'zone' },
-          { label: '共享范围', key: 'public_scope' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cloudaccounts'))
+            },
+          },
           { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
