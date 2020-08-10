@@ -11,6 +11,9 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        formRules: [
+          { required: true, message: '请输入名称' },
+        ],
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>

@@ -195,7 +195,12 @@ export default {
       const ips = []
       for (let i = 0; i < this.list.length; i++) {
         const item = this.list[i]
-        if (!item.suitable_network) {
+        const { ip_nets } = item
+        let isSuitableNetwork = false
+        if (ip_nets && ip_nets.length) {
+          isSuitableNetwork = ip_nets.every(o => o.suitable_network)
+        }
+        if (!item.suitable_network && !isSuitableNetwork) {
           ips.push(...item.ips)
         }
       }

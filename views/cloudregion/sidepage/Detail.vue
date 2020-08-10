@@ -3,7 +3,8 @@
     :data="data"
     :onManager="onManager"
     :base-info="baseInfo"
-    :extra-info="extraInfo" />
+    :extra-info="extraInfo"
+    :nameRules="[{ required: true, message: '请输入名称' }]" />
 </template>
 
 <script>

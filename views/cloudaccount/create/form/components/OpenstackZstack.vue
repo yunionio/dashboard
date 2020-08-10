@@ -25,7 +25,7 @@
       <a-form-item label="Domain Name"  v-if="isOpenstack">
         <a-input v-decorator="decorators.domain_name" />
       </a-form-item>
-      <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
+      <domain-project :provider="provider" :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
@@ -141,6 +141,7 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
+            initialValue: false,
             valuePropName: 'checked',
           },
         ],

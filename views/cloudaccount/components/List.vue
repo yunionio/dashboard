@@ -79,6 +79,13 @@ export default {
           { label: this.$t('cloudenv.text_102'), key: 'brand' },
           { label: this.$t('cloudenv.text_83'), key: 'enable_auto_sync' },
           { label: this.$t('cloudenv.text_103'), key: 'last_auto_sync' },
+          {
+            label: this.$t('compute.text_505'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cloudaccounts'))
+            },
+          },
         ],
       },
       groupActions: [
@@ -157,7 +164,15 @@ export default {
                     onManager: this.onManager,
                   })
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
+                meta: () => {
+                  const deleteResult = this.$getDeleteResult(this.list.selectedItems)
+                  if (!deleteResult.validate) {
+                    return deleteResult
+                  }
+                  return {
+                    validate: ownerDomain,
+                  }
+                },
               },
             ]
           },

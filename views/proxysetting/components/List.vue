@@ -51,6 +51,13 @@ export default {
           { label: this.$t('cloudenv.text_395'), key: 'https_proxy' },
           { label: this.$t('cloudenv.text_398'), key: 'http_proxy' },
           { label: this.$t('cloudenv.text_403'), key: 'no_proxy' },
+          {
+            label: this.$t('compute.text_505'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cloudaccounts'))
+            },
+          },
         ],
       },
       groupActions: [
