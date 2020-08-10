@@ -1,16 +1,14 @@
 <template>
   <div>
-    <a-popover trigger="click" :getPopupContainer="triggerNode => triggerNode.parentNode">
-      <div class="trigger d-flex align-items-center justify-content-center">
-        <span v-if="settingMenuTitleUsedText">{{$t('common_195')}}</span>
-        <a-icon type="setting" style="font-size: 24px;" v-else />
-      </div>
+    <a-popover trigger="hover" placement="leftBottom" :getPopupContainer="triggerNode => triggerNode.parentNode">
+      <span v-if="settingMenuTitleUsedText">{{$t('scope.text_238')}}</span>
+      <icon type="navbar-setting" style="font-size: 24px;" v-else />
       <template v-slot:content>
         <div class="setting-wrap">
           <div class="setting-item">
             <h3 class="setting-title">{{$t('common_459')}}</h3>
             <a-button-group size="small">
-              <a-button :type="language === 'zh-CN' ? 'primary' : 'default'" @click="() => handleChangeLanguage('zh-CN')">简</a-button>
+              <a-button :type="language === 'zh-CN' ? 'primary' : 'default'" @click="() => handleChangeLanguage('zh-CN')">{{$t('common_497')}}</a-button>
               <a-button :type="language === 'en' ? 'primary' : 'default'" @click="() => handleChangeLanguage('en')">En</a-button>
             </a-button-group>
           </div>

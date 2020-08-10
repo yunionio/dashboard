@@ -2,11 +2,14 @@
   <div>
     <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <icon type="question" style="font-size: 24px;" />
+        <icon type="navbar-more" style="font-size: 24px;" />
       </div>
       <a-menu slot="overlay" @click="handleDropdownClick">
         <a-menu-item key="/guide" v-if="isAdminMode">{{$t('common_187')}}</a-menu-item>
         <a-menu-item :key="docsUrl">{{$t('common_188')}}</a-menu-item>
+        <a-menu-item key="setting">
+          <setting-popover :settingMenuTitleUsedText="true" />
+        </a-menu-item>
         <a-menu-item key="/licenses">
           <span>{{$t('common_189')}}</span>
           <a-icon v-if="isAdminMode && updateAvailable" type="cloud-upload" class="success-color ml-1" />
@@ -19,9 +22,13 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import SettingPopover from './SettingPopover'
 
 export default {
   name: 'HelpPopover',
+  components: {
+    SettingPopover,
+  },
   data () {
     return {
       updateAvailable: false,
@@ -56,6 +63,7 @@ export default {
       })
     },
     handleDropdownClick (item) {
+      if (item.key === 'setting') return
       const newWindow = item.key.startsWith('http')
       if (newWindow) {
         window.open(item.key)
