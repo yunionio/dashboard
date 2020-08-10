@@ -765,6 +765,14 @@
       "deleting": "Deleting",
       "delete_fail": "Deletion failed",
       "deleted": "Deleted"
+    },
+    "idpAutoCreateUser": {
+      "true": "On",
+      "false": "Close"
+    },
+    "networIsAutoAlloc": {
+      "true": "belongs to",
+      "false": "Does not belong"
     }
   },
   "skuCategoryOptions": {
@@ -1995,6 +2003,13 @@
     "SECGROUPRULEINSERVER_ALLIN": "The in rule of the security group rule is a fully open host",
     "SNAPSHOT_UNUSED": "Unused snapshot",
     "OSS_SEC_ACL": "Object storage permissions are open to read and write buckets and files"
+  },
+  "idpDrivers": {
+    "LDAP": ["msad_one_domain", "msad_multi_domain", "openldap_one_domain"],
+    "OIDC": ["oidc", "github_oidc", "azure_oidc"],
+    "SAML": ["saml", "azure_ad_saml"],
+    "CAS": ["cas"],
+    "OAuth2": ["feishu_oauth2", "dingtalk_oauth2", "qywechat_oauth2"]
   },
   "idpTmplTitles": {
     "msad_one_domain": "Microsoft Active Directory Import order @:dictionary.domain",

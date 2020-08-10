@@ -765,6 +765,14 @@
       "deleting": "删除中",
       "delete_fail": "删除失败",
       "deleted": "已删除"
+    },
+    "idpAutoCreateUser": {
+      "true": "开启",
+      "false": "关闭"
+    },
+    "networIsAutoAlloc": {
+      "true": "属于",
+      "false": "不属于"
     }
   },
   "skuCategoryOptions": {
@@ -1995,6 +2003,13 @@
     "SECGROUPRULEINSERVER_ALLIN": "安全组规则的in规则为全开放的主机",
     "SNAPSHOT_UNUSED": "未使用的快照",
     "OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件"
+  },
+  "idpDrivers": {
+    "LDAP": ["msad_one_domain", "msad_multi_domain", "openldap_one_domain"],
+    "OIDC": ["oidc", "github_oidc", "azure_oidc"],
+    "SAML": ["saml", "azure_ad_saml"],
+    "CAS": ["cas"],
+    "OAuth2": ["feishu_oauth2", "dingtalk_oauth2", "qywechat_oauth2"]
   },
   "idpTmplTitles": {
     "msad_one_domain": "Microsoft Active Directory导入单@:dictionary.domain",
