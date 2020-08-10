@@ -144,6 +144,24 @@ export default {
       const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
+      if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
+        if (this.sku.sys_disk_type) {
+          const skuDiskTypes = this.sku.sys_disk_type.split(',')
+          if (skuDiskTypes && skuDiskTypes.length) {
+            currentTypes = skuDiskTypes
+          }
+        } else {
+          for (const obj in hypervisorDisks) {
+            if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
+              delete hypervisorDisks[obj]
+            }
+          }
+        }
+      } else {
+        if (this.isPublic) {
+          currentTypes = []
+        }
+      }
       if (hyper === HYPERVISORS_MAP.openstack.key) { // 前端特殊处理：openstack数据盘不支持 nova
         currentTypes = currentTypes.filter(val => {
           const types = val.split('/')
@@ -158,17 +176,6 @@ export default {
           currentTypes = findAndPush(currentTypes, item => item.includes('local'))
         } else {
           currentTypes = findAndUnshift(currentTypes, item => item.includes('local'))
-        }
-      }
-      if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
-        for (const obj in hypervisorDisks) {
-          if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
-            delete hypervisorDisks[obj]
-          }
-        }
-      } else {
-        if (this.isPublic) {
-          currentTypes = []
         }
       }
       for (let i = 0, len = currentTypes.length; i < len; i++) {
