@@ -132,6 +132,7 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
+            initialValue: true,
             valuePropName: 'checked',
           },
         ],

@@ -179,9 +179,9 @@ export default {
     },
     _providerDiff (data) {
       const brand = this.currentItem.provider.toLowerCase()
-      if (brand === 'ucloud' || brand === 'huawei' || brand === 'azure') {
-        data.auto_create_project = true
-      }
+      // if (brand === 'ucloud' || brand === 'huawei' || brand === 'azure') {
+      //   data['auto_create_project'] = true
+      // }
       if (brand === 'dstack') {
         data.brand = 'DStack'
         data.provider = 'ZStack'
