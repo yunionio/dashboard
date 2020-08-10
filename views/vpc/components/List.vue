@@ -70,7 +70,13 @@ export default {
           { label: '云账号', key: 'manager' },
           { label: '二层网络', key: 'wire_count' },
           { label: 'IP子网数量', key: 'network_count' },
-          { label: '共享范围', key: 'public_scope' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('vpcs'))
+            },
+          },
           { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },

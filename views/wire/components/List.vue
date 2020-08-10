@@ -70,7 +70,13 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: '平台', key: 'provider' },
           { label: '云账号', key: 'manager' },
-          { label: '共享范围', key: 'public_scope' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('wires'))
+            },
+          },
           { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
