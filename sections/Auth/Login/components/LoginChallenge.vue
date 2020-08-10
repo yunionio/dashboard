@@ -2,7 +2,7 @@
   <div>
     <template v-if="!showUsernameInput">
       <div class="selected-user-wrap text-center mb-4">
-        <div class="selected-user-content" @click="$router.replace('/auth/login/chooser')">
+        <div class="selected-user-content" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf } })">
           <div class="mr-2 name-icon">{{ firstNameWord }}</div>
           <div class="selected-user-name">{{ fd.username }}</div>
           <div class="ml-2 d-flex align-items-center">
@@ -75,7 +75,7 @@
         <div class="d-flex">
           <div class="flex-shrink-1 flex-grow-1 text-left" style="margin-left: -15px;">
             <template v-if="hasLoggedUsers && showUsernameInput">
-              <a-button type="link" @click="$router.replace('/auth/login/chooser')" class="week-link-button">{{ $t('auth.chooser') }}</a-button>
+              <a-button type="link" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf } })" class="week-link-button">{{ $t('auth.chooser') }}</a-button>
             </template>
           </div>
           <div class="flex-shrink-1 flex-grow-1 text-right" style="margin-right: -15px;">
