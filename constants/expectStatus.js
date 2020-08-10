@@ -330,4 +330,12 @@ export default {
     success: ['ready'],
     danger: ['delete_fail', 'deleted'],
   },
+  idpAutoCreateUser: {
+    success: [true],
+    info: [false],
+  },
+  networIsAutoAlloc: {
+    success: [true],
+    info: [false],
+  },
 }

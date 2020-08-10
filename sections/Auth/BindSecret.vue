@@ -93,11 +93,24 @@ export default {
     } else {
       !this.auth.auth.totp_init && this.$store.dispatch('auth/initcredential')
     }
+    if (!this.auth.totp_init) {
+      this.initTotp()
+    }
   },
   mounted () {
     this.$refs['security-code'].focusInput(1)
   },
   methods: {
+    async initTotp () {
+      const manager = this.$Manager('auth', 'v1')
+      try {
+        await manager.get({
+          id: 'initcredential',
+        })
+      } catch (err) {
+        throw err
+      }
+    },
     async onValid () {
       this.loading = true
       try {
