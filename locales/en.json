@@ -2005,11 +2005,28 @@
     "OSS_SEC_ACL": "Object storage permissions are open to read and write buckets and files"
   },
   "idpDrivers": {
-    "LDAP": ["msad_one_domain", "msad_multi_domain", "openldap_one_domain"],
-    "OIDC": ["oidc", "github_oidc", "azure_oidc"],
-    "SAML": ["saml", "azure_ad_saml"],
-    "CAS": ["cas"],
-    "OAuth2": ["feishu_oauth2", "dingtalk_oauth2", "qywechat_oauth2"]
+    "LDAP": [
+      "msad_one_domain",
+      "msad_multi_domain",
+      "openldap_one_domain"
+    ],
+    "OIDC": [
+      "oidc",
+      "github_oidc",
+      "azure_oidc"
+    ],
+    "SAML": [
+      "saml",
+      "azure_ad_saml"
+    ],
+    "CAS": [
+      "cas"
+    ],
+    "OAuth2": [
+      "feishu_oauth2",
+      "dingtalk_oauth2",
+      "qywechat_oauth2"
+    ]
   },
   "idpTmplTitles": {
     "msad_one_domain": "Microsoft Active Directory Import order @:dictionary.domain",
@@ -7717,8 +7734,8 @@
   "monitor_metric_73": "Memory",
   "monitor_metric_74": "CPU usage",
   "monitor_metric_75": "Rds CPU usage",
-  "monitor_metric_76": "Cloud account balance",
   "monitor_metric_77": "balance",
+  "monitor_metric_76": "Cloud account balance",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": "a",
@@ -8341,5 +8358,6 @@
   "common_497": "Automatically allocate IP address pool",
   "common_498": "Whether to join the automatically assigned IP address pool",
   "common_499": "Whether to automatically create users",
-  "common_500": "After joining, the IP subnet belongs to the automatically assigned IP address pool. If the subsequent user creates a virtual machine without specifying a network, the virtual machine will be assigned an IP address from the IP subnet belonging to the automatically assigned IP address pool"
+  "common_500": "After joining, the IP subnet belongs to the automatically assigned IP address pool. If the subsequent user creates a virtual machine without specifying a network, the virtual machine will be assigned an IP address from the IP subnet belonging to the automatically assigned IP address pool",
+  "common_501": "simple"
 }

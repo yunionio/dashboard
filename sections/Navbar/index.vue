@@ -19,17 +19,11 @@
         <img class="logo" :src="logo" />
       </router-link>
     </div>
-    <!-- 全局搜索 -->
-    <div class="navbar-item d-flex align-items-center flex-fill">
-      <div class="globar-search-wrapper px-2" v-if="showGlobalSearch">
-        <global-search />
-      </div>
-    </div>
     <!-- 系统选择 -->
-    <div class="navbar-item d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="products && showSystemChoose">
+    <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="products && showSystemChoose">
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <icon type="navbar-setting" />
+          <icon type="navbar-setting" style="font-size: 24px; line-height: normal;"  />
           <span class="ml-2 text-truncate products-label">{{$t('common_211')}}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
@@ -39,7 +33,7 @@
       </a-dropdown>
     </div>
     <!-- 视图选择 -->
-    <div class="navbar-item d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
+    <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
       <a-popover
         trigger="click"
         v-model="viewChangePopoverVisible"
@@ -97,22 +91,26 @@
           </ul>
         </template>
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <icon type="navbar-view-switch" />
+          <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
           <span class="ml-2 current-view-label text-truncate" :title="viewLabel">{{ viewLabel }}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
       </a-popover>
     </div>
+    <!-- 全局搜索 -->
+    <div class="h-100 d-flex align-items-center flex-fill">
+      <div class="globar-search-wrapper px-2" v-if="showGlobalSearch">
+        <global-search />
+      </div>
+    </div>
     <slot name="frontNavbar" />
     <!-- 消息中心 -->
-    <notify-popover class="navbar-item flex-shrink-0 flex-grow-0" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
+    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
-    <work-order-popover class="navbar-item flex-shrink-0 flex-grow-0" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
+    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
     <slot name="behindNavbar" />
-    <!-- 设置 -->
-    <setting-popover class="navbar-item flex-shrink-0 flex-grow-0" :settingMenuTitleUsedText="settingMenuTitleUsedText" />
-    <!-- 帮助 -->
-    <help-popover class="navbar-item flex-shrink-0 flex-grow-0" v-if="showHelp" />
+    <!-- 更多 -->
+    <more-popover class="navbar-item-icon primary-color-hover" />
     <!-- 用户 -->
     <slot name="userPopover" />
   </div>
@@ -124,9 +122,9 @@ import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { mapGetters, mapState } from 'vuex'
 import NotifyPopover from './components/NotifyPopover'
-import SettingPopover from './components/SettingPopover'
+// import SettingPopover from './components/SettingPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
-import HelpPopover from './components/HelpPopover'
+import MorePopover from './components/MorePopover'
 import GlobalSearch from './components/GlobalSearch'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
@@ -136,9 +134,9 @@ export default {
   name: 'Navbar',
   components: {
     NotifyPopover,
-    SettingPopover,
+    // SettingPopover,
     WorkOrderPopover,
-    HelpPopover,
+    MorePopover,
     GlobalSearch,
   },
   mixins: [WindowsMixin],
@@ -597,7 +595,12 @@ export default {
 }
 .navbar-item {
   height: 100%;
-  border-left: 1px solid #f5f5f5;
+}
+.navbar-item-icon {
+  width: 40px;
+  height: 40px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .navbar-item-trigger {
   height: 100%;
@@ -666,11 +669,6 @@ export default {
     border-radius: 50%;
     z-index: -1;
     transition: all .3s ease;
-  }
-  &:hover {
-    &::after {
-      background-color: rgb(241, 241, 241);
-    }
   }
 }
 @media only screen and (max-width: 1100px) {
