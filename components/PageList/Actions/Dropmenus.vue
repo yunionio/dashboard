@@ -1,54 +1,30 @@
 <template>
-  <a-popover
-    trigger="click"
+  <a-dropdown
     v-model="visible"
     placement="bottomRight"
-    destroyTooltipOnHide
-    overlayClassName="page-list-actions-dropmenus-wrap"
+    :trigger="['click']"
     @visibleChange="handleVisibleChange">
     <action-button :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" :button-style="buttonStyle" :button-block="buttonBlock" popover-trigger @clear-selected="clearSelected" />
-    <div slot="content">
-      <template v-if="options.length > 0">
-        <template v-if="!isSubmenus">
-          <template v-for="item of options">
-            <div :key="item.label" class="menu-item">
-              <action-button button-size="small" :button-style="{ fontSize: '12px' }" :item="item" :row="row" @hidden-popover="hiddenPopover" @clear-selected="clearSelected" />
-            </div>
-          </template>
-        </template>
-        <template v-else>
-          <div class="pl-3 pr-3">
-            <template v-for="item of options">
-              <div class="submenu-item" :key="item.label">
-                <a-row :gutter="20">
-                  <a-col :span="6">
-                    <div class="submenu-item-label">{{ item.label }}</div>
-                  </a-col>
-                  <a-col :span="18">
-                    <a-row :gutter="20">
-                      <a-col
-                        :span="12"
-                        v-for="submenu of item.submenus"
-                        :key="submenu.label"
-                        class="submenu-item-action-wrap">
-                        <action-button
-                          :item="submenu"
-                          :row="row"
-                          button-size="small"
-                          :button-style="{ fontSize: '12px' }"
-                          @hidden-popover="hiddenPopover"
-                          @clear-selected="clearSelected" />
-                      </a-col>
-                    </a-row>
-                  </a-col>
-                </a-row>
-              </div>
-            </template>
-          </div>
+    <a-menu slot="overlay">
+      <template v-if="!isSubmenus">
+        <template v-for="item of options">
+          <a-menu-item v-if="!isSubmenus" :key="item.label">
+            <action-button button-size="small" :button-style="{ fontSize: '12px' }" :item="item" :row="row" @hidden-popover="hiddenPopover" @clear-selected="clearSelected" />
+          </a-menu-item>
         </template>
       </template>
-    </div>
-  </a-popover>
+      <a-sub-menu v-else v-for="item of options" :key="item.label" :title="item.label" class="submenu-item">
+        <a-menu-item v-for="submenu of item.submenus" :key="submenu.label" class="submenu-item">
+          <action-button
+            :item="submenu"
+            :row="row"
+            button-size="small"
+            :button-style="{ fontSize: '12px' }"
+            @clear-selected="clearSelected" />
+        </a-menu-item>
+      </a-sub-menu>
+    </a-menu>
+  </a-dropdown>
 </template>
 
 <script>
@@ -131,55 +107,12 @@ export default {
 @import "../../../styles/less/theme";
 
 .submenu-item {
-  cursor: default;
-  width: 320px;
-  border-bottom: 1px solid #eee;
-  &:hover {
-    background-color: #fff;
-  }
-  &:last-child {
-    border-bottom: 0;
-  }
+  cursor: pointer;
+  width: 130px;
 }
 .submenu-item-label {
   font-size: 12px;
   color: #3c73b9;
   padding-top: 8px;
-}
-.submenu-item-action-wrap {
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
-  color: rgba(0, 0, 0, 0.65);
-  button {
-    color: rgba(0, 0, 0, 0.65);
-    &:hover {
-      color: @primary-5;
-    }
-    &:disabled {
-      color: rgba(0, 0, 0, 0.25);
-      cursor: not-allowed;
-      &:hover {
-        color: rgba(0, 0, 0, 0.25);
-      }
-    }
-  }
-}
-.menu-item {
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
-  color: rgba(0, 0, 0, 0.65);
-  button {
-    color: rgba(0, 0, 0, 0.65);
-    &:hover {
-      color: @primary-5;
-    }
-    &:disabled {
-      color: rgba(0, 0, 0, 0.25);
-      cursor: not-allowed;
-      &:hover {
-        color: rgba(0, 0, 0, 0.25);
-      }
-    }
-  }
 }
 </style>
