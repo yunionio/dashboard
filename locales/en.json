@@ -1816,7 +1816,8 @@
     "hours": "Hours",
     "days": "天",
     "months": "Month",
-    "years": "years"
+    "years": "years",
+    "ms": "millisecond"
   },
   "durations": {
     "1h": "1 hour",
@@ -7736,6 +7737,23 @@
   "monitor_metric_75": "Rds CPU usage",
   "monitor_metric_77": "balance",
   "monitor_metric_76": "Cloud account balance",
+  "monitor_metric_78": "total {0} records",
+  "monitor_metric_79": "Disk read rate",
+  "monitor_metric_80": "Disk write rate",
+  "monitor_metric_81": "Disk read operate rate",
+  "monitor_metric_82": "Disk write operate rate",
+  "monitor_metric_83": "Bytes write",
+  "monitor_metric_84": "Time to wait for write",
+  "monitor_metric_85": "Used memory rate",
+  "monitor_metric_86": "Used memory",
+  "monitor_metric_87": "Available memory",
+  "monitor_metric_88": "The amount of active memory",
+  "monitor_metric_89": "The amount of inactive memory",
+  "monitor_metric_90": "Total memory",
+  "monitor_metric_91": "The total number of packets received by the network interface",
+  "monitor_metric_92": "The total number of transmission packets dropped by the network interface",
+  "monitor_metric_93": "CPU utilization rate per core",
+  "monitor_metric_94": "The number of threads used by the process",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": "a",
@@ -8416,5 +8434,10 @@
   "common_555": "Only common SAML supports viewing",
   "common_556": "User attribution domain",
   "common_557": "I have Endpoint information",
-  "common_558": "Auto assign"
+  "common_558": "Join by group",
+  "common_559": "Join directly",
+  "common_560": "You can’t directly modify the role of items added through a group, please go to the group page to set",
+  "common_561": "Items added through a group cannot be removed directly, please go to the group page to set",
+  "common_562": "Considering that {0} failed to collect data in time has switched for you to view data for nearly three hours",
+  "common_563": "Auto assign"
 }

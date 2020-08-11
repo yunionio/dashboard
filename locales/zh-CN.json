@@ -1816,7 +1816,8 @@
     "hours": "小时",
     "days": "天",
     "months": "月",
-    "years": "年"
+    "years": "年",
+    "ms": "毫秒"
   },
   "durations": {
     "1h": "1小时",
@@ -7737,6 +7738,22 @@
   "monitor_metric_77": "余额",
   "monitor_metric_76": "云账号余额",
   "monitor_metric_78": "共 {0} 条记录",
+  "monitor_metric_79": "磁盘读速率",
+  "monitor_metric_80": "磁盘写速率",
+  "monitor_metric_81": "磁盘读操作速率",
+  "monitor_metric_82": "磁盘写操作速率"	,
+  "monitor_metric_83": "写入的字节数",
+  "monitor_metric_84": "等待写入的时间"	,
+  "monitor_metric_85": "内存使用率",
+  "monitor_metric_86": "已使用内存",
+  "monitor_metric_87": "可用内存",
+  "monitor_metric_88": "活动内存量",
+  "monitor_metric_89": "非活动内存量",
+  "monitor_metric_90": "总内存",
+  "monitor_metric_91": "网络接口接收数据包总数",
+  "monitor_metric_92": "网络接口丢包总数",
+  "monitor_metric_93": "CPU每核使用率",
+  "monitor_metric_94": "进程下线程数",
   "common.text00001": "可用",
   "common.text00002": "你所选的",
   "common.text00003": "个",
@@ -8417,5 +8434,10 @@
   "common_555": "仅通用SAML支持查看",
   "common_556": "用户归属域",
   "common_557": "我有Endpoint信息",
-  "common_558": "自动分配"
+  "common_558": "通过组加入",
+  "common_559": "直接加入",
+  "common_560": "通过组加入的项目无法直接修改角色，请到组页面进行设置",
+  "common_561": "通过组加入的项目无法直接移除，请到组页面进行设置",
+  "common_562": "考虑到{0}未能及时采集数据，已为您切换到查看近三小时数据",
+  "common_563": "自动分配"
 }

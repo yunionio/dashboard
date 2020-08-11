@@ -13,6 +13,7 @@
       :sort-config="{ sortMethod: () => {} }"
       :expand-config="expandConfig"
       :pager-config="tablePage"
+      :span-method="spanMethod"
       @page-change="handlePageChange"
       @sort-change="handleSortChange"
       v-on="dynamicEvents"
@@ -23,7 +24,7 @@
     </vxe-grid>
     <template v-if="tableData.length > 0 && nextMarker">
       <div class="text-center mt-4">
-        <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? this.$t('common.loding') : this.$t('common.LoadMore') }}</a-button>
+        <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
       </div>
     </template>
   </floating-scroll>
@@ -91,6 +92,9 @@ export default {
     isSidepageOpen: {
       type: Boolean,
       default: false,
+    },
+    spanMethod: {
+      type: Function,
     },
     noDataText: String,
     showPage: Boolean,

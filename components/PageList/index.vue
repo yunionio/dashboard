@@ -58,6 +58,7 @@
         :isSidepageOpen="isSidepageOpen"
         :noDataText="noDataText"
         :show-page="showPage"
+        :span-method="spanMethod"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -147,6 +148,9 @@ export default {
     showPage: {
       type: Boolean,
       default: true,
+    },
+    spanMethod: {
+      type: Function,
     },
   },
   provide: {

@@ -604,15 +604,16 @@ export const compactObj = (obj, fn = R.isEmpty) => {
  * @param {Number} base
  * @return {Object} e.g: { text: '123 MB', value: '123', unit: 'MB'  }
  */
-export const transformUnit = (value, unit = '', base = 1000) => {
+export const transformUnit = (value, unit = '', base = 1000, numerifyFormat = '0.00') => {
   const number = Number(value)
+  const valueStr = numerify(number, numerifyFormat)
   if (!R.is(Number, number) || Number.isNaN(number)) {
     console.error('onecloud: value must be Number type by used transformUnit util')
     return null
   }
   let obj = {
-    text: `${number} ${unit}`,
-    value: numerify(number, '0.00'),
+    text: `${valueStr} ${unit}`,
+    value: valueStr,
     unit,
   }
   if (~UNITS.indexOf(unit)) {
@@ -642,6 +643,23 @@ export const transformUnit = (value, unit = '', base = 1000) => {
   } else if (~unit.indexOf('ms')) {
     const text = numerify(number, unit)
     obj.text = text
+  }
+  return obj
+}
+
+/**
+ * 统计每个元素出现次数
+ * @param {Array<String>} arr 要统计的元素数组
+ */
+export const uniqueOccurrences = (arr) => {
+  const obj = {} // 新建对象存储每个元素和出现的次数
+
+  for (let i = 0; i < arr.length; i++) {
+    if (!obj[arr[i]]) {
+      obj[arr[i]] = 1
+    } else {
+      obj[arr[i]]++
+    }
   }
   return obj
 }
