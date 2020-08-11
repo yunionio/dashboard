@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ this.$t('cloudenv.cloudgroup_single_action1') }}</div>
+    <div slot="header">{{ $t('cloudenv.cloudgroup_single_action1') }}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.cloudgroup')" :count="params.data.length" :action="$t('cloudenv.cloudgroup_single_action1')" />
       <dialog-table class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
