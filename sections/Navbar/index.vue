@@ -19,19 +19,6 @@
         <img class="logo" :src="logo" />
       </router-link>
     </div>
-    <!-- 系统选择 -->
-    <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="products && showSystemChoose">
-      <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
-        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <icon type="navbar-setting" style="font-size: 24px; line-height: normal;"  />
-          <span class="ml-2 text-truncate products-label">{{$t('common_211')}}</span>
-          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
-        </div>
-        <a-menu slot="overlay" @click="productChange">
-          <a-menu-item v-for="(item, idx) of products" :key="`${item.key}$$${idx}`">{{ item.label }}</a-menu-item>
-        </a-menu>
-      </a-dropdown>
-    </div>
     <!-- 视图选择 -->
     <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
       <a-popover
@@ -96,6 +83,19 @@
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
       </a-popover>
+    </div>
+    <!-- 系统选择 -->
+    <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="products && showSystemChoose">
+      <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
+        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+          <icon type="navbar-setting" style="font-size: 24px; line-height: normal;"  />
+          <span class="ml-2 text-truncate products-label">{{$t('common_211')}}</span>
+          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+        </div>
+        <a-menu slot="overlay" @click="productChange">
+          <a-menu-item v-for="(item, idx) of products" :key="`${item.key}$$${idx}`">{{ item.label }}</a-menu-item>
+        </a-menu>
+      </a-dropdown>
     </div>
     <!-- 全局搜索 -->
     <div class="h-100 d-flex align-items-center flex-fill">
