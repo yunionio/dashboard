@@ -101,6 +101,11 @@ export default {
       }
     },
     mertricItemChange (item, i) {
+      const t = +this.time.replace(/\D+/, '')
+      if (item.id === 'balance' && ~this.time.indexOf('h') && t < 3) { // 指定余额
+        this.time = '3h'
+        this.$message.warning(`考虑到${item.label}未能及时采集数据，已为您切换到查看近三小时数据`)
+      }
       this.$set(this.seriesDescription, i, item)
     },
     async fetchAllData () {
