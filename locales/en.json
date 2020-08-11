@@ -8415,5 +8415,6 @@
   "common_554": "View IDP source data",
   "common_555": "Only common SAML supports viewing",
   "common_556": "User attribution domain",
-  "common_557": "I have Endpoint information"
+  "common_557": "I have Endpoint information",
+  "common_558": "Auto assign"
 }

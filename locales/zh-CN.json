@@ -8416,5 +8416,6 @@
   "common_554": "查看IDP源数据",
   "common_555": "仅通用SAML支持查看",
   "common_556": "用户归属域",
-  "common_557": "我有Endpoint信息"
+  "common_557": "我有Endpoint信息",
+  "common_558": "自动分配"
 }
