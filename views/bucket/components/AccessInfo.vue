@@ -1,6 +1,6 @@
 <template>
-  <a-popover :title="$t('storage.text_91')" trigger="hover" @visibleChange="handleVisibleChange" placement="right">
-    <div slot="content" style="width: 700px;">
+  <a-popover :title="$t('storage.text_91')" trigger="hover" placement="right" @visibleChange="handleVisibleChange">
+    <div slot="content" class="access-info-content">
       <a-spin :spinning="loading" />
       <template v-if="!loading">
         <a-row v-for="(value, key) in infoData" :key="key" class="pb-2">
@@ -57,6 +57,10 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style lang="scss" scoped>
+  .access-info-content {
+    max-height: 300px;
+    width: 700px;
+    overflow-y:auto;
+  }
+</style>>
