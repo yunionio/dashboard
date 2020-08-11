@@ -27,7 +27,7 @@
         :metricInfo="metricInfo" />
     </a-form-item>
     <a-form-item :label="$t('monitor.condition')" class="mb-0">
-      <condition :decorators="decorators" :disabled="disabled" @thresholdChange="emitThreshold" />
+      <condition :decorators="decorators" :disabled="disabled" @thresholdChange="emitThreshold" :unit="conditionUnit" />
     </a-form-item>
     <a-form-item :label="$t('monitor.level')">
       <a-radio-group v-decorator="decorators.level" :disabled="disabled">
@@ -275,6 +275,7 @@ export default {
       oldParams: {},
       metricKeyOpts: [],
       metricInfo: {},
+      conditionUnit: '',
       metricKeyItem: {},
       contactParams: {
         scope: this.$store.getters.scope,
@@ -370,6 +371,7 @@ export default {
     async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
         this.metricKeyItem = metricKeyItem
+        this.conditionUnit = _.get(mertricItem, 'description.unit') || ''
         this.$emit('mertricItemChange', mertricItem)
         const params = {
           database: metricKeyItem.database || 'telegraf',
