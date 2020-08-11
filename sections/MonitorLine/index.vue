@@ -16,6 +16,13 @@
         :columns="columns"
         :data="tableData"
         :row-style="getRowStyle" />
+      <div class="vxe-grid--pager-wrapper">
+        <div class="vxe-pager size--mini">
+          <div class="vxe-pager--wrapper">
+            <span class="vxe-pager--total">{{ total }}</span>
+          </div>
+        </div>
+      </div>
     </template>
   </a-card>
 </template>
@@ -28,6 +35,8 @@ import { tableColumnMaps } from '@Monitor/constants'
 import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
+
+const MAX_COLUMNS = 6
 
 export default {
   name: 'ExplorerMonitorLine',
@@ -97,6 +106,10 @@ export default {
         return ret
       })
     },
+    total () {
+      const total = this.tableData.length || 0
+      return this.$t('monitor_metric_78', [total])
+    },
     columns () {
       const columns = [
         {
@@ -128,7 +141,7 @@ export default {
           })
         }
       }
-      return columns
+      return columns.slice(0, MAX_COLUMNS)
     },
   },
   watch: {
@@ -288,10 +301,11 @@ export default {
       lineChartOptions.tooltip = {
         trigger: 'axis',
         position: (point, params, dom, rect, size) => {
-          const series = params.map(line => {
+          const series = params.map((line, i) => {
             const val = transformUnit(line.value, _.get(this.description, 'description.unit'))
             const value = _.get(val, 'text') || line.value
-            return `<div style="color: #616161;" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${line.seriesName || ' '}</span>:  <span>${value}</span></div>`
+            const color = i === this.highlight.index ? this.highlight.color : '#616161'
+            return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${line.seriesName || ' '}</span>:&nbsp;<span>${value}</span></div>`
           }).join('')
           const wrapper = `<div class="chart-tooltip-wrapper">
                         <div style="color: #5D6F80;">${params[0].name}</div>

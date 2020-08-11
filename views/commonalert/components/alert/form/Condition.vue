@@ -12,7 +12,7 @@
     </a-col>
     <a-col :span="6">
       <a-form-item>
-        <a-input v-decorator="decorators.threshold" :addon-after="unit" :disabled="disabled" @blur="blur" />
+        <a-input v-decorator="decorators.threshold" :disabled="disabled" @blur="blur" :suffix="unit" />
       </a-form-item>
     </a-col>
   </a-row>
@@ -34,6 +34,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    unit: {
+      type: String,
+      default: '',
+    },
   },
   data () {
     return {
@@ -43,12 +47,6 @@ export default {
         { key: '<=', label: '<=' },
       ],
     }
-  },
-  computed: {
-    unit () { // 3.3 暂时不加 单位
-      // % bps iops
-      return ''
-    },
   },
   methods: {
     blur (e) {

@@ -1,5 +1,6 @@
 /* eslint-disable quote-props */
 import i18n from '@/locales'
+import BrandIcon from '@/sections/BrandIcon'
 
 export const timeOpts = {
   [`${1}h`]: {
@@ -241,9 +242,17 @@ export const tableColumnMaps = {
     title: i18n.t('common_295'),
     field: 'cloudaccount_name',
   },
-  health_status: {
-    title: i18n.t('cloudenv.text_93'),
-    field: 'health_status',
+  brand: {
+    title: i18n.t('common.brand'),
+    field: 'brand',
+    slots: {
+      default: ({ row }, h) => {
+        if (row.brand) {
+          return [<BrandIcon name={ row.brand } />]
+        }
+        return '-'
+      },
+    },
   },
 }
 
@@ -367,4 +376,20 @@ export const metric_zh = {
   'Rds CPU usage': i18n.t('monitor_metric_75'),
   'Cloud account balance': i18n.t('monitor_metric_76'),
   'balance': i18n.t('monitor_metric_77'),
+  'Disk read rate': i18n.t('monitor_metric_79'),
+  'Disk write rate': i18n.t('monitor_metric_80'),
+  'Disk read operate rate': i18n.t('monitor_metric_81'),
+  'Disk write operate rate': i18n.t('monitor_metric_82'),
+  'Bytes write': i18n.t('monitor_metric_83'),
+  'Time to wait for write': i18n.t('monitor_metric_84'),
+  'Used memory rate': i18n.t('monitor_metric_85'),
+  'Used memory': i18n.t('monitor_metric_86'),
+  'Available memory': i18n.t('monitor_metric_87'),
+  'The amount of active memory': i18n.t('monitor_metric_88'),
+  'The amount of inactive memory': i18n.t('monitor_metric_89'),
+  'Total memory': i18n.t('monitor_metric_90'),
+  'The total number of packets received by the network interface': i18n.t('monitor_metric_91'),
+  'The total number of transmission packets dropped by the network interface': i18n.t('monitor_metric_92'),
+  'CPU utilization rate per core': i18n.t('monitor_metric_93'),
+  'The number of threads used by the process': i18n.t('monitor_metric_94'),
 }

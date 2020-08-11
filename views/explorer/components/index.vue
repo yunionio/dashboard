@@ -128,7 +128,6 @@ export default {
         const { series = [] } = await this.fetchData(metric_query)
         this.$set(this.seriesList, i, series)
         this.loadingList[i] = false
-        // this.$set(this.loadingList, i, false)
       } catch (error) {
         this.$set(this.seriesList, i, [])
         this.$set(this.loadingList, i, false)
