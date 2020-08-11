@@ -5,67 +5,67 @@ import numerifyBps from 'numerify/lib/plugins/bps.umd'
 import numerifyBytes from 'numerify/lib/plugins/bytes.umd'
 import numerifyPercent from 'numerify/lib/plugins/percent.umd'
 import numerifyCurrency from 'numerify/lib/plugins/currency.umd'
+import i18n from '@/locales'
 
 n.register('bps', numerifyBps)
 n.register('bytes', numerifyBytes)
 n.register('percent', numerifyPercent)
 n.register('currency', numerifyCurrency)
 
-const timemsFunc = (value, format = 'ms') => {
+const timemsFunc = (timeFormat, value, format, roundingFunction) => {
   const second = 1000
   const minute = 60 * second
   const hour = 60 * minute
   const day = 24 * hour
-  const days = Math.floor(value / day)
-  const hours = Math.floor((value - days * day) / hour)
-  const minutes = Math.floor((value - days * day - hours * hour) / minute)
-  const seconds = Math.floor((value - days * day - hours * hour - minutes * minute) / second)
+  const days = value / day
+  const hours = (value - days * day) / hour
+  const minutes = (value - days * day - hours * hour) / minute
+  const seconds = (value - days * day - hours * hour - minutes * minute) / second
   const ms = value - days * day - hours * hour - minutes * minute - seconds * second
-  let output = ''
-  if (days) {
-    output += `${days}天`
-    if (format === 'intms') return output
+  if (days >= 1) {
+    if (timeFormat === 'intms') return `${Math.floor(days)}${i18n.t('subDurations.days')}`
+    else return `${n._numberToFormat(days, '0.00', roundingFunction)}${i18n.t('subDurations.days')}`
   }
-  if (hours) {
-    output += `${hours}小时`
-    if (format === 'intms') return output
+  if (hours >= 1) {
+    if (timeFormat === 'intms') return `${Math.floor(hours)}${i18n.t('subDurations.hours')}`
+    else return `${n._numberToFormat(hours, '0.00', roundingFunction)}${i18n.t('subDurations.hours')}`
   }
-  if (minutes) {
-    output += `${minutes}分钟`
-    if (format === 'intms') return output
+  if (minutes >= 1) {
+    if (timeFormat === 'intms') return `${Math.floor(minutes)}${i18n.t('subDurations.minutes')}`
+    else return `${n._numberToFormat(minutes, '0.00', roundingFunction)}${i18n.t('subDurations.minutes')}`
   }
-  if (seconds) {
-    output += `${seconds}秒`
-    if (format === 'intms') return output
+  if (seconds >= 1) {
+    if (timeFormat === 'intms') return `${Math.floor(seconds)}${i18n.t('subDurations.seconds')}`
+    else return `${n._numberToFormat(seconds, '0.00', roundingFunction)}${i18n.t('subDurations.seconds')}`
   }
   if (ms) {
-    output += `${ms}毫秒`
-    if (format === 'intms') return output
+    if (timeFormat === 'intms') return `${Math.floor(ms)}${i18n.t('subDurations.ms')}`
+    else return `${n._numberToFormat(ms, '0.00', roundingFunction)}${i18n.t('subDurations.ms')}`
   }
-  return output
+  return '0'
 }
 
 n.register('timems', {
   regexp: /^ms/,
-  format (value) {
+  format (value, format, roundingFunction) {
     value = Number(value)
     if (typeof value !== 'number' || Number.isNaN(value)) {
       value = 0
       console.error('onecloud: value must be Number type by used numerify custom util timems')
     }
-    return timemsFunc(value, 'ms')
+    return timemsFunc('ms', value, format, roundingFunction)
   },
 })
 
 n.register('timemsint', {
   regexp: /^intms/,
-  format (value) {
+  format (value, format, roundingFunction) {
     value = Number(value)
     if (typeof value !== 'number' || Number.isNaN(value)) {
       value = 0
       console.error('onecloud: value must be Number type by used numerify custom util timems')
     }
-    return timemsFunc(value, 'intms')
+    return timemsFunc('intms', value, format, roundingFunction)
   },
 })
 
