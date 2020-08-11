@@ -3,7 +3,7 @@
     <div class="setting-item">
       <h3 class="setting-title">{{$t('common_459')}}</h3>
       <a-button-group size="small">
-        <a-button :type="language === 'zh-CN' ? 'primary' : 'default'" @click="() => handleChangeLanguage('zh-CN')">{{$t('common_497')}}</a-button>
+        <a-button :type="language === 'zh-CN' ? 'primary' : 'default'" @click="() => handleChangeLanguage('zh-CN')">简体中文</a-button>
         <a-button :type="language === 'en' ? 'primary' : 'default'" @click="() => handleChangeLanguage('en')">En</a-button>
       </a-button-group>
     </div>
