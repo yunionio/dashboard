@@ -49,7 +49,13 @@ export default {
   name: 'ExportListDataDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    let exportOptionItems = [...this.params.options.items]
+    let exportOptionItems = [...this.params.options.items].filter(item => {
+      const { hidden } = item
+      if (hidden && R.type(hidden) === 'Function') {
+        return hidden()
+      }
+      return !hidden
+    })
     let allExportKeys = exportOptionItems.map(item => item.key)
     const exportTags = (this.params.showTagColumns && this.params.config.showTagKeys) || []
     if (exportTags && exportTags.length) {

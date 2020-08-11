@@ -2,9 +2,12 @@
   <div>
     <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <icon type="question" style="font-size: 24px;" />
+        <icon type="navbar-more" style="font-size: 24px;" />
       </div>
       <a-menu slot="overlay" @click="handleDropdownClick">
+        <a-menu-item key="/user-preferences">
+          {{$t('scope.text_238')}}
+        </a-menu-item>
         <a-menu-item key="/guide" v-if="isAdminMode">{{$t('common_187')}}</a-menu-item>
         <a-menu-item :key="docsUrl">{{$t('common_188')}}</a-menu-item>
         <a-menu-item key="/licenses">
@@ -56,6 +59,7 @@ export default {
       })
     },
     handleDropdownClick (item) {
+      if (item.key === 'setting') return
       const newWindow = item.key.startsWith('http')
       if (newWindow) {
         window.open(item.key)
@@ -70,7 +74,7 @@ export default {
 <style lang="less" scoped>
 .trigger {
   height: 100%;
-  padding: 0 20px;
+  // padding: 0 20px;
   cursor: pointer;
   text-decoration: none;
 }
