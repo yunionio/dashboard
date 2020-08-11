@@ -55,7 +55,7 @@ export default {
         steadyStatus: {
           status: Object.values(expectStatus.server).flat(),
           checkBackup: (val) => {
-            return val.metadata.create_backup || val.metadata.switch_backup
+            return val.metadata && (val.metadata.create_backup || val.metadata.switch_backup)
           },
         },
         filterOptions: {
