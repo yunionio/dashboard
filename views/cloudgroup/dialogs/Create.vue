@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ this.$t('common.create') }}{{ this.$t('dictionary.cloudgroup') }}</div>
+    <div slot="header">{{ $t('common.create') }}{{ $t('dictionary.cloudgroup') }}</div>
     <div slot="body">
       <a-form
         :form="form.fc"
