@@ -1816,7 +1816,8 @@
     "hours": "Hours",
     "days": "天",
     "months": "Month",
-    "years": "years"
+    "years": "years",
+    "ms": "millisecond"
   },
   "durations": {
     "1h": "1 hour",

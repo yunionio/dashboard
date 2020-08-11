@@ -1816,7 +1816,8 @@
     "hours": "小时",
     "days": "天",
     "months": "月",
-    "years": "年"
+    "years": "年",
+    "ms": "毫秒"
   },
   "durations": {
     "1h": "1小时",
