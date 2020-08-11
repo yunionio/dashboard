@@ -8387,7 +8387,7 @@
   "common_526": "Please enter ClientSecret",
   "common_527": "Please enter AppId",
   "common_528": "Please enter Secret",
-  "common_529": "Please enter ${0}DN",
+  "common_529": "Please enter {0}DN",
   "common_530": "Please enter Endpoint",
   "common_531": "Please enter Scopes",
   "common_532": "If there are multiple Scopes, please use “,” to separate",
