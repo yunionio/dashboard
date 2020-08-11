@@ -51,5 +51,6 @@ export default {
     `,
     ipSupplement: '请确保本次提交IP与实际IP一致，一经提交成功无法修改',
     disable_user_on_import: '启用表示用户状态为启用，则本次带入用户均可使用本系统, 禁用反之，你可以在导入成功后在用户列表重新设置',
+    defaultServerNetwork: '将从属于自动分配地址池的IP子网中为虚拟机分配IP地址',
   },
 }
