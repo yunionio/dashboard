@@ -1,5 +1,5 @@
 <template>
-  <a-select label-in-value :value="value" :loading="loading" @change="imageChange" :filterOption="filterOption" :showSearch="true" option-filter-prop="children">
+  <a-select label-in-value :value="value" :loading="loading" @change="imageChange" :filterOption="filterOption" :showSearch="true" option-filter-prop="children" :placeholder="$t('compute.text_214')" allowClear>
     <a-select-option v-for="item in imageOptions" :key="item.id" :value="item.id">
       {{ item.name }}
       <!-- <div class="d-flex align-items-center">
@@ -18,7 +18,6 @@ export default {
   name: 'ImageSelectTemplate',
   props: {
     value: {
-      type: Object,
     },
     imageOpts: {
       type: Array,
@@ -44,9 +43,9 @@ export default {
             label,
           }
         }
-        this.$emit('change', imageObj)
-        this.$emit('imageChange', imageObj)
       }
+      this.$emit('change', imageObj)
+      this.$emit('imageChange', imageObj)
     },
     filterOption (input, option) {
       return (

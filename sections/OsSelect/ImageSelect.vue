@@ -14,7 +14,7 @@
       </a-col>
       <a-col :span="showCloudaccount ? 4 : 6">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select v-decorator="decorator.os" :loading="loading" @change="osChange">
+          <a-select v-decorator="decorator.os" :loading="loading" @change="osChange" :placeholder="$t('compute.text_153')">
             <a-select-option v-for="item in imagesInfo.osOpts" :key="item.key">
               <div :key="item.key" class="d-flex align-items-center">
                 <image-icon :image="item.key" />
@@ -44,10 +44,7 @@ import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import storage from '@/utils/storage'
 import { uuid } from '@/utils/utils'
 
-const initData = {
-  key: '',
-  label: '',
-}
+const initData = undefined
 
 export default {
   name: 'ImageSelect',
@@ -210,7 +207,7 @@ export default {
         })
         const arr = imageOpts.filter((item) => { return !item.hidden })
         if (arr.length === 0 && os === 'Windows') {
-          this.form.fc.setFieldsValue({ image: {} })
+          this.form.fc.setFieldsValue({ [this.decorator.image[0]]: initData })
         }
         return imageOpts
       }
@@ -292,8 +289,8 @@ export default {
     _resetImage () {
       const { os, image } = this.form.fc.getFieldsValue(['os', 'image'])
       if (os && image) {
-        this.form.fc.setFieldsValue({ os: '' })
-        this.form.fc.setFieldsValue({ image: { ...initData } })
+        this.form.fc.setFieldsValue({ os: undefined })
+        this.form.fc.setFieldsValue({ image: initData })
       }
     },
     async fetchImages () {
@@ -553,7 +550,7 @@ export default {
         let os = osValue || osOpts[0].key
         let imageOpts = this.getImageOpts(imageOptsMap[os])
         if (!imageOpts || !imageOpts.length) {
-          this.form.fc.setFieldsValue({ image: { ...initData } })
+          this.form.fc.setFieldsValue({ image: initData })
         } else {
           const isEsxit = imageValue && !!imageOpts.find(val => val.id === imageValue.key)
           let image = isEsxit ? imageValue : { key: imageOpts[0].id, label: imageOpts[0].name }
@@ -571,7 +568,7 @@ export default {
           if (this.imageOptions.find(val => val.id === image.key)) {
             this.form.fc.setFieldsValue({ image })
           } else {
-            this.form.fc.setFieldsValue({ image: { ...initData } })
+            this.form.fc.setFieldsValue({ image: initData })
           }
           const currentImage = this.form.fc.getFieldValue(this.decorator.image[0])
           if (currentImage && imageValue && currentImage.key === imageValue.key) {
@@ -581,7 +578,7 @@ export default {
         }
         this.form.fc.setFieldsValue({ os })
       } else {
-        this.form.fc.setFieldsValue({ os: '', image: { ...initData } })
+        this.form.fc.setFieldsValue({ os: undefined, image: initData })
       }
     },
     getImageOpts (imageOpts = []) {

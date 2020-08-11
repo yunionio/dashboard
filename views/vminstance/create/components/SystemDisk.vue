@@ -125,6 +125,24 @@ export default {
       const hypervisorDisks = { ...STORAGE_TYPES[hyper] } || {}
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
+      if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
+        if (this.sku.sys_disk_type) {
+          const skuDiskTypes = this.sku.sys_disk_type.split(',')
+          if (skuDiskTypes && skuDiskTypes.length) {
+            currentTypes = skuDiskTypes
+          }
+        } else {
+          for (const obj in hypervisorDisks) {
+            if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
+              delete hypervisorDisks[obj]
+            }
+          }
+        }
+      } else {
+        if (this.isPublic) {
+          currentTypes = []
+        }
+      }
       const localIndex = currentTypes.findIndex(item => item.includes('local'))
       const novaIndex = currentTypes.findIndex(item => item.includes('nova'))
       if (localIndex !== -1 && localIndex !== 0) { // 将local放置首位
@@ -132,17 +150,6 @@ export default {
       }
       if (novaIndex !== -1 && novaIndex !== (currentTypes.length - 1)) { // 将nova放置到最后
         currentTypes = findAndPush(currentTypes, item => item.includes('nova'))
-      }
-      if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
-        for (const obj in hypervisorDisks) {
-          if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.sku.instance_type_family)) {
-            delete hypervisorDisks[obj]
-          }
-        }
-      } else {
-        if (this.isPublic) {
-          currentTypes = []
-        }
       }
       for (let i = 0, len = currentTypes.length; i < len; i++) {
         const type = currentTypes[i].split('/')[0]

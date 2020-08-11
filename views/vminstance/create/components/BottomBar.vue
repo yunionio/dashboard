@@ -165,7 +165,7 @@ export default {
       return ret.join('、')
     },
     image () {
-      return this.fd.image.label
+      return _.get(this.fd, 'image.label') || ''
     },
     tips () {
       const ret = [
