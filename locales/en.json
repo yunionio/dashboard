@@ -8381,7 +8381,7 @@
   "common_520": "When there is no project with the same name locally, a project with the same name will be created automatically",
   "common_521": "Use {1} in {0} first",
   "common_522": "When a user synchronizes to a project in the system, the local role with the same name as {0} is preferred. If there is no role with the same name in the system, the default role will be used. If the default role is not specified, the user will be The project has no role and can be adjusted in the user list after adding",
-  "common_523": "Please choose a domain",
+  "common_523": "Please choose a {0}",
   "common_524": "Please enter TenantId",
   "common_525": "Please enter ClientID",
   "common_526": "Please enter ClientSecret",
