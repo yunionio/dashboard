@@ -4,6 +4,7 @@
 
 <script>
 import { IMAGE_MSG } from './constants'
+import i18n from '@/locales'
 
 const sprites = require('./assets/sprites.png')
 const unknow = require('./assets/unkonw.png')
@@ -19,7 +20,7 @@ export default {
           return true
         } else {
           if (val !== 'other') {
-            console.warn(this.$t('common_16', [val]))
+            console.warn(i18n.t('common_16', [val]))
           }
           return true
         }
