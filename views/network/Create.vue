@@ -142,14 +142,16 @@ const masks = {
 }
 
 function validateGateway (rule, value, callback) {
+  if (!value) {
+    return callback()
+  }
   // 只需要查看是否是以 0 结尾
   const ipItems = value.split('.')
   const msg = this.$t('network.text_591')
   if (ipItems[ipItems.length - 1] === '0') {
-    callback(msg)
-  } else {
-    callback()
+    return callback(new Error(msg))
   }
+  return callback()
 }
 
 export default {
@@ -337,8 +339,8 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { required: true, message: this.$t('network.text_596') },
-                { validator: this.$validate('IPv4') },
+                // { required: true, message: this.$t('network.text_596') },
+                { validator: this.$validate('IPv4', false) },
                 { validator: validateGateway },
               ],
             },
@@ -387,7 +389,7 @@ export default {
       ],
       isShowWire: true,
       isGroupGuestIpPrefix: false,
-      show: 'true',
+      show: true,
       regionProvider: '',
       regionId: '',
       guestIpPrefix: [{ key: uuid() }],
@@ -627,10 +629,10 @@ export default {
       this.guestIpPrefixHelp = ''
     },
     async handleSubmit () {
-      this.submiting = true
       const ListPath = this.$router.resolve(this.$route.path)
       try {
         const values = await this.form.fc.validateFields()
+        this.submiting = true
         if (values.platform_type === 'idc' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
           this.ipSubnetsValidateStatus = 'error'
           this.ipSubnetsHelp = this.$t('network.text_605')
@@ -659,6 +661,8 @@ export default {
           await manager.create({ data })
         }
         this.$router.push({ path: ListPath.resolved.matched[0].path })
+      } catch (err) {
+        throw err
       } finally {
         this.submiting = false
       }
