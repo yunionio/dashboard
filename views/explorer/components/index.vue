@@ -101,6 +101,11 @@ export default {
       }
     },
     mertricItemChange (item, i) {
+      const t = +this.time.replace(/\D+/, '')
+      if (item.id === 'balance' && ~this.time.indexOf('h') && t < 3) { // 指定余额
+        this.time = '3h'
+        this.$message.warning(this.$t('common_562', [item.label]))
+      }
       this.$set(this.seriesDescription, i, item)
     },
     async fetchAllData () {
