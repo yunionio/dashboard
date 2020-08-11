@@ -41,10 +41,10 @@ export default {
             },
           },
           region: {
-            label: '区域',
+            label: this.$t('dashboard.text_101'),
           },
           zone: {
-            label: '可用区',
+            label: this.$t('compute.text_270'),
           },
         },
       }),

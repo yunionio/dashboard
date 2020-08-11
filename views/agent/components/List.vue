@@ -27,34 +27,39 @@ export default {
     },
   },
   data () {
+    const filterOptions = {
+      name: {
+        label: this.$t('network.text_21'),
+        filter: true,
+        formatter: val => {
+          return `name.contains(${val})`
+        },
+      },
+      cluster: {
+        label: this.$t('network.text_19'),
+        dropdown: true,
+        distinctField: {
+          type: 'extra_field',
+          key: 'cluster',
+        },
+      },
+      region: {
+        label: this.$t('dashboard.text_101'),
+      },
+      zone: {
+        label: this.$t('compute.text_270'),
+      },
+    }
+    const { path } = this.$route
+    if (path.includes('/cluster')) {
+      delete filterOptions.cluster
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'loadbalanceragents',
         getParams: this.getParam,
-        filterOptions: {
-          name: {
-            label: this.$t('network.text_21'),
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
-          cluster: {
-            label: this.$t('network.text_19'),
-            dropdown: true,
-            distinctField: {
-              type: 'extra_field',
-              key: 'cluster',
-            },
-          },
-          region: {
-            label: '区域',
-          },
-          zone: {
-            label: '可用区',
-          },
-        },
+        filterOptions,
       }),
       exportDataOptions: {
         items: [

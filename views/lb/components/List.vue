@@ -37,28 +37,33 @@ export default {
   },
   data () {
     const allBrandsFilter = getBrandFilter()
-    const surpportLbBrandsFilter = {
-      ...allBrandsFilter,
-      items: allBrandsFilter.items.filter(val => surpportLb.includes(val.key.toLowerCase())),
+    const filterOptions = {
+      name: getNameFilter(),
+      brand: {
+        ...allBrandsFilter,
+        items: allBrandsFilter.items.filter(val => surpportLb.includes(val.key.toLowerCase())),
+      },
+      projects: getTenantFilter(),
+      project_domains: getDomainFilter(),
+      cloudaccount: getAccountFilter(),
+      region: {
+        label: this.$t('dashboard.text_101'),
+      },
+      zone: {
+        label: this.$t('compute.text_270'),
+      },
+    }
+    const { path } = this.$route
+    if (path.includes('/cluster')) {
+      delete filterOptions.brand
+      delete filterOptions.cloudaccount
     }
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'loadbalancers',
         getParams: this.getParam,
-        filterOptions: {
-          name: getNameFilter(),
-          brand: surpportLbBrandsFilter,
-          projects: getTenantFilter(),
-          project_domains: getDomainFilter(),
-          cloudaccount: getAccountFilter(),
-          region: {
-            label: '区域',
-          },
-          zone: {
-            label: '可用区',
-          },
-        },
+        filterOptions,
         steadyStatus: {
           status: Object.values(expectStatus.lb).flat(),
         },
