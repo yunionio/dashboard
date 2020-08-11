@@ -606,13 +606,14 @@ export const compactObj = (obj, fn = R.isEmpty) => {
  */
 export const transformUnit = (value, unit = '', base = 1000) => {
   const number = Number(value)
+  const valueStr = numerify(number, '0.00')
   if (!R.is(Number, number) || Number.isNaN(number)) {
     console.error('onecloud: value must be Number type by used transformUnit util')
     return null
   }
   let obj = {
-    text: `${number} ${unit}`,
-    value: numerify(number, '0.00'),
+    text: `${valueStr} ${unit}`,
+    value: valueStr,
     unit,
   }
   if (~UNITS.indexOf(unit)) {
