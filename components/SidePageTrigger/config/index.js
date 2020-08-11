@@ -60,6 +60,11 @@ export default {
     resource: 'projects',
     apiVersion: 'v1',
   },
+  // 组
+  GroupSidePage: {
+    resource: 'groups',
+    apiVersion: 'v1',
+  },
   // 物理机
   PhysicalmachineSidePage: {
     resource: 'hosts',

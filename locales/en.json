@@ -7736,6 +7736,7 @@
   "monitor_metric_75": "Rds CPU usage",
   "monitor_metric_77": "balance",
   "monitor_metric_76": "Cloud account balance",
+  "monitor_metric_78": "共 {0} 条记录",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": "a",
@@ -8415,5 +8416,9 @@
   "common_554": "View IDP source data",
   "common_555": "Only common SAML supports viewing",
   "common_556": "User attribution domain",
-  "common_557": "I have Endpoint information"
+  "common_557": "I have Endpoint information",
+  "common_558": "Join by group",
+  "common_559": "Join directly",
+  "common_560": "You can’t directly modify the role of items added through a group, please go to the group page to set",
+  "common_561": "Items added through a group cannot be removed directly, please go to the group page to set"
 }

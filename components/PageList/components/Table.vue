@@ -13,6 +13,7 @@
       :sort-config="{ sortMethod: () => {} }"
       :expand-config="expandConfig"
       :pager-config="tablePage"
+      :span-method="spanMethod"
       @page-change="handlePageChange"
       @sort-change="handleSortChange"
       v-on="dynamicEvents"
@@ -91,6 +92,9 @@ export default {
     isSidepageOpen: {
       type: Boolean,
       default: false,
+    },
+    spanMethod: {
+      type: Function,
     },
     noDataText: String,
     showPage: Boolean,
