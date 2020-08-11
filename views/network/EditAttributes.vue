@@ -156,8 +156,8 @@ export default {
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('network.text_611') },
-              { validator: this.$validate('IPv4') },
+              // { required: true, message: this.$t('network.text_611') },
+              { validator: this.$validate('IPv4', false) },
               { validator: this.validateGateway },
             ],
           },
