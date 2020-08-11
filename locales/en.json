@@ -2005,11 +2005,28 @@
     "OSS_SEC_ACL": "Object storage permissions are open to read and write buckets and files"
   },
   "idpDrivers": {
-    "LDAP": ["msad_one_domain", "msad_multi_domain", "openldap_one_domain"],
-    "OIDC": ["oidc", "github_oidc", "azure_oidc"],
-    "SAML": ["saml", "azure_ad_saml"],
-    "CAS": ["cas"],
-    "OAuth2": ["feishu_oauth2", "dingtalk_oauth2", "qywechat_oauth2"]
+    "LDAP": [
+      "msad_one_domain",
+      "msad_multi_domain",
+      "openldap_one_domain"
+    ],
+    "OIDC": [
+      "oidc",
+      "github_oidc",
+      "azure_oidc"
+    ],
+    "SAML": [
+      "saml",
+      "azure_ad_saml"
+    ],
+    "CAS": [
+      "cas"
+    ],
+    "OAuth2": [
+      "feishu_oauth2",
+      "dingtalk_oauth2",
+      "qywechat_oauth2"
+    ]
   },
   "idpTmplTitles": {
     "msad_one_domain": "Microsoft Active Directory Import order @:dictionary.domain",
@@ -7717,8 +7734,8 @@
   "monitor_metric_73": "Memory",
   "monitor_metric_74": "CPU usage",
   "monitor_metric_75": "Rds CPU usage",
-  "monitor_metric_76": "Cloud account balance",
   "monitor_metric_77": "balance",
+  "monitor_metric_76": "Cloud account balance",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": "a",
@@ -8341,5 +8358,62 @@
   "common_497": "Automatically allocate IP address pool",
   "common_498": "Whether to join the automatically assigned IP address pool",
   "common_499": "Whether to automatically create users",
-  "common_500": "After joining, the IP subnet belongs to the automatically assigned IP address pool. If the subsequent user creates a virtual machine without specifying a network, the virtual machine will be assigned an IP address from the IP subnet belonging to the automatically assigned IP address pool"
+  "common_500": "After joining, the IP subnet belongs to the automatically assigned IP address pool. If the subsequent user creates a virtual machine without specifying a network, the virtual machine will be assigned an IP address from the IP subnet belonging to the automatically assigned IP address pool",
+  "common_501": "Automatically create users",
+  "common_502": "Download IDP source data",
+  "common_503": "User attribution target {0}",
+  "common_504": "When synchronizing users in {0} to this system, you need to specify the user ID",
+  "common_505": "When synchronizing users in {0} to this system, you need to specify the user name",
+  "common_506": "When synchronizing {1} in {0} to this system, you need to specify a {2} in this system.",
+  "common_507": "Please enter the field name of the {1} attribute in {0}, such as: {2}:proj.",
+  "common_508": "When synchronizing {1} in {0} to the system, you need to specify what {2} the user joins the above {3}.",
+  "common_509": "Please enter the field name of the {1} attribute in {0}, such as: {2}:role.",
+  "common_510": "When synchronizing users in {0} to this system, the field corresponding to the user display name",
+  "common_511": "When synchronizing users in {0} to the system, the field corresponding to the user's mailbox",
+  "common_512": "When synchronizing the user in {0} to the system, the field corresponding to the user's mobile phone number",
+  "common_513": "When the automatic user creation is turned on, a local user will be automatically created in the system when the user in the authentication source logs into the system.",
+  "common_514": "If you need to associate an existing user with this authentication source, you need to turn off the automatic project creation.",
+  "common_515": "Please select target {0}",
+  "common_516": "User ID",
+  "common_517": "Preferentially add users to the local project with the same name in {0}. When there is no project with the same name in the local area, the project with the same name will be automatically created by checking it. If it is not checked, it will belong to the default project. If not specified, there is no item for this user, you can adjust it in the user list after adding.",
+  "common_518": "Cancel the use of {0} in CAS",
+  "common_519": "Create project automatically",
+  "common_520": "When there is no project with the same name locally, a project with the same name will be created automatically",
+  "common_521": "Use {1} in {0} first",
+  "common_522": "When a user synchronizes to a project in the system, the local role with the same name as {0} is preferred. If there is no role with the same name in the system, the default role will be used. If the default role is not specified, the user will be The project has no role and can be adjusted in the user list after adding",
+  "common_523": "Please choose a domain",
+  "common_524": "Please enter TenantId",
+  "common_525": "Please enter ClientID",
+  "common_526": "Please enter ClientSecret",
+  "common_527": "Please enter AppId",
+  "common_528": "Please enter Secret",
+  "common_529": "Please enter ${0}DN",
+  "common_530": "Please enter Endpoint",
+  "common_531": "Please enter Scopes",
+  "common_532": "If there are multiple Scopes, please use “,” to separate",
+  "common_533": "Please enter AuthUrl",
+  "common_534": "Please enter TokenUrl",
+  "common_535": "Please enter UserinfoUrl",
+  "common_536": "SAML Entry Method",
+  "common_537": "Upload SAML IDP metadata",
+  "common_538": "You can drag and drop the SAML IDP metadata xml file here or click directly to upload",
+  "common_539": "Please enter EntityID",
+  "common_540": "Please enter RedirectSSOURL",
+  "common_541": "Please import xml file",
+  "common_542": "Not a valid SAML IDP metadata xml file!",
+  "common_543": "Only upload xml files!",
+  "common_544": "Please enter CorpId",
+  "common_545": "Please enter AgentId",
+  "common_546": "Please enter CorpSecret",
+  "common_547": "Attribution {0}",
+  "common_548": "Authentication source attribution",
+  "common_549": "Please enter the authentication source name",
+  "common_550": "Authentication Type",
+  "common_551": "Basic Configuration",
+  "common_552": "LDAP authentication protocol does not support this operation",
+  "common_553": "IDP source data",
+  "common_554": "View IDP source data",
+  "common_555": "Only common SAML supports viewing",
+  "common_556": "User attribution domain",
+  "common_557": "I have Endpoint information"
 }

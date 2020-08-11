@@ -2005,11 +2005,28 @@
     "OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件"
   },
   "idpDrivers": {
-    "LDAP": ["msad_one_domain", "msad_multi_domain", "openldap_one_domain"],
-    "OIDC": ["oidc", "github_oidc", "azure_oidc"],
-    "SAML": ["saml", "azure_ad_saml"],
-    "CAS": ["cas"],
-    "OAuth2": ["feishu_oauth2", "dingtalk_oauth2", "qywechat_oauth2"]
+    "LDAP": [
+      "msad_one_domain",
+      "msad_multi_domain",
+      "openldap_one_domain"
+    ],
+    "OIDC": [
+      "oidc",
+      "github_oidc",
+      "azure_oidc"
+    ],
+    "SAML": [
+      "saml",
+      "azure_ad_saml"
+    ],
+    "CAS": [
+      "cas"
+    ],
+    "OAuth2": [
+      "feishu_oauth2",
+      "dingtalk_oauth2",
+      "qywechat_oauth2"
+    ]
   },
   "idpTmplTitles": {
     "msad_one_domain": "Microsoft Active Directory导入单@:dictionary.domain",
@@ -8341,5 +8358,62 @@
   "common_497": "自动分配IP地址池",
   "common_498": "是否加入自动分配IP地址池",
   "common_499": "是否自动创建用户",
-  "common_500": "加入后，该IP子网属于自动分配IP地址池，后续用户创建虚拟机不指定网络时，将从属于自动分配IP地址池的IP子网中为虚拟机分配IP地址"
+  "common_500": "加入后，该IP子网属于自动分配IP地址池，后续用户创建虚拟机不指定网络时，将从属于自动分配IP地址池的IP子网中为虚拟机分配IP地址",
+  "common_501": "自动创建用户",
+  "common_502": "下载IDP源数据",
+  "common_503": "用户归属目标{0}",
+  "common_504": "把{0}中的用户同步至该系统时，需指定用户ID",
+  "common_505": "把{0}中的用户同步至该系统时，需指定用户名称",
+  "common_506": "把{0}中的{1}同步至该系统时，需要指定一个该系统中的{2}。",
+  "common_507": "请输入{0}中{1}属性的字段名称，如：{2}:proj 。",
+  "common_508": "把{0}中的{1}同步至该系统时，需要指定用户以什么{2}加入上述的{3}。",
+  "common_509": "请输入{0}中{1}属性的字段名称，如：{2}:role 。",
+  "common_510": "把{0}中的用户同步至该系统时，用户显示名对应的字段",
+  "common_511": "把{0}中的用户同步至该系统时，用户邮箱对应的字段",
+  "common_512": "把{0}中的用户同步至该系统时，用户手机号对应的字段",
+  "common_513": "自动创建用户打开则该认证源内用户登录本系统时会自动在系统创建一个本地用户。",
+  "common_514": "若需要让已有用户关联此认证源需关闭自动创建项目。",
+  "common_515": "请选择目标{0}",
+  "common_516": "用户ID",
+  "common_517": "优先把用户添加到与{0}中的同名的本地项目，当本地没有同名项目时，自动创建项目勾选则自动创建同名项目，没有勾选则归属默认项目，若默认项目没有指定，该用户无项目，可在添加后在用户列表进行调整。",
+  "common_518": "取消使用CAS中的{0}",
+  "common_519": "自动创建项目",
+  "common_520": "当本地没有同名项目则自动创建一个同名项目",
+  "common_521": "优先使用{0}中的{1}",
+  "common_522": "当用户同步到该系统中的项目时，优先使用与{0}同名的本地角色，如果系统中没有同名的角色则会使用默认角色，若没有指定默认角色，该用户在该项目无角色，可在添加后在用户列表进行调整",
+  "common_523": "请选择归属域",
+  "common_524": "请输入TenantId",
+  "common_525": "请输入ClientID",
+  "common_526": "请输入ClientSecret",
+  "common_527": "请输入AppId",
+  "common_528": "请输入Secret",
+  "common_529": "请输入${0}DN",
+  "common_530": "请输入Endpoint",
+  "common_531": "请输入Scopes",
+  "common_532": "如果多个Scopes，请用“,”分割",
+  "common_533": "请输入AuthUrl",
+  "common_534": "请输入TokenUrl",
+  "common_535": "请输入UserinfoUrl",
+  "common_536": "SAML录入方式",
+  "common_537": "上传SAML IDP metadata",
+  "common_538": "可将SAML IDP metadata xml文件拖拽到此处或直接点击上传",
+  "common_539": "请输入EntityID",
+  "common_540": "请输入RedirectSSOURL",
+  "common_541": "请导入xml文件",
+  "common_542": "不是合法的SAML IDP metadata xml文件！",
+  "common_543": "只能上传xml文件!",
+  "common_544": "请输入CorpId",
+  "common_545": "请输入AgentId",
+  "common_546": "请输入CorpSecret",
+  "common_547": "归属{0}",
+  "common_548": "认证源归属",
+  "common_549": "请输入认证源名称",
+  "common_550": "认证类型",
+  "common_551": "基本配置",
+  "common_552": "LDAP认证协议不支持此操作",
+  "common_553": "IDP源数据",
+  "common_554": "查看IDP源数据",
+  "common_555": "仅通用SAML支持查看",
+  "common_556": "用户归属域",
+  "common_557": "我有Endpoint信息"
 }
