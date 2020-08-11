@@ -11,7 +11,7 @@
     <div class="auto-completer-wrap" v-show="show">
       <ul class="auto-completer-items">
         <li v-show="!isDropdown">
-          <span class="empty text-weak">{{this.$t('common.text00014')}}</span>
+          <span class="empty text-weak">{{ $t('common.text00014') }}</span>
         </li>
         <template v-if="isDropdown">
           <!-- 如果有配置项则渲染 -->
