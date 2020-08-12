@@ -8439,5 +8439,7 @@
   "common_560": "You can’t directly modify the role of items added through a group, please go to the group page to set",
   "common_561": "Items added through a group cannot be removed directly, please go to the group page to set",
   "common_562": "Considering that {0} failed to collect data in time has switched for you to view data for nearly three hours",
-  "common_563": "Auto assign"
+  "common_563": "Auto assign",
+  "common_564": "Automatically allocate address pool",
+  "common_565": "Only physical and virtual machine types support this operation"
 }
