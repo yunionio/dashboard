@@ -336,7 +336,7 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (this.list.selectedItems.some(obj => obj.server_type !== 'baremetal' && obj.server_type !== 'guest')) {
+                  if (this.list.selectedItems.some(obj => obj.server_type !== 'guest')) {
                     return {
                       validate: false,
                       tooltip: this.$t('common_565'),
