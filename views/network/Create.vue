@@ -400,7 +400,7 @@ export default {
     isShowIsAutoAlloc () {
       const { vpc, server_type } = this.form.fd
       if (this.platform_type === 'idc' && (vpc && vpc.key === 'default')) {
-        return ['guest', 'baremetal', undefined].includes(server_type)
+        return ['guest', undefined].includes(server_type)
       }
       return true
     },
