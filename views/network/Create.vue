@@ -399,8 +399,8 @@ export default {
     // 是否显示加入自动分配地址池
     isShowIsAutoAlloc () {
       const { vpc, server_type } = this.form.fd
-      if (this.platform_type === 'idc') {
-        return vpc && vpc.key === 'default' && ['guest', 'baremetal', undefined].includes(server_type)
+      if (this.platform_type === 'idc' && (vpc && vpc.key === 'default')) {
+        return ['guest', 'baremetal', undefined].includes(server_type)
       }
       return true
     },
@@ -537,6 +537,9 @@ export default {
         } else {
           this.isGroupGuestIpPrefix = false
           this.show = true
+          this.form.fc.setFieldsValue({
+            server_type: 'guest',
+          })
         }
       }
     },
