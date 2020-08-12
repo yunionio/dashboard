@@ -73,8 +73,8 @@
           <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
         </div>
       </a-form-item>
-      <a-form-item :label="$t('common_498')">
-        <a-switch v-decorator="decorators.is_auto_alloc">{{$t('common_499')}}</a-switch>
+      <a-form-item :label="$t('common_498')" v-if="isShowIsAutoAlloc">
+        <a-switch v-decorator="decorators.is_auto_alloc" />
         <template slot="extra">{{$t('common_500')}}</template>
       </a-form-item>
       <a-collapse :bordered="false"  v-if="show">
@@ -165,13 +165,8 @@ export default {
     return {
       submiting: false,
       form: {
-        fc: this.$form.createForm(this, {
-          onValuesChange: (props, values) => {
-            if (values.platform_type) {
-              this.platform_type = values.platform_type
-            }
-          },
-        }),
+        fc: this.$form.createForm(this, { onValuesChange: this.handleValuesChange }),
+        fd: {},
       },
       ipSubnetsValidateStatus: '',
       guestIpPrefixValidateStatus: '',
@@ -401,6 +396,14 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    // 是否显示加入自动分配地址池
+    isShowIsAutoAlloc () {
+      const { vpc, server_type } = this.form.fd
+      if (this.platform_type === 'idc') {
+        return vpc && vpc.key === 'default' && ['guest', 'baremetal', undefined].includes(server_type)
+      }
+      return true
+    },
     remain () {
       const remain = 6 - this.guestIpPrefix.length
       return Math.max(remain, 0)
@@ -474,6 +477,15 @@ export default {
     }
   },
   methods: {
+    handleValuesChange (props, values) {
+      if (values.platform_type) {
+        this.platform_type = values.platform_type
+      }
+      this.form.fd = {
+        ...this.form.fd,
+        ...values,
+      }
+    },
     wireLabelFormat (item) {
       if (item) {
         const { name, zone } = item
