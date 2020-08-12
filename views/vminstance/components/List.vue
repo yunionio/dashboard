@@ -46,6 +46,10 @@ export default {
       default: () => ({}),
     },
     cloudEnv: String,
+    filterParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -795,6 +799,26 @@ export default {
       this.$nextTick(() => {
         this.list.fetchData(0)
       })
+    },
+    filterParams: {
+      handler: function (val) {
+        const filterStatus = this.list.filter.status || []
+        val.statusArr.forEach((item) => {
+          if (!filterStatus.includes(item)) {
+            filterStatus.push(item)
+          }
+        })
+        if (val.statusArr && val.statusArr.length > 0) {
+          this.list.changeFilter({ ...this.list.filter, status: val.statusArr })
+        } else {
+          delete this.list.filter.status
+          this.list.changeFilter({ ...this.list.filter })
+        }
+      },
+      deep: true,
+    },
+    'list.filter' (val) {
+      this.$bus.$emit('ServerFilterChange', val)
     },
   },
   created () {
