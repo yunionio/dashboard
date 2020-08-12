@@ -24,7 +24,7 @@ export default {
     return {
       loading: false,
       scope: this.$store.getters.scope,
-      configText: R.is(Object, this.params.configText) ? jsYaml.safeDump(this.params.configText) : this.params.configText,
+      configText: R.is(Object, this.params.configText) ? jsYaml.safeDump(this.params.configText, { lineWidth: Infinity }) : this.params.configText,
       data: this.params.data[0],
       cmOptions: {
         tabSize: 4,

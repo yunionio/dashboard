@@ -179,7 +179,7 @@ export default {
         this.chartDetail = this.releaseDetail.chart
         this.form.fc.setFieldsValue({
           [this.decorators.release_name[0]]: this.releaseDetail.name,
-          [this.decorators.yaml[0]]: jsYaml.safeDump(this.releaseDetail.config || {}),
+          [this.decorators.yaml[0]]: jsYaml.safeDump(this.releaseDetail.config || {}, { lineWidth: Infinity }),
         })
         this.getChartVersion()
       }
