@@ -3,7 +3,10 @@
     <a-form-item>
       <a-radio-group v-decorator="decorator.networkType" @change="change">
         <template  v-for="(item, key) in networkMaps">
-          <a-radio-button v-if="(isServertemplate && (key !== 'schedtag')) || !isServertemplate" :value="key" :key="key">{{ item.label }}</a-radio-button>
+          <a-radio-button v-if="(isServertemplate && (key !== 'schedtag')) || !isServertemplate" :value="key" :key="key">
+            {{ item.label }}
+            <help-tooltip v-if="key === 'default'" :name="`${key}ServerNetwork`" class="ml-2" />
+          </a-radio-button>
         </template>
       </a-radio-group>
     </a-form-item>
@@ -95,9 +98,14 @@ export default {
     },
   },
   data () {
+    const { auto_alloc_network_count } = this.$store.getters.capability
+    const _networkMaps = { ...NETWORK_OPTIONS_MAP }
+    if (!auto_alloc_network_count || auto_alloc_network_count <= 0) {
+      delete _networkMaps.default
+    }
     return {
-      networkMaps: { ...NETWORK_OPTIONS_MAP },
       networkComponent: '', // 指定IP子网 / 指定调度标签 的控件
+      networkMaps: _networkMaps,
     }
   },
   computed: {
@@ -106,7 +114,7 @@ export default {
     },
   },
   watch: {
-    'form.fi.capability.public_network_count' (val) {
+    'form.fi.capability.auto_alloc_network_count' (val) {
       if (val === 0) {
         delete this.networkMaps[NETWORK_OPTIONS_MAP.default.key]
         this.form.fc.setFieldsValue({
