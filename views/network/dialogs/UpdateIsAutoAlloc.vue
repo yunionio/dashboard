@@ -35,7 +35,7 @@ export default {
         is_auto_alloc: [
           'is_auto_alloc',
           {
-            initialValue: this.params.data[0].is_auto_alloc,
+            initialValue: this.params.data.length === 1 ? this.params.data[0].is_auto_allo : false,
             valuePropName: 'checked',
           }],
       },
@@ -54,8 +54,8 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await this.params.onManager('update', {
-          id: this.params.data[0].id,
+        await this.params.onManager('batchUpdate', {
+          ids: this.params.data.map(item => item.id),
           managerArgs: {
             data: values,
           },

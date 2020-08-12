@@ -269,6 +269,9 @@ export default {
       this.vpcId = data.vpc_id
     },
     validateGateway (rule, value, callback) {
+      if (!value) {
+        return callback()
+      }
       // 只需要查看是否是以 0 结尾
       const ipItems = value.split('.')
       if (ipItems[ipItems.length - 1] === '0') {
@@ -294,6 +297,8 @@ export default {
         await this.doUpdate(values)
         const networkPath = this.$router.resolve(this.$route.path)
         this.$router.push({ path: networkPath.resolved.matched[0].path })
+      } catch (err) {
+        throw err
       } finally {
         this.submiting = false
       }
