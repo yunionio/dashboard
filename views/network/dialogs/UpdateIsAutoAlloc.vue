@@ -35,7 +35,7 @@ export default {
         is_auto_alloc: [
           'is_auto_alloc',
           {
-            initialValue: this.params.data.length === 1 ? this.params.data[0].is_auto_allo : false,
+            initialValue: this.params.data.length === 1 ? this.params.data[0].is_auto_alloc : false,
             valuePropName: 'checked',
           }],
       },
