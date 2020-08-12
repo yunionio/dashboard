@@ -35,7 +35,7 @@ export default {
         is_auto_alloc: [
           'is_auto_alloc',
           {
-            initialValue: this.params.data.length === 1 ? this.params.data[0].is_auto_alloc : false,
+            initialValue: this.params.data.length === 1 ? this.params.data[0].is_auto_alloc : this.params.data.every(item => item.is_auto_alloc),
             valuePropName: 'checked',
           }],
       },
@@ -54,12 +54,22 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await this.params.onManager('batchUpdate', {
-          ids: this.params.data.map(item => item.id),
-          managerArgs: {
-            data: values,
-          },
-        })
+        const ids = this.params.data.map(item => item.id)
+        if (ids.length > 1) {
+          await this.params.onManager('batchUpdate', {
+            ids,
+            managerArgs: {
+              data: values,
+            },
+          })
+        } else {
+          await this.params.onManager('update', {
+            id: ids[0],
+            managerArgs: {
+              data: values,
+            },
+          })
+        }
         this.cancelDialog()
       } finally {
         this.loading = false
