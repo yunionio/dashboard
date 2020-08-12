@@ -8,7 +8,7 @@ export default {
         onManager: this.onManager,
         hideField: true,
         edit: true,
-        showDesc: false,
+        formRules: [{ required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` }],
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>

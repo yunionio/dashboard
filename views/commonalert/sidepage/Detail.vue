@@ -5,6 +5,7 @@
     :extra-info="extraInfo"
     :on-manager="onManager"
     :hiddenKeys="hiddenKeys"
+    :nameRules="nameRules"
     status-module="commonalert"
     :resource="resource" />
 </template>
@@ -38,6 +39,7 @@ export default {
       ],
       extraInfo: [],
       hiddenKeys: ['project_domain', 'tenant'],
+      nameRules: [{ required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` }],
     }
   },
 }
