@@ -54,7 +54,7 @@ export default {
         spec: 'rawdata',
         params,
       }).then(({ data }) => {
-        this.text = jsYaml.safeDump(data)
+        this.text = jsYaml.safeDump(data, { lineWidth: Infinity })
       })
     },
     update () {
