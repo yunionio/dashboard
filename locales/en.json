@@ -8443,5 +8443,6 @@
   "common_564": "Automatically allocate address pool",
   "common_565": "Only the virtual machine type supports this operation",
   "common_566": "Authentication source belongs to {0}",
-  "common_567": "Please handle abnormal resources"
+  "common_567": "Please handle abnormal resources",
+  "common_568": "The local associated user was not found, please fill in the following information to complete the registration"
 }
