@@ -4,7 +4,7 @@
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_264')"  extra="请输入IP地址或者域名地址，例如192.168.1.1或者domain-name.com">
+      <a-form-item :label="$t('cloudenv.text_264')" :extra="this.$t('common_572')">
         <a-input v-decorator="decorators.host" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_266')">
