@@ -2,26 +2,49 @@
   <div>
     <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <vm-instance-list :id="listId" :cloud-env="cloudEnv" />
+      <server-error-status-tab
+        resource="servers"
+        @getStatusCheckArr="getStatusCheckArr" />
+      <vm-instance-list
+        :id="listId"
+        :cloud-env="cloudEnv"
+        :filterParams="filterParams" />
     </page-body>
   </div>
 </template>
 
 <script>
 import VmInstanceList from './components/List'
+import ServerErrorStatusTab from '@Compute/sections/ServerErrorStatusTab'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
   name: 'VmInstanceIndex',
   components: {
     VmInstanceList,
+    ServerErrorStatusTab,
   },
   data () {
     return {
       listId: 'VMInstanceList',
       cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
       cloudEnv: '',
+      filterParams: {},
     }
+  },
+  methods: {
+    getStatusCheckArr (statusCheckArr, statusArr) {
+      if (statusCheckArr && statusCheckArr.length > 0) {
+        this.filterParams = {
+          statusCheckArr: statusCheckArr,
+          statusArr: statusArr,
+        }
+      } else {
+        this.filterParams = {
+          statusCheckArr: [],
+        }
+      }
+    },
   },
 }
 </script>
