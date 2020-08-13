@@ -2,7 +2,8 @@
   <div>
     <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <server-status-tab @getStatusCheckArr="getStatusCheckArr" />
+      <server-status-tab
+        @getStatusCheckArr="getStatusCheckArr" />
       <vm-instance-list
         :id="listId"
         :cloud-env="cloudEnv"
@@ -31,14 +32,15 @@ export default {
     }
   },
   methods: {
-    getStatusCheckArr (statusArr) {
-      if (statusArr && statusArr.length > 0) {
+    getStatusCheckArr (statusCheckArr, statusArr) {
+      if (statusCheckArr && statusCheckArr.length > 0) {
         this.filterParams = {
+          statusCheckArr: statusCheckArr,
           statusArr: statusArr,
         }
       } else {
         this.filterParams = {
-          statusArr: [],
+          statusCheckArr: [],
         }
       }
     },

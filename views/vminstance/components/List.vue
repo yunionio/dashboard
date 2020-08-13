@@ -803,17 +803,17 @@ export default {
     filterParams: {
       handler: function (val) {
         const filterStatus = this.list.filter.status || []
-        val.statusArr.forEach((item) => {
+        val.statusCheckArr.forEach((item) => {
           if (!filterStatus.includes(item)) {
             filterStatus.push(item)
           }
         })
-        if (val.statusArr && val.statusArr.length > 0) {
-          this.list.changeFilter({ ...this.list.filter, status: val.statusArr })
+        if (val.statusCheckArr && val.statusCheckArr.length > 0) {
+          this.list.changeFilter({ ...this.list.filter, status: val.statusCheckArr })
           this.list.filterOptions.status.items = []
           const statusArrTem = this.list.filterOptions.status.items || []
           val.statusArr.forEach((item) => {
-            const isExist = statusArrTem.includes((obj) => { return obj.key === item })
+            const isExist = statusArrTem.some((obj) => { return obj.key === item })
             if (!isExist) {
               statusArrTem.push({
                 key: item,

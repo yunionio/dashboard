@@ -23,6 +23,7 @@ export default {
     return {
       statusMap: {},
       statusErrorOpts: [],
+      statusArr: [],
     }
   },
   computed: {
@@ -61,7 +62,9 @@ export default {
         const statusArr = data.map((item) => { return item.status })
         const statusMap = uniqueOccurrences(statusArr)
         this.statusErrorOpts = []
+        this.statusArr = []
         for (const k in statusMap) {
+          this.statusArr.push(k)
           if (statusMap.hasOwnProperty(k) && /failed$/.test(k)) {
             const num = statusMap[k]
             this.statusErrorOpts.push({
@@ -81,7 +84,7 @@ export default {
         })
         this.statusErrorOpts = statusErrorOpts
         const statusCheckArr = [...statusErrorOpts].filter((item) => { return item.checked && item.num > 0 }).map((item) => { return item.val })
-        this.$emit('getStatusCheckArr', statusCheckArr)
+        this.$emit('getStatusCheckArr', statusCheckArr, this.statusArr)
       }).catch((err) => {
         console.log(err)
         throw err
@@ -96,7 +99,7 @@ export default {
         item.color = ''
       }
       const statusCheckArr = [...this.statusErrorOpts].filter((item) => { return item.checked && item.num > 0 }).map((item) => { return item.val })
-      this.$emit('getStatusCheckArr', statusCheckArr)
+      this.$emit('getStatusCheckArr', statusCheckArr, this.statusArr)
     },
   },
 }
