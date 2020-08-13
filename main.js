@@ -55,5 +55,6 @@ async function start () {
 }
 
 window.app = app
+window.buildInfo = typeof process.env.VUE_APP_BUILDINFO === 'object' ? JSON.parse(process.env.VUE_APP_BUILDINFO) : null
 
 start()
