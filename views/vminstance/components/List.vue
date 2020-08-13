@@ -810,6 +810,7 @@ export default {
         })
         if (val.statusArr && val.statusArr.length > 0) {
           this.list.changeFilter({ ...this.list.filter, status: val.statusArr })
+          this.list.filterOptions.status.items = []
           const statusArrTem = this.list.filterOptions.status.items || []
           val.statusArr.forEach((item) => {
             const isExist = statusArrTem.includes((obj) => { return obj.key === item })

@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3 d-flex" v-if="isShow">
-    <div>有状态异常的资源请处理：</div>
+    <div>{{ $t('common_567') }}：</div>
     <div>
       <a-tag
         v-for="(item, index) in statusErrorOpts"
