@@ -4,7 +4,7 @@
     <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout" v-if="!updateValue">
       <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
     </a-form-item>
-    <a-form-item :label="$t('cloudenv.text_413')" v-bind="formItemLayout">
+    <a-form-item required :label="$t('cloudenv.text_413')" v-bind="formItemLayout">
       <strategy-radio :decorator="decorators.strategy" />
     </a-form-item>
     <a-form-item :label="$t('cloudenv.text_18')" v-bind="formItemLayout">
@@ -73,15 +73,15 @@ export default {
           'strategy',
           {
             initialValue: initValue.strategy,
+            rules: [
+              { required: true, message: '清选择偏好' },
+            ],
           },
         ],
         schedtag: [
           'schedtag',
           {
             initialValue: initValue.schedtag,
-            rules: [
-              { required: true, message: '请输入名称' },
-            ],
           },
         ],
         conditionKey: [

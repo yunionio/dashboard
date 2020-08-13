@@ -38,7 +38,7 @@ export const getDynamicSchedtagCountTableColumn = () => {
   return {
     field: 'dynamic_schedtag_count',
     title: i18n.t('cloudenv.text_418'),
-    width: 120,
+    width: 150,
     formatter: ({ row }) => {
       return row.dynamic_schedtag_count || '0'
     },
