@@ -7,7 +7,9 @@
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_253')">
         <a-input v-decorator="decorators.auth_url" />
-        <div slot="extra">{{urlPlaceholder}}</div>
+        <span slot="extra">
+          {{isOpenstack ? $t('common_569') : $t('common_570')}}
+        </span>
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />

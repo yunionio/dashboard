@@ -4,8 +4,8 @@
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_261')">
-        <a-input v-decorator="decorators.endpoint" :placeholder="$t('cloudenv.text_262')" />
+      <a-form-item :label="$t('cloudenv.text_261')" :extra="$t('common_571')">
+        <a-input v-decorator="decorators.endpoint" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
