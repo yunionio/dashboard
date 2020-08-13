@@ -274,7 +274,9 @@ export default {
           {findAndPush(this.cityList, ({ name }) => name === 'Other').map(city => {
             const { name } = city
             const lowercaseName = name.toLowerCase()
-            return <a-select-option key={name} value={name}>{citys[lowercaseName] || name}</a-select-option>
+            return <a-select-option key={name} value={name}>
+              <span class="text-color-secondary">{ this.$t('common_573') }: </span>{citys[lowercaseName] || name}
+            </a-select-option>
           })}
         </a-select>
       )
@@ -314,7 +316,9 @@ export default {
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.provider}>
           {this.providerList.map(provider => {
             const { name } = provider
-            return <a-select-option key={name} value={name}>{cloudProvidersMap[name] || name}</a-select-option>
+            return <a-select-option key={name} value={name}>
+              <span class="text-color-secondary">{ this.$t('compute.text_176') }: </span>{cloudProvidersMap[name] || name}
+            </a-select-option>
           })}
         </a-select>
       )
@@ -361,7 +365,9 @@ export default {
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder={this.placeholders.cloudregion}>
           {this.cloudregionList.map(cloudregion => {
             const { id, name } = cloudregion
-            return <a-select-option key={id} value={id}>{name}</a-select-option>
+            return <a-select-option key={id} value={id}>
+              <span class="text-color-secondary">{ this.$t('dictionary.region') }: </span>{name}
+            </a-select-option>
           })}
         </a-select>
       )
@@ -408,7 +414,9 @@ export default {
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder={this.placeholders.zone}>
           {this.zoneList.map(zone => {
             const { id, name } = zone
-            return <a-select-option key={id} value={id}>{name}</a-select-option>
+            return <a-select-option key={id} value={id}>
+              <span class="text-color-secondary">{ this.$t('dictionary.zone') }: </span>{name}
+            </a-select-option>
           })}
         </a-select>
       )

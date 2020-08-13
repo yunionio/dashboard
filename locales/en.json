@@ -8448,5 +8448,6 @@
   "common_569": "Please enter the certified URL address, for example: http|https://ip:port/v3",
   "common_570": "Please enter the certified URL address, for example: http|https://192.168.1.1:8080",
   "common_571": "Please enter the certified URL address, for example: http|https://ip:port",
-  "common_572": "Please enter an IP address or domain name address, such as 192.168.1.1 or domain-name.com"
+  "common_572": "Please enter an IP address or domain name address, such as 192.168.1.1 or domain-name.com",
+  "common_573": "City"
 }
