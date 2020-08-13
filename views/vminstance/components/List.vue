@@ -810,6 +810,14 @@ export default {
         })
         if (val.statusArr && val.statusArr.length > 0) {
           this.list.changeFilter({ ...this.list.filter, status: val.statusArr })
+          const statusArrTem = this.list.filterOptions.status.items || []
+          val.statusArr.forEach((item) => {
+            statusArrTem.push({
+              key: item,
+              label: this.$t(`status.server.${item}`),
+            })
+          })
+          this.list.filterOptions.status.items = statusArrTem
         } else {
           delete this.list.filter.status
           this.list.changeFilter({ ...this.list.filter })
