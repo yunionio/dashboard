@@ -33,11 +33,12 @@ export default {
     }
   },
   methods: {
-    getStatusCheckArr (statusCheckArr, statusArr) {
+    getStatusCheckArr (statusCheckArr, statusArr, isFirstLoad) {
       if (statusCheckArr && statusCheckArr.length > 0) {
         this.filterParams = {
           statusCheckArr: statusCheckArr,
           statusArr: statusArr,
+          isFirstLoad: isFirstLoad,
         }
       } else {
         this.filterParams = {

@@ -34,6 +34,7 @@ export default {
       statusMap: {},
       statusErrorOpts: [],
       statusArr: [],
+      isFirstLoad: true,
     }
   },
   computed: {
@@ -94,13 +95,14 @@ export default {
         })
         this.statusErrorOpts = statusErrorOpts
         const statusCheckArr = [...statusErrorOpts].filter((item) => { return item.checked && item.num > 0 }).map((item) => { return item.val })
-        this.$emit('getStatusCheckArr', statusCheckArr, this.statusArr)
+        this.$emit('getStatusCheckArr', statusCheckArr, this.statusArr, this.isFirstLoad)
       }).catch((err) => {
         console.log(err)
         throw err
       })
     },
     chooseStatusHandle (item) {
+      this.isFirstLoad = false
       if (!item.checked) {
         item.checked = true
         item.color = 'red'
@@ -109,7 +111,7 @@ export default {
         item.color = ''
       }
       const statusCheckArr = [...this.statusErrorOpts].filter((item) => { return item.checked && item.num > 0 }).map((item) => { return item.val })
-      this.$emit('getStatusCheckArr', statusCheckArr, this.statusArr)
+      this.$emit('getStatusCheckArr', statusCheckArr, this.statusArr, this.isFirstLoad)
     },
   },
 }
