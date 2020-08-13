@@ -18,7 +18,13 @@
 import { mapGetters } from 'vuex'
 import { uniqueOccurrences, uuid } from '@/utils/utils'
 export default {
-  name: 'ServerStatusTab',
+  name: 'ServerErrorStatusTab',
+  props: {
+    resource: {
+      type: String,
+      required: true,
+    },
+  },
   data () {
     return {
       statusMap: {},
@@ -51,7 +57,7 @@ export default {
   },
   methods: {
     loadServersData () {
-      const m = new this.$Manager('servers')
+      const m = new this.$Manager(this.resource)
       const params = {
         scope: this.scope,
         limit: 0,
