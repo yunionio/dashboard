@@ -162,6 +162,7 @@ export default {
       return this.elements.includes(element)
     },
     parser (value) {
+      value = String(value)
       return value.replace(/[GB]*/g, '')
     },
     formatter (num) {
