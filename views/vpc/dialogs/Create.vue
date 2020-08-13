@@ -208,6 +208,7 @@ export default {
   },
   created () {
     this.form.fc.getFieldDecorator('platform', { initialValue: this.platformInitialValue, preserve: true })
+    this.platform = this.platformInitialValue
   },
   methods: {
     handleRegionChange (item) {
