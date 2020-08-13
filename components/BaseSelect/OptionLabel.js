@@ -34,6 +34,19 @@ const resourceMode = {
       return label
     },
   },
+  eips: {
+    vnode: (vm, h) => {
+      const { name, ip_addr } = vm.data
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-3' title={ name }>{ name }</span>
+          {
+            ip_addr ? <span style="color: #8492a6; font-size: 13px">IP: { ip_addr}</span> : null
+          }
+        </div>
+      )
+    },
+  },
   // repos: {
   //   vnode: (vm, h) => {
   //     const text = vm.getLabel()
