@@ -7,7 +7,7 @@
         <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_413')" v-bind="formItemLayout">
+        <a-form-item required :label="$t('cloudenv.text_413')" v-bind="formItemLayout">
           <strategy-radio :decorator="decorators.default_strategy" />
         </a-form-item>
         <a-form-item :label="$t('cloudenv.text_384')" v-bind="formItemLayout">

@@ -10,16 +10,6 @@
           v-decorator="decorators.environment"
           :selectProps="{ placeholder: $t('cloudenv.text_231') }" />
       </a-form-item>
-      <a-form-item>
-        <span slot="label">{{$t('cloudenv.text_239')}}<!-- <a-tooltip placement="top">
-            <a-icon type="question-circle" color="grey" />
-            <div slot="title">
-              <a class="link-color" target="_blank" :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_240', [keySecretField.text, keySecretField.label.k])}}</a>
-            </div>
-          </a-tooltip> -->
-        </span>
-        <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_241')" />
-      </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
@@ -29,6 +19,16 @@
       </a-form-item>
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
+      </a-form-item>
+      <a-form-item>
+        <span slot="label">{{$t('cloudenv.text_239')}}<!-- <a-tooltip placement="top">
+            <a-icon type="question-circle" color="grey" />
+            <div slot="title">
+              <a class="link-color" target="_blank" :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_240', [keySecretField.text, keySecretField.label.k])}}</a>
+            </div>
+          </a-tooltip> -->
+        </span>
+        <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_241')" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />

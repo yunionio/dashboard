@@ -4,7 +4,7 @@ export const STRATEGY_CN = {
   avoid: i18n.t('cloudenv.text_2'),
   exclude: i18n.t('cloudenv.text_3'),
   // require: '必须使用',
-  '': i18n.t('cloudenv.text_4'),
+  // '': i18n.t('cloudenv.text_4'),
 }
 
 export const RES_TYPES = { hosts: i18n.t('cloudenv.text_5'), storages: i18n.t('cloudenv.text_6'), networks: i18n.t('cloudenv.text_7') }
