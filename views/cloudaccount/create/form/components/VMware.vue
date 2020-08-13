@@ -4,8 +4,8 @@
       <a-form-item label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item label="vCenter地址" extra="请输入ip地址或者域名">
-        <a-input v-decorator="decorators.host" placeholder="请输入ip地址或者域名" />
+      <a-form-item label="vCenter地址" extra="请输入IP地址或者域名地址，例如192.168.1.1或者domain-name.com">
+        <a-input v-decorator="decorators.host" />
       </a-form-item>
       <a-form-item label="端口">
         <a-input v-decorator="decorators.port" />
@@ -65,7 +65,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: '请输入vCenter地址' },
-              { validator: this.$validate(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
+              // { validator: this.$validate(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
             ],
           },
         ],

@@ -6,7 +6,13 @@
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
       <a-form-item label="认证地址">
-        <a-input v-decorator="decorators.auth_url" :placeholder="urlPlaceholder" />
+        <a-input v-decorator="decorators.auth_url" />
+        <span v-if="isOpenstack" slot="extra">
+          请输入认证的URL地址，例如：http|https://ip:port/v3
+        </span>
+        <span v-else slot="extra">
+          请输入认证的URL地址，例如：http|https://192.168.1.1:8080
+        </span>
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
