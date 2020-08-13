@@ -8448,5 +8448,6 @@
   "common_569": "请输入认证的URL地址，例如：http|https://ip:port/v3",
   "common_570": "请输入认证的URL地址，例如：http|https://192.168.1.1:8080",
   "common_571": "请输入认证的URL地址，例如：http|https://ip:port",
-  "common_572": "请输入IP地址或者域名地址，例如192.168.1.1或者domain-name.com"
+  "common_572": "请输入IP地址或者域名地址，例如192.168.1.1或者domain-name.com",
+  "common_573": "城市"
 }
