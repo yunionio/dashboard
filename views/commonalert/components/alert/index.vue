@@ -245,6 +245,12 @@ export default {
       }
     },
     mertricItemChange (val) {
+      const t = +this.time.replace(/\D+/, '')
+      const existBalance = this.lineDescription.id === 'balance'
+      if (!existBalance && val.id === 'balance' && ~this.time.indexOf('h') && t < 3) { // 时间都是转换成h了，这里仅需要对比h即可
+        this.time = '72h'
+        this.$message.warning(this.$t('common_562', [val.label]))
+      }
       this.lineDescription = val
     },
   },

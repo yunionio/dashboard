@@ -292,12 +292,10 @@ export default {
         axisLabel: {
           formatter: (value, index) => {
             let unit = _.get(this.description, 'description.unit')
-            let numerifyFormat = '0.00'
             if (unit === 'ms') { // 时间类型的Y坐标，要取整 如 ： 1小时10分钟30秒 -> 1小时
               unit = 'intms'
-              numerifyFormat = '0'
             }
-            const val = transformUnit(value, unit, 1000, numerifyFormat)
+            const val = transformUnit(value, unit, 1000, '0')
             return val.text
           },
         },
