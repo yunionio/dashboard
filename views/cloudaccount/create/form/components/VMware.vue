@@ -4,8 +4,8 @@
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_264')" :extra="$t('cloudenv.text_265')">
-        <a-input v-decorator="decorators.host" :placeholder="$t('cloudenv.text_265')" />
+      <a-form-item :label="$t('cloudenv.text_264')"  extra="请输入IP地址或者域名地址，例如192.168.1.1或者domain-name.com">
+        <a-input v-decorator="decorators.host" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_266')">
         <a-input v-decorator="decorators.port" />
@@ -65,7 +65,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('cloudenv.text_268') },
-              { validator: this.$validate(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: this.$t('cloudenv.text_269') },
+              // { validator: this.$validate(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
             ],
           },
         ],
