@@ -46,6 +46,9 @@ const RenderSizeTitle = {
       }
     },
   },
+  created () {
+    this.fetchSync()
+  },
   render () {
     return (
       <div>用量统计 <a onClick={this.fetchSync}><a-icon type="sync" spin={this.loading} /></a></div>
