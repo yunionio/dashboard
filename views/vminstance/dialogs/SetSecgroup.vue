@@ -163,10 +163,9 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
-        const data = {}
-        values.secgroups.forEach((id, idx) => {
-          data[`secgrp.${idx}`] = id
-        })
+        const data = {
+          secgroup_ids: values.secgroups,
+        }
         await this.params.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {
