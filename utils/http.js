@@ -50,8 +50,8 @@ export const getRequestKey = config => {
   }
   // 是否展示系统资源控制
   if (store.getters.profile && store.getters.profile.value && store.getters.profile.value[SHOW_SYSTEM_RESOURCE]) {
-    if (config.params) {
-      config.params.system = true
+    if (R.is(Object, config.params)) {
+      config.params = { ...config.params, system: true }
     } else {
       config.params = {
         system: true,
