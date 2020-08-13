@@ -102,8 +102,9 @@ export default {
     },
     mertricItemChange (item, i) {
       const t = +this.time.replace(/\D+/, '')
-      if (item.id === 'balance' && ~this.time.indexOf('h') && t < 3) { // 指定余额
-        this.time = '3h'
+      const existBalance = this.seriesDescription.find(val => val.id === 'balance')
+      if (!existBalance && item.id === 'balance' && ~this.time.indexOf('h') && t < 3) { // 时间都是转换成h了，这里仅需要对比h即可
+        this.time = '72h'
         this.$message.warning(this.$t('common_562', [item.label]))
       }
       this.$set(this.seriesDescription, i, item)
