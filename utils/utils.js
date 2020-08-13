@@ -609,7 +609,7 @@ export const transformUnit = (value, unit = '', base = 1000, numerifyFormat = '0
   const valueStr = numerify(number, numerifyFormat)
   if (!R.is(Number, number) || Number.isNaN(number)) {
     console.error('onecloud: value must be Number type by used transformUnit util')
-    return null
+    return { text: '0', value: 0, unit: '' }
   }
   let obj = {
     text: `${valueStr} ${unit}`,
