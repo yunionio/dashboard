@@ -809,7 +809,9 @@ export default {
           }
         })
         if (val.statusCheckArr && val.statusCheckArr.length > 0) {
-          this.list.changeFilter({ ...this.list.filter, status: val.statusCheckArr })
+          if (!val.isFirstLoad) {
+            this.list.changeFilter({ ...this.list.filter, status: val.statusCheckArr })
+          }
           this.list.filterOptions.status.items = []
           const statusArrTem = this.list.filterOptions.status.items || []
           val.statusArr.forEach((item) => {
