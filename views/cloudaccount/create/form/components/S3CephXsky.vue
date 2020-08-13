@@ -4,8 +4,8 @@
       <a-form-item label="名称">
         <a-input v-decorator="decorators.name" placeholder="请输入名称" />
       </a-form-item>
-      <a-form-item label="接入地址">
-        <a-input v-decorator="decorators.endpoint" placeholder="请输入接入地址" />
+      <a-form-item label="接入地址" extra="请输入认证的URL地址，例如：http|https://ip:port">
+        <a-input v-decorator="decorators.endpoint" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />

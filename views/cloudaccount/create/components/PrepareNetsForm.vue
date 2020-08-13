@@ -5,10 +5,10 @@
     </a-divider>
     <a-alert v-if="list.length > 0" class="mb-3 mt-3" :type="allSuccess? 'success' : 'warning'" show-icon>
       <template slot="message" v-if="type === 'host'">
-        {{allSuccess ? '恭喜已有网络全部满足,点击“下一步”即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的宿主机，您需要新建${noSuitableIps.length}个包含上述宿主机IP的子网，否则您无法使用或同步该宿主机下资源` }}
+        {{allSuccess ? '恭喜已有网络全部满足,点击“下一步”即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的宿主机，您需要新建包含上述宿主机IP的子网，否则您无法使用或同步该宿主机下资源，以下是推荐子网，您可根据实际情况修改。` }}
       </template>
       <template  slot="message" v-if="type === 'guest'">
-        {{allSuccess ? '恭喜已有网络全部满足,点击“确定”即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的虚拟机，您需要新建${noSuitableIps.length}个包含上述虚拟机IP的子网,否则您可能无法正常使用上述虚拟机` }}
+        {{allSuccess ? '恭喜已有网络全部满足,点击“确定”即可' : `发现该域子网目前不包含该账号下的IP为${noSuitableIps.join(' 、 ')}的虚拟机，您需要新建包含上述虚拟机IP的子网,否则您可能无法正常使用上述虚拟机，以下是推荐子网，您可根据实际情况修改。` }}
       </template>
     </a-alert>
     <a-form-item label="IP子网" v-if="!allSuccess">
