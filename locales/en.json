@@ -5727,9 +5727,9 @@
   "cloudenv.text_175": "Configure the physical machine IP",
   "cloudenv.text_176": "Configure the virtual machine IP",
   "cloudenv.text_177": "Congratulations to all the existing networks, just click 'Next'",
-  "cloudenv.text_178": "It is found that the domain subnet currently does not contain the host with the IP {0} under the account. You need to create a {1} subnet with the above host IP, otherwise you cannot use or synchronize Resources under this host",
+  "cloudenv.text_178": "It is found that the domain subnet currently does not contain the host with the IP of {0} under the account. You need to create a new subnet with the above host IP, otherwise you cannot use or synchronize the resources under this host. The following is the recommended subnet , You can modify it according to the actual situation.",
   "cloudenv.text_179": "Congratulations on all the existing networks are satisfied, just click 'OK'",
-  "cloudenv.text_180": "It is found that the domain subnet currently does not contain the virtual machine with the IP of {0} under the account. You need to create a new {1} subnet containing the above virtual machine IP, otherwise you may not be able to use it normally The above virtual machine",
+  "cloudenv.text_180": "It is found that the domain subnet currently does not contain the virtual machine with the IP of {0} under the account. You need to create a new subnet containing the above virtual machine IP, otherwise you may not be able to use the above virtual machine normally. The following is the recommended subnet. It can be modified according to the actual situation.",
   "cloudenv.text_181": "IP Subnet",
   "cloudenv.text_182": "Create IP Subnet",
   "cloudenv.text_183": "Not created yet",
@@ -8444,5 +8444,9 @@
   "common_565": "Only the virtual machine type supports this operation",
   "common_566": "Authentication source belongs to {0}",
   "common_567": "Please handle abnormal resources",
-  "common_568": "The local associated user was not found, please fill in the following information to complete the registration"
+  "common_568": "The local associated user was not found, please fill in the following information to complete the registration",
+  "common_569": "Please enter the certified URL address, for example: http|https://ip:port/v3",
+  "common_570": "Please enter the certified URL address, for example: http|https://192.168.1.1:8080",
+  "common_571": "Please enter the certified URL address, for example: http|https://ip:port",
+  "common_572": "Please enter an IP address or domain name address, such as 192.168.1.1 or domain-name.com"
 }
