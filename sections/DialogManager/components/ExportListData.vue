@@ -52,7 +52,7 @@ export default {
     let exportOptionItems = [...this.params.options.items].filter(item => {
       const { hidden } = item
       if (hidden && R.type(hidden) === 'Function') {
-        return hidden()
+        return !hidden()
       }
       return !hidden
     })
