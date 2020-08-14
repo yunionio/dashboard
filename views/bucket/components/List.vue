@@ -67,6 +67,13 @@ export default {
           { label: '平台', key: 'provider' },
           { label: '云账号', key: 'manager' },
           { label: '区域', key: 'region' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('buckets'))
+            },
+          },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
