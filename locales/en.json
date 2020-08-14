@@ -8449,5 +8449,10 @@
   "common_570": "Please enter the certified URL address, for example: http|https://192.168.1.1:8080",
   "common_571": "Please enter the certified URL address, for example: http|https://ip:port",
   "common_572": "Please enter an IP address or domain name address, such as 192.168.1.1 or domain-name.com",
-  "common_573": "City"
+  "common_573": "City",
+  "common_574": "RDS-Account",
+  "common_575": "RDS-Database",
+  "common_576": "Redis-Account",
+  "common_577": "Redis-Whitelist",
+  "common_578": "User/Group"
 }
