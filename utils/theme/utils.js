@@ -1,4 +1,4 @@
-import { message } from 'ant-design-vue'
+// import { message } from 'ant-design-vue'
 import themeColor from './colors.js'
 import i18n from '@/locales'
 
@@ -31,10 +31,11 @@ const colorList = [
 ]
 
 const updateThemeColor = newPrimaryColor => {
-  const hideMessage = message.loading(i18n.t('common_321'), 0)
-  themeColor.changeColor(newPrimaryColor).finally(() => {
-    hideMessage()
-  })
+  // const hideMessage = message.loading(i18n.t('common_321'), 0)
+  // themeColor.changeColor(newPrimaryColor).finally(() => {
+  //   hideMessage()
+  // })
+  themeColor.changeColor(newPrimaryColor)
 }
 
 export { updateThemeColor, colorList }

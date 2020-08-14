@@ -287,6 +287,7 @@ export default {
         const response = await http.post('/v1/auth/logout', data)
         await commit('LOGOUT')
         await commit('RESET_COOKIE')
+        await commit('profile/REST_ID', null, { root: true })
         return response.data
       } catch (error) {
         throw error
