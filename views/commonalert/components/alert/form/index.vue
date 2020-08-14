@@ -1,6 +1,6 @@
 <template>
   <a-form v-bind="formItemLayout" :form="form.fc">
-    <scope-radio :decorators="decorators" @change="getMeasurement" :form="form" :disabled="disabled" />
+    <scope-radio :decorators="decorators" @change="scopeChange" :form="form" :disabled="disabled" />
     <a-form-item :label="$t('common.name')">
       <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" :disabled="disabled" />
       <name-repeated v-slot:extra res="commonalerts" :name="form.fd.name" />
@@ -316,6 +316,10 @@ export default {
     }
   },
   methods: {
+    scopeChange (scopeParams) {
+      this.getMeasurement(scopeParams)
+      this.$emit('scopeChange', scopeParams)
+    },
     async getMeasurement (params = {}) {
       try {
         this.metricLoading = true
