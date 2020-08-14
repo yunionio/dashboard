@@ -20,8 +20,12 @@
             <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_34')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.displayUnUsage }}</div>
           </div>
+          <div v-if="showReserved" class="d-flex">
+            <div class="flex-shrink-0 flex-grow-0">{{$t('common_586')}}</div>
+            <div class="ml-2 flex-fill text-right">{{ this.reserved }}</div>
+          </div>
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_44')}}</div>
+            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_34')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.allUsage }}</div>
           </div>
         </div>
@@ -48,7 +52,7 @@ import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
-import { getRequestT } from '@/utils/utils'
+import { getRequestT, sizestrWithUnit } from '@/utils/utils'
 
 export default {
   name: 'RingServer',
@@ -208,6 +212,12 @@ export default {
         ret = 'exception'
       }
       return ret
+    },
+    showReserved () {
+      return this.form.fd.usage_key === 'all.servers.memory' && this.form.fd.all_usage_key === 'hosts.memory'
+    },
+    reserved () {
+      return this.showReserved && sizestrWithUnit(this.data['hosts.memory.reserved'], 'M', 1024)
     },
   },
   watch: {
