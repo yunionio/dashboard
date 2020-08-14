@@ -373,10 +373,22 @@ export default {
         this.metricKeyItem = metricKeyItem
         this.conditionUnit = _.get(mertricItem, 'description.unit') || ''
         this.$emit('mertricItemChange', mertricItem)
+        const scopeFormValues = this.form.fc.getFieldsValue([this.decorators.scope[0], this.decorators.domain[0], this.decorators.project[0]])
+        const scopeParams = {}
+        for (const k in scopeFormValues) {
+          if (scopeFormValues[k]) {
+            if (k === this.decorators.scope[0]) {
+              scopeParams[k] = scopeFormValues[k]
+            } else {
+              scopeParams[`${k}_id`] = scopeFormValues[k]
+            }
+          }
+        }
         const params = {
           database: metricKeyItem.database || 'telegraf',
           measurement: metricKey,
           field: mertric,
+          ...scopeParams,
           ...this.timeRangeParams,
         }
         this.metricInfoLoading = true
