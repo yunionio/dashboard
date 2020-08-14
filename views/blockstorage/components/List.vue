@@ -183,7 +183,13 @@ export default {
           { label: '调度标签', key: 'schedtag' },
           { label: '平台', key: 'provider' },
           { label: '区域', key: 'region' },
-          { label: '共享范围', key: 'public_scope' },
+          {
+            label: '共享范围',
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('storages'))
+            },
+          },
           { label: `所属${this.$t('dictionary.domain')}`, key: 'project_domain' },
         ],
       },
