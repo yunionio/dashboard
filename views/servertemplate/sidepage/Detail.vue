@@ -101,9 +101,9 @@ export default {
                       }
                       return net.network || net.id
                     }).filter(v => !!v)
-                    return _.length > 0 ? _ : '-'
+                    return _.length > 0 ? _ : this.$t('common_563')
                   }
-                  return this.$t('compute.text_1')
+                  return this.$t('common_563')
                 },
               },
             },
