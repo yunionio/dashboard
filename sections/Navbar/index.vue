@@ -193,9 +193,9 @@ export default {
       const ret = []
       R.forEach(item => {
         if (item.domain_capable && !domainIds.includes(item.domain_id)) {
+          domainIds.push(item.domain_id)
           ret.push(item)
         }
-        domainIds.push(item.domain_id)
       }, this.projects)
       return ret
     },
