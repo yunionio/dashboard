@@ -347,12 +347,12 @@ class CreateList {
         },
       } = response
       this.clearWaitJob()
-      this.nextMarker = response.data.next_marker
       if (response.data.marker_order) {
         this.data = Object.assign({}, this.wrapData(data), this.data)
       } else {
         this.data = this.wrapData(data)
       }
+      this.nextMarker = response.data.next_marker
       this.syncSelected()
       this.checkSteadyStatus()
       this.total = total
