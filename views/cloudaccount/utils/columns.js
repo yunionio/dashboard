@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import store from '@/store'
 
 export const getAccessUrlTableColumn = () => {
   return {
@@ -65,6 +66,9 @@ export const getPublicScopeTableColumn = ({
     title: '共享范围',
     width: 110,
     showOverflow: 'title',
+    hidden: () => {
+      return !store.getters.l3PermissionEnable && (store.getters.scopeResource && store.getters.scopeResource.domain.includes('cloudaccounts'))
+    },
     slots: {
       default: ({ row }, h) => {
         if (!row.is_public) return i18n.t('cloudAccountShareDesc.none')
