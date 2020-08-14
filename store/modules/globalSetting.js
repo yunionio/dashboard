@@ -29,14 +29,13 @@ export default {
     /**
      * @description 获取globalSettings
      */
-    async getFetchGlobalSetting ({ state, commit }, payload = {}) {
+    async getFetchGlobalSetting ({ state, commit, dispatch }, payload = {}) {
       try {
         const { data } = await http.get('/v1/rpc/parameters/global-settings')
         commit('UPDATE', data)
         return Promise.resolve(data)
       } catch (err) {
         console.log(err)
-        throw err
       }
     },
     /**
