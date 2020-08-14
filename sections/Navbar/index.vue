@@ -367,6 +367,7 @@ export default {
   },
   methods: {
     checkWorkflow (val) {
+      if (!this.itsmServiceEnable) return
       if (val) {
         this.$store.dispatch('app/fetchWorkflowStatistics')
         this.$store.dispatch('app/fetchWorkflowEnabledKeys')

@@ -14,6 +14,9 @@ export default {
     SET_DATA (state, { name, data }) {
       Vue.set(state, name, data)
     },
+    REST_ID (state) {
+      state.id = ''
+    },
   },
   actions: {
     async get ({ commit }) {
