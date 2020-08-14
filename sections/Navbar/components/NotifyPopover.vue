@@ -23,7 +23,7 @@
                 class="notify-item">
                 <div class="item-header d-flex">
                   <div class="item-header-type">{{$t('common_194')}}</div>
-                  <div class="item-header-time flex-fill text-right">{{ $moment(item.create_at).format() }}</div>
+                  <div class="item-header-time flex-fill text-right">{{ $moment(item.created_at).format() }}</div>
                 </div>
                 <div class="item-content mt-2">{{ item.topic }}</div>
               </li>
