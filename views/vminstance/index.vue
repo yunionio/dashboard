@@ -43,6 +43,7 @@ export default {
       } else {
         this.filterParams = {
           statusCheckArr: [],
+          isFirstLoad: isFirstLoad,
         }
       }
     },
