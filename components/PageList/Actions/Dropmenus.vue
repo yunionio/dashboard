@@ -116,6 +116,12 @@ export default {
 .submenu-item {
   cursor: pointer;
   width: 130px;
+  .ant-btn-link {
+    color: rgba(0, 0, 0, 0.65)
+  }
+  .ant-btn-link[disabled] {
+    color: rgba(0, 0, 0, 0.25)
+  }
 }
 .submenu-item-label {
   font-size: 12px;
