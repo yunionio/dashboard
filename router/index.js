@@ -1,3 +1,4 @@
+import DiskCreate from '@Compute/views/disk/create/index'
 import VMInstance from '@Compute/views/vminstance'
 import Baremetal from '@Compute/views/baremetal'
 import BaremetalCreate from '@Compute/views/baremetal/create/index'
@@ -230,6 +231,11 @@ export default {
               name: 'Disk',
               path: '',
               component: Disk,
+            },
+            {
+              name: 'DiskCreate',
+              path: 'create',
+              component: DiskCreate,
             },
           ],
         },
