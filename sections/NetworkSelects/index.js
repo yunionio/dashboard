@@ -105,6 +105,16 @@ export default {
       return 24 / this.types.length
     },
   },
+  watch: {
+    vpcParams (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchs()
+    },
+    networkParams (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchNetwork()
+    },
+  },
   methods: {
     firstName (name) {
       return name.replace(/^\S/, s => s.toUpperCase())
@@ -206,7 +216,7 @@ export default {
       }
       if (this.networkParams) {
         if (R.type(this.networkParams) === 'Object') {
-          return Object.assign({}, _default, this.vpcParams)
+          return Object.assign({}, _default, this.networkParams)
         }
         if (R.type(this.networkParams) === 'Function') {
           const _params = await this.networkParams() || {}

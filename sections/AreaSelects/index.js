@@ -201,7 +201,7 @@ export default {
     async fetchChange (name, list) {
       const events = this._events || {}
       const changes = events[`${name}FetchSuccess`]
-      let _list = list
+      let _list = findAndPush(list, ({ name }) => name === 'Other')
       if (changes && changes.length > 0) {
         const changeFetchSuccess = changes[0]
         const value = await changeFetchSuccess(list, this.FC)
@@ -245,6 +245,13 @@ export default {
               return
             }
             await this.fetchChange(name, list)
+            if (R.type(list) === 'Array' && list.length === 0) {
+              const nextNames = fetchNames.slice(i, fetchNames.length)
+              if (nextNames.length > 0) {
+                this.resetSelect(nextNames)
+              }
+              return false
+            }
           }
         }
       }
@@ -279,7 +286,7 @@ export default {
       const citys = this.$t('citys')
       return (
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder={this.placeholders.city}>
-          {findAndPush(this.cityList, ({ name }) => name === 'Other').map(city => {
+          {this.cityList.map(city => {
             const { name } = city
             const lowercaseName = name.toLowerCase()
             return <a-select-option key={name} value={name}>
