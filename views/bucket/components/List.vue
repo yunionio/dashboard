@@ -72,6 +72,13 @@ export default {
           { label: this.$t('storage.text_46'), key: 'provider' },
           { label: this.$t('storage.text_94'), key: 'manager' },
           { label: this.$t('storage.text_47'), key: 'region' },
+          {
+            label: this.$t('storage.text_48'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('buckets'))
+            },
+          },
           { label: this.$t('dictionary.project'), key: 'tenant' },
         ],
       },
