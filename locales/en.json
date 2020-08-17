@@ -6637,7 +6637,7 @@
   "monitor.text00022": "1 hour period",
   "monitor.text00023": "3 hours period",
   "monitor.text00024": "System Manager View",
-  "monitor.text00025": "Domain Manager View",
+  "monitor.text00025": "@:dictionary.domain",
   "monitor.text_1": "Monitor Alarm",
   "monitor.text_2": "Alarm Strategy",
   "monitor.text_3": "All",
