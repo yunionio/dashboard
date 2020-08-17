@@ -2,7 +2,7 @@
   <a-popconfirm placement="bottom" overlayClassName="custom-date-time" @confirm="submit" @cancel="cancel" v-model="visible">
     <template v-slot:icon><i /></template>
     <template v-slot:title>
-      <a-alert v-if="diffHours < 1" class="mb-2" message="间隔小于一小时，暂不支持该操作" type="error" show-icon />
+      <a-alert v-if="diffHours < 1" class="mb-2" :message="$t('common_587')" type="error" show-icon />
       <a-form-model hideRequiredMark ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
         <a-form-model-item :label="$t('common.text00119')" prop="startValue">
           <a-date-picker
