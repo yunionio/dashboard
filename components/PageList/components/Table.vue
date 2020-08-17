@@ -245,8 +245,8 @@ export default {
       const maps = this.config.sortColumnsMap
       if (!R.isNil(maps) && !R.isEmpty(maps)) {
         defaultColumns.sort((prev, next) => {
-          const prevColumnIndex = _.get(maps, `[${prev.field}].$index`) || 0
-          const nextColumnIndex = _.get(maps, `[${next.field}].$index`) || 0
+          const prevColumnIndex = _.get(maps, `[${prev.field}]`) || 0
+          const nextColumnIndex = _.get(maps, `[${next.field}]`) || 0
           return prevColumnIndex - nextColumnIndex
         })
       }
