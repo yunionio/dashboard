@@ -228,6 +228,7 @@ export default {
     },
     async fetchs (fetchNames = this.names) {
       await this.resetSelect(fetchNames)
+      console.log(fetchNames)
       if (fetchNames && fetchNames.length > 0) {
         for (let i = 0; i < fetchNames.length; i++) {
           const name = fetchNames[i]
@@ -236,6 +237,14 @@ export default {
           const getParams = R.is(Function, this[`${name}Params`]) ? await this[`${name}Params`]() : this[`${name}Params`]
           if (this.names.indexOf(name) > -1 && fetchFn) {
             const list = await fetchFn(getParams)
+            if (list.length === 0) {
+              const nextNames = fetchNames.slice(i, fetchNames.length)
+              nextNames.forEach(name => {
+                this[`${name}List`] = []
+              })
+              this.FC.resetFields(nextNames)
+              return
+            }
             await this.fetchChange(name, list)
           }
         }
@@ -338,6 +347,7 @@ export default {
         const manager = new this.$Manager('cloudregions', 'v2')
         const { data = {} } = await manager.list({ params })
         const retList = !R.isEmpty(data.data) ? data.data : []
+
         return retList
       } finally {
         this.cloudregionLoading = false
@@ -448,7 +458,7 @@ export default {
       return null
     })
     return (
-      <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
+      <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label} required={this.isRequired}>
         <a-row gutter={8}>
           {RenderCols}
         </a-row>
