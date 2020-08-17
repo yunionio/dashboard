@@ -228,7 +228,6 @@ export default {
     },
     async fetchs (fetchNames = this.names) {
       await this.resetSelect(fetchNames)
-      console.log(fetchNames)
       if (fetchNames && fetchNames.length > 0) {
         for (let i = 0; i < fetchNames.length; i++) {
           const name = fetchNames[i]
@@ -347,7 +346,6 @@ export default {
         const manager = new this.$Manager('cloudregions', 'v2')
         const { data = {} } = await manager.list({ params })
         const retList = !R.isEmpty(data.data) ? data.data : []
-
         return retList
       } finally {
         this.cloudregionLoading = false
