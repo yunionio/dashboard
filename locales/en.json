@@ -8463,5 +8463,7 @@
   "common_584": "AWS international zone resources only support on-demand billing. On-demand billing fees are billed on a monthly basis, on the 6th day of each month and the previous month’s bill, and the payment cycle is 30 days.",
   "common_585": "When opening an Amazone Web Services (AWS) international account, you must have a verified email address, which can be modified and bound in the account center",
   "common_586": "Reserved",
-  "common_587": "This operation is not supported if the interval is less than one hour"
+  "common_587": "This operation is not supported if the interval is less than one hour",
+  "common_588": "Please select cloud subscription",
+  "common_589": "Error obtaining storage type:"
 }
