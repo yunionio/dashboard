@@ -3,13 +3,13 @@
     <div v-if="!isHiddenMenu">
       <template v-if="authInfoLoaded && isShowMenu">
         <a-tooltip :title="$t('common_209')" placement="right">
-          <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
+          <div class="primary-color-hover d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
             <icon type="menu" style="font-size: 24px;" />
           </div>
         </a-tooltip>
       </template>
       <template v-else>
-        <div class="d-flex align-items-center h-100 navbar-item-trigger flex-shrink-0 flex-grow-0">
+        <div class="primary-color-hover d-flex align-items-center h-100 navbar-item-trigger flex-shrink-0 flex-grow-0">
           <icon type="menu" style="font-size: 24px; cursor: default;" />
         </div>
       </template>
