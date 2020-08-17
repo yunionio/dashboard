@@ -104,6 +104,12 @@
       </div>
     </div>
     <slot name="frontNavbar" />
+    <!-- 大屏监控 -->
+    <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && isAdminMode">
+      <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
+        <icon type="daping" style="font-size: 20px;" />
+      </div>
+    </div>
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
@@ -188,6 +194,7 @@ export default {
       viewChangePopoverVisible: false,
       selectPid: '',
       isOperation: process.env.VUE_APP_PLATFORM === 'operation',
+      isCMPPrivate: process.env.VUE_APP_PLATFORM === 'cmp_private',
     }
   },
   computed: {
@@ -575,6 +582,9 @@ export default {
           drawerVisible: false,
         },
       })
+    },
+    handleOpenOverview () {
+      window.open('/overview', '_blank')
     },
   },
 }
