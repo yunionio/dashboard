@@ -575,12 +575,6 @@ export default {
     this.getPriceList = _.debounce(this._getPriceList, 500)
     this.baywatch([
       'form.fd.sku.id',
-      'form.fd.gcounts',
-      'form.fd.duration',
-      'form.fd.billType',
-      'form.fd.systemDiskSize',
-      'form.fd.systemDiskType.key',
-      'form.fd.count',
     ], (val) => {
       if (val) {
         this.getPriceList()
