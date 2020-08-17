@@ -643,7 +643,7 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
     rbd: {
-      label: 'rbd',
+      label: 'Ceph RBD',
       value: 'rbd',
       min: 1,
       max: 3072,

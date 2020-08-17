@@ -1,84 +1,123 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_409')}}</div>
-    <div slot="body">
-      <a-form
-        :form="form.fc">
-        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
-          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_177')" class="mb-0" v-bind="formItemLayout">
-          <cloudregion-zone
-            :zone-params="par.zone"
-            :cloudregion.sync="currentCloudregion"
-            :cloudregion-params="par.region"
-            :decorator="decorators.regionZone" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
-        </a-form-item>
-        <a-form-item :label="storageLabel" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.backend" @change="__newStorageChange">
-            <a-select-option v-for="item in storageOpts" :key="item.value">
-              <div class="d-flex">
-                <span class="text-truncate flex-fill mr-2" :title="item.label">{{ item.label }}</span>
-                <!-- <span style="color: #8492a6; font-size: 13px" v-if="item.manager">云订阅: {{ item.manager }}</span> -->
-              </div>
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_397')" v-bind="formItemLayout">
-          <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
-        </a-form-item>
-      </a-form>
-    </div>
-    <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-    </div>
-  </base-dialog>
+  <div>
+    <page-header :title="$t('compute.text_18')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <a-form
+      class="mt-3"
+      :form="form.fc">
+      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
+        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+      </a-form-item>
+      <area-selects
+        class="mb-0"
+        ref="areaSelects"
+        :wrapperCol="formItemLayout.wrapperCol"
+        :labelCol="formItemLayout.labelCol"
+        :names="areaselectsName"
+        :cloudregionParams="param.region"
+        :zoneParams="param.zone"
+        :isRequired="true" />
+      <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
+        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
+      </a-form-item>
+      <a-form-item :label="$t('compute.text_100')" required v-bind="formItemLayout">
+        <a-row>
+          <a-col :span="3" class="mr-2">
+            <a-select v-decorator="decorators.backend" @change="__newStorageChange">
+              <a-select-option v-for="item in storageOpts" :key="item.value">
+                <div class="d-flex">
+                  <span class="text-truncate flex-fill mr-2" :title="item.label">{{ item.label }}</span>
+                </div>
+              </a-select-option>
+            </a-select>
+          </a-col>
+          <a-col :span="3">
+            <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
+          </a-col>
+        </a-row>
+      </a-form-item>
+      <a-form-item :label="$t('compute.text_149')" required v-bind="formItemLayout" v-show="cloudproviderData.length > 1">
+        <base-select
+          class="w-50"
+          v-decorator="decorators.cloudprovider"
+          resource="cloudproviders"
+          :params="cloudproviderParams"
+          :isDefaultSelect="true"
+          :showSync="true"
+          :select-props="{ placeholder: $t('compute.text_149') }"
+          :resList.sync="cloudproviderData" />
+      </a-form-item>
+    </a-form>
+    <page-footer>
+      <div slot="right">
+        <a-button class="float-right" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common_258') }}</a-button>
+      </div>
+    </page-footer>
+  </div>
 </template>
 
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import * as CommonConstants from '../../../constants'
-import CloudregionZone from '@/sections/CloudregionZone'
+import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
 import { PROVIDER_MAP } from '@/constants'
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
-  name: 'DiskCreateDialog',
+  name: 'DiskCreate',
   components: {
-    CloudregionZone,
+    AreaSelects,
     DomainProject,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
+    const queryType = this.$route.query.type
+    let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
+    let routerQuery = this.$route.query.type
+    if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
+      cloudEnv = cloudEnvOptions[0].key
+      routerQuery = cloudEnv === 'onpremise' ? 'idc' : cloudEnv
+    }
     return {
       loading: false,
+      cloudEnvOptions,
+      cloudEnv,
+      routerQuery,
       currentCloudregion: {},
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
-            Object.keys(values).forEach((key) => {
-              this.form.fd[key] = values[key]
-            })
+            if (values.domain && values.domain.key) {
+              this.form.fd.domain = values.domain.key
+            }
+            if (values.project && values.project.key) {
+              this.form.fd.project = values.project.key
+            }
             if (values.hasOwnProperty('zone')) {
-              if (values.zone && values.zone.key) {
-                // this.fetchStorageList(values.zone.key)
-                this.fetchNewStorageList(values.zone.key)
+              if (values.zone) {
+                this.fetchStorageList(values.zone)
+                this.form.fd.zone = values.zone
+              } else {
+                this.storageOpts = []
+                this.form.fc.resetFields(['backend'])
               }
+            }
+            if (values.cloudregion) {
+              this.form.fd.cloudregion = values.cloudregion
             }
           },
         }),
         fd: {
           domain: '',
           project: '',
+          cloudregion: '',
+          zone: '',
         },
       },
       decorators: {
@@ -112,7 +151,7 @@ export default {
           'backend',
           {
             rules: [
-              { required: true, message: '请选择存储类型' },
+              { required: true, message: this.$t('compute.text_411') },
             ],
           },
         ],
@@ -133,26 +172,14 @@ export default {
             ],
           },
         ],
-        regionZone: {
-          cloudregion: [
-            'cloudregion',
-            {
-              initialValue: { key: '', label: '' },
-              rules: [
-                { required: true, message: this.$t('compute.text_212') },
-              ],
-            },
-          ],
-          zone: [
-            'zone',
-            {
-              initialValue: { key: '', label: '' },
-              rules: [
-                { required: true, message: this.$t('compute.text_213') },
-              ],
-            },
-          ],
-        },
+        cloudprovider: [
+          'cloudprovider',
+          {
+            rules: [
+              { required: true, message: this.$t('common_588') },
+            ],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -162,18 +189,12 @@ export default {
           span: 3,
         },
       },
-      param: {
-        zone: {},
-        region: {
-          usable: true,
-          cloud_env: 'onpremise',
-        },
-      },
       storageOpts: [],
       storageItem: {},
       maxDiskData: 2048,
       minDiskData: 1,
       step: 10,
+      cloudproviderData: [],
     }
   },
   computed: {
@@ -185,7 +206,7 @@ export default {
       return ['kvm', 'esxi'] // 没有 provider 肯定是 kvm 或者 esxi 的cloudregion
     },
     diskType () {
-      return this.params.diskType
+      return this.cloudEnv
     },
     storageLabel () {
       if (['idc', 'private'].includes(this.diskType)) {
@@ -193,8 +214,8 @@ export default {
       }
       return this.$t('compute.text_396')
     },
-    par () {
-      const project_domain = { project_domain: this.form.fd.domain.key || this.userInfo.domain.id }
+    param () {
+      const project_domain = { project_domain: this.form.fd.domain || this.userInfo.domain.id }
       if (this.diskType === 'private') {
         return {
           zone: {
@@ -250,6 +271,35 @@ export default {
         },
       }
     },
+    areaselectsName () {
+      if (this.diskType === 'private' || this.diskType === 'onpremise') {
+        return ['cloudregion', 'zone']
+      }
+      return ['city', 'provider', 'cloudregion', 'zone']
+    },
+    cloudproviderParams () {
+      const { cloudregion, domain: project_domain, zone } = this.form.fd
+      const params = {
+        limit: 0,
+        enabled: true,
+        'filter.0': 'status.equals("connected")',
+        'filter.1': 'health_status.equals("normal")',
+        cloudregion,
+        project_domain,
+        zone,
+      }
+      return params
+    },
+  },
+  watch: {
+    cloudEnv () {
+      this.$refs.areaSelects.fetchs(['city', 'provider', 'cloudregion', 'zone'])
+    },
+    'form.fd.domain' (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.$refs.areaSelects.fetchs(['cloudregion'])
+      }
+    },
   },
   provide () {
     return {
@@ -258,30 +308,6 @@ export default {
   },
   methods: {
     fetchStorageList (zoneId) {
-      const params = {
-        usable: true,
-        share: true,
-        details: true,
-        show_emulated: true,
-        // project_domain: this.form.fd.domain.key || this.userInfo.domain.id,
-        scope: this.scope,
-      }
-      this.storageOpts = []
-      new this.$Manager('storages').list({ ctx: [['zones', zoneId]], params })
-        .then(({ data: { data } = { data: [] } }) => {
-          try {
-            this.storageOpts = this._translateStorageOps(data)
-            this.form.fc.setFieldsValue({ storage_id: '' })
-            if (this.storageOpts.length > 0) {
-              this.form.fc.setFieldsValue({ storage_id: this.storageOpts[0].value })
-              this.__storageChange(this.storageOpts[0].value)
-            }
-          } catch (error) {
-            throw new Error(this.$t('compute.text_412') + error)
-          }
-        })
-    },
-    fetchNewStorageList (zoneId) {
       const params = { show_emulated: true, scope: this.scope }
       this.storageOpts = []
       new this.$Manager('capability').list({ ctx: [['zones', zoneId]], params })
@@ -312,7 +338,7 @@ export default {
               this.__newStorageChange(this.storageOpts[0].value)
             }
           } catch (error) {
-            throw new Error('存储类型获取出错：' + error)
+            throw new Error(this.$t('common_589') + error)
           }
         })
     },
@@ -328,11 +354,7 @@ export default {
       })
     },
     doCreate (data) {
-      return this.params.onManager('create', {
-        managerArgs: {
-          data,
-        },
-      })
+      return new this.$Manager('disks').create({ data })
     },
     async handleConfirm () {
       this.loading = true
@@ -353,7 +375,8 @@ export default {
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
         await this.doCreate(values)
-        this.cancelDialog()
+        this.$message.success(this.$t('k8s.text_184'))
+        this.$router.push('/disk')
       } catch (error) {
         throw error
       } finally {
@@ -452,7 +475,7 @@ export default {
           this.maxDiskData = 2048
         }
       } catch (error) {
-        console.warn(`没有找到 ${CommonConstants.STORAGE_TYPES[this.provider]} 下面的 ${item.storage_type}`)
+        console.warn(this.$t('compute.text_413', [CommonConstants.STORAGE_TYPES[this.provider], item.storage_type]))
       }
       this.form.fc.setFieldsValue({ size: 10 })
       const size = this.form.fc.getFieldValue('size')

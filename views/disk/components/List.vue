@@ -72,7 +72,7 @@ export default {
           project_domains: getDomainFilter(),
           account: getAccountFilter(),
           region: {
-            label: '区域',
+            label: this.$t('common_282'),
           },
           medium_type: {
             label: this.$t('compute.text_396'),
@@ -117,42 +117,48 @@ export default {
         {
           label: this.$t('compute.text_18'),
           permission: 'disks_create',
-          actions: () => {
-            return [
-              {
-                label: 'IDC',
-                permission: 'disks_create',
-                action: () => {
-                  this.createDialog('DiskCreateDialog', {
-                    title: this.$t('compute.text_18'),
-                    onManager: this.onManager,
-                    diskType: 'idc',
-                  })
-                },
+          action: () => {
+            this.$router.push({
+              path: '/disk/create',
+              query: {
+                type: this.cloudEnv,
               },
-              {
-                label: this.$t('compute.text_400'),
-                permission: 'disks_create',
-                action: () => {
-                  this.createDialog('DiskCreateDialog', {
-                    title: this.$t('compute.text_18'),
-                    onManager: this.onManager,
-                    diskType: 'private',
-                  })
-                },
-              },
-              {
-                label: this.$t('compute.text_401'),
-                permission: 'disks_create',
-                action: () => {
-                  this.createDialog('DiskCreateDialog', {
-                    title: this.$t('compute.text_18'),
-                    onManager: this.onManager,
-                    diskType: 'public',
-                  })
-                },
-              },
-            ]
+            })
+            // return [
+            //   {
+            //     label: 'IDC',
+            //     permission: 'disks_create',
+            //     action: () => {
+            //       this.createDialog('DiskCreateDialog', {
+            //         title: this.$t('compute.text_18'),
+            //         onManager: this.onManager,
+            //         diskType: 'idc',
+            //       })
+            //     },
+            //   },
+            //   {
+            //     label: this.$t('compute.text_400'),
+            //     permission: 'disks_create',
+            //     action: () => {
+            //       this.createDialog('DiskCreateDialog', {
+            //         title: this.$t('compute.text_18'),
+            //         onManager: this.onManager,
+            //         diskType: 'private',
+            //       })
+            //     },
+            //   },
+            //   {
+            //     label: this.$t('compute.text_401'),
+            //     permission: 'disks_create',
+            //     action: () => {
+            //       this.createDialog('DiskCreateDialog', {
+            //         title: this.$t('compute.text_18'),
+            //         onManager: this.onManager,
+            //         diskType: 'public',
+            //       })
+            //     },
+            //   },
+            // ]
           },
           meta: () => ({
             buttonType: 'primary',
