@@ -5,12 +5,6 @@
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item :label="$t('cloudenv.clouduser_list_t4')">
-          <user-select
-            v-decorator="decorators.owner_id"
-            :cloudaccount-id="params.cloudaccount.id"
-            :user.sync="form.fi.user" />
-        </a-form-item>
         <template v-if="isGoogle">
           <a-form-item :label="$t('dictionary.cloudprovider')">
             <base-select
@@ -23,12 +17,13 @@
         </template>
         <a-form-item :label="$t('cloudenv.text_375')" :extra="nameExtra">
           <a-input v-decorator="decorators.generate_name" :placeholder="namePlaceholder"  @change="e => { form.fi.generate_name = e.target.value }" />
-          <name-repeated
-            v-slot:extra
-            res="cloudusers"
-            version="v1"
-            :name="form.fi.generate_name"
-            :params="nameRepeatParams" />
+          <template v-slot:extra>
+            <name-repeated
+              res="cloudusers"
+              version="v1"
+              :name="form.fi.generate_name"
+              :params="nameRepeatParams" />
+          </template>
         </a-form-item>
         <a-form-item :label="$t('dictionary.cloudgroup')" :extra="$t('cloudenv.clouduser_text2')">
           <list-select
@@ -36,6 +31,12 @@
             :listProps="cloudgroupListSelectProps"
             :formatter="formatterLabel"
             :dialog-params="{ mask: false }" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.clouduser_list_t4')">
+          <user-select
+            v-decorator="decorators.owner_id"
+            :cloudaccount-id="params.cloudaccount.id"
+            :user.sync="form.fi.user" />
         </a-form-item>
       </a-form>
     </div>
@@ -86,11 +87,11 @@ export default {
         ],
         owner_id: [
           'owner_id',
-          {
-            rules: [
-              { required: true, message: this.$t('common.select') },
-            ],
-          },
+          // {
+          //   rules: [
+          //     { required: true, message: this.$t('common.select') },
+          //   ],
+          // },
         ],
         cloudprovider_id: [
           'cloudprovider_id',
@@ -139,10 +140,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
@@ -158,7 +159,13 @@ export default {
       return this.params.cloudaccount.brand === 'Google'
     },
     namePlaceholder () {
-      return this.isGoogle ? this.$t('cloudenv.text_377') : this.form.fi.user.name
+      if (this.form.fi.user && this.form.fi.user.name) {
+        if (this.isGoogle) {
+          return this.$t('cloudenv.text_377')
+        }
+        return this.form.fi.user.name
+      }
+      return ''
     },
     nameRepeatParams () {
       if (this.isGoogle) {

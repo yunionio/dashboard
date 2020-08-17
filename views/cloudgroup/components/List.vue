@@ -5,7 +5,7 @@
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
-    :expand-config="{ lazy: true, loadMethod: loadPolicy, visibleMethod: visbleLoadPolicy }" />
+    :expand-config="{ lazy: true, loadMethod: loadPolicy }" />
 </template>
 
 <script>
