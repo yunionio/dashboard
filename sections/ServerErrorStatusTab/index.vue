@@ -40,7 +40,7 @@ export default {
   computed: {
     ...mapGetters(['scope']),
     isShow () {
-      const opts = this.statusErrorOpts.filter((item) => { return /failed$/.test(item.val) })
+      const opts = this.statusErrorOpts.filter((item) => { return /fail/.test(item.val) })
       const sum = opts.reduce(function (acc, cur) {
         return acc + cur.num
       }, 0)
@@ -76,7 +76,7 @@ export default {
         this.statusArr = []
         for (const k in statusMap) {
           this.statusArr.push(k)
-          if (statusMap.hasOwnProperty(k) && /failed$/.test(k)) {
+          if (statusMap.hasOwnProperty(k) && /fail/.test(k)) {
             const num = statusMap[k]
             this.statusErrorOpts.push({
               color: '',
