@@ -43,20 +43,24 @@
                 <namespace-select v-decorator="decorators.namespace"  @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
               </a-form-item>
             </template>
-            <form-yaml
-              :decorators="decorators"
-              :activeTab.sync="formActiveTab"
-              :localData="chartDetail.chart.values"
-              :valueSearch="valueSearch" />
+            <a-collapse v-model="activeKey">
+              <a-collapse-panel :header="$t('helm.text_46')" key="jsonschema">
+                <json-schema-form v-if="isJsonSchema" :schema="schema" :extendFd="form.fd" :definition="definition" :hide-reset="false" ref="formRef" />
+                <form-yaml
+                  v-else
+                  :decorators="decorators"
+                  :activeTab.sync="formActiveTab"
+                  :localData="chartDetail.chart.values"
+                  :valueSearch="valueSearch" />
+              </a-collapse-panel>
+              <a-collapse-panel v-if="chartDetail.yaml !== ''" :header="$t('helm.text_33')" key="desc">
+                <div v-html="compiledMarkdown" />
+              </a-collapse-panel>
+              <a-collapse-panel :header="$t('helm.text_34')" key="yaml">
+                <template-preview :previewFiles="previewFiles" />
+              </a-collapse-panel>
+            </a-collapse>
           </a-form>
-          <a-collapse v-model="activeKey">
-            <a-collapse-panel v-if="chartDetail.yaml !== ''" :header="$t('helm.text_33')" key="desc">
-              <div v-html="compiledMarkdown" />
-            </a-collapse-panel>
-            <a-collapse-panel :header="$t('helm.text_34')" key="yaml">
-              <template-preview :previewFiles="previewFiles" />
-            </a-collapse-panel>
-          </a-collapse>
         </template>
       </div>
     </page-body>
@@ -74,22 +78,25 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import marked from 'marked'
 import { Base64 } from 'js-base64'
-import FormYaml from './FormYaml'
+import { mapGetters } from 'vuex'
+import { compactObj } from '@/utils/utils'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
 import TemplatePreview from '@K8S/sections/TemplatePreview'
 import k8sCreateMixin from '@K8S/mixins/create'
-import { validateYaml, isRequired } from '@/utils/validate'
 import DomainProject from '@/sections/DomainProject'
+import { validateYaml, isRequired } from '@/utils/validate'
+import { HYPERVISORS_MAP } from '@/constants'
+import FormYaml from '@Helm/views/chart/create/FormYaml'
 
 export default {
   name: 'K8SChartCreate',
   components: {
-    FormYaml,
     ClusterSelect,
     NamespaceSelect,
     TemplatePreview,
     DomainProject,
+    FormYaml,
   },
   mixins: [k8sCreateMixin],
   data () {
@@ -103,8 +110,9 @@ export default {
         })
     }
     return {
-      activeKey: ['desc', 'yaml'],
+      activeKey: ['jsonschema', 'desc', 'yaml'],
       formActiveTab: 'form',
+      isJsonSchema: false,
       versions: [],
       previewFiles: [],
       loading: false,
@@ -128,8 +136,16 @@ export default {
         [13, 9],
       ],
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.$set(this.form.fd, key, values[key])
+            })
+          },
+        }),
+        fd: {},
       },
+      schema: {},
       decorators: {
         release_name: [
           'release_name',
@@ -213,13 +229,39 @@ export default {
           },
         ],
       },
+      definition: [
+        // 'hypervisor',
+        // 'preferRegion',
+        // 'preferZone',
+        // 'network',
+        // 'virtualMachines',
+        // 'virtualMachines.masterNode',
+        // 'virtualMachines.slaveNode',
+        // 'virtualMachines.masterNode.instanceType',
+        // 'virtualMachines.masterNode.diskSizeGB',
+        // 'virtualMachines.masterNode.storageBackend',
+        // 'virtualMachines.masterNode.ansiblePlaybook',
+        // 'virtualMachines.masterNode.ansiblePlaybook.jenkins',
+        // 'virtualMachines.masterNode.ansiblePlaybook.telegraf',
+        // 'virtualMachines.masterNode.ansiblePlaybook.jenkins.adminUsername',
+        // 'virtualMachines.masterNode.ansiblePlaybook.jenkins.adminPassword',
+        // 'virtualMachines.masterNode.ansiblePlaybook.jenkins.httpPort',
+        // 'virtualMachines.masterNode.ansiblePlaybook.telegraf.influxdbName',
+        // 'virtualMachines.masterNode.ansiblePlaybook.telegraf.influxdbUrl',
+        // 'virtualMachines.slaveNode.count',
+        // 'virtualMachines.slaveNode.instanceType',
+        // 'virtualMachines.slaveNode.diskSizeGB',
+        // 'virtualMachines.slaveNode.storageBackend',
+      ],
     }
   },
   computed: {
     compiledMarkdown () {
+      if (!this.chartDetail.readme) return this.$t('helm.text_47')
       const markdownDoc = Base64.decode(this.chartDetail.readme)
       return marked(markdownDoc, { sanitize: true })
     },
+    ...mapGetters(['isAdminMode', 'isProjectMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
   },
   created () {
     this.chartsM = new this.$Manager('charts', 'v1')
@@ -228,6 +270,36 @@ export default {
     this.getChartVersion()
   },
   methods: {
+    async getCapability () {
+      if (!this.definition || !this.definition.length) return
+      try {
+        const { data: { data } } = await new this.$Manager('capabilities', 'v2').list({ params: {} })
+        if (data && data.length) {
+          const index = this.definition.findIndex(val => {
+            if (R.is(Object, val)) {
+              return val.key === 'hypervisor'
+            }
+            return val === 'hypervisor'
+          })
+          const { hypervisors = [] } = data[0]
+          const hyperItem = this.definition[index]
+          const hyperObj = R.is(Object, hyperItem) ? hyperItem : { key: hyperItem }
+          this.definition.splice(index, 1, {
+            ...hyperObj,
+            type: 'a-select',
+            options: hypervisors
+              .filter(v => v !== 'baremetal')
+              .map(v => ({ value: v, label: (_.get(HYPERVISORS_MAP, `${v}.label`) || v) })),
+          })
+        }
+      } catch (error) {
+        throw error
+      }
+    },
+    getDefinition (jsonshcema = this.schema) {
+      this.definition = Object.keys(jsonshcema.properties).filter(val => val !== 'project')
+      this.getCapability()
+    },
     valueSearch (query, path) {
       const values = this.chartDetail.chart.values
       const value = _.get(values, path)
@@ -237,6 +309,15 @@ export default {
         return opts
       }
       return []
+    },
+    async validateForm () {
+      try {
+        const values = await this.$refs.formRef.handleSubmit()
+        const validData = compactObj(values) // 去除 属性值是 undefined，''和null的
+        return validData
+      } catch (error) {
+        throw error
+      }
     },
     async getChart () {
       const { repo, name } = this.$route.query
@@ -251,6 +332,16 @@ export default {
         this.previewFiles = data.files
         if (this.activeKey.indexOf('yaml')) {
           this.activeKey.push('yaml')
+        }
+        const jsonSchemaItem = data.files.find(val => val.name.endsWith('values.schema.json'))
+        if (R.is(Object, jsonSchemaItem)) {
+          let schema = Base64.decode(jsonSchemaItem.data)
+          if (R.is(String, schema)) {
+            schema = JSON.parse(schema)
+          }
+          this.schema = schema
+          this.getDefinition()
+          this.isJsonSchema = true
         }
       }
     },
@@ -279,23 +370,25 @@ export default {
         [this.decorators.version[0]]: this.versions[0].key,
       })
     },
-    async doCreate (values) {
+    async doCreate (values, valuesJson) {
       const data = {
         chart_name: `${this.chartDetail.repo}/${this.chartDetail.name}`,
         release_name: values.release_name,
       }
       if (this.isVm) {
-        if (this.$store.getters.isAdminMode) {
-          data.domain = values.domain.key
+        if (this.isAdminMode) {
           data.project = values.project.key
+          if (this.l3PermissionEnable) {
+            data.domain = values.domain.key
+          }
         }
-        if (this.$store.getters.isDomainMode) {
+        if (this.isDomainMode) {
           data.project = values.project.key
-          data.domain = this.$store.getters.userInfo.projectDomainId
+          data.domain = this.userInfo.projectDomainId
         }
-        if (this.$store.getters.isProjectMode) {
-          data.domain = this.$store.getters.userInfo.projectDomainId
-          data.project = this.$store.getters.userInfo.projectId
+        if (this.isProjectMode) {
+          data.domain = this.userInfo.projectDomainId
+          data.project = this.userInfo.projectId
         }
       } else {
         data.cluster = values.cluster
@@ -304,22 +397,31 @@ export default {
       if (!R.isNil(values.version) && !R.isEmpty(values.version)) {
         data.version = values.version.split(' - ')[1]
       }
-      const sets = {}
-      if (this.formActiveTab === 'form') {
-        R.forEachObjIndexed((value, key) => {
-          sets[value] = values.values[key]
-        }, values.keys)
-        data.sets = sets
+      if (valuesJson) {
+        data.values_json = valuesJson
+        data.values_json.project = data.project
       } else {
-        data.values = values.yaml
+        const sets = {}
+        if (this.formActiveTab === 'form') {
+          R.forEachObjIndexed((value, key) => {
+            sets[value] = values.values[key]
+          }, values.keys)
+          data.sets = sets
+        } else {
+          data.values = values.yaml
+        }
       }
       await this.releaseM.create({ data })
     },
     async confirm () {
+      this.loading = true
+      const jobs = [this.form.fc.validateFields()]
+      if (this.isJsonSchema) {
+        jobs.push(this.validateForm())
+      }
       try {
-        this.loading = true
-        const values = await this.form.fc.validateFields()
-        await this.doCreate(values)
+        const [values, valuesJson] = await Promise.all(jobs)
+        await this.doCreate(values, valuesJson)
         this.$message.success(this.$t('helm.text_45'))
         this.loading = false
         this.cancel(true)
