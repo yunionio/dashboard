@@ -248,6 +248,7 @@ export default {
         ret = this.userInfo.projectDomain || '-'
         managerLabel = this.isOperation ? this.$t('common_213') : ' ' + this.$t('dictionary.domain') + this.$t('common_213')
       }
+      if (this.isOperation) return `${managerLabel}（${ret}）`
       return ret + managerLabel
     },
     // 认证信息加载完毕
