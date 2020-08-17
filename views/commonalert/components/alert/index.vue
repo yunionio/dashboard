@@ -1,7 +1,16 @@
 <template>
   <a-row v-loading="loading">
     <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 11 }" class="mb-5">
-      <alert-form ref="alertFormRef" v-if="!isUpdate || (loaded && !loading)" @refresh="refresh" :threshold.sync="threshold" :alertData="alertData" @resetChart="resetChart" @mertricItemChange="mertricItemChange" :timeRangeParams="timeRangeParams" />
+      <alert-form
+        v-if="!isUpdate || (loaded && !loading)"
+        ref="alertFormRef"
+        :alertData="alertData"
+        :threshold.sync="threshold"
+        :timeRangeParams="timeRangeParams"
+        @refresh="refresh"
+        @resetChart="resetChart"
+        @mertricItemChange="mertricItemChange"
+        @scopeChange="scopeChange" />
     </a-col>
     <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
       <monitor-header
@@ -62,6 +71,7 @@ export default {
       loaded: false,
       chartLoading: false,
       lineDescription: {},
+      scopeParams: {},
     }
   },
   computed: {
@@ -120,6 +130,9 @@ export default {
     customTime () {
       this.fetchData()
     },
+    scopeParams () {
+      this.fetchData()
+    },
   },
   created () {
     if (this.isUpdate) {
@@ -164,6 +177,9 @@ export default {
     resetChart () {
       this.series = []
     },
+    scopeChange (scopeParams) {
+      this.scopeParams = scopeParams
+    },
     async submit () {
       try {
         const { fd, monitorParams } = await this.$refs.alertFormRef.validate()
@@ -184,11 +200,6 @@ export default {
         }
         if (fd.domain || fd.domain_id) data.domain_id = (fd.domain || fd.domain_id)
         if (fd.project) data.project_id = fd.project
-        if (fd.scope === 'domain' || fd.scope === 'project') {
-          if (!data.domain_id && !data.project_id) {
-            data.scope = fd.scope
-          }
-        }
         if (this.time === 'custom') { // 自定义时间
           if (this.customTime && this.customTime.from && this.customTime.to) {
             data.from = this.customTime.from
@@ -225,6 +236,7 @@ export default {
         const data = {
           metric_query: this.formmMetric,
           interval: this.timeGroup,
+          ...this.scopeParams,
         }
         if (this.time === 'custom') { // 自定义时间
           if (this.customTime && this.customTime.from && this.customTime.to) {

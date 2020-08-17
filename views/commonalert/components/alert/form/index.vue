@@ -1,6 +1,6 @@
 <template>
   <a-form v-bind="formItemLayout" :form="form.fc">
-    <scope-radio :decorators="decorators" @change="getMeasurement" :form="form" :disabled="disabled" />
+    <scope-radio :decorators="decorators" @change="scopeChange" :form="form" :disabled="disabled" />
     <a-form-item :label="$t('common.name')">
       <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" :disabled="disabled" />
       <name-repeated v-slot:extra res="commonalerts" :name="form.fd.name" />
@@ -316,6 +316,10 @@ export default {
     }
   },
   methods: {
+    scopeChange (scopeParams) {
+      this.getMeasurement(scopeParams)
+      this.$emit('scopeChange', scopeParams)
+    },
     async getMeasurement (params = {}) {
       try {
         this.metricLoading = true
@@ -373,10 +377,22 @@ export default {
         this.metricKeyItem = metricKeyItem
         this.conditionUnit = _.get(mertricItem, 'description.unit') || ''
         this.$emit('mertricItemChange', mertricItem)
+        const scopeFormValues = this.form.fc.getFieldsValue([this.decorators.scope[0], this.decorators.domain[0], this.decorators.project[0]])
+        const scopeParams = {}
+        for (const k in scopeFormValues) {
+          if (scopeFormValues[k]) {
+            if (k === this.decorators.scope[0]) {
+              scopeParams[k] = scopeFormValues[k]
+            } else {
+              scopeParams[`${k}_id`] = scopeFormValues[k]
+            }
+          }
+        }
         const params = {
           database: metricKeyItem.database || 'telegraf',
           measurement: metricKey,
           field: mertric,
+          ...scopeParams,
           ...this.timeRangeParams,
         }
         this.metricInfoLoading = true

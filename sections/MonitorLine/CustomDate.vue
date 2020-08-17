@@ -2,11 +2,13 @@
   <a-popconfirm placement="bottom" overlayClassName="custom-date-time" @confirm="submit" @cancel="cancel" v-model="visible">
     <template v-slot:icon><i /></template>
     <template v-slot:title>
+      <a-alert v-if="diffHours < 1" class="mb-2" :message="$t('common_587')" type="error" show-icon />
       <a-form-model hideRequiredMark ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
         <a-form-model-item :label="$t('common.text00119')" prop="startValue">
           <a-date-picker
             v-model="formData.startValue"
             :disabled-date="disabledStartDate"
+            :disabled-time="disabledDateTime"
             :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
             format="YYYY-MM-DD HH:mm"
             :open="startOpen"
@@ -17,6 +19,7 @@
           <a-date-picker
             v-model="formData.endValue"
             :disabled-date="disabledEndDate"
+            :disabled-time="disabledDateTime"
             :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
             format="YYYY-MM-DD HH:mm"
             :placeholder="$t('common.text00120')"
@@ -66,6 +69,7 @@ export default {
           { required: true, message: this.$t('common.select') },
         ],
       },
+      diffHours: 1,
     }
   },
   watch: {
@@ -95,6 +99,11 @@ export default {
     async submit () {
       try {
         const valid = await this.$refs.ruleForm.validate()
+        this.diffHours = this.formData.endValue.diff(this.formData.startValue, 'hours')
+        if (this.diffHours < 1) {
+          this.visible = true
+          return false
+        }
         if (valid) {
           this.$emit('update:time', 'custom')
           this.$emit('update:customTime', this.getCustomTime())
@@ -133,6 +142,14 @@ export default {
         result.push(i)
       }
       return result
+    },
+    disabledDateTime () {
+      const currentHour = this.$moment().hour()
+      return {
+        disabledSeconds: () => this._range(1, 60),
+        disabledMinutes: () => this._range(1, 60),
+        disabledHours: () => this._range(currentHour + 1, 24),
+      }
     },
   },
 }
