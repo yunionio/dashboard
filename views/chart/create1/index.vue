@@ -78,6 +78,7 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import marked from 'marked'
 import { Base64 } from 'js-base64'
+import { mapGetters } from 'vuex'
 import { compactObj } from '@/utils/utils'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
@@ -260,6 +261,7 @@ export default {
       const markdownDoc = Base64.decode(this.chartDetail.readme)
       return marked(markdownDoc, { sanitize: true })
     },
+    ...mapGetters(['isAdminMode', 'isProjectMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
   },
   created () {
     this.chartsM = new this.$Manager('charts', 'v1')
@@ -374,17 +376,19 @@ export default {
         release_name: values.release_name,
       }
       if (this.isVm) {
-        if (this.$store.getters.isAdminMode) {
-          data.domain = values.domain.key
+        if (this.isAdminMode) {
           data.project = values.project.key
+          if (this.l3PermissionEnable) {
+            data.domain = values.domain.key
+          }
         }
-        if (this.$store.getters.isDomainMode) {
+        if (this.isDomainMode) {
           data.project = values.project.key
-          data.domain = this.$store.getters.userInfo.projectDomainId
+          data.domain = this.userInfo.projectDomainId
         }
-        if (this.$store.getters.isProjectMode) {
-          data.domain = this.$store.getters.userInfo.projectDomainId
-          data.project = this.$store.getters.userInfo.projectId
+        if (this.isProjectMode) {
+          data.domain = this.userInfo.projectDomainId
+          data.project = this.userInfo.projectId
         }
       } else {
         data.cluster = values.cluster
