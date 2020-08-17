@@ -105,43 +105,46 @@ export default {
       const column = [
         { type: 'radio', width: 40 },
         { field: 'instance_type_category_i18n', title: this.$t('compute.text_175') },
-        {
-          field: 'provider',
-          title: this.$t('compute.text_176'),
-          slots: {
-            default: ({ row }) => {
-              return [
-                this.getHypervisor(row),
-              ]
-            },
-          },
-        },
         { field: 'region', title: this.$t('compute.text_177') },
         { field: 'name', title: this.$t('compute.text_178') },
         { field: 'cpu_core_count', title: this.$t('compute.text_179') },
         { field: 'memory_size_mb_compute', title: this.$t('compute.text_180') },
       ]
-      if (this.isPublic && this.hasMeterService) {
-        column.push({
-          field: 'hour_price',
-          title: this.$t('compute.text_181'),
-          slots: {
-            default: ({ row }) => {
-              const price = this.getFormatPrice(row.hour_price)
-              if (price > 0) {
-                let ret = [<a-icon type="loading" />]
-                if (!this.rateLoading) {
-                  ret = [
-                    <span style="color: rgb(230, 139, 80);">{ price }</span>,
-                    <span> {this.$t(`currencys.${row.currency}`)} / { this.priceUnit.unit }</span>,
-                  ]
-                }
-                return ret
-              }
-              return [<span style="color: rgb(230, 139, 80);">--</span>]
-            },
+      const providerColumn = {
+        field: 'provider',
+        title: this.$t('compute.text_176'),
+        slots: {
+          default: ({ row }) => {
+            return [
+              this.getHypervisor(row),
+            ]
           },
-        })
+        },
+      }
+      if (this.isPublic) {
+        column.splice(1, 0, providerColumn)
+        if (this.hasMeterService) {
+          column.push({
+            field: 'hour_price',
+            title: this.$t('compute.text_181'),
+            slots: {
+              default: ({ row }) => {
+                const price = this.getFormatPrice(row.hour_price)
+                if (price > 0) {
+                  let ret = [<a-icon type="loading" />]
+                  if (!this.rateLoading) {
+                    ret = [
+                      <span style="color: rgb(230, 139, 80);">{ price }</span>,
+                      <span> {this.$t(`currencys.${row.currency}`)} / { this.priceUnit.unit }</span>,
+                    ]
+                  }
+                  return ret
+                }
+                return [<span style="color: rgb(230, 139, 80);">--</span>]
+              },
+            },
+          })
+        }
       }
       return column
     },
