@@ -1,16 +1,20 @@
 <template>
   <a-row :gutter="8" class="w-100">
     <a-col :span="12">
-      <a-select v-model="domain">
+      <a-select v-model="domain" allow-clear>
         <template v-for="item of domains">
-          <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+          <a-select-option :key="item.id" :value="item.id">
+            <span class="text-color-secondary">{{ $t('dictionary.domain') }}: </span>{{ item.name }}
+          </a-select-option>
         </template>
       </a-select>
     </a-col>
     <a-col :span="12">
-      <a-select v-model="user">
+      <a-select v-model="user" allow-clear>
         <template v-for="item of users">
-          <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+          <a-select-option :key="item.id" :value="item.id">
+            <span class="text-color-secondary">{{ $t('dictionary.user') }}: </span>{{ item.name }}
+          </a-select-option>
         </template>
       </a-select>
     </a-col>
@@ -46,9 +50,18 @@ export default {
   watch: {
     domain (val, oldVal) {
       if (val !== oldVal) {
-        const obj = R.find(R.propEq('id', val))(this.domains)
-        this.$emit('update:domain', obj)
-        this.fetchUsers()
+        if (val) {
+          const obj = R.find(R.propEq('id', val))(this.domains)
+          this.$emit('update:domain', obj)
+          this.fetchUsers()
+        } else {
+          this.users = []
+          this.user = ''
+          this.userObj = {}
+          this.$emit('input', this.user)
+          this.$emit('change', this.user)
+          this.$emit('update:user', this.userObj)
+        }
       }
     },
     user (val, oldVal) {

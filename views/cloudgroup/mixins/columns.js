@@ -69,8 +69,5 @@ export default {
         manager = null
       }
     },
-    visbleLoadPolicy ({ row }) {
-      return row.cloudpolicies && row.cloudpolicies.length > 0
-    },
   },
 }
