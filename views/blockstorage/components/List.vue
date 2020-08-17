@@ -17,7 +17,8 @@ import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
-import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+// import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
 import expectStatus from '@/constants/expectStatus'
 
@@ -84,17 +85,17 @@ export default {
                 }
               },
             }),
-            getSetPublicAction(this, {
-              name: this.$t('dictionary.storages'),
-              scope: 'domain',
-              resource: 'storages',
-            }, {
-              meta: () => {
-                return {
-                  validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
-                }
-              },
-            }),
+            // getSetPublicAction(this, {
+            //   name: this.$t('dictionary.storages'),
+            //   scope: 'domain',
+            //   resource: 'storages',
+            // }, {
+            //   meta: () => {
+            //     return {
+            //       validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
+            //     }
+            //   },
+            // }),
             // {
             //   label: '同步状态',
             //   action: () => {
@@ -188,7 +189,13 @@ export default {
           { label: this.$t('storage.text_45'), key: 'schedtag' },
           { label: this.$t('storage.text_46'), key: 'provider' },
           { label: this.$t('storage.text_47'), key: 'region' },
-          { label: this.$t('storage.text_48'), key: 'public_scope' },
+          {
+            label: this.$t('storage.text_48'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('storages'))
+            },
+          },
           { label: this.$t('storage.text_49', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
