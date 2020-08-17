@@ -70,8 +70,24 @@
     </div>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{$t('compute.text_907')}}</a-button>
-        <a-button @click="cancel">{{$t('compute.text_908')}}</a-button>
+        <div class="d-flex align-items-center">
+          <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
+            <div class="text-truncate">{{$t('compute.text_286')}}</div>
+            <div class="ml-2 prices">
+              <div class="hour error-color text-truncate">
+                <template v-if="price">
+                  <m-animated-number :value="price" :formatValue="formatToPrice" />
+                </template>
+                <template v-else>---</template>
+              </div>
+              <div class="tips text-truncate">
+                <span v-html="priceTips" />
+              </div>
+            </div>
+          </div>
+          <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{$t('compute.text_907')}}</a-button>
+          <a-button @click="cancel">{{$t('compute.text_908')}}</a-button>
+        </div>
       </div>
     </page-footer>
   </div>
@@ -86,12 +102,12 @@ import MemRadio from '@Compute/sections/MemRadio'
 import DataDisk from '@Compute/sections/DataDisk'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import sku from '@Compute/sections/SKU'
-import { SERVER_TYPE } from '@Compute/constants'
+import { SERVER_TYPE, BILL_TYPES_MAP } from '@Compute/constants'
 import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
-import { HYPERVISORS_MAP } from '@/constants'
+import { HYPERVISORS_MAP, PROVIDER_MAP } from '@/constants'
 import {
   getNameDescriptionTableColumn,
   getIpsTableColumn,
@@ -101,7 +117,7 @@ import {
 } from '@/utils/common/tableColumn'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { isRequired } from '@/utils/validate'
-import { sizestr } from '@/utils/utils'
+import { sizestr, sizestrWithUnit } from '@/utils/utils'
 import { STORAGE_TYPES } from '@/constants/compute'
 
 export default {
@@ -144,6 +160,8 @@ export default {
           vcpu: 2,
           vmem: 2048,
           diskType: null,
+          dataDiskSizes: [],
+          dataDiskTypes: [],
         },
         fi: {
           cpuMem: {}, // cpu 和 内存 的关联关系
@@ -312,6 +330,7 @@ export default {
       diskLoaded: false,
       domain: itemData.domain_id,
       sysdisk: {},
+      pricesList: [],
     }
   },
   computed: {
@@ -321,6 +340,9 @@ export default {
     },
     selectedItem () {
       return this.params.data[0]
+    },
+    count () {
+      return this.selectedItems.length || 1
     },
     isSomeRunning () {
       return this.params.data.some(val => val.status === 'running')
@@ -465,6 +487,74 @@ export default {
     instanceType () {
       return this.selectedItem.instance_type
     },
+    hasMeterService () { // 是否有计费的服务
+      const { services } = this.$store.getters.userInfo
+      const meterService = services.find(val => val.type === 'meter')
+      if (meterService && meterService.status === true) {
+        return true
+      }
+      return false
+    },
+    price () {
+      const count = this.count
+      if (count && this.pricesList && this.pricesList.length > 0) {
+        const { month_price: month, sum_price: sum } = this.pricesList[0]
+        let _price = parseFloat(sum)
+        if (this.isPackage && this.durationNum) {
+          _price = parseFloat(month) * this.durationNum
+        }
+        return _price * parseFloat(count)
+      }
+      return null
+    },
+    currency () {
+      const currencys = {
+        USD: '$',
+        CNY: '¥',
+      }
+      if (this.pricesList && this.pricesList.length > 0) {
+        return currencys[this.pricesList[0].currency]
+      }
+      return '¥'
+    },
+    priceTips () {
+      if (this.price) {
+        if (this.isPackage && this.durationNum) {
+          const _day = (this.price / 30 / this.durationNum).toFixed(2)
+          const _hour = (parseFloat(_day) / 24).toFixed(2)
+          return this.$t('compute.text_1137', [this.currency, _day, this.currency, _hour])
+        } else {
+          const _day = (this.price * 24).toFixed(2)
+          const _month = (parseFloat(_day) * 30).toFixed(2)
+          return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
+        }
+      }
+      return '--'
+    },
+    // 是否为包年包月
+    isPackage () {
+      return this.form.fd.billType === BILL_TYPES_MAP.package.key
+    },
+    durationNum () {
+      if (this.isPackage) {
+        const { duration } = this.form.fd
+        let num = parseInt(duration)
+        if (num && duration.endsWith('Y')) {
+          num *= 12 // 1年=12月
+        } else if (num && duration.endsWith('W')) {
+          num *= 0.25 // 1周=0.25月
+        }
+        return num
+      }
+      return 0
+    },
+    disk () {
+      const diskValueArr = [this.form.fd.systemDiskSize]
+      R.forEachObjIndexed(value => {
+        diskValueArr.push(value)
+      }, this.form.fd.dataDiskSizes)
+      return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, 0)
+    },
   },
   watch: {
     isSomeRunning: {
@@ -482,6 +572,14 @@ export default {
     this.serverskusM = new Manager('serverskus')
     this.loadData(this.params.data)
     this.fetchInstanceSpecs()
+    this.getPriceList = _.debounce(this._getPriceList, 500)
+    this.baywatch([
+      'form.fd.sku.id',
+    ], (val) => {
+      if (val) {
+        this.getPriceList()
+      }
+    })
   },
   methods: {
     async loadData (data) {
@@ -723,6 +821,75 @@ export default {
     cancel () {
       this.$router.push({ name: 'VMInstance' })
     },
+    baywatch (props, watcher) {
+      const iterator = function (prop) {
+        this.$watch(prop, watcher)
+      }
+      props.forEach(iterator, this)
+    },
+    formatToPrice (val) {
+      let ret = `${this.currency} ${val.toFixed(2)}`
+      ret += !this.isPackage ? this.$t('compute.text_296') : ''
+      return ret
+    },
+    // 获取总价格
+    async _getPriceList () {
+      if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
+      if (R.isEmpty(this.form.fd.sku) || R.isNil(this.form.fd.sku)) return
+      const skuProvider = this.form.fd.sku.provider || PROVIDER_MAP.OneCloud.key
+      const brand = PROVIDER_MAP[skuProvider].brand
+      const params = {
+        quantity: this.count,
+        brand,
+      }
+      const { systemDiskSize = 0, systemDiskType = {}, sysdisks = [] } = this.form.fd
+      if (this.params.data[0].cloud_env !== SERVER_TYPE.public) {
+        let diskSize = this.disk || 0
+        if (!this.disk && sysdisks) {
+          diskSize = sysdisks.reduce((sum, disk) => { return sum + disk.value }, 0) / this.count
+        }
+        params.spec = `cpu=${this.form.fd.vcpu}core;mem=${sizestrWithUnit(this.form.fd.vmem, 'M', 1024)};disk=${diskSize}GB`
+      } else {
+        const { sku } = this.form.fd
+        const { region_ext_id: regionExtId, name, zone_ext_id: zoneExtId } = sku
+        const image = this.form.fi.imageMsg || {}
+        const osType = image.os_type ? image.os_type.toLowerCase() : ''
+        params.region_id = regionExtId
+        const provider = skuProvider.toLowerCase()
+        if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+          params.price_key = `${provider}::${regionExtId}::::instance::`
+          if (sku.name) {
+            params.price_key += `${sku.name}`
+          }
+        } else {
+          params.price_key = `${regionExtId}::${name}::${osType}::${zoneExtId}`
+        }
+        // spec
+        params.spec = `${systemDiskSize}:${systemDiskType.key}`
+        if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+          params.spec = `${systemDiskSize}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`
+        }
+        const dataDiskSpec = []
+        const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
+        R.forEach((value) => {
+          if (isUcloudAzure) {
+            dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${this.dataDiskType}`)
+          } else {
+            dataDiskSpec.push(`${value}:${this.dataDiskType}`)
+          }
+        }, this.form.fd.dataDiskSizes)
+        if (dataDiskSpec && dataDiskSpec.length > 0) {
+          params.spec += `;${dataDiskSpec.join(';')}`
+        }
+        if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
+          params.period = this.form.fd.duration
+        }
+        params.version = 'v2'
+        if (R.isNil(params.region_id) || R.isEmpty(params.region_id)) return
+      }
+      const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
+      this.pricesList = data
+    },
   },
 }
 </script>
@@ -743,5 +910,14 @@ export default {
 }
 .h-desc-bg{
   background: rgba(245, 245, 243, 0.4)
+}
+.prices {
+  .hour {
+    font-size: 24px;
+  }
+  .tips {
+    color: #999;
+    font-size: 12px;
+  }
 }
 </style>
