@@ -16,21 +16,9 @@
 
 <script>
 import * as R from 'ramda'
-import { getStatusTableColumn, getBrandTableColumn, getNameDescriptionTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
-import expectStatus from '@/constants/expectStatus'
+import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
-import { getBrandItems, mapperStatusToItems } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
-
-const expectStatusAlias = {
-  guestimage: 'image',
-  instance_snapshot: 'snapshot',
-  elasticcache: 'redis',
-  dbinstance: 'rds',
-  loadbalancer: 'lb',
-}
-
-const noStatusRes = ['loadbalanceragent', 'loadbalancercluster']
 
 export default {
   name: 'BindResource',
@@ -60,7 +48,7 @@ export default {
         eip: this.$t('dictionary.eip'),
         snapshot: this.$t('dictionary.snapshot'),
         dbinstance: 'RDS',
-        host: this.$t('dictionary.physicalmachine'),
+        host: this.$t('dictionary.host'),
         dbinstancebackup: this.$t('dictionary.dbinstancebackups'),
         loadbalancerclusters: '负载均衡集群',
       },
@@ -86,7 +74,7 @@ export default {
           permission: 'rds_dbinstances_get',
         },
         host: {
-          name: 'PhysicalmachineSidePage',
+          name: 'HostSidePage',
           permission: 'hosts_get',
         },
       },
@@ -122,8 +110,7 @@ export default {
       return ret
     },
     columns () {
-      const statusAlias = expectStatusAlias[this.currentResource] || this.currentResource
-      let ret = [
+      return [
         getNameDescriptionTableColumn({
           onManager: this.onManager,
           hideField: true,
@@ -148,21 +135,12 @@ export default {
             }
           },
         }),
-        getProjectTableColumn(),
       ]
-      if (this.cloudEnv !== 'local_image') {
-        ret = R.insert(2, getBrandTableColumn(), ret)
-      }
-      if (!noStatusRes.includes(this.currentResource)) {
-        ret = R.insert(1, getStatusTableColumn({ statusModule: statusAlias }), ret)
-      }
-      return ret
     },
   },
   watch: {
     currentResource: {
       handler (val) {
-        const statusAlias = expectStatusAlias[val] || val
         const filterOptions = {
           name: {
             label: this.$t('cloudenv.text_95'),
@@ -171,46 +149,11 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          brand: {
-            label: this.$t('cloudenv.text_102'),
-            dropdown: true,
-            multiple: true,
-            items: getBrandItems('brands'),
-          },
-          status: {
-            label: this.$t('cloudenv.text_98'),
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'field',
-              key: 'status',
-            },
-            mapper: data => {
-              return mapperStatusToItems(data, statusAlias)
-            },
-            filter: true,
-            formatter: val => {
-              return `status.in(${val.join(',')})`
-            },
-          },
-          tenant: {
-            label: this.$t('dictionary.project'),
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'extra_field',
-              key: 'tenant',
-            },
-          },
-        }
-        if (noStatusRes.includes(val)) {
-          delete filterOptions.status
         }
         this.list = this.$list.createList(this, {
           resource: `${val}s`,
           apiVersion: this.cloudEnv === 'local_image' ? 'v1' : 'v2',
           getParams: this.getParams,
-          steadyStatus: expectStatus[statusAlias] && Object.values(expectStatus[statusAlias]) && Object.values(expectStatus[statusAlias]).flat(),
           filterOptions,
         })
         this.list.fetchData(0)
