@@ -8462,5 +8462,6 @@
   "common_583": "The payment currency for AWS international accounts can be paid in RMB (domestic) or US dollars (overseas). The currency conversion rate is based on the central parity of the RMB exchange rate announced by the People's Bank of China Administration of Foreign Exchange on the first working day of the month. All Domestic VAT invoices can be issued for actual RMB payment.",
   "common_584": "AWS international zone resources only support on-demand billing. On-demand billing fees are billed on a monthly basis, on the 6th day of each month and the previous month’s bill, and the payment cycle is 30 days.",
   "common_585": "When opening an Amazone Web Services (AWS) international account, you must have a verified email address, which can be modified and bound in the account center",
-  "common_586": "Reserved"
+  "common_586": "Reserved",
+  "common_587": "This operation is not supported if the interval is less than one hour"
 }
