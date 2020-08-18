@@ -4,6 +4,7 @@
     <page-body>
       <server-error-status-tab
         resource="servers"
+        status="server"
         @getStatusCheckArr="getStatusCheckArr" />
       <vm-instance-list
         :id="listId"
