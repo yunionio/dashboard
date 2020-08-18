@@ -8473,5 +8473,7 @@
   "common_594": "Create or obtain path: Log in to the enterprise WeChat management background as an administrator -> Application Management -> Create a self-built application -> Obtain application credentials in the application details after creation",
   "common_595": "Enterprise WeChat",
   "common_596": "Enterprise WeChat Robot",
-  "common_597": "Path to create or obtain: Settings in the upper right corner of the enterprise WeChat group -> Group robot -> Add robot -> After successful addition, get the robot's webhook address"
+  "common_597": "Path to create or obtain: Settings in the upper right corner of the enterprise WeChat group -> Group robot -> Add robot -> After successful addition, get the robot's webhook address",
+  "common_598": "Enterprise WeChat {0}",
+  "common_599": "Notification Channel"
 }
