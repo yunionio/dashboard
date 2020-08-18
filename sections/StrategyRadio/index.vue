@@ -20,11 +20,19 @@ export default {
       type: Array,
       required: true,
     },
+    isNone: {
+      type: Boolean,
+      default: true,
+    },
   },
-  data () {
-    return {
-      opts: STRATEGY_OPT,
-    }
+  computed: {
+    opts () {
+      const _opts = [...STRATEGY_OPT]
+      if (!this.isNone) {
+        return _opts.filter(opt => opt.key)
+      }
+      return _opts
+    },
   },
 }
 </script>
