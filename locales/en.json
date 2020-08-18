@@ -8394,7 +8394,7 @@
   "common_515": "Please select target {0}",
   "common_516": "User ID",
   "common_517": "Preferentially add users to the local project with the same name in {0}. When there is no project with the same name in the local area, the project with the same name will be automatically created by checking it. If it is not checked, it will belong to the default project. If not specified, there is no item for this user, you can adjust it in the user list after adding.",
-  "common_518": "Cancel the use of {0} in CAS",
+  "common_518": "Cancel the use of {1} in {0}",
   "common_519": "Create project automatically",
   "common_520": "When there is no project with the same name locally, a project with the same name will be created automatically",
   "common_521": "Use {1} in {0} first",
