@@ -1,5 +1,5 @@
 <template>
-  <a-form-item class="no-line-height" :label="$t('cloudenv.text_22')" v-bind="formItemLayout">
+  <a-form-item :required="isRequired" class="no-line-height" :label="$t('cloudenv.text_22')" v-bind="formItemLayout">
     <a-input-group compact>
       <a-select v-decorator="decorators.conditionKey">
         <a-select-option value="projects">{{ $t('dictionary.project') }}</a-select-option>
@@ -45,6 +45,14 @@ export default {
         limit: 0,
         scope: this.scope,
       }
+    },
+    isRequired () {
+      const { conditionVals = [] } = this.decorators
+      const [, options] = conditionVals
+      if (options && options.rules && options.rules.length > 0) {
+        return options.rules.some(rules => rules.required)
+      }
+      return false
     },
   },
   methods: {
