@@ -1368,7 +1368,7 @@
     "loadbalancerlistener": "Load Balancer Listening",
     "loadbalancerlistenerrule": "Load Balance-Forwarding Strategy",
     "loadbalancercluster": "Load Balance-Cluster",
-    "mail_config": "Notification Channel",
+    "mail_config": "Notification Channel Settings",
     "meter": "Billing Metering",
     "meter_baremetal": "Bare Metal Server Rate",
     "meter_detail": "Resource Details",
@@ -6050,7 +6050,7 @@
   "system.text_16": "System Messages",
   "system.text_17": "Operation Log",
   "system.text_18": "Enterprise Information",
-  "system.text_19": "Notification Channel",
+  "system.text_19": "Notification Channel Settings",
   "system.text_20": "Announcement",
   "system.text_21": "Common System",
   "system.text_22": "Global Settings",
@@ -8473,5 +8473,7 @@
   "common_594": "Create or obtain path: Log in to the enterprise WeChat management background as an administrator -> Application Management -> Create a self-built application -> Obtain application credentials in the application details after creation",
   "common_595": "Enterprise WeChat",
   "common_596": "Enterprise WeChat Robot",
-  "common_597": "Path to create or obtain: Settings in the upper right corner of the enterprise WeChat group -> Group robot -> Add robot -> After successful addition, get the robot's webhook address"
+  "common_597": "Path to create or obtain: Settings in the upper right corner of the enterprise WeChat group -> Group robot -> Add robot -> After successful addition, get the robot's webhook address",
+  "common_598": "Enterprise WeChat {0}",
+  "common_599": "Notification Channel"
 }

@@ -1368,7 +1368,7 @@
     "loadbalancerlistener": "负载均衡-监听",
     "loadbalancerlistenerrule": "负载均衡-转发策略",
     "loadbalancercluster": "负载均衡-集群",
-    "mail_config": "通知渠道",
+    "mail_config": "通知渠道设置",
     "meter": "计费计量",
     "meter_baremetal": "裸金属服务器费率",
     "meter_detail": "资源明细",
@@ -6050,7 +6050,7 @@
   "system.text_16": "消息中心",
   "system.text_17": "操作日志",
   "system.text_18": "企业信息",
-  "system.text_19": "通知渠道",
+  "system.text_19": "通知渠道设置",
   "system.text_20": "公告",
   "system.text_21": "常用系统",
   "system.text_22": "全局设置",
@@ -8474,5 +8474,7 @@
   "common_595": "企业微信",
   "common_596": "企业微信机器人",
   "common_597": "创建或获取路径：企业微信群右上角设置->群机器人->添加机器人->添加成功后获取机器人的webhook地址",
-  "common_598": "掩码"
+  "common_598": "企业微信{0}",
+  "common_599": "通知渠道",
+  "common_600": "掩码"
 }
