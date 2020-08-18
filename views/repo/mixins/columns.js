@@ -16,7 +16,7 @@ export default {
         },
       }),
       {
-        field: 'url',
+        field: 'type',
         title: i18n.t('helm.text_92'),
         minWidth: 80,
         formatter: ({ row }) => {
