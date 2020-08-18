@@ -67,6 +67,7 @@ export default {
               name: this.$t('dictionary.guestimage'),
               scope: 'project',
               resource: 'guestimages',
+              apiVersion: 'v1',
             }, {
               permission: 'images_perform_public',
               meta: () => {
