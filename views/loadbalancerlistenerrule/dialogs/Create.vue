@@ -18,7 +18,7 @@
         <a-form-item label="URL路径">
           <div slot="extra">
             以"/"开头，但不能只填“/”，URL路径支持前缀匹配，匹配所有以设置的路径开头的URL路径。
-            <span v-if="provider === 'huawei' || provider === 'aliyun' || provider === 'aws'" :class="{'error-color': !isDomainOrPath}">域名和URL必须填写一项</span>
+            <span v-if="isDomainOrPathProviders" :class="{'error-color': !isDomainOrPath}">域名和URL必须填写一项</span>
           </div>
           <a-input v-decorator="decorators.path" placeholder="请输入" />
         </a-form-item>
@@ -169,6 +169,9 @@ export default {
     isOneCloud () {
       return this.provider === 'onecloud'
     },
+    isDomainOrPathProviders () {
+      return this.provider === 'huawei' || this.provider === 'aliyun' || this.provider === 'aws'
+    },
   },
   created () {
     this.form.fc.getFieldDecorator('listener_type', {
@@ -188,7 +191,9 @@ export default {
         this.form.fc.validateFields(['check'])
       }
       const { path, domain } = this.form.fc.getFieldsValue(['path', 'domain'])
-      this.isDomainOrPath = (this.provider === 'huawei' || this.provider === 'aliyun' || this.provider === 'aws') && (path || domain)
+      if (this.isDomainOrPathProviders) {
+        this.isDomainOrPath = path || domain
+      }
     },
     async doCreate (values) {
       const data = {
@@ -202,10 +207,12 @@ export default {
     async handleConfirm () {
       try {
         const { path, domain } = this.form.fc.getFieldsValue(['path', 'domain'])
-        this.isDomainOrPath = (this.provider === 'huawei' || this.provider === 'aliyun' || this.provider === 'aws') && (path || domain)
         const values = await this.form.fc.validateFields()
-        if (!this.isDomainOrPath) {
-          return false
+        if (this.isDomainOrPathProviders) {
+          this.isDomainOrPath = path || domain
+          if (!(path || domain)) {
+            return false
+          }
         }
         this.loading = true
         values.redirect = values.redirect ? 'raw' : 'off'
