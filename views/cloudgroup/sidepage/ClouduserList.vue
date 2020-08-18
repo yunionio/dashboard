@@ -69,6 +69,7 @@ export default {
                     },
                   })
                   this.list.refresh()
+                  this.$bus.$emit('CloudgroupListSingleRefresh', this.resId)
                   return response
                 } finally {}
               },
@@ -99,6 +100,7 @@ export default {
                     },
                   })
                   this.list.refresh()
+                  this.$bus.$emit('CloudgroupListSingleRefresh', this.resId)
                   return response
                 } finally {}
               },
@@ -115,6 +117,9 @@ export default {
   created () {
     this.list.fetchData()
     this.manager = new this.$Manager('cloudusers', 'v1')
+    this.$bus.$on('CloudgroupSidepageClouduserListRefresh', () => {
+      this.list.refresh()
+    }, this)
   },
   methods: {
     getParam () {
