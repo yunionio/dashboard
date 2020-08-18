@@ -2,7 +2,15 @@
   <a-card class="explorer-monitor-line d-flex align-items-center justify-content-center">
     <loader v-if="loading" :loading="true" />
     <template v-else>
-      <line-chart :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="setChartInstance" width="100%" height="250px" class="mb-4" :options="lineChartOptionsC" />
+      <div class="d-flex">
+        <line-chart class="flex-grow-1 mb-4" :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" />
+        <div class="alert-handler-wrapper position-relative">
+          <div v-if="alertHandlerShow && lineChartRows.length" class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
+            <div class="alert-handler-line" />
+            <div class="alert-handler"> {{ formatThreshold }}</div>
+          </div>
+        </div>
+      </div>
       <vxe-grid
         v-if="tableData && tableData.length"
         max-height="200"
@@ -71,6 +79,8 @@ export default {
     description: {
       type: Object,
     },
+    threshold: {
+    },
   },
   data () {
     return {
@@ -86,6 +96,9 @@ export default {
         index: null,
         color: '',
       },
+      yMax: 0,
+      alertHandlerShow: false,
+      topStyleRange: [220, 20],
     }
   },
   computed: {
@@ -143,6 +156,11 @@ export default {
       }
       return columns.slice(0, MAX_COLUMNS)
     },
+    formatThreshold () {
+      if (!this.threshold) return '0'
+      const ret = transformUnit(this.threshold, _.get(this.description, 'description.unit'), 1000, '0')
+      return `${ret.value}${ret.unit}`
+    },
   },
   watch: {
     series (val, oldV) {
@@ -162,6 +180,12 @@ export default {
       if (!R.equals(val, oldV)) {
         this.getMonitorLine()
       }
+    },
+    threshold () {
+      this.showThreshold()
+    },
+    yMax () {
+      this.showThreshold()
     },
   },
   created () {
@@ -198,6 +222,14 @@ export default {
         this._cancelHighlight()
         this.highlightSeries(params.seriesName, this.tableData[params.seriesIndex], params.seriesIndex)
       })
+      if (this.chartInstance && R.is(Function, this.chartInstance.getModel)) {
+        const model = this.chartInstance.getModel()
+        if (model && R.is(Function, model.getComponent)) {
+          const component = model.getComponent('yAxis')
+          const yMax = _.get(component, 'axis.scale._extent[1]')
+          this.yMax = yMax
+        }
+      }
     },
     highlightSeries (seriesName, row, rowIndex) {
       if (this.chartInstance) {
@@ -254,7 +286,16 @@ export default {
     getMonitorLine () {
       const columns = ['time']
       const rows = []
-      const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, { series: [] }))
+      const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, {
+        series: [],
+        grid: {
+          left: 10,
+          top: 30,
+          right: 1,
+          bottom: 0,
+          containLabel: true,
+        },
+      }))
       this.series.forEach((item, i) => {
         const seriesItem = {
           ...(lineChartOptions.series[i] || {}),
@@ -332,12 +373,36 @@ export default {
       }
       return null
     },
+    showThreshold () {
+      if (this.threshold > this.yMax) {
+        this.alertHandlerShow = true
+      } else {
+        this.alertHandlerShow = false
+      }
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
-.explorer-monitor-line ::v-deep .ant-card-body {
-  width: 100%;
+.explorer-monitor-line {
+  ::v-deep .ant-card-body {
+    width: 100%;
+  }
+  .alert-handler-wrapper {
+    width: 50px;
+    .alert-handler-line {
+      background-color: red;
+      height: 2px;
+      z-index: 0;
+      position: relative;
+      width: 15px;
+    }
+    .alert-handler {
+      font-size: 12px;
+      color: red;
+    }
+  }
 }
+
 </style>

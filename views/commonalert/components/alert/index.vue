@@ -25,7 +25,7 @@
       </monitor-header>
       <div>
         <template v-if="chartLoading"><loader loading /></template>
-        <monitor-line v-else class="mb-3" :series="series" :timeFormatStr="timeFormatStr" :lineChartOptions="lineChartOptions" :description="lineDescription" />
+        <monitor-line v-else class="mb-3" :series="series" :timeFormatStr="timeFormatStr" :lineChartOptions="lineChartOptions" :description="lineDescription" :threshold="threshold" />
       </div>
     </a-col>
   </a-row>

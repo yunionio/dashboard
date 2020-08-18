@@ -4,7 +4,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -22,7 +23,7 @@ export default {
   name: 'CommonalertList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
-    id: String,
+    listId: String,
     getParams: {
       type: Object,
       default: () => ({
@@ -37,7 +38,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
+        id: this.listId,
         resource: 'commonalerts',
         apiVersion: 'v1',
         getParams: this.getParam,
@@ -92,6 +93,17 @@ export default {
           },
         },
       ],
+      exportDataOptions: {
+        items: [
+          { key: 'name', label: this.$t('common.name') },
+          { key: 'status', label: this.$t('common.status') },
+          { key: 'enabled', label: this.$t('common.enabled') },
+          { key: 'common_alert_metric_details', label: this.$t('monitor.strategy_detail') },
+          { key: 'level', label: this.$t('monitor.level') },
+          { key: 'channel', label: this.$t('monitor.channel') },
+          { key: 'tenant', label: this.$t('monitor.text00015') },
+        ],
+      },
     }
   },
   watch: {
