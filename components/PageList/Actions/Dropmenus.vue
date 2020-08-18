@@ -8,7 +8,7 @@
     <a-menu slot="overlay">
       <template v-if="!isSubmenus">
         <template v-for="item of options">
-          <a-menu-item v-if="!isSubmenus" :key="item.label">
+          <a-menu-item v-if="!isSubmenus" :key="item.label" class="sub-link-btn">
             <action-button
               button-size="small"
               :button-style="{ fontSize: '12px' }"
@@ -20,7 +20,7 @@
         </template>
       </template>
       <a-sub-menu v-else v-for="item of options" :key="item.label" :title="item.label" class="submenu-item">
-        <a-menu-item v-for="submenu of item.submenus" :key="submenu.label" class="submenu-item">
+        <a-menu-item v-for="submenu of item.submenus" :key="submenu.label" class="submenu-item sub-link-btn">
           <action-button
             :item="submenu"
             :row="row"
@@ -116,6 +116,8 @@ export default {
 .submenu-item {
   cursor: pointer;
   width: 130px;
+}
+.sub-link-btn {
   .ant-btn-link {
     color: rgba(0, 0, 0, 0.65)
   }
