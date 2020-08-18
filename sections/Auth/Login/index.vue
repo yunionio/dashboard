@@ -20,7 +20,7 @@
         <template v-if="idps.length > 0">
           <div class="fast-login-wrap">
             <div class="fast-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />{{ $t('auth.login.fast.login.title') }}<span class="ml-2" /></div>
-            <div class="d-flex justify-content-center flex-wrap px-2">
+            <div class="d-flex justify-content-center flex-wrap p-1">
               <div class="fast-login-items" :key="idx" v-for="(item, idx) of idps">
                 <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2" @click="handleClickIdp(item)">
                   <a-tooltip placement="top" :title="$t(`idpTmplTitles.${item.template || item.driver}`)">
@@ -105,7 +105,7 @@ export default {
     getIcon (idp) {
       const { template, driver } = idp
       const key = (template || driver).toLocaleLowerCase()
-      return require(`../../../assets/images/idp-icons/block/${key}.png`)
+      return require(`../../../assets/images/idp-icons/round/${key}.png`)
     },
     handleClickIdp (idpItem) {
       const { origin, search } = window.location
@@ -165,7 +165,7 @@ export default {
   height: 35px;
   overflow: hidden;
   img {
-    height: 50%;
+    height: 60%;
   }
 }
 </style>
