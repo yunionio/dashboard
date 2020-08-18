@@ -20,29 +20,31 @@
         <a-row :gutter="10" v-for="k in form.fc.getFieldValue('keys')" :key="k">
           <a-col :span="4">
             <a-form-item>
-              <a-input  v-decorator="formatDecorator(k, 'name')" :placeholder="$t('cloudenv.text_184')" />
+              <a-input :addon-before="$t('db.text_60')"  v-decorator="formatDecorator(k, 'name')" :placeholder="$t('cloudenv.text_184')" />
             </a-form-item>
           </a-col>
           <a-col :span="5">
             <a-form-item>
-              <a-input @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_start')" :placeholder="$t('cloudenv.text_185')" />
+              <a-input :addon-before="$t('network.text_607')" @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_start')" :placeholder="$t('cloudenv.text_185')" />
             </a-form-item>
           </a-col>
           <a-col :span="5">
             <a-form-item>
-              <a-input @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_end')" :placeholder="$t('cloudenv.text_186')" />
+              <a-input :addon-before="$t('network.text_608')" @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_end')" :placeholder="$t('cloudenv.text_186')" />
             </a-form-item>
           </a-col>
-          <a-col :span="2">
+          <a-col :span="3">
             <a-form-item>
-              <a-select class="w-100" v-decorator="formatDecorator(k, 'guest_ip_mask')">
-                <a-select-option v-for="item in netMaskOptions" :key="item.value" :value="item.value">{{item.value}} </a-select-option>
+              <a-select class="w-100" :placeholder="$t('network.text_595')" v-decorator="formatDecorator(k, 'guest_ip_mask')">
+                <a-select-option v-for="item in netMaskOptions" :key="item.value" :value="item.value">
+                  <span class="text-color-secondary">{{$t('common_598')}}: </span>{{item.value}}
+                </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col :span="5">
             <a-form-item>
-              <a-input v-decorator="formatDecorator(k, 'guest_gateway')" :placeholder="$t('cloudenv.text_187')" />
+              <a-input :addon-before="$t('network.text_610')" v-decorator="formatDecorator(k, 'guest_gateway')" :placeholder="$t('cloudenv.text_187')" />
             </a-form-item>
           </a-col>
           <a-col :span="2">
