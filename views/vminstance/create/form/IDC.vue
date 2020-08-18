@@ -128,6 +128,15 @@
       <!-- <a-divider orientation="left" v-if="showAdvanceConfig">高级配置</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
+          <a-form-item :label="$t('compute.text_107')" v-if="showEip">
+            <eip-config
+              :decorators="decorators.eip"
+              :eip-params="eipParams"
+              :hypervisor="form.fd.hypervisor"
+              :showBind="false"
+              :isServertemplate="isServertemplate"
+              :form="form" />
+          </a-form-item>
           <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
             <secgroup-config
               :form="form"
@@ -183,11 +192,13 @@ import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { HYPERVISORS_MAP } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES } from '@/constants/compute'
+import EipConfig from '@Compute/sections/EipConfig'
 
 export default {
   name: 'VM_IDCCreate',
   components: {
     SecgroupConfig,
+    EipConfig,
   },
   mixins: [mixin],
   data () {
@@ -338,6 +349,23 @@ export default {
         return this.form.fi.capability.available_host_count || 0
       }
       return 0
+    },
+    eipParams () {
+      if (!this.cloudregionZoneParams.cloudregion) return {}
+      return {
+        project: this.project,
+        region: this.cloudregionZoneParams.cloudregion,
+      }
+    },
+    showEip () {
+      const { vpcs } = this.form.fd
+      if (R.is(Object, vpcs)) {
+        const vpcList = Object.values(vpcs)
+        if (vpcList.length && !~vpcList.indexOf('default')) {
+          return true
+        }
+      }
+      return false
     },
   },
   watch: {

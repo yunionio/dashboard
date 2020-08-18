@@ -590,7 +590,7 @@ export const createVmDecorators = type => {
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'backup', 'duration', 'groups', 'tag', 'servertemplate'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip'],
   public: ['domain', 'project', 'name', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate'],
 }
@@ -630,6 +630,7 @@ export class GenCreateData {
     this.fi = fi
     this.createType = this.fi.createType
     this.isPublic = this.createType === SERVER_TYPE.public
+    this.isIDC = this.createType === SERVER_TYPE.idc
     this.isPrepaid = this.fd.resourceType === RESOURCE_TYPES_MAP.prepaid.key
   }
 
@@ -982,7 +983,7 @@ export class GenCreateData {
       data.sku = this.fd.sku.name
     }
     // 弹性IP
-    if (this.isPublic) {
+    if (this.isPublic || this.isIDC) {
       if (this.fd.eip_type === EIP_TYPES_MAP.new.key) {
         if (
           this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.traffic.key ||
@@ -995,8 +996,6 @@ export class GenCreateData {
       if (this.fd.eip_type === EIP_TYPES_MAP.bind.key) {
         data.eip = this.fd.eip
       }
-      // resource_type
-      data.resource_type = this.fd.resourceType
       // 包年包月参数
       if (this.fd.billType === BILL_TYPES_MAP.package.key) {
         data.duration = this.fd.duration
