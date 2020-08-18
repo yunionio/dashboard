@@ -7,7 +7,7 @@
       <a-input :placeholder="$t('k8s.text_98')" v-decorator="decorators.image" />
     </a-form-item>
     <a-form-item label="CPU">
-      <a-input :placeholder="$t('k8s.text_99')" type="number" v-decorator="decorators.cpu" addonAfter="$t('k8s.text_100')" :min="1" @blur="e => formatInput(e, 'cpu')" />
+      <a-input :placeholder="$t('k8s.text_99')" type="number" v-decorator="decorators.cpu" :addonAfter="$t('k8s.text_100')" :min="1" @blur="e => formatInput(e, 'cpu')" />
     </a-form-item>
     <a-form-item :label="$t('k8s.text_101')">
       <a-input :placeholder="$t('k8s.text_102')" type="number" v-decorator="decorators.memory" addonAfter="G" :min="1" @blur="e => formatInput(e, 'memory')" />
