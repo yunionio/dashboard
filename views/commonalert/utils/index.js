@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { metric_zh, channelMaps, alertStrategyMaps, preiodMaps, levelMaps } from '@Monitor/constants'
 import i18n from '@/locales'
-import { transformUnit } from '@/utils/utils'
+import { transformUnit, arrayToObj } from '@/utils/utils'
 
 export const levelColumn = {
   field: 'level',
@@ -75,3 +75,16 @@ export const projectTableColumn = {
     },
   },
 }
+
+export const recipientsColumn = recipientList => ({
+  field: 'recipients',
+  title: i18n.t('compute.text_740'),
+  slots: {
+    default: ({ row }, h) => {
+      if (!row.recipients || !row.recipients.length) return '-'
+      const recipientsMap = arrayToObj(recipientList, 'uid')
+      const recipientNames = row.recipients.map(val => recipientsMap[val].name)
+      return recipientNames.join(', ')
+    },
+  },
+})

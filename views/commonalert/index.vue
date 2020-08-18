@@ -2,7 +2,7 @@
   <div>
     <page-header :title="$t('dictionary.commonalert')" :current-tab.sync="alertType" :tabs="cloudEnvOptions" />
     <page-body>
-      <commonalert-list :alertType="alertType" />
+      <commonalert-list :alertType="alertType" listId="CommonalertList" />
     </page-body>
   </div>
 </template>

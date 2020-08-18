@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { levelColumn, conditionColumn, strategyColumn, projectTableColumn } from '../utils'
+import { levelColumn, conditionColumn, strategyColumn, projectTableColumn, recipientsColumn } from '../utils'
 import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -41,6 +41,27 @@ export default {
       hiddenKeys: ['project_domain', 'tenant'],
       nameRules: [{ required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` }],
     }
+  },
+  created () {
+    this.getRecipients()
+  },
+  methods: {
+    async getRecipients () {
+      try {
+        const { data: { data: recipientList } } = await new this.$Manager('contacts', 'v1')
+          .list({
+            params: {
+              scope: this.$store.getters.scope,
+              with_meta: true,
+              limit: 0,
+            },
+          })
+        this.baseInfo.push(recipientsColumn(recipientList))
+      } catch (error) {
+        console.error(error)
+        return []
+      }
+    },
   },
 }
 </script>
