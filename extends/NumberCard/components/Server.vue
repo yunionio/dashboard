@@ -199,7 +199,7 @@ export default {
 <style lang="less" scoped>
 .number-card-number, .number-card-unit {
   font-size: 36px;
-  color: #1890ff !important;
+  color: rgb(24, 144, 254) !important;
 }
 .drawer-wrapper {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
