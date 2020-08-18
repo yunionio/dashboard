@@ -184,7 +184,7 @@ export default {
       try {
         const { columnsSelected = [], tagsSelected = [] } = await this.validateForm()
         this.loading = true
-        const sortColumnsMap = arrToObjByKey(this.columnFields, 'property', (item, i) => ({ ...item, $index: i }))
+        const sortColumnsMap = arrToObjByKey(this.columnFields, 'property', (item, i) => i)
         const unSelect = this.columnFields.filter(item => !columnsSelected.includes(item.property)).map(item => item.property)
         const showTagKeys = this.tagFields.filter(item => tagsSelected.includes(item.property)).map(item => item.property)
         await this.params.update({

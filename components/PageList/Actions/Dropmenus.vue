@@ -9,7 +9,13 @@
       <template v-if="!isSubmenus">
         <template v-for="item of options">
           <a-menu-item v-if="!isSubmenus" :key="item.label">
-            <action-button button-size="small" :button-style="{ fontSize: '12px' }" :item="item" :row="row" @hidden-popover="hiddenPopover" @clear-selected="clearSelected" />
+            <action-button
+              button-size="small"
+              :button-style="{ fontSize: '12px' }"
+              :item="item"
+              :row="row"
+              @hidden-popover="hiddenPopover"
+              @clear-selected="clearSelected" />
           </a-menu-item>
         </template>
       </template>
@@ -20,6 +26,7 @@
             :row="row"
             button-size="small"
             :button-style="{ fontSize: '12px' }"
+            @hidden-popover="hiddenPopover"
             @clear-selected="clearSelected" />
         </a-menu-item>
       </a-sub-menu>
@@ -109,6 +116,12 @@ export default {
 .submenu-item {
   cursor: pointer;
   width: 130px;
+  .ant-btn-link {
+    color: rgba(0, 0, 0, 0.65)
+  }
+  .ant-btn-link[disabled] {
+    color: rgba(0, 0, 0, 0.25)
+  }
 }
 .submenu-item-label {
   font-size: 12px;

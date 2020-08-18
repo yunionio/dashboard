@@ -3,13 +3,13 @@
     <div v-if="!isHiddenMenu">
       <template v-if="authInfoLoaded && isShowMenu">
         <a-tooltip :title="$t('common_209')" placement="right">
-          <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
+          <div class="primary-color-hover d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
             <icon type="menu" style="font-size: 24px;" />
           </div>
         </a-tooltip>
       </template>
       <template v-else>
-        <div class="d-flex align-items-center h-100 navbar-item-trigger flex-shrink-0 flex-grow-0">
+        <div class="primary-color-hover d-flex align-items-center h-100 navbar-item-trigger flex-shrink-0 flex-grow-0">
           <icon type="menu" style="font-size: 24px; cursor: default;" />
         </div>
       </template>
@@ -104,6 +104,12 @@
       </div>
     </div>
     <slot name="frontNavbar" />
+    <!-- 大屏监控 -->
+    <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && isAdminMode">
+      <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
+        <icon type="daping" style="font-size: 20px;" />
+      </div>
+    </div>
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
@@ -188,6 +194,7 @@ export default {
       viewChangePopoverVisible: false,
       selectPid: '',
       isOperation: process.env.VUE_APP_PLATFORM === 'operation',
+      isCMPPrivate: process.env.VUE_APP_PLATFORM === 'cmp_private',
     }
   },
   computed: {
@@ -248,6 +255,7 @@ export default {
         ret = this.userInfo.projectDomain || '-'
         managerLabel = this.isOperation ? this.$t('common_213') : ' ' + this.$t('dictionary.domain') + this.$t('common_213')
       }
+      if (this.isOperation) return `${managerLabel}（${ret}）`
       return ret + managerLabel
     },
     // 认证信息加载完毕
@@ -574,6 +582,9 @@ export default {
           drawerVisible: false,
         },
       })
+    },
+    handleOpenOverview () {
+      window.open('/overview', '_blank')
     },
   },
 }

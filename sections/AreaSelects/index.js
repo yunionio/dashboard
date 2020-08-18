@@ -236,6 +236,14 @@ export default {
           const getParams = R.is(Function, this[`${name}Params`]) ? await this[`${name}Params`]() : this[`${name}Params`]
           if (this.names.indexOf(name) > -1 && fetchFn) {
             const list = await fetchFn(getParams)
+            if (list.length === 0) {
+              const nextNames = fetchNames.slice(i, fetchNames.length)
+              nextNames.forEach(name => {
+                this[`${name}List`] = []
+              })
+              this.FC.resetFields(nextNames)
+              return
+            }
             await this.fetchChange(name, list)
             if (R.type(list) === 'Array' && list.length === 0) {
               const nextNames = fetchNames.slice(i, fetchNames.length)
@@ -455,7 +463,7 @@ export default {
       return null
     })
     return (
-      <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
+      <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label} required={this.isRequired}>
         <a-row gutter={8}>
           {RenderCols}
         </a-row>

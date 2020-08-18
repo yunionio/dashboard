@@ -69,25 +69,12 @@ export default {
     const v = []
     let action
     if (this.popoverTrigger) {
-      action = (
-        <a-button style={{ ...this.buttonStyle, maxWidth: '100%' }} block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handlePopoverClick } title={this.label}>
-          <span class='d-flex align-items-center'>
-            <span class='text-truncate'>{ this.label }</span>
-            <a-icon class='ml-1 flex-shrink-0 flex-grow-0' type='caret-down' />
-          </span>
-        </a-button>
-      )
+      action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handlePopoverClick }>{ this.label }<a-icon class='ml-1' type='caret-down' /></a-button>
     } else {
-      action = (
-        <a-button style={{ ...this.buttonStyle, maxWidth: '100%' }} block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handleClick } title={this.label}>
-          <span class='d-flex align-items-center'>
-            <span class='text-truncate'>{ this.label }</span>
-          </span>
-        </a-button>
-      )
+      action = <a-button style={ this.buttonStyle } block={ this.buttonBlock } size={ this.buttonSize } type={ this.meta.buttonType || this.buttonType } disabled={ this.disabled } onClick={ this.handleClick }>{ this.label }</a-button>
     }
     if (this.tooltip) {
-      action = <a-tooltip style="max-width: 100%;" title={ this.tooltip } placement='left' destroyTooltipOnHide>{ action }</a-tooltip>
+      action = <a-tooltip title={ this.tooltip } placement='left' destroyTooltipOnHide>{ action }</a-tooltip>
     }
     v.push(action)
     return v
