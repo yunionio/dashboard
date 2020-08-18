@@ -88,6 +88,9 @@ export default {
   created () {
     this.initSidePageTab('cloudgroup-detail')
     this.list.fetchData()
+    this.$bus.$on('CloudgroupListSingleRefresh', (...arg) => {
+      this.list.singleRefresh(...arg)
+    }, false)
   },
   methods: {
     getParam () {

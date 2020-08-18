@@ -96,6 +96,24 @@ export default {
       },
     }
   },
+  computed: {
+    paramClouduserIds () {
+      return this.params.data[0] && this.params.data[0].cloudusers && this.params.data[0].cloudusers.map(item => item.id)
+    },
+  },
+  watch: {
+    paramClouduserIds (val) {
+      if (val && val.length) {
+        this.form.fc.setFieldsValue({
+          clouduser_ids: val,
+        })
+      } else {
+        this.form.fc.setFieldsValue({
+          clouduser_ids: [],
+        })
+      }
+    },
+  },
   methods: {
     async handleConfirm () {
       this.loading = true
@@ -113,6 +131,7 @@ export default {
           },
         })
         this.cancelDialog()
+        this.$bus.$emit('CloudgroupSidepageClouduserListRefresh')
       } finally {
         this.loading = false
       }
