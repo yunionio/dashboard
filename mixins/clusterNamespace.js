@@ -18,7 +18,7 @@ export default {
     noDataText () {
       const { cluster, namespace } = this.list.getParams
       if (!cluster && !namespace) return this.$t('common_461')
-      return this.$t('dictionary.common.notData')
+      return this.$t('common.notData')
     },
   },
   data () {
