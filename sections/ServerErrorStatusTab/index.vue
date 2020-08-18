@@ -28,6 +28,10 @@ export default {
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+    },
   },
   data () {
     return {
@@ -80,7 +84,7 @@ export default {
             const num = statusMap[k]
             this.statusErrorOpts.push({
               color: '',
-              text: this.$t(`status.server.${k}`),
+              text: this.$t(`status.${this.status}.${k}`),
               num: num,
               val: k,
               checked: false,

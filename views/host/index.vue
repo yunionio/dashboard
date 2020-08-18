@@ -4,6 +4,7 @@
     <page-body>
       <server-error-status-tab
         resource="hosts"
+        status="host"
         @getStatusCheckArr="getStatusCheckArr" />
       <host-list :get-params="listParams" :id="listId" />
     </page-body>
