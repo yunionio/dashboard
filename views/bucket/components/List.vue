@@ -204,6 +204,9 @@ export default {
         getParams: this.getParams,
       }, {
         list: this.list,
+        cancel: () => {
+          this.list.singleRefresh(row.id, Object.values(expectStatus.bucket).flat())
+        },
       })
     },
   },
