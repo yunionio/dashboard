@@ -51,6 +51,6 @@ export default {
     `,
     ipSupplement: 'Please ensure that the IP submitted this time is consistent with the actual IP, and cannot be modified once the submission is successful',
     disable_user_on_import: 'Enable means that the user status is enabled, then the users brought in this time can use the system, if disabled, you can reset it in the user list after the import is successful',
-    defaultServerNetwork: 'The virtual machine will be assigned an IP address from the IP subnet belonging to the automatically assigned address pool',
+    defaultServerNetwork: 'The virtual machine will be assigned an IP address from the IP subnet that belongs to the automatically assigned address pool',
   },
 }
