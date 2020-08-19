@@ -26,6 +26,7 @@ export default {
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    cloudEnv: String,
     getParams: {
       type: [Object, Function],
       default: () => ({}),
@@ -36,6 +37,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'buckets',
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.bucket).flat(),
         filterOptions: {
           name: getNameFilter(),
@@ -87,10 +89,16 @@ export default {
           label: this.$t('storage.text_31'),
           permission: 'buckets_create',
           action: () => {
-            this.createDialog('BucketCreateDialog', {
-              title: this.$t('storage.text_95'),
-              onManager: this.onManager,
-              refresh: this.refresh,
+            // this.createDialog('BucketCreateDialog', {
+            //   title: this.$t('storage.text_95'),
+            //   onManager: this.onManager,
+            //   refresh: this.refresh,
+            // })
+            this.$router.push({
+              path: '/bucket/create',
+              query: {
+                type: this.cloudEnv,
+              },
             })
           },
           meta: () => {
@@ -192,11 +200,25 @@ export default {
   computed: {
     ...mapGetters(['isProjectMode']),
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.list.fetchData()
     this.initSidePageTab('objects')
   },
   methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
+      return ret
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'BucketStorageSidePage', {
         id: row.id,
