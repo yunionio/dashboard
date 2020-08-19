@@ -27,7 +27,7 @@
           <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="指定云订阅" required v-bind="formItemLayout" v-if="cloudEnv === 'public'">
+      <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-if="cloudEnv === 'public'">
         <base-select
           class="w-50"
           v-decorator="decorators.cloudprovider"

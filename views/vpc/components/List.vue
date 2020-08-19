@@ -58,7 +58,7 @@ export default {
           },
           project_domains: getProjectDomainFilter(),
           region: {
-            label: '区域',
+            label: this.$t('common_282'),
           },
         },
       }),
@@ -74,7 +74,7 @@ export default {
           { label: this.$t('network.text_571'), key: 'wire_count' },
           { label: this.$t('network.text_682'), key: 'network_count' },
           {
-            label: '共享范围',
+            label: this.$t('common_101'),
             key: 'public_scope',
             hidden: () => {
               return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('vpcs'))

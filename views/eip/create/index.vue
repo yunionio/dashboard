@@ -21,7 +21,7 @@
         </a-form-item>
         <template v-if="(providerC === 'zstack' || providerC === 'openstack') || (cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id)">
           <ip-subnet
-            label="指定IP子网"
+            :label="$t('network.text_211')"
             :isRequired="true"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
@@ -55,7 +55,7 @@
             </div>
           </a-form-item>
         </template>
-        <a-form-item label="指定云订阅" v-bind="formItemLayout" v-if="cloudEnv === 'public'" key="manager">
+        <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout" v-if="cloudEnv === 'public'" key="manager">
           <base-select
             :remote="true"
             v-decorator="decorators.manager"

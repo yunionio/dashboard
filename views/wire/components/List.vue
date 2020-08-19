@@ -71,7 +71,7 @@ export default {
           { label: this.$t('network.text_198'), key: 'provider' },
           { label: this.$t('network.text_196'), key: 'manager' },
           {
-            label: '共享范围',
+            label: this.$t('common_101'),
             key: 'public_scope',
             hidden: () => {
               return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('wires'))
