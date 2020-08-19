@@ -10,9 +10,12 @@
           :init-options="initCustomOptions"
           :is-default-option="isDefault"
           @select="handleCurrentOptionSelect"
-          @update-options="updateOptions" />
+          @update-options="updateOptions"
+          @refresh="refresh" />
       </div>
-      <dashboard-content :data="dashboard" class="mt-2" />
+      <div class="flex-fill">
+        <dashboard-content ref="content" :data="dashboard" class="mt-2" />
+      </div>
     </template>
     <template v-else>
       <div class="pt-4 pb-4 text-center"><a-spin :tip="$t('dashboard.text_117')" /></div>
@@ -176,6 +179,9 @@ export default {
           value: [],
         },
       })
+    },
+    refresh () {
+      this.$refs.content.refresh()
     },
   },
 }

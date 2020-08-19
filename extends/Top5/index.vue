@@ -277,11 +277,11 @@ export default {
   created () {
     this.$emit('update', this.options.i, this.form.fd)
     this.fetchData()
-    this.$bus.$on('DashboardCardRefresh', args => {
-      this.fetchData()
-    }, this)
   },
   methods: {
+    refresh () {
+      return this.fetchData()
+    },
     async fetchData () {
       if (!this.form.fd.brand) return
       this.loading = true

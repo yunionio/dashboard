@@ -15,7 +15,7 @@
           </div>
           <div class="d-flex flex-shrink-0 flex-grow-0 mt-1">
             <div class="text-color-help flex-fill">{{ data[0]['author'] }} · {{ $moment(data[0]['updated_at']).fromNow() }}</div>
-            <div class="flex-shrink-0 flex-grow-0" @click.stop.prevent="doLike" style="cursor: pointer;">{{ readmarkTotal }}<a-icon class="ml-1" type="like" :style="{ color: likeColor }" /></div>
+            <div class="flex-shrink-0 flex-grow-0" @click.stop.prevent="doLike" style="cursor: pointer;">{{ readmarkTotal }}<a-icon class="ml-1" type="like" :style="{ color: likeColor }" :theme="liked ? 'filled' : 'outlined'" /></div>
           </div>
         </template>
       </div>
@@ -126,11 +126,11 @@ export default {
     this.$emit('update', this.options.i, {
       name: this.form.fd.name,
     })
-    this.$bus.$on('DashboardCardRefresh', args => {
-      this.fetchNotices()
-    }, this)
   },
   methods: {
+    refresh () {
+      return this.fetchNotices()
+    },
     async fetchNotices () {
       this.loading = true
       try {
@@ -175,7 +175,7 @@ export default {
             scope: this.scope,
           },
         })
-        this.fetchRemark()
+        this.fetchReadmarks()
       } catch (error) {
         throw error
       }

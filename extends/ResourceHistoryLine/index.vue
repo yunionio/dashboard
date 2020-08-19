@@ -87,11 +87,11 @@ export default {
     this.$emit('update', this.options.i, {
       ...this.fd,
     })
-    this.$bus.$on('DashboardCardRefresh', args => {
-      this.fetchData()
-    }, this)
   },
   methods: {
+    refresh () {
+      return this.fetchData()
+    },
     handleEdit () {
       this.visible = true
     },

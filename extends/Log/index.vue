@@ -129,11 +129,11 @@ export default {
     this.$emit('update', this.options.i, {
       ...this.form.fd,
     })
-    this.$bus.$on('DashboardCardRefresh', args => {
-      this.fetchLogs()
-    }, this)
   },
   methods: {
+    refresh () {
+      return this.fetchLogs()
+    },
     async fetchLogs () {
       this.loading = true
       try {
