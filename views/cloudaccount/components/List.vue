@@ -67,6 +67,7 @@ export default {
           share_mode: getPublicFilter(),
           project_domains: getDomainFilter(),
         },
+        hiddenColumns: ['guest_count', 'host_count', 'enable_auto_sync', 'probe_at', 'last_auto_sync'],
       }),
       exportDataOptions: {
         items: [
