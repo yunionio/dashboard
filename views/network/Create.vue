@@ -366,7 +366,7 @@ export default {
       serverTypeOpts: [
         { label: this.$t('network.text_226'), key: 'guest' },
         { label: this.$t('network.text_598'), key: 'baremetal' },
-        { label: this.$t('network.text_599'), key: 'container' },
+        // { label: this.$t('network.text_599'), key: 'container' },
         { label: 'PXE', key: 'pxe' },
         { label: 'IPMI', key: 'ipmi' },
         { label: this.$t('network.text_221'), key: 'eip' },

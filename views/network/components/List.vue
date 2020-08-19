@@ -87,7 +87,7 @@ export default {
             },
           },
           is_auto_alloc: {
-            label: this.$t('common_497'),
+            label: this.$t('common_498'),
             dropdown: true,
             items: Object.keys(this.$t('status.networIsAutoAlloc')).map(k => {
               return { label: this.$t('status.networIsAutoAlloc')[k], key: k }
@@ -276,6 +276,30 @@ export default {
                 },
               },
               {
+                label: this.$t('common_564'),
+                action: () => {
+                  this.createDialog('NetworkUpdateIsAutoAllocDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: this.$t('common_564'),
+                    name: this.$t('dictionary.network'),
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  if (this.list.selectedItems.some(obj => obj.server_type !== 'guest')) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('common_565'),
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
+              },
+              {
                 label: this.$t('network.text_201'),
                 permission: 'networks_perform_syncstatus',
                 action: () => {
@@ -320,30 +344,6 @@ export default {
                 meta: () => {
                   return {
                     validate: this.list.allowDelete(),
-                  }
-                },
-              },
-              {
-                label: this.$t('common_564'),
-                action: () => {
-                  this.createDialog('NetworkUpdateIsAutoAllocDialog', {
-                    vm: this,
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: this.$t('common_564'),
-                    name: this.$t('dictionary.network'),
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  if (this.list.selectedItems.some(obj => obj.server_type !== 'guest')) {
-                    return {
-                      validate: false,
-                      tooltip: this.$t('common_565'),
-                    }
-                  }
-                  return {
-                    validate: true,
                   }
                 },
               },
