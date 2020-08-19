@@ -1,3 +1,4 @@
+import BucketCreate from '@Storage/views/bucket/create'
 import BlockStorage from '@Storage/views/blockstorage'
 import Bucket from '@Storage/views/bucket'
 import Layout from '@/layouts/RouterView'
@@ -60,6 +61,11 @@ export default {
               name: 'Bucket',
               path: '',
               component: Bucket,
+            },
+            {
+              name: 'BucketCreate',
+              path: 'create',
+              component: BucketCreate,
             },
           ],
         },
