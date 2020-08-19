@@ -8390,7 +8390,7 @@
   "common_511": "When synchronizing users in {0} to the system, the field corresponding to the user's mailbox",
   "common_512": "When synchronizing the user in {0} to the system, the field corresponding to the user's mobile phone number",
   "common_513": "When the automatic user creation is turned on, a local user will be automatically created in the system when the user in the authentication source logs into the system.",
-  "common_514": "If you need to associate an existing user with this authentication source, you need to turn off the automatic project creation.",
+  "common_514": "If you need to associate an existing user with this authentication source, you need to turn off automatic user creation.",
   "common_515": "Please select target {0}",
   "common_516": "User ID",
   "common_517": "Preferentially add users to the local project with the same name in {0}. When there is no project with the same name in the local area, the project with the same name will be automatically created by checking it. If it is not checked, it will belong to the default project. If not specified, there is no item for this user, you can adjust it in the user list after adding.",
