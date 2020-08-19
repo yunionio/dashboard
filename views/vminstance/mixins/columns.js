@@ -10,6 +10,7 @@ import {
   getNameDescriptionTableColumn,
   getTagTableColumn,
   getBillingTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
@@ -186,6 +187,7 @@ export default {
       getProjectTableColumn(),
       getBrandTableColumn(),
       getRegionTableColumn(),
+      getTimeTableColumn(),
     ]
     if (this.hideColumnFields) {
       this.columns = columns.filter((column) => { return !this.hideColumnFields.includes(column.field) })
