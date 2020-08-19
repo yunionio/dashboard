@@ -11,8 +11,10 @@
     @tab-change="handleTabChange">
     <component
       :is="params.windowData.currentTab"
+      :hiddenColumns="hiddenColumns"
       :res-id="detailData.id"
       :showGroupActions="showGroupActions"
+      :showSingleActions="showSingleActions"
       :showSearchbox="showSearchbox"
       :data="detailData"
       :getParams="getParams"
@@ -55,7 +57,7 @@ export default {
         { label: this.$t('network.text_565'), key: 'network-list' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
-      if (this.detailData.brand === 'Huawei' || this.detailData.brand === 'Aliyun') {
+      if (this.detailData.brand === 'Huawei' || this.detailData.brand === 'Aliyun' || this.detailData.brand === 'OpenStack') {
         tabs.splice(2, 0, { label: this.$t('dictionary.route_table'), key: 'route-table-list' })
       }
       return tabs
@@ -76,7 +78,13 @@ export default {
       return null
     },
     showGroupActions () {
-      if (this.params.windowData.currentTab === 'network-list') {
+      if (this.params.windowData.currentTab === 'network-list' || this.params.windowData.currentTab === 'route-table-list') {
+        return false
+      }
+      return true
+    },
+    showSingleActions () {
+      if (this.params.windowData.currentTab === 'route-table-list') {
         return false
       }
       return true
@@ -86,6 +94,12 @@ export default {
         return false
       }
       return true
+    },
+    hiddenColumns () {
+      if (this.params.windowData.currentTab === 'route-table-list') {
+        return ['public_scope']
+      }
+      return []
     },
   },
 }
