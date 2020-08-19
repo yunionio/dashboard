@@ -100,7 +100,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    hiddenDaminSelect: {
+    hiddenDomainSelect: {
       type: Boolean,
       default: false,
     },
@@ -241,7 +241,7 @@ export default {
           this.fd.domain = ''
         }
         // 409 则显示 domain 选择框 并 刷新验证码
-        if (error.response && error.response.status === 409 && !this.hiddenDaminSelect) {
+        if (error.response && error.response.status === 409 && !this.hiddenDomainSelect) {
           this.showDomainSelect = true
         }
         this.showUsernameInput = true
