@@ -123,6 +123,7 @@ export default {
           },
         },
         responseData: this.responseData,
+        hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account'],
       }),
       exportDataOptions: {
         items: [

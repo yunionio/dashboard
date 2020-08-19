@@ -13,6 +13,7 @@ import {
   getBrandTableColumn,
   getCopyWithContentTableColumn,
   getPublicScopeTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -28,10 +29,12 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
         getBrandTableColumn(),
         getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
         {
