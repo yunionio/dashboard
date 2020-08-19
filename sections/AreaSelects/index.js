@@ -223,6 +223,12 @@ export default {
             [name]: _item.id || _item.name,
           })
         }
+        this.$emit('change', {
+          [name]: {
+            id: _item.id || _item.name,
+            value: _item,
+          },
+        })
       }
       this[`${name}List`] = _list
     },
@@ -353,6 +359,11 @@ export default {
         const manager = new this.$Manager('cloudregions', 'v2')
         const { data = {} } = await manager.list({ params })
         const retList = !R.isEmpty(data.data) ? data.data : []
+        const genList = {}
+        retList.map(item => {
+          genList[item.id] = item
+        })
+        this.$emit('update:region', genList)
         return retList
       } finally {
         this.cloudregionLoading = false
