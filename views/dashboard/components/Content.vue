@@ -6,6 +6,7 @@
         :key="key"
         :style="getItemStyles(item.layout)">
         <component
+          ref="children"
           :is="item.layout.component"
           :options="item.layout"
           :params="item.params" />
@@ -15,6 +16,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { clear as clearCache } from '@Dashboard/utils/cache'
 import extendsComponents from '@Dashboard/extends'
 
@@ -30,10 +32,18 @@ export default {
       required: true,
     },
   },
-  beforeDestroy () {
-    clearCache()
-  },
   methods: {
+    refresh () {
+      clearCache()
+      const children = this.$refs.children
+      if (R.is(Array, children)) {
+        for (let i = 0, len = children.length; i < len; i++) {
+          children[i].refresh()
+        }
+      } else {
+        children.refresh()
+      }
+    },
     setTransform (top, left, width, height) {
       const translate = `translate3d(${left}px, ${top}px, 0)`
       return {

@@ -35,7 +35,7 @@ export function load ({
     } else {
       _queue[key] = new Loader({ key, res, action, apiVersion, resolve, reject, actionArgs, resPath, useManager })
       setTimeout(() => {
-        _queue[key].load()
+        _queue[key] && _queue[key].load()
       }, 100)
     }
   })

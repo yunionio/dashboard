@@ -1,5 +1,6 @@
 <template>
   <component
+    ref="usage"
     :is="type"
     :type="type"
     :visible.sync="visible"
@@ -59,6 +60,9 @@ export default {
   methods: {
     update (...ret) {
       this.$emit('update', ...ret)
+    },
+    refresh () {
+      return this.$refs.usage.refresh()
     },
   },
 }

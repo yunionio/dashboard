@@ -1,5 +1,6 @@
 <template>
   <component
+    ref="usage"
     :is="type"
     :visible.sync="visible"
     :formItemLayout="formItemLayout"
@@ -56,6 +57,9 @@ export default {
     }
   },
   methods: {
+    refresh () {
+      return this.$refs.usage.refresh()
+    },
     update (...ret) {
       this.$emit('update', ...ret)
     },

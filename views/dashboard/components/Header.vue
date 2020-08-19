@@ -33,7 +33,6 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import draggable from 'vuedraggable'
-import { clear as clearCache } from '@Dashboard/utils/cache'
 import { download, uuid } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -237,8 +236,7 @@ export default {
       return data
     },
     handleRefresh () {
-      clearCache()
-      this.$bus.$emit('DashboardCardRefresh')
+      this.$emit('refresh')
     },
   },
 }
