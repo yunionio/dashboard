@@ -10,7 +10,13 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getStatusTableColumn,
+  getCopyWithContentTableColumn,
+  getSwitchTableColumn,
+  getPublicScopeTableColumn,
+  getTagTableColumn,
+} from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 const isStandard = status => status === true || status === 'true'
@@ -27,10 +33,12 @@ export default {
       required: true,
     },
     resource: String,
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'image', columns: () => this.columns }),
         {
           field: 'project_domain',
           title: this.$t('dictionary.domain'),

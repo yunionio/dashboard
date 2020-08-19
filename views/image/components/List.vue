@@ -76,6 +76,7 @@ export default {
           // os_type: getOsTypeFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['metadata', 'created_at'],
       }),
       exportDataOptions: {
         items: [
