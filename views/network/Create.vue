@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_570')" />
+    <page-header :title="$t('network.text_570')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit" v-bind="formItemLayout">
       <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
@@ -8,21 +8,24 @@
       <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
       </a-form-item>
-      <a-form-item :label="$t('network.text_198')" v-bind="formItemLayout">
-        <a-radio-group v-decorator="decorators.platform_type" @change="handlePlatformChange">
-          <a-radio-button
-            v-for="item of platformOpts"
-            :key="item.key"
-            :value="item.key">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item label="VPC" class="mb-0" v-bind="formItemLayout">
-        <cloudregion-vpc
-          @regionChange="regionChange"
-          @vpcChange="vpcChange"
-          :cloudregion-params="cloudregionParams"
-          :vpc-params="vpcParams"
-          :decorator="decorators.cloudregionVpc" />
+      <area-selects
+        class="mb-0"
+        ref="areaSelects"
+        :wrapperCol="formItemLayout.wrapperCol"
+        :labelCol="formItemLayout.labelCol"
+        :names="areaselectsName"
+        :cloudregionParams="cloudregionParams"
+        :isRequired="true"
+        @change="handleRegionChange" />
+      <a-form-item label="VPC" v-bind="formItemLayout">
+        <base-select
+          v-decorator="decorators.vpc"
+          resource="vpcs"
+          :params="vpcParams"
+          :isDefaultSelect="true"
+          @change="vpcChange"
+          :labelFormat="vpcLabelFormat"
+          :select-props="{ placeholder: $t('common_226') }" />
       </a-form-item>
       <a-form-item :label="$t('network.text_571')" v-bind="formItemLayout" v-if="show || isShowWire">
         <base-select
@@ -118,11 +121,11 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import IpSubnets from './components/IpSubnets'
 import { isRequired, REGEXP } from '@/utils/validate'
-import CloudregionVpc from '@/sections/CloudregionVpc'
 import { Manager } from '@/utils/manager'
 import { uuid } from '@/utils/utils'
-import { typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds, getCloudEnvOptions } from '@/utils/common/hypervisor'
 import DomainProject from '@/sections/DomainProject'
+import AreaSelects from '@/sections/AreaSelects'
 import i18n from '@/locales'
 
 const { networkSegment } = REGEXP
@@ -157,13 +160,24 @@ function validateGateway (rule, value, callback) {
 export default {
   name: 'NetworkCreate',
   components: {
-    CloudregionVpc,
     IpSubnets,
     DomainProject,
+    AreaSelects,
   },
   data () {
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
+    const queryType = this.$route.query.type
+    let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
+    let routerQuery = this.$route.query.type
+    if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
+      cloudEnv = cloudEnvOptions[0].key
+      routerQuery = cloudEnv === 'onpremise' ? 'idc' : cloudEnv
+    }
     return {
       submiting: false,
+      cloudEnvOptions,
+      cloudEnv,
+      routerQuery,
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.handleValuesChange }),
         fd: {},
@@ -213,33 +227,14 @@ export default {
             ],
           },
         ],
-        platform_type: [
-          'platform_type',
+        vpc: [
+          'vpc',
           {
-            initialValue: 'idc',
-            validateTrigger: ['change', 'blur'],
+            rules: [
+              { required: true, message: this.$t('network.text_274') },
+            ],
           },
         ],
-        cloudregionVpc: {
-          cloudregion: [
-            'cloudregion',
-            {
-              initialValue: { key: '', label: '', provider: '' },
-              rules: [
-                { validator: isRequired(), message: this.$t('rules.domain') },
-              ],
-            },
-          ],
-          vpc: [
-            'vpc',
-            {
-              initialValue: { key: '', label: '' },
-              rules: [
-                { validator: isRequired(), message: this.$t('network.text_274') },
-              ],
-            },
-          ],
-        },
         wire: [
           'wire',
           {
@@ -334,7 +329,6 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                // { required: true, message: this.$t('network.text_596') },
                 { validator: this.$validate('IPv4', false) },
                 { validator: validateGateway },
               ],
@@ -377,11 +371,6 @@ export default {
         { label: this.$t('network.text_602'), key: 'stepup' },
         { label: this.$t('network.text_603'), key: 'random' },
       ],
-      platformOpts: [
-        { label: this.$t('network.text_207'), key: 'idc' },
-        { label: this.$t('network.text_208'), key: 'private' },
-        { label: this.$t('network.text_209'), key: 'public' },
-      ],
       isShowWire: true,
       isGroupGuestIpPrefix: false,
       show: true,
@@ -390,7 +379,6 @@ export default {
       guestIpPrefix: [{ key: uuid() }],
       zoneList: [],
       project_domain: '',
-      platform_type: 'idc',
       vpcId: '',
     }
   },
@@ -399,7 +387,7 @@ export default {
     // 是否显示加入自动分配地址池
     isShowIsAutoAlloc () {
       const { vpc, server_type } = this.form.fd
-      if (this.platform_type === 'idc' && (vpc && vpc.key === 'default')) {
+      if (this.cloudEnv === 'onpremise' && (vpc && vpc.key === 'default')) {
         return ['guest', undefined].includes(server_type)
       }
       return true
@@ -414,6 +402,7 @@ export default {
         limit: 0,
         usable_vpc: true,
         scope: this.scope,
+        cloudregion_id: this.regionId,
       }
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
@@ -429,11 +418,11 @@ export default {
         usable_vpc: true,
         show_emulated: true,
       }
-      if (this.platform_type === 'private') {
+      if (this.cloudEnv === 'private') {
         params.is_private = true
         delete params.is_public
         delete params.is_on_premise
-      } else if (this.platform_type === 'public') {
+      } else if (this.cloudEnv === 'public') {
         params.is_public = true
         delete params.is_private
         delete params.is_on_premise
@@ -470,17 +459,50 @@ export default {
       }
       return params
     },
+    areaselectsName () {
+      if (this.cloudEnv === 'private' || this.cloudEnv === 'onpremise') {
+        return ['cloudregion']
+      }
+      return ['city', 'provider', 'cloudregion']
+    },
   },
   provide () {
     return {
       form: this.form,
     }
   },
-  methods: {
-    handleValuesChange (props, values) {
-      if (values.platform_type) {
-        this.platform_type = values.platform_type
+  watch: {
+    cloudEnv (newValue) {
+      this.$refs.areaSelects.fetchs(this.areaselectsName)
+      if (newValue === 'private') {
+        this.show = false
+        this.isGroupGuestIpPrefix = false
+      } else if (newValue === 'public') {
+        this.show = false
+        this.isGroupGuestIpPrefix = false
+      } else {
+        this.show = true
+        this.isGroupGuestIpPrefix = true
       }
+    },
+  },
+  created () {
+    this.initState()
+  },
+  methods: {
+    initState () {
+      if (this.cloudEnv === 'private') {
+        this.show = false
+        this.isGroupGuestIpPrefix = false
+      } else if (this.cloudEnv === 'public') {
+        this.show = false
+        this.isGroupGuestIpPrefix = false
+      } else {
+        this.show = true
+        this.isGroupGuestIpPrefix = true
+      }
+    },
+    handleValuesChange (props, values) {
       this.form.fd = {
         ...this.form.fd,
         ...values,
@@ -511,17 +533,19 @@ export default {
     decrease (index) {
       this.guestIpPrefix.splice(index, 1)
     },
-    regionChange (data) {
-      if (data) {
-        this.fetchZone(data.key)
+    handleRegionChange (data) {
+      const hasCloudRegion = R.has('cloudregion')(data)
+      if (hasCloudRegion && !R.isEmpty(data.cloudregion)) {
+        this.fetchZone(data.cloudregion.id)
       } else {
         this.zoneList = []
         this.form.fc.resetFields(['zone'])
         return
       }
-      this.regionProvider = data.provider
-      this.regionId = data.key
-      if (data.provider === typeClouds.providerMap.ZStack.key) {
+      const { provider } = data.cloudregion.value
+      this.regionProvider = provider
+      this.regionId = data.cloudregion.id
+      if (provider === typeClouds.providerMap.ZStack.key) {
         this.isShowWire = true
       } else {
         this.isShowWire = false
@@ -529,8 +553,7 @@ export default {
     },
     vpcChange (vpcId) {
       this.vpcId = vpcId
-      const platformType = this.form.fc.getFieldValue('platform_type')
-      if (platformType === 'idc') {
+      if (this.cloudEnv === 'onpremise') {
         if (vpcId !== 'default') {
           this.isGroupGuestIpPrefix = true
           this.show = false
@@ -542,6 +565,10 @@ export default {
           })
         }
       }
+    },
+    vpcLabelFormat (item) {
+      if (item.manager) return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
+      return (<div><span class="text-color-secondary">VPC:</span> { item.name }</div>)
     },
     validatePublicIpPrefix (rule, value, callback) {
       if (!networkSegment.regexp.test(value)) {
@@ -569,20 +596,8 @@ export default {
           this.zoneList = data
         })
     },
-    handlePlatformChange (e) {
-      if (e.target.value === 'private') {
-        this.show = false
-        this.isGroupGuestIpPrefix = false
-      } else if (e.target.value === 'public') {
-        this.show = false
-        this.isGroupGuestIpPrefix = false
-      } else {
-        this.show = true
-        this.isGroupGuestIpPrefix = true
-      }
-    },
     genData (values) {
-      if (values.platform_type === 'idc') {
+      if (values.cloudEnv === 'onpremise') {
         const data = []
         if (this.isGroupGuestIpPrefix) {
           R.forEachObjIndexed((value, key) => {
@@ -630,7 +645,7 @@ export default {
         project_id: values.project.key,
         guest_ip_prefix: values.guest_ip_prefix[0],
         name: values.name,
-        vpc: values.vpc.key,
+        vpc: values.vpc,
         zone: values.zone,
         is_auto_alloc: values.is_auto_alloc,
       }
@@ -648,7 +663,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.submiting = true
-        if (values.platform_type === 'idc' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
+        if (values.cloudEnv === 'onpremise' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
           this.ipSubnetsValidateStatus = 'error'
           this.ipSubnetsHelp = this.$t('network.text_605')
           return
@@ -660,7 +675,7 @@ export default {
         }
         const data = this.genData(values)
         const manager = new Manager('networks')
-        if (values.platform_type === 'idc') {
+        if (values.cloudEnv === 'onpremise') {
           for (let i = 0, len = data.length; i < len; i++) {
             const bodyData = { ...data[i] }
             if (i > 0) {

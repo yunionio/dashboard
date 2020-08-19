@@ -87,12 +87,11 @@ export default {
         {
           label: this.$t('network.text_26'),
           action: () => {
-            this.createDialog('VpcCreateDialog', {
-              title: this.$t('network.text_26'),
-              data: this.list.selectedItems,
-              onManager: this.onManager,
-              refresh: this.refresh,
-              createType: this.cloudEnv,
+            this.$router.push({
+              path: '/vpc/create',
+              query: {
+                type: this.cloudEnv,
+              },
             })
           },
           meta: () => {

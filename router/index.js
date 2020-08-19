@@ -1,4 +1,5 @@
 // import FlexNetwork from '@Network/views/flex-network'
+import EipCreate from '@Network/views/eip/create'
 import Wire from '@Network/views/wire'
 import Network from '@Network/views/network'
 import NetworkCreate from '@Network/views/network/Create'
@@ -10,6 +11,7 @@ import NatList from '@Network/views/nats'
 // import ReservedIpList from '@Network/views/reserved-ip'
 import DNS from '@Network/views/dns'
 import VPC from '@Network/views/vpc'
+import VPCCreate from '@Network/views/vpc/create'
 import LbList from '@Network/views/lb'
 import LBCreate from '@Network/views/lb/create/index'
 import LbListenerCreate from '@Network/views/loadbalancerlistener/create'
@@ -69,6 +71,11 @@ export default {
               name: 'VPC',
               path: '',
               component: VPC,
+            },
+            {
+              name: 'VPCCreate',
+              path: 'create',
+              component: VPCCreate,
             },
           ],
         },
@@ -186,6 +193,11 @@ export default {
               name: 'EipList',
               path: '',
               component: Eip,
+            },
+            {
+              name: 'EipCreate',
+              path: 'create',
+              component: EipCreate,
             },
           ],
         },
