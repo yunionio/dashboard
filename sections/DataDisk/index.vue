@@ -219,7 +219,9 @@ export default {
     typesMap (v, oldV) {
       if (!R.equals(v, oldV)) {
         if (this.dataDisks && this.dataDisks.length) {
-          this.dataDisks.forEach(disk => this.decrease(disk.key))
+          this.dataDisks.forEach(disk => {
+            if (!disk.disabled) this.decrease(disk.key)
+          })
         }
       }
     },
