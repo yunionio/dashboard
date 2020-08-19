@@ -8476,5 +8476,6 @@
   "common_597": "Path to create or obtain: Settings in the upper right corner of the enterprise WeChat group -> Group robot -> Add robot -> After successful addition, get the robot's webhook address",
   "common_598": "Enterprise WeChat {0}",
   "common_599": "Notification Channel",
-  "common_600": "Mask"
+  "common_600": "Mask",
+  "common_601": "LDAP protocol authentication users do not support this operation"
 }
