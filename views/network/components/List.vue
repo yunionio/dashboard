@@ -148,7 +148,12 @@ export default {
           label: this.$t('network.text_26'),
           permission: 'networks_create',
           action: () => {
-            this.$router.push(`${this.$route.path}/create`)
+            this.$router.push({
+              path: `${this.$route.path}/create`,
+              query: {
+                type: this.cloudEnv,
+              },
+            })
           },
           meta: () => {
             return {

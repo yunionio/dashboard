@@ -1,74 +1,46 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('network.text_206')}}</div>
-    <div slot="body">
+  <div>
+    <page-header :title="$t('network.text_26')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-body>
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" v-bind="formItemLayout" class="mb-0">
           <domain-project :fc="form.fc" :form-layout="formItemLayout" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="domainChange" />
         </a-form-item>
-         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+        <area-selects
+          class="mb-0"
+          ref="areaSelects"
+          :wrapperCol="formItemLayout.wrapperCol"
+          :labelCol="formItemLayout.labelCol"
+          :names="areaselectsName"
+          :cloudregionParams="regionParams"
+          :isRequired="true"
+          :region.sync="regionList" />
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_198')" v-bind="formItemLayout">
-          <a-radio-group v-decorator="decorators.platform" @change="platformChange">
-            <a-radio-button value="idc">{{$t('network.text_207')}}</a-radio-button>
-            <a-radio-button value="private_cloud">{{$t('network.text_208')}}</a-radio-button>
-            <a-radio-button value="public_cloud">{{$t('network.text_209')}}</a-radio-button>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item :label="$t('network.text_196')" v-bind="formItemLayout"  v-if="selectedPlatform !== 'idc'" key="manager">
-          <base-select
-            :remote="true"
-            v-decorator="decorators.manager"
-            resource="cloudproviders"
-            :params="providerParams"
-            :mapper="providerMapper"
-            :label-format="labelFormat"
-            :remote-fn="q => ({ filter: `name.contains(${q})` })"
-            @update:item="providerChange"
-            :isDefaultSelect="true"
-            :select-props="{ placeholder: $t('network.text_210') }"
-            style="width: 320px" />
-        </a-form-item>
-        <a-form-item :label="$t('network.text_199')" v-bind="formItemLayout" key="region">
-           <base-select
-            :remote="true"
-            v-decorator="decorators.region"
-            resource="cloudregions"
-            :params="regionParams"
-            :remote-fn="q => ({ search: q })"
-            @update:item="regionChange"
-            :isDefaultSelect="true"
-            :select-props="{ placeholder: $t('network.text_203') }"
-            style="width: 320px" />
-        </a-form-item>
-        <template v-if="(providerC === 'zstack' || providerC === 'openstack') || (selectedPlatform === 'idc' && this.selectedRegionItem && this.selectedRegionItem.id)">
-          <a-form-item :label="$t('network.text_211')" v-bind="formItemLayout">
-            <base-select
-              :remote="true"
-              needParams
-              v-decorator="decorators.network"
-              resource="networks"
-              :params="networkParams"
-              :remote-fn="q => ({ filter: `name.contains(${q})` })"
-              :select-props="{ placeholder: $t('network.text_212') }" />
-          </a-form-item>
-          <a-form-item :label="$t('network.text_213')" v-bind="formItemLayout">
-            <a-radio-group v-model="inputIpType">
-              <template  v-for="(v, k) in this.$t('passwordInputTypes')">
-                <a-radio-button v-if="['random', 'password'].indexOf(k) > -1" :value="k" :key="k">
-                  {{v}}
-                </a-radio-button>
-               </template>
-            </a-radio-group>
-            <a-input v-if="inputIpType === 'password'" v-decorator="decorators.ip_addr" :placeholder="$t('network.text_214')" />
-          </a-form-item>
+        <template v-if="(providerC === 'zstack' || providerC === 'openstack') || (cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id)">
+          <ip-subnet
+            :label="$t('network.text_211')"
+            :isRequired="true"
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
+            :decorator="decorators"
+            :vpcParams="vpcParams"
+            :networkParams="networkParams"
+            :vpcResourceMapper="vpcResourceMapper" />
         </template>
-        <template v-if="selectedPlatform !== 'private_cloud'">
+        <template v-if="cloudEnv !== 'private'">
+          <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout" v-if="cloudEnv !== 'onpremise' ">
+            <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
+              <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
+                {{item.label}}
+              </a-radio-button>
+            </a-radio-group>
+          </a-form-item>
           <a-form-item :label="$t('network.text_484')" v-bind="formItemLayout">
             <div class="d-flex align-items-center">
-              <a-input-number v-if="selectedPlatform === 'idc'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
+              <a-input-number v-if="cloudEnv === 'onpremise'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
               <a-tooltip v-else placement="top" :title="$t('monitor.text_8', maxBandwidth)">
               <a-input-number
                 style="width: 120px"
@@ -82,43 +54,70 @@
               <span class="ml-2">Mbps</span>
             </div>
           </a-form-item>
-          <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout" v-if="selectedPlatform !== 'idc' ">
-            <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
-              <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
-                {{item.label}}
-              </a-radio-button>
-            </a-radio-group>
-          </a-form-item>
         </template>
+        <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout" v-if="cloudEnv === 'public'" key="manager">
+          <base-select
+            :remote="true"
+            v-decorator="decorators.manager"
+            resource="cloudproviders"
+            :params="providerParams"
+            :mapper="providerMapper"
+            :label-format="labelFormat"
+            :remote-fn="q => ({ filter: `name.contains(${q})` })"
+            @update:item="providerChange"
+            :isDefaultSelect="true"
+            :select-props="{ placeholder: $t('compute.text_149') }"
+            style="width: 320px" />
+        </a-form-item>
       </a-form>
-    </div>
-    <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-    </div>
-  </base-dialog>
+    </page-body>
+    <page-footer>
+      <div slot="right">
+        <a-button class="float-right" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common_258') }}</a-button>
+      </div>
+    </page-footer>
+  </div>
 </template>
 
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import IpSubnet from '../../../sections/IpSubnet'
+import AreaSelects from '@/sections/AreaSelects'
 import DomainProject from '@/sections/DomainProject'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 import { isRequired } from '@/utils/validate'
+import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
-  name: 'EipCreateDialog',
+  name: 'EipCreate',
   components: {
+    AreaSelects,
     DomainProject,
+    IpSubnet,
   },
-  mixins: [DialogMixin, WindowsMixin],
   data () {
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
+    const queryType = this.$route.query.type
+    let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
+    let routerQuery = this.$route.query.type
+    if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
+      cloudEnv = cloudEnvOptions[0].key
+      routerQuery = cloudEnv === 'onpremise' ? 'idc' : cloudEnv
+    }
     return {
       loading: false,
       inputIpType: 'random',
+      cloudEnvOptions,
+      cloudEnv,
+      routerQuery,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            if (values.cloudregion) {
+              this.selectedRegionItem = this.regionList[values.cloudregion]
+            }
+          },
+        }),
       },
       decorators: {
         domain: [
@@ -137,12 +136,6 @@ export default {
             ],
           },
         ],
-        platform: [
-          'platform',
-          {
-            initialValue: 'idc',
-          },
-        ],
         manager: [
           'manager',
           {
@@ -151,22 +144,14 @@ export default {
             ],
           },
         ],
-        region: [
-          'region',
+        vpc: [
+          'vpc',
           {
             rules: [
-              { required: true, message: this.$t('network.text_216') },
+              { required: true, message: this.$t('network.text_212') },
             ],
           },
         ],
-        // idcRegion: [
-        //   'idcRegion',
-        //   {
-        //     rules: [
-        //       { required: true, message: '请输入区域' },
-        //     ],
-        //   },
-        // ],
         network: [
           'network',
           {
@@ -220,7 +205,6 @@ export default {
       selectedRegionItem: {},
       showBandwidth: true,
       charge_type: 'traffic',
-      selectedPlatform: 'idc',
       providerC: '',
       domain_id: 'default',
       providerParams: {
@@ -230,6 +214,7 @@ export default {
         scope: this.$store.getters.scope,
         usable: true,
       },
+      regionList: {},
     }
   },
   computed: {
@@ -250,7 +235,7 @@ export default {
           capability: 'compute',
         }
       }
-      if (this.selectedPlatform === 'idc') {
+      if (this.cloudEnv === 'onpremise') {
         params = {
           cloud_env: 'onpremise',
           usable: true,
@@ -269,18 +254,29 @@ export default {
         return {
           manager: this.manager,
           limit: 0,
-          scope: this.$store.getters.scope,
+          scope: this.scope,
         }
       }
-      if (this.selectedPlatform === 'idc' && this.selectedRegionItem) {
+      if (this.cloudEnv === 'onpremise' && !R.isEmpty(this.selectedRegionItem)) {
         return {
           limit: 0,
-          scope: this.$store.getters.scope,
+          scope: this.scope,
           server_type: 'eip',
           cloudregion_id: this.selectedRegionItem.id,
         }
       }
       return {}
+    },
+    vpcParams () {
+      const params = {
+        scope: this.scope,
+        cloudregion_id: this.selectedRegionItem.id,
+      }
+      if (this.isAdminMode) {
+        params.project_domain = this.domain_id
+        delete params.scope
+      }
+      return params
     },
     chargeTypeOptions () {
       if (this.showBandwidth) {
@@ -295,7 +291,7 @@ export default {
       }
     },
     maxBandwidth () {
-      if (this.selectedPlatform === 'idc') {
+      if (this.cloudEnv === 'idc') {
         return 999999
       }
       let maxBandwidth = 200
@@ -324,10 +320,46 @@ export default {
         this.providerParams = newValue
       },
     },
+    areaselectsName () {
+      if (this.cloudEnv === 'private' || this.cloudEnv === 'onpremise') {
+        return ['cloudregion']
+      }
+      return ['city', 'provider', 'cloudregion']
+    },
+  },
+  watch: {
+    cloudEnv (newValue) {
+      if (R.has('public_cloud', this.updateProviderParams)) {
+        Reflect.deleteProperty(this.updateProviderParams, 'public_cloud')
+      } else {
+        Reflect.deleteProperty(this.updateProviderParams, 'private_cloud')
+      }
+      const platform = newValue + '_cloud'
+      this.updateProviderParams = {
+        ...this.updateProviderParams,
+        [platform]: true,
+      }
+      this.$refs.areaSelects.fetchs(this.areaselectsName)
+      this.form.fc.resetFields(['manager'])
+      this.manager = ''
+      this.providerC = ''
+    },
+  },
+  provide () {
+    return {
+      form: this.form,
+    }
   },
   methods: {
     format (val) {
       return +val || 1
+    },
+    vpcResourceMapper (data) {
+      if (this.cloudEnv === 'onpremise') {
+        data = data.filter(item => item.id === 'default')
+        return data
+      }
+      return data
     },
     domainChange (item) {
       if (R.type(item) === 'Object') {
@@ -348,22 +380,6 @@ export default {
         }
       }
     },
-    platformChange (e) {
-      if (R.has('public_cloud', this.updateProviderParams)) {
-        Reflect.deleteProperty(this.updateProviderParams, 'public_cloud')
-      } else {
-        Reflect.deleteProperty(this.updateProviderParams, 'private_cloud')
-      }
-      const platform = e.target.value
-      this.updateProviderParams = {
-        ...this.updateProviderParams,
-        [platform]: true,
-      }
-      this.selectedPlatform = platform
-      this.form.fc.resetFields(['manager', 'region'])
-      this.manager = ''
-      this.providerC = ''
-    },
     providerMapper (data) {
       data = data.filter(item => item.status === 'connected' && item.enabled)
       return data
@@ -379,9 +395,6 @@ export default {
         this.hiddenBrandwidthHandle(e.provider)
         this.providerC = e.provider.toLowerCase()
       }
-    },
-    regionChange (e) {
-      this.selectedRegionItem = e
     },
     chargeTypeChange (e) {
       this.charge_type = e.target.value
@@ -400,19 +413,16 @@ export default {
       }
     },
     doCreate (data) {
-      return this.params.onManager('create', {
-        managerArgs: {
-          data,
-        },
-      })
+      return new this.$Manager('eips').create({ data })
     },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
         values.tenant = values.project.key
+        values.domain = values.domain.key
         Reflect.deleteProperty(values, 'project')
-        if (values.platform === 'private_cloud') {
+        if (this.cloudEnv === 'private') {
           delete values.charge_type
           values.bandwidth = 0
           if (values.ip_addr) {
@@ -422,9 +432,11 @@ export default {
         }
         await this.doCreate(values)
         this.loading = false
-        this.cancelDialog()
+        this.$message.success(this.$t('k8s.text_184'))
+        this.$router.push('/eip')
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },

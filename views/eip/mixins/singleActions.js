@@ -121,7 +121,7 @@ export default {
                   tooltip: '',
                 }
                 if (this.isProjectMode) {
-                  ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                  ret.tooltip = i18n.t('common_601')
                   return ret
                 }
                 return {

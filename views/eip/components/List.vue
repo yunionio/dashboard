@@ -26,6 +26,7 @@ export default {
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    cloudEnv: String,
     getParams: {
       type: Object,
     },
@@ -57,7 +58,7 @@ export default {
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
           region: {
-            label: '区域',
+            label: this.$t('common_282'),
           },
           charge_type: {
             label: this.$t('network.text_192'),
@@ -96,10 +97,11 @@ export default {
           label: this.$t('network.text_26'),
           permission: 'eips_create',
           action: () => {
-            this.createDialog('EipCreateDialog', {
-              title: this.$t('network.text_26'),
-              onManager: this.onManager,
-              refresh: this.refresh,
+            this.$router.push({
+              path: '/eip/create',
+              query: {
+                type: this.cloudEnv,
+              },
             })
           },
           meta: () => ({
@@ -154,6 +156,13 @@ export default {
   computed: {
     ...mapGetters(['isProjectMode']),
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('eip-detail')
     this.list.fetchData()
@@ -164,6 +173,7 @@ export default {
         ...this.getParams,
         details: true,
       }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {

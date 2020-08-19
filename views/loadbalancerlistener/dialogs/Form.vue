@@ -1,6 +1,6 @@
 <template>
   <base-dialog :width="1000" @cancel="cancelDialog">
-    <div slot="header">{{isUpdate ? $t('network.text_130') : $t('network.text_26')}}负载均衡监听</div>
+    <div slot="header">{{isUpdate ? $t('network.text_130') : $t('common_602')}}</div>
     <div slot="body">
       <steps v-show="!isLbRedirected" v-model="step" />
       <a-spin :spinning="spinning">
