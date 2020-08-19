@@ -196,6 +196,30 @@ export default {
               },
             },
             {
+              label: this.$t('common_564'),
+              action: () => {
+                this.createDialog('NetworkUpdateIsAutoAllocDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: this.$t('common_564'),
+                  name: this.$t('dictionary.network'),
+                  onManager: this.onManager,
+                })
+              },
+              meta: (obj) => {
+                if (obj.server_type !== 'guest') {
+                  return {
+                    validate: false,
+                    tooltip: this.$t('common_565'),
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
+            },
+            {
               label: i18n.t('network.text_201'),
               permission: 'networks_perform_syncstatus',
               action: () => {
@@ -254,30 +278,6 @@ export default {
                 return {
                   validate: true,
                   tooltip: '',
-                }
-              },
-            },
-            {
-              label: this.$t('common_564'),
-              action: () => {
-                this.createDialog('NetworkUpdateIsAutoAllocDialog', {
-                  vm: this,
-                  data: [obj],
-                  columns: this.columns,
-                  title: this.$t('common_564'),
-                  name: this.$t('dictionary.network'),
-                  onManager: this.onManager,
-                })
-              },
-              meta: (obj) => {
-                if (obj.server_type !== 'guest') {
-                  return {
-                    validate: false,
-                    tooltip: this.$t('common_565'),
-                  }
-                }
-                return {
-                  validate: true,
                 }
               },
             },

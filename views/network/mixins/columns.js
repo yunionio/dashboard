@@ -71,7 +71,7 @@ export default {
         },
       },
       getStatusTableColumn({ statusModule: 'network' }),
-      getStatusTableColumn({ field: 'is_auto_alloc', statusModule: 'networIsAutoAlloc', title: i18n.t('common_497'), minWidth: 140 }),
+      getStatusTableColumn({ field: 'is_auto_alloc', statusModule: 'networIsAutoAlloc', title: i18n.t('common_498'), minWidth: 140 }),
       {
         field: 'ports',
         title: i18n.t('network.text_622'),
