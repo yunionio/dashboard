@@ -11,6 +11,7 @@
           <a-menu-item v-if="!isSubmenus" :key="item.label" class="sub-link-btn">
             <action-button
               button-size="small"
+              :button-block="true"
               :button-style="{ fontSize: '12px' }"
               :item="item"
               :row="row"
@@ -25,6 +26,7 @@
             :item="submenu"
             :row="row"
             button-size="small"
+            :button-block="true"
             :button-style="{ fontSize: '12px' }"
             @hidden-popover="hiddenPopover"
             @clear-selected="clearSelected" />
@@ -129,5 +131,8 @@ export default {
   font-size: 12px;
   color: #3c73b9;
   padding-top: 8px;
+}
+.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
+  padding: 5px 0 !important;
 }
 </style>
