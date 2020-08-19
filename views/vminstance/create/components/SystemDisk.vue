@@ -126,7 +126,7 @@ export default {
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
-        if (this.sku.sys_disk_type) {
+        if (this.sku.sys_disk_type && !this.defaultSize) { // 有 defaultSize 表示是调整配置，不需要根据sku信息过滤
           const skuDiskTypes = this.sku.sys_disk_type.split(',')
           if (skuDiskTypes && skuDiskTypes.length) {
             currentTypes = skuDiskTypes

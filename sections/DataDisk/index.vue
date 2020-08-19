@@ -145,8 +145,8 @@ export default {
       if (!this.capabilityData || !this.capabilityData.data_storage_types2) return ret
       let currentTypes = this.capabilityData.data_storage_types2[hyper] || []
       if (!R.isNil(this.sku) && !R.isEmpty(this.sku)) {
-        if (this.sku.sys_disk_type) {
-          const skuDiskTypes = this.sku.sys_disk_type.split(',')
+        if (this.sku.data_disk_types) {
+          const skuDiskTypes = this.sku.data_disk_types.split(',')
           if (skuDiskTypes && skuDiskTypes.length) {
             currentTypes = skuDiskTypes
           }
