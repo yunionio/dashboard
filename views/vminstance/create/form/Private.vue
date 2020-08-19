@@ -125,6 +125,7 @@
         :loading="submiting"
         :form="form"
         :type="type"
+        :dataDiskSizes="dataDiskSizes"
         :isOpenWorkflow="isOpenWorkflow"
         :errors.sync="errors"
         :isServertemplate="isServertemplate"
