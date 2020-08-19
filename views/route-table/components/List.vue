@@ -4,7 +4,9 @@
     :columns="columns"
     :export-data-options="exportDataOptions"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :showGroupActions="showGroupActions"
+    :showSingleActions="showSingleActions" />
 </template>
 
 <script>
@@ -23,6 +25,18 @@ export default {
   props: {
     id: String,
     getParams: [Object, Function],
+    showGroupActions: {
+      type: Boolean,
+      default: true,
+    },
+    showSingleActions: {
+      type: Boolean,
+      default: true,
+    },
+    hiddenColumns: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     return {
@@ -48,6 +62,7 @@ export default {
           brand: getBrandFilter(),
           project_domain: getProjectDomainFilter(),
         },
+        hiddenColumns: this.hiddenColumns,
       }),
       exportDataOptions: {
         items: [
