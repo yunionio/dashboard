@@ -2044,6 +2044,10 @@
     "dingtalk_oauth2": "钉钉",
     "qywechat_oauth2": "企业微信"
   },
+  "idpAzureCloudEnv": {
+    "china": "Azure中国区",
+    "global": "Azure全球区"
+  },
   "login.desc1": "新一代产品化融合云",
   "login.desc2": "简单 · 开放 · 融合 · 智能",
   "login.desc3": "为企业上云、用云、多云管理等全部需求提供一键部署、产品化解决方案",
