@@ -320,7 +320,6 @@ export default {
             this.storageOpts = data.data_storage_types.map((item) => {
               const type = item.split('/')[0]
               const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
-              console.log(provider, type)
               const storageType = CommonConstants.STORAGE_TYPES[provider][type]
               const getLabel = (type) => { return type.includes('rbd') ? 'Ceph' : type }
               return {
