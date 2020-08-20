@@ -90,7 +90,7 @@ export default {
               },
             }),
             {
-              field: 'dns',
+              field: 'guest_dns',
               title: '域名服务器',
             },
             {
