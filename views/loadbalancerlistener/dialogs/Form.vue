@@ -37,6 +37,7 @@ import Qcloud from '@Network/views/loadbalancerlistener/create/form/qcloud'
 import Huawei from '@Network/views/loadbalancerlistener/create/form/huawei'
 import AwsApplication from '@Network/views/loadbalancerlistener/create/form/aws-application'
 import AwsNetwork from '@Network/views/loadbalancerlistener/create/form/aws-network'
+import Openstack from '@Network/views/loadbalancerlistener/create/form/openstack'
 import { filterObj } from '@/utils/utils'
 import StepMixin from '@/mixins/step'
 import DialogMixin from '@/mixins/dialog'
@@ -51,6 +52,7 @@ export default {
     Aliyun,
     Qcloud,
     Huawei,
+    Openstack,
     AwsApplication,
     AwsNetwork,
   },

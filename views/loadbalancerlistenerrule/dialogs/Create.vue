@@ -164,7 +164,7 @@ export default {
       return this.provider === 'onecloud'
     },
     isDomainOrPathProviders () {
-      return this.provider === 'huawei' || this.provider === 'aliyun' || this.provider === 'aws'
+      return this.provider === 'huawei' || this.provider === 'aliyun' || this.provider === 'aws' || this.provider === 'openstack'
     },
   },
   created () {
