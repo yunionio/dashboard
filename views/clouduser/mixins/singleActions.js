@@ -1,4 +1,9 @@
+import { mapGetters } from 'vuex'
+
 export default {
+  computed: {
+    ...mapGetters(['isAdminMode', 'userInfo']),
+  },
   created () {
     this.singleActions = [
       {
@@ -69,7 +74,7 @@ export default {
         },
         meta: () => {
           return {
-            validate: this.isNormalStatus(),
+            validate: this.isNormalStatus() && this.isOwner(),
           }
         },
       },
@@ -87,6 +92,9 @@ export default {
         normalStatus = true
       }
       return normalStatus
+    },
+    isOwner () {
+      return this.isAdminMode || (this.cloudaccount && this.cloudaccount.domain_id === this.userInfo.projectDomainId)
     },
   },
 }
