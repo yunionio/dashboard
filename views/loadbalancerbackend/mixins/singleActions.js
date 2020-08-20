@@ -29,7 +29,7 @@ export default {
           if (provider.toLowerCase() === 'openstack') {
             return {
               validate: false,
-              tooltip: i18n.t('common_607'),
+              tooltip: i18n.t('common_609'),
             }
           }
           return {
