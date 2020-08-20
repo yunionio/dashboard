@@ -93,11 +93,11 @@ export default {
               },
             }),
             {
-              field: 'dns',
+              field: 'guest_dns',
               title: this.$t('network.text_585'),
             },
             {
-              field: 'domain',
+              field: 'guest_domain',
               title: this.$t('network.text_586'),
               formatter: ({ cellValue }) => {
                 return cellValue || '-'
