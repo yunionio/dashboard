@@ -141,14 +141,15 @@ export default {
               },
             ]
           },
+          meta: () => ({
+            validate: this.list.selectedItems.length > 0,
+          }),
         },
       ],
     }
   },
   created () {
     this.list.fetchData()
-  },
-  methods: {
   },
 }
 </script>

@@ -17,6 +17,7 @@
       :data="detailData"
       :on-manager="onManager"
       :getParams="getParams"
+      :columns="columns"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>

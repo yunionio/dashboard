@@ -10,7 +10,7 @@
 
 <script>
 import { getMaintenanceTableColumn } from '../utils/columns'
-import { getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -31,6 +31,7 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
@@ -101,6 +102,7 @@ export default {
         },
       ],
       baseInfo: [
+        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
         getEnabledTableColumn(),
         getMaintenanceTableColumn(),
         {

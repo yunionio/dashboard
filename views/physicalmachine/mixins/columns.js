@@ -25,9 +25,9 @@ export default {
           }
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
-      getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'host' }),
+      getEnabledTableColumn(),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
       {
         field: 'custom_ip',
         title: 'IP',
@@ -51,6 +51,26 @@ export default {
               )
             }
             return cellWrap
+          },
+        },
+      },
+      {
+        field: 'ipmi',
+        title: 'IPMI',
+        width: 70,
+        slots: {
+          default: ({ row }) => {
+            return [<PasswordFetcher serverId={ row.id } resourceType='baremetals' />]
+          },
+        },
+      },
+      {
+        field: 'login_ssh',
+        title: i18n.t('compute.text_566'),
+        width: 70,
+        slots: {
+          default: ({ row }) => {
+            return [<PasswordFetcher serverId={ row.server_id ? row.server_id : row.id } resourceType={row.server_id ? 'servers' : 'baremetal_ssh' } disabled={ row.is_import } promptText={row.is_import ? i18n.t('compute.text_848') : '' } />]
           },
         },
       },
@@ -100,6 +120,7 @@ export default {
           return `${cpu}${mem}${hdd}${ssd}${driver}`
         },
       },
+      getMaintenanceTableColumn(),
       {
         field: 'manufacture',
         title: i18n.t('compute.text_847'),
@@ -126,7 +147,6 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'sn', title: 'SN' }),
       getCopyWithContentTableColumn({
         field: 'server',
         title: i18n.t('compute.text_602'),
@@ -139,31 +159,11 @@ export default {
         },
       }),
       {
-        field: 'login_ssh',
-        title: i18n.t('compute.text_566'),
-        width: 70,
-        slots: {
-          default: ({ row }) => {
-            return [<PasswordFetcher serverId={ row.server_id ? row.server_id : row.id } resourceType={row.server_id ? 'servers' : 'baremetal_ssh' } disabled={ row.is_import } promptText={row.is_import ? i18n.t('compute.text_848') : '' } />]
-          },
-        },
-      },
-      {
         field: 'access_mac',
         title: 'MAC',
         width: 130,
       },
-      {
-        field: 'ipmi',
-        title: 'IPMI',
-        width: 70,
-        slots: {
-          default: ({ row }) => {
-            return [<PasswordFetcher serverId={ row.id } resourceType='baremetals' />]
-          },
-        },
-      },
-      getMaintenanceTableColumn(),
+      getCopyWithContentTableColumn({ field: 'sn', title: 'SN' }),
       getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),

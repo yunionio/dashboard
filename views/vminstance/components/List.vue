@@ -760,17 +760,7 @@ export default {
                     title: this.$t('compute.text_261'),
                   })
                 },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  if (this.list.selectedItems.some(item => !item.can_delete)) {
-                    ret.validate = false
-                    return ret
-                  }
-                  return ret
-                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
               },
             ]
           },
