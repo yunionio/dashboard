@@ -94,7 +94,7 @@ export default {
               title: '域名服务器',
             },
             {
-              field: 'domain',
+              field: 'guest_domain',
               title: '主机域名后缀',
               formatter: ({ cellValue }) => {
                 return cellValue || '-'
