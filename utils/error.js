@@ -87,16 +87,34 @@ export const getHttpReqMessage = error => {
 export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'delete_fail_reason') => {
   let validate = true
   let tooltip = null
-  if (R.is(Array, row)) {
-    if (!row.length) return { validate: false }
-    validate = row.every(obj => !!obj[deleteField])
-  } else {
-    validate = !!row[deleteField]
-    if (!validate) {
-      let deleteFailReason
-      if (R.is(String, row[failKey])) {
+  let data = R.is(Array, row) ? row : [row]
+  if (data.length === 0) {
+    return {
+      validate: false,
+    }
+  }
+  data = data.filter(item => !item[deleteField])
+  const len = data.length
+  if (len > 0) {
+    validate = false
+    let deleteFailReason = []
+    // 只有一项不可删除条目时
+    if (len === 1) {
+      deleteFailReason = [data[0][failKey]]
+    }
+    // 有多条不可删除条目时
+    if (len > 1) {
+      deleteFailReason = data.map(item => item[failKey])
+      deleteFailReason = R.uniq(deleteFailReason)
+    }
+    // 处理获取到的 deleteFailReason
+    if (deleteFailReason.length > 1 || deleteFailReason.length <= 0) {
+      tooltip = i18n.t('common_604')
+    } else {
+      deleteFailReason = deleteFailReason[0]
+      if (R.is(String, deleteFailReason)) {
         try {
-          deleteFailReason = JSON.parse(row[failKey])
+          deleteFailReason = JSON.parse(deleteFailReason)
         } catch (error) {
           console.warn(i18n.t('common_306', [failKey]))
         }

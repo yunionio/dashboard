@@ -8483,5 +8483,6 @@
   "common_600": "Mask",
   "common_601": "Only system or domain administrators support this operation",
   "common_602": "New Load Balance Monitor",
-  "common_603": "LDAP protocol authentication users do not support this operation"
+  "common_603": "LDAP protocol authentication users do not support this operation",
+  "common_604": "Some items cannot be deleted"
 }
