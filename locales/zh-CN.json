@@ -8488,5 +8488,6 @@
   "common_605": "请选择标签键",
   "common_606": "请选择@:dictionary.project归属",
   "common_607": "请指定用户ID",
-  "common_608": "请指定用户名称"
+  "common_608": "请指定用户名称",
+  "common_609": "Openstack暂不支持此操作"
 }
