@@ -15,13 +15,14 @@
         :names="areaselectsName"
         :cloudregionParams="param.region"
         :zoneParams="param.zone"
-        :isRequired="true" />
+        :isRequired="true"
+        :region.sync="regionList" />
       <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_100')" required v-bind="formItemLayout">
         <a-row>
-          <a-col :span="3" class="mr-2">
+          <a-col :span="6" class="mr-2">
             <a-select v-decorator="decorators.backend" @change="__newStorageChange">
               <a-select-option v-for="item in storageOpts" :key="item.value">
                 <div class="d-flex">
@@ -35,7 +36,7 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item :label="$t('compute.text_149')" required v-bind="formItemLayout" v-show="cloudproviderData.length > 1">
+      <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudproviderData.length > 1 && cloudEnv === 'public'">
         <base-select
           class="w-50"
           v-decorator="decorators.cloudprovider"
@@ -89,7 +90,6 @@ export default {
       cloudEnvOptions,
       cloudEnv,
       routerQuery,
-      currentCloudregion: {},
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -195,10 +195,14 @@ export default {
       minDiskData: 1,
       step: 10,
       cloudproviderData: [],
+      regionList: {},
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    currentCloudregion () {
+      return this.regionList[this.form.fd.cloudregion]
+    },
     provider () { // 向外提供的，通过 refs 获取
       if (this.currentCloudregion && this.currentCloudregion.provider) {
         return this.currentCloudregion.provider.toLowerCase()
@@ -316,6 +320,7 @@ export default {
             this.storageOpts = data.data_storage_types.map((item) => {
               const type = item.split('/')[0]
               const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
+              console.log(provider, type)
               const storageType = CommonConstants.STORAGE_TYPES[provider][type]
               const getLabel = (type) => { return type.includes('rbd') ? 'Ceph' : type }
               return {
