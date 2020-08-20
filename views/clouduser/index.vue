@@ -45,7 +45,6 @@ export default {
       singleActions: [
         {
           label: this.$t('common_326'),
-          permission: 'cloudpolicy_list',
           action: (obj) => {
             this.createDialog('CloudgroupListForClouduserForUserDialog', {
               data: [obj],
