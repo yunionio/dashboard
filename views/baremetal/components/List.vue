@@ -281,17 +281,12 @@ export default {
                     validate: true,
                     tooltip: null,
                   }
-                  if (this.list.selectedItems.some(item => !item.can_delete)) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_284')
-                    return ret
-                  }
                   if (this.list.selectedItems.some(item => item.billing_type === 'prepaid')) {
                     ret.validate = false
                     ret.tooltip = this.$t('compute.text_285')
                     return ret
                   }
-                  return ret
+                  return this.$getDeleteResult(this.list.selectedItems)
                 },
               },
             ]

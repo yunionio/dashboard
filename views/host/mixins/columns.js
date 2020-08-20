@@ -44,8 +44,6 @@ export default {
           }
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
-      getEnabledTableColumn(),
       getStatusTableColumn({
         statusModule: 'host',
         minWidth: 100,
@@ -58,6 +56,13 @@ export default {
           ]
         },
       }),
+      getEnabledTableColumn(),
+      getStatusTableColumn({
+        field: 'host_status',
+        title: i18n.t('compute.text_502'),
+        statusModule: 'host_status',
+      }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
       {
         field: 'custom_ip',
         title: 'IP',
@@ -84,11 +89,34 @@ export default {
           },
         },
       },
-      getStatusTableColumn({
-        field: 'host_status',
-        title: i18n.t('compute.text_502'),
-        statusModule: 'host_status',
-      }),
+      {
+        field: 'id',
+        title: 'IPMI',
+        width: 60,
+        slots: {
+          default: ({ cellValue, row }) => {
+            if (!row.is_baremetal) {
+              return '-'
+            } else {
+              return [<PasswordFetcher serverId={ row.id } resourceType='baremetals' />]
+            }
+          },
+        },
+      },
+      {
+        field: 'server_id',
+        title: i18n.t('compute.text_566'),
+        width: 70,
+        slots: {
+          default: ({ cellValue, row }) => {
+            if (!row.is_baremetal) {
+              return '-'
+            } else {
+              return [<PasswordFetcher serverId={ row.server_id } resourceType='servers' />]
+            }
+          },
+        },
+      },
       {
         field: 'nonsystem_guests',
         title: '#VM',
@@ -160,38 +188,10 @@ export default {
         },
       },
       getBrandTableColumn(),
+      getAccountTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
-      getAccountTableColumn(),
-      {
-        field: 'id',
-        title: 'IPMI',
-        width: 60,
-        slots: {
-          default: ({ cellValue, row }) => {
-            if (!row.is_baremetal) {
-              return '-'
-            } else {
-              return [<PasswordFetcher serverId={ row.id } resourceType='baremetals' />]
-            }
-          },
-        },
-      },
-      {
-        field: 'server_id',
-        title: i18n.t('compute.text_566'),
-        width: 70,
-        slots: {
-          default: ({ cellValue, row }) => {
-            if (!row.is_baremetal) {
-              return '-'
-            } else {
-              return [<PasswordFetcher serverId={ row.server_id } resourceType='servers' />]
-            }
-          },
-        },
-      },
     ]
   },
 }

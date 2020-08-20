@@ -131,11 +131,7 @@ export default {
               onManager: this.onManager,
             })
           },
-          meta: () => {
-            return {
-              validate: this.list.allowDelete(),
-            }
-          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
     }
