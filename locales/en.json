@@ -2044,6 +2044,10 @@
     "dingtalk_oauth2": "Dingtalk",
     "qywechat_oauth2": "Wechat"
   },
+  "idpAzureCloudEnv": {
+    "china": "Azure China",
+    "global": "Azure Global Zone"
+  },
   "login.desc1": "Next generation unified cloud management platform (CMP)",
   "login.desc2": "Simple·Open·Integrated·Smart",
   "login.desc3": "Provide one-click deployment and productized solutions for all the needs of enterprises on cloud, cloud use, and multi-cloud management",
