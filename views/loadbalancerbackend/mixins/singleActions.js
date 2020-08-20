@@ -26,6 +26,12 @@ export default {
               tooltip: i18n.t('common_464'),
             }
           }
+          if (provider.toLowerCase() === 'openstack') {
+            return {
+              validate: false,
+              tooltip: i18n.t('common_607'),
+            }
+          }
           return {
             validate: true,
           }

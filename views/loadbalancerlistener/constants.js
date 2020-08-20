@@ -15,6 +15,7 @@ export const schedulerProviderMaps = {
   huawei: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aws_network: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aws_application: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
+  openstack: [schedulerMaps.rr, schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
 }
 
 export const healthCheckTypeMaps = {
