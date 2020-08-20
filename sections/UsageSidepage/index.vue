@@ -32,9 +32,15 @@ export default {
     },
   },
   data () {
+    const isAdminMode = this.$store.getters.isAdminMode
+    const isDomainMode = this.$store.getters.isDomainMode
     const baseInfo = []
     Object.keys(USAGE_CONFIG).forEach((key) => {
       const item = USAGE_CONFIG[key] || {}
+      if (!item.noPerfix) {
+        if (isAdminMode) key = `all.${key}`
+        if (isDomainMode) key = `domain.${key}`
+      }
       baseInfo.push({
         field: key,
         title: item.zh_cn || key,

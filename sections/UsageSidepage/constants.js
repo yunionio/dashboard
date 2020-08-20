@@ -1,6 +1,8 @@
 import { sizestrWithUnit } from '@/utils/utils'
 import i18n from '@/locales'
 
+// noPerfix 表示此usage不用区分 all 或 domain
+
 // 不定单位使用formatter，固定单位使用unit
 export const USAGE_CONFIG = {
   bucket_bytes: {
@@ -210,21 +212,26 @@ export const USAGE_CONFIG = {
   storages: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: i18n.t('cloudenv.text_78'),
+    noPerfix: true,
   },
   'storages.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     zh_cn: i18n.t('cloudenv.text_79'),
+    noPerfix: true,
   },
   vpcs: {
     unit: i18n.t('cloudenv.text_24'),
     zh_cn: i18n.t('cloudenv.text_80'),
+    noPerfix: true,
   },
   wires: {
     unit: i18n.t('cloudenv.text_24'),
     zh_cn: i18n.t('cloudenv.text_81'),
+    noPerfix: true,
   },
   zones: {
     unit: i18n.t('cloudenv.text_24'),
     zh_cn: i18n.t('cloudenv.text_82'),
+    noPerfix: true,
   },
 }
