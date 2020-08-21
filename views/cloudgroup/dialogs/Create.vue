@@ -78,7 +78,6 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('common.text00042') },
-              { validator: this.$validate('serverCreateName') },
             ],
           },
         ],

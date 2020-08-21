@@ -3,6 +3,9 @@
     :data="data"
     :onManager="onManager"
     :base-info="baseInfo"
+    :nameRules="[
+      { required: true, message: this.$t('bill.text_145') },
+    ]"
     status-module="cloudgroup" />
 </template>
 
