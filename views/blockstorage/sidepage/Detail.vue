@@ -17,6 +17,7 @@ import WindowsMixin from '@/mixins/windows'
 import {
   getBrandTableColumn,
   getEnabledTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -39,6 +40,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'storages' }),
         getBrandTableColumn(),
         getEnabledTableColumn(),
         {
