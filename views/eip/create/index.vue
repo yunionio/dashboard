@@ -15,11 +15,12 @@
           :names="areaselectsName"
           :cloudregionParams="regionParams"
           :isRequired="true"
-          :region.sync="regionList" />
+          :region.sync="regionList"
+          @change="cloudregionChange" />
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <template v-if="(providerC === 'zstack' || providerC === 'openstack') || (cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id)">
+        <template v-if="showIpSubnet">
           <ip-subnet
             :label="$t('network.text_211')"
             :isRequired="true"
@@ -326,6 +327,12 @@ export default {
       }
       return ['city', 'provider', 'cloudregion']
     },
+    showIpSubnet () {
+      if (this.providerC === 'zstack' || this.providerC === 'openstack') return true
+      if (this.cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id) return true
+      if (this.cloudEnv === 'private' && this.selectedRegionItem && this.selectedRegionItem.id) return true
+      return false
+    },
   },
   watch: {
     cloudEnv (newValue) {
@@ -377,6 +384,14 @@ export default {
         this.updateProviderParams = {
           ...this.updateProviderParams,
           scope: this.$store.getters.scope,
+        }
+      }
+    },
+    cloudregionChange (data) {
+      if (!R.isNil(data.cloudregion) && !R.isEmpty(data.cloudregion)) {
+        this.updateProviderParams = {
+          ...this.updateProviderParams,
+          cloudregion_id: data.cloudregion.id,
         }
       }
     },

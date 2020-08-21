@@ -66,7 +66,7 @@
         </template>
         <div class="d-flex" v-for="(item, i) in guestIpPrefix" :key="item.key">
           <a-form-item>
-            <a-input v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.text_581')" />
+            <a-input style="width: 400px" v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.text_581')" />
           </a-form-item>
           <a-button shape="circle" icon="minus" size="small" v-if="guestIpPrefix.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
         </div>
@@ -567,8 +567,13 @@ export default {
       }
     },
     vpcLabelFormat (item) {
-      if (item.manager) return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
-      return (<div><span class="text-color-secondary">VPC:</span> { item.name }</div>)
+      if (item.manager) {
+        if (item.cidr_block) {
+          return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
+        }
+        return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
+      }
+      return (<div>{ item.name }</div>)
     },
     validatePublicIpPrefix (rule, value, callback) {
       if (!networkSegment.regexp.test(value)) {
