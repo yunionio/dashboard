@@ -9,7 +9,7 @@
     <a-form-item :label="$t('network.text_21')">
       <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
     </a-form-item>
-    <a-form-item label="网络">
+    <a-form-item :label="$t('cloudenv.text_7')">
       <a-row :gutter="9">
         <a-col :span="12">
           <base-select

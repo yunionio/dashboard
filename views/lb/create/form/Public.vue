@@ -1,6 +1,5 @@
 <template>
   <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
-    {{vpcObj}}
     <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mb-0">
       <domain-project :fc="form.fc" :decorators="decorators" :domain.sync="domain" :project.sync="project" :labelInValue="false" />
     </a-form-item>
@@ -31,16 +30,16 @@
         <a-radio-button value="ipv4">IPv4</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item label="云订阅" v-if="isShowCloudprovider">
+    <a-form-item :label="$t('bill.text_233')" v-if="isShowCloudprovider">
       <base-select
         v-decorator="decorators.manager"
         resource="cloudproviders"
         need-params
         filterable
         :params="cloudproviderParams"
-        :select-props="{ placeholder: '请选择云订阅' }" />
+        :select-props="{ placeholder: $t('common_588') }" />
     </a-form-item>
-    <a-form-item label="网络" v-else>
+    <a-form-item :label="$t('cloudenv.text_7')" v-else>
       <a-row :gutter="9">
         <a-col :span="12">
           <base-select
@@ -65,11 +64,15 @@
       </a-row>
     </a-form-item>
     <a-form-item :label="$t('network.text_221')" v-if="isHuawei && form.fd.address_type === 'internet'">
-      <eip-config
-        hiddenNoneType
-        :form="form"
-        :decorators="eipDecorators"
-        :eipParams="eipParams" />
+      <base-select
+        v-decorator="decorators.eip"
+        resource="eips"
+        need-params
+        :params="eipParams"
+        :showSync="true"
+        :select-props="{ placeholder: $t('network.text_278') }" />
+        <div slot="extra">{{$t('system.text_439')}}<help-link href="/eip">{{$t('system.text_440')}}</help-link>
+        </div>
     </a-form-item>
   </a-form>
 </template>
@@ -77,7 +80,6 @@
 <script>
 import * as R from 'ramda'
 import lbCreate from './mixin.js'
-import EipConfig from '@Compute/sections/EipConfig'
 import ChargeTypeRadio from '@/sections/ChargeTypeRadio'
 import { LB_SPEC } from '@Network/views/lb/constants'
 import AreaSelects from '@/sections/AreaSelects'
@@ -85,7 +87,6 @@ import AreaSelects from '@/sections/AreaSelects'
 export default {
   name: 'LbAliyunCreate',
   components: {
-    EipConfig,
     ChargeTypeRadio,
     AreaSelects,
   },
@@ -98,36 +99,13 @@ export default {
   computed: {
     eipParams () {
       let params = {}
-      if (this.form.fd.cloudregion && this.form.fd.cloudregion.key && !R.isEmpty(this.scopeParams)) {
-        params = { ...this.scopeParams, usable: true, region: this.form.fd.cloudregion.key }
+      if (this.form.fd.cloudregion && !R.isEmpty(this.scopeParams)) {
+        params = { ...this.scopeParams, usable: true, region: this.form.fd.cloudregion }
         if (this.isAdminMode || this.isDomainMode) {
           params.project = this.form.fd.project
         }
       }
       return params
-    },
-    eipDecorators () {
-      const { eip, chargeType, bandwidth } = this.decorators
-      console.log(bandwidth)
-      return {
-        eip,
-        charge_type: chargeType,
-        bandwidth: [
-          'eip_bw',
-          {
-            initialValue: 1,
-            rules: [
-              { required: true, message: this.$t('network.text_288'), trigger: 'change', type: 'number' },
-            ],
-          },
-        ],
-        type: [
-          'eip_type',
-          {
-            initialValue: 'new',
-          },
-        ],
-      }
     },
   },
   methods: {

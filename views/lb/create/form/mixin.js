@@ -113,7 +113,7 @@ export default {
           {
             initialValue: { key: '', label: '' },
             rules: [
-              { validator: isRequired(), message: '请选择可用区' },
+              { validator: isRequired(), message: i18n.t('scope.text_65') },
             ],
           },
         ],
