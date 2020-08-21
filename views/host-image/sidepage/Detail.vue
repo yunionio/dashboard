@@ -29,6 +29,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'guestimages' }),
         {
           field: 'project_domain',
           title: this.$t('dictionary.domain'),
@@ -43,7 +44,6 @@ export default {
             return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{ row.tenant }</side-page-trigger>
           },
         },
-        getPublicScopeTableColumn({ vm: this, resource: 'guestimages' }),
         {
           field: 'type',
           title: this.$t('compute.text_175'),

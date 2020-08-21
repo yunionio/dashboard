@@ -10,9 +10,10 @@
 
 <script>
 import { getMaintenanceTableColumn } from '../utils/columns'
-import { getEnabledTableColumn, getCopyWithContentTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getCopyWithContentTableColumn, getTagTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import WindowsMixin from '@/mixins/windows'
 
 const storageType = {
   rotate: i18n.t('compute.text_577'),
@@ -22,6 +23,7 @@ const storageType = {
 
 export default {
   name: 'PhysicalmachineDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -102,6 +104,7 @@ export default {
         },
       ],
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
         getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
         getEnabledTableColumn(),
         getMaintenanceTableColumn(),

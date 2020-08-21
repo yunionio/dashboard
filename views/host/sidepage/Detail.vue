@@ -11,7 +11,7 @@
 <script>
 import { getIsolatedDeviceCountColumns } from '../utils/columns'
 import WindowsMixin from '@/mixins/windows'
-import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getTagTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -112,6 +112,7 @@ export default {
         },
       ],
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
         getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
         getBrandTableColumn(),
         getEnabledTableColumn(),
