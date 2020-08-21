@@ -9,7 +9,7 @@
 
 <script>
 import { getBandwidthTableColumn } from '../utils/columns'
-import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getCopyWithContentTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -28,6 +28,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'wires' }),
         getBrandTableColumn(),
         getBandwidthTableColumn(),
         getCopyWithContentTableColumn({

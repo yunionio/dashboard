@@ -34,9 +34,9 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
         getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
         getBrandTableColumn(),
-        getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
         {
           field: 'guest_ip_start',
           title: this.$t('network.text_653'),
