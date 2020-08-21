@@ -12,6 +12,9 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        formRules: [
+          { required: true, message: i18n.t('bill.text_145') },
+        ],
         slotCallback: row => {
           return (
             <side-page-trigger permission='cloudgroup_get' name='CloudgroupSidePage' id={row.id} list={this.list} vm={this}>{ row.name }</side-page-trigger>
