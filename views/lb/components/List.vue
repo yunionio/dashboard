@@ -91,88 +91,14 @@ export default {
       let createBtn = {
         label: this.$t('network.text_26'),
         permission: 'lb_loadbalancers_create',
-        actions: () => [
-          {
-            label: 'OneCloud',
-            action: () => {
-              this.$router.push({
-                path: '/lb/create',
-                query: {
-                  type: 'Onecloud',
-                },
-              })
+        action: () => {
+          this.$router.push({
+            path: '/lb/create',
+            query: {
+              type: this.cloudEnv,
             },
-            meta: () => {
-              return {
-                validate: this.hasService(this.userInfo, 'lbagent'),
-              }
-            },
-          },
-          {
-            label: this.$t('network.text_250'),
-            action: () => {
-              this.$router.push({
-                path: '/lb/create',
-                query: {
-                  type: 'Aliyun',
-                },
-              })
-            },
-            meta: () => {
-              return {
-                validate: this.hasHypervisors('aliyun'),
-              }
-            },
-          },
-          {
-            label: this.$t('network.text_251'),
-            action: () => {
-              this.$router.push({
-                path: '/lb/create',
-                query: {
-                  type: 'Qcloud',
-                },
-              })
-            },
-            meta: () => {
-              return {
-                validate: this.hasHypervisors('qcloud'),
-              }
-            },
-          },
-          {
-            label: this.$t('network.text_252'),
-            action: () => {
-              this.$router.push({
-                path: '/lb/create',
-                query: {
-                  type: 'Huawei',
-                },
-              })
-            },
-            meta: () => {
-              return {
-                validate: this.hasHypervisors('huawei'),
-              }
-            },
-          },
-          {
-            label: 'AWS',
-            action: () => {
-              this.$router.push({
-                path: '/lb/create',
-                query: {
-                  type: 'Aws',
-                },
-              })
-            },
-            meta: () => {
-              return {
-                validate: this.hasHypervisors('aws'),
-              }
-            },
-          },
-        ],
+          })
+        },
         meta: () => {
           return {
             buttonType: 'primary',

@@ -11,10 +11,14 @@ export default {
     DomainProject,
     CloudproviderRegionZone,
   },
+  props: {
+    type: String,
+  },
   data () {
     return {
       domain: {},
       project: {},
+      vpcObj: {},
       networkObj: {},
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
@@ -86,12 +90,12 @@ export default {
             ],
           },
         ],
-        cloudprovider: [
-          'cloudprovider',
+        manager: [
+          'manager',
           {
-            initialValue: { key: '', label: '' },
+            // initialValue: { key: '', label: '' },
             rules: [
-              { validator: isRequired(), message: i18n.t('network.text_285') },
+              { required: true, message: i18n.t('network.text_285') },
             ],
           },
         ],
@@ -109,7 +113,7 @@ export default {
           {
             initialValue: { key: '', label: '' },
             rules: [
-              { validator: isRequired(), message: i18n.t('network.text_287') },
+              { validator: isRequired(), message: i18n.t('scope.text_65') },
             ],
           },
         ],
@@ -138,7 +142,7 @@ export default {
           {
             initialValue: 1,
             rules: [
-              { required: true, message: i18n.t('network.text_288'), trigger: 'change' },
+              { required: true, message: i18n.t('network.text_288'), trigger: 'change', type: 'number' },
             ],
           },
         ],
@@ -159,8 +163,38 @@ export default {
       },
     }
   },
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+    provider () {
+      if (this.form.fd.provider) {
+        return this.form.fd.provider.toLocaleLowerCase()
+      }
+      return null
+    },
+    isAliyun () {
+      return this.provider === 'aliyun'
+    },
+    isAws () {
+      return this.provider === 'aws'
+    },
+    isHuawei () {
+      return this.provider === 'huawei'
+    },
+    isQcloud () {
+      return this.provider === 'qcloud'
+    },
+    isShowCloudprovider () {
+      const { address_type } = this.form.fd
+      if (this.isAliyun) {
+        return address_type === 'internet'
+      }
+      return false
+    },
     scopeParams () {
       const params = {}
       if (this.isAdminMode) {
@@ -176,10 +210,11 @@ export default {
       return params
     },
     vpcParams () {
-      if (this.form.fd.cloudprovider && this.form.fd.cloudprovider.key && !R.isEmpty(this.scopeParams)) {
-        const params = { ...this.scopeParams, manager_id: this.form.fd.cloudprovider.key }
-        if (_.get(this.form.fd, 'cloudregion.key')) {
-          params.cloudregion = _.get(this.form.fd, 'cloudregion.key')
+      const { cloudregion } = this.form.fd
+      if (cloudregion && !R.isEmpty(this.scopeParams)) {
+        const params = {
+          ...this.scopeParams,
+          cloudregion: _.isObject(cloudregion) ? cloudregion.key : cloudregion,
         }
         return params
       }
@@ -198,18 +233,21 @@ export default {
     cloudregionParams () {
       const params = {
         limit: 0,
-        provider: this.$route.query.type,
+        capability: undefined,
+        cloud_env: this.type,
         ...this.scopeParams,
       }
       return params
     },
     cloudproviderParams () {
       if (R.isEmpty(this.scopeParams)) return {}
+      const { provider } = this.form.fd
       const params = {
         limit: 0,
         enabled: true,
-        provider: this.$route.query.type,
+        provider,
         status: 'connected',
+        cloudregion: this.form.fd.cloudregion,
         ...this.scopeParams,
       }
       return params
@@ -217,6 +255,7 @@ export default {
     zoneParams () {
       const params = {
         usable: true,
+        show_emulated: true,
         order_by: 'created_at',
         order: 'asc',
         limit: 0,
@@ -224,8 +263,33 @@ export default {
       }
       return params
     },
+    areaParams () {
+      return {
+        cityParams: this.scopeParams,
+        providerParams: this.scopeParams,
+        cloudregionParams: this.cloudregionParams,
+        zoneParams: this.zoneParams,
+        isRequired: true,
+        ...this.formItemLayout,
+        event: {
+          providerFetchSuccess: (list) => {
+            console.log(list)
+            return list
+          },
+        },
+      }
+    },
   },
   methods: {
+    vpcLabelFormat (item) {
+      const { name, manager } = item
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={name}>{name}</span>
+          <span style="color: #8492a6; font-size: 13px">云订阅: {manager}</span>
+        </div>
+      )
+    },
     validateIp () {
       const remainIps = this.networkObj.ports - this.networkObj.ports_used
       if (remainIps && remainIps < 8) {
@@ -233,6 +297,9 @@ export default {
         return false
       }
       return true
+    },
+    handleVpcChange (changeValue) {
+      console.log(changeValue)
     },
     onValuesChange (props, values) {
       R.forEachObjIndexed((value, key) => {

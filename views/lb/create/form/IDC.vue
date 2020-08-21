@@ -1,5 +1,5 @@
 <template>
-  <a-form :form="form.fc" class="mt-3 w-75" v-bind="formItemLayout">
+  <a-form :form="form.fc"  class="mt-3" v-bind="formItemLayout">
     <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mb-0">
       <domain-project :fc="form.fc" :decorators="decorators" :domain.sync="domain" :project.sync="project" :labelInValue="false" />
     </a-form-item>
@@ -8,6 +8,11 @@
     </a-form-item>
     <a-form-item :label="$t('network.text_21')">
       <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
+    </a-form-item>
+    <a-form-item :label="$t('compute.text_176')">
+      <a-radio-group :defaultValue="hypervisorOpts[0].key">
+        <a-radio-button v-for="item in hypervisorOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
+      </a-radio-group>
     </a-form-item>
     <a-form-item :label="$t('network.text_19')">
       <base-select
@@ -21,14 +26,27 @@
       <div slot="extra" v-if="isAdminMode">{{$t('network.text_281')}}<help-link href="/cluster">{{$t('network.text_282')}}</help-link></div>
     </a-form-item>
     <a-form-item :label="$t('network.text_211')">
-      <base-select
-        v-decorator="decorators.network"
-        resource="networks"
-        need-params
-        filterable
-        :params="networkParams"
-        :item.sync="networkObj"
-        :select-props="{ placeholder: $t('network.text_275') }" />
+      <a-row :gutter="8">
+        <a-col :span="12">
+          <a-select value="default" disabled>
+            <a-select-option key="default">
+              <span class="text-color-secondary">VPC: </span>Default
+            </a-select-option>
+          </a-select>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item>
+            <base-select
+              v-decorator="decorators.network"
+              resource="networks"
+              need-params
+              filterable
+              :params="networkParams"
+              :item.sync="networkObj"
+              :select-props="{ placeholder: $t('network.text_275') }" />
+          </a-form-item>
+        </a-col>
+      </a-row>
     </a-form-item>
   </a-form>
 </template>
@@ -38,6 +56,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import lbCreate from './mixin'
 import CloudregionZone from '@/sections/CloudregionZone'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'LbOnecloudCreate',
@@ -84,6 +103,10 @@ export default {
         usable: true,
         is_on_premise: true,
       }
+    },
+    // 当前只支持oneCloud
+    hypervisorOpts () {
+      return [HYPERVISORS_MAP.kvm]
     },
   },
   methods: {
