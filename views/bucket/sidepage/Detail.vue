@@ -16,6 +16,7 @@ import WindowsMixin from '@/mixins/windows'
 import {
   getBrandTableColumn,
   getCopyWithContentTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 
 const RenderSizeTitle = {
@@ -79,6 +80,7 @@ export default {
     return {
       syncLoading: false,
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'buckets' }),
         getBrandTableColumn(),
         getCopyWithContentTableColumn({
           field: 'cloudregion',
