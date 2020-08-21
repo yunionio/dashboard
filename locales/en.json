@@ -8496,5 +8496,7 @@
   "common_606": "Please select @:dictionary.project affiliation",
   "common_607": "Please specify a user ID",
   "common_608": "Please specify a user name",
-  "common_609": "Openstack currently does not support this operation"
+  "common_609": "Openstack currently does not support this operation",
+  "common_610": "Operator",
+  "common_611": "Enterprise user login address: https://cloud.yunion.cn/auth/login?domain=<domain_name>"
 }
