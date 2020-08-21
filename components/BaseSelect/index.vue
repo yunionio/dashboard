@@ -333,7 +333,7 @@ export default {
       this.query = query
       try {
         const { list, data, sourceList } = await this.fetchData(manager, params)
-        if (data.total > data.data.length) {
+        if (data && data.data && data.total > data.data.length) {
           this.noMoreData = false
           this.showLoadMore = true
         } else {
