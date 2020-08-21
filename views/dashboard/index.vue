@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column">
+  <div class="d-flex flex-column flex-fill">
     <template v-if="optionsLoaded">
       <div style="padding-left: 5px;">
         <dashboard-header
@@ -79,6 +79,7 @@ export default {
   },
   beforeDestroy () {
     this.pm = null
+    this.removeAppPageClass()
   },
   async created () {
     this.pm = new this.$Manager('parameters', 'v1')
@@ -95,7 +96,25 @@ export default {
     }
     this.handleCurrentOptionSelect(selected)
   },
+  mounted () {
+    this.addAppPageClass()
+  },
   methods: {
+    addAppPageClass () {
+      const appPage = document.getElementById('app-page')
+      const toBeAddedClass = ['h-100', 'd-flex', 'flex-column', 'mb-0']
+      this.appPageAddedClass = []
+      for (let i = 0, len = toBeAddedClass.length; i < len; i++) {
+        if (!appPage.classList.contains(toBeAddedClass[i])) {
+          appPage.classList.add(toBeAddedClass[i])
+          this.appPageAddedClass.push(toBeAddedClass[i])
+        }
+      }
+    },
+    removeAppPageClass () {
+      const appPage = document.getElementById('app-page')
+      appPage.classList.remove(this.appPageAddedClass)
+    },
     // 选择面板
     async handleCurrentOptionSelect (option) {
       this.currentOption = option

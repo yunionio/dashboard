@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative">
+  <div class="position-relative h-100 w-100 overflow-auto">
     <template v-for="(item, key) of data">
       <div
         class="item"
