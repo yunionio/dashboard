@@ -773,6 +773,10 @@
     "networIsAutoAlloc": {
       "true": "属于",
       "false": "不属于"
+    },
+    "verified": {
+      "true": "已验证",
+      "false": "未验证"
     }
   },
   "skuCategoryOptions": {
@@ -1437,7 +1441,8 @@
     "explorer": "监控查询",
     "instance_snapshot": "主机快照",
     "dbinstance": "RDS实例",
-    "loadbalancerclusters": "负载均衡-集群"
+    "loadbalancerclusters": "负载均衡-集群",
+    "receivers": "接收人"
   },
   "shareScope": {
     "system": "系统",
