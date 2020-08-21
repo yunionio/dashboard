@@ -89,6 +89,10 @@ export default {
       type: [Array, Boolean],
       default: true,
     },
+    cloudregionMapper: { // 请求数据后进行数据处理
+      type: Function,
+      required: false,
+    },
   },
   watch: {
     cityParams (val, oldVal) {
@@ -106,7 +110,7 @@ export default {
       providerLoading: false,
       providerList: [],
       cloudregionLoading: false,
-      cloudregionList: [],
+      cloudregionList: [], // 未经过mapper的数据
       zoneLoading: false,
       zoneList: [],
     }
@@ -358,7 +362,10 @@ export default {
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
         const { data = {} } = await manager.list({ params })
-        const retList = !R.isEmpty(data.data) ? data.data : []
+        let retList = !R.isEmpty(data.data) ? data.data : []
+        if (this.cloudregionMapper) {
+          retList = this.cloudregionMapper(retList)
+        }
         const genList = {}
         retList.map(item => {
           genList[item.id] = item
@@ -391,6 +398,11 @@ export default {
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder={this.placeholders.cloudregion}>
           {this.cloudregionList.map(cloudregion => {
             const { id, name } = cloudregion
+            if (this.names.length === 1) {
+              return <a-select-option key={id} value={id}>
+                {name}
+              </a-select-option>
+            }
             return <a-select-option key={id} value={id}>
               <span class="text-color-secondary">{ this.$t('dictionary.region') }: </span>{name}
             </a-select-option>
@@ -440,6 +452,11 @@ export default {
         <a-select allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder={this.placeholders.zone}>
           {this.zoneList.map(zone => {
             const { id, name } = zone
+            if (this.names.length === 1) {
+              return <a-select-option key={id} value={id}>
+                {name}
+              </a-select-option>
+            }
             return <a-select-option key={id} value={id}>
               <span class="text-color-secondary">{ this.$t('dictionary.zone') }: </span>{name}
             </a-select-option>
