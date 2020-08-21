@@ -378,6 +378,7 @@ export default {
         }
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
+        Reflect.deleteProperty(values, 'provider')
         await this.doCreate(values)
         this.$message.success(this.$t('k8s.text_184'))
         this.$router.push('/disk')
