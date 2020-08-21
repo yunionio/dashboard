@@ -10,8 +10,10 @@
 <script>
 import {
   getCopyWithContentTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import WindowsMixin from '@/mixins/windows'
 
 const BillingType = {
   postpaid: i18n.t('network.text_533'),
@@ -20,6 +22,7 @@ const BillingType = {
 
 export default {
   name: 'NatDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -33,6 +36,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
         getCopyWithContentTableColumn({ field: 'vpc', title: this.$t('network.text_535') }),
         {
           field: 'region',

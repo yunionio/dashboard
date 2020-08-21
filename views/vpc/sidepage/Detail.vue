@@ -11,10 +11,13 @@
 <script>
 import {
   getBrandTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'VPCDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -28,6 +31,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'vpcs' }),
         getBrandTableColumn(),
         {
           field: 'cidr_block',

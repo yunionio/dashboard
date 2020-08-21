@@ -8,8 +8,14 @@
 </template>
 
 <script>
+import {
+  getPublicScopeTableColumn,
+} from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
+
 export default {
-  name: 'GpuDetail',
+  name: 'GlobalVPCDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -23,6 +29,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'globalvpcs' }),
         // {
         //   field: 'model',
         //   title: '设备型号',
