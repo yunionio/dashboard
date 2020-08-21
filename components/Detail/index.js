@@ -289,7 +289,7 @@ export default {
           } else {
             if (!R.isNil(child.hidden)) {
               if (R.is(Function, child.hidden)) {
-                return child.hidden(this.data)
+                return !child.hidden(this.data)
               }
             }
             return !child.hidden
