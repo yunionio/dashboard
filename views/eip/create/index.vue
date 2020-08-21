@@ -226,7 +226,9 @@ export default {
       return ret
     },
     regionParams () {
-      let params = {}
+      let params = {
+        cloud_env: this.cloudEnv,
+      }
       if (this.manager) {
         params = {
           manager: this.manager,
@@ -238,7 +240,6 @@ export default {
       }
       if (this.cloudEnv === 'onpremise') {
         params = {
-          cloud_env: 'onpremise',
           usable: true,
           show_emulated: true,
           scope: this.$store.getters.scope,
@@ -266,7 +267,9 @@ export default {
           cloudregion_id: this.selectedRegionItem.id,
         }
       }
-      return {}
+      return {
+        scope: this.scope,
+      }
     },
     vpcParams () {
       const params = {
