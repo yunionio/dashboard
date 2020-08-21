@@ -32,6 +32,7 @@ export default {
         domain: this.$t('shareScope.domain'),
       },
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
         {
           field: 'guest_cnt',
           title: this.$t('compute.text_1023'),
@@ -46,7 +47,6 @@ export default {
             return <a onClick={ () => this.$emit('tab-change', 'cache-list') }>{row.cache_cnt}</a>
           },
         },
-        getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
       ],
     }
   },

@@ -105,7 +105,7 @@ export default {
           },
         },
       },
-      getPublicScopeTableColumn({ vm: this, width: '180px' }),
+      getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
       getProjectTableColumn(),
     ]
   },
