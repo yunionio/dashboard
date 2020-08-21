@@ -2042,7 +2042,9 @@
     "cas": "通用CAS",
     "feishu_oauth2": "飞书",
     "dingtalk_oauth2": "钉钉",
-    "qywechat_oauth2": "企业微信"
+    "qywechat_oauth2": "企业微信",
+    "wechat_oauth2": "微信",
+    "alipay_oauth2": "支付宝"
   },
   "idpAzureCloudEnv": {
     "china": "Azure中国区",
