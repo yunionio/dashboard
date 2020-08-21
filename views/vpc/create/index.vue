@@ -214,7 +214,7 @@ export default {
       }
     },
     doCreate (data) {
-      return new this.$Manager('disks').create({ data })
+      return new this.$Manager('vpcs').create({ data })
     },
     handleDomainChange (val) {
       this.project_domain = val
