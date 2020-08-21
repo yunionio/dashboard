@@ -25,6 +25,7 @@
             v-decorator="decorators.cloudprovider"
             resource="cloudproviders"
             :params="cloudproviderParams"
+            :mapper="providerMapper"
             :isDefaultSelect="true"
             :showSync="true"
             :select-props="{ placeholder: $t('compute.text_149') }" />
@@ -54,11 +55,6 @@ export default {
   components: {
     AreaSelects,
     DomainProject,
-  },
-  provide () {
-    return {
-      form: this.form,
-    }
   },
   data () {
     return {
@@ -167,9 +163,18 @@ export default {
       this.$refs.areaSelects.fetchs(this.areaselectsName)
     },
   },
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
   methods: {
     handleDomainChange (val) {
       this.project_domain = val.key
+    },
+    providerMapper (data) {
+      if (this.cloudEnv === 'onpremise') data = data.filter(item => item.provider !== 'VMware')
+      return data
     },
     validateForm () {
       return new Promise((resolve, reject) => {
@@ -180,7 +185,7 @@ export default {
             values.zone = zone.key
           }
           if (cloudregion) {
-            values.cloudregion = cloudregion.key
+            values.cloudregion = cloudregion
           }
           resolve(values)
         })
@@ -209,6 +214,7 @@ export default {
       try {
         const values = await this.validateForm()
         const { project, domain, ...rest } = values
+        console.log(values)
         await new this.$Manager('buckets').create({
           data: {
             ...rest,
