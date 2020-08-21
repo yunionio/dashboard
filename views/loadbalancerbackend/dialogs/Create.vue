@@ -19,7 +19,7 @@
             v-decorator="decorators.guest_backend"
             show-sync
             :mapper="serverlistMapper"
-            :select-props="{ placeholder: $t('dictionary.text_334', [$t('dictionary.server')]) }" />
+            :select-props="{ placeholder: $t('network.text_334', [$t('dictionary.server')]) }" />
             <div slot="extra">{{$t('network.text_335', [$t('dictionary.server')])}}<help-link :href="serverHref">{{$t('network.text_26')}}</help-link>
           </div>
         </a-form-item>
