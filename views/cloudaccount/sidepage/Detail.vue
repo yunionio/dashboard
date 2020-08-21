@@ -34,8 +34,8 @@ export default {
   data () {
     return {
       baseInfo: [
-        getBrandTableColumn(),
         getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
+        getBrandTableColumn(),
         {
           field: 'account',
           title: this.$t('cloudenv.text_94'),

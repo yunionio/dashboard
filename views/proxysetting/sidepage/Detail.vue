@@ -9,6 +9,7 @@
 <script>
 import {
   getCopyWithContentTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -26,6 +27,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'proxysettings' }),
         getCopyWithContentTableColumn({
           field: 'https_proxy',
           title: this.$t('cloudenv.text_395'),
