@@ -773,6 +773,10 @@
     "networIsAutoAlloc": {
       "true": "belongs to",
       "false": "Does not belong"
+    },
+    "verified": {
+      "true": "Verified",
+      "false": "Unverified"
     }
   },
   "skuCategoryOptions": {
@@ -1437,7 +1441,8 @@
     "explorer": "Monitoring Query",
     "instance_snapshot": "Host Snapshot",
     "dbinstance": "RDS instance",
-    "loadbalancerclusters": "Load Balance-Cluster"
+    "loadbalancerclusters": "Load Balance-Cluster",
+    "receivers": "receivers"
   },
   "shareScope": {
     "system": "System",
