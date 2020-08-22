@@ -18,6 +18,7 @@
         :names="areaselectsName"
         :cloudregionParams="regionParams"
         :isRequired="true"
+        :cloudregionMapper="cloudregionMapper"
         @change="handleRegionChange" />
       <a-form-item v-if="!isGoogle || cloudEnv !== 'public'" :label="$t('network.text_244')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
         <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
@@ -191,10 +192,16 @@ export default {
   },
   methods: {
     handleRegionChange (data) {
-      if (!R.isEmpty(data.cloudregion)) {
+      if (!R.isEmpty(data.cloudregion) && !R.isNil(data.cloudregion)) {
         const { provider } = data.cloudregion.value
         this.isGoogle = provider.toLowerCase() === 'google'
       }
+    },
+    cloudregionMapper (data) {
+      if (this.cloudEnv === 'private') {
+        return data.filter(item => item.provider === 'OpenStack')
+      }
+      return data
     },
     async checkIp (rule, value, callback) {
       const params = {
