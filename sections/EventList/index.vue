@@ -42,8 +42,11 @@ export default {
       obj_name: {
         label: this.$t('common_151'),
       },
-      tenant: {
+      owner_project_ids: {
         label: this.$t('common_152') + this.$t('dictionary.project'),
+      },
+      owner_domain_ids: {
+        label: this.$t('common_152') + this.$t('dictionary.domain'),
       },
       user: {
         label: this.$t('common_153'),
