@@ -38,8 +38,8 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
-import { colors } from '@/sections/Charts/constants'
 import { tableColumnMaps } from '@Monitor/constants'
+import { colors } from '@/sections/Charts/constants'
 import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
@@ -330,6 +330,7 @@ export default {
         }
       })
       lineChartOptions.yAxis = {
+        minInterval: 1,
         axisLabel: {
           formatter: (value, index) => {
             let unit = _.get(this.description, 'description.unit')
