@@ -19,9 +19,9 @@
           <template v-if="!isAdminMode && isShowWorkflow">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">新建工单</span></div>
             <ul class="work-list">
-              <li @click="joinProjectHandle" v-if="projectEnabled">申请加入{{ $t('dictionary.project') }}</li>
+              <li @click="joinProjectHandle" v-if="isProjectMode && projectEnabled">申请加入{{ $t('dictionary.project') }}</li>
               <li @click="customeServiceHandle" v-if="customerServiceEnabled">申请技术支持</li>
-              <li @click="applyProjectQuotaHandle" v-if="projectQuotaEnabled">申请{{ $t('dictionary.project') }}配额</li>
+              <li @click="applyProjectQuotaHandle" v-if="isProjectMode && projectQuotaEnabled">申请{{ $t('dictionary.project') }}配额</li>
               <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">申请{{ $t('dictionary.domain') }}配额</li>
             </ul>
           </template>
@@ -42,7 +42,7 @@ export default {
   name: 'WorkOrderPopover',
   mixins: [workflowMixin, DialogMixin, WindowsMixin],
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'isProjectMode']),
     statistics () {
       return (this.workflowStatistics['nr-historic-process-instance'] + this.workflowStatistics['nr-process-task']) || 0
     },
