@@ -350,7 +350,6 @@ export default {
           path: '/keypair',
           meta: {
             label: '密钥',
-            permission: 'keypairs_list',
           },
           component: Layout,
           children: [
