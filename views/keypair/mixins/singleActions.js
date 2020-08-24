@@ -3,6 +3,7 @@ export default {
     this.singleActions = [
       {
         label: '删除',
+        permission: 'keypairs_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
