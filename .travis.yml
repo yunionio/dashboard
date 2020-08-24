@@ -9,3 +9,6 @@ script:
   - rm -rf ./containers ./src
   - ./scripts/setup.sh
   - yarn run build
+branches:
+  only:
+    - master
