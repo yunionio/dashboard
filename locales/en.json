@@ -8500,5 +8500,6 @@
   "common_610": "Operator",
   "common_611": "Enterprise user login address: https://cloud.yunion.cn/auth/login?domain=<domain_name>",
   "common_612": "If the option is empty, it represents all the @:dictionary.project under the @:dictionary.domain",
-  "common_613": "Notification Channel："
+  "common_613": "Notification Channel：",
+  "common_614": "The operation is not supported by shared resources"
 }

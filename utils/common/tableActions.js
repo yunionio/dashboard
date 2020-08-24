@@ -36,7 +36,7 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) 
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { name = i18n.t('common_92'), resource } = dialogParams
+  const { name = i18n.t('common_92'), resource, apiVersion = 'v2' } = dialogParams
   const options = {
     label: i18n.t('common_279') + i18n.t('dictionary.domain'),
     action: row => {
@@ -48,6 +48,7 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) 
         columns: vm.columns,
         refresh: vm.refresh,
         resource,
+        apiVersion,
       })
     },
     meta: row => {
