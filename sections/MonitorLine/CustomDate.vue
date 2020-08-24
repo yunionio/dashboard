@@ -9,7 +9,7 @@
             v-model="formData.startValue"
             :disabled-date="disabledStartDate"
             :disabled-time="disabledDateTime"
-            :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
+            :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }"
             format="YYYY-MM-DD HH:mm"
             :open="startOpen"
             :placeholder="$t('common.text00119')"
@@ -20,7 +20,7 @@
             v-model="formData.endValue"
             :disabled-date="disabledEndDate"
             :disabled-time="disabledDateTime"
-            :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm') }"
+            :show-time="{ defaultValue: $moment('00:00:00', 'HH:mm:ss') }"
             format="YYYY-MM-DD HH:mm"
             :placeholder="$t('common.text00120')"
             :open="endOpen"
@@ -146,8 +146,6 @@ export default {
     disabledDateTime () {
       const currentHour = this.$moment().hour()
       return {
-        disabledSeconds: () => this._range(1, 60),
-        disabledMinutes: () => this._range(1, 60),
         disabledHours: () => this._range(currentHour + 1, 24),
       }
     },

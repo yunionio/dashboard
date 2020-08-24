@@ -236,10 +236,6 @@ export default {
       try {
         this.metricKeyItem = metricKeyItem
         this.$emit('mertricItemChange', mertricItem)
-        this.form.fc.setFieldsValue({
-          [this.decorators.group_by[0]]: undefined,
-          [this.decorators.function[0]]: undefined,
-        })
         const params = {
           $t: getRequestT(),
           database: metricKeyItem.database,
@@ -257,6 +253,15 @@ export default {
         if (R.is(Array, Aggregations)) {
           this.functionOpts = Aggregations.map(v => ({ key: v, label: v }))
         }
+        const { group_by: groupBy, function: func } = this.form.fc.getFieldsValue([this.decorators.group_by[0], this.decorators.function[0]])
+        const resetFields = {}
+        if (!~this.metricInfo.tag_key.indexOf(groupBy)) {
+          resetFields[this.decorators.group_by[0]] = undefined
+        }
+        if (!~Aggregations.indexOf(func)) {
+          resetFields[this.decorators.function[0]] = undefined
+        }
+        this.form.fc.setFieldsValue(resetFields)
         this.metricInfoLoading = false
       } catch (error) {
         this.metricInfo.tag_key = []
