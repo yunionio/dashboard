@@ -21,7 +21,10 @@
           'threshold',
           {
             initialValue: fdInitailValue.threshold,
-            normalize: value => Number(value),
+            normalize: value => {
+              if (R.isNil(value) || R.isEmpty(value)) return undefined
+              return Number(value)
+            },
             rules: [
               { required: true, message: $t('compute.text_737') },
               ...thresholdRules
@@ -31,12 +34,10 @@
         <div slot="addonAfter" v-if="thresholdUnit">{{ thresholdUnit }}</div>
       </a-input>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_738')" v-bind="formItemLayout">
-      <a-select v-decorator="decorators.level">
-        <a-select-option v-for="item in levelOpts" :key="item.key" :value="item.key">
-          {{ item.label }}
-        </a-select-option>
-      </a-select>
+    <a-form-item :label="$t('monitor.level')" v-bind="formItemLayout">
+      <a-radio-group v-decorator="decorators.level">
+        <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
+      </a-radio-group>
     </a-form-item>
     <a-form-item :label="$t('compute.text_739')" v-bind="formItemLayout">
       <a-select v-decorator="decorators.channel">
@@ -91,7 +92,6 @@ export default {
           comparator: '>=',
           level: 'normal',
           channel: 'email',
-          threshold: 1,
         }
       },
     },
@@ -167,9 +167,9 @@ export default {
         // { key: '!=', label: '!=' }
       ],
       levelOpts: [
-        { key: 'normal', label: `${LEVEL_CN.normal.label}（normal）` },
-        { key: 'important', label: `${LEVEL_CN.important.label}（important）` },
-        { key: 'fatal', label: `${LEVEL_CN.fatal.label}（fatal）` },
+        { key: 'normal', label: LEVEL_CN.normal.label },
+        { key: 'important', label: LEVEL_CN.important.label },
+        { key: 'fatal', label: LEVEL_CN.fatal.label },
       ],
       channelOpts: [
         { key: 'email', label: this.$t('compute.text_743') },
@@ -179,6 +179,7 @@ export default {
       recipientOpts: [], // 由 base-select 组件同步出来
       thresholdRules: [], // threshold 的规则
       windowMin: 5,
+      R,
     }
   },
   computed: {

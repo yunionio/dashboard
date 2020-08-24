@@ -159,6 +159,19 @@ export default {
       ],
       singleActions: [
         {
+          label: this.$t('compute.text_749'),
+          action: obj => {
+            this.createDialog('UpdateNodeAlert', {
+              data: [obj],
+              columns: this.columns,
+              list: this.list,
+              alertType: this.alertType,
+              metricOpts: this.metricOpts,
+              hypervisor: this.data.hypervisor,
+            })
+          },
+        },
+        {
           label: this.$t('compute.text_261'),
           permission: 'server_delete',
           action: obj => {
@@ -172,19 +185,6 @@ export default {
             })
           },
           // meta: obj => this.$getDeleteResult(obj),
-        },
-        {
-          label: this.$t('compute.text_749'),
-          action: obj => {
-            this.createDialog('UpdateNodeAlert', {
-              data: [obj],
-              columns: this.columns,
-              list: this.list,
-              alertType: this.alertType,
-              metricOpts: this.metricOpts,
-              hypervisor: this.data.hypervisor,
-            })
-          },
         },
       ],
     }
