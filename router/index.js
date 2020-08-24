@@ -364,6 +364,7 @@ export default {
           meta: {
             label: i18n.t('compute.text_108'),
             hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware']),
+            permission: 'keypairs_list',
           },
           component: Layout,
           children: [

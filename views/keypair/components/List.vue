@@ -52,6 +52,7 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.text_18'),
+          permission: 'keypairs_create',
           action: () => {
             this.createDialog('CreateKeyPairDialog', {
               title: this.$t('compute.text_18'),
@@ -64,6 +65,7 @@ export default {
         },
         {
           label: this.$t('compute.text_261'),
+          permission: 'keypairs_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
