@@ -125,6 +125,7 @@ export default {
           meta: {
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
             label: '定时任务',
+            permission: 'scheduledtasks_list',
           },
           component: Layout,
           children: [
