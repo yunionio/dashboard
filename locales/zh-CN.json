@@ -8499,5 +8499,6 @@
   "common_609": "Openstack暂不支持此操作",
   "common_610": "操作人",
   "common_611": "企业用户登录地址：https://cloud.yunion.cn/auth/login?domain=<domain_name>",
-  "common_612": "选项为空则表示所有@:dictionary.domain下的@:dictionary.project"
+  "common_612": "选项为空则表示所有@:dictionary.domain下的@:dictionary.project",
+  "common_613": "通知渠道："
 }
