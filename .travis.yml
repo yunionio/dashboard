@@ -1,4 +1,6 @@
 language: node_js
+before_install:
+  - git checkout master
 cache:
   - yarn
 node_js:
@@ -6,7 +8,5 @@ node_js:
 install:
   - yarn
 script:
-  - rm -rf ./containers ./src
-  - git checkout master
   - ./scripts/setup.sh
-  - yarn run build
+  - yarn build
