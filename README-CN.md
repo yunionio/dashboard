@@ -1,5 +1,7 @@
 # Yunion Dashboard
 
+[![Build Status](https://www.travis-ci.org/yunionio/dashboard.svg?branch=master)](https://www.travis-ci.org/yunionio/dashboard)
+
 Yunion Dashboard 是[OneCloud](https://github.com/yunionio/onecloud)的Web控制台
 
 ## 开发指南
