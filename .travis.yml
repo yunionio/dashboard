@@ -1,0 +1,11 @@
+language: node_js
+cache:
+  - yarn
+node_js:
+  - "10"
+install:
+  - yarn
+script:
+  - rm -rf ./containers ./src
+  - ./scripts/setup.sh
+  - yarn run build
