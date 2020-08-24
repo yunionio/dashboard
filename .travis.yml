@@ -7,8 +7,6 @@ install:
   - yarn
 script:
   - rm -rf ./containers ./src
+  - git checkout master
   - ./scripts/setup.sh
   - yarn run build
-branches:
-  only:
-    - master
