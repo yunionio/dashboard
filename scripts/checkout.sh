@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # set -x
-read -p "🗃 : 请确保您已经fork了本仓库，并且fork了以下的的仓库(y/n):
-📦 ssh://git@git.yunion.io/fep/dashboard-module-common
-📦 ssh://git@git.yunion.io/fep/dashboard-module-cloudenv
-📦 ssh://git@git.yunion.io/fep/dashboard-module-compute
-📦 ssh://git@git.yunion.io/fep/dashboard-module-network
-📦 ssh://git@git.yunion.io/fep/dashboard-module-dashboard
-📦 ssh://git@git.yunion.io/fep/dashboard-module-storage
-" userConfirm
+# read -p "🗃 : 请确保您已经fork了本仓库，并且fork了以下的的仓库(y/n):
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-common
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-cloudenv
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-compute
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-network
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-dashboard
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-storage
+# " userConfirm
 
-if [ "$userConfirm" == "n" ] 
-  then
-    echo "请先fork上面👆的仓库之后重试"
-    exit -1
-fi
+# if [ "$userConfirm" == "n" ] 
+#   then
+#     echo "请先fork上面👆的仓库之后重试"
+#     exit -1
+# fi
 
 branch=$1
 currentPath=$(dirname $0)
