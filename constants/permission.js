@@ -177,6 +177,8 @@ export const PERMISSION = {
   endpoints_list: ['identity', 'endpoints', 'list'],
   // 报警
   commonalerts_list: ['monitor', 'commonalerts', 'list'],
+  // 资源消费预警
+  costalerts_list: ['meter', 'costalerts', 'list'],
   /**
    * server 相关操作
    */
@@ -680,6 +682,9 @@ export const PERMISSION = {
   suggestsysalerts_list: ['monitor', 'suggestsysalerts', 'list'],
   suggestsysrules_list: ['monitor', 'suggestsysrules', 'list'],
   suggestsysruleconfigs_list: ['monitor', 'suggestsysrules', 'list'],
+  // 资源消费预警
+  costalerts_create: ['meter', 'costalerts', 'create'],
+  costalerts_delete: ['meter', 'costalerts', 'delete'],
 }
 
 // 已声明权限的资源
