@@ -358,6 +358,7 @@ export default {
           meta: {
             label: '密钥',
             hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware']),
+            permission: 'keypairs_list',
           },
           component: Layout,
           children: [

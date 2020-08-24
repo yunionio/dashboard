@@ -52,6 +52,7 @@ export default {
       groupActions: [
         {
           label: '新建',
+          permission: 'keypairs_create',
           action: () => {
             this.createDialog('CreateKeyPairDialog', {
               title: '新建',
@@ -64,6 +65,7 @@ export default {
         },
         {
           label: '删除',
+          permission: 'keypairs_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
