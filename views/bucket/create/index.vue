@@ -214,7 +214,6 @@ export default {
       try {
         const values = await this.validateForm()
         const { project, domain, ...rest } = values
-        console.log(values)
         await new this.$Manager('buckets').create({
           data: {
             ...rest,
