@@ -42,8 +42,11 @@ export default {
       obj_name: {
         label: '资源名称',
       },
-      tenant: {
+      owner_project_ids: {
         label: `所属${this.$t('dictionary.project')}`,
+      },
+      owner_domain_ids: {
+        label: `所属${this.$t('dictionary.domain')}`,
       },
       user: {
         label: '发起人',
