@@ -1,4 +1,7 @@
 export default {
+  props: {
+    isOwner: Function,
+  },
   created () {
     this.singleActions = [
       {
@@ -14,7 +17,15 @@ export default {
             onManager: this.onManager,
           })
         },
-        meta: (obj) => this.$getDeleteResult(obj),
+        meta: (obj) => {
+          if (!(this.isOwner && this.isOwner())) {
+            return {
+              validate: false,
+              tooltip: this.$t('common_614'),
+            }
+          }
+          return this.$getDeleteResult(obj)
+        },
       },
     ]
   },

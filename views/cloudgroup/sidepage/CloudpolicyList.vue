@@ -23,6 +23,7 @@ export default {
       default: () => ({}),
     },
     resId: String,
+    data: Object,
   },
   data () {
     return {
@@ -74,6 +75,15 @@ export default {
               },
             })
           },
+          meta: () => {
+            if (!this.isOwner()) {
+              return {
+                validate: false,
+                tooltip: this.$t('common_614'),
+              }
+            }
+            return this.$getDeleteResult(this.list.selectedItems)
+          },
         },
       ],
       singleActions: [
@@ -102,6 +112,15 @@ export default {
                 } finally {}
               },
             })
+          },
+          meta: (obj) => {
+            if (!this.isOwner()) {
+              return {
+                validate: false,
+                tooltip: this.$t('common_614'),
+              }
+            }
+            return this.$getDeleteResult(obj)
           },
         },
       ],
@@ -137,6 +156,9 @@ export default {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
       return ret
+    },
+    isOwner () {
+      return this.$store.getters.isAdminMode || (this.data && this.data.domain_id === this.$store.getters.userInfo.projectDomainId)
     },
   },
 }

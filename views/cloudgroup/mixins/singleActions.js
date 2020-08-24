@@ -1,3 +1,8 @@
+import {
+  getSetPublicAction,
+  getDomainChangeOwnerAction,
+} from '@/utils/common/tableActions'
+
 export default {
   created () {
     this.singleActions = [
@@ -53,6 +58,17 @@ export default {
                 }
               },
             },
+            getDomainChangeOwnerAction(this, {
+              name: this.$t('dictionary.cloudgroup'),
+              resource: 'cloudgroups',
+              apiVersion: 'v1',
+            }),
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.cloudgroup'),
+              scope: 'domain',
+              resource: 'cloudgroups',
+              apiVersion: 'v1',
+            }),
             {
               label: this.$t('common.delete'),
               permission: 'cloudgroup_delete',

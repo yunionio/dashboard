@@ -3,6 +3,8 @@ import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
   getStatusTableColumn,
+  getProjectDomainTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -52,6 +54,9 @@ export default {
         },
       },
       getBrandTableColumn({ field: 'provider' }),
+      getPublicScopeTableColumn({ vm: this, resource: 'cloudgroups' }),
+      getProjectDomainTableColumn(),
+
     ]
   },
   methods: {
