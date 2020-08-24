@@ -125,6 +125,7 @@ export default {
           meta: {
             hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
             label: i18n.t('helm.text_8'),
+            permission: 'scheduledtasks_list',
           },
           component: Layout,
           children: [
