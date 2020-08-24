@@ -331,6 +331,7 @@ export default {
       domain: itemData.domain_id,
       sysdisk: {},
       pricesList: [],
+      dataDiskType: '',
     }
   },
   computed: {
@@ -760,8 +761,14 @@ export default {
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
-        // this.form.fd[key] = values[key]
         this.$set(this.form.fd, key, values[key])
+        if (~key.indexOf('dataDiskTypes') && R.is(Object, values)) {
+          this.dataDiskType = values[key].key
+        }
+        if (~key.indexOf('dataDiskSizes[')) {
+          this.form.fd.dataDiskSizes.push(values[key])
+          this.$nextTick(this.getPriceList)
+        }
       })
     },
     async capability (v) { // 可用区查询
