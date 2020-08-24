@@ -74,7 +74,6 @@ export default {
               },
             })
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
       singleActions: [
@@ -104,7 +103,6 @@ export default {
               },
             })
           },
-          meta: (obj) => this.$getDeleteResult(obj),
         },
       ],
       columns: [
