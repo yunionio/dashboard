@@ -6899,7 +6899,7 @@
   "scope.text_240": "On",
   "scope.text_241": "Close",
   "scope.text_242": "The virtual machine created by a new container cluster is only displayed on the container cluster page by default. After turning on this switch, it will be displayed in the virtual machine list at the same time (this setting is only valid for individuals)",
-  "scope.text_243": "Edit user communication information",
+  "scope.text_243": "Modify contact information",
   "scope.text_244": "User Name",
   "scope.text_245": "Display name",
   "scope.text_246": "Last login IP",
