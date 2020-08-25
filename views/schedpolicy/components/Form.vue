@@ -66,7 +66,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: '请输入名称' },
+              { required: true, message: this.$t('common.text00042') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -76,7 +76,7 @@ export default {
           {
             initialValue: initValue.strategy,
             rules: [
-              { required: true, message: '清选择偏好' },
+              { required: true, message: this.$t('common_615') },
             ],
           },
         ],
@@ -96,9 +96,9 @@ export default {
           'conditionVals',
           {
             initialValue: initValue.conditionVals,
-            // rules: [
-            //   { required: true, message: '请填入条件' },
-            // ],
+            rules: [
+              { required: true, message: this.$t('common_616') },
+            ],
           },
         ],
       },
