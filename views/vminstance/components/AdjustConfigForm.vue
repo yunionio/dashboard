@@ -160,7 +160,7 @@ export default {
           vcpu: 2,
           vmem: 2048,
           diskType: null,
-          dataDiskSizes: [],
+          dataDiskSizes: {},
           dataDiskTypes: [],
         },
         fi: {
@@ -576,6 +576,7 @@ export default {
     this.getPriceList = _.debounce(this._getPriceList, 500)
     this.baywatch([
       'form.fd.sku.id',
+      'form.fd.dataDiskSizes',
     ], (val) => {
       if (val) {
         this.getPriceList()
@@ -761,13 +762,17 @@ export default {
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
-        this.$set(this.form.fd, key, values[key])
+        let value = values[key]
+        if (key === 'dataDiskSizes' && R.is(Object, values[key]) && R.is(Object, this.form.fd.dataDiskSizes)) {
+          value = { ...this.form.fd.dataDiskSizes, ...values[key] }
+        }
+        this.$set(this.form.fd, key, value)
         if (~key.indexOf('dataDiskTypes') && R.is(Object, values)) {
           this.dataDiskType = values[key].key
         }
         if (~key.indexOf('dataDiskSizes[')) {
-          this.form.fd.dataDiskSizes.push(values[key])
-          this.$nextTick(this.getPriceList)
+          const uid = key.replace(/dataDiskSizes\[(.+)\]/, '$1')
+          this.$set(this.form.fd.dataDiskSizes, uid, values[key])
         }
       })
     },
@@ -884,7 +889,7 @@ export default {
           } else {
             dataDiskSpec.push(`${value}:${this.dataDiskType}`)
           }
-        }, this.form.fd.dataDiskSizes)
+        }, Object.values(this.form.fd.dataDiskSizes))
         if (dataDiskSpec && dataDiskSpec.length > 0) {
           params.spec += `;${dataDiskSpec.join(';')}`
         }
