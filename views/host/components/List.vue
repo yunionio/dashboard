@@ -126,11 +126,11 @@ export default {
       const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
       return _frontGroupActions.concat(
         [
+          ...getEnabledSwitchActions(this, undefined),
           {
             label: this.$t('common.batchAction'),
             actions: () => {
               return [
-                ...getEnabledSwitchActions(this, undefined),
                 getDomainChangeOwnerAction(this, {
                   name: this.$t('dictionary.host'),
                   resource: 'hosts',

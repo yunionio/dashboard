@@ -115,7 +115,11 @@ export default {
           { label: this.$t('compute.text_506', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
-      groupActions: [
+    }
+  },
+  computed: {
+    groupActions () {
+      return [
         {
           label: this.$t('compute.text_822'),
           action: () => {
@@ -134,11 +138,11 @@ export default {
             }
           },
         },
+        ...getEnabledSwitchActions(this, undefined),
         {
           label: this.$t('compute.text_275'),
           actions: (obj) => {
             return [
-              ...getEnabledSwitchActions(this, obj),
               {
                 label: this.$t('compute.text_272'),
                 action: (obj) => {
@@ -410,8 +414,8 @@ export default {
             }
           },
         },
-      ],
-    }
+      ]
+    },
   },
   created () {
     this.initSidePageTab('physicalmachine-detail')
