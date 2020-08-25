@@ -49,6 +49,7 @@
             need-params
             :item.sync="vpcObj"
             :params="vpcParams"
+            :labelFormat="vpcLabelFormat"
             :select-props="{ placeholder: $t('network.text_274') }" />
         </a-col>
         <a-col :span="12" v-if="(isQcloud && form.fd.address_type === 'intranet') || !isQcloud">
@@ -109,6 +110,15 @@ export default {
     },
   },
   methods: {
+    vpcLabelFormat (item) {
+      if (item.manager) {
+        if (item.cidr_block) {
+          return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
+        }
+        return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
+      }
+      return (<div>{ item.name }</div>)
+    },
     providerFetchSuccess (list) {
       const showProvider = ['Aliyun', 'Aws', 'Qcloud', 'Huawei', 'Qcloud']
       if (list && list.length > 0) {

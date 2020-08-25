@@ -197,6 +197,7 @@ export default {
             },
             {
               label: this.$t('common_564'),
+              permission: 'networks_update',
               action: () => {
                 this.createDialog('NetworkUpdateIsAutoAllocDialog', {
                   vm: this,

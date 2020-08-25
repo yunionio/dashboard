@@ -23,6 +23,7 @@
           resource="vpcs"
           :params="vpcParams"
           :isDefaultSelect="true"
+          :needParams="true"
           @change="vpcChange"
           :labelFormat="vpcLabelFormat"
           :select-props="{ placeholder: $t('common_226') }" />
@@ -387,7 +388,7 @@ export default {
     // 是否显示加入自动分配地址池
     isShowIsAutoAlloc () {
       const { vpc, server_type } = this.form.fd
-      if (this.cloudEnv === 'onpremise' && (vpc && vpc.key === 'default')) {
+      if (this.cloudEnv === 'onpremise' && vpc === 'default') {
         return ['guest', undefined].includes(server_type)
       }
       return true
@@ -408,6 +409,7 @@ export default {
         params.project_domain = this.project_domain
         delete params.scope
       }
+      if (!this.regionId) return {}
       return params
     },
     cloudregionParams () {
@@ -602,7 +604,7 @@ export default {
         })
     },
     genData (values) {
-      if (values.cloudEnv === 'onpremise') {
+      if (this.cloudEnv === 'onpremise') {
         const data = []
         if (this.isGroupGuestIpPrefix) {
           R.forEachObjIndexed((value, key) => {
