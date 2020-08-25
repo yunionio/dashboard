@@ -5,6 +5,17 @@
       <a-form
         :form="form.fc"
          v-bind="formItemLayout">
+        <template v-if="isAdminMode">
+          <a-form-item :label="`${$t('network.text_205', [$t('dictionary.domain')])}`">
+            <base-select
+              v-decorator="decorators.project_domain"
+              resource="domains"
+              version="v1"
+              :params="domainProps"
+              filterable
+              :select-props="{ placeholder: $t('rules.domain') }" />
+          </a-form-item>
+        </template>
         <a-form-item :label="$t('common.name')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />
           <name-repeated
@@ -43,6 +54,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import NameRepeated from '@/sections/NameRepeated'
@@ -93,6 +105,14 @@ export default {
         cloudpolicy_ids: [
           'cloudpolicy_ids',
         ],
+        project_domain: [
+          'project_domain',
+          {
+            rules: [
+              { required: true, message: this.$t('rules.domain') },
+            ],
+          },
+        ],
       },
       policySelectProps: {
         list: this.$list.createList(this, {
@@ -140,9 +160,15 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['scope', 'isAdminMode']),
     nameRepeatParams () {
       return {
         provider: this.form.fi.provider,
+      }
+    },
+    domainProps () {
+      return {
+        scope: this.scope,
       }
     },
   },

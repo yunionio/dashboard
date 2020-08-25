@@ -10,8 +10,14 @@
 </template>
 
 <script>
+import {
+  getPublicScopeTableColumn,
+} from '@/utils/common/tableColumn'
+import WindowsMixin from '@/mixins/windows'
+
 export default {
   name: 'CloudgroupDetail',
+  mixins: [WindowsMixin],
   props: {
     onManager: {
       type: Function,
@@ -25,6 +31,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getPublicScopeTableColumn({ vm: this, resource: 'cloudgroups' }),
         {
           field: 'cloudpolicy_count',
           title: this.$t('cloudenv.coludgroup_text005'),

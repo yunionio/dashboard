@@ -24,6 +24,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    isOwner: Function,
   },
   data () {
     return {
@@ -60,7 +61,15 @@ export default {
               onManager: this.onManager,
             })
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
+          meta: () => {
+            if (!(this.isOwner && this.isOwner())) {
+              return {
+                validate: false,
+                tooltip: this.$t('common_614'),
+              }
+            }
+            return this.$getDeleteResult(this.list.selectedItems)
+          },
         },
       ],
     }
