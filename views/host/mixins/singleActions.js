@@ -114,178 +114,173 @@ export default {
                 ],
               },
               {
-                label: i18n.t('compute.text_136'),
-                submenus: [
-                  {
-                    label: i18n.t('compute.text_507'),
-                    action: () => {
-                      this.createDialog('HostsAdjustLabelDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        name: this.$t('dictionary.host'),
-                        onManager: this.onManager,
-                      })
-                    },
-                  },
-                  {
-                    label: i18n.t('compute.text_513'),
-                    action: () => {
-                      this.createDialog('HostAdjustOversoldRatioDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        name: this.$t('dictionary.host'),
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: obj => ({
-                      validate: obj.brand.toLowerCase() !== 'zstack',
-                    }),
-                  },
-                  getDomainChangeOwnerAction(this, {
+                label: i18n.t('compute.text_507'),
+                action: () => {
+                  this.createDialog('HostsAdjustLabelDialog', {
+                    data: [obj],
+                    columns: this.columns,
                     name: this.$t('dictionary.host'),
-                    resource: 'hosts',
-                  }),
-                  getSetPublicAction(this, {
+                    onManager: this.onManager,
+                  })
+                },
+              },
+              {
+                label: i18n.t('compute.text_513'),
+                action: () => {
+                  this.createDialog('HostAdjustOversoldRatioDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
                     name: this.$t('dictionary.host'),
-                    scope: 'domain',
-                    resource: 'hosts',
-                  }),
-                  {
-                    label: i18n.t('compute.text_547'),
-                    action: () => {
-                      this.createDialog('DowntimeMigrateDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        name: i18n.t('compute.text_547'),
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: () => {
-                      if (obj.provider.toLowerCase() === 'onecloud' && obj.allow_health_check) {
-                        return {
-                          validate: true,
-                        }
-                      }
-                      return {
-                        validate: false,
-                        tooltip: obj.provider.toLowerCase() !== 'onecloud' ? i18n.t('compute.text_570') : '',
-                      }
-                    },
-                  },
-                  {
-                    label: i18n.t('compute.text_508'),
-                    action: () => {
-                      this.createDialog('HostUnconvertDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        name: this.$t('dictionary.host'),
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: () => {
-                      if (obj.host_type !== 'hypervisor') {
-                        return {
-                          validate: false,
-                          tooltip: i18n.t('compute.text_510'),
-                        }
-                      } else if (obj.nonsystem_guests > 0) {
-                        return {
-                          validate: false,
-                          tooltip: i18n.t('compute.text_511'),
-                        }
-                      } else if (obj.enabled) {
-                        return {
-                          validate: false,
-                          tooltip: i18n.t('compute.text_512'),
-                        }
-                      } else if (!obj.is_baremetal) {
-                        return {
-                          validate: false,
-                          tooltip: '',
-                        }
-                      }
-                      return {
-                        validate: true,
-                      }
-                    },
-                  },
-                  {
-                    label: i18n.t('compute.text_550'),
-                    action: () => {
-                      this.createDialog('HostMaintenanceInDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        name: this.$t('dictionary.host'),
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: () => {
-                      if (obj.host_type !== 'hypervisor') {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      return {
-                        validate: ['running', 'maintain_fail'].includes(obj.status),
-                        tooltip: obj.status !== 'running' ? i18n.t('compute.text_571') : '',
-                      }
-                    },
-                  },
-                  {
-                    label: i18n.t('compute.text_559'),
-                    action: () => {
-                      this.createDialog('HostMaintenanceOutDialog', {
-                        data: [obj],
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        name: this.$t('dictionary.host'),
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: () => {
-                      if (obj.host_type !== 'hypervisor') {
-                        return {
-                          validate: false,
-                        }
-                      }
-                      return {
-                        validate: ['maintaining', 'maintain_fail'].includes(obj.status),
-                      }
-                    },
-                  },
-                  {
-                    label: i18n.t('compute.text_514'),
-                    action: obj => {
-                      this.createDialog('SetHostReserveResourceDialog', {
-                        onManager: this.onManager,
-                        data: [obj],
-                        columns: this.columns,
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      if (obj.provider !== typeClouds.providerMap.OneCloud.key) {
-                        ret.tooltip = i18n.t('compute.text_515')
-                        return ret
-                      }
-                      if (!obj.reserved_resource_for_gpu) {
-                        ret.tooltip = i18n.t('compute.text_516')
-                        return ret
-                      }
-                      return {
-                        validate: true,
-                      }
-                    },
-                  },
-                ],
+                    refresh: this.refresh,
+                  })
+                },
+                meta: obj => ({
+                  validate: obj.brand.toLowerCase() !== 'zstack',
+                }),
+              },
+              getDomainChangeOwnerAction(this, {
+                name: this.$t('dictionary.host'),
+                resource: 'hosts',
+              }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.host'),
+                scope: 'domain',
+                resource: 'hosts',
+              }),
+              {
+                label: i18n.t('compute.text_547'),
+                action: () => {
+                  this.createDialog('DowntimeMigrateDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: i18n.t('compute.text_547'),
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  if (obj.provider.toLowerCase() === 'onecloud' && obj.allow_health_check) {
+                    return {
+                      validate: true,
+                    }
+                  }
+                  return {
+                    validate: false,
+                    tooltip: obj.provider.toLowerCase() !== 'onecloud' ? i18n.t('compute.text_570') : '',
+                  }
+                },
+              },
+              {
+                label: i18n.t('compute.text_508'),
+                action: () => {
+                  this.createDialog('HostUnconvertDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: this.$t('dictionary.host'),
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  if (obj.host_type !== 'hypervisor') {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('compute.text_510'),
+                    }
+                  } else if (obj.nonsystem_guests > 0) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('compute.text_511'),
+                    }
+                  } else if (obj.enabled) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('compute.text_512'),
+                    }
+                  } else if (!obj.is_baremetal) {
+                    return {
+                      validate: false,
+                      tooltip: '',
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
+              },
+              {
+                label: i18n.t('compute.text_550'),
+                action: () => {
+                  this.createDialog('HostMaintenanceInDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: this.$t('dictionary.host'),
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  if (obj.host_type !== 'hypervisor') {
+                    return {
+                      validate: false,
+                    }
+                  }
+                  return {
+                    validate: ['running', 'maintain_fail'].includes(obj.status),
+                    tooltip: obj.status !== 'running' ? i18n.t('compute.text_571') : '',
+                  }
+                },
+              },
+              {
+                label: i18n.t('compute.text_559'),
+                action: () => {
+                  this.createDialog('HostMaintenanceOutDialog', {
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: this.$t('dictionary.host'),
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  if (obj.host_type !== 'hypervisor') {
+                    return {
+                      validate: false,
+                    }
+                  }
+                  return {
+                    validate: ['maintaining', 'maintain_fail'].includes(obj.status),
+                  }
+                },
+              },
+              {
+                label: i18n.t('compute.text_514'),
+                action: obj => {
+                  this.createDialog('SetHostReserveResourceDialog', {
+                    onManager: this.onManager,
+                    data: [obj],
+                    columns: this.columns,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (obj.provider !== typeClouds.providerMap.OneCloud.key) {
+                    ret.tooltip = i18n.t('compute.text_515')
+                    return ret
+                  }
+                  if (!obj.reserved_resource_for_gpu) {
+                    ret.tooltip = i18n.t('compute.text_516')
+                    return ret
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
               },
               {
                 label: i18n.t('compute.text_261'),
