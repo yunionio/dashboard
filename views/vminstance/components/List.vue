@@ -446,6 +446,45 @@ export default {
                     },
                   },
                   {
+                    label: this.$t('compute.text_1132'),
+                    permission: 'server_perform_cancel_expire',
+                    action: () => {
+                      this.createDialog('SetDurationDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      // 包年包月机器，不支持此操作
+                      const isSomePrepaid = this.list.selectedItems.some((item) => {
+                        return item.billing_type === 'prepaid'
+                      })
+                      if (isSomePrepaid) {
+                        ret.tooltip = this.$t('compute.text_285')
+                        return ret
+                      }
+                      // 暂只支持同时操作已设置到期或未设置到期释放的机器
+                      const isSomeExpired = this.list.selectedItems.some((item) => {
+                        return item.expired_at
+                      })
+                      const isSomeNotExpired = this.list.selectedItems.some((item) => {
+                        return !item.expired_at
+                      })
+                      if (isSomeExpired && isSomeNotExpired) {
+                        ret.tooltip = this.$t('compute.text_1133')
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
                     label: this.$t('compute.text_1112'),
                     action: () => {
                       this.createDialog('VmAttachGpuDialog', {
@@ -544,45 +583,6 @@ export default {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1119')
                       }
-                      return ret
-                    },
-                  },
-                  {
-                    label: this.$t('compute.text_1132'),
-                    permission: 'server_perform_cancel_expire',
-                    action: () => {
-                      this.createDialog('SetDurationDialog', {
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        refresh: this.refresh,
-                      })
-                    },
-                    meta: () => {
-                      const ret = {
-                        validate: false,
-                        tooltip: null,
-                      }
-                      // 包年包月机器，不支持此操作
-                      const isSomePrepaid = this.list.selectedItems.some((item) => {
-                        return item.billing_type === 'prepaid'
-                      })
-                      if (isSomePrepaid) {
-                        ret.tooltip = this.$t('compute.text_285')
-                        return ret
-                      }
-                      // 暂只支持同时操作已设置到期或未设置到期释放的机器
-                      const isSomeExpired = this.list.selectedItems.some((item) => {
-                        return item.expired_at
-                      })
-                      const isSomeNotExpired = this.list.selectedItems.some((item) => {
-                        return !item.expired_at
-                      })
-                      if (isSomeExpired && isSomeNotExpired) {
-                        ret.tooltip = this.$t('compute.text_1133')
-                        return ret
-                      }
-                      ret.validate = true
                       return ret
                     },
                   },
