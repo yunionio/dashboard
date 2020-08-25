@@ -8501,5 +8501,10 @@
   "common_611": "Enterprise user login address: https://cloud.yunion.cn/auth/login?domain=<domain_name>",
   "common_612": "If the option is empty, it represents all the @:dictionary.project under the @:dictionary.domain",
   "common_613": "Notification Channel：",
-  "common_614": "The operation is not supported by shared resources"
+  "common_614": "The operation is not supported by shared resources",
+  "common_615": "Cloud Billing Account",
+  "common_616": "Product Subcategory",
+  "common_617": "Please select a product subcategory",
+  "common_618": "Please select a unit",
+  "common_619": "Set discount"
 }
