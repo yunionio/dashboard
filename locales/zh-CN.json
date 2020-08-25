@@ -771,8 +771,8 @@
       "false": "关闭"
     },
     "networIsAutoAlloc": {
-      "true": "属于",
-      "false": "不属于"
+      "true": "启用",
+      "false": "禁用"
     },
     "verified": {
       "true": "已验证",

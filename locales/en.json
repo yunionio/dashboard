@@ -771,8 +771,8 @@
       "false": "Close"
     },
     "networIsAutoAlloc": {
-      "true": "belongs to",
-      "false": "Does not belong"
+      "true": "Enable",
+      "false": "Disable"
     },
     "verified": {
       "true": "Verified",
