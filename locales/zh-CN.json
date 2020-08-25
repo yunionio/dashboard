@@ -8501,5 +8501,10 @@
   "common_611": "企业用户登录地址：https://cloud.yunion.cn/auth/login?domain=<domain_name>",
   "common_612": "选项为空则表示所有@:dictionary.domain下的@:dictionary.project",
   "common_613": "通知渠道：",
-  "common_614": "共享资源不支持该操作"
+  "common_614": "共享资源不支持该操作",
+  "common_615": "云计费账号",
+  "common_616": "产品子类",
+  "common_617": "请选择产品子类",
+  "common_618": "请选择单位",
+  "common_619": "设置折扣"
 }
