@@ -41,7 +41,6 @@ export default {
             title: i18n.t('k8s.text_201'),
             name: i18n.t('k8s.text_18'),
             onManager: this.onManager,
-            idKey: 'name',
             requestParams,
             success: () => {
               if (this.getResponseData) this.getResponseData()

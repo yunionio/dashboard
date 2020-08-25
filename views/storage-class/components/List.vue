@@ -39,7 +39,6 @@ export default {
         resource: 'storageclasses',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -110,7 +109,7 @@ export default {
     },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SStorageclassSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'storageclasses',
         apiVersion: 'v1',
         getParams: this.list.getParams,

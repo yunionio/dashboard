@@ -60,7 +60,6 @@ export default {
                     }
                     return params
                   },
-                  idKey: 'name',
                   apiVersion: 'v1',
                   steadyStatus: {
                     status: Object.values(expectStatus.k8s_resource).flat(),

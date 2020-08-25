@@ -38,7 +38,6 @@ export default {
         resource: 'k8s_nodes',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -56,7 +55,7 @@ export default {
     },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SNodeSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'k8s_nodes',
         apiVersion: 'v1',
         getParams: this.list.getParams,

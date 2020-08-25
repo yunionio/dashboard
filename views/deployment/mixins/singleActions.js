@@ -73,7 +73,6 @@ export default {
                 columns: this.columns,
                 title: i18n.t('k8s.text_201'),
                 onManager: this.onManager,
-                idKey: 'name',
                 requestParams,
                 success: () => {
                   if (this.getResponseData) this.getResponseData()

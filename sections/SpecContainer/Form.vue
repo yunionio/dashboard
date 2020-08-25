@@ -72,7 +72,6 @@ export default {
         version: 'v1',
         params,
         needParams: true,
-        idKey: 'name',
       }
       return props
     },

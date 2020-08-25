@@ -44,7 +44,6 @@ export default {
         resource: 'rbacroles',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -63,7 +62,6 @@ export default {
               title: this.$t('k8s.text_328'),
               name: this.$t('k8s.text_24'),
               onManager: this.onManager,
-              idKey: 'name',
               ok: (ids, data) => {
                 return new this.$Manager(`${data[0].type}s`, 'v1').batchDelete({
                   ids,
@@ -108,7 +106,7 @@ export default {
   methods: {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SRbacRoleSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'rbacroles',
         apiVersion: 'v1',
         getParams: this.list.getParams,

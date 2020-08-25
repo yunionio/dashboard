@@ -13,7 +13,6 @@ export default {
             title: i18n.t('k8s.text_328'),
             name: i18n.t('k8s.text_24'),
             onManager: this.onManager,
-            idKey: 'name',
             ok: (ids, data) => {
               return new this.$Manager('serviceaccounts', 'v1').batchDelete({
                 ids,

@@ -9,7 +9,7 @@
     option-filter-prop="children"
     :loading="loading"
     :value="value">
-    <a-select-option v-for="item in options" :value="item.name" :key="item.name">
+    <a-select-option v-for="item in options" :value="item.id" :key="item.id">
       <div class="d-flex">
         <span class="text-truncate flex-fill mr-2">{{ item.label || item.name }}</span>
         <span style="color: #8492a6; font-size: 13px" v-if="R.is(Number, item.num)">{{ item.num }}</span>
@@ -105,7 +105,7 @@ export default {
         this.loading = false
         /* 暂不支持 所有命名空间
           if (this.supportAllNamespace) {
-            this.options = data.concat({ name: 'all_namespace', label: '所有命名空间' })
+            this.options = data.concat({ id: 'all_namespace', label: '所有命名空间' })
           } else {
             this.options = data.map(val => ({ ...val, label: val.name }))
           }
@@ -126,9 +126,9 @@ export default {
       const all = opts.find(v => v.name === 'all_namespace')
       if (opts && opts.length) {
         if (all) {
-          this.namespace = all.name
+          this.namespace = all.id
         } else {
-          this.namespace = opts[0].name
+          this.namespace = opts[0].id
         }
         this.change(this.namespace)
       } else {

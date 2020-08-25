@@ -46,7 +46,6 @@
               <base-select
                 resource="secrets"
                 v-decorator="decorators.secretName"
-                idKey="name"
                 :params="secretsParams"
                 version="v1"
                 :need-params="true"

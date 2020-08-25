@@ -39,7 +39,6 @@ export default {
         resource: 'namespaces',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -110,7 +109,7 @@ export default {
     },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SNamespaceSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'namespaces',
         apiVersion: 'v1',
         getParams: this.list.getParams,

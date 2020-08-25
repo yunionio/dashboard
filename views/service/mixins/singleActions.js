@@ -38,7 +38,6 @@ export default {
             title: i18n.t('k8s.text_201'),
             name: i18n.t('k8s.text_13'),
             onManager: this.onManager,
-            idKey: 'name',
             requestParams,
           })
         },
