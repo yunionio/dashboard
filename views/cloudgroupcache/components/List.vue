@@ -62,7 +62,7 @@ export default {
             })
           },
           meta: () => {
-            if (!(this.isOwner && this.isOwner())) {
+            if (this.isOwner && !this.isOwner()) {
               return {
                 validate: false,
                 tooltip: this.$t('common_614'),
