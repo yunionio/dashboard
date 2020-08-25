@@ -358,6 +358,9 @@ export default {
         ...DEFAULT_PARAMS,
         ...queryParams,
       }
+      if (queryParams.is_on_premise || (params.cloud_env && params.cloud_env === 'onpremise')) {
+        delete params.capability
+      }
       this.cloudregionLoading = true
       try {
         const manager = new this.$Manager('cloudregions', 'v2')
