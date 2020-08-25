@@ -37,10 +37,9 @@
     <a-form-item :label="$t('monitor.recipient')">
       <base-select
         v-decorator="decorators.recipients"
-        resource="contacts"
+        resource="receivers"
         version="v1"
         filterable
-        idKey="uid"
         :isDefaultSelect="true"
         :select-props="{ mode: 'multiple' }"
         :params="contactParams" />
