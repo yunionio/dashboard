@@ -120,336 +120,311 @@ export default {
         label: i18n.t('compute.text_352'),
         actions: (obj) => {
           return [
+            ...getEnabledSwitchActions(Object.assign({}, this, { resource: 'physicalmachine' }), obj, undefined, { resourceName: this.$t('dictionary.physicalmachine') }),
             {
-              label: i18n.t('compute.text_849'),
-              submenus: [
-                ...getEnabledSwitchActions(Object.assign({}, this, { resource: 'physicalmachine' }), obj, undefined, { resourceName: this.$t('dictionary.physicalmachine') }),
-              ],
-            },
-            {
-              label: i18n.t('compute.text_136'),
-              submenus: [
-                {
-                  label: i18n.t('compute.text_541'),
-                  action: () => {
-                    this.createDialog('HostsAdjustLabelDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      name: this.$t('dictionary.physicalmachine'),
-                    })
-                  },
-                },
-                {
-                  label: i18n.t('compute.text_282'),
-                  action: () => {
-                    this.onManager('performAction', {
-                      id: obj.id,
-                      steadyStatus: Object.values(expectStatus.host).flat(),
-                      managerArgs: {
-                        action: 'syncstatus',
-                      },
-                    })
-                  },
-                  meta: () => {
-                    if (obj.status === 'ready') {
-                      return {
-                        validate: false,
-                        tooltip: i18n.t('compute.text_850'),
-                      }
-                    }
-                    return {
-                      validate: true,
-                    }
-                  },
-                },
-                getDomainChangeOwnerAction(this, {
+              label: i18n.t('compute.text_541'),
+              action: () => {
+                this.createDialog('HostsAdjustLabelDialog', {
+                  data: [obj],
+                  columns: this.columns,
                   name: this.$t('dictionary.physicalmachine'),
-                  resource: 'hosts',
-                }),
-                getSetPublicAction(this, {
-                  name: this.$t('dictionary.physicalmachine'),
-                  scope: 'domain',
-                  resource: 'hosts',
-                }),
-                {
-                  label: i18n.t('compute.text_298'),
-                  action: () => {
-                    this.$router.push({
-                      path: '/baremetal/create',
-                      query: {
-                        id: obj.id,
-                        type: 'baremetal',
-                        zone_id: obj.zone_id,
-                        host_id: obj.id,
-                        region_id: obj.cloudregion_id,
-                        domain_id: obj.domain_id,
-                      },
-                    })
-                  },
-                  meta: () => {
-                    if (!obj.is_baremetal) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (obj.host_type !== 'baremetal') {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (obj.server_id) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (!obj.enabled) {
-                      return {
-                        validate: false,
-                        tooltip: i18n.t('compute.text_851'),
-                      }
-                    }
-                    if (['running', 'ready'].indexOf(obj.status) < 0) {
-                      return {
-                        validate: false,
-                        tooltip: i18n.t('compute.text_852'),
-                      }
-                    }
-                    return {
-                      validate: true,
-                    }
-                  },
-                },
-                {
-                  label: i18n.t('compute.text_828'),
-                  action: () => {
-                    this.createDialog('HostsConvertDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                      refresh: this.refresh,
-                    })
-                  },
-                  meta: () => {
-                    if (!obj.is_baremetal) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (obj.host_type !== 'baremetal') {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (obj.server_id) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (!obj.enabled) {
-                      return {
-                        validate: false,
-                        tooltip: i18n.t('compute.text_851'),
-                      }
-                    }
-                    if (['running', 'ready'].indexOf(obj.status) < 0) {
-                      return {
-                        validate: false,
-                        tooltip: i18n.t('compute.text_852'),
-                      }
-                    }
-                    return {
-                      validate: true,
-                    }
-                  },
-                },
-                {
-                  label: i18n.t('compute.text_825'),
-                  action: () => {
-                    this.onManager('performAction', {
-                      id: obj.id,
-                      steadyStatus: Object.values(expectStatus.host).flat(),
-                      managerArgs: {
-                        action: 'prepare',
-                      },
-                    })
-                  },
-                  meta: () => ({ validate: obj.can_prepare }),
-                },
-              ],
+                })
+              },
             },
             {
-              label: i18n.t('compute.text_268'),
-              submenus: [
-                {
-                  label: i18n.t('compute.text_272'),
-                  action: () => {
-                    this.onManager('performAction', {
-                      id: obj.id,
-                      steadyStatus: Object.values(expectStatus.host).flat(),
-                      managerArgs: {
-                        action: 'start',
-                      },
-                    })
+              label: i18n.t('compute.text_282'),
+              action: () => {
+                this.onManager('performAction', {
+                  id: obj.id,
+                  steadyStatus: Object.values(expectStatus.host).flat(),
+                  managerArgs: {
+                    action: 'syncstatus',
                   },
-                  meta: () => {
-                    if (obj.server_id && obj.host_type === 'baremetal') {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    return {
-                      validate: obj.status === 'ready',
-                    }
+                })
+              },
+              meta: () => {
+                if (obj.status === 'ready') {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_850'),
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
+            },
+            getDomainChangeOwnerAction(this, {
+              name: this.$t('dictionary.physicalmachine'),
+              resource: 'hosts',
+            }),
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.physicalmachine'),
+              scope: 'domain',
+              resource: 'hosts',
+            }),
+            {
+              label: i18n.t('compute.text_298'),
+              action: () => {
+                this.$router.push({
+                  path: '/baremetal/create',
+                  query: {
+                    id: obj.id,
+                    type: 'baremetal',
+                    zone_id: obj.zone_id,
+                    host_id: obj.id,
+                    region_id: obj.cloudregion_id,
+                    domain_id: obj.domain_id,
                   },
-                },
-                {
-                  label: i18n.t('compute.text_273'),
-                  action: () => {
-                    this.onManager('performAction', {
-                      id: obj.id,
-                      steadyStatus: Object.values(expectStatus.host).flat(),
-                      managerArgs: {
-                        action: 'stop',
-                      },
-                    })
-                  },
-                  meta: () => {
-                    if (!obj.is_baremetal) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (obj.server_id && obj.host_type === 'baremetal') {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (obj.status !== 'running') {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    return {
-                      validate: true,
-                    }
-                  },
-                },
-              ],
+                })
+              },
+              meta: () => {
+                if (!obj.is_baremetal) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (obj.host_type !== 'baremetal') {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (obj.server_id) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (!obj.enabled) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_851'),
+                  }
+                }
+                if (['running', 'ready'].indexOf(obj.status) < 0) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_852'),
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
             },
             {
-              label: 'PXE',
-              submenus: [
-                {
-                  label: i18n.t('compute.text_550'),
-                  action: () => {
-                    this.onManager('performAction', {
-                      id: obj.id,
-                      steadyStatus: Object.values(expectStatus.host).flat(),
-                      managerArgs: {
-                        action: 'maintenance',
-                      },
-                    })
+              label: i18n.t('compute.text_828'),
+              action: () => {
+                this.createDialog('HostsConvertDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                if (!obj.is_baremetal) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (obj.host_type !== 'baremetal') {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (obj.server_id) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (!obj.enabled) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_851'),
+                  }
+                }
+                if (['running', 'ready'].indexOf(obj.status) < 0) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_852'),
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
+            },
+            {
+              label: i18n.t('compute.text_825'),
+              action: () => {
+                this.onManager('performAction', {
+                  id: obj.id,
+                  steadyStatus: Object.values(expectStatus.host).flat(),
+                  managerArgs: {
+                    action: 'prepare',
                   },
-                  meta: () => {
-                    if (obj.server) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (!obj.is_baremetal) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (!obj.server_id) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (obj.is_maintenance) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (['running', 'ready'].indexOf(obj.status) < 0) {
-                      return {
-                        validate: false,
-                        tooltip: i18n.t('compute.text_853'),
-                      }
-                    }
-                    return {
-                      validate: true,
-                    }
+                })
+              },
+              meta: () => ({ validate: obj.can_prepare }),
+            },
+            {
+              label: i18n.t('compute.text_272'),
+              action: () => {
+                this.onManager('performAction', {
+                  id: obj.id,
+                  steadyStatus: Object.values(expectStatus.host).flat(),
+                  managerArgs: {
+                    action: 'start',
                   },
-                },
-                {
-                  label: i18n.t('compute.text_559'),
-                  action: () => {
-                    this.onManager('performAction', {
-                      id: obj.id,
-                      steadyStatus: Object.values(expectStatus.host).flat(),
-                      managerArgs: {
-                        action: 'unmaintenance',
-                      },
-                    })
+                })
+              },
+              meta: () => {
+                if (obj.server_id && obj.host_type === 'baremetal') {
+                  return {
+                    validate: false,
+                  }
+                }
+                return {
+                  validate: obj.status === 'ready',
+                }
+              },
+            },
+            {
+              label: i18n.t('compute.text_273'),
+              action: () => {
+                this.onManager('performAction', {
+                  id: obj.id,
+                  steadyStatus: Object.values(expectStatus.host).flat(),
+                  managerArgs: {
+                    action: 'stop',
                   },
-                  meta: () => {
-                    if (obj.server) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (!obj.is_baremetal) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (!obj.server_id) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (!obj.is_maintenance) {
-                      return {
-                        validate: false,
-                      }
-                    }
-                    if (['running', 'ready'].indexOf(obj.status) < 0) {
-                      return {
-                        validate: false,
-                        tooltip: i18n.t('compute.text_853'),
-                      }
-                    }
-                    return {
-                      validate: true,
-                    }
+                })
+              },
+              meta: () => {
+                if (!obj.is_baremetal) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (obj.server_id && obj.host_type === 'baremetal') {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (obj.status !== 'running') {
+                  return {
+                    validate: false,
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
+            },
+            {
+              label: i18n.t('compute.text_550'),
+              action: () => {
+                this.onManager('performAction', {
+                  id: obj.id,
+                  steadyStatus: Object.values(expectStatus.host).flat(),
+                  managerArgs: {
+                    action: 'maintenance',
                   },
-                },
-              ],
+                })
+              },
+              meta: () => {
+                if (obj.server) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (!obj.is_baremetal) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (!obj.server_id) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (obj.is_maintenance) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (['running', 'ready'].indexOf(obj.status) < 0) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_853'),
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
+            },
+            {
+              label: i18n.t('compute.text_559'),
+              action: () => {
+                this.onManager('performAction', {
+                  id: obj.id,
+                  steadyStatus: Object.values(expectStatus.host).flat(),
+                  managerArgs: {
+                    action: 'unmaintenance',
+                  },
+                })
+              },
+              meta: () => {
+                if (obj.server) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (!obj.is_baremetal) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (!obj.server_id) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (!obj.is_maintenance) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (['running', 'ready'].indexOf(obj.status) < 0) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_853'),
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
             },
             {
               label: i18n.t('compute.text_261'),
-              submenus: [
-                {
-                  label: i18n.t('compute.text_261'),
-                  action: () => {
-                    this.createDialog('DeleteResDialog', {
-                      name: this.$t('dictionary.physicalmachine'),
-                      vm: this,
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                      title: i18n.t('compute.text_261'),
-                    })
-                  },
-                  meta: () => {
-                    return {
-                      validate: this.$getDeleteResult(obj).validate,
-                      tooltip: this.$getDeleteResult(obj).validate ? '' : i18n.t('compute.text_854'),
-                    }
-                  },
-                },
-              ],
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  name: this.$t('dictionary.physicalmachine'),
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  title: i18n.t('compute.text_261'),
+                })
+              },
+              meta: () => {
+                return {
+                  validate: this.$getDeleteResult(obj).validate,
+                  tooltip: this.$getDeleteResult(obj).validate ? '' : i18n.t('compute.text_854'),
+                }
+              },
             },
           ]
         },

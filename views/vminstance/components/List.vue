@@ -223,544 +223,553 @@ export default {
           actions: () => {
             return [
               {
-                label: this.$t('compute.text_247'),
-                action: () => {
-                  this.createDialog('VmUpdateDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: (row) => {
-                  const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
-                  return {
-                    validate: isOneCloud,
-                    tooltip: !isOneCloud && this.$t('compute.text_355'),
-                  }
-                },
-              },
-              {
-                label: this.$t('compute.text_276'),
-                permission: 'server_perform_deploy',
-                action: () => {
-                  this.createDialog('VmResetPasswordDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  const isBindKeypair = this.list.selectedItems.some((item) => { return item.keypair_id && item.keypair_id.toLowerCase() !== 'none' })
-                  if (isBindKeypair) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_277')
-                    return ret
-                  }
-                  return {
-                    validate: cloudEnabled('resetPassword', this.list.selectedItems),
-                    tooltip: cloudUnabledTip('resetPassword', this.list.selectedItems),
-                  }
-                },
-              },
-              {
-                label: this.$t('compute.text_1100'),
-                permission: 'server_perform_change_config',
-                action: () => {
-                  this.$router.push({
-                    name: 'VMInstanceAdjustConfig',
-                    query: {
-                      id: this.list.selectedItems.map((item) => { return item.id }),
+                /* 实例状态 */
+                label: this.$t('compute.text_353'),
+                submenus: [
+                  {
+                    label: this.$t('compute.text_1128'), // 挂起
+                    permission: 'server_perform_suspend',
+                    action: () => {
+                      this.createDialog('VmSuspendDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
                     },
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  if (this.isSameHyper) {
-                    const isSomePrepaid = this.list.selectedItems.some((item) => { return item.billing_type === 'prepaid' })
-                    if (isSomePrepaid) {
-                      ret.validate = false
-                      ret.tooltip = this.isAdminMode ? this.$t('compute.text_285') : this.$t('compute.text_1110')
-                      return ret
-                    }
-                    const isSomeBackupHost = this.list.selectedItems.some((item) => { return item.backup_host_id })
-                    if (isSomeBackupHost) {
-                      ret.validate = false
-                      ret.tooltip = this.$t('compute.text_1111')
-                      return ret
-                    }
-                    ret.validate = cloudEnabled('adjustConfig', this.list.selectedItems)
-                    ret.tooltip = cloudUnabledTip('adjustConfig', this.list.selectedItems)
-                    // const googleItems = this.list.selectedItems.filter(val => val.brand === typeClouds.brandMap.Google.key)
-                    // if (googleItems && googleItems.length) { // 谷歌云 windows 仅支持关机下操作，linux 支持 开关机
-                    //   ret.validate = googleItems.every(val => {
-                    //     const os = val.os_type.toLowerCase()
-                    //     if (os.includes('windows')) {
-                    //       return val.status === 'ready'
-                    //     }
-                    //     if (os.includes('linux')) {
-                    //       return val.status === 'ready' || val.status === 'running'
-                    //     }
-                    //     return true
-                    //   })
-                    //   if (!ret.validate) {
-                    //     ret.tooltip = '谷歌云Windows虚拟机仅支持关机下操作，Linux虚拟机支持开机和关机下操作'
-                    //   }
-                    // }
-                    return ret
-                  }
-                  ret.validate = false
-                  ret.tooltip = this.$t('compute.text_278')
-                  return ret
-                },
-              },
-              {
-                label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
-                action: () => {
-                  this.createDialog('ChangeOwenrDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    name: this.$t('dictionary.server'),
-                    resource: 'servers',
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  if (!this.isAdminMode && !this.isDomainMode) {
-                    ret.validate = false
-                    ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
-                    return ret
-                  }
-                  const domains = this.list.selectedItems.map(item => item.domain_id)
-                  if (R.uniq(domains).length !== 1) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_280', [this.$t('dictionary.domain')])
-                    return ret
-                  }
-                  return ret
-                },
-              },
-              {
-                label: this.$t('compute.text_282'),
-                action: () => {
-                  this.onManager('batchPerformAction', {
-                    steadyStatus: ['running', 'ready'],
-                    managerArgs: {
-                      action: 'syncstatus',
-                    },
-                  })
-                },
-              },
-              {
-                label: this.$t('compute.text_1112'),
-                action: () => {
-                  this.createDialog('VmAttachGpuDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  const isAllReady = this.list.selectedItems.every((item) => { return item.status === 'ready' })
-                  const isAllIdc = this.list.selectedItems.every((item) => {
-                    return findPlatform(item.hypervisor, 'hypervisor') === SERVER_TYPE.idc
-                  })
-                  const isAllAdmin = this.list.selectedItems.every((item) => {
-                    return this.isAdminMode
-                  })
-                  // 如果是 VMware提示不支持
-                  const isSomeVMware = this.list.selectedItems.some((item) => {
-                    return item.hypervisor === 'esxi'
-                  })
-                  if (!isAllAdmin) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1113')
-                    return ret
-                  }
-                  if (!isAllReady) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1114')
-                    return ret
-                  }
-                  if (!isAllIdc) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1115')
-                    return ret
-                  }
-                  if (isSomeVMware) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_450')
-                    return ret
-                  }
-                  return ret
-                },
-              },
-              {
-                label: this.$t('compute.text_1116'),
-                permission: 'server_perform_add_secgroup',
-                action: () => {
-                  this.createDialog('VmSetSecgroupDialog', {
-                    vm: this,
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: cloudEnabled('assignSecgroup', this.list.selectedItems),
-                    tooltip: cloudUnabledTip('assignSecgroup', this.list.selectedItems),
-                  }
-                  return ret
-                },
-              },
-              {
-                label: this.$t('compute.text_283'),
-                action: () => {
-                  this.createDialog('SetTagDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    params: {
-                      resources: 'server',
-                    },
-                    mode: 'add',
-                  })
-                },
-              },
-              // {
-              //   label: '加入资源池',
-              //   action: () => {
-              //     this.createDialog('VmJoinResourceDialog', {
-              //       data: this.list.selectedItems,
-              //       columns: this.columns,
-              //       onManager: this.onManager,
-              //     })
-              //   },
-              //   meta: () => {
-              //     const ret = {
-              //       validate: true,
-              //       tooltip: null,
-              //     }
-              //     const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
-              //     const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
-              //     if (!isAllPublic) {
-              //       ret.validate = false
-              //       ret.tooltip = '仅公有云支持此操作'
-              //     }
-              //     if (!isAllPrepaid) {
-              //       ret.validate = false
-              //       ret.tooltip = '仅包年包月的资源支持此操作'
-              //     }
-              //     return ret
-              //   },
-              // },
-              {
-                label: this.$t('compute.text_1117'),
-                action: () => {
-                  this.createDialog('VmResourceFeeDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
-                  const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
-                  if (!isAllPublic) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1118')
-                  }
-                  if (!isAllPrepaid) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1119')
-                  }
-                  return ret
-                },
-              },
-              {
-                label: this.$t('compute.text_1120'),
-                action: () => {
-                  this.createDialog('VmResourceRenewFeeDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
-                  const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
-                  if (!isAllPublic) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1118')
-                  }
-                  if (!isAllPrepaid) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1119')
-                  }
-                  return ret
-                },
-              },
-              {
-                label: this.$t('compute.text_1121'),
-                action: () => {
-                  this.createDialog('VmPublicIpToEipDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
-                  const isAllBindPublicIp = this.list.selectedItems.every((item) => { return item.eip_mode === 'public_ip' })
-                  if (isSomeBindEip) {
-                    ret.tooltip = this.$t('compute.text_1122')
-                    return ret
-                  }
-                  if (!isAllBindPublicIp) {
-                    ret.tooltip = this.$t('compute.text_1123')
-                    return ret
-                  }
-                  ret.validate = cloudEnabled('publicIpToEip', this.list.selectedItems)
-                  ret.tooltip = cloudUnabledTip('publicIpToEip', this.list.selectedItems)
-                  return ret
-                },
-              },
-              {
-                label: this.$t('compute.text_1124'),
-                action: () => {
-                  this.createDialog('VmSourceTargetCheckDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    refresh: this.refresh,
-                  })
-                },
-                meta: () => {
-                  const ret = { validate: true, tooltip: null }
-                  const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
-                  const isOk = this.list.selectedItems.every((item) => { return ['running', 'ready'].includes(item.status) })
-                  if (!isAllOneCloud) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1125')
-                    return ret
-                  }
-                  if (!isOk) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1126')
-                    return ret
-                  }
-                  return ret
-                },
-              },
-              {
-                label: this.$t('compute.text_1127'),
-                action: () => {
-                  this.createDialog('VmTransferDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: true,
-                    tooltip: null,
-                  }
-                  let isOk = this.list.selectedItems.every((item) => {
-                    return ['running', 'ready', 'unknown'].includes(item.status)
-                  })
-                  if (isOk) {
-                    isOk = this.list.selectedItems.every((item) => {
-                      if (item.backup_host_id) {
-                        return false
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
                       }
-                      if (item.status === 'running') {
-                        return !item.is_gpu && !item.cdrom
+                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
+                      const isAllRunning = this.list.selectedItems.every(item => item.status === 'running')
+                      if (!isAllVMware) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1129')
+                        return ret
                       }
-                    })
-                  }
-                  if (!isOk) {
-                    ret.validate = false
-                    return ret
-                  }
-                  if (!this.isAdminMode) {
-                    ret.validate = false
-                    return ret
-                  }
-                  if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm')) {
-                    ret.validate = false
-                    return ret
-                  }
-                  return ret
-                },
+                      if (!isAllRunning) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1130')
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_478'), // 恢复
+                    permission: 'server_perform_resume',
+                    action: () => {
+                      this.createDialog('VmResumeDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
+                      const isAllSuspend = this.list.selectedItems.every(item => item.status === 'suspend')
+                      if (!isAllVMware) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1129')
+                        return ret
+                      }
+                      if (!isAllSuspend) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1131')
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                ],
               },
               {
-                label: this.$t('compute.text_1128'),
-                permission: 'server_perform_suspend',
-                action: () => {
-                  this.createDialog('VmSuspendDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
-                  const isAllRunning = this.list.selectedItems.every(item => item.status === 'running')
-                  if (!isAllVMware) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1129')
-                    return ret
-                  }
-                  if (!isAllRunning) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1130')
-                    return ret
-                  }
-                  ret.validate = true
-                  return ret
-                },
+                /* 实例设置 */
+                label: this.$t('compute.text_356'),
+                submenus: [
+                  {
+                    label: this.$t('compute.text_247'),
+                    action: () => {
+                      this.createDialog('VmUpdateDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: (row) => {
+                      const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
+                      return {
+                        validate: isOneCloud,
+                        tooltip: !isOneCloud && this.$t('compute.text_355'),
+                      }
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_357'),
+                    permission: 'server_perform_rebuild_root',
+                    action: () => {
+                      this.createDialog('VmRebuildRootDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      if (this.isSameHyper) {
+                        ret.validate = cloudEnabled('rebuildRoot', this.list.selectedItems)
+                        ret.tooltip = cloudUnabledTip('rebuildRoot', this.list.selectedItems)
+                        return ret
+                      }
+                      ret.validate = false
+                      ret.tooltip = this.$t('compute.text_278')
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_1100'),
+                    permission: 'server_perform_change_config',
+                    action: () => {
+                      this.$router.push({
+                        name: 'VMInstanceAdjustConfig',
+                        query: {
+                          id: this.list.selectedItems.map((item) => { return item.id }),
+                        },
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      if (this.isSameHyper) {
+                        const isSomePrepaid = this.list.selectedItems.some((item) => { return item.billing_type === 'prepaid' })
+                        if (isSomePrepaid) {
+                          ret.validate = false
+                          ret.tooltip = this.isAdminMode ? this.$t('compute.text_285') : this.$t('compute.text_1110')
+                          return ret
+                        }
+                        const isSomeBackupHost = this.list.selectedItems.some((item) => { return item.backup_host_id })
+                        if (isSomeBackupHost) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.text_1111')
+                          return ret
+                        }
+                        ret.validate = cloudEnabled('adjustConfig', this.list.selectedItems)
+                        ret.tooltip = cloudUnabledTip('adjustConfig', this.list.selectedItems)
+                        // const googleItems = this.list.selectedItems.filter(val => val.brand === typeClouds.brandMap.Google.key)
+                        // if (googleItems && googleItems.length) { // 谷歌云 windows 仅支持关机下操作，linux 支持 开关机
+                        //   ret.validate = googleItems.every(val => {
+                        //     const os = val.os_type.toLowerCase()
+                        //     if (os.includes('windows')) {
+                        //       return val.status === 'ready'
+                        //     }
+                        //     if (os.includes('linux')) {
+                        //       return val.status === 'ready' || val.status === 'running'
+                        //     }
+                        //     return true
+                        //   })
+                        //   if (!ret.validate) {
+                        //     ret.tooltip = '谷歌云Windows虚拟机仅支持关机下操作，Linux虚拟机支持开机和关机下操作'
+                        //   }
+                        // }
+                        return ret
+                      }
+                      ret.validate = false
+                      ret.tooltip = this.$t('compute.text_278')
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+                    action: () => {
+                      this.createDialog('ChangeOwenrDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        name: this.$t('dictionary.server'),
+                        resource: 'servers',
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      if (!this.isAdminMode && !this.isDomainMode) {
+                        ret.validate = false
+                        ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                        return ret
+                      }
+                      const domains = this.list.selectedItems.map(item => item.domain_id)
+                      if (R.uniq(domains).length !== 1) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_280', [this.$t('dictionary.domain')])
+                        return ret
+                      }
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_282'),
+                    action: () => {
+                      this.onManager('batchPerformAction', {
+                        steadyStatus: ['running', 'ready'],
+                        managerArgs: {
+                          action: 'syncstatus',
+                        },
+                      })
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_283'),
+                    action: () => {
+                      this.createDialog('SetTagDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        params: {
+                          resources: 'server',
+                        },
+                        mode: 'add',
+                      })
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_1132'),
+                    permission: 'server_perform_cancel_expire',
+                    action: () => {
+                      this.createDialog('SetDurationDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      // 包年包月机器，不支持此操作
+                      const isSomePrepaid = this.list.selectedItems.some((item) => {
+                        return item.billing_type === 'prepaid'
+                      })
+                      if (isSomePrepaid) {
+                        ret.tooltip = this.$t('compute.text_285')
+                        return ret
+                      }
+                      // 暂只支持同时操作已设置到期或未设置到期释放的机器
+                      const isSomeExpired = this.list.selectedItems.some((item) => {
+                        return item.expired_at
+                      })
+                      const isSomeNotExpired = this.list.selectedItems.some((item) => {
+                        return !item.expired_at
+                      })
+                      if (isSomeExpired && isSomeNotExpired) {
+                        ret.tooltip = this.$t('compute.text_1133')
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_1112'),
+                    action: () => {
+                      this.createDialog('VmAttachGpuDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      const isAllReady = this.list.selectedItems.every((item) => { return item.status === 'ready' })
+                      const isAllIdc = this.list.selectedItems.every((item) => {
+                        return findPlatform(item.hypervisor, 'hypervisor') === SERVER_TYPE.idc
+                      })
+                      const isAllAdmin = this.list.selectedItems.every((item) => {
+                        return this.isAdminMode
+                      })
+                      // 如果是 VMware提示不支持
+                      const isSomeVMware = this.list.selectedItems.some((item) => {
+                        return item.hypervisor === 'esxi'
+                      })
+                      if (!isAllAdmin) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1113')
+                        return ret
+                      }
+                      if (!isAllReady) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1114')
+                        return ret
+                      }
+                      if (!isAllIdc) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1115')
+                        return ret
+                      }
+                      if (isSomeVMware) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_450')
+                        return ret
+                      }
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_1117'),
+                    action: () => {
+                      this.createDialog('VmResourceFeeDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
+                      const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                      if (!isAllPublic) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1118')
+                      }
+                      if (!isAllPrepaid) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1119')
+                      }
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_1120'),
+                    action: () => {
+                      this.createDialog('VmResourceRenewFeeDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      const isAllPublic = this.list.selectedItems.every(item => findPlatform(item.hypervisor) === SERVER_TYPE.public)
+                      const isAllPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                      if (!isAllPublic) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1118')
+                      }
+                      if (!isAllPrepaid) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1119')
+                      }
+                      return ret
+                    },
+                  },
+                ],
               },
               {
-                label: this.$t('compute.text_478'),
-                permission: 'server_perform_resume',
-                action: () => {
-                  this.createDialog('VmResumeDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
-                  const isAllSuspend = this.list.selectedItems.every(item => item.status === 'suspend')
-                  if (!isAllVMware) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1129')
-                    return ret
-                  }
-                  if (!isAllSuspend) {
-                    ret.validate = false
-                    ret.tooltip = this.$t('compute.text_1131')
-                    return ret
-                  }
-                  ret.validate = true
-                  return ret
-                },
+                /* 密码密钥 */
+                label: this.$t('compute.text_360'),
+                submenus: [
+                  {
+                    label: this.$t('compute.text_276'),
+                    permission: 'server_perform_deploy',
+                    action: () => {
+                      this.createDialog('VmResetPasswordDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      const isBindKeypair = this.list.selectedItems.some((item) => { return item.keypair_id && item.keypair_id.toLowerCase() !== 'none' })
+                      if (isBindKeypair) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_277')
+                        return ret
+                      }
+                      return {
+                        validate: cloudEnabled('resetPassword', this.list.selectedItems),
+                        tooltip: cloudUnabledTip('resetPassword', this.list.selectedItems),
+                      }
+                    },
+                  },
+                ],
               },
               {
-                label: this.$t('compute.text_357'),
-                permission: 'server_perform_rebuild_root',
-                action: () => {
-                  this.createDialog('VmRebuildRootDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  if (this.isSameHyper) {
-                    ret.validate = cloudEnabled('rebuildRoot', this.list.selectedItems)
-                    ret.tooltip = cloudUnabledTip('rebuildRoot', this.list.selectedItems)
-                    return ret
-                  }
-                  ret.validate = false
-                  ret.tooltip = this.$t('compute.text_278')
-                  return ret
-                },
+                /* 网络安全 */
+                label: this.$t('compute.text_1290'),
+                submenus: [
+                  {
+                    label: this.$t('compute.text_1116'),
+                    permission: 'server_perform_add_secgroup',
+                    action: () => {
+                      this.createDialog('VmSetSecgroupDialog', {
+                        vm: this,
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: cloudEnabled('assignSecgroup', this.list.selectedItems),
+                        tooltip: cloudUnabledTip('assignSecgroup', this.list.selectedItems),
+                      }
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_1121'),
+                    action: () => {
+                      this.createDialog('VmPublicIpToEipDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: false,
+                        tooltip: null,
+                      }
+                      const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
+                      const isAllBindPublicIp = this.list.selectedItems.every((item) => { return item.eip_mode === 'public_ip' })
+                      if (isSomeBindEip) {
+                        ret.tooltip = this.$t('compute.text_1122')
+                        return ret
+                      }
+                      if (!isAllBindPublicIp) {
+                        ret.tooltip = this.$t('compute.text_1123')
+                        return ret
+                      }
+                      ret.validate = cloudEnabled('publicIpToEip', this.list.selectedItems)
+                      ret.tooltip = cloudUnabledTip('publicIpToEip', this.list.selectedItems)
+                      return ret
+                    },
+                  },
+                  {
+                    label: this.$t('compute.text_1124'),
+                    action: () => {
+                      this.createDialog('VmSourceTargetCheckDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
+                    },
+                    meta: () => {
+                      const ret = { validate: true, tooltip: null }
+                      const isAllOneCloud = this.list.selectedItems.every((item) => { return item.hypervisor === typeClouds.hypervisorMap.kvm.key })
+                      const isOk = this.list.selectedItems.every((item) => { return ['running', 'ready'].includes(item.status) })
+                      if (!isAllOneCloud) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1125')
+                        return ret
+                      }
+                      if (!isOk) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1126')
+                        return ret
+                      }
+                      return ret
+                    },
+                  },
+                ],
               },
               {
-                label: this.$t('compute.text_1132'),
-                permission: 'server_perform_cancel_expire',
-                action: () => {
-                  this.createDialog('SetDurationDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    refresh: this.refresh,
-                  })
-                },
-                meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
-                  // 包年包月机器，不支持此操作
-                  const isSomePrepaid = this.list.selectedItems.some((item) => {
-                    return item.billing_type === 'prepaid'
-                  })
-                  if (isSomePrepaid) {
-                    ret.tooltip = this.$t('compute.text_285')
-                    return ret
-                  }
-                  // 暂只支持同时操作已设置到期或未设置到期释放的机器
-                  const isSomeExpired = this.list.selectedItems.some((item) => {
-                    return item.expired_at
-                  })
-                  const isSomeNotExpired = this.list.selectedItems.some((item) => {
-                    return !item.expired_at
-                  })
-                  if (isSomeExpired && isSomeNotExpired) {
-                    ret.tooltip = this.$t('compute.text_1133')
-                    return ret
-                  }
-                  ret.validate = true
-                  return ret
-                },
+                /* 高可用 */
+                label: this.$t('compute.text_1295'),
+                submenus: [
+                  {
+                    label: this.$t('compute.text_1127'),
+                    action: () => {
+                      this.createDialog('VmTransferDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      let isOk = this.list.selectedItems.every((item) => {
+                        return ['running', 'ready', 'unknown'].includes(item.status)
+                      })
+                      if (isOk) {
+                        isOk = this.list.selectedItems.every((item) => {
+                          if (item.backup_host_id) {
+                            return false
+                          }
+                          if (item.status === 'running') {
+                            return !item.is_gpu && !item.cdrom
+                          }
+                        })
+                      }
+                      if (!isOk) {
+                        ret.validate = false
+                        return ret
+                      }
+                      if (!this.isAdminMode) {
+                        ret.validate = false
+                        return ret
+                      }
+                      if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm')) {
+                        ret.validate = false
+                        return ret
+                      }
+                      return ret
+                    },
+                  },
+                ],
               },
-              disableDeleteAction(this, { name: this.$t('dictionary.server') }),
               {
+                /* 删除 */
                 label: this.$t('compute.text_261'),
-                permission: 'server_delete',
-                action: () => {
-                  this.createDialog('DeleteVmDialog', {
-                    vm: this,
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    title: this.$t('compute.text_261'),
-                  })
-                },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
+                submenus: [
+                  disableDeleteAction(this, { name: this.$t('dictionary.server') }),
+                  {
+                    label: this.$t('compute.text_261'),
+                    permission: 'server_delete',
+                    action: () => {
+                      this.createDialog('DeleteVmDialog', {
+                        vm: this,
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        title: this.$t('compute.text_261'),
+                      })
+                    },
+                    meta: () => this.$getDeleteResult(this.list.selectedItems),
+                  },
+                ],
               },
             ]
           },
