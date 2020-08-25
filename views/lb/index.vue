@@ -19,7 +19,7 @@ export default {
   data () {
     return {
       listId: 'LbList',
-      cloudEnvOptions: getCloudEnvOptions('brands').filter(v => v.key !== 'private'),
+      cloudEnvOptions: getCloudEnvOptions('network_manage_brands'),
       cloudEnv: '',
       getParams: {
         details: true,

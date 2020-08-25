@@ -604,7 +604,6 @@ export default {
         })
     },
     genData (values) {
-      console.log(values)
       if (this.cloudEnv === 'onpremise') {
         const data = []
         if (this.isGroupGuestIpPrefix) {
