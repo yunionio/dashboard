@@ -6185,7 +6185,7 @@
   "system.text_141": "修改{0}",
   "system.text_142": "更新",
   "system.text_143": "用户名",
-  "system.text_144": "手机",
+  "system.text_144": "短信",
   "system.text_145": "手机验证状态",
   "system.text_146": "邮箱",
   "system.text_147": "邮箱验证状态",
@@ -8509,5 +8509,6 @@
   "common_619": "设置折扣",
   "common_620": "请选择偏好",
   "common_621": "请填入条件",
-  "common_622": "修改{0}失败"
+  "common_622": "设置{0}失败",
+  "common_623": "{0}失败"
 }
