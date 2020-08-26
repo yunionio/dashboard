@@ -50,6 +50,9 @@ export default {
       }, 0)
       return sum > 0
     },
+    isHost () {
+      return this.resource === 'hosts'
+    },
   },
   created () {
     this.loadServersData()
@@ -71,6 +74,9 @@ export default {
         scope: this.scope,
         limit: 0,
         $t: uuid(),
+      }
+      if (this.isHost) {
+        params.baremetal = false
       }
       m.list({ params }).then((res) => {
         const { data } = res.data
