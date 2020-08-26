@@ -43,7 +43,12 @@
           <a-form-item :label="$t('network.text_423')" class="mb-0">
             <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
           </a-form-item>
-          <sticky-session :decorators="decorators" :form="form" v-if="['http', 'https'].includes(form.fd.listener_type)" :disabled-sticky-session-cookie-timeout="['http', 'https'].includes(form.fd.listener_type)" />
+          <sticky-session
+            :decorators="decorators"
+            :form="form"
+            v-if="['http', 'https'].includes(form.fd.listener_type)"
+            :disabled-sticky-session-cookie-timeout="['http', 'https'].includes(form.fd.listener_type)"
+            :stickySessionTypeOpts="[{key: 'server',label: $t('network.text_385')}]" />
           <acl :decorators="decorators" :form="form" :aclTypeOpts="aclTypeOpts" />
           <a-form-item :label="$t('network.text_435')" v-if="['http', 'tcp', 'udp'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.backend_connect_timeout" :addonAfter="$t('network.text_76')" type="number" :disabled="isUpdate && ['http', 'tcp', 'udp'].includes(form.fd.listener_type)" />
@@ -54,9 +59,9 @@
           <a-form-item :label="$t('network.text_424')" v-if="['http', 'tcp', 'udp'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.client_idle_timeout" :addonAfter="$t('network.text_76')" type="number" :disabled="isUpdate && ['http', 'tcp', 'udp'].includes(form.fd.listener_type)" />
           </a-form-item>
-          <a-form-item :label="$t('network.text_425')" v-if="['http'].includes(form.fd.listener_type)">
+          <!-- <a-form-item :label="$t('network.text_425')" v-if="['http'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.client_request_timeout" :addonAfter="$t('network.text_76')" type="number" />
-          </a-form-item>
+          </a-form-item> -->
           <!-- <a-form-item :label="$t('network.text_437')" :extra="$t('network.text_438')" v-if="['http', 'https'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.http_request_rate" :addonAfter="$t('network.text_439')" type="number" />
           </a-form-item> -->
