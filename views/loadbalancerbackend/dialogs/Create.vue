@@ -184,8 +184,8 @@ export default {
       if (this.params.lbBackendgroupData.vpc_id) {
         params.vpc = this.params.lbBackendgroupData.vpc_id
       }
-      // 网络是公网的阿里云LB实例，添加服务器时不应传参数vpc
-      if (this.params.lbBackendgroupData.address_type === 'internet' && this.params.lbBackendgroupData.brand.toLowerCase() === 'aliyun') {
+      // 网络是公网的阿里云LB实例，添加服务器时不应传参数vp
+      if ((this.params.lbBackendgroupData.address_type === 'internet' && this.params.lbBackendgroupData.brand.toLowerCase() === 'aliyun') || this.params.lbBackendgroupData.brand.toLowerCase() === 'openstack') {
         delete params.vpc
       }
       return params

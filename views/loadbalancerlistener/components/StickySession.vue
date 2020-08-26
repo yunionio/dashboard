@@ -65,7 +65,7 @@ export default {
       if (val) {
         this.form.fc.getFieldDecorator(this.decorators.sticky_session_type[0], this.decorators.sticky_session_type[1])
         this.form.fc.setFieldsValue({
-          [this.decorators.sticky_session_type[0]]: 'insert',
+          [this.decorators.sticky_session_type[0]]: this.stickySessionTypeOpts[0].key,
         })
       }
     },

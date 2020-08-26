@@ -32,6 +32,7 @@ export const healthCheckTypeProviderMaps = {
   huawei: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
   aws_network: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.https],
   aws_application: [healthCheckTypeMaps.http, healthCheckTypeMaps.https],
+  openstack: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
 }
 
 export const healthCheckHttpCodeOpts = {
