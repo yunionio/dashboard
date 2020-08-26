@@ -32,7 +32,7 @@
             :formatter="formatterLabel"
             :dialog-params="{ mask: false }" />
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.clouduser_list_t4')" :extra="$t('common_623')">
+        <a-form-item :label="$t('cloudenv.clouduser_list_t4')" :extra="$t('common_625')">
           <user-select
             v-decorator="decorators.owner_id"
             :cloudaccount-id="params.cloudaccount.id"
