@@ -98,6 +98,7 @@ export default {
     resetChart (i) {
       if (this.seriesList && this.seriesList.length && this.seriesList[i]) {
         this.$set(this.seriesList, i, [])
+        this.$set(this.metricList, i, [])
       }
     },
     mertricItemChange (item, i) {
