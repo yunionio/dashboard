@@ -50,7 +50,7 @@ export default {
   name: 'LBListenerCreateHealcheck',
   mixins: [mixin],
   computed: {
-    healthCheckTypeOptsC () { // onecloud 独有逻辑，udp的监听只能配udp的健康检查
+    healthCheckTypeOptsC () { // openstack udp的监听只能配udp的健康检查，和onecloud一样
       if (this.allFd.listener_type === 'udp') {
         return this.healthCheckTypeOpts.filter(v => v.key === 'udp')
       }

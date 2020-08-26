@@ -125,6 +125,15 @@ export default {
             ],
           },
         ],
+        instance_type: [
+          'instance_type',
+          {
+            initialValue: 'application',
+            rules: [
+              { required: true, message: i18n.t('network.text_269') },
+            ],
+          },
+        ],
         address_type: [
           'address_type',
           {
@@ -226,7 +235,7 @@ export default {
         params = { ...this.scopeParams }
         params.limit = 0
         params.vpc = this.form.fd.vpc
-        if (this.form.fd.zone && this.form.fd.zone.key) params.zone = this.form.fd.zone.key
+        if (this.form.fd.zone) params.zone = this.form.fd.zone
       }
       return params
     },
