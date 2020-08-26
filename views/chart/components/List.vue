@@ -133,10 +133,12 @@ export default {
       } else {
         const params = R.clone(this.list.getParams)
         delete params.repo
+        this.list.getParams = params
       }
       this.fetchData()
     },
     fetchData () {
+      this.list.data = {}
       if (!this.list.getParams.repo) return
       this.list.fetchData()
     },
