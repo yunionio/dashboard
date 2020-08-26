@@ -184,6 +184,7 @@ export default {
       try {
         const { fd, monitorParams } = await this.$refs.alertFormRef.validate()
         const data = {
+          scope: fd.scope,
           interval: this.timeGroup,
           generate_name: fd.name,
           period: fd.period,
