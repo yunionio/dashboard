@@ -16,6 +16,11 @@
         :options="specOpts"
         :select-props="{ placeholder: $t('network.text_269') }" />
     </a-form-item>
+    <a-form-item :label="$t('compute.text_266')" v-if="isAws">
+      <a-radio-group v-decorator="decorators.instance_type">
+        <a-radio-button v-for="item in instanceOpts" :value="item.key" :label="item.label" :key="item.key">{{ item.label }}</a-radio-button>
+      </a-radio-group>
+    </a-form-item>
     <a-form-item :label="$t('network.text_16')">
       <a-radio-group v-decorator="decorators.address_type">
         <a-radio-button value="internet">{{$t('network.text_270')}}</a-radio-button>
@@ -95,6 +100,7 @@ export default {
   data () {
     return {
       specOpts: LB_SPEC.aliyun,
+      instanceOpts: LB_SPEC.aws,
     }
   },
   computed: {
@@ -105,6 +111,9 @@ export default {
         if (this.isAdminMode || this.isDomainMode) {
           params.project = this.form.fd.project
         }
+      }
+      if (!R.isEmpty(this.vpcObj) && this.vpcObj.manager_id) {
+        params.manager_id = this.vpcObj.manager_id
       }
       return params
     },
@@ -140,6 +149,10 @@ export default {
           values.admin = true
         } else {
           delete values.domain
+        }
+        if (this.isAws) {
+          values.loadbalancer_spec = values.instance_type
+          delete values.instance_type
         }
         return values
       } catch (error) {
