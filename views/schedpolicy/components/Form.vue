@@ -76,7 +76,7 @@ export default {
           {
             initialValue: initValue.strategy,
             rules: [
-              { required: true, message: this.$t('common_615') },
+              { required: true, message: this.$t('common_620') },
             ],
           },
         ],
@@ -97,7 +97,7 @@ export default {
           {
             initialValue: initValue.conditionVals,
             rules: [
-              { required: true, message: this.$t('common_616') },
+              { required: true, message: this.$t('common_621') },
             ],
           },
         ],
