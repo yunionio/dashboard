@@ -1,11 +1,13 @@
 <template>
   <base-select
     :value="value"
+    ref="baseSelectRef"
     resource="serverskus"
     need-params
-    filterable
+    remote
     idKey="name"
     :item.sync="sku"
+    :label-format="labelFormat"
     :mapper="mapper"
     :params="params"
     @change="change" />
@@ -16,6 +18,7 @@ import { mapMutations } from 'vuex'
 import mixin from '../mixin'
 import { getRequestT } from '@/utils/utils'
 import { HYPERVISORS_MAP } from '@/constants'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'JSKUList',
@@ -27,6 +30,8 @@ export default {
   },
   computed: {
     params () {
+      const hyper = this.formFd.fd.hypervisor
+      const env = findPlatform(hyper)
       const p = {
         ...this.scopeParams.scopeParams,
         usable: true,
@@ -35,18 +40,29 @@ export default {
         postpaid_status: 'available',
         $t: getRequestT(),
       }
-      if (this.formFd.fd.hypervisor) {
-        const onecloudProviders = [HYPERVISORS_MAP.kvm.key, HYPERVISORS_MAP.esxi.key]
-        if (~onecloudProviders.indexOf(this.formFd.fd.hypervisor)) {
+      if (hyper) {
+        const onecloudProviders = [HYPERVISORS_MAP.kvm.key, HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.zstack.key, HYPERVISORS_MAP.openstack.key]
+        if (~onecloudProviders.indexOf(hyper)) {
           p.provider = HYPERVISORS_MAP.kvm.provider
         } else {
-          p.provider = this.formFd.fd.hypervisor
+          p.provider = hyper
+        }
+        if (env === 'public') {
+          if (this.formFd.fd.preferRegion) p.cloudregion = this.formFd.fd.preferRegion
+          if (this.formFd.fd.preferZone) p.zone = this.formFd.fd.preferZone
         }
       }
-      if (this.formFd.fd.preferRegion) p.cloudregion = this.formFd.fd.preferRegion
-      if (this.formFd.fd.preferZone) p.zone = this.formFd.fd.preferZone
-      if (!p.provider || !p.cloudregion || !p.zone) return {}
+      if (env === 'public') {
+        if (!p.cloudregion || !p.zone) return {}
+      }
+      if (!p.provider) return {}
       return p
+    },
+  },
+  watch: {
+    'formFd.fd.hypervisor' () {
+      this.$refs.baseSelectRef.resList = []
+      this.$refs.baseSelectRef.resOpts = {}
     },
   },
   methods: {
@@ -72,6 +88,13 @@ export default {
         skuSet.add(flag)
         resList.push(item)
       }
+      resList.sort((a, b) => {
+        const diff = a.cpu_core_count - b.cpu_core_count
+        if (diff === 0) {
+          return a.memory_size_mb - b.memory_size_mb
+        }
+        return diff
+      })
       return resList
     },
     getI18NValue (key, originVal) {
@@ -79,6 +102,16 @@ export default {
         return this.$t(key)
       }
       return originVal
+    },
+    labelFormat (item) {
+      const cpu = item.cpu_core_count
+      let mem = parseInt(item.memory_size_mb / 1024)
+      let memUnit = 'GB'
+      if (item.memory_size_mb < 1024) {
+        mem = item.memory_size_mb
+        memUnit = 'MB'
+      }
+      return `${item.name} (${cpu}${this.$t('compute.text_167')}、${mem}${memUnit})`
     },
   },
 }
