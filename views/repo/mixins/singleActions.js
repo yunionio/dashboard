@@ -7,6 +7,8 @@ export default {
       getSetPublicAction(this, {
         name: i18n.t('helm.text_6'),
         scope: 'project',
+        resource: 'repos',
+        apiVersion: 'v1',
       }),
       {
         label: i18n.t('helm.text_69'),
