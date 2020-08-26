@@ -13,7 +13,7 @@
               <a-icon type="global" class="oc-pointer" />
               <a-menu slot="overlay" @click="handleChangeLanguage">
                 <a-menu-item key="zh-CN">
-                  <a>{{$t('common_68')}}</a>
+                  <a>简体中文</a>
                 </a-menu-item>
                 <a-menu-item key="en">
                   <a>English</a>
