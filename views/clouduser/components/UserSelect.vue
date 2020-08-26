@@ -1,24 +1,42 @@
 <template>
-  <a-row :gutter="8" class="w-100">
-    <a-col :span="12">
-      <a-select v-model="domain" allow-clear>
-        <template v-for="item of domains">
-          <a-select-option :key="item.id" :value="item.id">
-            <span class="text-color-secondary">{{ $t('dictionary.domain') }}: </span>{{ item.name }}
-          </a-select-option>
+  <div>
+    <template v-if="accountLoaded">
+      <a-row :gutter="8" class="w-100">
+        <template v-if="isAdminMode">
+          <a-col :span="8">
+            <a-select v-model="domain" show-search @search="getConditionDomains" allow-clear>
+              <template v-for="item of domains">
+                <a-select-option :key="item.id" :value="item.id">
+                  <span class="text-color-secondary">{{ $t('dictionary.domain') }}: </span>{{ item.name }}
+                </a-select-option>
+              </template>
+            </a-select>
+          </a-col>
         </template>
-      </a-select>
-    </a-col>
-    <a-col :span="12">
-      <a-select v-model="user" allow-clear>
-        <template v-for="item of users">
-          <a-select-option :key="item.id" :value="item.id">
-            <span class="text-color-secondary">{{ $t('dictionary.user') }}: </span>{{ item.name }}
-          </a-select-option>
-        </template>
-      </a-select>
-    </a-col>
-  </a-row>
+        <a-col :span="isAdminMode ? 8 : 12">
+          <a-select v-model="project" show-search @search="fetchProjects" allow-clear>
+            <template v-for="item of projects">
+              <a-select-option :key="item.id" :value="item.id">
+                <span class="text-color-secondary">{{ $t('dictionary.project') }}: </span>{{ item.name }}
+              </a-select-option>
+            </template>
+          </a-select>
+        </a-col>
+        <a-col :span="isAdminMode ? 8 : 12">
+          <a-select v-model="user" show-search @search="fetchUsers" allow-clear>
+            <template v-for="item of users">
+              <a-select-option :key="item.id" :value="item.id">
+                <span class="text-color-secondary">{{ $t('dictionary.user') }}: </span>{{ item.name }}
+              </a-select-option>
+            </template>
+          </a-select>
+        </a-col>
+      </a-row>
+    </template>
+    <template v-else>
+      <a-spin />
+    </template>
+  </div>
 </template>
 
 <script>
@@ -29,19 +47,31 @@ export default {
   name: 'UserSelect',
   props: {
     cloudaccountId: String,
-    defaultUser: Object,
-    defaultDomain: Object,
+    defaultProjectId: String,
+    defaultDomainId: String,
+    defaultUserId: String,
+    defaultDomainName: String,
   },
   data () {
     return {
+      account: {},
+      accountLoaded: false,
       domainLoading: false,
       domains: [],
       domain: '',
       domainObj: {},
+      projects: [],
+      projectLoading: false,
+      project: '',
+      projectObj: {},
       userLoading: false,
       users: [],
       user: '',
       userObj: {},
+      defaultProject: {},
+      defaultDomain: {},
+      defaultUser: {},
+      // defaultUserJoinProjects: [],
     }
   },
   computed: {
@@ -53,6 +83,20 @@ export default {
         if (val) {
           const obj = R.find(R.propEq('id', val))(this.domains)
           this.$emit('update:domain', obj)
+          this.fetchProjects()
+        } else {
+          this.projects = []
+          this.project = ''
+          this.projectObj = {}
+          this.$emit('update:project', this.projectObj)
+        }
+      }
+    },
+    project (val, oldVal) {
+      if (val !== oldVal) {
+        if (val) {
+          const obj = R.find(R.propEq('id', val))(this.projects)
+          this.$emit('update:project', obj)
           this.fetchUsers()
         } else {
           this.users = []
@@ -75,16 +119,27 @@ export default {
     this.cm = null
     this.dm = null
     this.um = null
+    this.pm = null
   },
-  created () {
+  async created () {
     this.cm = new this.$Manager('cloudaccounts')
     this.dm = new this.$Manager('domains', 'v1')
     this.um = new this.$Manager('users', 'v1')
-    this.getCanUseDomains()
+    this.pm = new this.$Manager('projects', 'v1')
+    await this.getAccount()
+    if (this.isAdminMode && this.defaultDomainId) {
+      await this.getDefaultDomain()
+    }
+    if (this.defaultProjectId) {
+      await this.getDefaultProject()
+    }
+    if (this.defaultUserId) {
+      await this.getDefaultUser()
+    }
+    await this.getConditionDomains()
   },
   methods: {
-    async getCanUseDomains (query) {
-      this.domainLoading = true
+    async getAccount () {
       try {
         const cloudaccountRes = await this.cm.get({
           id: this.cloudaccountId,
@@ -92,103 +147,166 @@ export default {
             scope: this.$store.getters.scope,
           },
         })
-        const cloudaccount = cloudaccountRes.data || {}
-        const isOwner = this.isAdminMode || cloudaccount.domain_id === this.$store.getters.userInfo.projectDomainId
-        const userDomain = {
-          id: this.userInfo.projectDomainId,
-          name: this.userInfo.projectDomain,
-        }
-        if (this.isAdminMode) {
-          const data = await this.fetchDomains(query)
-          this.domains = data
-          const hasUserDomain = R.find(R.propEq('id', userDomain.id))(this.domains)
-          if (!hasUserDomain) {
-            this.domains.push(userDomain)
-          }
-        } else {
-          if (isOwner) {
-            this.domains = [userDomain]
-          }
-        }
-        if (this.domains.length > 0) {
-          this.domain = this.domains[0].id
-          this.domainObj = this.domains[0]
-        }
-      } finally {
-        this.domainLoading = false
+        this.cloudaccount = cloudaccountRes.data || {}
+        this.accountLoaded = true
+      } catch (error) {
+        throw error
       }
     },
-    // async getCanUseDomains (query) {
-    //   this.domainLoading = true
-    //   try {
-    //     // 获取云账号信息
-    //     const cloudaccountRes = await this.cm.get({
-    //       id: this.cloudaccountId,
-    //       params: {
-    //         scope: this.$store.getters.scope,
-    //       },
-    //     })
-    //     const cloudaccount = cloudaccountRes.data || {}
-    //     // 如果云账号未共享，直接返回云账号的所属域
-    //     if (!cloudaccount.is_public) {
-    //       this.domains = [{
-    //         id: cloudaccount.domain_id,
-    //         name: cloudaccount.project_domain,
-    //       }]
-    //     } else {
-    //       // 共享时
-    //       // 管理员，显示可用域
-    //       const isOwner = this.isAdminMode || cloudaccount.domain_id === this.$store.getters.userInfo.projectDomainId
-    //       const userDomain = {
-    //         id: this.userInfo.projectDomainId,
-    //         name: this.userInfo.projectDomain,
-    //       }
-    //       if (this.isAdminMode) {
-    //         // 如果是google云账号，显示所有域
-    //         if (cloudaccount.brand === 'Google') {
-    //           const data = await this.fetchDomains(query)
-    //           this.domains = data
-    //         } else {
-    //           if (cloudaccount.shared_domains && cloudaccount.shared_domains.length > 0) {
-    //             this.domains = cloudaccount.shared_domains
-    //           } else {
-    //             const data = await this.fetchDomains(query)
-    //             this.domains = data
-    //           }
-    //         }
-    //         const hasUserDomain = R.find(R.propEq('id', userDomain.id))(this.domains)
-    //         if (!hasUserDomain) {
-    //           this.domains.push(userDomain)
-    //         }
-    //       } else {
-    //         if (isOwner) {
-    //           this.domains = [userDomain]
-    //         }
-    //       }
-    //     }
-    //     if (this.domains.length > 0) {
-    //       this.domain = this.domains[0].id
-    //       this.domainObj = this.domains[0]
-    //     }
-    //   } finally {
-    //     this.domainLoading = false
-    //   }
-    // },
-    // 获取域列表
-    async fetchDomains (query) {
+    async getDefaultDomain () {
+      try {
+        const response = await this.dm.get({
+          id: this.defaultDomainId,
+          params: {
+            scope: this.$store.getters.scope,
+          },
+        })
+        this.defaultDomain = response.data || {}
+      } catch (error) {
+        throw error
+      }
+    },
+    async getDefaultProject () {
+      try {
+        const response = await this.pm.get({
+          id: this.defaultProjectId,
+          params: {
+            scope: this.$store.getters.scope,
+          },
+        })
+        this.defaultProject = response.data || {}
+      } catch (error) {
+        throw error
+      }
+    },
+    async getDefaultUser () {
+      try {
+        const response = await this.um.get({
+          id: this.defaultUserId,
+          params: {
+            scope: this.$store.getters.scope,
+          },
+        })
+        this.defaultUser = response.data || {}
+      } catch (error) {
+        throw error
+      }
+    },
+    async getConditionDomains (query) {
+      if (!this.isAdminMode) {
+        const domains = [
+          { name: this.defaultDomainName, id: this.defaultDomainId },
+        ]
+        this.domains = domains
+        this.domain = this.domains[0].id
+        this.domainObj = this.domains[0]
+        return
+      }
+      this.domainLoading = true
+      const isGoogle = this.cloudaccount.provider === 'Google'
+      // const isOwner = this.isAdminMode || this.cloudaccount.domain_id === this.$store.getters.userInfo.projectDomainId
+      const { public_scope, shared_domains, share_mode } = this.cloudaccount
+      const userDomain = {
+        id: this.userInfo.projectDomainId,
+        name: this.userInfo.projectDomain,
+      }
+      let domains = []
+      if (public_scope === 'none') {
+        domains = [userDomain]
+      }
+      if (public_scope === 'domain') {
+        if (share_mode === 'provider_domain') {
+          if (isGoogle) {
+            domains = shared_domains
+          } else {
+            domains = [userDomain]
+          }
+        } else {
+          domains = shared_domains
+        }
+      }
+      if (public_scope === 'system') {
+        try {
+          const params = {
+            scope: this.scope,
+            limit: 20,
+          }
+          if (query) {
+            params.search = query
+          }
+          try {
+            const response = await this.dm.list({
+              params,
+            })
+            const data = response.data.data || []
+            domains = data
+          } catch (error) {
+            throw error
+          }
+        } catch (error) {
+          throw error
+        }
+      }
+      if (!R.isEmpty(this.defaultDomain)) {
+        const isFind = R.find(R.propEq('id', this.defaultDomain.id))(domains)
+        if (!isFind) {
+          domains.push(this.defaultDomain)
+        }
+      }
+      if (query) {
+        domains = domains.filter(item => item.name.includes(query))
+      }
+      this.domainLoading = false
+      this.domains = domains
+      if (!R.isEmpty(this.defaultDomain) && R.find(R.propEq('id', this.defaultDomain.id))(this.domains)) {
+        this.domain = this.defaultDomain.id
+        this.domainObj = { ...this.defaultDomain }
+      } else if (this.domains.length) {
+        this.domain = this.domains[0].id
+        this.domainObj = this.domains[0]
+      } else {
+        this.domain = ''
+        this.domainObj = {}
+      }
+    },
+    // 获取项目列表
+    async fetchProjects (query) {
       const params = {
         scope: this.scope,
+        domain_id: this.domain,
         limit: 20,
       }
       if (query) {
         params.search = query
       }
       try {
-        const response = await this.dm.list({
+        const response = await this.pm.list({
           params,
         })
         const data = response.data.data || []
-        return data
+        this.projects = data
+        if (
+          !R.isEmpty(this.defaultDomain) &&
+          !R.isEmpty(this.defaultProject) &&
+          this.defaultProject.domain_id === this.defaultDomain.id
+        ) {
+          const isFind = R.find(R.propEq('id', this.defaultProject.id))(this.projects)
+          if (!isFind) {
+            if (!query || (query && this.defaultProject.name.includes(query))) {
+              this.projects.push(this.defaultProject)
+            }
+          }
+        }
+        if (!R.isEmpty(this.defaultProject) && R.find(R.propEq('id', this.defaultProject.id))(this.projects)) {
+          this.project = this.defaultProject.id
+          this.projectObj = { ...this.defaultProject }
+        } else if (this.projects.length > 0) {
+          this.project = this.projects[0].id
+          this.projectObj = this.projects[0]
+        } else {
+          this.project = ''
+          this.projectObj = {}
+        }
       } catch (error) {
         throw error
       }
@@ -197,7 +315,7 @@ export default {
     async fetchUsers (query) {
       const params = {
         scope: this.scope,
-        domain_id: this.domain,
+        project: this.project,
       }
       if (query) {
         params.search = query
@@ -207,14 +325,11 @@ export default {
           params,
         })
         const data = response.data.data || []
-        // if (!R.isNil(this.defaultUser) && !R.isEmpty(this.defaultUser)) {
-        //   const hasDefaultUser = R.find(R.propEq('id', this.defaultUser.id))(data)
-        //   if (!hasDefaultUser) {
-        //     data.unshift(this.defaultUser)
-        //   }
-        // }
         this.users = data
-        if (this.users.length > 0) {
+        if (!R.isEmpty(this.defaultUser) && R.find(R.propEq('id', this.defaultUser.id))(this.users)) {
+          this.user = this.defaultUser.id
+          this.userObj = { ...this.defaultUser }
+        } else if (this.users.length > 0) {
           this.user = this.users[0].id
           this.userObj = this.users[0]
         } else {
