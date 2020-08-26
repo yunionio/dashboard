@@ -12,16 +12,16 @@ n.register('bytes', numerifyBytes)
 n.register('percent', numerifyPercent)
 n.register('currency', numerifyCurrency)
 
-const timemsFunc = (timeFormat, value, format, roundingFunction) => {
+const timemsFunc = (timeFormat, value, format, roundingFunction, a) => {
   const second = 1000
   const minute = 60 * second
   const hour = 60 * minute
   const day = 24 * hour
   const days = value / day
-  const hours = (value - days * day) / hour
-  const minutes = (value - days * day - hours * hour) / minute
-  const seconds = (value - days * day - hours * hour - minutes * minute) / second
-  const ms = value - days * day - hours * hour - minutes * minute - seconds * second
+  const hours = value / hour
+  const minutes = value / minute
+  const seconds = value / second
+  const ms = value
   if (days >= 1) {
     if (timeFormat === 'intms') return `${Math.floor(days)}${i18n.t('subDurations.days')}`
     else return `${n._numberToFormat(days, '0.00', roundingFunction)}${i18n.t('subDurations.days')}`
@@ -40,7 +40,7 @@ const timemsFunc = (timeFormat, value, format, roundingFunction) => {
   }
   if (ms) {
     if (timeFormat === 'intms') return `${Math.floor(ms)}${i18n.t('subDurations.ms')}`
-    else return `${n._numberToFormat(ms, '0.00', roundingFunction)}${i18n.t('subDurations.ms')}`
+    else return `${n._numberToFormat(ms, '0', roundingFunction)}${i18n.t('subDurations.ms')}`
   }
   return '0'
 }
@@ -53,7 +53,7 @@ n.register('timems', {
       value = 0
       console.error('onecloud: value must be Number type by used numerify custom util timems')
     }
-    return timemsFunc('ms', value, format, roundingFunction)
+    return timemsFunc('ms', value, format, roundingFunction, 1)
   },
 })
 
