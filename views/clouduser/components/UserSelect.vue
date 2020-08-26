@@ -232,7 +232,7 @@ export default {
             limit: 20,
           }
           if (query) {
-            params.search = query
+            params.filter = `name.contains(${query})`
           }
           try {
             const response = await this.dm.list({
@@ -277,7 +277,7 @@ export default {
         limit: 20,
       }
       if (query) {
-        params.search = query
+        params.filter = `name.contains(${query})`
       }
       try {
         const response = await this.pm.list({
@@ -318,7 +318,7 @@ export default {
         project: this.project,
       }
       if (query) {
-        params.search = query
+        params.filter = `name.contains(${query})`
       }
       try {
         const response = await this.um.list({
