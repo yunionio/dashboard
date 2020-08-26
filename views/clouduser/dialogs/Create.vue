@@ -32,11 +32,12 @@
             :formatter="formatterLabel"
             :dialog-params="{ mask: false }" />
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.clouduser_list_t4')">
+        <a-form-item :label="$t('cloudenv.clouduser_list_t4')" :extra="$t('common_625')">
           <user-select
             v-decorator="decorators.owner_id"
             :cloudaccount-id="params.cloudaccount.id"
-            :user.sync="form.fi.user" />
+            :user.sync="form.fi.user"
+            :project.sync="form.fi.project" />
         </a-form-item>
       </a-form>
     </div>
@@ -72,6 +73,7 @@ export default {
           generate_name: '',
           user: {},
           cloudprovider: {},
+          project: {},
         },
       },
       decorators: {
@@ -186,6 +188,7 @@ export default {
         if (!this.isGoogle) {
           values.cloudaccount_id = this.params.cloudaccount.id
         }
+        values.project_id = this.form.fi.project.id
         await this.params.onManager('create', {
           managerArgs: {
             data: values,

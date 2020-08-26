@@ -14,9 +14,12 @@
           <template v-else>
             <user-select
               v-decorator="decorators.user_id"
+              :project.sync="form.fi.project"
               :cloudaccount-id="params.cloudaccount.id"
-              :default-domain="defaultDomain"
-              :default-user="defaultUser" />
+              :default-domain-id="defaultDomain"
+              :default-domain-name="defaultDomainName"
+              :default-user-id="defaultUser"
+              :default-project-id="defaultProject" />
           </template>
         </a-form-item>
       </a-form>
@@ -43,10 +46,14 @@ export default {
     return {
       loading: false,
       userLoading: false,
-      defaultDomain: {},
-      defaultUser: {},
+      defaultDomain: '',
+      defaultUser: '',
+      defaultDomainName: '',
       form: {
         fc: this.$form.createForm(this),
+        fi: {
+          project: {},
+        },
       },
       decorators: {
         user_id: [
@@ -82,8 +89,10 @@ export default {
       this.userLoading = true
       try {
         const { data } = await this.um.get({ id: this.params.data[0].owner_id })
-        this.defaultDomain = { id: data.domain_id, name: data.project_domain }
-        this.defaultUser = { id: data.id, name: data.name }
+        this.defaultDomain = data.domain_id
+        this.defaultUser = data.id
+        this.defaultProject = data.tenant_id
+        this.defaultDomainName = data.project_domain
       } finally {
         this.userLoading = false
       }
@@ -92,6 +101,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        values.project_id = this.form.fi.project.id
         await this.params.onManager('performAction', {
           id: this.params.data[0].id,
           steadyStatus: 'available',
