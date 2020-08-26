@@ -8510,5 +8510,8 @@
   "common_620": "Please choose your preference",
   "common_621": "Please fill in the conditions",
   "common_622": "Failed to set {0}",
-  "common_623": "{0} Failed"
+  "common_623": "{0} Failed",
+  "common_624": "Belonging to {0}",
+  "common_625": "Local users who have not joined the project do not support associating cloud users",
+  "common_626": "@:dictionary.domain System Manager View"
 }
