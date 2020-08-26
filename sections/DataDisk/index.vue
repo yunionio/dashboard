@@ -267,7 +267,7 @@ export default {
         }
         const formValue = this.form.fc.getFieldsValue()
         if (this.form.fd) { // 如果上层表单有fd时，需要在此同步数据(外层监听不到减少表单的情况)
-          this.form.fd.dataDiskSizes = formValue.dataDiskSizes
+          this.form.fd.dataDiskSizes = formValue.dataDiskSizes || {}
         }
       })
     },
