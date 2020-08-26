@@ -42,7 +42,7 @@
             <!-- 域管理后台 -->
             <template v-if="domainProjects && domainProjects.length">
               <li>
-                <div>{{ isOperation ? $t('common_213') : `${$t('dictionary.domain')} ${$t('common_214')}` }}</div>
+                <div>{{ isOperation ? $t('common_213') : $t('common_626') }}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
@@ -253,7 +253,7 @@ export default {
       let managerLabel = ''
       if (this.$store.getters['auth/isDomain']) {
         ret = this.userInfo.projectDomain || '-'
-        managerLabel = this.isOperation ? this.$t('common_213') : ' ' + this.$t('dictionary.domain') + this.$t('common_213')
+        managerLabel = this.isOperation ? this.$t('common_213') : ' ' + this.$t('common_626')
       }
       if (this.isOperation) {
         if (managerLabel) return `${managerLabel}`
