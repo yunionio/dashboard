@@ -237,3 +237,23 @@ body {
 .CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
   font-family: consolas !important;
 }
+
+.oc-select-wrapper {
+  position: relative;
+  .oc-select-help {
+    position: absolute;
+    left: 4px;
+    top: 0;
+    z-index: 1;
+  }
+  .oc-select-help-2em {
+    .ant-select-selection--single .ant-select-selection__rendered {
+      text-indent: 2em;
+    }
+  }
+  .oc-select-help-3em {
+    .ant-select-selection--single .ant-select-selection__rendered {
+      text-indent: 3em;
+    }
+  }
+}
