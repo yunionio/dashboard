@@ -173,7 +173,7 @@ export default {
 
 .side-page-wrap {
   position: fixed;
-  z-index: 100;
+  z-index: 97;
   background-color: #fff;
   left: 500px;
   right: 0;
