@@ -116,7 +116,7 @@ export default {
 
 .submenu-item {
   cursor: pointer;
-  width: 130px;
+  min-width: 130px;
 }
 .sub-link-btn {
   .ant-btn-link {
