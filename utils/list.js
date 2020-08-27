@@ -930,7 +930,7 @@ class CreateList {
           }
         } else {
           if (res.status < 400) {
-            this.update(ids[0], res.data)
+            if (on !== 'getSpecific') this.update(ids[0], res.data)
           } else {
             this.setError(ids[0], res)
           }
