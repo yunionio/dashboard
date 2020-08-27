@@ -777,6 +777,11 @@
     "verified": {
       "true": "Verified",
       "false": "Unverified"
+    },
+    "bill": {
+      "init": "normal",
+      "overdue": "Overdue",
+      "arrears": "Arrears"
     }
   },
   "skuCategoryOptions": {
