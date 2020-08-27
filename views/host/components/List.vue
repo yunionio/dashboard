@@ -22,6 +22,7 @@ import ListMixin from '@/mixins/list'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 // import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 
 export default {
   name: 'HostList',
@@ -43,6 +44,11 @@ export default {
     },
   },
   data () {
+    const brandFilter = getBrandFilter()
+    const notSupportBrand = [
+      ...Object.values(HYPERVISORS_MAP).filter(item => item.cloud_env === 'public').map(item => item.brand),
+      ...Object.values(EXTRA_HYPERVISORS).map(item => item.brand),
+    ]
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -85,7 +91,10 @@ export default {
           zone: {
             label: '可用区',
           },
-          brand: getBrandFilter(),
+          brand: {
+            ...brandFilter,
+            items: brandFilter.items.filter(val => !notSupportBrand.includes(val.key)),
+          },
           project_domains: getProjectDomainFilter(),
           account: getAccountFilter(),
         },
