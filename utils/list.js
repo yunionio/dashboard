@@ -914,7 +914,7 @@ class CreateList {
         return res
       }
       let isBatch = false
-      if (R.is(Array, res.data.data)) {
+      if (R.is(Array, res.data.data) && on !== 'getSpecific') {
         isBatch = true
       }
       if (on !== 'get') {
