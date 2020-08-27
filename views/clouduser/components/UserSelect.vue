@@ -210,6 +210,10 @@ export default {
         id: this.userInfo.projectDomainId,
         name: this.userInfo.projectDomain,
       }
+      const accountDomain = {
+        id: this.cloudaccount.domain_id,
+        name: this.cloudaccount.project_domain,
+      }
       let domains = []
       if (public_scope === 'none') {
         domains = [userDomain]
@@ -218,11 +222,19 @@ export default {
         if (share_mode === 'provider_domain') {
           if (isGoogle) {
             domains = shared_domains
+            const hasAccountDomain = R.find(R.propEq('id', this.accountDomain.id))(domains)
+            if (!hasAccountDomain) {
+              domains.push(accountDomain)
+            }
           } else {
             domains = [userDomain]
           }
         } else {
           domains = shared_domains
+          const hasAccountDomain = R.find(R.propEq('id', this.accountDomain.id))(domains)
+          if (!hasAccountDomain) {
+            domains.push(accountDomain)
+          }
         }
       }
       if (public_scope === 'system') {
