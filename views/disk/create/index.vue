@@ -301,7 +301,7 @@ export default {
     },
     'form.fd.domain' (newValue, oldValue) {
       if (newValue !== oldValue) {
-        this.$refs.areaSelects.fetchs(['cloudregion'])
+        this.$refs.areaSelects.fetchs(this.areaselectsName)
       }
     },
   },
