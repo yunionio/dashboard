@@ -19,7 +19,8 @@
               :default-domain-id="defaultDomain"
               :default-domain-name="defaultDomainName"
               :default-user-id="defaultUser"
-              :default-project-id="defaultProject" />
+              :default-project-id="defaultProject"
+              :cloudprovider-id="params.data[0].cloudprovider_id" />
           </template>
         </a-form-item>
       </a-form>

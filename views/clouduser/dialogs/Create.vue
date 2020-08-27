@@ -37,7 +37,8 @@
             v-decorator="decorators.owner_id"
             :cloudaccount-id="params.cloudaccount.id"
             :user.sync="form.fi.user"
-            :project.sync="form.fi.project" />
+            :project.sync="form.fi.project"
+            :cloudprovider-id="form.fi.cloudprovider.id" />
         </a-form-item>
       </a-form>
     </div>

@@ -46,6 +46,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'UserSelect',
   props: {
+    cloudproviderId: String,
     cloudaccountId: String,
     defaultProjectId: String,
     defaultDomainId: String,
@@ -114,18 +115,23 @@ export default {
       const obj = R.find(R.propEq('id', val))(this.users)
       this.$emit('update:user', obj)
     },
+    cloudproviderId (val) {
+      this.getConditionDomains()
+    },
   },
   destroyed () {
     this.cm = null
     this.dm = null
     this.um = null
     this.pm = null
+    this.cpm = null
   },
   async created () {
     this.cm = new this.$Manager('cloudaccounts')
     this.dm = new this.$Manager('domains', 'v1')
     this.um = new this.$Manager('users', 'v1')
     this.pm = new this.$Manager('projects', 'v1')
+    this.cpm = new this.$Manager('cloudproviders')
     await this.getAccount()
     if (this.isAdminMode && this.defaultDomainId) {
       await this.getDefaultDomain()
@@ -149,6 +155,16 @@ export default {
         })
         this.cloudaccount = cloudaccountRes.data || {}
         this.accountLoaded = true
+      } catch (error) {
+        throw error
+      }
+    },
+    async getProvider () {
+      try {
+        const response = await this.cpm.get({
+          id: this.cloudproviderId,
+        })
+        return response.data || {}
       } catch (error) {
         throw error
       }
@@ -221,10 +237,12 @@ export default {
       if (public_scope === 'domain') {
         if (share_mode === 'provider_domain') {
           if (isGoogle) {
-            domains = shared_domains
-            const hasAccountDomain = R.find(R.propEq('id', this.accountDomain.id))(domains)
-            if (!hasAccountDomain) {
-              domains.push(accountDomain)
+            if (this.cloudproviderId) {
+              const provider = await this.getProvider()
+              domains = [{
+                id: provider.domain_id,
+                name: provider.project_domain,
+              }]
             }
           } else {
             domains = [userDomain]
