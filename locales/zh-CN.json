@@ -777,6 +777,11 @@
     "verified": {
       "true": "已验证",
       "false": "未验证"
+    },
+    "bill": {
+      "init": "正常",
+      "overdue": "逾期",
+      "arrears": "欠费"
     }
   },
   "skuCategoryOptions": {
