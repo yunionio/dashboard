@@ -6,17 +6,12 @@
         {{ tips }}
       </div>
     </a-alert>
-    <div class="h-desc-bg">
-      <h5 class="h-title">{{$t('compute.text_1101')}}<em>{{$t('compute.text_1102', [params.data.length])}}</em>{{$t('compute.text_1103')}}</h5>
-      <div class="pl-4 pr-4 pb-2">
-        <a-row>
-          <a-col :span="24">
-            <dialog-table :data="params.data" :columns="columns" />
-          </a-col>
-        </a-row>
-      </div>
-    </div>
-    <h5 class="h-title">{{$t('compute.text_1104')}}</h5>
+    <a-card :bordered="false" size="small">
+      <template #title>
+        <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1100')" />
+      </template>
+      <dialog-table :data="params.data" :columns="columns" />
+    </a-card>
     <div class="form-wrapper">
       <a-form
         :form="form.fc">
@@ -909,19 +904,6 @@ export default {
 <style lang="less" scoped>
 .form-wrapper {
   padding-left: 22px;
-}
-.h-title{
-  font-size: 16px;
-  padding: 10px 0;
-  margin-left: 21px;
-  font-weight: normal;
-}
-.h-title em{
-  font-style: normal;
-  color: #1890ff;
-}
-.h-desc-bg{
-  background: rgba(245, 245, 243, 0.4)
 }
 .prices {
   .hour {
