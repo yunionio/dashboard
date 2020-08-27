@@ -840,9 +840,8 @@ class CreateList {
             }
           }
         } else {
-          console.log(ids)
           if (res.status < 400) {
-            this.update(ids[0], res.data)
+            if (on !== 'getSpecific') this.update(ids[0], res.data)
           } else {
             this.setError(ids[0], res)
           }
