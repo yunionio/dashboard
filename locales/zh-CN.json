@@ -8513,5 +8513,9 @@
   "common_623": "{0}失败",
   "common_624": "所属{0}",
   "common_625": "未加入项目的本地用户不支持关联云用户",
-  "common_626": "@:dictionary.domain管理后台"
+  "common_626": "@:dictionary.domain管理后台",
+  "common_627": "出账金额",
+  "common_628": "未出账金额",
+  "common_629": "待支付金额",
+  "common_630": "申请时间"
 }

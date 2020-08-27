@@ -338,4 +338,8 @@ export default {
     success: [true],
     info: [false],
   },
+  bill: {
+    success: ['init'],
+    danger: ['overdue', 'arrears'],
+  },
 }
