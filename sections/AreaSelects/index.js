@@ -153,7 +153,7 @@ export default {
     },
     filterOption (input, option) {
       return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        option.componentOptions.children[1].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       )
     },
     firstName (name) {
@@ -295,18 +295,15 @@ export default {
       }
       const citys = this.$t('citys')
       return (
-        <div class="oc-select-wrapper">
-          <span class="text-color-secondary oc-select-help">{ this.$t('common_573') }: </span>
-          <a-select allowClear class="oc-select-help-2em" showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder={this.placeholders.city}>
-            {this.cityList.map(city => {
-              const { name } = city
-              const lowercaseName = name.toLowerCase()
-              return <a-select-option key={name} value={name}>
-                {citys[lowercaseName] || name}
-              </a-select-option>
-            })}
-          </a-select>
-        </div>
+        <a-select dropdownClassName='oc-select-dropdown' allowClear showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cityLoading} placeholder={this.placeholders.city}>
+          {this.cityList.map(city => {
+            const { name } = city
+            const lowercaseName = name.toLowerCase()
+            return (
+              <a-select-option key={name} value={name}><span class="text-color-secondary option-prefix">{ this.$t('common_573') }:</span>{citys[lowercaseName] || name}</a-select-option>
+            )
+          })}
+        </a-select>
       )
     },
     async fetchProvider (queryParams = {}) {
@@ -341,17 +338,14 @@ export default {
       }
       const cloudProvidersMap = this.$t('cloudPrvidersMap')
       return (
-        <div class="oc-select-wrapper">
-          <span class="text-color-secondary oc-select-help">{ this.$t('compute.text_176') }: </span>
-          <a-select allowClear class="oc-select-help-2em" showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.provider}>
-            {this.providerList.map(provider => {
-              const { name } = provider
-              return <a-select-option key={name} value={name}>
-                {cloudProvidersMap[name] || name}
-              </a-select-option>
-            })}
-          </a-select>
-        </div>
+        <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.provider}>
+          {this.providerList.map(provider => {
+            const { name } = provider
+            return <a-select-option key={name} value={name}>
+              <span class="text-color-secondary option-prefix">{ this.$t('compute.text_176') }: </span>{cloudProvidersMap[name] || name}
+            </a-select-option>
+          })}
+        </a-select>
       )
     },
     async fetchCloudregion (queryParams) {
@@ -404,22 +398,19 @@ export default {
         }, _callback)
       }
       return (
-        <div class="oc-select-wrapper">
-          <span class="text-color-secondary oc-select-help">{ this.$t('dictionary.region') }: </span>
-          <a-select allowClear class="oc-select-help-2em" showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder={this.placeholders.cloudregion}>
-            {this.cloudregionList.map(cloudregion => {
-              const { id, name } = cloudregion
-              if (this.names.length === 1) {
-                return <a-select-option key={id} value={id}>
-                  {name}
-                </a-select-option>
-              }
+        <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder={this.placeholders.cloudregion}>
+          {this.cloudregionList.map(cloudregion => {
+            const { id, name } = cloudregion
+            if (this.names.length === 1) {
               return <a-select-option key={id} value={id}>
-                {name}
+                <span class="text-color-secondary option-prefix">{ this.$t('dictionary.region') }: </span>{name}
               </a-select-option>
-            })}
-          </a-select>
-        </div>
+            }
+            return <a-select-option key={id} value={id}>
+              <span class="text-color-secondary option-prefix">{ this.$t('dictionary.region') }: </span>{name}
+            </a-select-option>
+          })}
+        </a-select>
       )
     },
     async fetchZone (queryParams = {}) {
@@ -461,22 +452,19 @@ export default {
         }, _callback)
       }
       return (
-        <div class="oc-select-wrapper">
-          <span class="text-color-secondary oc-select-help">{ this.$t('dictionary.zone') }: </span>
-          <a-select allowClear class="oc-select-help-3em" showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder={this.placeholders.zone}>
-            {this.zoneList.map(zone => {
-              const { id, name } = zone
-              if (this.names.length === 1) {
-                return <a-select-option key={id} value={id}>
-                  {name}
-                </a-select-option>
-              }
+        <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder={this.placeholders.zone}>
+          {this.zoneList.map(zone => {
+            const { id, name } = zone
+            if (this.names.length === 1) {
               return <a-select-option key={id} value={id}>
                 {name}
               </a-select-option>
-            })}
-          </a-select>
-        </div>
+            }
+            return <a-select-option key={id} value={id}>
+              <span class="text-color-secondary option-prefix">{ this.$t('dictionary.zone') }: </span>{name}
+            </a-select-option>
+          })}
+        </a-select>
       )
     },
   },
