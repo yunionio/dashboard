@@ -88,7 +88,7 @@ export default {
         {
           field: 'accessModes',
           title: this.$t('k8s.text_313'),
-          formatter: ({ row }) => row.accessModes && row.accessModes.join('，'),
+          formatter: ({ row }) => row.accessModes && (row.accessModes || []).join('，'),
         },
         {
           field: 'volume',

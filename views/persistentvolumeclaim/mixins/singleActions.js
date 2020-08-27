@@ -9,7 +9,7 @@ export default {
           const manager = new this.$Manager('persistentvolumeclaims', 'v1')
           async function fetchData () {
             const { cluster, namespace } = obj
-            const { data } = await manager.getSpecific({ id: obj.name, spec: 'rawdata', params: { cluster, namespace } })
+            const { data } = await manager.getSpecific({ id: obj.id, spec: 'rawdata', params: { cluster, namespace } })
             return data
           }
           const configText = await fetchData()

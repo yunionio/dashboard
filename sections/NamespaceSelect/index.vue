@@ -69,10 +69,12 @@ export default {
       if (R.isNil(this.namespaceMap)) return
       this.options = this.options.map(val => {
         const item = R.clone(val)
-        if (R.is(Array, this.namespaceMap[item.name])) {
-          item.num = this.namespaceMap[item.name].length
+        if (R.is(Array, this.namespaceMap[item.id])) {
+          item.num = this.namespaceMap[item.id].length
         } else {
-          item.num = 0
+          if (item.id !== 'all_namespace') {
+            item.num = 0
+          }
         }
         return item
       })
@@ -81,7 +83,7 @@ export default {
       this.$emit('input', v)
       this.$emit('change', v)
       if (v) {
-        const obj = this.options.find(val => val.name === v)
+        const obj = this.options.find(val => val.id === v)
         this.$emit('update:namespaceObj', obj)
       } else {
         this.$emit('update:namespaceObj', {})
@@ -103,14 +105,10 @@ export default {
         const { data: { data = [] } } = await namespacesM.list({ params })
         this.options = data.map(val => ({ ...val, label: val.name }))
         this.loading = false
-        /* 暂不支持 所有命名空间
-          if (this.supportAllNamespace) {
-            this.options = data.concat({ id: 'all_namespace', label: '所有命名空间' })
-          } else {
-            this.options = data.map(val => ({ ...val, label: val.name }))
-          }
-        */
-        const isErrorNamespace = !this.options.find(v => v.name === this.value)
+        if (this.supportAllNamespace) {
+          this.options = data.concat({ id: 'all_namespace', label: '所有命名空间' })
+        }
+        const isErrorNamespace = !this.options.find(v => v.id === this.value)
         const isEmptyNamespace = R.isEmpty(this.value) || R.isNil(this.value)
         if (this.setDefault && (isEmptyNamespace || isErrorNamespace)) {
           this.setDefaultNamespace(this.options)
@@ -123,7 +121,7 @@ export default {
       }
     },
     setDefaultNamespace (opts) {
-      const all = opts.find(v => v.name === 'all_namespace')
+      const all = opts.find(v => v.id === 'all_namespace')
       if (opts && opts.length) {
         if (all) {
           this.namespace = all.id

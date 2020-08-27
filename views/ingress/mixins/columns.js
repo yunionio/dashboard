@@ -26,6 +26,7 @@ export default {
         title: i18n.t('k8s.text_240'),
         slots: {
           default: ({ row }) => {
+            if (!row.endpoints) return '-'
             return row.endpoints.filter(v => v.host).map(v => {
               let value = '-'
               if (v.host && v.ports) value = `${v.host}:${v.ports}`

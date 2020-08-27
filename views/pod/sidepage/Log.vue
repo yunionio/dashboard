@@ -57,7 +57,7 @@ export default {
   methods: {
     async fetchData () {
       const { data: { containers } } = await this.manager.get({
-        id: this.data.name,
+        id: this.data.id,
         params: {
           cluster: this.data.clusterID,
           namespace: this.data.namespace,
@@ -79,7 +79,7 @@ export default {
       }
       const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
         methodname: 'DoK8sLogConnect',
-        objId: this.data.name,
+        objId: this.data.id,
         params,
       })
       this.connectParams = data.connect_params

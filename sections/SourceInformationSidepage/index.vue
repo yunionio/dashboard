@@ -50,7 +50,7 @@ export default {
       if (this.data.cluster) params.cluster = this.data.cluster
       if (this.data.namespace) params.namespace = this.data.namespace
       new this.$Manager(this.resource, 'v1').getSpecific({
-        id: this.data.name,
+        id: this.data.id,
         spec: 'rawdata',
         params,
       }).then(({ data }) => {
@@ -63,9 +63,8 @@ export default {
       if (this.data.cluster) params += `cluster=${this.data.cluster}`
       if (this.data.namespace) params = params.charAt(params.length - 1) === '?' ? params + `namespace=${this.data.namespace}` : params + '&namespace=' + this.data.namespace
       const data = jsYaml.safeLoad(this.text)
-      console.log(data, 'data')
       new this.$Manager(resource, 'v1').update({
-        id: `${this.data.name}/rawdata` + params,
+        id: `${this.data.id}/rawdata` + params,
         data,
       }).then(({ data }) => {
         this.$message.success(this.$t('k8s.text_96', [this.data.name]))

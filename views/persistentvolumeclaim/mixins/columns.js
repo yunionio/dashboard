@@ -38,7 +38,7 @@ export default {
       {
         field: 'accessModes',
         title: i18n.t('k8s.text_313'),
-        formatter: ({ row }) => row.accessModes.join('，'),
+        formatter: ({ row }) => (row.accessModes || []).join('，'),
       },
       {
         field: 'storageClass',

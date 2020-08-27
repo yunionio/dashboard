@@ -219,7 +219,7 @@ export default {
     },
     doCreate (data) {
       return new this.$Manager('kubeclusters', 'v1').performAction({
-        id: this.params.data.name,
+        id: this.params.data.id,
         action: 'add-machines',
         data,
       })
