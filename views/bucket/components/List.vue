@@ -41,7 +41,7 @@ export default {
         steadyStatus: Object.values(expectStatus.bucket).flat(),
         filterOptions: {
           name: getNameFilter(),
-          brand: getBrandFilter(),
+          brand: getBrandFilter('object_storage_brands'),
           projects: getTenantFilter(),
           status: getStatusFilter({ statusModule: 'bucket' }),
           cloudaccount: getAccountFilter(),
