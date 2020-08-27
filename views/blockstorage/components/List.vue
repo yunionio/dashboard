@@ -21,6 +21,7 @@ import { getDomainChangeOwnerAction, getEnabledSwitchActions } from '@/utils/com
 // import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
 import expectStatus from '@/constants/expectStatus'
+import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 
 export default {
   name: 'BlockStorageList',
@@ -133,6 +134,11 @@ export default {
         },
       },
     ]
+    const brandFilter = getBrandFilter()
+    const notSupportBrand = [
+      ...Object.values(HYPERVISORS_MAP).filter(item => item.cloud_env === 'public').map(item => item.brand),
+      ...Object.values(EXTRA_HYPERVISORS).map(item => item.brand),
+    ]
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -143,7 +149,10 @@ export default {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
           status: getStatusFilter({ statusModule: 'blockstorage' }),
-          brand: getBrandFilter(),
+          brand: {
+            ...brandFilter,
+            items: brandFilter.items.filter(val => !notSupportBrand.includes(val.key)),
+          },
           storage_type: {
             label: this.$t('storage.text_38'),
             filter: true,
