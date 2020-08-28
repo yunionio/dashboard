@@ -6789,7 +6789,7 @@
   "scope.text_127": "OneCloud Authorization",
   "scope.text_128": "OneCloud authorization usage:",
   "scope.text_129": "Public cloud virtual machine: {0} (the average value of the past 7 days or the minimum value of the current value)",
-  "scope.text_130": "Non-OneStack host: {0} ({1} / 10 nodes)",
+  "scope.text_130": "Non-OneStack host: {0} ({1}nodes)",
   "scope.text_132": "Authorization Information",
   "scope.text_133": "Replace License",
   "scope.text_134": "Authorized User:",
