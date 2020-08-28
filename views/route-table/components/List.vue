@@ -14,7 +14,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getAccountFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
 // import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
@@ -52,14 +52,6 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          cloudaccount: getAccountFilter(),
-          vpc: {
-            label: this.$t('network.text_535'),
-          },
-          region: {
-            label: this.$t('network.text_199'),
-          },
-          brand: getBrandFilter(),
           project_domain: getProjectDomainFilter(),
         },
         hiddenColumns: this.hiddenColumns,
