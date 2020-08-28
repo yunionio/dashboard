@@ -91,7 +91,7 @@ export default {
         title: 'VLAN',
         width: 60,
       },
-      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', hidden: this.$store.getters.isProjectMode }),
       {
         field: 'schedtag',
         title: i18n.t('network.text_630'),
@@ -110,7 +110,7 @@ export default {
         },
       },
       getBrandTableColumn(),
-      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('network.text_196') }),
+      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('network.text_196'), hidden: this.$store.getters.isProjectMode }),
       getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
       getProjectTableColumn(),
       getRegionTableColumn(),
