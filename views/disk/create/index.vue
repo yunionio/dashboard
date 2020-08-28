@@ -296,7 +296,7 @@ export default {
     },
   },
   watch: {
-    cloudEnv () {
+    cloudEnv (val) {
       this.$refs.areaSelects.fetchs(['city', 'provider', 'cloudregion', 'zone'])
     },
     'form.fd.domain' (newValue, oldValue) {
@@ -338,6 +338,9 @@ export default {
             }
             this.form.fc.setFieldsValue({ backend: '' })
             if (this.storageOpts.length > 0) {
+              if (this.cloudEnv === 'onpremise') {
+                this.storageOpts = this.storageOpts.filter(item => { return item.value !== 'local' })
+              }
               this.form.fc.setFieldsValue({ backend: this.storageOpts[0].value })
               this.__newStorageChange(this.storageOpts[0].value)
             }
