@@ -106,6 +106,7 @@ export function getAccountFilter () {
       type: 'extra_field',
       key: 'account',
     },
+    hidden: () => store.getters.isProjectMode,
   }
 }
 
@@ -190,6 +191,7 @@ export function getHostFilter () {
     formatter: val => {
       return `hosts.id(host_id).name.contains("${val}")`
     },
+    hidden: () => store.getters.isProjectMode,
   }
 }
 
@@ -212,6 +214,7 @@ export function getDomainFilter () {
       type: 'extra_field',
       key: 'domain',
     },
+    hidden: () => store.getters.isProjectMode,
   }
 }
 
@@ -234,5 +237,6 @@ export function getVpcFilter () {
       type: 'extra_field',
       key: 'vpc',
     },
+    hidden: () => store.getters.isProjectMode,
   }
 }

@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import i18n from '@/locales'
 import WindowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
+import store from '@/store'
 
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
 const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets', 'networkinterfaces', 'lbs']
@@ -86,6 +87,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
           ]
         },
       },
+      hidden: () => store.getters.isProjectMode,
     },
   ]
   let ret = [
@@ -163,6 +165,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
           ]
         },
       },
+      hidden: () => store.getters.isProjectMode,
     },
     {
       field: 'tenant',
@@ -359,12 +362,18 @@ export default {
         // h('span', { class: 'ml-2' }, title),
       ])
     },
-    renderContent (h, icon, title, items, item, type) {
+    renderContent (h, icon, title, items = [], item, type) {
+      const options = items.filter(item => {
+        if (R.is(Function, item.hidden)) {
+          return !item.hidden()
+        }
+        return !item.hidden
+      })
       return h('div', {
         class: 'detail-content',
       }, [
         this.renderTitle(h, icon, title),
-        items ? this.renderItems(h, items, type) : this.renderItem(h, item, false),
+        !R.isEmpty(options) ? this.renderItems(h, options, type) : this.renderItem(h, item, false),
       ])
     },
     renderBase (h) {
