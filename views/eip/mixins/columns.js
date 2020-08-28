@@ -58,6 +58,7 @@ export default {
       getCopyWithContentTableColumn({
         field: 'account',
         title: i18n.t('network.text_196'),
+        hidden: this.$store.getters.isProjectMode,
       }),
       getProjectTableColumn(),
       getRegionTableColumn(),

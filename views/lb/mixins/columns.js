@@ -61,6 +61,7 @@ export default {
         field: 'vpc',
         title: 'VPC',
         minWidth: 100,
+        hidden: this.$store.getters.isProjectMode,
       },
       getStatusTableColumn({ statusModule: 'lb', title: i18n.t('network.text_27') }),
       {
@@ -129,6 +130,7 @@ export default {
         field: 'account',
         title: i18n.t('network.text_196'),
         minWidth: 120,
+        hidden: this.$store.getters.isProjectMode,
       },
       // getTimeTableColumn(), // 列表太长先隐藏
     ]
