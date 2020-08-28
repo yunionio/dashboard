@@ -611,7 +611,7 @@ export default {
             const obj = {
               guest_ip_prefix: value,
               name: values.name,
-              vpc: values.vpc.key,
+              vpc: values.vpc,
               zone: values.zone,
               project_id: values.project.key,
               is_auto_alloc: values.is_auto_alloc,
@@ -669,8 +669,9 @@ export default {
       const ListPath = this.$router.resolve(this.$route.path)
       try {
         const values = await this.form.fc.validateFields()
+        console.log(values)
         this.submiting = true
-        if (values.cloudEnv === 'onpremise' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
+        if (this.cloudEnv === 'onpremise' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
           this.ipSubnetsValidateStatus = 'error'
           this.ipSubnetsHelp = this.$t('network.text_605')
           return
@@ -682,7 +683,7 @@ export default {
         }
         const data = this.genData(values)
         const manager = new Manager('networks')
-        if (values.cloudEnv === 'onpremise') {
+        if (this.cloudEnv === 'onpremise') {
           for (let i = 0, len = data.length; i < len; i++) {
             const bodyData = { ...data[i] }
             if (i > 0) {
