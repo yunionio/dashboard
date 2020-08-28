@@ -384,6 +384,7 @@ export const getAccountTableColumn = ({
     formatter: ({ cellValue }) => {
       return cellValue || '-'
     },
+    hidden: () => store.getters.isProjectMode,
   }
 }
 

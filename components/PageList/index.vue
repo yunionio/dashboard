@@ -184,7 +184,12 @@ export default {
       return this.list.tagFilter
     },
     filterOptions () {
-      return this.list.filterOptions
+      return R.filter(item => {
+        if (R.is(Function, item.hidden)) {
+          return !item.hidden()
+        }
+        return !item.hidden
+      }, this.list.filterOptions)
     },
     filter () {
       return this.list.filter
