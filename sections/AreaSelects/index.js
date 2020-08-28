@@ -99,6 +99,10 @@ export default {
       if (R.equals(val, oldVal)) return
       this.fetchs()
     },
+    cloudregionParams (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchs(['cloudregion', 'zone'])
+    },
   },
   created () {
     this.fetchs()
@@ -431,6 +435,8 @@ export default {
         })
         const retList = !R.isEmpty(data.data) ? data.data : []
         return retList
+      } catch (error) {
+        throw error
       } finally {
         this.zoneLoading = false
       }
