@@ -74,7 +74,7 @@ class WaitStatusJob {
         this.clearTimer()
       }
     } catch (error) {
-      if (error.response.status === 404) {
+      if (_.get(error, 'response.status') === 404) {
         this.data.list.refresh()
         this.clearTimer()
       } else {
