@@ -81,6 +81,7 @@ export default {
           if (!row.host) return '-'
           return [<span>{ row.host }</span>]
         },
+        hidden: () => this.$store.getters.isProjectMode,
       }),
       getRegionTableColumn(),
     ]

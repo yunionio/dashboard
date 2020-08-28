@@ -65,6 +65,7 @@ export default {
           },
           host: {
             label: this.$t('compute.text_112'),
+            hidden: () => this.$store.getters.isProjectMode,
           },
           region: {
             label: '区域',
@@ -93,7 +94,7 @@ export default {
           { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: this.$t('compute.text_176'), key: 'hypervisor' },
-          { label: this.$t('compute.text_269'), key: 'manager' },
+          { label: this.$t('compute.text_269'), key: 'manager', hidden: () => this.$store.getters.isProjectMode },
           { label: this.$t('compute.text_177'), key: 'region' },
           { label: this.$t('compute.text_270'), key: 'zone' },
           { label: this.$t('compute.text_271'), key: 'user_tags' },

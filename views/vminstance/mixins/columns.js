@@ -164,7 +164,11 @@ export default {
           ]
         },
       }),
-      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+      getCopyWithContentTableColumn({
+        field: 'vpc',
+        title: 'VPC',
+        hidden: () => this.$store.getters.isProjectMode,
+      }),
       {
         field: 'host',
         title: i18n.t('compute.text_111'),
@@ -182,8 +186,13 @@ export default {
             ]
           },
         },
+        hidden: () => this.$store.getters.isProjectMode,
       },
-      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('compute.text_269') }),
+      getCopyWithContentTableColumn({
+        field: 'account',
+        title: i18n.t('compute.text_269'),
+        hidden: () => this.$store.getters.isProjectMode,
+      }),
       getProjectTableColumn(),
       getBrandTableColumn(),
       getRegionTableColumn(),
