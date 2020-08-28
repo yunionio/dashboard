@@ -8513,5 +8513,6 @@
   "common_623": "{0}失败",
   "common_624": "所属{0}",
   "common_625": "未加入项目的本地用户不支持关联云用户",
-  "common_626": "@:dictionary.domain管理后台"
+  "common_626": "@:dictionary.domain管理后台",
+  "common_627": "{0}验证"
 }
