@@ -143,6 +143,7 @@ export default {
                   ]
                 },
               },
+              hidden: () => this.$store.getters.isProjectMode,
             },
             {
               field: 'secgroups',
@@ -168,6 +169,7 @@ export default {
                   <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
                 ]
               },
+              hidden: () => this.$store.getters.isProjectMode,
             }),
             {
               field: 'vcpu_count',
@@ -243,6 +245,7 @@ export default {
                   ]
                 },
               },
+              hidden: () => this.$store.getters.isProjectMode,
             },
           ],
         },
