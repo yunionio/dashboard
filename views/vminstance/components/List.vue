@@ -55,7 +55,6 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        refreshInterval: 5,
         resource: 'servers',
         getParams: this.getParam,
         steadyStatus: {
@@ -132,8 +131,8 @@ export default {
           { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: this.$t('compute.text_176'), key: 'hypervisor' },
-          { label: this.$t('compute.text_111'), key: 'host' },
-          { label: this.$t('compute.text_269'), key: 'manager' },
+          { label: this.$t('compute.text_111'), key: 'host', hidden: () => this.$store.getters.isProjectMode },
+          { label: this.$t('compute.text_269'), key: 'manager', hidden: () => this.$store.getters.isProjectMode },
           { label: this.$t('compute.text_177'), key: 'region' },
           { label: this.$t('compute.text_270'), key: 'zone' },
           { label: this.$t('compute.text_498'), key: 'billing_type' },

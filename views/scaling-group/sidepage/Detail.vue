@@ -100,6 +100,7 @@ export default {
                   <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
                 ]
               },
+              hidden: () => this.$store.getters.isProjectMode,
             }),
             getCopyWithContentTableColumn({
               field: 'network',

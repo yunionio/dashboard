@@ -183,6 +183,7 @@ export default {
                   <side-page-trigger permission='hosts_get' name='PhysicalmachineSidePage' id={row.host_id} vm={this}>{ row.host }</side-page-trigger>,
                 ]
               },
+              hidden: () => this.$store.getters.isProjectMode,
             }),
             getCopyWithContentTableColumn({ field: 'host_sn', title: 'SN' }),
           ],
