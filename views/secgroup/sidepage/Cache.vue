@@ -46,7 +46,17 @@ export default {
           field: 'name',
           title: this.$t('compute.text_988'),
           minWidth: 100,
-          showOverflow: 'ellipsis',
+          showOverflow: 'title',
+          slots: {
+            default: ({ row }, h) => {
+              const { name } = row
+              return [
+                <div class='text-truncate' title={ name }>
+                  { name }
+                </div>,
+              ]
+            },
+          },
         },
         getStatusTableColumn({ statusModule: 'secgroupCache' }),
         {
