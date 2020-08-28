@@ -63,6 +63,9 @@ export default {
     'formFd.fd.hypervisor' () {
       this.$refs.baseSelectRef.resList = []
       this.$refs.baseSelectRef.resOpts = {}
+      this.$nextTick(() => {
+        this.$refs.baseSelectRef.loadOptsDebounce()
+      })
     },
   },
   methods: {
