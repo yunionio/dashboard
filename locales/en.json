@@ -3986,6 +3986,13 @@
   "k8s.text_361": "No",
   "k8s.text_362": "Provider",
   "k8s.text_363": "Set as default",
+  "k8s.text_364": "Multi-cluster resources",
+  "k8s.text_365": "namespace",
+  "k8s.text_366": "Bind to a cluster",
+  "k8s.text_367": "create namespace",
+  "k8s.text_368": "delete namespace",
+  "k8s.text_369": "attached clusters",
+
   "network.text_1": "One hundred megabytes (100M)",
   "network.text_2": "Gigabit (1G)",
   "network.text_3": "Dual Gigabit (2x1G)",
