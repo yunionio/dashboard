@@ -23,8 +23,8 @@
       </a-form-item>
       <a-form-item
         :wrapperCol="{ span: 24 }"
-        style="min-width: 240px;"
-        class="w-25 mb-0 mr-1">
+        style="min-width: 240px; max-width: 500px;"
+        class="w-50 mb-0 mr-1">
         <base-select
           class="w-100"
           v-decorator="decorator.networks(item.key)"
