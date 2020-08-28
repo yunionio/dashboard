@@ -154,6 +154,7 @@ export default {
       },
       getBillingTableColumn({ vm: this }),
       getStatusTableColumn({
+        minWidth: 130,
         statusModule: 'server',
         slotCallback: row => {
           return [
