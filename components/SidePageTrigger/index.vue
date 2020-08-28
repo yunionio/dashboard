@@ -1,5 +1,5 @@
 <template>
-  <a v-if="isLink" @click="clickHandle"><slot /></a>
+  <a v-if="isLink && !inBaseDialog" @click="clickHandle"><slot /></a>
   <span v-else><slot /></span>
 </template>
 
@@ -45,6 +45,10 @@ export default {
     },
     // 是否处于SidePage中
     inBaseSidePage: {
+      default: false,
+    },
+    // 是否处于Dialog中
+    inBaseDialog: {
       default: false,
     },
   },
