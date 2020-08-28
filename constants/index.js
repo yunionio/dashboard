@@ -109,3 +109,28 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
 ]
 
 export const chartColors = ['#4DA1FF', '#FFC760', '#F76F89', '#5ED28A', '#ff5f2e', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
+
+export const contactMap = {
+  email: {
+    label: i18n.t('system.text_146'),
+    value: 'email',
+  },
+  mobile: {
+    label: i18n.t('system.text_144'),
+    value: 'mobile',
+  },
+  dingtalk: {
+    label: i18n.t('system.text_136'),
+    value: 'dingtalk',
+  },
+  feishu: {
+    label: i18n.t('system.text_133'),
+    value: 'feishu',
+  },
+  workwx: {
+    label: i18n.t('common_595'),
+    value: 'workwx',
+  },
+}
+
+export const contactArr = Object.keys(contactMap)
