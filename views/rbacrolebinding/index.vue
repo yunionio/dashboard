@@ -20,7 +20,6 @@ export default {
       listId: 'K8SRbacRoleBindingList',
       getParams: {
         details: true,
-        admin: true,
       },
     }
   },

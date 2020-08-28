@@ -20,7 +20,6 @@ export default {
       listId: 'K8sServerAccountList',
       getParams: {
         details: true,
-        admin: true,
       },
     }
   },

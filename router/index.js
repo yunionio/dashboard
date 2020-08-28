@@ -1,3 +1,4 @@
+import Federatednamespace from '@K8S/views/federatednamespace'
 import Kubeclusters from '@K8S/views/cluster'
 import KubeclustersCreate from '@K8S/views/cluster/create'
 import KubeclustersImport from '@K8S/views/cluster/import'
@@ -34,7 +35,7 @@ import K8sConfigmapCreate from '@K8S/views/configmap/create'
 import Secret from '@K8S/views/secret'
 import K8sSecretCreate from '@K8S/views/secret/create'
 import Layout from '@/layouts/RouterView'
-
+import FederatednamespaceCreate from '@K8S/views/federatednamespace/create'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 
@@ -438,6 +439,33 @@ export default {
               name: 'K8sKubeComponentUpdate',
               path: 'update',
               component: K8sKubeComponentUpdate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('k8s.text_364'),
+      },
+      submenus: [
+        {
+          path: '/k8s-federatednamespace',
+          meta: {
+            label: i18n.t('k8s.text_365'),
+            permission: 'k8s_federatednamespaces_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Federatednamespace',
+              path: '',
+              component: Federatednamespace,
+            },
+            {
+              name: 'FederatednamespaceCreate',
+              path: 'create',
+              component: FederatednamespaceCreate,
             },
           ],
         },
