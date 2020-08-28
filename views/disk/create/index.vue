@@ -373,8 +373,8 @@ export default {
           size: values.size * 1024,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
           project_id: (project && project.key) || this.userInfo.projectId,
-          prefer_region: cloudregion && cloudregion.key,
-          prefer_zone: zone && zone.key,
+          prefer_region: cloudregion,
+          prefer_zone: zone,
         }
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
