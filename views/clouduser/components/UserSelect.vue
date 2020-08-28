@@ -55,7 +55,7 @@ export default {
   },
   data () {
     return {
-      account: {},
+      cloudaccount: {},
       accountLoaded: false,
       domainLoading: false,
       domains: [],
@@ -249,7 +249,7 @@ export default {
           }
         } else {
           domains = shared_domains
-          const hasAccountDomain = R.find(R.propEq('id', this.accountDomain.id))(domains)
+          const hasAccountDomain = R.find(R.propEq('id', accountDomain.id))(domains)
           if (!hasAccountDomain) {
             domains.push(accountDomain)
           }
