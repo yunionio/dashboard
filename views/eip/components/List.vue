@@ -83,7 +83,7 @@ export default {
           { label: this.$t('network.text_21'), key: 'name' },
           { label: this.$t('network.text_191'), key: 'ip_addr' },
           { label: this.$t('network.text_195'), key: 'bandwidth' },
-          { label: this.$t('network.text_196'), key: 'account' },
+          { label: this.$t('network.text_196'), key: 'account', hidden: this.$store.getters.isProjectMode },
           { label: this.$t('network.text_27'), key: 'status' },
           { label: this.$t('network.text_192'), key: 'charge_type' },
           { label: this.$t('network.text_197'), key: 'associate_name' },

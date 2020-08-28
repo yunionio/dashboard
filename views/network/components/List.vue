@@ -113,6 +113,7 @@ export default {
           },
           vpc: {
             label: 'VPC',
+            hidden: this.$store.getters.isProjectMode,
           },
           wire: {
             label: this.$t('network.text_571'),
@@ -137,9 +138,9 @@ export default {
           { label: this.$t('network.text_198'), key: 'brand' },
           { label: this.$t('network.text_571'), key: 'wire' },
           { label: 'VLAN', key: 'vlan_id' },
-          { label: 'VPC', key: 'vpc' },
+          { label: 'VPC', key: 'vpc', hidden: this.$store.getters.isProjectMode },
           { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('network.text_196'), key: 'account' },
+          { label: this.$t('network.text_196'), key: 'account', hidden: this.$store.getters.isProjectMode },
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('network.text_24'), key: 'zone' },
         ],
