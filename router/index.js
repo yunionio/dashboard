@@ -1,4 +1,5 @@
 // import FlexNetwork from '@Network/views/flex-network'
+import DnsZone from '@Network/views/dns-zone'
 import EipCreate from '@Network/views/eip/create'
 import Wire from '@Network/views/wire'
 import Network from '@Network/views/network'
@@ -232,6 +233,21 @@ export default {
               name: 'DNS',
               path: '',
               component: DNS,
+            },
+          ],
+        },
+        {
+          path: '/dns-zone',
+          meta: {
+            label: i18n.t('dictionary.dnszone'),
+            permission: 'dnszone_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'DnsZone',
+              path: '',
+              component: DnsZone,
             },
           ],
         },
