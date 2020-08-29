@@ -47,6 +47,23 @@ export default {
                 validate: true,
               }),
             },
+            {
+              label: this.$t('network.text_721'),
+              action: () => {
+                this.onManager('performAction', {
+                  steadyStatus: ['available'],
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'sync-recordsets',
+                  },
+                })
+              },
+              meta: () => {
+                return {
+                  validate: !['sync_record_sets'].includes(obj.status),
+                }
+              },
+            },
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.dnszone'),
               resource: 'dns_zones',
