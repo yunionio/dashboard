@@ -9,6 +9,7 @@ import {
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
   getTagTableColumn,
+  getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -35,6 +36,7 @@ export default {
       getZoneTypeTableColumns(),
       getDnsRecordsetCountTableColumns(),
       getVpcCountTableColumns(),
+      getStatusTableColumn({ statusModule: 'dnszone' }),
       getPublicScopeTableColumn(),
       getProjectDomainTableColumn(),
     ]

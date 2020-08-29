@@ -12,7 +12,10 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getDomainFilter } from '@/utils/common/tableFilter'
+import {
+  getDomainFilter,
+  getStatusFilter,
+} from '@/utils/common/tableFilter'
 
 export default {
   name: 'DnsZoneList',
@@ -33,6 +36,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          status: getStatusFilter('dnszone'),
           zone_type: {
             label: this.$t('network.text_717'),
             dropdown: true,
