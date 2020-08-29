@@ -795,7 +795,8 @@
       "deleting":"Deleting",
       "delete_failed":"Deletion failed",
       "unknown":"unknown",
-      "sync_status": "Syncing"
+      "sync_status": "Syncing",
+      "init":"Created"
     }
   },
   "skuCategoryOptions": {
@@ -4728,6 +4729,7 @@
   "network.text_718": "Records",
   "network.text_719": "Associate VPC",
   "network.text_720": "DNS",
+  "network.text_721": "Synchronize analysis resources",
   "storage.text_1": "Local Storage",
   "storage.text_2": "Physical machine storage",
   "storage.text_3": "Container Storage",

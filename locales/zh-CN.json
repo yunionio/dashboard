@@ -795,7 +795,8 @@
       "deleting":"删除中",
       "delete_failed":"删除失败",
       "unknown":"未知",
-      "sync_status": "同步中"
+      "sync_status": "同步中",
+      "init":"初始化"
     }
   },
   "skuCategoryOptions": {
@@ -4728,6 +4729,7 @@
   "network.text_718": "记录数",
   "network.text_719": "关联VPC",
   "network.text_720": "域名解析",
+  "network.text_721": "同步解析列表",
   "storage.text_1": "本地存储",
   "storage.text_2": "物理机存储",
   "storage.text_3": "容器存储",
