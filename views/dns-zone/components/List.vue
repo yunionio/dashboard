@@ -113,7 +113,7 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('dns-detail')
+    this.initSidePageTab('dns-zone-detail')
     this.list.fetchData()
   },
   methods: {
