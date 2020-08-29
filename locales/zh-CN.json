@@ -777,6 +777,25 @@
     "verified": {
       "true": "已验证",
       "false": "未验证"
+    },
+    "dnszone": {
+      "available":"可用",
+      "creating":"创建中",
+      "create_failed":"创建失败",
+      "uncaching":"云上资源删除中",
+      "uncache_failed":"云上资源删除失败",
+      "caching":"云上资源创建中",
+      "cache_failed":"云上资源创建失败",
+      "add_vpcs":"绑定VPC中",
+      "add_vpcs_failed":"绑定VPC失败",
+      "remove_vpcs":"解绑VPC中",
+      "remove_vpcs_failed":"解绑VPC失败",
+      "sync_record_sets":"同步解析列表中",
+      "sync_record_sets_failed":"同步解析列表失败",
+      "deleting":"删除中",
+      "delete_failed":"删除失败",
+      "unknown":"未知",
+      "sync_status": "同步中"
     }
   },
   "skuCategoryOptions": {
@@ -1442,7 +1461,8 @@
     "instance_snapshot": "主机快照",
     "dbinstance": "RDS实例",
     "loadbalancerclusters": "负载均衡-集群",
-    "receivers": "接收人"
+    "receivers": "接收人",
+    "dnszone": "域名解析"
   },
   "shareScope": {
     "system": "系统",
@@ -4704,6 +4724,9 @@
   "network.text_714": "实例",
   "network.text_715": "访问控制",
   "network.text_716": "证书",
+  "network.text_717": "解析域类型",
+  "network.text_718": "记录数",
+  "network.text_719": "关联VPC",
   "storage.text_1": "本地存储",
   "storage.text_2": "物理机存储",
   "storage.text_3": "容器存储",
