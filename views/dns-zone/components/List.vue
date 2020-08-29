@@ -57,7 +57,18 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('network.text_21'), key: 'name' },
-          { label: this.$t('network.text_153'), key: 'enabled' },
+          { label: this.$t('network.text_717'), key: 'zone_type' },
+          { label: this.$t('network.text_718'), key: 'dns_recordset_count' },
+          { label: this.$t('network.text_719'), key: 'vpc_count' },
+          { label: this.$t('network.text_27'), key: 'status' },
+          {
+            label: this.$t('common_101'),
+            key: 'public_scope',
+            hidden: () => {
+              return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('vpcs'))
+            },
+          },
+          { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
         ],
       },
       groupActions: [

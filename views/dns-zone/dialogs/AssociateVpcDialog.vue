@@ -8,6 +8,7 @@
         @submit.prevent="handleSubmit"
         v-bind="formItemLayout">
         <area-selects
+          v-if="isShowRegionSelect"
           class="mb-0"
           ref="areaSelects"
           :wrapperCol="formItemLayout.wrapperCol"
@@ -23,7 +24,6 @@
             :params="vpcParams"
             :isDefaultSelect="true"
             :needParams="true"
-            @change="vpcChange"
             :labelFormat="vpcLabelFormat"
             :select-props="{ placeholder: $t('common_226') }" />
         </a-form-item>
@@ -41,6 +41,7 @@ import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import AreaSelects from '@/sections/AreaSelects'
+import { getRequestT } from '@/utils/utils'
 
 export default {
   name: 'AssociateVpcDialog',
@@ -48,6 +49,11 @@ export default {
     AreaSelects,
   },
   mixins: [DialogMixin, WindowsMixin],
+  provide () {
+    return {
+      form: this.form,
+    }
+  },
   data () {
     return {
       loading: false,
@@ -73,7 +79,7 @@ export default {
       },
       regionProvider: '',
       regionId: '',
-      vpcId: '',
+      associateVpcIds: [],
       formItemLayout: {
         wrapperCol: {
           md: { span: 18 },
@@ -90,27 +96,50 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope']),
+    zoneParams () {
+      const { cloudaccount_id, provider } = this.params.data[0]
+      if (cloudaccount_id) {
+        return { cloudaccount_id }
+      } else if (provider) {
+        return { provider }
+      }
+      return null
+    },
+    isShowRegionSelect () {
+      return !this.zoneParams
+    },
     vpcParams () {
-      const params = {
+      let params = {
         show_emulated: true,
         limit: 0,
         usable_vpc: true,
         scope: this.scope,
         cloudregion_id: this.regionId,
       }
+      if (this.zoneParams) {
+        params = {
+          ...params,
+          ...this.zoneParams,
+        }
+        delete params.cloudregion_id
+      }
+      if (this.associateVpcIds) {
+        params.filter = `id.notin(${this.associateVpcIds.join(',')})`
+      }
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
         delete params.scope
       }
-      if (!this.regionId) return {}
       return params
     },
+  },
+  created () {
+    this.loadVpcByDnsZone()
   },
   methods: {
     async handleConfirm () {
       this.loading = true
       try {
-        // const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
         await this.params.onManager('batchPerformAction', {
           id: ids,
@@ -141,8 +170,23 @@ export default {
       }
       return (<div>{ item.name }</div>)
     },
-    vpcChange (vpcId) {
-      this.vpcId = vpcId
+    loadVpcByDnsZone () {
+      const m = new this.$Manager('vpcs')
+      const { id } = this.params.data[0]
+      const params = {
+        show_emulated: true,
+        limit: 0,
+        usable_vpc: true,
+        scope: this.scope,
+        dns_zone_id: id,
+        $t: getRequestT(),
+      }
+      m.list({ params }).then((res) => {
+        const { data } = res.data
+        this.associateVpcIds = data.map((item) => {
+          return item.id
+        })
+      })
     },
   },
 }
