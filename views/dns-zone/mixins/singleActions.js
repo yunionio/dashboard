@@ -32,6 +32,21 @@ export default {
               scope: 'domain',
               resource: 'dns_zones',
             }),
+            {
+              label: this.$t('network.text_201'),
+              action: () => {
+                this.onManager('performAction', {
+                  steadyStatus: ['available'],
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'syncstatus',
+                  },
+                })
+              },
+              meta: () => ({
+                validate: true,
+              }),
+            },
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.dnszone'),
               resource: 'dns_zones',
