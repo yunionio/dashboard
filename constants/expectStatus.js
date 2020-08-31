@@ -342,4 +342,9 @@ export default {
     success: ['init'],
     danger: ['overdue', 'arrears'],
   },
+  dnszone: {
+    info: [],
+    success: ['available'],
+    danger: ['delete_fail'],
+  },
 }

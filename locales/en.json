@@ -782,6 +782,26 @@
       "init": "normal",
       "overdue": "Overdue",
       "arrears": "Arrears"
+    },
+    "dnszone": {
+      "available":"available",
+      "creating":"Creating",
+      "create_failed":"Create failed",
+      "uncaching":"Resources on the cloud are being deleted",
+      "uncache_failed": "Failed to delete resources on the cloud",
+      "caching":"Creating resources on the cloud",
+      "cache_failed": "Failed to create resources on the cloud",
+      "add_vpcs":"Bind VPC",
+      "add_vpcs_failed":"VPC binding failed",
+      "remove_vpcs":"Untie VPC",
+      "remove_vpcs_failed":"Unbinding VPC failed",
+      "sync_record_sets":"Synchronous analysis list",
+      "sync_record_sets_failed": "Failed to parse the list synchronously",
+      "deleting":"Deleting",
+      "delete_failed":"Deletion failed",
+      "unknown":"unknown",
+      "sync_status": "Syncing",
+      "init":"Created"
     }
   },
   "skuCategoryOptions": {
@@ -1447,7 +1467,8 @@
     "instance_snapshot": "Host Snapshot",
     "dbinstance": "RDS instance",
     "loadbalancerclusters": "Load Balance-Cluster",
-    "receivers": "receivers"
+    "receivers": "receivers",
+    "dnszone": "DNS"
   },
   "shareScope": {
     "system": "System",
@@ -4709,6 +4730,11 @@
   "network.text_714": "Instance",
   "network.text_715": "Access Control",
   "network.text_716": "Certificate",
+  "network.text_717": "Resolution domain type",
+  "network.text_718": "Records",
+  "network.text_719": "Associate VPC",
+  "network.text_720": "DNS",
+  "network.text_721": "Synchronize analysis resources",
   "storage.text_1": "Local Storage",
   "storage.text_2": "Physical machine storage",
   "storage.text_3": "Container Storage",

@@ -125,21 +125,27 @@ export default {
   computed: {
     _filterOptions () {
       if (!this.filterOptions || R.isEmpty(this.filterOptions)) return null
+      const filterOptions = R.filter(item => {
+        if (R.is(Function, item.hidden)) {
+          return !item.hidden()
+        }
+        return !item.hidden
+      }, this.filterOptions)
       const filterSortKeys = ['name', 'brand', 'provider', 'ip', 'ips', 'status', 'enabled', 'sn', 'os_type', 'cidr', 'ports', 'tenant', 'region', 'host', 'billing_type']
-      const _filterOptions = {}
+      const ret = {}
       filterSortKeys.forEach(k => {
         const _k = k.toLowerCase()
-        if (this.filterOptions[_k]) {
-          _filterOptions[_k] = this.filterOptions[_k]
+        if (filterOptions[_k]) {
+          ret[_k] = filterOptions[_k]
         }
       })
-      Object.keys(this.filterOptions).forEach(k => {
+      Object.keys(filterOptions).forEach(k => {
         const _k = k.toLowerCase()
-        if (!_filterOptions[_k]) {
-          _filterOptions[_k] = this.filterOptions[_k]
+        if (!ret[_k]) {
+          ret[_k] = filterOptions[_k]
         }
       })
-      return _filterOptions
+      return ret
     },
   },
   methods: {
