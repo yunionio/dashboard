@@ -338,4 +338,9 @@ export default {
     success: [true],
     info: [false],
   },
+  dnszone: {
+    info: [],
+    success: ['available'],
+    danger: ['delete_fail'],
+  },
 }

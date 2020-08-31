@@ -156,4 +156,7 @@ export default {
   LbcertSidePage: {
     resource: 'loadbalancercertificates',
   },
+  DnsZoneSidePage: {
+    resource: 'dns_zones',
+  },
 }
