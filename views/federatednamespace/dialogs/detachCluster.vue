@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ action }}</div>
+    <div slot="header">解绑</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('k8s.text_365')" :count="params.data.length" action="解绑" />
       <dialog-table :data="params.data" :columns="params.columns" />
@@ -28,7 +28,17 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
+        await this.params.onManager('performAction', {
+          id: this.params.data[0].federatednamespace_id,
+          managerArgs: {
+            action: 'detach-cluster',
+            data: {
+              cluster_id: this.params.data[0].cluster_id,
+            },
+          },
+        })
         this.cancelDialog()
+        this.params.success && this.params.success()
         this.loading = false
       } catch (error) {
         this.loading = false

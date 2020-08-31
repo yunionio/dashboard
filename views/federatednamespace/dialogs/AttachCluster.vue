@@ -1,15 +1,15 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('k8s.text_49')}}</div>
+    <div slot="header">{{$t('k8s.text_366')}}</div>
     <div slot="body">
       <a-form class="mt-3" :form="form.fc">
-        <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout">
+        <a-form-item :label="$t('k8s.text_28')" class="mb-0" v-bind="formItemLayout">
           <base-select
-            :options="options"
+            resource="kubeclusters"
+            :params="clusterParams"
+            version="v1"
             v-decorator="decorators.cluster_id"
-            idKey="cluster_id"
-            nameKey="cluster"
-            :select-props="{ placeholder: $t('k8s.text_30'), loading: clusterLoading }" />
+            :select-props="{ placeholder: $t('k8s.text_30') }" />
         </a-form-item>
       </a-form>
     </div>
@@ -31,8 +31,6 @@ export default {
   data () {
     return {
       loading: false,
-      options: [],
-      clusterLoading: false,
       form: {
         fc: this.$form.createForm(this, {
         }),
@@ -52,48 +50,30 @@ export default {
         wrapperCol: { span: 20 },
         labelCol: { span: 3 },
       },
+      clusterParams: {
+        federated_keyword: 'federatednamespace',
+        federated_used: false,
+        federated_resource_id: this.params.data.id,
+      },
     }
   },
   computed: {
     ...mapGetters(['scope']),
   },
-  created () {
-    this.fetchCluster()
-  },
   methods: {
-    async fetchCluster () {
-      try {
-        this.clusterLoading = true
-        const { data: { data = [] } } = await this.params.onManager('getSpecific', {
-          managerArgs: {
-            id: this.params.data[0].id,
-            spec: 'kubeclusters',
-            params: {
-              details: true,
-            },
-          },
-        })
-        this.clusterLoading = false
-        this.options = data
-      } catch (error) {
-        this.clusterLoading = false
-        throw error
-      }
-    },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
         await this.params.onManager('performAction', {
-          id: this.params.data[0].id,
+          id: this.params.data.id,
           managerArgs: {
             action: 'attach-cluster',
             data: values,
           },
         })
         this.loading = false
-        this.$message.success(this.$t('k8s.text_281'))
-        // this.params.refresh()
+        this.params.success && this.params.success()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

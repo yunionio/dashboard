@@ -11,18 +11,16 @@
 <script>
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
-  name: 'K8SFederatednamespaceClusterList',
-  mixins: [WindowsMixin],
+  name: 'K8SFederatedroleClusterList',
+  mixins: [WindowsMixin, ListMixin],
   props: {
+    id: String,
     data: {
       type: Object,
-    },
-    onManager: {
-      type: Function,
-      required: true,
     },
   },
   data () {
@@ -37,7 +35,7 @@ export default {
       groupActions: [
         {
           label: this.$t('k8s.text_366'),
-          permission: 'k8s_federatednamespaces_perform_attach_cluster',
+          permission: 'k8s_federatedroles_perform_attach_cluster',
           action: () => {
             this.createDialog('AttachClusterDialog', {
               vm: this,
@@ -47,7 +45,7 @@ export default {
               name: this.$t('k8s.text_365'),
               onManager: this.onManager,
               success: () => {
-                this.list.refesh()
+                this.list.refresh()
               },
             })
           },
@@ -58,16 +56,35 @@ export default {
       ],
       singleActions: [
         {
+          label: this.$t('k8s.text_366'),
+          permission: 'k8s_federatedroles_perform_attach_cluster',
+          action: (obj) => {
+            this.createDialog('AttachClusterDialog', {
+              vm: this,
+              data: [obj],
+              columns: this.columns,
+              title: this.$t('k8s.text_368'),
+              name: this.$t('k8s.text_365'),
+              onManager: this.onManager,
+              success: () => {
+                this.destroySidePages()
+              },
+            })
+          },
+        },
+        {
           label: '解绑',
-          permission: 'k8s_federatednamespaces_perform_detach_cluster',
+          permission: 'k8s_federatedroles_perform_detach_cluster',
           action: (obj) => {
             this.createDialog('DetachClusterDialog', {
               vm: this,
               data: [obj],
               columns: this.columns,
+              title: this.$t('k8s.text_368'),
+              name: this.$t('k8s.text_365'),
               onManager: this.onManager,
               success: () => {
-                this.list.refesh()
+                this.destroySidePages()
               },
             })
           },
@@ -142,7 +159,7 @@ export default {
             ...params,
           },
         }
-        const res = await new this.$Manager('federatednamespaces', 'v1').getSpecific(managerArgs)
+        const res = await new this.$Manager('federatedroles', 'v1').getSpecific(managerArgs)
         return res
       } catch (error) {
         throw error
