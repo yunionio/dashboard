@@ -1,7 +1,14 @@
 <template>
   <div @click="handleWrapClick">
-    <a-popover v-model="visible" trigger="click" destroyTooltipOnHide placement="bottomLeft" overlayClassName="search-box-tag-popover-wrap">
-      <div class="auto-completer-wrap" slot="content">
+    <a-popover
+      v-model="visible"
+      trigger="click"
+      destroyTooltipOnHide
+      placement="bottomLeft"
+      overlayClassName="search-box-tag-popover-wrap"
+      :getPopupContainer="getPopupContainer"
+      :align="{offset: [0, 0]}">
+      <div class="auto-completer-wrap" slot="content" :style="{ width: isDate ? '300px' : '200px' }">
         <ul class="auto-completer-items">
           <template v-if="isDropdown">
             <!-- 如果有配置项则渲染 -->
@@ -17,6 +24,14 @@
                     @change="handleValueChange">{{ item.label }}</a-checkbox>
                 </span>
               </li>
+            </template>
+            <!-- 如果需要渲染时间选择器 -->
+            <template v-else-if="isDate">
+              <date-select
+                :value="newValue"
+                @change="handleDateChange"
+                :getPopupContainer="getDateSelectPopupContainer"
+                @date-editing-change="editing => $emit('date-editing-change', editing)" />
             </template>
           </template>
           <template v-else>
@@ -35,9 +50,13 @@
 
 <script>
 import * as R from 'ramda'
+import DateSelect from './DateSelect'
 
 export default {
   name: 'Tag',
+  components: {
+    DateSelect,
+  },
   props: {
     value: {
       type: Array,
@@ -79,13 +98,23 @@ export default {
     label () {
       const label = this.options[this.id].label
       let ret = `${label}${this.keySeparator}`
-      ret += this.value.map(value => {
-        if (this.options[this.id].items) {
-          const target = this.options[this.id].items.find(item => item.key === value)
-          if (target) return target.label
+      if (this.isDate) {
+        if (this.value[0] && this.value[1]) {
+          ret += this.value.join('-')
+        } else if (this.value[0]) {
+          ret += `<${this.value[0]}`
+        } else if (this.value[1]) {
+          ret += `>${this.value[1]}`
         }
-        return value
-      }).filter(item => !!item).join(this.valueSeparator)
+      } else {
+        ret += this.value.map(value => {
+          if (this.options[this.id].items) {
+            const target = this.options[this.id].items.find(item => item.key === value)
+            if (target) return target.label
+          }
+          return value
+        }).filter(item => !!item).join(this.valueSeparator)
+      }
       return ret
     },
     config () {
@@ -94,6 +123,10 @@ export default {
     // 配置项是否使用了dropdown模式
     isDropdown () {
       return this.config && this.config.dropdown
+    },
+    // 是否为时间选择模式
+    isDate () {
+      return this.config && this.config.date
     },
     confirmDisable () {
       if (this.isDropdown) {
@@ -157,10 +190,28 @@ export default {
         }
       }
     },
+    handleDateChange (val) {
+      const values = val[0]
+      let labelArr
+      if (values[0] && values[1]) {
+        labelArr = values.map(item => item.format('YYYY-MM-DD HH:mm:ss'))
+      } else if (values[0]) {
+        labelArr = [values[0].format('YYYY-MM-DD HH:mm:ss'), null]
+      } else if (values[1]) {
+        labelArr = [null, values[1].format('YYYY-MM-DD HH:mm:ss')]
+      }
+      this.newValue = labelArr
+    },
     handleInputChange (e) {
       let val = e.target.value
       val = val.split(this.valueSeparator)
       this.newValue = val
+    },
+    getPopupContainer (trigger) {
+      return trigger.parentNode
+    },
+    getDateSelectPopupContainer (trigger) {
+      return this.$parent.$refs['search-box-wrap']
     },
   },
 }

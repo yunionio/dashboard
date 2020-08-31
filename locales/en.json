@@ -779,24 +779,24 @@
       "false": "Unverified"
     },
     "dnszone": {
-      "available":"available",
-      "creating":"Creating",
-      "create_failed":"Create failed",
-      "uncaching":"Resources on the cloud are being deleted",
+      "available": "available",
+      "creating": "Creating",
+      "create_failed": "Create failed",
+      "uncaching": "Resources on the cloud are being deleted",
       "uncache_failed": "Failed to delete resources on the cloud",
-      "caching":"Creating resources on the cloud",
+      "caching": "Creating resources on the cloud",
       "cache_failed": "Failed to create resources on the cloud",
-      "add_vpcs":"Bind VPC",
-      "add_vpcs_failed":"VPC binding failed",
-      "remove_vpcs":"Untie VPC",
-      "remove_vpcs_failed":"Unbinding VPC failed",
-      "sync_record_sets":"Synchronous analysis list",
+      "add_vpcs": "Bind VPC",
+      "add_vpcs_failed": "VPC binding failed",
+      "remove_vpcs": "Untie VPC",
+      "remove_vpcs_failed": "Unbinding VPC failed",
+      "sync_record_sets": "Synchronous analysis list",
       "sync_record_sets_failed": "Failed to parse the list synchronously",
-      "deleting":"Deleting",
-      "delete_failed":"Deletion failed",
-      "unknown":"unknown",
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
+      "unknown": "unknown",
       "sync_status": "Syncing",
-      "init":"Created"
+      "init": "Created"
     }
   },
   "skuCategoryOptions": {
@@ -4013,7 +4013,6 @@
   "k8s.text_367": "create namespace",
   "k8s.text_368": "delete namespace",
   "k8s.text_369": "attached clusters",
-
   "network.text_1": "One hundred megabytes (100M)",
   "network.text_2": "Gigabit (1G)",
   "network.text_3": "Dual Gigabit (2x1G)",
@@ -8548,5 +8547,13 @@
   "common_625": "Local users who have not joined the project do not support associating cloud users",
   "common_626": "@:dictionary.domain System Manager View",
   "common_627": "{0} verification",
-  "common_628": "New {0}"
+  "common_628": "New {0}",
+  "common_648": "Date",
+  "common_649": "Before this date",
+  "common_650": "After this date",
+  "common_651": "Scope Selection",
+  "common_652": "Select start date",
+  "common_653": "Select start time",
+  "common_654": "Select end date",
+  "common_655": "Select end time"
 }
