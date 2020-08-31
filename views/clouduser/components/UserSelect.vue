@@ -222,17 +222,17 @@ export default {
       const isGoogle = this.cloudaccount.provider === 'Google'
       // const isOwner = this.isAdminMode || this.cloudaccount.domain_id === this.$store.getters.userInfo.projectDomainId
       const { public_scope, shared_domains, share_mode } = this.cloudaccount
-      const userDomain = {
-        id: this.userInfo.projectDomainId,
-        name: this.userInfo.projectDomain,
-      }
+      // const userDomain = {
+      //   id: this.userInfo.projectDomainId,
+      //   name: this.userInfo.projectDomain,
+      // }
       const accountDomain = {
         id: this.cloudaccount.domain_id,
         name: this.cloudaccount.project_domain,
       }
       let domains = []
       if (public_scope === 'none') {
-        domains = [userDomain]
+        domains = [accountDomain]
       }
       if (public_scope === 'domain') {
         if (share_mode === 'provider_domain') {
@@ -245,7 +245,7 @@ export default {
               }]
             }
           } else {
-            domains = [userDomain]
+            domains = [accountDomain]
           }
         } else {
           domains = shared_domains
