@@ -1,5 +1,8 @@
 import K8sRbacclusterrolebinding from '@K8S/views/rbacclusterrolebinding'
 import Federatednamespace from '@K8S/views/federatednamespace'
+import Federatedclusterrole from '@K8S/views/federatedclusterrole'
+import Federatedrolebinding from '@K8S/views/federatedrolebinding'
+import Federatedclusterrolebinding from '@K8S/views/federatedclusterrolebinding'
 import Federatedrole from '@K8S/views/federatedrole'
 import Kubeclusters from '@K8S/views/cluster'
 import KubeclustersCreate from '@K8S/views/cluster/create'
@@ -521,6 +524,51 @@ export default {
               name: 'FederatedroleCreate',
               path: 'create',
               component: FederatedroleCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-federatedclusterrole',
+          meta: {
+            label: i18n.t('k8s.text_373'),
+            permission: 'k8s_federatedclusterroles_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Federatedclusterrole',
+              path: '',
+              component: Federatedclusterrole,
+            },
+          ],
+        },
+        {
+          path: '/k8s-federatedrolebinding',
+          meta: {
+            label: i18n.t('k8s.text_374'),
+            permission: 'k8s_federatedrolebindings_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Federatedrolebinding',
+              path: '',
+              component: Federatedrolebinding,
+            },
+          ],
+        },
+        {
+          path: '/k8s-federatedclusterrolebinding',
+          meta: {
+            label: i18n.t('k8s.text_375'),
+            permission: 'k8s_federatedclusterrolebindings_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Federatedclusterrolebinding',
+              path: '',
+              component: Federatedclusterrolebinding,
             },
           ],
         },
