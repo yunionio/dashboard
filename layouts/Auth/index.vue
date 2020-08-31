@@ -10,13 +10,16 @@
           <!-- 多语言切换按钮 -->
           <div class="auth-header-right flex-fill d-flex justify-content-end">
             <a-dropdown :trigger="['click']">
-              <a-icon type="global" class="oc-pointer" />
+              <div class="oc-pointer">
+                <a-icon type="global" />
+                <span class="ml-2">{{ language === 'zh-CN' ? $t('common_68') : 'English' }}</span>
+              </div>
               <a-menu slot="overlay" @click="handleChangeLanguage">
                 <a-menu-item key="zh-CN">
-                  <a>简体中文</a>
+                  <span class="mr-2">{{$t('common_68')}}</span><a-icon v-show="language === 'zh-CN'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                 </a-menu-item>
                 <a-menu-item key="en">
-                  <a>English</a>
+                  <span class="mr-2">English</span><a-icon v-show="language === 'en'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
@@ -64,9 +67,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['copyright', 'loginLogo']),
+    ...mapGetters(['copyright', 'loginLogo', 'setting']),
     isChrome () {
       return isChrome()
+    },
+    language () {
+      return this.setting.language
     },
   },
   async created () {
