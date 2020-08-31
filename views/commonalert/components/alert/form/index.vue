@@ -370,6 +370,9 @@ export default {
         }
       }, newField)
       this.$nextTick(this.toParams)
+      if ((values.hasOwnProperty('metric_key') && !values.metric_key) || (values.hasOwnProperty('metric_value') && !values.metric_value)) {
+        this.resetChart()
+      }
     },
     async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
@@ -440,9 +443,6 @@ export default {
       if (fd.group_by) {
         // eslint-disable-next-line no-template-curly-in-string
         params.group_by = [{ type: 'tag', params: [fd.group_by] }]
-      }
-      if (!fd.metric_key || !fd.metric_value) {
-        this.resetChart()
       }
       if (params.select && R.is(String, fd.function)) {
         params.select[0].push({ type: fd.function.toLowerCase(), params: [] })
