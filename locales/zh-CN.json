@@ -779,24 +779,24 @@
       "false": "未验证"
     },
     "dnszone": {
-      "available":"可用",
-      "creating":"创建中",
-      "create_failed":"创建失败",
-      "uncaching":"云上资源删除中",
-      "uncache_failed":"云上资源删除失败",
-      "caching":"云上资源创建中",
-      "cache_failed":"云上资源创建失败",
-      "add_vpcs":"绑定VPC中",
-      "add_vpcs_failed":"绑定VPC失败",
-      "remove_vpcs":"解绑VPC中",
-      "remove_vpcs_failed":"解绑VPC失败",
-      "sync_record_sets":"同步解析列表中",
-      "sync_record_sets_failed":"同步解析列表失败",
-      "deleting":"删除中",
-      "delete_failed":"删除失败",
-      "unknown":"未知",
+      "available": "可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "uncaching": "云上资源删除中",
+      "uncache_failed": "云上资源删除失败",
+      "caching": "云上资源创建中",
+      "cache_failed": "云上资源创建失败",
+      "add_vpcs": "绑定VPC中",
+      "add_vpcs_failed": "绑定VPC失败",
+      "remove_vpcs": "解绑VPC中",
+      "remove_vpcs_failed": "解绑VPC失败",
+      "sync_record_sets": "同步解析列表中",
+      "sync_record_sets_failed": "同步解析列表失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "unknown": "未知",
       "sync_status": "同步中",
-      "init":"初始化"
+      "init": "初始化"
     }
   },
   "skuCategoryOptions": {
@@ -4013,7 +4013,6 @@
   "k8s.text_367": "新建命名空间",
   "k8s.text_368": "删除命名空间",
   "k8s.text_369": "已绑定集群资源",
-
   "network.text_1": "百兆(100M)",
   "network.text_2": "千兆(1G)",
   "network.text_3": "双千兆(2x1G)",
@@ -8548,5 +8547,13 @@
   "common_625": "未加入项目的本地用户不支持关联云用户",
   "common_626": "@:dictionary.domain管理后台",
   "common_627": "{0}验证",
-  "common_628": "新建{0}"
+  "common_628": "新建{0}",
+  "common_648": "日期",
+  "common_649": "此日期之前",
+  "common_650": "此日期之后",
+  "common_651": "范围选择",
+  "common_652": "选择开始日期",
+  "common_653": "选择开始时间",
+  "common_654": "选择结束日期",
+  "common_655": "选择结束时间"
 }
