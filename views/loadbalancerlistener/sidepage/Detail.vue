@@ -165,6 +165,7 @@ export default {
               title: this.$t('network.text_435'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
+                if (row.provider.toUpperCase() !== 'onecloud') return '-'
                 return row.backend_connect_timeout + this.$t('network.text_76')
               },
             },
@@ -173,6 +174,7 @@ export default {
               title: this.$t('network.text_436'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
+                if (row.provider.toUpperCase() !== 'onecloud') return '-'
                 return row.backend_idle_timeout + this.$t('network.text_76')
               },
             },
@@ -195,6 +197,7 @@ export default {
               title: this.$t('network.text_437'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
+                if (row.provider.toUpperCase() !== 'onecloud') return '-'
                 return row.http_request_rate + this.$t('network.text_76')
               },
             },
@@ -203,6 +206,7 @@ export default {
               title: this.$t('network.text_440'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
+                if (row.provider.toUpperCase() !== 'onecloud') return '-'
                 return row.http_request_rate_per_src + this.$t('network.text_76')
               },
             },
