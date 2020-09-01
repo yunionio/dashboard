@@ -19,7 +19,7 @@ export const SERVER_TYPE = {
 // 网络配置选项
 export const NETWORK_OPTIONS_MAP = {
   default: {
-    label: i18n.t('common_563'),
+    label: i18n.t('common_498'),
     key: 'default',
   },
   manual: {

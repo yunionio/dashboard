@@ -15,7 +15,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -55,13 +55,7 @@ export default {
         resource: 'hosts',
         getParams: this.getParam,
         filterOptions: {
-          name: {
-            label: this.$t('compute.text_228'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           status: getStatusFilter('host'),
           enabled: getEnabledFilter(),
           host_status: {
@@ -150,7 +144,7 @@ export default {
                 //   resource: 'hosts',
                 // }),
                 {
-                  label: this.$t('compute.text_507'),
+                  label: this.$t('compute.text_540'),
                   action: (obj) => {
                     this.createDialog('HostsAdjustLabelDialog', {
                       data: this.list.selectedItems,

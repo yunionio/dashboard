@@ -19,6 +19,7 @@ import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
 import {
+  getNameFilter,
   getTenantFilter,
   getStatusFilter,
   getBrandFilter,
@@ -44,13 +45,7 @@ export default {
         getParams: this.getParam,
         steadyStatus,
         filterOptions: {
-          name: {
-            label: this.$t('compute.text_228'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           status: getStatusFilter('snapshot'),
           brand: getBrandFilter(),
           projects: getTenantFilter(),
@@ -58,10 +53,10 @@ export default {
           account: getAccountFilter(),
           disk_name: {
             label: this.$t('compute.text_100'),
-            jointFilter: true,
             filter: true,
+            jointFilter: true,
             formatter: val => {
-              return `disks.id(disk_id).name.contains("${val}")`
+              return `disks.id(disk_id).name.in(${val})`
             },
           },
           disk_type: {

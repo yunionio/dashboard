@@ -47,7 +47,7 @@ export default {
             label: this.$t('compute.text_392'),
             jointFilter: true,
           },
-          guest: {
+          guests: {
             label: this.$t('dictionary.server'),
           },
           disk_type: {
