@@ -80,12 +80,12 @@ export default {
               },
             },
             {
-              label: i18n.t('storage.text_45'),
+              label: i18n.t('compute.text_540'),
               action: row => {
                 this.createDialog('BlockStorageUpdateTagsDialog', {
                   data: [row],
                   columns: this.columns,
-                  title: i18n.t('storage.text_45'),
+                  title: i18n.t('compute.text_540'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
