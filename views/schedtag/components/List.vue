@@ -12,6 +12,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
+import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import i18n from '@/locales'
@@ -33,13 +34,7 @@ export default {
         resource: 'schedtags',
         getParams,
         filterOptions: {
-          name: {
-            label: this.$t('cloudenv.text_95'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           default_strategy: {
             label: this.$t('cloudenv.text_413'),
             dropdown: true,
