@@ -229,15 +229,6 @@ export default {
       let params = {
         cloud_env: this.cloudEnv,
       }
-      if (this.manager) {
-        params = {
-          manager: this.manager,
-          usable: true,
-          scope: this.$store.getters.scope,
-          show_emulated: true,
-          capability: 'compute',
-        }
-      }
       if (this.cloudEnv === 'onpremise') {
         params = {
           usable: true,
