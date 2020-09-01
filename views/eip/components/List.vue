@@ -16,7 +16,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getStatusFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -38,19 +38,13 @@ export default {
         resource: 'eips',
         getParams: this.getParam,
         filterOptions: {
-          name: {
-            label: this.$t('network.text_21'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           brand: getBrandFilter('brands', ['VMware']),
           ip_addr: {
             label: this.$t('network.text_191'),
             filter: true,
             formatter: val => {
-              return `ip_addr.contains("${val}")`
+              return `ip_addr.contains(${val})`
             },
           },
           status: getStatusFilter('eip'),
