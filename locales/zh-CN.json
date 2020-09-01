@@ -797,6 +797,10 @@
       "unknown": "未知",
       "sync_status": "同步中",
       "init": "初始化"
+    },
+    "alertrecord": {
+      "ok": "告警已恢复",
+      "alerting": "发生告警"
     }
   },
   "skuCategoryOptions": {
@@ -6696,6 +6700,7 @@
   "monitor.text_7": "请输入名称",
   "monitor.text_8": "范围在 1～{0}Mbps",
   "monitor.text_9": "仅系统或{0}管理员支持该操作",
+  "monitor.text_10": "报警记录",
   "system.policy_edit_type_checkbox": "可视化视图",
   "system.policy_edit_type_yaml": "YAML编辑视图",
   "scope.text_1": "实例列表",
@@ -7680,6 +7685,7 @@
   "common.email": "邮件",
   "common.dingtalk": "钉钉",
   "common.feishu": "飞书",
+  "common.feishu_robot": "飞书机器人",
   "common.storage.cloud": "普通云盘",
   "common.storage.cloudssd": "SSD 云盘",
   "common.storage.cloudessd": "ESSD云盘PL1",

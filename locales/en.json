@@ -797,6 +797,10 @@
       "unknown": "unknown",
       "sync_status": "Syncing",
       "init": "Created"
+    },
+    "alertrecord": {
+      "ok": "Alarm has been restored",
+      "alerting": "Alarming"
     }
   },
   "skuCategoryOptions": {
@@ -6696,6 +6700,7 @@
   "monitor.text_7": "Please enter a name",
   "monitor.text_8": "The range is 1～{0}Mbps",
   "monitor.text_9": "Only the system or {0} administrator supports this operation",
+  "monitor.text_10": "Alarm Record",
   "system.policy_edit_type_checkbox": "Visualization View",
   "system.policy_edit_type_yaml": "YAML edit view",
   "scope.text_1": "Instance List",
@@ -7680,6 +7685,7 @@
   "common.email": "Mail",
   "common.dingtalk": "Dingtalk",
   "common.feishu": "Feishu",
+  "common.feishu_robot": "Feishu Rebot",
   "common.storage.cloud": "common cloud disk",
   "common.storage.cloudssd": "SSD Cloud Disk",
   "common.storage.cloudessd": "ESSD Cloud Disk PL1",
