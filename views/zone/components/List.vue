@@ -10,6 +10,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -31,13 +32,7 @@ export default {
         resource: 'zones',
         getParams: this.getParams,
         filterOptions: {
-          name: {
-            label: this.$t('cloudenv.text_95'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
         },
       }),
       exportDataOptions: {
