@@ -8,12 +8,13 @@
         @submit.prevent="handleSubmit"
         v-bind="formItemLayout">
         <area-selects
-          v-if="isShowRegionSelect"
           class="mb-0"
           ref="areaSelects"
           :wrapperCol="formItemLayout.wrapperCol"
           :labelCol="formItemLayout.labelCol"
           :names="areaselectsName"
+          :cityParams="cityParams"
+          :providerParams="providerParams"
           :cloudregionParams="cloudregionParams"
           :isRequired="true"
           @change="handleRegionChange" />
@@ -41,7 +42,6 @@ import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import AreaSelects from '@/sections/AreaSelects'
-import { getRequestT } from '@/utils/utils'
 
 export default {
   name: 'AssociateVpcDialog',
@@ -71,12 +71,6 @@ export default {
         ],
       },
       areaselectsName: ['city', 'provider', 'cloudregion'],
-      cloudregionParams: {
-        scope: this.scope,
-        limit: 0,
-        usable_vpc: true,
-        show_emulated: true,
-      },
       regionProvider: '',
       regionId: '',
       associateVpcIds: [],
@@ -96,58 +90,56 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope']),
-    zoneParams () {
-      const { cloudaccount_id, provider } = this.params.data[0]
-      if (cloudaccount_id) {
-        return { cloudaccount_id }
-      } else if (provider) {
-        return { provider }
-      }
-      return null
-    },
-    isShowRegionSelect () {
-      return !this.zoneParams
-    },
     vpcParams () {
-      let params = {
+      const params = {
         show_emulated: true,
         limit: 0,
         usable_vpc: true,
         scope: this.scope,
         cloudregion_id: this.regionId,
-      }
-      if (this.zoneParams) {
-        params = {
-          ...params,
-          ...this.zoneParams,
-        }
-        delete params.cloudregion_id
-      }
-      if (this.associateVpcIds) {
-        params.filter = `id.notin(${this.associateVpcIds.join(',')})`
+        filter: 'provider.in(Aws, OneCloud)',
       }
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
         delete params.scope
       }
+      if (!this.regionId) return {}
       return params
     },
-  },
-  created () {
-    this.loadVpcByDnsZone()
+    cityParams () {
+      return {
+        filter: 'provider.in(Aws, OneCloud)',
+        scope: this.scope,
+      }
+    },
+    providerParams () {
+      return {
+        filter: 'provider.in(Aws, OneCloud)',
+        scope: this.scope,
+      }
+    },
+    cloudregionParams () {
+      return {
+        scope: this.scope,
+        limit: 0,
+        usable_vpc: true,
+        show_emulated: true,
+      }
+    },
   },
   methods: {
     async handleConfirm () {
       this.loading = true
       try {
         const ids = this.params.data.map(item => item.id)
+        const { vpc } = await this.form.fc.validateFields()
         await this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: ['running', 'ready'],
           managerArgs: {
             action: 'add-vpcs',
             data: {
-              vpc_ids: [this.vpcId],
+              vpc_ids: [vpc],
             },
           },
         })
@@ -157,9 +149,12 @@ export default {
       }
     },
     handleRegionChange (data) {
-      const { provider } = data.cloudregion.value
-      this.regionProvider = provider
-      this.regionId = data.cloudregion.id
+      const { cloudregion } = data
+      if (cloudregion) {
+        const { provider } = cloudregion.value
+        this.regionProvider = provider
+        this.regionId = cloudregion.id
+      }
     },
     vpcLabelFormat (item) {
       if (item.manager) {
@@ -169,24 +164,6 @@ export default {
         return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
       }
       return (<div>{ item.name }</div>)
-    },
-    loadVpcByDnsZone () {
-      const m = new this.$Manager('vpcs')
-      const { id } = this.params.data[0]
-      const params = {
-        show_emulated: true,
-        limit: 0,
-        usable_vpc: true,
-        scope: this.scope,
-        dns_zone_id: id,
-        $t: getRequestT(),
-      }
-      m.list({ params }).then((res) => {
-        const { data } = res.data
-        this.associateVpcIds = data.map((item) => {
-          return item.id
-        })
-      })
     },
   },
 }
