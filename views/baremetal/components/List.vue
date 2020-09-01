@@ -18,7 +18,7 @@ import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { disableDeleteAction } from '@/utils/common/tableActions'
-import { getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
@@ -41,13 +41,7 @@ export default {
         resource: 'servers',
         getParams: this.getParam,
         filterOptions: {
-          name: {
-            label: this.$t('compute.text_228'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           ips: {
             label: 'IP',
             filter: true,

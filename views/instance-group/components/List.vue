@@ -10,7 +10,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getDomainFilter, getTenantFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -55,9 +55,7 @@ export default {
               { label: this.$t('compute.text_569'), key: false },
             ],
           },
-          tenant: {
-            label: this.$t('dictionary.project'),
-          },
+          projects: getTenantFilter(),
           project_domains: getDomainFilter(),
         },
       }),
