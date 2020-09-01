@@ -3,11 +3,11 @@
     <div class="wrapper">
       <a-icon type="close-circle" class="icon-error mb-3" />
       <h3 class="title">{{errorMsg}}</h3>
-      <p class="content">您可以点击【关闭页面】将本页面关闭，也可以点击【登录系统】进行其他任务</p>
+      <p class="content">{{$t('common_644')}}</p>
       <div>
-        <!-- <el-button type="primary" @click="openPage">打开页面</el-button> -->
-        <a-button class="mr-2" type="primary" @click="closePage">关闭页面</a-button>
-        <a-button @click="openLogin">登录系统</a-button>
+        <!-- <el-button type="primary" @click="openPage">{{$t('common_645')}}</el-button> -->
+        <a-button class="mr-2" type="primary" @click="closePage">{{$t('common_646')}}</a-button>
+        <a-button @click="openLogin">{{$t('common_335')}}</a-button>
       </div>
     </div>
   </div>

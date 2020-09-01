@@ -1,4 +1,3 @@
-import UserPreferences from '@/views/user-preferences'
 import NotFoundPage from '@/views/exception/404'
 import NoPermission from '@/views/exception/403'
 import EmailVerify from '@/views/email-verify'
@@ -32,11 +31,6 @@ const routes = [
       auth: false,
     },
     component: EmailVerify,
-  },
-  {
-    path: '/user-preferences',
-    name: 'UserPreferences',
-    component: UserPreferences,
   },
   { name: 'WorkflowSuccess', path: '/workflow/success', component: WorkflowSuccess, meta: { layout: 'full-screen', auth: false } },
   { name: 'WorkflowError', path: '/workflow/error', component: WorkflowError, meta: { layout: 'full-screen', auth: false } },

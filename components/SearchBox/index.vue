@@ -3,7 +3,8 @@
     class="search-box-wrap ant-input d-flex align-items-center justify-content-between"
     :class="{ 'ant-input-number-focused': focus }"
     v-clickoutside="handleWrapClickoutside"
-    @click="handleWrapClick">
+    @click="handleWrapClick"
+    ref="search-box-wrap">
     <ul class="clearfix">
       <template v-for="(item, key) of value">
         <li :key="key" class="mb-1 mt-1">
@@ -19,7 +20,8 @@
             @remove="handleRemoveTag"
             @update-show="handleUpdateShow"
             @confirm="handleSearch"
-            @update-focus="handleUpdateFocus" />
+            @update-focus="handleUpdateFocus"
+            @date-editing-change="editing => dateEditing = editing" />
         </li>
       </template>
       <li class="mb-1 mt-1">
@@ -85,6 +87,7 @@ export default {
       newValues: {},
       // 同步input的输入value
       autocompleterSearch: '',
+      dateEditing: false,
     }
   },
   computed: {
@@ -107,11 +110,13 @@ export default {
      */
     handleWrapClick (e) {
       // e.stopPropagation()
-      this.focus = true
-      this.showCompleter = true
-      this.$nextTick(() => {
-        this.focusInput()
-      })
+      if (!this.dateEditing) {
+        this.focus = true
+        this.showCompleter = true
+        this.$nextTick(() => {
+          this.focusInput()
+        })
+      }
     },
     /**
      * @description wrap clickoutside事件
@@ -129,11 +134,15 @@ export default {
       R.forEachObjIndexed((value, key) => {
         if (this.options[key].dropdown) {
           const config = this.options[key]
-          this.newValues[key] = value.map(item => {
-            const op = R.find(R.propEq('label', item))(config.items)
-            if (op) return op.key
-            return item
-          })
+          if (config.date) {
+            this.newValues[key] = value
+          } else {
+            this.newValues[key] = value.map(item => {
+              const op = R.find(R.propEq('label', item))(config.items)
+              if (op) return op.key
+              return item
+            })
+          }
         } else {
           this.newValues[key] = value
         }

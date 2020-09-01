@@ -1,6 +1,6 @@
 <template>
   <e-chart
-    v-if="rows && rows.length"
+    v-if="(rows && rows.length) || (options.dataset && options.dataset.length)"
     :style="chartStyles"
     :options="chartOptions"
     @chartInstance="v => $emit('chartInstance', v)"
@@ -19,12 +19,10 @@ export default {
   props: {
     columns: {
       type: Array,
-      required: true,
       default: () => ([]),
     },
     rows: {
       type: Array,
-      required: true,
       default: () => ([]),
     },
   },
