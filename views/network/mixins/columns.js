@@ -48,6 +48,15 @@ export default {
           },
         },
       },
+      getStatusTableColumn({ statusModule: 'network' }),
+      {
+        field: 'server_type',
+        title: i18n.t('network.text_249'),
+        width: 100,
+        formatter: ({ cellValue }) => {
+          return this.$t('networkServerType')[cellValue] || i18n.t('network.text_507')
+        },
+      },
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
       {
         field: 'ip',
@@ -62,15 +71,6 @@ export default {
           },
         },
       },
-      {
-        field: 'server_type',
-        title: i18n.t('network.text_249'),
-        width: 100,
-        formatter: ({ cellValue }) => {
-          return this.$t('networkServerType')[cellValue] || i18n.t('network.text_507')
-        },
-      },
-      getStatusTableColumn({ statusModule: 'network' }),
       getStatusTableColumn({ field: 'is_auto_alloc', statusModule: 'networIsAutoAlloc', title: i18n.t('common_498'), minWidth: 140 }),
       {
         field: 'ports',
