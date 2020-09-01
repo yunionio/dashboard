@@ -8,9 +8,9 @@
       @keydown.13="handleInputEnter"
       @keydown.delete="handleInputDelete"
       @input="handleInput" />
-    <div class="auto-completer-wrap" v-show="show">
+    <div class="auto-completer-wrap" v-show="show" :style="completerWrapStyle">
       <ul class="auto-completer-items">
-        <li v-show="!isDropdown">
+        <li v-show="!isDropdown && !isDate">
           <span class="empty text-weak">{{ $t('common.text00014') }}</span>
         </li>
         <template v-if="isDropdown">
@@ -27,6 +27,12 @@
                   @change="handleValueChange">{{ item.label }}</a-checkbox>
               </span>
             </li>
+          </template>
+          <!-- 如果需要渲染时间选择器 -->
+          <template v-else-if="isDate">
+            <date-select
+              @change="handleDateChange"
+              :getPopupContainer="getDateSelectPopupContainer" />
           </template>
           <template v-else>
             <!-- 如果需要获取 distinct field -->
@@ -54,9 +60,13 @@
 
 <script>
 import * as R from 'ramda'
+import DateSelect from './DateSelect'
 
 export default {
   name: 'AutoCompleter',
+  components: {
+    DateSelect,
+  },
   props: {
     focus: {
       type: Boolean,
@@ -93,6 +103,7 @@ export default {
       selectValue: [],
       // input 输入的值
       search: '',
+      completerWrapStyle: {},
     }
   },
   computed: {
@@ -104,6 +115,10 @@ export default {
     isDropdown () {
       return this.config && this.config.dropdown
     },
+    // 是否为时间选择模式
+    isDate () {
+      return this.config && this.config.date
+    },
   },
   watch: {
     search (val) {
@@ -113,6 +128,7 @@ export default {
   methods: {
     clear () {
       this.$emit('update-show', false)
+      this.completerWrapStyle = {}
       this.search = ''
       this.selectKey = null
       this.selectValue = []
@@ -125,10 +141,14 @@ export default {
      */
     async handleKeyClick (e, key, item) {
       e.stopPropagation()
+      if (item.date) {
+        this.completerWrapStyle = { width: '300px', right: '-300px' }
+      }
       this.selectKey = key
       this.search = `${item.label}${this.keySeparator}`
       if (!this.isDropdown) {
         this.$emit('update-show', false)
+        this.completerWrapStyle = {}
       } else {
         if (this.config.distinctField) {
           try {
@@ -173,6 +193,22 @@ export default {
       this.search = `${this.config.label}${this.keySeparator}${labels.join(this.valueSeparator)}`
     },
     /**
+     * @description date类型的修改
+     */
+    handleDateChange (val) {
+      this.selectValue = val
+      const values = val[0]
+      let labelStr
+      if (values[0] && values[1]) {
+        labelStr = values.map(item => item.format('YYYY-MM-DD HH:mm:ss')).join('-')
+      } else if (values[0]) {
+        labelStr = `<${values[0].format('YYYY-MM-DD HH:mm:ss')}`
+      } else if (values[1]) {
+        labelStr = `>${values[1].format('YYYY-MM-DD HH:mm:ss')}`
+      }
+      this.search = `${this.config.label}${this.keySeparator}${labelStr}`
+    },
+    /**
      * @description 拼装参数，调用搜索
      */
     handleOk () {
@@ -192,7 +228,20 @@ export default {
       const selectValueEmpty = R.isNil(this.selectValue) || R.isEmpty(this.selectValue)
       if (selectValueEmpty) return
       let value = this.search.split(this.keySeparator)[1]
-      value = value.split(this.valueSeparator)
+      if (this.isDate) {
+        if (value.includes('-')) {
+          value = value.split('-')
+          value = [value[0], value[1]]
+        } else if (value.includes('<')) {
+          value = value.split('<')
+          value = [value[1], null]
+        } else if (value.includes('>')) {
+          value = value.split('>')
+          value = [null, value[1]]
+        }
+      } else {
+        value = value.split(this.valueSeparator)
+      }
       if (R.isNil(value) || R.isEmpty(value)) {
         return
       }
@@ -220,6 +269,7 @@ export default {
       this.clear()
       this.$emit('focus-input')
       this.$emit('update-show', true)
+      this.completerWrapStyle = {}
     },
     /**
      * @description 输入框回车按键事件
@@ -248,7 +298,7 @@ export default {
       this.search = e.target.value
       let value = (e.target.value && e.target.value.split(this.keySeparator)) || []
       value = value[1] && value[1].split(this.valueSeparator)
-      if (this.isDropdown) {
+      if (this.isDropdown && !this.isDate) {
         if (!value) {
           this.selectKey = null
           return
@@ -261,6 +311,9 @@ export default {
       } else {
         this.selectValue = value || []
       }
+    },
+    getDateSelectPopupContainer (trigger) {
+      return this.$parent.$refs['search-box-wrap']
     },
   },
 }

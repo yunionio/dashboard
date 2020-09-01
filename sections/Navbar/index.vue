@@ -78,8 +78,10 @@
           </ul>
         </template>
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
-          <span class="ml-2 current-view-label text-truncate" :title="viewLabel">{{ viewLabel }}</span>
+          <a-tooltip :title="$t('common_642')" placement="right">
+            <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
+          </a-tooltip>
+          <span class="ml-2 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
       </a-popover>
@@ -88,8 +90,10 @@
     <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="products && showSystemChoose">
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <icon type="navbar-setting" style="font-size: 24px; line-height: normal;"  />
-          <span class="ml-2 text-truncate products-label">{{$t('common_211')}}</span>
+          <a-tooltip :title="$t('system.text_21')" placement="right">
+            <icon type="navbar-setting" style="font-size: 24px; line-height: 1;"  />
+          </a-tooltip>
+          <span class="ml-2 text-truncate products-label" style="line-height: normal;">{{$t('common_211')}}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
@@ -106,9 +110,11 @@
     <slot name="frontNavbar" />
     <!-- 大屏监控 -->
     <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && isAdminMode">
-      <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
-        <icon type="daping" style="font-size: 20px;" />
-      </div>
+      <a-tooltip :title="$t('common_643')" placement="right">
+        <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
+          <icon type="daping" style="font-size: 20px;" />
+        </div>
+      </a-tooltip>
     </div>
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />

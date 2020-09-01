@@ -3,9 +3,11 @@
     <a-popover trigger="click" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
         <span v-if="workOrderMenuTitleUsedText">{{$t('common_198')}}</span>
-        <a-badge :count="statistics" :overflowCount="99" v-else>
-          <icon type="navbar-process" style="font-size: 24px;" />
-        </a-badge>
+        <a-tooltip :title="$t('common_199')" placement="right" v-else>
+          <a-badge :count="statistics" :overflowCount="99">
+            <icon type="navbar-process" style="font-size: 24px;" />
+          </a-badge>
+        </a-tooltip>
       </div>
       <template v-slot:content>
         <div class="work-order-wrap">

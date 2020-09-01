@@ -8,7 +8,7 @@
           :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('dictionary.domain')" key="domain"  v-if="isDomainScope">
+    <a-form-item :label="$t('dictionary.domain')" key="domain"  v-if="isAdminMode && l3PermissionEnable && isDomainScope">
       <base-select
         resource="domains"
         v-decorator="decorators.domain"
@@ -32,6 +32,12 @@
         :disabled="disabled"
         @change="v => emit(v, 'projectId')"
         :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.project')}` }" />
+    </a-form-item>
+    <a-form-item :label="$t('dictionary.domain')" v-if="isDomainMode && isDomainScope">
+      <div>{{ userInfo.projectDomain }}</div>
+    </a-form-item>
+    <a-form-item :label="$t('dictionary.project')" v-if="isProjectMode && isProjectScope">
+      <div>{{ userInfo.projectName }}</div>
     </a-form-item>
   </div>
 </template>
@@ -69,7 +75,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope', 'isAdminMode', 'isDomainMode', 'l3PermissionEnable', 'isProjectMode']),
+    ...mapGetters(['scope', 'isAdminMode', 'isDomainMode', 'l3PermissionEnable', 'isProjectMode', 'userInfo']),
     isDomainScope () {
       return this.formScope === 'domain'
     },
@@ -89,11 +95,11 @@ export default {
       const ret = [
         { label: this.$t('shareScope.project'), key: 'project' },
       ]
+      if (this.l3PermissionEnable && !this.isProjectMode) {
+        ret.splice(0, 0, { label: this.$t('shareScope.domain'), key: 'domain' })
+      }
       if (this.isAdminMode) {
         ret.splice(0, 0, { label: this.$t('shareScope.system'), key: 'system' })
-        if (this.l3PermissionEnable) {
-          ret.splice(1, 0, { label: this.$t('shareScope.domain'), key: 'domain' })
-        }
       }
       return ret
     },

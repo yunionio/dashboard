@@ -13,8 +13,8 @@
       <div slot="dropdownRender" slot-scope="menu">
         <v-nodes :vnodes="menu" />
         <div class="d-flex justify-content-center mb-2" v-if="resList.length > 0">
-          <a-button class="mx-auto" :loading="loading" :disabled="loading" v-if="showLoadMore" @mousedown="e => e.preventDefault()" type="link" @click="loadMore">加载更多</a-button>
-          <span v-if="loadMoreClicked && noMoreData" class="text-color-secondary pt-2 pb-1">没有更多了</span>
+          <a-button class="mx-auto" :loading="loading" :disabled="loading" v-if="showLoadMore" @mousedown="e => e.preventDefault()" type="link" @click="loadMore">{{$t('common.LoadMore')}}</a-button>
+          <span v-if="loadMoreClicked && noMoreData" class="text-color-secondary pt-2 pb-1">{{$t('common_640')}}</span>
         </div>
       </div>
       <slot name="optionTemplate" v-bind:options="resOpts">
