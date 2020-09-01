@@ -5,7 +5,7 @@
       <div class="d-flex">
         <line-chart class="flex-grow-1 mb-4" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" />
         <div class="alert-handler-wrapper position-relative">
-          <div v-if="alertHandlerShow && lineChartRows.length" class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
+          <div v-if="alertHandlerShow && lineChartOptionsC.dataset.length" class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
             <div class="alert-handler-line" />
             <div class="alert-handler"> {{ formatThreshold }}</div>
           </div>
@@ -84,8 +84,6 @@ export default {
   },
   data () {
     return {
-      lineChartColumns: [],
-      lineChartRows: [],
       chartInstanceOption: {
         series: [],
       },
@@ -158,7 +156,19 @@ export default {
     },
     formatThreshold () {
       if (!this.threshold) return '0'
-      const ret = transformUnit(this.threshold, _.get(this.description, 'description.unit'), 1000, '0')
+      const unit = _.get(this.description, 'description.unit')
+      let formatStr = '0'
+      if (unit === '%') { // 比如用户输入 2.22%，这里传入为 '0.00'
+        const sLen = this.threshold.length
+        const sArr = []
+        for (let i = 0; i < sLen; i++) {
+          const s = this.threshold[i]
+          const v = /\d/.test(s) ? '0' : s
+          sArr.push(v)
+        }
+        formatStr = sArr.join('')
+      }
+      const ret = transformUnit(this.threshold, unit, 1000, formatStr)
       return `${ret.value}${ret.unit}`
     },
   },
@@ -273,8 +283,6 @@ export default {
       }
     },
     getMonitorLine () {
-      const columns = ['time']
-      const rows = []
       const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, {
         series: [],
         grid: {
@@ -344,8 +352,6 @@ export default {
       this.lineChartOptionsC = lineChartOptions
       this.seriesOldClickName = null
       this.highlight = { index: null, color: '' }
-      this.lineChartRows = rows
-      this.lineChartColumns = columns
     },
     getRowStyle ({ $rowIndex, column, columnIndex, $columnIndex }) {
       if ($rowIndex === this.highlight.index) {
