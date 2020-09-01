@@ -65,7 +65,7 @@ export default {
       handler (val, oldVal) {
         if (!R.equals(val, oldVal) && !R.isNil(val) && !R.isEmpty(val)) {
           if (!R.isNil(val.en) && !R.isEmpty(val.en)) {
-            i18n.mergeLocaleMessage('en-US', {
+            i18n.mergeLocaleMessage('en', {
               dictionary: val.en,
             })
           }
