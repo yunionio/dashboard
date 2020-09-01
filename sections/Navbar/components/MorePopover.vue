@@ -1,13 +1,12 @@
 <template>
   <div>
     <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
-      <div class="trigger d-flex align-items-center justify-content-center">
-        <icon type="navbar-more" style="font-size: 24px;" />
-      </div>
+      <a-tooltip :title="$t('common.text00109')" placement="right">
+        <div class="trigger d-flex align-items-center justify-content-center">
+          <icon type="navbar-more" style="font-size: 24px;" />
+        </div>
+      </a-tooltip>
       <a-menu slot="overlay" @click="handleDropdownClick">
-        <a-menu-item key="/user-preferences">
-          {{$t('scope.text_238')}}
-        </a-menu-item>
         <a-menu-item key="/guide" v-if="isAdminMode">{{$t('common_187')}}</a-menu-item>
         <a-menu-item :key="docsUrl">{{$t('common_188')}}</a-menu-item>
         <a-menu-item key="/licenses">

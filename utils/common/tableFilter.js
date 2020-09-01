@@ -115,7 +115,7 @@ export function getIpFilter () {
     label: 'IP',
     filter: true,
     formatter: val => {
-      return `guestnetworks.guest_id(id).ip_addr.contains("${val}")`
+      return `guestnetworks.guest_id(id).ip_addr.in(${val})`
     },
     jointFilter: true,
   }
@@ -189,7 +189,7 @@ export function getHostFilter () {
     filter: true,
     jointFilter: true,
     formatter: val => {
-      return `hosts.id(host_id).name.contains("${val}")`
+      return `hosts.id(host_id).name.in(${val})`
     },
     hidden: () => store.getters.isProjectMode,
   }

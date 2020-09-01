@@ -2,11 +2,11 @@
   <div class="workflow-success">
     <div class="wrapper">
       <a-icon type="check-circle" class="icon-success mb-4" />
-      <h3 class="title">工单审批完成</h3>
-      <p class="content">您可以点击【关闭页面】将本页面关闭，也可以点击【登录系统】进行其他任务</p>
+      <h3 class="title">{{$t('common_647')}}</h3>
+      <p class="content">{{$t('common_644')}}</p>
       <div>
-        <a-button class="mr-2" type="primary" @click="closePage">关闭页面</a-button>
-        <a-button @click="openLogin">登录系统</a-button>
+        <a-button class="mr-2" type="primary" @click="closePage">{{$t('common_646')}}</a-button>
+        <a-button @click="openLogin">{{$t('common_335')}}</a-button>
       </div>
     </div>
   </div>
