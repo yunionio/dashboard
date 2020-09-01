@@ -3,7 +3,7 @@
     <loader v-if="loading" :loading="true" />
     <template v-else>
       <div class="d-flex">
-        <line-chart class="flex-grow-1 mb-4" :columns="lineChartColumns" :rows="lineChartRows" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" />
+        <line-chart class="flex-grow-1 mb-4" @chartInstance="setChartInstance" width="100%" height="250px" :options="lineChartOptionsC" />
         <div class="alert-handler-wrapper position-relative">
           <div v-if="alertHandlerShow && lineChartRows.length" class="position-absolute clearfix d-flex align-items-center" :style="{ top: `${topStyleRange[1]}px` }">
             <div class="alert-handler-line" />
@@ -16,7 +16,7 @@
         max-height="200"
         size="mini"
         border
-        row-id="vm_id"
+        row-id="raw_name"
         ref="tableRef"
         highlight-hover-row
         highlight-current-row
@@ -107,7 +107,7 @@ export default {
     },
     tableData () {
       return this.series.map((val, i) => {
-        const ret = { ...val.tags }
+        const ret = { ...val.tags, raw_name: val.raw_name }
         const showMetric = !!this.groupBy
         if (showMetric) {
           ret.__metric = val.name
@@ -215,10 +215,6 @@ export default {
       this.chartInstance = v
       this.$emit('chartInstance', v)
       this.chartInstance.on('click', params => {
-        const seriesName = params.seriesName
-        if (seriesName !== this.seriesOldClickName) {
-          this.seriesOldClickName = null
-        }
         this._cancelHighlight()
         this.highlightSeries(params.seriesName, this.tableData[params.seriesIndex], params.seriesIndex)
       })
@@ -247,40 +243,33 @@ export default {
       }
     },
     _cancelHighlight () {
-      this._setOptionForOpacity(1) // 需要还原opacity
-    },
-    _setOptionForOpacity (opacity) {
       this.chartInstance.setOption({
-        ...this.chartInstanceOption,
-        series: this.chartInstanceOption.series.map(val => {
-          return {
-            ...val,
-            lineStyle: {
-              ...val.lineStyle,
-              opacity,
-            },
-          }
-        }),
+        series: {
+          name: this.seriesOldClickName,
+          lineStyle: {
+            type: 'solid',
+            width: 2,
+            shadowBlur: 0,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+          },
+        },
       })
     },
     _setHighlight (seriesName) {
-      const _setOption = name => {
+      if (seriesName) {
         this.chartInstance.setOption({
           series: {
-            name,
-            symbolSize: 3,
+            name: seriesName,
             lineStyle: {
               width: 4,
-              shadowBlur: 6,
+              shadowBlur: 4,
               opacity: 1,
-              shadowOffsetX: 8,
-              shadowOffsetY: 8,
+              shadowOffsetX: 4,
+              shadowOffsetY: 4,
             },
           },
         })
-      }
-      if (seriesName) {
-        _setOption(seriesName)
       }
     },
     getMonitorLine () {
@@ -289,14 +278,16 @@ export default {
       const lineChartOptions = _.cloneDeep(_.mergeWith(this.lineChartOptions, {
         series: [],
         grid: {
-          left: 10,
-          top: 30,
-          right: 1,
-          bottom: 0,
           containLabel: true,
         },
       }))
+      const dataset = []
+      const names = []
       this.series.forEach((item, i) => {
+        let name = item.raw_name
+        if (item.tags && item.tags.path) {
+          name += ` (path: ${item.tags.path})`
+        }
         const seriesItem = {
           ...(lineChartOptions.series[i] || {}),
           itemStyle: {
@@ -304,30 +295,18 @@ export default {
               color: colors[i] || this.colorHash.hex(`${i * 1000}`),
             },
           },
-          symbolSize: 2,
+          symbolSize: 1,
+          type: 'line',
+          encode: { x: 1, y: 0, tooltip: [0, 1] },
+          datasetIndex: i,
+          name,
         }
         lineChartOptions.series[i] = seriesItem
-        let name = item.raw_name
-        if (item.tags && item.tags.path) {
-          name += ` (path: ${item.tags.path})`
-        }
-        columns.push(name)
-        if (i === 0) { // 证明是第一条线，时间点取第一条时间线里的点，所以要求几条线的时间点是一致的
-          item.points.forEach(row => {
-            const momentObj = this.$moment(row[1])
-            const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : row[1]
-            rows.push({
-              time,
-              [name]: row[0] || 0,
-            })
-          })
-        } else {
-          item.points.forEach((row, i) => {
-            if (rows[i]) {
-              rows[i][name] = row[0] || 0
-            }
-          })
-        }
+        dataset.push({
+          dimensions: [{ name: 'value', type: 'ordinal' }, { name: 'time', type: 'time' }],
+          source: item.points,
+        })
+        names.push(name)
       })
       lineChartOptions.yAxis = {
         minInterval: 1,
@@ -342,11 +321,12 @@ export default {
           },
         },
       }
+      lineChartOptions.xAxis = { type: 'time' }
       lineChartOptions.tooltip = {
         trigger: 'axis',
         position: (point, params, dom, rect, size) => {
           const series = params.map((line, i) => {
-            const val = transformUnit(line.value, _.get(this.description, 'description.unit'))
+            const val = transformUnit(line.value[0], _.get(this.description, 'description.unit'))
             const value = _.get(val, 'text') || line.value
             const color = i === this.highlight.index ? this.highlight.color : '#616161'
             return `<div style="color: ${color};" class="d-flex align-items-center"><span>${line.marker}</span> <span class="text-truncate" style="max-width: 500px;">${line.seriesName || ' '}</span>:&nbsp;<span>${value}</span></div>`
@@ -360,6 +340,7 @@ export default {
           dom.innerHTML = wrapper
         },
       }
+      lineChartOptions.dataset = dataset
       this.lineChartOptionsC = lineChartOptions
       this.seriesOldClickName = null
       this.highlight = { index: null, color: '' }
