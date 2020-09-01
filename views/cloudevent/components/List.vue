@@ -59,11 +59,6 @@ export default {
           action: {
             label: this.$t('cloudenv.text_322'),
           },
-          created_at: {
-            label: '创建时间',
-            dropdown: true,
-            date: 'default',
-          },
         },
       }),
       columns: [
