@@ -38,7 +38,7 @@ export default {
               field: 'listener_type/listener_port',
               title: this.$t('network.text_477'),
               formatter: ({ row }) => {
-                return `${row.listener_type.toUpperCase()}: ${row.listener_port}`
+                return `${row.listener_type.toLowerCase()}: ${row.listener_port}`
               },
             },
             getCopyWithContentTableColumn({
@@ -165,7 +165,7 @@ export default {
               title: this.$t('network.text_435'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.provider.toUpperCase() !== 'onecloud') return '-'
+                if (row.provider.toLowerCase() !== 'onecloud') return '-'
                 return row.backend_connect_timeout + this.$t('network.text_76')
               },
             },
@@ -174,7 +174,7 @@ export default {
               title: this.$t('network.text_436'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.provider.toUpperCase() !== 'onecloud') return '-'
+                if (row.provider.toLowerCase() !== 'onecloud') return '-'
                 return row.backend_idle_timeout + this.$t('network.text_76')
               },
             },
@@ -197,7 +197,7 @@ export default {
               title: this.$t('network.text_437'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.provider.toUpperCase() !== 'onecloud') return '-'
+                if (row.provider.toLowerCase() !== 'onecloud') return '-'
                 return row.http_request_rate + this.$t('network.text_76')
               },
             },
@@ -206,7 +206,7 @@ export default {
               title: this.$t('network.text_440'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.provider.toUpperCase() !== 'onecloud') return '-'
+                if (row.provider.toLowerCase() !== 'onecloud') return '-'
                 return row.http_request_rate_per_src + this.$t('network.text_76')
               },
             },
