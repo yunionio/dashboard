@@ -1415,7 +1415,7 @@
     "proxysetting": "Proxy",
     "region": "Region",
     "reserved-ip": "Reserved IP",
-    "role": "role",
+    "role": "Role",
     "role_assignment": "Project",
     "route_table": "Routing Table",
     "schedpolicie": "Scheduling Policy",
