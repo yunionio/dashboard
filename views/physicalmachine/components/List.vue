@@ -15,7 +15,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getEnabledFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getEnabledFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -43,13 +43,7 @@ export default {
           status: Object.values(expectStatus.host).flat(),
         },
         filterOptions: {
-          name: {
-            label: this.$t('compute.text_228'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           status: getStatusFilter('host'),
           enabled: getEnabledFilter(),
           sn: {

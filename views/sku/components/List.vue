@@ -10,7 +10,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -33,19 +33,13 @@ export default {
         resource: 'serverskus',
         getParams: this.getParam,
         filterOptions: {
-          name: {
-            label: this.$t('compute.text_228'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           status: getStatusFilter('sku'),
           enabled: getEnabledFilter(),
           cpu_core_count: {
             label: this.$t('compute.text_1051'),
             dropdown: true,
-            multiple: false,
+            multiple: true,
             distinctField: {
               type: 'field',
               key: 'cpu_core_count',
@@ -59,7 +53,7 @@ export default {
           memory_size_mb: {
             label: this.$t('compute.text_1052'),
             dropdown: true,
-            multiple: false,
+            multiple: true,
             distinctField: {
               type: 'field',
               key: 'memory_size_mb',

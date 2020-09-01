@@ -20,8 +20,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-// import { getSetPublicAction } from '@/utils/common/tableActions'
-import { getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'ImageList',
@@ -43,16 +42,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.image).flat(),
         filterOptions: {
-          name: {
-            label: this.$t('compute.text_627'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
-          // status: getStatusFilter('image'),
+          name: getNameFilter(),
           disk_formats: {
-            label: this.$t('compute.text_640'),
+            label: this.$t('compute.text_398'),
             dropdown: true,
             items: [
               { label: 'VMDK', key: 'vmdk' },
@@ -63,7 +55,7 @@ export default {
             ],
           },
           is_standard: {
-            label: this.$t('compute.text_611'),
+            label: this.$t('compute.text_175'),
             dropdown: true,
             items: [
               { label: this.$t('compute.text_620'), key: true },
@@ -72,8 +64,6 @@ export default {
           },
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
-          // tenant: getTenantFilter(),
-          // os_type: getOsTypeFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at'],

@@ -13,7 +13,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -47,13 +47,7 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.servertemplate).flat(),
         filterOptions: {
-          name: {
-            label: this.$t('compute.text_228'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
           status: getStatusFilter('servertemplate'),

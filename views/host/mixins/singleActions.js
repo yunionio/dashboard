@@ -114,7 +114,7 @@ export default {
                 ],
               },
               {
-                label: i18n.t('compute.text_507'),
+                label: i18n.t('compute.text_540'),
                 action: () => {
                   this.createDialog('HostsAdjustLabelDialog', {
                     data: [obj],

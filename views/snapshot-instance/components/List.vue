@@ -19,6 +19,7 @@ import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
 import {
+  getNameFilter,
   getTenantFilter,
   getStatusFilter,
   getDomainFilter,
@@ -42,13 +43,7 @@ export default {
         getParams: this.getParam,
         steadyStatus,
         filterOptions: {
-          name: {
-            label: this.$t('compute.text_228'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           status: getStatusFilter('snapshot'),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
