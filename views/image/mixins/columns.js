@@ -22,6 +22,24 @@ export default {
           { validator: this.$validate('imageName') },
         ],
       }),
+      {
+        field: 'status',
+        title: i18n.t('compute.text_268'),
+        sortable: true,
+        showOverflow: 'ellipsis',
+        minWidth: 80,
+        slots: {
+          default: ({ row }, h) => {
+            const fileProcess = row.status === 'saving' ? <FileProcess size={ row.size }></FileProcess> : null
+            return [
+              <div class='text-truncate'>
+                <status status={ row.status } statusModule={ 'image' } />
+                { fileProcess }
+              </div>,
+            ]
+          },
+        },
+      },
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'image', columns: () => this.columns }),
       {
         field: 'disk_format',
@@ -58,27 +76,6 @@ export default {
         },
       },
       {
-        field: 'status',
-        title: i18n.t('compute.text_268'),
-        sortable: true,
-        showOverflow: 'ellipsis',
-        minWidth: 80,
-        slots: {
-          default: ({ row }, h) => {
-            const fileProcess = row.status === 'saving' ? <FileProcess size={ row.size }></FileProcess> : null
-            return [
-              <div class='text-truncate'>
-                <status status={ row.status } statusModule={ 'image' } />
-                { fileProcess }
-              </div>,
-            ]
-          },
-        },
-      },
-      getPublicScopeTableColumn({ vm: this, resource: 'images' }),
-      getProjectTableColumn(),
-      // isPublicTableColumn(),
-      {
         field: 'is_standard',
         title: i18n.t('compute.text_611'),
         width: 100,
@@ -88,6 +85,9 @@ export default {
         },
       },
       getTimeTableColumn(),
+      getPublicScopeTableColumn({ vm: this, resource: 'images' }),
+      getProjectTableColumn(),
+      // isPublicTableColumn(),
     ]
   },
 }
