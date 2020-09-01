@@ -23,7 +23,13 @@ router.beforeEach(async (to, from, next) => {
   const hasToken = !!store.getters.auth.token
   if (!hasToken) {
     if (auth) {
-      return next('/auth/login')
+      return next({
+        path: '/auth/login',
+        query: {
+          pathAuth: true,
+          path: to.path,
+        },
+      })
     }
     return next()
   }
@@ -45,7 +51,15 @@ router.beforeEach(async (to, from, next) => {
     return next()
   }
   // 需要认证页面
-  if (!hasToken) return next('/auth/login')
+  if (!hasToken) {
+    return next({
+      path: '/auth/login',
+      query: {
+        pathAuth: true,
+        path: to.path,
+      },
+    })
+  }
   const hasRoles = !R.isEmpty(store.getters.userInfo.roles) && !R.isNil(store.getters.userInfo.roles)
   const hasPermission = !R.isEmpty(store.getters.permission) && !R.isNil(store.getters.permission)
   const hasScopeResource = !R.isEmpty(store.getters.scopeResource) && !R.isNil(store.getters.scopeResource)
