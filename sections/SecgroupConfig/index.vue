@@ -56,32 +56,20 @@ export default {
     },
   },
   data () {
-    const validateSecgroups = (rule, value, callback) => {
-      const max = this._max
-      const maxError = this.$t('compute.text_191', [max])
-      const minError = this.$t('compute.text_192')
-      if (value.length > max) {
-        return callback(maxError)
-      }
-      if (value.length < 1) {
-        return callback(minError)
-      }
-      return callback()
-    }
-    const concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
-    const secgroupDecMsg = R.mergeDeepWithKey(concatRules,
-      (this.decorators.secgroup[1] || {}),
-      { rules: [{ validator: validateSecgroups }] },
-    )
+    // const concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
+    // const secgroupDecMsg = R.mergeDeepWithKey(concatRules,
+    //   (this.decorators.secgroup[1] || {}),
+    //   { rules: [{ validator: this.validateSecgroups }] },
+    // )
     return {
       types: SECGROUP_OPTIONS_MAP,
       isBind: this.decorators.type[1].initialValue === SECGROUP_OPTIONS_MAP.bind.key,
       loading: false,
       disabled: false,
-      secgroupDecorator: [
-        this.decorators.secgroup[0],
-        secgroupDecMsg,
-      ],
+      // secgroupDecorator: [
+      //   this.decorators.secgroup[0],
+      //   this.secgroupDecMsg,
+      // ],
     }
   },
   computed: {
@@ -113,6 +101,21 @@ export default {
       }
       return (this.isAzure || this.isUCloud || this.isZstack) ? 1 : 5
     },
+    secgroupDecorator () {
+      const concatRules = (k, l, r) => k === 'rules' ? R.concat(l, r) : r
+      const obj = R.mergeDeepWithKey(concatRules,
+        (this.decorators.secgroup[1] || {}),
+        { rules: [{ validator: this.validateSecgroups }] },
+      )
+      if (obj.rules.length > 1) {
+        obj.validateFirst = true
+      }
+      const arr = [
+        this.decorators.secgroup[0],
+        obj,
+      ]
+      return arr
+    },
   },
   watch: {
     isSnapshotImageType (val) {
@@ -132,6 +135,18 @@ export default {
     },
   },
   methods: {
+    validateSecgroups (rule, value, callback) {
+      const max = this._max
+      const maxError = this.$t('compute.text_191', [max])
+      const minError = this.$t('compute.text_192')
+      if (value.length > max) {
+        return callback(maxError)
+      }
+      if (value.length < 1) {
+        return callback(minError)
+      }
+      return callback()
+    },
     handleTypeChange (e) {
       this.isBind = (e.target.value === SECGROUP_OPTIONS_MAP.bind.key)
     },
