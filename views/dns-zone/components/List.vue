@@ -12,6 +12,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import expectStatus from '@/constants/expectStatus'
 import {
   getDomainFilter,
   getStatusFilter,
@@ -28,6 +29,9 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'dns_zones',
+        steadyStatus: {
+          status: Object.values(expectStatus.dnszone).flat(),
+        },
         filterOptions: {
           name: {
             label: this.$t('network.text_21'),
@@ -76,11 +80,10 @@ export default {
           label: this.$t('network.text_26'),
           action: () => {
             this.createDialog('DnsZoneCreateDialog', {
-              title: this.$t('network.text_154'),
+              title: '新建DNS解析',
               data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
-              type: 'create',
             })
           },
           meta: () => {
