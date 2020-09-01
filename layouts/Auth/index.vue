@@ -12,11 +12,11 @@
             <a-dropdown :trigger="['click']">
               <div class="oc-pointer">
                 <a-icon type="global" />
-                <span class="ml-2">{{ language === 'zh-CN' ? $t('common_68') : 'English' }}</span>
+                <span class="ml-2">{{ language === 'zh-CN' ? '简体中文' : 'English' }}</span>
               </div>
               <a-menu slot="overlay" @click="handleChangeLanguage">
                 <a-menu-item key="zh-CN">
-                  <span class="mr-2">{{$t('common_68')}}</span><a-icon v-show="language === 'zh-CN'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                  <span class="mr-2">简体中文</span><a-icon v-show="language === 'zh-CN'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                 </a-menu-item>
                 <a-menu-item key="en">
                   <span class="mr-2">English</span><a-icon v-show="language === 'en'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
