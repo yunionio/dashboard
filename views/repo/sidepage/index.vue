@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('helm.text_98')"
+    :title="$t('helm.text_95')"
     icon="res-k8s-repo"
     :res-name="detailData.name"
     :actions="params.actions"
