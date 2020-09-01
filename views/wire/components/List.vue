@@ -17,7 +17,7 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
 // import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
-import { getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'WireList',
@@ -36,13 +36,7 @@ export default {
         resource: 'wires',
         getParams: this.getParam,
         filterOptions: {
-          name: {
-            label: this.$t('network.text_21'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           bandwidth: {
             label: this.$t('network.text_694'),
             dropdown: true,
