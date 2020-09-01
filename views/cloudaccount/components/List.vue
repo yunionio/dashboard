@@ -60,7 +60,7 @@ export default {
             label: this.$t('cloudenv.text_94'),
             filter: true,
             formatter: val => {
-              return `account.contains("${val}")`
+              return `account.contains(${val})`
             },
           },
           enable_auto_sync: getEnabledFilter({ label: this.$t('cloudenv.text_83') }),
