@@ -343,4 +343,9 @@ export default {
     success: ['available'],
     danger: ['delete_fail'],
   },
+  alertrecord: {
+    info: [],
+    success: ['ok'],
+    danger: ['alerting'],
+  },
 }
