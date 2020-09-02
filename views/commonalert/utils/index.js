@@ -22,11 +22,11 @@ export const levelColumn = {
 
 export const conditionColumn = {
   field: 'channel',
-  title: i18n.t('monitor.channel'),
+  title: i18n.t('monitor.text_11'),
   minWidth: 80,
   formatter: ({ row }) => {
     if (!row.channel || !row.channel.length) return '-'
-    return row.channel.map(val => (channelMaps[val] || {}).label).join('、')
+    return row.channel.filter(val => ~val.indexOf('robot')).map(val => (channelMaps[val] || {}).label).join('、')
   },
 }
 
@@ -82,9 +82,11 @@ export const recipientsColumn = recipientList => ({
   slots: {
     default: ({ row }, h) => {
       if (!row.recipients || !row.recipients.length) return '-'
-      const recipientsMap = arrayToObj(recipientList, 'uid')
+      const recipientsMap = arrayToObj(recipientList, 'id')
       const recipientNames = row.recipients.map(val => recipientsMap[val].name)
-      return recipientNames.join(', ')
+      return recipientNames.map(val => {
+        return h('a-tag', val)
+      })
     },
   },
 })

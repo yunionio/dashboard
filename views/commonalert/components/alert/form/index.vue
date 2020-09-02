@@ -40,13 +40,21 @@
         resource="receivers"
         version="v1"
         filterable
-        :isDefaultSelect="true"
-        :select-props="{ mode: 'multiple' }"
+        :resList.sync="recipientOpts"
+        :select-props="{ mode: 'multiple', placeholder: $t('compute.text_741') }"
         :params="contactParams" />
     </a-form-item>
-    <a-form-item :label="$t('monitor.channel')">
-      <a-checkbox-group name="checkboxgroup" :options="channelOpts" v-decorator="decorators.channel" />
-    </a-form-item>
+    <template>
+      <a-form-item :label="$t('monitor_metric_95')">
+        <a-switch v-decorator="decorators.showChannel" @change="v => showChannel = v" />
+      </a-form-item>
+      <notify-types
+        :label="$t('monitor.text_11')"
+        showAllRobot
+        :decorator="decorators.channel"
+        v-show="showChannel"
+        @channelOptsChange="channelOptsChange" />
+    </template>
   </a-form>
 </template>
 
@@ -58,8 +66,9 @@ import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
 import ScopeRadio from '@/sections/ScopeRadio'
 import NameRepeated from '@/sections/NameRepeated'
-import { channelMaps, levelMaps, metric_zh } from '@Monitor/constants'
+import { levelMaps, metric_zh } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
+import NotifyTypes from '@/sections/NotifyTypes'
 
 export default {
   name: 'CommonalertForm',
@@ -69,6 +78,7 @@ export default {
     Metric,
     Filters,
     Condition,
+    NotifyTypes,
   },
   props: {
     formItemLayout: {
@@ -93,7 +103,6 @@ export default {
     const initialValue = {
       period: '5m',
       comparator: '>=',
-      channel: ['webconsole'],
       level: 'normal',
       scope: this.$store.getters.scope,
     }
@@ -122,6 +131,7 @@ export default {
         initialValue.scope = 'project'
       }
     }
+    const showChannel = initialValue.channel ? !!initialValue.channel.find(v => v.includes('robot')) : false
     return {
       form: {
         fc: this.$form.createForm(this, {
@@ -263,6 +273,13 @@ export default {
             ],
           },
         ],
+        showChannel: [
+          'showChannel',
+          {
+            valuePropName: 'checked',
+            initialValue: showChannel,
+          },
+        ],
         channel: [
           'channel',
           {
@@ -281,11 +298,13 @@ export default {
         with_meta: true,
         limit: 0,
       },
-      channelOpts: Object.values(channelMaps),
       levelOpts: Object.values(levelMaps),
       projectItem: {},
       metricLoading: false,
       metricInfoLoading: false,
+      hadRobot: false,
+      showChannel,
+      recipientOpts: [],
     }
   },
   computed: {
@@ -296,6 +315,13 @@ export default {
   watch: {
     timeRangeParams () {
       this.getMeasurement(this.formScopeParams)
+    },
+    recipientOpts (val) {
+      if (!this.alertData && val && val.length === 1) {
+        this.form.fc.setFieldsValue({
+          [this.decorators.recipients[0]]: [val[0].id],
+        })
+      }
     },
   },
   created () {
@@ -315,6 +341,9 @@ export default {
     }
   },
   methods: {
+    channelOptsChange (val) {
+      this.hadRobot = val.find(val => ~val.value.indexOf('robot'))
+    },
     scopeChange (scopeParams) {
       this.getMeasurement(scopeParams)
       this.$emit('scopeChange', scopeParams)

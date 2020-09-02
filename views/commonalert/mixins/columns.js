@@ -1,4 +1,4 @@
-import { levelColumn, conditionColumn, strategyColumn, projectTableColumn } from '../utils'
+import { levelColumn, strategyColumn, projectTableColumn } from '../utils'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -19,7 +19,6 @@ export default {
       getEnabledTableColumn({ minWidth: 50 }),
       strategyColumn,
       levelColumn,
-      conditionColumn,
       projectTableColumn,
     ]
   },
