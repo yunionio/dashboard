@@ -28,29 +28,14 @@ export default {
         },
       }),
       getAccessUrlTableColumn(),
-      getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'cloudaccount' }),
+      getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: i18n.t('cloudenv.text_93'), field: 'health_status', minWidth: 90 }),
-      {
-        field: 'probe_at',
-        title: i18n.t('cloudenv.text_309'),
-        minWidth: 100,
-        slots: {
-          default: ({ row }) => {
-            const time = this.$moment(row.probe_at)
-            if (time) {
-              return time.fromNow()
-            } else {
-              return '-'
-            }
-          },
-        },
-      },
-      getGuestCountTableColumn(),
       getBalanceTableColumn(),
-      getHostCountTableColumn(),
-      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('cloudenv.text_94') }),
       getBrandTableColumn(),
+      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('cloudenv.text_94') }),
+      getHostCountTableColumn(),
+      getGuestCountTableColumn(),
       getEnabledTableColumn({ field: 'enable_auto_sync', title: i18n.t('cloudenv.text_83'), minWidth: 90 }),
       {
         field: 'last_auto_sync',
@@ -70,6 +55,21 @@ export default {
               } else {
                 return '-'
               }
+            }
+          },
+        },
+      },
+      {
+        field: 'probe_at',
+        title: i18n.t('cloudenv.text_309'),
+        minWidth: 100,
+        slots: {
+          default: ({ row }) => {
+            const time = this.$moment(row.probe_at)
+            if (time) {
+              return time.fromNow()
+            } else {
+              return '-'
             }
           },
         },
