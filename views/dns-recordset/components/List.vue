@@ -19,6 +19,9 @@ export default {
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    data: {
+      type: Object,
+    },
     getParams: {
       type: Object,
       default: () => ({}),
@@ -54,23 +57,24 @@ export default {
         ],
       },
       groupActions: [
-        // {
-        //   label: this.$t('network.text_26'),
-        //   action: () => {
-        //     this.createDialog('DnsRecordSetCreateDialog', {
-        //       title: this.$t('common_630', [this.$t('common_628', [])]),
-        //       data: this.list.selectedItems,
-        //       onManager: this.onManager,
-        //       refresh: this.refresh,
-        //       type: 'create',
-        //     })
-        //   },
-        //   meta: () => {
-        //     return {
-        //       buttonType: 'primary',
-        //     }
-        //   },
-        // },
+        {
+          label: this.$t('network.text_26'),
+          action: () => {
+            this.createDialog('DnsRecordSetCreateDialog', {
+              title: '新建记录',
+              data: this.list.selectedItems,
+              detailData: this.data,
+              onManager: this.onManager,
+              refresh: this.refresh,
+              type: 'create',
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+        },
         {
           label: this.$t('common.batchAction'),
           actions: () => {
