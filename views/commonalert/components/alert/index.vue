@@ -199,6 +199,7 @@ export default {
             threshold: fd.threshold,
           }],
         }
+        if (fd.showChannel) data.channel = fd.channel
         if (fd.domain || fd.domain_id) data.domain_id = (fd.domain || fd.domain_id)
         if (fd.project) data.project_id = fd.project
         if (this.time === 'custom') { // 自定义时间
