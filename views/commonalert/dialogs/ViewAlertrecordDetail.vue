@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ title }}{{ $t('monitor.text_10') }}{{ $t('scope.text_433') }}</div>
+    <div slot="header">{{ $t('monitor.text_12', [title]) }}</div>
     <div slot="body" class="alertrecord-detail">
       <a-card class="mb-3" size="small" :title="item.metric" v-for="(item, i) in records" :key="i">
         <div class="Rheader"><span>{{ $t('dashboard.text_20') }}： </span><span>{{ item.metric }}</span></div>
