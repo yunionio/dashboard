@@ -37,6 +37,10 @@ export default {
     frontGroupActions: {
       type: Function,
     },
+    showCreateAction: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -95,84 +99,86 @@ export default {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'isProjectMode']),
     groupActions () {
       const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
-      return _frontGroupActions.concat(
-        [
-          {
-            index: 0,
-            label: this.$t('compute.text_18'),
-            permission: 'secgroups_create',
-            action: () => {
-              this.createDialog('CreateSecgroupDialog', {
-                title: this.$t('compute.text_18'),
-                onManager: this.onManager,
-                refresh: this.refresh,
-              })
-            },
-            meta: () => ({
-              buttonType: 'primary',
-            }),
+      const createAction = {
+        index: 0,
+        label: this.$t('compute.text_18'),
+        permission: 'secgroups_create',
+        action: () => {
+          this.createDialog('CreateSecgroupDialog', {
+            title: this.$t('compute.text_18'),
+            onManager: this.onManager,
+            refresh: this.refresh,
+          })
+        },
+        meta: () => ({
+          buttonType: 'primary',
+        }),
+      }
+      const defaultActions = [
+        {
+          index: 2,
+          label: this.$t('compute.text_991'),
+          permission: 'secgroups_performAction',
+          action: () => {
+            this.createDialog('AddRulesDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('compute.text_991'),
+              onManager: this.onManager,
+              refresh: this.refresh,
+            })
           },
-          {
-            index: 2,
-            label: this.$t('compute.text_991'),
-            permission: 'secgroups_performAction',
-            action: () => {
-              this.createDialog('AddRulesDialog', {
-                data: this.list.selectedItems,
-                columns: this.columns,
-                title: this.$t('compute.text_991'),
-                onManager: this.onManager,
-                refresh: this.refresh,
-              })
-            },
-            meta: () => {
-              if (this.list.selectedItems.length > 0) {
-                if (this.isAdminMode) {
-                  return {
-                    validate: true,
-                  }
-                } else {
-                  return {
-                    validate: this.list.selectedItems.every(val => !val.is_public),
-                  }
+          meta: () => {
+            if (this.list.selectedItems.length > 0) {
+              if (this.isAdminMode) {
+                return {
+                  validate: true,
+                }
+              } else {
+                return {
+                  validate: this.list.selectedItems.every(val => !val.is_public),
                 }
               }
-              return {
-                validate: false,
-                tooltip: this.$t('compute.text_992'),
-              }
-            },
+            }
+            return {
+              validate: false,
+              tooltip: this.$t('compute.text_992'),
+            }
           },
-          // getSetPublicAction(this, {
-          //   name: this.$t('dictionary.secgroup'),
-          //   scope: 'project',
-          //   resource: 'secgroups',
-          // }, {
-          //   permission: 'secgroups_performAction',
-          //   meta: () => {
-          //     return {
-          //       validate: this.list.selectedItems.length,
-          //     }
-          //   },
-          // }),
-          {
-            index: 3,
-            label: this.$t('compute.text_261'),
-            permission: 'secgroups_delete',
-            action: () => {
-              this.createDialog('DeleteResDialog', {
-                vm: this,
-                data: this.list.selectedItems,
-                columns: this.columns,
-                title: this.$t('compute.text_261'),
-                name: this.$t('dictionary.secgroup'),
-                onManager: this.onManager,
-              })
-            },
-            meta: (obj) => this.$getDeleteResult(this.list.selectedItems),
+        },
+        // getSetPublicAction(this, {
+        //   name: this.$t('dictionary.secgroup'),
+        //   scope: 'project',
+        //   resource: 'secgroups',
+        // }, {
+        //   permission: 'secgroups_performAction',
+        //   meta: () => {
+        //     return {
+        //       validate: this.list.selectedItems.length,
+        //     }
+        //   },
+        // }),
+        {
+          index: 3,
+          label: this.$t('compute.text_261'),
+          permission: 'secgroups_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('compute.text_261'),
+              name: this.$t('dictionary.secgroup'),
+              onManager: this.onManager,
+            })
           },
-        ],
-      ).sort((a, b) => a.index - b.index)
+          meta: (obj) => this.$getDeleteResult(this.list.selectedItems),
+        },
+      ]
+      if (this.showCreateAction) {
+        defaultActions.unshift(createAction)
+      }
+      return _frontGroupActions.concat(defaultActions).sort((a, b) => a.index - b.index)
     },
   },
   watch: {

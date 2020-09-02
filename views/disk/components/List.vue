@@ -33,8 +33,104 @@ export default {
       type: [Function, Object],
     },
     cloudEnv: String,
+    showCreateAction: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
+    const createAction = {
+      label: this.$t('compute.text_18'),
+      permission: 'disks_create',
+      action: () => {
+        this.$router.push({
+          path: '/disk/create',
+          query: {
+            type: this.cloudEnv,
+          },
+        })
+        // return [
+        //   {
+        //     label: 'IDC',
+        //     permission: 'disks_create',
+        //     action: () => {
+        //       this.createDialog('DiskCreateDialog', {
+        //         title: this.$t('compute.text_18'),
+        //         onManager: this.onManager,
+        //         diskType: 'idc',
+        //       })
+        //     },
+        //   },
+        //   {
+        //     label: this.$t('compute.text_400'),
+        //     permission: 'disks_create',
+        //     action: () => {
+        //       this.createDialog('DiskCreateDialog', {
+        //         title: this.$t('compute.text_18'),
+        //         onManager: this.onManager,
+        //         diskType: 'private',
+        //       })
+        //     },
+        //   },
+        //   {
+        //     label: this.$t('compute.text_401'),
+        //     permission: 'disks_create',
+        //     action: () => {
+        //       this.createDialog('DiskCreateDialog', {
+        //         title: this.$t('compute.text_18'),
+        //         onManager: this.onManager,
+        //         diskType: 'public',
+        //       })
+        //     },
+        //   },
+        // ]
+      },
+      meta: () => ({
+        buttonType: 'primary',
+      }),
+    }
+    const groupActions = [
+      {
+        label: this.$t('compute.text_275'),
+        actions: () => {
+          return [
+            {
+              label: this.$t('compute.text_282'),
+              permission: 'disks_perform_syncstatus',
+              action: () => {
+                this.onManager('batchPerformAction', {
+                  steadyStatus: ['running', 'ready'],
+                  managerArgs: {
+                    action: 'syncstatus',
+                  },
+                })
+              },
+            },
+            {
+              label: this.$t('compute.text_261'),
+              permission: 'disks_delete',
+              action: () => {
+                this.createDialog('DiskDeleteDialog', {
+                  data: this.list.selectedItems,
+                  columns: this.columns,
+                  title: this.$t('compute.text_261'),
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => this.$getDeleteResult(this.list.selectedItems),
+            },
+          ]
+        },
+        meta: () => {
+          return {
+            validate: this.list.selected.length,
+          }
+        },
+      },
+    ]
+    if (this.showCreateAction) {
+      groupActions.unshift(createAction)
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -113,95 +209,7 @@ export default {
           { label: this.$t('compute.text_396'), key: 'medium_type' },
         ],
       },
-      groupActions: [
-        {
-          label: this.$t('compute.text_18'),
-          permission: 'disks_create',
-          action: () => {
-            this.$router.push({
-              path: '/disk/create',
-              query: {
-                type: this.cloudEnv,
-              },
-            })
-            // return [
-            //   {
-            //     label: 'IDC',
-            //     permission: 'disks_create',
-            //     action: () => {
-            //       this.createDialog('DiskCreateDialog', {
-            //         title: this.$t('compute.text_18'),
-            //         onManager: this.onManager,
-            //         diskType: 'idc',
-            //       })
-            //     },
-            //   },
-            //   {
-            //     label: this.$t('compute.text_400'),
-            //     permission: 'disks_create',
-            //     action: () => {
-            //       this.createDialog('DiskCreateDialog', {
-            //         title: this.$t('compute.text_18'),
-            //         onManager: this.onManager,
-            //         diskType: 'private',
-            //       })
-            //     },
-            //   },
-            //   {
-            //     label: this.$t('compute.text_401'),
-            //     permission: 'disks_create',
-            //     action: () => {
-            //       this.createDialog('DiskCreateDialog', {
-            //         title: this.$t('compute.text_18'),
-            //         onManager: this.onManager,
-            //         diskType: 'public',
-            //       })
-            //     },
-            //   },
-            // ]
-          },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
-        },
-        {
-          label: this.$t('compute.text_275'),
-          actions: () => {
-            return [
-              {
-                label: this.$t('compute.text_282'),
-                permission: 'disks_perform_syncstatus',
-                action: () => {
-                  this.onManager('batchPerformAction', {
-                    steadyStatus: ['running', 'ready'],
-                    managerArgs: {
-                      action: 'syncstatus',
-                    },
-                  })
-                },
-              },
-              {
-                label: this.$t('compute.text_261'),
-                permission: 'disks_delete',
-                action: () => {
-                  this.createDialog('DiskDeleteDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: this.$t('compute.text_261'),
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
-              },
-            ]
-          },
-          meta: () => {
-            return {
-              validate: this.list.selected.length,
-            }
-          },
-        },
-      ],
+      groupActions,
     }
   },
   computed: {

@@ -23,6 +23,7 @@
       :res-id="data.id"
       :getParams="componentParams"
       :on-manager="onManager"
+      :show-create-action="false"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />

@@ -80,6 +80,18 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({
+        minWidth: 130,
+        statusModule: 'server',
+        slotCallback: row => {
+          return [
+            <div class='d-flex align-items-center text-truncate'>
+              <status status={ row.status } statusModule='server' />
+              { row.metadata && getToolTip(row) }
+            </div>,
+          ]
+        },
+      }),
       {
         field: 'is_gpu',
         title: i18n.t('compute.text_175'),
@@ -152,22 +164,16 @@ export default {
           return cellValue.map(item => item.name).join(',')
         },
       },
-      getBillingTableColumn({ vm: this }),
-      getStatusTableColumn({
-        minWidth: 130,
-        statusModule: 'server',
-        slotCallback: row => {
-          return [
-            <div class='d-flex align-items-center text-truncate'>
-              <status status={ row.status } statusModule='server' />
-              { row.metadata && getToolTip(row) }
-            </div>,
-          ]
-        },
-      }),
       getCopyWithContentTableColumn({
         field: 'vpc',
         title: 'VPC',
+        hidden: () => this.$store.getters.isProjectMode,
+      }),
+      getBillingTableColumn({ vm: this }),
+      getBrandTableColumn(),
+      getCopyWithContentTableColumn({
+        field: 'account',
+        title: i18n.t('compute.text_269'),
         hidden: () => this.$store.getters.isProjectMode,
       }),
       {
@@ -189,13 +195,7 @@ export default {
         },
         hidden: () => this.$store.getters.isProjectMode,
       },
-      getCopyWithContentTableColumn({
-        field: 'account',
-        title: i18n.t('compute.text_269'),
-        hidden: () => this.$store.getters.isProjectMode,
-      }),
       getProjectTableColumn(),
-      getBrandTableColumn(),
       getRegionTableColumn(),
       getTimeTableColumn(),
     ]
