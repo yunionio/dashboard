@@ -363,6 +363,13 @@ export default {
       ])
     },
     renderContent (h, icon, title, items = [], item, type) {
+      let wrapHidden
+      if (R.is(Function, item && item.hidden)) {
+        wrapHidden = item.hidden()
+      } else {
+        wrapHidden = item && item.hidden
+      }
+      if (wrapHidden) return
       const options = items.filter(item => {
         if (R.is(Function, item.hidden)) {
           return !item.hidden()
