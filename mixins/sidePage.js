@@ -369,7 +369,7 @@ export default {
       if (!R.is(Object, managerArgs)) {
         throw Error(i18n.t('common_75'))
       }
-      const promise = this.manager[on]({ ...managerArgs }).then(res => {
+      const promise = this.manager[on]({ ...managerArgs }).then(async res => {
         if (refreshActions.includes(on)) {
           this.refresh()
           return res
@@ -378,23 +378,34 @@ export default {
         if (R.is(Array, res.data.data)) {
           isBatch = true
         }
+        // 需要调用get更新数据的id
+        let waitUpdateId = ''
         if (on !== 'get') {
           if (isBatch) {
             const rec = res.data.data[0]
             if (rec.status < 400) {
               // success
-              this.data.data = rec.data
+              // this.data.data = rec.data
+              waitUpdateId = rec[this.idKey]
             } else {
               // failure
               this.data.setError(res)
             }
           } else {
             if (res.status < 400) {
-              this.data.data = res.data
+              // this.data.data = res.data
+              waitUpdateId = res.data[this.idKey]
             } else {
               this.setError(res)
             }
           }
+        }
+        if (waitUpdateId) {
+          const newDataResponse = await this.manager.get({
+            id: waitUpdateId,
+            params: this.detailParams,
+          })
+          this.data.data = newDataResponse.data
         }
         if (steadyStatus) {
           this.data.waitStatus(steadyStatus)
