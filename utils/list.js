@@ -918,7 +918,7 @@ class CreateList {
     if (!R.is(Object, managerArgs)) {
       throw Error(i18n.t('common_75'))
     }
-    const promise = this.manager[on]({ ...managerArgs }).then(res => {
+    const promise = this.manager[on]({ ...managerArgs }).then(async res => {
       if (refreshActions.includes(on)) {
         this.refresh()
         return res
@@ -927,13 +927,16 @@ class CreateList {
       if (R.is(Array, res.data.data) && on !== 'getSpecific') {
         isBatch = true
       }
+      // 需要调用get更新数据的id
+      const waitUpdateIds = []
       if (on !== 'get') {
         if (isBatch) {
           for (let i = 0, len = res.data.data.length; i < len; i++) {
             const rec = res.data.data[i]
             if (rec.status < 400) {
               // success
-              this.update(rec[this.idKey], rec.data)
+              // this.update(rec[this.idKey], rec.data)
+              waitUpdateIds.push(rec[this.idKey])
             } else {
               // failure
               this.setError(rec[this.idKey], res)
@@ -941,10 +944,26 @@ class CreateList {
           }
         } else {
           if (res.status < 400) {
-            if (on !== 'getSpecific') this.update(ids[0], res.data)
+            if (on !== 'getSpecific') {
+              waitUpdateIds.push(ids[0])
+              // this.update(ids[0], res.data)
+            }
           } else {
             this.setError(ids[0], res)
           }
+        }
+      }
+      if (waitUpdateIds.length > 0) {
+        const params = { ...this.params }
+        delete params.limit
+        delete params.offset
+        const batchResponse = await this.manager.batchGet({
+          id: waitUpdateIds,
+          params,
+        })
+        for (let i = 0, len = batchResponse.data.data.length; i < len; i++) {
+          const rec = batchResponse.data.data[i]
+          this.update(rec[this.idKey], rec)
         }
       }
       if (steadyStatus) {
