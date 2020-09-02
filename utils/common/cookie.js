@@ -1,9 +1,13 @@
 import Cookies from 'js-cookie'
 
 export function setLanguage (val) {
-  return Cookies.set('language', val, { expires: 365 })
+  return Cookies.set('lang', val, { expires: 365 })
 }
 
 export function getLanguage () {
-  return Cookies.get('language') || 'zh-CN'
+  let lang = Cookies.get('lang')
+  if (lang) return lang
+  lang = navigator.language
+  setLanguage(lang)
+  return lang
 }
