@@ -6702,6 +6702,7 @@
   "monitor.text_9": "Only the system or {0} administrator supports this operation",
   "monitor.text_10": "Alarm Record",
   "monitor.text_11": "Alarm Robot",
+  "monitor.text_12": "{0} Alarm Record Detail",
   "system.policy_edit_type_checkbox": "Visualization View",
   "system.policy_edit_type_yaml": "YAML edit view",
   "scope.text_1": "Instance List",
