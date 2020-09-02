@@ -57,11 +57,12 @@ export default {
     DomainProject,
   },
   data () {
+    const cloudEnvOptions = getCloudEnvOptions('object_storage_brands', true)
     return {
       loading: false,
-      cloudEnvOptions: getCloudEnvOptions('object_storage_brands', true),
+      cloudEnvOptions,
       routerQuery: this.$route.query.type,
-      cloudEnv: this.$route.query.type ? this.$route.query.type : 'onpremise',
+      cloudEnv: this.$route.query.type ? this.$route.query.type : cloudEnvOptions[0].key,
       form: {
         fc: this.$form.createForm(this),
       },
