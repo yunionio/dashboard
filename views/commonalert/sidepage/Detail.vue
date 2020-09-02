@@ -48,7 +48,7 @@ export default {
   methods: {
     async getRecipients () {
       try {
-        const { data: { data: recipientList } } = await new this.$Manager('contacts', 'v1')
+        const { data: { data: recipientList } } = await new this.$Manager('receivers', 'v1')
           .list({
             params: {
               scope: this.$store.getters.scope,

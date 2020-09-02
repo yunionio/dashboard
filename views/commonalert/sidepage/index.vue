@@ -17,7 +17,7 @@
     </template>
     <component
       :is="params.windowData.currentTab"
-      :res-id="data.id"
+      :alertId="data.id"
       :data="detailData"
       :resource="resource"
       :on-manager="onManager" />
@@ -28,6 +28,7 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import CommonalertDetail from './Detail'
+import Commonalertrecord from './Alertrecord'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -37,15 +38,20 @@ export default {
   components: {
     CommonalertDetail,
     Actions,
+    Commonalertrecord,
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
-  data () {
-    return {
-      detailTabs: [
+  computed: {
+    detailTabs () {
+      const tabs = [
         { label: this.$t('sidepage.tab.label.detail'), key: 'commonalert-detail' },
         { label: this.$t('dictionary.actions'), key: 'event-drawer' },
-      ],
-    }
+      ]
+      if (this.$store.getters.isAdminMode) {
+        tabs.splice(1, 0, { label: this.$t('monitor.text_10'), key: 'commonalertrecord' })
+      }
+      return tabs
+    },
   },
 }
 </script>
