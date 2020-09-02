@@ -7653,6 +7653,10 @@
   "scope.text_953": "Half a year",
   "scope.text_954": "One Year",
   "scope.text_955": "The amount cannot be 0",
+  "op_1": "Payment Amount",
+  "op_2": "Unpaid amount",
+  "op_3": "Amount to be paid",
+  "op_4": "Application time",
   "common.batchAction": "Batch Action",
   "common.action": "Action",
   "common.ok": "OK",
@@ -8586,8 +8590,5 @@
   "common_653": "Select start time",
   "common_654": "Select end date",
   "common_655": "Select end time",
-  "op_1": "Payment Amount",
-  "op_2": "Unpaid amount",
-  "op_3": "Amount to be paid",
-  "op_4": "Application time"
+  "common_656": "Please select user attribution target@:dictionary.domain"
 }
