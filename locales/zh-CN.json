@@ -802,6 +802,10 @@
       "unknown": "未知",
       "sync_status": "同步中",
       "init": "初始化"
+    },
+    "alertrecord": {
+      "ok": "告警已恢复",
+      "alerting": "发生告警"
     }
   },
   "skuCategoryOptions": {
@@ -6701,6 +6705,9 @@
   "monitor.text_7": "请输入名称",
   "monitor.text_8": "范围在 1～{0}Mbps",
   "monitor.text_9": "仅系统或{0}管理员支持该操作",
+  "monitor.text_10": "报警记录",
+  "monitor.text_11": "报警机器人",
+  "monitor.text_12": "{0}报警记录详情",
   "system.policy_edit_type_checkbox": "可视化视图",
   "system.policy_edit_type_yaml": "YAML编辑视图",
   "scope.text_1": "实例列表",
@@ -7689,6 +7696,8 @@
   "common.email": "邮件",
   "common.dingtalk": "钉钉",
   "common.feishu": "飞书",
+  "common.feishu_robot": "飞书机器人",
+  "common.workwx": "企业微信",
   "common.storage.cloud": "普通云盘",
   "common.storage.cloudssd": "SSD 云盘",
   "common.storage.cloudessd": "ESSD云盘PL1",
@@ -7812,6 +7821,7 @@
   "monitor_metric_92": "网络接口丢包总数",
   "monitor_metric_93": "CPU每核使用率",
   "monitor_metric_94": "进程下线程数",
+  "monitor_metric_95": "机器人报警",
   "common.text00001": "可用",
   "common.text00002": "你所选的",
   "common.text00003": "个",

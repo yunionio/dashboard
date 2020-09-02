@@ -218,7 +218,7 @@ http.interceptors.response.use(
           }
         })
       }
-      if (error.response.data && error.response.data.details && !error.response.data.details.includes('No token in header')) {
+      if (error.response.data && !(error.response.data.details || String()).includes('No token in header')) {
         showHttpErrorMessage(error)
       }
     }

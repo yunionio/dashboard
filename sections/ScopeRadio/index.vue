@@ -52,7 +52,7 @@ export default {
     decorators: {
       type: Object,
       required: true,
-      validator: val => val.domain && val.project,
+      validator: val => val.scope && val.domain && val.project,
     },
     disabled: {
       type: Boolean,
@@ -62,6 +62,10 @@ export default {
       type: Object,
       required: true,
       validator: val => val.fc,
+    },
+    isDefaultSelect: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
@@ -133,9 +137,20 @@ export default {
         {(this.isAdminMode && this.l3PermissionEnable) ? <span style="color: #8492a6; font-size: 13px">{this.$t('common_257')}{this.$t('dictionary.domain')}: {item.project_domain}</span> : null}
       </div>
     },
-    scopeChange (e) {
+    async scopeChange (e) {
       this.formScope = e.target.value
-      this.emit(e.target.value, 'scope')
+      const emitValue = {
+        scope: this.formScope,
+      }
+      if (this.isDefaultSelect && (this.formScope !== 'system')) {
+        await this.$nextTick()
+        const key = this.formScope === 'domain' ? 'projectDomainId' : 'projectId'
+        this.form.fc.setFieldsValue({
+          [this.decorators[this.formScope][0]]: this.userInfo[key],
+        })
+        emitValue[`${this.formScope}_id`] = this.userInfo[key]
+      }
+      this.$emit('change', emitValue)
     },
   },
 }
