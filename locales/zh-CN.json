@@ -796,7 +796,9 @@
       "delete_failed": "删除失败",
       "unknown": "未知",
       "sync_status": "同步中",
-      "init": "初始化"
+      "init": "初始化",
+      "sync_vpcs_failed": "同步VPC失败",
+      "sync_vpcs": "同步VPC"
     },
     "alertrecord": {
       "ok": "告警已恢复",

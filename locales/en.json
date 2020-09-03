@@ -796,7 +796,9 @@
       "delete_failed": "Deletion failed",
       "unknown": "unknown",
       "sync_status": "Syncing",
-      "init": "Created"
+      "init": "Created",
+      "sync_vpcs_failed": "Syncing VPC failed",
+      "sync_vpcs": "Syncing VPC"
     },
     "alertrecord": {
       "ok": "Alarm has been restored",
