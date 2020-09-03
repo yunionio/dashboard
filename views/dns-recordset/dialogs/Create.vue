@@ -63,7 +63,7 @@
             </a-col>
             <a-col :span="6">
               <a-form-item>
-                <a-select v-decorator="decorators.policy_values(item.key)">
+                <a-select v-decorator="decorators.policy_value(item.key)">
                   <a-select-option
                     :key="i"
                     :value="item.value"
@@ -170,8 +170,8 @@ export default {
             }],
           },
         ]),
-        policy_values: (k) => ([
-          `policy_values[${k}]`,
+        policy_value: (k) => ([
+          `policy_value[${k}]`,
           {
             initialValue: '',
           },
@@ -215,7 +215,7 @@ export default {
         this.form.fc.setFieldsValue({
           [`provider[${uid}]`]: val.provider || _providers[0].value,
           [`policy_type[${uid}]`]: curPolicyType,
-          [`policy_values[${uid}]`]: val.policy_value || '',
+          [`policy_value[${uid}]`]: val.policy_value || '',
         })
       })
     },
@@ -241,6 +241,8 @@ export default {
         this.cancelDialog()
         this.params.refresh()
       } catch (error) {
+        throw error
+      } finally {
         this.loading = false
       }
     },
@@ -250,11 +252,11 @@ export default {
       this.$nextTick(() => {
         if (item.policy_values.length > 0) {
           this.form.fc.setFieldsValue({
-            [`policy_values[${item.key}]`]: item.policy_values[0].value,
+            [`policy_value[${item.key}]`]: item.policy_values[0].value,
           })
         } else {
           this.form.fc.setFieldsValue({
-            [`policy_values[${item.key}]`]: '',
+            [`policy_value[${item.key}]`]: '',
           })
         }
       })

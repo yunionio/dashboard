@@ -133,16 +133,16 @@ export default {
       try {
         const ids = this.params.data.map(item => item.id)
         const { vpc } = await this.form.fc.validateFields()
-        await this.params.onManager('batchPerformAction', {
-          id: ids,
-          steadyStatus: ['running', 'ready'],
-          managerArgs: {
-            action: 'add-vpcs',
-            data: {
-              vpc_ids: [vpc],
-            },
+        const vpcManager = new this.$Manager('dns_zones')
+        await vpcManager.batchPerformAction({
+          ids: ids,
+          action: 'add-vpcs',
+          data: {
+            vpc_ids: [vpc],
           },
         })
+        this.params.refresh && this.params.refresh()
+        this.$bus.$emit('DnsZoneListSingleRefresh', [this.params.data[0].id])
         this.cancelDialog()
       } finally {
         this.loading = false

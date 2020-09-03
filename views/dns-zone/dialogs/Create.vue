@@ -113,6 +113,8 @@ export default {
         this.loading = false
         this.params.refresh && this.params.refresh()
         this.cancelDialog()
+      } catch (err) {
+        throw err
       } finally {
         this.loading = false
       }

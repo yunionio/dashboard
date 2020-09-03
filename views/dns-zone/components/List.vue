@@ -129,6 +129,9 @@ export default {
   created () {
     this.initSidePageTab('dns-zone-detail')
     this.list.fetchData()
+    this.$bus.$on('DnsZoneListSingleRefresh', (...arg) => {
+      this.list.singleRefresh(...arg)
+    }, false)
   },
   methods: {
     handleOpenSidepage (row) {

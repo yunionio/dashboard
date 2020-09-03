@@ -30,6 +30,7 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import DnsZoneDetail from './Detail'
+import DnsAssociateVpcList from './DnsAssociateVpcList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -41,6 +42,7 @@ export default {
     DnsZoneDetail,
     Actions,
     DnsRecordsetListForDnsZoneSidepage,
+    DnsAssociateVpcList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -48,6 +50,7 @@ export default {
       detailTabs: [
         { label: this.$t('network.text_67'), key: 'dns-zone-detail' },
         { label: '记录', key: 'dns-recordset-list-for-dns-zone-sidepage' },
+        { label: '关联VPC', key: 'dns-associate-vpc-list' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
@@ -55,6 +58,11 @@ export default {
   computed: {
     getParams () {
       if (this.params.windowData.currentTab === 'dns-recordset-list-for-dns-zone-sidepage') {
+        return {
+          detail: true,
+          dns_zone_id: this.detailData.id,
+        }
+      } else if (this.params.windowData.currentTab === 'dns-associate-vpc-list') {
         return {
           detail: true,
           dns_zone_id: this.detailData.id,
