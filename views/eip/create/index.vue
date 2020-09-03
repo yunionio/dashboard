@@ -231,6 +231,7 @@ export default {
       }
       if (this.cloudEnv === 'onpremise') {
         params = {
+          ...params,
           usable: true,
           show_emulated: true,
           scope: this.$store.getters.scope,
