@@ -10,15 +10,9 @@
     </div>
     <template v-else>
       <a-alert
-        v-if="brand !== 'huawei'"
         message="当前云厂商暂未对接"
         class="mb-2"
         description="目前仅阿里云和华为云支持查看监控数据"
-        type="warning" />
-      <a-alert
-        v-if="brand === 'huawei'"
-        message=""
-        description="华为云RDS监控调用接口正在完善中,目前无法调取数据,后续开放我们会支持数据展示,请知悉"
         type="warning" />
     </template>
   </div>
@@ -63,7 +57,7 @@ export default {
     },
     hadMonitor () {
       const brand = this.data.brand.toLowerCase()
-      const surportBrand = [HYPERVISORS_MAP.aliyun.key/*, HYPERVISORS_MAP.huawei.key */]
+      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key]
       return surportBrand.includes(brand)
     },
     monitorConstants () {
