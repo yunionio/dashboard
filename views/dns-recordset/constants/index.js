@@ -39,7 +39,7 @@ export const policy_types = {
   ],
 }
 
-export const policy_params = {
+export const policy_values = {
   ByCarrier: [
     { label: '中国联通', value: 'unicom' }, // 中国联通
     { label: '中国电信', value: 'telecom' }, // 中国电信
