@@ -160,7 +160,7 @@ export const REGEXP = {
       return true
     },
     // json 里面下面的字符串不合法，只能放在js文件里面
-    message: '12~30个字符，必须同时包含三项（大小写字母、数字、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个），不能以“/”开头',
+    message: i18n.t('validator.sshPassword'),
   },
   imageName: {
     regexp: /^[a-zA-Z][a-zA-Z0-9._-]{1,127}$/,
@@ -262,7 +262,7 @@ export const passwordValidator = (rule, value, _callback) => {
   const sensitives = ['Huawei@', 'huawei@', 'Admin@', 'admin@', 'Root@', 'root@', 'ABC@', 'abc@', 'ABCD@', 'abcd@', 'Huawei123@', 'huawei123@', 'Admin123@', 'admin123@', 'Root123@', 'root123@', 'Huawei#', 'huawei#', 'Admin#', 'admin#', 'Root#', 'root#', 'ABC#', 'abc#', 'ABCD#', 'abcd#', 'Huawei123#', 'huawei123#', 'Admin123#', 'admin123#', 'Root123#', 'root123#，Huawei!', 'huawei!', 'Admin!', 'admin!', 'Root!', 'root!', 'ABC!', 'abc!', 'ABCD!', 'abcd!', 'Huawei123!', 'huawei123!', 'Admin123!', 'admin123!', 'Root123!', 'root123!', 'ABC123!', 'abc123!', 'Huawei@123', 'huawei@123', 'Admin@123', 'admin@123', 'Root@123', 'root@123', 'ABC@123', 'abc@123', '123@Huawei', '123@Root', '123@abc', 'Huawei123', 'huawei123', 'Admin123', 'admin123', 'Root123', 'root123', 'abc123', 'Huawei_123', 'huawei_123', 'Admin_123', 'admin_123', 'Root_123', 'root_123', 'ABC_123', 'abc_123', '123abc', '123abcd', '1234abc', '1234abcd', 'abcd123', 'abc1234', 'abcd1234', 'abcd@1234', 'abcd1234!', 'abcd_1234', 'a123456', '123.com', '123@com', '123_com', 'Huawei!@#', 'huawei!@#', 'Admin!@#', 'admin!@#', 'Root!@#', 'root!@#', 'Huawei!@', 'huawei!@', 'Admin!@', 'admin!@', 'Root!@', 'root!@', 'Huaweiroot', 'HuaweiRoot', 'huaweiroot', 'huaweiRoot', 'Huaweiadmin', 'HuaweiAdmin', 'huaweiadmin', 'huaweiAdmin', 'Adminroot', 'AdminRoot', 'adminRoot', 'adminroot', 'Rootadmin', 'RootAdmin', 'rootAdmin', 'rootadmin', 'Rootroot', 'RootRoot', 'rootroot', 'Administrator', 'Password', 'Password123', 'Password@123', 'Password_123', 'Password123!', 'DDM@123', 'ddM@123', 'dDm@123']
   const sensitiveValidator = () => {
     if (sensitives.indexOf(value) > -1) {
-      _callback(new Error(`密码不允许是“${value}”`))
+      _callback(new Error(i18n.t('validator.passwordValidator', [value])))
       return false
     }
     return true
@@ -273,7 +273,7 @@ export const passwordValidator = (rule, value, _callback) => {
     }
   } else {
     // callback(new Error('8~30个字符，密码中有一个数字、大写字母、小写字母、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个'))
-    _callback(new Error('12~30个字符，必须同时包含四项（大小写字母、数字、特殊符号 ~`!@#$%^&*()-_=+[]{}|:\':\\",./<>?中至少一个），不能以“/”开头'))
+    _callback(new Error(i18n.t('validator.sshPassword')))
   }
 }
 
@@ -287,7 +287,7 @@ const validateForm = (rules, isRequired = true, checkMethod = 'every') => {
   rules = R.unless(R.is(Array), R.of)(rules)
   return (rule, value, callback) => {
     if (!isRequired && (R.isNil(value) || R.isEmpty(value))) return callback()
-    let msg = '输入信息不正确'
+    let msg = i18n.t('validator.validateForm')
     const everyIsTrue = rules[checkMethod](r => {
       const result = validate(value, r)
       if (result === true) return true
@@ -311,7 +311,7 @@ const validateForm = (rules, isRequired = true, checkMethod = 'every') => {
 export const validate = (value, regexpItem) => {
   const validateItem = REGEXP[regexpItem]
   if (validateItem) {
-    let msg = validateItem.message || '输入信息不正确'
+    let msg = validateItem.message || i18n.t('validator.validateForm')
     let result = true
     if (validateItem.regexp) {
       result = validateItem.regexp.test(value)
@@ -331,7 +331,7 @@ export const validate = (value, regexpItem) => {
     }
     return true
   } else {
-    console.error(`OneCloud: REGEXP 里面没有记录 ${regexpItem}规则, 请及时添加`)
+    console.error(i18n.t('validate', [regexpItem]))
     return false
   }
 }
