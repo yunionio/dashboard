@@ -7,7 +7,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        edit: true,
+        edit: row => row.alert_type !== 'system',
         formRules: [{ required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` }],
         slotCallback: row => {
           return (
