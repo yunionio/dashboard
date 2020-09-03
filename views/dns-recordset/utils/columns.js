@@ -48,7 +48,7 @@ export const getTrafficPoliciesTableColumns = () => {
           }
           return `线路${idx + 1}: ${con.join('/')}`
         }
-        if (traffic_policies.length === 0) {
+        if (!traffic_policies || traffic_policies.length === 0) {
           trafficPolicieList.push(
             <div>暂无解析线路</div>,
           )

@@ -63,11 +63,11 @@
             </a-col>
             <a-col :span="6">
               <a-form-item>
-                <a-select v-decorator="decorators.policy_params(item.key)">
+                <a-select v-decorator="decorators.policy_values(item.key)">
                   <a-select-option
                     :key="i"
                     :value="item.value"
-                    v-for="(item, i) in item.policy_params">
+                    v-for="(item, i) in item.policy_values">
                     {{item.label}}
                   </a-select-option>
                 </a-select>
@@ -77,7 +77,7 @@
               <a-button shape="circle" icon="minus" size="small" @click="() => remove(item.key, idx)" class="mt-2" />
             </a-col>
           </a-row>
-          <div class="d-flex align-items-center" v-if="options.providers.length > trafficPolicies.length">
+          <div class="d-flex align-items-center mt-1" v-if="options.providers.length > trafficPolicies.length">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
             <a-button type="link" @click="add">增加解析线路</a-button>
           </div>
@@ -93,7 +93,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ttls, providers, policy_types, policy_params } from '../constants'
+import { ttls, providers, policy_types, policy_values } from '../constants'
 import { getDnsTypes, getDnsProviders } from '../utils'
 import { uuid } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
@@ -112,7 +112,7 @@ export default {
         ttls,
         providers: dnsProviders,
         policy_types,
-        policy_params,
+        policy_values,
       },
       trafficPolicies: [],
       dnsZoneCapabilityData: null,
@@ -151,7 +151,7 @@ export default {
         provider: (k) => ([
           `provider[${k}]`,
           {
-            initialValue: [],
+            initialValue: '',
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
@@ -162,7 +162,7 @@ export default {
         policy_type: (k) => ([
           `policy_type[${k}]`,
           {
-            initialValue: [],
+            initialValue: '',
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
@@ -170,10 +170,10 @@ export default {
             }],
           },
         ]),
-        policy_params: (k) => ([
-          `policy_params[${k}]`,
+        policy_values: (k) => ([
+          `policy_values[${k}]`,
           {
-            initialValue: [],
+            initialValue: '',
           },
         ]),
       },
@@ -193,26 +193,29 @@ export default {
   created () {
     this.recordsetManager = new this.$Manager('dns_recordsets')
   },
+  mounted () {
+    this.backfillData()
+  },
   methods: {
-    add () {
+    add (val) {
       const uid = uuid()
       const provider = this.form.fc.getFieldValue('provider') || {}
       const providerValues = Object.values(provider)
       const _providers = this.options.providers.filter(item => !providerValues.includes(item.value))
       const pv = (_providers[0].value).toLowerCase()
-      const curPolicyType = policy_types[pv][0].value
-
+      const curPolicyType = val.policy_type || policy_types[pv][0].value
       this.trafficPolicies.push({
         key: uid,
         providers: _providers,
         policy_types: policy_types[pv],
-        policy_params: policy_params[curPolicyType.toLowerCase()],
+        policy_values: policy_values[curPolicyType],
       })
 
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
-          [`provider[${uid}]`]: _providers[0].value,
+          [`provider[${uid}]`]: val.provider || _providers[0].value,
           [`policy_type[${uid}]`]: curPolicyType,
+          [`policy_values[${uid}]`]: val.policy_value || '',
         })
       })
     },
@@ -242,28 +245,28 @@ export default {
       }
     },
     policyTypeChangeHandle (val, item) {
-      item.policy_params = policy_params[val] || []
+      item.policy_values = policy_values[val] || []
 
       this.$nextTick(() => {
-        if (item.policy_params.length > 0) {
+        if (item.policy_values.length > 0) {
           this.form.fc.setFieldsValue({
-            [`policy_params[${item.key}]`]: item.policy_params[0].value,
+            [`policy_values[${item.key}]`]: item.policy_values[0].value,
           })
         } else {
           this.form.fc.setFieldsValue({
-            [`policy_params[${item.key}]`]: '',
+            [`policy_values[${item.key}]`]: '',
           })
         }
       })
     },
     generateData (values) {
-      const { name, dns_type, dns_value, ttl, provider, policy_type, policy_params } = values
+      const { name, dns_type, dns_value, ttl, provider, policy_type, policy_value } = values
       const { id } = this.params.detailData
       const trafficPolicies = this.trafficPolicies.map((item) => {
         return {
           provider: provider[item.key],
           policy_type: policy_type[item.key],
-          policy_value: policy_params[item.key] || '',
+          policy_value: policy_value[item.key] || '',
         }
       })
       return {
@@ -275,6 +278,30 @@ export default {
         dns_zone_id: id,
         enabled: true,
       }
+    },
+    backfillData () {
+      if (this.params.type === 'update' || this.params.type === 'clone') {
+        this._updateFormValue(this.params.data[0])
+      }
+    },
+    _updateFormValue (val) {
+      const { name, dns_type, dns_value, ttl, traffic_policies } = val
+
+      traffic_policies.forEach((item) => {
+        this.add(item)
+      })
+      this.$nextTick(() => {
+        let _name = ''
+        if (this.params.type === 'update') {
+          _name = name
+        }
+        this.form.fc.setFieldsValue({
+          name: _name,
+          dns_type,
+          dns_value,
+          ttl,
+        })
+      })
     },
   },
 }

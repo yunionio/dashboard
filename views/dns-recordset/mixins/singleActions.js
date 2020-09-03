@@ -6,9 +6,10 @@ export default {
       {
         label: this.$t('network.text_130'),
         action: (obj) => {
-          this.createDialog('DnsCreateDialog', {
+          this.createDialog('DnsRecordSetCreateDialog', {
             title: this.$t('network.text_130'),
             data: [obj],
+            detailData: this.data,
             columns: this.columns,
             onManager: this.onManager,
             refresh: this.refresh,
@@ -30,6 +31,7 @@ export default {
                 this.createDialog('DnsRecordSetCreateDialog', {
                   title: this.$t('network.text_155'),
                   data: [obj],
+                  detailData: this.data,
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
