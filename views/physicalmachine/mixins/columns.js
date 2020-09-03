@@ -134,6 +134,8 @@ export default {
                 hpe: { height: '30px' },
                 inspur: { height: '50px' },
                 lenovo: { height: '10px' },
+                supermicro: { height: '30px' },
+                huawei: { height: '30px' },
               }
               const arr = Object.keys(icons)
               if (!arr.includes(row.sys_info.oem_name)) {
