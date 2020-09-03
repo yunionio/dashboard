@@ -100,6 +100,7 @@ export const USAGE_CONFIG = {
   networks: {
     unit: i18n.t('cloudenv.text_24'),
     zh_cn: i18n.t('cloudenv.text_49'),
+    noPerfix: true,
   },
   nics: {
     unit: i18n.t('cloudenv.text_24'),
