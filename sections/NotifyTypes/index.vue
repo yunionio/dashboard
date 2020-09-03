@@ -70,7 +70,7 @@ export default {
           }, channelMaps)
         }
         if (disableRobotArr.length > 0) {
-          this.extraStr = `未配置${disableRobotArr.join('、')}，无法开启`
+          this.extraStr = this.$t('common_657', [disableRobotArr.join('、')])
         }
         this.channelOpts = channelOpts.sort((a, b) => b.sort - a.sort)
         this.$emit('channelOptsChange', this.channelOpts)
