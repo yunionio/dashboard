@@ -9,6 +9,7 @@ export default {
           this.createDialog('AssociateVpcDialog', {
             title: this.$t('network.text_719'),
             data: [obj],
+            resData: obj,
             columns: this.columns,
             onManager: this.onManager,
             refresh: this.refresh,

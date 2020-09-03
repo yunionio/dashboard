@@ -12,9 +12,6 @@
 <script>
 import {
   getZoneTypeTableColumns,
-  getVpcCountTableColumns,
-  getDnsRecordsetCountTableColumns,
-
 } from '../utils/columns'
 
 export default {
@@ -33,8 +30,20 @@ export default {
     return {
       baseInfo: [
         getZoneTypeTableColumns(),
-        getDnsRecordsetCountTableColumns(),
-        getVpcCountTableColumns(),
+        {
+          field: 'dns_recordset_count',
+          title: this.$t('network.text_718'),
+          formatter: ({ row }) => {
+            return <a onClick={ () => this.$emit('tab-change', 'dns-recordset-list-for-dns-zone-sidepage') }>{row.dns_recordset_count}</a>
+          },
+        },
+        {
+          field: 'vpc_count',
+          title: this.$t('network.text_719'),
+          formatter: ({ row }) => {
+            return <a onClick={ () => this.$emit('tab-change', 'dns-associate-vpc-list') }>{row.vpc_count}</a>
+          },
+        },
       ],
     }
   },
