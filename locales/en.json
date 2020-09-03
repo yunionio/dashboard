@@ -957,7 +957,11 @@
     "k8sLabel": "Please enter an alphanumeric combination, hyphens are allowed,-_",
     "k8sName": "Begin with a lowercase letter, a combination of lowercase letters and numbers",
     "domainAccount": "The administrator account needs to start with a lowercase letter, a combination of lowercase letters and numbers, and the length is no less than 6 digits",
-    "domainPassword": "Administrator password, a combination of letters, numbers and _@#, length 6~64 bits"
+    "domainPassword": "Administrator password, a combination of letters, numbers and _@#, length 6~64 bits",
+    "sshPassword": "12~30 characters, must contain three items at the same time (uppercase and lowercase letters, numbers, special symbols~`!@#$%^&*()-_=+[]{}|:':\\\",. /<>? at least one), cannot start with “/”",
+    "passwordValidator": "Password is not allowed {0}”",
+    "validateForm": "The input information is incorrect",
+    "validate": "OneCloud: There is no record of {0} rule in REGEXP, please add it in time"
   },
   "dialog": {
     "ok": "OK",
@@ -8600,5 +8604,6 @@
   "common_653": "Select start time",
   "common_654": "Select end date",
   "common_655": "Select end time",
-  "common_656": "Please select user attribution target@:dictionary.domain"
+  "common_656": "Please select user attribution target@:dictionary.domain",
+  "common_657": "unconfigured {0}, cannot open"
 }
