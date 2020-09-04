@@ -170,12 +170,10 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
     {
       field: 'tenant',
       title: i18n.t('dictionary.project'),
-      formatter: ({ row }) => {
-        return row.tenant || '-'
-      },
       slots: {
         default: ({ row }) => {
           if (!row.tenant_id) return row.tenant || '-'
+          if (!row.tenant) return '-'
           const p = hasPermission({ key: 'projects_get' })
           let node
           if (p) {
