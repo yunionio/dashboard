@@ -57,7 +57,7 @@ export default {
           charge_type: [
             'charge_type',
             {
-              initialValue: 'traffic',
+              initialValue: this.params.data[0].hypervisor === 'kvm' ? 'bandwidth' : 'traffic',
             },
           ],
           bandwidth: [
