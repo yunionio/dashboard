@@ -150,6 +150,10 @@ export default {
         if (response.data && response.data.value) {
           this.dashboardOptions = response.data.value || []
         }
+        // 如果是新建自动生成面板名称
+        if (this.isCreate) {
+          this.dashboardName = this.genDashboardName()
+        }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           this.pm.create({
@@ -354,10 +358,9 @@ export default {
     },
     async handleConfirm () {
       if (!R.trim(this.dashboardName)) {
-        // this.$message.warn(this.$t('dashboard.text_120'))
-        // this.$refs.input.focus()
-        // return
-        this.dashboardName = this.genDashboardName()
+        this.$message.warn(this.$t('dashboard.text_120'))
+        this.$refs.input.focus()
+        return
       }
       this.submting = true
       try {
@@ -418,15 +421,14 @@ export default {
       const reg = /^dashboard-\d+$/g
       const numbers = []
       let max = 1
-      for (let i = 0, len = this.dashboardOptions.length; i < len; i++) {
-        const item = this.dashboardOptions[i]
-        if (reg.test(item.name)) {
+      R.forEach(item => {
+        if (R.test(reg, item.name)) {
           const nameArr = item.name.split('-')
           numbers.push(parseInt(nameArr[1]))
         }
-      }
+      }, this.dashboardOptions)
       if (numbers.length > 0) {
-        max = Math.max(numbers)
+        max = R.max(...numbers)
         max += 1
       }
       return `dashboard-${max}`

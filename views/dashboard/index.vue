@@ -113,7 +113,7 @@ export default {
     },
     removeAppPageClass () {
       const appPage = document.getElementById('app-page')
-      appPage.classList.remove(this.appPageAddedClass)
+      appPage && appPage.classList.remove(this.appPageAddedClass)
     },
     // 选择面板
     async handleCurrentOptionSelect (option) {
