@@ -8493,7 +8493,7 @@
   "common_549": "请输入认证源名称",
   "common_550": "认证类型",
   "common_551": "基本配置",
-  "common_552": "LDAP认证协议不支持此操作",
+  "common_552": "LDAP及SQL认证协议不支持此操作",
   "common_553": "IDP源数据",
   "common_554": "查看IDP源数据",
   "common_555": "仅通用SAML支持查看",
