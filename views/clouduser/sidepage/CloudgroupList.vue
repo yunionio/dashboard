@@ -71,7 +71,21 @@ export default {
               },
             })
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
+          meta: () => {
+            if (this.list.selectedItems.length < 0) {
+              return {
+                validate: false,
+              }
+            }
+            if (!this.$store.getters.isAdminMode) {
+              if (this.list.selectedItems.some(item => item.domain_id !== this.$store.getters.userInfo.domain.id)) {
+                return {
+                  validate: false,
+                }
+              }
+            }
+            return this.$getDeleteResult(this.list.selectedItems)
+          },
         },
       ],
       singleActions: [
@@ -101,7 +115,16 @@ export default {
               },
             })
           },
-          meta: (obj) => this.$getDeleteResult(obj),
+          meta: (obj) => {
+            if (!this.$store.getters.isAdminMode) {
+              if (obj.domain_id !== this.$store.getters.userInfo.domain.id) {
+                return {
+                  validate: false,
+                }
+              }
+            }
+            return this.$getDeleteResult(obj)
+          },
         },
       ],
     }
