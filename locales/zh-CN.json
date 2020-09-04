@@ -8609,5 +8609,6 @@
   "common_656": "请选择用户归属目标@:dictionary.domain",
   "common_657": "未配置{0}，无法开启",
   "common_658": "管理口MAC地址",
-  "common_659": "支持Redfish的服务器无需填写，其它可根据实际情况填写"
+  "common_659": "支持Redfish的服务器无需填写，其它可根据实际情况填写",
+  "common_660": "增强型SSD云硬盘"
 }
