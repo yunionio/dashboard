@@ -347,6 +347,12 @@ export default {
               this.storageOpts = this.storageOpts.filter((item) => {
                 return item.value !== 'nova'
               })
+            } else {
+              // 公有云隐藏带local关键字的硬盘类型
+              this.storageOpts = this.storageOpts.filter(({ value }) => {
+                if (value.includes('local')) return false
+                return true
+              })
             }
             this.form.fc.setFieldsValue({ backend: '' })
             if (this.storageOpts.length > 0) {
