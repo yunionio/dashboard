@@ -119,10 +119,15 @@ export default {
           resource: 'cloudgroups',
           apiVersion: 'v1',
           getParams: () => {
-            return {
-              scope: this.$store.getters.scope,
+            const params = {
               provider: this.params.cloudaccount.provider,
             }
+            if (this.$store.getters.isAdminMode) {
+              params.domain_id = this.params.cloudaccount.domain_id
+            } else {
+              params.scope = this.$store.getters.scope
+            }
+            return params
           },
           filterOptions: {
             name: getNameFilter(),
