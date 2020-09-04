@@ -121,6 +121,9 @@ export default {
       ].includes(this.hypervisor)) {
         delete ret.bandwidth
       }
+      if (this.hypervisor === 'kvm') {
+        delete ret.traffic
+      }
       return ret
     },
     isNew () {
@@ -193,6 +196,14 @@ export default {
   methods: {
     handleTypeChange (e) {
       this.type = e.target.value
+      if (this.type === 'new') {
+        this.$nextTick(() => {
+          if (R.has('traffic', this.chargeTypes)) {
+            return this.form.fc.setFieldsValue({ eip_charge_type: 'traffic' })
+          }
+          this.form.fc.setFieldsValue({ eip_charge_type: 'bandwidth' })
+        })
+      }
     },
     handleChargeTypeChange (e) {
       this.chargeType = e.target.value

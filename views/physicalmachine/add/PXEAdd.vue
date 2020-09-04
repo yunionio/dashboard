@@ -14,11 +14,11 @@
       <a-form-item :label="$t('compute.text_777')" :extra="$t('compute.text_775')">
         <a-input-password v-decorator="decorators.ipmi_password" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_778')" :extra="$t('compute.text_781')">
-        <net-select v-decorator="decorators.net" :project-domain="fd.project_domain" />
-      </a-form-item>
       <a-form-item :label="$t('common_658')" :extra="$t('common_659')">
         <a-input v-decorator="decorators.access_mac" />
+      </a-form-item>
+      <a-form-item :label="$t('compute.text_778')" :extra="$t('compute.text_781')">
+        <net-select v-decorator="decorators.net" :project-domain="fd.project_domain" />
       </a-form-item>
     </template>
     <template v-if="isFile">

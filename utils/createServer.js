@@ -529,9 +529,6 @@ export const createVmDecorators = type => {
       ],
       charge_type: [
         'eip_charge_type',
-        {
-          initialValue: 'traffic',
-        },
       ],
       bandwidth: [
         'eip_bw',
