@@ -211,7 +211,7 @@ export default {
     async getConditionDomains (query) {
       if (!this.isAdminMode) {
         const domains = [
-          { name: this.defaultDomainName, id: this.defaultDomainId },
+          this.userInfo.domain,
         ]
         this.domains = domains
         this.domain = this.domains[0].id
