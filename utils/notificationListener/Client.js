@@ -22,11 +22,11 @@ class Client {
       autoConnect: false,
     })
     this.socket.on('connect', () => {
-      console.info('connected onecloud push server')
+      console.info('connected push server')
     })
 
     this.socket.on('disconnect', () => {
-      console.info('disconnect onecloud push server')
+      console.info('disconnect push server')
     })
 
     this.socket.on('error', (error) => {

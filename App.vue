@@ -80,7 +80,7 @@ export default {
     },
     theme: {
       handler (val) {
-        if (val && val !== process.env.theme) {
+        if (val && val !== process.env.THEME) {
           console.log(val)
         }
       },
@@ -88,7 +88,7 @@ export default {
     },
     themeColor: {
       handler (val) {
-        if (val && val !== process.env.themeColor) {
+        if (val && val !== process.env.THEME_COLOR) {
           updateThemeColor(val)
         }
       },
