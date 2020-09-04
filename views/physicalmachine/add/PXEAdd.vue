@@ -14,6 +14,9 @@
       <a-form-item label="IPMI密码" extra="请输入已配置好的BMC的信息">
         <a-input-password v-decorator="decorators.ipmi_password" />
       </a-form-item>
+      <a-form-item label="管理口MAC地址" extra="支持Redfish的服务器无需填写，其它可根据实际情况填写">
+        <a-input v-decorator="decorators.access_mac" />
+      </a-form-item>
       <a-form-item label="管理口IP" extra="会根据输入的IP子网或者IP地址设置物理机的管理口IP，留空则使用DHCP自动分配的IP作为管理口IP">
         <net-select v-decorator="decorators.net" :project-domain="fd.project_domain" />
       </a-form-item>

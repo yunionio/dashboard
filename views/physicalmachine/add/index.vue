@@ -213,6 +213,9 @@ export default {
             valuePropName: 'checked',
           },
         ],
+        access_mac: [
+          'access_mac',
+        ],
       }
     },
     desc () {
