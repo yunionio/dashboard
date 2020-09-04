@@ -14,6 +14,7 @@
       placeholder="请输入子网内的IP地址"
       v-model="ip"
       @change="handleChange" />
+    <a-button v-if="ipShow" type="link" @click="handleHiddenIp" class="pl-0 pr-0 ml-2">取消</a-button>
     <a-button v-else type="link" @click="handleShowIp" class="pl-0 pr-0 ml-2">手动配置IP</a-button>
   </div>
 </template>
@@ -53,6 +54,9 @@ export default {
   methods: {
     handleShowIp () {
       this.ipShow = true
+    },
+    handleHiddenIp () {
+      this.ipShow = false
     },
     handleChange () {
       this.$nextTick(() => {
