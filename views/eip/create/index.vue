@@ -32,7 +32,7 @@
             :vpcResourceMapper="vpcResourceMapper" />
         </template>
         <template v-if="cloudEnv !== 'private'">
-          <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout" v-if="cloudEnv !== 'onpremise' ">
+          <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout">
             <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
               <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
                 {{item.label}}
@@ -189,9 +189,9 @@ export default {
         ],
         charge_type: [
           'charge_type',
-          {
-            initialValue: 'traffic',
-          },
+          // {
+          //   initialValue: 'bandwidth',
+          // },
         ],
       },
       formItemLayout: {
@@ -205,7 +205,7 @@ export default {
       manager: '',
       selectedRegionItem: {},
       showBandwidth: true,
-      charge_type: 'traffic',
+      charge_type: cloudEnv === 'onpremise' ? 'bandwidth' : 'traffic',
       providerC: '',
       domain_id: 'default',
       providerParams: {
@@ -275,16 +275,14 @@ export default {
       return params
     },
     chargeTypeOptions () {
-      if (this.showBandwidth) {
-        return [
-          { label: this.$t('network.text_193'), value: 'traffic' },
-          { label: this.$t('network.text_194'), value: 'bandwidth' },
-        ]
-      } else {
-        return [
-          { label: this.$t('network.text_193'), value: 'traffic' },
-        ]
+      const arr = [
+        { label: this.$t('network.text_193'), value: 'traffic' },
+        { label: this.$t('network.text_194'), value: 'bandwidth' },
+      ]
+      if ((this.showBandwidth && this.cloudEnv === 'onpremise') || !this.showBandwidth) {
+        arr.shift()
       }
+      return arr
     },
     maxBandwidth () {
       if (this.cloudEnv === 'idc') {
@@ -345,12 +343,21 @@ export default {
       this.form.fc.resetFields(['manager'])
       this.manager = ''
       this.providerC = ''
+      this.charge_type = newValue === 'onpremise' ? 'bandwidth' : 'traffic'
+      this.$nextTick(() => {
+        this.form.fc.getFieldDecorator('charge_type', { initialValue: newValue === 'onpremise' ? 'bandwidth' : 'traffic' })
+      })
     },
   },
   provide () {
     return {
       form: this.form,
     }
+  },
+  created () {
+    this.$nextTick(() => {
+      this.form.fc.getFieldDecorator('charge_type', { initialValue: this.cloudEnv === 'onpremise' ? 'bandwidth' : 'traffic' })
+    })
   },
   methods: {
     format (val) {
