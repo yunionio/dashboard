@@ -2052,17 +2052,17 @@
       "msad_multi_domain",
       "openldap_one_domain"
     ],
-    "OIDC": [
-      "oidc",
-      "github_oidc",
-      "azure_oidc"
+    "CAS": [
+      "cas"
     ],
     "SAML": [
       "saml",
       "azure_ad_saml"
     ],
-    "CAS": [
-      "cas"
+    "OIDC": [
+      "oidc",
+      "github_oidc",
+      "azure_oidc"
     ],
     "OAuth2": [
       "feishu_oauth2",
