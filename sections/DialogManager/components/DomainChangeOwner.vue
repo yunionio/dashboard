@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="columns" />
       <template v-if="domainLoaded">
         <a-form :form="form.fc">
-          <a-form-item :label="$t('dictionary.domain')" v-bind="formItemLayout" :extra="$t('common.text00088')">
+          <a-form-item :label="$t('dictionary.domain')" v-bind="formItemLayout" :extra="extra">
             <a-select v-decorator="decorators.project_domain" showSearch @search="getCanUseDomains" :filterOption="false">
               <template v-for="item of domains">
                 <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
@@ -81,6 +81,12 @@ export default {
     // 是否为批量操作
     isBatch () {
       return this.params.data.length >= 2
+    },
+    extra () {
+      if (this.params.hiddenExtra) {
+        return null
+      }
+      return this.$t('common.text00088')
     },
   },
   beforeDestroy () {
