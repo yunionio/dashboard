@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header title="记录" />
+   <page-header title="$t('network.text_316')" />
    <page-body>
      <list :id="listId" />
    </page-body>
@@ -11,13 +11,13 @@
 import List from './components/List'
 
 export default {
-  name: 'DnsRecordSetIndex',
+  name: 'DnsZonecacheIndex',
   components: {
     List,
   },
   data () {
     return {
-      listId: 'DnsRecordSetList',
+      listId: 'DnsZonecacheList',
     }
   },
 }

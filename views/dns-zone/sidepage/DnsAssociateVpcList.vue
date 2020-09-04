@@ -92,6 +92,7 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: !this.isPublicZone,
             }
           },
         },
@@ -130,6 +131,11 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    isPublicZone () {
+      return this.data.zone_type === 'PublicZone'
+    },
   },
   created () {
     this.initSidePageTab('vpc-detail')

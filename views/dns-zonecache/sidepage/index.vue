@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('network.text_720')"
+    title="记录"
     icon="res-dns"
     :res-name="detailData.name"
     :actions="params.actions"
@@ -29,53 +29,28 @@
 <script>
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import DnsZoneDetail from './Detail'
-import DnsAssociateVpcList from './DnsAssociateVpcList'
+import DnsZonecacheDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
-import DnsRecordsetListForDnsZoneSidepage from '@Network/views/dns-recordset/components/List'
-import DnsZonecacheListForDnsZoneSidepage from '@Network/views/dns-zonecache/components/List'
 
 export default {
-  name: 'DnsZoneSidePage',
+  name: 'DnsZonecacheSidePage',
   components: {
-    DnsZoneDetail,
+    DnsZonecacheDetail,
     Actions,
-    DnsRecordsetListForDnsZoneSidepage,
-    DnsAssociateVpcList,
-    DnsZonecacheListForDnsZoneSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: this.$t('network.text_67'), key: 'dns-zone-detail' },
-        { label: '记录', key: 'dns-recordset-list-for-dns-zone-sidepage' },
-        { label: '关联VPC', key: 'dns-associate-vpc-list' },
-        { label: '缓存列表', key: 'dns-zonecache-list-for-dns-zone-sidepage' },
+        { label: this.$t('network.text_67'), key: 'dns-zonecache-detail' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
   },
   computed: {
     getParams () {
-      if (this.params.windowData.currentTab === 'dns-recordset-list-for-dns-zone-sidepage') {
-        return {
-          detail: true,
-          dns_zone_id: this.detailData.id,
-        }
-      } else if (this.params.windowData.currentTab === 'dns-associate-vpc-list') {
-        return {
-          detail: true,
-          dns_zone_id: this.detailData.id,
-        }
-      } else if (this.params.windowData.currentTab === 'dns-zonecache-list-for-dns-zone-sidepage') {
-        return {
-          detail: true,
-          dns_zone_id: this.detailData.id,
-        }
-      }
       return null
     },
   },
