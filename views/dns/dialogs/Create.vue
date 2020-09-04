@@ -165,7 +165,7 @@ export default {
         ttl: [
           'ttl',
           {
-            initialValue: 600,
+            initialValue: this.params.type === 'create' ? 600 : this.params.data[0].ttl,
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [

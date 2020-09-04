@@ -14,6 +14,7 @@ import {
   getRegionTableColumn,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
+import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -32,13 +33,7 @@ export default {
         resource: 'cachedloadbalanceracls',
         getParams: this.getParam,
         filterOptions: {
-          name: {
-            label: this.$t('network.text_291'),
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
-          },
+          name: getNameFilter(),
         },
       }),
       columns: [
