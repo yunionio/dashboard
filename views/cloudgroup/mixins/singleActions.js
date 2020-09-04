@@ -62,6 +62,7 @@ export default {
               name: this.$t('dictionary.cloudgroup'),
               resource: 'cloudgroups',
               apiVersion: 'v1',
+              hiddenExtra: true,
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.cloudgroup'),
