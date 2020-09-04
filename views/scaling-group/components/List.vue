@@ -53,7 +53,7 @@ export default {
             dropdown: true,
             multiple: true,
             items: [
-              { label: 'OneCloud', key: 'OneCloud' },
+              { label: this.$t('brand'), key: 'OneCloud' },
             ],
           },
           // region: {
