@@ -238,8 +238,8 @@ export default {
         const newValues = this.generateData(values)
         await this.doCreate(newValues)
         this.loading = false
+        this.params.refresh && this.params.refresh()
         this.cancelDialog()
-        this.params.refresh()
       } catch (error) {
         throw error
       } finally {

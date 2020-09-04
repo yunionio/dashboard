@@ -81,7 +81,6 @@ export default {
           action: () => {
             this.createDialog('DnsZoneCreateDialog', {
               title: '新建DNS解析',
-              data: this.list.selectedItems,
               onManager: this.onManager,
               refresh: this.refresh,
             })
