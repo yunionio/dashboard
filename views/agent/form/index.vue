@@ -1,6 +1,6 @@
 <template>
   <a-spin :spinning="loading">
-    <page-header :title="$t('network.text_78')" />
+    <page-header :title="title" />
     <page-body>
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('network.text_21')">
@@ -295,6 +295,9 @@ export default {
   computed: {
     lbAgentId () {
       return this.$route.query.id
+    },
+    title () {
+      return this.lbAgentId ? this.$t('network.text_722') : this.$t('network.text_78')
     },
   },
   created () {
