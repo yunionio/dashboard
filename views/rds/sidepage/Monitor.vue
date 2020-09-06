@@ -10,15 +10,9 @@
     </div>
     <template v-else>
       <a-alert
-        v-if="brand !== 'huawei'"
         :message="$t('db.text_183')"
         class="mb-2"
         :description="$t('db.text_184')"
-        type="warning" />
-      <a-alert
-        v-if="brand === 'huawei'"
-        message=""
-        :description="$t('db.text_185')"
         type="warning" />
     </template>
   </div>
@@ -63,7 +57,7 @@ export default {
     },
     hadMonitor () {
       const brand = this.data.brand.toLowerCase()
-      const surportBrand = [HYPERVISORS_MAP.aliyun.key/*, HYPERVISORS_MAP.huawei.key */]
+      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key]
       return surportBrand.includes(brand)
     },
     monitorConstants () {
