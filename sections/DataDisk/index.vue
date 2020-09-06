@@ -8,7 +8,7 @@
           :min="item.min || min"
           :form="form"
           :schedtagParams="getSchedtagParams()"
-          :snapshots-params="getSnapshotsParams(item)"
+          :snapshots-params="getSnapshotsParams"
           :diskTypeLabel="i === 0 ? '' : diskTypeLabel"
           :decorator="genDecorator(item.key)"
           :hypervisor="hypervisor"
@@ -221,6 +221,31 @@ export default {
     diskTypeLabel () {
       return _.get(this.dataDisks, '[0].diskType.label')
     },
+    getSnapshotsParams () {
+      const staticParams = {
+        with_meta: true,
+        cloud_env: 'onpremise',
+        limit: 0,
+        disk_type: 'data',
+        is_instance_snapshot: false,
+        $t: uuid(),
+      }
+      const scopeParams = {}
+      if (this.$store.getters.isAdminMode) {
+        scopeParams.project_domain = this.domain
+      } else {
+        scopeParams.scope = this.$store.getters.scope
+      }
+      const diskTypeKey = _.get(this.dataDisks, '[0].diskType.key')
+
+      if (diskTypeKey) {
+        staticParams['joint_filter.0'] = `storages.id(storage_id).storage_type.equals(${diskTypeKey})`
+      }
+      return {
+        ...staticParams,
+        ...scopeParams,
+      }
+    },
   },
   watch: {
     typesMap (v, oldV) {
@@ -361,31 +386,6 @@ export default {
         }
       }
       return ret
-    },
-    getSnapshotsParams (item) {
-      const staticParams = {
-        with_meta: true,
-        cloud_env: 'onpremise',
-        limit: 0,
-        disk_type: 'data',
-        is_instance_snapshot: false,
-      }
-      const scopeParams = {}
-      if (this.$store.getters.isAdminMode) {
-        scopeParams.project_domain = this.domain
-      } else {
-        scopeParams.scope = this.$store.getters.scope
-      }
-      if (this.diskTypeLabel) {
-        staticParams['joint_filter.0'] = `storages.id(storage_id).storage_type.equals(${_.get(this.form, 'fd.systemDiskType.key')})`
-      }
-      if (item.diskType && item.diskType.key) {
-        staticParams['joint_filter.0'] = `storages.id(storage_id).storage_type.equals(${item.diskType.key})`
-      }
-      return {
-        ...staticParams,
-        ...scopeParams,
-      }
     },
     getSchedtagParams () {
       const params = {
