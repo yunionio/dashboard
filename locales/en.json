@@ -4745,6 +4745,7 @@
   "network.text_719": "Associate VPC",
   "network.text_720": "DNS",
   "network.text_721": "Synchronize analysis resources",
+  "network.text_722": "update lbagent",
   "storage.text_1": "Local Storage",
   "storage.text_2": "Physical machine storage",
   "storage.text_3": "Container Storage",
