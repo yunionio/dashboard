@@ -1479,7 +1479,8 @@
     "loadbalancerclusters": "负载均衡-集群",
     "receivers": "接收人",
     "dnszone": "DNS解析",
-    "system": "系统配置"
+    "system": "系统配置",
+    "costalerts": "资源消费预警"
   },
   "shareScope": {
     "system": "系统",
@@ -8659,5 +8660,7 @@
   "common_702": "中国区",
   "common_703": "国际区",
   "common_704": "认证源名称",
-  "common_705": "认证源端用户名"
+  "common_705": "认证源端用户名",
+  "common_706": "操作日志-系统",
+  "common_707": "操作日志-云账号"
 }
