@@ -5616,10 +5616,10 @@
   "bill.text_250": "实例账单",
   "bill.text_251": "资源账单",
   "bill.text_252": "流水账单",
-  "bill.text_253": "资源优化",
-  "bill.text_254": "资源列表",
-  "bill.text_255": "规则配置",
-  "bill.text_256": "全局规则",
+  "bill.text_253": "优化建议",
+  "bill.text_254": "建议列表",
+  "bill.text_255": "订阅设置",
+  "bill.text_256": "规则配置",
   "cloudenv.text_1": "尽量使用",
   "cloudenv.text_2": "避免使用",
   "cloudenv.text_3": "禁止使用",
@@ -8664,5 +8664,7 @@
   "common_704": "认证源名称",
   "common_705": "认证源端用户名",
   "common_706": "操作日志-系统",
-  "common_707": "操作日志-云账号"
+  "common_707": "操作日志-云账号",
+  "common_708": "无关联{0}",
+  "common_709": "{0}@:dictionary.identity_provider信息方式获取可参考"
 }
