@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header :title="$t('dictionary.dnszone')" />
+   <page-header :title="$t('dictionary.dns_zone')" />
    <page-body>
      <list :id="listId" />
    </page-body>

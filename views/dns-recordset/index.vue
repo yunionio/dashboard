@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header :title="$t('common_663')" />
+   <page-header :title="$t('dictionary.dns_recordset')" />
    <page-body>
      <list :id="listId" />
    </page-body>

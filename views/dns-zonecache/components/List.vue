@@ -54,6 +54,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
+          permission: 'dns_zonecaches_create',
           action: () => {
             this.createDialog('DnsZonecacheCreateDialog', {
               title: this.$t('common_699'),

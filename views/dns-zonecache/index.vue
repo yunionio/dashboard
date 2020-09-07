@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header title="$t('network.text_316')" />
+   <page-header title="$t('dictionary.dns_zonecache')" />
    <page-body>
      <list :id="listId" />
    </page-body>
