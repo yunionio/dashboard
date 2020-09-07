@@ -1474,7 +1474,8 @@
     "loadbalancerclusters": "Load Balance-Cluster",
     "receivers": "receivers",
     "dnszone": "DNS",
-    "system": "System Config"
+    "system": "System Config",
+    "costalerts": "Resource consumption warning"
   },
   "shareScope": {
     "system": "System",
@@ -8650,5 +8651,7 @@
   "common_702": "China Region",
   "common_703": "International Zone",
   "common_704": "Authentication source name",
-  "common_705": "Authentication source user name"
+  "common_705": "Authentication source user name",
+  "common_706": "Operation Log-System",
+  "common_707": "Operation Log-Cloud Account"
 }
