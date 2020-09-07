@@ -13,6 +13,7 @@ import JCloudregionList from './JComponents/JCloudregionList/index'
 import JZoneList from './JComponents/JZoneList/index'
 import JNetworkList from './JComponents/JNetworkList/index'
 import JSKUList from './JComponents/JSKUList/index'
+import JVPCList from './JComponents/JVPCList/index'
 import JStorageBackendList from './JComponents/JStorageBackendList/index'
 
 const components = [
@@ -30,6 +31,7 @@ const components = [
   JNetworkList,
   JSKUList,
   JStorageBackendList,
+  JVPCList,
 ]
 
 components.map(component => {
