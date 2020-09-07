@@ -83,7 +83,7 @@ export default {
     const initFd = getInitialValue(decorators)
     return {
       submiting: false,
-      errors: [],
+      errors: {},
       formItemLayout: {
         wrapperCol: CreateServerForm.wrapperCol,
         labelCol: CreateServerForm.labelCol,
