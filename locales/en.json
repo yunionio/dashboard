@@ -5611,10 +5611,10 @@
   "bill.text_250": "Instance Bill",
   "bill.text_251": "Resource Bill",
   "bill.text_252": "Current Bill",
-  "bill.text_253": "Expense Optimization",
-  "bill.text_254": "Resource List",
-  "bill.text_255": "Rule Configuration",
-  "bill.text_256": "Global Rules",
+  "bill.text_253": "Optimization suggestions",
+  "bill.text_254": "Suggestion list",
+  "bill.text_255": "Subscription settings",
+  "bill.text_256": "Rule configuration",
   "cloudenv.text_1": "Use as much as possible",
   "cloudenv.text_2": "Avoid using",
   "cloudenv.text_3": "Use prohibited",
@@ -8655,5 +8655,7 @@
   "common_704": "Authentication source name",
   "common_705": "Authentication source user name",
   "common_706": "Operation Log-System",
-  "common_707": "Operation Log-Cloud Account"
+  "common_707": "Operation Log-Cloud Account",
+  "common_708": "No association {0}",
+  "common_709": "{0}@:dictionary.identity_provider information method can be obtained for reference"
 }
