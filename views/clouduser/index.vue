@@ -12,8 +12,9 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -77,6 +78,42 @@ export default {
             default: ({ row }) => {
               if (!row.iam_login_url) return '-'
               return [<help-link href={ row.iam_login_url } />]
+            },
+          },
+        },
+        {
+          field: 'cloudgroups',
+          title: this.$t('common_460', [this.$t('dictionary.cloudgroup')]),
+          type: 'expand',
+          slots: {
+            default: ({ row }) => {
+              return (row.cloudgroups && row.cloudgroups.length) || 0
+            },
+            content: ({ row }) => {
+              if (R.isNil(row.cloudgroups) || R.isEmpty(row.cloudgroups)) return this.$t('common_708', [this.$t('dictionary.cloudgroup')])
+              return [
+                <vxe-grid
+                  showOverflow='title'
+                  data={ row.cloudgroups }
+                  columns={[
+                    getNameDescriptionTableColumn({
+                      onManager: this.onManager,
+                      hideField: true,
+                      showDesc: false,
+                      edit: false,
+                      slotCallback: row => {
+                        return (
+                          <side-page-trigger permission='cloudgroup_get' name='CloudgroupSidePage' id={row.id} vm={this}>{ row.name }</side-page-trigger>
+                        )
+                      },
+                    }),
+                    {
+                      field: 'id',
+                      title: 'ID',
+                      formatter: ({ cellValue }) => cellValue || '-',
+                    },
+                  ]} />,
+              ]
             },
           },
         },
