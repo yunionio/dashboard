@@ -34,7 +34,7 @@
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('monitor.recipient')">
+    <a-form-item :label="$t('monitor.recipient')" :extra="$t('monitor_text00001')">
       <base-select
         v-decorator="decorators.recipients"
         resource="receivers"
@@ -297,6 +297,7 @@ export default {
         scope: this.$store.getters.scope,
         with_meta: true,
         limit: 0,
+        enabled: true,
       },
       levelOpts: Object.values(levelMaps),
       projectItem: {},
