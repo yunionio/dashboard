@@ -535,53 +535,26 @@ export class GenCreateData {
    * @memberof GenCreateData
    */
   getForecastErrors (data) {
-    const ret = []
-    const genErrorObj = (item, message) => {
-      const obj = {
-        message,
+    const errors = []
+    if (data.filtered_candidates && data.filtered_candidates.length > 0) {
+      for (let i = 0, len = data.filtered_candidates.length; i < len; i++) {
+        const item = data.filtered_candidates[i]
+        const message = FORECAST_FILTERS_MAP[item.filter_name] || i18n.t('compute.text_1310', [item.filter_name])
+        errors.push({
+          message,
+          children: item.reasons,
+        })
       }
-      if (item.messages && item.messages.length) {
-        obj.children = item.messages.map(child => {
-          const msgArr = child.split(':')
-          if (msgArr && msgArr.length > 0) {
-            return msgArr[0]
-          }
-          return null
-        }).filter(child => !!child)
-      }
-      return obj
-    }
-    if (data.filters && data.filters.length > 0) {
-      for (let i = 0, len = data.filters.length; i < len; i++) {
-        const item = data.filters[i]
-        if (item.filter === 'disk_schedtag') {
-          const obj = genErrorObj(item, i18n.t('db.text_333', [item.count,item.filter]))
-          ret.push(obj)
-        } else if (item.filter.startsWith('host')) {
-          const obj = genErrorObj(item, i18n.t('db.text_334', [item.count,FORECAST_FILTERS_MAP[item.filter]]))
-          ret.push(obj)
-        } else {
-          if (item.count > 0) {
-            const obj = genErrorObj(item, FORECAST_FILTERS_MAP[item.filter] || i18n.t('db.text_335', [item.count,item.filter]))
-            ret.push(obj)
-          } else {
-            const obj = genErrorObj(item, i18n.t('db.text_336'))
-            ret.push(obj)
-          }
-        }
-      }
-    } else if (data.results && data.results.length > 0) {
-      const count = data.results.reduce((total, current) => {
-        return total + parseInt(current.capacity)
-      }, 0)
-      ret.push({
-        message: i18n.t('db.text_337', [count]),
-      })
     } else {
-      ret.push({
-        message: i18n.t('db.text_338'),
+      errors.push({
+        message: i18n.t('compute.text_227'),
       })
     }
-    return ret
+    return {
+      errors,
+      allow_count: data.allow_count,
+      req_count: data.req_count,
+      not_allow_reasons: data.not_allow_reasons,
+    }
   }
 }
