@@ -105,24 +105,16 @@ export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'dele
     // 有多条不可删除条目时
     if (len > 1) {
       deleteFailReason = data.map(item => item[failKey])
-      deleteFailReason = R.uniq(deleteFailReason)
     }
     // 处理获取到的 deleteFailReason
     if (deleteFailReason.length > 1 || deleteFailReason.length <= 0) {
       tooltip = i18n.t('common_604')
     } else {
       deleteFailReason = deleteFailReason[0]
-      if (R.is(String, deleteFailReason)) {
-        try {
-          deleteFailReason = JSON.parse(deleteFailReason)
-        } catch (error) {
-          console.warn(i18n.t('common_306', [failKey]))
-        }
-      }
       if (deleteFailReason) {
-        const error = deleteFailReason.error
+        const error = deleteFailReason
         const errorMessage = getHttpErrorMessage(error, true)
-        tooltip = `${errorMessage.class}: ${errorMessage.detail}`
+        tooltip = errorMessage.detail
       }
     }
   }
