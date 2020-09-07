@@ -63,6 +63,17 @@ export default {
               resource: 'cloudgroups',
               apiVersion: 'v1',
               hiddenExtra: true,
+            }, {
+              meta: () => {
+                if (this.$store.getters.isDomainMode && obj.domain_id !== this.$store.getters.userInfo.projectDomainId) {
+                  return {
+                    validate: false,
+                  }
+                }
+                return {
+                  validate: true,
+                }
+              },
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.cloudgroup'),
@@ -83,7 +94,14 @@ export default {
                   onManager: this.onManager,
                 })
               },
-              meta: () => this.$getDeleteResult(obj),
+              meta: () => {
+                if (this.$store.getters.isDomainMode && obj.domain_id !== this.$store.getters.userInfo.projectDomainId) {
+                  return {
+                    validate: false,
+                  }
+                }
+                return this.$getDeleteResult(obj)
+              },
             },
           ]
         },

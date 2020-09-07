@@ -256,25 +256,39 @@ export default {
         }
       }
       if (public_scope === 'system') {
-        try {
-          const params = {
-            scope: this.scope,
-            limit: 20,
+        if (share_mode === 'provider_domain') {
+          if (isGoogle) {
+            if (this.cloudproviderId) {
+              const provider = await this.getProvider()
+              domains = [{
+                id: provider.domain_id,
+                name: provider.project_domain,
+              }]
+            }
+          } else {
+            domains = [accountDomain]
           }
-          if (query) {
-            params.filter = `name.contains(${query})`
-          }
+        } else {
           try {
-            const response = await this.dm.list({
-              params,
-            })
-            const data = response.data.data || []
-            domains = data
+            const params = {
+              scope: this.scope,
+              limit: 20,
+            }
+            if (query) {
+              params.filter = `name.contains(${query})`
+            }
+            try {
+              const response = await this.dm.list({
+                params,
+              })
+              const data = response.data.data || []
+              domains = data
+            } catch (error) {
+              throw error
+            }
           } catch (error) {
             throw error
           }
-        } catch (error) {
-          throw error
         }
       }
       if (!R.isEmpty(this.defaultDomain)) {
