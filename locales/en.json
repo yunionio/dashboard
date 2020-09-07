@@ -8648,5 +8648,7 @@
   "common_700": "There is no analytical line yet",
   "common_701": "0 Article",
   "common_702": "China Region",
-  "common_703": "International Zone"
+  "common_703": "International Zone",
+  "common_704": "Authentication source name",
+  "common_705": "Authentication source user name"
 }
