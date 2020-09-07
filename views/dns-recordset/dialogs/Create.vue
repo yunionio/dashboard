@@ -23,13 +23,22 @@
         <a-form-item :label="$t('network.text_152')">
           <a-input v-decorator="decorators.dns_value" :placeholder="$t('network.text_175')" />
         </a-form-item>
-        <a-form-item label="TTL">
+        <a-form-item>
+          <span slot="label">
+            {{ $t('common_665') }}
+            <a-tooltip class="item" effect="dark" placement="top">
+              <a-icon type="info-circle" />
+              <div slot="title">{{$t('network.text_171', [300])}}</div>
+            </a-tooltip>
+          </span>
           <a-row>
-            <a-col :span="8"><a-input v-decorator="decorators.ttl" /></a-col>
-            <a-col :span="16">
+            <a-col :span="2">
+              <a-input-number v-decorator="decorators.ttl" :min="ttlRange.min" :max="ttlRange.max" />
+            </a-col>
+            <a-col :span="22">
               <ul class="oc-ttl d-flex">
                 <li
-                  class="oc-ttl-item"
+                  class="oc-ttl-item ml-1"
                   @click="ttlClickHandle(v)"
                   v-for="v in options.ttls"
                   :value="v.value"
@@ -39,12 +48,6 @@
               </ul>
             </a-col>
           </a-row>
-          <!-- <a-select
-            v-decorator="decorators.ttl">
-            <a-select-option v-for="v in options.ttls" :value="v.value" :key="v.value">
-              {{ v.label }}
-            </a-select-option>
-          </a-select> -->
         </a-form-item>
         <a-form-item :label="$t('common_696')">
           <a-row
@@ -108,8 +111,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ttls, providers, policy_types, policy_values } from '../constants'
-import { getDnsTypes, getDnsProviders } from '../utils'
+import { providers, policy_types, policy_values } from '../constants'
+import { getDnsTypes, getDnsProviders, getTtls } from '../utils'
 import { uuid } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -120,6 +123,7 @@ export default {
   data () {
     const dnsTypes = getDnsTypes()
     const dnsProviders = getDnsProviders(providers, this.params.detailData)
+    const ttls = getTtls(this.params.detailData)
     return {
       loading: false,
       options: {
@@ -160,7 +164,7 @@ export default {
         ttl: [
           'ttl',
           {
-            initialValue: ttls[0].value,
+            initialValue: 300,
           },
         ],
         provider: (k) => ([
@@ -204,6 +208,22 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    isPublicZone () {
+      return this.params.detailData.zone_type === 'PublicZone'
+    },
+    ttlRange () {
+      if (this.isPublicZone) {
+        return {
+          min: 60,
+          max: 86400,
+        }
+      } else {
+        return {
+          min: 5,
+          max: 86400,
+        }
+      }
+    },
   },
   created () {
     this.recordsetManager = new this.$Manager('dns_recordsets')
