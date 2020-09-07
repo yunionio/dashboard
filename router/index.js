@@ -25,6 +25,7 @@ import Layout from '@/layouts/RouterView'
 
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
+import store from '@/store'
 
 export default {
   index: 4,
@@ -239,8 +240,9 @@ export default {
         {
           path: '/dns-zone',
           meta: {
-            label: i18n.t('dictionary.dnszone'),
+            label: i18n.t('dictionary.dns_zone'),
             permission: 'dnszone_list',
+            hidden: () => store.getters.isProjectMode,
           },
           component: Layout,
           children: [

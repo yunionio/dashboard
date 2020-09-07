@@ -78,6 +78,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
+          permission: 'dns_zones_create',
           action: () => {
             this.createDialog('DnsZoneCreateDialog', {
               title: this.$t('common_661'),
@@ -102,7 +103,7 @@ export default {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     title: this.$t('network.text_131'),
-                    name: this.$t('dictionary.dnszone'),
+                    name: this.$t('dictionary.dns_zone'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,

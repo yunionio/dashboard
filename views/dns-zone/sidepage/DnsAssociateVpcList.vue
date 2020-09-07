@@ -79,6 +79,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_719'),
+          permission: 'dns_zones_add_vpcs',
           action: (obj) => {
             this.createDialog('AssociateVpcDialog', {
               title: this.$t('network.text_719'),
@@ -98,6 +99,7 @@ export default {
         },
         {
           label: this.$t('cloudenv.text_452'),
+          permission: 'dns_zones_remove_vpcs',
           action: (obj) => {
             this.createDialog('RemoveVpcDialog', {
               title: this.$t('cloudenv.text_452'),
@@ -118,6 +120,7 @@ export default {
       singleActions: [
         {
           label: this.$t('cloudenv.text_452'),
+          permission: 'dns_zones_remove_vpcs',
           action: (obj) => {
             this.createDialog('RemoveVpcDialog', {
               title: this.$t('cloudenv.text_452'),

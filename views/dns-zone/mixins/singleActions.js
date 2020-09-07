@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('network.text_719'),
+        permission: 'dns_zones_add_vpcs',
         action: (obj) => {
           this.createDialog('AssociateVpcDialog', {
             title: this.$t('network.text_719'),
@@ -27,10 +28,11 @@ export default {
       },
       {
         label: this.$t('network.text_129'),
+        permission: 'dns_zones_syncstatus',
         actions: obj => {
           return [
             getSetPublicAction(this, {
-              name: this.$t('dictionary.dnszone'),
+              name: this.$t('dictionary.dns_zone'),
               scope: 'domain',
               resource: 'dns_zones',
             }),
@@ -51,6 +53,7 @@ export default {
             },
             {
               label: this.$t('network.text_721'),
+              permission: 'dns_zones_sync_recordsets',
               action: () => {
                 this.onManager('performAction', {
                   steadyStatus: ['available'],
@@ -67,7 +70,7 @@ export default {
               },
             },
             getDomainChangeOwnerAction(this, {
-              name: this.$t('dictionary.dnszone'),
+              name: this.$t('dictionary.dns_zone'),
               resource: 'dns_zones',
             }),
             {
@@ -77,7 +80,7 @@ export default {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   title: this.$t('network.text_131'),
-                  name: this.$t('dictionary.dnszone'),
+                  name: this.$t('dictionary.dns_zone'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
