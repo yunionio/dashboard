@@ -6,9 +6,19 @@
         <div><a-icon @click="closeError" type="close" /></div>
       </div>
       <div class="divider" />
+      <div class="mb-2"><span>{{ $t('compute.text_1312') }}：</span><span>{{ errors.req_count }} / {{ errors.allow_count }}</span></div>
+      <div>{{ $t('compute.text_1313') }}</div>
+      <ul class="list list-wrapper mb-2">
+        <li
+          v-for="(item, idx) of errors.not_allow_reasons"
+          :key="idx">
+          <div>{{ item }}</div>
+        </li>
+      </ul>
+      <div>{{ $t('compute.text_1314') }}</div>
       <ul class="list list-wrapper">
         <li
-          v-for="(item, idx) of errors"
+          v-for="(item, idx) of errors.errors"
           :key="idx">
           <div>{{ item.message }}</div>
           <ul class="list sec-list" v-if="item.children">
@@ -21,6 +31,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+
 export default {
   name: 'SideErrors',
   props: {
@@ -29,18 +41,18 @@ export default {
       required: true,
     },
     errors: {
-      type: Array,
+      type: Object,
       required: true,
     },
   },
   computed: {
     showError () {
-      return this.errors.length > 0
+      return !R.isEmpty(this.errors)
     },
   },
   methods: {
     closeError () {
-      this.$emit('update:errors', [])
+      this.$emit('update:errors', {})
     },
   },
 }
@@ -60,6 +72,9 @@ export default {
   background-color: #fef0f0;
   box-shadow: -5px -5px 5px rgba(0, 0, 0, 0.1);
   border-top-left-radius: 3px;
+  color: @error-color;
+  max-height: 400px;
+  overflow-y: scroll;
   .title {
     color: @error-color;
     > i {
@@ -75,13 +90,9 @@ export default {
     background-color: #DCDFE6;
     height: 1px;
   }
-  .list-wrapper {
-    max-height: 360px;
-    overflow-y: scroll;
-  }
   .list {
     padding: 0 15px;
-    color: @error-color;
+
     li {
       line-height: 1.8;
       list-style-type: disc;
