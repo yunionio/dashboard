@@ -1,16 +1,17 @@
+import i18n from '@/locales'
 export default {
   created () {
     this.singleActions = [
       {
-        label: '释放缓存',
+        label: i18n.t('storage.text_74'),
         permission: 'dns_zonecaches_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: '释放缓存',
-            name: '缓存',
+            title: i18n.t('storage.text_74'),
+            name: i18n.t('common.text00107'),
             onManager: this.onManager,
           })
         },

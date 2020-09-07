@@ -3,16 +3,16 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <template v-if="params.type !== 'create'">
-        <dialog-selected-tips name="记录" :count="params.data.length" :action="params.type === 'update' ? '修改记录' : '新建记录'" />
+        <dialog-selected-tips :name="$t('common_663')" :count="params.data.length" :action="params.type === 'update' ? $t('common_694') : $t('common_666')" />
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 4)" />
       </template>
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item label="主机记录">
-          <a-input v-decorator="decorators.name" :addon-after="params.detailData.name" placeholder="请输入主机记录" />
+        <a-form-item :label="$t('common_664')">
+          <a-input v-decorator="decorators.name" :addon-after="params.detailData.name" :placeholder="$t('common_695')" />
         </a-form-item>
-        <a-form-item label="记录类型">
+        <a-form-item :label="$t('network.text_160')">
           <a-select
             v-decorator="decorators.dns_type">
             <a-select-option v-for="v in options.dnsTypes" :value="v.value" :key="v.value">
@@ -20,8 +20,8 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="记录值">
-          <a-input v-decorator="decorators.dns_value" placeholder="请输入记录值" />
+        <a-form-item :label="$t('network.text_152')">
+          <a-input v-decorator="decorators.dns_value" :placeholder="$t('network.text_175')" />
         </a-form-item>
         <a-form-item label="TTL">
           <a-row>
@@ -46,7 +46,7 @@
             </a-select-option>
           </a-select> -->
         </a-form-item>
-        <a-form-item label="解析线路">
+        <a-form-item :label="$t('common_696')">
           <a-row
             :gutter="4"
             :key="item.key"
@@ -94,7 +94,7 @@
           </a-row>
           <div class="d-flex align-items-center mt-1" v-if="options.providers.length > trafficPolicies.length">
             <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-            <a-button type="link" @click="add">增加解析线路</a-button>
+            <a-button type="link" @click="add">{{$t('common_697')}}</a-button>
           </div>
         </a-form-item>
       </a-form>
@@ -139,7 +139,7 @@ export default {
           'name',
           {
             rules: [
-              { required: true, message: '请输入主机记录' },
+              { required: true, message: this.$t('common_695') },
             ],
           },
         ],
@@ -153,7 +153,7 @@ export default {
           'dns_value',
           {
             rules: [
-              { required: true, message: '请输入记录值' },
+              { required: true, message: this.$t('network.text_175') },
             ],
           },
         ],
@@ -170,7 +170,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: '请选择平台',
+              message: this.$t('db.text_30'),
             }],
           },
         ]),
@@ -181,7 +181,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: '请选择策略类型',
+              message: this.$t('compute.text_935'),
             }],
           },
         ]),
@@ -302,7 +302,7 @@ export default {
       }
     },
     _updateFormValue (val) {
-      const { name, dns_type, dns_value, ttl, traffic_policies } = val
+      const { name, dns_type, dns_value, ttl, traffic_policies = [] } = val
 
       traffic_policies.forEach((item) => {
         this.add(item)

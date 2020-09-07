@@ -80,7 +80,7 @@ export default {
           label: this.$t('network.text_26'),
           action: () => {
             this.createDialog('DnsZoneCreateDialog', {
-              title: '新建DNS解析',
+              title: this.$t('common_661'),
               onManager: this.onManager,
               refresh: this.refresh,
             })

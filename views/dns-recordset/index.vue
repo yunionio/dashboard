@@ -1,6 +1,6 @@
 <template>
   <div>
-   <page-header title="记录" />
+   <page-header :title="$t('common_663')" />
    <page-body>
      <list :id="listId" />
    </page-body>

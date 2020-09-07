@@ -97,10 +97,10 @@ export default {
           },
         },
         {
-          label: '解绑',
+          label: this.$t('cloudenv.text_452'),
           action: (obj) => {
             this.createDialog('RemoveVpcDialog', {
-              title: '解绑',
+              title: this.$t('cloudenv.text_452'),
               data: this.list.selectedItems,
               resData: this.data,
               columns: this.columns,
@@ -117,10 +117,10 @@ export default {
       ],
       singleActions: [
         {
-          label: '解绑',
+          label: this.$t('cloudenv.text_452'),
           action: (obj) => {
             this.createDialog('RemoveVpcDialog', {
-              title: '解绑',
+              title: this.$t('cloudenv.text_452'),
               data: [obj],
               resData: this.data,
               columns: this.columns,

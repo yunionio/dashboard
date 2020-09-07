@@ -51,9 +51,9 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('network.text_67'), key: 'dns-zone-detail' },
-        { label: '记录', key: 'dns-recordset-list-for-dns-zone-sidepage' },
-        { label: '关联VPC', key: 'dns-associate-vpc-list' },
-        { label: '缓存列表', key: 'dns-zonecache-list-for-dns-zone-sidepage' },
+        { label: this.$t('common_663'), key: 'dns-recordset-list-for-dns-zone-sidepage' },
+        { label: this.$t('network.text_719'), key: 'dns-associate-vpc-list' },
+        { label: this.$t('network.text_316'), key: 'dns-zonecache-list-for-dns-zone-sidepage' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }

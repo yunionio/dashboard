@@ -1,4 +1,5 @@
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -46,7 +47,7 @@ export default {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   title: this.$t('network.text_131'),
-                  name: '记录',
+                  name: i18n.t('common_663'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
