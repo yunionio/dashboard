@@ -343,9 +343,7 @@ export default {
     danger: ['overdue', 'arrears'],
   },
   dnszone: {
-    info: [],
     success: ['available'],
-    danger: ['delete_fail'],
   },
   alertrecord: {
     info: [],
