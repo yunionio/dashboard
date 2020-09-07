@@ -78,7 +78,7 @@ export default {
       required: true,
     },
     errors: {
-      type: Array,
+      type: Object,
       required: true,
     },
     type: {
