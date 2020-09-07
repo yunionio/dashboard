@@ -1478,7 +1478,8 @@
     "dbinstance": "RDS实例",
     "loadbalancerclusters": "负载均衡-集群",
     "receivers": "接收人",
-    "dnszone": "DNS解析"
+    "dnszone": "DNS解析",
+    "system": "系统配置"
   },
   "shareScope": {
     "system": "系统",
@@ -5360,6 +5361,7 @@
   "helm.text_99": "套餐",
   "helm.text_100": "{0} 核",
   "helm.text_101": "内存",
+  "helm.text_102": "发布数量",
   "bill.text_1": "金额",
   "bill.text_2": "总费用",
   "bill.text_3": "天",
@@ -7829,6 +7831,7 @@
   "monitor_metric_93": "CPU每核使用率",
   "monitor_metric_94": "进程下线程数",
   "monitor_metric_95": "机器人报警",
+  "monitor_text00001": "只有在@:dictionary.system - @:dictionary.contact菜单中状态启用的用户才支持通知报警消息",
   "common.text00001": "可用",
   "common.text00002": "你所选的",
   "common.text00003": "个",
