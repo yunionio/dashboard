@@ -121,7 +121,7 @@ export default {
   name: 'DnsRecordSetCreateDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const dnsTypes = getDnsTypes()
+    const dnsTypes = getDnsTypes(this.params.detailData)
     const dnsProviders = getDnsProviders(providers, this.params.detailData)
     const ttls = getTtls(this.params.detailData)
     return {

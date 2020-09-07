@@ -2,14 +2,23 @@ import { dnsTypes } from '../constants'
 
 import i18n from '@/locales'
 
-export const getDnsTypes = () => {
+const isPublicZone = (zone_type) => {
+  return zone_type === 'PublicZone'
+}
+
+export const getDnsTypes = ({ zone_type }) => {
+  if (isPublicZone(zone_type)) {
+    return dnsTypes.filter((item) => {
+      return item.value !== 'PTR'
+    })
+  }
   return dnsTypes
 }
 
 export const getDnsProviders = (providers, { zone_type }) => {
   const publicZonesProvider = ['Aws']
   return providers.filter((item) => {
-    if (zone_type === 'PublicZone') {
+    if (isPublicZone(zone_type)) {
       return !publicZonesProvider.includes(item.value)
     }
     return publicZonesProvider.includes(item.value)
@@ -17,7 +26,7 @@ export const getDnsProviders = (providers, { zone_type }) => {
 }
 
 export const getTtls = ({ zone_type }) => {
-  if (zone_type === 'PublicZone') {
+  if (isPublicZone(zone_type)) {
     return [
       { label: i18n.t('common_171'), value: 10 * 60 }, // 10分钟
       { label: i18n.t('common_172'), value: 30 * 60 }, // 30分钟
