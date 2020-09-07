@@ -10,6 +10,9 @@
         <a-form-item :label="$t('helm.text_16')">
           <a-input v-decorator="decorators.name" :placeholder="$t('helm.text_28')" />
         </a-form-item>
+        <a-form-item :label="$t('compute.text_297', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
+          <domain-select v-decorator="decorators.project_domain" />
+        </a-form-item>
         <a-form-item label="URL">
           <a-input v-decorator="decorators.url" :placeholder="$t('helm.text_91')" />
         </a-form-item>
@@ -36,9 +39,13 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import DomainSelect from '@/sections/DomainSelect'
 
 export default {
   name: 'ChartCreateDialog',
+  components: {
+    DomainSelect,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const initialValue = {}
@@ -67,6 +74,12 @@ export default {
               { required: true, message: this.$t('helm.text_28') },
               { validator: this.$validate('k8sName') },
             ],
+          },
+        ],
+        project_domain: [
+          'project_domain',
+          {
+            initialValue: this.$store.getters.userInfo.projectDomainId,
           },
         ],
         type: [

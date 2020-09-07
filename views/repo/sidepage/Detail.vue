@@ -42,6 +42,21 @@ export default {
           },
         },
         {
+          field: 'type',
+          title: this.$t('helm.text_92'),
+          minWidth: 80,
+          formatter: ({ row }) => {
+            if (row.type === 'internal') return this.$t('helm.text_14')
+            if (row.type === 'external') return this.$t('helm.text_15')
+            return '-'
+          },
+        },
+        {
+          field: 'mountedBy',
+          title: this.$t('helm.text_102'),
+          formatter: ({ row }) => row.mountedBy ? row.mountedBy.length : '-',
+        },
+        {
           field: 'url',
           title: this.$t('helm.text_96'),
         },
