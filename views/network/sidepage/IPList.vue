@@ -110,7 +110,11 @@ export default {
       return this.tableData
     },
   },
+  destroyed () {
+    this.manager = null
+  },
   created () {
+    this.manager = new this.$Manager('networks')
     this.fetchQueryAddresses()
   },
   methods: {
@@ -129,8 +133,7 @@ export default {
     async fetchQueryAddresses () {
       this.loading = true
       try {
-        const manager = new this.$Manager('networks')
-        const { data: { addresses } } = await manager.getSpecific({
+        const { data: { address = [] } } = await this.manager.getSpecific({
           id: this.resId,
           // id: 'vnet222',
           spec: 'addresses',
@@ -138,9 +141,10 @@ export default {
             details: true,
             system: true,
             with_meta: true,
+            scope: this.$store.getters.scope,
           },
         })
-        this.tableData = addresses
+        this.tableData = address
       } catch (err) {
         throw err
       } finally {
