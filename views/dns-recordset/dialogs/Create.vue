@@ -24,12 +24,27 @@
           <a-input v-decorator="decorators.dns_value" placeholder="请输入记录值" />
         </a-form-item>
         <a-form-item label="TTL">
-          <a-select
+          <a-row>
+            <a-col :span="8"><a-input v-decorator="decorators.ttl" /></a-col>
+            <a-col :span="16">
+              <ul class="oc-ttl d-flex">
+                <li
+                  class="oc-ttl-item"
+                  @click="ttlClickHandle(v)"
+                  v-for="v in options.ttls"
+                  :value="v.value"
+                  :key="v.value">
+                  <a-tag color="blue">{{ v.label }}</a-tag>
+                </li>
+              </ul>
+            </a-col>
+          </a-row>
+          <!-- <a-select
             v-decorator="decorators.ttl">
             <a-select-option v-for="v in options.ttls" :value="v.value" :key="v.value">
               {{ v.label }}
             </a-select-option>
-          </a-select>
+          </a-select> -->
         </a-form-item>
         <a-form-item label="解析线路">
           <a-row
@@ -305,6 +320,21 @@ export default {
         })
       })
     },
+    ttlClickHandle (v) {
+      this.form.fc.setFieldsValue({
+        ttl: v.value,
+      })
+    },
   },
 }
 </script>
+<style lang="scss" scoped>
+.oc-ttl {
+  list-style: none;
+  .oc-ttl-item {
+    .ant-tag {
+      cursor: pointer;
+    }
+  }
+}
+</style>
