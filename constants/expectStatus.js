@@ -339,9 +339,7 @@ export default {
     info: [false],
   },
   dnszone: {
-    info: [],
     success: ['available'],
-    danger: ['delete_fail'],
   },
   alertrecord: {
     info: [],
