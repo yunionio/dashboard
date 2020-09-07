@@ -692,6 +692,7 @@ export const PERMISSION = {
   dns_zones_update: ['compute', 'dns_zones', 'update'],
   dns_zones_delete: ['compute', 'dns_zones', 'delete'],
   dns_zones_add_vpcs: ['compute', 'dns_zones', 'perform', 'add-vpcs'],
+  dns_zones_remove_vpcs: ['compute', 'dns_zones', 'perform', 'remove-vpcs'],
   dns_zones_syncstatus: ['compute', 'dns_zones', 'perform', 'syncstatus'],
   dns_zones_sync_recordsets: ['compute', 'dns_zones', 'perform', 'sync-recordsets'],
   dns_zones_change_owner: ['compute', 'dns_zones', 'perform', 'change-owner'],
