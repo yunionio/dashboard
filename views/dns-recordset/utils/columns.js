@@ -25,7 +25,7 @@ export const getTtlTableColumns = () => {
 export const getTrafficPoliciesTableColumns = () => {
   return {
     field: 'traffic_policies',
-    title: i18n.t('common_695'),
+    title: i18n.t('common_696'),
     width: 220,
     type: 'expand',
     slots: {
