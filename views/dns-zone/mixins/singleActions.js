@@ -1,4 +1,5 @@
 import { getSetPublicAction, getDomainChangeOwnerAction } from '@/utils/common/tableActions'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -19,7 +20,7 @@ export default {
           const ret = { validate: true }
           if (obj.zone_type === 'PublicZone') {
             ret.validate = false
-            ret.tooltip = 'PublicZone类型解析域不支持关联VPC'
+            ret.tooltip = i18n.t('common_662')
           }
           return ret
         },

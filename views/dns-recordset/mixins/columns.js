@@ -16,7 +16,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        title: '主机记录',
+        title: i18n.t('common_664'),
         edit: false,
         formRules: function (row) {
           return [

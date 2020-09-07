@@ -56,7 +56,7 @@ export default {
           label: this.$t('network.text_26'),
           action: () => {
             this.createDialog('DnsZonecacheCreateDialog', {
-              title: '新建缓存',
+              title: this.$t('common_699'),
               resData: this.data,
               onManager: this.onManager,
               refresh: this.refresh,

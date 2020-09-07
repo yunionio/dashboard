@@ -49,10 +49,10 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: '主机记录', key: 'name' },
-          { label: '记录类型', key: 'dns_type' },
-          { label: '记录值', key: 'dns_value' },
-          { label: 'TTL(秒)', key: 'ttl' },
+          { label: this.$t('common_664'), key: 'name' },
+          { label: this.$t('network.text_160'), key: 'dns_type' },
+          { label: this.$t('network.text_152'), key: 'dns_value' },
+          { label: this.$t('common_665'), key: 'ttl' },
           { label: this.$t('common_285'), key: 'enabled' },
         ],
       },
@@ -61,7 +61,7 @@ export default {
           label: this.$t('network.text_26'),
           action: () => {
             this.createDialog('DnsRecordSetCreateDialog', {
-              title: '新建记录',
+              title: this.$t('common_666'),
               data: this.list.selectedItems,
               detailData: this.data,
               onManager: this.onManager,

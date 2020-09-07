@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="记录"
+    :title="$t('common_663')"
     icon="res-dns"
     :res-name="detailData.name"
     :actions="params.actions"

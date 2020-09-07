@@ -1,36 +1,37 @@
 import { policyParamsMap } from '../constants'
+import i18n from '@/locales'
 
 export const getDnsTypeTableColumns = () => {
   return {
     field: 'dns_type',
-    title: '记录类型',
+    title: i18n.t('network.text_160'),
   }
 }
 
 export const getDnsValueTableColumns = () => {
   return {
     field: 'dns_value',
-    title: '记录值',
+    title: i18n.t('network.text_152'),
   }
 }
 
 export const getTtlTableColumns = () => {
   return {
     field: 'ttl',
-    title: 'TTL(秒)',
+    title: i18n.t('common_663'),
   }
 }
 
 export const getTrafficPoliciesTableColumns = () => {
   return {
     field: 'traffic_policies',
-    title: '解析线路',
+    title: i18n.t('common_695'),
     width: 220,
     type: 'expand',
     slots: {
       default: ({ row }) => {
-        if (!row.traffic_policies) return '0条'
-        return `${row.traffic_policies.length}条`
+        if (!row.traffic_policies) return i18n.t('common_701')
+        return i18n.t('compute.text_798', [row.traffic_policies.length])
       },
       content: ({ row }, h) => {
         const trafficPolicieList = []
@@ -46,11 +47,11 @@ export const getTrafficPoliciesTableColumns = () => {
           if (item.policy_value) {
             con.push(policyParamsMap.policy_value[item.policy_value])
           }
-          return `线路${idx + 1}: ${con.join('/')}`
+          return `${i18n.t('common_698')}${idx + 1}: ${con.join('/')}`
         }
         if (!traffic_policies || traffic_policies.length === 0) {
           trafficPolicieList.push(
-            <div>暂无解析线路</div>,
+            <div>{ i18n.t('common_700') }</div>,
           )
         } else {
           return traffic_policies.map((item, idx) => {

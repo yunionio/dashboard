@@ -1,12 +1,12 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">新建缓存</div>
+    <div slot="header">{{$t('common_699')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_176')">
-          <a-select v-decorator="decorators.provider" @change="handlePlatformChange" placeholder="请选择平台">
+          <a-select v-decorator="decorators.provider" @change="handlePlatformChange" :placeholder="$t('db.text_30')">
             <a-select-option
               v-for="(item, index) in providerOptions"
               :key="index"
@@ -15,7 +15,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="指定云订阅">
+        <a-form-item :label="$t('compute.text_15')">
           <base-select
             :remote="true"
             class="w-100"
@@ -24,7 +24,7 @@
             resource="cloudaccounts"
             :params="providerParams"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
-            :select-props="{ placeholder: '请选择云订阅' }" />
+            :select-props="{ placeholder: $t('common_588') }" />
         </a-form-item>
       </a-form>
     </div>
@@ -55,7 +55,7 @@ export default {
           {
             rules: [{
               required: true,
-              message: '请选择平台',
+              message: this.$t('db.text_30'),
             }],
           },
         ],
@@ -64,7 +64,7 @@ export default {
           {
             rules: [{
               required: true,
-              message: '请选择云账号',
+              message: this.$t('network.text_215'),
             }],
           },
         ],
