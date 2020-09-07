@@ -54,7 +54,10 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) 
     },
     meta: row => {
       if (params.meta) {
-        return params.meta(row)
+        const ret = params.meta(row)
+        if (ret && !ret.validate) {
+          return ret
+        }
       }
       const data = getSelectedData(row, vm)
       const ret = {
@@ -101,7 +104,10 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
         }
       }
       if (params.meta) {
-        return params.meta(row)
+        const ret = params.meta(row)
+        if (ret && !ret.validate) {
+          return ret
+        }
       }
       const data = getSelectedData(row, vm)
       const ret = {
