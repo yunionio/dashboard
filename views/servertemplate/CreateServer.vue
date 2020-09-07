@@ -46,7 +46,7 @@ export default {
       loading: false,
       catalogData: {},
       serverConfig: null,
-      errors: [],
+      errors: {},
       form: {
         fc: this.$form.createForm(this),
       },
