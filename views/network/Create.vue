@@ -83,7 +83,7 @@
       </a-form-item>
       <a-collapse :bordered="false"  v-if="show">
         <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
-           <a-form-item v-bind="formItemLayout">
+          <a-form-item v-bind="formItemLayout">
             <span slot="label">{{$t('network.text_583')}}</span>
             <a-radio-group v-decorator="decorators.alloc_policy">
               <a-radio-button
@@ -96,7 +96,7 @@
           <a-form-item :label="$t('network.text_585')" v-bind="formItemLayout">
             <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
           </a-form-item>
-           <a-form-item v-bind="formItemLayout">
+          <a-form-item v-bind="formItemLayout">
             <span slot="label">{{$t('network.text_586')}}</span>
             <template slot="extra">
               <div>{{$t('network.text_587')}}</div>
@@ -146,16 +146,13 @@ const masks = {
 }
 
 function validateGateway (rule, value, callback) {
-  if (!value) {
-    return callback()
-  }
   // 只需要查看是否是以 0 结尾
   const ipItems = value.split('.')
-  const msg = this.$t('network.text_591')
+  const msg = i18n.t('network.text_591')
   if (ipItems[ipItems.length - 1] === '0') {
-    return callback(new Error(msg))
+    callback(msg)
   }
-  return callback()
+  callback()
 }
 
 export default {
@@ -220,7 +217,6 @@ export default {
           'name',
           {
             initialValue: '',
-            validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('network.text_116') },
@@ -256,7 +252,6 @@ export default {
           'server_type',
           {
             initialValue: 'guest',
-            validateTrigger: ['change', 'blur'],
             rules: [
               { required: true, message: this.$t('network.text_592') },
             ],
@@ -272,7 +267,6 @@ export default {
           'guest_dns',
           {
             initialValue: '',
-            validateTrigger: ['change', 'blur'],
             rules: [
               { validator: this.$validate('IPv4', false) },
             ],
@@ -282,7 +276,6 @@ export default {
           'guest_domain',
           {
             initialValue: '',
-            validateTrigger: ['change', 'blur'],
             rules: [
               { validator: this.$validate('domain', false) },
             ],
@@ -293,7 +286,6 @@ export default {
             `startip[${i}]`,
             {
               initialValue: '',
-              validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
                 { required: true, message: this.$t('network.text_593') },
@@ -305,7 +297,6 @@ export default {
             `endip[${i}]`,
             {
               initialValue: '',
-              validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
                 { required: true, message: this.$t('network.text_594') },
@@ -317,7 +308,6 @@ export default {
             `netmask[${i}]`,
             {
               initialValue: '24',
-              validateTrigger: ['change', 'blur'],
               rules: [
                 { required: true, message: this.$t('network.text_595') },
               ],
@@ -330,7 +320,7 @@ export default {
               validateTrigger: ['change', 'blur'],
               validateFirst: true,
               rules: [
-                { validator: this.$validate('IPv4', false) },
+                { validator: this.$validate('IPv4') },
                 { validator: validateGateway },
               ],
             },
@@ -346,7 +336,6 @@ export default {
           `guest_ip_prefix[${i}]`,
           {
             initialValue: '',
-            validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('network.text_597') },
@@ -669,6 +658,7 @@ export default {
       const ListPath = this.$router.resolve(this.$route.path)
       try {
         const values = await this.form.fc.validateFields()
+        console.log(values)
         this.submiting = true
         if (this.cloudEnv === 'onpremise' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
           this.ipSubnetsValidateStatus = 'error'
@@ -698,8 +688,8 @@ export default {
           await manager.create({ data })
         }
         this.$router.push({ path: ListPath.resolved.matched[0].path })
-      } catch (err) {
-        throw err
+      } catch (error) {
+        throw error
       } finally {
         this.submiting = false
       }
