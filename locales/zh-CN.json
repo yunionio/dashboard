@@ -8656,5 +8656,6 @@
   "common_705": "认证源端用户名",
   "common_706": "操作日志-系统",
   "common_707": "操作日志-云账号",
-  "common_708": "无关联{0}"
+  "common_708": "无关联{0}",
+  "common_709": "{0}@:dictionary.identity_provider信息方式获取可参考"
 }
