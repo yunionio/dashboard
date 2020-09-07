@@ -685,6 +685,26 @@ export const PERMISSION = {
   // 资源消费预警
   costalerts_create: ['meter', 'costalerts', 'create'],
   costalerts_delete: ['meter', 'costalerts', 'delete'],
+
+  // DNS解析相关
+  dns_zones_get: ['compute', 'dns_zones', 'get'],
+  dns_zones_create: ['compute', 'dns_zones', 'create'],
+  dns_zones_update: ['compute', 'dns_zones', 'update'],
+  dns_zones_delete: ['compute', 'dns_zones', 'delete'],
+  dns_zones_add_vpcs: ['compute', 'dns_zones', 'perform', 'add-vpcs'],
+  dns_zones_remove_vpcs: ['compute', 'dns_zones', 'perform', 'remove-vpcs'],
+  dns_zones_syncstatus: ['compute', 'dns_zones', 'perform', 'syncstatus'],
+  dns_zones_sync_recordsets: ['compute', 'dns_zones', 'perform', 'sync-recordsets'],
+  dns_zones_change_owner: ['compute', 'dns_zones', 'perform', 'change-owner'],
+  dns_recordsets_create: ['compute', 'dns_recordsets', 'create'],
+  dns_recordsets_update: ['compute', 'dns_recordsets', 'update'],
+  dns_recordsets_get: ['compute', 'dns_recordsets', 'get'],
+  dns_recordsets_delete: ['compute', 'dns_recordsets', 'delete'],
+  dns_recordsets_disable: ['compute', 'dns_recordsets', 'perform', 'disable'],
+  dns_recordsets_enable: ['compute', 'dns_recordsets', 'perform', 'enable'],
+  dns_zonecaches_get: ['compute', 'dns_zonecaches', 'get'],
+  dns_zonecaches_create: ['compute', 'dns_zonecaches', 'create'],
+  dns_zonecaches_delete: ['compute', 'dns_zonecaches', 'delete'],
 }
 
 // 已声明权限的资源
