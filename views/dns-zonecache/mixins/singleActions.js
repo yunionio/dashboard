@@ -3,19 +3,18 @@ export default {
     this.singleActions = [
       {
         label: '释放缓存',
+        permission: 'dns_zonecaches_delete',
         action: (obj) => {
-          this.createDialog('DnsDeleteCacheDialog', {
+          this.createDialog('DeleteResDialog', {
+            vm: this,
             data: [obj],
             columns: this.columns,
             title: '释放缓存',
-            resData: this.data,
+            name: '缓存',
             onManager: this.onManager,
-            refresh: this.refresh,
           })
         },
-        meta: (obj) => {
-          return this.$getDeleteResult(obj)
-        },
+        meta: (obj) => this.$getDeleteResult(obj),
       },
     ]
   },

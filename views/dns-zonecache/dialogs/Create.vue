@@ -8,9 +8,9 @@
         <a-form-item :label="$t('compute.text_176')">
           <a-select v-decorator="decorators.provider" @change="handlePlatformChange" placeholder="请选择平台">
             <a-select-option
-              v-for="(item, index) in platformOptions"
+              v-for="(item, index) in providerOptions"
               :key="index"
-              :value="item.value">
+              :value="item.key">
               {{ item.label }}
             </a-select-option>
           </a-select>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { getProviders } from '../utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -76,7 +77,7 @@ export default {
           span: 3,
         },
       },
-      platformOptions: [{ label: '腾讯云', value: 'Qcloud' }, { label: 'AWS', value: 'Aws' }],
+      providerOptions: getProviders(),
       providerParams: {},
     }
   },
