@@ -17,7 +17,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows.js'
-import { getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
@@ -53,18 +53,12 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.network).flat(),
         filterOptions: {
-          name: {
-            label: this.$t('network.text_21'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
+          name: getNameFilter(),
           ip: {
             label: 'IP',
-            distinctField: {
-              type: 'extra_field',
-              key: 'ip',
+            filter: true,
+            formatter: val => {
+              return `ip.contains(${val})`
             },
           },
           status: {
@@ -96,6 +90,7 @@ export default {
           server_type: {
             label: this.$t('network.text_249'),
             dropdown: true,
+            multiple: true,
             items: [
               { label: this.$t('network.text_598'), key: 'baremetal' },
               { label: this.$t('network.text_599'), key: 'container' },
@@ -110,17 +105,19 @@ export default {
           project_domains: getDomainFilter(),
           region: {
             label: this.$t('network.text_199'),
+            filter: true,
+            formatter: val => {
+              return `region.contains(${val})`
+            },
           },
-          vpc: {
-            label: 'VPC',
-            hidden: this.$store.getters.isProjectMode,
-          },
+          vpc: getVpcFilter(),
           wire: {
             label: this.$t('network.text_571'),
-            // filter: true,
-            // formatter: val => {
-            //   return `wire.contains("${val}")`
-            // },
+            filter: true,
+            jointFilter: true,
+            formatter: val => {
+              return `wire.contains(${val})`
+            },
           },
         },
         responseData: this.responseData,

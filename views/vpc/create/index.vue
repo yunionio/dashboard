@@ -28,17 +28,19 @@
           <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-if="cloudEnv === 'public'">
-        <base-select
-          class="w-50"
-          v-decorator="decorators.cloudprovider"
-          resource="cloudproviders"
-          :params="cloudproviderParams"
-          :isDefaultSelect="true"
-          :showSync="true"
-          :select-props="{ placeholder: $t('compute.text_149') }"
-          :resList.sync="cloudproviderData" />
-      </a-form-item>
+      <template v-if="cloudEnv !== 'onpremise'">
+        <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
+          <base-select
+            class="w-50"
+            v-decorator="decorators.cloudprovider"
+            resource="cloudproviders"
+            :params="cloudproviderParams"
+            :isDefaultSelect="true"
+            :showSync="true"
+            :select-props="{ placeholder: $t('compute.text_149') }"
+            :resList.sync="cloudproviderData" />
+        </a-form-item>
+      </template>
     </a-form>
     <page-footer>
       <div slot="right">

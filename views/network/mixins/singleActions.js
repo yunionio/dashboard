@@ -24,7 +24,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('network.text_648'),
+        label: i18n.t('network.text_629'),
         permission: 'schedtags_list,networks_perform_set_schedtag',
         action: (obj) => {
           this.createDialog('AdjustLabelDialog', {
