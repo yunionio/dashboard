@@ -6,7 +6,7 @@ export default {
     this.singleActions = [
       getSetPublicAction(this, {
         name: i18n.t('helm.text_6'),
-        scope: 'project',
+        scope: 'domain',
         resource: 'repos',
         apiVersion: 'v1',
       }),

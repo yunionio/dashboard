@@ -48,6 +48,7 @@ export default {
           },
           meta: () => ({
             buttonType: 'primary',
+            validate: this.$store.getters.isAmdinMode,
           }),
         },
         {

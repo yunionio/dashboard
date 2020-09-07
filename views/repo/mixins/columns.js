@@ -26,6 +26,12 @@ export default {
         },
       },
       {
+        field: 'mountedBy',
+        minWidth: 80,
+        title: i18n.t('helm.text_102'),
+        formatter: ({ row }) => row.mountedBy ? row.mountedBy.length : '-',
+      },
+      {
         field: 'url',
         title: i18n.t('helm.text_96'),
         minWidth: '200px',
