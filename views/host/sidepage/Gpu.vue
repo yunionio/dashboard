@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 
@@ -14,7 +15,7 @@ const DEVICE_MAP = {
 }
 
 export default {
-  name: 'GpuList',
+  name: 'HostGpuList',
   mixins: [WindowsMixin],
   props: {
     resId: String,
@@ -26,10 +27,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         resource: 'isolated_devices',
-        getParams: {
-          gpu: true,
-          host: this.resId,
-        },
+        getParams: this.getParam,
       }),
       columns: [
         {
@@ -77,6 +75,16 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      const ret = {
+        gpu: true,
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        host: this.resId,
+      }
+      return ret
+    },
   },
 }
 </script>

@@ -172,6 +172,18 @@ export default {
             return ret
           },
         },
+        {
+          field: 'isolated_device_count',
+          title: this.$t('compute.text_609'),
+          slots: {
+            default: ({ row }, h) => {
+              if (!row.isolated_device_count) return 0
+              return [
+                <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{row.isolated_device_count}</a>,
+              ]
+            },
+          },
+        },
       ],
       extraInfo: [
         {
