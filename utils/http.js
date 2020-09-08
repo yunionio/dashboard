@@ -107,7 +107,7 @@ const showErrorNotify = ({ errorMsg, reqMsg }) => {
             })
           },
         },
-      }, '查看详情')
+      }, i18n.t('common_224'))
     },
   })
 }
