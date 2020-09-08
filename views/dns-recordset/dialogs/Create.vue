@@ -185,7 +185,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: this.$t('network_1'),
+              message: this.$t('network.text_334'),
             }],
           },
         ]),

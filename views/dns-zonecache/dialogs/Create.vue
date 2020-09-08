@@ -6,7 +6,7 @@
         :form="form.fc"
         v-bind="formItemLayout">
         <a-form-item :label="$t('network.text_198')">
-          <a-select v-decorator="decorators.provider" @change="handlePlatformChange" :placeholder="$t('db.text_30')">
+          <a-select v-decorator="decorators.provider" @change="handlePlatformChange" :placeholder="$t('network.text_334', [$t('common_283')])">
             <a-select-option
               v-for="(item, index) in providerOptions"
               :key="index"
@@ -55,7 +55,7 @@ export default {
           {
             rules: [{
               required: true,
-              message: this.$t('db.text_30'),
+              message: this.$t('network.text_334', [this.$t('common_283')]),
             }],
           },
         ],
