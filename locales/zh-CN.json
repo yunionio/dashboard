@@ -1481,8 +1481,8 @@
     "dns_zone": "DNS解析",
     "system": "系统配置",
     "costalerts": "资源消费预警",
-    "dns_recordset": "DNS解析-记录",
-    "dns_zonecache": "DNS解析-缓存"
+    "dns_recordsets": "DNS解析-记录",
+    "dns_zonecaches": "DNS解析-缓存"
   },
   "shareScope": {
     "system": "系统",
@@ -8662,7 +8662,7 @@
   "common_698": "线路",
   "common_699": "新建缓存",
   "common_700": "暂无解析线路",
-  "common_701": "0条",
+  "common_701": "{0}条",
   "common_702": "中国区",
   "common_703": "国际区",
   "common_704": "认证源名称",
@@ -8670,5 +8670,9 @@
   "common_706": "操作日志-系统",
   "common_707": "操作日志-云账号",
   "common_708": "无关联{0}",
-  "common_709": "{0}@:dictionary.identity_provider信息方式获取可参考"
+  "common_709": "{0}@:dictionary.identity_provider信息方式获取可参考",
+  "common_710": "指定{0}",
+  "common_711": "云订阅",
+  "common_712": "默认",
+  "common_713": "策略"
 }
