@@ -8661,5 +8661,9 @@
   "common_706": "操作日志-系统",
   "common_707": "操作日志-云账号",
   "common_708": "无关联{0}",
-  "common_709": "{0}@:dictionary.identity_provider信息方式获取可参考"
+  "common_709": "{0}@:dictionary.identity_provider信息方式获取可参考",
+  "common_710": "指定{0}",
+  "common_711": "云订阅",
+  "common_712": "默认",
+  "common_713": "策略"
 }
