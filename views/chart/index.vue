@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('helm.text_65')" />
+    <page-header :title="$t('helm.text_5')" />
     <page-body>
       <chart-list :id="listId" />
     </page-body>
