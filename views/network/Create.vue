@@ -146,13 +146,16 @@ const masks = {
 }
 
 function validateGateway (rule, value, callback) {
+  if (!value) {
+    return callback()
+  }
   // 只需要查看是否是以 0 结尾
   const ipItems = value.split('.')
   const msg = i18n.t('network.text_591')
   if (ipItems[ipItems.length - 1] === '0') {
-    callback(msg)
+    return callback(msg)
   }
-  callback()
+  return callback()
 }
 
 export default {
