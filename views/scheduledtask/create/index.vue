@@ -76,7 +76,7 @@
     </a-form>
     <page-footer>
       <template class="content" v-slot:right>
-        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common.create') }}</a-button>
         <a-button @click="handleCancel">{{ $t('dialog.cancel') }}</a-button>
       </template>
     </page-footer>
