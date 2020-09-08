@@ -407,7 +407,7 @@ export default {
             const { id, name } = cloudregion
             if (this.names.length === 1) {
               return <a-select-option key={id} value={id}>
-                <span class="text-color-secondary option-prefix">{ this.$t('dictionary.region') }: </span>{name}
+                {name}
               </a-select-option>
             }
             return <a-select-option key={id} value={id}>
