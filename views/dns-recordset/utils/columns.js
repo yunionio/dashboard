@@ -31,7 +31,7 @@ export const getTrafficPoliciesTableColumns = () => {
     slots: {
       default: ({ row }) => {
         if (!row.traffic_policies) return i18n.t('common_701')
-        return i18n.t('compute.text_798', [row.traffic_policies.length])
+        return i18n.t('common_701', [row.traffic_policies.length])
       },
       content: ({ row }, h) => {
         const trafficPolicieList = []

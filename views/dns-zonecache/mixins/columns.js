@@ -27,7 +27,7 @@ export default {
       getBrandTableColumn(),
       getAccountTableColumn(),
       getTimeTableColumn(),
-      getTimeTableColumn({ title: this.$t('compute.text_691'), field: 'updated_at' }),
+      getTimeTableColumn({ title: this.$t('network.text_314'), field: 'updated_at' }),
     ]
   },
 }

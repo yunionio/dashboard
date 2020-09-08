@@ -5,7 +5,7 @@
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.text_176')">
+        <a-form-item :label="$t('network.text_198')">
           <a-select v-decorator="decorators.provider" @change="handlePlatformChange" :placeholder="$t('db.text_30')">
             <a-select-option
               v-for="(item, index) in providerOptions"
