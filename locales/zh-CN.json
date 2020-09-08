@@ -967,7 +967,8 @@
   },
   "dialog": {
     "ok": "确定",
-    "cancel": "取消"
+    "cancel": "取消",
+    "create": "新建"
   },
   "env": {
     "idc": "本地IDC",
@@ -4759,6 +4760,8 @@
   "network.text_720": "DNS解析",
   "network.text_721": "同步解析列表",
   "network.text_722": "修改节点",
+  "network.text_723": "新建VPC",
+  "network.text_724": "新建弹性公网IP",
   "storage.text_1": "本地存储",
   "storage.text_2": "物理机存储",
   "storage.text_3": "容器存储",
