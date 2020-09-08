@@ -43,9 +43,9 @@ const themePluginOption = {
   changeSelector (selector) {
     switch (selector) {
       case '.ant-btn:focus,.ant-btn:hover':
-        return '.ant-btn:focus:not(.ant-btn-primary),.ant-btn:hover:not(.ant-btn-primary)'
+        return '.ant-btn:focus:not(.ant-btn-primary):not(.ant-btn-danger),.ant-btn:hover:not(.ant-btn-primary):not(.ant-btn-danger)'
       case '.ant-btn.active,.ant-btn:active':
-        return '.ant-btn.active:not(.ant-btn-primary),.ant-btn:active:not(.ant-btn-primary)'
+        return '.ant-btn.active:not(.ant-btn-primary):not(.ant-btn-danger),.ant-btn:active:not(.ant-btn-primary):not(.ant-btn-danger)'
       case '.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon':
       case '.ant-steps-item-process .ant-steps-item-icon>.ant-steps-icon':
         return ':not(.ant-steps-item-process)' + selector
