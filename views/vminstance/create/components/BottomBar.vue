@@ -268,6 +268,12 @@ export default {
         this.getPriceList()
       }
     },
+    'fd.eip_type' (val, oldV) {
+      this.getPriceList()
+    },
+    'fd.eip_bw' (val, oldV) {
+      this.getPriceList()
+    },
   },
   created () {
     this.baywatch([
@@ -362,6 +368,9 @@ export default {
         if (R.isNil(params.region_id) || R.isEmpty(params.region_id)) return
       }
       if (R.isNil(params.brand) || R.isEmpty(params.brand)) return
+      if (this.fd.eip_type === 'new') {
+        params.eip = this.fd.eip_bw + 'Mb'
+      }
       // try {
       const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
       this.pricesList = data

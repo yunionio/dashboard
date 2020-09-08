@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter } from '@/utils/common/tableFilter'
@@ -21,8 +22,7 @@ export default {
   props: {
     id: String,
     getParams: {
-      type: Object,
-      default: () => ({}),
+      type: [Function, Object],
     },
   },
   data () {
@@ -30,10 +30,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'isolated_devices',
-        getParams: {
-          ...this.getParams,
-          details: true,
-        },
+        getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
           dev_type: {
@@ -154,11 +151,21 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    getParam () {
+      const ret = {
+        show_baremetal_isolated_devices: false,
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        with_meta: true,
+        details: true,
+      }
+      return ret
+    },
     handleOpenSidepage (row, tab) {
       this.initSidePageTab(tab)
       this.sidePageTriggerHandle(this, 'GpuSidePage', {
         id: row.id,
         resource: 'isolated_devices',
+        getParams: this.getParam,
         currentTab: 'servers-list',
       }, {
         list: this.list,
