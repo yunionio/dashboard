@@ -6646,6 +6646,7 @@
   "system.text_558": "已过期",
   "system.text_559": "匹配用户权限",
   "system.text_560": "所属项目数量",
+  "system.text_561": "DNS解析限制(个)",
   "monitor.monitor_add": "添加查询",
   "monitor.monitor_metric": "监控指标",
   "monitor.monitor_filters": "资源过滤",

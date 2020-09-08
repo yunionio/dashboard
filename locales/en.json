@@ -6646,6 +6646,7 @@
   "system.text_558": "Expired",
   "system.text_559": "Match user permissions",
   "system.text_560": "The number of belonging items",
+  "system.text_561": "DNS resolution limit (number)",
   "monitor.monitor_add": "Add Query",
   "monitor.monitor_metric": "Monitor metrics",
   "monitor.monitor_filters": "Resource Filters",
