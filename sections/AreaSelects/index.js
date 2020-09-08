@@ -434,6 +434,11 @@ export default {
           params,
         })
         const retList = !R.isEmpty(data.data) ? data.data : []
+        const genList = {}
+        retList.map(item => {
+          genList[item.id] = item
+        })
+        this.$emit('update:zone', genList)
         return retList
       } catch (error) {
         throw error
