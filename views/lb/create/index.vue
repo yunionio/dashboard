@@ -6,7 +6,7 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button type="primary" class="mr-2" @click="submit" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+        <a-button type="primary" class="mr-2" @click="submit" :loading="loading">{{ $t('common.create') }}</a-button>
         <a-button @click="cancel">{{$t('network.text_31')}}</a-button>
       </template>
     </page-footer>
