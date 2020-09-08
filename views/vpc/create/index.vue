@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_26')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('network.text_723')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <a-form
       class="mt-3"
       :form="form.fc">

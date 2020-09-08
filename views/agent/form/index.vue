@@ -100,7 +100,7 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button type="primary" size="large" :loading="submiting" @click="handleSubmit">{{ $t('dialog.ok') }}</a-button>
+        <a-button type="primary" size="large" :loading="submiting" @click="handleSubmit">{{ $t('common.create') }}</a-button>
         <a-button class="ml-2" size="large" @click="handleCancel">{{ $t('dialog.cancel') }}</a-button>
       </template>
     </page-footer>
