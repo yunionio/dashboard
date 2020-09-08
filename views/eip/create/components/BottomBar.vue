@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { numerify } from '@/filters'
 
@@ -103,6 +104,7 @@ export default {
     },
     async _getPrice () {
       try {
+        if (R.isEmpty(this.currentCloudregion)) return
         let region = ''
         if (this.currentCloudregion.external_id) {
           region = this.currentCloudregion.external_id.split('/')[1]
@@ -126,8 +128,8 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        values.domain = values.domain?.key
         values.tenant = values.project.key
-        values.domain = values.domain.key
         Reflect.deleteProperty(values, 'project')
         if (this.cloudEnv === 'private') {
           delete values.charge_type
