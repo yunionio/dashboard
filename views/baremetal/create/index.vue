@@ -821,6 +821,26 @@ export default {
         })
         disks += sizes.join('_')
       })
+      // isolated_devices 根据 model 去重并添加count字段
+      if (spec.isolated_devices && spec.isolated_devices.length > 0) {
+        const gpuList = R.clone(spec.isolated_devices)
+        for (let i = 0; i < gpuList.length; i++) {
+          gpuList[i].count = 1
+          for (let j = i + 1; j < gpuList.length; j++) {
+            if (gpuList[i].model === gpuList[j].model) {
+              gpuList[i].count++
+              gpuList.split(j, 1)
+            }
+          }
+        }
+        // gpu string
+        let gpuString = '_'
+        gpuList.map(item => {
+          gpuString += `${item.model}X${item.count}、`
+        })
+        gpuString = gpuString.substr(0, gpuString.length - 1)
+        return `${cpu}C${mem}${disks}${gpuString}`
+      }
       return `${cpu}C${mem}${disks}`
     },
     __ignoreModel (options) {

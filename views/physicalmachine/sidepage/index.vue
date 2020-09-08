@@ -72,6 +72,10 @@ export default {
           with_meta: true,
           limit: 20,
         }
+      } else if (this.params.windowData.currentTab === 'gpu-list') {
+        return {
+          show_baremetal_isolated_devices: true,
+        }
       } else if (this.params.windowData.currentTab === 'bmc-log') {
         return {
           host_id: this.data.id,
