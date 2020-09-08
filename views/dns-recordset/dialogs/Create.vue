@@ -174,7 +174,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: this.$t('db.text_30'),
+              message: this.$t('network.text_334', [this.$t('common_283')]),
             }],
           },
         ]),
@@ -185,7 +185,7 @@ export default {
             validateTrigger: ['change', 'blur'],
             rules: [{
               required: true,
-              message: this.$t('network.text_334'),
+              message: this.$t('common_708', [this.$t('common_709')]),
             }],
           },
         ]),

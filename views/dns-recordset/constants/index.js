@@ -24,14 +24,14 @@ export const providers = [
 
 export const policy_types = {
   qcloud: [
-    { label: i18n.t('k8s.text_359'), value: 'Simple' }, // 默认 简单
+    { label: i18n.t('common_710'), value: 'Simple' }, // 默认 简单
     { label: i18n.t('common_675'), value: 'ByCarrier' }, // 运营商
     { label: i18n.t('common_676'), value: 'ByGeoLocation' }, // 地理区域
     { label: i18n.t('common_677'), value: 'BySearchEngine' }, // 搜索引擎
     { label: i18n.t('common_678'), value: 'Weighted' }, // 加权
   ],
   aws: [
-    { label: i18n.t('k8s.text_359'), value: 'Simple' }, // 默认
+    { label: i18n.t('common_710'), value: 'Simple' }, // 默认
     { label: i18n.t('common_676'), value: 'ByGeoLocation' }, // 地理区域
     { label: i18n.t('common_678'), value: 'Weighted' }, // 加权
     { label: i18n.t('common_679'), value: 'Failover' }, // 故障转移
@@ -67,7 +67,7 @@ export const policyParamsMap = {
     Aws: 'AWS',
   },
   policy_type: {
-    Simple: i18n.t('k8s.text_359'),
+    Simple: i18n.t('common_710'),
     ByCarrier: i18n.t('common_675'),
     ByGeoLocation: i18n.t('common_676'),
     BySearchEngine: i18n.t('common_677'),
