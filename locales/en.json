@@ -1476,8 +1476,8 @@
     "dns_zone": "DNS",
     "system": "System Config",
     "costalerts": "Resource consumption warning",
-    "dns_recordset": "DNS Recordset",
-    "dns_zonecache": "DNS Zone Cache"
+    "dns_recordsets": "DNS Recordset",
+    "dns_zonecaches": "DNS Zone Cache"
   },
   "shareScope": {
     "system": "System",
