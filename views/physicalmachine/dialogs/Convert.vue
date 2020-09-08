@@ -106,6 +106,7 @@ import { sizestr } from '@/utils/utils'
 import { isWithinRange } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import i18n from '@/locales'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
@@ -260,7 +261,7 @@ export default {
         itemStyle: {
           color: function (params) {
             const colorList = ['#afa3f5', '#00d488', '#3feed4', '#3bafff', '#f1bb4c', 'rgba(250,250,250,0.5)']
-            if (params.data.name === this.$t('compute.text_315')) {
+            if (params.data.name === i18n.t('compute.text_315')) {
               return '#e3e3e3'
             } else {
               return colorList[params.dataIndex]

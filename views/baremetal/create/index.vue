@@ -829,7 +829,7 @@ export default {
           for (let j = i + 1; j < gpuList.length; j++) {
             if (gpuList[i].model === gpuList[j].model) {
               gpuList[i].count++
-              gpuList.split(j, 1)
+              gpuList.splice(j, 1)
             }
           }
         }
