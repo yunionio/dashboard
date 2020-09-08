@@ -1910,7 +1910,7 @@
     "dnsrecords.disable": "After disabling, the domain name service will no longer resolve domain names.",
     "storages.disable": "When disabled, block storage cannot be used to create virtual machine disks.",
     "cloudaccounts.disable": "After disabling, you cannot use the cloud account to create resources, and the created resources cannot be used.",
-    "identity_providers.disable": "After disabling, the authentication source will no longer be synchronized. However, users under the authentication source can still log in to the system normally.",
+    "identity_providers.disable": "Once disabled, the authentication source will no longer be synchronized. The user cannot log in.",
     "domains.disable": "High-risk operation. After being disabled, all users under the domain cannot log in to the system and cannot create resources under the domain.",
     "users.disable": "After disabling, users will not be able to log in to the system",
     "contacts.disable": "After the contact method is disabled, users will not be able to receive system notifications.",
