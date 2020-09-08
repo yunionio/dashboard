@@ -15,7 +15,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('common_708', [$t('common_709')])">
+        <a-form-item :label="$t('common_710', [$t('common_711')])">
           <base-select
             :remote="true"
             class="w-100"
