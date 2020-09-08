@@ -39,7 +39,7 @@
           </template>
         </ul>
         <div class="actions">
-          <span @click="handleConfirm($event)" :class="{ disabled: confirmDisable }">{{$t('common.ok')}}</span>
+          <span @click="handleConfirm($event)" class="primary-color" :class="{ disabled: confirmDisable }">{{$t('common.ok')}}</span>
           <span @click="handleCancel($event)">{{$t('common.cancel')}}</span>
         </div>
       </div>
@@ -290,10 +290,8 @@ export default {
     display: inline-block;
     box-sizing: border-box;
     width: 50%;
-    color: #000;
     &:first-child {
       border-right: 1px solid #ddd;
-      color: #006eff;
     }
     &:hover {
       background-color: #f2f2f2;
