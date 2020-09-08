@@ -79,7 +79,7 @@
             :decorator="decorators.network"
             :isBonding="isBonding"
             :network-resource-mapper="networkResourceMapper"
-            :network-list-params="resourcesParams.network"
+            :network-list-params="networkParams"
             :schedtag-params="resourcesParams.schedtag"
             :networkVpcParams="resourcesParams.vpcParams"
             :vpcResource="vpcResource"
@@ -277,12 +277,6 @@ export default {
       selectedImage: {}, // 选中的镜像
       isBonding: false,
       resourcesParams: {
-        network: {
-          scope: this.$store.getters.scope,
-          zone: this.params.data[0].zone_id,
-          host: this.params.data[0].id,
-          usable: true,
-        },
         schedtag: {
           limit: 1024,
           'filter.0': 'resource_type.equals(networks)',
@@ -306,6 +300,30 @@ export default {
     }
   },
   computed: {
+    networkParams () {
+      const ret = {
+        scope: this.$store.getters.scope,
+        zone: this.params.data[0].zone_id,
+        host: this.params.data[0].id,
+        usable: true,
+      }
+      if (this.wireIds) ret.filter = `wire_id.in(${this.wireIds})`
+      return ret
+    },
+    wireIds () {
+      if (this.params.data[0].nic_info) {
+        const arr = this.params.data[0].nic_info.filter(item => {
+          return item.nic_type !== 'ipmi' && item.wire_id
+        })
+        let str = ''
+        arr.map(item => {
+          str += `${item.wire_id},`
+        })
+        str = str.substr(0, str.length - 1)
+        return str
+      }
+      return null
+    },
     raidOptions () {
       let flag = false
       const items = this.params.data[0]

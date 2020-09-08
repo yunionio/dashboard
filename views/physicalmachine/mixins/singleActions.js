@@ -166,6 +166,16 @@ export default {
             {
               label: i18n.t('compute.text_298'),
               action: () => {
+                let wire_id = ''
+                if (obj.nic_info) {
+                  const arr = obj.nic_info.filter(item => {
+                    return item.nic_type !== 'ipmi' && item.wire_id
+                  })
+                  arr.map(item => {
+                    wire_id += `${item.wire_id},`
+                  })
+                  wire_id = wire_id.substr(0, wire_id.length - 1)
+                }
                 this.$router.push({
                   path: '/baremetal/create',
                   query: {
@@ -175,6 +185,7 @@ export default {
                     host_id: obj.id,
                     region_id: obj.cloudregion_id,
                     domain_id: obj.domain_id,
+                    wire_id,
                   },
                 })
               },

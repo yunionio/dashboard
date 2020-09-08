@@ -528,19 +528,25 @@ export default {
       }
     },
     networkParam () {
-      if (this.isInstallOperationSystem) {
-        return {
-          scope: this.$store.getters.scope,
-          zone: this.$route.query.zone_id,
-          host: this.$route.query.host_id,
-          usable: true,
-        }
-      }
-      return {
+      let ret = {
         zone: this.zone,
         usable: true,
-        ...this.scopeParams,
       }
+      if (this.isInstallOperationSystem) {
+        if (this.$route.query.wire_id) ret.filter = `wire_id.in(${this.$route.query.wire_id})`
+        ret = {
+          ...ret,
+          scope: this.$store.getters.scope,
+          host: this.$route.query.host_id,
+        }
+        return ret
+      } else {
+        ret = {
+          ...ret,
+          ...this.scopeParams,
+        }
+      }
+      return ret
     },
     vpcResource () {
       if (this.isInstallOperationSystem) {
