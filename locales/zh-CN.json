@@ -1905,7 +1905,7 @@
     "dnsrecords.disable": "禁用后，域名服务将不再解析域名。",
     "storages.disable": "禁用后，无法使用块存储创建虚拟机磁盘。",
     "cloudaccounts.disable": "禁用后，无法使用云账号创建资源，已创建的资源也无法使用。",
-    "identity_providers.disable": "禁用后，认证源将不再同步。但认证源下的用户仍可以正常登录系统。",
+    "identity_providers.disable": "禁用后，认证源将不再同步。用户不能登录。",
     "domains.disable": "高危操作，禁用后，域下所有用户都不能登录系统且不能在域下创建资源。",
     "users.disable": "禁用后，用户将无法登录系统",
     "contacts.disable": "联系方式禁用后，用户将无法接收系统的消息通知。",
