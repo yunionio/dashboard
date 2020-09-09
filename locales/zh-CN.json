@@ -7713,6 +7713,7 @@
   "common.create": "新建",
   "common.delete": "删除",
   "common.brand": "平台",
+  "common.noPermissionView": "无权限查看",
   "common.email": "邮件",
   "common.dingtalk": "钉钉",
   "common.feishu": "飞书",
