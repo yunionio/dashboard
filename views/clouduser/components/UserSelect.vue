@@ -4,29 +4,29 @@
       <a-row :gutter="8" class="w-100">
         <template v-if="isAdminMode">
           <a-col :span="8">
-            <a-select v-model="domain" show-search @search="getConditionDomains" allow-clear>
+            <a-select v-model="domain" show-search @search="getConditionDomains" :filter-option="false" allow-clear dropdownClassName="oc-select-dropdown">
               <template v-for="item of domains">
                 <a-select-option :key="item.id" :value="item.id">
-                  <span class="text-color-secondary">{{ $t('dictionary.domain') }}: </span>{{ item.name }}
+                  <span class="text-color-secondary option-prefix">{{ $t('dictionary.domain') }}: </span>{{ item.name }}
                 </a-select-option>
               </template>
             </a-select>
           </a-col>
         </template>
         <a-col :span="isAdminMode ? 8 : 12">
-          <a-select v-model="project" show-search @search="fetchProjects" allow-clear>
+          <a-select v-model="project" show-search @search="fetchProjects" :filter-option="false" allow-clear dropdownClassName="oc-select-dropdown">
             <template v-for="item of projects">
               <a-select-option :key="item.id" :value="item.id">
-                <span class="text-color-secondary">{{ $t('dictionary.project') }}: </span>{{ item.name }}
+                <span class="text-color-secondary option-prefix">{{ $t('dictionary.project') }}: </span>{{ item.name }}
               </a-select-option>
             </template>
           </a-select>
         </a-col>
         <a-col :span="isAdminMode ? 8 : 12">
-          <a-select v-model="user" show-search @search="fetchUsers" allow-clear>
+          <a-select v-model="user" show-search @search="fetchUsers" :filter-option="false" allow-clear dropdownClassName="oc-select-dropdown">
             <template v-for="item of users">
               <a-select-option :key="item.id" :value="item.id">
-                <span class="text-color-secondary">{{ $t('dictionary.user') }}: </span>{{ item.name }}
+                <span class="text-color-secondary option-prefix">{{ $t('dictionary.user') }}: </span>{{ item.name }}
               </a-select-option>
             </template>
           </a-select>
