@@ -16,7 +16,8 @@
         :cloudregionParams="param.region"
         :zoneParams="param.zone"
         :isRequired="true"
-        :region.sync="regionList" />
+        :region.sync="regionList"
+        :zone.sync="zoneList" />
       <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
@@ -50,11 +51,13 @@
         </a-form-item>
       </template>
     </a-form>
-    <page-footer>
-      <div slot="right">
-        <a-button class="float-right" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common_258') }}</a-button>
-      </div>
-    </page-footer>
+    <bottom-bar
+      :current-cloudregion="currentCloudregion"
+      :current-cloudzone="currentCloudzone"
+      :current-storage="storageItem"
+      :storage-types="storageTypes"
+      :provider="provider"
+      :size="form.fd.size" />
   </div>
 </template>
 
@@ -62,13 +65,13 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import * as CommonConstants from '../../../constants'
+import BottomBar from './components/BottomBar'
 import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
-import { PROVIDER_MAP } from '@/constants'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
@@ -76,6 +79,7 @@ export default {
   components: {
     AreaSelects,
     DomainProject,
+    BottomBar,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -112,6 +116,9 @@ export default {
             }
             if (values.cloudregion) {
               this.form.fd.cloudregion = values.cloudregion
+            }
+            if (values.size) {
+              this.form.fd.size = values.size
             }
           },
         }),
@@ -193,17 +200,22 @@ export default {
       },
       storageOpts: [],
       storageItem: {},
+      storageTypes: [],
       maxDiskData: 2048,
       minDiskData: 1,
       step: 10,
       cloudproviderData: [],
       regionList: {},
+      zoneList: {},
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     currentCloudregion () {
       return this.regionList[this.form.fd.cloudregion]
+    },
+    currentCloudzone () {
+      return this.zoneList[this.form.fd.zone]
     },
     provider () { // 向外提供的，通过 refs 获取
       if (this.currentCloudregion && this.currentCloudregion.provider) {
@@ -300,6 +312,7 @@ export default {
   watch: {
     cloudEnv (val) {
       this.$refs.areaSelects.fetchs(['city', 'provider', 'cloudregion', 'zone'])
+      this.storageItem = {}
     },
     'form.fd.domain' (newValue, oldValue) {
       if (newValue !== oldValue) {
@@ -329,6 +342,7 @@ export default {
                 return true
               })
             }
+            this.storageTypes = storageTypes
             this.storageOpts = storageTypes.map((item) => {
               const type = item.split('/')[0]
               const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
@@ -366,48 +380,6 @@ export default {
             throw new Error(this.$t('common_589') + error)
           }
         })
-    },
-    validateForm () {
-      return new Promise((resolve, reject) => {
-        this.form.fc.validateFields((err, values) => {
-          if (!err) {
-            resolve(values)
-          } else {
-            reject(err)
-          }
-        })
-      })
-    },
-    doCreate (data) {
-      return new this.$Manager('disks').create({ data })
-    },
-    async handleConfirm () {
-      this.loading = true
-      try {
-        let values = await this.validateForm()
-        const { project, domain, cloudregion, zone, ...rest } = values
-        const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
-        const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
-        values = {
-          ...rest,
-          hypervisor: oProvider ? oProvider.hypervisor : provider,
-          size: values.size * 1024,
-          project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
-          project_id: (project && project.key) || this.userInfo.projectId,
-          prefer_region: cloudregion,
-          prefer_zone: zone,
-        }
-        Reflect.deleteProperty(values, 'cloudregion')
-        Reflect.deleteProperty(values, 'zone')
-        Reflect.deleteProperty(values, 'provider')
-        await this.doCreate(values)
-        this.$message.success(this.$t('k8s.text_184'))
-        this.$router.push('/disk')
-      } catch (error) {
-        throw error
-      } finally {
-        this.loading = false
-      }
     },
     _translateStorageOps (data) {
       const findStorageProvider = optItem => {
