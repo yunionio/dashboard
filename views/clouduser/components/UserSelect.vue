@@ -243,6 +243,8 @@ export default {
                 id: provider.domain_id,
                 name: provider.project_domain,
               }]
+            } else {
+              domains = await this.fetchProviderDomains()
             }
           } else {
             domains = [accountDomain]
@@ -264,6 +266,8 @@ export default {
                 id: provider.domain_id,
                 name: provider.project_domain,
               }]
+            } else {
+              domains = await this.fetchProviderDomains()
             }
           } else {
             domains = [accountDomain]
@@ -380,6 +384,30 @@ export default {
           this.user = ''
           this.userObj = {}
         }
+      } catch (error) {
+        throw error
+      }
+    },
+    async fetchProviderDomains () {
+      try {
+        const response = await this.cpm.list({
+          params: {
+            cloudaccount_id: this.cloudaccount.id,
+          },
+        })
+        let data = response.data.data || []
+        if (data.length) {
+          data = data.map(item => {
+            return {
+              name: item.project_domain,
+              id: item.domain_id,
+            }
+          })
+        }
+        if (data.length) {
+          data = R.uniq(data)
+        }
+        return data
       } catch (error) {
         throw error
       }
