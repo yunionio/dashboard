@@ -32,8 +32,8 @@ import Deployment from '@K8S/views/deployment/components/List'
 import Secret from '@K8S/views/secret/components/List'
 import Configmap from '@K8S/views/configmap/components/List'
 import Daemonset from '@K8S/views/daemonset/components/List'
-import Clusterrole from '@K8S/views/rbacrole/components/List'
-import Clusterrolebinding from '@K8S/views/rbacrolebind/components/List'
+import Rbacrole from '@K8S/views/rbacrole/components/List'
+import Rbacrolebinding from '@K8S/views/rbacrolebinding/components/List'
 import Serviceaccount from '@K8S/views/service-account/components/List'
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
@@ -53,8 +53,8 @@ export default {
     Secret,
     Configmap,
     Daemonset,
-    Clusterrole,
-    Clusterrolebinding,
+    Rbacrole,
+    Rbacrolebinding,
     Serviceaccount,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -68,8 +68,8 @@ export default {
         { label: '配置项', key: 'configmap' },
         { label: '保密字典', key: 'secret' },
         { label: '守护进程', key: 'daemonset' },
-        { label: '角色', key: 'clusterrole' },
-        { label: '角色绑定', key: 'clusterrolebinding' },
+        { label: '角色', key: 'rbacrole' },
+        { label: '角色绑定', key: 'rbacrolebinding' },
         { label: '服务账户', key: 'serviceaccount' },
       ]
       allResourceArr.forEach(item => {
