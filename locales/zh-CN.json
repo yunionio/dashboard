@@ -7683,6 +7683,7 @@
   "scope.text_953": "半年",
   "scope.text_954": "一年",
   "scope.text_955": "金额不能为0",
+  "scope.text_956": "OpenID Connect连接信息：",
   "common.batchAction": "批量操作",
   "common.action": "操作",
   "common.ok": "确定",
