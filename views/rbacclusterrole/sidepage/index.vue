@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('k8s.text_330')"
-    icon="res-k8s-rbacclusterrole"
+    icon="res-k8s-rbacrole"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
@@ -18,6 +18,7 @@
     <component
       :is="params.windowData.currentTab"
       :data="detailData"
+      :rules="detailData.rules"
       resource="rbacclusterroles"
       :serverColumns="columns"
       :res-id="data.name"
@@ -32,24 +33,27 @@
 <script>
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import K8sRbacclusteroleDetail from './Detail'
+import K8sRbacclusterroleDetail from './Detail'
 import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import RoleRulesSidepage from '@K8S/sections/RoleRulesSidepage'
 
 export default {
   name: 'K8SRbacclusteroleSidePage',
   components: {
     Actions,
-    K8sRbacclusteroleDetail,
+    K8sRbacclusterroleDetail,
     SourceInformationSidepage,
+    RoleRulesSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: this.$t('k8s.text_217'), key: 'k8s-rbac-role-detail' },
+        { label: this.$t('k8s.text_217'), key: 'k8s-rbacclusterrole-detail' },
+        { label: this.$t('k8s.text_378'), key: 'role-rules-sidepage' },
         { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }
