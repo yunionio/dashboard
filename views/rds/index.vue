@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('db.text_150')" />
+    <page-header :title="$t('dictionary.dbinstance')" />
     <page-body>
       <rds-list :id="listId" />
     </page-body>

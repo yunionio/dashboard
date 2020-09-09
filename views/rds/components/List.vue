@@ -115,7 +115,7 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('db.text_41'),
+          label: this.$t('common.create'),
           permission: 'rds_dbinstances_create',
           action: () => {
             this.$router.push('/rds/create')
