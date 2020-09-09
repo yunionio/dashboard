@@ -28,7 +28,7 @@ export default {
           meta: {
             label: 'RDS实例',
             permission: 'rds_dbinstances_list',
-            t: 'dictionary.dbinstances',
+            t: 'dictionary.dbinstance',
             hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws']),
           },
           children: [
@@ -78,7 +78,7 @@ export default {
         {
           path: '/redis',
           meta: {
-            label: i18n.t('db.text_29'),
+            label: i18n.t('dictionary.elasticcache'),
             permission: 'redis_elasticcaches_list',
           },
           component: Layout,
