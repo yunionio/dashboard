@@ -25,7 +25,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'K8SRbacRoleBindList',
+  name: 'K8SRbacrolebindingList',
   components: {
     ClusterNamespace,
   },
@@ -107,7 +107,7 @@ export default {
   },
   methods: {
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'K8SRbacRoleBindSidePage', {
+      this.sidePageTriggerHandle(this, 'K8sRbacrolebindingSidePage', {
         id: row.name,
         resource: 'rbacrolebindings',
         apiVersion: 'v1',
