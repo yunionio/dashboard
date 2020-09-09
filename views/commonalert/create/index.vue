@@ -1,12 +1,12 @@
 <template>
   <div>
-    <page-header :title="`${$t('common.create')}${$t('dictionary.commonalert')}`" />
+    <page-header :title="$t('monitor.text_13')" />
     <page-body>
       <alert ref="alertRef" :loading.sync="loading" />
     </page-body>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm">{{ $t('common.save') }}</a-button>
+        <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm">{{ $t('common.create') }}</a-button>
         <a-button @click="cancel">{{ $t('common.cancel') }}</a-button>
       </div>
     </page-footer>
