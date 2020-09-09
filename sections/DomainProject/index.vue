@@ -9,6 +9,7 @@
           <a-select
             :allowClear="allowClear"
             class="w-100"
+            dropdownClassName="oc-select-dropdown"
             style="width:100%"
             :labelInValue="labelInValue"
             v-decorator="decorators.domain"
@@ -18,7 +19,7 @@
             :filterOption="filterOption"
             showSearch>
             <a-select-option v-for="item of domains" :value="item.key" :key="item.key">
-              <span class="text-color-secondary">{{ $t('dictionary.domain') }}: </span>{{ item.label }}
+              <span class="text-color-secondary option-prefix">{{ $t('dictionary.domain') }}: </span>{{ item.label }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -28,6 +29,7 @@
           <a-select
             :allowClear="allowClear"
             class="w-100"
+            dropdownClassName="oc-select-dropdown"
             :labelInValue="labelInValue"
             v-decorator="decorators.project"
             :loading="projectLoading"
@@ -36,7 +38,7 @@
             :filterOption="filterOption"
             showSearch>
             <a-select-option v-for="item of projects" :value="item.key" :key="item.key">
-              <span class="text-color-secondary">{{ $t('dictionary.project') }}: </span>{{ item.label }}
+              <span class="text-color-secondary option-prefix">{{ $t('dictionary.project') }}: </span>{{ item.label }}
             </a-select-option>
           </a-select>
         </a-form-item>
