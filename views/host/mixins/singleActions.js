@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
 import { typeClouds } from '@/utils/common/hypervisor'
@@ -12,6 +13,7 @@ export default {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
   },
   computed: {
+    ...mapGetters(['isAdminMode', 'userInfo']),
     singleActions () {
       const _frontSingleActions = this.frontSingleActions ? this.frontSingleActions.bind(this)() || [] : []
       return _frontSingleActions.concat([
@@ -106,13 +108,18 @@ export default {
         {
           label: i18n.t('compute.text_352'),
           actions: (obj) => {
+            const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
             return [
-              {
-                label: i18n.t('compute.text_569'),
-                submenus: [
-                  ...getEnabledSwitchActions(this, obj),
+              ...getEnabledSwitchActions(this, obj, [], {
+                metas: [
+                  () => ({
+                    validate: !obj.enabled && ownerDomain,
+                  }),
+                  () => ({
+                    validate: obj.enabled && ownerDomain,
+                  }),
                 ],
-              },
+              }),
               {
                 label: i18n.t('compute.text_540'),
                 action: () => {
@@ -123,6 +130,9 @@ export default {
                     onManager: this.onManager,
                   })
                 },
+                meta: obj => ({
+                  validate: ownerDomain,
+                }),
               },
               {
                 label: i18n.t('compute.text_513'),
@@ -136,17 +146,29 @@ export default {
                   })
                 },
                 meta: obj => ({
-                  validate: obj.brand.toLowerCase() !== 'zstack',
+                  validate: obj.brand.toLowerCase() !== 'zstack' && ownerDomain,
                 }),
               },
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.host'),
                 resource: 'hosts',
+              }, {
+                meta: function (obj) {
+                  return {
+                    validate: ownerDomain,
+                  }
+                },
               }),
               getSetPublicAction(this, {
                 name: this.$t('dictionary.host'),
                 scope: 'domain',
                 resource: 'hosts',
+              }, {
+                meta: function (obj) {
+                  return {
+                    validate: ownerDomain,
+                  }
+                },
               }),
               {
                 label: i18n.t('compute.text_547'),
@@ -160,7 +182,7 @@ export default {
                   })
                 },
                 meta: () => {
-                  if (obj.provider.toLowerCase() === 'onecloud' && obj.allow_health_check) {
+                  if (obj.provider.toLowerCase() === 'onecloud' && obj.allow_health_check && ownerDomain) {
                     return {
                       validate: true,
                     }
@@ -203,6 +225,11 @@ export default {
                       validate: false,
                       tooltip: '',
                     }
+                  } else if (!ownerDomain) {
+                    return {
+                      validate: false,
+                      tooltip: '',
+                    }
                   }
                   return {
                     validate: true,
@@ -227,7 +254,7 @@ export default {
                     }
                   }
                   return {
-                    validate: ['running', 'maintain_fail'].includes(obj.status),
+                    validate: ['running', 'maintain_fail'].includes(obj.status) && ownerDomain,
                     tooltip: obj.status !== 'running' ? i18n.t('compute.text_571') : '',
                   }
                 },
@@ -250,7 +277,7 @@ export default {
                     }
                   }
                   return {
-                    validate: ['maintaining', 'maintain_fail'].includes(obj.status),
+                    validate: ['maintaining', 'maintain_fail'].includes(obj.status) && ownerDomain,
                   }
                 },
               },
@@ -278,28 +305,31 @@ export default {
                     return ret
                   }
                   return {
-                    validate: true,
+                    validate: ownerDomain,
                   }
                 },
               },
               {
                 label: i18n.t('compute.text_261'),
-                submenus: [
-                  {
-                    label: i18n.t('compute.text_261'),
-                    action: () => {
-                      this.createDialog('DeleteResDialog', {
-                        vm: this,
-                        data: [obj],
-                        columns: this.columns,
-                        title: i18n.t('compute.text_261'),
-                        name: this.$t('dictionary.host'),
-                        onManager: this.onManager,
-                      })
-                    },
-                    meta: () => this.$getDeleteResult(obj),
-                  },
-                ],
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: [obj],
+                    columns: this.columns,
+                    title: i18n.t('compute.text_261'),
+                    name: this.$t('dictionary.host'),
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const deleteResult = this.$getDeleteResult(obj)
+                  if (!deleteResult.validate) {
+                    return deleteResult
+                  }
+                  return {
+                    validate: ownerDomain,
+                  }
+                },
               },
             ]
           },
