@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('dictionary.cloudgroup')" />
+    <page-header :title="$t('cloudenv.text_491')" />
     <a-alert :message="$t('cloudenv.cloudgroup_desc')" type="info" class="mt-2" />
     <page-body>
       <list :id="listId" />
