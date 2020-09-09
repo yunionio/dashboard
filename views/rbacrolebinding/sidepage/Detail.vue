@@ -13,7 +13,7 @@
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
-  name: 'K8sRbacRoleBindDetail',
+  name: 'K8sRbacrolebindingDetail',
   props: {
     data: {
       type: Object,
