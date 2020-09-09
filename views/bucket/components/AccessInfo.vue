@@ -1,5 +1,5 @@
 <template>
-  <a-popover :title="$t('storage.text_91')" trigger="hover" placement="right" @visibleChange="handleVisibleChange">
+  <a-popover :title="$t('storage.text_91')" trigger="hover" placement="top" @visibleChange="handleVisibleChange">
     <div slot="content" class="access-info-content">
       <a-spin :spinning="loading" />
       <template v-if="!loading">
