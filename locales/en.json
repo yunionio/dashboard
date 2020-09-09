@@ -1478,7 +1478,7 @@
     "instance_snapshot": "Host Snapshot",
     "dbinstance": "RDS Instances",
     "loadbalancerclusters": "Load Balance-Cluster",
-    "receivers": "receivers",
+    "receiver": "receiver",
     "dns_zone": "DNS",
     "system": "System Config",
     "costalerts": "Resource consumption warning",
