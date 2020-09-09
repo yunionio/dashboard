@@ -7722,6 +7722,7 @@
   "common.create": "Create",
   "common.delete": "Delete",
   "common.brand": "Platform",
+  "common.noPermissionView": "No permission to view",
   "common.email": "Mail",
   "common.dingtalk": "Dingtalk",
   "common.feishu": "Feishu",
