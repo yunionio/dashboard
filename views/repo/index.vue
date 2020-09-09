@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('helm.text_95')" />
+    <page-header :title="$t('helm.text_6')" />
     <page-body>
       <repo-list :id="listId" />
     </page-body>

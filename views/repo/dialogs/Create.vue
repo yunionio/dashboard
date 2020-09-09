@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ params.formType === 'update' ? $t('helm.text_90') : $t('helm.text_68')}}Helm仓库地址</div>
+    <div slot="header">{{ params.formType === 'update' ? $t('helm.text_104') : $t('helm.text_103')}}</div>
     <div slot="body">
       <dialog-selected-tips v-if="params.data" :count="params.data.length" :name="$t('helm.text_6')" :action="$t('helm.text_90')" />
       <dialog-table v-if="params.columns" :data="params.data" :columns="params.columns.slice(0, 3)" />
