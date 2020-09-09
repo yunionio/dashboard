@@ -1,4 +1,5 @@
 // import FlexNetwork from '@Network/views/flex-network'
+import DnsZone from '@Network/views/dns-zone'
 import EipCreate from '@Network/views/eip/create'
 import Wire from '@Network/views/wire'
 import Network from '@Network/views/network'
@@ -24,6 +25,7 @@ import Layout from '@/layouts/RouterView'
 
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
+import store from '@/store'
 
 export default {
   index: 4,
@@ -232,6 +234,22 @@ export default {
               name: 'DNS',
               path: '',
               component: DNS,
+            },
+          ],
+        },
+        {
+          path: '/dns-zone',
+          meta: {
+            label: i18n.t('dictionary.dns_zone'),
+            permission: 'dnszone_list',
+            hidden: () => store.getters.isProjectMode,
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'DnsZone',
+              path: '',
+              component: DnsZone,
             },
           ],
         },
