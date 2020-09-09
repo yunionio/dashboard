@@ -145,12 +145,13 @@ export class Manager {
   }
 
   _rpcGet ({ id, words, params } = {}) {
-    let url = this._rpcURL({ id, words })
-    const _qs = qs.stringify(params)
-    if (_qs) {
-      url += '?' + _qs
-    }
-    return Vue.http.get(url)
+    const url = this._rpcURL({ id, words })
+    // const _qs = qs.stringify(params)
+    // console.log(_qs)
+    // if (_qs) {
+    //   url += '?' + _qs
+    // }
+    return Vue.http.get(url, { params })
   }
 
   _rpcPost ({ id, words, params } = {}) {
