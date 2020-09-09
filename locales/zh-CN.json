@@ -1473,7 +1473,7 @@
     "instance_snapshot": "主机快照",
     "dbinstance": "RDS实例",
     "loadbalancerclusters": "负载均衡-集群",
-    "receivers": "接收人",
+    "receiver": "接收人",
     "dns_zone": "DNS解析",
     "system": "系统配置",
     "costalerts": "资源消费预警",
