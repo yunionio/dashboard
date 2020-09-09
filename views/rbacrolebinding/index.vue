@@ -1,23 +1,23 @@
 <template>
   <div>
-    <page-header title="角色绑定(RbacRoleBinding)" />
+    <page-header title="角色绑定(Rbacrolebinding)" />
     <page-body>
-      <k8s-rbac-role-bind-list :id="listId" :getParams="getParams" />
+      <k8s-rbacrolebinding-list :id="listId" :getParams="getParams" />
     </page-body>
   </div>
 </template>
 
 <script>
-import K8sRbacRoleBindList from './components/List'
+import K8sRbacrolebindingList from './components/List'
 
 export default {
   name: 'K8SRbacRoleIndex',
   components: {
-    K8sRbacRoleBindList,
+    K8sRbacrolebindingList,
   },
   data () {
     return {
-      listId: 'K8SRbacRoleBindList',
+      listId: 'K8SRbacRoleBindingList',
       getParams: {
         details: true,
         admin: true,

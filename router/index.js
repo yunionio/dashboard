@@ -11,7 +11,7 @@ import K8sStorageclassesCreate from '@K8S/views/storage-class/create'
 import K8sNamespace from '@K8S/views/namespace'
 import K8sNamespaceCreate from '@K8S/views/namespace/create'
 import K8sRbacrole from '@K8S/views/rbacrole'
-import K8sRbacrolebind from '@K8S/views/rbacrolebind'
+import K8sRbacrolebinding from '@K8S/views/rbacrolebinding'
 import K8sServiceAccount from '@K8S/views/service-account'
 import K8sKubeComponent from '@K8S/views/kube-component'
 import K8sKubeComponentCreate from '@K8S/views/kube-component/create'
@@ -386,7 +386,7 @@ export default {
           ],
         },
         {
-          path: '/k8s-rbacrolebind',
+          path: '/k8s-rbacrolebinding',
           meta: {
             label: '角色绑定',
             permission: 'k8s_rbacrolebindings_list',
@@ -394,9 +394,9 @@ export default {
           component: Layout,
           children: [
             {
-              name: 'K8sRbacrolebind',
+              name: 'K8sRbacrolebinding',
               path: '',
-              component: K8sRbacrolebind,
+              component: K8sRbacrolebinding,
             },
           ],
         },
