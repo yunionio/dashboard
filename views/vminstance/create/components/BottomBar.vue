@@ -274,6 +274,9 @@ export default {
     'fd.eip_bw' (val, oldV) {
       this.getPriceList()
     },
+    'fd.backupEnable' (val, oldV) {
+      this.getPriceList()
+    },
   },
   created () {
     this.baywatch([
@@ -370,6 +373,9 @@ export default {
       if (R.isNil(params.brand) || R.isEmpty(params.brand)) return
       if (this.fd.eip_type === 'new') {
         params.eip = this.fd.eip_bw + 'Mb'
+      }
+      if (this.fd.backupEnable) {
+        params.backup_host = true
       }
       // try {
       const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })

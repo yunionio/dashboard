@@ -79,7 +79,7 @@
             :decorator="decorators.network"
             :isBonding="isBonding"
             :network-resource-mapper="networkResourceMapper"
-            :network-list-params="resourcesParams.network"
+            :network-list-params="networkParams"
             :schedtag-params="resourcesParams.schedtag"
             :networkVpcParams="resourcesParams.vpcParams"
             :vpcResource="vpcResource"
@@ -106,6 +106,7 @@ import { sizestr } from '@/utils/utils'
 import { isWithinRange } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import i18n from '@/locales'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, cb) => {
@@ -260,7 +261,7 @@ export default {
         itemStyle: {
           color: function (params) {
             const colorList = ['#afa3f5', '#00d488', '#3feed4', '#3bafff', '#f1bb4c', 'rgba(250,250,250,0.5)']
-            if (params.data.name === this.$t('compute.text_315')) {
+            if (params.data.name === i18n.t('compute.text_315')) {
               return '#e3e3e3'
             } else {
               return colorList[params.dataIndex]
@@ -276,12 +277,6 @@ export default {
       selectedImage: {}, // 选中的镜像
       isBonding: false,
       resourcesParams: {
-        network: {
-          scope: this.$store.getters.scope,
-          zone: this.params.data[0].zone_id,
-          host: this.params.data[0].id,
-          usable: true,
-        },
         schedtag: {
           limit: 1024,
           'filter.0': 'resource_type.equals(networks)',
@@ -305,6 +300,30 @@ export default {
     }
   },
   computed: {
+    networkParams () {
+      const ret = {
+        scope: this.$store.getters.scope,
+        zone: this.params.data[0].zone_id,
+        host: this.params.data[0].id,
+        usable: true,
+      }
+      if (this.wireIds) ret.filter = `wire_id.in(${this.wireIds})`
+      return ret
+    },
+    wireIds () {
+      if (this.params.data[0].nic_info) {
+        const arr = this.params.data[0].nic_info.filter(item => {
+          return item.nic_type !== 'ipmi' && item.wire_id
+        })
+        let str = ''
+        arr.map(item => {
+          str += `${item.wire_id},`
+        })
+        str = str.substr(0, str.length - 1)
+        return str
+      }
+      return null
+    },
     raidOptions () {
       let flag = false
       const items = this.params.data[0]
