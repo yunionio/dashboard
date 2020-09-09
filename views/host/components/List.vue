@@ -127,9 +127,25 @@ export default {
   computed: {
     groupActions () {
       const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
+      const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
       return _frontGroupActions.concat(
         [
-          ...getEnabledSwitchActions(this, undefined),
+          ...getEnabledSwitchActions(this, undefined, [], {
+            metas: [
+              () => {
+                const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
+                return {
+                  validate: this.list.selectedItems.length && ownerDomain && isDisable,
+                }
+              },
+              () => {
+                const isEnable = !!this.list.selectedItems.find(item => item.enabled)
+                return {
+                  validate: this.list.selectedItems.length && ownerDomain && isEnable,
+                }
+              },
+            ],
+          }),
           {
             label: this.$t('common.batchAction'),
             actions: () => {
@@ -137,6 +153,12 @@ export default {
                 getDomainChangeOwnerAction(this, {
                   name: this.$t('dictionary.host'),
                   resource: 'hosts',
+                }, {
+                  meta: function () {
+                    return {
+                      validate: ownerDomain,
+                    }
+                  },
                 }),
                 // getSetPublicAction(this, {
                 //   name: this.$t('dictionary.host'),
@@ -154,7 +176,7 @@ export default {
                     })
                   },
                   meta: () => ({
-                    validate: this.list.selectedItems.length,
+                    validate: this.list.selectedItems.length && ownerDomain,
                   }),
                 },
                 {
@@ -198,6 +220,11 @@ export default {
                           validate: false,
                           tooltip: '',
                         }
+                      } else if (!ownerDomain) {
+                        return {
+                          validate: false,
+                          tooltip: '',
+                        }
                       }
                     }
                     return {
@@ -218,7 +245,7 @@ export default {
                     })
                   },
                   meta: () => ({
-                    validate: this.list.selectedItems.every(item => { return item.brand.toLowerCase() !== 'zstack' }),
+                    validate: this.list.selectedItems.every(item => { return item.brand.toLowerCase() !== 'zstack' }) && ownerDomain,
                   }),
                 },
                 {
@@ -247,7 +274,7 @@ export default {
                       return ret
                     }
                     return {
-                      validate: true,
+                      validate: ownerDomain,
                     }
                   },
                 },
@@ -264,7 +291,15 @@ export default {
                       onManager: this.onManager,
                     })
                   },
-                  meta: () => this.$getDeleteResult(this.list.selectedItems),
+                  meta: () => {
+                    const deleteResult = this.$getDeleteResult(this.list.selectedItems)
+                    if (!deleteResult.validate) {
+                      return deleteResult
+                    }
+                    return {
+                      validate: ownerDomain,
+                    }
+                  },
                 },
               ]
             },
