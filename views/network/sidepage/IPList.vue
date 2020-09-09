@@ -133,7 +133,7 @@ export default {
     async fetchQueryAddresses () {
       this.loading = true
       try {
-        const { data: { address = [] } } = await this.manager.getSpecific({
+        const { data: { addresses = [] } } = await this.manager.getSpecific({
           id: this.resId,
           // id: 'vnet222',
           spec: 'addresses',
@@ -144,7 +144,7 @@ export default {
             scope: this.$store.getters.scope,
           },
         })
-        this.tableData = address
+        this.tableData = addresses
       } catch (err) {
         throw err
       } finally {
