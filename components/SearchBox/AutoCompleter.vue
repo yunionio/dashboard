@@ -345,7 +345,7 @@ export default {
   overflow: hidden;
   overflow-y: auto;
   background-color: #fff;
-  // max-height: 400px;
+  max-height: 400px;
   list-style: none;
   margin: 0;
   padding: 0;
