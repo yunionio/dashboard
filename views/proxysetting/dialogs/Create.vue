@@ -18,9 +18,9 @@
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
       <test-button
-            :disabled="!form.fc.getFieldValue('http_proxy') && !form.fc.getFieldValue('https_proxy')"
-            :post="testPost"
-            :isSuccessAlert="false" />
+        :disabled="!form.fc.getFieldValue('http_proxy') && !form.fc.getFieldValue('https_proxy')"
+        :post="testPost"
+        :isSuccessAlert="false" />
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>

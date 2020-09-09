@@ -96,9 +96,9 @@ export default {
         {
           path: '/cloudgroup',
           meta: {
-            label: i18n.t('cloudenv.text_13'),
+            label: i18n.t('cloudenv.text_491'),
             permission: 'cloudgroup_list',
-            t: 'dictionary.cloudgroup',
+            t: 'cloudenv.text_491',
             hidden: () => store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google']),
           },
           component: Layout,
