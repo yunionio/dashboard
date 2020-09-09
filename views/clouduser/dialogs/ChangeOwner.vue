@@ -61,7 +61,7 @@ export default {
           'user_id',
           {
             rules: [
-              { required: true, message: this.$t('common.select') },
+              { required: false, message: this.$t('common.select') },
             ],
           },
         ],
