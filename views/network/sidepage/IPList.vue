@@ -79,6 +79,10 @@ export default {
         {
           field: 'owner',
           title: this.$t('network.text_664'),
+          formatter: ({ row }) => {
+            if (row.mac_addr && !row.owner) return this.$t('common.noPermissionView')
+            return row.owner
+          },
         },
         {
           field: 'action',
