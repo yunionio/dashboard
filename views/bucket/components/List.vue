@@ -130,12 +130,18 @@ export default {
                   })
                 },
                 meta: row => {
+                  if (this.list.selectedItems.some(item => item.is_public)) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('common_614'),
+                    }
+                  }
                   const ret = {
                     validate: false,
                     tooltip: '',
                   }
                   if (this.isProjectMode) {
-                    ret.tooltip = `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`
+                    ret.tooltip = this.$t('common_601')
                     return ret
                   }
                   const domainIds = this.list.selectedItems.map(item => item.domain_id)
