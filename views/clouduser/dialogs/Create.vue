@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import UserSelect from '../components/UserSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -143,6 +144,35 @@ export default {
             field: 'description',
             title: this.$t('cloudenv.text_327'),
             showOverflow: 'title',
+          },
+          {
+            field: 'cloudpolicies',
+            title: this.$t('cloudenv.text_329'),
+            type: 'expand',
+            slots: {
+              default: ({ row }) => {
+                return [this.$t('cloudenv.text_245', [(row.cloudpolicies && row.cloudpolicies.length) || 0])]
+              },
+              content: ({ row }) => {
+                if (R.isNil(row.cloudpolicies) || R.isEmpty(row.cloudpolicies)) return this.$t('cloudenv.text_330')
+                return [
+                  <vxe-grid
+                    showOverflow='title'
+                    data={ row.cloudpolicies }
+                    columns={[
+                      {
+                        field: 'name',
+                        title: this.$t('common.name'),
+                      },
+                      {
+                        field: 'description',
+                        title: this.$t('table.column.title.desc'),
+                        formatter: ({ cellValue }) => cellValue || '-',
+                      },
+                    ]} />,
+                ]
+              },
+            },
           },
         ],
       },

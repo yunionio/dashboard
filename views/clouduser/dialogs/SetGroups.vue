@@ -93,11 +93,11 @@ export default {
                 return [this.$t('cloudenv.text_245', [(row.cloudpolicies && row.cloudpolicies.length) || 0])]
               },
               content: ({ row }) => {
-                if (R.isNil(row.feCloudpolicies) || R.isEmpty(row.feCloudpolicies)) return this.$t('cloudenv.text_330')
+                if (R.isNil(row.cloudpolicies) || R.isEmpty(row.cloudpolicies)) return this.$t('cloudenv.text_330')
                 return [
                   <vxe-grid
                     showOverflow='title'
-                    data={ row.feCloudpolicies }
+                    data={ row.cloudpolicies }
                     columns={[
                       {
                         field: 'name',
@@ -114,29 +114,29 @@ export default {
             },
           },
         ],
-        expandConfig: {
-          lazy: true,
-          loadMethod: async ({ row }) => {
-            let manager = new this.$Manager('cloudpolicies', 'v1')
-            try {
-              const response = await manager.list({
-                params: {
-                  cloudgroup_id: row.id,
-                  scope: this.$store.getters.scope,
-                },
-              })
-              row.feCloudpolicies = response.data.data || []
-              return response
-            } catch (error) {
-              throw error
-            } finally {
-              manager = null
-            }
-          },
-          visibleMethod: ({ row }) => {
-            return row.cloudpolicies && row.cloudpolicies.length > 0
-          },
-        },
+        // expandConfig: {
+        //   lazy: true,
+        //   loadMethod: async ({ row }) => {
+        //     let manager = new this.$Manager('cloudpolicies', 'v1')
+        //     try {
+        //       const response = await manager.list({
+        //         params: {
+        //           cloudgroup_id: row.id,
+        //           scope: this.$store.getters.scope,
+        //         },
+        //       })
+        //       row.feCloudpolicies = response.data.data || []
+        //       return response
+        //     } catch (error) {
+        //       throw error
+        //     } finally {
+        //       manager = null
+        //     }
+        //   },
+        //   // visibleMethod: ({ row }) => {
+        //   //   return row.cloudpolicies && row.cloudpolicies.length > 0
+        //   // },
+        // },
       },
     }
   },
