@@ -3,18 +3,18 @@
     <a-row :gutter="8">
       <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value v-decorator="decorator.cloudregion" @change="handleChange">
+          <a-select dropdownClassName="oc-select-dropdown" label-in-value v-decorator="decorator.cloudregion" @change="handleChange">
             <a-select-option v-for="item in regionOpts" :key="item.id">
-              <span class="text-color-secondary">{{ $t('dictionary.region') }}: </span>{{ item.name }}
+              <span class="text-color-secondary option-prefix">{{ $t('dictionary.region') }}: </span>{{ item.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select label-in-value  v-decorator="decorator.zone" allow-clear @change="v => emit(v, 'zone')">
+          <a-select dropdownClassName="oc-select-dropdown" label-in-value  v-decorator="decorator.zone" allow-clear @change="v => emit(v, 'zone')">
             <a-select-option v-for="item in zoneOpts" :key="item.id">
-              <span class="text-color-secondary">{{ $t('dictionary.zone') }}: </span>{{ item.name }}
+              <span class="text-color-secondary option-prefix">{{ $t('dictionary.zone') }}: </span>{{ item.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
