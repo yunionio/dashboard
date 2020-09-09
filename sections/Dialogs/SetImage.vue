@@ -89,7 +89,7 @@ export default {
         },
       })
       this.containerImages = data.containerImages
-      this.initContainerImages = data.initContainerImages
+      this.initContainerImages = data.initContainerImages || []
       const imagesFieldValue = {}
       this.containerImages.forEach((item, i) => {
         imagesFieldValue[`images${i}`] = item.image
