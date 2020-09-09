@@ -72,11 +72,9 @@
         </a-form-item>
       </a-form>
     </page-body>
-    <page-footer>
-      <div slot="right">
-        <a-button class="float-right" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common_258') }}</a-button>
-      </div>
-    </page-footer>
+    <bottom-bar
+      :current-cloudregion="selectedRegionItem"
+      :size="bandwidth" />
   </div>
 </template>
 
@@ -84,6 +82,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import IpSubnet from '../../../sections/IpSubnet'
+import BottomBar from './components/BottomBar'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
@@ -95,6 +94,7 @@ export default {
     AreaSelects,
     DomainProject,
     IpSubnet,
+    BottomBar,
   },
   data () {
     const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
@@ -116,6 +116,9 @@ export default {
           onValuesChange: (props, values) => {
             if (values.cloudregion) {
               this.selectedRegionItem = this.regionList[values.cloudregion]
+            }
+            if (values.bandwidth) {
+              this.bandwidth = values.bandwidth
             }
           },
         }),
@@ -216,6 +219,7 @@ export default {
         usable: true,
       },
       regionList: {},
+      bandwidth: 30,
     }
   },
   computed: {
@@ -352,6 +356,7 @@ export default {
   provide () {
     return {
       form: this.form,
+      cloudEnv: this.cloudEnv,
     }
   },
   created () {
@@ -427,33 +432,6 @@ export default {
       } else {
         this.form.fc.setFieldsValue({ bandwidth: 30 })
         this.showBandwidth = true
-      }
-    },
-    doCreate (data) {
-      return new this.$Manager('eips').create({ data })
-    },
-    async handleConfirm () {
-      this.loading = true
-      try {
-        const values = await this.form.fc.validateFields()
-        values.tenant = values.project.key
-        values.domain = values.domain.key
-        Reflect.deleteProperty(values, 'project')
-        if (this.cloudEnv === 'private') {
-          delete values.charge_type
-          values.bandwidth = 0
-          if (values.ip_addr) {
-            values.ip = values.ip_addr
-            delete values.ip_addr
-          }
-        }
-        await this.doCreate(values)
-        this.loading = false
-        this.$message.success(this.$t('k8s.text_184'))
-        this.$router.push('/eip')
-      } catch (error) {
-        this.loading = false
-        throw error
       }
     },
   },
