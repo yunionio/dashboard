@@ -52,6 +52,16 @@ export default {
       deleteGroupOpsValid: arr => arr.every(item => item.type === arr[0].type),
       groupActions: [
         {
+          label: this.$t('common.create'),
+          permission: 'k8s_rbacroles_create',
+          action: () => {
+            this.$router.push('/k8s-rbacrole/create')
+          },
+          meta: () => ({
+            buttonType: 'primary',
+          }),
+        },
+        {
           label: this.$t('k8s.text_201'),
           permission: 'k8s_rbacroles_delete',
           action: () => {

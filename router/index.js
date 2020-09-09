@@ -18,6 +18,7 @@ import K8sNamespace from '@K8S/views/namespace'
 import K8sNamespaceCreate from '@K8S/views/namespace/create'
 import K8sRbacrole from '@K8S/views/rbacrole'
 import K8sRbacrolebinding from '@K8S/views/rbacrolebinding'
+import K8sRbacroleCreate from '@K8S/views/rbacrole/create'
 import K8sRbacclusterrole from '@K8S/views/rbacclusterrole'
 import K8sServiceAccount from '@K8S/views/service-account'
 import K8sKubeComponent from '@K8S/views/kube-component'
@@ -392,6 +393,11 @@ export default {
               name: 'K8sRbacrole',
               path: '',
               component: K8sRbacrole,
+            },
+            {
+              name: 'K8sRbacroleCreate',
+              path: 'create',
+              component: K8sRbacroleCreate,
             },
           ],
         },

@@ -18,6 +18,7 @@
     <component
       :is="params.windowData.currentTab"
       :data="detailData"
+      :rules="detailData.rules"
       resource="rbacroles"
       :serverColumns="columns"
       :res-id="data.name"
@@ -37,6 +38,7 @@ import SourceInformationSidepage from '@K8S/sections/SourceInformationSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import RoleRulesSidepage from '@K8S/sections/RoleRulesSidepage'
 
 export default {
   name: 'K8SRbacRoleSidePage',
@@ -44,12 +46,14 @@ export default {
     Actions,
     K8sRbacRoleDetail,
     SourceInformationSidepage,
+    RoleRulesSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: this.$t('k8s.text_217'), key: 'k8s-rbac-role-detail' },
+        { label: this.$t('k8s.text_378'), key: 'role-rules-sidepage' },
         { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
       ],
     }

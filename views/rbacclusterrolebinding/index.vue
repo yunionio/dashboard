@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_331')" />
+    <page-header :title="$t('k8s.text_377')" />
     <page-body>
       <k8s-rbacclusterrolebinding-list :id="listId" :getParams="getParams" />
     </page-body>

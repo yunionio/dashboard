@@ -45,6 +45,7 @@ export default {
   methods: {
     syncCluster (id) {
       const obj = this.clusterOps.find(v => v.id === id)
+      console.log({ id, obj })
       this.$emit('update:clusterObj', obj)
       this.$emit('change', id)
     },
@@ -68,10 +69,14 @@ export default {
             data.push(systemItem)
           }
           this.clusterOps = data
-          if (this.setDefault && !this.value) {
-            const clusterObj = this.clusterOps[0]
-            this.$emit('input', clusterObj.id)
-            this.syncCluster(clusterObj.id)
+          if (this.setDefault) {
+            if (!this.value) {
+              const clusterObj = this.clusterOps[0]
+              this.$emit('input', clusterObj.id)
+              this.syncCluster(clusterObj.id)
+            } else {
+              this.syncCluster(this.value)
+            }
           }
         }
       })
