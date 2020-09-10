@@ -2147,7 +2147,15 @@
       "title": {
         "name": "名称",
         "brand": "平台",
-        "desc": "描述"
+        "desc": "描述",
+        "projectPolicy": "@:dictionary.project权限",
+        "domainPolicy": "@:dictionary.domain权限",
+        "managePolicy": "管理权限",
+        "role": "@:dictionary.role",
+        "domain": "@:dictionary.domain",
+        "userId": "用户ID",
+        "on": "开启",
+        "off": "关闭"
       }
     }
   },
@@ -2194,6 +2202,7 @@
     "feishu": "飞书",
     "feishu_robot": "飞书机器人",
     "workwx": "企业微信",
+    "nickname": "昵称",
     "storage": {
       "cloud": "普通云盘",
       "cloudssd": "SSD 云盘",

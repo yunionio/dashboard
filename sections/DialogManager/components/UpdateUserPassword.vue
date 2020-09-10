@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog" :width="400">
+  <base-dialog @cancel="cancelDialog" :width="620">
     <div slot="header">{{$t('common_135')}}</div>
     <div slot="body">
       <a-form :form="form.fc">
