@@ -123,12 +123,16 @@ export default {
               },
               percent: {
                 align: 'left',
-                color: 'rgb(200, 200, 200)',
+                color: '#1890ff',
+                borderWidth: 1,
+                borderColor: '#1890ff',
+                padding: [3, 5, 3, 5],
               },
               formatted_amount: {
-                align: 'right',
+                align: 'left',
                 fontSize: 12,
-                color: 'rgb(100, 100, 100)',
+                color: 'rgb(150, 150, 150)',
+                padidng: 0,
               },
             },
           },
@@ -136,7 +140,7 @@ export default {
           formatter: name => {
             const item = R.find(R.propEq('name', name))(this.outherData)
             if (item) {
-              return `{name|${name}} \n {percent|${item.percent}%}{formatted_amount|￥${item.formatted_amount}}`
+              return `{name|${name}}\n{formatted_amount|￥${item.formatted_amount}}  {percent|${item.percent}%}`
             }
             return name
           },
