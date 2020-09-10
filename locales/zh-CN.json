@@ -6665,6 +6665,8 @@
   "system.text_562": "创建@:dictionary.identity_provider",
   "system.text_563": "更新@:dictionary.identity_provider",
   "system.text_564": "消息中心",
+  "system.text_565": "SMAL认证协议所需本系统信息:",
+  "system.text_566": "OIDC、OAuth2协议所需本系统信息:",
   "monitor.monitor_add": "添加查询",
   "monitor.monitor_metric": "监控指标",
   "monitor.monitor_filters": "资源过滤",

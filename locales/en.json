@@ -6665,6 +6665,8 @@
   "system.text_562": "Create @:dictionary.identity_provider",
   "system.text_563": "Update @:dictionary.identity_provider",
   "system.text_564": "Messages",
+  "system.text_565": "The system information required by the SMAL authentication protocol:",
+  "system.text_566": "This system information required by OIDC and OAuth2 protocols:",
   "monitor.monitor_add": "Add Query",
   "monitor.monitor_metric": "Monitor metrics",
   "monitor.monitor_filters": "Resource Filters",
