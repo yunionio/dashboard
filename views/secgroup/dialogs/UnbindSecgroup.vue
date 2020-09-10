@@ -38,7 +38,7 @@ export default {
           managerArgs: {
             action: 'revoke-secgroup',
             data: {
-              'secgrp.0': this.params.detailData.id,
+              secgroup_ids: [this.params.detailData.id],
             },
           },
         })
