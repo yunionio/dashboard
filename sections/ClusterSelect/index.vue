@@ -45,7 +45,6 @@ export default {
   methods: {
     syncCluster (id) {
       const obj = this.clusterOps.find(v => v.id === id)
-      console.log({ id, obj })
       this.$emit('update:clusterObj', obj)
       this.$emit('change', id)
     },

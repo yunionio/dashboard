@@ -1,3 +1,4 @@
+import K8sRbacrolebindingCreate from '@K8S/views/rbacrolebinding/create'
 import K8sRbacclusterroleCreate from '@K8S/views/rbacclusterrole/create'
 import K8sRbacclusterrolebinding from '@K8S/views/rbacclusterrolebinding'
 import Federatednamespace from '@K8S/views/federatednamespace'
@@ -434,6 +435,11 @@ export default {
               name: 'K8sRbacrolebinding',
               path: '',
               component: K8sRbacrolebinding,
+            },
+            {
+              name: 'K8sRbacrolebindingCreate',
+              path: 'create',
+              component: K8sRbacrolebindingCreate,
             },
           ],
         },
