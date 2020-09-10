@@ -1,6 +1,7 @@
 import K8sRbacrolebindingCreate from '@K8S/views/rbacrolebinding/create'
 import K8sRbacclusterroleCreate from '@K8S/views/rbacclusterrole/create'
 import K8sRbacclusterrolebinding from '@K8S/views/rbacclusterrolebinding'
+import K8sRbacclusterrolebindingCreate from '@K8S/views/rbacclusterrolebinding/create'
 import Federatednamespace from '@K8S/views/federatednamespace'
 import Federatedclusterrole from '@K8S/views/federatedclusterrole'
 import Federatedrolebinding from '@K8S/views/federatedrolebinding'
@@ -444,7 +445,7 @@ export default {
           ],
         },
         {
-          path: '/k8s-rbacclusterrolebind',
+          path: '/k8s-rbacclusterrolebinding',
           meta: {
             label: i18n.t('k8s.text_372'),
             permission: 'k8s_rbacclusterrolebindings_list',
@@ -455,6 +456,11 @@ export default {
               name: 'K8sRbacclusterrolebind',
               path: '',
               component: K8sRbacclusterrolebinding,
+            },
+            {
+              name: 'K8sRbacclusterrolebindingCreate',
+              path: 'create',
+              component: K8sRbacclusterrolebindingCreate,
             },
           ],
         },

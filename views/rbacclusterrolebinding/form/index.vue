@@ -7,19 +7,11 @@
       <a-form-item :label="$t('k8s.text_19')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" :clusterObj.sync="clusterObj" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_23')">
-        <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
-      </a-form-item>
-      <a-form-item label="角色类型">
-        <a-radio-group v-decorator="decorators.roleRefType" @change="e => roleRefType = e.target.value">
-          <a-radio-button v-for="item in roleRefOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item :label="roleLabel">
+      <a-form-item label="集群角色">
         <base-select
-          :resource="roleRefType === 'Role' ? 'rbacroles' : 'rbacclusterroles'"
+          :resource="'rbacclusterroles'"
           version="v1"
-          :params="params"
+          :params="clusterRoleparams"
           need-params
           idKey="name"
           :select-props="{ placeholder: $t('common.select') }"
@@ -29,6 +21,9 @@
         <a-radio-group v-decorator="decorators.subjectType" @change="subjectTypeChange">
           <a-radio-button v-for="item in subjectOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
+      </a-form-item>
+      <a-form-item :label="$t('k8s.text_23')" v-if="subjectType === 'ServiceAccount'">
+        <namespace-select v-decorator="decorators.namespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
       <a-form-item label="Subject Name">
         <base-select
@@ -99,12 +94,6 @@ export default {
             ],
           },
         ],
-        roleRefType: [
-          'roleRefType',
-          {
-            initialValue: 'Role',
-          },
-        ],
         role: [
           'role',
           {
@@ -130,37 +119,36 @@ export default {
       },
       clusterObj: {},
       namespaceObj: {},
-      roleRefOpts: [
-        { key: 'Role', label: '角色' },
-        { key: 'ClusterRole', label: '集群角色' },
-      ],
       subjectOpts: [
         { key: 'User', label: 'User' },
         { key: 'Group', label: 'Group' },
         { key: 'ServiceAccount', label: '服务账户' },
       ],
-      roleRefType: 'Role',
       subjectType: 'User',
     }
   },
   computed: {
-    params () {
+    clusterRoleparams () {
       const cluster = this.clusterObj.id
-      const namespace = this.namespaceObj.id
+      if (!cluster) return {}
       const params = {
         cluster,
         limit: 0,
         scope: this.$store.getters.scope,
       }
-      if (!cluster) return {}
-      if (this.roleRefType === 'Role') {
-        if (!namespace) return {}
-        params.namespace = namespace
-      }
       return params
     },
-    roleLabel () {
-      return this.roleRefType === 'Role' ? '角色' : '集群角色'
+    params () {
+      const cluster = this.clusterObj.id
+      const namespace = this.namespaceObj.id
+      if (!cluster || !namespace) return {}
+      const params = {
+        cluster,
+        namespace,
+        limit: 0,
+        scope: this.$store.getters.scope,
+      }
+      return params
     },
   },
   methods: {
@@ -185,9 +173,8 @@ export default {
         const data = {
           cluster_id: values.cluster,
           name: values.name,
-          namespace_id: values.namespace,
           roleRef: {
-            kind: values.roleRefType,
+            kind: 'ClusterRole',
             name: values.role,
             apiGroup: API_GROUP,
           },
