@@ -2147,7 +2147,12 @@
       "title": {
         "name": "Name",
         "brand": "Platform",
-        "desc": "Description"
+        "desc": "Description",
+        "projectPolicy": "Project policy",
+        "domainPolicy": "Domain policy",
+        "managePolicy": "Manage policy",
+        "role": "Role",
+        "domain": "Domain"
       }
     }
   },

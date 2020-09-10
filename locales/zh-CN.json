@@ -2147,7 +2147,12 @@
       "title": {
         "name": "名称",
         "brand": "平台",
-        "desc": "描述"
+        "desc": "描述",
+        "projectPolicy": "项目权限",
+        "domainPolicy": "域权限",
+        "managePolicy": "管理权限",
+        "role": "角色",
+        "domain": "域"
       }
     }
   },
