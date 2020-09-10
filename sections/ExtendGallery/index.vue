@@ -86,7 +86,7 @@ export default {
       border-bottom: 1px solid #eee;
       background-color: #fff;
       touch-action: none;
-      height: 86px;
+      // height: 86px;
       width: 100%;
       min-width: 100%;
       position: relative;
