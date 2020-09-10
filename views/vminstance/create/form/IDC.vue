@@ -252,13 +252,17 @@ export default {
     policyHostParams () {
       const zone = _.get(this.form.fd, 'zone.key')
       if (zone) {
-        return {
+        const parmas = {
           enabled: 1,
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
           ...this.scopeParams,
         }
+        if (parmas.hypervisor === HYPERVISORS_MAP.esxi.key) {
+          parmas.cloudprovider = this.form.fd.prefer_manager
+        }
+        return parmas
       }
       return {}
     },
