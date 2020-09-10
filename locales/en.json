@@ -3993,11 +3993,7 @@
   "k8s.text_328": "Delete role",
   "k8s.text_329": "Please select a resource under the unified namespace",
   "k8s.text_330": "Role",
-<<<<<<< HEAD
-  "k8s.text_331": "Role Binding",
-=======
   "k8s.text_331": "RoleBinding",
->>>>>>> fix [3.4] k8s i18n
   "k8s.text_332": "Mirror Warehouse Key",
   "k8s.text_333": "For example admin",
   "k8s.text_334": "For example, AQAc8m5e754hHhAAvWYtFivfs9bvhRm6P51QXA==",
