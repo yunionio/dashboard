@@ -14,6 +14,21 @@ const messages = {
   'zh-CN': Object.assign(zhCN, helpZhCN, { brand: setting.brand['zh-CN'] }),
 }
 
+const moduleCtx = require.context('../../containers', true, /^((?![\\/]node_modules).)*.\/locales\/.*(json)$/)
+const scopeCtx = require.context('../..', true, /^((?![\\/]node_modules).)*.\/scope\/locales\/.*(json)/)
+
+const register = (ctx) => {
+  const keys = ctx.keys()
+  for (let i = 0, len = keys.length; i < len; i++) {
+    const lang = keys[i].match(/([^\\/]+)(?=\.\w+$)/)[0]
+    const msg = ctx(keys[i])
+    messages[lang] = Object.assign(messages[lang], msg)
+  }
+}
+
+register(moduleCtx)
+register(scopeCtx)
+
 const i18n = new VueI18n({
   locale: getLanguage(),
   messages,
