@@ -31,7 +31,7 @@ export default {
           ids: ids,
           action: 'revoke-secgroup',
           data: {
-            'secgrp.0': this.params.secgrpId,
+            secgroup_ids: [this.params.secgrpId],
           },
         })
         this.params.refresh && this.params.refresh()

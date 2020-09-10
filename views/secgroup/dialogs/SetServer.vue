@@ -177,7 +177,7 @@ export default {
         const bindServers = []
         const removeServers = []
         const data = {
-          'secgrp.0': this.params.data[0].id,
+          secgroup_ids: [this.params.data[0].id],
         }
         ids = JSON.parse(JSON.stringify(values.sergroups))
         this.bindServers.forEach((item, idx) => {
