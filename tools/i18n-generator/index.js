@@ -10,7 +10,7 @@ program.command('generate [src]')
   .option('-s, --single <single>', '是否为单文件index序列，默认为全局序列，当自定义key之后，此设置无效')
   .option('-p, --path <path>', '设置生成文件的路径，默认为运行目录（请设置已经存在的目录！！！）')
   .option('-f, --filename <filename>', '设置生成文件名，默认为zh-CN')
-  .action((src = 'src', { key = 'common', single, path = './src/locales', filename = 'zh-CN', index }) => {
+  .action((src = 'src', { key = '', single, path = '', filename = 'zh-CN', index }) => {
     generateFile.generate(src, { key, single, path, filename, index })
   })
 

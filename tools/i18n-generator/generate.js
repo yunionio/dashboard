@@ -283,6 +283,14 @@ const generateJsFile = (file) => {
  * @param options
  */
 module.exports.generate = (src, options) => {
+  if (!options.key) {
+    console.error('请指定 --key 或 -k，如compute'.bgRed)
+    return
+  }
+  if (!options.path) {
+    console.error('请指定信息文件生成的路径 --path 或 -p，如./containers/Compute/locales'.bgRed)
+    return
+  }
   // 初始化序列值
   if (options.index) {
     generate = Number(options.index)
