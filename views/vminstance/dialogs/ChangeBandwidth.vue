@@ -8,7 +8,7 @@
         <a-form-item :label="$t('compute.text_1186')" v-bind="formItemLayout" :extra="$t('compute.text_1187')">
           <a-input-number
             v-decorator="decorators.bandwidth"
-            :parser="Math.round"
+            :parser="getParser"
             :min="0"
             :max="10000" />
         </a-form-item>
@@ -77,6 +77,12 @@ export default {
         this.loading = false
         manager = null
       }
+    },
+    getParser (val) {
+      if (isNaN(val)) {
+        return 0
+      }
+      return Math.round(val)
     },
   },
 }
