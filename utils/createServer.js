@@ -848,9 +848,7 @@ export class GenCreateData {
         ret.key = 'prefer_host'
       }
       ret.value = this.fd.schedPolicyHost
-    }
-    // 如果是通过云账号过滤镜像
-    if (this.showPreferManager()) {
+    } else if (this.showPreferManager()) { // 如果是通过云账号过滤镜像
       ret.key = 'prefer_manager'
       ret.value = this.fd.prefer_manager
     }
