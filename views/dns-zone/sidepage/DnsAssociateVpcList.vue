@@ -93,7 +93,7 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
-              validate: !this.isPublicZone,
+              validate: !this.isPublicZone && this.isAvailable,
             }
           },
         },
@@ -112,7 +112,7 @@ export default {
           },
           meta: (row) => {
             return {
-              validate: !!this.list.selectedItems.length,
+              validate: !!this.list.selectedItems.length && this.isAvailable,
             }
           },
         },
@@ -131,6 +131,11 @@ export default {
               refresh: this.refresh,
             })
           },
+          meta: (row) => {
+            return {
+              validate: this.isAvailable,
+            }
+          },
         },
       ],
     }
@@ -138,6 +143,9 @@ export default {
   computed: {
     isPublicZone () {
       return this.data.zone_type === 'PublicZone'
+    },
+    isAvailable () {
+      return this.data.status === 'available'
     },
   },
   created () {
