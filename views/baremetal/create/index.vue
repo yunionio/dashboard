@@ -149,7 +149,7 @@ function checkIpInSegment (i, networkData) {
     if (isIn) {
       cb()
     } else {
-      cb(new Error(this.$t('compute.text_205')))
+      cb(new Error(i18n.t('compute.text_205')))
     }
   }
 }
@@ -233,7 +233,7 @@ export default {
             validateTrigger: 'blur',
             validateFirst: true,
             rules: [
-              { required: true, message: this.$t('compute.text_210') },
+              { required: true, message: i18n.t('compute.text_210') },
               { validator: this.$validate('resourceCreateName') },
             ],
           },
@@ -244,7 +244,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: this.$t('compute.text_212') },
+                { required: true, message: i18n.t('compute.text_212') },
               ],
             },
           ],
@@ -253,7 +253,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: this.$t('compute.text_213') },
+                { required: true, message: i18n.t('compute.text_213') },
               ],
             },
           ],
@@ -270,7 +270,7 @@ export default {
             {
               initialValue: '',
               rules: [
-                { required: true, message: this.$t('compute.text_153') },
+                { required: true, message: i18n.t('compute.text_153') },
               ],
             },
           ],
@@ -279,7 +279,7 @@ export default {
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { validator: isRequired(), message: this.$t('compute.text_214') },
+                { validator: isRequired(), message: i18n.t('compute.text_214') },
               ],
             },
           ],
@@ -294,7 +294,7 @@ export default {
           'specifications',
           {
             rules: [
-              { required: true, message: this.$t('compute.text_313') },
+              { required: true, message: i18n.t('compute.text_313') },
             ],
           },
         ],
@@ -310,7 +310,7 @@ export default {
             {
               initialValue: undefined, // { key: '', label: '' }
               rules: [
-                { validator: isRequired(), message: this.$t('compute.text_203') },
+                { validator: isRequired(), message: i18n.t('compute.text_203') },
               ],
             },
           ],
@@ -320,7 +320,7 @@ export default {
               initialValue: '',
               validateFirst: true,
               rules: [
-                { required: true, message: this.$t('compute.text_204') },
+                { required: true, message: i18n.t('compute.text_204') },
                 { validator: validateForm('sshPassword') },
               ],
             },
@@ -340,7 +340,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: this.$t('compute.text_194'),
+                  message: i18n.t('compute.text_194'),
                 }],
               },
             ],
@@ -350,7 +350,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: this.$t('compute.text_217'),
+                  message: i18n.t('compute.text_217'),
                 }],
               },
             ],
@@ -361,7 +361,7 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: this.$t('compute.text_218'),
+                  message: i18n.t('compute.text_218'),
                 }, {
                   validator: checkIpInSegment(i, networkData),
                 }],
@@ -375,7 +375,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: this.$t('compute.text_123'),
+                  message: i18n.t('compute.text_123'),
                 }],
               },
             ],
@@ -385,7 +385,7 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: this.$t('compute.text_123'),
+                  message: i18n.t('compute.text_123'),
                 }],
               },
             ],
@@ -402,7 +402,7 @@ export default {
             'schedPolicyHost',
             {
               rules: [
-                { required: true, message: this.$t('compute.text_314') },
+                { required: true, message: i18n.t('compute.text_314') },
               ],
             },
           ],
@@ -413,7 +413,7 @@ export default {
                 validateTrigger: ['change', 'blur'],
                 rules: [{
                   required: true,
-                  message: this.$t('compute.text_123'),
+                  message: i18n.t('compute.text_123'),
                 }],
               },
             ],
@@ -423,7 +423,7 @@ export default {
                 validateTrigger: ['blur', 'change'],
                 rules: [{
                   required: true,
-                  message: this.$t('compute.text_123'),
+                  message: i18n.t('compute.text_123'),
                 }],
               },
             ],
@@ -485,7 +485,7 @@ export default {
         itemStyle: {
           color: function (params) {
             const colorList = ['#afa3f5', '#00d488', '#3feed4', '#3bafff', '#f1bb4c', 'rgba(250,250,250,0.5)']
-            if (params.data.name === this.$t('compute.text_315')) {
+            if (params.data.name === i18n.t('compute.text_315')) {
               return '#e3e3e3'
             } else {
               return colorList[params.dataIndex]
@@ -608,7 +608,7 @@ export default {
           // 每一项是否有分配磁盘
           if (i > 0) {
             const rowsLength = this.diskOptionsDate[i].chartData.rows.length
-            if ((rowsLength === 1 && this.diskOptionsDate[i].chartData.rows[0].name !== this.$t('compute.text_315')) || (rowsLength > 1)) {
+            if ((rowsLength === 1 && this.diskOptionsDate[i].chartData.rows[0].name !== i18n.t('compute.text_315')) || (rowsLength > 1)) {
               isDistribution = true
             }
           }
@@ -875,7 +875,7 @@ export default {
     // 添加硬盘配置
     addDisk () {
       this.createDialog('BaremetalCreateDiskDialog', {
-        title: this.$t('compute.text_18'),
+        title: i18n.t('compute.text_18'),
         list: this.list,
         diskData: this.diskData,
         diskOptionsDate: this.diskOptionsDate,
@@ -955,14 +955,14 @@ export default {
         const imageDiskSize = this.selectedImage.min_disk / 1024
         if (imageDiskSize >= defaultSize) {
           sizeNumber = sizeNumber - imageDiskSize
-          option.chartData.rows.push({ name: this.$t('compute.text_316'), size: imageDiskSize })
+          option.chartData.rows.push({ name: i18n.t('compute.text_316'), size: imageDiskSize })
         } else {
           sizeNumber = sizeNumber - defaultSize
           option.chartData.rows.push({ name: '/', size: defaultSize })
         }
       }
       option.remainder = sizeNumber
-      option.chartData.rows.push({ name: this.$t('compute.text_315'), size: sizeNumber })
+      option.chartData.rows.push({ name: i18n.t('compute.text_315'), size: sizeNumber })
       this.diskOptionsDate.push(option)
       data.computeCount--
       if (data.option[2] === 'none' && data.computeCount > 0) {
@@ -983,16 +983,16 @@ export default {
       this.diskOptionsDate.forEach(item => {
         nameArr = nameArr.concat(item.chartData.rows)
       })
-      nameArr = nameArr.filter(item => item.name !== this.$t('compute.text_315'))
+      nameArr = nameArr.filter(item => item.name !== i18n.t('compute.text_315'))
       this.createDialog('DiskOptionsUpdateDialog', {
-        title: e.name === this.$t('compute.text_315') ? this.$t('compute.text_317') : this.$t('compute.text_318'),
+        title: e.name === i18n.t('compute.text_315') ? i18n.t('compute.text_317') : i18n.t('compute.text_318'),
         list: this.list,
         item: this.diskOptionsDate[idx],
         nameArr,
         selectedArea: selectedArea[0],
         updateData: (values) => {
           const updateItem = this.diskOptionsDate[idx].chartData.rows
-          if (e.name === this.$t('compute.text_315')) {
+          if (e.name === i18n.t('compute.text_315')) {
             // 创建新分区
             updateItem.unshift({ name: values.name, size: values.size, format: values.format })
             if (values.size === this.diskOptionsDate[idx].remainder || values.method === 'autoextend') {
@@ -1016,10 +1016,10 @@ export default {
             if (this.diskOptionsDate[idx].remainder > values.size) {
               updateItem[updateItem.length - 1].size = updateItem[updateItem.length - 1].size + oldSize - values.size
               this.diskOptionsDate[idx].remainder = this.diskOptionsDate[idx].remainder + oldSize - values.size
-              if (updateItem[updateItem.length - 1].name === this.$t('compute.text_315')) {
+              if (updateItem[updateItem.length - 1].name === i18n.t('compute.text_315')) {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ name: this.$t('compute.text_315'), size: this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: i18n.t('compute.text_315'), size: this.diskOptionsDate[idx].remainder })
               }
             } else {
               if (values.method === 'autoextend') {
@@ -1029,10 +1029,10 @@ export default {
               }
               this.diskOptionsDate[idx].remainder = (oldSize - values.size) + this.diskOptionsDate[idx].remainder
               if (this.diskOptionsDate[idx].remainder === 0) return
-              if (updateItem[updateItem.length - 1].name === this.$t('compute.text_315')) {
+              if (updateItem[updateItem.length - 1].name === i18n.t('compute.text_315')) {
                 updateItem[updateItem.length - 1].size = this.diskOptionsDate[idx].remainder
               } else {
-                updateItem.push({ name: this.$t('compute.text_315'), size: this.diskOptionsDate[idx].remainder })
+                updateItem.push({ name: i18n.t('compute.text_315'), size: this.diskOptionsDate[idx].remainder })
               }
             }
           }
@@ -1078,8 +1078,8 @@ export default {
       // 判断数据盘是否合法
       if (this.diskOptionsDate.length > 0) {
         if (this.isShowFalseIcon) {
-          this.$message.error(this.$t('compute.text_319'))
-          throw new Error(this.$t('compute.text_319'))
+          this.$message.error(i18n.t('compute.text_319'))
+          throw new Error(i18n.t('compute.text_319'))
         }
         // 将系统盘放置首位
         const systemDisk = this.diskOptionsDate[0].chartData.rows.pop()
@@ -1120,7 +1120,7 @@ export default {
               if (!rows[j].format) {
                 Reflect.deleteProperty(option, 'fs')
               }
-              if (rows[j].name === this.$t('compute.text_315')) {
+              if (rows[j].name === i18n.t('compute.text_315')) {
                 Reflect.deleteProperty(option, 'mountpoint')
               }
             }
@@ -1206,7 +1206,7 @@ export default {
         .create({ data: { variables } })
         .then(() => {
           this.submiting = false
-          this.$message.success(this.$t('compute.text_320', [params.name]))
+          this.$message.success(i18n.t('compute.text_320', [params.name]))
           this.$router.push('/workflow')
         })
         .catch(() => {
@@ -1225,7 +1225,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$message.error(this.$t('compute.text_321', [err]))
+          this.$message.error(i18n.t('compute.text_321', [err]))
           this.submiting = false
         })
     },
@@ -1236,7 +1236,7 @@ export default {
         this.serverM.batchCreate({ data, count })
           .then(res => {
             this.submiting = false
-            this.$message.success(this.$t('compute.text_322'))
+            this.$message.success(i18n.t('compute.text_322'))
             if (this.isInstallOperationSystem) {
               this.$router.push('/physicalmachine')
             } else {
@@ -1250,7 +1250,7 @@ export default {
         this.serverM.create({ data })
           .then(res => {
             this.submiting = false
-            this.$message.success(this.$t('compute.text_322'))
+            this.$message.success(i18n.t('compute.text_322'))
             if (this.isInstallOperationSystem) {
               this.$router.push('/physicalmachine')
             } else {
