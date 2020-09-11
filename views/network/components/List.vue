@@ -121,7 +121,7 @@ export default {
           },
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account'],
+        hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope'],
       }),
       exportDataOptions: {
         items: [
