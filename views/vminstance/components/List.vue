@@ -730,6 +730,7 @@ export default {
                           if (item.status === 'running') {
                             return !item.is_gpu && !item.cdrom
                           }
+                          return true
                         })
                       }
                       if (!isOk) {
