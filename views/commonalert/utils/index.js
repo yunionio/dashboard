@@ -43,7 +43,7 @@ export const strategyColumn = {
       if (metric) {
         metric = metric_zh[metric] || _.get(detail, 'field_description.name') || detail.field
       }
-      const reduce = (alertStrategyMaps[detail.reduce]) || detail.reduce
+      const reduce = (alertStrategyMaps[detail.reduce]) || ''
       const preiod = ((preiodMaps[row.period] || {}).label) || row.period
       const threshold = transformUnit(detail.threshold, _.get(detail, 'field_description.unit'))
       return i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text, preiod])
