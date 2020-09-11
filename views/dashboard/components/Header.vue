@@ -214,7 +214,6 @@ export default {
     },
     // 生成面板名称，如果已存在默认+1
     genName (name) {
-      console.log(name)
       const existNames = this.options.map(item => item.name)
       let num = 1
       let newName = name
