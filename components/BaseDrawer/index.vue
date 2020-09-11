@@ -3,7 +3,7 @@
     destroyOnClose
     placement="right"
     wrapClassName="base-drawer-wrap"
-    :width="500"
+    :width="700"
     :closable="false"
     :visible="visible"
     @close="handleCancel">
