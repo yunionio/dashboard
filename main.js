@@ -26,7 +26,9 @@ import './filters'
 Vue.config.productionTip = false
 
 Vue.use(Antd)
-Vue.use(VXETable)
+Vue.use(VXETable, {
+  i18n: key => i18n.t(key),
+})
 Vue.use(antdGlobalConfig)
 
 Vue.prototype.$log = window.console.log

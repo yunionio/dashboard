@@ -6,8 +6,9 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         class="mt-3"
-        :form="form.fc">
-        <a-form-item :label="$t('common.text00076')" v-bind="formItemLayout">
+        :form="form.fc"
+        v-bind="formItemLayout">
+        <a-form-item :label="$t('common.text00076')">
           <a-radio-group  v-decorator="decorators.disable_delete">
             <a-radio :value="true">{{$t('status.enabled.true')}}</a-radio>
             <a-radio :value="false">{{$t('status.enabled.false')}}</a-radio>
@@ -45,8 +46,8 @@ export default {
         ],
       },
       formItemLayout: {
-        wrapperCol: { span: 21 },
-        labelCol: { span: 3 },
+        wrapperCol: { span: 20 },
+        labelCol: { span: 4 },
       },
     }
   },
