@@ -2,7 +2,7 @@
   <div>
     <template v-if="accountLoaded">
       <a-row :gutter="8" class="w-100">
-        <template v-if="isAdminMode">
+        <template v-if="isAdminMode && this.$store.getters.l3PermissionEnable">
           <a-col :span="8">
             <a-select v-model="domain" show-search @search="getConditionDomains" :filter-option="false" allow-clear dropdownClassName="oc-select-dropdown">
               <template v-for="item of domains">
@@ -211,7 +211,10 @@ export default {
     async getConditionDomains (query) {
       if (!this.isAdminMode) {
         const domains = [
-          this.userInfo.domain,
+          {
+            name: this.userInfo.projectDomain,
+            id: this.userInfo.projectDomainId,
+          },
         ]
         this.domains = domains
         this.domain = this.domains[0].id
@@ -231,75 +234,79 @@ export default {
         name: this.cloudaccount.project_domain,
       }
       let domains = []
-      if (public_scope === 'none') {
-        domains = [accountDomain]
-      }
-      if (public_scope === 'domain') {
-        if (share_mode === 'provider_domain') {
-          if (isGoogle) {
-            if (this.cloudproviderId) {
-              const provider = await this.getProvider()
-              domains = [{
-                id: provider.domain_id,
-                name: provider.project_domain,
-              }]
+      if (this.$store.getters.l3PermissionEnable) {
+        if (public_scope === 'none') {
+          domains = [accountDomain]
+        }
+        if (public_scope === 'domain') {
+          if (share_mode === 'provider_domain') {
+            if (isGoogle) {
+              if (this.cloudproviderId) {
+                const provider = await this.getProvider()
+                domains = [{
+                  id: provider.domain_id,
+                  name: provider.project_domain,
+                }]
+              } else {
+                domains = await this.fetchProviderDomains()
+              }
             } else {
-              domains = await this.fetchProviderDomains()
+              domains = [accountDomain]
             }
           } else {
-            domains = [accountDomain]
-          }
-        } else {
-          domains = shared_domains
-          const hasAccountDomain = R.find(R.propEq('id', accountDomain.id))(domains)
-          if (!hasAccountDomain) {
-            domains.push(accountDomain)
+            domains = shared_domains
+            const hasAccountDomain = R.find(R.propEq('id', accountDomain.id))(domains)
+            if (!hasAccountDomain) {
+              domains.push(accountDomain)
+            }
           }
         }
-      }
-      if (public_scope === 'system') {
-        if (share_mode === 'provider_domain') {
-          if (isGoogle) {
-            if (this.cloudproviderId) {
-              const provider = await this.getProvider()
-              domains = [{
-                id: provider.domain_id,
-                name: provider.project_domain,
-              }]
+        if (public_scope === 'system') {
+          if (share_mode === 'provider_domain') {
+            if (isGoogle) {
+              if (this.cloudproviderId) {
+                const provider = await this.getProvider()
+                domains = [{
+                  id: provider.domain_id,
+                  name: provider.project_domain,
+                }]
+              } else {
+                domains = await this.fetchProviderDomains()
+              }
             } else {
-              domains = await this.fetchProviderDomains()
+              domains = [accountDomain]
             }
           } else {
-            domains = [accountDomain]
-          }
-        } else {
-          try {
-            const params = {
-              scope: this.scope,
-              limit: 20,
-            }
-            if (query) {
-              params.filter = `name.contains(${query})`
-            }
             try {
-              const response = await this.dm.list({
-                params,
-              })
-              const data = response.data.data || []
-              domains = data
+              const params = {
+                scope: this.scope,
+                limit: 20,
+              }
+              if (query) {
+                params.filter = `name.contains(${query})`
+              }
+              try {
+                const response = await this.dm.list({
+                  params,
+                })
+                const data = response.data.data || []
+                domains = data
+              } catch (error) {
+                throw error
+              }
             } catch (error) {
               throw error
             }
-          } catch (error) {
-            throw error
           }
         }
-      }
-      if (!R.isEmpty(this.defaultDomain)) {
-        const isFind = R.find(R.propEq('id', this.defaultDomain.id))(domains)
-        if (!isFind) {
-          domains.push(this.defaultDomain)
+        if (!R.isEmpty(this.defaultDomain)) {
+          const isFind = R.find(R.propEq('id', this.defaultDomain.id))(domains)
+          if (!isFind) {
+            domains.push(this.defaultDomain)
+          }
         }
+      } else {
+        domains = [accountDomain]
       }
       if (query) {
         domains = domains.filter(item => item.name.includes(query))
@@ -367,6 +374,9 @@ export default {
       }
       if (query) {
         params.filter = `name.contains(${query})`
+      }
+      if (this.$store.getters.isDomainMode) {
+        params.project_domain = this.userInfo.domain.id
       }
       try {
         const response = await this.um.list({
