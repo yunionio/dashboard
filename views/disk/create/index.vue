@@ -308,6 +308,9 @@ export default {
       }
       return params
     },
+    project_domain () {
+      return this.form.fd.domain ? this.form.fd.domain.key : this.userInfo.projectDomainId
+    },
   },
   watch: {
     cloudEnv (val) {
@@ -327,7 +330,7 @@ export default {
   },
   methods: {
     fetchStorageList (zoneId) {
-      const params = { show_emulated: true, scope: this.scope }
+      const params = { show_emulated: true, project_domain: this.project_domain }
       this.storageOpts = []
       new this.$Manager('capability').list({ ctx: [['zones', zoneId]], params })
         .then(({ data }) => {
