@@ -563,9 +563,9 @@ export default {
     vpcLabelFormat (item) {
       if (item.manager) {
         if (item.cidr_block) {
-          return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
+          return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
         }
-        return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
+        return (<div>{ item.name }<span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
       }
       return (<div>{ item.name }</div>)
     },
