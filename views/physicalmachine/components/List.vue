@@ -84,7 +84,7 @@ export default {
           },
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'access_mac', 'sn'],
+        hiddenColumns: ['metadata', 'access_mac', 'sn', 'public_scope', 'project_domain', 'region'],
       }),
       exportDataOptions: {
         items: [
