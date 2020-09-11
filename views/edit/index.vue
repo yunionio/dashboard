@@ -428,7 +428,7 @@ export default {
         }
       }, this.dashboardOptions)
       if (numbers.length > 0) {
-        max = R.max(...numbers)
+        max = Math.max(...numbers)
         max += 1
       }
       return `dashboard-${max}`
