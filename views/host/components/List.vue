@@ -93,7 +93,7 @@ export default {
           account: getAccountFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'schedtag'],
+        hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region'],
       }),
       exportDataOptions: {
         items: [
