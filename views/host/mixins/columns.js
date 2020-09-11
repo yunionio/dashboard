@@ -12,11 +12,11 @@ export default {
         const sysError = row.metadata.sys_error
         const titleCon = sysWarn || sysError
         if (titleCon) {
-          const aLink = <side-page-trigger vm={this} name='HostSidePage' id={row.id} list={this.list} tab='event-drawer'>查看日志</side-page-trigger>
+          // const aLink = <side-page-trigger vm={this} name='HostSidePage' id={row.id} list={this.list} tab='event-drawer'>查看日志</side-page-trigger>
           const aIcon = <a-icon type="exclamation-circle" class={ { 'ml-1 oc-pointer': true, 'warning-color': sysWarn, 'error-color': sysError } } />
           return <a-tooltip placement="right">
             <template slot="title">
-              { titleCon } { aLink }
+              { titleCon }
             </template>
             { aIcon }
           </a-tooltip>
@@ -47,20 +47,20 @@ export default {
       getStatusTableColumn({
         statusModule: 'host',
         minWidth: 100,
-        slotCallback: row => {
-          return [
-            <div class='d-flex align-items-center text-truncate'>
-              <status status={ row.status } statusModule='host' />
-              { getStatusToolTip(row) }
-            </div>,
-          ]
-        },
       }),
       getEnabledTableColumn(),
       getStatusTableColumn({
         field: 'host_status',
         title: i18n.t('compute.text_502'),
         statusModule: 'host_status',
+        slotCallback: row => {
+          return [
+            <div class='d-flex align-items-center text-truncate'>
+              <status status={ row.host_status } statusModule='host_status' />
+              { getStatusToolTip(row) }
+            </div>,
+          ]
+        },
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
       {

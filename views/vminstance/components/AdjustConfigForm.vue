@@ -776,7 +776,7 @@ export default {
         show_emulated: true,
       }
       if (this.isAdminMode) {
-        params.project_domain = this.selectedItem.manager_domain_id
+        params.project_domain = this.selectedItem.domain_id
       }
       return this.zonesM2.get({ id: `${v}/capability`, params })
     },
