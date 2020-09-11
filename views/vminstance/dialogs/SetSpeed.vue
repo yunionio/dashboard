@@ -5,11 +5,12 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_1247')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1247')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="form.fi.isSetSpeed" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_1248')" v-bind="formItemLayout" v-show="form.fi.isSetSpeed">
+        <a-form-item :label="$t('compute.text_1248')" v-show="form.fi.isSetSpeed">
           <a-input-number :max="2048" :min="1" :step="50" v-decorator="decorators.bps" />
         </a-form-item>
       </a-form>
@@ -54,7 +55,7 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 19,
         },
         labelCol: {
           span: 3,

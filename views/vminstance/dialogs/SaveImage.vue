@@ -4,17 +4,17 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1236')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('compute.text_1237')" v-bind="formItemLayout" v-if="isKvm">
+      <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1237')" v-if="isKvm">
           <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
             <a-radio-button :value="types.system.key">{{ types.system.label }}</a-radio-button>
             <a-radio-button :value="types.host.key">{{ types.host.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_228')">
           <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.imageName')" @change="e => {form.fi.generate_name = e.target.value}" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_494')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" />
           <template v-slot:extra>
             <div>{{$t('compute.text_1238')}}</div>
@@ -92,10 +92,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }

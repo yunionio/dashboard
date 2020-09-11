@@ -1,10 +1,9 @@
-import { status } from '@/locales/zh-CN'
 import { typeClouds } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
 const hypervisorMap = typeClouds.hypervisorMap
 
-const serverStatus = status.server
+const serverStatus = i18n.t('status.server')
 
 const _toArr = value => {
   if (!Array.isArray(value)) {
