@@ -77,6 +77,8 @@ export default {
       }
       if (this.isHost) {
         params.baremetal = false
+      } else {
+        params.filter = 'hypervisor.notin(baremetal,container)'
       }
       m.list({ params }).then((res) => {
         const { data } = res.data
