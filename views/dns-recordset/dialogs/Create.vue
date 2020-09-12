@@ -14,7 +14,8 @@
         </a-form-item>
         <a-form-item :label="$t('network.text_160')">
           <a-select
-            v-decorator="decorators.dns_type">
+            v-decorator="decorators.dns_type"
+            @change="dnsTypeChangeHandle">
             <a-select-option v-for="v in options.dnsTypes" :value="v.value" :key="v.value">
               {{ v.label }}
             </a-select-option>
@@ -81,7 +82,8 @@
             </a-col>
             <a-col :span="6">
               <a-form-item>
-                <a-select v-decorator="decorators.policy_value(item.key)">
+                <a-input v-if="item.policy_type === 'Weighted'" v-decorator="decorators.policy_txtvalue(item.key)" />
+                <a-select v-else :disabled="item.policy_type === 'Simple'" v-decorator="decorators.policy_value(item.key)">
                   <a-select-option
                     :key="i"
                     :value="item.value"
@@ -96,14 +98,17 @@
             </a-col>
           </a-row>
           <div class="d-flex align-items-center mt-1" v-if="options.providers.length > trafficPolicies.length">
-            <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-            <a-button type="link" @click="add">{{$t('common_697')}}</a-button>
+            <a-spin v-if="loading.trafficPolicy" />
+            <template v-else>
+              <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
+              <a-button type="link" @click="add">{{$t('common_697')}}</a-button>
+            </template>
           </div>
         </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading.submit">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -114,6 +119,7 @@ import { mapGetters } from 'vuex'
 import { providers, policy_types, policy_values } from '../constants'
 import { getDnsTypes, getDnsProviders, getTtls } from '../utils'
 import { uuid } from '@/utils/utils'
+import { validate } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -124,8 +130,45 @@ export default {
     const dnsTypes = getDnsTypes(this.params.detailData)
     const dnsProviders = getDnsProviders(providers, this.params.detailData)
     const ttls = getTtls(this.params.detailData)
+    const checkDnsValue = (rule, value, callback) => {
+      if (this.form.fd.dns_type === 'A') {
+        if (validate(value, 'IPv4') === false || validate(value, 'IPv4').result === false) {
+          callback(new Error(this.$t('validator.IPv4')))
+        } else {
+          callback()
+        }
+      } else if (this.form.fd.dns_type === 'AAAA') {
+        if (validate(value, 'IPv6') === false || validate(value, 'IPv6').result === false) {
+          callback(new Error(this.$t('validator.IPv6')))
+        } else {
+          callback()
+        }
+      } else if (this.form.fd.dns_type === 'CNMAE' || this.form.fd.dns_type === 'MX') {
+        if (validate(value, 'domainName') === false || validate(value, 'domainName').result === false) {
+          callback(new Error(this.$t('validator.domain')))
+        } else {
+          callback()
+        }
+      } else if (this.form.fd.dns_type === 'SRV') {
+        const parts = value.split('.')
+        if (parts.length < 3) {
+          return callback(new Error(this.$t('network.text_179')))
+        }
+        for (let i = 0; i < parts.length; i++) {
+          if (i < 2 && (parts[i].length < 2 || parts[i][0] !== '_')) {
+            return callback(new Error(this.$t('network.text_180')))
+          } else if (i >= 2 && parts[i].length === 0) {
+            return callback(new Error(this.$t('network.text_180')))
+          }
+        }
+      }
+      callback()
+    }
     return {
-      loading: false,
+      loading: {
+        submit: false,
+        trafficPolicy: false,
+      },
       options: {
         dnsTypes,
         ttls,
@@ -136,7 +179,10 @@ export default {
       trafficPolicies: [],
       dnsZoneCapabilityData: null,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
+        fd: {
+          dns_type: 'A',
+        },
       },
       decorators: {
         name: [
@@ -156,8 +202,11 @@ export default {
         dns_value: [
           'dns_value',
           {
+            validateTrigger: ['change', 'blur'],
+            validateFirst: true,
             rules: [
               { required: true, message: this.$t('network.text_175') },
+              { validator: checkDnsValue },
             ],
           },
         ],
@@ -195,6 +244,12 @@ export default {
             initialValue: '',
           },
         ]),
+        policy_txtvalue: (k) => ([
+          `policy_txtvalue[${k}]`,
+          {
+            initialValue: '',
+          },
+        ]),
       },
       formItemLayout: {
         wrapperCol: {
@@ -208,8 +263,11 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    zoneType () {
+      return this.params.detailData.zone_type
+    },
     isPublicZone () {
-      return this.params.detailData.zone_type === 'PublicZone'
+      return this.zoneType === 'PublicZone'
     },
     ttlRange () {
       if (this.isPublicZone) {
@@ -228,7 +286,8 @@ export default {
   created () {
     this.recordsetManager = new this.$Manager('dns_recordsets')
   },
-  mounted () {
+  async mounted () {
+    await this.fetchTrafficPolicies()
     this.backfillData()
   },
   methods: {
@@ -237,20 +296,26 @@ export default {
       const provider = this.form.fc.getFieldValue('provider') || {}
       const providerValues = Object.values(provider)
       const _providers = this.options.providers.filter(item => !providerValues.includes(item.value))
-      const pv = (_providers[0].value).toLowerCase()
-      const curPolicyType = val.policy_type || policy_types[pv][0].value
+      const _provider = val.provider || _providers[0].value
+      const policy_types = this.getPublicTypes(_provider, this.zoneType)
+      const curPolicyType = val.policy_type || policy_types[0].value
+      const policy_values = this.getPublicValues(_provider, curPolicyType)
+
       this.trafficPolicies.push({
         key: uid,
+        provider: _provider,
         providers: _providers,
-        policy_types: policy_types[pv],
-        policy_values: policy_values[curPolicyType],
+        policy_types: policy_types,
+        policy_type: curPolicyType,
+        policy_values: policy_values,
       })
 
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
-          [`provider[${uid}]`]: val.provider || _providers[0].value,
+          [`provider[${uid}]`]: _provider,
           [`policy_type[${uid}]`]: curPolicyType,
           [`policy_value[${uid}]`]: val.policy_value || '',
+          [`policy_txtvalue[${uid}]`]: val.policy_value || '',
         })
       })
     },
@@ -267,43 +332,49 @@ export default {
       }
     },
     async handleConfirm () {
-      this.loading = true
+      this.loading.submit = true
       try {
         const values = await this.form.fc.validateFields()
         const newValues = this.generateData(values)
         await this.doCreate(newValues)
-        this.loading = false
+        this.loading.submit = false
         this.params.refresh && this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         throw error
       } finally {
-        this.loading = false
+        this.loading.submit = false
       }
     },
     policyTypeChangeHandle (val, item) {
-      item.policy_values = policy_values[val] || []
-
+      item.policy_type = val
+      item.policy_values = this.getPublicValues(item.provider, val)
       this.$nextTick(() => {
         if (item.policy_values.length > 0) {
           this.form.fc.setFieldsValue({
             [`policy_value[${item.key}]`]: item.policy_values[0].value,
           })
+          this.form.fc.setFieldsValue({
+            [`policy_txtvalue[${item.key}]`]: item.policy_values[0].value,
+          })
         } else {
           this.form.fc.setFieldsValue({
             [`policy_value[${item.key}]`]: '',
+          })
+          this.form.fc.setFieldsValue({
+            [`policy_txtvalue[${item.key}]`]: '',
           })
         }
       })
     },
     generateData (values) {
-      const { name, dns_type, dns_value, ttl, provider, policy_type, policy_value } = values
+      const { name, dns_type, dns_value, ttl, provider, policy_type, policy_value, policy_txtvalue } = values
       const { id } = this.params.detailData
       const trafficPolicies = this.trafficPolicies.map((item) => {
         return {
           provider: provider[item.key],
           policy_type: policy_type[item.key],
-          policy_value: policy_value[item.key] || '',
+          policy_value: item.policy_type === 'Weighted' ? policy_txtvalue[item.key] : policy_value[item.key] || '',
         }
       })
       return {
@@ -343,6 +414,61 @@ export default {
     ttlClickHandle (v) {
       this.form.fc.setFieldsValue({
         ttl: v.value,
+      })
+    },
+    fetchTrafficPolicies () {
+      this.loading.trafficPolicy = true
+      return new this.$Manager('dns_zones/capability')
+        .list({ params: { scope: this.scope } })
+        .then((res) => {
+          this.dnsZoneCapabilityData = res.data
+          this.loading.trafficPolicy = false
+        })
+        .catch((err) => {
+          this.loading.trafficPolicy = false
+          throw err
+        })
+    },
+    getPublicTypes (provider, zoneType) {
+      let types = []
+      if (!this.dnsZoneCapabilityData) return []
+      if (this.dnsZoneCapabilityData[provider] && this.dnsZoneCapabilityData[provider].policy_types) {
+        types = this.dnsZoneCapabilityData[provider].policy_types[zoneType] || []
+        types = types.filter((item) => !(provider === 'Qcloud' && item === 'Weighted'))
+        return types.map((item) => {
+          return {
+            label: this.$te(`network.dns.${item.toLowerCase()}`) ? this.$t(`network.dns.${item.toLowerCase()}`) : item,
+            value: item,
+          }
+        })
+      }
+      return []
+    },
+    getPublicValues (provider, type) {
+      let values = []
+      if (!this.dnsZoneCapabilityData) return []
+      if (this.dnsZoneCapabilityData[provider] && this.dnsZoneCapabilityData[provider].policy_values) {
+        values = this.dnsZoneCapabilityData[provider].policy_values[type] || []
+        values = Array.from(new Set(values))
+        return values.map((item) => {
+          return {
+            label: this.$te(`network.dns.${item.toLowerCase()}`) ? this.$t(`network.dns.${item.toLowerCase()}`) : item,
+            value: item,
+          }
+        })
+      }
+      return []
+    },
+    onValuesChange (props, values) {
+      Object.keys(values).forEach((key) => {
+        if (['dns_type'].includes(key)) {
+          this.form.fd[key] = values[key]
+        }
+      })
+    },
+    dnsTypeChangeHandle () {
+      this.$nextTick(() => {
+        this.form.fc.validateFields(['dns_value'], { force: true })
       })
     },
   },
