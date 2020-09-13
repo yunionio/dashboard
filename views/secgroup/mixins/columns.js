@@ -67,7 +67,7 @@ export default {
             if (inList.length > 0) {
               ret.push(
                 <div class='d-flex'>
-                  <div class='flex-grow-0 flex-shrink-0'>入方向：</div>
+                  <div class='flex-grow-0 flex-shrink-0'>{this.$t('compute.text_1316')}</div>
                   <div>{ inList.map(item => {
                     return <span onClick={ () => { this.openEditRulesDialog(item.rule, row) } }>{ getHightLight(keys, item) }</span>
                   }) }</div>
@@ -77,7 +77,7 @@ export default {
             if (outList.length > 0) {
               ret.push(
                 <div class='mb-2 d-flex'>
-                  <div class='flex-grow-0 flex-shrink-0'>出方向：</div>
+                  <div class='flex-grow-0 flex-shrink-0'>{this.$t('compute.text_1317')}</div>
                   <div>{ outList.map(item => {
                     return <span onClick={ () => { this.openEditRulesDialog(item.rule, row) } }>{ getHightLight(keys, item) }</span>
                   }) }</div>
