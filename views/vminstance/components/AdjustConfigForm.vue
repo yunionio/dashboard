@@ -14,14 +14,15 @@
     </a-card>
     <div class="form-wrapper">
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_1058')" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('compute.text_1058')" class="mb-0">
           <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_369')" v-bind="formItemLayout" class="mb-0">
+        <a-form-item :label="$t('compute.text_369')" class="mb-0">
           <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_109')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_109')">
           <sku
             v-decorator="decorators.sku"
             :type="type"
@@ -29,7 +30,7 @@
             :instance-type="instanceType"
             :hypervisor="hypervisor" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_49')" v-bind="formItemLayout" v-show="selectedItems.length === 1 && form.fd.defaultType">
+        <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
           <system-disk
             v-if="hypervisor && form.fi.capability.storage_types && form.fd.defaultType"
             :decorator="decorators.systemDisk"
@@ -42,7 +43,7 @@
             :capability-data="form.fi.capability"
             :disabled="true" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_50')" v-bind="formItemLayout" v-show="selectedItems.length === 1">
+        <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1">
           <data-disk
             v-if="hypervisor && form.fi.capability.storage_types"
             ref="dataDiskRef"
@@ -55,10 +56,10 @@
             :image="form.fi.imageMsg"
             :domain="domain" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_1041')" v-bind="formItemLayout" v-if="isOpenWorkflow">
+        <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
           <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1106')">
+        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1106')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
         </a-form-item>
       </a-form>
@@ -310,15 +311,15 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
           xxl: {
-            span: 23,
+            span: 22,
           },
         },
         labelCol: {
-          span: 3,
+          span: 4,
           xxl: {
-            span: 1,
+            span: 2,
           },
         },
       },

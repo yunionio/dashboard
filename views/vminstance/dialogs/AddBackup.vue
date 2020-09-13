@@ -4,8 +4,8 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1162')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('compute.text_1163')" v-bind="formItemLayout" :extra="$t('compute.text_1164')">
+      <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1163')"  :extra="$t('compute.text_1164')">
           <base-select
             class="w-100"
             v-decorator="decorators.prefer_host_id"
@@ -52,10 +52,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 18,
         },
         labelCol: {
-          span: 4,
+          span: 6,
         },
       },
     }

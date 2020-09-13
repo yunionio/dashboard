@@ -9,8 +9,8 @@
       <dialog-table
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc">
-        <a-form-item v-bind="formItemLayout" :label="$t('compute.text_1071')" v-if="isKvm">
+      <a-form :form="form.fc" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1071')" v-if="isKvm">
           <a-radio-group
             v-decorator="decorators.snapshotType"
             @change="snapshotTypeChangeHandle">
@@ -19,7 +19,6 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item
-          v-bind="formItemLayout"
           :label="$t('compute.text_1254')"
           v-if="isDiskSnapshot">
           <base-select
@@ -36,7 +35,6 @@
             :item.sync="selectDisk" />
         </a-form-item>
         <a-form-item
-          v-bind="formItemLayout"
           :label="$t('compute.text_415')">
           <a-input
             v-decorator="decorators.snapshotName"
@@ -114,8 +112,8 @@ export default {
         ],
       },
       formItemLayout: {
-        labelCol: { span: 3 },
-        wrapperCol: { span: 21 },
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20 },
       },
       selectDisk: {},
       disabledSubmit: false,

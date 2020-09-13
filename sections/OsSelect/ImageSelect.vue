@@ -2,7 +2,7 @@
   <div class="os-image-select-wrapper">
     <a-row :gutter="8">
       <a-col :span="8" v-if="showCloudaccount">
-        <a-form-item :wrapperCol="{ span: 24 }">
+        <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
           <base-select
             v-decorator="decorator.prefer_manager"
             resource="cloudproviders"
@@ -13,7 +13,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="showCloudaccount ? 4 : 6">
-        <a-form-item :wrapperCol="{ span: 24 }">
+        <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
           <a-select v-decorator="decorator.os" :loading="loading" @change="osChange" :placeholder="$t('compute.text_153')">
             <a-select-option v-for="item in imagesInfo.osOpts" :key="item.key">
               <div :key="item.key" class="d-flex align-items-center">
@@ -25,7 +25,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="12">
-        <a-form-item :wrapperCol="{ span: 24 }">
+        <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
           <image-select-template v-decorator="decorator.image" :imageOpts="imageOptions" @imageChange="imageChange" :loading="loading" />
         </a-form-item>
       </a-col>

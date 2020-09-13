@@ -10,8 +10,8 @@
       <dialog-table
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc">
-        <a-form-item v-bind="formItemLayout" :label="$t('compute.text_1202')">
+      <a-form :form="form.fc" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1202')">
           <a-radio-group
             v-decorator="decorators.cloneType">
             <a-radio value="newSnapshot">{{$t('compute.text_1203')}}</a-radio>
@@ -19,24 +19,24 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item
-          v-bind="formItemLayout"
           :label="$t('compute.text_228')">
           <a-input
             v-decorator="decorators.name"
             :placeholder="$t('validator.resourceCreateName')" />
-          <name-repeated
-            v-slot:extra
-            res="servers"
-            :name="form.fd.name"
-            :default-text="$t('compute.text_893')" />
+          <template #extra>
+            <name-repeated
+              res="servers"
+              :name="form.fd.name"
+              :default-text="$t('compute.text_893')" />
+          </template>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_294')">
           <a-input-number v-decorator="decorators.count" :max="5" :min="1" :step="1" step-strictly />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_1205')" v-bind="formItemLayout" :extra="$t('compute.text_1206')" v-if="isNewSnapshotClone">
+        <a-form-item :label="$t('compute.text_1205')" :extra="$t('compute.text_1206')" v-if="isNewSnapshotClone">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_delete_instance_snapshot" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_102')" v-bind="formItemLayout" v-else>
+        <a-form-item :label="$t('compute.text_102')" v-else>
           <base-select
             :options="snapshotOptions"
             v-decorator="decorators.snapshot"
@@ -121,8 +121,8 @@ export default {
         ],
       },
       formItemLayout: {
-        labelCol: { span: 3 },
-        wrapperCol: { span: 21 },
+        labelCol: { span: 5 },
+        wrapperCol: { span: 19 },
       },
       snapshotParams: {
         scope: this.$store.getters.scope,

@@ -85,16 +85,16 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 19,
         },
         labelCol: {
-          span: 3,
+          span: 5,
         },
       },
       formItemLayoutWithoutLabel: {
         wrapperCol: {
-          span: 21,
-          offset: 3,
+          span: 19,
+          offset: 5,
         },
       },
     }

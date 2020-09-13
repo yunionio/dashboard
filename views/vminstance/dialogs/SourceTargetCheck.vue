@@ -5,8 +5,9 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
-        :form="form.fc">
-        <a-form-item :label="$t('compute.text_1257')" v-bind="formItemLayout" :help="$t('compute.text_1258')">
+        :form="form.fc"
+        v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1257')" :help="$t('compute.text_1258')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.open" />
         </a-form-item>
       </a-form>
@@ -44,10 +45,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 19,
         },
         labelCol: {
-          span: 3,
+          span: 5,
         },
       },
     }

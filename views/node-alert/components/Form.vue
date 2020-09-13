@@ -1,22 +1,22 @@
 <template>
-  <a-form :form="form.fc" style="wdith: 400px;">
-    <a-form-item :label="$t('compute.text_732')" v-bind="formItemLayout">
+  <a-form :form="form.fc" style="wdith: 400px;" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_732')">
       <a-select v-decorator="decorators.metric" :disabled="metricDisabled" @change="metricChange">
         <a-select-option v-for="item in metricOpts" :key="item.key" :value="item.key">
           {{ item.label }}
         </a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_733')" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_733')">
       <a-input-number v-decorator="decorators.window" :min="windowMin" />{{$t('compute.text_734')}}</a-form-item>
-    <a-form-item :label="$t('compute.text_735')" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_735')">
       <a-select v-decorator="decorators.comparator">
         <a-select-option v-for="item in comparatorOpts" :key="item.key" :value="item.key">
           {{ item.label }}
         </a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_736')" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_736')">
       <a-input type="number" :min="0" v-decorator="[
           'threshold',
           {
@@ -34,19 +34,19 @@
         <div slot="addonAfter" v-if="thresholdUnit">{{ thresholdUnit }}</div>
       </a-input>
     </a-form-item>
-    <a-form-item :label="$t('monitor.level')" v-bind="formItemLayout">
+    <a-form-item :label="$t('monitor.level')">
       <a-radio-group v-decorator="decorators.level">
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_739')" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_739')">
       <a-select v-decorator="decorators.channel">
         <a-select-option v-for="item in channelOpts" :key="item.key" :value="item.key">
           {{ item.label }}
         </a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_740')" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_740')">
       <a-spin v-show="!recipientsLoaded" />
       <base-select
         v-show="recipientsLoaded"
@@ -154,10 +154,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 19,
         },
         labelCol: {
-          span: 4,
+          span: 5,
         },
       },
       comparatorOpts: [
