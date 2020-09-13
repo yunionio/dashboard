@@ -1297,5 +1297,7 @@
   "compute.text_1312": "请求数量/允许数量",
   "compute.text_1313": "拒绝原因",
   "compute.text_1314": "详细错误",
-  "compute.text_1315": "设置调度标签"
+  "compute.text_1315": "设置调度标签",
+  "compute.text_1316": "入方向：",
+  "compute.text_1317": "出方向："
 }
