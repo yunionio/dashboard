@@ -2238,7 +2238,8 @@
       "EXCLUSIVE_LOCAL_DISK": "Exclusive local disk",
       "pd-ssd": "SSD Persistent Disk",
       "pd-standard": "Standard Persistent Disk"
-    }
+    },
+    "view": "View"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
@@ -2475,7 +2476,7 @@
   "scope.text_236": "Mailbox:",
   "scope.text_237": "Enable status:",
   "scope.text_238": "Preferences",
-  "scope.text_239": "Whether to display system resources:",
+  "scope.text_239": "Show system resources:",
   "scope.text_240": "On",
   "scope.text_241": "Close",
   "scope.text_242": "The virtual machine created by a new container cluster is only displayed on the container cluster page by default. After turning on this switch, it will be displayed in the virtual machine list at the same time (this setting is only valid for individuals)",
@@ -2724,7 +2725,7 @@
   "scope.text_485": "Total amount: {0} yuan",
   "scope.text_487": "Subscription Name",
   "scope.text_488": "Billing Period",
-  "scope.text_489": "天",
+  "scope.text_489": "Day",
   "scope.text_490": "Month",
   "scope.text_491": "Year",
   "scope.text_492": "Bill Payment Period",
@@ -3325,7 +3326,7 @@
   "common_9": "3 years",
   "common_10": "Charging Method",
   "common_11": "Hour",
-  "common_12": "天",
+  "common_12": "Day",
   "common_13": "Month",
   "common_14": "Year",
   "common_15": "Please fill in the absolute path",

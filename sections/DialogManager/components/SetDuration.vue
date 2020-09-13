@@ -11,14 +11,14 @@
       <dialog-selected-tips :name="name" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        :form="form.fc">
-        <a-form-item :label="$t('common.text00061')" v-bind="formItemLayout">
+        :form="form.fc"
+        v-bind="formItemLayout">
+        <a-form-item :label="$t('common.text00061')">
           <a-switch :checkedChildren="$t('common.text00062')" :unCheckedChildren="$t('common.text00063')" v-decorator="decorators.durationEnable" />
         </a-form-item>
         <a-form-item
           v-if="form.fd.durationEnable"
           :label="$t('common.text00064')"
-          v-bind="formItemLayout"
           :help="help">
           <div @click="openDatePicker">
             <a-date-picker
@@ -28,10 +28,11 @@
               :open="open"
               @change="dateChangeHandle"
               format="YYYY-MM-DD HH:mm"
-              :showTime="{ format: 'HH:mm' }">
+              :showTime="{ format: 'HH:mm' }"
+              @ok="closeDatePicker">
               <template slot="renderExtraFooter">
                 {{$t('common.text00065')}}<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
-                <p class="ant-calendar-ok-btn" style="position: absolute; right: 13px; top: 83px; padding: 0 8px; z-index: 999;" @click="closeDatePicker">{{$t('common.ok')}}</p>
+                <!-- <p class="ant-calendar-ok-btn" style="position: absolute; right: 13px; top: 83px; padding: 0 8px; z-index: 999;" @click="closeDatePicker">{{$t('common.ok')}}</p> -->
               </template>
             </a-date-picker>
           </div>
@@ -92,10 +93,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
       open: false,
