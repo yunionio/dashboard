@@ -266,7 +266,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
         }
         if (row.ips) {
           const ips = row.ips.split(',').map(ip => {
-            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class="text-color-help">(私有)</span></list-body-cell-wrap>
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class="text-color-help">({ i18n.t('common_287') })</span></list-body-cell-wrap>
           })
           ret = ret.concat(ips)
         }
@@ -584,7 +584,7 @@ export const getBillingTableColumn = ({
           const seconds = vm.$moment(row.expired_at).diff(new Date()) / 1000
           const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
           const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date.substring(0, date.length - 1)])
-          ret.push(<div style={{ color: textColor }}>{ text } { help }</div>)
+          ret.push(<div class='text-truncate' title={text} style={{ color: textColor }}>{ text } { help }</div>)
         }
         return ret
       },
