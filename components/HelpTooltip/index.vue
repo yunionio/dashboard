@@ -10,10 +10,6 @@
 </template>
 
 <script>
-import helpCn from '@/locales/help-zh-CN'
-
-const { help: helpMap } = helpCn
-
 export default {
   name: 'HelpTooltip',
   props: {
@@ -24,7 +20,7 @@ export default {
   },
   computed: {
     content () {
-      return helpMap[this.name]
+      return this.$t(`help.${this.name}`)
     },
   },
 }

@@ -11,7 +11,11 @@ export function getBrandItems (key = 'brands', outBrands = []) {
   }
   return brands.map(item => {
     const brandConfig = HYPERVISORS_MAP[item.toLowerCase()] || {}
-    return { key: item, label: brandConfig.label || item }
+    const obj = { key: item, label: brandConfig.label || item }
+    if (obj.label === 'OneCloud') {
+      obj.label = i18n.t('brand')
+    }
+    return obj
   }).filter(({ key }) => {
     if (R.type(outBrands) === 'Array' && !R.isEmpty(outBrands)) {
       return outBrands.indexOf(key) === -1
