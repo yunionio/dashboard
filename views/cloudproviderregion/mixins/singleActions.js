@@ -41,7 +41,7 @@ export default {
           const isIdle = obj.sync_status === 'idle'
           return {
             validate: isIdle,
-            tooltip: !isIdle && i18n.t('cloudenv.text_368', [this.$t('status.cloudaccountSyncStatus')]),
+            tooltip: !isIdle && i18n.t('cloudenv.text_368', [this.$t('status.cloudaccountSyncStatus')[obj.sync_status]]),
           }
         },
       },
