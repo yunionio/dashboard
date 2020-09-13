@@ -176,7 +176,7 @@ export default {
               } catch (e) {
                 text = row.notes
               }
-              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) }>查看</a-button>]
+              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) }>{ this.$t('common.view') }</a-button>]
             },
           },
         },
