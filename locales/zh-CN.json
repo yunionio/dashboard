@@ -1295,6 +1295,7 @@
   "compute.text_1310": "该硬盘快照数量 {0} 个",
   "compute.text_1311": "{0} 不满足",
   "compute.text_1312": "请求数量/允许数量",
-  "compute.text_1313":"拒绝原因",
-  "compute.text_1314":"详细错误"
+  "compute.text_1313": "拒绝原因",
+  "compute.text_1314": "详细错误",
+  "compute.text_1315": "设置调度标签"
 }

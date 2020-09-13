@@ -10,8 +10,9 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item v-bind="formItemLayout" v-show="!imgHidden" :label="$t('compute.text_267')">
+        <a-form-item v-show="!imgHidden" :label="$t('compute.text_267')">
           <div slot="help">
             <div class="help-color">{{$t('compute.text_302')}}</div>
           </div>
@@ -32,13 +33,13 @@
             :imageTypeMap="imageTypeMap"
             :edit="true" />
         </a-form-item>
-        <a-form-item v-bind="formItemLayout" v-show="imgHidden" :label="$t('compute.text_267')">
+        <a-form-item v-show="imgHidden" :label="$t('compute.text_267')">
           <div>{{ imgHidden.text }}</div>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_308')" v-bind="formItemLayout" v-if="!isZStack">
+        <a-form-item :label="$t('compute.text_308')" v-if="!isZStack" class="mb-0">
           <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1220')">
+        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1220')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
@@ -95,10 +96,10 @@ export default {
       ],
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
       detailData: {},

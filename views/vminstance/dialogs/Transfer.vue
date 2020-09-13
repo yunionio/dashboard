@@ -4,8 +4,8 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1127')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('compute.text_111')" v-bind="formItemLayout" :extra="$t('compute.text_1164')">
+      <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_111')" :extra="$t('compute.text_1164')">
           <base-select
             v-decorator="decorators.host"
             resource="hosts"
@@ -15,10 +15,10 @@
             :mapper="hostsMapper"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_314') }" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_1261')" v-bind="formItemLayout" v-if="isSingle" :extra="$t('compute.text_1262')">
+        <a-form-item :label="$t('compute.text_1261')" v-if="isSingle" :extra="$t('compute.text_1262')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.rescue_mode" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" v-if="isSingle && firstData.status === 'ready'" :extra="$t('compute.text_1263')">
+        <a-form-item :label="$t('compute.text_494')" v-if="isSingle && firstData.status === 'ready'" :extra="$t('compute.text_1263')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" />
         </a-form-item>
       </a-form>
@@ -70,10 +70,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }

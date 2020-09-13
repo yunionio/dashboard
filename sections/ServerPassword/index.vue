@@ -8,9 +8,10 @@
         </a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item v-if="(loginTypeMap && loginTypeMap.keypair) && vmLoginType === loginTypeMap.keypair.key">
-      <div slot="extra">{{$t('compute.text_201')}}<help-link :href="href">{{$t('compute.text_202')}}</help-link>
-      </div>
+    <a-form-item v-if="(loginTypeMap && loginTypeMap.keypair) && vmLoginType === loginTypeMap.keypair.key" class="mb-0">
+      <template #extra>
+        {{$t('compute.text_201')}}<help-link :href="href">{{$t('compute.text_202')}}</help-link>
+      </template>
       <base-select
         class="w-50"
         v-decorator="decorators.keypair"
@@ -19,7 +20,7 @@
         :showSync="true"
         :select-props="{ allowClear: true, placeholder: $t('compute.text_203') }" />
     </a-form-item>
-    <a-form-item v-if="(loginTypeMap && loginTypeMap.password) && vmLoginType === loginTypeMap.password.key">
+    <a-form-item v-if="(loginTypeMap && loginTypeMap.password) && vmLoginType === loginTypeMap.password.key" class="mb-0">
       <a-input-password
         class="w-50"
         v-decorator="decorators.password"

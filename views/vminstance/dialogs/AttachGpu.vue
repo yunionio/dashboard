@@ -12,15 +12,16 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
-        :form="form.fc">
-        <a-form-item :label="$t('compute.text_1170')" v-bind="formItemLayout">
+        :form="form.fc"
+        v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1170')">
           <a-radio-group name="radioGroup" :defaultValue="true" v-if="isGroupAction" v-model="isOpenGpu">
             <a-radio :value="true">{{$t('compute.text_902')}}</a-radio>
             <a-radio :value="false">{{$t('compute.text_723')}}</a-radio>
           </a-radio-group>
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="isOpenGpu" v-else />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_607')" v-bind="formItemLayout" v-show="isOpenGpu" :extra="$t('compute.text_1171')">
+        <a-form-item :label="$t('compute.text_607')" v-show="isOpenGpu" :extra="$t('compute.text_1171')">
           <!-- 批量设置 -->
           <base-select
             v-if="isGroupAction"
@@ -57,10 +58,10 @@
             resource="isolated_devices"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'multiple' }" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout" v-show="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
+        <a-form-item :label="$t('compute.text_294')" v-show="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_495')">
+        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
         </a-form-item>
       </a-form>
@@ -118,10 +119,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
       gpuOpt: [],

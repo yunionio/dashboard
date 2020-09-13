@@ -4,11 +4,11 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_276')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc">
-        <a-form-item :label="$t('compute.text_308')" v-bind="formItemLayout">
+      <a-form :form="form.fc" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_308')">
           <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1229')">
+        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1229')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
         </a-form-item>
       </a-form>
@@ -79,10 +79,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }

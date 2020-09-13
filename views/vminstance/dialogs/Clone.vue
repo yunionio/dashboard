@@ -4,19 +4,20 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_359')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
+      <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_228')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />
-          <name-repeated
-            v-slot:extra
-            res="servers"
-            :name="form.fi.generate_name"
-            :default-text="$t('compute.text_893')" />
+          <template #extra>
+            <name-repeated
+              res="servers"
+              :name="form.fi.generate_name"
+              :default-text="$t('compute.text_893')" />
+          </template>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_294')">
           <a-input-number v-decorator="decorators.__count__" :min="1" :max="10" :step="1" :parser="Math.round" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout" v-if="isPublic">
+        <a-form-item :label="$t('compute.text_267')" v-if="isPublic">
           <os-select
             :type="type"
             :form="form"
@@ -133,10 +134,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
       servers: [],
