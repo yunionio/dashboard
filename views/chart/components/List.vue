@@ -22,9 +22,9 @@
           :select-props="{ placeholder: $t('helm.text_10') }" />
       </div>
     </template>
-    <template #tool-actions-between>
+    <!-- <template #tool-actions-between>
       <a-button @click="toRepo" type="link" size="small">{{$t('helm.text_12')}}</a-button>
-    </template>
+    </template> -->
     <template #tool-actions-append>
       <search-box :options="options" :value="searchValue" @input="search" :placeholder="$t('helm.text_13')" />
     </template>
