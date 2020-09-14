@@ -22,6 +22,10 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    source: {
+      type: String,
+      default: 'host',
+    },
   },
   data () {
     return {
@@ -29,7 +33,11 @@ export default {
         resource: 'isolated_devices',
         getParams: this.getParam,
       }),
-      columns: [
+    }
+  },
+  computed: {
+    columns () {
+      const ret = [
         {
           field: 'dev_type',
           title: this.$t('compute.text_481'),
@@ -70,8 +78,16 @@ export default {
             },
           },
         },
-      ],
-    }
+      ]
+      if (this.source === 'physicalmachine') {
+        const addObj = {
+          field: 'host',
+          title: this.$t('compute.text_1318'),
+        }
+        ret.splice(ret.length - 2, 2, addObj)
+      }
+      return ret
+    },
   },
   created () {
     this.list.fetchData()

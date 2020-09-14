@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { getIsolatedDeviceCountColumns } from '../utils/columns'
 import WindowsMixin from '@/mixins/windows'
 import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getTagTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
@@ -201,7 +200,17 @@ export default {
             return ret
           },
         },
-        getIsolatedDeviceCountColumns(),
+        {
+          field: 'isolated_device_count',
+          title: this.$t('compute.text_609'),
+          slots: {
+            default: ({ row }, h) => {
+              return [
+                <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{row.isolated_device_count || 0}</a>,
+              ]
+            },
+          },
+        },
       ],
       extraInfo: [
         {
