@@ -8,7 +8,7 @@
         :form="form.fc">
         <a-form-item :label="$t('network.text_195')" v-bind="formItemLayout">
           <a-input-number v-if="isOneCloud" style="width: 120px" :precision="0" :min="1" v-decorator="decorators.bandwidth" />
-          <a-tooltip v-else placement="top" :title="$t('monitor.text_8', maxBandwidth)">
+          <a-tooltip v-else placement="top" :title="$t('network.eip.text_725', [maxBandwidth])">
             <a-input-number style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
           </a-tooltip>
           <span class="ml-2">Mbps</span>
