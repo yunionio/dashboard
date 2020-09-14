@@ -242,7 +242,7 @@ export default {
           meta: {
             label: i18n.t('dictionary.dns_zone'),
             permission: 'dnszone_list',
-            hidden: () => store.getters.isProjectMode,
+            hidden: () => store.getters.isProjectMode || !hasSetupKey(['aws', 'qcloud']),
           },
           component: Layout,
           children: [
