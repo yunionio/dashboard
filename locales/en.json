@@ -738,5 +738,6 @@
   "network.dns.youdao": "Youdao",
   "network.dns.sousou": "Sousou",
   "network.dns.sougou": "Sougou",
-  "network.dns.qihu360": "Qihu 360"
+  "network.dns.qihu360": "Qihu 360",
+  "network.eip.text_725": "Range is 1～{0}Mbps"
 }

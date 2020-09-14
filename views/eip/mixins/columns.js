@@ -36,7 +36,8 @@ export default {
         title: i18n.t('network.text_195'),
         minWidth: 80,
         showOverflow: 'ellipsis',
-        formatter: ({ cellValue }) => {
+        formatter: ({ row, cellValue }) => {
+          if (row.cloud_env === 'private') return '-'
           return sizestr(cellValue, 'M', 1024)
         },
       },
