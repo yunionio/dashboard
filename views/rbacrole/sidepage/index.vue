@@ -18,7 +18,6 @@
     <component
       :is="params.windowData.currentTab"
       :data="detailData"
-      :rules="detailData.rules"
       resource="rbacroles"
       :serverColumns="columns"
       :res-id="data.name"

@@ -1,15 +1,21 @@
 <template>
-  <vxe-grid :data="rules || []" :columns="columns" />
+  <vxe-grid :data="data.rules || []" :columns="columns" />
 </template>
 
 <script>
 import ActionButton from '@/components/PageList/Actions/ActionButton'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'K8SRoleRulesSidepage',
+  mixins: [WindowsMixin],
   props: {
-    rules: {
-      type: Array,
+    data: {
+      type: Object,
+      required: true,
+    },
+    onManager: {
+      type: Function,
       required: true,
     },
   },
@@ -50,11 +56,11 @@ export default {
           field: 'actions',
           title: this.$t('common.action'),
           slots: {
-            default: ({ row }, h) => {
+            default: ({ row, rowIndex }, h) => {
               const item = {
                 label: this.$t('common.delete'),
                 action: row => {
-                  console.log(row, 'row')
+                  this.deleteRule(rowIndex)
                 },
               }
               return [h(ActionButton, {
@@ -72,6 +78,17 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    deleteRule (rowIndex) {
+      this.createDialog('K8SRemoveRuleDialog', {
+        resourceData: this.data,
+        data: [this.data.rules[rowIndex]],
+        rowIndex,
+        columns: this.columns.slice(0, 3),
+        onManager: this.onManager,
+      })
+    },
   },
 }
 </script>

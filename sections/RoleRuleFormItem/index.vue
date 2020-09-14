@@ -4,6 +4,7 @@
       <div class="d-flex" v-for="(item, i) in resourceList" :key="item.key">
         <a-form-item class="mr-2" :label="i > 0 ? '' : '资源'">
           <base-select
+            style="width: 300px"
             v-decorator="decorators.resources(item.key)"
             :options="resourceOpts"
             filterable
@@ -37,6 +38,9 @@ export default {
     isNamespace: {
       type: Boolean,
       default: false,
+    },
+    federatedResource: {
+      type: String,
     },
   },
   data () {
@@ -87,37 +91,50 @@ export default {
     }
   },
   watch: {
-    clusterId: {
-      handler (val) {
-        this.fetchData()
-      },
-      immediate: true,
+    clusterId () {
+      this.fetchData()
     },
+  },
+  created () {
+    if (this.federatedResource) {
+      this.fetchFederatedData()
+    } else {
+      this.fetchData()
+    }
   },
   methods: {
     syncItem (val, item) {
-      console.log(val, 'vv')
       item.verbs = val.verbs
     },
-    async fetchData () {
+    async fetchFederatedData () {
       try {
-        console.log(this.clusterId, 'this.clusterId')
-        if (!this.clusterId) return
-        let { data = [] } = await new this.$Manager('kubeclusters', 'v1').getSpecific({ id: this.clusterId, spec: 'api-resources' })
-        if (this.isNamespace) data = data.filter(val => val.apiResource.namespaced)
-        data = data.map(val => {
-          let label = val.apiResource.name
-          if (val.apiGroup) label = `${val.apiGroup} / ${label}`
-          return {
-            key: `${val.apiGroup} / ${val.apiResource.name}`,
-            label,
-            verbs: val.apiResource.verbs,
-          }
-        })
-        this.resourceOpts = data
+        const { data = [] } = await new this.$Manager(this.federatedResource, 'v1').get({ id: 'api-resources' })
+        this.getResourceOpts(data)
       } catch (error) {
         throw error
       }
+    },
+    async fetchData () {
+      try {
+        if (!this.clusterId) return
+        const { data = [] } = await new this.$Manager('kubeclusters', 'v1').getSpecific({ id: this.clusterId, spec: 'api-resources' })
+        this.getResourceOpts(data)
+      } catch (error) {
+        throw error
+      }
+    },
+    getResourceOpts (data) {
+      if (this.isNamespace) data = data.filter(val => val.apiResource.namespaced)
+      data = data.map(val => {
+        let label = val.apiResource.name
+        if (val.apiGroup) label = `${val.apiGroup} / ${label}`
+        return {
+          key: `${val.apiGroup} / ${val.apiResource.name}`,
+          label,
+          verbs: val.apiResource.verbs,
+        }
+      })
+      this.resourceOpts = data
     },
     async validateForm () {
       try {

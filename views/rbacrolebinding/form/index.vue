@@ -27,7 +27,7 @@
       </a-form-item>
       <a-form-item label="Subject">
         <a-radio-group v-decorator="decorators.subjectType" @change="subjectTypeChange">
-          <a-radio-button v-for="item in subjectOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
+          <a-radio-button v-for="item in subjectTypeOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item label="Subject Name">
@@ -40,7 +40,16 @@
           :params="params"
           need-params
           :select-props="{ placeholder: $t('common.select') }" />
-        <a-input v-else v-decorator="decorators.subject" :placeholder="$t('common.placeholder')" />
+        <template v-else>
+          <base-select
+            v-if="subjectOpts.length"
+            v-decorator="decorators.subject"
+            :options="subjectOpts"
+            version="v1"
+            idKey="name"
+            :select-props="{ placeholder: $t('common.select') }" />
+          <a-input v-else v-decorator="decorators.subject" :placeholder="$t('common.placeholder')" />
+        </template>
       </a-form-item>
     </a-form>
   </div>
@@ -134,11 +143,12 @@ export default {
         { key: 'Role', label: '角色' },
         { key: 'ClusterRole', label: '集群角色' },
       ],
-      subjectOpts: [
+      subjectTypeOpts: [
         { key: 'User', label: 'User' },
         { key: 'Group', label: 'Group' },
         { key: 'ServiceAccount', label: '服务账户' },
       ],
+      subjectOpts: [],
       roleRefType: 'Role',
       subjectType: 'User',
     }
@@ -163,9 +173,30 @@ export default {
       return this.roleRefType === 'Role' ? '角色' : '集群角色'
     },
   },
+  watch: {
+    clusterObj (val, oldV) {
+      this.namespaceObj = {}
+      this.getSubjectOpts()
+    },
+  },
   methods: {
+    async getSubjectOpts () {
+      try {
+        const cluster = this.clusterObj.id
+        let spec = ''
+        if (this.subjectType === 'User') spec = 'cluster-users'
+        if (this.subjectType === 'Group') spec = 'cluster-user-groups'
+        if (cluster) {
+          const { data } = await new this.$Manager('kubeclusters', 'v1').getSpecific({ id: cluster, spec })
+          this.subjectOpts = data
+        }
+      } catch (error) {
+        throw error
+      }
+    },
     subjectTypeChange (e) {
       this.subjectType = e.target.value
+      this.getSubjectOpts()
       this.form.fc.setFieldsValue({
         [this.decorators.subject[0]]: undefined,
       })

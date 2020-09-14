@@ -33,7 +33,7 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import K8sFederatedrolebindingDetail from './Detail'
-import K8sFederatedrolebindingClusterList from './AccachClsuterSidepage'
+import K8sAttachClusterList from '@K8S/sections/AccachClsuterSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -43,14 +43,14 @@ export default {
   components: {
     Actions,
     K8sFederatedrolebindingDetail,
-    K8sFederatedrolebindingClusterList,
+    K8sAttachClusterList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: this.$t('k8s.text_217'), key: 'k8s-federatedrolebinding-detail' },
-        { label: this.$t('k8s.text_369'), key: 'k8s-federatedrolebinding-cluster-list' },
+        { label: this.$t('k8s.text_369'), key: 'k8s-attach-cluster-list' },
       ],
     }
   },

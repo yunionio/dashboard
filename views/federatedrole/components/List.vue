@@ -40,7 +40,7 @@ export default {
           label: this.$t('k8s.text_49'),
           permission: 'k8s_federatedroles_create',
           action: () => {
-            this.$router.push({ path: '/k8s-federatednamespace/create' })
+            this.$router.push({ path: '/k8s-federatedrole/create' })
           },
           meta: () => ({
             buttonType: 'primary',

@@ -1,97 +1,49 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_367')" />
-    <a-form
-      class="mt-3"
-      :form="form.fc">
-      <a-form-item
-        :label="$t('k8s.text_41')"
-        v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('k8s.text_60')" />
-      </a-form-item>
-    </a-form>
+    <page-header title="新建角色" />
+    <page-body>
+      <role-form @submit="submit" ref="formRef" />
+    </page-body>
     <page-footer>
-      <div slot="right">
-        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
-        <a-button @click="cancel">{{ $t('dialog.cancel') }}</a-button>
-      </div>
+      <template class="content" #right>
+        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+        <a-button @click="handleCancel">{{ $t('dialog.cancel') }}</a-button>
+      </template>
     </page-footer>
   </div>
 </template>
 
 <script>
-import k8sCreateMixin from '@K8S/mixins/create'
+import RoleForm from '../form'
 
 export default {
-  name: 'FederatedclusterroleCreate',
-  mixins: [k8sCreateMixin],
+  name: 'FederatedClusterroleCreate',
+  components: {
+    RoleForm,
+  },
   data () {
     return {
       loading: false,
-      form: {
-        fc: this.$form.createForm(this),
-      },
-      decorators: {
-        name: [
-          'name',
-          {
-            validateTrigger: 'blur',
-            validateFirst: true,
-            rules: [
-              { required: true, message: this.$t('k8s.text_60') },
-              { min: 2, max: 24, message: this.$t('k8s.text_132') },
-              { validator: this.$validate('k8sName') },
-            ],
-          },
-        ],
-        cluster: [
-          'cluster',
-          {
-            rules: [
-              { required: true, message: this.$t('k8s.text_30') },
-            ],
-          },
-        ],
-      },
-      formItemLayout: {
-        wrapperCol: { span: 20 },
-        labelCol: { span: 3 },
-      },
     }
   },
-  created () {
-    this.resourceM = new this.$Manager('federatedclusterroles', 'v1')
-  },
-  destroyed () {
-    this.resourceM = null
-  },
   methods: {
-    doCreate (data) {
-      return this.resourceM.create({ data })
+    handleConfirm () {
+      this.$refs.formRef.doCreate()
     },
-    async handleConfirm () {
-      this.loading = true
+    handleCancel () {
+      this.$router.push('/k8s-federatedclusterrole')
+    },
+    async submit (data) {
       try {
-        const values = await this.form.fc.validateFields()
-        const data = {
-          ...values,
-          spec: {
-            template: {
-              spec: {},
-            },
-          },
-        }
-        await this.doCreate(data)
+        this.loading = true
+        await new this.$Manager('federatedclusterroles', 'v1').create({ data })
+        this.$message.success(this.$t('k8s.text_46'))
         this.loading = false
-        this.$message.success(this.$t('k8s.text_184'))
-        this.cancel()
+        this.handleCancel()
       } catch (error) {
         this.loading = false
         throw error
       }
-    },
-    cancel () {
-      this.$router.push('/k8s-federatedclusterrole')
     },
   },
 }

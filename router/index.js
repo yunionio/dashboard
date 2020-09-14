@@ -4,8 +4,11 @@ import K8sRbacclusterrolebinding from '@K8S/views/rbacclusterrolebinding'
 import K8sRbacclusterrolebindingCreate from '@K8S/views/rbacclusterrolebinding/create'
 import Federatednamespace from '@K8S/views/federatednamespace'
 import Federatedclusterrole from '@K8S/views/federatedclusterrole'
+import FederatedclusterroleCreate from '@K8S/views/federatedclusterrole/create'
 import Federatedrolebinding from '@K8S/views/federatedrolebinding'
+import FederatedrolebindingCreate from '@K8S/views/federatedrolebinding/create'
 import Federatedclusterrolebinding from '@K8S/views/federatedclusterrolebinding'
+import FederatedclusterrolebindingCreate from '@K8S/views/federatedclusterrolebinding/create'
 import Federatedrole from '@K8S/views/federatedrole'
 import Kubeclusters from '@K8S/views/cluster'
 import KubeclustersCreate from '@K8S/views/cluster/create'
@@ -564,6 +567,11 @@ export default {
               path: '',
               component: Federatedclusterrole,
             },
+            {
+              name: 'FederatedclusterroleCreate',
+              path: 'create',
+              component: FederatedclusterroleCreate,
+            },
           ],
         },
         {
@@ -579,6 +587,11 @@ export default {
               path: '',
               component: Federatedrolebinding,
             },
+            {
+              name: 'FederatedrolebindingCreate',
+              path: 'create',
+              component: FederatedrolebindingCreate,
+            },
           ],
         },
         {
@@ -593,6 +606,11 @@ export default {
               name: 'Federatedclusterrolebinding',
               path: '',
               component: Federatedclusterrolebinding,
+            },
+            {
+              name: 'FederatedclusterrolebindingCreate',
+              path: 'create',
+              component: FederatedclusterrolebindingCreate,
             },
           ],
         },
