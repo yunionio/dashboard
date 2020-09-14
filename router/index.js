@@ -226,7 +226,7 @@ export default {
             label: '域名服务',
             permission: 'dnsrecords_list',
             t: 'dictionary.dns',
-            hidden: () => !hasSetupKey(['onestack', 'baremetal', 'vmware']),
+            hidden: () => true,
           },
           component: Layout,
           children: [
