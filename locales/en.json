@@ -93,7 +93,7 @@
   "helm.text_92": "Type",
   "helm.text_93": "Is it public",
   "helm.text_94": "Please enter URL",
-  "helm.text_95": "Helm warehouse address (Repo)",
+  "helm.text_95": "Helm Repo",
   "helm.text_96": "URL address",
   "helm.text_97": "Please select [unused] storage volume",
   "helm.text_98": "Storage Claim (Persistentvolumeclaim)",
@@ -101,6 +101,6 @@
   "helm.text_100": "{0} Core",
   "helm.text_101": "Memory",
   "helm.text_102": "release count",
-  "helm.text_103": "Create Helm warehouse address",
-  "helm.text_104": "Update Helm warehouse address"
+  "helm.text_103": "Create Helm Repo",
+  "helm.text_104": "Update Helm Repo"
 }
