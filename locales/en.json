@@ -1599,9 +1599,9 @@
     "silence": "Slightly"
   },
   "currencys": {
-    "CNY": "元",
-    "HKD": "Hong Kong Dollar",
-    "USD": "United States Dollar"
+    "CNY": "CNY",
+    "HKD": "HKD",
+    "USD": "USD"
   },
   "cloudAccountAccessType": {
     "China": "China Area",
