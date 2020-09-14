@@ -1,7 +1,9 @@
 <template>
-  <vc-dialog
+  <a-modal
     visible
+    width="100%"
     prefix-cls="side-page"
+    transitionName=""
     :class="{ 'first-side-page': isFirstSidePage }"
     :wrapStyle="wrapStyle"
     :mask="false"
@@ -56,13 +58,12 @@
         </template>
       </div>
     </div>
-  </vc-dialog>
+  </a-modal>
 </template>
 
 <script>
 import * as R from 'ramda'
 import { mapState } from 'vuex'
-import VcDialog from 'ant-design-vue/lib/vc-dialog'
 import Clickoutside from '@/directives/clickoutside'
 import { getHttpErrorMessage } from '@/utils/error'
 
@@ -70,9 +71,6 @@ export default {
   name: 'BaseSidePage',
   directives: {
     Clickoutside,
-  },
-  components: {
-    VcDialog,
   },
   inject: ['requestError'],
   props: {
