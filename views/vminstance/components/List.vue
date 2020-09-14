@@ -287,6 +287,17 @@ export default {
                       return ret
                     },
                   },
+                  {
+                    label: this.$t('compute.text_282'),
+                    action: () => {
+                      this.onManager('batchPerformAction', {
+                        steadyStatus: ['running', 'ready'],
+                        managerArgs: {
+                          action: 'syncstatus',
+                        },
+                      })
+                    },
+                  },
                 ],
               },
               {
@@ -417,17 +428,6 @@ export default {
                         return ret
                       }
                       return ret
-                    },
-                  },
-                  {
-                    label: this.$t('compute.text_282'),
-                    action: () => {
-                      this.onManager('batchPerformAction', {
-                        steadyStatus: ['running', 'ready'],
-                        managerArgs: {
-                          action: 'syncstatus',
-                        },
-                      })
                     },
                   },
                   {
