@@ -42,16 +42,15 @@
           </a-form-item>
           <a-form-item :label="$t('network.text_484')" v-bind="formItemLayout">
             <div class="d-flex align-items-center">
-              <a-input-number v-if="cloudEnv === 'onpremise'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
-              <a-tooltip v-else placement="top" :title="$t('network.eip.text_725', [maxBandwidth])">
-              <a-input-number
-                style="width: 120px"
-                :min="1"
-                :max="maxBandwidth"
-                :step="50"
-                :formatter="format"
-                :parse="format"
-                v-decorator="decorators.bandwidth" />
+              <a-tooltip placement="top" :title="$t('network.eip.text_725', [maxBandwidth])">
+                <a-input-number
+                  style="width: 120px"
+                  :min="1"
+                  :max="maxBandwidth"
+                  :step="cloudEnv === 'onpremise' ? 1 : 50"
+                  :formatter="format"
+                  :parse="format"
+                  v-decorator="decorators.bandwidth" />
               </a-tooltip>
               <span class="ml-2">Mbps</span>
             </div>
@@ -289,8 +288,8 @@ export default {
       return arr
     },
     maxBandwidth () {
-      if (this.cloudEnv === 'idc') {
-        return 999999
+      if (this.cloudEnv === 'onpremise') {
+        return 10000
       }
       let maxBandwidth = 200
       if (!R.isEmpty(this.selectedRegionItem)) {
@@ -372,6 +371,7 @@ export default {
   },
   methods: {
     format (val) {
+      if (this.cloudEnv === 'onpremise') return val
       return +val || 1
     },
     vpcResourceMapper (data) {
