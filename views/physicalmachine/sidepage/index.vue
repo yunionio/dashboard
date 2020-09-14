@@ -12,6 +12,7 @@
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <component
+      source="physicalmachine"
       :is="params.windowData.currentTab"
       :res-id="data.id"
       :data="detailData"

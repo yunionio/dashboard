@@ -150,12 +150,12 @@ export default {
         return (
           brandWidthMax[this.hypervisor] &&
           brandWidthMax[this.hypervisor].max
-        ) || 200
+        ) || (this.hypervisor === 'kvm' ? 10000 : 200)
       }
       return (
         trafficMax[this.hypervisor] &&
         trafficMax[this.hypervisor].max
-      ) || 200
+      ) || (this.hypervisor === 'kvm' ? 10000 : 200)
     },
     sliderMarks () {
       let ret = { 100: '100Mbps' }
