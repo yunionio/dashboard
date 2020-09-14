@@ -272,6 +272,27 @@ export default {
                     return ret
                   },
                 },
+                {
+                  label: i18n.t('compute.text_282'),
+                  action: () => {
+                    this.onManager('performAction', {
+                      steadyStatus: ['running', 'ready'],
+                      id: obj.id,
+                      managerArgs: {
+                        action: 'syncstatus',
+                      },
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (commonUnabled(obj)) return ret
+                    ret.validate = true
+                    return ret
+                  },
+                },
               ],
             },
             {
@@ -364,27 +385,6 @@ export default {
                     if (!this.isAdminMode && !this.isDomainMode) {
                       ret.tooltip = i18n.t('compute.text_613')
                       return ret
-                    }
-                    if (commonUnabled(obj)) return ret
-                    ret.validate = true
-                    return ret
-                  },
-                },
-                {
-                  label: i18n.t('compute.text_282'),
-                  action: () => {
-                    this.onManager('performAction', {
-                      steadyStatus: ['running', 'ready'],
-                      id: obj.id,
-                      managerArgs: {
-                        action: 'syncstatus',
-                      },
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
                     }
                     if (commonUnabled(obj)) return ret
                     ret.validate = true
