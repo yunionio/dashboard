@@ -308,9 +308,8 @@ export default {
           keypair: [
             'loginKeypair',
             {
-              initialValue: undefined, // { key: '', label: '' }
               rules: [
-                { validator: isRequired(), message: i18n.t('compute.text_203') },
+                { required: true, message: i18n.t('compute.text_203') },
               ],
             },
           ],

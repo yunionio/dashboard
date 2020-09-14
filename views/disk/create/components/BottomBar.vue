@@ -100,11 +100,11 @@ export default {
       },
     },
     currentCloudregion (value) {
-      if (value.provider) {
+      if (value && value.provider) {
         this._getPrice()
         return
       }
-      if (value.external_id) {
+      if (value && value.external_id) {
         this._getPrice()
       }
     },
@@ -123,7 +123,7 @@ export default {
   },
   methods: {
     formatToPrice (val) {
-      let ret = `${this.currency} ${numerify(val, '0,0.00')}`
+      let ret = `${this.currency} ${numerify(val, '0,0.000')}`
       ret += this.$t('db.text_115')
       return ret
     },
