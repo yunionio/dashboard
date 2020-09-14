@@ -386,7 +386,7 @@
   "compute.text_385": "MAC地址",
   "compute.text_386": "IP地址",
   "compute.text_387": "带宽限制",
-  "compute.text_388": "代表带宽没有限制",
+  "compute.text_388": "0代表带宽没有限制",
   "compute.text_389": "修改带宽",
   "compute.text_390": "更换IP",
   "compute.text_391": "私有云、公有云不支持此操作",
