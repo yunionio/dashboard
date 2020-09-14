@@ -18,9 +18,10 @@
     <component
       :is="params.windowData.currentTab"
       :data="detailData"
+      :resId="detailData.id"
       resource="federatedroles"
       :serverColumns="columns"
-      :res-id="data.name"
+      :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
       @refresh="refresh"
@@ -49,8 +50,9 @@ export default {
   data () {
     return {
       detailTabs: [
-        { label: this.$t('k8s.text_217'), key: 'k8s-federatednamespace-detail' },
+        { label: this.$t('k8s.text_217'), key: 'k8s-federatedrole-detail' },
         { label: this.$t('k8s.text_369'), key: 'k8s-attach-cluster-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

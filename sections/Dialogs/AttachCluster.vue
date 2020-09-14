@@ -53,7 +53,7 @@ export default {
       clusterParams: {
         federated_keyword: this.params.resource,
         federated_used: false,
-        federated_resource_id: this.params.data.id,
+        federatedresource_id: this.params.data.id,
       },
     }
   },

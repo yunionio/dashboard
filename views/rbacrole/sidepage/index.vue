@@ -20,7 +20,7 @@
       :data="detailData"
       resource="rbacroles"
       :serverColumns="columns"
-      :res-id="data.name"
+      :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
       @refresh="refresh"
@@ -54,6 +54,7 @@ export default {
         { label: this.$t('k8s.text_217'), key: 'k8s-rbac-role-detail' },
         { label: this.$t('k8s.text_378'), key: 'role-rules-sidepage' },
         { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

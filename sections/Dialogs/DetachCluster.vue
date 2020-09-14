@@ -29,7 +29,7 @@ export default {
       this.loading = true
       try {
         await this.params.onManager('performAction', {
-          id: this.params.data[0].federatednamespace_id,
+          id: this.params.data[0].federatedresource_id,
           managerArgs: {
             action: 'detach-cluster',
             data: {

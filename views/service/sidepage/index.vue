@@ -44,6 +44,7 @@ export default {
         { label: this.$t('k8s.text_9'), key: 'pod-list' },
         { label: this.$t('k8s.text_218'), key: 'events-sidepage' },
         { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

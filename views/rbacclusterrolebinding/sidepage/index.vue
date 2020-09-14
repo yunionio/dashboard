@@ -20,7 +20,7 @@
       :data="detailData"
       resource="rbacclusterrolebindings"
       :serverColumns="columns"
-      :res-id="data.name"
+      :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
       @refresh="refresh"
@@ -51,6 +51,7 @@ export default {
       detailTabs: [
         { label: this.$t('k8s.text_217'), key: 'k8s-rbac-role-bind-detail' },
         { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },
