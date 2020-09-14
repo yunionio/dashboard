@@ -101,6 +101,6 @@
   "helm.text_100": "{0} 核",
   "helm.text_101": "内存",
   "helm.text_102": "发布数量",
-  "helm.text_103": "创建Helm仓库地址",
-  "helm.text_104": "更新Helm仓库地址"
+  "helm.text_103": "创建Helm仓库",
+  "helm.text_104": "更新Helm仓库"
 }
