@@ -7,7 +7,7 @@
       <a-form-item :label="$t('k8s.text_19')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" :clusterObj.sync="clusterObj"  class="w-75" />
       </a-form-item>
-      <a-form-item label="资源授权">
+      <a-form-item :label="$t('k8s.text_386')">
         <role-rule-form-item ref="roleRuleRef" :clusterId="clusterObj.id" />
       </a-form-item>
     </a-form>

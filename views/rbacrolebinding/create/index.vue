@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建角色绑定(RoleBinding)" />
+    <page-header :title="$t('k8s.text_392')" />
     <page-body>
       <role-form @submit="submit" ref="formRef" />
     </page-body>

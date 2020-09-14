@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('k8s.text_68')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" name="规则" :action="$t('common.delete')" />
+      <dialog-selected-tips :count="params.data.length" :name="$t('k8s.text_378')" :action="$t('common.delete')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

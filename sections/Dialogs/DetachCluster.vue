@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">解绑</div>
+    <div slot="header">{{$t('k8s.text_199')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('k8s.text_373')" :count="params.data.length" action="解绑" />
+      <dialog-selected-tips :name="$t('k8s.text_365')" :count="params.data.length" :action="$t('k8s.text_199')" />
       <dialog-table :data="params.data" :columns="params.columns" />
     </div>
     <div slot="footer">
@@ -29,7 +29,7 @@ export default {
       this.loading = true
       try {
         await this.params.onManager('performAction', {
-          id: this.params.data[0].federatedclusterrole_id,
+          id: this.params.data[0].federatednamespace_id,
           managerArgs: {
             action: 'detach-cluster',
             data: {

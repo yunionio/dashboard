@@ -51,7 +51,7 @@ export default {
         labelCol: { span: 3 },
       },
       clusterParams: {
-        federated_keyword: 'federatedclusterrole',
+        federated_keyword: this.params.resource,
         federated_used: false,
         federated_resource_id: this.params.data.id,
       },

@@ -4,7 +4,7 @@
       <a-form-item :label="$t('k8s.text_41')">
         <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item label="集群角色">
+      <a-form-item :label="$t('k8s.text_373')">
         <base-select
           resource="federatedclusterroles"
           version="v1"
@@ -97,8 +97,8 @@ export default {
         ],
       },
       roleRefOpts: [
-        { key: 'Role', label: '角色' },
-        { key: 'ClusterRole', label: '集群角色' },
+        { key: 'Role', label: this.$t('k8s.text_370') },
+        { key: 'ClusterRole', label: this.$t('k8s.text_373') },
       ],
       subjectTypeOpts: [
         { key: 'User', label: 'User' },

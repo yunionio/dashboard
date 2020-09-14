@@ -12,7 +12,7 @@
           v-decorator="decorators.federatednamespace"
           :params="federatednamespaceParams" />
       </a-form-item>
-      <a-form-item label="角色类型">
+      <a-form-item :label="$t('k8s.text_389')">
         <a-radio-group v-decorator="decorators.roleRefType" @change="e => roleRefType = e.target.value">
           <a-radio-button v-for="item in roleRefOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
@@ -124,8 +124,8 @@ export default {
         ],
       },
       roleRefOpts: [
-        { key: 'Role', label: '角色' },
-        { key: 'ClusterRole', label: '集群角色' },
+        { key: 'Role', label: this.$t('k8s.text_370') },
+        { key: 'ClusterRole', label: this.$t('k8s.text_373') },
       ],
       subjectTypeOpts: [
         { key: 'User', label: 'User' },
@@ -146,7 +146,7 @@ export default {
   },
   computed: {
     roleLabel () {
-      return this.roleRefType === 'Role' ? '角色' : '集群角色'
+      return this.roleRefType === 'Role' ? this.$t('k8s.text_370') : this.$t('k8s.text_373')
     },
   },
   created () {

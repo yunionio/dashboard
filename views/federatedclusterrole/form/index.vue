@@ -4,7 +4,7 @@
       <a-form-item :label="$t('k8s.text_41')">
         <a-input :placeholder="$t('k8s.text_60')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item label="资源授权">
+      <a-form-item :label="$t('k8s.text_386')">
         <role-rule-form-item ref="roleRuleRef" federatedResource="federatedclusterroles" />
       </a-form-item>
     </a-form>

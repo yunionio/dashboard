@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="角色" />
+    <page-header :title="$t('k8s.text_370')" />
     <page-body>
       <k8s-federatedrole-list :id="listId" :getParams="getParams" />
     </page-body>

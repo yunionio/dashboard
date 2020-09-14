@@ -106,7 +106,7 @@ export default {
         this.options = data.map(val => ({ ...val, label: val.name }))
         this.loading = false
         if (this.supportAllNamespace) {
-          this.options = data.concat({ id: 'all_namespace', label: '所有命名空间' })
+          this.options = data.concat({ id: 'all_namespace', label: this.$t('k8s.text_379') })
         }
         const isErrorNamespace = !this.options.find(v => v.id === this.value)
         const isEmptyNamespace = R.isEmpty(this.value) || R.isNil(this.value)

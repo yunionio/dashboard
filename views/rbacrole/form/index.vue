@@ -10,7 +10,7 @@
       <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj"  class="w-75" />
       </a-form-item>
-      <a-form-item label="资源授权">
+      <a-form-item :label="$t('k8s.text_386')">
         <role-rule-form-item ref="roleRuleRef" :clusterId="clusterObj.id" isNamespace />
       </a-form-item>
     </a-form>

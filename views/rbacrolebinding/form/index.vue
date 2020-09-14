@@ -10,7 +10,7 @@
       <a-form-item :label="$t('k8s.text_23')">
         <namespace-select v-decorator="decorators.namespace" @input="setNamespace" :cluster="cluster" :namespaceObj.sync="namespaceObj" />
       </a-form-item>
-      <a-form-item label="角色类型">
+      <a-form-item :label="$t('k8s.text_389')">
         <a-radio-group v-decorator="decorators.roleRefType" @change="e => roleRefType = e.target.value">
           <a-radio-button v-for="item in roleRefOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
@@ -140,13 +140,13 @@ export default {
       clusterObj: {},
       namespaceObj: {},
       roleRefOpts: [
-        { key: 'Role', label: '角色' },
-        { key: 'ClusterRole', label: '集群角色' },
+        { key: 'Role', label: this.$t('k8s.text_370') },
+        { key: 'ClusterRole', label: this.$t('k8s.text_373') },
       ],
       subjectTypeOpts: [
         { key: 'User', label: 'User' },
         { key: 'Group', label: 'Group' },
-        { key: 'ServiceAccount', label: '服务账户' },
+        { key: 'ServiceAccount', label: this.$t('k8s.text_26') },
       ],
       subjectOpts: [],
       roleRefType: 'Role',
@@ -170,7 +170,7 @@ export default {
       return params
     },
     roleLabel () {
-      return this.roleRefType === 'Role' ? '角色' : '集群角色'
+      return this.roleRefType === 'Role' ? this.$t('k8s.text_370') : this.$t('k8s.text_373')
     },
   },
   watch: {

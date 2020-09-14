@@ -375,5 +375,20 @@
   "k8s.text_375": "cluster role binding",
   "k8s.text_376": "ClusterRole",
   "k8s.text_377": "ClusterRoleBinding",
-  "k8s.text_378": "Rules"
+  "k8s.text_378": "Rules",
+  "k8s.text_199": "detach",
+  "k8s.text_379": "All Namepsace",
+  "k8s.text_380": "please select resource",
+  "k8s.text_381": "permission",
+  "k8s.text_382": "No permission is available, please select resources first",
+  "k8s.text_383": "Add Resource",
+  "k8s.text_384": "Please check permissions",
+  "k8s.text_385": "Create Role",
+  "k8s.text_386": "Resource Authorization",
+  "k8s.text_387": "FederatedRoleBinding Create",
+  "k8s.text_388": "FederatedRoleBinding Create",
+  "k8s.text_389": "Role Type",
+  "k8s.text_390": "ClusterRole Create",
+  "k8s.text_391": "ClusterRoleBinding Create",
+  "k8s.text_392": "RoleBinding Create"
 }

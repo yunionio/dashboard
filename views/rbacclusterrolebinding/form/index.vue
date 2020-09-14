@@ -7,7 +7,7 @@
       <a-form-item :label="$t('k8s.text_19')">
         <cluster-select v-decorator="decorators.cluster" @input="setCluster" :clusterObj.sync="clusterObj" />
       </a-form-item>
-      <a-form-item label="集群角色">
+      <a-form-item :label="$t('k8s.text_373')">
         <base-select
           :resource="'rbacclusterroles'"
           version="v1"
@@ -131,7 +131,7 @@ export default {
       subjectTypeOpts: [
         { key: 'User', label: 'User' },
         { key: 'Group', label: 'Group' },
-        { key: 'ServiceAccount', label: '服务账户' },
+        { key: 'ServiceAccount', label: this.$t('k8s.text_26') },
       ],
       subjectOpts: [],
       subjectType: 'User',

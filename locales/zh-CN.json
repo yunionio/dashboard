@@ -375,5 +375,20 @@
   "k8s.text_375": "集群角色绑定",
   "k8s.text_376": "集群角色(ClusterRole)",
   "k8s.text_377": "集群角色绑定(ClusterRoleBinding)",
-  "k8s.text_378": "规则"
+  "k8s.text_378": "规则",
+  "k8s.text_199": "解绑",
+  "k8s.text_379": "所有命名空间",
+  "k8s.text_380": "请选择资源",
+  "k8s.text_381": "权限",
+  "k8s.text_382": "暂无权限可选，请先选择资源",
+  "k8s.text_383": "添加资源",
+  "k8s.text_384": "请勾选权限",
+  "k8s.text_385": "新建角色",
+  "k8s.text_386": "资源授权",
+  "k8s.text_387": "新建角色绑定(FederatedClusterRoleBinding)",
+  "k8s.text_388": "新建角色绑定(FederatedRoleBinding)",
+  "k8s.text_389": "角色类型",
+  "k8s.text_390": "新建集群角色",
+  "k8s.text_391": "新建集群角色绑定(ClusterRoleBinding)",
+  "k8s.text_392": "新建角色绑定(RoleBinding)"
 }

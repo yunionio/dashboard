@@ -2,24 +2,24 @@
   <div>
     <a-form :form="form.fc" v-bind="formItemLayout" layout="vertical">
       <div class="d-flex" v-for="(item, i) in resourceList" :key="item.key">
-        <a-form-item class="mr-2" :label="i > 0 ? '' : '资源'">
+        <a-form-item class="mr-2" :label="i > 0 ? '' : $t('k8s.text_64')">
           <base-select
             style="width: 300px"
             v-decorator="decorators.resources(item.key)"
             :options="resourceOpts"
             filterable
             @update:item="val => syncItem(val, item)"
-            :select-props="{ placeholder: '请选择资源' }" />
+            :select-props="{ placeholder: $t('k8s.text_380') }" />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 24 }" style="min-width: 200px;" :label="i > 0 ? '' : '权限'" class="verbs-item">
-          <div v-if="!item.verbs.length" class="no-verbs-tip">暂无权限可选，请先选择资源</div>
+        <a-form-item :labelCol="{ span: 24 }" style="min-width: 200px;" :label="i > 0 ? '' : $t('k8s.text_381')" class="verbs-item">
+          <div v-if="!item.verbs.length" class="no-verbs-tip">{{$t('k8s.text_382')}}</div>
           <a-checkbox-group v-else v-decorator="decorators.verbs(item.key)" name="checkboxgroup" :options="item.verbs" />
         </a-form-item>
         <a-button shape="circle" icon="minus" size="small" @click="decrease(i)" :class="i === 0 ? 'mt-4_5': ''" />
       </div>
       <div class="d-flex align-items-center">
         <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
-        <a-button type="link" @click="add">添加资源</a-button>
+        <a-button type="link" @click="add">{{$t('k8s.text_383')}}</a-button>
       </div>
     </a-form>
   </div>
@@ -64,7 +64,7 @@ export default {
           `resources[${i}]`,
           {
             rules: [
-              { required: true, message: '请选择资源' },
+              { required: true, message: this.$t('k8s.text_380') },
             ],
           },
         ],
@@ -82,7 +82,7 @@ export default {
           `verbs[${i}]`,
           {
             rules: [
-              { required: true, message: '请勾选权限' },
+              { required: true, message: this.$t('k8s.text_384') },
             ],
           },
         ],

@@ -14,7 +14,7 @@ import WindowsMixin from '@/mixins/windows'
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
-  name: 'K8SFederatednamespaceClusterList',
+  name: 'K8SFederatedAccachClsuterSidepage',
   mixins: [WindowsMixin],
   props: {
     data: {
@@ -50,6 +50,7 @@ export default {
               title: this.$t('k8s.text_368'),
               name: this.$t('k8s.text_365'),
               onManager: this.onManager,
+              resource: this.resource,
               success: () => {
                 this.list.refesh()
               },
@@ -62,7 +63,7 @@ export default {
       ],
       singleActions: [
         {
-          label: '解绑',
+          label: this.$t('k8s.text_199'),
           permission: `k8s_${this.resource}_perform_detach_cluster`,
           action: (obj) => {
             this.createDialog('DetachClusterDialog', {
@@ -80,7 +81,7 @@ export default {
       columns: [
         {
           field: 'cluster',
-          title: '集群名称',
+          title: this.$t('k8s.text_243'),
           width: 300,
           slots: {
             default: ({ row }, h) => {

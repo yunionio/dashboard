@@ -11,7 +11,7 @@
           v-decorator="decorators.federatednamespace_id"
           :params="federatednamespaceParams" />
       </a-form-item>
-      <a-form-item label="资源授权">
+      <a-form-item :label="$t('k8s.text_386')">
         <role-rule-form-item ref="roleRuleRef" federatedResource="federatedroles" />
       </a-form-item>
     </a-form>
