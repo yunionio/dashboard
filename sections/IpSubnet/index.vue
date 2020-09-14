@@ -36,13 +36,19 @@
         </a-form-item>
       </a-col>
       <a-col :span="8">
-        <a-form-item class="mb-0" v-if="this.ipShow" :wrapperCol="{ span: 24 }">
-          <a-input
-            :placeholder="$t('compute.text_197')"
-            v-decorator="decorator.ip_addr" />
-        </a-form-item>
-        <a-button v-if="this.ipShow" type="link" class="mr-1 mt-1" @click="triggerShowIp">{{$t('compute.text_135')}}</a-button>
-        <a-button v-else type="link" class="mr-1 mt-1" @click="triggerShowIp">{{$t('compute.text_198')}}</a-button>
+        <a-button v-if="!this.ipShow" type="link" class="mr-1 mt-1" @click="triggerShowIp">{{$t('compute.text_198')}}</a-button>
+        <a-row v-else>
+          <a-col :span="21">
+            <a-form-item class="mb-0" :wrapperCol="{ span: 24 }">
+              <a-input
+                :placeholder="$t('compute.text_197')"
+                v-decorator="decorator.ip_addr" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="3">
+            <a-button type="link" class="mt-1" @click="triggerShowIp">{{$t('compute.text_135')}}</a-button>
+          </a-col>
+        </a-row>
       </a-col>
     </a-row>
   </a-form-item>

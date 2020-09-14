@@ -105,6 +105,10 @@ export default {
     async _getPrice () {
       try {
         if (R.isEmpty(this.currentCloudregion)) return
+        if (!this.size) {
+          this.priceTotal = null
+          return
+        }
         let region = ''
         if (this.currentCloudregion.external_id) {
           region = this.currentCloudregion.external_id.split('/')[1]

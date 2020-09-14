@@ -14,6 +14,7 @@
           :labelCol="formItemLayout.labelCol"
           :names="areaselectsName"
           :cloudregionParams="regionParams"
+          :providerParams="cloudProviderParams"
           :isRequired="true"
           :region.sync="regionList"
           @change="cloudregionChange" />
@@ -41,16 +42,15 @@
           </a-form-item>
           <a-form-item :label="$t('network.text_484')" v-bind="formItemLayout">
             <div class="d-flex align-items-center">
-              <a-input-number v-if="cloudEnv === 'onpremise'" style="width: 120px" :precision="0" :min="1" :max="200" v-decorator="decorators.bandwidth" />
-              <a-tooltip v-else placement="top" :title="$t('monitor.text_8', maxBandwidth)">
-              <a-input-number
-                style="width: 120px"
-                :min="1"
-                :max="maxBandwidth"
-                :step="50"
-                :formatter="format"
-                :parse="format"
-                v-decorator="decorators.bandwidth" />
+              <a-tooltip placement="top" :title="$t('network.eip.text_725', [maxBandwidth])">
+                <a-input-number
+                  style="width: 120px"
+                  :min="1"
+                  :max="maxBandwidth"
+                  :step="cloudEnv === 'onpremise' ? 1 : 50"
+                  :formatter="format"
+                  :parse="format"
+                  v-decorator="decorators.bandwidth" />
               </a-tooltip>
               <span class="ml-2">Mbps</span>
             </div>
@@ -63,7 +63,6 @@
             resource="cloudproviders"
             :params="providerParams"
             :mapper="providerMapper"
-            :label-format="labelFormat"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @update:item="providerChange"
             :isDefaultSelect="true"
@@ -219,7 +218,7 @@ export default {
         usable: true,
       },
       regionList: {},
-      bandwidth: 30,
+      bandwidth: cloudEnv !== 'private' ? 30 : 0,
     }
   },
   computed: {
@@ -289,8 +288,8 @@ export default {
       return arr
     },
     maxBandwidth () {
-      if (this.cloudEnv === 'idc') {
-        return 999999
+      if (this.cloudEnv === 'onpremise') {
+        return 10000
       }
       let maxBandwidth = 200
       if (!R.isEmpty(this.selectedRegionItem)) {
@@ -330,6 +329,11 @@ export default {
       if (this.cloudEnv === 'private' && this.selectedRegionItem && this.selectedRegionItem.id) return true
       return false
     },
+    cloudProviderParams () {
+      return {
+        cloudEnv: this.cloudEnv,
+      }
+    },
   },
   watch: {
     cloudEnv (newValue) {
@@ -351,6 +355,7 @@ export default {
       this.$nextTick(() => {
         this.form.fc.getFieldDecorator('charge_type', { initialValue: newValue === 'onpremise' ? 'bandwidth' : 'traffic' })
       })
+      this.bandwidth = newValue === 'private' ? 0 : 30
     },
   },
   provide () {
@@ -366,6 +371,7 @@ export default {
   },
   methods: {
     format (val) {
+      if (this.cloudEnv === 'onpremise') return val
       return +val || 1
     },
     vpcResourceMapper (data) {
@@ -420,9 +426,6 @@ export default {
     },
     chargeTypeChange (e) {
       this.charge_type = e.target.value
-    },
-    labelFormat (item) {
-      return `${item.provider}/${item.cloudaccount}/${item.name}`
     },
     hiddenBrandwidthHandle (selectedProvider) {
       const providers = ['Azure', 'Aws', 'Qcloud', 'Google']
