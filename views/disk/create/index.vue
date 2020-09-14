@@ -15,6 +15,7 @@
         :names="areaselectsName"
         :cloudregionParams="param.region"
         :zoneParams="param.zone"
+        :providerParams="param.provider"
         :isRequired="true"
         :region.sync="regionList"
         :zone.sync="zoneList" />
@@ -249,6 +250,7 @@ export default {
             show_emulated: true,
             ...project_domain,
           },
+          provider: {},
         }
       } else if (this.diskType === 'public') {
         return {
@@ -264,6 +266,7 @@ export default {
             cloud_env: 'public',
             ...project_domain,
           },
+          provider: { cloud_env: 'public' },
         }
       }
       if (this.isAdminMode) {

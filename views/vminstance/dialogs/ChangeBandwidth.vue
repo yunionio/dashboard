@@ -5,12 +5,15 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1185')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('compute.text_1186')" v-bind="formItemLayout" :extra="$t('compute.text_1187')">
-          <a-input-number
-            v-decorator="decorators.bandwidth"
-            :parser="getParser"
-            :min="0"
-            :max="10000" />
+        <a-form-item :label="$t('compute.text_1186')" v-bind="formItemLayout">
+          <a-tooltip placement="top" :title="`范围在 0～${[10000]}Mbps`">
+            <a-input-number
+              v-decorator="decorators.bandwidth"
+              :parser="getParser"
+              :min="0"
+              :max="10000" />
+            Mbps
+          </a-tooltip>
         </a-form-item>
       </a-form>
     </div>

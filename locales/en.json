@@ -386,7 +386,7 @@
   "compute.text_385": "MAC address",
   "compute.text_386": "IP address",
   "compute.text_387": "Bandwidth Limit",
-  "compute.text_388": "On behalf of the bandwidth is not limited",
+  "compute.text_388": "0 means unlimited bandwidth",
   "compute.text_389": "Modify Bandwidth",
   "compute.text_390": "Change IP",
   "compute.text_391": "Private cloud and public cloud do not support this operation",
@@ -1299,5 +1299,6 @@
   "compute.text_1314": "detail errors",
   "compute.text_1315": "Set scheulder tag",
   "compute.text_1316": "Incoming direction:",
-  "compute.text_1317": "Outgoing direction:"
+  "compute.text_1317": "Outgoing direction:",
+  "compute.text_1318": "Physical machine"
 }

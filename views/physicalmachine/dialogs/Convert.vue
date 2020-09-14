@@ -73,7 +73,7 @@
         <a-form-item :wrapper-col="{ span: 18, offset: 4 }" v-if="isShowImages">
           <a-button type="primary" @click="addDisk">{{$t('compute.text_307')}}</a-button>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0" v-if="isShowImages">
+        <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0" v-if="isShowNetwork">
           <server-network
             :form="form"
             :decorator="decorators.network"
@@ -85,7 +85,7 @@
             :vpcResource="vpcResource"
             :vpcResourceMapper="vpcResourceMapper" />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 18, offset: 4 }" v-if="isShowImages">
+        <a-form-item :wrapper-col="{ span: 18, offset: 4 }" v-if="isShowNetwork">
           <a-checkbox v-model="isBonding">{{$t('compute.text_310')}}</a-checkbox>
         </a-form-item>
       </a-form>
@@ -154,6 +154,7 @@ export default {
         host_type: [
           'host_type',
           {
+            initialValue: 'hypervisor',
             rules: [
               { required: true },
             ],
@@ -244,6 +245,7 @@ export default {
       ],
       imagesParams: {},
       isShowImages: false,
+      isShowNetwork: false,
       imagesData: [],
       diskOptionsDate: [], // 自定义磁盘配置数据
       chartSettings: { // echart配置信息
@@ -433,6 +435,9 @@ export default {
       } else {
         this.isShowImages = false
       }
+      if (e === 'custom' || e === '' || e === 'raid10' || e === 'raid5' || e === 'raid0') {
+        this.isShowNetwork = true
+      }
     },
     // 镜像改变
     imagechange (e) {
@@ -443,7 +448,7 @@ export default {
       })
     },
     imagesResourceMapper (data) {
-      data = data.filter((d) => d.properties.os_type === 'Linux')
+      data = data.filter((d) => d.properties?.os_type === 'Linux')
       return data
     },
     // 添加硬盘配置
@@ -653,106 +658,112 @@ export default {
         },
       })
     },
+    genParmas (values) {
+      const diskConfigs = []
+      const disks = []
+      const nets = []
+      const params = {}
+      if (values.networks) {
+        const networks = values.networks
+        for (const key in networks) {
+          const option = {
+            network: networks[key],
+          }
+          if (!R.isNil(values.networkIps) && !R.isEmpty(values.networkIps)) {
+            option.address = values.networkIps[key]
+          }
+          // 是否启用bonding
+          if (this.isBonding) {
+            option.require_teaming = true
+            if (this.isInstallOperationSystem) option.private = false
+            nets.push(option)
+          } else {
+            nets.push(option)
+          }
+        }
+      } else {
+        // 是否启用bonding
+        if (this.isBonding) {
+          nets.push({ exit: false, require_teaming: true })
+        } else {
+          nets.push({ exit: false })
+        }
+      }
+      if (nets.length > 0) {
+        params.nets = nets
+      }
+      if (this.isShowImages) {
+        // 判断数据盘是否合法
+        if (this.diskOptionsDate.length > 0) {
+          if (this.isShowFalseIcon) {
+            this.$message.error(this.$t('compute.text_319'))
+            throw new Error(this.$t('compute.text_319'))
+          }
+          // 将系统盘放置首位
+          const systemDisk = this.diskOptionsDate[0].chartData.rows.pop()
+          this.diskOptionsDate[0].chartData.rows.unshift(systemDisk)
+          for (var i = 0; i < this.diskOptionsDate.length; i++) {
+            const rows = this.diskOptionsDate[i].chartData.rows
+            const adapter = Number(this.diskOptionsDate[i].diskInfo[1].charAt(this.diskOptionsDate[i].diskInfo[1].length - 1))
+            const configOption = {
+              conf: this.diskOptionsDate[i].diskInfo[2],
+              driver: this.diskOptionsDate[i].diskInfo[0],
+              count: this.diskOptionsDate[i].count,
+              range: this.diskOptionsDate[i].range,
+              adapter,
+              type: this.diskOptionsDate[i].type === 'HDD' ? 'rotate' : 'SSD',
+            }
+            diskConfigs.push(configOption)
+            for (var j = 0; j < rows.length; j++) {
+              let option = {
+                size: rows[j].size * 1024,
+                fs: rows[j].format,
+                mountpoint: rows[j].name,
+              }
+              if (i === 0 && j === 0) {
+                option = {
+                  size: rows[j].size * 1024,
+                  image_id: this.selectedImage.id,
+                }
+              }
+              if (j === rows.length - 1) {
+                option.size = -1
+                if (!rows[j].format) {
+                  Reflect.deleteProperty(option, 'fs')
+                }
+                if (rows[j].name === this.$t('compute.text_315')) {
+                  Reflect.deleteProperty(option, 'mountpoint')
+                }
+              }
+              disks.push(option)
+            }
+          }
+          // 根据adapter排序diskConfigs
+          diskConfigs.sort((a, b) => { return a.adapter - b.adapter })
+          return {
+            ...params,
+            name: values.name,
+            host_type: values.host_type,
+            disks,
+            baremetal_disk_configs: diskConfigs,
+          }
+        } else {
+          this.$message.error(this.$t('compute.text_842'))
+          throw new Error(this.$t('compute.text_842'))
+        }
+      }
+      return {
+        ...params,
+        name: values.name,
+        host_type: values.host_type,
+        raid: values.raid,
+      }
+    },
     async handleConfirm () {
       this.loading = true
       try {
-        const diskConfigs = []
         const values = await this.validateForm()
-        const disks = []
-        const nets = []
-        let params = {}
-        if (values.networks) {
-          const networks = values.networks
-          for (const key in networks) {
-            const option = {
-              network: networks[key],
-            }
-            if (!R.isNil(values.networkIps) && !R.isEmpty(values.networkIps)) {
-              option.address = values.networkIps[key]
-            }
-            // 是否启用bonding
-            if (this.isBonding) {
-              option.require_teaming = true
-              if (this.isInstallOperationSystem) option.private = false
-              nets.push(option)
-            } else {
-              nets.push(option)
-            }
-          }
-        } else {
-          // 是否启用bonding
-          if (this.isBonding) {
-            nets.push({ exit: false, require_teaming: true })
-          } else {
-            nets.push({ exit: false })
-          }
-        }
-        if (this.isShowImages) {
-          // 判断数据盘是否合法
-          if (this.diskOptionsDate.length > 0) {
-            if (this.isShowFalseIcon) {
-              this.$message.error(this.$t('compute.text_319'))
-              throw new Error(this.$t('compute.text_319'))
-            }
-            // 将系统盘放置首位
-            const systemDisk = this.diskOptionsDate[0].chartData.rows.pop()
-            this.diskOptionsDate[0].chartData.rows.unshift(systemDisk)
-            for (var i = 0; i < this.diskOptionsDate.length; i++) {
-              const rows = this.diskOptionsDate[i].chartData.rows
-              const adapter = Number(this.diskOptionsDate[i].diskInfo[1].charAt(this.diskOptionsDate[i].diskInfo[1].length - 1))
-              const configOption = {
-                conf: this.diskOptionsDate[i].diskInfo[2],
-                driver: this.diskOptionsDate[i].diskInfo[0],
-                count: this.diskOptionsDate[i].count,
-                range: this.diskOptionsDate[i].range,
-                adapter,
-                type: this.diskOptionsDate[i].type === 'HDD' ? 'rotate' : 'SSD',
-              }
-              diskConfigs.push(configOption)
-              for (var j = 0; j < rows.length; j++) {
-                let option = {
-                  size: rows[j].size * 1024,
-                  fs: rows[j].format,
-                  mountpoint: rows[j].name,
-                }
-                if (i === 0 && j === 0) {
-                  option = {
-                    size: rows[j].size * 1024,
-                    image_id: this.selectedImage.id,
-                  }
-                }
-                if (j === rows.length - 1) {
-                  option.size = -1
-                  if (!rows[j].format) {
-                    Reflect.deleteProperty(option, 'fs')
-                  }
-                  if (rows[j].name === this.$t('compute.text_315')) {
-                    Reflect.deleteProperty(option, 'mountpoint')
-                  }
-                }
-                disks.push(option)
-              }
-            }
-            // 根据adapter排序diskConfigs
-            diskConfigs.sort((a, b) => { return a.adapter - b.adapter })
-            params = {
-              name: values.name,
-              host_type: values.host_type,
-              disks,
-              baremetal_disk_configs: diskConfigs,
-              nets,
-            }
-          } else {
-            this.$message.error(this.$t('compute.text_842'))
-            throw new Error(this.$t('compute.text_842'))
-          }
-        } else {
-          params = {
-            name: values.name,
-            host_type: values.host_type,
-            raid: values.raid,
-          }
-        }
+        const params = this.genParmas(values)
         await this.doConvert(params)
         this.loading = false
         this.cancelDialog()
