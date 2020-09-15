@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import { roleRefColumn, subjectsColumn } from '@K8S/utils/sidePageColumn'
 
 export default {
@@ -28,7 +27,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        getCopyWithContentTableColumn({ field: 'cluster', title: this.$t('k8s.text_19') }),
         {
           field: 'status',
           title: this.$t('k8s.text_35'),

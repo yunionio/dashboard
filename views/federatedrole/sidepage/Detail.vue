@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
-
 export default {
   name: 'K8sFederatedroleDetail',
   props: {
@@ -27,7 +25,6 @@ export default {
   data () {
     return {
       baseInfo: [
-        getCopyWithContentTableColumn({ field: 'cluster', title: this.$t('k8s.text_19') }),
         {
           field: 'status',
           title: this.$t('k8s.text_35'),
