@@ -240,7 +240,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope', 'capability']),
+    ...mapGetters(['scope', 'capability', 'isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
     brandEnv () {
       return findPlatform(this.form.fd.brand)
     },
@@ -332,6 +332,7 @@ export default {
       let brandKey = 'brand'
       const usageKeys = fd.usage.split(',')
       const min = fd.time / 60 / 60
+      const condition = this.getDomainOrProjectQuery()
       if (this.brandEnv === 'idc' || this.brandEnv === 'private') {
         const hypervisor = typeClouds.brandMap[brand].hypervisor
         if (hypervisor === 'kvm') {
@@ -344,11 +345,17 @@ export default {
         if (fd.resType === 'host') {
           ret = `SELECT ${fd.order}("${usageKeys[0]}", ${fd.limit}) FROM "${usageKeys[1]}" WHERE "res_type" = 'host' AND time > now() - ${min}m AND "${brandKey}" = '${brand}' GROUP BY "host"`
         }
+        if (condition && condition.length > 0) {
+          ret += ` AND ${condition}`
+        }
         return ret
       }
       if (this.brandEnv === 'public') {
         if (fd.resType === 'server') {
           ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", "hypervisor", ${fd.limit}) FROM "${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
+        }
+        if (condition && condition.length > 0) {
+          ret += ` AND ${condition}`
         }
         return ret
       }
@@ -380,6 +387,14 @@ export default {
     getPercent (val) {
       const num = (val / this.maxSeriesData).toFixed(2) * 100
       return Number.isFinite(num) ? num : 0
+    },
+    getDomainOrProjectQuery () {
+      if (this.isProjectMode) {
+        return `tenant_id = ${this.userInfo.projectId}`
+      } else if (this.isDomainMode) {
+        return `domain_id = ${this.userInfo.projectDomainId}`
+      }
+      return ''
     },
   },
 }
