@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
   getAccountTableColumn,
+  getStatusTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 
@@ -25,6 +26,7 @@ export default {
         },
       }),
       getBrandTableColumn(),
+      getStatusTableColumn({ statusModule: 'dnszonecache' }),
       getAccountTableColumn(),
       getTimeTableColumn(),
       getTimeTableColumn({ title: this.$t('network.text_314'), field: 'updated_at' }),

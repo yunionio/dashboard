@@ -12,6 +12,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'DnsZonecacheList',
@@ -31,6 +32,9 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'dns_zonecaches',
+        steadyStatus: {
+          status: Object.values(expectStatus.dnszonecache).flat(),
+        },
         getParams: {
           ...this.getParams,
           details: true,
