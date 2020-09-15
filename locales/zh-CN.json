@@ -389,5 +389,13 @@
   "k8s.text_389": "角色类型",
   "k8s.text_390": "新建集群角色(ClusterRole)",
   "k8s.text_391": "新建集群角色绑定(ClusterRoleBinding)",
-  "k8s.text_392": "新建角色绑定(RoleBinding)"
+  "k8s.text_392": "新建角色绑定(RoleBinding)",
+  "k8s.text_385": "新建集群角色(FederatedClusterRole)",
+  "k8s.text_393": "集群角色(FederatedClusterRole)",
+  "k8s.text_394": "集群角色绑定(FederatedClusterRoleBingding)",
+  "k8s.text_395": "命名空间(FederatedNamespace)",
+  "k8s.text_396": "新建角色(FederatedRole)",
+  "k8s.text_397": "角色(FederatedRole)",
+  "k8s.text_398": "角色绑定(FederatedRoleBinding)",
+  "k8s.text_399": "新建角色(Role)"
 }

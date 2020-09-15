@@ -389,5 +389,13 @@
   "k8s.text_389": "Role Type",
   "k8s.text_390": "ClusterRole Create",
   "k8s.text_391": "ClusterRoleBinding Create",
-  "k8s.text_392": "RoleBinding Create"
+  "k8s.text_392": "RoleBinding Create",
+  "k8s.text_385": "FederatedClusterRole Create",
+  "k8s.text_393": "FederatedClusterRole Create",
+  "k8s.text_394": "FederatedClusterRoleBingding Create",
+  "k8s.text_395": "FederatedNamespace Create",
+  "k8s.text_396": "FederatedRole Create",
+  "k8s.text_397": "FederatedRole",
+  "k8s.text_398": "FederatedRoleBinding",
+  "k8s.text_399": "Role"
 }

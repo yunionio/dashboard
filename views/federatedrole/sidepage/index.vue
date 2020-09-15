@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="角色(FederatedRole)"
+    :title="$t('k8s.text_397')"
     icon="res-k8s-rbacrole"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"

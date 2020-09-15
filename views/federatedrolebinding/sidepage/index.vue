@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="角色绑定(FederatedRoleBinding)"
+    :title="$t('k8s.text_398')"
     icon="res-k8s-rbacrolebinding"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"

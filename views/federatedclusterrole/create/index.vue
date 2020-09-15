@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="新建集群角色(FederatedClusterRole)" />
+    <page-header :title="$t('k8s.text_385')" />
     <page-body>
       <role-form @submit="submit" ref="formRef" />
     </page-body>

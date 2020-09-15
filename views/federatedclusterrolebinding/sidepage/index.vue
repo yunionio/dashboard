@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    title="集群角色绑定(FederatedClusterRoleBingding)"
+    :title="$t('k8s.text_394')"
     icon="res-k8s-rbacclusterrolebinding"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
