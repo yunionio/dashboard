@@ -1479,7 +1479,14 @@
     "system": "System Config",
     "costalerts": "Resource consumption warning",
     "dns_recordsets": "DNS Recordset",
-    "dns_zonecaches": "DNS Zone Cache"
+    "dns_zonecaches": "DNS Zone Cache",
+    "rbacclusterroles": "rbacclusterroles",
+    "rbacclusterrolebindings": "rbacclusterrolebindings",
+    "federatednamespaces": "federatednamespaces",
+    "federatedroles": "federatedroles",
+    "federatedclusterroles": "federatedclusterroles",
+    "federatedrolebindings": "federatedrolebindings",
+    "federatedclusterrolebindings": "federatedclusterrolebindings" 
   },
   "shareScope": {
     "system": "System",
