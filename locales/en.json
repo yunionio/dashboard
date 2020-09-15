@@ -808,6 +808,14 @@
     "alertrecord": {
       "ok": "Alarm has been restored",
       "alerting": "Alarming"
+    },
+    "dnszonecache": {
+      "init": "Initialize",
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
+      "creating": "Creating",
+      "create_failed": "Create failed",
+      "available": "available"
     }
   },
   "skuCategoryOptions": {

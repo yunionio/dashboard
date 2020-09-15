@@ -808,6 +808,14 @@
     "alertrecord": {
       "ok": "告警已恢复",
       "alerting": "发生告警"
+    },
+    "dnszonecache": {
+      "init": "初始化",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "available": "可用"
     }
   },
   "skuCategoryOptions": {
