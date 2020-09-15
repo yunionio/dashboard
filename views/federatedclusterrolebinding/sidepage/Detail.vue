@@ -47,8 +47,8 @@ export default {
             return this.$moment(cellValue).format()
           },
         },
-        roleRefColumn('spec.template'),
-        subjectsColumn('spec.template'),
+        roleRefColumn('spec.template.roleRef'),
+        subjectsColumn('spec.template.subjects'),
       ],
     }
   },

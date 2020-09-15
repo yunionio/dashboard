@@ -120,11 +120,7 @@ export const subjectsColumn = (path = 'subjects') => {
       default: ({ row }, h) => {
         const subjects = _.get(row, path)
         if (!subjects) return '-'
-        const columns = [
-          { field: 'kind', title: 'kind' },
-          { field: 'name', title: 'name' },
-          { field: 'namespace', title: 'namespace' },
-        ]
+        const columns = Object.keys(subjects[0]).filter(key => key !== '_XID').map(key => ({ field: key, title: key }))
         return <vxe-grid data={ subjects } columns={ columns } size="mini" />
       },
     },

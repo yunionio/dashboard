@@ -397,5 +397,6 @@
   "k8s.text_396": "FederatedRole Create",
   "k8s.text_397": "FederatedRole",
   "k8s.text_398": "FederatedRoleBinding",
-  "k8s.text_399": "Role"
+  "k8s.text_399": "Role",
+  "k8s.text_400": "Cluster Type"
 }

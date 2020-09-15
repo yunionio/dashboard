@@ -9,12 +9,9 @@
         v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('k8s.text_60')" />
       </a-form-item>
-      <!-- <a-form-item
-        :label="$t('k8s.text_178')"
-        :extra="$t('k8s.text_179')<IP>:<Port>/"
-        v-bind="formItemLayout">
-        <a-input v-decorator="decorators.api_server" :placeholder="$t('k8s.text_180')" />
-      </a-form-item> -->
+      <a-form-item :label="$t('k8s.text_400')" v-bind="formItemLayout">
+        <icon-radio v-decorator="decorators.distribution" :options="clusterTypesOpt" />
+      </a-form-item>
       <a-form-item
         :label="$t('k8s.text_181')"
         v-bind="formItemLayout">
@@ -30,9 +27,13 @@
 
 <script>
 import { validateYaml } from '@/utils/validate'
+import IconRadio from '@/sections/IconRadio'
 
 export default {
   name: 'ClusterImport',
+  components: {
+    IconRadio,
+  },
   data () {
     const validator = (rule, value, _callback) => {
       validateYaml(value)
@@ -43,6 +44,10 @@ export default {
           return _callback(this.$t('k8s.text_182'))
         })
     }
+    const clusterTypesOpt = [
+      { key: 'k8s', label: 'K8S', icon: { type: 'k8s' }, style: { color: 'rgb(51, 51, 51)' } },
+      { key: 'openshift', label: 'OpenShift', icon: { type: 'openshift' }, style: { color: 'rgb(225, 38, 52)' } },
+    ]
     return {
       loading: false,
       form: {
@@ -58,15 +63,12 @@ export default {
             ],
           },
         ],
-        // api_server: [
-        //   'api_server',
-        //   {
-        //     validateTrigger: 'blur',
-        //     rules: [
-        //       { required: true, message: '请输入API Server 地址' },
-        //     ],
-        //   },
-        // ],
+        distribution: [
+          'distribution',
+          {
+            initialValue: clusterTypesOpt[0].key,
+          },
+        ],
         kubeconfig: [
           'kubeconfig',
           {
@@ -91,6 +93,7 @@ export default {
         theme: 'material',
         autofocus: true,
       },
+      clusterTypesOpt,
     }
   },
   methods: {
@@ -102,7 +105,13 @@ export default {
           mode: 'import',
           provider: 'external',
           resource_type: 'unknown',
-          ...values,
+          name: values.name,
+          import_data: {
+            kubeconfig: values.kubeconfig,
+          },
+        }
+        if (values.distribution === 'openshift') {
+          data.import_data.distribution = 'openshift'
         }
         await new this.$Manager('kubeclusters', 'v1').create({ data })
         this.loading = false

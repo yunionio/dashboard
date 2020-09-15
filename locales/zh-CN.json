@@ -397,5 +397,6 @@
   "k8s.text_396": "新建角色(FederatedRole)",
   "k8s.text_397": "角色(FederatedRole)",
   "k8s.text_398": "角色绑定(FederatedRoleBinding)",
-  "k8s.text_399": "新建角色(Role)"
+  "k8s.text_399": "新建角色(Role)",
+  "k8s.text_400": "集群类型"
 }
