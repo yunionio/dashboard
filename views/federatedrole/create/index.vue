@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_385')" />
+    <page-header title="新建角色(federatedrole)" />
     <page-body>
       <role-form @submit="submit" ref="formRef" />
     </page-body>

@@ -1,16 +1,17 @@
 <template>
   <div>
     <detail
-    :on-manager="onManager"
-    :data="data"
-    :base-info="baseInfo"
-    resource="rbacclusterrolebindings" />
+      :on-manager="onManager"
+      :data="data"
+      :base-info="baseInfo"
+      resource="rbacclusterrolebindings" />
   </div>
 
 </template>
 
 <script>
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { roleRefColumn, subjectsColumn } from '@K8S/utils/sidePageColumn'
 
 export default {
   name: 'K8sRbacclusterrolebindingDetail',
@@ -35,8 +36,8 @@ export default {
             return this.$moment(cellValue).format()
           },
         },
-        { field: 'type', title: this.$t('k8s.text_34') },
-        { field: 'namespace', title: this.$t('k8s.text_23') },
+        roleRefColumn(),
+        subjectsColumn(),
       ],
     }
   },

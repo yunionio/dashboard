@@ -11,6 +11,7 @@
 
 <script>
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { roleRefColumn, subjectsColumn } from '@K8S/utils/sidePageColumn'
 
 export default {
   name: 'K8sFederatedclusterrolebindingDetail',
@@ -46,6 +47,8 @@ export default {
             return this.$moment(cellValue).format()
           },
         },
+        roleRefColumn('spec.template'),
+        subjectsColumn('spec.template'),
       ],
     }
   },

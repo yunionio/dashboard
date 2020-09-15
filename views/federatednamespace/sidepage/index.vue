@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('k8s.text_295')"
+    title="命名空间(FederatedNamespace)"
     icon="res-k8s-namespace"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"

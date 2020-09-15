@@ -14,6 +14,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -31,14 +32,20 @@ export default {
       this.loading = true
       try {
         if (!R.is(Number, this.params.rowIndex)) return
-        const rules = (this.params.data || []).slice(0)
+        const { rulesPath } = this.params
+        let rules = (_.get(this.params.resourceData, rulesPath) || []).slice(0)
+        rules.splice(this.params.rowIndex, 1)
+        rules = rules.map(val => ({ apiGroups: val.apiGroups, resources: val.resources, verbs: val.verbs }))
         await this.params.onManager('update', {
           id: this.params.resourceData.id,
           managerArgs: {
-            data: rules.splice(this.params.rowIndex, 1),
+            data: {
+              rules,
+            },
           },
         })
         this.loading = false
+        this.params.success && this.params.success()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

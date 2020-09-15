@@ -1,8 +1,9 @@
 <template>
-  <vxe-grid :data="data.rules || []" :columns="columns" />
+  <vxe-grid :data="rules" :columns="columns" />
 </template>
 
 <script>
+import _ from 'lodash'
 import ActionButton from '@/components/PageList/Actions/ActionButton'
 import WindowsMixin from '@/mixins/windows'
 
@@ -18,9 +19,14 @@ export default {
       type: Function,
       required: true,
     },
+    rulesPath: {
+      type: String,
+      default: 'rules',
+    },
   },
   data () {
     return {
+      rules: _.get(this.data, this.rulesPath),
       columns: [
         {
           field: 'verbs',
@@ -81,12 +87,17 @@ export default {
   },
   methods: {
     deleteRule (rowIndex) {
+      const rule = this.rules[rowIndex]
       this.createDialog('K8SRemoveRuleDialog', {
         resourceData: this.data,
-        data: [this.data.rules[rowIndex]],
+        rulesPath: this.rulesPath,
+        data: [rule],
         rowIndex,
         columns: this.columns.slice(0, 3),
         onManager: this.onManager,
+        success: () => {
+          this.$emit('singleRefresh', this.data.id)
+        },
       })
     },
   },

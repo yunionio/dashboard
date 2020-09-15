@@ -1,8 +1,8 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('k8s.text_330')"
-    icon="res-k8s-rbacrole"
+    :title="$t('k8s.text_376')"
+    icon="res-k8s-rbacclusterrole"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"

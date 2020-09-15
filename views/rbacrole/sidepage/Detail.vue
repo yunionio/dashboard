@@ -35,7 +35,6 @@ export default {
             return this.$moment(cellValue).format()
           },
         },
-        { field: 'type', title: this.$t('k8s.text_34') },
         { field: 'namespace', title: this.$t('k8s.text_23') },
       ],
     }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_374')" />
+    <page-header title="角色绑定(FederatedRoleBinding)" />
     <page-body>
       <k8s-federatedrolebinding-list :id="listId" :getParams="getParams" />
     </page-body>

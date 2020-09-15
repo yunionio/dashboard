@@ -63,7 +63,7 @@ export default {
         },
         {
           label: this.$t('k8s.text_201'),
-          permission: 'k8s_rbacroles_delete',
+          permission: 'k8s_rbacrolebindings_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -73,7 +73,7 @@ export default {
               name: this.$t('k8s.text_24'),
               onManager: this.onManager,
               ok: (ids, data) => {
-                return new this.$Manager(`${data[0].type}s`, 'v1').batchDelete({
+                return new this.$Manager('rbacrolebindings', 'v1').batchDelete({
                   ids,
                   data: {
                     cluster: data[0].clusterID,

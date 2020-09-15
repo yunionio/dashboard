@@ -1,8 +1,8 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('k8s.text_295')"
-    icon="res-k8s-namespace"
+    title="角色(FederatedRole)"
+    icon="res-k8s-rbacrole"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
@@ -20,6 +20,7 @@
       :data="detailData"
       :resId="detailData.id"
       resource="federatedroles"
+      rulesPath="spec.template.rules"
       :serverColumns="columns"
       :res-id="data.id"
       :getParams="getParams"
@@ -38,6 +39,7 @@ import K8sAttachClusterList from '@K8S/sections/AccachClsuterSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import RoleRulesSidepage from '@K8S/sections/RoleRulesSidepage'
 
 export default {
   name: 'K8SFederatedroleSidePage',
@@ -45,12 +47,14 @@ export default {
     Actions,
     K8sFederatedroleDetail,
     K8sAttachClusterList,
+    RoleRulesSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: this.$t('k8s.text_217'), key: 'k8s-federatedrole-detail' },
+        { label: this.$t('k8s.text_378'), key: 'role-rules-sidepage' },
         { label: this.$t('k8s.text_369'), key: 'k8s-attach-cluster-list' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],

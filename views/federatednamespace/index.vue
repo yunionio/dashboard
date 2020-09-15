@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_365')" />
+    <page-header title="命名空间(FederatedNamespace)" />
     <page-body>
       <k8s-federatednamespace-list :id="listId" :getParams="getParams" />
     </page-body>

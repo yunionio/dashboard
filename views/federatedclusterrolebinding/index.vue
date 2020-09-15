@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_375')" />
+    <page-header title="集群角色绑定(FederatedClusterRoleBingding)" />
     <page-body>
       <k8s-federatedclusterrolebinding-list :id="listId" :getParams="getParams" />
     </page-body>
