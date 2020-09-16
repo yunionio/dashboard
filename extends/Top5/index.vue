@@ -84,7 +84,7 @@ import { usageConfig } from './constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { resolveValueChangeField } from '@/utils/common/ant'
-import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
 
 export default {
@@ -328,17 +328,12 @@ export default {
     genSQLQuery () {
       const fd = this.form.fd
       let ret = ''
-      let brand = fd.brand
-      let brandKey = 'brand'
+      const brand = fd.brand
+      const brandKey = 'brand'
       const usageKeys = fd.usage.split(',')
       const min = fd.time / 60 / 60
       const condition = this.getDomainOrProjectQuery()
       if (this.brandEnv === 'idc' || this.brandEnv === 'private') {
-        const hypervisor = typeClouds.brandMap[brand].hypervisor
-        if (hypervisor === 'kvm') {
-          brandKey = 'platform'
-          brand = 'kvm'
-        }
         if (fd.resType === 'server') {
           ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", ${fd.limit}) FROM "telegraf"."30day_only"."${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
         }
