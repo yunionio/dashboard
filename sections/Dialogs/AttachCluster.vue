@@ -73,8 +73,8 @@ export default {
           },
         })
         this.loading = false
-        this.params.success && this.params.success()
         this.cancelDialog()
+        this.params.success && this.params.success()
       } catch (error) {
         this.loading = false
       }
