@@ -2257,7 +2257,10 @@
       "pd-standard": "标准永久性磁盘"
     },
     "view": "查看",
-    "total": "共：{0}"
+    "total": "共：{0}",
+    "bind": "绑定",
+    "unbind": "解绑",
+    "remove": "移除"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
