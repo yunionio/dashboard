@@ -738,5 +738,11 @@
   "network.dns.youdao": "Youdao",
   "network.dns.sousou": "Sousou",
   "network.dns.sougou": "Sougou",
-  "network.dns.qihu360": "Qihu 360"
+  "network.dns.qihu360": "Qihu 360",
+  "network.eip.text_725": "Range is 1～{0}Mbps",
+  "network.text_725": "Start: {0}",
+  "network.text_726": "Stop: {0}",
+  "network.text_727": "Total: {0}",
+  "network.text_728": "Use: {0}",
+  "network.text_729": "No scheulder tags"
 }

@@ -738,5 +738,11 @@
   "network.dns.youdao": "有道",
   "network.dns.sousou": "搜搜",
   "network.dns.sougou": "搜狗",
-  "network.dns.qihu360": "奇虎360"
+  "network.dns.qihu360": "奇虎360",
+  "network.eip.text_725": "范围在 1～{0}Mbps",
+  "network.text_725": "起：{0}",
+  "network.text_726": "止：{0}",
+  "network.text_727": "总计：{0}",
+  "network.text_728": "使用：{0}",
+  "network.text_729": "无调度标签"
 }
