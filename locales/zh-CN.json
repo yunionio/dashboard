@@ -1300,5 +1300,7 @@
   "compute.text_1315": "设置调度标签",
   "compute.text_1316": "入方向：",
   "compute.text_1317": "出方向：",
-  "compute.text_1318": "所在物理机"
+  "compute.text_1318": "所在物理机",
+  "compute.text_1319": "（管理）",
+  "compute.text_1320": "（带外）"
 }
