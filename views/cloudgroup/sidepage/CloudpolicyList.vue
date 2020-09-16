@@ -114,13 +114,16 @@ export default {
             })
           },
           meta: (obj) => {
+            const ret = {
+              validate: true,
+            }
             if (!this.isOwner()) {
               return {
                 validate: false,
                 tooltip: this.$t('common_614'),
               }
             }
-            return this.$getDeleteResult(obj)
+            return ret
           },
         },
       ],

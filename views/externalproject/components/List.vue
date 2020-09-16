@@ -39,11 +39,11 @@ export default {
       columns: [
         {
           field: 'name',
-          title: this.$t('cloudenv.text_386', [this.$t('dictionary.project')]),
+          title: this.$t('cloudenv.text_386'),
         },
         {
           field: 'tenant',
-          title: this.$t('cloudenv.text_387', [this.$t('dictionary.project')]),
+          title: this.$t('cloudenv.text_387'),
           slots: {
             default: ({ row }) => {
               return [
@@ -59,12 +59,12 @@ export default {
       ],
       groupActions: [
         {
-          label: this.$t('cloudenv.text_388', [this.$t('dictionary.project')]),
+          label: this.$t('cloudenv.text_388'),
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: this.list.selectedItems,
-              title: this.$t('cloudenv.text_388', [this.$t('dictionary.project')]),
+              title: this.$t('cloudenv.text_388'),
               name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,
@@ -79,12 +79,12 @@ export default {
       ],
       singleActions: [
         {
-          label: this.$t('cloudenv.text_388', [this.$t('dictionary.project')]),
+          label: this.$t('cloudenv.text_388'),
           permission: 'externalprojects_update',
           action: obj => {
             this.createDialog('ChangeProjectDialog', {
               data: [obj],
-              title: this.$t('cloudenv.text_388', [this.$t('dictionary.project')]),
+              title: this.$t('cloudenv.text_388'),
               name: this.$t('dictionary.project'),
               columns: this.columns,
               onManager: this.onManager,

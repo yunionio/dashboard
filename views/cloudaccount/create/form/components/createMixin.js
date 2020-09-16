@@ -22,13 +22,13 @@ export default {
       formLayout: {
         wrapperCol: {
           md: { span: 18 },
-          xl: { span: 20 },
-          xxl: { span: 22 },
+          xl: { span: 19 },
+          xxl: { span: 21 },
         },
         labelCol: {
-          md: { span: 6 },
-          xl: { span: 3 },
-          xxl: { span: 2 },
+          md: { span: 8 },
+          xl: { span: 5 },
+          xxl: { span: 3 },
         },
       },
       domainProjectShow: false,

@@ -73,16 +73,16 @@ export default {
       },
       formLayout: {
         wrapperCol: {
-          span: 21,
+          span: 18,
         },
         labelCol: {
-          span: 3,
+          span: 6,
         },
       },
       offsetFormLayout: {
         wrapperCol: {
-          span: 21,
-          offset: 3,
+          span: 18,
+          offset: 6,
         },
       },
       domainParams: {

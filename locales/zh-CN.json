@@ -418,9 +418,9 @@
   "cloudenv.text_383": "调整策略",
   "cloudenv.text_384": "资源类型",
   "cloudenv.text_385": "标签(调度标签)",
-  "cloudenv.text_386": "云上{0}",
-  "cloudenv.text_387": "本地{0}",
-  "cloudenv.text_388": "切换本地{0}",
+  "cloudenv.text_386": "云上项目",
+  "cloudenv.text_387": "本地项目",
+  "cloudenv.text_388": "切换本地项目",
   "cloudenv.text_389": "参数",
   "cloudenv.text_390": "包含",
   "cloudenv.text_391": "不包含",
@@ -524,5 +524,6 @@
   "cloudenv.text_489": "二层网络(数量)",
   "cloudenv.text_490": "IP子网(数量)",
   "cloudenv.text_491": "云用户组",
-  "cloudenv.text_492": "创建云用户组"
+  "cloudenv.text_492": "创建云用户组",
+  "cloudenv.text_493": "自动创建项目"
 }

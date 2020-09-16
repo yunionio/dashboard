@@ -104,7 +104,7 @@ export default {
                     <a-progress status={'active'} strokeColor={strokeColor} format={format} size="small" percent={percent} />
                   </a-col>
                   <a-col span={10}>
-                    <span style={{ fontSize: '12px', paddingLeft: '20px' }}>{uc}（共{mc}）</span>
+                    <span style={{ fontSize: '12px', paddingLeft: '20px' }}>{uc}（{this.$t('common.total', [mc])}）</span>
                   </a-col>
                 </a-row>,
               ]

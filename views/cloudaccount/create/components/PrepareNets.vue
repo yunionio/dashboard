@@ -115,7 +115,7 @@ export default {
               Object.keys(o).forEach(k => {
                 if (k === 'ips') {
                   tds.push(
-                    <td>{ o.ips && o.ips.length > 0 ? o.ips.map(ip => ip) : '-'}</td>,
+                    <td>{ o.ips && o.ips.length > 0 ? o.ips.map(ip => ip).join('、') : '-'}</td>,
                   )
                 } else {
                   tds.push(
@@ -152,26 +152,26 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .prepare-content{
-    max-height: 300px;
-    overflow: auto;
-  }
-  .prepare-table{
-    width: 100%;
-    margin-top: 30px;
-    .thead{
-      background-color: #f8f8f9;
-      td {
-        padding: 5px;
-        font-weight: 500;
-      }
-    }
+.prepare-content{
+  max-height: 300px;
+  overflow: auto;
+}
+.prepare-table{
+  width: 100%;
+  margin-top: 30px;
+  .thead{
+    background-color: #f8f8f9;
     td {
-      font-size: 12px;
-      color: #60626E;
-      padding: 7px;
-      border: 1px solid #e8eaec;
-      text-align: center
+      padding: 5px;
+      font-weight: 500;
     }
   }
+  td {
+    font-size: 12px;
+    color: #60626E;
+    padding: 7px;
+    border: 1px solid #e8eaec;
+    text-align: center
+  }
+}
 </style>
