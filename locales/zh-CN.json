@@ -1356,7 +1356,8 @@
     "taiyuan": "太原",
     "tianjin": "天津",
     "wuhan": "武汉",
-    "zhengzhou": "郑州"
+    "zhengzhou": "郑州",
+    "wulanchabu": "乌兰察布"
   },
   "cloudPrvidersMap": {
     "Aliyun": "阿里云",
@@ -1491,7 +1492,14 @@
     "system": "系统配置",
     "costalerts": "资源消费预警",
     "dns_recordsets": "DNS解析-记录",
-    "dns_zonecaches": "DNS解析-缓存"
+    "dns_zonecaches": "DNS解析-缓存",
+    "rbacclusterroles": "集群角色",
+    "rbacclusterrolebindings": "集群角色绑定",
+    "federatednamespaces": "命名空间(多集群)",
+    "federatedroles": "角色(多集群)",
+    "federatedclusterroles": "集群角色(多集群)",
+    "federatedrolebindings": "角色绑定(多集群)",
+    "federatedclusterrolebindings": "集群角色绑定(多集群)" 
   },
   "shareScope": {
     "system": "系统",
