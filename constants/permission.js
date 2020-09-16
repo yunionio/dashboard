@@ -77,6 +77,16 @@ export const PERMISSION = {
   k8s_rbacrolebindings_list: ['k8s', 'rbacrolebindings', 'list'],
   // rbacroles
   k8s_serviceaccounts_list: ['k8s', 'serviceaccounts', 'list'],
+  // rbacclusterroles
+  k8s_rbacclusterroles_list: ['k8s', 'rbacclusterroles', 'list'],
+  // rbacclusterrolebindings
+  k8s_rbacclusterrolebindings_list: ['k8s', 'rbacrolebindings', 'list'],
+  /* 多集群资源 */
+  k8s_federatednamespaces_list: ['k8s', 'federatednamespaces', 'list'],
+  k8s_federatedroles_list: ['k8s', 'federatedroles', 'list'],
+  k8s_federatedclusterroles_list: ['k8s', 'federatedclusterroles', 'list'],
+  k8s_federatedrolebindings_list: ['k8s', 'federatedrolebindings', 'list'],
+  k8s_federatedclusterrolebindings_list: ['k8s', 'federatedclusterrolebindings', 'list'],
   // 主机模板
   servertemplates_list: ['compute', 'servertemplates', 'list'],
   // 弹性伸缩组
@@ -341,8 +351,10 @@ export const PERMISSION = {
   k8s_namespaces_update: ['k8s', 'namespaces', 'update'],
   k8s_namespaces_create: ['k8s', 'namespaces', 'create'],
   k8s_namespaces_delete: ['k8s', 'namespaces', 'delete'],
+  k8s_rbacroles_create: ['k8s', 'rbacroles', 'create'],
   k8s_rbacroles_update: ['k8s', 'rbacroles', 'update'],
   k8s_rbacroles_delete: ['k8s', 'rbacroles', 'delete'],
+  k8s_rbacrolebindings_create: ['k8s', 'rbacrolebindings', 'update'],
   k8s_rbacrolebindings_update: ['k8s', 'rbacrolebindings', 'update'],
   k8s_rbacrolebindings_delete: ['k8s', 'rbacrolebindings', 'delete'],
   k8s_serviceaccounts_update: ['k8s', 'serviceaccounts', 'update'],
@@ -350,6 +362,32 @@ export const PERMISSION = {
   k8s_kubecomponent_update: ['k8s', 'kubecomponent', 'update'],
   k8s_kubecomponent_create: ['k8s', 'kubecomponent', 'create'],
   k8s_kubemachines_delete: ['k8s', 'kubemachines', 'delete'],
+  k8s_rbacclusterroles_create: ['k8s', 'rbacclusterroles', 'create'],
+  k8s_rbacclusterroles_update: ['k8s', 'rbacclusterroles', 'update'],
+  k8s_rbacclusterroles_delete: ['k8s', 'rbacclusterroles', 'delete'],
+  k8s_rbacclusterrolebindings_create: ['k8s', 'rbacclusterrolebindings', 'update'],
+  k8s_rbacclusterrolebindings_update: ['k8s', 'rbacclusterrolebindings', 'update'],
+  k8s_rbacclusterrolebindings_delete: ['k8s', 'rbacclusterrolebindings', 'delete'],
+  k8s_federatednamespaces_create: ['k8s', 'federatednamespaces', 'create'],
+  k8s_federatednamespaces_delete: ['k8s', 'federatednamespaces', 'delete'],
+  k8s_federatednamespaces_perform_attach_cluster: ['k8s', 'federatednamespaces', 'perform', 'attach-cluster'],
+  k8s_federatednamespaces_perform_detach_cluster: ['k8s', 'federatednamespaces', 'perform', 'detach-cluster'],
+  k8s_federatedroles_create: ['k8s', 'federatedroles', 'create'],
+  k8s_federatedroles_delete: ['k8s', 'federatedroles', 'delete'],
+  k8s_federatedroles_perform_attach_cluster: ['k8s', 'federatedroles', 'perform', 'attach-cluster'],
+  k8s_federatedroles_perform_detach_cluster: ['k8s', 'federatedroles', 'perform', 'detach-cluster'],
+  k8s_federatedclusterroles_create: ['k8s', 'federatedclusterroles', 'create'],
+  k8s_federatedclusterroles_delete: ['k8s', 'federatedclusterroles', 'delete'],
+  k8s_federatedclusterroles_perform_attach_cluster: ['k8s', 'federatedclusterroles', 'perform', 'attach-cluster'],
+  k8s_federatedclusterroles_perform_detach_cluster: ['k8s', 'federatedclusterroles', 'perform', 'detach-cluster'],
+  k8s_federatedrolebindings_create: ['k8s', 'federatedrolebindings', 'create'],
+  k8s_federatedrolebindings_delete: ['k8s', 'federatedrolebindings', 'delete'],
+  k8s_federatedrolebindings_perform_attach_cluster: ['k8s', 'federatedrolebindings', 'perform', 'attach-cluster'],
+  k8s_federatedrolebindings_perform_detach_cluster: ['k8s', 'federatedrolebindings', 'perform', 'detach-cluster'],
+  k8s_federatedclusterrolebindings_create: ['k8s', 'federatedclusterrolebindings', 'create'],
+  k8s_federatedclusterrolebindings_delete: ['k8s', 'federatedclusterrolebindings', 'delete'],
+  k8s_federatedclusterrolebindings_perform_attach_cluster: ['k8s', 'federatedclusterrolebindings', 'perform', 'attach-cluster'],
+  k8s_federatedclusterrolebindings_perform_detach_cluster: ['k8s', 'federatedclusterrolebindings', 'perform', 'detach-cluster'],
   /**
    * 负责均衡 相关操作
    */
