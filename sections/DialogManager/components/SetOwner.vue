@@ -5,8 +5,9 @@
       <dialog-selected-tips :count="params.data.length" :action="$t('common.text00104')" :name="this.params.tipName || ''" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        :form="form.fc">
-        <a-form-item :label="$t('common.text00105')" v-bind="formItemLayout">
+        :form="form.fc"
+        v-bind="formItemLayout">
+        <a-form-item :label="$t('common.text00105')">
           <a-radio-group v-model="formScope">
             <a-radio-button
               v-for="item in scopeOptions"
@@ -14,7 +15,7 @@
               :key="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('dictionary.domain')" key="domain" v-bind="formItemLayout" v-if="isDomainScope">
+        <a-form-item :label="$t('dictionary.domain')" key="domain" v-if="isDomainScope">
           <base-select
             resource="domains"
             v-decorator="decorators.domain"
@@ -23,7 +24,7 @@
             version="v1"
             :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.domain')}` }" />
         </a-form-item>
-        <a-form-item :label="$t('dictionary.project')" key="project" v-bind="formItemLayout" v-if="isProjectScope">
+        <a-form-item :label="$t('dictionary.project')" key="project" v-if="isProjectScope">
           <base-select
             resource="projects"
             v-decorator="decorators.project"
@@ -105,10 +106,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 19,
         },
         labelCol: {
-          span: 3,
+          span: 5,
         },
       },
     }

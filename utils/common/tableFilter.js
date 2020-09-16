@@ -119,7 +119,7 @@ export function getIpFilter () {
     label: 'IP',
     filter: true,
     formatter: val => {
-      return `guestnetworks.guest_id(id).ip_addr.in(${val})`
+      return `guestnetworks.guest_id(id).ip_addr.contains(${val})`
     },
     jointFilter: true,
   }

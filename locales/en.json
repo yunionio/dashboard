@@ -1365,7 +1365,7 @@
     "Huawei": "Huawei Cloud",
     "Qcloud": "Tencent Cloud",
     "Azure": "Microsoft Cloud",
-    "Ctyun": "天翼云"
+    "Ctyun": "eCloud"
   },
   "dictionary": {
     "actions": "Audit Logs",
@@ -2178,6 +2178,12 @@
         "on": "On",
         "off": "Off"
       }
+    },
+    "action": {
+      "save": "Save",
+      "cacel": "Cancel",
+      "delete": "Delete",
+      "modify": "Modify"
     }
   },
   "sidepage": {
@@ -2255,7 +2261,8 @@
       "pd-ssd": "SSD Persistent Disk",
       "pd-standard": "Standard Persistent Disk"
     },
-    "view": "View"
+    "view": "View",
+    "total": "Total:{0}"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
@@ -4043,5 +4050,6 @@
   "common_710": "Specify {0}",
   "common_711": "Cloud Subscription",
   "common_712": "Default",
-  "common_713": "Strategy"
+  "common_713": "Strategy",
+  "common_714": "Oversold"
 }
