@@ -21,7 +21,14 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('network.text_152')">
+        <a-form-item>
+          <span slot="label">
+            {{ $t('network.text_152') }}
+            <a-tooltip class="item" effect="dark" placement="top" v-if="isSRV">
+              <a-icon type="info-circle" />
+              <div slot="title">格式为：优先级、空格、权重、空格、端口、空格、主机名，5 0 5269 example.com</div>
+            </a-tooltip>
+          </span>
           <a-input v-decorator="decorators.dns_value" :placeholder="$t('network.text_175')" />
         </a-form-item>
         <a-form-item>
@@ -130,6 +137,7 @@ export default {
     const dnsTypes = getDnsTypes(this.params.detailData)
     const dnsProviders = getDnsProviders(providers, this.params.detailData)
     const ttls = getTtls(this.params.detailData)
+
     const checkDnsValue = (rule, value, callback) => {
       if (this.form.fd.dns_type === 'A') {
         if (validate(value, 'IPv4') === false || validate(value, 'IPv4').result === false) {
@@ -150,20 +158,43 @@ export default {
           callback()
         }
       } else if (this.form.fd.dns_type === 'SRV') {
-        const parts = value.split('.')
-        if (parts.length < 3) {
-          return callback(new Error(this.$t('network.text_179')))
+        const parts = value.split(' ')
+        if (parts.length !== 4) {
+          callback(new Error(this.$t('network.text_179')))
         }
         for (let i = 0; i < parts.length; i++) {
-          if (i < 2 && (parts[i].length < 2 || parts[i][0] !== '_')) {
-            return callback(new Error(this.$t('network.text_180')))
-          } else if (i >= 2 && parts[i].length === 0) {
-            return callback(new Error(this.$t('network.text_180')))
+          if (parts[i][0] < 0 || parts[i][0] > 65535) {
+            callback(new Error(this.$t('network.text_180')))
+          }
+          if (parts[i][1] < 0 || parts[i][1] > 99999) {
+            callback(new Error(this.$t('network.text_180')))
+          }
+          if (parts[i][2] < 0 || parts[i][2] > 65535) {
+            callback(new Error(this.$t('network.text_180')))
+          }
+          if (parts[i][3]) {
+            const domain = parts[i][3]
+            if (validate(domain, 'domainName') === false || validate(domain, 'domainName').result === false) {
+              callback(new Error(this.$t('network.text_180')))
+            } else {
+              callback()
+            }
           }
         }
       }
       callback()
     }
+
+    const checkDnsName = (rule, value, callback) => {
+      if (this.form.fd.dns_type === 'SRV') {
+        const parts = value.split('.')
+        if (parts.length < 2) {
+          return callback(new Error(this.$t('network.text_179')))
+        }
+      }
+      callback()
+    }
+
     return {
       loading: {
         submit: false,
@@ -188,8 +219,11 @@ export default {
         name: [
           'name',
           {
+            validateTrigger: ['change', 'blur'],
+            validateFirst: true,
             rules: [
               { required: true, message: this.$t('common_695') },
+              { validator: checkDnsName },
             ],
           },
         ],
@@ -281,6 +315,9 @@ export default {
           max: 86400,
         }
       }
+    },
+    isSRV () {
+      return this.form.fd.dns_type === 'SRV'
     },
   },
   created () {
