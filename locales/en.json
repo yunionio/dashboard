@@ -525,5 +525,6 @@
   "cloudenv.text_490": "IP subnet (number)",
   "cloudenv.text_491": "Groups",
   "cloudenv.text_492": "Create Group",
-  "cloudenv.text_493": "Auto create"
+  "cloudenv.text_493": "Auto create",
+  "cloudenv.text_494": "OpenStack platform does not support this operation"
 }

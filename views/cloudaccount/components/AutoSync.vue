@@ -4,7 +4,7 @@
       <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.enable_auto_sync" @change="change" />
     </a-form-item>
     <a-form-item :label="$t('cloudenv.text_86')" v-bind="formLayout" v-if="showSecond">
-      <a-input style="width: 180px" v-decorator="decorators.sync_interval_seconds" :addonAfter="$t('cloudenv.text_87')" type="number" />
+      <a-input-number style="width: 180px" :min="30" v-decorator="decorators.sync_interval_seconds" /><span class="ml-1">{{ $t('cloudenv.text_87') }}</span>
       <div v-if="!fc.getFieldError('sync_interval_seconds')" slot="extra">{{$t('cloudenv.text_88')}}</div>
     </a-form-item>
     <!-- <a-form-item :label="$t('cloudenv.text_89')" v-bind="formLayout">
