@@ -52,7 +52,7 @@ import k8sCreateMixin from '@K8S/mixins/create'
 const API_GROUP = 'rbac.authorization.k8s.io'
 
 export default {
-  name: 'K8sRbacroleFormCreate',
+  name: 'K8sFederatedrolebindingFormCreate',
   components: {
   },
   mixins: [k8sCreateMixin],

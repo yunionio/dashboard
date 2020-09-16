@@ -80,7 +80,7 @@
         </a-select>
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
-        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
+        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('common.create')}}</a-button>
         <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
       </a-form-item>
     </a-form>
@@ -88,7 +88,7 @@
       <div slot="header">{{$t('k8s.text_354')}}</div>
       <div slot="body">{{$t('k8s.text_355')}}</div>
       <div slot="footer">
-        <a-button type="primary" @click="createCephCSI">{{ $t('dialog.ok') }}</a-button>
+        <a-button type="primary" @click="createCephCSI">{{$t('common.create')}}</a-button>
       </div>
     </base-dialog>
   </div>

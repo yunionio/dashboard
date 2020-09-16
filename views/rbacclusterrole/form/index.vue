@@ -20,7 +20,7 @@ import RoleRuleFormItem from '@K8S/sections/RoleRuleFormItem'
 import k8sCreateMixin from '@K8S/mixins/create'
 
 export default {
-  name: 'K8sRbacroleFormCreate',
+  name: 'K8sRbacclusterrolebindingFormCreate',
   components: {
     ClusterSelect,
     RoleRuleFormItem,

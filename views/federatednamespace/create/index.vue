@@ -12,7 +12,7 @@
     </a-form>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('dialog.ok')}}</a-button>
+        <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('common.create')}}</a-button>
         <a-button @click="cancel">{{ $t('dialog.cancel') }}</a-button>
       </div>
     </page-footer>
