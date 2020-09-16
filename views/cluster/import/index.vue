@@ -9,7 +9,7 @@
         v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('k8s.text_60')" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_400')" v-bind="formItemLayout">
+      <a-form-item :label="$t('k8s.text_401')" v-bind="formItemLayout">
         <icon-radio v-decorator="decorators.distribution" :options="clusterTypesOpt" />
       </a-form-item>
       <a-form-item
@@ -45,7 +45,7 @@ export default {
         })
     }
     const clusterTypesOpt = [
-      { key: 'k8s', label: 'K8S', icon: { type: 'k8s' }, style: { color: 'rgb(51, 51, 51)' } },
+      { key: 'k8s', label: 'K8S', icon: { type: 'k8s' }, style: { color: 'rgb(50, 109, 230)' } },
       { key: 'openshift', label: 'OpenShift', icon: { type: 'openshift' }, style: { color: 'rgb(225, 38, 52)' } },
     ]
     return {

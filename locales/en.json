@@ -398,5 +398,6 @@
   "k8s.text_397": "FederatedRole",
   "k8s.text_398": "FederatedRoleBinding",
   "k8s.text_399": "Role",
-  "k8s.text_400": "Cluster Type"
+  "k8s.text_400": "Cluster Type",
+  "k8s.text_401": "Release Version"
 }
