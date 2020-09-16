@@ -65,8 +65,8 @@ export default {
         slots: {
           default: ({ row }) => {
             return [
-              <div>起：{ row.guest_ip_start }</div>,
-              <div>止：{ row.guest_ip_end }</div>,
+              <div>{ this.$t('network.text_725', [row.guest_ip_start])}</div>,
+              <div>{ this.$t('network.text_726', [row.guest_ip_end])}</div>,
             ]
           },
         },
@@ -79,8 +79,8 @@ export default {
         slots: {
           default: ({ row }) => {
             return [
-              <div class='text-truncate'>总计:{ row.ports }</div>,
-              <div class='text-truncate'>使用:{ row.ports_used }</div>,
+              <div class='text-truncate'>{ this.$t('network.text_727', [row.ports])}</div>,
+              <div class='text-truncate'>{ this.$t('network.text_728', [row.ports_used])}</div>,
             ]
           },
         },
@@ -104,7 +104,7 @@ export default {
               return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
             }
             return [
-              <div class='text-color-help'>无调度标签</div>,
+              <div class='text-color-help'>{ this.$t('network.text_729') }</div>,
             ]
           },
         },
