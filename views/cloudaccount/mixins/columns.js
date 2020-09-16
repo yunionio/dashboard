@@ -85,7 +85,7 @@ export default {
           default: ({ row }) => {
             if (row.auto_create_project) {
               return [
-                <span class='mr-2'>自动创建项目</span>,
+                <span class='mr-2'>{ this.$t('cloudenv.text_493') }</span>,
                 <help-tooltip name='cloudaccountAutoCreateProject' />,
               ]
             }

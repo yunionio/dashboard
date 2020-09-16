@@ -35,9 +35,9 @@
           </a-col>
           <a-col :span="3">
             <a-form-item>
-              <a-select class="w-100" :placeholder="$t('network.text_595')" v-decorator="formatDecorator(k, 'guest_ip_mask')">
+              <a-select class="w-100" :placeholder="$t('network.text_595')" v-decorator="formatDecorator(k, 'guest_ip_mask')" dropdownClassName="oc-select-dropdown">
                 <a-select-option v-for="item in netMaskOptions" :key="item.value" :value="item.value">
-                  <span class="text-color-secondary">{{$t('common_600')}}: </span>{{item.value}}
+                  <span class="text-color-secondary option-prefix">{{$t('common_600')}}: </span>{{item.value}}
                 </a-select-option>
               </a-select>
             </a-form-item>

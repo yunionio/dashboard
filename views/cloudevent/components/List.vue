@@ -119,7 +119,7 @@ export default {
               }
               let disabled = false
               if (!row.request) disabled = true
-              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) } disabled={ disabled }>查看</a-button>]
+              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) } disabled={ disabled }>{ this.$t('common.view') }</a-button>]
             },
           },
         },
