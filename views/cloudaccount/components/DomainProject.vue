@@ -15,7 +15,7 @@
     </a-form-item>
     <a-form-item :label="`资源归属${$t('dictionary.project')}`" v-bind="formLayout" :extra="`资源同步会归属至该${$t('dictionary.project')}，若自动创建${$t('dictionary.project')}会根据云上${$t('dictionary.project')}情况归属`">
       <a-select
-        :disabled="disableProjectSelect"
+        :disabled="disableProjectSelect || isOpenstack"
         :allowClear="allowClear"
         :labelInValue="labelInValue"
         v-decorator="decorators.project"
@@ -26,9 +26,16 @@
         showSearch>
         <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
       </a-select>
-      <div class="d-flex" v-if="!isOpenstack">
+      <div class="d-flex">
         <div class="flex-shrink-0 flex-grow-0">
-          <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange">自动创建{{ $t('dictionary.project') }}</a-checkbox>
+          <template v-if="isOpenstack">
+            <a-tooltip title="OpenStack平台不支持该操作">
+              <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange" disabled>自动创建{{ $t('dictionary.project') }}</a-checkbox>
+            </a-tooltip>
+          </template>
+          <template v-else>
+            <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange">自动创建{{ $t('dictionary.project') }}</a-checkbox>
+          </template>
         </div>
         <div class="flex-shrink-0 flex-grow-0 ml-1">
           <help-tooltip name="cloudaccountAutoCreateProject" />
