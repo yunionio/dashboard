@@ -41,10 +41,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 19,
         },
         labelCol: {
-          span: 3,
+          span: 5,
         },
       },
     }
