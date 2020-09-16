@@ -12,7 +12,6 @@
           v-model="formData.storageClassName"
           resource="storageclasses"
           version="v1"
-          idKey="name"
           :params="params" />
       </a-form-model-item>
     </template>

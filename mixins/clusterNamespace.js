@@ -5,9 +5,6 @@ export default {
   components: {
     ClusterNamespace,
   },
-  created () {
-    this.fetchData()
-  },
   inject: {
     // 是否处于SidePage中
     inBaseSidePage: {
@@ -31,7 +28,6 @@ export default {
       if (this.inBaseSidePage) return
       const params = R.clone(this.list.getParams)
       delete params.namespace
-      params.all_namespace = true
       this.namespaceMap = {}
       try {
         const { data: { data = [] } } = await this.list.manager.list({
@@ -40,10 +36,10 @@ export default {
         })
         const map = {}
         data.forEach(val => {
-          if (!map[val.namespace]) {
-            map[val.namespace] = []
+          if (!map[val.namespace_id]) {
+            map[val.namespace_id] = []
           }
-          map[val.namespace].push(val)
+          map[val.namespace_id].push(val)
         })
         this.namespaceMap = map
       } catch (error) {
@@ -52,12 +48,8 @@ export default {
     },
     async fetchData () {
       if (this.list.getParams.cluster) {
-        if (this.list.getParams.all_namespace || this.list.getParams.namespace) {
-          if (this.list.getParams.all_namespace) delete this.list.getParams.namespace
-          if (this.list.getParams.namespace) delete this.list.getParams.all_namespace
-          await this.list.fetchData()
-          this.fetchAllNamespaceData()
-        }
+        await this.list.fetchData()
+        this.fetchAllNamespaceData()
       }
     },
   },

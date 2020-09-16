@@ -28,7 +28,7 @@ export default {
         title: i18n.t('k8s.text_9'),
         width: 70,
         formatter: ({ row }) => {
-          return row.podsInfo.running + ' / ' + row.podsInfo.current
+          return row.podsInfo ? (row.podsInfo.running + ' / ' + row.podsInfo.current) : '-'
         },
       },
       k8sImageColumn(),

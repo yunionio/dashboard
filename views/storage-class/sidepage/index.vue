@@ -20,7 +20,7 @@
       :data="detailData"
       resource="storageclasses"
       :serverColumns="columns"
-      :res-id="data.name"
+      :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
       @refresh="refresh"
@@ -54,6 +54,7 @@ export default {
         { label: this.$t('k8s.text_217'), key: 'k8s-storageclass-detail' },
         { label: this.$t('k8s.text_218'), key: 'events-sidepage' },
         { label: this.$t('k8s.text_219'), key: 'source-information-sidepage' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },

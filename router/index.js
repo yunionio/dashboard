@@ -1,3 +1,15 @@
+import K8sRbacrolebindingCreate from '@K8S/views/rbacrolebinding/create'
+import K8sRbacclusterroleCreate from '@K8S/views/rbacclusterrole/create'
+import K8sRbacclusterrolebinding from '@K8S/views/rbacclusterrolebinding'
+import K8sRbacclusterrolebindingCreate from '@K8S/views/rbacclusterrolebinding/create'
+import Federatednamespace from '@K8S/views/federatednamespace'
+import Federatedclusterrole from '@K8S/views/federatedclusterrole'
+import FederatedclusterroleCreate from '@K8S/views/federatedclusterrole/create'
+import Federatedrolebinding from '@K8S/views/federatedrolebinding'
+import FederatedrolebindingCreate from '@K8S/views/federatedrolebinding/create'
+import Federatedclusterrolebinding from '@K8S/views/federatedclusterrolebinding'
+import FederatedclusterrolebindingCreate from '@K8S/views/federatedclusterrolebinding/create'
+import Federatedrole from '@K8S/views/federatedrole'
 import Kubeclusters from '@K8S/views/cluster'
 import KubeclustersCreate from '@K8S/views/cluster/create'
 import KubeclustersImport from '@K8S/views/cluster/import'
@@ -12,6 +24,8 @@ import K8sNamespace from '@K8S/views/namespace'
 import K8sNamespaceCreate from '@K8S/views/namespace/create'
 import K8sRbacrole from '@K8S/views/rbacrole'
 import K8sRbacrolebinding from '@K8S/views/rbacrolebinding'
+import K8sRbacroleCreate from '@K8S/views/rbacrole/create'
+import K8sRbacclusterrole from '@K8S/views/rbacclusterrole'
 import K8sServiceAccount from '@K8S/views/service-account'
 import K8sKubeComponent from '@K8S/views/kube-component'
 import K8sKubeComponentCreate from '@K8S/views/kube-component/create'
@@ -34,6 +48,8 @@ import K8sConfigmapCreate from '@K8S/views/configmap/create'
 import Secret from '@K8S/views/secret'
 import K8sSecretCreate from '@K8S/views/secret/create'
 import Layout from '@/layouts/RouterView'
+import FederatednamespaceCreate from '@K8S/views/federatednamespace/create'
+import FederatedroleCreate from '@K8S/views/federatedrole/create'
 
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -384,6 +400,31 @@ export default {
               path: '',
               component: K8sRbacrole,
             },
+            {
+              name: 'K8sRbacroleCreate',
+              path: 'create',
+              component: K8sRbacroleCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-rbacclusterrole',
+          meta: {
+            label: i18n.t('k8s.text_371'),
+            permission: 'k8s_rbacclusterroles_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sRbacclusterrole',
+              path: '',
+              component: K8sRbacclusterrole,
+            },
+            {
+              name: 'K8sRbacclusterroleCreate',
+              path: 'create',
+              component: K8sRbacclusterroleCreate,
+            },
           ],
         },
         {
@@ -398,6 +439,31 @@ export default {
               name: 'K8sRbacrolebinding',
               path: '',
               component: K8sRbacrolebinding,
+            },
+            {
+              name: 'K8sRbacrolebindingCreate',
+              path: 'create',
+              component: K8sRbacrolebindingCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-rbacclusterrolebinding',
+          meta: {
+            label: i18n.t('k8s.text_372'),
+            permission: 'k8s_rbacclusterrolebindings_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'K8sRbacclusterrolebind',
+              path: '',
+              component: K8sRbacclusterrolebinding,
+            },
+            {
+              name: 'K8sRbacclusterrolebindingCreate',
+              path: 'create',
+              component: K8sRbacclusterrolebindingCreate,
             },
           ],
         },
@@ -438,6 +504,113 @@ export default {
               name: 'K8sKubeComponentUpdate',
               path: 'update',
               component: K8sKubeComponentUpdate,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('k8s.text_364'),
+      },
+      submenus: [
+        {
+          path: '/k8s-federatednamespace',
+          meta: {
+            label: i18n.t('k8s.text_365'),
+            permission: 'k8s_federatednamespaces_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Federatednamespace',
+              path: '',
+              component: Federatednamespace,
+            },
+            {
+              name: 'FederatednamespaceCreate',
+              path: 'create',
+              component: FederatednamespaceCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-federatedrole',
+          meta: {
+            label: i18n.t('k8s.text_370'),
+            permission: 'k8s_federatedroles_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'federatedrole',
+              path: '',
+              component: Federatedrole,
+            },
+            {
+              name: 'FederatedroleCreate',
+              path: 'create',
+              component: FederatedroleCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-federatedclusterrole',
+          meta: {
+            label: i18n.t('k8s.text_373'),
+            permission: 'k8s_federatedclusterroles_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Federatedclusterrole',
+              path: '',
+              component: Federatedclusterrole,
+            },
+            {
+              name: 'FederatedclusterroleCreate',
+              path: 'create',
+              component: FederatedclusterroleCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-federatedrolebinding',
+          meta: {
+            label: i18n.t('k8s.text_374'),
+            permission: 'k8s_federatedrolebindings_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Federatedrolebinding',
+              path: '',
+              component: Federatedrolebinding,
+            },
+            {
+              name: 'FederatedrolebindingCreate',
+              path: 'create',
+              component: FederatedrolebindingCreate,
+            },
+          ],
+        },
+        {
+          path: '/k8s-federatedclusterrolebinding',
+          meta: {
+            label: i18n.t('k8s.text_375'),
+            permission: 'k8s_federatedclusterrolebindings_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Federatedclusterrolebinding',
+              path: '',
+              component: Federatedclusterrolebinding,
+            },
+            {
+              name: 'FederatedclusterrolebindingCreate',
+              path: 'create',
+              component: FederatedclusterrolebindingCreate,
             },
           ],
         },

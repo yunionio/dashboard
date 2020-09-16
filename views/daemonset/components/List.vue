@@ -46,7 +46,6 @@ export default {
         resource: 'daemonsets',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -87,7 +86,6 @@ export default {
               title: this.$t('k8s.text_201'),
               name: this.$t('k8s.text_4'),
               onManager: this.onManager,
-              idKey: 'name',
               requestData,
             })
           },
@@ -117,7 +115,7 @@ export default {
   methods: {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SDaemonsetSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'daemonsets',
         getParams: () => {
           const params = R.clone(this.list.getParams)
@@ -127,7 +125,6 @@ export default {
           }
           return params
         },
-        idKey: 'name',
         apiVersion: 'v1',
         steadyStatus: {
           status: Object.values(expectStatus.k8s_resource).flat(),

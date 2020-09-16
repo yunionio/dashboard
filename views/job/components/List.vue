@@ -53,7 +53,6 @@ export default {
         resource: 'jobs',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -93,7 +92,6 @@ export default {
               title: this.$t('k8s.text_201'),
               name: this.$t('k8s.text_7'),
               onManager: this.onManager,
-              idKey: 'name',
               requestData,
             })
           },
@@ -123,7 +121,7 @@ export default {
   methods: {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SJobsSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'jobs',
         getParams: () => {
           const params = R.clone(this.list.getParams)
@@ -133,7 +131,6 @@ export default {
           }
           return params
         },
-        idKey: 'name',
         apiVersion: 'v1',
         steadyStatus: {
           status: Object.values(expectStatus.k8s_resource_job).flat(),

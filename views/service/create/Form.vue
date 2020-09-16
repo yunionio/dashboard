@@ -22,7 +22,6 @@
             version="v1"
             :need-params="true"
             :isDefaultSelect="true"
-            idKey="name"
             :params="resParams"
             :select-props="{ placeholder: $t('k8s.text_77') }" />
         </a-form-item>

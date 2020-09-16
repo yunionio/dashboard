@@ -45,7 +45,6 @@ export default {
         resource: 'configmaps',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -79,7 +78,6 @@ export default {
               title: this.$t('k8s.text_201'),
               name: this.$t('k8s.text_17'),
               onManager: this.onManager,
-              idKey: 'name',
               requestData,
             })
           },
@@ -109,7 +107,7 @@ export default {
   methods: {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SConfigmapSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'configmaps',
         getParams: () => {
           const params = R.clone(this.list.getParams)
@@ -119,7 +117,6 @@ export default {
           }
           return params
         },
-        idKey: 'name',
         apiVersion: 'v1',
       }, {
         list: this.list,

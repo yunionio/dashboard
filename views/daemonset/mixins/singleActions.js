@@ -24,7 +24,7 @@ export default {
           const manager = new this.$Manager('daemonsets', 'v1')
           async function fetchData () {
             const { cluster, namespace } = obj
-            const { data } = await manager.getSpecific({ id: obj.name, spec: 'rawdata', params: { cluster, namespace } })
+            const { data } = await manager.getSpecific({ id: obj.id, spec: 'rawdata', params: { cluster, namespace } })
             return data
           }
           const configText = await fetchData()
@@ -55,7 +55,6 @@ export default {
             columns: this.columns,
             title: i18n.t('k8s.text_201'),
             onManager: this.onManager,
-            idKey: 'name',
             requestParams,
             success: () => {
               if (this.getResponseData) this.getResponseData()

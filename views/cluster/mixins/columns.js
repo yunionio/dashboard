@@ -1,7 +1,6 @@
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
-  getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -12,7 +11,6 @@ export default {
         onManager: this.onManager,
         hideField: true,
         edit: false,
-        // editDesc: false,
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
@@ -20,9 +18,34 @@ export default {
         },
       }),
       {
+        field: 'distribution',
+        title: i18n.t('k8s.text_401'),
+        minWidth: 100,
+        slots: {
+          default: ({ row }) => {
+            let title = 'Kubernetes'
+            let type = 'k8s'
+            const styles = { color: 'rgb(50, 109, 230)', fontSize: '20px' }
+            if (row.distribution === 'openshift') {
+              title = 'OpenShift'
+              type = 'openshift'
+              styles.color = 'rgb(225, 38, 52)'
+            }
+            if (row.distribution_info && row.distribution_info.version) {
+              title += `(${row.distribution_info.version})`
+            }
+            return [
+              <div class="d-inline-flex align-items-center flex-column">
+                <Icon class="d-block text-left" type={ type } style={ styles } />
+                <div>{ title }</div>
+              </div>,
+            ]
+          },
+        },
+      },
+      {
         field: 'mode',
         title: i18n.t('k8s.text_186'),
-        minWidth: 80,
         formatter: ({ cellValue }) => {
           switch (cellValue) {
             case 'customize':
@@ -37,7 +60,6 @@ export default {
       {
         field: 'resource_type',
         title: i18n.t('k8s.text_188'),
-        width: 70,
         formatter: ({ cellValue }) => {
           switch (cellValue) {
             case 'guest':
@@ -52,7 +74,7 @@ export default {
       {
         field: 'version',
         title: i18n.t('k8s.text_153'),
-        width: 100,
+        minWidth: 100,
         slots: {
           default: ({ row }, h) => {
             return [
@@ -64,18 +86,19 @@ export default {
       {
         field: 'machines',
         title: i18n.t('k8s.text_191'),
-        width: 70,
       },
       {
         field: 'is_public',
         title: i18n.t('k8s.text_192'),
-        width: 70,
         formatter: ({ cellValue }) => {
           return cellValue ? i18n.t('k8s.text_193') : i18n.t('k8s.text_194')
         },
       },
-      getStatusTableColumn({ statusModule: 'kubecluster' }),
-      getProjectTableColumn(),
+      getStatusTableColumn({ statusModule: 'kubecluster', minWidth: 40 }),
+      {
+        field: 'domain',
+        title: i18n.t('dictionary.domain'),
+      },
     ]
   },
 }

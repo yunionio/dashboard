@@ -68,10 +68,14 @@ export default {
             data.push(systemItem)
           }
           this.clusterOps = data
-          if (this.setDefault && !this.value) {
-            const clusterObj = this.clusterOps[0]
-            this.$emit('input', clusterObj.id)
-            this.syncCluster(clusterObj.id)
+          if (this.setDefault) {
+            if (!this.value) {
+              const clusterObj = this.clusterOps[0]
+              this.$emit('input', clusterObj.id)
+              this.syncCluster(clusterObj.id)
+            } else {
+              this.syncCluster(this.value)
+            }
           }
         }
       })

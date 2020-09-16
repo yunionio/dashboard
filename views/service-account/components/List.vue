@@ -55,7 +55,6 @@ export default {
         resource: 'serviceaccounts',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -64,7 +63,7 @@ export default {
       groupActions: [
         {
           label: this.$t('k8s.text_201'),
-          permission: 'k8s_rbacroles_delete',
+          permission: 'k8s_serviceaccounts_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -73,9 +72,8 @@ export default {
               title: this.$t('k8s.text_328'),
               name: this.$t('k8s.text_24'),
               onManager: this.onManager,
-              idKey: 'name',
               ok: (ids, data) => {
-                return new this.$Manager(`${data[0].type}s`, 'v1').batchDelete({
+                return new this.$Manager('serviceaccounts', 'v1').batchDelete({
                   ids,
                   data: {
                     cluster: data[0].clusterID,
@@ -118,7 +116,7 @@ export default {
   methods: {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SServiceAccountSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'serviceaccounts',
         apiVersion: 'v1',
         getParams: this.list.getParams,

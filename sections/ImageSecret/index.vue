@@ -11,7 +11,6 @@
         v-decorator="decorators.imagePullSecrets"
         resource="secrets"
         version="v1"
-        idKey="name"
         :params="params"
         :need-params="true"
         :select-props="{ mode: 'multiple', placeholder: $t('k8s.text_77') }" />
