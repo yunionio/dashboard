@@ -471,8 +471,14 @@ export default {
       if (!this.dnsZoneCapabilityData) return []
       if (this.dnsZoneCapabilityData[provider] && this.dnsZoneCapabilityData[provider].policy_types) {
         types = this.dnsZoneCapabilityData[provider].policy_types[zoneType] || []
-        types = types.filter((item) => !(provider === 'Qcloud' && item === 'Weighted'))
-        types = types.filter((item) => !(provider === 'Aws' && item === 'Failover'))
+        types = types.filter((item) => {
+          if (provider === 'Qcloud') {
+            return item !== 'Weighted'
+          }
+          if (provider === 'Aws') {
+            return item !== 'Failover'
+          }
+        })
         return types.map((item) => {
           return {
             label: this.$te(`network.dns.${item.toLowerCase()}`) ? this.$t(`network.dns.${item.toLowerCase()}`) : item,
