@@ -60,7 +60,6 @@ export default {
                     }
                     return params
                   },
-                  idKey: 'name',
                   apiVersion: 'v1',
                   steadyStatus: {
                     status: Object.values(expectStatus.k8s_resource).flat(),
@@ -89,7 +88,7 @@ export default {
         {
           field: 'accessModes',
           title: this.$t('k8s.text_313'),
-          formatter: ({ row }) => row.accessModes && row.accessModes.join('，'),
+          formatter: ({ row }) => row.accessModes && (row.accessModes || []).join(', '),
         },
         {
           field: 'volume',

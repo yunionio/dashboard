@@ -38,7 +38,7 @@
       </a-card>
       <a-button type="link" size="small" @click="addConfig">{{$t('k8s.text_249')}}</a-button>
       <a-form-model-item :wrapper-col="{ span: 20, offset: 3 }">
-        <a-button class="mr-2" type="primary" @click="handleConfirm('formRef')" :loading="loading">{{$t('dialog.ok')}}</a-button>
+        <a-button class="mr-2" type="primary" @click="handleConfirm('formRef')" :loading="loading">{{$t('common.create')}}</a-button>
         <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
       </a-form-model-item>
     </a-form-model>

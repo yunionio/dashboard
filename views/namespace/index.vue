@@ -20,7 +20,6 @@ export default {
       listId: 'K8SNamespaceList',
       getParams: {
         details: true,
-        admin: true,
       },
     }
   },

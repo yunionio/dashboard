@@ -13,9 +13,8 @@ export default {
             title: i18n.t('k8s.text_328'),
             name: i18n.t('k8s.text_24'),
             onManager: this.onManager,
-            idKey: 'name',
             ok: (ids, data) => {
-              return new this.$Manager(`${data[0].type}s`, 'v1').batchDelete({
+              return new this.$Manager('rbacroles', 'v1').batchDelete({
                 ids,
                 data: {
                   cluster: data[0].clusterID,
@@ -43,7 +42,7 @@ export default {
           const manager = new this.$Manager('rbacroles', 'v1')
           async function fetchData () {
             const { cluster, namespace } = obj
-            const { data } = await manager.getSpecific({ id: obj.name, spec: 'rawdata', params: { cluster, namespace } })
+            const { data } = await manager.getSpecific({ id: obj.id, spec: 'rawdata', params: { cluster, namespace } })
             return data
           }
           const configText = await fetchData()

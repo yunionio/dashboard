@@ -20,7 +20,6 @@ export default {
       listId: 'K8sStorageclassesList',
       getParams: {
         details: true,
-        admin: true,
       },
     }
   },

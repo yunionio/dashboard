@@ -46,12 +46,6 @@ export default {
       type: Object,
     },
   },
-  data () {
-    return {
-      // cluster: '',
-      // namespace: '',
-    }
-  },
   computed: {
     ...mapState('common', {
       cluster: state => state.k8s.cluster,
@@ -82,7 +76,6 @@ export default {
       }
       if (this.namespace) {
         if (this.namespace === 'all_namespace') {
-          params.all_namespace = true
           delete params.namespace
         } else {
           params.namespace = this.namespace

@@ -149,7 +149,6 @@ export default {
               data: [obj],
               title: this.$t('k8s.text_201'),
               name: obj.name,
-              idKey: 'name',
               ok: (ids, data) => {
                 return new this.$Manager('kubeclusters', 'v1').performAction({
                   id: this.cluster,

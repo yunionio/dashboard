@@ -44,7 +44,6 @@ export default {
         resource: 'rbacrolebindings',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
         },
@@ -53,8 +52,18 @@ export default {
       deleteGroupOpsValid: arr => arr.every(item => item.type === arr[0].type),
       groupActions: [
         {
+          label: this.$t('common.create'),
+          permission: 'k8s_rbacrolebindings_create',
+          action: () => {
+            this.$router.push('/k8s-rbacrolebinding/create')
+          },
+          meta: () => ({
+            buttonType: 'primary',
+          }),
+        },
+        {
           label: this.$t('k8s.text_201'),
-          permission: 'k8s_rbacroles_delete',
+          permission: 'k8s_rbacrolebindings_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -63,9 +72,8 @@ export default {
               title: this.$t('k8s.text_328'),
               name: this.$t('k8s.text_24'),
               onManager: this.onManager,
-              idKey: 'name',
               ok: (ids, data) => {
-                return new this.$Manager(`${data[0].type}s`, 'v1').batchDelete({
+                return new this.$Manager('rbacrolebindings', 'v1').batchDelete({
                   ids,
                   data: {
                     cluster: data[0].clusterID,

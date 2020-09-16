@@ -43,7 +43,6 @@ export default {
         resource: 'persistentvolumeclaims',
         apiVersion: 'v1',
         getParams: this.getParams,
-        idKey: 'name',
         filterOptions: {
           name: getNameFilter(),
           unused: {
@@ -91,7 +90,6 @@ export default {
               title: this.$t('k8s.text_201'),
               name: this.$t('k8s.text_10'),
               onManager: this.onManager,
-              idKey: 'name',
               requestData,
             })
           },
@@ -125,7 +123,7 @@ export default {
   methods: {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SPersistentvolumeclaimSidePage', {
-        id: row.name,
+        id: row.id,
         resource: 'persistentvolumeclaims',
         getParams: () => {
           const params = R.clone(this.list.getParams)
@@ -135,7 +133,6 @@ export default {
           }
           return params
         },
-        idKey: 'name',
         apiVersion: 'v1',
         steadyStatus: {
           status: Object.values(expectStatus.k8s_resource).flat(),

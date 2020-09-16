@@ -81,7 +81,7 @@ export default {
     async fetchData () {
       const { data } = await this.params.onManager('get', {
         managerArgs: {
-          id: this.data.name,
+          id: this.data.id,
           params: {
             cluster: this.data.cluster,
             namespace: this.data.namespace,
@@ -126,7 +126,7 @@ export default {
       }
       try {
         await this.params.onManager('update', {
-          id: this.data.name,
+          id: this.data.id,
           managerArgs: {
             data,
           },

@@ -21,11 +21,6 @@ export default {
         width: 100,
         sortable: true,
       },
-      {
-        field: 'type',
-        title: i18n.t('k8s.text_34'),
-        width: 150,
-      },
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },

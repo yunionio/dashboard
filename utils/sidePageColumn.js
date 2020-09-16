@@ -1,4 +1,7 @@
+import * as R from 'ramda'
+import _ from 'lodash'
 import i18n from '@/locales'
+
 const commonColumns = [
   {
     field: 'key',
@@ -82,6 +85,43 @@ export const taintColumn = () => {
         return [
           <vxe-grid class="mb-2" data={ data } columns={ taintsColumns } />,
         ]
+      },
+    },
+  }
+}
+
+export const roleRefColumn = (path = 'roleRef') => {
+  return {
+    field: 'roleRef',
+    title: 'roleRef',
+    slots: {
+      default: ({ row }, h) => {
+        const roleRef = _.get(row, path)
+        if (!R.is(Object, roleRef)) return '-'
+        const items = Object.keys(roleRef).map(key => {
+          return (
+            <div class="d-flex">
+              <div style={{ width: '80px' }}>{ key }：</div>
+              <div>{ roleRef[key] }</div>
+            </div>
+          )
+        })
+        return items
+      },
+    },
+  }
+}
+
+export const subjectsColumn = (path = 'subjects') => {
+  return {
+    field: 'subjects',
+    title: 'subjects',
+    slots: {
+      default: ({ row }, h) => {
+        const subjects = _.get(row, path)
+        if (!subjects) return '-'
+        const columns = Object.keys(subjects[0]).filter(key => key !== '_XID').map(key => ({ field: key, title: key }))
+        return <vxe-grid data={ subjects } columns={ columns } size="mini" />
       },
     },
   }
