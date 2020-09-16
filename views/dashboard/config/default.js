@@ -759,7 +759,7 @@ export default {
           component: 'Top5',
           h: 5,
           w: 5,
-          x: 10,
+          x: 0,
           y: 9,
         },
         params: {
@@ -951,7 +951,7 @@ export default {
           component: 'Top5',
           h: 5,
           w: 5,
-          x: 0,
+          x: 10,
           y: 9,
         },
         params: {
