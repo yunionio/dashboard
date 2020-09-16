@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import get from 'lodash/get'
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -73,13 +74,14 @@ export default {
     const providerOptions = Object.entries(HYPERVISORS_MAP).filter(item => {
       return (this.$store.getters.capability.cloud_id_brands || []).includes(item[1].provider) && this.$store.getters.capability.brands.includes(item[1].provider)
     })
+    const firstProvider = get(providerOptions, '[0][1].provider')
     return {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
         fi: {
           generate_name: '',
-          provider: this.params.provider || (providerOptions[0] && providerOptions[0][1].provider),
+          provider: this.params.provider || firstProvider,
         },
       },
       providerOptions,
@@ -96,7 +98,7 @@ export default {
         provider: [
           'provider',
           {
-            initialValue: this.params.provider || providerOptions[0][1].provider,
+            initialValue: this.params.provider || firstProvider,
             rules: [
               { required: true, message: this.$t('rules.provider') },
             ],
