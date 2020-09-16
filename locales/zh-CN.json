@@ -2173,6 +2173,12 @@
         "on": "开启",
         "off": "关闭"
       }
+    },
+    "action": {
+      "save": "保存",
+      "cacel": "取消",
+      "delete": "删除",
+      "modify": "修改"
     }
   },
   "sidepage": {
@@ -2250,7 +2256,8 @@
       "pd-ssd": "SSD永久性磁盘",
       "pd-standard": "标准永久性磁盘"
     },
-    "view": "查看"
+    "view": "查看",
+    "total": "共：{0}"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
@@ -4038,5 +4045,6 @@
   "common_710": "指定{0}",
   "common_711": "云订阅",
   "common_712": "默认",
-  "common_713": "策略"
+  "common_713": "策略",
+  "common_714": "超售"
 }

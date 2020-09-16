@@ -70,7 +70,7 @@ export default {
         return this.percentFormat(this)
       }
       const per = this.percent || 0
-      const oversell = per > 100 ? <a-tag color="red">超售</a-tag> : null
+      const oversell = per > 100 ? <a-tag color="red">{ this.$t('common_714') }</a-tag> : null
       return (<div>{oversell}<div class="mt-2 text-color">{ numerify(per, this.numerifyFloat) }{ this.unit }</div></div>)
     },
   },
