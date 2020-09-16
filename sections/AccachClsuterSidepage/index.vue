@@ -50,9 +50,9 @@ export default {
               title: this.$t('k8s.text_368'),
               name: this.$t('k8s.text_365'),
               onManager: this.onManager,
-              resource: this.resource.replace(/^(\w+)s$/, '$1'), // 把 reousce 复数变单数
+              resource: this.resource.replace(/^(\w+)s$/, '$1'), // 把 resource 复数变单数
               success: () => {
-                this.list.refesh()
+                this.list.refresh()
               },
             })
           },
@@ -72,7 +72,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               success: () => {
-                this.list.refesh()
+                this.list.refresh()
               },
             })
           },
