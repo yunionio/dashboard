@@ -32,6 +32,7 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
   if (!isErrorBody && (!err.response || !err.response.data)) return
   const errorData = isErrorBody ? err : err.response.data
   let errorBody = getErrorBody(errorData)
+  if (R.is(Object, errorBody.error)) errorBody = errorBody.error
   const status = isErrorBody ? err.code : (err.response && err.response.status)
   if (!isErrorBody) {
     const method = err.config.method
@@ -104,7 +105,7 @@ export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'dele
     }
     // 有多条不可删除条目时
     if (len > 1) {
-      deleteFailReason = data.map(item => item[failKey])
+      deleteFailReason = data.map(item => item[failKey]).filter(val => !!val)
     }
     // 处理获取到的 deleteFailReason
     if (deleteFailReason.length > 1 || deleteFailReason.length <= 0) {

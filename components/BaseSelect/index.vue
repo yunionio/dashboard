@@ -33,6 +33,7 @@ import debounce from 'lodash/debounce'
 import OptionLabel from './OptionLabel'
 import { Manager } from '@/utils/manager'
 import { arrayToObj } from '@/utils/utils'
+import i18n from '@/locales'
 
 const del$t = value => {
   if (!R.is(Object, value)) return {}
@@ -104,6 +105,9 @@ export default {
     selectProps: { // vue-ant-design a-select 的属性
       type: Object,
       required: false,
+      default: () => ({
+        placeholder: i18n.t('common.select'),
+      }),
     },
     options: {
       type: Array,
@@ -183,6 +187,9 @@ export default {
       this.paramsChange(val, oldV)
     },
     resource (val, oldV) {
+      this.resOpts = {}
+      this.resList = []
+      this.sourceList = []
       this.paramsChange(val, oldV, true)
     },
     options: {

@@ -1282,7 +1282,7 @@
     "hongkong": "Hongkong",
     "chengdu": "Chengdu",
     "hangzhou": "Hangzhou",
-    "ningxia": "宁夏",
+    "ningxia": "Ningxia",
     "shenzhen": "Shenzhen",
     "zhangjiakou": "Zhangjiakou",
     "bangkok": "Bangkok",
@@ -1338,20 +1338,21 @@
     "taipei": "Taipei",
     "taiwan": "Taiwan",
     "zurich": "Zurich",
-    "lanzhou": "兰州",
-    "wulumuqi": "乌鲁木齐",
+    "lanzhou": "Lanzhuo",
+    "wulumuqi": "Wulumuqi",
     "wuhu": "Wuhu",
     "other": "Other",
-    "nanjing": "南京",
-    "fuzhou": "福州",
-    "haikou": "海口",
+    "nanjing": "Nanjing",
+    "fuzhou": "Fuzhou",
+    "haikou": "Haikou",
     "kunming": "Kunming",
-    "nanning": "南宁",
+    "nanning": "Nanning",
     "suzhou": "Suzhou",
-    "taiyuan": "太原",
-    "tianjin": "天津",
+    "taiyuan": "Taiyuan",
+    "tianjin": "Tianjin",
     "wuhan": "Wuhan",
-    "zhengzhou": "Zhengzhou"
+    "zhengzhou": "Zhengzhou",
+    "wulanchabu": "Wulanchabu"
   },
   "cloudPrvidersMap": {
     "Aliyun": "Aliyun",
@@ -1359,7 +1360,7 @@
     "Huawei": "Huawei Cloud",
     "Qcloud": "Tencent Cloud",
     "Azure": "Microsoft Cloud",
-    "Ctyun": "天翼云"
+    "Ctyun": "eCloud"
   },
   "dictionary": {
     "actions": "Audit Logs",
@@ -1486,7 +1487,14 @@
     "system": "System Config",
     "costalerts": "Resource consumption warning",
     "dns_recordsets": "DNS Recordset",
-    "dns_zonecaches": "DNS Zone Cache"
+    "dns_zonecaches": "DNS Zone Cache",
+    "rbacclusterroles": "rbacclusterroles",
+    "rbacclusterrolebindings": "rbacclusterrolebindings",
+    "federatednamespaces": "federatednamespaces",
+    "federatedroles": "federatedroles",
+    "federatedclusterroles": "federatedclusterroles",
+    "federatedrolebindings": "federatedrolebindings",
+    "federatedclusterrolebindings": "federatedclusterrolebindings" 
   },
   "shareScope": {
     "system": "System",
@@ -2165,6 +2173,12 @@
         "on": "On",
         "off": "Off"
       }
+    },
+    "action": {
+      "save": "Save",
+      "cacel": "Cancel",
+      "delete": "Delete",
+      "modify": "Modify"
     }
   },
   "sidepage": {
@@ -2242,7 +2256,8 @@
       "pd-ssd": "SSD Persistent Disk",
       "pd-standard": "Standard Persistent Disk"
     },
-    "view": "View"
+    "view": "View",
+    "total": "Total:{0}"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
@@ -4030,5 +4045,6 @@
   "common_710": "Specify {0}",
   "common_711": "Cloud Subscription",
   "common_712": "Default",
-  "common_713": "Strategy"
+  "common_713": "Strategy",
+  "common_714": "Oversold"
 }
