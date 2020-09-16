@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import LabelsComplete from '@K8S/sections/LabelsComplete'
+import LabelsComplete from '@Helm/sections/LabelsComplete'
 
 export default {
   name: 'K8sChartFormYaml',
@@ -56,9 +56,6 @@ export default {
         placeholder: this.$t('helm.text_23'),
       },
     }
-  },
-  mounted () {
-    this.$refs.labelRef.add()
   },
   methods: {
     tabChange (val) {
