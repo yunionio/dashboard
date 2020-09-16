@@ -670,6 +670,10 @@ export default {
         obj[arr2[0]] = arr2[1]
       }
       this.selectedSpecItem = obj
+      const currentSpec = this.form.fi.capability.specs.hosts[value]
+      if (R.has('isolated_devices')(currentSpec)) {
+        this.selectedSpecItem.isolated_devices = currentSpec.isolated_devices
+      }
       this.diskData = this.form.fi.capability.specs.hosts[value].disk
       // 过滤包含此规格的物理机
       this.hostResourceMapper(this.hostData)
@@ -792,6 +796,7 @@ export default {
         // 存储选中规格中的信息
         this.diskData = this.form.fi.capability.specs.hosts[this.specOptions[0].value].disk
         this.hostResourceMapper(this.hostData)
+        const originalValue = this.specOptions[0].value
         const str = this.specOptions[0].value.replace(/\//g, ',')
         const arr = str.split(',')
         const obj = {}
@@ -799,7 +804,12 @@ export default {
           const arr2 = arr[i].split(':')
           obj[arr2[0]] = arr2[1]
         }
+        obj.value = originalValue
         this.selectedSpecItem = obj
+        const currentSpec = this.form.fi.capability.specs.hosts[originalValue]
+        if (R.has('isolated_devices')(currentSpec)) {
+          this.selectedSpecItem.isolated_devices = currentSpec.isolated_devices
+        }
       }
     },
     __getSpecification (spec) {
@@ -1175,6 +1185,7 @@ export default {
       }
       if (values.loginPassword) params.password = values.loginPassword
       if (values.loginKeypair) params.keypair = values.loginKeypair.key
+      if (this.selectedSpecItem.isolated_devices) params.isolated_devices = this.selectedSpecItem.isolated_devices
       // 判断是否是iso导入
       if (values.imageType === 'iso') {
         params = {
