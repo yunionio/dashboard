@@ -390,9 +390,9 @@ export default {
     },
     getDomainOrProjectQuery () {
       if (this.isProjectMode) {
-        return `tenant_id = ${this.userInfo.projectId}`
+        return `"tenant_id" = '${this.userInfo.projectId}'`
       } else if (this.isDomainMode) {
-        return `domain_id = ${this.userInfo.projectDomainId}`
+        return `"domain_id" = '${this.userInfo.projectDomainId}'`
       }
       return ''
     },
