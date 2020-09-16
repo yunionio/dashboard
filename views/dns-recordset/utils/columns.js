@@ -45,7 +45,7 @@ export const getTrafficPoliciesTableColumns = () => {
             con.push(policyParamsMap.policy_type[item.policy_type])
           }
           if (item.policy_value) {
-            con.push(policyParamsMap.policy_value[item.policy_value])
+            con.push(policyParamsMap.policy_value[item.policy_value] || item.policy_value)
           }
           return `${i18n.t('common_698')}${idx + 1}: ${con.join('/')}`
         }
