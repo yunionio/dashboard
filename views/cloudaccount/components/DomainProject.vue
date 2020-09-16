@@ -15,7 +15,7 @@
     </a-form-item>
     <a-form-item :label="$t('cloudenv.text_90', [$t('dictionary.project')])" v-bind="formLayout" :extra="$t('cloudenv.text_91', [$t('dictionary.project'),$t('dictionary.project'),$t('dictionary.project')])">
       <a-select
-        :disabled="disableProjectSelect"
+        :disabled="disableProjectSelect || isOpenstack"
         :allowClear="allowClear"
         :labelInValue="labelInValue"
         v-decorator="decorators.project"
@@ -26,9 +26,16 @@
         showSearch>
         <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
       </a-select>
-      <div class="d-flex" v-if="!isOpenstack">
+      <div class="d-flex">
         <div class="flex-shrink-0 flex-grow-0">
-          <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange">{{$t('cloudenv.text_92', [$t('dictionary.project')])}}</a-checkbox>
+          <template v-if="isOpenstack">
+            <a-tooltip :title="$t('cloudenv.text_494')">
+              <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange" disabled>{{$t('cloudenv.text_92', [$t('dictionary.project')])}}</a-checkbox>
+            </a-tooltip>
+          </template>
+          <template v-else>
+            <a-checkbox v-decorator="decorators.auto_create_project" @change="handleAutoCreateProjectChange">{{$t('cloudenv.text_92', [$t('dictionary.project')])}}</a-checkbox>
+          </template>
         </div>
         <div class="flex-shrink-0 flex-grow-0 ml-1">
           <help-tooltip name="cloudaccountAutoCreateProject" />

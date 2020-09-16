@@ -525,5 +525,6 @@
   "cloudenv.text_490": "IP子网(数量)",
   "cloudenv.text_491": "云用户组",
   "cloudenv.text_492": "创建云用户组",
-  "cloudenv.text_493": "自动创建项目"
+  "cloudenv.text_493": "自动创建项目",
+  "cloudenv.text_494": "OpenStack平台不支持该操作"
 }
