@@ -143,7 +143,7 @@ export default {
         auto_create_project: [
           'auto_create_project',
           {
-            initialValue: this.isOpenstack,
+            initialValue: this.provider.toLowerCase() === 'openstack',
             valuePropName: 'checked',
           },
         ],
