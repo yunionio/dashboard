@@ -346,4 +346,7 @@ export default {
     success: ['ok'],
     danger: ['alerting'],
   },
+  dnszonecache: {
+    success: ['available'],
+  },
 }
