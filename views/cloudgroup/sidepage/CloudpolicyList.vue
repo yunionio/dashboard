@@ -50,14 +50,14 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('cloudenv.text_452'),
+          label: this.$t('common.remove'),
           permission: 'cloudpolicy_perform_revoke_group',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: this.$t('cloudenv.text_452'),
+              title: this.$t('common.remove'),
               name: this.$t('dictionary.cloudpolicy'),
               onManager: this.onManager,
               ok: async ids => {
@@ -88,14 +88,14 @@ export default {
       ],
       singleActions: [
         {
-          label: this.$t('cloudenv.text_452'),
+          label: this.$t('common.remove'),
           permission: 'cloudpolicy_perform_revoke_group',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
               columns: this.columns,
-              title: this.$t('cloudenv.text_452'),
+              title: this.$t('common.remove'),
               name: this.$t('dictionary.cloudpolicy'),
               onManager: this.onManager,
               ok: async ids => {
