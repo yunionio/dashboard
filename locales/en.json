@@ -2257,7 +2257,10 @@
       "pd-standard": "Standard Persistent Disk"
     },
     "view": "View",
-    "total": "Total:{0}"
+    "total": "Total:{0}",
+    "bind": "Bind",
+    "unbind": "Unbind",
+    "remove": "Remove"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
