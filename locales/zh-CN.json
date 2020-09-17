@@ -167,5 +167,11 @@
   "storage.text_167": "生成URL",
   "storage.text_168": "文件夹",
   "storage.text_169": "文件列表",
-  "storage.text_170": "监控"
+  "storage.text_170": "监控",
+  "storage.text_171": "无调度标签",
+  "storage.text_172": "用量统计",
+  "storage.text_173": "1. 请使用符合要求的 UTF-8 字符，可用数字、中英文和可见字符的组合",
+  "storage.text_174": "2. 用 / 分割路径，可快速创建子目录，但不要以 / 打头，不要出现连续的",
+  "storage.text_175": "3. 不允许以 .. 作为文件夹名称",
+  "storage.text_176": "4. 总长度控制在 1-254 个字符"
 }
