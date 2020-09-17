@@ -2254,7 +2254,8 @@
       "LOCAL_SSD": "本地SSD盘",
       "EXCLUSIVE_LOCAL_DISK": "独享本地盘",
       "pd-ssd": "SSD永久性磁盘",
-      "pd-standard": "标准永久性磁盘"
+      "pd-standard": "标准永久性磁盘",
+      "cloudhssd": "增强型SSD云硬盘"
     },
     "view": "查看",
     "total": "共：{0}",
