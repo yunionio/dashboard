@@ -194,6 +194,10 @@ export default {
       if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
         ret[STORAGE_AUTO.key] = STORAGE_AUTO
       }
+      if (this.hypervisor === HYPERVISORS_MAP.qcloud.key) {
+        delete ret.local_nvme
+        delete ret.local_pro
+      }
       return ret
     },
     currentTypeObj () {
