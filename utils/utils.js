@@ -425,22 +425,22 @@ export const formatSeconds = value => {
     [theTime, 'seconds'],
   ]
   if (theTime > 0) {
-    str = '' + parseInt(theTime) + '秒'
+    str = i18n.t('common.date.seconds', [parseInt(theTime)])
   }
   if (theTime1 > 0) {
-    str = '' + parseInt(theTime1) + '分' + str
+    str = i18n.t('common.date.minutes', [parseInt(theTime1)])
   }
   if (theTime2 > 0) {
-    str = '' + parseInt(theTime2) + '小时' + str
+    str = i18n.t('common.date.hours', [parseInt(theTime2)])
   }
   if (theTime3 > 0) {
-    str = '' + parseInt(theTime3) + '天' + str
+    str = i18n.t('common.date.days', [parseInt(theTime3)])
   }
   if (theTime4 > 0) {
-    str = '' + parseInt(theTime4) + '月' + str
+    str = i18n.t('common.date.months', [parseInt(theTime4)])
   }
   if (theTime5 > 0) {
-    str = '' + parseInt(theTime5) + '年' + str
+    str = i18n.t('common.date.years', [parseInt(theTime5)])
   }
   return {
     str,
