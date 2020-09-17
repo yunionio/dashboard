@@ -198,10 +198,14 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          md: { span: 17 },
+          xl: { span: 19 },
+          xxl: { span: 21 },
         },
         labelCol: {
-          span: 3,
+          md: { span: 7 },
+          xl: { span: 5 },
+          xxl: { span: 3 },
         },
       },
       manager: '',

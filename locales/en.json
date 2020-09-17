@@ -65,7 +65,7 @@
   "network.text_64": "Please enter the Yum source address",
   "network.text_65": "Yum source TLS verification",
   "network.text_66": "Prompt: It is detected that the task is being executed, click",
-  "network.text_67": "Details",
+  "network.text_67": "Properties",
   "network.text_68": "Please enter a project",
   "network.text_69": "Please select a system administrator user",
   "network.text_70": "Host",
@@ -148,7 +148,7 @@
   "network.text_147": "Telegraf configuration information",
   "network.text_148": "(Ignore certificate verification)",
   "network.text_149": "KeepAlived configuration information",
-  "network.text_150": "Operation Log",
+  "network.text_150": "Operations",
   "network.text_151": "Deployment Details",
   "network.text_152": "Record value",
   "network.text_153": "Enable Status",
@@ -303,7 +303,7 @@
   "network.text_302": "Add addresses in batches cannot be empty",
   "network.text_303": "Instance",
   "network.text_304": "(flexible public network IP)",
-  "network.text_305": "(public network IP)",
+  "network.text_305": "(Public IP)",
   "network.text_306": "(Private IP)",
   "network.text_307": "(Public IP)",
   "network.text_308": "Configuration Information",
@@ -749,5 +749,6 @@
   "network.text_731": "MX priority",
   "network.text_732": "The smaller the value, the higher the priority",
   "network.text_733": "Please fill in the weight value",
-  "network.text_734": "The weight must be an integer between 0 and 255"
+  "network.text_734": "The weight must be an integer between 0 and 255",
+  "network.text_735": "Total {ports}, {ports_used} used (including reserved IP {reserve_vnics})"
 }
