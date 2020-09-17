@@ -24,9 +24,6 @@
               :key="item.key">{{ item.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('helm.text_93')" v-if="$store.getters.isAdminMode">
-          <a-switch v-decorator="decorators.is_public" />
-        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -52,7 +49,6 @@ export default {
     if (this.params.data && this.params.data[0]) {
       initialValue.name = this.params.data[0].name
       initialValue.url = this.params.data[0].url
-      initialValue.is_public = this.params.data[0].is_public
     }
     return {
       loading: false,
@@ -97,13 +93,6 @@ export default {
               { required: true, message: this.$t('helm.text_94'), trigger: 'blur' },
               { validator: this.$validate('url') },
             ],
-          },
-        ],
-        is_public: [
-          'is_public',
-          {
-            initialValue: initialValue.is_public,
-            valuePropName: 'checked',
           },
         ],
       },
