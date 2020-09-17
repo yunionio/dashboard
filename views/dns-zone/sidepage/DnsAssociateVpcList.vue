@@ -80,7 +80,7 @@ export default {
         {
           label: this.$t('network.text_719'),
           permission: 'dns_zones_add_vpcs',
-          action: (obj) => {
+          action: () => {
             this.createDialog('AssociateVpcDialog', {
               title: this.$t('network.text_719'),
               data: [this.data],
@@ -91,16 +91,19 @@ export default {
             })
           },
           meta: () => {
-            return {
-              buttonType: 'primary',
-              validate: !this.isPublicZone && this.isAvailable,
+            const ret = { buttonType: 'primary', validate: true, tooltip: '' }
+            if (!this.isAvailable) {
+              ret.validate = false
+              ret.tooltip = this.$t('network.text_730')
+              return ret
             }
+            return ret
           },
         },
         {
           label: this.$t('cloudenv.text_452'),
           permission: 'dns_zones_remove_vpcs',
-          action: (obj) => {
+          action: () => {
             this.createDialog('RemoveVpcDialog', {
               title: this.$t('cloudenv.text_452'),
               data: this.list.selectedItems,
@@ -110,10 +113,18 @@ export default {
               refresh: this.refresh,
             })
           },
-          meta: (row) => {
-            return {
-              validate: !!this.list.selectedItems.length && this.isAvailable,
+          meta: () => {
+            const ret = { validate: true, tooltip: '' }
+            if (!this.list.selectedItems.length) {
+              ret.validate = false
+              return ret
             }
+            if (!this.isAvailable) {
+              ret.validate = false
+              ret.tooltip = this.$t('network.text_730')
+              return ret
+            }
+            return ret
           },
         },
       ],
@@ -132,8 +143,11 @@ export default {
             })
           },
           meta: (row) => {
-            return {
-              validate: this.isAvailable,
+            const ret = { validate: true, tooltip: '' }
+            if (!this.isAvailable) {
+              ret.validate = false
+              ret.tooltip = this.$t('network.text_730')
+              return ret
             }
           },
         },
