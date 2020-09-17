@@ -2,6 +2,7 @@ import LbListCell from '@Network/views/lb/components/LbListCell'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -26,11 +27,7 @@ export default {
         }),
         getStatusTableColumn({ minWidth: 100, statusModule: 'lb' }),
         getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: i18n.t('network.text_368') }),
-        {
-          field: 'domain',
-          title: i18n.t('network.text_156'),
-          minWidth: 200,
-        },
+        getProjectDomainTableColumn(),
         {
           field: 'path',
           title: 'URL',
