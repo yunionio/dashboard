@@ -1460,7 +1460,7 @@
     "bucket": "bucket",
     "wire": "Broadcast Domains",
     "workflowconfig": "Configure Work Order",
-    "zone": "Available Zone",
+    "zone": "Zones",
     "oss": "Bucket",
     "log": "Log",
     "container": "Container",
@@ -1669,7 +1669,7 @@
     "loadbalancer": "Load balance health check"
   },
   "billingType": {
-    "postpaid": "Pay by amount",
+    "postpaid": "Pay as you go",
     "prepaid": "Package year and month"
   },
   "isoChannelOptions": {
@@ -2269,7 +2269,12 @@
       "months": "{0} months",
       "years": "{0} years",
       "ms": "{0} milliseconds"
-    }
+    },
+    "available_1var": "Available：{0}",
+    "intranet_1var": "Intranet: {0}",
+    "extranet_1var": "Extranet: {0}",
+    "setting": "Setting",
+    "cloudprovider_1var": "Cloud provider: {0}"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
@@ -3404,7 +3409,7 @@
   "common_59": "Item is duplicate)",
   "common_60": "Core",
   "common_61": "a",
-  "common_62": "Taiwan",
+  "common_62": "",
   "common_63": "piece",
   "common_64": "Number of buckets",
   "common_65": "Number of objects",
@@ -3462,7 +3467,7 @@
   "common_117": "Add new label",
   "common_118": "The following tags are user-defined tags",
   "common_119": "Each resource can be bound with up to 20 tags, please adjust and try again",
-  "common_120": "@:brand authorization activation",
+  "common_120": "{0} authorization activation",
   "common_121": "Software version: {0}",
   "common_122": "Server ID",
   "common_123": "License file upload",
@@ -3762,7 +3767,7 @@
   "common_428": "Configuration",
   "common_429": "Core",
   "common_430": "Number of machines",
-  "common_431": "Taiwan",
+  "common_431": "",
   "common_432": "System Disk",
   "common_433": "Data Disk",
   "common_434": ", {0} block ({1})",

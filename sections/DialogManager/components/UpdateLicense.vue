@@ -3,7 +3,7 @@
     <div slot="body">
       <div class="titles">
          <img class="logo" :src="logo" alt="" />
-         <h2>{{$t('common_120')}}</h2>
+         <h2>{{$t('common_120', [companyInfo.name])}}</h2>
          <p v-if="updateInfo.current_version">{{$t('common_121', [updateInfo.current_version])}}</p>
       </div>
       <a-form class="form" label-align="right" :form="form.fc" v-bind="formItemLayout">
@@ -95,6 +95,9 @@ export default {
     ...mapGetters([
       'logo',
     ]),
+    ...mapState('app', {
+      companyInfo: state => state.companyInfo,
+    }),
     ...mapState({
       serviceNumbers: state => state.app.license.service_numbers,
       status: state => state.app.license.status,
