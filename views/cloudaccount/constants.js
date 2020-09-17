@@ -125,21 +125,21 @@ export const ENV_TITLE = {
 }
 
 export const CLOUDACCOUNT_DOCS = {
-  aliyun: i18n.t('cloudenv.text_125', [DOCS_PATH]),
-  azure: i18n.t('cloudenv.text_126', [DOCS_PATH]),
-  aws: i18n.t('cloudenv.text_127', [DOCS_PATH]),
-  qcloud: i18n.t('cloudenv.text_128', [DOCS_PATH]),
-  huawei: i18n.t('cloudenv.text_129', [DOCS_PATH]),
-  ucloud: i18n.t('cloudenv.text_130', [DOCS_PATH]),
-  zstack: i18n.t('cloudenv.text_131', [DOCS_PATH]),
-  dstack: i18n.t('cloudenv.text_131', [DOCS_PATH]),
-  openstack: i18n.t('cloudenv.text_132', [DOCS_PATH]),
-  vmware: i18n.t('cloudenv.text_133', [DOCS_PATH]),
-  s3: i18n.t('cloudenv.text_134', [DOCS_PATH]),
-  ceph: i18n.t('cloudenv.text_135', [DOCS_PATH]),
-  xsky: i18n.t('cloudenv.text_136', [DOCS_PATH]),
-  google: i18n.t('cloudenv.text_137', [DOCS_PATH]),
-  ctyun: i18n.t('cloudenv.text_138', [DOCS_PATH]),
+  aliyun: `${DOCS_PATH}#新建阿里云账号`,
+  azure: `${DOCS_PATH}#新建azure账号`,
+  aws: `${DOCS_PATH}#新建aws账号`,
+  qcloud: `${DOCS_PATH}#新建腾讯云账号`,
+  huawei: `${DOCS_PATH}#新建华为云账号`,
+  ucloud: `${DOCS_PATH}#新建ucloud账号`,
+  zstack: `${DOCS_PATH}#新建zstack-dstack账号`,
+  dstack: `${DOCS_PATH}#新建zstack-dstack账号`,
+  openstack: `${DOCS_PATH}#新建openstack账号`,
+  vmware: `${DOCS_PATH}#新建vmware账号`,
+  s3: `${DOCS_PATH}#新建s3账号`,
+  ceph: `${DOCS_PATH}#新建ceph账号`,
+  xsky: `${DOCS_PATH}#新建xsky账号`,
+  google: `${DOCS_PATH}#新建google账号`,
+  ctyun: `${DOCS_PATH}#新建天翼云账号`,
 }
 
 export const ACCESS_URL = {
@@ -362,8 +362,8 @@ export const keySecretFields = {
 }
 
 export const BILL_BUCKET_URL_DOCS = {
-  aliyun: i18n.t('cloudenv.text_164', [DOCS_PATH]),
-  aws: i18n.t('cloudenv.text_165', [DOCS_PATH]),
-  huawei: i18n.t('cloudenv.text_166', [DOCS_PATH]),
-  google: i18n.t('cloudenv.text_167', [DOCS_PATH]),
+  aliyun: `${DOCS_PATH}#如何获取账单存储桶url`,
+  aws: `${DOCS_PATH}#如何获取账单存储桶url-1`,
+  huawei: `${DOCS_PATH}#如何获取账单存储桶url-2`,
+  google: `${DOCS_PATH}#如何获取账单文件的存储桶url以及文件前缀`,
 }
