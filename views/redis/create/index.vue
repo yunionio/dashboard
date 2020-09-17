@@ -11,7 +11,9 @@
       </a-form-item>
       <a-form-item :label="$t('db.text_60')">
         <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.serverName')" />
-        <name-repeated v-slot:extra res="elasticcaches" :name="form.getFieldValue('generate_name')" />
+        <template #extra>
+          <name-repeated res="elasticcaches" :name="form.getFieldValue('generate_name')" />
+        </template>
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
@@ -42,7 +44,6 @@
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
 import changeMinxin from './changeMinxin'
-import { CreateServerForm } from '@Compute/constants'
 import { DECORATORS } from '@DB/views/redis/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import Duration from '@Compute/sections/Duration'
@@ -74,8 +75,16 @@ export default {
     return {
       loginTypes: ['random', 'password'],
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: {
+          lg: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 21 },
+        },
+        labelCol: {
+          lg: { span: 6 },
+          xl: { span: 4 },
+          xxl: { span: 3 },
+        },
       },
       decorators: DECORATORS,
       scopeParams: {

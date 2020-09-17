@@ -7,11 +7,12 @@
       </a-form-item>
       <a-form-item :label="$t('db.text_60')" v-bind="formItemLayout">
         <a-input :placeholder="$t('validator.resourceCreateName')" v-decorator="decorators.generate_name" />
-        <name-repeated
-          v-slot:extra
-          res="dbinstances"
-          :name="form.getFieldValue('generate_name')"
-          :default-text="$t('db.text_142')"  />
+        <template #extra>
+          <name-repeated
+            res="dbinstances"
+            :name="form.getFieldValue('generate_name')"
+            :default-text="$t('db.text_142')"  />
+        </template>
       </a-form-item>
       <!-- 计费方式 -->
       <clearing-radios v-bind="formItemLayout" />
@@ -45,7 +46,6 @@ import { DECORATORS } from './constants/index'
 import SKU from './components/SKU'
 import BottomBar from './components/BottomBar'
 import changeMinxin from './changeMinxin'
-import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import Duration from '@Compute/sections/Duration'
@@ -74,8 +74,16 @@ export default {
       loginTypes: ['random', 'password'],
       decorators: DECORATORS,
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: {
+          lg: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 21 },
+        },
+        labelCol: {
+          lg: { span: 6 },
+          xl: { span: 4 },
+          xxl: { span: 3 },
+        },
       },
       scopeParams: {
         scope: this.$store.getters.scope,

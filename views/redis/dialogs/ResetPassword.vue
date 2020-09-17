@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -44,8 +43,8 @@ export default {
         fc: this.$form.createForm(this),
       },
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: { span: 20 },
+        labelCol: { span: 4 },
       },
       loading: false,
     }

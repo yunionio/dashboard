@@ -132,7 +132,7 @@ export default {
                 }
                 return [
                   <span style="color: rgb(230, 139, 80);">{ price.toFixed(2) }</span>,
-                  <span> 元 / {unit}</span>,
+                  <span> { this.$t('currencys.CNY') } / {unit}</span>,
                 ]
               }
               return '-'
