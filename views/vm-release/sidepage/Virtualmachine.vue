@@ -62,16 +62,6 @@ export default {
           field: 'instanceType',
           title: this.$t('helm.text_99'),
         },
-        {
-          field: 'vcpuCount',
-          title: 'CPU',
-          formatter: ({ row }) => R.is(Number, row.vcpuCount) ? this.$t('helm.text_100', [row.vcpuCount]) : '-',
-        },
-        {
-          field: 'vmemSizeGB',
-          title: this.$t('helm.text_101'),
-          formatter: ({ row }) => R.is(Number, row.vcpuCount) ? `${row.vmemSizeGB} GB` : '-',
-        },
       ],
     }
   },
