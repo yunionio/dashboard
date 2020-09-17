@@ -399,6 +399,7 @@ export default {
       try {
         const response = await this.cpm.list({
           params: {
+            scope: this.$store.getters.scope,
             cloudaccount_id: this.cloudaccount.id,
           },
         })
