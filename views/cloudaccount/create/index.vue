@@ -116,17 +116,21 @@ export default {
       if (!this.vmwareFormData) return false
       try {
         const { name, host, password, port, project, username } = this.vmwareFormData
+        const performData = {
+          name,
+          host,
+          password,
+          port,
+          project: project.key,
+          provider: 'VMware',
+          username,
+        }
+        if (this.$store.getters.isAdminMode && this.vmwareFormData.domain && this.vmwareFormData.domain.key) {
+          performData.project_domain = this.vmwareFormData.domain.key
+        }
         const { data } = await this.cloudaccountsM.performClassAction({
           action: 'prepare-nets',
-          data: {
-            name,
-            host,
-            password,
-            port,
-            project: project.key,
-            provider: 'VMware',
-            username,
-          },
+          data: performData,
         })
         this.prepareNetData = data || {}
       } catch (err) {
