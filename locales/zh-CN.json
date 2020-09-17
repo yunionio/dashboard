@@ -2168,7 +2168,7 @@
       "title": {
         "name": "名称",
         "brand": "平台",
-        "desc": "描述",
+        "desc": "备注",
         "projectPolicy": "@:dictionary.project权限",
         "domainPolicy": "@:dictionary.domain权限",
         "managePolicy": "管理权限",
@@ -2265,7 +2265,16 @@
     "total": "共：{0}",
     "bind": "绑定",
     "unbind": "解绑",
-    "remove": "移除"
+    "remove": "移除",
+    "date": {
+      "seconds": "{0}秒",
+      "minutes": "{0}分",
+      "hours": "{0}小时",
+      "days": "{0}天",
+      "months": "{0}月",
+      "years": "{0}年",
+      "ms": "{0}毫秒"
+    }
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",

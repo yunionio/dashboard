@@ -1874,12 +1874,12 @@
   },
   "subDurations": {
     "seconds": "seconds",
-    "minutes": "分",
-    "hours": "Hours",
-    "days": "天",
-    "months": "Month",
+    "minutes": "minutes",
+    "hours": "hours",
+    "days": "days",
+    "months": "months",
     "years": "years",
-    "ms": "millisecond"
+    "ms": "milliseconds"
   },
   "durations": {
     "1h": "1 hour",
@@ -2265,7 +2265,16 @@
     "total": "Total:{0}",
     "bind": "Bind",
     "unbind": "Unbind",
-    "remove": "Remove"
+    "remove": "Remove",
+    "date": {
+      "seconds": "{0} seconds",
+      "minutes": "{0} minutes",
+      "hours": "{0} hours",
+      "days": "{0} days",
+      "months": "{0} months",
+      "years": "{0} years",
+      "ms": "{0} milliseconds"
+    }
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
