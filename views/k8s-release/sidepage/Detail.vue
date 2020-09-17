@@ -2,7 +2,7 @@
   <detail
     :showDesc="false"
     :showName="false"
-    :hiddenKeys="['project_domain', 'tenant', 'updated_at']"
+    :hiddenKeys="['tenant', 'updated_at']"
     :onManager="onManager"
     :data="data"
     :base-info="baseInfo" />
