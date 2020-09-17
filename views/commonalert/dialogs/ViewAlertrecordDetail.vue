@@ -7,7 +7,10 @@
         <div class="Rheader"><span>{{ $t('bill.text_176') }}： </span><span>{{ item.value_str }}</span></div>
         <div class="tag-title mt-3">{{ $t('common.text00012') }}</div>
         <div class="tag-wrapper">
-          <div class="tag" v-for="(v, k) in item.tags" :key="k"><span class="d-inline-block tag-item-key text-truncate" :title="k">{{ k }}： </span><span class="d-inline-block">{{ v }}</span></div>
+          <div class="tag-item d-flex align-items-center" v-for="(v, k) in item.tags" :key="k">
+            <span class="tag-item-key text-truncate" :title="k">{{ k }}： </span>
+            <span>{{ v }}</span>
+          </div>
         </div>
       </a-card>
     </div>
@@ -58,6 +61,10 @@ export default {
   .tag-title {
     font-size: 16px;
     font-weight: 500;
+  }
+  .tag-item {
+    height: 26px;
+    line-height: 26px;
   }
   .tag-item-key {
     width: 120px;
