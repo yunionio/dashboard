@@ -181,6 +181,10 @@ export default {
       if (this.hypervisor === HYPERVISORS_MAP.google.key) {
         delete ret['local-ssd']
       }
+      if (this.hypervisor === HYPERVISORS_MAP.qcloud.key) {
+        delete ret.local_nvme
+        delete ret.local_pro
+      }
       this.$nextTick(this.setDefaultType)
       return ret
     },
