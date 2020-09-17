@@ -1,4 +1,4 @@
-import { getNameDescriptionTableColumn, isPublicTableColumn, getTimeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getTimeTableColumn, getProjectDomainTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -26,10 +26,10 @@ export default {
         },
       },
       {
-        field: 'mountedBy',
+        field: 'release_count',
         minWidth: 80,
         title: i18n.t('helm.text_102'),
-        formatter: ({ row }) => row.mountedBy ? row.mountedBy.length : '-',
+        formatter: ({ row }) => row.release_count || '0',
       },
       {
         field: 'url',
@@ -54,8 +54,8 @@ export default {
           },
         },
       },
-      isPublicTableColumn(),
       getProjectDomainTableColumn(),
+      getPublicScopeTableColumn({ vm: this, resource: 'repos' }),
       getTimeTableColumn({ field: 'created_at', fromNow: true, sortable: true }),
     ]
   },

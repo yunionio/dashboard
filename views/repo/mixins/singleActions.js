@@ -1,4 +1,4 @@
-import { getSetPublicAction } from '@/utils/common/tableActions'
+import { getSetPublicAction, getDomainChangeOwnerAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
 export default {
@@ -9,6 +9,18 @@ export default {
         scope: 'domain',
         resource: 'repos',
         apiVersion: 'v1',
+      }),
+      getDomainChangeOwnerAction(this, {
+        name: this.$t('dictionary.host'),
+        resource: 'repos',
+        apiVersion: 'v1',
+      }, {
+        meta: obj => {
+          const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+          return {
+            validate: ownerDomain,
+          }
+        },
       }),
       {
         label: i18n.t('helm.text_69'),
@@ -34,7 +46,7 @@ export default {
         meta: (obj) => {
           let validate = true
           let tooltip = ''
-          if (obj.mountedBy && obj.mountedBy.length > 0) {
+          if (+obj.release_count > 0) {
             validate = false
             tooltip = i18n.t('helm.text_97')
           }
