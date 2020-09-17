@@ -287,9 +287,9 @@ export default {
       new this.$Manager('capability').list({ ctx: [['zones', zoneId]], params })
         .then(({ data }) => {
           try {
+            const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
             this.storageOpts = data.data_storage_types.map((item) => {
               const type = item.split('/')[0]
-              const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
               const storageType = CommonConstants.STORAGE_TYPES[provider][type]
               const getLabel = (type) => { return type.includes('rbd') ? 'Ceph' : type }
               return {
@@ -304,6 +304,11 @@ export default {
             } else if (this.diskType === 'private') {
               this.storageOpts = this.storageOpts.filter((item) => {
                 return item.value !== 'nova'
+              })
+            }
+            if (provider === 'qcloud') {
+              this.storageOpts = this.storageOpts.filter((item) => {
+                return !item.value.startsWith('local_')
               })
             }
             this.form.fc.setFieldsValue({ backend: '' })
