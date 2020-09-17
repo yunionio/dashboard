@@ -16,9 +16,14 @@ export default {
     CommonalertList,
   },
   data () {
+    let cloudEnvOptions = [{ key: 'all', label: this.$t('monitor.text_3') }, { key: 'normal', label: this.$t('monitor.text_4') }, { key: 'system', label: this.$t('monitor.text_5') }]
+    if (!this.$store.getters.isAdminMode) {
+      cloudEnvOptions = [{ key: 'normal', label: this.$t('monitor.text_4') }]
+    }
+    const alertType = cloudEnvOptions[0].key
     return {
-      cloudEnvOptions: [{ key: 'all', label: this.$t('monitor.text_3') }, { key: 'normal', label: this.$t('monitor.text_4') }, { key: 'system', label: this.$t('monitor.text_5') }],
-      alertType: 'all',
+      cloudEnvOptions,
+      alertType,
     }
   },
 }
