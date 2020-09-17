@@ -19,10 +19,10 @@ export default {
       if (!this.formFd.fd.preferRegion || !this.formFd.fd.preferZone) return {}
       const p = {
         ...this.scopeParams.scopeParams,
-        // usable: true,
         filter: 'server_type.notin(ipmi, pxe)',
         cloudregion: this.formFd.fd.preferRegion,
         zone: this.formFd.fd.preferZone,
+        vpc: this.formFd.fd.vpc,
       }
       return p
     },
