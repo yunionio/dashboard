@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getCopyWithContentTableColumn, getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getCopyWithContentTableColumn, getBrandTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -48,10 +48,7 @@ export default {
               field: 'listener',
               title: this.$t('network.text_138'),
             },
-            {
-              field: 'domain',
-              title: this.$t('network.text_156'),
-            },
+            getProjectDomainTableColumn(),
             {
               field: 'path',
               title: this.$t('network.text_524'),
