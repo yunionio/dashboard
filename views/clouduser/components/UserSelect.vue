@@ -375,9 +375,6 @@ export default {
       if (query) {
         params.filter = `name.contains(${query})`
       }
-      if (this.$store.getters.isDomainMode) {
-        params.project_domain = this.userInfo.projectDomainId
-      }
       try {
         const response = await this.um.list({
           params,
