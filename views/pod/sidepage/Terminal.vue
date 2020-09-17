@@ -55,7 +55,7 @@ export default {
       }
       const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
         methodname: 'DoK8sShellConnect',
-        objId: this.data.id,
+        objId: this.data.name,
         params,
       })
       this.connectParams = data.connect_params
