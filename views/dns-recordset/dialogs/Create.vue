@@ -57,6 +57,16 @@
             </a-col>
           </a-row>
         </a-form-item>
+        <a-form-item v-if="isMX">
+          <span slot="label">
+            {{ $t('network.text_731') }}
+            <a-tooltip class="item" effect="dark" placement="top">
+              <a-icon type="info-circle" />
+              <div slot="title">{{$t('network.text_732')}}</div>
+            </a-tooltip>
+          </span>
+          <a-input-number v-decorator="decorators.mx_priority" :min="1" :max="50" />
+        </a-form-item>
         <a-form-item :label="$t('common_696')">
           <a-row
             :gutter="4"
@@ -244,6 +254,12 @@ export default {
             ],
           },
         ],
+        mx_priority: [
+          'mx_priority',
+          {
+            initialValue: 5,
+          },
+        ],
         ttl: [
           'ttl',
           {
@@ -318,6 +334,9 @@ export default {
     },
     isSRV () {
       return this.form.fd.dns_type === 'SRV'
+    },
+    isMX () {
+      return this.form.fd.dns_type === 'MX'
     },
   },
   created () {
@@ -405,7 +424,7 @@ export default {
       })
     },
     generateData (values) {
-      const { name, dns_type, dns_value, ttl, provider, policy_type, policy_value, policy_txtvalue } = values
+      const { name, dns_type, dns_value, ttl, provider, policy_type, policy_value, policy_txtvalue, mx_priority } = values
       const { id } = this.params.detailData
       const trafficPolicies = this.trafficPolicies.map((item) => {
         return {
@@ -414,7 +433,7 @@ export default {
           policy_value: item.policy_type === 'Weighted' ? policy_txtvalue[item.key] : policy_value[item.key] || '',
         }
       })
-      return {
+      const data = {
         name,
         dns_type,
         dns_value,
@@ -423,6 +442,10 @@ export default {
         dns_zone_id: id,
         enabled: true,
       }
+      if (this.isMX) {
+        data.mx_priority = mx_priority
+      }
+      return data
     },
     backfillData () {
       if (this.params.type === 'update' || this.params.type === 'clone') {
@@ -430,7 +453,7 @@ export default {
       }
     },
     _updateFormValue (val) {
-      const { name, dns_type, dns_value, ttl, traffic_policies = [] } = val
+      const { name, dns_type, dns_value, ttl, traffic_policies = [], mx_priority } = val
 
       traffic_policies.forEach((item) => {
         this.add(item)
@@ -440,12 +463,16 @@ export default {
         if (this.params.type === 'update') {
           _name = name
         }
-        this.form.fc.setFieldsValue({
+        const data = {
           name: _name,
           dns_type,
           dns_value,
           ttl,
-        })
+        }
+        if (dns_type === 'MX') {
+          data.mx_priority = mx_priority
+        }
+        this.form.fc.setFieldsValue(data)
       })
     },
     ttlClickHandle (v) {

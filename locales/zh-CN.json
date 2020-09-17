@@ -745,5 +745,7 @@
   "network.text_727": "总计：{0}",
   "network.text_728": "使用：{0}",
   "network.text_729": "无调度标签",
-  "network.text_730": "只有解析域名状态可用时才支持该操作"
+  "network.text_730": "只有解析域名状态可用时才支持该操作",
+  "network.text_731": "MX优先级",
+  "network.text_732": "数值越小优先级越高"
 }
