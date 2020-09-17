@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
+  getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -95,10 +96,7 @@ export default {
         },
       },
       getStatusTableColumn({ statusModule: 'kubecluster', minWidth: 40 }),
-      {
-        field: 'domain',
-        title: i18n.t('dictionary.domain'),
-      },
+      getProjectDomainTableColumn(),
     ]
   },
 }
