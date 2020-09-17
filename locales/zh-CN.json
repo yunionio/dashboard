@@ -2274,7 +2274,12 @@
       "months": "{0}月",
       "years": "{0}年",
       "ms": "{0}毫秒"
-    }
+    },
+    "available_1var": "可用：{0}",
+    "intranet_1var": "内网：{0}",
+    "extranet_1var": "外网：{0}",
+    "setting": "设置",
+    "cloudprovider_1var": "@:dictionary.cloudaccount：{0}"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
@@ -3467,7 +3472,7 @@
   "common_117": "新增标签",
   "common_118": "以下标签为用户自定义标签",
   "common_119": "每个资源最多可绑定20个标签，请调整后重试",
-  "common_120": "@:brand 授权激活",
+  "common_120": "{0}授权激活",
   "common_121": "软件版本：{0}",
   "common_122": "服务器识别码",
   "common_123": "License文件上传",
