@@ -18,10 +18,16 @@ export default {
           })
         },
         meta: (obj) => {
-          const ret = { validate: true }
+          const ret = { validate: true, tooltip: '' }
           if (obj.zone_type === 'PublicZone') {
             ret.validate = false
             ret.tooltip = i18n.t('common_662')
+            return ret
+          }
+          if (obj.status !== 'available') {
+            ret.validate = false
+            ret.tooltip = i18n.t('network.text_730')
+            return ret
           }
           return ret
         },
