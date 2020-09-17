@@ -747,5 +747,7 @@
   "network.text_729": "No scheulder tags",
   "network.text_730": "This operation is only supported when the status of the resolved domain name is available",
   "network.text_731": "MX priority",
-  "network.text_732": "The smaller the value, the higher the priority"
+  "network.text_732": "The smaller the value, the higher the priority",
+  "network.text_733": "Please fill in the weight value",
+  "network.text_734": "The weight must be an integer between 0 and 255"
 }

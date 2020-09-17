@@ -205,6 +205,17 @@ export default {
       callback()
     }
 
+    const checkPolicyTxtValue = (rule, value, callback) => {
+      const val = parseInt(value)
+      if (!val) {
+        callback(new Error(this.$t('network.text_733')))
+      }
+      if (val < 0 || val > 255) {
+        callback(new Error(this.$t('network.text_734')))
+      }
+      callback()
+    }
+
     return {
       loading: {
         submit: false,
@@ -298,6 +309,7 @@ export default {
           `policy_txtvalue[${k}]`,
           {
             initialValue: '',
+            rules: [{ validator: checkPolicyTxtValue }],
           },
         ]),
       },
@@ -349,7 +361,7 @@ export default {
   methods: {
     add (val) {
       const uid = uuid()
-      const provider = this.form.fc.getFieldValue('provider') || {}
+      const provider = this.form.fc.getFieldsValue().provider || {}
       const providerValues = Object.values(provider)
       const _providers = this.options.providers.filter(item => !providerValues.includes(item.value))
       const _provider = val.provider || _providers[0].value
@@ -365,6 +377,11 @@ export default {
         policy_type: curPolicyType,
         policy_values: policy_values,
       })
+
+      this.form.fc.getFieldDecorator(`provider[${uid}]`, this.decorators.provider(uid)[1])
+      this.form.fc.getFieldDecorator(`policy_type[${uid}]`, this.decorators.policy_type(uid)[1])
+      this.form.fc.getFieldDecorator(`policy_value[${uid}]`, this.decorators.policy_value(uid)[1])
+      this.form.fc.getFieldDecorator(`policy_txtvalue[${uid}]`, this.decorators.policy_txtvalue(uid)[1])
 
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({
@@ -405,6 +422,7 @@ export default {
     policyTypeChangeHandle (val, item) {
       item.policy_type = val
       item.policy_values = this.getPublicValues(item.provider, val)
+
       this.$nextTick(() => {
         if (item.policy_values.length > 0) {
           this.form.fc.setFieldsValue({

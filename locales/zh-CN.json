@@ -747,5 +747,7 @@
   "network.text_729": "无调度标签",
   "network.text_730": "只有解析域名状态可用时才支持该操作",
   "network.text_731": "MX优先级",
-  "network.text_732": "数值越小优先级越高"
+  "network.text_732": "数值越小优先级越高",
+  "network.text_733": "请填写权重值",
+  "network.text_734": "权重必须是0到255之间的整数"
 }
