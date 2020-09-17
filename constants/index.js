@@ -548,6 +548,15 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       resizeStep: 10,
     },
+    cloud_hssd: {
+      label: '增强型SSD云硬盘',
+      value: 'cloud_hssd',
+      min: 100,
+      max: 16000,
+      sysMin: 50,
+      sysMax: 500,
+      resizeStep: 10,
+    },
   },
   azure: {
     standard_lrs: {
