@@ -744,5 +744,6 @@
   "network.text_726": "Stop: {0}",
   "network.text_727": "Total: {0}",
   "network.text_728": "Use: {0}",
-  "network.text_729": "No scheulder tags"
+  "network.text_729": "No scheulder tags",
+  "network.text_730": "This operation is only supported when the status of the resolved domain name is available"
 }

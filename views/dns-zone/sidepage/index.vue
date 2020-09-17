@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import DnsZoneDetail from './Detail'
@@ -48,17 +49,22 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
-    return {
-      detailTabs: [
-        { label: this.$t('network.text_67'), key: 'dns-zone-detail' },
-        { label: this.$t('common_663'), key: 'dns-recordset-list-for-dns-zone-sidepage' },
-        { label: this.$t('network.text_719'), key: 'dns-associate-vpc-list' },
-        { label: this.$t('network.text_316'), key: 'dns-zonecache-list-for-dns-zone-sidepage' },
-        { label: this.$t('network.text_150'), key: 'event-drawer' },
-      ],
-    }
+    return {}
   },
   computed: {
+    detailTabs () {
+      const data = this.detailData
+      const detailTabs = [
+        { label: this.$t('network.text_67'), key: 'dns-zone-detail' },
+        { label: this.$t('common_663'), key: 'dns-recordset-list-for-dns-zone-sidepage' },
+        { label: this.$t('network.text_316'), key: 'dns-zonecache-list-for-dns-zone-sidepage' },
+        { label: this.$t('network.text_150'), key: 'event-drawer' },
+      ]
+      if (data.zone_type === 'PrivateZone') {
+        detailTabs.splice(2, 0, { label: this.$t('network.text_719'), key: 'dns-associate-vpc-list' })
+      }
+      return detailTabs
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'dns-recordset-list-for-dns-zone-sidepage') {
         return {
@@ -78,6 +84,11 @@ export default {
       }
       return null
     },
+  },
+  created () {
+    if (R.isNil(R.find(R.propEq('key', this.params.windowData.currentTab))(this.detailTabs))) {
+      this.handleTabChange(this.detailTabs[0].key)
+    }
   },
 }
 </script>
