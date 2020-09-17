@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import { getStatusTableColumn } from '@/utils/common/tableColumn'
 
