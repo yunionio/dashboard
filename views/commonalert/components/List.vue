@@ -97,10 +97,9 @@ export default {
         items: [
           { key: 'name', label: this.$t('common.name') },
           { key: 'status', label: this.$t('common.status') },
-          { key: 'enabled', label: this.$t('common.enabled') },
+          { key: 'enabled', label: this.$t('common_285') },
           { key: 'common_alert_metric_details', label: this.$t('monitor.strategy_detail') },
           { key: 'level', label: this.$t('monitor.level') },
-          { key: 'channel', label: this.$t('monitor.channel') },
           { key: 'tenant', label: this.$t('monitor.text00015') },
         ],
       },
