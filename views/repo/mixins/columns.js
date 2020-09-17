@@ -1,4 +1,4 @@
-import { getNameDescriptionTableColumn, isPublicTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, isPublicTableColumn, getTimeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -55,6 +55,7 @@ export default {
         },
       },
       isPublicTableColumn(),
+      getProjectDomainTableColumn(),
       getTimeTableColumn({ field: 'created_at', fromNow: true, sortable: true }),
     ]
   },
