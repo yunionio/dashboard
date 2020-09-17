@@ -52,7 +52,7 @@ const RenderSizeTitle = {
   },
   render () {
     return (
-      <div>用量统计 <a onClick={this.fetchSync}><a-icon type="sync" spin={this.loading} /></a></div>
+      <div>{ this.$t('storage.text_172') } <a onClick={this.fetchSync}><a-icon type="sync" spin={this.loading} /></a></div>
     )
   },
 }
@@ -188,7 +188,7 @@ export default {
                 default: ({ row }) => {
                   return [
                     ACL_TYPE[row.acl] || row.acl,
-                    <a-button onClick={() => this.handleSetAcl(row)} type="link">设置</a-button>,
+                    <a onClick={() => this.handleSetAcl(row)} class='ml-2'>{ this.$t('common.setting') }</a>,
                   ]
                 },
               },

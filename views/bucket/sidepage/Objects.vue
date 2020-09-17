@@ -1,22 +1,21 @@
 <template>
-   <page-list
+  <page-list
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions">
-      <div slot="table-prepend" class="d-flex align-items-center pt-2 pb-2">
-        <span>
-         <a-icon type="folder-open" theme="filled" style="color: rgb(245,200, 61);font-size:15px" />{{$t('storage.text_150')}}</span>
-        <a-breadcrumb>
-           <a-breadcrumb-item>
-             <a-button  style="padding:0" type="link" @click="nextPage('')"> {{data.name}} </a-button>
-          </a-breadcrumb-item>
-          <a-breadcrumb-item v-for="(value, key) in breadcrumbs" :key="key">
-             <a-button style="padding:0" type="link" @click="nextPage(key)"> {{value}} </a-button>
-          </a-breadcrumb-item>
-        </a-breadcrumb>
-      </div>
-    </page-list>
+    <div slot="table-prepend" class="d-flex align-items-center pt-2 pb-2">
+      <span><a-icon type="folder-open" theme="filled" style="color: rgb(245,200, 61);font-size:15px" />{{$t('storage.text_150')}}</span>
+      <a-breadcrumb>
+        <a-breadcrumb-item>
+          <a-button style="padding:0" type="link" @click="nextPage('')">{{data.name}}</a-button>
+        </a-breadcrumb-item>
+        <a-breadcrumb-item v-for="(value, key) in breadcrumbs" :key="key">
+          <a-button style="padding:0" type="link" @click="nextPage(key)">{{value}}</a-button>
+        </a-breadcrumb-item>
+      </a-breadcrumb>
+    </div>
+  </page-list>
 </template>
 
 <script>
@@ -164,6 +163,14 @@ export default {
               data: [row],
               list: this.list,
               width: 600,
+              formItemLayout: {
+                wrapperCol: {
+                  span: 19,
+                },
+                labelCol: {
+                  span: 5,
+                },
+              },
               callback: async (data) => {
                 const manager = new this.$Manager(`buckets/${this.resName}/makedir`, 'v2')
                 data.key = `${this.prefix}${data.key}/`
@@ -182,12 +189,14 @@ export default {
                   label: this.$t('storage.text_161'),
                   placeholder: this.$t('storage.text_162'),
                   extra: () => {
-                    return <div>
-                        1. 请使用符合要求的 UTF-8 字符，可用数字、中英文和可见字符的组合 <br />
-                        2. 用 / 分割路径，可快速创建子目录，但不要以 / 打头，不要出现连续的 / <br />
-                        3. 不允许以 .. 作为文件夹名称 <br />
-                        4.总长度控制在 1-254 个字符
-                    </div>
+                    return (
+                      <div>
+                        <div>{ this.$t('storage.text_173') }</div>
+                        <div class='mt-1'>{ this.$t('storage.text_174') }</div>
+                        <div class='mt-1'>{ this.$t('storage.text_175') }</div>
+                        <div class='mt-1'>{ this.$t('storage.text_176') }</div>
+                      </div>
+                    )
                   },
                 },
                 ],
