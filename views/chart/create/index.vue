@@ -339,6 +339,7 @@ export default {
           if (R.is(String, schema)) {
             schema = JSON.parse(schema)
           }
+          delete schema.properties.envs
           this.schema = schema
           this.getDefinition()
           this.isJsonSchema = true
@@ -400,6 +401,10 @@ export default {
       if (valuesJson) {
         data.values_json = valuesJson
         data.values_json.project = data.project
+        data.values_json.envs = {
+          project_id: data.project,
+          domain_id: data.domain,
+        }
       } else {
         const sets = {}
         if (this.formActiveTab === 'form') {
