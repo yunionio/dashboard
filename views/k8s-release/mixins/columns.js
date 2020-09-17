@@ -1,5 +1,5 @@
 import { k8sStatusColumn } from '@K8S/utils/tableColumns'
-import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getTimeTableColumn, getProjectDomainTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -36,6 +36,7 @@ export default {
         minWidth: 200,
       },
       getTimeTableColumn({ field: 'created_at', fromNow: true, sortable: true }),
+      getProjectDomainTableColumn(),
     ]
   },
 }
