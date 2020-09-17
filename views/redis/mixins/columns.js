@@ -103,10 +103,10 @@ export default {
             }
             const ports = []
             if (row.private_connect_port && (row.private_dns || row.private_ip_addr)) {
-              ports.push(<div> 内网：{row.private_connect_port}</div>)
+              ports.push(<div>{ this.$t('common.intranet_1var', [row.private_connect_port]) }</div>)
             }
             if (row.public_connect_port && (row.public_dns || row.public_ip_addr)) {
-              ports.push(<div>外网：{row.public_connect_port}</div>)
+              ports.push(<div>{ this.$t('common.extranet_1var', [row.public_connect_port]) }</div>)
             }
             return ports
           },

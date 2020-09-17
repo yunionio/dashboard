@@ -23,7 +23,6 @@
 
 <script>
 import SKU from '../create/components/SKU'
-import { CreateServerForm } from '@Compute/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -37,8 +36,8 @@ export default {
     return {
       loading: false,
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: { span: 18 },
+        labelCol: { span: 6 },
       },
       rdsZone: {},
     }
