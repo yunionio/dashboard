@@ -52,9 +52,9 @@ export default {
           },
         },
         {
-          field: 'mountedBy',
+          field: 'release_count',
           title: this.$t('helm.text_102'),
-          formatter: ({ row }) => row.mountedBy ? row.mountedBy.length : '-',
+          formatter: ({ row }) => row.release_count || '0',
         },
         {
           field: 'url',
