@@ -177,10 +177,10 @@ export default {
           },
           project_domains: getProjectDomainFilter(),
           region: {
-            label: '区域',
+            label: this.$t('dictionary.region'),
           },
           zone: {
-            label: '可用区',
+            label: this.$t('dictionary.zone'),
           },
         },
       }),
