@@ -242,12 +242,12 @@ export default {
       formItemLayout: {
         wrapperCol: {
           md: { span: 18 },
-          xl: { span: 21 },
+          xl: { span: 20 },
           xxl: { span: 22 },
         },
         labelCol: {
           md: { span: 6 },
-          xl: { span: 3 },
+          xl: { span: 4 },
           xxl: { span: 2 },
         },
       },

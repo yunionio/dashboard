@@ -20,7 +20,7 @@ export default {
         },
         meta: () => {
           return {
-            validate: this.isNormalStatus(),
+            validate: this.isNormalStatus() && this.isOwner(),
           }
         },
       },
