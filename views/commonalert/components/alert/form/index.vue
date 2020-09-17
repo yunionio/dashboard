@@ -85,10 +85,10 @@ export default {
       type: Object,
       default: () => ({
         wrapperCol: {
-          span: 20,
+          span: 19,
         },
         labelCol: {
-          span: 4,
+          span: 5,
         },
       }),
     },
