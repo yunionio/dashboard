@@ -1,11 +1,11 @@
 <template>
   <base-dialog @cancel="cancelDialog" :width="900">
     <div slot="header">{{params.title}}</div>
-    <a-form slot="body" :form="form.fc" class="mt-3">
-      <a-form-item  v-bind="formItemLayout" :label="$t('db.text_232')">
+    <a-form slot="body" :form="form.fc" class="mt-3" v-bind="formItemLayout">
+      <a-form-item :label="$t('db.text_232')">
         <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
       </a-form-item>
-      <a-form-item  v-bind="formItemLayout" :label="$t('db.text_233')">
+      <a-form-item :label="$t('db.text_233')">
         <a-select allowClear showSearch :placeholder="$t('db.text_234')" v-decorator="decorators.character_set">
           <a-select-option
             v-for="item in CHARACTER_SET"
@@ -13,7 +13,7 @@
             :value="item">{{ item }}</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" :label="$t('db.text_188')" v-if="this.params.rdsItem.brand !== 'Google'">
+      <a-form-item :label="$t('db.text_188')" v-if="this.params.rdsItem.brand !== 'Google'">
         <database-privileges :rdsItem="params.rdsItem" />
       </a-form-item>
     </a-form>
@@ -26,7 +26,6 @@
 
 <script>
 import DatabasePrivileges from '../components/DatabasePrivileges'
-import { CreateServerForm } from '@Compute/constants'
 import { RDS_ACCOUNT_PRIVILEGES } from '@DB/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -48,8 +47,8 @@ export default {
         fc: this.$form.createForm(this),
       },
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: { span: 20 },
+        labelCol: { span: 4 },
       },
     }
   },

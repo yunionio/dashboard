@@ -39,7 +39,6 @@
 </template>
 <script>
 import * as R from 'ramda'
-import { CreateServerForm } from '@Compute/constants'
 import { ENGINE_ARCH, NODE_TYPE, PERFORMANCE_TYPE_KEYS, PERFORMANCE_TYPE, ENGINE_KEYS, NODE_KEYS } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 export default {
@@ -77,8 +76,16 @@ export default {
       performance_types: [],
       memorys: [],
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: {
+          lg: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 21 },
+        },
+        labelCol: {
+          lg: { span: 6 },
+          xl: { span: 4 },
+          xxl: { span: 3 },
+        },
       },
       filterItems: {},
     }

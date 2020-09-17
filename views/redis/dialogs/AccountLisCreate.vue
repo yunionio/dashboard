@@ -1,31 +1,30 @@
 <template>
-    <base-dialog @cancel="cancelDialog">
-        <div slot="header">{{$t('db.text_282')}}</div>
-        <a-form slot="body" :form="form.fc" class="mt-3">
-            <a-form-item  v-bind="formItemLayout" :label="$t('db.text_283')">
-                <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
-            </a-form-item>
-            <a-form-item v-bind="formItemLayout" :label="$t('db.text_284')">
-               <a-radio-group v-decorator="decorators.account_privilege">
-                  <a-radio v-for="k in Object.keys(privileges)" :key="k" :value="k">
-                    {{privileges[k]}}
-                  </a-radio>
-              </a-radio-group>
-            </a-form-item>
-            <a-form-item :label="$t('db.text_195')" v-bind="formItemLayout">
-              <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
-            </a-form-item>
-        </a-form>
-         <div slot="footer">
-            <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
-            <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-         </div>
-    </base-dialog>
+  <base-dialog @cancel="cancelDialog">
+    <div slot="header">{{$t('db.text_282')}}</div>
+    <a-form slot="body" :form="form.fc" class="mt-3" v-bind="formItemLayout">
+      <a-form-item :label="$t('db.text_283')">
+        <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
+      </a-form-item>
+      <a-form-item :label="$t('db.text_284')">
+        <a-radio-group v-decorator="decorators.account_privilege">
+          <a-radio v-for="k in Object.keys(privileges)" :key="k" :value="k">
+            {{privileges[k]}}
+          </a-radio>
+        </a-radio-group>
+      </a-form-item>
+      <a-form-item :label="$t('db.text_195')">
+        <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
+      </a-form-item>
+    </a-form>
+    <div slot="footer">
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+    </div>
+  </base-dialog>
 </template>
 
 <script>
 import { ACCOUNT_PRIVILEGES } from '../constants'
-import { CreateServerForm } from '@Compute/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -46,8 +45,8 @@ export default {
         fc: this.$form.createForm(this),
       },
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: { span: 19 },
+        labelCol: { span: 5 },
       },
     }
   },
