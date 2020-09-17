@@ -343,20 +343,9 @@ export default {
       new this.$Manager('capability').list({ ctx: [['zones', zoneId]], params })
         .then(({ data }) => {
           try {
-            let storageTypes = data.data_storage_types
-            // !!! 后端不好隐藏 local_ssd 存储类型，前端暂时隐藏
-            if (this.currentCloudregion.provider.toLowerCase() === 'qcloud') storageTypes = storageTypes.filter(val => !~val.indexOf('local_ssd'))
-            if (this.currentCloudregion.provider.toLowerCase() === 'ucloud') {
-              storageTypes = storageTypes.filter(val => {
-                if (!~val.indexOf('LOCAL_NORMAL')) return false
-                if (!~val.indexOf('LOCAL_SSD')) return false
-                return true
-              })
-            }
-            this.storageTypes = storageTypes
-            this.storageOpts = storageTypes.map((item) => {
+            const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
+            this.storageOpts = data.data_storage_types.map((item) => {
               const type = item.split('/')[0]
-              const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
               const storageType = CommonConstants.STORAGE_TYPES[provider][type]
               const getLabel = (type) => { return type.includes('rbd') ? 'Ceph' : type }
               return {
@@ -377,6 +366,11 @@ export default {
               this.storageOpts = this.storageOpts.filter(({ value }) => {
                 if (value.includes('local')) return false
                 return true
+              })
+            }
+            if (provider === 'qcloud' || provider === 'ucloud') {
+              this.storageOpts = this.storageOpts.filter((item) => {
+                return !(item.value && item.value.toLowerCase().startsWith('local_'))
               })
             }
             this.form.fc.setFieldsValue({ backend: '' })
