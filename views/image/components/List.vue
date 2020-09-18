@@ -78,6 +78,7 @@ export default {
           { label: this.$t('compute.text_611'), key: 'is_standard' },
           { label: this.$t('compute.text_243'), key: 'created_at' },
           { label: this.$t('compute.text_641'), key: 'checksum' },
+          { label: this.$t('compute.text_271'), key: 'user_tags' },
         ],
       },
     }

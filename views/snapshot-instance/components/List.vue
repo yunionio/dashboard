@@ -62,6 +62,7 @@ export default {
           { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: this.$t('compute.text_91'), key: 'guest' },
+          { label: this.$t('compute.text_271'), key: 'user_tags' },
         ],
       },
       groupActions: [

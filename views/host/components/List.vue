@@ -120,6 +120,7 @@ export default {
             },
           },
           { label: this.$t('compute.text_506', [this.$t('dictionary.domain')]), key: 'project_domain' },
+          { label: this.$t('compute.text_271'), key: 'user_tags' },
         ],
       },
     }
