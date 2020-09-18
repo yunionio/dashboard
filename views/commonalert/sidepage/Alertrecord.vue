@@ -11,6 +11,7 @@ import { getStatusTableColumn, getTimeTableColumn } from '@/utils/common/tableCo
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { BRAND_MAP } from '@/constants'
+import { levelMaps } from '@Monitor/constants'
 
 export default {
   name: 'AlertrecordList',
@@ -35,12 +36,18 @@ export default {
           scope: 'system', // 仅管理后台可以查看报警记录
         },
         filterOptions: {
-          name: {
-            label: '名称',
-            filter: true,
-            formatter: val => {
-              return `name.contains(${val})`
-            },
+          level: {
+            label: this.$t('monitor.level'),
+            dropdown: true,
+            items: Object.values(levelMaps),
+          },
+          state: {
+            label: this.$t('common.status'),
+            dropdown: true,
+            items: [
+              { label: this.$t('status.alertrecord.ok'), key: 'ok' },
+              { label: this.$t('status.alertrecord.alerting'), key: 'alerting' },
+            ],
           },
         },
       }),
@@ -92,7 +99,7 @@ export default {
           },
         },
         getStatusTableColumn({ statusModule: 'alertrecord', field: 'state' }),
-        getTimeTableColumn(),
+        getTimeTableColumn({ title: this.$t('monitor.text_14') }),
       ],
       singleActions: [
         {

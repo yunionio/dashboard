@@ -168,5 +168,6 @@
   "monitor.text_10": "报警记录",
   "monitor.text_11": "报警机器人",
   "monitor.text_12": "{0}报警记录详情",
-  "monitor.text_13": "创建报警策略"
+  "monitor.text_13": "创建报警策略",
+  "monitor.text_14": "触发时间"
 }

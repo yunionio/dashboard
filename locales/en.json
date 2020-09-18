@@ -168,5 +168,6 @@
   "monitor.text_10": "Alarm Record",
   "monitor.text_11": "Alarm Robot",
   "monitor.text_12": "{0} Alarm Record Detail",
-  "monitor.text_13": "Create Alarm"
+  "monitor.text_13": "Create Alarm",
+  "monitor.text_14": "触发时间"
 }
