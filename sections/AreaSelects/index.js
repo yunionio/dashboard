@@ -385,13 +385,21 @@ export default {
     },
     RenderCloudregion () {
       const fetchNames = ['zone']
-      const { setFieldsValue } = this.FC
-      const _callback = (item = {}) => {
-        const { city, provider } = item
+      const { setFieldsValue, getFieldsValue } = this.FC
+      const _callback = async (item = {}) => {
+        const { city = 'Other', provider } = item
+        const fields = getFieldsValue()
         setFieldsValue({
           city,
           provider,
         })
+        if (!fields.provider) { // 当跳过provider直接选中cloudregion时，cloudregion 本身也要根据cloudprovider过滤
+          this.cloudregionList = await this.fetchCloudregion({
+            city,
+            provider,
+            ...this.cloudregionParams,
+          })
+        }
       }
       const _handleChange = (id) => {
         this.handleChange({
@@ -447,9 +455,24 @@ export default {
       }
     },
     RenderZone () {
-      const _callback = (item = {}) => {
-        // eslint-disable-next-line camelcase
+      const _callback = async (item = {}) => {
+        const fields = this.FC.getFieldsValue()
         const { provider, cloudregion_id } = item
+        if (!fields.cloudregion) { // 当跳过cloudregion直接选中zone时
+          this.cloudregionList = await this.fetchCloudregion({
+            city: fields.city,
+            provider,
+            ...this.cloudregionParams,
+          })
+        }
+        if (!fields.zone) { // 当跳过cloudregion直接选中zone时，zone 本身也要根据cloudregion过滤
+          this.zoneList = await this.fetchZone({
+            city: fields.city,
+            provider,
+            cloudregion_id,
+            ...this.zoneParams,
+          })
+        }
         this.FC.setFieldsValue({
           provider,
           cloudregion: cloudregion_id,
