@@ -42,6 +42,7 @@ import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableCol
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import { STORAGE_TYPES } from '@Storage/constants/index.js'
 
 export default {
   name: 'BlockStorageSidePage',
@@ -118,7 +119,7 @@ export default {
               meta: row => {
                 return {
                   validate: me.isBlockStorage,
-                  tooltip: !me.isBlockStorage && this.$t('storage.text_67'),
+                  tooltip: !me.isBlockStorage && this.$t('storage.text_67', [STORAGE_TYPES[row.storage_type] || row.storage_type]),
                 }
               },
             },
