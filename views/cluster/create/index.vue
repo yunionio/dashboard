@@ -263,8 +263,16 @@ export default {
       },
       isConfigImage: false,
       formItemLayout: {
-        wrapperCol: { span: 20 },
-        labelCol: { span: 3 },
+        wrapperCol: {
+          md: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 22 },
+        },
+        labelCol: {
+          md: { span: 6 },
+          xl: { span: 4 },
+          xxl: { span: 2 },
+        },
       },
       params: {
         zone: {

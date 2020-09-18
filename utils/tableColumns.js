@@ -17,7 +17,10 @@ export const k8sStatusColumn = ({ path = 'podsInfo.warnings', statusModule = 'k8
               <template slot="title">
                 { warnings.map(val => (<div> { val } </div>)) }
               </template>
-              <a-icon type="bulb" theme="twoTone" twoToneColor="#f5222d" class="mr-2" />状态异常
+              <div class='text-truncate'>
+                <a-icon type="bulb" theme="twoTone" twoToneColor="#f5222d" class="mr-2" />
+                <span>{ i18n.t('K8s.text_402') }</span>
+              </div>
             </a-tooltip>
           )
         }

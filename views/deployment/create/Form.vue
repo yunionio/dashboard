@@ -82,8 +82,16 @@ export default {
         fc: this.$form.createForm(this),
       },
       formItemLayout: {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 20 },
+        wrapperCol: {
+          md: { span: 14 },
+          xl: { span: 16 },
+          xxl: { span: 18 },
+        },
+        labelCol: {
+          md: { span: 10 },
+          xl: { span: 8 },
+          xxl: { span: 6 },
+        },
       },
       errPanes: [], // 表单校验错误的tabs
       containerPanes: [], // 子组件同步的tabs
