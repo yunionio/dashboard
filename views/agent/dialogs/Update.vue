@@ -4,7 +4,7 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.eip')" :count="params.data.length" :action="$t('network.text_74')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc" v-bind="formItemLayout">
+      <a-form :form="form.fc" layout="vertical">
         <a-form-item :label="$t('network.text_75')">
           <a-input v-decorator="decorators.hb_timeout" type="Number" :addonAfter="$t('network.text_76')" />
         </a-form-item>
