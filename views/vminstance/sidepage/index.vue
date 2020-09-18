@@ -70,8 +70,8 @@ export default {
         // { label: '宿主机', key: 'host-list' },
         { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
         { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
-        // { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
-        // { label: this.$t('compute.text_102'), key: 'instance-snapshot-list-for-vm-instance-sidepage' },
+        { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
+        { label: this.$t('compute.text_102'), key: 'instance-snapshot-list-for-vm-instance-sidepage' },
         { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
         { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
@@ -101,7 +101,7 @@ export default {
       }
       if (snapshotsTabs.includes(this.params.windowData.currentTab)) {
         return {
-          server: this.detailData.id,
+          server_id: this.detailData.id,
         }
       }
       return null
