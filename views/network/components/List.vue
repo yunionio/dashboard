@@ -74,6 +74,7 @@ export default {
               { label: this.$t('network.text_619'), key: 'deleted' },
               { label: this.$t('network.text_620'), key: 'delete_failed' },
               { label: this.$t('network.text_507'), key: 'unknown' },
+              { label: this.$t('common_715'), key: 'user_tags' },
             ],
             filter: true,
             formatter: val => {

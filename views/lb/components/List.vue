@@ -81,6 +81,7 @@ export default {
           { label: this.$t('network.text_43'), key: 'tenant' },
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('network.text_196'), key: 'account', hidden: this.$store.getters.isProjectMode },
+          { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
     }
