@@ -121,10 +121,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 17,
         },
         labelCol: {
-          span: 3,
+          span: 7,
         },
       },
       osDistributionOptions: {

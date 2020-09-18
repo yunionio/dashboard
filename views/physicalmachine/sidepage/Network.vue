@@ -56,7 +56,7 @@ export default {
             default: ({ row }, h) => {
               const ret = []
               ret.push(
-                <a-button type="link" onClick = {() => this.setWire(row)} disabled={ !!row.ip_addr }>设置二层网络</a-button>,
+                <a-button type="link" onClick = {() => this.setWire(row)} disabled={ !!row.ip_addr }>{ this.$t('compute.text_843') }</a-button>,
               )
               return ret
             },

@@ -283,7 +283,7 @@ export default {
                   const cpu = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_cpu
                   if (cpu) {
                     return [
-                      <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{cpu}核</a>,
+                      <a onClick={ () => this.$emit('tab-change', 'gpu-list') }>{this.$t('compute.text_120', [cpu])}</a>,
                     ]
                   }
                   return '-'

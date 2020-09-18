@@ -31,7 +31,7 @@ export default {
       {
         field: 'custom_ip',
         title: 'IP',
-        width: 180,
+        width: 200,
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
@@ -39,14 +39,14 @@ export default {
             if (row.access_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                  <list-body-cell-wrap row={row} field="access_ip" copy><span class="text-color-help">(管理)</span></list-body-cell-wrap>
+                  <list-body-cell-wrap row={row} field="access_ip" copy><span class="text-color-help">{ this.$t('compute.text_1319') }</span></list-body-cell-wrap>
                 </div>,
               )
             }
             if (row.ipmi_ip) {
               cellWrap.push(
                 <div class="d-flex">
-                  <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">(带外)</span></list-body-cell-wrap>
+                  <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">{ this.$t('compute.text_1320') }</span></list-body-cell-wrap>
                 </div>,
               )
             }

@@ -33,7 +33,7 @@
               </a-select-option>
             </a-select>
           </a-col>
-          <a-col :span="3">
+          <a-col :span="5">
             <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
           </a-col>
         </a-row>
@@ -193,10 +193,14 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          md: { span: 16 },
+          xl: { span: 18 },
+          xxl: { span: 20 },
         },
         labelCol: {
-          span: 3,
+          md: { span: 8 },
+          xl: { span: 6 },
+          xxl: { span: 4 },
         },
       },
       storageOpts: [],

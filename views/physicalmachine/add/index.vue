@@ -88,25 +88,20 @@ export default {
       net_required: false,
       formItemLayout: {
         wrapperCol: {
-          span: 21,
-          xxl: {
-            span: 22,
-          },
+          md: { span: 16 },
+          xl: { span: 18 },
+          xxl: { span: 20 },
         },
         labelCol: {
-          span: 3,
-          xxl: {
-            span: 2,
-          },
+          md: { span: 8 },
+          xl: { span: 6 },
+          xxl: { span: 4 },
         },
       },
       offsetWrapperCol: {
-        span: 21,
-        offset: 3,
-        xxl: {
-          span: 22,
-          offset: 2,
-        },
+        md: { span: 16, offset: 8 },
+        xl: { span: 18, offset: 6 },
+        xxl: { span: 20, offset: 4 },
       },
     }
   },
