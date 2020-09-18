@@ -34,7 +34,7 @@ export default {
         slots: {
           default: ({ row }, h) => {
             const cnRole = NODE_ROLE_MAP[row.role] || row.role
-            return [<a-tag class="mr-2" color="blue">{cnRole}</a-tag>]
+            return [<a-tag class="mr-2 d-block text-truncate" title={cnRole} color="blue">{cnRole}</a-tag>]
           },
         },
       },

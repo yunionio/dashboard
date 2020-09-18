@@ -13,7 +13,7 @@ export const GUEST_DEFAULT_CONFIG = {
 }
 
 export const hyperOpts = [
-  { label: 'OneCloud', value: 'kvm' },
+  { label: i18n.t('brand'), value: 'kvm' },
   { label: 'VMware', value: 'esxi' },
   { label: 'OpenStack', value: 'openstack' },
 ]
