@@ -1892,8 +1892,8 @@
     "exclude": "Forbidden to use"
   },
   "chargeTypes": {
-    "traffic": "According to traffic",
-    "bandwidth": "Charged by bandwidth"
+    "traffic": "Billed by traffic",
+    "bandwidth": "Billed by bandwidth"
   },
   "networkServerType": {
     "baremetal": "Physical Machine",
