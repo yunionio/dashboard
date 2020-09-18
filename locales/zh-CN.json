@@ -750,5 +750,6 @@
   "network.text_732": "数值越小优先级越高",
   "network.text_733": "请填写权重值",
   "network.text_734": "权重必须是0到255之间的整数",
-  "network.text_735": "总量{ports}，已用{ports_used}（含预留IP {reserve_vnics}）"
+  "network.text_735": "总量{ports}，已用{ports_used}（含预留IP {reserve_vnics}）",
+  "network.text_736": "确认已经实际操作下线"
 }
