@@ -32,7 +32,7 @@
         required
         v-bind="formItemLayout">
         <a-row>
-          <a-col :span="4">
+          <a-col :span="12">
             <a-form-item>
               <namespace-select
                 size="small"
@@ -41,7 +41,7 @@
                 @change="secretNamespaceChange" />
             </a-form-item>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="12">
             <a-form-item>
               <base-select
                 resource="secrets"
@@ -52,7 +52,7 @@
                 filterable
                 showSync
                 :placeholder="$t('k8s.text_349')" />
-              <div class="ml-2" style="font-size: 12px;">{{$t('k8s.text_306')}}<a-button  style="font-size: 12px;" type="link" @click="toCreateSecret">{{$t('k8s.text_350')}}</a-button></div>
+              <div class="ml-2" style="font-size: 12px;">{{$t('k8s.text_306')}}<a-button style="font-size: 12px;" type="link" @click="toCreateSecret">{{$t('k8s.text_350')}}</a-button></div>
             </a-form-item>
           </a-col>
         </a-row>

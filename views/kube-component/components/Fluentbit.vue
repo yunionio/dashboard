@@ -1,5 +1,5 @@
 <template>
-  <a-form-model :model="formData" size="small" ref="formRef" class="w-75" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+  <a-form-model :model="formData" size="small" ref="formRef" class="w-75" :rules="rules" v-bind="formItemLayout">
     <a-form-model-item :label="$t('k8s.text_250')">
       <a-switch v-model="formData.es.enabled" />
     </a-form-model-item>
@@ -53,7 +53,7 @@
         <a-button type="link" size="small" @click="addTopic">{{$t('k8s.text_249')}}</a-button>
       </a-form-model-item>
     </template>
-    <a-form-model-item :wrapper-col="{ span: 20, offset: 3 }">
+    <a-form-model-item v-bind="offsetFormItemLayout">
       <a-button class="mr-2" type="primary" @click="submitForm('formRef')">{{$t('k8s.text_260')}}</a-button>
       <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
     </a-form-model-item>
@@ -106,8 +106,25 @@ export default {
         ],
       },
       formData,
-      labelCol: { span: 7 },
-      wrapperCol: { span: 13 },
+      formItemLayout: {
+        wrapperCol: {
+          md: { span: 14 },
+          xl: { span: 16 },
+          xxl: { span: 18 },
+        },
+        labelCol: {
+          md: { span: 10 },
+          xl: { span: 8 },
+          xxl: { span: 6 },
+        },
+      },
+      offsetFormItemLayout: {
+        wrapperCol: {
+          md: { span: 14, offset: 10 },
+          xl: { span: 16, offset: 8 },
+          xxl: { span: 18, offset: 6 },
+        },
+      },
     }
   },
   methods: {

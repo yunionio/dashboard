@@ -17,7 +17,7 @@
         v-bind="formItemLayout">
         <code-mirror v-decorator="decorators.kubeconfig" :options="cmOptions" />
       </a-form-item>
-      <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
+      <a-form-item :wrapper-col="offsetWrapperCol">
         <a-button class="mr-2" type="primary" @click="doImport" :loading="loading">{{$t('k8s.text_143')}}</a-button>
         <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
       </a-form-item>
@@ -81,8 +81,21 @@ export default {
         ],
       },
       formItemLayout: {
-        wrapperCol: { span: 20 },
-        labelCol: { span: 3 },
+        wrapperCol: {
+          md: { span: 16 },
+          xl: { span: 18 },
+          xxl: { span: 20 },
+        },
+        labelCol: {
+          md: { span: 8 },
+          xl: { span: 6 },
+          xxl: { span: 4 },
+        },
+      },
+      offsetWrapperCol: {
+        md: { span: 16, offset: 8 },
+        xl: { span: 18, offset: 6 },
+        xxl: { span: 20, offset: 4 },
       },
       cmOptions: {
         tabSize: 2,
