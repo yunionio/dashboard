@@ -1,4 +1,5 @@
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { STORAGE_TYPES } from '@Storage/constants/index.js'
 
 export default {
   created () {
@@ -37,7 +38,7 @@ export default {
                 const validate = ['rbd', 'nfs', 'gpfs'].includes(row.storage_type)
                 return {
                   validate,
-                  tooltip: !validate && 'Ceph、GPFS或NFS类型的存储支持该操作',
+                  tooltip: !validate && `${STORAGE_TYPES[row.storage_type] || row.storage_type}类型不支持该操作`,
                 }
               },
             },
