@@ -1,5 +1,6 @@
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { STORAGE_TYPES } from '@Storage/constants/index.js'
 
 export default {
   created () {
@@ -38,7 +39,7 @@ export default {
                 const validate = ['rbd', 'nfs', 'gpfs'].includes(row.storage_type)
                 return {
                   validate,
-                  tooltip: !validate && i18n.t('storage.text_67'),
+                  tooltip: !validate && i18n.t('storage.text_67', [STORAGE_TYPES[row.storage_type] || row.storage_type]),
                 }
               },
             },

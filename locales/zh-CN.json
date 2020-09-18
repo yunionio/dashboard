@@ -65,7 +65,7 @@
   "storage.text_64": "修改属性",
   "storage.text_65": "更多",
   "storage.text_66": "关联宿主机",
-  "storage.text_67": "Ceph、GPFS或NFS类型的存储支持该操作",
+  "storage.text_67": "{0}类型不支持该操作",
   "storage.text_68": "该平台暂不支持此操作",
   "storage.text_69": "调整容量",
   "storage.text_70": "本地存储不支持该操作，默认与该宿主机一致",
