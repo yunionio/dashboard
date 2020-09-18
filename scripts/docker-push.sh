@@ -2,10 +2,13 @@
 set -o errexit
 set -o pipefail
 
+if [ "$DEBUG" == "true" ]; then
+    set -ex ;export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+fi
+
 pushd $(dirname $(dirname "$BASH_SOURCE")) > /dev/null
 CUR_DIR=$(pwd)
 SRC_DIR=$CUR_DIR
-#SRC_DIR=$(cd .. && pwd)
 popd > /dev/null
 
 DOCKER_DIR="$SRC_DIR"
@@ -23,7 +26,7 @@ build_image() {
     local tag=$1
     local file=$2
     local path=$3
-    docker build -t "$tag" -f "$file" "$3"
+    docker build -t "$tag" -f "$file" "$path"
 }
 
 push_image() {
@@ -31,7 +34,25 @@ push_image() {
     docker push "$tag"
 }
 
+docker_buildx(){
+    local tag=$1
+    local file=$2
+    local path=$3
+    tag=${tag}-arm64
+    docker buildx build --platform="linux/$ARCH" -t "$tag" -f "$file" "$path" --push
+    docker pull $tag
+}
+
 build_src
 img_name="$REGISTRY/web:$TAG"
-build_image "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR"
-push_image "$img_name"
+
+case $ARCH in
+    amd64 | "" )
+        build_image "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR"
+        push_image "$img_name"
+        ;;
+    arm64)
+        docker_buildx "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR"
+        ;;
+esac
+
