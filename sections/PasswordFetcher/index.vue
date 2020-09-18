@@ -213,6 +213,10 @@ export default {
     },
     handleDialogConfirm () {
       if (R.isNil(this.dialog.value) || R.isEmpty(this.dialog.value)) return
+      if (this.dialog.password) {
+        this.handleDialogCacel()
+        return
+      }
       try {
         this.dialog.password = passwordDecrypt(this.login_key, this.dialog.value) || this.$t('compute.text_165')
       } catch (error) {
