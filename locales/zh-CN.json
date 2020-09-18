@@ -1302,5 +1302,7 @@
   "compute.text_1317": "出方向：",
   "compute.text_1318": "所在物理机",
   "compute.text_1319": "（管理）",
-  "compute.text_1320": "（带外）"
+  "compute.text_1320": "（带外）",
+  "compute.text_1321": "{num}（物理机总容量）",
+  "compute.text_1322": "无调度标签"
 }

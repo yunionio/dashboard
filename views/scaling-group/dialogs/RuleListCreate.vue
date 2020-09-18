@@ -131,8 +131,8 @@ export default {
         fc: this.$form.createForm(this),
       },
       formItemLayout: {
-        wrapperCol: { span: 20 },
-        labelCol: { span: 4 },
+        wrapperCol: { span: 15 },
+        labelCol: { span: 9 },
       },
       decorators: {
         name: [

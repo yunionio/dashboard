@@ -48,7 +48,7 @@ export default {
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
           region: {
-            label: '区域',
+            label: this.$t('dictionary.region'),
           },
         },
         responseData: this.responseData,
