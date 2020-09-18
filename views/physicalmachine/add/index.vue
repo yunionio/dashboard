@@ -314,7 +314,7 @@ export default {
     doPreFileAdd () {
       const fd = new FormData()
       fd.append('action', 'BatchHostRegister')
-      fd.append('hosts', this.form.fd.file.file)
+      fd.append('hosts', new Blob([this.form.fd.file.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
       fd.append('no_probe', true)
       if (this.form.fd.project_domain && this.isAdminMode) {
         fd.append('project_domain', this.form.fd.project_domain)
@@ -355,7 +355,7 @@ export default {
     doIsoFileAdd () {
       const fd = new FormData()
       fd.append('action', 'BatchHostRegister')
-      fd.append('hosts', this.form.fd.file.file)
+      fd.append('hosts', new Blob([this.form.fd.file.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
       fd.append('no_prepare', this.form.fd.no_prepare || false)
       if (this.form.fd.project_domain && this.isAdminMode) {
         fd.append('project_domain', this.form.fd.project_domain)
@@ -396,7 +396,7 @@ export default {
     doPxeFileAdd () {
       const fd = new FormData()
       fd.append('action', 'BatchHostRegister')
-      fd.append('hosts', this.form.fd.file.file)
+      fd.append('hosts', new Blob([this.form.fd.file.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
       fd.append('no_prepare', this.form.fd.no_prepare || false)
       if (this.form.fd.project_domain && this.isAdminMode) {
         fd.append('project_domain', this.form.fd.project_domain)
