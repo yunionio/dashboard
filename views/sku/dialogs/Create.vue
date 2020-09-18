@@ -3,10 +3,11 @@
     <div slot="header">{{$t('compute.text_1054')}}</div>
     <div slot="body">
       <a-form
-        :form="form.fc">
-        <a-form-item :label="$t('compute.text_1051')" v-bind="formItemLayout" :extra="$t('compute.text_1055')">
+        :form="form.fc"
+        layout="vertical">
+        <a-form-item :label="$t('compute.text_1051')" :extra="$t('compute.text_1055')">
           <a-input-number :min="1" :max="256" v-decorator="decorators.cpu_core_count" />{{$t('compute.text_167')}}</a-form-item>
-        <a-form-item :label="$t('compute.text_1052')" v-bind="formItemLayout" :extra="$t('compute.text_1056')">
+        <a-form-item :label="$t('compute.text_1052')" :extra="$t('compute.text_1056')">
           <a-input-number :min="0.5" :max="512" v-decorator="decorators.memory_size_mb" /> GB
         </a-form-item>
       </a-form>
@@ -47,10 +48,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 18,
         },
         labelCol: {
-          span: 3,
+          span: 6,
         },
       },
     }

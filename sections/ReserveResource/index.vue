@@ -1,19 +1,19 @@
 <template>
   <a-form-item :label="label" style="margin-bottom:0;" v-bind="formItemLayout">
-      <a-row>
-        <a-col :span="8">
-          <a-form-item>
-          CPU: <a-input-number v-decorator="decorators.cpu" :min="1" :precision="0" />{{$t('compute.text_167')}}</a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item>{{$t('compute.text_168')}}<a-input-number v-decorator="decorators.memory" :min="1" :precision="0" /> G
-          </a-form-item>
-        </a-col>
-        <a-col :span="8">
-          <a-form-item>{{$t('compute.text_169')}}<a-input-number v-decorator="decorators.disk" :min="1" :precision="0" /> G
-          </a-form-item>
-        </a-col>
-      </a-row>
+    <a-row>
+      <a-col :span="8">
+        <a-form-item>
+        CPU: <a-input-number v-decorator="decorators.cpu" :min="1" :precision="0" />{{$t('compute.text_167')}}</a-form-item>
+      </a-col>
+      <a-col :span="8">
+        <a-form-item>{{$t('compute.text_168')}}<a-input-number v-decorator="decorators.memory" :min="1" :precision="0" /> G
+        </a-form-item>
+      </a-col>
+      <a-col :span="8">
+        <a-form-item>{{$t('compute.text_169')}}<a-input-number v-decorator="decorators.disk" :min="1" :precision="0" /> G
+        </a-form-item>
+      </a-col>
+    </a-row>
   </a-form-item>
 </template>
 
@@ -43,10 +43,10 @@ export default {
       default: () => {
         return {
           wrapperCol: {
-            span: 20,
+            span: 18,
           },
           labelCol: {
-            span: 4,
+            span: 6,
           },
         }
       },

@@ -19,8 +19,8 @@
   "compute.text_17": "Not needed temporarily",
   "compute.text_18": "Create",
   "compute.text_19": "Binding already exists",
-  "compute.text_20": "According to traffic",
-  "compute.text_21": "According to fixed bandwidth",
+  "compute.text_20": "Billed by traffic",
+  "compute.text_21": "Billed by bandwidth",
   "compute.text_22": "Pay as you go",
   "compute.text_23": "Package year and month",
   "compute.text_24": "1 week",
@@ -119,7 +119,7 @@
   "compute.text_117": "Please select the host of the backup machine",
   "compute.text_118": "At present, only Alibaba Cloud supports the creation of a one-week subscription machine, so the system will automatically select the Alibaba Cloud platform",
   "compute.text_119": "Automatically renew after expiration",
-  "compute.text_120": "{0}Core",
+  "compute.text_120": "{0} Core",
   "compute.text_121": "Please select the disk type",
   "compute.text_122": "Please enter the disk size",
   "compute.text_123": "Please select a scheduling tag",
@@ -201,7 +201,7 @@
   "compute.text_199": "Add network card",
   "compute.text_200": "a",
   "compute.text_201": "Don't have the key you want? Can go",
-  "compute.text_202": "New Key",
+  "compute.text_202": "Create SSH Keypair",
   "compute.text_203": "Please select the associated key",
   "compute.text_204": "Please enter the password",
   "compute.text_205": "The entered IP is not in the selected subnet segment",
@@ -1302,5 +1302,7 @@
   "compute.text_1317": "Outgoing direction:",
   "compute.text_1318": "Physical machine",
   "compute.text_1319": "(Manage)",
-  "compute.text_1320": "(Out of Band)"
+  "compute.text_1320": "(Out of Band)",
+  "compute.text_1321": "{num} (total of machine)",
+  "compute.text_1322": "No scheulder tags"
 }
