@@ -65,7 +65,7 @@
   "storage.text_64": "Modify Properties",
   "storage.text_65": "More",
   "storage.text_66": "Associated Host",
-  "storage.text_67": "Ceph, GPFS or NFS storage supports this operation",
+  "storage.text_67": "{0} type does not support this operation",
   "storage.text_68": "This platform does not currently support this operation",
   "storage.text_69": "Adjust capacity",
   "storage.text_70": "Local storage does not support this operation, the default is consistent with this host",
