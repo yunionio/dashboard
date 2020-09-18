@@ -37,7 +37,7 @@ export default {
       getDnsRecordsetCountTableColumns(),
       getVpcCountTableColumns(),
       getStatusTableColumn({ statusModule: 'dnszone' }),
-      getPublicScopeTableColumn(),
+      getPublicScopeTableColumn({ vm: this, resource: 'dns_zones' }),
       getProjectDomainTableColumn(),
     ]
   },
