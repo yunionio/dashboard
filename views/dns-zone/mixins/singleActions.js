@@ -37,11 +37,6 @@ export default {
         permission: 'dns_zones_syncstatus',
         actions: obj => {
           return [
-            getSetPublicAction(this, {
-              name: this.$t('dictionary.dns_zone'),
-              scope: 'domain',
-              resource: 'dns_zones',
-            }),
             {
               label: this.$t('network.text_201'),
               action: () => {
@@ -77,6 +72,11 @@ export default {
             },
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.dns_zone'),
+              resource: 'dns_zones',
+            }),
+            getSetPublicAction(this, {
+              name: this.$t('dictionary.dns_zone'),
+              scope: 'domain',
               resource: 'dns_zones',
             }),
             {
