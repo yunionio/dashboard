@@ -42,6 +42,7 @@ import { getStatusTableColumn, getCopyWithContentTableColumn, getProjectTableCol
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import { STORAGE_TYPES } from '@Storage/constants/index.js'
 
 export default {
   name: 'BlockStorageSidePage',
@@ -118,7 +119,7 @@ export default {
               meta: row => {
                 return {
                   validate: me.isBlockStorage,
-                  tooltip: !me.isBlockStorage && 'Ceph、GPFS或NFS类型的存储支持该操作',
+                  tooltip: !me.isBlockStorage && `${STORAGE_TYPES[row.storage_type] || row.storage_type}类型不支持该操作`,
                 }
               },
             },
