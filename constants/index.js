@@ -134,3 +134,15 @@ export const contactMap = {
 }
 
 export const contactArr = Object.keys(contactMap)
+
+export const channelMaps = {
+  webconsole: { value: 'webconsole', label: i18n.t('dictionary.infos'), disabled: true, sort: 0 },
+  email: { value: 'email', label: i18n.t('common.email'), sort: 1 },
+  mobile: { value: 'mobile', label: i18n.t('helm.text_49'), sort: 2 },
+  workwx: { value: 'workwx', label: i18n.t('common.workwx'), sort: 3 },
+  dingtalk: { value: 'dingtalk', label: i18n.t('common.dingtalk'), sort: 4 },
+  feishu: { value: 'feishu', label: i18n.t('common.feishu'), sort: 5 },
+  'feishu-robot': { value: 'feishu', label: i18n.t('common.feishu_robot'), sort: 6 },
+  'workwx-robot': { value: 'workwx-robot', label: i18n.t('common_596'), sort: 7 },
+  'dingtalk-robot': { value: 'dingtalk-robot', label: i18n.t('system.text_303'), sort: 8 },
+}

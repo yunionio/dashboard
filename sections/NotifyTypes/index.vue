@@ -6,8 +6,8 @@
 
 <script>
 import * as R from 'ramda'
-import { channelMaps } from '@Monitor/constants'
 import i18n from '@/locales'
+import { channelMaps } from '@/constants'
 
 export default {
   name: 'NotifyTypes',
@@ -43,8 +43,7 @@ export default {
   methods: {
     async fetchData () {
       try {
-        const disableRobotArr = []
-        const { data: { types } } = await new this.$Manager('notifyconfigs', 'v1').performClassAction({ action: 'get-types', data: this.getParams })
+        const { data: { types = [] } } = await new this.$Manager('notifyconfigs', 'v1').performClassAction({ action: 'get-types', data: this.getParams })
         const channelOpts = types.map(val => {
           const channel = channelMaps[val]
           const item = {
@@ -64,15 +63,15 @@ export default {
                 sort: value.sort,
                 disabled: true,
               }
-              disableRobotArr.push(value.label)
               channelOpts.push(item)
             }
           }, channelMaps)
         }
+        this.channelOpts = channelOpts.sort((a, b) => b.sort - a.sort)
+        const disableRobotArr = channelOpts.filter(val => val.disabled).map(val => val.label)
         if (disableRobotArr.length > 0) {
           this.extraStr = this.$t('common_657', [disableRobotArr.join('、')])
         }
-        this.channelOpts = channelOpts.sort((a, b) => b.sort - a.sort)
         this.$emit('channelOptsChange', this.channelOpts)
       } catch (error) {
         throw error
