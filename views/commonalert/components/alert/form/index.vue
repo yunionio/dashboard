@@ -323,10 +323,20 @@ export default {
       this.getMeasurement(this.formScopeParams)
     },
     recipientOpts (val) {
-      if (!this.alertData && val && val.length === 1) {
-        this.form.fc.setFieldsValue({
-          [this.decorators.recipients[0]]: [val[0].id],
-        })
+      if (!this.alertData && val) {
+        if (val.length === 1) {
+          this.form.fc.setFieldsValue({
+            [this.decorators.recipients[0]]: [val[0].id],
+          })
+        } else if (val.length > 1) {
+          const currentUser = this.$store.getters.userInfo.id
+          const hasCurrentUser = val.find(val => val.id === currentUser)
+          if (hasCurrentUser) {
+            this.form.fc.setFieldsValue({
+              [this.decorators.recipients[0]]: [hasCurrentUser.id],
+            })
+          }
+        }
       }
     },
   },
