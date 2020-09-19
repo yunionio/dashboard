@@ -4008,7 +4008,7 @@
   "common_654": "Select end date",
   "common_655": "Select end time",
   "common_656": "Please select user attribution target@:dictionary.domain",
-  "common_657": "unconfigured {0}, cannot open",
+  "common_657": "unconfigured 【{0}】, cannot open",
   "common_658": "Management port MAC address",
   "common_659": "Servers supporting Redfish do not need to be filled in, others can be filled in according to the actual situation",
   "common_660": "Enhanced SSD cloud hard drive",
