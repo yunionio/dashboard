@@ -480,7 +480,6 @@ export default {
       specOptions: [],
       selectedSpecItem: {},
       resourceType: 'shared',
-      loginTypes: Object.keys(LOGIN_TYPES_MAP),
       policyHostDisabled: [],
       diskData: {},
       diskOptionsDate: [],
@@ -605,6 +604,21 @@ export default {
     },
     isCheckedIso () {
       return this.osSelectImageType === 'iso'
+    },
+    isWindows () {
+      let isWindows = false
+      if (this.selectedImage.os && this.form.fd.os.toLowerCase() === 'windows') {
+        isWindows = true
+      }
+      return isWindows
+    },
+    loginTypes () { // 主机模板隐藏手工输入密码
+      const maps = R.clone(LOGIN_TYPES_MAP)
+      if (this.isWindows) {
+        delete maps.keypair
+      }
+      const loginTypes = Object.keys(maps)
+      return loginTypes
     },
   },
   provide () {

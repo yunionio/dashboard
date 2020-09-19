@@ -118,7 +118,11 @@ export default {
       return this.$route.query.source === 'servertemplate'
     },
     loginTypes () { // 主机模板隐藏手工输入密码
-      const loginTypes = Object.keys(LOGIN_TYPES_MAP)
+      const maps = R.clone(LOGIN_TYPES_MAP)
+      if (this.isWindows) {
+        delete maps.keypair
+      }
+      const loginTypes = Object.keys(maps)
       // if (this.isServertemplate) {
       //   return loginTypes.filter(val => (val !== LOGIN_TYPES_MAP.password.key && val !== LOGIN_TYPES_MAP.keypair.key))
       // }
@@ -236,6 +240,13 @@ export default {
         'filter.0': 'resource_type.equals(hosts)',
         ...this.scopeParams,
       }
+    },
+    isWindows () {
+      let isWindows = false
+      if (this.form.fd.os && this.form.fd.os.toLowerCase() === 'windows') {
+        isWindows = true
+      }
+      return isWindows
     },
   },
   created () {

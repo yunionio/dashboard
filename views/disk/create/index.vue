@@ -42,7 +42,7 @@
         <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
           <base-select
             class="w-50"
-            v-decorator="decorators.cloudprovider"
+            v-decorator="decorators.manager_id"
             resource="cloudproviders"
             :params="cloudproviderParams"
             :isDefaultSelect="true"
@@ -182,8 +182,8 @@ export default {
             ],
           },
         ],
-        cloudprovider: [
-          'cloudprovider',
+        manager_id: [
+          'manager_id',
           {
             rules: [
               { required: true, message: this.$t('common_588') },
