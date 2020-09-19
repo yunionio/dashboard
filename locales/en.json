@@ -94,6 +94,8 @@
   "monitor_metric_93": "CPU utilization rate per core",
   "monitor_metric_94": "The number of threads used by the process",
   "monitor_metric_95": "Alarm Robot",
+  "monitor_metric_96": "inodes_free/inodes_total inode",
+  "monitor_metric_97": " free/total",
   "monitor_text00001": "Notification alarm messages are supported only for users whose status is enabled in the @:dictionary.system - @:dictionary.contact menu",
   "monitor.monitor_add": "Add Query",
   "monitor.monitor_metric": "Monitor metrics",

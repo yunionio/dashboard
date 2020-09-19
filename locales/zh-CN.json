@@ -94,6 +94,8 @@
   "monitor_metric_93": "CPU每核使用率",
   "monitor_metric_94": "进程下线程数",
   "monitor_metric_95": "机器人报警",
+  "monitor_metric_96": "inode空闲率",
+  "monitor_metric_97": "磁盘空闲率",
   "monitor_text00001": "只有在@:dictionary.system - @:dictionary.contact菜单中状态启用的用户才支持通知报警消息",
   "monitor.monitor_add": "添加查询",
   "monitor.monitor_metric": "监控指标",
