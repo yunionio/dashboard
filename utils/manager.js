@@ -69,8 +69,8 @@ export class Manager {
     return Vue.http.put(`${this.contextPath(ctx)}${this.resource}`, data, { params: { id: ids } })
   }
 
-  patch ({ id, data, ctx = [] } = {}) {
-    return Vue.http.patch(`${this.contextPath(ctx)}${this.resource}/${id}`, data)
+  patch ({ id, data, ctx = [], params } = {}) {
+    return Vue.http.patch(`${this.contextPath(ctx)}${this.resource}/${id}`, data, { params })
   }
 
   batchPatch ({ ids, data, ctx = [] } = {}) {
