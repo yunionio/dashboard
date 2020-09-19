@@ -303,13 +303,6 @@ export default {
     showAdvanceConfig () { // 是否展示高级配置
       return this.isKvm || !this.isServertemplate
     },
-    isWindows () {
-      let isWindows = false
-      if (this.form.fd.os && this.form.fd.os.toLowerCase() === 'windows') {
-        isWindows = true
-      }
-      return isWindows
-    },
     uefi () {
       if (this.isKvm && this.form.fd.gpuEnable && this.form.fd.gpu && this.isWindows) {
         return true
