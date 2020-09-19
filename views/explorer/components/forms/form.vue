@@ -244,6 +244,7 @@ export default {
           database: metricKeyItem.database,
           measurement: metricKey,
           field: mertric,
+          scope: this.$store.getters.scope,
           ...this.timeRangeParams,
         }
         this.metricInfoLoading = true

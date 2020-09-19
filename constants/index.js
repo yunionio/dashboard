@@ -397,4 +397,6 @@ export const metric_zh = {
   'The total number of transmission packets dropped by the network interface': i18n.t('monitor_metric_92'),
   'CPU utilization rate per core': i18n.t('monitor_metric_93'),
   'The number of threads used by the process': i18n.t('monitor_metric_94'),
+  'inodes_free/inodes_total': i18n.t('monitor_metric_96'),
+  'free/total': i18n.t('monitor_metric_97'),
 }
