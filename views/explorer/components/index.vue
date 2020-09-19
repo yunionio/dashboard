@@ -146,6 +146,7 @@ export default {
         const data = {
           metric_query,
           interval: this.timeGroup,
+          scope: this.$store.getters.scope,
           ...this.timeRangeParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
