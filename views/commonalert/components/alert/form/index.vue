@@ -34,7 +34,12 @@
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('monitor.recipient')" :extra="$t('monitor_text00001')">
+    <a-form-item :label="$t('monitor.recipient')" style="white-space: nowrap;">
+      <template #extra style="width: 1200px;">
+        <i18n tag="div" path="monitor_text00001">
+          <help-link slot="new" href="/contact">{{$t('monitor.text_15')}}</help-link>
+        </i18n>
+      </template>
       <base-select
         v-decorator="decorators.recipients"
         resource="receivers"
@@ -318,10 +323,20 @@ export default {
       this.getMeasurement(this.formScopeParams)
     },
     recipientOpts (val) {
-      if (!this.alertData && val && val.length === 1) {
-        this.form.fc.setFieldsValue({
-          [this.decorators.recipients[0]]: [val[0].id],
-        })
+      if (!this.alertData && val) {
+        if (val.length === 1) {
+          this.form.fc.setFieldsValue({
+            [this.decorators.recipients[0]]: [val[0].id],
+          })
+        } else if (val.length > 1) {
+          const currentUser = this.$store.getters.userInfo.id
+          const hasCurrentUser = val.find(val => val.id === currentUser)
+          if (hasCurrentUser) {
+            this.form.fc.setFieldsValue({
+              [this.decorators.recipients[0]]: [hasCurrentUser.id],
+            })
+          }
+        }
       }
     },
   },

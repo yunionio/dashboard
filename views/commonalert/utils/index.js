@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { metric_zh, channelMaps, alertStrategyMaps, preiodMaps, levelMaps } from '@Monitor/constants'
+import { metric_zh, alertStrategyMaps, preiodMaps, levelMaps } from '@Monitor/constants'
+import { channelMaps } from '@/constants'
 import i18n from '@/locales'
 import { transformUnit, arrayToObj } from '@/utils/utils'
 
