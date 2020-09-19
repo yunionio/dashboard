@@ -96,7 +96,7 @@
   "monitor_metric_95": "机器人报警",
   "monitor_metric_96": "inode空闲率",
   "monitor_metric_97": "磁盘空闲率",
-  "monitor_text00001": "只有在@:dictionary.system - @:dictionary.contact菜单中状态启用的用户才支持通知报警消息",
+  "monitor_text00001": "只有在@:dictionary.system - @:dictionary.contact菜单中状态启用的用户才支持通知报警消息，{new}",
   "monitor.monitor_add": "添加查询",
   "monitor.monitor_metric": "监控指标",
   "monitor.monitor_filters": "资源过滤",
@@ -171,5 +171,6 @@
   "monitor.text_11": "报警机器人",
   "monitor.text_12": "{0}报警记录详情",
   "monitor.text_13": "创建报警策略",
-  "monitor.text_14": "触发时间"
+  "monitor.text_14": "触发时间",
+  "monitor.text_15": "新建报警接收人"
 }

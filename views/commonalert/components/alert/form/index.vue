@@ -34,7 +34,12 @@
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('monitor.recipient')" :extra="$t('monitor_text00001')">
+    <a-form-item :label="$t('monitor.recipient')" style="white-space: nowrap;">
+      <template #extra style="width: 1200px;">
+        <i18n tag="div" path="monitor_text00001">
+          <help-link slot="new" href="/contact">{{$t('monitor.text_15')}}</help-link>
+        </i18n>
+      </template>
       <base-select
         v-decorator="decorators.recipients"
         resource="receivers"
