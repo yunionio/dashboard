@@ -207,6 +207,7 @@ export default {
           { label: this.$t('compute.text_177'), key: 'region' },
           { label: this.$t('compute.text_270'), key: 'zone' },
           { label: this.$t('compute.text_396'), key: 'medium_type' },
+          { label: this.$t('compute.text_271'), key: 'user_tags' },
         ],
       },
       groupActions,

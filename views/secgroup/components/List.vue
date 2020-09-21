@@ -75,6 +75,7 @@ export default {
           { label: this.$t('compute.text_981'), key: 'priority' },
           { label: 'CIDR', key: 'cidr' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
+          { label: this.$t('compute.text_271'), key: 'user_tags' },
         ],
         transformParams (params) {
           if (params.filter) {
