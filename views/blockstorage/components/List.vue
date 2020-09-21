@@ -206,6 +206,7 @@ export default {
             },
           },
           { label: this.$t('storage.text_49', [this.$t('dictionary.domain')]), key: 'project_domain' },
+          { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
       handleOpenSidepage (row) {
