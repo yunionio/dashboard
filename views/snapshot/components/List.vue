@@ -68,6 +68,9 @@ export default {
               { label: this.$t('compute.text_49'), key: 'sys' },
             ],
           },
+          region: {
+            label: this.$t('dictionary.region'),
+          },
         },
         responseData: this.responseData,
       }),

@@ -4,8 +4,8 @@
       <a-tag color="blue" class="mr-1" style="margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
       <a-form-item
         :wrapperCol="{ span: 24 }"
-        style="min-width: 200px;"
-        class="w-25 mb-0 mr-1">
+        style="width: 200px;"
+        class="mb-0 mr-1">
         <base-select
           v-if="i === 0"
           class="w-100"
@@ -23,8 +23,8 @@
       </a-form-item>
       <a-form-item
         :wrapperCol="{ span: 24 }"
-        style="min-width: 240px; max-width: 500px;"
-        class="w-50 mb-0 mr-1">
+        style="flex: 1;"
+        class="mb-0 mr-1">
         <base-select
           class="w-100"
           v-decorator="decorator.networks(item.key)"
@@ -41,13 +41,14 @@
           </div>
       </a-form-item>
       <template v-if="item.ipShow">
-        <a-form-item class="mb-0 mr-2" :wrapperCol="{ span: 24 }">
+        <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
           <a-input
+            style="width: 200px"
             :placeholder="$t('compute.text_197')"
             @change="e => ipChange(e, i)"
             v-decorator="decorator.ips(item.key, item.network)" />
         </a-form-item>
-        <a-button type="link" class="mr-1 mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
+        <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
       </template>
       <a-button v-else type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
       <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
