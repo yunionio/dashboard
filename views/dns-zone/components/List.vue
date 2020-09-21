@@ -93,33 +93,21 @@ export default {
           },
         },
         {
-          label: this.$t('common.batchAction'),
-          actions: () => {
-            return [
-              {
-                label: this.$t('network.text_131'),
-                permission: 'dns_zones_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    vm: this,
-                    title: this.$t('network.text_131'),
-                    name: this.$t('dictionary.dns_zone'),
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: this.list.allowDelete(),
-                  }
-                },
-              },
-            ]
+          label: this.$t('network.text_131'),
+          permission: 'dns_zones_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              title: this.$t('network.text_131'),
+              name: this.$t('dictionary.dns_zone'),
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+            })
           },
           meta: () => {
             return {
-              validate: this.list.selectedItems.length > 0,
+              validate: this.list.allowDelete(),
             }
           },
         },
