@@ -11019,15 +11019,15 @@ vuex@^3.4.0:
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.4.0.tgz#20cc086062d750769fce1febb34e7fceeaebde45"
   integrity sha512-ajtqwEW/QhnrBZQsZxCLHThZZaa+Db45c92Asf46ZDXu6uHXgbfVuBaJ4gzD2r4UX0oMJHstFwd2r2HM4l8umg==
 
-vxe-table-plugin-antd@^1.8.9:
-  version "1.8.9"
-  resolved "https://registry.yarnpkg.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-1.8.9.tgz#19312e9dcf18724de44210fe6b4c54281fc74740"
-  integrity sha512-f+8GZdzftGY/jsaWuy7jCZEUXg5U9v4zBC/Kxv7bWmcZ9i8kQAnqKKi1SYpRbA8TlMniq+UqHJvekwqIOa4Vkw==
+vxe-table-plugin-antd@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-1.9.2.tgz#c06688f0bd5e76ca229945be4fcef6befc44e157"
+  integrity sha512-0OIqaExTV82mAJqMP7rOFI/TQ2Mkxqnl19zuXVatcjimkkMtHAAXyuxGCCvob+Uamvb68tt8f+NOQsg7+tpSxA==
 
-vxe-table@^2.9.14:
-  version "2.9.14"
-  resolved "https://registry.yarnpkg.com/vxe-table/-/vxe-table-2.9.14.tgz#d4366ff693f578c053e336cdd0e9739144f5ff8e"
-  integrity sha512-DoKHF+Aykw5LQ1LTX82Q0Bkv9plQH8iaMoLFXm6MFqcGh2RUIEQ0/202XpdqnweJGC5B3F8RBgIADqja/ue4pw==
+vxe-table@^2.9.22:
+  version "2.9.22"
+  resolved "https://registry.yarnpkg.com/vxe-table/-/vxe-table-2.9.22.tgz#8191225dfd6a4cf35a75533730d9028ea2209770"
+  integrity sha512-XtCZRQFVNr2EVFn1Y6sMKj24a0dANfApzqi0861KuzuvNjRPvXObVk7yBeqmwwdsPx14R2FqUriSKOEFB9Y9oA==
 
 w3c-hr-time@^1.0.1:
   version "1.0.2"
@@ -11387,10 +11387,10 @@ ws@~6.1.0:
   dependencies:
     async-limiter "~1.0.0"
 
-xe-utils@^2.4.5:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/xe-utils/-/xe-utils-2.4.5.tgz#e549e4c682f69fc611e2a8cbf676fe32e4266c6e"
-  integrity sha512-zhj98p1Wc0vaiBlWV/ChtwbQOoTEadJSVRsH5JxEh69p8fdznoBT66U3RqKbntEZQEye1GHeTrFTH4OQ+/VGqg==
+xe-utils@^2.7.12:
+  version "2.7.12"
+  resolved "https://registry.yarnpkg.com/xe-utils/-/xe-utils-2.7.12.tgz#fabb18ecae46f592937e9e1fce088bf50d357ca3"
+  integrity sha512-37Yibls8vhmxbN3hgBRSC8ykHBZY8QjXXdG9GeKRiUEuAm+pitnjmQoR+b73SxPM3kVqaTneiKu7tNbw8pecjw==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
