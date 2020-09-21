@@ -84,6 +84,7 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: this.$t('network.text_198'), key: 'provider' },
           { label: this.$t('network.text_199'), key: 'region' },
+          { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
       groupActions: [
