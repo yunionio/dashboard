@@ -18,7 +18,7 @@ export const getDnsValueTableColumns = () => {
 export const getTtlTableColumns = () => {
   return {
     field: 'ttl',
-    title: i18n.t('common_663'),
+    title: i18n.t('common_665'),
   }
 }
 
@@ -30,7 +30,7 @@ export const getTrafficPoliciesTableColumns = () => {
     type: 'expand',
     slots: {
       default: ({ row }) => {
-        if (!row.traffic_policies) return i18n.t('common_701')
+        if (!row.traffic_policies) return i18n.t('common_701', [0])
         return i18n.t('common_701', [row.traffic_policies.length])
       },
       content: ({ row }, h) => {
