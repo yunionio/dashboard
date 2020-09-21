@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import get from 'lodash/get'
 import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
@@ -100,10 +101,20 @@ export default {
           hideField: true,
           slotCallback: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
         }),
-        getCopyWithContentTableColumn({
+        {
           title: this.$t('common_154'),
-          field: 'action',
-        }),
+          field: '_i18n.action',
+          minWidth: 80,
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }) => {
+              const action = get(row, '_i18n.action', row.action)
+              return [
+                <list-body-cell-wrap copy field='_i18n.action' row={row} hideField={true} message={action}>{action}</list-body-cell-wrap>,
+              ]
+            },
+          },
+        },
         getCopyWithContentTableColumn({
           title: this.$t('common_151'),
           field: 'obj_name',
