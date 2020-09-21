@@ -229,7 +229,7 @@ export default {
       this.$nextTick(async () => {
         await this.$refs.grid.recalculate(true)
         const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
-        const tableBodyWidth = tableBodyEl.getBoundingClientRect().width - 15
+        const tableBodyWidth = tableBodyEl.getBoundingClientRect().width
         if (tableBodyWidth) this.tableWidth = tableBodyWidth
         gridEl && this.$bus.$emit('FloatingScrollUpdate', {
           sourceElement: gridEl,
@@ -257,7 +257,7 @@ export default {
       }
       if (this.showSingleActions && this.singleActions && this.singleActions.length) {
         defaultColumns.push({
-          field: 'action',
+          field: '_action',
           title: this.$t('common.action'),
           minWidth: 120,
           slots: {
@@ -287,10 +287,16 @@ export default {
             },
           },
         })
+        // 有操作时，在操作后面增加一列空的占位，目的是使表格在计算宽度的时候更准确
+        // 确保操作的按钮文字尽可能的有足够宽度能够显示完整
+        defaultColumns.push({
+          field: '_action_placeholder',
+          formatter: () => ' ',
+        })
       }
       if (this.config && this.config.hiddenColumns) {
         R.forEach(item => {
-          if (item.type !== 'checkbox' || item.type !== 'radio' || item.field !== 'action') {
+          if (item.type !== 'checkbox' || item.type !== 'radio' || item.field !== '_action' || item.field !== '_action_placeholder') {
             item.visible = !this.config.hiddenColumns.includes(item.field)
           }
         }, defaultColumns)
@@ -363,7 +369,6 @@ export default {
 
 <style lang="less" scoped>
 .page-list-grid {
-  min-width: 100%;
   ::v-deep {
     > .vxe-table > .vxe-table--main-wrapper > .vxe-table--body-wrapper {
       overflow: hidden;
