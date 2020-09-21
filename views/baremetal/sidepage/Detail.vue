@@ -169,7 +169,7 @@ export default {
                   ids[val.model] = val.id
                 })
                 return Object.keys(obj).map(k => {
-                  return <side-page-trigger permission='isolated_devices_get' name='GpuSidePage' id={ids[k]} vm={this}>{this.$t('compute.text_370', [obj[k], k])}</side-page-trigger>
+                  return <span>{this.$t('compute.text_370', [obj[k], k])}</span>
                 })
               },
             },
