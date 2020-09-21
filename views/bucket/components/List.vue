@@ -82,6 +82,7 @@ export default {
             },
           },
           { label: this.$t('dictionary.project'), key: 'tenant' },
+          { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
       groupActions: [
