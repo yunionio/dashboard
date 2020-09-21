@@ -190,7 +190,7 @@
   "k8s.text_189": "Cloud Server",
   "k8s.text_190": "Host",
   "k8s.text_191": "Number of Nodes",
-  "k8s.text_192": "Is it public?",
+  "k8s.text_192": "Visibility",
   "k8s.text_193": "Public",
   "k8s.text_194": "Private",
   "k8s.text_195": "View kubeconfig",
