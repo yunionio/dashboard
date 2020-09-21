@@ -106,7 +106,7 @@ export default {
                     const change = (bool) => {
                       this.okButtonProps.disabled = !bool
                     }
-                    return <a-checkbox value={this.isDelete} onInput={ change }>确认已经实际操作下线</a-checkbox>
+                    return <a-checkbox value={this.isDelete} onInput={ change }>{ this.$t('network.text_736') }</a-checkbox>
                   },
                   okButtonProps: this.okButtonProps,
                 })

@@ -149,6 +149,7 @@ export default {
               ret.tooltip = this.$t('network.text_730')
               return ret
             }
+            return ret
           },
         },
       ],

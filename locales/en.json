@@ -34,7 +34,7 @@
   "network.text_33": "Close",
   "network.text_34": "Task Name",
   "network.text_35": "Start Time",
-  "network.text_36": "YYYY MM Month DD HH:mm:ss",
+  "network.text_36": "YYYY-MM-DD HH:mm:ss",
   "network.text_37": "End Time",
   "network.text_38": "Other Information",
   "network.text_39": "Log",
@@ -191,8 +191,8 @@
   "network.text_190": "Disable",
   "network.text_191": "Address",
   "network.text_192": "Charging Method",
-  "network.text_193": "According to traffic",
-  "network.text_194": "Charged by bandwidth",
+  "network.text_193": "Billed by traffic",
+  "network.text_194": "Billed by bandwidth",
   "network.text_195": "Bandwidth",
   "network.text_196": "Cloud Account",
   "network.text_197": "Bind Resources",
@@ -750,5 +750,6 @@
   "network.text_732": "The smaller the value, the higher the priority",
   "network.text_733": "Please fill in the weight value",
   "network.text_734": "The weight must be an integer between 0 and 255",
-  "network.text_735": "Total {ports}, {ports_used} used (including reserved IP {reserve_vnics})"
+  "network.text_735": "Total {ports}, {ports_used} used (including reserved IP {reserve_vnics})",
+  "network.text_736": "Confirm that the actual operation has been offline"
 }
