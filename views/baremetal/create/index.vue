@@ -76,7 +76,7 @@
           </template>
         </div>
       </a-form-item>
-      <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
+      <a-form-item v-bind="offsetFormItemLayout">
         <a-button type="primary" @click="addDisk" :disabled="specOptions.length === 0">{{$t('compute.text_307')}}</a-button>
       </a-form-item>
       <a-form-item :label="$t('compute.text_308')" v-bind="formItemLayout" v-if="!isCheckedIso">
@@ -95,7 +95,7 @@
           :vpcResource="vpcResource"
           :vpcResourceMapper="vpcResourceMapper" />
       </a-form-item>
-      <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
+      <a-form-item v-bind="offsetFormItemLayout">
         <a-checkbox v-model="isBonding">{{$t('compute.text_310')}}</a-checkbox>
       </a-form-item>
       <a-form-item :label="$t('compute.text_311')" v-bind="formItemLayout" class="mb-0" v-if="!isInstallOperationSystem">
@@ -128,7 +128,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import BottomBar from './BottomBar'
-import { CreateServerForm, LOGIN_TYPES_MAP, NETWORK_OPTIONS_MAP, FORECAST_FILTERS_MAP } from '@Compute/constants'
+import { LOGIN_TYPES_MAP, NETWORK_OPTIONS_MAP, FORECAST_FILTERS_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
@@ -172,8 +172,23 @@ export default {
       submiting: false,
       errors: {},
       formItemLayout: {
-        wrapperCol: { span: CreateServerForm.wrapperCol },
-        labelCol: { span: CreateServerForm.labelCol },
+        wrapperCol: {
+          md: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 22 },
+        },
+        labelCol: {
+          md: { span: 6 },
+          xl: { span: 4 },
+          xxl: { span: 2 },
+        },
+      },
+      offsetFormItemLayout: {
+        wrapperCol: {
+          md: { span: 18, offset: 6 },
+          xl: { span: 20, offset: 4 },
+          xxl: { span: 22, offset: 2 },
+        },
       },
       form: {
         fc: this.$form.createForm(this, {
@@ -465,7 +480,6 @@ export default {
       specOptions: [],
       selectedSpecItem: {},
       resourceType: 'shared',
-      loginTypes: Object.keys(LOGIN_TYPES_MAP),
       policyHostDisabled: [],
       diskData: {},
       diskOptionsDate: [],
@@ -590,6 +604,21 @@ export default {
     },
     isCheckedIso () {
       return this.osSelectImageType === 'iso'
+    },
+    isWindows () {
+      let isWindows = false
+      if (this.selectedImage.os && this.form.fd.os.toLowerCase() === 'windows') {
+        isWindows = true
+      }
+      return isWindows
+    },
+    loginTypes () { // 主机模板隐藏手工输入密码
+      const maps = R.clone(LOGIN_TYPES_MAP)
+      if (this.isWindows) {
+        delete maps.keypair
+      }
+      const loginTypes = Object.keys(maps)
+      return loginTypes
     },
   },
   provide () {

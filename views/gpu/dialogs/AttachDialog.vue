@@ -64,10 +64,10 @@ export default {
       guestesOpts: [],
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 18,
         },
         labelCol: {
-          span: 3,
+          span: 6,
         },
       },
     }

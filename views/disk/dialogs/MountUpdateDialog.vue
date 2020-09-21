@@ -67,6 +67,7 @@ export default {
       attachable_servers_for_disk: itemData.id,
       scope: this.scope,
       brand: itemData.brand,
+      filter: 'status.in(ready, running)',
     }
     if (itemData.cloud_env === 'public' || itemData.cloud_env === 'private') {
       params.manager = itemData.manager_id

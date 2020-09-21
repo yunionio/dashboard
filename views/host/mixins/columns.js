@@ -182,7 +182,7 @@ export default {
               return tags.map(tag => <a-tag class='mb-2' color='blue'>{tag.name}</a-tag>)
             }
             return [
-              <div class='text-color-help'>无调度标签</div>,
+              <div class='text-color-help'>{ this.$t('compute.text_1322') }</div>,
             ]
           },
         },

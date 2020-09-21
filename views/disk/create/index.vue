@@ -33,7 +33,7 @@
               </a-select-option>
             </a-select>
           </a-col>
-          <a-col :span="3">
+          <a-col :span="5">
             <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
           </a-col>
         </a-row>
@@ -42,7 +42,7 @@
         <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
           <base-select
             class="w-50"
-            v-decorator="decorators.cloudprovider"
+            v-decorator="decorators.manager_id"
             resource="cloudproviders"
             :params="cloudproviderParams"
             :isDefaultSelect="true"
@@ -182,8 +182,8 @@ export default {
             ],
           },
         ],
-        cloudprovider: [
-          'cloudprovider',
+        manager_id: [
+          'manager_id',
           {
             rules: [
               { required: true, message: this.$t('common_588') },
@@ -193,10 +193,14 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          md: { span: 16 },
+          xl: { span: 18 },
+          xxl: { span: 20 },
         },
         labelCol: {
-          span: 3,
+          md: { span: 8 },
+          xl: { span: 6 },
+          xxl: { span: 4 },
         },
       },
       storageOpts: [],

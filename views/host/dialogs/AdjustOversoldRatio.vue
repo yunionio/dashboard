@@ -64,10 +64,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 18,
         },
         labelCol: {
-          span: 4,
+          span: 6,
         },
       },
     }

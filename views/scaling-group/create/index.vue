@@ -131,8 +131,16 @@ export default {
         fd: { ...initFd },
       },
       formItemLayout: {
-        labelCol: { span: 3 },
-        wrapperCol: { span: 20 },
+        wrapperCol: {
+          md: { span: 16 },
+          xl: { span: 18 },
+          xxl: { span: 20 },
+        },
+        labelCol: {
+          md: { span: 8 },
+          xl: { span: 6 },
+          xxl: { span: 4 },
+        },
       },
       isDeleteVpc: false,
       isDeleteNetwork: false,

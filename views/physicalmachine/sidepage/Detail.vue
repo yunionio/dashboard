@@ -278,7 +278,7 @@ export default {
               slots: {
                 default: ({ row }, h) => {
                   return [
-                    <p>{ sizestr(row.storage_size, 'M', 1024) }<span style={{ color: '#aaa' }}>（物理机总容量）</span></p>,
+                    <p>{ this.$t('compute.text_1321', { num: sizestr(row.storage_size, 'M', 1024) }) }</p>,
                   ]
                 },
               },

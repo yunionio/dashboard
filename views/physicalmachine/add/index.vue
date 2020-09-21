@@ -88,25 +88,20 @@ export default {
       net_required: false,
       formItemLayout: {
         wrapperCol: {
-          span: 21,
-          xxl: {
-            span: 22,
-          },
+          md: { span: 16 },
+          xl: { span: 18 },
+          xxl: { span: 20 },
         },
         labelCol: {
-          span: 3,
-          xxl: {
-            span: 2,
-          },
+          md: { span: 8 },
+          xl: { span: 6 },
+          xxl: { span: 4 },
         },
       },
       offsetWrapperCol: {
-        span: 21,
-        offset: 3,
-        xxl: {
-          span: 22,
-          offset: 2,
-        },
+        md: { span: 16, offset: 8 },
+        xl: { span: 18, offset: 6 },
+        xxl: { span: 20, offset: 4 },
       },
     }
   },
@@ -314,7 +309,7 @@ export default {
     doPreFileAdd () {
       const fd = new FormData()
       fd.append('action', 'BatchHostRegister')
-      fd.append('hosts', this.form.fd.file.file)
+      fd.append('hosts', new Blob([this.form.fd.file.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
       fd.append('no_probe', true)
       if (this.form.fd.project_domain && this.isAdminMode) {
         fd.append('project_domain', this.form.fd.project_domain)
@@ -355,7 +350,7 @@ export default {
     doIsoFileAdd () {
       const fd = new FormData()
       fd.append('action', 'BatchHostRegister')
-      fd.append('hosts', this.form.fd.file.file)
+      fd.append('hosts', new Blob([this.form.fd.file.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
       fd.append('no_prepare', this.form.fd.no_prepare || false)
       if (this.form.fd.project_domain && this.isAdminMode) {
         fd.append('project_domain', this.form.fd.project_domain)
@@ -396,7 +391,7 @@ export default {
     doPxeFileAdd () {
       const fd = new FormData()
       fd.append('action', 'BatchHostRegister')
-      fd.append('hosts', this.form.fd.file.file)
+      fd.append('hosts', new Blob([this.form.fd.file.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
       fd.append('no_prepare', this.form.fd.no_prepare || false)
       if (this.form.fd.project_domain && this.isAdminMode) {
         fd.append('project_domain', this.form.fd.project_domain)
