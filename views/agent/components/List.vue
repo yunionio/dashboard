@@ -71,6 +71,7 @@ export default {
           { label: this.$t('network.text_23'), key: 'hb_last_seen' },
           { label: this.$t('network.text_24'), key: 'zone' },
           { label: this.$t('network.text_25'), key: 'version' },
+          { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
       groupActions: [

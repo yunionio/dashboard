@@ -81,6 +81,7 @@ export default {
             },
           },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
+          { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
       groupActions: [

@@ -53,6 +53,7 @@ export default {
           { label: 'ID', key: 'id' },
           { label: this.$t('network.text_21'), key: 'name' },
           { label: this.$t('network.text_199'), key: 'region' },
+          { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
       groupActions: [
