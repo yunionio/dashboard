@@ -1306,7 +1306,13 @@ export default {
       if (data.filtered_candidates && data.filtered_candidates.length > 0) {
         for (let i = 0, len = data.filtered_candidates.length; i < len; i++) {
           const item = data.filtered_candidates[i]
-          const message = FORECAST_FILTERS_MAP[item.filter_name] || i18n.t('compute.text_1310', [item.filter_name])
+          let message = `${i18n.t('dictionary.physicalmachine')}【${item.name}】`
+          const filterMapItem = FORECAST_FILTERS_MAP[item.filter_name]
+          if (filterMapItem) {
+            message += filterMapItem
+          } else {
+            message += `被 【${item.filter_name}】过滤掉`
+          }
           errors.push({
             message,
             children: item.reasons,
