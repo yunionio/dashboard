@@ -4,11 +4,11 @@
       <a-tag color="blue" class="mr-1" style="margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
       <a-form-item
         :wrapperCol="{ span: 24 }"
-        style="width: 200px;"
         class="mb-0 mr-1">
         <base-select
           v-if="i === 0"
           class="w-100"
+          style="width: 200px;"
           v-decorator="decorator.vpcs(item.key)"
           :resource="vpcResource"
           remote
@@ -24,7 +24,7 @@
       <a-form-item
         :wrapperCol="{ span: 24 }"
         style="flex: 1;"
-        class="mb-0 mr-1">
+        class="mb-0 mr-1 network-item">
         <base-select
           class="w-100"
           v-decorator="decorator.networks(item.key)"
