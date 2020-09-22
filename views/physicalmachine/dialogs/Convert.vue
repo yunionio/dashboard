@@ -234,10 +234,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 18,
+          span: 21,
         },
         labelCol: {
-          span: 6,
+          span: 3,
         },
       },
       hostTypeOptions: [
@@ -774,3 +774,9 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+/deep/ .network-item {
+  width: 260px;
+}
+</style>
