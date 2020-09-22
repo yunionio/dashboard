@@ -1,16 +1,16 @@
 <template>
   <div>
     <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
-      <a-tooltip :title="$t('common.text00109')" placement="right">
+      <a-tooltip :title="$t('common.more')" placement="right">
         <div class="trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-more" style="font-size: 24px;" />
         </div>
       </a-tooltip>
       <a-menu slot="overlay" @click="handleDropdownClick">
-        <a-menu-item key="/guide" v-if="isAdminMode">{{$t('common_187')}}</a-menu-item>
-        <a-menu-item :key="docsUrl">{{$t('common_188')}}</a-menu-item>
+        <a-menu-item key="/guide" v-if="isAdminMode">{{$t('navbar.button.feature_select')}}</a-menu-item>
+        <a-menu-item :key="docsUrl">{{$t('navbar.button.docs')}}</a-menu-item>
         <a-menu-item key="/licenses">
-          <span>{{$t('common_189')}}</span>
+          <span>{{$t('navbar.button.about')}}</span>
           <a-icon v-if="isAdminMode && updateAvailable" type="cloud-upload" class="success-color ml-1" />
         </a-menu-item>
       </a-menu>
