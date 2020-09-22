@@ -93,7 +93,7 @@ export default {
           permission: 'eips_create',
           action: () => {
             this.$router.push({
-              path: '/eip/create',
+              path: `${this.$route.path}/create`,
               query: {
                 type: this.cloudEnv,
               },
