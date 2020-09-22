@@ -7,7 +7,7 @@
       <a-input v-decorator="decorator.endip" :placeholder="$t('common_162')" />
     </a-form-item>
     <a-form-item class="ml-2">
-      <a-select v-decorator="decorator.netmask">
+      <a-select v-decorator="decorator.netmask" style="width: 80px;">
         <a-select-option
           v-for="item of netMaskOptions"
           :key="item.key"
