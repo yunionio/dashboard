@@ -1,5 +1,5 @@
 <template>
-  <a-card class="explorer-monitor-line d-flex align-items-center justify-content-center">
+  <a-card :title="description ? description.title : ''" size="small" class="explorer-monitor-line">
     <loader v-if="loading" :loading="true" />
     <template v-else>
       <div class="d-flex">
