@@ -427,6 +427,7 @@
       "ready": "Available",
       "deleting": "Deleting",
       "unknown": "Status abnormal",
+      "instance_snapshot_create_failed": "Host snapshot creation failed",
       "instance_snapshot_start_delete": "The host snapshot starts to be deleted",
       "instance_snapshot_delete_failed": "Host snapshot deletion failed",
       "sync_status": "Sync Status"

@@ -427,6 +427,7 @@
       "ready": "可用",
       "deleting": "删除中",
       "unknown": "状态异常",
+      "instance_snapshot_create_failed": "主机快照创建失败",
       "instance_snapshot_start_delete": "主机快照开始删除",
       "instance_snapshot_delete_failed": "主机快照删除失败",
       "sync_status": "同步状态"
