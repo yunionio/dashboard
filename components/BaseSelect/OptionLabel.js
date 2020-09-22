@@ -11,7 +11,7 @@ const resourceMode = {
         </div>
       )
     },
-    labelFormat: item => `${item.name}（${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id}）`,
+    labelFormat: item => `${item.name}(${item.guest_ip_start} - ${item.guest_ip_end}, vlan=${item.vlan_id})`,
   },
   vpcs: {
     vnode: (vm, h) => {
