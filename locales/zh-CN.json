@@ -526,5 +526,5 @@
   "cloudenv.text_491": "云用户组",
   "cloudenv.text_492": "创建云用户组",
   "cloudenv.text_493": "自动创建项目",
-  "cloudenv.text_494": "OpenStack平台不支持该操作"
+  "cloudenv.text_494": "OpenStack平台必须勾选自动创建项目，暂不支持取消"
 }
