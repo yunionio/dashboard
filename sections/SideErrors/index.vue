@@ -15,15 +15,20 @@
           <div>{{ item }}</div>
         </li>
       </ul>
-      <div>{{ $t('compute.text_1314') }}</div>
+      <div class="mb-2">{{ $t('compute.text_1323') }}</div>
       <ul class="list list-wrapper">
-        <li
-          v-for="(item, idx) of errors.errors"
-          :key="idx">
-          <div>{{ item.message }}</div>
-          <ul class="list sec-list" v-if="item.children">
-            <li v-for="(child, childIdx) of item.children" :key="`child-${childIdx}`">{{ child }}</li>
-          </ul>
+        <li class="mb-3" v-for="(item, idx) of errors.errors" :key="idx">
+          <div class="mb-1">{{ item.message }}</div>
+          <a-collapse :bordered="false">
+            <a-collapse-panel key="1" :header="$t('compute.text_1314')">
+              <ul class="list sec-list" v-if="item.children">
+                <li v-for="(child, childIdx) of item.children" :key="`child-${childIdx}`">
+                  {{ child }}
+                  <div class="divider" v-if="childIdx !== item.children.length - 1" />
+                </li>
+              </ul>
+            </a-collapse-panel>
+          </a-collapse>
         </li>
       </ul>
     </div>
@@ -60,6 +65,7 @@ export default {
 
 <style lang="less" scoped>
 @import '../../../src/styles/less/theme';
+@error-bg: #fef0f0;
 
 .errors-wrap {
   position: absolute;
@@ -69,7 +75,7 @@ export default {
   padding: 15px;
   opacity: 1;
   transform: translateX(0);
-  background-color: #fef0f0;
+  background-color: @error-bg;
   box-shadow: -5px -5px 5px rgba(0, 0, 0, 0.1);
   border-top-left-radius: 3px;
   color: @error-color;
@@ -95,11 +101,29 @@ export default {
 
     li {
       line-height: 1.8;
-      list-style-type: disc;
+      list-style-type: none;
     }
     &.sec-list {
       li {
-        list-style-type: circle;
+        list-style-type: none;
+      }
+    }
+  }
+  .list-wrapper {
+    .ant-collapse {
+        background-color: @error-bg;
+       /deep/ .ant-collapse-header {
+        color: @error-color;
+        padding: 0;
+        font-size: 12px;
+        background-color: @error-bg;
+        padding-left: 20px;
+        padding-right: 10px;
+        border: 1px solid red;
+        width: max-content;
+        i {
+          left: 2px;
+        }
       }
     }
   }
