@@ -243,7 +243,9 @@ export default {
     },
     isWindows () {
       let isWindows = false
-      if (this.form.fd.os && this.form.fd.os.toLowerCase() === 'windows') {
+      const osType = (_.get(this.form.fi, 'imageMsg.info.properties.os_type') || '').toLowerCase()
+      const os = (_.get(this.form.fd, 'os') || '').toLowerCase()
+      if (~[osType, os].indexOf('windows')) {
         isWindows = true
       }
       return isWindows

@@ -186,6 +186,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 import _ from 'lodash'
 import * as R from 'ramda'
 import mixin from './mixin'
@@ -438,9 +439,9 @@ export default {
     },
     uefi (val, oldVal) {
       if (val) {
-        this.form.fc.setFieldsValue({ bios: 'UEFI' })
+        this.form.fc.setFieldsValue({ [this.decorators.bios[0]]: 'UEFI' })
       } else {
-        this.form.fc.setFieldsValue({ bios: 'BIOS' })
+        this.form.fc.setFieldsValue({ [this.decorators.bios[0]]: 'BIOS' })
       }
     },
   },
