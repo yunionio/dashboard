@@ -2,7 +2,7 @@
   <div class="navbar-wrap d-flex align-items-center" @click.stop.prevent="handleCloseSidebar">
     <div v-if="!isHiddenMenu">
       <template v-if="authInfoLoaded && isShowMenu">
-        <a-tooltip :title="$t('common_209')" placement="right">
+        <a-tooltip :title="$t('navbar.button.menu')" placement="right">
           <div class="primary-color-hover d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
             <icon type="menu" style="font-size: 24px;" />
           </div>
@@ -32,7 +32,7 @@
             <template v-if="systemProject">
               <li class="item-link" @click="() => projectChange(systemProject.id, 'system')">
                 <div class="d-flex h-100 align-items-center">
-                  <div class="flex-fill text-truncate">{{ isOperation ? $t('common_212') : $t('common_213') }}</div>
+                  <div class="flex-fill text-truncate">{{ $t('navbar.view.system_manager') }}</div>
                   <div style="width: 20px;" class="ml-1">
                     <a-icon v-show="scope === 'system' && systemProject.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                   </div>
@@ -42,7 +42,7 @@
             <!-- 域管理后台 -->
             <template v-if="domainProjects && domainProjects.length">
               <li>
-                <div>{{ isOperation ? $t('common_213') : $t('common_626') }}</div>
+                <div>{{ isOperation ? $t('navbar.view.manager') : $t('navbar.view.domain_manager') }}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
@@ -60,7 +60,7 @@
             <!-- 项目 -->
             <template v-if="projects && projects.length">
               <li>
-                <div>{{$t('common_215')}}</div>
+                <div>{{$t('navbar.view.project')}}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of projects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'project')">
@@ -78,7 +78,7 @@
           </ul>
         </template>
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <a-tooltip :title="$t('common_642')" placement="right">
+          <a-tooltip :title="$t('navbar.view.switch')" placement="right">
             <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
           </a-tooltip>
           <span class="ml-2 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
@@ -90,10 +90,10 @@
     <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="products && showSystemChoose">
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <a-tooltip :title="$t('system.text_21')" placement="right">
+          <a-tooltip :title="$t('navbar.button.external_links')" placement="right">
             <icon type="navbar-setting" style="font-size: 24px; line-height: 1;"  />
           </a-tooltip>
-          <span class="ml-2 text-truncate products-label" style="line-height: normal;">{{$t('common_211')}}</span>
+          <span class="ml-2 text-truncate products-label" style="line-height: normal;">{{$t('brand')}}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
@@ -110,7 +110,7 @@
     <slot name="frontNavbar" />
     <!-- 大屏监控 -->
     <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && isAdminMode">
-      <a-tooltip :title="$t('common_643')" placement="right">
+      <a-tooltip :title="$t('navbar.button.monitor')" placement="right">
         <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
           <icon type="daping" style="font-size: 20px;" />
         </div>
@@ -253,19 +253,12 @@ export default {
     viewLabel () {
       if (this.reLogging) return '-'
       if (this.$store.getters['auth/isAdmin']) {
-        return this.isOperation ? this.$t('common_212') : this.$t('common_213')
+        return this.$t('navbar.view.system_manager')
       }
-      let ret = this.userInfo.projectName || '-'
-      let managerLabel = ''
       if (this.$store.getters['auth/isDomain']) {
-        ret = this.userInfo.projectDomain || '-'
-        managerLabel = this.isOperation ? this.$t('common_213') : ' ' + this.$t('common_626')
+        return this.isOperation ? this.$t('navbar.view.manager') : this.$t('navbar.view.domain_manager_1var', { domain: this.userInfo.projectDomain || '-' })
       }
-      if (this.isOperation) {
-        if (managerLabel) return `${managerLabel}`
-        else return `${ret}`
-      }
-      return ret + managerLabel
+      return this.userInfo.projectName || '-'
     },
     // 认证信息加载完毕
     authInfoLoaded () {
