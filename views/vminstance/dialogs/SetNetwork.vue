@@ -173,3 +173,9 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+/deep/ .network-item {
+  width: 260px;
+}
+</style>
