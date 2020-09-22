@@ -3,7 +3,9 @@
     <a-tabs :defaultActiveKey="currentComponent" @change="callback" :animated="false">
       <a-tab-pane v-for="obj in tabs" :key="obj.key" :tab="obj.label">
         <div class="mt-2">
-          <component v-if="obj.key === currentComponent" :is="currentComponent" :getParams="getParams" />
+          <keep-alive>
+            <component v-if="obj.key === currentComponent" :is="currentComponent" :getParams="getParams" />
+          </keep-alive>
         </div>
       </a-tab-pane>
     </a-tabs>
