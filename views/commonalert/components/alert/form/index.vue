@@ -45,6 +45,7 @@
         resource="receivers"
         version="v1"
         filterable
+        show-sync
         :resList.sync="recipientOpts"
         :select-props="{ mode: 'multiple', placeholder: $t('compute.text_741') }"
         :params="contactParams" />
