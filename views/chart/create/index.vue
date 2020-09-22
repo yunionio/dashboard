@@ -263,6 +263,11 @@ export default {
     },
     ...mapGetters(['isAdminMode', 'isProjectMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
   },
+  watch: {
+    'form.fd.domain.key' () {
+      this.getCapability()
+    },
+  },
   created () {
     this.chartsM = new this.$Manager('charts', 'v1')
     this.releaseM = new this.$Manager('releases', 'v1')
@@ -272,8 +277,9 @@ export default {
   methods: {
     async getCapability () {
       if (!this.definition || !this.definition.length) return
+      const params = { project_domain: _.get(this.form.fd, 'domain.key') }
       try {
-        const { data: { data } } = await new this.$Manager('capabilities', 'v2').list({ params: {} })
+        const { data: { data } } = await new this.$Manager('capabilities', 'v2').list({ params })
         if (data && data.length) {
           const index = this.definition.findIndex(val => {
             if (R.is(Object, val)) {
