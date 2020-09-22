@@ -11,6 +11,7 @@ import Network from '@Network/views/network'
 import NetworkCreate from '@Network/views/network/Create'
 import EditAttributes from '@Network/views/network/EditAttributes'
 import Eip from '@Network/views/eip'
+import EipCreate from '@Network/views/eip/create'
 import Host from '@Compute/views/host'
 import Physicalmachine from '@Compute/views/physicalmachine'
 import PhysicalmachineAdd from '@Compute/views/physicalmachine/add'
@@ -349,6 +350,11 @@ export default {
               name: 'Eip2',
               path: '',
               component: Eip,
+            },
+            {
+              name: 'EipCreate2',
+              path: 'create',
+              component: EipCreate,
             },
           ],
         },
