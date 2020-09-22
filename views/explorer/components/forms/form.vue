@@ -157,6 +157,7 @@ export default {
       metricKeyOpts: [],
       metricInfo: {},
       metricKeyItem: {},
+      mertricItem: {},
       panelShow: this.defaultPanelShow,
       oldParams: {},
       metricLoading: false,
@@ -166,7 +167,7 @@ export default {
   computed: {
     title () {
       if (!this.panelShow && this.form.fd.metric_key) {
-        return `${this.form.fd.metric_key} (${this.form.fd.metric_value || '-'})`
+        return this.getTitle()
       }
       return this.$t('monitor.monitor_fill_filters')
     },
@@ -183,6 +184,14 @@ export default {
     this.getMeasurement()
   },
   methods: {
+    getTitle () {
+      let label = this.metricKeyItem.label || '-'
+      const metricLabel = _.get(this.mertricItem, 'description.display_name')
+      if (metricLabel) {
+        label += `(${metric_zh[metricLabel] ? metric_zh[metricLabel] : metricLabel})`
+      }
+      return label
+    },
     resetChart () {
       this.$emit('resetChart')
       this.$refs.filtersRef.reset()
@@ -238,7 +247,8 @@ export default {
     async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
         this.metricKeyItem = metricKeyItem
-        this.$emit('mertricItemChange', mertricItem)
+        this.mertricItem = mertricItem
+        this.$emit('mertricItemChange', { ...mertricItem, title: this.getTitle() })
         const params = {
           $t: getRequestT(),
           database: metricKeyItem.database,

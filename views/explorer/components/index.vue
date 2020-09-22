@@ -99,6 +99,7 @@ export default {
       if (this.seriesList && this.seriesList.length && this.seriesList[i]) {
         this.$set(this.seriesList, i, [])
         this.$set(this.metricList, i, [])
+        this.$set(this.seriesDescription[i], 'title', '')
       }
     },
     mertricItemChange (item, i) {
