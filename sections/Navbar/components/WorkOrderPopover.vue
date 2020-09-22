@@ -2,8 +2,8 @@
   <div>
     <a-popover trigger="click" :getPopupContainer="triggerNode => triggerNode.parentNode">
       <div class="trigger d-flex align-items-center justify-content-center">
-        <span v-if="workOrderMenuTitleUsedText">{{$t('common_198')}}</span>
-        <a-tooltip :title="$t('common_199')" placement="right" v-else>
+        <span v-if="workOrderMenuTitleUsedText">{{$t('navbar.button.work_order')}}</span>
+        <a-tooltip :title="$t('navbar.button.work_order')" placement="right" v-else>
           <a-badge :count="statistics" :overflowCount="99">
             <icon type="navbar-process" style="font-size: 24px;" />
           </a-badge>
@@ -12,20 +12,28 @@
       <template v-slot:content>
         <div class="work-order-wrap">
           <div class="work-order-header d-flex align-items-center">
-            <div class="flex-fill title">{{$t('common_199')}}</div>
+            <div class="flex-fill title">{{$t('navbar.button.work_order')}}</div>
           </div>
-          <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('common_200')}}</span></div>
+          <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('navbar.tips.pending_work_order')}}</span></div>
           <ul class="work-list">
-            <li @click="goHistoricProcess">{{$t('common_201')}}<a>{{workflowStatistics['nr-historic-process-instance'] || 0}}</a>{{$t('common_202')}}</li>
-            <li @click="goProcessTask">{{$t('common_203')}}<a>{{workflowStatistics['nr-process-task'] || 0}}</a>{{$t('common_202')}}</li>
+            <i18n path="navbar.button.work_order_undone" tag="li" @click="goHistoricProcess">
+              <template #num>
+                <a>{{workflowStatistics['nr-historic-process-instance'] || 0}}</a>
+              </template>
+            </i18n>
+            <i18n path="navbar.button.pending_work_order" tag="li" @click="goProcessTask">
+              <template #num>
+                <a>{{workflowStatistics['nr-process-task'] || 0}}</a>
+              </template>
+            </i18n>
           </ul>
           <template v-if="!isAdminMode && isShowWorkflow">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
             <ul class="work-list">
-              <li @click="joinProjectHandle" v-if="isProjectMode && projectEnabled">{{$t('common_205')}}{{$t('dictionary.project')}}</li>
-              <li @click="customeServiceHandle" v-if="customerServiceEnabled">{{$t('common_206')}}</li>
-              <li @click="applyProjectQuotaHandle" v-if="isProjectMode && projectQuotaEnabled">{{$t('common_207')}}{{$t('dictionary.project')}}{{$t('common_208')}}</li>
-              <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">{{$t('common_207')}}{{$t('dictionary.domain')}}{{$t('common_208')}}</li>
+              <li @click="joinProjectHandle" v-if="isProjectMode && projectEnabled">{{$t('navbar.button.join_project')}}</li>
+              <li @click="customeServiceHandle" v-if="customerServiceEnabled">{{$t('navbar.button.work_order_support')}}</li>
+              <li @click="applyProjectQuotaHandle" v-if="isProjectMode && projectQuotaEnabled">{{$t('navbar.button.work_order_apply_project_quota')}}</li>
+              <li @click="applyDomainQuotaHandle" v-if="isDomainMode && domainQuotaEnabled">{{$t('navbar.button.work_order_apply_domain_quota')}}</li>
             </ul>
           </template>
         </div>
