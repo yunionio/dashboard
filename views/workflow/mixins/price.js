@@ -10,7 +10,7 @@ export default {
           items: [
             {
               field: 'billingType',
-              title: i18n.t('common_10'),
+              title: i18n.t('table.column.title.bill_type'),
               formatter: ({ cellValue, row }) => {
                 const serverConf = getServerConf(row)
                 const durationUnit = {
