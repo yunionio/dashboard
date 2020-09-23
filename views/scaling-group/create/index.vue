@@ -14,7 +14,7 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_176')">
         <a-radio-group v-decorator="decorators.brand">
-          <a-radio-button v-for="item in brands" :key="item" :value="item">{{item}}</a-radio-button>
+          <a-radio-button v-for="item in brands" :key="item.brand" :value="item.brand">{{item.label}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :label="$t('compute.text_873')">
@@ -97,6 +97,7 @@
 <script>
 import BindLb from '../components/BindLb'
 import { DECORATORS, BRANDS } from '../constants'
+import { HYPERVISORS_MAP } from '@/constants'
 import DomainProject from '@/sections/DomainProject'
 // import NameRepeated from '@/sections/NameRepeated'
 import NetworkSelects from '@/sections/NetworkSelects'
@@ -156,9 +157,11 @@ export default {
       return this.$store.getters.capability.brands
     },
     brands () {
-      return BRANDS.filter(brand => {
+      let supportBrands = BRANDS.filter(brand => {
         return this.capabilityBrands.indexOf(brand) > -1
       })
+      supportBrands = [...Object.values(HYPERVISORS_MAP)].filter(item => supportBrands.includes(item.brand))
+      return supportBrands
     },
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain : this.$store.getters.userInfo.projectDomainId
@@ -244,7 +247,7 @@ export default {
     projectChange () {
       if (this.brands && this.brands.length > 0) {
         this.form.fc.setFieldsValue({
-          brand: this.brands[0],
+          brand: this.brands[0].brand,
         })
       }
     },
