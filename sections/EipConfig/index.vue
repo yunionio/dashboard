@@ -18,7 +18,7 @@
     </a-form-item>
     <a-form-item class="mb-0" v-if="isNew">
       <div class="d-flex">
-        <a-tooltip placement="top" :title="`范围在 1～${maxBindWidth}Mbps`">
+        <a-tooltip placement="top" :title="$t('compute.text_1324', [maxBindWidth])">
           <a-input-number
             :min="1"
             :max="maxBindWidth"

@@ -148,7 +148,7 @@ export default {
                   }
                 }
                 return {
-                  tooltip: `仅系统或${this.$t('dictionary.domain')}管理员支持该操作`,
+                  tooltip: i18n.t('compute.text_1336'),
                   validate: false,
                 }
               },

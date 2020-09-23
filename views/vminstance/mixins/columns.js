@@ -28,10 +28,10 @@ export default {
         data: {},
       }).then((res) => {
         this.execLoading = false
-        this.$message.success('执行成功')
+        this.$message.success(i18n.t('compute.text_911'))
       }).catch((err) => {
         this.execLoading = false
-        this.$message.success('执行失败')
+        this.$message.success(i18n.t('compute.text_1339'))
         throw err
       })
     }
@@ -44,7 +44,7 @@ export default {
         try {
           time = this.$moment(JSON.parse(time)).format()
         } catch (error) {
-          throw new Error('解析日期失败', error)
+          throw new Error(i18n.t('compute.text_1340'), error)
         }
         if (row.metadata.create_backup) {
           return <a-tooltip placement="right">

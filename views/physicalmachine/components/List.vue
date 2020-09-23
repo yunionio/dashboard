@@ -77,10 +77,10 @@ export default {
           },
           project_domain: getProjectDomainFilter(),
           region: {
-            label: '区域',
+            label: this.$t('compute.text_177'),
           },
           zone: {
-            label: '可用区',
+            label: this.$t('compute.text_270'),
           },
         },
         responseData: this.responseData,
@@ -124,7 +124,7 @@ export default {
             const hasBMAgent = hasServices('bmagent')
             if (!hasBMAgent) {
               ret.validate = false
-              ret.tooltip = 'Baremetal服务未开启'
+              ret.tooltip = this.$t('compute.text_1334')
             }
             return {
               buttonType: 'primary',
