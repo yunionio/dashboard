@@ -23,6 +23,7 @@ import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'K8SServiceList',
@@ -54,6 +55,9 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.k8s_resource).flat(),
         },
       }),
       groupActions: [

@@ -1,5 +1,6 @@
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 
 export default {
   created () {
@@ -21,6 +22,7 @@ export default {
         width: 200,
         sortable: true,
       },
+      k8sStatusColumn(),
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
