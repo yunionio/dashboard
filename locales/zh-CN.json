@@ -1305,5 +1305,20 @@
   "compute.text_1320": "（带外）",
   "compute.text_1321": "{num}（物理机总容量）",
   "compute.text_1322": "无调度标签",
-  "compute.text_1323": "错误"
+  "compute.text_1323": "错误",
+  "compute.text_1324": "范围在 1～{0}Mbps",
+  "compute.text_1325": "被 【{0}】过滤掉",
+  "compute.text_1326": "虚拟CPU",
+  "compute.text_1327": "物理容量",
+  "compute.text_1328": "/已分配",
+  "compute.text_1329": "根分区容量",
+  "compute.text_1330": "已使用：",
+  "compute.text_1331": "/总量：",
+  "compute.text_1332": "存储池容量",
+  "compute.text_1333": "输入的IP没有创建",
+  "compute.text_1334": "Baremetal服务未开启",
+  "compute.text_1336": "仅系统或管理员支持该操作",
+  "compute.text_1338": "范围在 0～{0}Mbps",
+  "compute.text_1339": "执行失败",
+  "compute.text_1340": "解析日期失败"
 }

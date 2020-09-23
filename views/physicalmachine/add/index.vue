@@ -450,7 +450,7 @@ export default {
         return this.getIpAddr(value).then((res) => {
           const data = res.data.data || []
           if (data.length === 0) {
-            return callback(new Error('输入的IP没有创建'))
+            return callback(new Error(this.$t('compute.text_1333')))
           }
         })
       }

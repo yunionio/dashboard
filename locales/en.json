@@ -1305,5 +1305,20 @@
   "compute.text_1320": "(Out of Band)",
   "compute.text_1321": "{num} (total of machine)",
   "compute.text_1322": "No scheulder tags",
-  "compute.text_1323": "Error"
+  "compute.text_1323": "Error",
+  "compute.text_1324": "The range is 1～{0}Mbps",
+  "compute.text_1325": "Filtered out by [{0}]",
+  "compute.text_1326": "Virtual CPU",
+  "compute.text_1327": "Physical Capacity",
+  "compute.text_1328": "/allocated",
+  "compute.text_1329": "Root Partition Capacity",
+  "compute.text_1330": "Used:",
+  "compute.text_1331": "/Total:",
+  "compute.text_1332": "Storage Pool Capacity",
+  "compute.text_1333": "The entered IP is not created",
+  "compute.text_1334": "Baremetal service is not enabled",
+  "compute.text_1336": "Only the system or administrator supports this operation",
+  "compute.text_1338": "The range is 0～{0}Mbps",
+  "compute.text_1339": "Execution failed",
+  "compute.text_1340": "Failed to parse date"
 }

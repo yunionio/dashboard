@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item :label="$t('compute.text_1186')" v-bind="formItemLayout">
-          <a-tooltip placement="top" :title="`范围在 0～${[10000]}Mbps`">
+          <a-tooltip placement="top" :title="$t('compute.text_1338', [[10000]])">
             <a-input-number
               v-decorator="decorators.bandwidth"
               :parser="getParser"

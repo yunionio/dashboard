@@ -145,10 +145,14 @@ export default {
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
+            const allowedBrands = ['OneCloud', 'VMware']
+            if (allowedBrands.includes(row.brand)) {
+              const num = row.mem_commit / cellValue
+              return sizestr(cellValue, 'M', 1024) + '/' + percentstr(num)
+            }
             return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.mem_commit_rate)
-          } else {
-            return 'N/A'
           }
+          return 'N/A'
         },
       },
       {
@@ -158,10 +162,16 @@ export default {
         showOverflow: 'title',
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
-            return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.storage_commit_rate)
-          } else {
-            return 'N/A'
+            let total = row.storage
+            let uesd = row.actual_storage_used
+            if (row.brand.toLowerCase() === 'onecloud') {
+              total += Number(row.metadata.root_partition_total_capacity_mb)
+              uesd += Number(row.metadata.root_partition_used_capacity_mb)
+            }
+            const num = uesd / total
+            return sizestr(total, 'M', 1024) + '/' + percentstr(num)
           }
+          return 'N/A'
         },
       },
       {

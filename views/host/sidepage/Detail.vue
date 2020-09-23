@@ -241,7 +241,7 @@ export default {
           items: [
             {
               field: 'cpu_count',
-              title: this.$t('compute.text_592'),
+              title: this.$t('compute.text_563'),
               formatter: ({ cellValue }) => {
                 return cellValue + this.$t('compute.text_167')
               },
@@ -265,6 +265,16 @@ export default {
                   }
                   return '-'
                 },
+              },
+            },
+            {
+              field: 'cpu_virtual',
+              title: this.$t('compute.text_1326'),
+              formatter: ({ row }) => {
+                if (!row.cpu_count || !row.cpu_commit_bound) {
+                  return '-'
+                }
+                return row.cpu_count * row.cpu_commit_bound + this.$t('compute.text_167')
               },
             },
             {
@@ -297,9 +307,11 @@ export default {
           items: [
             {
               field: 'mem_size',
-              title: this.$t('compute.text_397'),
+              title: this.$t('compute.text_1327'),
               formatter: ({ cellValue, row }) => {
-                return sizestr(cellValue, 'M', 1024)
+                const allowedBrands = ['OneCloud', 'VMware']
+                if (!allowedBrands.includes(row.brand)) return sizestr(cellValue, 'M', 1024)
+                return sizestr(cellValue, 'M', 1024) + this.$t('compute.text_1328') + sizestr(row.mem_commit, 'M', 1024)
               },
             },
             {
@@ -344,10 +356,24 @@ export default {
           title: this.$t('compute.text_99'),
           items: [
             {
-              field: 'storage',
-              title: this.$t('compute.text_397'),
+              field: 'metadata',
+              title: this.$t('compute.text_1329'),
               formatter: ({ cellValue, row }) => {
-                return sizestr(cellValue, 'M', 1024)
+                if (row.brand.toLowerCase() !== 'onecloud') return '-'
+                const total = sizestr(row.metadata.root_partition_total_capacity_mb, 'M', 1024)
+                const used = sizestr(row.metadata.root_partition_used_capacity_mb, 'M', 1024)
+                return this.$t('compute.text_1330') + used + this.$t('compute.text_1331') + total
+              },
+            },
+            {
+              field: 'storage',
+              title: this.$t('compute.text_1332'),
+              formatter: ({ cellValue, row }) => {
+                const total = sizestr(row.storage, 'M', 1024)
+                const used = sizestr(row.actual_storage_used, 'M', 1024)
+                const allowedBrands = ['OneCloud', 'VMware']
+                if (!allowedBrands.includes(row.brand)) return sizestr(cellValue, 'M', 1024)
+                return this.$t('compute.text_1330') + used + this.$t('compute.text_1331') + total
               },
             },
             {
