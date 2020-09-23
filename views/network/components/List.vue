@@ -98,6 +98,7 @@ export default {
               { label: this.$t('network.text_226'), key: 'guest' },
               { label: 'PXE', key: 'pxe' },
               { label: 'IPMI', key: 'ipmi' },
+              { label: this.$t('network.text_221'), key: 'eip' },
             ],
           },
           brand: brandFilter,
