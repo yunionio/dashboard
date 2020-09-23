@@ -1,5 +1,6 @@
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 
 export default {
   created () {
@@ -15,6 +16,7 @@ export default {
           },
         },
       },
+      k8sStatusColumn(),
       {
         field: 'namespace',
         title: i18n.t('k8s.text_23'),

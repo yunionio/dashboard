@@ -13,6 +13,14 @@ import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
 
+const RESOURCE_KEYWORD_MAP = {
+  namespace: 'K8SNamespaceSidePage',
+  rbacrole: 'K8SRbacRoleSidePage',
+  rbacclusterrole: 'K8SRbacclusteroleSidePage',
+  rbacrolebinding: 'K8sRbacrolebindingSidePage',
+  rbacclusterrolebinding: 'K8SRbacclusterrolebindingSidePage',
+}
+
 export default {
   name: 'K8SFederatedAccachClsuterSidepage',
   mixins: [WindowsMixin],
@@ -82,10 +90,23 @@ export default {
         {
           field: 'cluster',
           title: this.$t('k8s.text_243'),
-          width: 300,
           slots: {
             default: ({ row }, h) => {
               const ret = [<side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.cluster }</side-page-trigger>]
+              return ret
+            },
+          },
+        },
+        {
+          field: 'resource_id',
+          title: this.$t('k8s.text_64'),
+          slots: {
+            default: ({ row }, h) => {
+              let ret = [row.resource]
+              if (row.resource_keyword && RESOURCE_KEYWORD_MAP[row.resource_keyword]) {
+                const sidepageName = RESOURCE_KEYWORD_MAP[row.resource_keyword]
+                ret = [<side-page-trigger onTrigger={ () => this.handleOpenResourceSidepage(row, sidepageName) }>{ row.resource }</side-page-trigger>]
+              }
               return ret
             },
           },
@@ -106,6 +127,18 @@ export default {
       this.sidePageTriggerHandle(this, 'K8SClusterSidePage', {
         id: row.cluster_id,
         resource: 'kubeclusters',
+        apiVersion: 'v1',
+        getParams: this.list.getParams,
+      }, {
+        cancel: () => {
+          this.list.refresh()
+        },
+      })
+    },
+    handleOpenResourceSidepage (row, sidepageName) {
+      this.sidePageTriggerHandle(this, sidepageName, {
+        id: row.resource_id,
+        resource: `${row.resource_keyword}s`,
         apiVersion: 'v1',
         getParams: this.list.getParams,
       }, {

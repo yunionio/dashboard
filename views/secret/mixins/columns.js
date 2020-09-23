@@ -1,5 +1,6 @@
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 
 export default {
   created () {
@@ -21,6 +22,7 @@ export default {
         width: 120,
         sortable: true,
       },
+      k8sStatusColumn(),
       {
         field: 'type',
         title: i18n.t('k8s.text_34'),

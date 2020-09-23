@@ -24,6 +24,7 @@ import clusterNamespaceMixin from '@K8S/mixins/clusterNamespace'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'K8SSecretList',
@@ -48,6 +49,9 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           type: getNameFilter({ field: 'type', label: this.$t('k8s.text_34') }),
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.k8s_resource).flat(),
         },
         responseData: this.responseData,
       }),
