@@ -2185,8 +2185,13 @@
         "on": "开启",
         "off": "关闭",
         "os": "系统",
-        "main_account": "主账号"
+        "main_account": "主账号",
+        "bill_method": "计费方式",
+        "status": "状态"
       }
+    },
+    "filter": {
+      "status": "状态"
     },
     "action": {
       "save": "保存",
@@ -2324,6 +2329,10 @@
       "service_message": "服务消息",
       "pending_work_order": "待处理工单"
     }
+  },
+  "message": {
+    "exec_succee": "执行成功",
+    "exec_fail": "执行失败"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
@@ -3408,7 +3417,6 @@
   "common_7": "1年",
   "common_8": "2年",
   "common_9": "3年",
-  "common_10": "计费方式",
   "common_11": "小时",
   "common_12": "天",
   "common_13": "月",

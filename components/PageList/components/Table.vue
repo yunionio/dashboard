@@ -1,6 +1,7 @@
 <template>
-  <floating-scroll :hiddenScrollbar="hiddenScrollbar" unobtrusive>
+  <floating-scroll ref="floating-scroll" :hiddenScrollbar="hiddenScrollbar" unobtrusive>
     <vxe-grid
+      show-header-overflow
       highlight-hover-row
       highlight-current-row
       class="page-list-grid"
@@ -223,6 +224,8 @@ export default {
     },
     // 更新虚拟滚动条
     updateFloatingScroll () {
+      const floatingScroll = this.$refs['floating-scroll']
+      const scrollLeft = floatingScroll.$el.scrollLeft
       const gridEl = this.$refs.grid && this.$refs.grid.$el
       if (!gridEl) return
       this.tableWidth = 'auto'
@@ -233,6 +236,9 @@ export default {
         if (tableBodyWidth) this.tableWidth = tableBodyWidth
         gridEl && this.$bus.$emit('FloatingScrollUpdate', {
           sourceElement: gridEl,
+        })
+        this.$nextTick(() => {
+          floatingScroll.$el.scrollLeft = scrollLeft
         })
       })
     },
@@ -251,9 +257,9 @@ export default {
         })
       }
       if (this.checkboxEnabled) {
-        defaultColumns.unshift({ type: 'checkbox', width: 40 })
+        defaultColumns.unshift({ type: 'checkbox', width: 40, showHeaderOverflow: false })
       } else if (this.radioEnabled) {
-        defaultColumns.unshift({ type: 'radio', width: 40 })
+        defaultColumns.unshift({ type: 'radio', width: 40, showHeaderOverflow: false })
       }
       if (this.showSingleActions && this.singleActions && this.singleActions.length) {
         defaultColumns.push({
