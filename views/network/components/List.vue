@@ -153,6 +153,20 @@ export default {
           actions: () => {
             return [
               {
+                label: '修改属性',
+                permission: 'networks_update',
+                action: () => {
+                  this.$router.push({ path: '/network/batch-edit', query: { id: this.list.selectedItems.map((item) => { return item.id }) } })
+                },
+                meta: (row) => {
+                  const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
+                  return {
+                    validate: isOneCloud,
+                    tooltip: !isOneCloud && '只有OneCloud主机支持此操作',
+                  }
+                },
+              },
+              {
                 label: `更改${this.$t('dictionary.project')}`,
                 permission: 'networks_perform_change_owner',
                 action: () => {

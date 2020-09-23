@@ -3,9 +3,9 @@
     <div class="d-flex" v-for="(item, i) in ipSubnets" :key="item.key">
       <ip-subnet
         :decorator="genDecorator(item.key)" />
-      <a-button shape="circle" icon="minus" size="small" v-if="ipSubnets.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
+      <a-button shape="circle" icon="minus" size="small" v-if="!hiddenDeleteAction && ipSubnets.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
     </div>
-    <div class="d-flex align-items-center" v-if="remain > 0">
+    <div class="d-flex align-items-center" v-if="!hiddenAddAction && remain > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
       <a-button type="link" @click="add">添加新IP子网</a-button>
       <span class="count-tips">您还可以添加 <span class="remain-num">{{ remain }}</span> 个</span>
@@ -31,6 +31,14 @@ export default {
         const fields = ['startip', 'endip', 'netmask', 'gateway', 'vlan']
         return fields.every(f => R.is(Function, val[f]))
       },
+    },
+    hiddenAddAction: {
+      type: Boolean,
+      default: false,
+    },
+    hiddenDeleteAction: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
