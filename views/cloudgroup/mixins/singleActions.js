@@ -20,7 +20,7 @@ export default {
         },
       },
       {
-        label: this.$t('common.text00109'),
+        label: this.$t('common.more'),
         actions: obj => {
           return [
             {
@@ -34,6 +34,12 @@ export default {
                 })
               },
               meta: () => {
+                if (this.$store.getters.isDomainMode && obj.domain_id !== this.$store.getters.userInfo.projectDomainId) {
+                  return {
+                    validate: false,
+                    tooltip: this.$t('table.validate.no_share_res_permission'),
+                  }
+                }
                 return {
                   validate: obj.status === 'available',
                 }
@@ -56,6 +62,7 @@ export default {
                 if (this.$store.getters.isDomainMode && obj.domain_id !== this.$store.getters.userInfo.projectDomainId) {
                   return {
                     validate: false,
+                    tooltip: this.$t('table.validate.no_share_res_permission'),
                   }
                 }
                 return {
@@ -92,6 +99,7 @@ export default {
                 if (this.$store.getters.isDomainMode && obj.domain_id !== this.$store.getters.userInfo.projectDomainId) {
                   return {
                     validate: false,
+                    tooltip: this.$t('table.validate.no_share_res_permission'),
                   }
                 }
                 return this.$getDeleteResult(obj)
