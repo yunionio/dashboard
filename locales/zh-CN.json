@@ -2179,7 +2179,8 @@
         "userId": "用户ID",
         "on": "开启",
         "off": "关闭",
-        "os": "系统"
+        "os": "系统",
+        "main_account": "主账号"
       }
     },
     "action": {
