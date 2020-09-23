@@ -21,6 +21,12 @@
                 <div><span>{{ loginInfos.ip.value }}</span><copy class="ml-1" :message="loginInfos.ip.value" /></div>
               </div>
             </div>
+            <div class="mv-2" v-if="loginInfos.mainAccount.value">
+              <div class="d-flex">
+                <div><span v-html="loginInfos.mainAccount.label" /></div>
+                <div><span>{{ loginInfos.mainAccount.value }}</span><copy class="ml-1" :message="loginInfos.mainAccount.value" /></div>
+              </div>
+            </div>
             <div class="mv-2">
               <div class="d-flex">
                 <div><span v-html="loginInfos.username.label" /></div>
@@ -168,6 +174,10 @@ export default {
           keypair: '',
           loginKey: '',
         },
+        mainAccount: {
+          label: this.$t('table.column.title.main_account'),
+          value: '',
+        },
       },
       dialog: {
         visible: false,
@@ -197,6 +207,9 @@ export default {
             this.loginInfos.password.loginKey = loginKey
           } else {
             this.loginInfos.password.value = password
+          }
+          if (this.resourceType === 'cloudusers' && account) {
+            this.loginInfos.mainAccount.value = account
           }
           this.error = null
         } catch (error) {
