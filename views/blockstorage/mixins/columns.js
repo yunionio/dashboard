@@ -27,8 +27,8 @@ export default {
             const allowedBrands = ['VMware', 'OneCloud']
             const actual_capacity_used = allowedBrands.includes(row.brand) ? sizestr(row.actual_capacity_used, 'M', 1024) : '-'
             return [<div>
-              <div>已使用：{actual_capacity_used}</div>
-              <div>总量：{capacity}</div>
+              <div>{this.$t('storage.text_178', [actual_capacity_used])}</div>
+              <div>{this.$t('storage.text_180', [capacity])}</div>
             </div>]
           },
         },
@@ -42,8 +42,8 @@ export default {
             const virtual_capacity = sizestr(row.virtual_capacity, 'M', 1024)
             const used_capacity = sizestr(row.used_capacity, 'M', 1024)
             return [<div>
-              <div>已使用：{used_capacity}</div>
-              <div>总量：{virtual_capacity}</div>
+              <div>{this.$t('storage.text_178', [used_capacity])}</div>
+              <div>{this.$t('storage.text_180', [virtual_capacity])}</div>
             </div>]
           },
         },

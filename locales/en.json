@@ -175,6 +175,7 @@
   "storage.text_175": "3. It is not allowed to use .. as a folder name",
   "storage.text_176": "4. The total length is controlled within 1-254 characters",
   "storage.text_177": "Physical capacity",
-  "storage.text_178": "Used:",
-  "storage.text_179": "/Total:"
+  "storage.text_178": "Used: {0}",
+  "storage.text_179": "Used: {0}/Total: {1}",
+  "storage.text_180": "Total: {0}"
 }
