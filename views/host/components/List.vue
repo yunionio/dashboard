@@ -80,10 +80,10 @@ export default {
             },
           },
           region: {
-            label: '区域',
+            label: this.$t('compute.text_177'),
           },
           zone: {
-            label: '可用区',
+            label: this.$t('compute.text_270'),
           },
           brand: {
             ...brandFilter,

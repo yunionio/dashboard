@@ -104,7 +104,7 @@ export default {
             }),
             getCopyWithContentTableColumn({
               field: 'network',
-              title: 'IP子网',
+              title: this.$t('compute.text_106'),
               hideField: true,
               slotCallback: row => {
                 if (!row.networks || !row.networks.length) return '-'

@@ -1086,7 +1086,7 @@ export class GenCreateData {
         if (filterMapItem) {
           message += filterMapItem
         } else {
-          message += `被 【${item.filter_name}】过滤掉`
+          message += i18n.t('compute.text_1325', [item.filter_name])
         }
         errors.push({
           message,

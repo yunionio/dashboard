@@ -125,7 +125,7 @@
         <tag
           v-decorator="decorators.tag" />
       </a-form-item>
-      <!-- <a-divider orientation="left" v-if="showAdvanceConfig">高级配置</a-divider> -->
+      <!-- <a-divider orientation="left" v-if="showAdvanceConfig">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <a-form-item :label="$t('compute.text_107')" v-if="showEip">
