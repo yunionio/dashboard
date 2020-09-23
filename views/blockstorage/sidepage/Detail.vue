@@ -72,11 +72,12 @@ export default {
           items: [
             {
               field: 'capacity',
-              title: this.$t('storage.text_42'),
-              slots: {
-                default: ({ row }) => {
-                  return this._sizestr(row.capacity)
-                },
+              title: this.$t('storage.text_177'),
+              formatter: ({ row }) => {
+                const capacity = this._sizestr(row.capacity)
+                const allowedBrands = ['VMware', 'OneCloud']
+                const actual_capacity_used = allowedBrands.includes(row.brand) ? sizestr(row.actual_capacity_used, 'M', 1024) : '-'
+                return this.$t('storage.text_179', [actual_capacity_used, capacity])
               },
             },
             {
