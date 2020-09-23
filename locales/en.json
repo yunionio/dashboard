@@ -336,7 +336,6 @@
   "compute.text_334": "Minimum: 1GB Maximum: {0}GB",
   "compute.text_335": "The mount point must start with /",
   "compute.text_337": "Name already exists",
-  "compute.text_338": "System",
   "compute.text_339": "Unknown",
   "compute.text_340": "Password",
   "compute.text_341": "Remote Control",
@@ -899,7 +898,6 @@
   "compute.text_908": "Cancel",
   "compute.text_909": "The network resource is missing",
   "compute.text_910": "After disabling the elastic scaling group, the scaling group will no longer automatically trigger scaling activities, but the scaling activities that have started will continue to execute, and the existing virtual machines will continue to be retained.",
-  "compute.text_911": "Executed successfully",
   "compute.text_912": "After the elastic scaling group is enabled, scaling will be triggered according to the policy, and virtual machines may be created or deleted",
   "compute.text_913": "Strategy Type",
   "compute.text_914": "Trigger Condition",
@@ -1320,5 +1318,8 @@
   "compute.text_1336": "Only the system or administrator supports this operation",
   "compute.text_1338": "The range is 0～{0}Mbps",
   "compute.text_1339": "Execution failed",
-  "compute.text_1340": "Failed to parse date"
+  "compute.text_1340": "Failed to parse date",
+  "compute.text_1341": "Try again now",
+  "compute.text_1342": "Failed to create a backup machine: The automatic backup machine creation has failed {num} times, the next time the backup machine will be automatically created: {time}, {link }",
+  "compute.text_1343": "Failed to switch the standby machine: The automatic switching of the standby machine has failed {num} times, the next time the standby machine is automatically switched: {time}, {link }"
 }

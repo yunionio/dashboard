@@ -336,7 +336,6 @@
   "compute.text_334": "最小:1GB 最大:{0}GB",
   "compute.text_335": "挂载点必须以 / 开头",
   "compute.text_337": "名称已经存在",
-  "compute.text_338": "系统",
   "compute.text_339": "未知",
   "compute.text_340": "密码",
   "compute.text_341": "远程控制",
@@ -899,7 +898,6 @@
   "compute.text_908": "取 消",
   "compute.text_909": "该网络资源已缺失",
   "compute.text_910": "禁用弹性伸缩组之后，伸缩组将不再自动触发伸缩活动，但已开始的伸缩活动会继续执行、已存在的虚拟机将继续保留。",
-  "compute.text_911": "执行成功",
   "compute.text_912": "启用弹性伸缩组之后，将会根据策略触发伸缩，可能会进行虚拟机创建或删除",
   "compute.text_913": "策略类型",
   "compute.text_914": "触发条件",
@@ -1022,7 +1020,7 @@
   "compute.text_1035": "外部ID",
   "compute.text_1036": "外网IP",
   "compute.text_1037": "选择的虚拟机只有一个安全组，不支持该操作",
-  "compute.text_1038": "主机回收站",
+  "compute.text_1038": "虚拟机回收站",
   "compute.text_1039": "新建{0}",
   "compute.text_1040": "名称支持序号占位符‘#’，用法如下。 名称：host## 数量：2、实例为：host01、host02",
   "compute.text_1041": "申请原因",
@@ -1320,5 +1318,8 @@
   "compute.text_1336": "仅系统或管理员支持该操作",
   "compute.text_1338": "范围在 0～{0}Mbps",
   "compute.text_1339": "执行失败",
-  "compute.text_1340": "解析日期失败"
+  "compute.text_1340": "解析日期失败",
+  "compute.text_1341": "立即重试",
+  "compute.text_1342": "创建备用机失败: 自动创建备用机已失败{ num }次，下次自动创建备用机时间：{ time } ，{ link }",
+  "compute.text_1343": "切换备用机失败: 自动切换备用机已失败{ num }次，下次自动切换备用机时间：{ time } ，{ link }"
 }

@@ -26,7 +26,6 @@ import {
   getDomainFilter,
   getTenantFilter,
   getAccountFilter,
-  getIpFilter,
   getHostFilter,
   getVpcFilter,
 } from '@/utils/common/tableFilter'
@@ -66,7 +65,9 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter('compute_engine_brands'),
-          ips: getIpFilter(),
+          ip_addr: {
+            label: 'IP',
+          },
           status: getStatusFilter('server'),
           os_type: {
             label: this.$t('compute.text_721'),

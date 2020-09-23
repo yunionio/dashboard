@@ -45,7 +45,7 @@ export default {
           },
         })
         this.cancelDialog()
-        this.$message.success(this.$t('compute.text_911'))
+        this.$message.success(this.$t('message.exec_success'))
       } catch (err) {
         throw err
       } finally {
