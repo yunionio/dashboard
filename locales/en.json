@@ -2184,7 +2184,8 @@
         "userId": "User ID",
         "on": "On",
         "off": "Off",
-        "os": "OS"
+        "os": "OS",
+        "main_account": "Main account"
       }
     },
     "action": {
