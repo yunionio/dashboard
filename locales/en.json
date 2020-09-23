@@ -2159,6 +2159,12 @@
   "auth.login.fast.login.fail": "Login failed, please log in again",
   "auth.remove.history.user.btn": "Remove Account",
   "auth.outher.history.user.btn": "Use another account",
+  "res": {
+    "role": "Role",
+    "roles": "Roles",
+    "domain": "Domain",
+    "domains": "Domains"
+  },
   "table": {
     "column": {
       "title": {
@@ -2172,7 +2178,8 @@
         "domain": "Domain",
         "userId": "User ID",
         "on": "On",
-        "off": "Off"
+        "off": "Off",
+        "os": "OS"
       }
     },
     "action": {
@@ -2180,6 +2187,9 @@
       "cacel": "Cancel",
       "delete": "Delete",
       "modify": "Modify"
+    },
+    "validate": {
+      "no_share_res_permission": "Shared resource, no operation permission"
     }
   },
   "sidepage": {
