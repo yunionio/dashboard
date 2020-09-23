@@ -18,6 +18,7 @@ import ClusterNamespace from '@K8S/sections/ClusterNamespace'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'K8sStorageclassesList',
@@ -41,6 +42,9 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: getNameFilter(),
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.k8s_resource).flat(),
         },
       }),
       groupActions: [
