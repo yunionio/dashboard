@@ -2164,6 +2164,12 @@
   "auth.login.fast.login.fail": "登录失败，请重新登录",
   "auth.remove.history.user.btn": "移除账号",
   "auth.outher.history.user.btn": "使用其他账号",
+  "res": {
+    "role": "@:dictionary.role",
+    "roles": "@:dictionary.role",
+    "domain": "@:dictionary.domain",
+    "domains": "@:dictionary.domain"
+  },
   "table": {
     "column": {
       "title": {
@@ -2177,7 +2183,8 @@
         "domain": "@:dictionary.domain",
         "userId": "用户ID",
         "on": "开启",
-        "off": "关闭"
+        "off": "关闭",
+        "os": "系统"
       }
     },
     "action": {
@@ -2185,6 +2192,9 @@
       "cacel": "取消",
       "delete": "删除",
       "modify": "修改"
+    },
+    "validate": {
+      "no_share_res_permission": "共享资源，无操作权限"
     }
   },
   "sidepage": {
