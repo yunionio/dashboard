@@ -751,5 +751,6 @@
   "network.text_733": "Please fill in the weight value",
   "network.text_734": "The weight must be an integer between 0 and 255",
   "network.text_735": "Total {ports}, {ports_used} used (including reserved IP {reserve_vnics})",
-  "network.text_736": "Confirm that the actual operation has been offline"
+  "network.text_736": "Confirm that the actual operation has been offline",
+  "network.text_737": "Only @:brand host supports this operation"
 }
