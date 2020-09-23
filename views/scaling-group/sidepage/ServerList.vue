@@ -73,7 +73,7 @@ export default {
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
           field: 'os_type',
-          title: this.$t('compute.text_338'),
+          title: this.$t('table.column.title.os'),
           width: 50,
           slots: {
             default: ({ row }) => {

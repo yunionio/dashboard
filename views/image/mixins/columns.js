@@ -51,7 +51,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: i18n.t('compute.text_338'),
+        title: i18n.t('table.column.title.os'),
         width: 60,
         slots: {
           default: ({ row }, h) => {

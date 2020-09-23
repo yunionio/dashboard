@@ -28,10 +28,10 @@ export default {
         data: {},
       }).then((res) => {
         this.execLoading = false
-        this.$message.success(i18n.t('compute.text_911'))
+        this.$message.success(this.$t('message.exec_success'))
       }).catch((err) => {
         this.execLoading = false
-        this.$message.success(i18n.t('compute.text_1339'))
+        this.$message.success(this.$t('message.exec_fail'))
         throw err
       })
     }
@@ -39,24 +39,32 @@ export default {
       const num = row.metadata.create_backup_count || row.metadata.switch_backup_count
       let time = row.metadata.create_backup || row.metadata.switch_backup
       if (time) {
-        const aLink = <a-button type="link" class="oc-pointer" disabled={ this.execLoading } style="padding: 0;" onClick={() => doCreateOrSwitchBackup(row)}>立即重试</a-button>
+        const aLink = <a-button type="link" class="oc-pointer" disabled={ this.execLoading } style="padding: 0;" onClick={() => doCreateOrSwitchBackup(row)}>{ this.$t('compute.text_1341') }</a-button>
         const aIcon = <a-icon type="exclamation-circle" class="ml-1 error-color oc-pointer" />
         try {
           time = this.$moment(JSON.parse(time)).format()
         } catch (error) {
-          throw new Error(i18n.t('compute.text_1340'), error)
+          throw new Error('Failed to parse date', error)
         }
         if (row.metadata.create_backup) {
           return <a-tooltip placement="right">
             <template slot="title">
-              创建备用机失败: 自动创建备用机已失败{ num }次，下次自动创建备用机时间：{ time } ，{ aLink }
+              <i18n path="compute.text_1342">
+                <template slot="num">{ num }</template>
+                <template slot="time">{ time }</template>
+                <template slot="link">{ aLink }</template>
+              </i18n>
             </template>
             { aIcon }
           </a-tooltip>
         } else if (row.metadata.switch_backup) {
           return <a-tooltip placement="right">
             <template slot="title">
-              切换备用机失败: 自动切换备用机已失败{ num }次，下次自动切换备用机时间：{ time } ，{ aLink }
+              <i18n path="compute.text_1343">
+                <template slot="num">{ num }</template>
+                <template slot="time">{ time }</template>
+                <template slot="link">{ aLink }</template>
+              </i18n>
             </template>
             { aIcon }
           </a-tooltip>
@@ -129,7 +137,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: i18n.t('compute.text_338'),
+        title: i18n.t('table.column.title.os'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -148,7 +156,7 @@ export default {
       {
         field: 'password',
         title: i18n.t('compute.text_340'),
-        width: 50,
+        minWidth: 50,
         slots: {
           default: ({ row }) => {
             return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
@@ -158,7 +166,7 @@ export default {
       {
         field: 'secgroups',
         title: i18n.t('compute.text_105'),
-        width: 80,
+        minWidth: 80,
         showOverflow: 'ellipsis',
         formatter: ({ cellValue = [] }) => {
           return cellValue.map(item => item.name).join(',')
