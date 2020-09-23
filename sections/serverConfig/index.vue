@@ -1,6 +1,7 @@
 <template>
   <div>
-    <a-card class="mb-2 card" hoverable v-for="(item, i) in serverConfigList" :key="item.key">
+    <a-card class="mb-2 card" v-for="(item, i) in serverConfigList" :key="item.key">
+      <a-button v-if="i !== 0" @click="decrease(item.key, i)" type="link" size="small" class="error-color position-absolute" style="right: 10px; top: 10px;">{{ $t('common.delete') }}</a-button>
       <a-form-item label="CPU" v-bind="formItemLayout">
         <a-input-number v-decorator="decorator.vcpu_count(i)" :formatter="value => $t('k8s.text_119', [value])" :parser="value => value.replace($t('k8s.text_100'), '')" :min="4" :max="32" />
       </a-form-item>
@@ -55,7 +56,6 @@
       <a-form-item :label="$t('k8s.text_125')" v-bind="formItemLayout" :extra="$t('k8s.text_126')">
         <a-input-number v-decorator="decorator.num(i)" :min="1" :max="item.ipShow ? 1 : 10" />
       </a-form-item>
-      <a-button v-if="serverConfigList.length > 1" shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2 decrease" />
     </a-card>
     <div class="d-flex align-items-center" v-if="serverConfigRemaining > 0">
       <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
@@ -130,18 +130,9 @@ export default {
       }
       this.serverConfigList.push(data)
     },
+    removeServer () {
+
+    },
   },
 }
 </script>
-<style lang="less">
-  .card {
-    position: relative;
-    .decrease {
-      color: #f5222d;
-      border-color: #f5222d;
-      position: absolute;
-      top: 50%;
-      right: -40px;
-    }
-  }
-</style>

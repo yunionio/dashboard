@@ -50,6 +50,7 @@ import K8sSecretCreate from '@K8S/views/secret/create'
 import Layout from '@/layouts/RouterView'
 import FederatednamespaceCreate from '@K8S/views/federatednamespace/create'
 import FederatedroleCreate from '@K8S/views/federatedrole/create'
+import store from '@/store'
 
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -305,6 +306,7 @@ export default {
       meta: {
         label: i18n.t('k8s.text_19'),
         labelAlias: i18n.t('k8s.text_20'),
+        hidden: () => store.getters.isProjectMode,
       },
       submenus: [
         {
@@ -512,6 +514,7 @@ export default {
     {
       meta: {
         label: i18n.t('k8s.text_364'),
+        hidden: () => store.getters.isProjectMode,
       },
       submenus: [
         {
