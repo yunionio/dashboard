@@ -42,7 +42,7 @@ export default {
           },
         },
       ]
-      if (this.data.provider.toUpperCase() !== 'onecloud') arr.splice(2, 1)
+      if (this.data.provider && this.data.provider.toUpperCase() !== 'onecloud') arr.splice(2, 1)
       return arr
     },
   },

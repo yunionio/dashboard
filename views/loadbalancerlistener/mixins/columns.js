@@ -64,7 +64,7 @@ export default {
         getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: i18n.t('network.text_368') }),
         getProjectTableColumn(),
       ]
-      if (this.data.provider.toUpperCase() !== 'onecloud') arr.splice(7, 1)
+      if (this.data.provider && this.data.provider.toUpperCase() !== 'onecloud') arr.splice(7, 1)
       return arr
     },
   },
