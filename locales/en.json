@@ -1670,8 +1670,8 @@
     "loadbalancer": "Load balance health check"
   },
   "billingType": {
-    "postpaid": "Pay as you go",
-    "prepaid": "Package year and month"
+    "postpaid": "On-Demand",
+    "prepaid": "Prepaid"
   },
   "isoChannelOptions": {
     "import": "Import from the mirror market",
@@ -2180,8 +2180,12 @@
         "on": "On",
         "off": "Off",
         "os": "OS",
-        "main_account": "Main account"
+        "main_account": "Main account",
+        "bill_type": "Billing type"
       }
+    },
+    "filter": {
+      "status": "status"
     },
     "action": {
       "save": "Save",
@@ -2319,6 +2323,10 @@
       "service_message": "Service message",
       "pending_work_order": "Pending"
     }
+  },
+  "message": {
+    "exec_succee": "Execution succeed",
+    "exec_fail": "Execution failed"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
@@ -3403,7 +3411,6 @@
   "common_7": "1 year",
   "common_8": "2 years",
   "common_9": "3 years",
-  "common_10": "Charging Method",
   "common_11": "Hour",
   "common_12": "Day",
   "common_13": "Month",
@@ -3659,7 +3666,7 @@
   "common_287": "Private",
   "common_288": "Shared Cloud Account",
   "common_289": "Shared Subscription",
-  "common_290": "Flexibility",
+  "common_290": "EIP",
   "common_291": "Public",
   "common_292": "On",
   "common_293": "Off",

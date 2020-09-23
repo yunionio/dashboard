@@ -71,11 +71,11 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('common_
   }
 }
 
-export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('common_283'), hidden = false, width = 70 } = {}) => {
+export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.column.title.brand'), hidden = false, minWidth = 70 } = {}) => {
   return {
     field,
     title,
-    width,
+    minWidth,
     sortable: true,
     slots: {
       default: ({ row }, h) => {
@@ -530,14 +530,14 @@ export const getProjectDomainTableColumn = ({
 export const getBillingTableColumn = ({
   vm,
   field = 'billing_type',
-  title = i18n.t('common_10'),
-  width = 120,
+  title = i18n.t('table.column.title.bill_type'),
+  minWidth = 120,
   showOverflow = 'ellipsis',
 } = {}) => {
   return {
     title,
     field,
-    width,
+    minWidth,
     showOverflow,
     slots: {
       default: ({ row }, h) => {
