@@ -19,28 +19,33 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'storage', columns: () => this.columns }),
       {
         field: 'capacity',
-        title: i18n.t('storage.text_42'),
-        width: 100,
-        formatter: ({ row }) => {
-          return sizestr(row.capacity, 'M', 1024)
+        title: this.$t('storage.text_177'),
+        width: 180,
+        slots: {
+          default: ({ row }, h) => {
+            const capacity = sizestr(row.capacity, 'M', 1024)
+            const allowedBrands = ['VMware', 'OneCloud']
+            const actual_capacity_used = allowedBrands.includes(row.brand) ? sizestr(row.actual_capacity_used, 'M', 1024) : '-'
+            return [<div>
+              <div>{this.$t('storage.text_178', [actual_capacity_used])}</div>
+              <div>{this.$t('storage.text_180', [capacity])}</div>
+            </div>]
+          },
         },
       },
       {
         field: 'virtual_capacity',
         title: i18n.t('storage.text_43'),
-        width: 100,
-        formatter: ({ row }) => {
-          if (!row.virtual_capacity) return '-'
-          return sizestr(row.virtual_capacity, 'M', 1024)
-        },
-      },
-      {
-        field: 'used_capacity',
-        title: i18n.t('storage.text_44'),
-        width: 100,
-        formatter: ({ row }) => {
-          if (!row.used_capacity) return '-'
-          return sizestr(row.used_capacity, 'M', 1024)
+        width: 180,
+        slots: {
+          default: ({ row }, h) => {
+            const virtual_capacity = sizestr(row.virtual_capacity, 'M', 1024)
+            const used_capacity = sizestr(row.used_capacity, 'M', 1024)
+            return [<div>
+              <div>{this.$t('storage.text_178', [used_capacity])}</div>
+              <div>{this.$t('storage.text_180', [virtual_capacity])}</div>
+            </div>]
+          },
         },
       },
       getEnabledTableColumn(),
