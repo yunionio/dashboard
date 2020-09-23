@@ -25,7 +25,7 @@ export default {
         },
       },
       {
-        label: this.$t('common.text00109'),
+        label: this.$t('common.more'),
         actions: obj => {
           return [
             {
