@@ -163,6 +163,20 @@ export default {
           actions: () => {
             return [
               {
+                label: this.$t('network.text_606'),
+                permission: 'networks_update',
+                action: () => {
+                  this.$router.push({ path: '/network/batch-edit', query: { id: this.list.selectedItems.map((item) => { return item.id }) } })
+                },
+                meta: (row) => {
+                  const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
+                  return {
+                    validate: isOneCloud,
+                    tooltip: !isOneCloud && this.$t('network.text_737'),
+                  }
+                },
+              },
+              {
                 label: this.$t('network.text_225', [this.$t('dictionary.project')]),
                 permission: 'networks_perform_change_owner',
                 action: () => {
