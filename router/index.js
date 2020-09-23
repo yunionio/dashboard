@@ -5,6 +5,7 @@ import Wire from '@Network/views/wire'
 import Network from '@Network/views/network'
 import NetworkCreate from '@Network/views/network/Create'
 import EditAttributes from '@Network/views/network/EditAttributes'
+import BatchEditAttributes from '@Network/views/network/BatchEditAttributes'
 import Eip from '@Network/views/eip'
 import GlobalVpc from '@Network/views/global-vpc'
 // import RouteTableList from '@Network/views/route-table'
@@ -153,6 +154,11 @@ export default {
               name: 'NetworkUpdate',
               path: 'edit',
               component: EditAttributes,
+            },
+            {
+              name: 'NetworkBatchUpdate',
+              path: 'batch-edit',
+              component: BatchEditAttributes,
             },
           ],
         },
