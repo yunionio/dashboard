@@ -45,7 +45,7 @@ export default {
                   },
                   {
                     field: 'description',
-                    title: this.$t('table.column.title.desc'),
+                    title: this.$t('table.title.desc'),
                     formatter: ({ cellValue }) => cellValue || '-',
                   },
                 ]} />,

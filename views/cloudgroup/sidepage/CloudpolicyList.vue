@@ -44,8 +44,8 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('table.column.title.name'), key: 'name' },
-          { label: this.$t('table.column.title.brand'), key: 'brand' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('table.title.brand'), key: 'brand' },
         ],
       },
       groupActions: [
@@ -136,7 +136,7 @@ export default {
         },
         {
           field: 'description',
-          title: this.$t('table.column.title.desc'),
+          title: this.$t('table.title.desc'),
           minWidth: 250,
           showOverflow: 'title',
         },
