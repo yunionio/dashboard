@@ -62,6 +62,12 @@ export default {
       ipSubnetsHelp: '',
       decorators: {
         ipSubnets: {
+          name: i => [
+            `name[${i}]`,
+            {
+              initialValue: '',
+            },
+          ],
           startip: i => [
             `startip[${i}]`,
             {
@@ -157,6 +163,7 @@ export default {
           })
 
           this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ [`name[${key}]`]: item.name })
             this.form.fc.setFieldsValue({ [`startip[${key}]`]: item.guest_ip_start })
             this.form.fc.setFieldsValue({ [`endip[${key}]`]: item.guest_ip_end })
             this.form.fc.setFieldsValue({ [`netmask[${key}]`]: item.guest_ip_mask })
