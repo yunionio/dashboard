@@ -17,7 +17,7 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'commonalert', minWidth: 50 }),
       getEnabledTableColumn({ minWidth: 50 }),
-      strategyColumn,
+      strategyColumn(),
       levelColumn,
       projectTableColumn,
     ]
