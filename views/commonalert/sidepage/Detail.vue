@@ -32,7 +32,7 @@ export default {
       baseInfo: [
         projectTableColumn,
         getEnabledTableColumn(),
-        strategyColumn,
+        strategyColumn(),
         levelColumn,
         conditionColumn,
         getProjectTableColumn(),
