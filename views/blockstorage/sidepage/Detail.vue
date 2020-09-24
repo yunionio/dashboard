@@ -77,7 +77,7 @@ export default {
                 const capacity = this._sizestr(row.capacity)
                 const allowedBrands = ['VMware', 'OneCloud']
                 const actual_capacity_used = sizestr(row.actual_capacity_used, 'M', 1024)
-                return allowedBrands.includes(row.brand) ? this.$t('storage.text_179', [actual_capacity_used, capacity]) : this.$t('storage.text_180', [capacity])
+                return allowedBrands.includes(row.brand) ? this.$t('storage.text_179', [actual_capacity_used, capacity]) : capacity
               },
             },
             {
