@@ -164,11 +164,13 @@ export default {
           if (cellValue) {
             let total = row.storage
             let uesd = row.actual_storage_used
+            const allowedBrands = ['OneCloud', 'VMware']
             if (row.brand.toLowerCase() === 'onecloud') {
               total += Number(row.metadata.root_partition_total_capacity_mb)
               uesd += Number(row.metadata.root_partition_used_capacity_mb)
             }
-            const num = uesd / total
+            let num = !total ? 0 : uesd / total
+            if (!allowedBrands.includes(row.brand)) num = row.storage_commit_rate
             return sizestr(total, 'M', 1024) + '/' + percentstr(num)
           }
           return 'N/A'
