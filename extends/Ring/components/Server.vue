@@ -25,7 +25,7 @@
             <div class="ml-2 flex-fill text-right">{{ this.reserved }}</div>
           </div>
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_34')}}</div>
+            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_181')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.allUsage }}</div>
           </div>
         </div>

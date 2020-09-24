@@ -176,5 +176,6 @@
   "dashboard.text_177": "Snapshot quota usage of each project",
   "dashboard.text_178": "CPU Usage TOP5 (Local IDC)",
   "dashboard.text_179": "Disk write speed TOP5 (local IDC)",
-  "dashboard.text_180": "Disk read speed TOP5 (local IDC)"
+  "dashboard.text_180": "Disk read speed TOP5 (local IDC)",
+  "dashboard.text_181": "Total"
 }
