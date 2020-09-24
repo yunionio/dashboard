@@ -752,5 +752,5 @@
   "network.text_734": "权重必须是0到255之间的整数",
   "network.text_735": "总量{ports}，已用{ports_used}（含预留IP {reserve_vnics}）",
   "network.text_736": "确认已经实际操作下线",
-  "network.text_737": "只有@:brand主机支持此操作"
+  "network.text_737": "只有@:brand平台支持此操作"
 }
