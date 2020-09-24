@@ -1,3 +1,4 @@
+import { federatedResClusterCountColumn, k8sStatusColumn } from '@K8S/utils/tableColumns'
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -15,18 +16,9 @@ export default {
           },
         },
       },
-      {
-        field: 'status',
-        title: i18n.t('k8s.text_35'),
-        width: 200,
-        slots: {
-          default: ({ row }, h) => {
-            const ret = [<span style={{ color: row.status === 'Active' ? '#67C23A' : '#F56C6C' }}>{ row.status }</span>]
-            return ret
-          },
-        },
-      },
-      getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
+      k8sStatusColumn(),
+      federatedResClusterCountColumn(),
+      getTimeTableColumn({ field: 'created_at', fromNow: true, sortable: true }),
     ]
   },
 }

@@ -1,4 +1,5 @@
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 import i18n from '@/locales'
 
 export default {
@@ -15,17 +16,7 @@ export default {
           },
         },
       },
-      {
-        field: 'status',
-        title: i18n.t('k8s.text_35'),
-        width: 200,
-        slots: {
-          default: ({ row }, h) => {
-            const ret = [<span style={{ color: row.status === 'Active' ? '#67C23A' : '#F56C6C' }}>{ row.status }</span>]
-            return ret
-          },
-        },
-      },
+      k8sStatusColumn(),
       getTimeTableColumn({ field: 'creationTimestamp', fromNow: true, sortable: true }),
     ]
   },
