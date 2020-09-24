@@ -43,7 +43,7 @@ export default {
             const used_capacity = sizestr(row.used_capacity, 'M', 1024)
             return [<div>
               <div>{this.$t('storage.text_178', [used_capacity])}</div>
-              <div>{this.$t('storage.text_180', [virtual_capacity])}</div>
+              <div>{this.$t('storage.text_181', [virtual_capacity])}</div>
             </div>]
           },
         },

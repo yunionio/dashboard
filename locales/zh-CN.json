@@ -177,5 +177,6 @@
   "storage.text_177": "物理容量",
   "storage.text_178": "已使用：{0}",
   "storage.text_179": "已使用：{0}/总量：{1}",
-  "storage.text_180": "总量：{0}"
+  "storage.text_180": "总量：{0}",
+  "storage.text_181": "已分配：{0}"
 }
