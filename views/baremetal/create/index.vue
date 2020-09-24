@@ -310,9 +310,8 @@ export default {
           keypair: [
             'loginKeypair',
             {
-              initialValue: undefined, // { key: '', label: '' }
               rules: [
-                { validator: isRequired(), message: '请选择关联密钥' },
+                { required: true, message: '请选择关联密钥' },
               ],
             },
           ],
