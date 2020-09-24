@@ -102,7 +102,7 @@ export default {
       }),
       {
         field: 'is_gpu',
-        title: i18n.t('compute.text_175'),
+        title: i18n.t('table.title.type'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -120,7 +120,7 @@ export default {
       getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
       {
         field: 'instance_type',
-        title: i18n.t('compute.text_295'),
+        title: i18n.t('table.title.flavor'),
         showOverflow: 'ellipsis',
         minWidth: 120,
         sortable: true,
@@ -137,7 +137,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: i18n.t('table.column.title.os'),
+        title: i18n.t('table.title.os'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -155,7 +155,7 @@ export default {
       },
       {
         field: 'password',
-        title: i18n.t('compute.text_340'),
+        title: i18n.t('table.title.init_keypair'),
         minWidth: 50,
         slots: {
           default: ({ row }) => {
@@ -165,7 +165,7 @@ export default {
       },
       {
         field: 'secgroups',
-        title: i18n.t('compute.text_105'),
+        title: i18n.t('res.secgroup'),
         minWidth: 80,
         showOverflow: 'ellipsis',
         formatter: ({ cellValue = [] }) => {
@@ -181,12 +181,12 @@ export default {
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
         field: 'account',
-        title: i18n.t('compute.text_269'),
+        title: i18n.t('res.cloudaccount'),
         hidden: () => this.$store.getters.isProjectMode,
       }),
       {
         field: 'host',
-        title: i18n.t('compute.text_111'),
+        title: i18n.t('res.host'),
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 100,

@@ -285,11 +285,11 @@ export const EIP_RANGES_MAP = {
 // 公有云计费方式配置选项
 export const BILL_TYPES_MAP = {
   quantity: {
-    label: i18n.t('compute.text_22'),
+    label: i18n.t('billingType.postpaid'),
     key: 'quantity',
   },
   package: {
-    label: i18n.t('compute.text_23'),
+    label: i18n.t('billingType.prepaid'),
     key: 'package',
   },
 }

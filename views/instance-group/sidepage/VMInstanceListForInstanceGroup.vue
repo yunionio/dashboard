@@ -71,7 +71,7 @@ export default {
         getNameDescriptionTableColumn({ addLock: true, vm: this }),
         {
           field: 'os_type',
-          title: this.$t('table.column.title.os'),
+          title: this.$t('table.title.os'),
           width: 50,
           slots: {
             default: ({ row }) => {

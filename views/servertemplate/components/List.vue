@@ -53,7 +53,7 @@ export default {
           status: getStatusFilter('servertemplate'),
           brand: getBrandFilter(),
           os_type: {
-            label: this.$t('compute.text_721'),
+            label: this.$t('table.title.os'),
             dropdown: true,
             multiple: true,
             items: [
@@ -70,10 +70,10 @@ export default {
             label: 'VPC',
           },
           region: {
-            label: this.$t('compute.text_177'),
+            label: this.$t('res.region'),
           },
           billing_type: {
-            label: this.$t('compute.text_1046'),
+            label: this.$t('table.title.bill_type'),
             dropdown: true,
             items: Object.keys(this.$t('billingType')).map((k) => {
               return {
@@ -87,9 +87,9 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('compute.text_243'), key: 'created_at' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('res.project'), key: 'tenant' },
+          { label: this.$t('table.title.create_time'), key: 'created_at' },
         ],
       },
       groupActions: [

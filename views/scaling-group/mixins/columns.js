@@ -17,7 +17,7 @@ export default {
       getStatusTableColumn({ statusModule: 'scalinggroup', minWidth: 130 }),
       getCopyWithContentTableColumn({
         field: 'guest_template',
-        title: i18n.t('compute.text_873'),
+        title: i18n.t('res.servertemplate'),
         hideField: true,
         showOverflow: 'ellipsis',
         width: 120,
@@ -29,25 +29,25 @@ export default {
       {
         field: 'instance_number',
         title: i18n.t('compute.text_874'),
-        width: 100,
+        minWidth: 100,
         sortable: true,
       },
       {
         field: 'desire_instance_number',
         title: i18n.t('compute.text_875'),
-        width: 100,
+        minWidth: 100,
         sortable: true,
       },
       {
         field: 'min_instance_number',
         title: i18n.t('compute.text_876'),
-        width: 100,
+        minWidth: 100,
         sortable: true,
       },
       {
         field: 'max_instance_number',
         title: i18n.t('compute.text_877'),
-        width: 100,
+        minWidth: 100,
         sortable: true,
       },
       getProjectTableColumn(),
