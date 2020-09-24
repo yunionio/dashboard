@@ -400,6 +400,6 @@
   "k8s.text_399": "Role",
   "k8s.text_400": "Cluster Type",
   "k8s.text_401": "Release Version",
-  "K8s.text_402": "Status abnormal",
+  "k8s.text_402": "Status abnormal",
   "k8s.text_403": "Attach Cluster Count"
 }

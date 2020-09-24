@@ -19,7 +19,7 @@ export const k8sStatusColumn = ({ path = 'podsInfo.warnings', statusModule = 'k8
               </template>
               <div class='text-truncate'>
                 <a-icon type="bulb" theme="twoTone" twoToneColor="#f5222d" class="mr-2" />
-                <span>{ i18n.t('K8s.text_402') }</span>
+                <span>{ i18n.t('k8s.text_402') }</span>
               </div>
             </a-tooltip>
           )

@@ -24,6 +24,7 @@
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
+      :title="$t('k8s.text_394')"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
