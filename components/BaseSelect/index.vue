@@ -219,6 +219,9 @@ export default {
       },
       immediate: true,
     },
+    value (v) {
+      this.syncItem(v)
+    },
   },
   mounted () {
     if (this._valid()) this.loadOptsDebounce()
@@ -284,7 +287,9 @@ export default {
     syncItem (value) {
       if (value) {
         const syncValue = R.is(Object, value) ? this.resOpts[value.key] : this.resOpts[value]
-        this.$emit('update:item', syncValue)
+        if (R.is(Object, syncValue)) {
+          this.$emit('update:item', syncValue)
+        }
       }
     },
     disabledOpts () {
@@ -378,12 +383,15 @@ export default {
       }
     },
     defaultSelect (list) {
-      let isUnvalidOrEmpty = !this.value
+      let isErrorOrEmpty = !this.value
+      let value = this.value
       if (R.is(String, this.value)) {
-        const value = _.get(this.value, 'key') || this.value
-        isUnvalidOrEmpty = !list.find(val => val.id === value || val.key === value)
+        value = _.get(this.value, 'key') || this.value
+        isErrorOrEmpty = !list.find(val => val.id === value || val.key === value)
       }
-      if (this.isDefaultSelect && list.length > 0 && isUnvalidOrEmpty) { // 是错误值或者没有初始化值才可以默认选择
+      if (value && !isErrorOrEmpty) {
+        this.syncItem(value)
+      } else if (this.isDefaultSelect && list.length > 0 && isErrorOrEmpty) { // 是错误值或者没有初始化值才可以默认选择
         const defaultItem = list[0]
         if (this.selectProps && this.selectProps.labelInValue) {
           this.change({ label: defaultItem[this.nameKey], value: defaultItem[this.idKey] })

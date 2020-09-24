@@ -601,6 +601,11 @@
       "create_fail": "创建失败",
       "delete_fail": "删除失败"
     },
+    "kubecluster_sync_status": {
+      "syncing": "同步配置中",
+      "sync_fail": "同步失败",
+      "idle": "同步完成"
+    },
     "kubemachines": {
       "init": "初始化",
       "ready": "待部署",
