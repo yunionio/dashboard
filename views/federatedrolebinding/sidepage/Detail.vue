@@ -11,6 +11,7 @@
 
 <script>
 import { roleRefColumn, subjectsColumn } from '@K8S/utils/sidePageColumn'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 
 export default {
   name: 'K8sFederatedrolebindingDetail',
@@ -27,17 +28,7 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
-          field: 'status',
-          title: this.$t('k8s.text_35'),
-          width: 200,
-          slots: {
-            default: ({ row }, h) => {
-              const ret = [<span style={{ color: row.status === 'Active' ? '#67C23A' : '#F56C6C' }}>{ row.status }</span>]
-              return ret
-            },
-          },
-        },
+        k8sStatusColumn(),
         {
           field: 'creationTimestamp',
           title: this.$t('k8s.text_74'),

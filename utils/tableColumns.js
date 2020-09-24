@@ -106,3 +106,10 @@ export const k8sEnvColumn = ({ field = 'env', title = i18n.t('k8s.text_111') } =
     },
   }
 }
+
+export const federatedResClusterCountColumn = () => ({
+  field: 'cluster_count',
+  title: i18n.t('k8s.text_403'),
+  minWidth: 100,
+  formatter: ({ row }) => `${row.cluster_count}` || '-',
+})
