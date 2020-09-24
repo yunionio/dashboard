@@ -36,6 +36,10 @@ export default {
       type: String,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
   },
   data () {
     return {
@@ -79,6 +83,7 @@ export default {
               data: [obj],
               columns: this.columns,
               onManager: this.onManager,
+              name: this.title,
               success: () => {
                 this.list.refresh()
               },

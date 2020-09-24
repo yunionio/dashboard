@@ -108,6 +108,11 @@ export default {
       ],
     }
   },
+  created () {
+    if (this.getParams.owner_kind && this.getParams.owner_name && this.getParams.namespace && this.getParams.cluster) {
+      this.list.fetchData()
+    }
+  },
   methods: {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SPodSidePage', {

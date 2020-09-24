@@ -88,14 +88,34 @@ export default {
         field: 'machines',
         title: i18n.t('k8s.text_191'),
       },
+      getStatusTableColumn({ statusModule: 'kubecluster', minWidth: 40 }),
       {
-        field: 'is_public',
-        title: i18n.t('k8s.text_192'),
-        formatter: ({ cellValue }) => {
-          return cellValue ? i18n.t('k8s.text_193') : i18n.t('k8s.text_194')
+        field: 'sync_status',
+        title: i18n.t('common.text00043'),
+        minWidth: 40,
+        slots: {
+          default: ({ row }, h) => {
+            let warnTooltip = row.sync_message
+            if (warnTooltip) {
+              warnTooltip = (
+                <a-tooltip placement="top" title={warnTooltip}>
+                  <div class='text-truncate'>
+                    <a-icon type="bulb" theme="twoTone" twoToneColor="#f5222d" class="mr-2" />
+                    <span>{ i18n.t('k8s.text_402') }</span>
+                  </div>
+                </a-tooltip>
+              )
+            }
+            return [
+              <div class='text-truncate'>
+                <status status={ row.sync_status } statusModule="kubecluster_sync_status">
+                  { warnTooltip }
+                </status>
+              </div>,
+            ]
+          },
         },
       },
-      getStatusTableColumn({ statusModule: 'kubecluster', minWidth: 40 }),
       getProjectDomainTableColumn(),
     ]
   },
