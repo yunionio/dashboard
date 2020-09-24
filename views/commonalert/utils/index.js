@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import * as R from 'ramda'
 import { metric_zh, alertStrategyMaps, preiodMaps, levelMaps } from '@Monitor/constants'
 import { channelMaps } from '@/constants'
 import i18n from '@/locales'
@@ -31,27 +32,32 @@ export const conditionColumn = {
   },
 }
 
-export const strategyColumn = {
-  field: 'common_alert_metric_details',
+export const strategyColumn = (field = 'common_alert_metric_details') => ({
+  field,
   title: i18n.t('monitor.strategy_detail'),
   minWidth: 120,
   formatter: ({ row }) => {
-    if (row.common_alert_metric_details && row.common_alert_metric_details[0]) {
-      const detail = row.common_alert_metric_details[0]
-      let measurement = detail.measurement_display_name || detail.measurement
+    if (row[field] && ((R.type(row[field]) === 'Array') || R.type(row[field]) === 'Object') && !R.isEmpty(row[field])) {
+      let detail = ''
+      if (R.type(row[field]) === 'Array') {
+        detail = row[field][0]
+      } else if (R.type(row[field]) === 'Object') {
+        detail = row[field]
+      }
+      let measurement = detail.measurement_display_name || detail.measurement || detail.measurement_desc
       if (metric_zh[measurement]) measurement = metric_zh[measurement]
-      let metric = _.get(detail, 'field_description.display_name')
+      let metric = _.get(detail, 'field_description.display_name') || detail.field_desc
       if (metric) {
         metric = metric_zh[metric] || _.get(detail, 'field_description.name') || detail.field
       }
       const reduce = (alertStrategyMaps[detail.reduce]) || ''
-      const preiod = ((preiodMaps[row.period] || {}).label) || row.period
+      const preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
       const threshold = transformUnit(detail.threshold, _.get(detail, 'field_description.unit'))
       return i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text, preiod])
     }
     return '-'
   },
-}
+})
 
 export const projectTableColumn = {
   field: 'project',
