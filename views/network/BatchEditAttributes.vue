@@ -11,10 +11,6 @@
       <div class="form-wrapper">
         <a-form v-bind="formItemLayout" :form="form.fc" @submit.prevent="handleSubmit">
           <a-form-item label="子网网段" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required>
-            <template slot="extra">
-              <div>1.VLAN ID用于网络物理隔离，默认1，相同VLAN ID的IP子网互通，不同VLAN ID的IP子网不通。</div>
-              <div>2.创建多个IP子网时，系统自动分配名称，例如：名称为net，增加3个IP子网，名称依次为net0、net1、net。</div>
-            </template>
             <ip-subnets
               ref="ipSubnetsRef"
               :decorator="decorators.ipSubnets"
@@ -142,7 +138,7 @@ export default {
       return this.networks.length > 0
     },
     renderColumns () {
-      const hiddenColumns = ['ports']
+      const hiddenColumns = ['metadata', 'schedtag', 'brand', 'account', 'public_scope']
       return this.columns.filter((item) => {
         return !hiddenColumns.includes(item.field)
       })
