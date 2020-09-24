@@ -1,24 +1,29 @@
 <template>
   <div class="d-flex">
-    <a-form-item>
-      <a-input v-decorator="decorator.startip" :placeholder="$t('common_161')" />
+    <a-form-item v-if="decorator.name" style="width: 28%;">
+      <a-input :addon-before="$t('network.text_21')" v-decorator="decorator.name" :placeholder="$t('network.text_21')" />
+    </a-form-item>
+    <a-form-item :class="{'ml-2': decorator.name}">
+      <a-input :addon-before="$t('network.text_607')" v-decorator="decorator.startip" :placeholder="$t('common_161')" />
     </a-form-item>
     <a-form-item class="ml-2">
-      <a-input v-decorator="decorator.endip" :placeholder="$t('common_162')" />
+      <a-input :addon-before="$t('network.text_608')" v-decorator="decorator.endip" :placeholder="$t('common_162')" />
     </a-form-item>
-    <a-form-item class="ml-2">
-      <a-select v-decorator="decorator.netmask" style="width: 80px;">
+    <a-form-item class="ml-2" style="width: 110px;">
+      <a-select v-decorator="decorator.netmask" :placeholder="$t('network.text_595')" dropdownClassName="oc-select-dropdown">
         <a-select-option
           v-for="item of netMaskOptions"
           :key="item.key"
-          :value="item.key">{{ item.label }}</a-select-option>
+          :value="item.key">
+          <span class="text-color-secondary option-prefix">{{$t('common_600')}}: </span>{{item.label}}
+        </a-select-option>
       </a-select>
     </a-form-item>
     <a-form-item class="ml-2">
-      <a-input v-decorator="decorator.gateway" :placeholder="$t('common_163')" />
+      <a-input :addon-before="$t('network.text_610')" v-decorator="decorator.gateway" :placeholder="$t('common_163')" />
     </a-form-item>
     <a-form-item class="ml-2">
-      <a-input v-decorator="decorator.vlan" placeholder="VLAN ID" />
+      <a-input addon-before="VLAN ID" v-decorator="decorator.vlan" placeholder="VLAN ID" />
     </a-form-item>
   </div>
 </template>
