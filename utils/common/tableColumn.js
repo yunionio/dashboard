@@ -9,7 +9,7 @@ import i18n from '@/locales'
 import { hasPermission } from '@/utils/auth'
 import { typeClouds } from '@/utils/common/hypervisor'
 
-export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictionary.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
+export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
     field,
     title,
@@ -43,7 +43,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('dictio
   }
 }
 
-export const getRegionTableColumn = ({ field = 'region', title = i18n.t('common_282') } = {}) => {
+export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.region') } = {}) => {
   return {
     field,
     title,
@@ -71,7 +71,7 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('common_
   }
 }
 
-export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.column.title.brand'), hidden = false, minWidth = 70 } = {}) => {
+export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.title.brand'), hidden = false, minWidth = 70 } = {}) => {
   return {
     field,
     title,
@@ -90,7 +90,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.col
   }
 }
 
-export const getStatusTableColumn = ({ field = 'status', title = i18n.t('common_284'), statusModule, sortable = true, minWidth = 80, slotCallback } = {}) => {
+export const getStatusTableColumn = ({ field = 'status', title = i18n.t('common.status'), statusModule, sortable = true, minWidth = 80, slotCallback } = {}) => {
   return {
     field,
     title,
@@ -116,7 +116,7 @@ export const getStatusTableColumn = ({ field = 'status', title = i18n.t('common_
   }
 }
 
-export const getEnabledTableColumn = ({ field = 'enabled', title = i18n.t('common_285'), minWidth = 90 } = {}) => {
+export const getEnabledTableColumn = ({ field = 'enabled', title = i18n.t('table.title.enable_status'), minWidth = 90 } = {}) => {
   return getStatusTableColumn({
     field,
     title,
@@ -144,7 +144,7 @@ export const getPublicTableColumn = ({ field = 'share_mode', title = i18n.t('com
 }
 
 export const getNameDescriptionTableColumn = ({
-  title = i18n.t('common_186'),
+  title = i18n.t('table.title.name'),
   field = 'name',
   slotCallback,
   onManager,
@@ -297,7 +297,7 @@ export const getSwitchTableColumn = ({ field, title, change }) => {
 
 export const getTagTableColumn = ({
   field = 'metadata',
-  title = i18n.t('common_266'),
+  title = i18n.t('table.title.tag'),
   ignoreKeys,
   needExt,
   resource,
@@ -357,7 +357,7 @@ export const isPublicTableColumn = ({ field = 'is_public', title = i18n.t('commo
 }
 export const getTimeTableColumn = ({
   field = 'created_at',
-  title = i18n.t('common_294'),
+  title = i18n.t('table.title.create_time'),
   sortable = false,
   fromNow = false,
 } = {}) => {
@@ -388,7 +388,7 @@ export const getAccountTableColumn = ({
   }
 }
 
-export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n.t('common_10'), width = '120px' } = {}) => {
+export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n.t('table.title.bill_type'), width = '120px' } = {}) => {
   return {
     field,
     title,
@@ -398,9 +398,9 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n
       default: ({ row }, h) => {
         const ret = []
         if (row[field] === 'postpaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('common_454')}</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('billingType.postpaid')}</div>)
         } else if (row[field] === 'prepaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('common_455')}</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{i18n.t('billingType.prepaid')}</div>)
         }
         if (row.expired_at) {
           const dateArr = moment(row.expired_at).fromNow().split(' ')
@@ -530,7 +530,7 @@ export const getProjectDomainTableColumn = ({
 export const getBillingTableColumn = ({
   vm,
   field = 'billing_type',
-  title = i18n.t('table.column.title.bill_type'),
+  title = i18n.t('table.title.bill_type'),
   minWidth = 120,
   showOverflow = 'ellipsis',
 } = {}) => {
@@ -553,9 +553,9 @@ export const getBillingTableColumn = ({
           })
         }
         if (billingType === 'postpaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('common_454') }</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('billingType.postpaid') }</div>)
         } else if (billingType === 'prepaid') {
-          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('bill.text_7') }</div>)
+          ret.push(<div style={{ color: '#0A1F44' }}>{ i18n.t('billingType.prepaid') }</div>)
         }
         if (row.expired_at) {
           const time = vm.$moment(row.expired_at).format()

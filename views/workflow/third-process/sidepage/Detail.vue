@@ -50,7 +50,7 @@ export default {
         },
         {
           field: 'status',
-          title: this.$t('common_284'),
+          title: this.$t('common.status'),
           formatter: ({ cellValue, row }) => {
             return this.data.status || '-'
           },
