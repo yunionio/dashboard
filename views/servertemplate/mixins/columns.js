@@ -31,7 +31,7 @@ export default {
       }),
       {
         field: 'instance_type',
-        title: i18n.t('compute.text_295'),
+        title: i18n.t('table.title.flavor'),
         showOverflow: 'ellipsis',
         minWidth: 120,
         sortable: true,
@@ -52,7 +52,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: i18n.t('table.column.title.os'),
+        title: i18n.t('table.title.os'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -70,7 +70,7 @@ export default {
       },
       {
         field: 'config_info.image',
-        title: i18n.t('compute.text_97'),
+        title: i18n.t('res.image'),
         showOverflow: 'ellipsis',
         minWidth: 190,
       },

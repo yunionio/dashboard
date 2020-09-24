@@ -38,7 +38,7 @@ export default {
         steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
         filterOptions: {
           name: {
-            label: this.$t('compute.text_228'),
+            label: this.$t('table.title.name'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
@@ -49,7 +49,7 @@ export default {
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
           brand: {
-            label: this.$t('compute.text_176'),
+            label: this.$t('table.title.brand'),
             dropdown: true,
             multiple: true,
             items: [
@@ -60,7 +60,7 @@ export default {
           //   label: '区域',
           // },
           guest_template: {
-            label: this.$t('compute.text_873'),
+            label: this.$t('res.servertemplate'),
           },
         },
       }),
