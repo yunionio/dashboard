@@ -147,7 +147,7 @@
   "k8s.text_146": "新建集群",
   "k8s.text_147": "控制节点(controlplane)：同时运行 kube-apiserver 和 etcd 的节点，默认不运行pod，建议部署 1个或 3个",
   "k8s.text_148": "计算节点(node)：只运行 pod 的节点",
-  "k8s.text_149": "无可用平台，请从“功能选择”配置OneStack、VMWare或OpenStack环境，以确保系统有可用资源创建容器集群",
+  "k8s.text_149": "无可用平台，请从“功能选择”配置KVM、VMWare或OpenStack环境，以确保系统有可用资源创建容器集群",
   "k8s.text_150": "平台",
   "k8s.text_151": "区域",
   "k8s.text_152": "机器配置",
