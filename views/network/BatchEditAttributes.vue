@@ -11,10 +11,6 @@
       <div class="form-wrapper">
         <a-form v-bind="formItemLayout" :form="form.fc" @submit.prevent="handleSubmit">
           <a-form-item :label="$t('network.text_575')" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required>
-            <template slot="extra">
-              <div>{{$t('network.text_576')}}</div>
-              <div>{{$t('network.text_577')}}</div>
-            </template>
             <ip-subnets
               ref="ipSubnetsRef"
               :decorator="decorators.ipSubnets"
@@ -139,7 +135,7 @@ export default {
       return this.networks.length > 0
     },
     renderColumns () {
-      const hiddenColumns = ['ports']
+      const hiddenColumns = ['metadata', 'schedtag', 'is_auto_alloc', 'brand', 'account', 'public_scope']
       return this.columns.filter((item) => {
         return !hiddenColumns.includes(item.field)
       })
