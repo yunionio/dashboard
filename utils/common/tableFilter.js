@@ -40,7 +40,7 @@ export function mapperStatusToItems (items, statusModule) {
   })
 }
 
-export function getNameFilter ({ field = 'name', label = i18n.t('common_186') } = {}) {
+export function getNameFilter ({ field = 'name', label = i18n.t('table.title.name') } = {}) {
   return {
     label,
     filter: true,
@@ -52,7 +52,7 @@ export function getNameFilter ({ field = 'name', label = i18n.t('common_186') } 
 
 export function getBrandFilter (key, outBrands) {
   return {
-    label: i18n.t('common_283'),
+    label: i18n.t('table.title.brand'),
     dropdown: true,
     multiple: true,
     items: getBrandItems(key, outBrands),
@@ -60,7 +60,7 @@ export function getBrandFilter (key, outBrands) {
 }
 
 export function getStatusFilter (params) {
-  let label = i18n.t('common_284')
+  let label = i18n.t('common.status')
   let statusModule = ''
   let field = 'status'
   if (R.type(params) === 'Object') {
@@ -91,7 +91,7 @@ export function getStatusFilter (params) {
 
 export function getTenantFilter () {
   return {
-    label: i18n.t('dictionary.project'),
+    label: i18n.t('res.project'),
     dropdown: true,
     multiple: true,
     distinctField: {
@@ -103,7 +103,7 @@ export function getTenantFilter () {
 
 export function getAccountFilter () {
   return {
-    label: i18n.t('common_295'),
+    label: i18n.t('res.cloudaccount'),
     dropdown: true,
     multiple: true,
     distinctField: {
@@ -127,7 +127,7 @@ export function getIpFilter () {
 
 export function getOsTypeFilter () {
   return {
-    label: i18n.t('common_302'),
+    label: i18n.t('table.title.os'),
     dropdown: true,
     multiple: true,
     items: [
@@ -143,13 +143,13 @@ export function getOsTypeFilter () {
 }
 
 export function getEnabledFilter (params = {}) {
-  const { label = i18n.t('common_285') } = params
+  const { label = i18n.t('table.title.enable_status') } = params
   return {
     label,
     dropdown: true,
     items: [
-      { label: i18n.t('common_303'), key: true },
-      { label: i18n.t('common_304'), key: false },
+      { label: i18n.t('status.enabled.true'), key: true },
+      { label: i18n.t('status.enabled.false'), key: false },
     ],
   }
 }
@@ -189,7 +189,7 @@ export function getPublicFilter () {
 
 export function getHostFilter () {
   return {
-    label: i18n.t('common_305'),
+    label: i18n.t('res.host'),
     filter: true,
     jointFilter: true,
     formatter: val => {
@@ -212,7 +212,7 @@ export function getProjectFilter () {
 
 export function getDomainFilter () {
   return {
-    label: i18n.t('dictionary.domain'),
+    label: i18n.t('table.title.domain'),
     dropdown: true,
     distinctField: {
       type: 'extra_field',

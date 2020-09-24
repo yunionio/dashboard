@@ -264,7 +264,7 @@ export default {
       if (this.showSingleActions && this.singleActions && this.singleActions.length) {
         defaultColumns.push({
           field: '_action',
-          title: this.$t('common.action'),
+          title: this.$t('table.title._action'),
           minWidth: 120,
           slots: {
             default: ({ row }, h) => {
@@ -288,7 +288,7 @@ export default {
                   style: {
                     paddingLeft: '7px',
                   },
-                }, this.$t('common.action')),
+                }, this.$t('table.title._action')),
               ]
             },
           },
