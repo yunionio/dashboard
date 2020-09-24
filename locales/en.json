@@ -147,7 +147,7 @@
   "k8s.text_146": "Create Cluster",
   "k8s.text_147": "Control plane: a node that runs kube-apiserver and etcd at the same time. Pod is not run by default. It is recommended to deploy 1 or 3",
   "k8s.text_148": "Compute node (node): a node that only runs pod",
-  "k8s.text_149": "No platform available, please configure OneStack, VMWare or OpenStack environment from 'Function Selection' to ensure that the system has available resources to create a container cluster",
+  "k8s.text_149": "No platform available, please configure KVM, VMWare or OpenStack environment from 'Function Selection' to ensure that the system has available resources to create a container cluster",
   "k8s.text_150": "Platform",
   "k8s.text_151": "Region",
   "k8s.text_152": "Machine Configuration",
