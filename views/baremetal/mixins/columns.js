@@ -22,7 +22,7 @@ export default {
       getIpsTableColumn({ field: 'ip', title: 'IP' }),
       {
         field: 'instance_type',
-        title: i18n.t('compute.text_295'),
+        title: i18n.t('table.title.flavor'),
         showOverflow: 'ellipsis',
         minWidth: 120,
         sortable: true,
@@ -45,7 +45,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: i18n.t('table.column.title.os'),
+        title: i18n.t('table.title.os'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -63,7 +63,7 @@ export default {
       },
       {
         field: 'login_account',
-        title: i18n.t('compute.text_340'),
+        title: i18n.t('table.title.init_keypair'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -75,7 +75,7 @@ export default {
       getProjectTableColumn(),
       getCopyWithContentTableColumn({
         field: 'host',
-        title: i18n.t('compute.text_112'),
+        title: i18n.t('res.machine'),
         hideField: true,
         slotCallback: row => {
           if (!row.host) return '-'

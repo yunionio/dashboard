@@ -32,7 +32,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: {
-            label: this.$t('compute.text_228'),
+            label: this.$t('table.title.name'),
             filter: true,
             formatter: val => {
               return `name.contains(${val})`
@@ -40,7 +40,7 @@ export default {
           },
           status: getStatusFilter('instanceGroup'),
           force_dispersion: {
-            label: this.$t('compute.text_694'),
+            label: this.$t('table.title.strategy'),
             dropdown: true,
             items: [
               { label: this.$t('compute.text_695'), key: true },
@@ -48,7 +48,7 @@ export default {
             ],
           },
           enabled: {
-            label: this.$t('compute.text_241'),
+            label: this.$t('table.title.enable_status'),
             dropdown: true,
             items: [
               { label: this.$t('compute.text_656'), key: true },
@@ -62,13 +62,13 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_241'), key: 'enabled' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_694'), key: 'force_dispersion' },
-          { label: this.$t('compute.text_697'), key: 'granularity' },
-          { label: this.$t('compute.text_698', [this.$t('dictionary.server')]), key: 'guest_count' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('compute.text_243'), key: 'created_at' },
+          { label: this.$t('table.title.enable_status'), key: 'enabled' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('table.title.strategy'), key: 'force_dispersion' },
+          { label: this.$t('table.title.granularity'), key: 'granularity' },
+          { label: this.$t('table.title.associated_server'), key: 'guest_count' },
+          { label: this.$t('res.project'), key: 'tenant' },
+          { label: this.$t('table.title.create_time'), key: 'created_at' },
         ],
       },
       groupActions: [
