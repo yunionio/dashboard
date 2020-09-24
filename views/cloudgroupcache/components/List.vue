@@ -43,8 +43,8 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('table.column.title.name'), key: 'name' },
-          { label: this.$t('table.column.title.brand'), key: 'brand' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('table.title.brand'), key: 'brand' },
         ],
       },
       groupActions: [

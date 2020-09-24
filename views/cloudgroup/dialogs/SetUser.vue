@@ -75,7 +75,7 @@ export default {
         columns: [
           {
             field: 'name',
-            title: this.$t('table.column.title.name'),
+            title: this.$t('table.title.name'),
             showOverflow: 'title',
           },
           getStatusTableColumn({ statusModule: 'clouduser' }),
