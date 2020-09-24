@@ -89,6 +89,11 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
       },
       hidden: () => store.getters.isProjectMode,
     },
+    {
+      field: 'manager',
+      title: i18n.t('common_711'),
+      hidden: () => store.getters.isProjectMode,
+    },
   ]
   let ret = [
     {
