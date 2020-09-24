@@ -177,5 +177,6 @@
   "storage.text_177": "Physical capacity",
   "storage.text_178": "Used: {0}",
   "storage.text_179": "Used: {0}/Total: {1}",
-  "storage.text_180": "Total: {0}"
+  "storage.text_180": "Total: {0}",
+  "storage.text_181": "Allocated: {0}"
 }
