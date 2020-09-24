@@ -166,7 +166,7 @@ export default {
             this.form.fc.setFieldsValue({ [`name[${key}]`]: item.name })
             this.form.fc.setFieldsValue({ [`startip[${key}]`]: item.guest_ip_start })
             this.form.fc.setFieldsValue({ [`endip[${key}]`]: item.guest_ip_end })
-            this.form.fc.setFieldsValue({ [`netmask[${key}]`]: item.guest_ip_mask })
+            this.form.fc.setFieldsValue({ [`netmask[${key}]`]: item.guest_ip_mask + '' })
             this.form.fc.setFieldsValue({ [`gateway[${key}]`]: item.guest_gateway })
             this.form.fc.setFieldsValue({ [`vlan[${key}]`]: item.vlan_id })
           })
