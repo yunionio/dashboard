@@ -20,21 +20,23 @@
           v-if="form.fd.durationEnable"
           :label="$t('common.text00064')"
           :help="help">
-          <div @click="openDatePicker">
-            <a-date-picker
-              v-decorator="decorators.durationDate"
-              :disabledDate="disabledDate"
-              :disabledTime="disabledDateTime"
-              :open="open"
-              @change="dateChangeHandle"
-              format="YYYY-MM-DD HH:mm"
-              :showTime="{ format: 'HH:mm' }"
-              @ok="closeDatePicker">
-              <template slot="renderExtraFooter">
-                {{$t('common.text00065')}}<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
-                <!-- <p class="ant-calendar-ok-btn" style="position: absolute; right: 13px; top: 83px; padding: 0 8px; z-index: 999;" @click="closeDatePicker">{{$t('common.ok')}}</p> -->
-              </template>
-            </a-date-picker>
+          <div class="d-flex">
+            <div @click="openDatePicker">
+              <a-date-picker
+                v-decorator="decorators.durationDate"
+                :disabledDate="disabledDate"
+                :disabledTime="disabledDateTime"
+                :open="open"
+                @change="dateChangeHandle"
+                format="YYYY-MM-DD HH:mm"
+                :showTime="{ format: 'HH:mm' }"
+                @ok="closeDatePicker">
+                <template slot="renderExtraFooter">
+                  {{$t('common.text00065')}}<a-tag color="blue" style="border-radius: 10px;" :class="{ active: currentDuration === v.value }" v-for="v in durationArrs" :key="v.value" @click="chooseDurationHandle(v)">{{v.text}}</a-tag>
+                  <!-- <p class="ant-calendar-ok-btn" style="position: absolute; right: 13px; top: 83px; padding: 0 8px; z-index: 999;" @click="closeDatePicker">{{$t('common.ok')}}</p> -->
+                </template>
+              </a-date-picker>
+            </div>
           </div>
         </a-form-item>
       </a-form>
