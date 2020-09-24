@@ -53,7 +53,7 @@ export default {
           { label: this.$t('network.text_160'), key: 'dns_type' },
           { label: this.$t('network.text_152'), key: 'dns_value' },
           { label: this.$t('common_665'), key: 'ttl' },
-          { label: this.$t('common_285'), key: 'enabled' },
+          { label: this.$t('table.title.enable_status'), key: 'enabled' },
         ],
       },
       groupActions: [
