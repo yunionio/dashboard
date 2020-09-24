@@ -40,6 +40,7 @@ export default {
         },
         steadyStatus: {
           status: Object.values(expectStatus.kubecluster).flat(),
+          sync_status: Object.values(expectStatus.kubecluster_sync_status).flat(),
         },
       }),
       groupActions: [
