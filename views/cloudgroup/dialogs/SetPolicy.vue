@@ -75,12 +75,12 @@ export default {
         columns: [
           {
             field: 'name',
-            title: this.$t('table.column.title.name'),
+            title: this.$t('table.title.name'),
             showOverflow: 'title',
           },
           {
             field: 'description',
-            title: this.$t('table.column.title.desc'),
+            title: this.$t('table.title.desc'),
             showOverflow: 'title',
           },
         ],
