@@ -172,5 +172,6 @@
   "monitor.text_12": "{0} Alarm Record Detail",
   "monitor.text_13": "Create Alarm",
   "monitor.text_14": "Triggering Time ",
-  "monitor.text_15": "New Alarm Receiver"
+  "monitor.text_15": "New Alarm Receiver",
+  "monitor.text_16": "Trigger value"
 }
