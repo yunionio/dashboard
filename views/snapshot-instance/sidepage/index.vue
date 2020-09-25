@@ -41,7 +41,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'snapshot-detail' },
-        { label: this.$t('compute.text_1081'), key: 'sub-snapshot-detail' },
+        { label: this.$t('table.title.sub_snapshot'), key: 'sub-snapshot-detail' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }

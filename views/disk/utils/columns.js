@@ -2,7 +2,7 @@ import i18n from '@/locales'
 export const getUnusedTableColumn = () => {
   return {
     field: 'unused',
-    title: i18n.t('compute.text_393'),
+    title: i18n.t('table.title.disk_mounted'),
     width: 70,
     slots: {
       default: ({ row }, h) => {

@@ -57,12 +57,12 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_398'), key: 'disk_format' },
-          { label: this.$t('compute.text_610'), key: 'size' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('compute.text_611'), key: 'is_standard' },
-          { label: this.$t('compute.text_243'), key: 'created_at' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('table.title.disk_format'), key: 'disk_format' },
+          { label: this.$t('table.title.image_size'), key: 'size' },
+          { label: this.$t('res.project'), key: 'tenant' },
+          { label: this.$t('table.title.image_type'), key: 'is_standard' },
+          { label: this.$t('table.title.create_time'), key: 'created_at' },
         ],
       },
       groupActions: [

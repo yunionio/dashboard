@@ -53,7 +53,7 @@ export default {
         },
         {
           field: 'child_image',
-          title: this.$t('compute.text_618'),
+          title: this.$t('table.title.child_image'),
           width: 150,
           slots: {
             default: ({ row }) => {

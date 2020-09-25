@@ -34,7 +34,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'disk', columns: () => this.columns }),
       {
         field: 'disk_size',
-        title: i18n.t('compute.text_397'),
+        title: i18n.t('table.title.disk_size'),
         minWidth: 50,
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'M', 1024)
@@ -42,12 +42,12 @@ export default {
       },
       {
         field: 'disk_format',
-        title: i18n.t('compute.text_398'),
+        title: i18n.t('table.title.disk_format'),
         width: 70,
       },
       {
         field: 'disk_type',
-        title: i18n.t('compute.text_381'),
+        title: i18n.t('table.title.disk_type'),
         width: 70,
         formatter: ({ cellValue }) => {
           return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
@@ -56,7 +56,7 @@ export default {
       getUnusedTableColumn(),
       {
         field: 'guest',
-        title: this.$t('dictionary.server'),
+        title: this.$t('res.server'),
         minWidth: 100,
         showOverflow: 'ellipsis',
         slots: {
@@ -70,7 +70,7 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('compute.text_392') }),
+      getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('table.title.disk_storage') }),
       getTimeTableColumn(),
       getBrandTableColumn(),
       getRegionTableColumn(),
@@ -80,7 +80,7 @@ export default {
       getAccountTableColumn(),
       {
         field: 'medium_type',
-        title: i18n.t('compute.text_396'),
+        title: i18n.t('table.title.disk_medium_type'),
         width: 70,
         formatter: ({ cellValue }) => {
           return MEDIUM_MAP[cellValue]

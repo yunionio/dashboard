@@ -22,8 +22,8 @@ export default {
       getStatusTableColumn({ statusModule: 'snapshotpolicy' }),
       {
         field: 'binding_disk_count',
-        title: i18n.t('compute.text_1082'),
-        width: 120,
+        title: i18n.t('table.title.bind_disk_count'),
+        minWidth: 120,
         slots: {
           default: ({ row }) => {
             if (row.binding_disk_count <= 0) return row.binding_disk_count
@@ -35,7 +35,7 @@ export default {
       },
       {
         field: 'repeat_weekdays',
-        title: i18n.t('compute.text_1083'),
+        title: i18n.t('table.title.strategy'),
         minWidth: 180,
         showOverflow: 'ellipsis',
         slots: {
