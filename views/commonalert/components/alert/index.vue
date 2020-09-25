@@ -34,11 +34,10 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
+import AlertForm from './form'
 import MonitorLine from '@Monitor/sections/MonitorLine'
 import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
 import { timeOpts } from '@Monitor/constants'
-// eslint-disable-next-line
-import AlertForm from './form'
 import MonitorHeader from '@/sections/Monitor/Header'
 
 export default {
