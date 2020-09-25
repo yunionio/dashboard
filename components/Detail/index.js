@@ -15,7 +15,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   const outher = [
     {
       field: 'region',
-      title: i18n.t('common.region'),
+      title: i18n.t('res.region'),
       slots: {
         default: ({ row }) => {
           if (!row.region_id) return row.region || '-'
@@ -40,7 +40,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     },
     {
       field: 'zone',
-      title: i18n.t('common.zone'),
+      title: i18n.t('res.zone'),
       slots: {
         default: ({ row }) => {
           if (!row.zone_id) return row.zone || '-'
@@ -65,7 +65,7 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     },
     {
       field: 'account',
-      title: i18n.t('common.account'),
+      title: i18n.t('res.cloudaccount'),
       slots: {
         default: ({ row }) => {
           if (!row.account_id) return row.account || '-'
@@ -91,21 +91,21 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     },
     {
       field: 'manager',
-      title: i18n.t('common_711'),
+      title: i18n.t('res.cloudprovider'),
       hidden: () => store.getters.isProjectMode,
     },
   ]
   let ret = [
     {
       field: 'created_at',
-      title: i18n.t('common.createdAt'),
+      title: i18n.t('table.title.create_time'),
       formatter: ({ row }) => {
         return (row.created_at && moment(row.created_at).format()) || '-'
       },
     },
     {
       field: 'updated_at',
-      title: i18n.t('common.updatedAt'),
+      title: i18n.t('table.title.update_time'),
       formatter: ({ row }) => {
         return (row.updated_at && moment(row.updated_at).format()) || '-'
       },
@@ -146,7 +146,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
     },
     {
       field: 'project_domain',
-      title: i18n.t('dictionary.domain'),
+      title: i18n.t('res.domain'),
       slots: {
         default: ({ row }) => {
           const domain = row.project_domain || row.domain
@@ -174,7 +174,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
     },
     {
       field: 'tenant',
-      title: i18n.t('dictionary.project'),
+      title: i18n.t('res.project'),
       slots: {
         default: ({ row }) => {
           if (!row.tenant_id) return row.tenant || '-'
@@ -402,7 +402,7 @@ export default {
     },
     renderDesc (h) {
       const children = [
-        h('div', { class: 'detail-item-title' }, i18n.t('common.description')),
+        h('div', { class: 'detail-item-title' }, i18n.t('table.title.desc')),
         h('div', { class: 'detail-item-value' }, [
           h('list-body-cell-wrap', {
             props: {
@@ -423,7 +423,7 @@ export default {
     },
     renderName (h) {
       const children = [
-        h('div', { class: 'detail-item-title' }, i18n.t('common.name')),
+        h('div', { class: 'detail-item-title' }, i18n.t('table.title.name')),
         h('div', { class: 'detail-item-value' }, [
           h('list-body-cell-wrap', {
             props: {

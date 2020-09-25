@@ -2186,7 +2186,13 @@
     "image": "@:dictionary.image",
     "images": "@:dictionary.image",
     "servertemplate": "@:dictionary.servertemplate",
-    "servertemplates": "@:dictionary.servertemplate"
+    "servertemplates": "@:dictionary.servertemplate",
+    "server": "@:dictionary.server",
+    "servers": "@:dictionary.server",
+    "disk": "@:dictionary.disk",
+    "disks": "@:dictionary.disk",
+    "cloudprovider": "@:dictionary.cloudprovider",
+    "cloudproviders": "@:dictionary.cloudprovider"
   },
   "table": {
     "title": {
@@ -2208,6 +2214,7 @@
       "tag": "标签",
       "init_keypair": "密码",
       "create_time": "创建时间",
+      "update_time": "更新时间",
       "_action": "操作",
       "external_id": "外部ID",
       "memory_mb": "内存（MB）",
@@ -2217,7 +2224,24 @@
       "enable_status": "启用状态",
       "strategy": "策略",
       "granularity": "粒度",
-      "associated_server": "已关联@:dictionary.server"
+      "associated_server": "已关联@:dictionary.server",
+      "disk_format": "格式",
+      "image_type": "镜像类型",
+      "image_size": "镜像大小",
+      "checksum": "校验和",
+      "share_range": "共享范围",
+      "child_image": "子镜像",
+      "disk_storage": "主存储",
+      "disk_type": "磁盘类型",
+      "disk_mounted": "是否挂载",
+      "disk_medium_type": "介质类型",
+      "disk_size": "磁盘容量",
+      "disk_guest_count": "挂载机器数量",
+      "disk_guest": "@:dictionary.server",
+      "snapshot_size": "快照大小",
+      "storage_type": "存储类型",
+      "sub_snapshot": "子快照",
+      "bind_disk_count": "关联硬盘数量"
     },
     "action": {
       "save": "保存",
