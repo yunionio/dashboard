@@ -273,7 +273,7 @@
   "network.text_272": "网络计费方式",
   "network.text_273": "IP版本",
   "network.text_274": "请选择VPC",
-  "network.text_275": "请选择可用IP大于0的网络",
+  "network.text_275": "请选择可用IP大于或者等于8的网络",
   "network.text_276": "指定的IP子网必须有大于或等于8个的可用IP才可以被选择创建实例",
   "network.text_277": "类型",
   "network.text_278": "请选择弹性公网IP",
