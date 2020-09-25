@@ -158,17 +158,22 @@ export default {
         }
       }
       let initDomainId = ''
-      if (!this.isBatch) {
+      if (!this.isBatch && !this.initDomainIdFlag) {
         if (this.params.data[0].domain_id && this.params.data[0].project_domain) {
           const selectedDomain = {
             id: this.params.data[0].domain_id,
             name: this.params.data[0].project_domain,
           }
-          if (!R.find(R.propEq('id', selectedDomain.id))(domains)) {
+          const fined = !!R.find(R.propEq('id', selectedDomain.id))(domains)
+          if (!fined) {
             if (!query || (query && selectedDomain.name.includes(query))) {
               domains.push(selectedDomain)
               initDomainId = selectedDomain.id
+              this.initDomainIdFlag = true
             }
+          } else {
+            initDomainId = selectedDomain.id
+            this.initDomainIdFlag = true
           }
         }
       }
@@ -193,15 +198,19 @@ export default {
         if (!this.isBatch && !this.initProjectIdFlag) {
           if (this.params.data[0].project_id && this.params.data[0].project) {
             const selectedProject = {
-              id: this.params.data[0].project_id,
+              id: this.params.data[0].tenant_id,
               name: this.params.data[0].project,
             }
-            if (!R.find(R.propEq('id', selectedProject.id))(projects)) {
+            const finded = !!R.find(R.propEq('id', selectedProject.id))(projects)
+            if (!finded) {
               if (!query || (query && selectedProject.name.includes(query))) {
                 projects.push(selectedProject)
                 initProjectId = selectedProject.id
                 this.initProjectIdFlag = true
               }
+            } else {
+              initProjectId = selectedProject.id
+              this.initProjectIdFlag = true
             }
           }
         }
