@@ -89,6 +89,7 @@ export default {
     networkParams () {
       let params = {
         vpc_id: 'default',
+        usable: true,
       }
       if (this.zoneObj && this.zoneObj.id && !R.isEmpty(this.scopeParams)) {
         params.zone = this.zoneObj.id
