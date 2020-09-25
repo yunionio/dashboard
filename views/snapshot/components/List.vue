@@ -52,7 +52,7 @@ export default {
           project_domains: getDomainFilter(),
           account: getAccountFilter(),
           disk_name: {
-            label: this.$t('compute.text_100'),
+            label: this.$t('res.disk'),
             filter: true,
             jointFilter: true,
             formatter: val => {
@@ -60,7 +60,7 @@ export default {
             },
           },
           disk_type: {
-            label: this.$t('compute.text_381'),
+            label: this.$t('table.title.disk_type'),
             dropdown: true,
             multiple: true,
             items: [
@@ -69,7 +69,7 @@ export default {
             ],
           },
           region: {
-            label: this.$t('dictionary.region'),
+            label: this.$t('res.region'),
           },
         },
         responseData: this.responseData,
@@ -77,19 +77,19 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_100'), key: 'disk_name' },
-          { label: this.$t('compute.text_381'), key: 'disk_type' },
-          { label: this.$t('compute.text_422'), key: 'size' },
-          { label: this.$t('compute.text_268'), key: 'status' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('compute.text_176'), key: 'provider' },
-          { label: this.$t('compute.text_91'), key: 'guest' },
-          { label: this.$t('compute.text_243'), key: 'create_at' },
-          { label: this.$t('compute.text_177'), key: 'region' },
-          { label: this.$t('compute.text_270'), key: 'zone' },
-          { label: this.$t('compute.text_1061'), key: 'storage_type' },
-          { label: this.$t('compute.text_271'), key: 'user_tags' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('res.disk'), key: 'disk_name' },
+          { label: this.$t('table.title.disk_type'), key: 'disk_type' },
+          { label: this.$t('table.title.snapshot_size'), key: 'size' },
+          { label: this.$t('common.status'), key: 'status' },
+          { label: this.$t('res.project'), key: 'tenant' },
+          { label: this.$t('table.title.brand'), key: 'provider' },
+          { label: this.$t('res.server'), key: 'guest' },
+          { label: this.$t('table.title.create_time'), key: 'create_at' },
+          { label: this.$t('res.region'), key: 'region' },
+          { label: this.$t('res.zone'), key: 'zone' },
+          { label: this.$t('table.title.storage_type'), key: 'storage_type' },
+          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
         ],
       },
       groupActions: [

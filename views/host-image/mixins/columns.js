@@ -20,7 +20,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'guestimage', columns: () => this.columns }),
       {
         field: 'child_image',
-        title: i18n.t('compute.text_618'),
+        title: i18n.t('table.title.child_image'),
         width: 150,
         type: 'expand',
         slots: {
@@ -45,7 +45,7 @@ export default {
       },
       {
         field: 'disk_format',
-        title: i18n.t('compute.text_398'),
+        title: i18n.t('table.title.disk_format'),
         width: 100,
         formatter: ({ cellValue }) => {
           return cellValue && cellValue.toUpperCase()
@@ -71,7 +71,7 @@ export default {
       },
       {
         field: 'size',
-        title: i18n.t('compute.text_610'),
+        title: i18n.t('table.title.image_size'),
         minWidth: 100,
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'B', 1024)
@@ -82,7 +82,7 @@ export default {
       getProjectTableColumn(),
       {
         field: 'is_standard',
-        title: i18n.t('compute.text_611'),
+        title: i18n.t('table.title.image_type'),
         width: 100,
         formatter: ({ cellValue }) => {
           if (cellValue) return i18n.t('compute.text_620')

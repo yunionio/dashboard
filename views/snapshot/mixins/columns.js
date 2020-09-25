@@ -29,11 +29,11 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'snapshot', columns: () => this.columns }),
       getCopyWithContentTableColumn({
         field: 'disk_name',
-        title: i18n.t('compute.text_100'),
+        title: i18n.t('res.disk'),
       }),
       {
         field: 'disk_type',
-        title: i18n.t('compute.text_381'),
+        title: i18n.t('table.title.disk_type'),
         width: 70,
         formatter: ({ row }) => {
           return DISK_TYPES[row.disk_type] || row.disk_type
@@ -41,7 +41,7 @@ export default {
       },
       {
         field: 'size',
-        title: i18n.t('compute.text_422'),
+        title: i18n.t('table.title.snapshot_size'),
         width: 70,
         formatter: ({ row }) => {
           return sizestr(row.size, 'M', 1024)
@@ -52,7 +52,7 @@ export default {
       getBrandTableColumn(),
       {
         field: 'guest',
-        title: i18n.t('compute.text_91'),
+        title: i18n.t('res.server'),
         minWidth: 70,
         showOverflow: 'ellipsis',
         slots: {

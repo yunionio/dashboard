@@ -27,7 +27,7 @@ export default {
       baseInfo: [
         {
           filed: 'binding_disk_count',
-          title: this.$t('compute.text_1082'),
+          title: this.$t('table.title.bind_disk_count'),
           width: 120,
           slots: {
             default: ({ row }) => {
