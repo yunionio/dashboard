@@ -52,7 +52,8 @@ export const strategyColumn = (field = 'common_alert_metric_details') => ({
       }
       const reduce = (alertStrategyMaps[detail.reduce]) || ''
       const preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
-      const threshold = transformUnit(detail.threshold, _.get(detail, 'field_description.unit'))
+      const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? row.eval_data[0].unit : '')
+      const threshold = transformUnit(detail.threshold, unit)
       return i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text, preiod])
     }
     return '-'
