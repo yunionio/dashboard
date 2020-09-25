@@ -34,7 +34,7 @@ export default {
       },
       {
         field: 'size',
-        title: i18n.t('compute.text_610'),
+        title: i18n.t('table.title.image_size'),
         width: 100,
         formatter: ({ cellValue }) => {
           return sizestr(cellValue, 'B', 1024)

@@ -47,7 +47,7 @@ export default {
     detailTabs () {
       return [
         { label: this.$t('compute.text_238'), key: 'host-image-detail' },
-        { label: this.$t('compute.text_618'), key: 'children-image-list' },
+        { label: this.$t('table.title.child_image'), key: 'children-image-list' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
     },

@@ -24,7 +24,7 @@ export default {
       }),
       {
         field: 'status',
-        title: i18n.t('compute.text_268'),
+        title: i18n.t('common.status'),
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 80,
@@ -43,7 +43,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'image', columns: () => this.columns }),
       {
         field: 'disk_format',
-        title: i18n.t('compute.text_398'),
+        title: i18n.t('table.title.disk_format'),
         width: 100,
         formatter: ({ cellValue }) => {
           return cellValue && cellValue.toUpperCase()
@@ -69,7 +69,7 @@ export default {
       },
       {
         field: 'size',
-        title: i18n.t('compute.text_610'),
+        title: i18n.t('table.title.image_size'),
         minWidth: 100,
         formatter: ({ cellValue, row }) => {
           return sizestr(cellValue, 'B', 1024)
@@ -77,7 +77,7 @@ export default {
       },
       {
         field: 'is_standard',
-        title: i18n.t('compute.text_611'),
+        title: i18n.t('table.title.image_type'),
         width: 100,
         formatter: ({ cellValue }) => {
           if (cellValue === true || cellValue === 'true') return i18n.t('compute.text_620')

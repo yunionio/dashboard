@@ -57,7 +57,7 @@ export default {
         },
         {
           field: 'medium_type',
-          title: this.$t('compute.text_396'),
+          title: this.$t('table.title.disk_medium_type'),
           formatter: ({ cellValue }) => {
             return MEDIUM_MAP[cellValue]
           },

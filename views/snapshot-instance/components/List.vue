@@ -48,7 +48,7 @@ export default {
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
           region: {
-            label: this.$t('dictionary.region'),
+            label: this.$t('res.region'),
           },
         },
         responseData: this.responseData,
@@ -56,13 +56,13 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_1081'), key: 'snapshots' },
-          { label: this.$t('compute.text_422'), key: 'size' },
-          { label: this.$t('compute.text_268'), key: 'status' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('compute.text_91'), key: 'guest' },
-          { label: this.$t('compute.text_271'), key: 'user_tags' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('table.title.sub_snapshot'), key: 'snapshots' },
+          { label: this.$t('table.title.snapshot_size'), key: 'size' },
+          { label: this.$t('common.status'), key: 'status' },
+          { label: this.$t('res.project'), key: 'tenant' },
+          { label: this.$t('res.server'), key: 'guest' },
+          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
         ],
       },
       groupActions: [

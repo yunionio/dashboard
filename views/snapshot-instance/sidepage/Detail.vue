@@ -53,7 +53,7 @@ export default {
         },
         {
           field: 'rules',
-          title: this.$t('compute.text_1081'),
+          title: this.$t('table.title.sub_snapshot'),
           slots: {
             default: ({ row }) => {
               const len = (row.snapshots && row.snapshots.length) || 0

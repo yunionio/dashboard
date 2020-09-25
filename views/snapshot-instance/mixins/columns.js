@@ -23,7 +23,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instance_snapshot', columns: () => this.columns }),
       {
         field: 'rules',
-        title: i18n.t('compute.text_1081'),
+        title: i18n.t('table.title.sub_snapshot'),
         minWidth: 220,
         type: 'expand',
         slots: {
@@ -41,7 +41,7 @@ export default {
       },
       {
         field: 'size',
-        title: i18n.t('compute.text_422'),
+        title: i18n.t('table.title.snapshot_size'),
         width: 70,
         formatter: ({ row }) => {
           const size = row.snapshots.reduce((a, b) => a + b.size, 0)
@@ -52,7 +52,7 @@ export default {
       getProjectTableColumn(),
       {
         field: 'guest',
-        title: i18n.t('compute.text_91'),
+        title: i18n.t('res.server'),
         minWidth: 70,
         showOverflow: 'ellipsis',
         slots: {

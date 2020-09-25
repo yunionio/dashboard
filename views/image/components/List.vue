@@ -44,7 +44,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           disk_formats: {
-            label: this.$t('compute.text_398'),
+            label: this.$t('table.title.disk_format'),
             dropdown: true,
             items: [
               { label: 'VMDK', key: 'vmdk' },
@@ -55,7 +55,7 @@ export default {
             ],
           },
           is_standard: {
-            label: this.$t('compute.text_175'),
+            label: this.$t('table.title.image_type'),
             dropdown: true,
             items: [
               { label: this.$t('compute.text_620'), key: true },
@@ -71,14 +71,14 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_398'), key: 'disk_format' },
-          { label: this.$t('compute.text_610'), key: 'size' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
-          { label: this.$t('compute.text_611'), key: 'is_standard' },
-          { label: this.$t('compute.text_243'), key: 'created_at' },
-          { label: this.$t('compute.text_641'), key: 'checksum' },
-          { label: this.$t('compute.text_271'), key: 'user_tags' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('table.title.disk_format'), key: 'disk_format' },
+          { label: this.$t('table.title.image_size'), key: 'size' },
+          { label: this.$t('res.project'), key: 'tenant' },
+          { label: this.$t('table.title.image_type'), key: 'is_standard' },
+          { label: this.$t('table.title.create_time'), key: 'created_at' },
+          { label: this.$t('table.title.checksum'), key: 'checksum' },
+          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
         ],
       },
     }

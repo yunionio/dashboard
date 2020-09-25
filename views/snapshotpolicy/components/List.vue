@@ -42,11 +42,11 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('compute.text_228'), key: 'name' },
-          { label: this.$t('compute.text_1082'), key: 'binding_disk_count' },
-          { label: this.$t('compute.text_1083'), key: 'repeat_weekdays' },
-          { label: this.$t('compute.text_268'), key: 'status' },
-          { label: this.$t('dictionary.project'), key: 'tenant' },
+          { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('table.title.bind_disk_count'), key: 'binding_disk_count' },
+          { label: this.$t('table.title.strategy'), key: 'repeat_weekdays' },
+          { label: this.$t('common.status'), key: 'status' },
+          { label: this.$t('res.project'), key: 'tenant' },
         ],
       },
       groupActions: [
