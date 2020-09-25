@@ -375,7 +375,7 @@ export const getTimeTableColumn = ({
 
 export const getAccountTableColumn = ({
   field = 'account',
-  title = i18n.t('common_295'),
+  title = i18n.t('res.cloudaccount'),
 } = {}) => {
   return {
     field,
@@ -418,7 +418,7 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n
 
 export const getPublicScopeTableColumn = ({
   field = 'public_scope',
-  title = i18n.t('common_101'),
+  title = i18n.t('table.title.share_range'),
   vm,
   resource,
   width = '110px',

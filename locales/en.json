@@ -2186,7 +2186,13 @@
     "image": "Image",
     "images": "Images",
     "servertemplate": "Server template",
-    "servertemplates": "Server templates"
+    "servertemplates": "Server templates",
+    "server": "Server",
+    "servers": "Servers",
+    "disk": "Disk",
+    "disks": "Disks",
+    "cloudprovider": "Cloud provider",
+    "cloudproviders": "Cloud providers"
   },
   "table": {
     "title": {
@@ -2208,6 +2214,7 @@
       "tag": "Tag",
       "init_keypair": "Initial keypair",
       "create_time": "Create time",
+      "update_time": "Update time",
       "_action": "Operation",
       "external_id": "External ID",
       "memory_mb": "Memory(MB)",
@@ -2217,7 +2224,24 @@
       "enable_status": "Enable status",
       "strategy": "Strategy",
       "granularity": "Granularity",
-      "associated_server": "Associated server"
+      "associated_server": "Associated server",
+      "disk_format": "Disk format",
+      "image_type": "Image type",
+      "image_size": "Image size",
+      "checksum": "Checksum",
+      "share_range": "Share range",
+      "child_image": "Sub image",
+      "disk_storage": "Primary storage",
+      "disk_type": "Disk type",
+      "disk_mounted": "Mounted",
+      "disk_medium_type": "Medium type",
+      "disk_size": "Disk size",
+      "disk_guest_count": "Guest count",
+      "disk_guest": "Guest",
+      "snapshot_size": "Snapshot size",
+      "storage_type": "Storage type",
+      "sub_snapshot": "Sub snapshot",
+      "bind_disk_count": "Associated disk count"
     },
     "action": {
       "save": "Save",
