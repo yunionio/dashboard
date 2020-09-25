@@ -16,7 +16,7 @@
             <a-textarea :placeholder="$t('db.text_295')"
               :autosize="{ minRows: 4, maxRows: 7 }"
               v-decorator="decorators['ip_list']" />
-              <div style="line-height:20px;color:#999">{{$t('db.text_296')}}<b style="color:#666">{{20 - (this.params.allIPList.length + (this.form.fc.getFieldValue('ip_list') ? this.form.fc.getFieldValue('ip_list').split(',').length : 0))}}</b>{{$t('db.text_297')}}</div>
+              <div style="line-height:20px;color:#999">{{$t('db.text_296')}}<b style="color:#666">{{remainIpCount}}</b>{{$t('db.text_297')}}</div>
           </a-form-item>
         </a-form>
          <div slot="footer">
@@ -79,8 +79,7 @@ export default {
       return decorators
     },
     remainIpCount () {
-      const ipValue = this.form.fc.getFieldValue('ip_list')
-      return 20 - (this.params.allIPList.length + (ipValue ? ipValue.split(',').length : 0))
+      return 20 - this.ipsLength
     },
   },
   created () {
@@ -94,22 +93,39 @@ export default {
       const REG_IP = REGEXP.IPv4.regexp
       const REG_NUM = /\d/
       if (value) {
-        const ips = [...this.params.allIPList, ...value.split(',')]
+        const ips = value.split(',')
+        const alreadyipList = [...this.params.allIPList]
+        const itselfIpList = this.params.data ? this.params.data[0].ip_list.split(',') : []
+        for (let i = 0; i < alreadyipList.length; i++) {
+          for (let j = 0; j < itselfIpList.length; j++) {
+            const sameIndex = alreadyipList.indexOf(itselfIpList[j])
+            if (sameIndex > -1) {
+              alreadyipList.splice(sameIndex, 1)
+            }
+          }
+        }
         const ipsLength = ips.length
         if (ipsLength >= 20) {
-          _callback(this.$t('db.text_299'))
+          return _callback(this.$t('db.text_299'))
         }
         for (let i = 0; i < ipsLength; i++) {
           const _item = ips[i]
           const [_ip, _u] = _item.split('/')
           if (_ip && !REG_IP.test(_ip)) {
-            _callback(this.$t('db.text_300', [_item]))
+            return _callback(this.$t('db.text_300', [_item]))
           }
           if (_u && !REG_NUM.test(_u)) {
-            _callback(this.$t('db.text_301', [_u]))
+            return _callback(this.$t('db.text_301', [_u]))
           }
-          if (ips && ips.indexOf(_item, (i + 1)) > -1) {
+          if (ips.indexOf(_item) !== i) {
             return _callback(this.$t('db.text_302', [_item]))
+          }
+        }
+        for (let i = 0; i < alreadyipList.length; i++) {
+          for (let j = 0; j < ipsLength; j++) {
+            if (alreadyipList.indexOf(ips[j]) > -1) {
+              return _callback(this.$t('db.text_302', [ips[j]]))
+            }
           }
         }
         this.ipsLength = ipsLength
