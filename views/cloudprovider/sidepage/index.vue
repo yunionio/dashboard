@@ -22,7 +22,6 @@ import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
 import CloudaccountQuotaList from './QuotaList'
 import Usage from '@Cloudenv/sections/UsageSidepage'
-import ExternalprojectList from '@Cloudenv/views/externalproject/components/List'
 import CloudproviderregionList from '@Cloudenv/views/cloudproviderregion/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -34,7 +33,6 @@ export default {
     Actions,
     CloudaccountDetail,
     CloudproviderregionList,
-    ExternalprojectList,
     CloudaccountQuotaList,
     Usage,
   },
@@ -44,7 +42,6 @@ export default {
       detailTabs: [
         { label: this.$t('cloudenv.text_237'), key: 'cloudaccount-detail' },
         { label: this.$t('cloudenv.text_10'), key: 'cloudproviderregion-list' },
-        { label: this.$t('dictionary.project'), key: 'externalproject-list' },
         { label: this.$t('cloudenv.text_362'), key: 'cloudaccount-quota-list' },
         { label: this.$t('cloudenv.text_319'), key: 'usage' },
         { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
@@ -58,12 +55,6 @@ export default {
           return {
             cloudprovider_id: this.data.id,
             details: true,
-          }
-        }
-      } else if (this.params.windowData.currentTab === 'externalproject-list') {
-        return () => {
-          return {
-            manager_id: this.data.id,
           }
         }
       }

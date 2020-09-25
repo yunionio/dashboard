@@ -31,6 +31,7 @@ import Actions from '@/components/PageList/Actions'
 import { findPlatform } from '@/utils/common/hypervisor'
 import CloudgroupList from '@Cloudenv/views/cloudgroup/components/List'
 import ClouduserList from '@Cloudenv/views/clouduser/components/List'
+import ExternalprojectList from '@Cloudenv/views/externalproject/components/List'
 
 export default {
   name: 'CloudaccountSidePage',
@@ -42,6 +43,7 @@ export default {
     Usage,
     ClouduserList,
     CloudgroupList,
+    ExternalprojectList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
@@ -54,6 +56,7 @@ export default {
       const detailTabs = [
         { label: this.$t('cloudenv.text_237'), key: 'cloudaccount-detail' },
         { label: this.$t('cloudenv.text_318'), key: 'cloudprovider-list' },
+        { label: this.$t('dictionary.project'), key: 'externalproject-list' },
         { label: this.$t('cloudenv.text_319'), key: 'usage' },
         { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ]
@@ -85,6 +88,12 @@ export default {
       } else if (this.params.windowData.currentTab === 'cloudgroup-list') {
         return {
           provider: this.data.data && this.data.data.provider,
+        }
+      } else if (this.params.windowData.currentTab === 'externalproject-list') {
+        return () => {
+          return {
+            cloudaccount_id: this.data.id,
+          }
         }
       }
       return null
