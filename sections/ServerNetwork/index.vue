@@ -16,6 +16,7 @@
         :decorator="decorator.networkConfig"
         :isBonding="isBonding"
         :network-params="networkListParams"
+        v-bind="configs"
         :vpc-params="networkVpcParams"
         :vpc-resource="vpcResource"
         :ipsDisabled="ipsDisabled"
@@ -96,6 +97,13 @@ export default {
       type: Boolean,
       default: false,
     },
+    defaultNetwork: {
+      type: Boolean,
+      default: true,
+    },
+    vpcObj: {
+      type: Object,
+    },
   },
   data () {
     const { auto_alloc_network_count } = this.$store.getters.capability
@@ -103,6 +111,7 @@ export default {
     if (!auto_alloc_network_count || auto_alloc_network_count <= 0) {
       delete _networkMaps.default
     }
+    if (!this.defaultNetwork) delete _networkMaps.default
     return {
       networkComponent: '', // 指定IP子网 / 指定调度标签 的控件
       networkMaps: _networkMaps,
@@ -111,6 +120,14 @@ export default {
   computed: {
     ipsDisabled () {
       return this.serverCount > 1
+    },
+    configs () {
+      if (this.vpcObj && this.vpcObj.id && this.vpcObj.name) {
+        return {
+          vpcObj: this.vpcObj,
+        }
+      }
+      return {}
     },
   },
   watch: {
@@ -122,11 +139,14 @@ export default {
         })
         this.networkComponent = 'config'
       } else {
-        this.networkMaps = { ...NETWORK_OPTIONS_MAP }
-        this.form.fc.setFieldsValue({
-          networkType: NETWORK_OPTIONS_MAP.default.key,
-        })
-        this.networkComponent = ''
+        const maps = { ...NETWORK_OPTIONS_MAP }
+        if (!this.defaultNetwork) delete maps[NETWORK_OPTIONS_MAP.default.key]
+        this.networkMaps = maps
+        const value = {
+          networkType: NETWORK_OPTIONS_MAP[Object.keys(maps)[0]].key,
+        }
+        this.form.fc.setFieldsValue(value)
+        this.networkComponent = value.networkType === NETWORK_OPTIONS_MAP.default.key ? '' : 'config'
       }
     },
     hypervisor (val, oldVal) {
