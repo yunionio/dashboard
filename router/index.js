@@ -176,7 +176,7 @@ export default {
           path: '/schedtag',
           meta: {
             label: i18n.t('cloudenv.text_18'),
-            permission: 'schedtags_list',
+            // permission: 'schedtags_list',
           },
           component: Layout,
           children: [
