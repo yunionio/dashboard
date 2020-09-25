@@ -91,7 +91,7 @@ export default {
                 },
                 {
                   field: 'value_str',
-                  title: this.$t('bill.text_176'),
+                  title: this.$t('monitor.text_16'),
                   align: 'right',
                   formatter: ({ row }) => row.value_str,
                 },

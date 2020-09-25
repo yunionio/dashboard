@@ -88,6 +88,8 @@ export default {
         }
       }
       return {
+        sampling: 'average',
+        animation: false,
         legend: {
           show: false,
         },
@@ -251,8 +253,11 @@ export default {
         if (!data.metric_query || !data.from || !_.get(data.metric_query, '[0].model.measurement') || !_.get(data.metric_query, '[0].model.select')) return
         this.chartLoading = true
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
-        this.series = series
-        this.chartLoading = false
+        this.series = []
+        this.$nextTick(_ => {
+          this.series = series
+          this.chartLoading = false
+        })
       } catch (error) {
         this.chartLoading = false
         throw error
