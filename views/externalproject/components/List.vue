@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import {
@@ -78,7 +79,7 @@ export default {
           },
           meta: () => {
             return {
-              validate: this.list.selectedItems.length,
+              validate: this.list.selectedItems.length && this.isOwner(),
             }
           },
         },
@@ -97,12 +98,25 @@ export default {
               onManager: this.onManager,
             })
           },
+          meta: () => {
+            return {
+              validate: this.isOwner(),
+            }
+          },
         },
       ],
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'userInfo']),
+  },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    isOwner () {
+      return this.isAdminMode || (this.cloudaccount && this.cloudaccount.domain_id === this.userInfo.projectDomainId)
+    },
   },
 }
 </script>
