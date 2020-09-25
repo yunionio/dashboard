@@ -145,7 +145,7 @@ export default {
   },
   vpc: {
     success: ['available'],
-    info: ['init', 'unavailable', 'unknown'],
+    info: ['unavailable', 'unknown'],
     danger: ['failed'],
   },
   blockstorage: {
