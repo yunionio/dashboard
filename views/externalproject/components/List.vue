@@ -20,6 +20,7 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    cloudaccount: Object,
   },
   data () {
     return {
@@ -52,6 +53,10 @@ export default {
             },
           },
         },
+        {
+          field: 'project_domain',
+          title: this.$t('res.domain'),
+        },
         getTimeTableColumn({
           field: 'created_at',
           title: this.$t('cloudenv.text_103'),
@@ -62,8 +67,9 @@ export default {
           label: this.$t('cloudenv.text_388'),
           permission: 'externalprojects_update',
           action: obj => {
-            this.createDialog('ChangeProjectDialog', {
+            this.createDialog('ExternalProjectSwitchLocalDialog', {
               data: this.list.selectedItems,
+              cloudaccount: this.cloudaccount,
               title: this.$t('cloudenv.text_388'),
               name: this.$t('dictionary.project'),
               columns: this.columns,
@@ -82,8 +88,9 @@ export default {
           label: this.$t('cloudenv.text_388'),
           permission: 'externalprojects_update',
           action: obj => {
-            this.createDialog('ChangeProjectDialog', {
+            this.createDialog('ExternalProjectSwitchLocalDialog', {
               data: [obj],
+              cloudaccount: this.cloudaccount,
               title: this.$t('cloudenv.text_388'),
               name: this.$t('dictionary.project'),
               columns: this.columns,
@@ -96,8 +103,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-  },
-  methods: {
   },
 }
 </script>
