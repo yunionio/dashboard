@@ -232,7 +232,7 @@ export default {
     networkParams () {
       let params = {}
       if (this.form.fd.vpc && !R.isEmpty(this.scopeParams)) {
-        params = { ...this.scopeParams }
+        params = { ...this.scopeParams, usable: true }
         params.limit = 0
         params.vpc = this.form.fd.vpc
         if (this.form.fd.zone) params.zone = this.form.fd.zone
