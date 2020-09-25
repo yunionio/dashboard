@@ -29,6 +29,7 @@ export const ACL_TYPE = {
   private: i18n.t('storage.text_9'),
   'public-read': i18n.t('storage.text_10'),
   'public-read-write': i18n.t('storage.text_11'),
+  'authenticated-read': i18n.t('storage.text_182'),
 }
 
 export const OSS_MONITOR_OPTS = {
