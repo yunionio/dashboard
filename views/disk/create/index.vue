@@ -38,19 +38,21 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <template v-if="cloudEnv !== 'onpremise'">
-        <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
-          <base-select
-            class="w-50"
-            v-decorator="decorators.manager_id"
-            resource="cloudproviders"
-            :params="cloudproviderParams"
-            :isDefaultSelect="true"
-            :showSync="true"
-            :select-props="{ placeholder: $t('compute.text_149') }"
-            :resList.sync="cloudproviderData" />
-        </a-form-item>
-      </template>
+      <a-collapse :bordered="false" v-if="cloudEnv === 'public'">
+        <a-collapse-panel :header="$t('compute.text_309')" key="1">
+          <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout">
+            <base-select
+              class="w-50"
+              v-decorator="decorators.manager_id"
+              resource="cloudproviders"
+              :params="cloudproviderParams"
+              :isDefaultSelect="true"
+              :showSync="true"
+              :select-props="{ placeholder: $t('compute.text_149') }"
+              :resList.sync="cloudproviderData" />
+          </a-form-item>
+        </a-collapse-panel>
+      </a-collapse>
     </a-form>
     <bottom-bar
       :current-cloudregion="currentCloudregion"
@@ -184,11 +186,6 @@ export default {
         ],
         manager_id: [
           'manager_id',
-          {
-            rules: [
-              { required: true, message: this.$t('common_588') },
-            ],
-          },
         ],
       },
       formItemLayout: {

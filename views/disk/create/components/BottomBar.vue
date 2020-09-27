@@ -167,7 +167,7 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
-        const { project, domain, cloudregion, zone, ...rest } = values
+        const { project, domain, cloudregion, zone, manager_id, ...rest } = values
         const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
         const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
@@ -176,8 +176,9 @@ export default {
           size: values.size * 1024,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
           project_id: (project && project.key) || this.userInfo.projectId,
-          prefer_region: cloudregion,
+          prefer_region_id: cloudregion,
           prefer_zone: zone,
+          prefer_manager_id: manager_id,
         }
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
