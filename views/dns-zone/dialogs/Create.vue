@@ -68,6 +68,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('network.text_157') },
+              { validator: this.$validate('domain') },
             ],
           },
         ],

@@ -161,8 +161,8 @@ export default {
         } else {
           callback()
         }
-      } else if (this.form.fd.dns_type === 'CNMAE' || this.form.fd.dns_type === 'MX') {
-        if (validate(value, 'domainName') === false || validate(value, 'domainName').result === false) {
+      } else if (this.form.fd.dns_type === 'CNAME' || this.form.fd.dns_type === 'MX') {
+        if (validate(value, 'domain') === false || validate(value, 'domain').result === false) {
           callback(new Error(this.$t('validator.domain')))
         } else {
           callback()
@@ -184,7 +184,7 @@ export default {
           }
           if (parts[i][3]) {
             const domain = parts[i][3]
-            if (validate(domain, 'domainName') === false || validate(domain, 'domainName').result === false) {
+            if (validate(domain, 'domain') === false || validate(domain, 'domain').result === false) {
               callback(new Error(this.$t('network.text_180')))
             } else {
               callback()
