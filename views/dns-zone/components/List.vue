@@ -118,7 +118,7 @@ export default {
     this.initSidePageTab('dns-zone-detail')
     this.list.fetchData()
     this.$bus.$on('DnsZoneListSingleRefresh', (...arg) => {
-      this.list.singleRefresh(...arg)
+      this.list.refresh(...arg)
     }, false)
   },
   methods: {
