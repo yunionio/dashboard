@@ -4145,5 +4145,6 @@
   "common_712": "Default",
   "common_713": "Strategy",
   "common_714": "Oversold",
-  "common_715": "User Tag"
+  "common_715": "User Tag",
+  "common_716": "Domain administrators who do not belong to the domain currently have no operation rights"
 }
