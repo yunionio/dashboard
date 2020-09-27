@@ -18,7 +18,8 @@
           :need-params="true"
           :params="vpcParams"
           :mapper="vpcResourceMapper"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_194'), disabled: vpcObj && !!vpcObj.id }" />
+          :disabled="vpcObj && !!vpcObj.id"
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" />
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
       <a-form-item
@@ -132,6 +133,16 @@ export default {
       return {
         vpc: this.networkList[0].vpc.id,
         ...this.networkParams,
+      }
+    },
+  },
+  watch: {
+    vpcObj (val) {
+      if (val && val.id && val.name) {
+        this.$set(this.networkList[0], 'vpc', val)
+        this.form.fc.setFieldsValue({
+          [this.decorator.vpcs(this.networkList[0].key)[0]]: this.vpcObj.id,
+        })
       }
     },
   },
