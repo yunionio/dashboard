@@ -387,7 +387,7 @@ export default {
     createServer (data) {
       delete data.vcpu_count
       delete data.vmem_size
-      this.serverM.create({ data })
+      return this.serverM.create({ data })
         .then(res => {
           if (R.is(Array, data.disks)) {
             const imageObj = data.disks.find(val => val.disk_type === 'sys')

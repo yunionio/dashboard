@@ -207,7 +207,7 @@ export default {
         isError: false,
       }
       if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic) {
-        const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor]
+        const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor] || {}
         const allStorageTypes = []
         Object.keys(storageTypes3).forEach((item) => {
           const key = Array.isArray(item.split('/')) ? item.split('/')[0] : ''

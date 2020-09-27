@@ -104,12 +104,20 @@ export default {
     vpcObj: {
       type: Object,
     },
+    allowNetworkTypes: {
+      type: Array,
+    },
   },
   data () {
     const { auto_alloc_network_count } = this.$store.getters.capability
     const _networkMaps = { ...NETWORK_OPTIONS_MAP }
     if (!auto_alloc_network_count || auto_alloc_network_count <= 0) {
       delete _networkMaps.default
+    }
+    if (this.allowNetworkTypes && this.allowNetworkTypes.length) {
+      this.allowNetworkTypes.forEach(key => {
+        delete _networkMaps[key]
+      })
     }
     if (!this.defaultNetwork) delete _networkMaps.default
     return {
@@ -141,6 +149,11 @@ export default {
       } else {
         const maps = { ...NETWORK_OPTIONS_MAP }
         if (!this.defaultNetwork) delete maps[NETWORK_OPTIONS_MAP.default.key]
+        if (this.allowNetworkTypes && this.allowNetworkTypes.length) {
+          this.allowNetworkTypes.forEach(key => {
+            delete maps[key]
+          })
+        }
         this.networkMaps = maps
         const value = {
           networkType: NETWORK_OPTIONS_MAP[Object.keys(maps)[0]].key,
