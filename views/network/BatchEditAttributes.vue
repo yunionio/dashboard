@@ -10,7 +10,7 @@
       </a-card>
       <div class="form-wrapper">
         <a-form v-bind="formItemLayout" :form="form.fc" @submit.prevent="handleSubmit">
-          <a-form-item :label="$t('network.text_575')" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required>
+          <a-form-item :label="$t('network.text_551')" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required>
             <ip-subnets
               ref="ipSubnetsRef"
               :decorator="decorators.ipSubnets"
@@ -124,14 +124,14 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          md: { span: 18 },
-          xl: { span: 20 },
-          xxl: { span: 22 },
+          md: { span: 23 },
+          xl: { span: 23 },
+          xxl: { span: 23 },
         },
         labelCol: {
-          md: { span: 6 },
-          xl: { span: 4 },
-          xxl: { span: 2 },
+          md: { span: 1 },
+          xl: { span: 1 },
+          xxl: { span: 1 },
         },
       },
     }
