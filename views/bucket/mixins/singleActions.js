@@ -1,7 +1,11 @@
+import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
 export default {
+  computed: {
+    ...mapGetters(['isProjectMode']),
+  },
   created () {
     this.singleActions = [
       {
