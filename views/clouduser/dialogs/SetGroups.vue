@@ -52,10 +52,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 19,
         },
         labelCol: {
-          span: 3,
+          span: 5,
         },
       },
       cloudgroupListSelectProps: {
@@ -78,6 +78,7 @@ export default {
             field: 'name',
             title: this.$t('table.title.name'),
             showOverflow: 'title',
+            sortable: true,
           },
           {
             field: 'description',
