@@ -63,7 +63,7 @@ export default {
       if (platform === 'idc' || platform === 'private') {
         detailTabs.splice(1, 0, { label: this.$t('cloudenv.text_101'), key: 'host-list' })
       }
-      if ((this.$store.getters.capability.cloud_id_brands || []).includes(data.provider)) {
+      if (['Huawei', 'Aliyun', 'Azure', 'Google', 'Aws', 'Qcloud'].includes(data.provider)) {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }
