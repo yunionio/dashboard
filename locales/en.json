@@ -2236,7 +2236,12 @@
       "snapshot_size": "Snapshot size",
       "storage_type": "Storage type",
       "sub_snapshot": "Sub snapshot",
-      "bind_disk_count": "Associated disk count"
+      "bind_disk_count": "Associated disk count",
+      "res_name": "Resource name",
+      "owner_project": "Owner project",
+      "owner_domain": "Owner domain",
+      "sponsor": "Sponsor",
+      "operation": "Operation"
     },
     "action": {
       "save": "Save",
@@ -3600,11 +3605,7 @@
   "common_149": "File Type",
   "common_150": "Non-system directory",
   "common_151": "Resource Name",
-  "common_152": "Belonging",
-  "common_153": "Initiator",
-  "common_154": "Operation",
-  "common_155": "Execution Status",
-  "common_156": "Operation Time",
+  "common_156": "Operation time",
   "common_157": "Remarks",
   "common_158": "This page shows logs",
   "common_159": "Success",
