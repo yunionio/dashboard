@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex">
-    <a-form-item v-if="decorator.name" style="width: 28%;">
+    <a-form-item v-if="decorator.name">
       <a-input :addon-before="$t('network.text_21')" v-decorator="decorator.name" :placeholder="$t('network.text_21')" />
     </a-form-item>
     <a-form-item :class="{'ml-2': decorator.name}">
@@ -22,7 +22,7 @@
     <a-form-item class="ml-2">
       <a-input :addon-before="$t('network.text_610')" v-decorator="decorator.gateway" :placeholder="$t('common_163')" />
     </a-form-item>
-    <a-form-item class="ml-2">
+    <a-form-item class="ml-2" style="width: 180px;">
       <a-input addon-before="VLAN ID" v-decorator="decorator.vlan" placeholder="VLAN ID" />
     </a-form-item>
   </div>
