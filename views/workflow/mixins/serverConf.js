@@ -134,7 +134,7 @@ export default {
             },
             {
               field: 'project',
-              title: i18n.t('common_152') + i18n.t('dictionary.project'),
+              title: i18n.t('table.title.owner_project'),
               formatter: ({ cellValue, row }) => {
                 const v = this.variables
                 const domain = v.project_domian
