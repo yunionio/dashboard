@@ -19,6 +19,7 @@ export default {
         meta: obj => {
           return {
             validate: obj.can_delete,
+            tooltip: obj.can_delete ? '' : this.$t('compute.text_1344'),
           }
         },
       },
