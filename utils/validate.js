@@ -76,7 +76,7 @@ export const REGEXP = {
     message: i18n.t('validator.isChinese'),
   },
   domain: {
-    regexp: /^([a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62}){1}(\.[a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62})*[._]?$/,
+    regexp: /^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$/,
     message: i18n.t('validator.domain'),
   },
   /* eslint-disable no-useless-escape */

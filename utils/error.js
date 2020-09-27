@@ -131,6 +131,7 @@ export const isOwner = (row) => {
   const projectDomainId = store.getters.userInfo.projectDomainId
   const dataArr = R.is(Array, row) ? row : [row]
   const ret = { validate: true, tooltip: '' }
+  if (store.getters.isAdminMode) return ret
   const isAllSameDomain = dataArr.every(item => item.domain_id === projectDomainId)
   if (!isAllSameDomain) {
     ret.validate = false
