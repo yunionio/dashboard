@@ -41,23 +41,23 @@ export default {
   data () {
     const filterOptions = {
       obj_name: {
-        label: this.$t('common_151'),
+        label: this.$t('table.title.res_name'),
       },
       owner_project_ids: {
-        label: this.$t('common_152') + this.$t('dictionary.project'),
+        label: this.$t('table.title.owner_project'),
       },
       owner_domain_ids: {
-        label: this.$t('common_152') + this.$t('dictionary.domain'),
+        label: this.$t('table.title.owner_domain'),
       },
       user: {
-        label: this.$t('common_153'),
+        label: this.$t('table.title.sponsor'),
         filter: true,
         formatter: val => {
           return `user.contains("${val}")`
         },
       },
       action: {
-        label: this.$t('common_154'),
+        label: this.$t('table.title.operation'),
       },
     }
     if (this.$store.getters.isProjectMode) delete filterOptions.tenant
@@ -73,14 +73,14 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('common_56'), key: 'obj_type' },
-          { label: this.$t('common_154'), key: 'action' },
-          { label: this.$t('common_151'), key: 'obj_name' },
-          { label: this.$t('common_155'), key: 'success' },
+          { label: this.$t('table.title.operation'), key: 'action' },
+          { label: this.$t('table.title.res_name'), key: 'obj_name' },
+          { label: this.$t('common.status'), key: 'success' },
           { label: this.$t('common_156'), key: 'start_time' },
-          { label: this.$t('common_153'), key: 'user' },
-          { label: this.$t('common_152') + this.$t('dictionary.domain'), key: 'owner_domain' },
-          { label: this.$t('common_152') + this.$t('dictionary.project'), key: 'owner_tenant' },
-          { label: this.$t('common_157'), key: 'notes' },
+          { label: this.$t('table.title.sponsor'), key: 'user' },
+          { label: this.$t('table.title.owner_domain'), key: 'owner_domain' },
+          { label: this.$t('table.title.owner_project'), key: 'owner_tenant' },
+          { label: this.$t('table.title.desc'), key: 'notes' },
         ],
         limit: () => Object.keys(this.list.data).length,
         export: 'custom',
@@ -99,10 +99,11 @@ export default {
           title: this.$t('common_56'),
           field: 'obj_type',
           hideField: true,
+          message: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
           slotCallback: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
         }),
         {
-          title: this.$t('common_154'),
+          title: this.$t('table.title.operation'),
           field: '_i18n.action',
           minWidth: 80,
           showOverflow: 'ellipsis',
@@ -116,11 +117,11 @@ export default {
           },
         },
         getCopyWithContentTableColumn({
-          title: this.$t('common_151'),
+          title: this.$t('table.title.res_name'),
           field: 'obj_name',
         }),
         {
-          title: this.$t('common_155'),
+          title: this.$t('common.status'),
           field: 'success',
           width: 80,
           slots: {
@@ -137,7 +138,7 @@ export default {
         }),
         {
           field: 'user',
-          title: this.$t('common_153'),
+          title: this.$t('table.title.sponsor'),
           showOverflow: 'title',
           minWidth: 120,
           slots: {
@@ -159,7 +160,7 @@ export default {
         },
         {
           field: 'owner_tenant',
-          title: this.$t('common_152') + this.$t('dictionary.project'),
+          title: this.$t('table.title.owner_project'),
           showOverflow: 'title',
           minWidth: 120,
           slots: {
@@ -177,7 +178,7 @@ export default {
         },
         {
           field: 'notes',
-          title: this.$t('common_157'),
+          title: this.$t('table.title.desc'),
           width: 70,
           slots: {
             default: ({ row, column }) => {

@@ -2246,7 +2246,12 @@
       "snapshot_size": "快照大小",
       "storage_type": "存储类型",
       "sub_snapshot": "子快照",
-      "bind_disk_count": "关联硬盘数量"
+      "bind_disk_count": "关联硬盘数量",
+      "res_name": "资源名称",
+      "owner_project": "所属@:dictionary.project",
+      "owner_domain": "所属@:dictionary.domain",
+      "sponsor": "发起人",
+      "operation": "操作"
     },
     "action": {
       "save": "保存",
@@ -3610,10 +3615,6 @@
   "common_149": "文件类型",
   "common_150": "非系统目录",
   "common_151": "资源名称",
-  "common_152": "所属",
-  "common_153": "发起人",
-  "common_154": "操作",
-  "common_155": "执行状态",
   "common_156": "操作时间",
   "common_157": "备注",
   "common_158": "本页显示日志",
