@@ -68,6 +68,8 @@ export default {
             })
           },
           meta: () => {
+            const ret = { ...this.$isOwner(this.data), buttonType: 'primary' }
+            if (!ret.validate) return ret
             return {
               buttonType: 'primary',
               validate: this.isPublicZone,

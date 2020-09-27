@@ -91,7 +91,8 @@ export default {
             })
           },
           meta: () => {
-            const ret = { buttonType: 'primary', validate: true, tooltip: '' }
+            const ret = { ...this.$isOwner(this.data), buttonType: 'primary' }
+            if (!ret.validate) return ret
             if (!this.isAvailable) {
               ret.validate = false
               ret.tooltip = this.$t('network.text_730')
@@ -114,7 +115,8 @@ export default {
             })
           },
           meta: () => {
-            const ret = { validate: true, tooltip: '' }
+            const ret = this.$isOwner(this.data)
+            if (!ret.validate) return ret
             if (!this.list.selectedItems.length) {
               ret.validate = false
               return ret
@@ -142,8 +144,9 @@ export default {
               refresh: this.refresh,
             })
           },
-          meta: (row) => {
-            const ret = { validate: true, tooltip: '' }
+          meta: (obj) => {
+            const ret = this.$isOwner(this.data)
+            if (!ret.validate) return ret
             if (!this.isAvailable) {
               ret.validate = false
               ret.tooltip = this.$t('network.text_730')
