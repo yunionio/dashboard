@@ -461,7 +461,7 @@ export const getPublicScopeTableColumn = ({
                           }),
                           getCopyWithContentTableColumn({
                             field: 'domain',
-                            title: i18n.t('common_299') + i18n.t('dictionary.domain'),
+                            title: i18n.t('table.title.owner_domain'),
                           }),
                         ]
                       } />,
@@ -516,7 +516,7 @@ export const getPublicScopeTableColumn = ({
 
 export const getProjectDomainTableColumn = ({
   field = 'project_domain',
-  title = i18n.t('common_299') + i18n.t('dictionary.domain'),
+  title = i18n.t('table.title.owner_domain'),
   sortable = true,
 } = {}) => {
   return getCopyWithContentTableColumn({
