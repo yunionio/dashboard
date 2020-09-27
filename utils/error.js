@@ -2,6 +2,7 @@
 import * as R from 'ramda'
 // import ERROR_INFO from '@/constants/error'
 import i18n from '@/locales'
+import store from '@/store'
 
 export const getErrorBody = data => {
   if (R.is(String, data)) {
@@ -123,4 +124,17 @@ export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'dele
     validate,
     tooltip,
   }
+}
+
+// 获取列表跨域权限
+export const isOwner = (row) => {
+  const projectDomainId = store.getters.userInfo.projectDomainId
+  const dataArr = R.is(Array, row) ? row : [row]
+  const ret = { validate: true, tooltip: '' }
+  const isAllSameDomain = dataArr.every(item => item.domain_id === projectDomainId)
+  if (!isAllSameDomain) {
+    ret.validate = false
+    ret.tooltip = i18n.t('common_716')
+  }
+  return ret
 }
