@@ -100,7 +100,7 @@
             <a-col :span="6">
               <a-form-item>
                 <a-input v-if="item.policy_type === 'Weighted'" v-decorator="decorators.policy_txtvalue(item.key)" />
-                <a-select v-else :disabled="item.policy_type === 'Simple'" v-decorator="decorators.policy_value(item.key)">
+                <a-select v-else :disabled="item.policy_type === 'Simple' || item.policy_type === 'MultiValueAnswer'" v-decorator="decorators.policy_value(item.key)">
                   <a-select-option
                     :key="i"
                     :value="item.value"

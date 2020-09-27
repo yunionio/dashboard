@@ -18,7 +18,8 @@ export default {
           })
         },
         meta: (obj) => {
-          const ret = { validate: true, tooltip: '' }
+          const ret = this.$isOwner(obj)
+          if (!ret.validate) return ret
           if (obj.zone_type === 'PublicZone') {
             ret.validate = false
             ret.tooltip = i18n.t('common_662')
@@ -48,9 +49,11 @@ export default {
                   },
                 })
               },
-              meta: () => ({
-                validate: true,
-              }),
+              meta: () => {
+                const ret = this.$isOwner(obj)
+                if (!ret.validate) return ret
+                return ret
+              },
             },
             {
               label: this.$t('network.text_721'),
@@ -65,6 +68,8 @@ export default {
                 })
               },
               meta: () => {
+                const ret = this.$isOwner(obj)
+                if (!ret.validate) return ret
                 return {
                   validate: !['sync_record_sets'].includes(obj.status),
                 }
@@ -92,7 +97,11 @@ export default {
                   onManager: this.onManager,
                 })
               },
-              meta: () => this.$getDeleteResult(obj),
+              meta: () => {
+                const ret = this.$isOwner(obj)
+                if (!ret.validate) return ret
+                return this.$getDeleteResult(obj)
+              },
             },
           ]
         },

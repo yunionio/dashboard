@@ -71,9 +71,9 @@ export default {
             })
           },
           meta: () => {
-            return {
-              buttonType: 'primary',
-            }
+            const ret = { ...this.$isOwner(this.data), buttonType: 'primary' }
+            if (!ret.validate) return ret
+            return ret
           },
         },
         {
@@ -95,6 +95,8 @@ export default {
                   })
                 },
                 meta: () => {
+                  const ret = { ...this.$isOwner(this.data) }
+                  if (!ret.validate) return ret
                   return {
                     validate: this.list.allowDelete(),
                   }

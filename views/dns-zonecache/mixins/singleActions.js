@@ -15,7 +15,11 @@ export default {
             onManager: this.onManager,
           })
         },
-        meta: (obj) => this.$getDeleteResult(obj),
+        meta: (obj) => {
+          const ret = this.$isOwner(this.data)
+          if (!ret.validate) return ret
+          return this.$getDeleteResult(obj)
+        },
       },
     ]
   },
