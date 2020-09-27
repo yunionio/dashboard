@@ -175,7 +175,7 @@ export default {
           loginKey: '',
         },
         mainAccount: {
-          label: this.$t('table.title.main_account'),
+          label: this.$t('compute.text_1345'),
           value: '',
         },
       },
