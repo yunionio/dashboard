@@ -601,6 +601,11 @@
       "create_fail": "Create failed",
       "delete_fail": "Delete failed"
     },
+    "kubecluster_sync_status": {
+      "syncing": "syncing config",
+      "sync_fail": "sync fail",
+      "idle": "synced"
+    },
     "kubemachines": {
       "init": "Initialize",
       "ready": "To be deployed",
