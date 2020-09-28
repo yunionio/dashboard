@@ -54,12 +54,11 @@ export default {
         steadyStatus: Object.values(expectStatus.network).flat(),
         filterOptions: {
           name: getNameFilter(),
-          ip: {
-            label: 'IP',
-            filter: true,
-            formatter: val => {
-              return `ip.contains(${val})`
-            },
+          guest_ip_start: {
+            label: this.$t('network.text_607'),
+          },
+          guest_ip_end: {
+            label: this.$t('network.text_608'),
           },
           status: {
             label: this.$t('network.text_27'),
