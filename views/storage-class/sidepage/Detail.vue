@@ -1,10 +1,11 @@
 <template>
   <div>
     <detail
-    :on-manager="onManager"
-    :data="data"
-    :base-info="baseInfo"
-    resource="storageclasses" />
+      :on-manager="onManager"
+      :data="data"
+      :base-info="baseInfo"
+      :is-edit-name="false"
+      resource="storageclasses" />
   </div>
 
 </template>

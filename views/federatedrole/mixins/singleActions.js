@@ -24,6 +24,7 @@ export default {
             },
           })
         },
+        meta: (obj) => this.$getDeleteResult(obj),
       },
     ]
   },
