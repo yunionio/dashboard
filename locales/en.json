@@ -2257,7 +2257,8 @@
       "save": "Save",
       "cacel": "Cancel",
       "delete": "Delete",
-      "modify": "Modify"
+      "modify": "Modify",
+      "set_tag": "Set tags"
     },
     "validate": {
       "no_share_res_permission": "Shared resource, no operation permission"

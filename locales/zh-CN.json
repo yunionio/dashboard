@@ -2257,7 +2257,8 @@
       "save": "保存",
       "cacel": "取消",
       "delete": "删除",
-      "modify": "修改"
+      "modify": "修改",
+      "set_tag": "编辑标签"
     },
     "validate": {
       "no_share_res_permission": "共享资源，无操作权限"
