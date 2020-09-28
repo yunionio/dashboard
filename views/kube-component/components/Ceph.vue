@@ -131,7 +131,7 @@ export default {
               monitors: val.monitors.map(v => v.monitor),
             }
           })
-          this.$emit('submit', data)
+          this.$emit('submit', { config: data })
         }
       })
     },
