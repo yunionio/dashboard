@@ -21,6 +21,9 @@ export default {
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>
           )
         },
+        formRules: [
+          { required: true, message: this.$t('cloudenv.text_190') },
+        ],
       }),
       getTagTableColumn({
         onManager: this.onManager,
