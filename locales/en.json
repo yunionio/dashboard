@@ -3,7 +3,7 @@
   "monitor_metric_2": "CPU usage per core",
   "monitor_metric_3": "CPU user state time",
   "monitor_metric_4": "CPU system state time",
-  "monitor_metric_5": "CPU active state utilization rate",
+  "monitor_metric_5": "CPU usage",
   "monitor_metric_6": "CPU guest usage",
   "monitor_metric_7": "CPU guest_ Nice usage",
   "monitor_metric_8": "CPU idle state utilization rate",
