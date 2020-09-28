@@ -404,5 +404,7 @@
   "k8s.text_403": "Attach Cluster Count",
   "k8s.text_404": "Please enter the grafana public address",
   "k8s.text_405": "Public Address",
-  "k8s.text_406": "Please enter a valid IP address or domain name"
+  "k8s.text_406": "Please enter a valid IP address or domain name",
+  "k8s.text_407": "Please make sure that the ceph cluster has been created in the service component -cephCSI. There is no ceph cluster? You can go to",
+  "k8s.text_408": "New ceph cluster"
 }
