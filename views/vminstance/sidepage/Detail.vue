@@ -20,6 +20,7 @@ import {
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { BRAND_MAP } from '@/constants'
 
 export default {
   name: 'VmInstanceDetail',
@@ -49,6 +50,10 @@ export default {
     }
   },
   computed: {
+    isOpenStack () {
+      const brand = this.data.brand
+      return brand === BRAND_MAP.OpenStack.brand
+    },
     diskInfos () {
       const disksInfo = this.data.disks_info
       if (!disksInfo) return {}
@@ -70,7 +75,10 @@ export default {
       if (dataDisks && dataDisks.length > 0) {
         for (const k in ALL_STORAGE) {
           const e = ALL_STORAGE[k]
-          const sameType = dataDisks.filter(v => v.storage_type === e.value)
+          let sameType = dataDisks.filter(v => v.storage_type === e.value)
+          if (this.isOpenStack) {
+            sameType = dataDisks.filter(v => v.storage_type.includes(e.value))
+          }
           if (sameType && sameType.length) {
             dataDisk[k] = this._dealSize(sameType)
           }
