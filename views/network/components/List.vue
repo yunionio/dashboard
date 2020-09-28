@@ -56,9 +56,17 @@ export default {
           name: getNameFilter(),
           guest_ip_start: {
             label: this.$t('network.text_607'),
+            filter: true,
+            formatter: val => {
+              return `guest_ip_start.contains(${val})`
+            },
           },
           guest_ip_end: {
             label: this.$t('network.text_608'),
+            filter: true,
+            formatter: val => {
+              return `guest_ip_end.contains(${val})`
+            },
           },
           status: {
             label: this.$t('network.text_27'),
