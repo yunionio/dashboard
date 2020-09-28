@@ -208,6 +208,7 @@ export default {
       const data = []
       R.forEachObjIndexed((value, key) => {
         const obj = {
+          name: values.name[key],
           guest_gateway: values.gateway[key],
           guest_ip_end: values.endip[key],
           guest_ip_mask: values.netmask[key],
