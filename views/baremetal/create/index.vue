@@ -519,6 +519,7 @@ export default {
       project_domain: '',
       projectId: '',
       osSelectImageType: 'standard',
+      wires: [],
     }
   },
   computed: {
@@ -558,6 +559,9 @@ export default {
           ...ret,
           ...this.scopeParams,
         }
+      }
+      if (!R.isEmpty(this.wires)) {
+        ret.filter = `wire_id.in(${this.wires.join(',')})`
       }
       return ret
     },
@@ -653,7 +657,7 @@ export default {
       deep: true,
     },
     project_domain (newVal, oldVal) {
-      if (this.isInstallOperationSystem) this._fetchSpec()
+      if (this.isInstallOperationSystem) this.fetchSpec()
       this.capability(this.zone)
     },
   },
@@ -661,8 +665,9 @@ export default {
     this.zonesM2 = new this.$Manager('zones')
     this.serverM = new this.$Manager('servers')
     this.schedulerM = new this.$Manager('schedulers', 'v1')
+    this.fetchSpec = _.debounce(this._fetchSpec, 500)
     if (this.$route.query.id) {
-      this._fetchSpec()
+      this.fetchSpec()
       this.hostDetail()
     }
     if (this.$route.query.zone_id) {
@@ -706,6 +711,8 @@ export default {
       this.diskData = this.form.fi.capability.specs.hosts[value].disk
       // 过滤包含此规格的物理机
       this.hostResourceMapper(this.hostData)
+      // 获取此规格的包含的wire
+      this.getSpecWire(value)
     },
     // 获取物理机数据
     loadHostOpt () {
@@ -825,6 +832,8 @@ export default {
         // 存储选中规格中的信息
         this.diskData = this.form.fi.capability.specs.hosts[this.specOptions[0].value].disk
         this.hostResourceMapper(this.hostData)
+        // 根据规格读取wire数据
+        this.getSpecWire(this.specOptions[0].value)
         const originalValue = this.specOptions[0].value
         const str = this.specOptions[0].value.replace(/\//g, ',')
         const arr = str.split(',')
@@ -1329,6 +1338,21 @@ export default {
         req_count: data.req_count,
         not_allow_reasons: data.not_allow_reasons,
       }
+    },
+    getSpecWire (currentSpec) {
+      const manager = new this.$Manager('specs')
+      const params = { host_type: 'baremetal', kind: 'hosts', key: currentSpec, ...this.scopeParams }
+      manager.rpc({ methodname: 'GetObjects', params }).then(res => {
+        const hosts = res.data || []
+        this.wires = []
+        for (const host of hosts) {
+          let nicInfos = host.nic_info || []
+          nicInfos = nicInfos.filter(item => !['ipmi', 'pxe'].includes(item.nic_type) && item.wire_id)
+          const wireIds = nicInfos.map(item => item.wire_id)
+          const newWireIds = Array.from(new Set(wireIds))
+          this.wires = newWireIds
+        }
+      })
     },
   },
 }
