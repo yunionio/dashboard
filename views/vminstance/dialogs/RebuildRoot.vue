@@ -93,6 +93,7 @@ export default {
         IMAGES_TYPE_MAP.iso.key,
         IMAGES_TYPE_MAP.host.key,
         IMAGES_TYPE_MAP.snapshot.key,
+        IMAGES_TYPE_MAP.vmware.key,
       ],
       formItemLayout: {
         wrapperCol: {
