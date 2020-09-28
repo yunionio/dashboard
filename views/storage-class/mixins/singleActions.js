@@ -7,7 +7,7 @@ export default {
         permission: 'k8s_storageclasses_perform_set_default',
         action: obj => {
           new this.$Manager('storageclasses', 'v1').performAction({
-            id: obj.name,
+            id: obj.id,
             action: 'set-default',
             data: { cluster: obj.cluster },
           }).then(() => {
@@ -30,7 +30,7 @@ export default {
               cluster: obj.clusterID,
             },
             requestParams: {
-              id: obj.name,
+              id: obj.id,
             },
           })
         },
