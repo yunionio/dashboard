@@ -313,7 +313,15 @@ export default {
         if (this.remoteFn) {
           params = { ...params, ...this.remoteFn(query) }
         } else {
-          params.filter = `${this.searchKey}.contains(${query})`
+          if (params.filter) {
+            if (R.is(Array, params.filter)) {
+              params.filter = [...params.filter, `${this.searchKey}.contains(${query})`]
+            } else {
+              params.filter = [params.filter, `${this.searchKey}.contains(${query})`]
+            }
+          } else {
+            params.filter = `${this.searchKey}.contains(${query})`
+          }
         }
       }
       if (R.is(Number, offset)) params.offset = offset
