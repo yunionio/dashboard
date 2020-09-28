@@ -4,6 +4,7 @@
     :on-manager="onManager"
     :data="data"
     :base-info="baseInfo"
+    :is-edit-name="false"
     resource="rbacclusterroles" />
   </div>
 
