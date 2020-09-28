@@ -51,7 +51,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('cloudenv.text_190') },
-              { validator: this.$validate('resourceName') },
+              // { validator: this.$validate('resourceName') },
             ],
           },
         ],
