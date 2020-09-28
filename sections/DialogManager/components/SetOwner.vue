@@ -59,7 +59,7 @@ export default {
       if (item.domain_id && item.project_id) { // 既有 domain_id 又有 project_id 说明所属在项目
         scope = 'project'
         project = item.project_id
-      } else if (item.domain_id && !item.project_id) {
+      } else if (item.domain_id && !item.project_id && this.$store.getters.l3PermissionEnable) {
         scope = 'domain'
         domain = item.domain_id
       }
