@@ -7,6 +7,7 @@ import {
 } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -20,6 +21,13 @@ export default {
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>
           )
         },
+      }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        needExt: true,
+        resource: 'schedtags',
+        columns: () => this.columns,
+        tipName: this.$t('dictionary.schedtag'),
       }),
       getDefaultStrategyTableColumn(),
       getResourceTypeTableColumn(),

@@ -83,6 +83,25 @@ export default {
           },
         },
         {
+          label: this.$t('table.action.set_tag'),
+          action: () => {
+            this.createDialog('SetTagDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              params: {
+                resources: 'schedtags',
+              },
+              mode: 'add',
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
+          },
+        },
+        {
           label: this.$t('cloudenv.text_108'),
           action: () => {
             this.createDialog('DeleteResDialog', {
