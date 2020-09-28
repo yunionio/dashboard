@@ -7,8 +7,7 @@ export default {
     recentMenus: storage.get('__oc_recent_menus__') || [],
     topAlert: {},
     bill: {
-      currency: 'CNY',
-      loaded: false,
+      currency: '',
       currencyOpts: [],
     },
     k8s: {
@@ -36,9 +35,6 @@ export default {
     SET_BILL_CURRENCYOPTS (state, payload) {
       state.bill.currencyOpts = payload
     },
-    SET_BILL_CURRENCY_LOADED (state, payload) {
-      state.bill.loaded = payload
-    },
     SET_K8S_CLUSTER (state, payload) {
       state.k8s.cluster = payload
     },
@@ -55,25 +51,15 @@ export default {
     },
     async fetchCurrency ({ commit, state, ...ret }, payload = {}) {
       try {
-        if (state.bill.loaded) return
         const params = {
           query_type: 'currency',
           ...payload,
         }
         const { data: { data = [] } } = await new Manager('bill_conditions', 'v1').list({ params })
-        commit('SET_BILL_CURRENCY_LOADED', true)
         commit('SET_BILL_CURRENCYOPTS', data)
-        let currency = ''
-        if (data.length) {
-          if (data.find(val => val.item_id === 'CNY')) {
-            currency = 'CNY'
-          } else if (data.find(val => val.item_id === 'USD')) {
-            currency = 'USD'
-          } else {
-            currency = data[0].item_id
-          }
+        if (data.length && data.every(val => val.item_id !== state.bill.currency)) {
+          commit('SET_BILL_CURRENCY', data[0].item_id)
         }
-        commit('SET_BILL_CURRENCY', currency)
       } catch (error) {
         throw error
       }
