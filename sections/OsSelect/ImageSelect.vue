@@ -138,6 +138,9 @@ export default {
     isPrivateImage () {
       return this.imageType === IMAGES_TYPE_MAP.private.key
     },
+    isVMwareImage () {
+      return this.imageType === IMAGES_TYPE_MAP.vmware.key
+    },
     // 选择的镜像类型是否为主机镜像
     isHostImage () {
       return this.imageType === IMAGES_TYPE_MAP.host.key
@@ -413,7 +416,7 @@ export default {
       this.fetchCacheimages()
     },
     getProperties (img) {
-      if (this.isPublicImage || this.isPrivateImage) {
+      if (this.isPublicImage || this.isPrivateImage || this.isVMwareImage) {
         return img.info.properties
       }
       return img.properties

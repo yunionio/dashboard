@@ -735,6 +735,10 @@ export default {
                       ret.tooltip = i18n.t('compute.text_1284')
                       return ret
                     }
+                    if (obj.os_type === 'Windows') {
+                      ret.tooltip = i18n.t('compute.text_1285')
+                      return ret
+                    }
                     const osType = obj.metadata && obj.metadata.os_name
                     if (['aws', 'azure', 'google', 'aliyun'].includes(obj.hypervisor) && osType === 'Windows') {
                       ret.tooltip = i18n.t('compute.text_1285')
