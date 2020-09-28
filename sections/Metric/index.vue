@@ -21,6 +21,7 @@
           v-decorator="decorators.metric_value"
           :item.sync="metricValueItem"
           :options="metricOpts"
+          :labelFormat="metricValueLabelFormat"
           :disabled="disabled"
           @change="metricValueChange"
           :select-props="{ placeholder: $t('common.select'), allowClear: true, loading }" />
@@ -88,6 +89,12 @@ export default {
     },
   },
   methods: {
+    metricValueLabelFormat (item) {
+      console.log(item)
+      return (<div>
+        {item.label}<span class="text-black-50">({item.description.name})</span>
+      </div>)
+    },
     metricKeyChange (val, isNative = true) {
       this.metric_key = val
       const metricKeyItem = this.metricKeyOpts.find(item => item.key === val)
