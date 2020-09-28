@@ -63,6 +63,7 @@
         <a-select v-decorator="decorators.clusterId" :placeholder="$t('k8s.text_77')">
           <a-select-option v-for="item in cephcsiOpts" :value="item.clusterId" :key="item.clusterId">{{item.clusterId}}</a-select-option>
         </a-select>
+        <div style="font-size: 12px;">{{$t('k8s.text_407')}}<a-button style="font-size: 12px;" type="link" @click="toCreateCluster">[{{$t('k8s.text_408')}}]</a-button></div>
       </a-form-item>
       <a-form-item
         label="Pool"
@@ -280,6 +281,10 @@ export default {
     toCreateSecret () {
       const storageType = this.form.fc.getFieldValue('storageType')
       window.open(`${this.$router.resolve('/k8s-secret/create').href}?storageType=${storageType}`)
+    },
+    toCreateCluster () {
+      this.$router.push('/k8s-cluster/create')
+      window.open(`${this.$router.resolve('/k8s-cluster/create').href}`)
     },
     doCreate (values) {
       const data = {
