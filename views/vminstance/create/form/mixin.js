@@ -311,8 +311,14 @@ export default {
           throw error
         })
     },
-    doCreateServertemplate (genCreateData) {
-      const data = genCreateData.all()
+    doCreateServertemplate (genCreateData, extraData) {
+      let data = genCreateData.all()
+      if (extraData) {
+        data = {
+          ...data,
+          ...extraData,
+        }
+      }
       const { project_id, ...rest } = data
       const templateData = {
         name: this.form.fc.getFieldValue('servertemplate_name'),
@@ -332,8 +338,14 @@ export default {
           this.submiting = false
         })
     },
-    doCreateWorkflow (genCreateData) {
-      const data = genCreateData.all()
+    doCreateWorkflow (genCreateData, extraData) {
+      let data = genCreateData.all()
+      if (extraData) {
+        data = {
+          ...data,
+          ...extraData,
+        }
+      }
       this.submiting = true
       const variables = {
         process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
@@ -354,17 +366,29 @@ export default {
           this.submiting = false
         })
     },
-    async checkCreateData (genCreateData) {
+    async checkCreateData (genCreateData, extraData) {
       try {
-        const data = genCreateData.all()
+        let data = genCreateData.all()
+        if (extraData) {
+          data = {
+            ...data,
+            ...extraData,
+          }
+        }
         const res = new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
         return res
       } catch (error) {
         throw error
       }
     },
-    doForecast (genCreateData) {
-      const data = genCreateData.all()
+    doForecast (genCreateData, extraData) {
+      let data = genCreateData.all()
+      if (extraData) {
+        data = {
+          ...data,
+          ...extraData,
+        }
+      }
       this.submiting = true
       return new Promise((resolve, reject) => {
         this.schedulerM.rpc({ methodname: 'DoForecast', params: data })
