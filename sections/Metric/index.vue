@@ -90,7 +90,6 @@ export default {
   },
   methods: {
     metricValueLabelFormat (item) {
-      console.log(item)
       return (<div>
         {item.label}<span class="text-black-50">({item.description.name})</span>
       </div>)
