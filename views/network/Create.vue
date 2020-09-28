@@ -111,6 +111,7 @@
       <page-footer>
         <template v-slot:right>
           <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_30')}}</a-button>
+          <a-button class="ml-3" size="large" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
         </template>
       </page-footer>
     </a-form>
