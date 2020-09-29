@@ -41,6 +41,9 @@ export default {
     SET_K8S_NAMESPACE (state, payload) {
       state.k8s.namespace = payload
     },
+    REST_BILL_CURRENCY (state) {
+      state.bill.currencyOpts = []
+    },
   },
   actions: {
     updateObject ({ commit }, payload) {
