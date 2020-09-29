@@ -5,7 +5,12 @@
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" @change="e => { form.fi.name = e.target.value }" />
+            <name-repeated
+              ref="nameRepeated"
+              #extra
+              res="schedtags"
+              :name="form.fi.name" />
         </a-form-item>
         <a-form-item required :label="$t('cloudenv.text_413')" v-bind="formItemLayout">
           <strategy-radio :decorator="decorators.default_strategy" />
@@ -28,6 +33,7 @@
 </template>
 
 <script>
+import NameRepeated from '@/sections/NameRepeated'
 import StrategyRadio from '@Cloudenv/sections/StrategyRadio'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -36,6 +42,7 @@ export default {
   name: 'CreateSchedtagDialog',
   components: {
     StrategyRadio,
+    NameRepeated,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -43,6 +50,9 @@ export default {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
+        fi: {
+          name: '',
+        },
       },
       decorators: {
         name: [
@@ -107,6 +117,9 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
+        if (this.$refs.nameRepeated.isRepeated) {
+          values.name = values.name + '-1'
+        }
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
