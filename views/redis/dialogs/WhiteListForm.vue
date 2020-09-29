@@ -83,10 +83,8 @@ export default {
     },
   },
   created () {
-    const { initialValues = {} } = this.params
-    if (initialValues.ip_list) {
-      this.ipsLength = initialValues.ip_list.split(',').length
-    }
+    const { allIPList } = this.params
+    this.ipsLength = allIPList.length
   },
   methods: {
     validateIps (rule, value, _callback) {
