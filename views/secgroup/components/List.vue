@@ -136,9 +136,7 @@ export default {
                   validate: true,
                 }
               } else {
-                return {
-                  validate: this.list.selectedItems.every(val => !val.is_public),
-                }
+                return this.$isOwner(this.list.selectedItems)
               }
             }
             return {

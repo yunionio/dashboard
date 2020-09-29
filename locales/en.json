@@ -965,7 +965,7 @@
   "compute.text_989": "Security Group ID",
   "compute.text_990": "Direction",
   "compute.text_991": "Batch Append Rules",
-  "compute.text_992": "Please select a private security group",
+  "compute.text_992": "Please select a security group",
   "compute.text_993": "Incoming Direction",
   "compute.text_994": "Outgoing Direction",
   "compute.text_995": "The source supports the following formats: single IP: 192.168.0.1CIDR: 192.168.1.0/24",
