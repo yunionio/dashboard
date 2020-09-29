@@ -965,7 +965,7 @@
   "compute.text_989": "安全组ID",
   "compute.text_990": "方向",
   "compute.text_991": "批量追加规则",
-  "compute.text_992": "请选择私有安全组",
+  "compute.text_992": "请选择安全组",
   "compute.text_993": "入方向",
   "compute.text_994": "出方向",
   "compute.text_995": "来源支持以下格式:单个IP: 192.168.0.1CIDR: 192.168.1.0/24",
