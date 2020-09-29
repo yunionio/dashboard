@@ -13,12 +13,6 @@
             <help-link :href="doc">{{$t('cloudenv.text_299')}}</help-link>
           </div>
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_300')" v-if="isAzure">
-          <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_243')" />
-          <div slot="extra">
-            <help-link :href="doc">{{$t('cloudenv.text_301')}}</help-link>
-          </div>
-        </a-form-item>
         <upload-json-file :fc="form.fc" v-if="isGoogle">
           <a-form-item :label="field.label.k">
             <a-textarea :autosize="{ minRows: 3, maxRows: 7 }" v-decorator="decorators.keyId" :placeholder="field.placeholder.k" />
@@ -35,6 +29,12 @@
               <div class="flex-grow-1">
                 <help-link :href="doc">{{$t('cloudenv.text_303', [ field.text , field.label.k , field.label.s ])}}</help-link>
               </div>
+            </div>
+          </a-form-item>
+          <a-form-item :label="$t('cloudenv.text_300')" v-if="isAzure">
+            <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_243')" />
+            <div slot="extra">
+              <help-link :href="doc">{{$t('cloudenv.text_301')}}</help-link>
             </div>
           </a-form-item>
           <a-form-item :label="field.label.s">
