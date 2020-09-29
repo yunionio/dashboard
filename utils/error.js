@@ -129,13 +129,22 @@ export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'dele
 // 获取列表跨域权限
 export const isOwner = (row) => {
   const projectDomainId = store.getters.userInfo.projectDomainId
+  const projectId = store.getters.userInfo.projectId
   const dataArr = R.is(Array, row) ? row : [row]
   const ret = { validate: true, tooltip: '' }
   if (store.getters.isAdminMode) return ret
-  const isAllSameDomain = dataArr.every(item => item.domain_id === projectDomainId)
-  if (!isAllSameDomain) {
-    ret.validate = false
-    ret.tooltip = i18n.t('common_716')
+  if (store.getters.isDomainMode) {
+    const isAllSameDomain = dataArr.every(item => item.domain_id === projectDomainId)
+    if (!isAllSameDomain) {
+      ret.validate = false
+      ret.tooltip = i18n.t('common_716')
+    }
+  } else {
+    const isAllSameProject = dataArr.every(item => item.tenant_id === projectId)
+    if (!isAllSameProject) {
+      ret.validate = false
+      ret.tooltip = i18n.t('common_716')
+    }
   }
   return ret
 }
