@@ -66,6 +66,12 @@ export default {
             `name[${i}]`,
             {
               initialValue: '',
+              validateTrigger: ['change', 'blur'],
+              validateFirst: true,
+              rules: [
+                { required: true, message: this.$t('network.text_116') },
+                { validator: this.$validate('resourceName') },
+              ],
             },
           ],
           startip: i => [
