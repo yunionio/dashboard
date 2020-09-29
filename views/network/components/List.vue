@@ -189,6 +189,11 @@ export default {
                     ret.tooltip = this.$t('network.text_650')
                     return ret
                   }
+                  if (!this.$isOwner(this.list.selectedItems).validate) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('network.text_627')
+                    return ret
+                  }
                   return ret
                 },
               },
