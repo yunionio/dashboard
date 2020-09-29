@@ -31,7 +31,7 @@
         class="mb-0"
         required
         v-bind="formItemLayout">
-        <a-row>
+        <a-row :gutter="8">
           <a-col :span="12">
             <a-form-item>
               <namespace-select
@@ -117,14 +117,16 @@ export default {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
             if (values.cluster) {
-              this.fetchCephcsiOpts(values.cluster)
-              this.fetchClusterStatus(values.cluster)
+              this.form.fd.cluster = values.cluster
             }
             this.$nextTick(() => {
               this.fetchPoolOpts()
             })
           },
         }),
+        fd: {
+          cluster: initCluster,
+        },
       },
       decorators: {
         storageType: [
@@ -214,13 +216,20 @@ export default {
       return {}
     },
   },
-  created () {
-    this.kubeclusterM = new this.$Manager('kubeclusters', 'v1')
-    this.resourceM = new this.$Manager('storageclasses', 'v1')
+  watch: {
+    'form.fd.cluster': {
+      handler (val) {
+        if (val) {
+          this.fetchCephcsiOpts(val)
+          this.fetchClusterStatus(val)
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
     async fetchClusterStatus (cluster) {
-      const { data } = await this.kubeclusterM.get({
+      const { data } = await new this.$Manager('kubeclusters', 'v1').get({
         id: `${cluster}/components-status`,
       })
       if (data && data.cephCSI && data.cephCSI.created === false) this.showCreateCephCSI = true
@@ -247,7 +256,7 @@ export default {
           name: 'rbd-climc',
           provisioner: 'rbd.csi.ceph.com',
         }
-        const { data } = await this.resourceM.performClassAction({
+        const { data } = await new this.$Manager('storageclasses', 'v1').performClassAction({
           action: 'connection-test',
           data: params,
         })
@@ -261,7 +270,7 @@ export default {
       }
     },
     async fetchCephcsiOpts (cluster) {
-      const { data } = await this.kubeclusterM.get({
+      const { data } = await new this.$Manager('kubeclusters', 'v1').get({
         id: `${cluster}/component-setting`,
         params: { type: 'cephCSI' },
       })
@@ -300,7 +309,7 @@ export default {
         name: values.name,
         provisioner: 'rbd.csi.ceph.com',
       }
-      return this.resourceM.create({ data })
+      return new this.$Manager('storageclasses', 'v1').create({ data })
     },
     async handleConfirm () {
       this.loading = true
