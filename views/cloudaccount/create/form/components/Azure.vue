@@ -17,9 +17,6 @@
           <help-link :href="docs[provider.toLowerCase()]">{{$t('cloudenv.text_237')}}</help-link>
         </div>
       </a-form-item>
-      <a-form-item :label="keySecretField.label.s">
-        <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
-      </a-form-item>
       <a-form-item>
         <span slot="label">{{$t('cloudenv.text_239')}}<!-- <a-tooltip placement="top">
             <a-icon type="question-circle" color="grey" />
@@ -29,6 +26,9 @@
           </a-tooltip> -->
         </span>
         <a-input v-decorator="decorators.directory_id" :placeholder="$t('cloudenv.text_241')" />
+      </a-form-item>
+      <a-form-item :label="keySecretField.label.s">
+        <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
