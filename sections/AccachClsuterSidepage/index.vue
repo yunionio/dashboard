@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getTimeTableColumn } from '@/utils/common/tableColumn'
 
@@ -47,7 +46,12 @@ export default {
         resource: this.fetchData,
         idKey: 'cluster_id',
         filterOptions: {
-          name: getNameFilter(),
+          cluster_name: {
+            label: this.$t('k8s.text_243'),
+          },
+          resource_name: {
+            label: this.$t('k8s.text_409'),
+          },
         },
       }),
       groupActions: [

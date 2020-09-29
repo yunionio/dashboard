@@ -16,7 +16,7 @@
         style="width: 140px;" />
     </a-form-item>
     <a-form-item :wrapper-col="{ span: 20, offset: 3 }">
-      <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('k8s.text_285')}}</a-button>
+      <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{$t('k8s.text_49')}}</a-button>
       <a-button @click="cancel">{{$t('k8s.text_162')}}</a-button>
     </a-form-item>
   </a-form>
