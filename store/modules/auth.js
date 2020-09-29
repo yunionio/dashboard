@@ -288,6 +288,7 @@ export default {
         await commit('LOGOUT')
         await commit('RESET_COOKIE')
         await commit('profile/REST_ID', null, { root: true })
+        await commit('common/REST_BILL_CURRENCY', null, { root: true })
         return response.data
       } catch (error) {
         throw error
