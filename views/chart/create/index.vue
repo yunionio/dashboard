@@ -280,9 +280,13 @@ export default {
       const params = { project_domain: _.get(this.form.fd, 'domain.key') }
       try {
         const { data: { data } } = await new this.$Manager('capabilities', 'v2').list({ params })
+
         if (data && data.length) {
           const index = this.definition.findIndex(val => {
             if (R.is(Object, val)) {
+              if (R.is(Array, val.key)) {
+                return val.key[0] === 'hypervisor'
+              }
               return val.key === 'hypervisor'
             }
             return val === 'hypervisor'
