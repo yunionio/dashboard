@@ -176,11 +176,20 @@ export default {
                   this.$router.push({ path: '/network/batch-edit', query: { id: this.list.selectedItems.map((item) => { return item.id }) } })
                 },
                 meta: (row) => {
-                  const isOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
-                  return {
-                    validate: isOneCloud,
-                    tooltip: !isOneCloud && this.$t('network.text_737'),
+                  const ret = { validate: true, tooltip: '' }
+                  const isAllOneCloud = this.list.selectedItems.every(item => item.brand === 'OneCloud')
+                  if (!isAllOneCloud) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('network.text_737')
+                    return ret
                   }
+                  const isAllDefault = this.list.selectedItems.every(item => item.vpc_id === 'default')
+                  if (!isAllDefault) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('network.text_650')
+                    return ret
+                  }
+                  return ret
                 },
               },
               {
