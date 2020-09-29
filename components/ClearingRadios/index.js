@@ -64,7 +64,7 @@ export default {
     ) : null
     return (
       <div>
-        <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={i18n.t('common_10')}>
+        <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={i18n.t('table.title.bill_type')}>
           {getFieldDecorator('billing_type', {
             initialValue: this.billing_type,
           })(

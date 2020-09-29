@@ -3736,7 +3736,7 @@
   "common_297": "Expires after {0}",
   "common_298": "This resource has been shared with the following {0} projects",
   "common_300": "This resource has been shared to the following {0} domains",
-  "common_301": "Virtual opportunity released at {0}",
+  "common_301": "The resource will be released on {0}",
   "common_305": "Host",
   "common_306": "{0} format matching error",
   "common_307": "Global VPC",
