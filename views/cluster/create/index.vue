@@ -44,9 +44,9 @@
           :filterable="true"
           :select-props="{ placeholder: $t('k8s.text_154') }" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_155')" v-bind="formItemLayout" v-if="isAdminMode">
+      <!-- <a-form-item :label="$t('k8s.text_155')" v-bind="formItemLayout" v-if="isAdminMode">
         <a-switch :checkedChildren="$t('k8s.text_156')" :unCheckedChildren="$t('k8s.text_157')" v-decorator="decorators.is_public" />
-      </a-form-item>
+      </a-form-item> -->
       <a-form-item :label="$t('k8s.text_158')" v-bind="formItemLayout">
         <a-switch :checkedChildren="$t('k8s.text_156')" :unCheckedChildren="$t('k8s.text_157')" v-decorator="decorators.isConfigImage" @change="isConfigImageChange" />
       </a-form-item>
@@ -409,10 +409,10 @@ export default {
       })
     },
     genData (data) {
-      const { hypervisor, is_public: isPublic, version: k8sVersion, name, zone, cloudregion } = data
+      const { hypervisor, version: k8sVersion, name, zone, cloudregion } = data
       const values = {
         hypervisor,
-        is_public: isPublic,
+        // is_public: isPublic,
         version: k8sVersion,
         machines: [],
         name,
