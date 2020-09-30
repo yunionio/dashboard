@@ -36,6 +36,7 @@ import { zoneTypes } from '../constants'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { validate } from '@/utils/validate'
 
 export default {
   name: 'DnsZoneCreateDialog',
@@ -53,7 +54,16 @@ export default {
         zoneTypes,
       },
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
+        fd: {
+          zoneType,
+        },
       },
       decorators: {
         project_domain: [
@@ -68,7 +78,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('network.text_157') },
-              { validator: this.$validate('domain') },
+              { validator: this.checkDomainHandle },
             ],
           },
         ],
@@ -122,6 +132,14 @@ export default {
     },
     handleDomainChange (val) {
       this.project_domain = val
+    },
+    checkDomainHandle (rule, value, callback) {
+      if (this.form.fd.zoneType === 'PublicZone') {
+        if (validate(value, 'domain') === false || validate(value, 'domain').result === false) {
+          callback(new Error(this.$t('network.text_178')))
+        }
+      }
+      callback()
     },
   },
 }
