@@ -46,11 +46,12 @@ export default {
     detailTabs () {
       const tabs = [
         { label: this.$t('sidepage.tab.label.detail'), key: 'commonalert-detail' },
+        { label: this.$t('monitor.text_10'), key: 'commonalertrecord' },
         { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ]
-      if (this.$store.getters.isAdminMode) {
-        tabs.splice(1, 0, { label: this.$t('monitor.text_10'), key: 'commonalertrecord' })
-      }
+      // if (this.$store.getters.isAdminMode) {
+      //   tabs.splice(1, 0, { label: this.$t('monitor.text_10'), key: 'commonalertrecord' })
+      // }
       return tabs
     },
   },
