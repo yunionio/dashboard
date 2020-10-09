@@ -52,6 +52,7 @@ export default {
           field: 'guest_gateway',
           title: this.$t('network.text_654'),
         },
+        getCopyWithContentTableColumn({ field: 'wire', title: this.$t('res.wire') }),
         {
           field: 'ports',
           title: this.$t('network.text_622'),
