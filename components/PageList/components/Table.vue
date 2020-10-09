@@ -218,8 +218,10 @@ export default {
       const gridEl = this.$refs.grid.$el
       const tableBodyEl = gridEl.querySelector('.vxe-table--body-wrapper .vxe-table--body')
       addResizeListener(tableBodyEl, this.updateFloatingScroll)
+      window.addEventListener('resize', this.updateFloatingScroll)
       this.$once('hook:beforeDestroy', () => {
         removeResizeListener(tableBodyEl, this.updateFloatingScroll)
+        window.removeEventListener('resize', this.updateFloatingScroll)
       })
     },
     // 更新虚拟滚动条
