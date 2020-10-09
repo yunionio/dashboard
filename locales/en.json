@@ -2192,7 +2192,9 @@
     "disk": "Disk",
     "disks": "Disks",
     "cloudprovider": "Cloud provider",
-    "cloudproviders": "Cloud providers"
+    "cloudproviders": "Cloud providers",
+    "wire": "Wire",
+    "wires": "Wires"
   },
   "table": {
     "title": {
