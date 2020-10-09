@@ -372,7 +372,6 @@ export default {
             if (res.data.can_create) {
               resolve(data)
             } else {
-              console.log(genCreateData.getForecastErrors(res.data), 'genCreateData.getForecastErrors(res.data)')
               this.errors = genCreateData.getForecastErrors(res.data)
               this.submiting = false
               reject(this.errors)
