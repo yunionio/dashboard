@@ -74,6 +74,7 @@ export default {
           title: this.$t('cloudenv.text_322'),
           field: 'logAction',
           hideField: true,
+          message: row => row.action,
           slotCallback: (row) => {
             return row.action
           },
