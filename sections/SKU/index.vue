@@ -251,7 +251,6 @@ export default {
           this.setSku({})
         }
       },
-      deep: true,
     },
     skuResults: {
       handler (val, oldV) {
@@ -265,7 +264,7 @@ export default {
   created () {
     this.skusM = new Manager('serverskus')
     this.ratesM = new Manager('cloud_sku_rates', 'v1')
-    this.fetchData()
+    if (this.skuParams && !R.isEmpty(this.skuParams)) this.fetchData()
   },
   methods: {
     fetchData () {
