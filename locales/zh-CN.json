@@ -2197,7 +2197,9 @@
     "disk": "@:dictionary.disk",
     "disks": "@:dictionary.disk",
     "cloudprovider": "@:dictionary.cloudprovider",
-    "cloudproviders": "@:dictionary.cloudprovider"
+    "cloudproviders": "@:dictionary.cloudprovider",
+    "wire": "@:dictionary.wire",
+    "wires": "@:dictionary.wire"
   },
   "table": {
     "title": {
