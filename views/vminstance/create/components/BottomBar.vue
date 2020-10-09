@@ -379,12 +379,12 @@ export default {
       if (this.fd.backupEnable) {
         params.backup_host = true
       }
-      // try {
-      const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
-      this.pricesList = data
-      // } catch (error) {
-      //   console.log(error)
-      // }
+      try {
+        const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
+        this.pricesList = data
+      } catch (error) {
+        throw error
+      }
     },
   },
 }

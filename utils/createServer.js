@@ -1100,8 +1100,8 @@ export class GenCreateData {
     }
     return {
       errors,
-      allow_count: data.allow_count,
-      req_count: data.req_count,
+      allow_count: data.allow_count || 0,
+      req_count: data.req_count || 1,
       not_allow_reasons: data.not_allow_reasons,
     }
   }
