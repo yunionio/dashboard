@@ -20,8 +20,8 @@
         <li class="mb-3" v-for="(item, idx) of errors.errors" :key="idx">
           <div class="mb-1">{{ item.message }}</div>
           <a-collapse :bordered="false">
-            <a-collapse-panel key="1" :header="$t('compute.text_1314')">
-              <ul class="list sec-list" v-if="item.children">
+            <a-collapse-panel key="1" :header="$t('compute.text_1314')" v-if="item.children && item.children.length">
+              <ul class="list sec-list">
                 <li v-for="(child, childIdx) of item.children" :key="`child-${childIdx}`">
                   {{ child }}
                   <div class="divider" v-if="childIdx !== item.children.length - 1" />
