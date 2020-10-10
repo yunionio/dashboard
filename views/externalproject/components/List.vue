@@ -12,6 +12,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import {
   getTimeTableColumn,
+  getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -43,21 +44,7 @@ export default {
           field: 'name',
           title: this.$t('cloudenv.text_386'),
         },
-        {
-          field: 'tenant',
-          title: this.$t('cloudenv.text_387'),
-          slots: {
-            default: ({ row }) => {
-              return [
-                <side-page-trigger permission='projects_get' name='ProjectSidePage' id={row.tenant_id} vm={this}>{row.tenant}</side-page-trigger>,
-              ]
-            },
-          },
-        },
-        {
-          field: 'project_domain',
-          title: this.$t('res.domain'),
-        },
+        getProjectTableColumn(),
         getTimeTableColumn({
           field: 'created_at',
           title: this.$t('cloudenv.text_103'),
