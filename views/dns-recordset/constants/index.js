@@ -18,8 +18,9 @@ export const ttls = [
 ]
 
 export const providers = [
-  { label: i18n.t('cloudenv.text_148'), value: 'Qcloud' }, // 腾讯云
+  { label: i18n.t('network.text_251'), value: 'Qcloud' }, // 腾讯云
   { label: 'AWS', value: 'Aws' }, // AWS
+  { label: i18n.t('network.text_250'), value: 'Aliyun' }, // 阿里云
 ]
 
 export const policy_types = {

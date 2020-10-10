@@ -248,7 +248,7 @@ export default {
           meta: {
             label: i18n.t('dictionary.dns_zone'),
             permission: 'dnszone_list',
-            hidden: () => store.getters.isProjectMode || !hasSetupKey(['aws', 'qcloud']),
+            hidden: () => store.getters.isProjectMode || !hasSetupKey(['aws', 'qcloud', 'aliyun']),
           },
           component: Layout,
           children: [

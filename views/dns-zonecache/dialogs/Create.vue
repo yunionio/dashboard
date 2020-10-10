@@ -86,6 +86,7 @@ export default {
       this.providerParams = {
         usable: true,
         provider: e,
+        project_domain: this.params.resData.project_domain,
       }
     },
     doSubmit (data) {
