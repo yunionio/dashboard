@@ -3,7 +3,7 @@
     <a-select-option v-for="item in imageOptions" :key="item.id" :value="item.id">
       <div>
         <div>{{ item.name }}</div>
-        <div class="oc-selected-display-none text-color-secondary" v-if="showExternalId && item.external_id">镜像ID: {{ item.external_id }}</div>
+        <div class="oc-selected-display-none text-color-secondary" v-if="showExternalId && item.external_id">{{ $t('compute.text_1346') }}: {{ item.external_id }}</div>
       </div>
       <!-- <div class="d-flex align-items-center">
         <span class="flex-fill mr-2">{{ item.name }}</span>
