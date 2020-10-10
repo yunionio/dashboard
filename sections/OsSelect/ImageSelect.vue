@@ -26,7 +26,7 @@
       </a-col>
       <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
-          <image-select-template v-decorator="decorator.image" :imageOpts="imageOptions" @imageChange="imageChange" :loading="loading" />
+          <image-select-template v-decorator="decorator.image" :imageOpts="imageOptions" @imageChange="imageChange" :loading="loading" :imageType="imageType" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -374,7 +374,7 @@ export default {
       }
     },
     async fetchCacheimages () {
-      if (!this.isVMware && (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams))) return
+      if (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams)) return
       if (!this.isPublicImage && !this.isPrivateImage && !this.isVMware) return // 阻止不必要的请求，仅这三种情况需要渲染的是cacheimage，而且现在没有[需要标出哪些已缓存]的功能了
       this.images.cacheimagesList = []
       const params = {
