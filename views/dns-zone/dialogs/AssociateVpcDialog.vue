@@ -97,10 +97,10 @@ export default {
         usable_vpc: true,
         scope: this.scope,
         cloudregion_id: this.regionId,
-        filter: 'provider.in(Aws, OneCloud)',
+        filter: 'provider.in(Aws, Aliyun, OneCloud)',
       }
       if (this.isAdminMode) {
-        params.project_domain = this.project_domain
+        params.project_domain = this.params.data[0].project_domain
         delete params.scope
       }
       if (!this.regionId) return {}
@@ -108,13 +108,13 @@ export default {
     },
     cityParams () {
       return {
-        filter: 'provider.in(Aws, OneCloud)',
+        filter: 'provider.in(Aws, Aliyun, OneCloud)',
         scope: this.scope,
       }
     },
     providerParams () {
       return {
-        filter: 'provider.in(Aws, OneCloud)',
+        filter: 'provider.in(Aws, Aliyun, OneCloud)',
         scope: this.scope,
       }
     },

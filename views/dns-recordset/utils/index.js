@@ -18,7 +18,7 @@ export const getDnsTypes = ({ zone_type }) => {
 export const getDnsProviders = (providers, { zone_type }) => {
   const dnsProviderMap = {
     publicZones: ['Aws', 'Qcloud'],
-    privateZones: ['Aws'],
+    privateZones: ['Aws', 'Aliyun'],
   }
   return providers.filter((item) => {
     if (isPublicZone(zone_type)) {
