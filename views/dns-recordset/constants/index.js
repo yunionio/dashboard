@@ -64,8 +64,9 @@ export const policy_values = {
 
 export const policyParamsMap = {
   provider: {
-    Qcloud: i18n.t('cloudenv.text_148'),
+    Qcloud: i18n.t('network.text_251'),
     Aws: 'AWS',
+    Aliyun: i18n.t('network.text_250'),
   },
   policy_type: {
     Simple: i18n.t('common_712'),
