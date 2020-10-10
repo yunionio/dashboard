@@ -11,8 +11,12 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode']),
   },
-  destroyed () {
-    this.webconsoleManager = null
+  data () {
+    return {
+      readyToBlur: false,
+      hashPlugin: false,
+      timer: null,
+    }
   },
   created () {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
@@ -37,7 +41,7 @@ export default {
                 action: obj.id,
               }).then(({ data }) => {
                 if (isValidURL(data.connect_params)) {
-                  open(data.connect_params)
+                  this.open(obj, data.connect_params)
                 } else {
                   this.openWebConsole(obj, data)
                 }
@@ -1140,6 +1144,14 @@ export default {
       },
     ]
   },
+  destroyed () {
+    this.webconsoleManager = null
+    window.removeEventListener('blur', this.blurHandle)
+    clearTimeout(this.timer)
+  },
+  mounted () {
+    window.addEventListener('blur', this.blurHandle)
+  },
   methods: {
     openWebConsole (obj, data) {
       let connectParams = qs.parse(data.connect_params)
@@ -1160,6 +1172,29 @@ export default {
       }
       const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
       window.open(href)
+    },
+    open (obj, url) {
+      if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
+        this.readyToBlur = true
+        window.location.href = url
+
+        this.timer = setTimeout(() => {
+          if (!this.hashPlugin) {
+            this.createDialog('VmrcDownload', {
+              data: [obj],
+              columns: this.columns,
+              onManager: this.onManager,
+            })
+          }
+        }, 1000)
+      } else {
+        window.open(url)
+      }
+    },
+    blurHandle () {
+      if (this.readyToBlur) {
+        this.hashPlugin = true
+      }
     },
   },
 }
