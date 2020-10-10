@@ -523,6 +523,7 @@ export default {
           if (provider === 'Aws') {
             return item !== 'Failover'
           }
+          return true
         })
         return types.map((item) => {
           return {
