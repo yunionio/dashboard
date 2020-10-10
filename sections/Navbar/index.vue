@@ -93,7 +93,7 @@
           <a-tooltip :title="$t('navbar.button.external_links')" placement="right">
             <icon type="navbar-setting" style="font-size: 24px; line-height: 1;"  />
           </a-tooltip>
-          <span class="ml-2 text-truncate products-label" style="line-height: normal;">{{$t('brand')}}</span>
+          <span class="ml-2 text-truncate products-label" style="line-height: normal;">{{$t('dictionary.endpoint')}}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
