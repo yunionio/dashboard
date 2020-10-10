@@ -1309,5 +1309,8 @@
   "compute.text_1342": "Failed to create a backup machine: The automatic backup machine creation has failed {num} times, the next time the backup machine will be automatically created: {time}, {link }",
   "compute.text_1343": "Failed to switch the standby machine: The automatic switching of the standby machine has failed {num} times, the next time the standby machine is automatically switched: {time}, {link }",
   "compute.text_1344": "The hard disk mounted on the virtual machine does not support separate removal, please go to the virtual machine recycle bin list to clear the corresponding virtual machine",
-  "compute.text_1345": "Main account:"
+  "compute.text_1345": "Main account:",
+  "compute.vmrc_tips": "The host version is lower than 6.5, and vmrc will be used to open the console. The system detects that the vmrc client is not installed on the machine you are using, please click first",
+  "compute.vmrc_link": "Link",
+  "compute.vmrc_download": "Download"
 }
