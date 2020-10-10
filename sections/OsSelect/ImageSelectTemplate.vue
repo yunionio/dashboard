@@ -1,7 +1,10 @@
 <template>
   <a-select label-in-value :value="value" :loading="loading" @change="imageChange" :filterOption="filterOption" :showSearch="true" option-filter-prop="children" :placeholder="$t('compute.text_214')" allowClear>
     <a-select-option v-for="item in imageOptions" :key="item.id" :value="item.id">
-      {{ item.name }}
+      <div>
+        <div>{{ item.name }}</div>
+        <div class="oc-selected-display-none text-color-secondary" v-if="showExternalId && item.external_id">镜像ID: {{ item.external_id }}</div>
+      </div>
       <!-- <div class="d-flex align-items-center">
         <span class="flex-fill mr-2">{{ item.name }}</span>
         <a-tag v-show="item.feData.cached" color="green">{{$t('compute.text_152')}}</a-tag>
@@ -13,6 +16,7 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
+import { IMAGES_TYPE_MAP } from '@/constants/compute'
 
 export default {
   name: 'ImageSelectTemplate',
@@ -27,10 +31,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    imageType: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
     imageOptions () {
       return this.imageOpts.filter((item) => { return !item.hidden })
+    },
+    showExternalId () {
+      const showExternalIdList = [IMAGES_TYPE_MAP.public.key, IMAGES_TYPE_MAP.public_customize.key]
+      if (showExternalIdList.includes(this.imageType)) {
+        return true
+      }
+      return false
     },
   },
   methods: {
@@ -47,10 +62,11 @@ export default {
       this.$emit('change', imageObj)
       this.$emit('imageChange', imageObj)
     },
-    filterOption (input, option) {
-      return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      )
+    filterOption (inp, option) {
+      const input = inp.toLowerCase()
+      const text = _.get(option.componentOptions, 'children[0].children[0].children[0].text') || ''
+      const textId = _.get(option.componentOptions, 'children[0].children[1].children[0].text') || ''
+      return text.toLowerCase().indexOf(input) >= 0 || textId.toLowerCase().indexOf(input) >= 0
     },
   },
 }
