@@ -2094,7 +2094,7 @@
     "nat": "NAT Gateway",
     "network": "IP Subnets",
     "networkinterface": "Elastic Network Card",
-    "notification": "System Messages",
+    "notification": "Messages",
     "notify": "Notification Service",
     "parameter": "Configuration",
     "physicalmachine": "Physical Machine",
