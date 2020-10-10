@@ -5,7 +5,7 @@
       {{ $t('compute.vmrc_tips') }}<a href="http://www.vmware.com/go/download-vmrc" target="_blank"> {{ $t('compute.vmrc_link') }} </a>{{ $t('compute.vmrc_download') }}
     </div>
     <div slot="footer">
-      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
+      <a-button type="primary" @click="cancelDialog">{{ $t('dialog.ok') }}</a-button>
     </div>
   </base-dialog>
 </template>
