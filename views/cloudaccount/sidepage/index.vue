@@ -56,7 +56,7 @@ export default {
       const detailTabs = [
         { label: this.$t('cloudenv.text_237'), key: 'cloudaccount-detail' },
         { label: this.$t('cloudenv.text_318'), key: 'cloudprovider-list' },
-        { label: this.$t('dictionary.project'), key: 'externalproject-list' },
+        { label: this.$t('cloudenv.text_386'), key: 'externalproject-list' },
         { label: this.$t('cloudenv.text_319'), key: 'usage' },
         { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ]
