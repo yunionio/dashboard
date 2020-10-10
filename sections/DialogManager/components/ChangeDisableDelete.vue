@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -31,7 +32,14 @@ export default {
   name: 'ChangeDisableDelete',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const isAllNotDisable = this.params.data.every((item) => { return !item.disable_delete })
+    const isAllNotDisable = this.params.data.every((item) => {
+      let disable_delete = item.disable_delete
+      if (R.is(String, disable_delete)) {
+        if (disable_delete === 'true') disable_delete = true
+        if (disable_delete === 'false') disable_delete = false
+      }
+      return !disable_delete
+    })
     return {
       loading: false,
       form: {
@@ -87,8 +95,9 @@ export default {
         this.cancelDialog()
         this.$message.success(this.$t('common.success'))
       } catch (error) {
-        this.loading = false
         throw error
+      } finally {
+        this.loading = false
       }
     },
   },

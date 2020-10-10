@@ -39,7 +39,7 @@
           </template>
           <template v-else>
             <template v-for="item of userTags">
-              <a-popover trigger="click" v-model="checkedInfo[item.key].visible" :key="`${item.key}${item.value}`" destroyTooltipOnHide>
+              <a-popover trigger="click" v-model="checkedInfo[item.key].visible" :key="`${item.key}${item.value}`" destroyTooltipOnHide @visibleChange="visible => handleTagVisibleChange(item, visible)">
                 <template #content>
                   <div class="tag-update-wrap">
                     <div class="mb-1">{{ $t('common_112') }}</div>
@@ -56,7 +56,7 @@
                         <a-button size="small" block @click="updateTag(item)">{{ $t('common.ok') }}</a-button>
                       </a-col>
                       <a-col :span="12">
-                        <a-button size="small" block @click="() => checkedInfo[item.key].visible = false">{{ $t('common.cancel') }}</a-button>
+                        <a-button size="small" block @click="() => handleTagPopoverCancel(item)">{{ $t('common.cancel') }}</a-button>
                       </a-col>
                     </a-row>
                   </div>
@@ -338,6 +338,23 @@ export default {
       }, newChecked)
       this.checkedInfo = newCheckedInfo
       this.checked = newChecked
+    },
+    handleTagVisibleChange (item, visible) {
+      if (!visible) {
+        const newCheckedInfo = { ...this.checkedInfo }
+        newCheckedInfo[item.key] = {
+          visible: false,
+          title: getTagTitle(item.key),
+          value: item.value,
+          titleErrorMessage: '',
+          index: item.index,
+        }
+        this.checkedInfo = newCheckedInfo
+      }
+    },
+    handleTagPopoverCancel (item) {
+      this.checkedInfo[item.key].visible = false
+      this.handleTagVisibleChange(item, false)
     },
   },
 }

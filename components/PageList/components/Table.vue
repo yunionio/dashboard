@@ -297,10 +297,10 @@ export default {
         })
         // 有操作时，在操作后面增加一列空的占位，目的是使表格在计算宽度的时候更准确
         // 确保操作的按钮文字尽可能的有足够宽度能够显示完整
-        defaultColumns.push({
-          field: '_action_placeholder',
-          formatter: () => ' ',
-        })
+        // defaultColumns.push({
+        //   field: '_action_placeholder',
+        //   formatter: () => ' ',
+        // })
       }
       if (this.config && this.config.hiddenColumns) {
         R.forEach(item => {
