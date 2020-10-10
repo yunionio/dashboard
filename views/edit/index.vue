@@ -25,6 +25,7 @@
                 :col-num="colNum"
                 :row-height="rowHeight"
                 :max-rows="maxRows"
+                :vertical-compact="false"
                 :is-draggable="true"
                 :is-resizable="true"
                 :is-mirrored="false"
