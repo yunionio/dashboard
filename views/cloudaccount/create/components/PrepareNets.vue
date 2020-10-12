@@ -1,4 +1,5 @@
 <script>
+import * as R from 'ramda'
 import { isWithinRange } from '@/utils/validate'
 
 export default {
@@ -154,15 +155,18 @@ export default {
       {
         field: 'index0',
         title: this.$t('cloudenv.text_496'),
-        formatter: () => {
-          return ++index
+        formatter: ({ row }) => {
+          if (row[0] && row[0].name) {
+            return ++index
+          }
+          return '-'
         },
       },
       {
         field: 'name0',
         title: this.$t('table.title.name'),
         formatter: ({ row }) => {
-          return row[0] && row[0].name
+          return (row[0] && row[0].name) || '-'
         },
       },
       {
@@ -177,22 +181,28 @@ export default {
         title: this.$t('cloudenv.text_495'),
         slots: {
           default: ({ row }) => {
-            return row[0] && row[0].isSuitable ? [<a-icon class="success-color" type="check-circle" style="font-size: 19px" />] : [<a-icon class="error-color" type="close-circle" style="font-size: 19px" />]
+            if (!R.isNil(row[0] && row[0].isSuitable)) {
+              return row[0] && row[0].isSuitable ? [<a-icon class="success-color" type="check-circle" style="font-size: 19px" />] : [<a-icon class="error-color" type="close-circle" style="font-size: 19px" />]
+            }
+            return '-'
           },
         },
       },
       {
         field: 'index1',
         title: this.$t('cloudenv.text_496'),
-        formatter: () => {
-          return ++index
+        formatter: ({ row }) => {
+          if (row[1] && row[1].name) {
+            return ++index
+          }
+          return '-'
         },
       },
       {
         field: 'name1',
         title: this.$t('table.title.name'),
         formatter: ({ row }) => {
-          return row[1] && row[1].name
+          return (row[1] && row[1].name) || '-'
         },
       },
       {
@@ -207,7 +217,10 @@ export default {
         title: this.$t('cloudenv.text_495'),
         slots: {
           default: ({ row }) => {
-            return row[1] && row[1].isSuitable ? [<a-icon class="success-color" type="check-circle" style="font-size: 19px" />] : [<a-icon class="error-color" type="close-circle" style="font-size: 19px" />]
+            if (!R.isNil(row[1] && row[1].isSuitable)) {
+              return row[1] && row[1].isSuitable ? [<a-icon class="success-color" type="check-circle" style="font-size: 19px" />] : [<a-icon class="error-color" type="close-circle" style="font-size: 19px" />]
+            }
+            return '-'
           },
         },
       },
