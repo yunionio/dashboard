@@ -7,7 +7,7 @@
       :style="{ width: (showSync ? 'calc(100% - 22px)' : '100%'), 'min-width': minWidth }"
       :value="value"
       @blur="onBlur"
-      @change="change"
+      @change="val => change(val, true)"
       @search="loadOptsDebounce"
       :loading="loadingC">
       <div slot="dropdownRender" slot-scope="menu">
@@ -270,7 +270,7 @@ export default {
       this.query = undefined
       this.loadMoreOffset = 0
     },
-    change (val) {
+    change (val, isNative) {
       const changeValue = val
       if (R.is(Object, changeValue) && R.is(Array, changeValue.label)) { // 兼容 label-in-value 的形式
         const data = _.get(changeValue, 'label[0].componentOptions.propsData.data')
@@ -282,7 +282,7 @@ export default {
       // 同步当前选择项obj
       this.syncItem(changeValue)
       this.$emit('input', changeValue)
-      this.$emit('change', changeValue)
+      this.$emit('change', changeValue, isNative)
     },
     syncItem (value) {
       if (value) {
