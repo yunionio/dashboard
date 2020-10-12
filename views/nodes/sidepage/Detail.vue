@@ -75,6 +75,16 @@ export default {
       baseInfo: [
         getCopyWithContentTableColumn({ field: 'cluster', title: this.$t('k8s.text_19') }),
         {
+          field: 'status',
+          title: this.$t('k8s.text_35'),
+          minWidth: 70,
+          slots: {
+            default: ({ row }, h) => {
+              return [<span style={{ color: row.ready ? '#67C23A' : '#F56C6C' }}>{ row.ready ? 'Ready' : 'UnReady' }</span>]
+            },
+          },
+        },
+        {
           field: 'unschedulable',
           title: this.$t('k8s.text_296'),
           formatter: ({ cellValue }) => {
