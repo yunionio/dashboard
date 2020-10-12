@@ -526,5 +526,7 @@
   "cloudenv.text_491": "Groups",
   "cloudenv.text_492": "Create Group",
   "cloudenv.text_493": "Auto create",
-  "cloudenv.text_494": "The OpenStack platform must check the automatic creation of projects, and cancellation is not currently supported"
+  "cloudenv.text_494": "The OpenStack platform must check the automatic creation of projects, and cancellation is not currently supported",
+  "cloudenv.text_495": "Is suitable",
+  "cloudenv.text_496": "Index"
 }
