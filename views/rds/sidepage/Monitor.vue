@@ -130,33 +130,34 @@ export default {
         },
       }
       this.monitorList = resList.map(result => {
-        const { unit, transfer, fromItem } = result.constants
+        const { unit, transfer } = result.constants
         const isSizestrUnit = UNITS.includes(unit)
         let series = result.series
         if (!series) series = []
-        if (series.length && (fromItem.includes('disk'))) { // 虚拟机的逻辑暂时拿过来(未用到)这里会把不同路径下的磁盘监控信息都返回，在这里整理一下
-          let tag = 'name'
-          let label = ''
-          if (fromItem === 'disk') {
-            tag = 'path'
-            label = this.$t('db.text_186')
-          }
-          const columns = ['time']
-          const values = series[0].values.map(val => [val[0]])
-          series.forEach(val => {
-            columns.push(`${label}${val.tags[tag]}`)
-            for (let i = 0; i < values.length; i++) {
-              const noTimeValues = val.values[i].slice(1)
-              values[i].push(...noTimeValues)
-            }
-          })
-          series = [{
-            name: series[0].name,
-            columns, // ['time', '/', '/opt', '/opt/test']
-            values,
-            lineConfig,
-          }]
-        }
+        // if (series.length && (fromItem.includes('disk'))) { // 虚拟机的逻辑暂时拿过来(未用到)这里会把不同路径下的磁盘监控信息都返回，在这里整理一下
+        //   let tag = 'name'
+        //   let label = ''
+        //   if (fromItem === 'disk') {
+        //     tag = 'path'
+        //     label = this.$t('db.text_186')
+        //   }
+        //   const columns = ['time']
+        //   const values = series[0].values.map(val => [val[0]])
+        //   series.forEach(val => {
+        //     columns.push(`${label}${val.tags[tag]}`)
+        //     for (let i = 0; i < values.length; i++) {
+        //       const noTimeValues = val.values[i].slice(1)
+        //       values[i].push(...noTimeValues)
+        //     }
+        //   })
+        //   console.log({ columns, result })
+        //   series = [{
+        //     name: series[0].name,
+        //     columns, // ['time', '/', '/opt', '/opt/test']
+        //     values,
+        //     lineConfig,
+        //   }]
+        // }
         if (isSizestrUnit || unit === 'bps') {
           series = series.map(serie => {
             return autoComputeUnit(serie, unit, transfer)
