@@ -22,6 +22,7 @@ import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import globalSearchMixins from '@/mixins/globalSearch'
 // import { getSetPublicAction } from '@/utils/common/tableActions'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'SecgroupList',
@@ -48,6 +49,7 @@ export default {
         id: this.id,
         resource: 'secgroups',
         getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.secgroup).flat(),
         filterOptions: {
           name: getNameFilter(),
           ip: {
