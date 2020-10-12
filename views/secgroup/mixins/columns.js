@@ -4,6 +4,7 @@ import {
   getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
   getTagTableColumn,
+  getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -20,6 +21,7 @@ export default {
         },
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'secgroup', columns: () => this.columns }),
+      getStatusTableColumn({ statusModule: 'secgroup' }),
       {
         field: 'rules',
         title: i18n.t('compute.text_1025'),
