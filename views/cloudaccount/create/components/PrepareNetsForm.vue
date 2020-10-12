@@ -17,18 +17,18 @@
         <a-radio-button :value="false">{{$t('cloudenv.text_183')}}</a-radio-button>
       </a-radio-group>
       <div v-show="form.fc.getFieldValue('isCreate') || form.fc.getFieldValue('isCreate') === undefined">
-        <a-row :gutter="10" v-for="k in form.fc.getFieldValue('keys')" :key="k">
+        <a-row :gutter="8" v-for="k in form.fc.getFieldValue('keys')" :key="k">
           <a-col :span="4">
             <a-form-item>
               <a-input :addon-before="$t('db.text_60')"  v-decorator="formatDecorator(k, 'name')" :placeholder="$t('cloudenv.text_184')" />
             </a-form-item>
           </a-col>
-          <a-col :span="5">
+          <a-col :span="4">
             <a-form-item>
               <a-input :addon-before="$t('network.text_607')" @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_start')" :placeholder="$t('cloudenv.text_185')" />
             </a-form-item>
           </a-col>
-          <a-col :span="5">
+          <a-col :span="4">
             <a-form-item>
               <a-input :addon-before="$t('network.text_608')" @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_end')" :placeholder="$t('cloudenv.text_186')" />
             </a-form-item>
@@ -42,9 +42,14 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :span="5">
+          <a-col :span="4">
             <a-form-item>
               <a-input :addon-before="$t('network.text_610')" v-decorator="formatDecorator(k, 'guest_gateway')" :placeholder="$t('cloudenv.text_187')" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="3">
+            <a-form-item>
+              <a-input addon-before="VLAN ID" v-decorator="formatDecorator(k, 'vlan', 'vlan_id')" placeholder="VLAN ID" />
             </a-form-item>
           </a-col>
           <a-col :span="2">
@@ -57,7 +62,7 @@
         </div>
       </div>
       <div v-show="!form.fc.getFieldValue('isCreate') && form.fc.getFieldValue('isCreate') !== undefined" class="mt-2">
-          <a-alert :message="$t('cloudenv.text_189')" type="warning" show-icon />
+        <a-alert :message="$t('cloudenv.text_189')" type="warning" show-icon />
       </div>
     </a-form-item>
   </div>
@@ -155,6 +160,10 @@ export default {
             { validator: this.validateGateway },
           ],
         },
+        vlan: {
+          validateTrigger: ['change', 'blur'],
+          validateFirst: true,
+        },
       },
     }
   },
@@ -208,10 +217,16 @@ export default {
       }
       return ips
     },
-    formatDecorator (k, id) {
+    formatDecorator (k, id, initialValueKey) {
+      let initialValue
+      if (initialValueKey) {
+        initialValue = this.netInit[k] ? this.netInit[k][initialValueKey] : undefined
+      } else {
+        initialValue = this.netInit[k] ? this.netInit[k][id] : undefined
+      }
       return [`${k}.${id}`, {
         ...this.options[id],
-        initialValue: this.netInit[k] ? this.netInit[k][id] : undefined,
+        initialValue,
       }]
     },
     initNets () {
@@ -271,7 +286,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>
