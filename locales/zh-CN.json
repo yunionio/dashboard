@@ -129,7 +129,7 @@
       "set_auto_renew": "设置自动续费中",
       "set_auto_renew_failed": "设置自动续费失败",
       "converted": "转换完成",
-      "tempalte_saving": "开始创建主机模版",
+      "tempalte_saving": "开始创建主机模板",
       "template_save_failed": "创建主机失败"
     },
     "network": {
@@ -2512,8 +2512,8 @@
   "scope.text_112": "根据您选择的平台或功能会显示相应菜单,其它菜单将会隐藏, 请根据实际情况选择, 后续如需调整可点击右上角 “",
   "scope.text_113": "” 选择「功能选择」重新进入配置即可",
   "scope.text_114": "全选",
-  "scope.text_115": "只有选择OneStack平台才支持选择该功能",
-  "scope.text_116": "请至少选择OneStack、公有云纳管及私有云&虚拟化平台中至少一个平台",
+  "scope.text_115": "只有选择KVM平台才支持选择该功能",
+  "scope.text_116": "请至少选择KVM、公有云纳管及私有云&虚拟化平台中至少一个平台",
   "scope.text_117": "删除Ceph存储",
   "scope.text_118": "关联宿主机",
   "scope.text_119": "状态",
