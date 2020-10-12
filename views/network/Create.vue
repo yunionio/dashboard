@@ -167,11 +167,12 @@ export default {
     AreaSelects,
   },
   data () {
-    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
+    const cloudEnvOptions = getCloudEnvOptions('network_manage_brands', true)
     const queryType = this.$route.query.type
     let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
     let routerQuery = this.$route.query.type
     if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
+      console.log(cloudEnvOptions)
       cloudEnv = cloudEnvOptions[0].key
       routerQuery = cloudEnv === 'onpremise' ? 'idc' : cloudEnv
     }

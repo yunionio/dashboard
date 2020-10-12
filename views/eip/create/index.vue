@@ -96,7 +96,7 @@ export default {
     BottomBar,
   },
   data () {
-    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands', true)
+    const cloudEnvOptions = getCloudEnvOptions('network_manage_brands', true)
     const queryType = this.$route.query.type
     let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
     let routerQuery = this.$route.query.type
