@@ -270,13 +270,13 @@ export default {
       this.$refs.NETWORK.fetchs(async (rets) => {
         await this.$nextTick()
         const { vpcList, networkList } = rets
-        // 判断当前选择的主机模版中的VPC是否存在VPC列表中
+        // 判断当前选择的主机模板中的VPC是否存在VPC列表中
         const _vpcId = fc.getFieldValue('vpc')
         if (vpcList !== undefined && _vpcId) {
           this.isDeleteVpc = vpcList.length === 0 || !vpcList.find(item => item.id === _vpcId)
           fc.validateFields(['vpc'])
         }
-        // 判断当前选择的主机模版中的netwrok是否存在netwrok列表中
+        // 判断当前选择的主机模板中的netwrok是否存在netwrok列表中
         const _networkId = fc.getFieldValue('network')
         if (networkList !== undefined && _networkId) {
           this.isDeleteNetwork = networkList.length === 0 || !networkList.find(item => item.id === _networkId)
