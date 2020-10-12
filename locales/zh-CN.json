@@ -198,7 +198,8 @@
       "delete_failed": "删除失败",
       "init": "初始化",
       "cache_fail": "缓存失败",
-      "saving": "正在保存"
+      "saving": "正在保存",
+      "active": "可用"
     },
     "cloudaccount": {
       "init": "初始化",

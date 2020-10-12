@@ -22,7 +22,7 @@ export default {
   },
   imageCache: {
     danger: ['delete_failed', 'cache_fail'],
-    success: ['ready'],
+    success: ['ready', 'active'],
     info: ['init'],
   },
   // 特殊状态，表示启用禁用
