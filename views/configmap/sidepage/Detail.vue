@@ -11,6 +11,7 @@
 
 <script>
 import DataView from '@K8S/sections/DataView'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 
 export default {
   name: 'K8sConfigmapDetail',
@@ -40,6 +41,7 @@ export default {
             },
           },
         },
+        k8sStatusColumn(),
         {
           field: 'cluster',
           title: this.$t('k8s.text_19'),
