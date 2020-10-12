@@ -413,7 +413,7 @@ export default {
         data.values_json.project = data.project
         data.values_json.envs = {
           project_id: data.project,
-          domain_id: data.domain,
+          domain_id: data.domain || 'default', // 兼容没开启三级权限情况
         }
       } else {
         const sets = {}
