@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
+
 export default {
   name: 'K8sServiceDetail',
   props: {
@@ -37,6 +39,7 @@ export default {
             },
           },
         },
+        k8sStatusColumn(),
         {
           field: 'cluster',
           title: this.$t('k8s.text_19'),

@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
+
 export default {
   name: 'K8sIngressDetail',
   props: {
@@ -37,6 +39,7 @@ export default {
             },
           },
         },
+        k8sStatusColumn(),
         {
           field: 'cluster',
           title: this.$t('k8s.text_19'),
@@ -50,6 +53,7 @@ export default {
           title: this.$t('k8s.text_240'),
           slots: {
             default: ({ row }) => {
+              if (!row.endpoints) return '-'
               return row.endpoints.filter(v => v.host).map(v => {
                 let value = '-'
                 if (v.host && v.ports) value = `${v.host}:${v.ports}`

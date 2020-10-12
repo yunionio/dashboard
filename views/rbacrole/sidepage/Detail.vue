@@ -12,6 +12,7 @@
 
 <script>
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { k8sStatusColumn } from '@K8S/utils/tableColumns'
 
 export default {
   name: 'K8sRbacRoleDetail',
@@ -29,6 +30,7 @@ export default {
     return {
       baseInfo: [
         getCopyWithContentTableColumn({ field: 'cluster', title: this.$t('k8s.text_19') }),
+        k8sStatusColumn(),
         {
           field: 'creationTimestamp',
           title: this.$t('k8s.text_74'),

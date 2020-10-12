@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { k8sLabelColumn } from '@K8S/utils/tableColumns'
+import { k8sLabelColumn, k8sStatusColumn } from '@K8S/utils/tableColumns'
 
 export default {
   name: 'K8sCronJobDetail',
@@ -39,6 +39,7 @@ export default {
             },
           },
         },
+        k8sStatusColumn(),
         {
           field: 'cluster',
           title: this.$t('k8s.text_19'),
