@@ -198,7 +198,8 @@
       "delete_failed": "Deletion failed",
       "init": "Initialize",
       "cache_fail": "Cache Failed",
-      "saving": "Saving"
+      "saving": "Saving",
+      "active": "Available"
     },
     "cloudaccount": {
       "init": "Initialize",
