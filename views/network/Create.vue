@@ -172,7 +172,6 @@ export default {
     let cloudEnv = queryType === 'idc' ? 'onpremise' : this.$route.query.type
     let routerQuery = this.$route.query.type
     if (!cloudEnvOptions.find(val => val.key === cloudEnv)) {
-      console.log(cloudEnvOptions)
       cloudEnv = cloudEnvOptions[0].key
       routerQuery = cloudEnv === 'onpremise' ? 'idc' : cloudEnv
     }
