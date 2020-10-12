@@ -129,7 +129,7 @@
       "set_auto_renew": "设置自动续费中",
       "set_auto_renew_failed": "设置自动续费失败",
       "converted": "转换完成",
-      "tempalte_saving": "开始创建主机模版",
+      "tempalte_saving": "开始创建主机模板",
       "template_save_failed": "创建主机失败"
     },
     "network": {
