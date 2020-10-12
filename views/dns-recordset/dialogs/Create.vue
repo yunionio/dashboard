@@ -172,23 +172,21 @@ export default {
         if (parts.length !== 4) {
           callback(new Error(this.$t('network.text_179')))
         }
-        for (let i = 0; i < parts.length; i++) {
-          if (parts[i][0] < 0 || parts[i][0] > 65535) {
+        if (parts[0] < 0 || parts[0] > 65535) {
+          callback(new Error(this.$t('network.text_180')))
+        }
+        if (parts[1] < 0 || parts[1] > 99999) {
+          callback(new Error(this.$t('network.text_180')))
+        }
+        if (parts[2] < 0 || parts[2] > 65535) {
+          callback(new Error(this.$t('network.text_180')))
+        }
+        if (parts[3]) {
+          const domain = parts[3]
+          if (validate(domain, 'domain') === false || validate(domain, 'domain').result === false) {
             callback(new Error(this.$t('network.text_180')))
-          }
-          if (parts[i][1] < 0 || parts[i][1] > 99999) {
-            callback(new Error(this.$t('network.text_180')))
-          }
-          if (parts[i][2] < 0 || parts[i][2] > 65535) {
-            callback(new Error(this.$t('network.text_180')))
-          }
-          if (parts[i][3]) {
-            const domain = parts[i][3]
-            if (validate(domain, 'domain') === false || validate(domain, 'domain').result === false) {
-              callback(new Error(this.$t('network.text_180')))
-            } else {
-              callback()
-            }
+          } else {
+            callback()
           }
         }
       }
