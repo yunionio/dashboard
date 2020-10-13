@@ -689,7 +689,7 @@ export default {
                 count: this.diskOptionsDate[i].count,
                 range: this.diskOptionsDate[i].range,
                 adapter,
-                type: this.diskOptionsDate[i].type === 'HDD' ? 'rotate' : 'SSD',
+                type: this.diskOptionsDate[i].type === 'HDD' ? 'rotate' : 'ssd',
               }
               diskConfigs.push(configOption)
               for (var j = 0; j < rows.length; j++) {
