@@ -3,13 +3,13 @@
     <a-card class="mb-2 card" v-for="(item, i) in serverConfigList" :key="item.key">
       <a-button v-if="i !== 0" @click="decrease(item.key, i)" type="link" size="small" class="error-color position-absolute" style="right: 10px; top: 10px;">{{ $t('common.delete') }}</a-button>
       <a-form-item label="CPU" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.vcpu_count(i)" :formatter="value => $t('k8s.text_119', [value])" :parser="value => value.replace($t('k8s.text_100'), '')" :min="4" :max="32" />
+        <a-input-number v-decorator="decorator.vcpu_count(i)" :formatter="value => $t('k8s.text_119', [value])" :parser="v => parser(v, $t('k8s.text_100'))" :min="4" :max="32" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_101')" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.vmem_size(i)" :formatter="value => `${value}G`" :parser="value => value.replace('G', '')" :min="1" :max="128" />
+        <a-input-number v-decorator="decorator.vmem_size(i)" :formatter="value => `${value}G`" :parser="v => parser(v, 'G')" :min="1" :max="128" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_120')" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.disk(i)" :formatter="value => `${value}G`" :parser="value => value.replace('G', '')" :min="40" :max="500" />
+        <a-input-number v-decorator="decorator.disk(i)" :formatter="value => `${value}G`" :parser="v => parser(v, 'G', '100')" :min="40" :max="500" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_121')" v-bind="formItemLayout" required>
         <a-row :gutter="8">
@@ -30,13 +30,16 @@
                 :select-props="{ allowClear: true, placeholder: $t('k8s.text_122') }" />
             </a-form-item>
           </a-col>
-          <a-col :span="12">
-            <a-form-item class="mb-0 mr-2" v-if="item.ipShow" :wrapperCol="{ span: 24 }">
+          <a-col :span="10" v-if="item.ipShow">
+            <a-form-item class="mb-0 mr-2" :wrapperCol="{ span: 24 }">
               <a-input
                 :placeholder="$t('k8s.text_123')"
                 @change="e => ipChange(e, i)"
                 v-decorator="decorator.ip(i, item.network)" />
             </a-form-item>
+          </a-col>
+          <a-col :span="2">
+            <a-button v-if="item.ipShow" type="link" class="mr-1 mt-1" @click="hideIp(item)">{{$t('k8s.text_410')}}</a-button>
             <a-button v-else type="link" class="mr-1 mt-1" @click="showIp(item)">{{$t('k8s.text_124')}}</a-button>
           </a-col>
         </a-row>
@@ -54,7 +57,7 @@
         </a-select>
       </a-form-item>
       <a-form-item :label="$t('k8s.text_125')" v-bind="formItemLayout" :extra="$t('k8s.text_126')">
-        <a-input-number v-decorator="decorator.num(i)" :min="1" :max="item.ipShow ? 1 : 10" />
+        <a-input-number v-decorator="decorator.num(i)" :min="1" :max="item.ipShow ? 1 : 10"  :parser="v => parser(v, '', '1')" />
       </a-form-item>
     </a-card>
     <div class="d-flex align-items-center" v-if="serverConfigRemaining > 0">
@@ -116,6 +119,9 @@ export default {
     showIp (item) {
       item.ipShow = true
     },
+    hideIp (item) {
+      item.ipShow = false
+    },
     ipChange (e, i) {
       this.serverConfigList[i].ip = e.target.value
     },
@@ -130,8 +136,14 @@ export default {
       }
       this.serverConfigList.push(data)
     },
-    removeServer () {
-
+    parser (val, unit, defaultValue = '4') {
+      const value = val.replace(unit, '')
+      const valueNum = Number(value)
+      console.log({ val, unit, value, valueNum })
+      if (!Number.isNaN(valueNum) && R.is(Number, valueNum)) {
+        return value
+      }
+      return defaultValue
     },
   },
 }
