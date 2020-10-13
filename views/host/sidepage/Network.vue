@@ -47,9 +47,13 @@ export default {
             return row.index ? row.index : '0'
           },
         },
+        // getCopyWithContentTableColumn({ field: 'network', title: '网卡名称', sortable: true }),
+        getCopyWithContentTableColumn({ field: 'mac_addr', title: 'MAC地址', sortable: true }),
+        getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址', sortable: true }),
+        getCopyWithContentTableColumn({ field: 'driver', title: '驱动' }),
         getCopyWithContentTableColumn({
           field: 'network',
-          title: '网卡名称',
+          title: 'IP子网',
           hideField: true,
           slotCallback: row => {
             return [
@@ -57,10 +61,6 @@ export default {
             ]
           },
         }),
-        // getCopyWithContentTableColumn({ field: 'network', title: '网卡名称', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'mac_addr', title: 'MAC地址', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'ip_addr', title: 'IP地址', sortable: true }),
-        getCopyWithContentTableColumn({ field: 'driver', title: '驱动' }),
         // {
         //   field: 'bw_limit',
         //   title: '带宽限制',
