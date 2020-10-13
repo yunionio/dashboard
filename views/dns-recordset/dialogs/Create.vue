@@ -16,9 +16,11 @@
           <a-select
             v-decorator="decorators.dns_type"
             @change="dnsTypeChangeHandle">
-            <a-select-option v-for="v in options.dnsTypes" :value="v.value" :key="v.value">
-              {{ v.label }}
-            </a-select-option>
+            <template v-for="v in options.dnsTypes">
+              <a-select-option v-if="!(isMultiValueAnswer && v.value === 'CNAME')" :value="v.value" :key="v.value">
+                {{ v.label }}
+              </a-select-option>
+            </template>
           </a-select>
         </a-form-item>
         <a-form-item>
@@ -238,6 +240,7 @@ export default {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
           dns_type: 'A',
+          policy_type: '',
         },
       },
       decorators: {
@@ -356,6 +359,14 @@ export default {
     },
     isUpdate () {
       return this.params.type === 'update'
+    },
+    isMultiValueAnswer () {
+      if (this.form.fd.policy_type) {
+        const types = Object.values(this.form.fd.policy_type)
+        console.log(types)
+        return types.includes('MultiValueAnswer')
+      }
+      return false
     },
   },
   created () {
@@ -562,7 +573,7 @@ export default {
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
-        if (['dns_type'].includes(key)) {
+        if (['dns_type', 'policy_type'].includes(key)) {
           this.form.fd[key] = values[key]
         }
       })
