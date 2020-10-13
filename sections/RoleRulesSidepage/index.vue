@@ -96,7 +96,7 @@ export default {
         columns: this.columns.slice(0, 3),
         onManager: this.onManager,
         success: () => {
-          this.$emit('singleRefresh', this.data.id)
+          this.$emit('single-refresh', this.data.id)
         },
       })
     },
