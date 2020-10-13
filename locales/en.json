@@ -752,5 +752,7 @@
   "network.text_734": "The weight must be an integer between 0 and 255",
   "network.text_735": "Total {ports}, {ports_used} used (including reserved IP {reserve_vnics})",
   "network.text_736": "Confirm that the actual operation has been offline",
-  "network.text_737": "Only @:brand brand supports this operation"
+  "network.text_737": "Only @:brand brand supports this operation",
+  "network.text_738": "Used for DNS resolution in VPC",
+   "network.text_739": "For public DNS resolution"
 }
