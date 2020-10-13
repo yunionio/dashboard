@@ -129,7 +129,7 @@ export default {
         if (this.sku.sys_disk_type && !this.defaultSize) { // 有 defaultSize 表示是调整配置，不需要根据sku信息过滤
           const skuDiskTypes = this.sku.sys_disk_type.split(',')
           if (skuDiskTypes && skuDiskTypes.length) {
-            currentTypes = skuDiskTypes
+            currentTypes = currentTypes.filter(val => skuDiskTypes.includes(val))
           }
         } else {
           for (const obj in hypervisorDisks) {
