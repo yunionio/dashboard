@@ -190,7 +190,7 @@ export default {
       this.resOpts = {}
       this.resList = []
       this.sourceList = []
-      this.paramsChange(val, oldV, true)
+      if (val) this.paramsChange(val, oldV, true) // 加上判断，防止出现 /undefined？xxx=xxx 的请求
     },
     options: {
       handler (val) {
