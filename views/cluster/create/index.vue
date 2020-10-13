@@ -454,7 +454,6 @@ export default {
         this.$message.error(this.$t('common_468'))
         return
       }
-      this.loading = true
       try {
         const values = await this.form.fc.validateFields()
         const genValues = this.genData(values)
@@ -464,6 +463,7 @@ export default {
           this.loading = false
           return
         }
+        this.loading = true
         await this.doCreate(genValues)
         this.loading = false
         this.$router.push('/k8s-cluster')
