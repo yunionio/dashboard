@@ -33,7 +33,7 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
-import { STORAGE_AUTO } from '@Compute/constants'
+// import { STORAGE_AUTO } from '@Compute/constants'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { uuid, findAndUnshift, findAndPush } from '@/utils/utils'
@@ -191,9 +191,9 @@ export default {
           }
         }
       }
-      if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
-        ret[STORAGE_AUTO.key] = STORAGE_AUTO
-      }
+      // if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
+      //   ret[STORAGE_AUTO.key] = STORAGE_AUTO
+      // }
       if (this.hypervisor === HYPERVISORS_MAP.qcloud.key) {
         delete ret.local_nvme
         delete ret.local_pro
