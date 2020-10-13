@@ -208,7 +208,7 @@ export default {
             value: item.id,
           }
         })
-        // .filter(({ value }) => value === 'default')
+        if (area === 'default') this.vpcs = this.vpcs.filter(({ value }) => value === 'default')
       })
     },
     fetchZones () {
