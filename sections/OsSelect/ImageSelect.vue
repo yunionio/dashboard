@@ -9,6 +9,7 @@
             @change="cloudproviderChange"
             :params="cloudproviderParams"
             :isDefaultSelect="true"
+            :resList.sync="cloudproviderList"
             :select-props="{ placeholder: $t('compute.text_149'), disabled: imageCloudproviderDisabled }" />
         </a-form-item>
       </a-col>
@@ -115,6 +116,7 @@ export default {
       loading: false,
       imageOpts: [],
       cloudprovider: _.get(this.decorator, 'prefer_manager[1].initialValue') || '',
+      cloudproviderList: [],
     }
   },
   computed: {
@@ -250,6 +252,12 @@ export default {
       if (this.imagesInfo.osOpts && this.imagesInfo.osOpts.length) {
         const { os, image } = this.form.fc.getFieldsValue([this.decorator.os[0], this.decorator.image[0]])
         this.defaultSelect(os, image)
+      }
+    },
+    cloudproviderList (val) {
+      if (this.showCloudaccount && (!val || !val.length)) {
+        this.images.cacheimagesList = []
+        this.getImagesInfo()
       }
     },
   },
