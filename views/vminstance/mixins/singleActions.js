@@ -680,7 +680,7 @@ export default {
                   },
                 },
                 // {
-                //   label: '保存主机模版',
+                //   label: '保存主机模板',
                 //   action: () => {
                 //     this.createDialog('VmAddTemplateDialog', {
                 //       data: [obj],
