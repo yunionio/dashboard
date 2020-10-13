@@ -14,6 +14,15 @@ export default {
             this.refresh()
           })
         },
+        meta: obj => {
+          const meta = {
+            validate: true,
+          }
+          if (obj.isDefault) {
+            meta.validate = false
+          }
+          return meta
+        },
       },
       {
         label: i18n.t('k8s.text_201'),
