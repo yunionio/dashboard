@@ -363,7 +363,6 @@ export default {
     isMultiValueAnswer () {
       if (this.form.fd.policy_type) {
         const types = Object.values(this.form.fd.policy_type)
-        console.log(types)
         return types.includes('MultiValueAnswer')
       }
       return false
