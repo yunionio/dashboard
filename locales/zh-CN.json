@@ -754,5 +754,6 @@
   "network.text_736": "确认已经实际操作下线",
   "network.text_737": "只有@:brand平台支持此操作",
   "network.text_738": "用于VPC内的DNS解析",
-  "network.text_739": "用于公共DNS解析"
+  "network.text_739": "用于公共DNS解析",
+  "network.text_740": "当不设置解析线路时，表示记录以默认解析线路同步到各个公有云平台。"
 }
