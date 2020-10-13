@@ -189,7 +189,7 @@ export default {
     },
     disabledDateTime (current) {
       let currentHour = moment(this.expireDate).hour()
-      if (current && current > moment(this.expireDate)) {
+      if (moment().date() !== current.date() || moment(this.expireDate).date() !== current.date()) {
         currentHour = 0
       }
       return {
