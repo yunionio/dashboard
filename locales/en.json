@@ -754,5 +754,6 @@
   "network.text_736": "Confirm that the actual operation has been offline",
   "network.text_737": "Only @:brand brand supports this operation",
   "network.text_738": "Used for DNS resolution in VPC",
-   "network.text_739": "For public DNS resolution"
+   "network.text_739": "For public DNS resolution",
+   "network.text_740": "When the resolution line is not set, it means that the record is synchronized to each public cloud platform with the default resolution line."
 }
