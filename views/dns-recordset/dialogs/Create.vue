@@ -88,12 +88,15 @@
             <a-col :span="8">
               <a-form-item>
                 <a-select v-decorator="decorators.policy_type(item.key)" @change="(val) => policyTypeChangeHandle(val, item)">
-                  <a-select-option
-                    :key="i"
-                    :value="item.value"
-                    v-for="(item, i) in item.policy_types">
-                    {{item.label}}
-                  </a-select-option>
+                  <template
+                      v-for="(item, i) in item.policy_types">
+                    <a-select-option
+                      :key="i"
+                      :value="item.value"
+                      v-if="!(form.fd.dns_type === 'CNAME' && item.value === 'MultiValueAnswer')">
+                      {{item.label}}
+                    </a-select-option>
+                  </template>
                 </a-select>
               </a-form-item>
             </a-col>
