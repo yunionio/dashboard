@@ -61,7 +61,7 @@ export default {
           {
             validateFirst: true,
             rules: [
-              { required: true, message: i18n.t('network.text_283') },
+              { required: true, message: i18n.t('network.text_116') },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -274,9 +274,16 @@ export default {
       }
       return params
     },
+    cityParams () {
+      const params = {
+        ...this.scopeParams,
+      }
+      if (this.type === 'public') params.public_cloud = true
+      return params
+    },
     areaParams () {
       return {
-        cityParams: this.scopeParams,
+        cityParams: this.cityParams,
         providerParams: this.scopeParams,
         cloudregionParams: this.cloudregionParams,
         zoneParams: this.zoneParams,
