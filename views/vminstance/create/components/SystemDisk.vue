@@ -19,7 +19,7 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
-import { STORAGE_AUTO } from '@Compute/constants'
+// import { STORAGE_AUTO } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { findAndUnshift, findAndPush } from '@/utils/utils'
@@ -171,13 +171,13 @@ export default {
           }
         }
       }
-      if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
-        ret[STORAGE_AUTO.key] = {
-          ...STORAGE_AUTO,
-          sysMin: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
-          sysMax: STORAGE_AUTO.sysMax,
-        }
-      }
+      // if (this.isIDC && this.hypervisor !== HYPERVISORS_MAP.kvm.key) {
+      //   ret[STORAGE_AUTO.key] = {
+      //     ...STORAGE_AUTO,
+      //     sysMin: Math.max(this.imageMinDisk, DISK_MIN_SIZE),
+      //     sysMax: STORAGE_AUTO.sysMax,
+      //   }
+      // }
       if (this.hypervisor === HYPERVISORS_MAP.google.key) {
         delete ret['local-ssd']
       }
