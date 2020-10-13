@@ -18,7 +18,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'driver', title: '驱动' }),
       {
         field: 'guest_id',
-        title: '网络',
+        title: 'IP子网',
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 100,
