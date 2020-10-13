@@ -69,7 +69,14 @@
           </span>
           <a-input-number v-decorator="decorators.mx_priority" :min="1" :max="50" />
         </a-form-item>
-        <a-form-item :label="$t('common_696')">
+        <a-form-item>
+          <span slot="label">
+            {{ $t('common_696') }}
+            <a-tooltip class="item" effect="dark" placement="top">
+              <a-icon type="info-circle" />
+              <div slot="title">{{$t('network.text_740')}}</div>
+            </a-tooltip>
+          </span>
           <a-row
             :gutter="4"
             :key="item.key"
