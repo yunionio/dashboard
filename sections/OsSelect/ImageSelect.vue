@@ -376,7 +376,6 @@ export default {
     async fetchCacheimages () {
       if (R.isNil(this.cacheImageParams) || R.isEmpty(this.cacheImageParams)) return
       if (!this.isPublicImage && !this.isPrivateImage && !this.isVMware) return // 阻止不必要的请求，仅这三种情况需要渲染的是cacheimage，而且现在没有[需要标出哪些已缓存]的功能了
-      this.images.cacheimagesList = []
       const params = {
         details: false,
         order_by: 'ref_count',
@@ -401,6 +400,7 @@ export default {
         params.image_type = 'system'
       }
       this.loading = true
+      this.images.cacheimagesList = []
       try {
         const { data: { data = [] } } = await this.cachedimagesM.list({ params })
         this.loading = false
