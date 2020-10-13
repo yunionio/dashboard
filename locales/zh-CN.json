@@ -731,7 +731,7 @@
   "network.dns.chinamobile": "中国移动",
   "network.dns.cernet": "中国教育网",
   "network.dns.mainland": "境内",
-  "network.dns.oversea": "海外",
+  "network.dns.oversea": "境外",
   "network.dns.baidu": "百度",
   "network.dns.bing": "必应",
   "network.dns.google": "谷歌",
