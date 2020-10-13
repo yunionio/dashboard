@@ -111,7 +111,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="2">
-              <a-button shape="circle" icon="minus" size="small" @click="() => remove(item.key, idx)" class="mt-2" />
+              <a-button v-show="!item.isHiddenDelete" shape="circle" icon="minus" size="small" @click="() => remove(item.key, idx)" class="mt-2" />
             </a-col>
           </a-row>
           <div class="d-flex align-items-center mt-1" v-if="options.providers.length > trafficPolicies.length">
@@ -205,8 +205,11 @@ export default {
 
     const checkPolicyTxtValue = (rule, value, callback) => {
       const val = parseInt(value)
-      if (!val) {
+      if (!value) {
         callback(new Error(this.$t('network.text_733')))
+      }
+      if (!(/^\+?[1-9][0-9]*$/.test(value))) {
+        callback(new Error(this.$t('network.text_734')))
       }
       if (val < 0 || val > 255) {
         callback(new Error(this.$t('network.text_734')))
@@ -348,6 +351,9 @@ export default {
     isMX () {
       return this.form.fd.dns_type === 'MX'
     },
+    isUpdate () {
+      return this.params.type === 'update'
+    },
   },
   created () {
     this.recordsetManager = new this.$Manager('dns_recordsets')
@@ -374,6 +380,7 @@ export default {
         policy_types: policy_types,
         policy_type: curPolicyType,
         policy_values: policy_values,
+        isHiddenDelete: val.isHiddenDelete,
       })
 
       this.form.fc.getFieldDecorator(`provider[${uid}]`, this.decorators.provider(uid)[1])
@@ -396,7 +403,7 @@ export default {
     doCreate (data) {
       if (this.params.type === 'create') {
         return this.recordsetManager.create({ data })
-      } else if (this.params.type === 'update') {
+      } else if (this.isUpdate) {
         return this.recordsetManager.update({ id: this.params.data[0].id, data })
       } else if (this.params.type === 'clone') {
         return this.recordsetManager.create({ data })
@@ -464,7 +471,7 @@ export default {
       return data
     },
     backfillData () {
-      if (this.params.type === 'update' || this.params.type === 'clone') {
+      if (this.isUpdate || this.params.type === 'clone') {
         this._updateFormValue(this.params.data[0])
       }
     },
@@ -472,11 +479,14 @@ export default {
       const { name, dns_type, dns_value, ttl, traffic_policies = [], mx_priority } = val
 
       traffic_policies.forEach((item) => {
-        this.add(item)
+        this.add({
+          ...item,
+          isHiddenDelete: this.isUpdate,
+        })
       })
       this.$nextTick(() => {
         let _name = ''
-        if (this.params.type === 'update') {
+        if (this.isUpdate) {
           _name = name
         }
         const data = {
