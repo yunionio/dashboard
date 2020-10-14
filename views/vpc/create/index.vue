@@ -7,9 +7,6 @@
       <a-form-item v-bind="formItemLayout" :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
         <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
       </a-form-item>
-      <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('network.text_684')" />
-      </a-form-item>
       <area-selects
         class="mb-0"
         ref="areaSelects"
@@ -20,6 +17,9 @@
         :isRequired="true"
         :cloudregionMapper="cloudregionMapper"
         @change="handleRegionChange" />
+      <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+        <a-input v-decorator="decorators.name" :placeholder="$t('network.text_684')" />
+      </a-form-item>
       <a-form-item v-if="!isGoogle || cloudEnv !== 'public'" :label="$t('network.text_244')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
         <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
         <a-select v-decorator="decorators.cidr_block" v-else>
