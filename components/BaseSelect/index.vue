@@ -140,6 +140,15 @@ export default {
       type: String,
       default: '200px',
     },
+    destroyedCallBack: {
+      type: Function,
+      required: false,
+      default: () => {},
+    },
+    cancelToken: {
+      type: Object,
+      required: false,
+    },
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
@@ -225,6 +234,9 @@ export default {
   },
   mounted () {
     if (this._valid()) this.loadOptsDebounce()
+  },
+  destroyed () {
+    this.destroyedCallBack()
   },
   methods: {
     filterOption (input, option) {
@@ -376,7 +388,7 @@ export default {
     async fetchData (manager, params) {
       try {
         this.loading = true
-        const { data } = await manager.list({ params, ctx: this.ctx })
+        const { data } = await manager.list({ params, ctx: this.ctx, cancelToken: this.cancelToken })
         const _list = R.type(data) === 'Array' ? data : (R.type(data) === 'Object' && (data.data || []))
         let list = _list.map(val => ({ ...val, id: val[this.idKey], name: val[this.nameKey] }))
         const sourceList = list
