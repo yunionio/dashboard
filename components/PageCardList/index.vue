@@ -13,15 +13,17 @@
     <slot name="tool-actions-append" />
     <card-list v-if="hasData" :list="list.data" :cardFields="cardFields" :singleActions="singleActions" :layoutDirection="layoutDirection" />
     <loader v-else :loading="loading" class="mt-3" />
-    <a-pagination
-      v-show="showPageer && list.total !== 0"
-      class="my-3 text-center"
-      showSizeChanger
-      :pageSize.sync="list.limit"
-      :total="list.total"
-      @change="pageChange"
-      @showSizeChange="sizeChange"
-      :defaultCurrent="1" />
+    <div class="d-flex align-items-center justify-content-center" v-show="showPageer && list.total !== 0">
+      <a-pagination
+        class="my-3 text-center"
+        showSizeChanger
+        :pageSize.sync="list.limit"
+        :total="list.total"
+        @change="pageChange"
+        @showSizeChange="sizeChange"
+        :default-current="1" />
+        <div class="vxe-pager--total" style="font-size: 12px;">{{ $t('common_717', [list.total]) }}</div>
+    </div>
   </div>
 </template>
 
