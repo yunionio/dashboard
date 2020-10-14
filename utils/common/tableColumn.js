@@ -380,11 +380,28 @@ export const getAccountTableColumn = ({
   return {
     field,
     title,
-    width: 150,
-    formatter: ({ cellValue }) => {
-      return cellValue || '-'
-    },
+    minWidth: 120,
+    showOverflow: 'ellipsis',
     hidden: () => store.getters.isProjectMode,
+    slots: {
+      default: ({ row }, h) => {
+        const val = _.get(row, field)
+        const ret = []
+        ret.push(
+          <list-body-cell-wrap hide-field copy field={field} row={row}>
+            <span style={{ color: '#0A1F44' }}>{ val }</span>
+          </list-body-cell-wrap>,
+        )
+        if (row.manager) {
+          ret.push(
+            <list-body-cell-wrap hide-field copy field='manager' row={row}>
+              <span style={{ color: '#53627C' }}>{ row.manager }</span>
+            </list-body-cell-wrap>,
+          )
+        }
+        return ret
+      },
+    },
   }
 }
 
