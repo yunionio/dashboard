@@ -377,21 +377,21 @@ export default {
       if (this._border(first[end], second[start]) && this._comparePre(first[end], second[start])) {
         this.IPfromObj = {
           IPfrom: first[start],
-          name: first.name,
+          name: first.id,
         }
         this.IPtoObj = {
           IPto: second[end],
-          name: second.name,
+          name: second.id,
         }
         return true
       } else if (this._border(second[end], first[start]) && this._comparePre(second[end], first[start])) {
         this.IPfromObj = {
           IPfrom: second[start],
-          name: second.name,
+          name: second.id,
         }
         this.IPtoObj = {
           IPto: first[end],
-          name: first.name,
+          name: first.id,
         }
         return true
       } else {
