@@ -7,10 +7,10 @@
        <a-form
         :form="form.fc">
         <a-form-item label="CPU超售比" v-bind="formItemLayout">
-          <a-input-number v-decorator="decorators.cpu_cmtbound" :min="0" :step="0.1" />
+          <a-input-number v-decorator="decorators.cpu_cmtbound" :min="0.1" :step="0.1" />
         </a-form-item>
         <a-form-item label="内存超售比" v-bind="formItemLayout">
-          <a-input-number v-decorator="decorators.mem_cmtbound" :min="0" :max="1" :step="0.1" />
+          <a-input-number v-decorator="decorators.mem_cmtbound" :min="0.1" :max="1" :step="0.1" />
           <div style="font-size:12px" class="add-desc">默认为1，推荐0.8或0.9（预留少许给宿主机系统服务）</div>
         </a-form-item>
       </a-form>
@@ -47,7 +47,6 @@ export default {
                 required: true,
                 message: '请填写cpu超售比',
               },
-              { validator: this.checkCmtBound },
             ],
           },
         ],
@@ -61,7 +60,6 @@ export default {
                 required: true,
                 message: '请填写内存超售比',
               },
-              { validator: this.checkCmtBound },
             ],
           },
         ],
@@ -101,12 +99,6 @@ export default {
       } catch (error) {
         this.loading = false
       }
-    },
-    checkCmtBound (rule, value, callback) {
-      if (parseFloat(value) === 0) {
-        callback(new Error('超售比必须大于0'))
-      }
-      callback()
     },
   },
 }
