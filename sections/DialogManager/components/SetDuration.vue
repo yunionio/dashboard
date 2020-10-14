@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">
-          {{$t('common.text00059')}} <br />
+          <!-- {{$t('common.text00059')}} <br /> -->
           {{$t('common.text00060')}}
         </div>
       </a-alert>
