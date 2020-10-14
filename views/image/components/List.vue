@@ -86,6 +86,9 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
     groupActions () {
+      const ownerDomain = obj => this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+      const isOwnerProject = project => project === this.$store.getters.userInfo.projectId || project === this.$store.getters.userInfo.projectName
+
       const ImageImport = {
         label: this.$t('compute.text_642'),
         permission: 'images_create',
@@ -198,11 +201,50 @@ export default {
                   })
                 },
                 meta: () => {
-                  const validate = this.list.selectedItems.length > 0
-                  return {
-                    validate: validate,
-                    tooltip: !validate && this.$t('compute.text_647'),
+                  let ret = {
+                    validate: false,
+                    tooltip: '',
                   }
+                  for (const obj of this.list.selectedItems) {
+                    const actions = new Map([
+                      ['admin', () => {
+                        if (this.booleanTransfer(obj.is_standard)) {
+                          ret.tooltip = this.$t('compute.text_687')
+                          return ret
+                        }
+                        return ret
+                      }],
+                      ['domain', () => {
+                        if (this.booleanTransfer(obj.is_standard)) {
+                          ret.tooltip = this.$t('compute.text_688')
+                          return ret
+                        }
+                        if (!ownerDomain(obj)) {
+                          ret.tooltip = this.$t('compute.text_689')
+                          return ret
+                        }
+                        return ret
+                      }],
+                      ['user', () => {
+                        if (this.booleanTransfer(obj.is_standard)) {
+                          ret.tooltip = this.$t('compute.text_688')
+                          return ret
+                        }
+                        if (!isOwnerProject(obj.tenant_id)) {
+                          ret.tooltip = this.$t('compute.text_690')
+                          return ret
+                        }
+                        return ret
+                      }],
+                    ])
+                    const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                    ret = action.call(this)
+                    if (ret.tooltip) {
+                      break
+                    }
+                  }
+                  if (ret.tooltip) return ret
+                  return { validate: true, tooltip: '' }
                 },
               },
               {
