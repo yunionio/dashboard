@@ -148,7 +148,10 @@ export default {
         if (this.sku.data_disk_types) {
           const skuDiskTypes = this.sku.data_disk_types.split(',')
           if (skuDiskTypes && skuDiskTypes.length) {
-            currentTypes = currentTypes.filter(val => skuDiskTypes.includes(val))
+            currentTypes = currentTypes.filter(val => {
+              const type = val.split('/')[0]
+              return skuDiskTypes.includes(type)
+            })
           }
         } else {
           for (const obj in hypervisorDisks) {
