@@ -51,7 +51,7 @@
         </a-form-item>
         <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
       </template>
-      <a-tooltip v-else :title="ipsDisabled ? '主机数量大于1时无法手动配置IP' : null">
+      <a-tooltip v-else :title="ipBtnTooltip">
         <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
       </a-tooltip>
       <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
@@ -133,6 +133,9 @@ export default {
         vpc: this.networkList[0].vpc.id,
         ...this.networkParams,
       }
+    },
+    ipBtnTooltip () {
+      return this.ipsDisabled ? this.$t('common_718') : null
     },
   },
   watch: {
