@@ -482,11 +482,11 @@ export default {
       } else if (second.wire === first.wire) {
         this.IPfromObj = {
           IPfrom: second[start],
-          name: second.name,
+          name: second.id,
         }
         this.IPtoObj = {
           IPto: first[end],
-          name: first.name,
+          name: first.id,
         }
         return true
       } else {
