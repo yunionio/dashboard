@@ -20,7 +20,7 @@
         ref="networkConfigRef"
         :vpc-params="networkVpcParams"
         :vpc-resource="vpcResource"
-        :ipsDisabled="ipsDisabled"
+        :ipsDisable="ipsDisable"
         :network-resource-mapper="networkResourceMapper"
         :vpc-resource-mapper="vpcResourceMapper"
         :limit="form.fi.capability.max_nic_count" />
@@ -127,7 +127,7 @@ export default {
     }
   },
   computed: {
-    ipsDisabled () {
+    ipsDisable () {
       return this.serverCount > 1
     },
     configs () {
@@ -163,9 +163,10 @@ export default {
         this.networkComponent = value.networkType === NETWORK_OPTIONS_MAP.default.key ? '' : 'config'
       }
     },
-    hypervisor (val, oldVal) {
+    async hypervisor (val, oldVal) {
       if (val === HYPERVISORS_MAP.esxi.key || oldVal === HYPERVISORS_MAP.esxi.key) {
-        this.refreshNetworkConfig()
+        await this.refreshNetworkConfig()
+        this.changeIpDisable(this.serverCount > 1)
       }
     },
     serverCount (val, oldVal) {
@@ -188,16 +189,16 @@ export default {
           break
       }
     },
-    refreshNetworkConfig () {
+    async refreshNetworkConfig () {
       if (this.networkComponent === 'config') {
         this.networkComponent = ''
-        this.$nextTick(() => { // 刷新 network-config 组件
-          this.networkComponent = 'config'
-        })
+        await this.$nextTick() // 刷新 network-config 组件
+        this.networkComponent = 'config'
       }
+      return true
     },
     changeIpDisable (ipDisable) {
-      this.$refs.networkConfigRef.reset(ipDisable)
+      if (this.$refs.networkConfigRef) this.$refs.networkConfigRef.reset(ipDisable)
     },
   },
 }
