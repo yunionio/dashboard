@@ -382,6 +382,7 @@ export default {
                     mode: 'add',
                   })
                 },
+                meta: () => this.$isOwner(this.list.selectedItems),
               },
               {
                 label: this.$t('compute.text_261'),
