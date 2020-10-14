@@ -5,7 +5,14 @@
     <template slot="title">
       <div class="d-flex align-items-center">
         <div class="flex-fill">{{$t('common_267')}}</div>
-        <a class="font-weight-normal" @click="handleEdit" v-if="!inBaseDialog && !!onManager">{{$t('common_105')}}</a>
+        <template v-if="validate.validate">
+          <a-button type="link" class="font-weight-normal p-0" @click="handleEdit" v-if="!inBaseDialog && !!onManager">{{$t('common_105')}}</a-button>
+        </template>
+        <template v-else>
+          <a-tooltip :title="validate.tooltip">
+            <a-button type="link" class="font-weight-normal p-0" disabled>{{$t('common_105')}}</a-button>
+          </a-tooltip>
+        </template>
       </div>
     </template>
     <template slot="content">
@@ -92,6 +99,9 @@ export default {
     },
     params () {
       return { resources: this.resource }
+    },
+    validate () {
+      return this.$isOwner(this.row)
     },
   },
   methods: {
