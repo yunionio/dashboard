@@ -51,7 +51,9 @@
         </a-form-item>
         <a-button type="link" class="mt-1" @click="triggerShowIp(item)">{{$t('compute.text_135')}}</a-button>
       </template>
-      <a-button v-else type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
+      <a-tooltip v-else :title="ipBtnTooltip">
+        <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
+      </a-tooltip>
       <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
@@ -114,14 +116,11 @@ export default {
       type: Object,
       validator: val => val.id && val.name,
     },
-    ipsDisabled: {
-      type: Boolean,
-      default: false,
-    },
   },
   data () {
     return {
       networkList: [],
+      ipsDisabled: false,
     }
   },
   computed: {
@@ -134,6 +133,9 @@ export default {
         vpc: this.networkList[0].vpc.id,
         ...this.networkParams,
       }
+    },
+    ipBtnTooltip () {
+      return this.ipsDisabled ? this.$t('common_718') : null
     },
   },
   watch: {
@@ -186,6 +188,14 @@ export default {
     },
     decrease (uid, index) {
       this.networkList.splice(index, 1)
+    },
+    reset (ipsDisabled) { // 重置成不可手动输入IP，并且仅保留1条数据
+      if (this.networkList.length > 1) {
+        const firstItem = this.networkList[0]
+        this.networkList = [firstItem]
+      }
+      this.$set(this.networkList[0], 'ipShow', false)
+      this.ipsDisabled = ipsDisabled
     },
   },
 }
