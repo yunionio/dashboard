@@ -18,22 +18,22 @@
       </a-radio-group>
       <div v-show="form.fc.getFieldValue('isCreate') || form.fc.getFieldValue('isCreate') === undefined">
         <a-row :gutter="8" v-for="k in form.fc.getFieldValue('keys')" :key="k">
-          <a-col :span="4">
+          <a-col :span="4" :xxl="4" :xl="9" :xs="9">
             <a-form-item>
               <a-input :addon-before="$t('db.text_60')"  v-decorator="formatDecorator(k, 'name')" :placeholder="$t('cloudenv.text_184')" />
             </a-form-item>
           </a-col>
-          <a-col :span="4">
+          <a-col :span="4" :xxl="4" :xl="6" :xs="6">
             <a-form-item>
               <a-input :addon-before="$t('network.text_607')" @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_start')" :placeholder="$t('cloudenv.text_185')" />
             </a-form-item>
           </a-col>
-          <a-col :span="4">
+          <a-col :span="4" :xxl="4" :xl="6" :xs="6">
             <a-form-item>
               <a-input :addon-before="$t('network.text_608')" @change="handleIpChange" v-decorator="formatDecorator(k, 'guest_ip_end')" :placeholder="$t('cloudenv.text_186')" />
             </a-form-item>
           </a-col>
-          <a-col :span="3">
+          <a-col :span="3" :xxl="3" :xl="3" :xs="3">
             <a-form-item>
               <a-select class="w-100" :placeholder="$t('network.text_595')" v-decorator="formatDecorator(k, 'guest_ip_mask')" dropdownClassName="oc-select-dropdown">
                 <a-select-option v-for="item in netMaskOptions" :key="item.value" :value="item.value">
@@ -42,17 +42,17 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :span="4">
+          <a-col :span="4" :xxl="4" :xl="6" :xs="6">
             <a-form-item>
               <a-input :addon-before="$t('network.text_610')" v-decorator="formatDecorator(k, 'guest_gateway')" :placeholder="$t('cloudenv.text_187')" />
             </a-form-item>
           </a-col>
-          <a-col :span="3">
+          <a-col :span="3" :xxl="3" :xl="6" :xs="6">
             <a-form-item>
               <a-input addon-before="VLAN ID" v-decorator="formatDecorator(k, 'vlan', 'vlan_id')" placeholder="VLAN ID" />
             </a-form-item>
           </a-col>
-          <a-col :span="2">
+          <a-col :span="2" :xxl="2" :xl="4" :xs="4">
             <a-button @click="handleRemove(k)" shape="circle" icon="minus" size="small" class="mt-2 ml-2" />
           </a-col>
         </a-row>
