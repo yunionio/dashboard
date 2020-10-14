@@ -15,11 +15,12 @@ import {
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'CacheListForVmSnapshotPolicySidePage',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     resId: String,
     data: {
@@ -55,7 +56,7 @@ export default {
               data: [obj],
               columns: this.columns,
               title: this.$t('compute.text_261'),
-              onManager: this.list.onManager,
+              onManager: this.onManager,
             })
           },
           meta: obj => this.$getDeleteResult(obj),
