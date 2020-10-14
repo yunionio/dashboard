@@ -1,11 +1,11 @@
 <template>
   <div class="create-server-result-wrap">
     <page-footer>
-      <template class="content" v-slot:left>
+      <template v-slot:left>
         <div
           v-for="(tip, idx) of tips"
           :key="idx"
-          class="d-flex flex-column justify-content-center flex-grow-1">
+          class="d-flex flex-column justify-content-center flex-grow-1 content">
           <div
             v-for="obj of tip"
             :key="obj.label"
@@ -398,7 +398,6 @@ export default {
   .content {
     width: 80%;
     .label {
-      color: #999;
       &.label-w-50 {
         width: 50px;
       }
