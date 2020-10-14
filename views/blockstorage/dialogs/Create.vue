@@ -3,9 +3,6 @@
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item :label="$t('storage.text_40')">
-          <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />
-        </a-form-item>
         <a-form-item :label="$t('storage.text_55', [$t('dictionary.domain')])">
           <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain" />
           <template v-else> {{userInfo.domain.name}} </template>
@@ -14,6 +11,9 @@
           <cloudregion-zone
             :cloudregionParams="{cloud_env: 'onpremise'}"
             :decorator="decorators.regionZone" />
+        </a-form-item>
+        <a-form-item :label="$t('storage.text_40')">
+          <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />
         </a-form-item>
         <a-form-item :label="$t('storage.text_39')">
           <a-radio-group v-decorator="decorators.medium_type" buttonStyle="solid">
