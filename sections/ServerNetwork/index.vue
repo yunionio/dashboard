@@ -20,7 +20,7 @@
         ref="networkConfigRef"
         :vpc-params="networkVpcParams"
         :vpc-resource="vpcResource"
-        :ipsDisabled="ipsDisabled"
+        :ipsDisable="ipsDisable"
         :network-resource-mapper="networkResourceMapper"
         :vpc-resource-mapper="vpcResourceMapper"
         :limit="form.fi.capability.max_nic_count" />
@@ -127,7 +127,7 @@ export default {
     }
   },
   computed: {
-    ipsDisabled () {
+    ipsDisable () {
       return this.serverCount > 1
     },
     configs () {
@@ -198,7 +198,7 @@ export default {
       return true
     },
     changeIpDisable (ipDisable) {
-      this.$refs.networkConfigRef.reset(ipDisable)
+      if (this.$refs.networkConfigRef) this.$refs.networkConfigRef.reset(ipDisable)
     },
   },
 }

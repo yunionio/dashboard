@@ -116,11 +116,15 @@ export default {
       type: Object,
       validator: val => val.id && val.name,
     },
+    ipsDisable: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       networkList: [],
-      ipsDisabled: false,
+      ipsDisabled: this.ipsDisable,
     }
   },
   computed: {
