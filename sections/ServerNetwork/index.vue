@@ -17,6 +17,7 @@
         :isBonding="isBonding"
         :network-params="networkListParams"
         v-bind="configs"
+        ref="networkConfigRef"
         :vpc-params="networkVpcParams"
         :vpc-resource="vpcResource"
         :ipsDisabled="ipsDisabled"
@@ -169,7 +170,7 @@ export default {
     },
     serverCount (val, oldVal) {
       if (val !== oldVal && (val === 1 || oldVal === 1)) {
-        this.refreshNetworkConfig()
+        this.changeIpDisable(val > 1)
       }
     },
   },
@@ -194,6 +195,9 @@ export default {
           this.networkComponent = 'config'
         })
       }
+    },
+    changeIpDisable (ipDisable) {
+      this.$refs.networkConfigRef.reset(ipDisable)
     },
   },
 }
