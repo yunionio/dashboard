@@ -368,8 +368,8 @@ export default {
       return this.params.type === 'update'
     },
     isMultiValueAnswer () {
-      if (this.form.fd.policy_type) {
-        const types = Object.values(this.form.fd.policy_type)
+      if (this.trafficPolicies && this.trafficPolicies.length > 0) {
+        const types = this.trafficPolicies.map(v => v.policy_type)
         return types.includes('MultiValueAnswer')
       }
       return false
