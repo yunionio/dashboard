@@ -26,6 +26,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import { BILL_TYPES_MAP, BUY_DURATION_OPTIONS } from '@Compute/constants'
 
 export default {
@@ -45,13 +46,17 @@ export default {
     disabledBillType: {
       type: String,
     },
+    billTypesMaps: {
+      type: Object,
+      default: BILL_TYPES_MAP,
+    },
   },
   data () {
     return {
-      duration: this.decorators.duration[1] ? this.decorators.duration[1].initialValue : '1M',
-      billTypesMap: BILL_TYPES_MAP,
+      duration: _.get(this.decorators.duration, '[1].initialValue') || '1M',
+      billTypesMap: this.billTypesMaps,
       buyDurationOptions: BUY_DURATION_OPTIONS,
-      showDuration: this.decorators.billType === BILL_TYPES_MAP.package.key,
+      showDuration: _.get(this.decorators.billType, '[1].initialValue') === BILL_TYPES_MAP.package.key,
     }
   },
   watch: {
@@ -74,6 +79,12 @@ export default {
         })
       }
     },
+  },
+  mounted () {
+    if (this.form && this.form.fd) {
+      this.form.fd.billType = _.get(this.decorators.billType, '[1].initialValue')
+      this.form.fd.duration = this.duration
+    }
   },
   methods: {
     durationDisabled (item) {
