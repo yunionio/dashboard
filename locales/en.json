@@ -1436,6 +1436,10 @@
       "label": "Password validity period",
       "desc": "The length of the default password validity period for cloud management local users (SQL). 0 means unlimited"
     },
+    "identity$token_expiration_seconds": {
+      "label": "Session timeout period",
+      "desc": "The default is 1 day. After the current session login exceeds the session time, the system will be unavailable and you need to log in again."
+    },
     "common$non_default_domain_projects": {
       "label": "Three-level permission switch",
       "desc": "Set whether to enable the three-level permission. The default is off, and it cannot be closed after it is set to on."
@@ -1447,6 +1451,10 @@
     "yunionapi$enable_totp": {
       "label": "Two-factor authentication",
       "desc": "Whether a second authentication is required for cloud management users to log in to the system"
+    },
+    "yunionapi$session_level_auth_cookie": {
+      "label": "The browser is closed to end the session",
+      "desc": "If enabled, after closing the browser, the current login session will be invalidated immediately"
     },
     "compute$enable_pending_delete": {
       "label": "Host, Hard Disk Recycle Bin",
