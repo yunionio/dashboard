@@ -145,8 +145,6 @@ const showHttpErrorMessage = (error) => {
 // request interceptor
 http.interceptors.request.use(
   (config) => {
-    const requestKey = getRequestKey(config)
-    cancelRquest(requestKey)
     pendingCount++
     config.method === 'get' && pendingCount === 1 && showLoading()
     config.headers['x-yunion-lang'] = store.getters.setting.language
@@ -154,12 +152,16 @@ http.interceptors.request.use(
     // if (store.getters.auth.auth && store.getters.auth.auth.session) {
     //   config.headers.Authorization = `Bearer ${store.getters.auth.auth.session}`
     // }
-    config.$requestKey = requestKey
-    config.cancelToken = new axios.CancelToken(cancel => {
-      requestMap[requestKey] = {
-        cancel,
-      }
-    })
+    if (!config.cancelToken) {
+      const requestKey = getRequestKey(config)
+      cancelRquest(requestKey)
+      config.$requestKey = requestKey
+      config.cancelToken = new axios.CancelToken(cancel => {
+        requestMap[requestKey] = {
+          cancel,
+        }
+      })
+    }
     config.paramsSerializer = params => qs.stringify(params, { arrayFormat: 'repeat' })
     return config
   },
