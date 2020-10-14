@@ -9,7 +9,7 @@
           :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
           <div class="d-flex align-items-center">
             <span class="flex-fill text-truncate">{{ item.title }}</span>
-            <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click="removeTag(item)" />
+            <a-icon v-if="showRemove(item)" class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click="removeTag(item)" />
           </div>
         </span>
       </template>
@@ -51,9 +51,14 @@ export default {
   components: {
     TagSelect,
   },
+  props: {
+    defaultChecked: {
+      type: Object,
+    },
+  },
   data () {
     return {
-      checked: {},
+      checked: this.defaultChecked || {},
       showForm: false,
       tagForm: {
         fc: this.$form.createForm(this),
@@ -104,6 +109,9 @@ export default {
       }
       this.$emit('change', ret)
     },
+    defaultChecked (val) {
+      this.checked = Object.assign({}, this.defaultChecked || {}, this.checked)
+    },
   },
   methods: {
     async addTag () {
@@ -145,6 +153,12 @@ export default {
       const newValue = { ...this.checked }
       delete newValue[item.key]
       this.checked = newValue
+    },
+    showRemove (item) {
+      if (this.defaultChecked && this.defaultChecked[item.key]) {
+        return false
+      }
+      return true
     },
   },
 }

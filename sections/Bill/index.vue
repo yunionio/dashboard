@@ -80,6 +80,12 @@ export default {
       }
     },
   },
+  mounted () {
+    if (this.form && this.form.fd) {
+      this.form.fd.billType = _.get(this.decorators.billType, '[1].initialValue')
+      this.form.fd.duration = this.duration
+    }
+  },
   methods: {
     durationDisabled (item) {
       // 比如一周的包年包月仅阿里云支持
