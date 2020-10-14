@@ -40,24 +40,28 @@ export default {
         cpu_cmtbound: [
           'cpu_cmtbound',
           {
-            initialValue: this.params.data[0].cpu_cmtbound,
+            validateFirst: true,
+            initialValue: this.params.data[0].cpu_commit_bound,
             rules: [
               {
                 required: true,
                 message: this.$t('compute.text_545'),
               },
+              { validator: this.checkCmtBound },
             ],
           },
         ],
         mem_cmtbound: [
           'mem_cmtbound',
           {
-            initialValue: this.params.data[0].mem_cmtbound,
+            validateFirst: true,
+            initialValue: this.params.data[0].mem_commint_bound,
             rules: [
               {
                 required: true,
                 message: this.$t('compute.text_546'),
               },
+              { validator: this.checkCmtBound },
             ],
           },
         ],
@@ -97,6 +101,12 @@ export default {
       } catch (error) {
         this.loading = false
       }
+    },
+    checkCmtBound (rule, value, callback) {
+      if (parseFloat(value) === 0) {
+        callback(new Error('超售比必须大于0'))
+      }
+      callback()
     },
   },
 }
