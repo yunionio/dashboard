@@ -7,10 +7,10 @@
        <a-form
         :form="form.fc">
         <a-form-item :label="$t('compute.text_542')" v-bind="formItemLayout">
-          <a-input-number v-decorator="decorators.cpu_cmtbound" :min="0" :step="0.1" />
+          <a-input-number v-decorator="decorators.cpu_cmtbound" :min="0.1" :step="0.1" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_543')" v-bind="formItemLayout">
-          <a-input-number v-decorator="decorators.mem_cmtbound" :min="0" :max="1" :step="0.1" />
+          <a-input-number v-decorator="decorators.mem_cmtbound" :min="0.1" :max="1" :step="0.1" />
           <div style="font-size:12px" class="add-desc">{{$t('compute.text_544')}}</div>
         </a-form-item>
       </a-form>
@@ -47,7 +47,6 @@ export default {
                 required: true,
                 message: this.$t('compute.text_545'),
               },
-              { validator: this.checkCmtBound },
             ],
           },
         ],
@@ -61,7 +60,6 @@ export default {
                 required: true,
                 message: this.$t('compute.text_546'),
               },
-              { validator: this.checkCmtBound },
             ],
           },
         ],
@@ -101,12 +99,6 @@ export default {
       } catch (error) {
         this.loading = false
       }
-    },
-    checkCmtBound (rule, value, callback) {
-      if (parseFloat(value) === 0) {
-        callback(new Error('超售比必须大于0'))
-      }
-      callback()
     },
   },
 }
