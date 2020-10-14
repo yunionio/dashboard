@@ -11,6 +11,7 @@ import {
   getTagTableColumn,
   getBillingTableColumn,
   getTimeTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
@@ -179,11 +180,12 @@ export default {
       }),
       getBillingTableColumn({ vm: this }),
       getBrandTableColumn(),
-      getCopyWithContentTableColumn({
-        field: 'account',
-        title: i18n.t('res.cloudaccount'),
-        hidden: () => this.$store.getters.isProjectMode,
-      }),
+      // getCopyWithContentTableColumn({
+      //   field: 'account',
+      //   title: i18n.t('res.cloudaccount'),
+      //   hidden: () => this.$store.getters.isProjectMode,
+      // }),
+      getAccountTableColumn(),
       {
         field: 'host',
         title: i18n.t('res.host'),
