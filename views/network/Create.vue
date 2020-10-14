@@ -5,9 +5,6 @@
       <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
         <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
       </a-form-item>
-      <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
-      </a-form-item>
       <area-selects
         class="mb-0"
         ref="areaSelects"
@@ -17,6 +14,9 @@
         :cloudregionParams="cloudregionParams"
         :isRequired="true"
         @change="handleRegionChange" />
+      <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
+      </a-form-item>
       <a-form-item label="VPC" v-bind="formItemLayout">
         <base-select
           v-decorator="decorators.vpc"
