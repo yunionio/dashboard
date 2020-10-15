@@ -5,7 +5,7 @@
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" @change="e => { form.fi.name = e.target.value }" />
+          <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.resourceName')" @change="e => { form.fi.name = e.target.value }" />
             <name-repeated
               ref="nameRepeated"
               #extra
@@ -55,8 +55,8 @@ export default {
         },
       },
       decorators: {
-        name: [
-          'name',
+        generate_name: [
+          'generate_name',
           {
             validateFirst: true,
             rules: [
@@ -117,9 +117,6 @@ export default {
       try {
         const values = await this.validateForm()
         this.loading = true
-        if (this.$refs.nameRepeated.isRepeated) {
-          values.name = values.name + '-1'
-        }
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()
