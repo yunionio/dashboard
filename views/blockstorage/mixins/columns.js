@@ -16,6 +16,8 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'blockstorage' }),
+      getEnabledTableColumn(),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'storage', columns: () => this.columns }),
       {
         field: 'capacity',
@@ -48,8 +50,6 @@ export default {
           },
         },
       },
-      getEnabledTableColumn(),
-      getStatusTableColumn({ statusModule: 'blockstorage' }),
       {
         field: 'storage_type',
         title: i18n.t('storage.text_38'),
@@ -58,9 +58,6 @@ export default {
           return STORAGE_TYPES[row.storage_type] || row.storage_type
         },
       },
-      getPublicScopeTableColumn({ vm: this, resource: 'storages' }),
-      getProjectDomainTableColumn(),
-      getBrandTableColumn(),
       {
         field: 'medium_type',
         title: i18n.t('storage.text_39'),
@@ -69,6 +66,7 @@ export default {
           return MEDIUM_TYPES[row.medium_type] || row.medium_type
         },
       },
+      getBrandTableColumn(),
       {
         field: 'schedtag',
         title: i18n.t('storage.text_45'),
@@ -86,6 +84,8 @@ export default {
           },
         },
       },
+      getPublicScopeTableColumn({ vm: this, resource: 'storages' }),
+      getProjectDomainTableColumn(),
       getRegionTableColumn(),
     ]
   },

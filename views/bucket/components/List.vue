@@ -63,6 +63,7 @@ export default {
           },
           project_domains: getDomainFilter(),
         },
+        hiddenColumns: ['storage_class', 'account', 'public_scope'],
       }),
       exportDataOptions: {
         items: [
