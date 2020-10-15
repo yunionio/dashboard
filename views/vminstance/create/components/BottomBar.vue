@@ -301,7 +301,7 @@ export default {
   },
   methods: {
     changeErrors (errors) {
-      this.$emit('update:errors', [])
+      this.$emit('update:errors', {})
     },
     formatToPrice (val) {
       let ret = `${this.currency} ${val.toFixed(2)}`
