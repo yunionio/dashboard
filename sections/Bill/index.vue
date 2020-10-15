@@ -82,8 +82,8 @@ export default {
   },
   mounted () {
     if (this.form && this.form.fd) {
-      this.form.fd.billType = _.get(this.decorators.billType, '[1].initialValue')
-      this.form.fd.duration = this.duration
+      this.$set(this.form.fd, 'billType', _.get(this.decorators.billType, '[1].initialValue'))
+      this.$set(this.form.fd, 'duration', this.duration)
     }
   },
   methods: {
