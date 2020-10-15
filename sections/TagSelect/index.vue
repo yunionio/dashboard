@@ -31,7 +31,7 @@
             class="tag-item"
             v-for="item of userTags"
             :key="item.key"
-            :class="{checked: checkedKeys.includes(item.key)}"
+            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key)}"
             @mouseenter="handleKeyMouseenter('userTags', item.key, $event)"
             @click="handleKeyClick(item.key)">
             <div class="title d-flex align-items-center">
@@ -46,7 +46,7 @@
             class="tag-item"
             v-for="item of extTags"
             :key="item.key"
-            :class="{checked: checkedKeys.includes(item.key)}"
+            :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key)}"
             @mouseenter="handleKeyMouseenter('extTags', item.key, $event)"
             @click="handleKeyClick(item.key)">
             <div class="title d-flex align-items-center">
@@ -115,6 +115,9 @@ export default {
     managerInstance: Object,
     // global代表获取全部标签，不进行resources过滤
     global: Boolean,
+    defaultChecked: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -169,6 +172,7 @@ export default {
       if (!this.mouseenterType || !this.mouseenterKey) return []
       let ret = []
       const obj = R.find(R.propEq('key', this.mouseenterKey))(this.currentTag)
+      if (this.defaultChecked && this.defaultChecked[this.mouseenterKey]) return ret
       if (!this.search) {
         ret = obj.value
       } else {
@@ -280,6 +284,7 @@ export default {
       })
     },
     handleKeyClick (key, val) {
+      if (this.defaultChecked && this.defaultChecked[key]) return
       const newValue = { ...this.value }
       if (this.multiple) {
         if (val) {
@@ -322,6 +327,10 @@ export default {
       }
       this.$emit('input', newValue)
       this.$emit('change', newValue)
+    },
+    getTagDisabled (key) {
+      if (this.defaultChecked && this.defaultChecked[key]) return true
+      return false
     },
   },
 }
@@ -369,6 +378,9 @@ export default {
   }
   &:hover {
     background-color: #F9F9FA;
+  }
+  &.disabled {
+    cursor: not-allowed;
   }
 }
 .values-wrap {
