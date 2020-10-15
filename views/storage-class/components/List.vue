@@ -73,7 +73,7 @@ export default {
                 cluster: this.list.selectedItems[0].clusterID,
               },
               requestParams: {
-                id: this.list.selectedItems.map(item => { return item.name }),
+                id: this.list.selectedItems.map(item => item.id),
               },
             })
           },
