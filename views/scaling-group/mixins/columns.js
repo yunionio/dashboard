@@ -13,8 +13,8 @@ export default {
           )
         },
       }),
-      getEnabledTableColumn(),
       getStatusTableColumn({ statusModule: 'scalinggroup', minWidth: 130 }),
+      getEnabledTableColumn(),
       getCopyWithContentTableColumn({
         field: 'guest_template',
         title: i18n.t('res.servertemplate'),
@@ -50,9 +50,9 @@ export default {
         minWidth: 100,
         sortable: true,
       },
-      getProjectTableColumn(),
       getBrandTableColumn(),
       getTimeTableColumn(),
+      getProjectTableColumn(),
     ]
   },
 }

@@ -26,8 +26,7 @@ export default {
       }
       column = [
         getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228') }),
-        getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('compute.text_99') }),
-        getCopyWithContentTableColumn({ field: 'guest', title: this.$t('dictionary.server') }),
+        getStatusTableColumn({ statusModule: 'disk' }),
         {
           field: 'disk_type',
           title: i18n.t('compute.text_175'),
@@ -36,10 +35,11 @@ export default {
             return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
           },
         },
-        getStatusTableColumn({ statusModule: 'disk' }),
-        getProjectTableColumn(),
+        getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('compute.text_99') }),
+        getCopyWithContentTableColumn({ field: 'guest', title: this.$t('dictionary.server') }),
         getBrandTableColumn(),
         getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
+        getProjectTableColumn(),
       ]
       return column
     },

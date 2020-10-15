@@ -19,6 +19,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'instanceGroup' }),
       getEnabledTableColumn(),
       {
         field: 'force_dispersion',
@@ -30,7 +31,6 @@ export default {
           return ret
         },
       },
-      getStatusTableColumn({ statusModule: 'instanceGroup' }),
       {
         field: 'granularity',
         title: i18n.t('table.title.granularity'),
@@ -46,8 +46,8 @@ export default {
           },
         },
       },
-      getProjectTableColumn(),
       getTimeTableColumn(),
+      getProjectTableColumn(),
     ]
   },
 }

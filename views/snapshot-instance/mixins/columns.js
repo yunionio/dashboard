@@ -20,6 +20,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'snapshot' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instance_snapshot', columns: () => this.columns }),
       {
         field: 'rules',
@@ -48,8 +49,6 @@ export default {
           return sizestr(size, 'M', 1024)
         },
       },
-      getStatusTableColumn({ statusModule: 'snapshot' }),
-      getProjectTableColumn(),
       {
         field: 'guest',
         title: i18n.t('res.server'),
@@ -67,6 +66,7 @@ export default {
         },
       },
       getTimeTableColumn(),
+      getProjectTableColumn(),
     ]
   },
 }

@@ -31,6 +31,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'disk' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'disk', columns: () => this.columns }),
       {
         field: 'disk_size',
@@ -70,14 +71,6 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('table.title.disk_storage') }),
-      getTimeTableColumn(),
-      getBrandTableColumn(),
-      getRegionTableColumn(),
-      getBillingTypeTableColumn(),
-      getStatusTableColumn({ statusModule: 'disk' }),
-      getProjectTableColumn(),
-      getAccountTableColumn(),
       {
         field: 'medium_type',
         title: i18n.t('table.title.disk_medium_type'),
@@ -86,6 +79,13 @@ export default {
           return MEDIUM_MAP[cellValue]
         },
       },
+      getBillingTypeTableColumn(),
+      getBrandTableColumn(),
+      getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('table.title.disk_storage') }),
+      getTimeTableColumn(),
+      getProjectTableColumn(),
+      getRegionTableColumn(),
+      getAccountTableColumn(),
     ]
   },
 }

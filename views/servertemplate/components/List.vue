@@ -83,6 +83,7 @@ export default {
             }),
           },
         },
+        hiddenColumns: ['os_type'],
       }),
       exportDataOptions: {
         items: [

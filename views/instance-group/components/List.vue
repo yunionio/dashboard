@@ -58,6 +58,7 @@ export default {
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [

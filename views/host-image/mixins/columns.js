@@ -17,6 +17,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'image' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'guestimage', columns: () => this.columns }),
       {
         field: 'child_image',
@@ -77,9 +78,6 @@ export default {
           return sizestr(cellValue, 'B', 1024)
         },
       },
-      getStatusTableColumn({ statusModule: 'image' }),
-      getPublicScopeTableColumn({ vm: this, resource: 'guestimages' }),
-      getProjectTableColumn(),
       {
         field: 'is_standard',
         title: i18n.t('table.title.image_type'),
@@ -90,6 +88,8 @@ export default {
         },
       },
       getTimeTableColumn(),
+      getPublicScopeTableColumn({ vm: this, resource: 'guestimages' }),
+      getProjectTableColumn(),
     ]
   },
 }

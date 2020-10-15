@@ -26,19 +26,8 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'snapshot' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'snapshot', columns: () => this.columns }),
-      getCopyWithContentTableColumn({
-        field: 'disk_name',
-        title: i18n.t('res.disk'),
-      }),
-      {
-        field: 'disk_type',
-        title: i18n.t('table.title.disk_type'),
-        width: 70,
-        formatter: ({ row }) => {
-          return DISK_TYPES[row.disk_type] || row.disk_type
-        },
-      },
       {
         field: 'size',
         title: i18n.t('table.title.snapshot_size'),
@@ -47,9 +36,19 @@ export default {
           return sizestr(row.size, 'M', 1024)
         },
       },
-      getStatusTableColumn({ statusModule: 'snapshot' }),
-      getProjectTableColumn(),
-      getBrandTableColumn(),
+      {
+        field: 'disk_type',
+        title: i18n.t('table.title.disk_type'),
+        width: 70,
+        formatter: ({ row }) => {
+          return DISK_TYPES[row.disk_type] || row.disk_type
+        },
+      },
+      getCopyWithContentTableColumn({
+        field: 'disk_name',
+        title: i18n.t('res.disk'),
+      }),
+      getStorageTypeTableColumn(),
       {
         field: 'guest',
         title: i18n.t('res.server'),
@@ -66,8 +65,9 @@ export default {
           },
         },
       },
+      getBrandTableColumn(),
       getTimeTableColumn(),
-      getStorageTypeTableColumn(),
+      getProjectTableColumn(),
       getRegionTableColumn(),
       getAccountTableColumn(),
     ]

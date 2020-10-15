@@ -52,6 +52,7 @@ export default {
           },
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [

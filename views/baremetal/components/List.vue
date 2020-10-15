@@ -74,6 +74,7 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.server).flat(),
         responseData: this.responseData,
+        hiddenColumns: ['host_sn'],
       }),
       exportDataOptions: {
         items: [

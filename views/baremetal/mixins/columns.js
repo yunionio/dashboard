@@ -18,6 +18,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'server' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       getIpsTableColumn({ field: 'ip', title: 'IP' }),
       {
@@ -36,12 +37,6 @@ export default {
             return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
           },
         },
-      },
-      {
-        field: 'host_sn',
-        title: 'SN',
-        minWidth: 70,
-        showOverflow: 'ellipsis',
       },
       {
         field: 'os_type',
@@ -71,8 +66,6 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ statusModule: 'server' }),
-      getProjectTableColumn(),
       getCopyWithContentTableColumn({
         field: 'host',
         title: i18n.t('res.machine'),
@@ -83,6 +76,13 @@ export default {
         },
         hidden: () => this.$store.getters.isProjectMode,
       }),
+      {
+        field: 'host_sn',
+        title: 'SN',
+        minWidth: 70,
+        showOverflow: 'ellipsis',
+      },
+      getProjectTableColumn(),
       getRegionTableColumn(),
     ]
   },

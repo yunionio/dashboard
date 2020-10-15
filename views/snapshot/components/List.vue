@@ -73,6 +73,7 @@ export default {
           },
         },
         responseData: this.responseData,
+        hiddenColumns: ['storage_type', 'created_at'],
       }),
       exportDataOptions: {
         items: [
