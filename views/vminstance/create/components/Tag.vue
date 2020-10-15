@@ -110,7 +110,7 @@ export default {
       this.$emit('change', ret)
     },
     defaultChecked (val) {
-      this.checked = Object.assign({}, this.defaultChecked || {}, this.checked)
+      this.checked = Object.assign({}, this.checked, this.defaultChecked || {})
     },
   },
   methods: {
