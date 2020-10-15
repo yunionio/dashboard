@@ -7,8 +7,19 @@
           <slot name="actions" :handle-edit="handleEdit" />
         </div>
       </div>
-      <div class="dashboard-card-body align-items-center justify-content-center">
-        <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
+      <div class="dashboard-card-body d-flex flex-column">
+        <div class="flex-fill">
+          <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
+        </div>
+        <div class="flex-shrink-0 flex-grow-0">
+          <vxe-pager
+            :layouts="['PrevPage', 'Jump', 'PageCount', 'NextPage', 'Total']"
+            :current-page="currentPage"
+            :total="total"
+            size="mini"
+            :page-size="pageSize"
+            @page-change="handlePageChange" />
+        </div>
       </div>
     </div>
     <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
@@ -127,11 +138,16 @@ export default {
           resource: 'region_quotas',
         },
       },
+      currentPage: 1,
+      pageSize: 8,
     }
   },
   computed: {
     ...mapGetters(['scope', 'isAdminMode', 'isDomainMode', 'userInfo']),
-    chartData () {
+    total () {
+      return this.data.length || 0
+    },
+    usageData () {
       let data = R.sort((a, b) => {
         const aUsage = get(a, `usage.${this.fd.field}`)
         const bUsage = get(b, `usage.${this.fd.field}`)
@@ -139,10 +155,16 @@ export default {
           return get(a, this.fd.field) - get(b, this.fd.field)
         }
         return aUsage - bUsage
-      }, R.slice(0, 8, this.data))
+      }, this.data)
       if (this.isDomainMode) {
         data = data.filter(item => item.tenant)
       }
+      return data
+    },
+    chartData () {
+      const start = this.pageSize * (this.currentPage - 1)
+      const end = start + this.pageSize
+      const data = R.slice(start, end, this.usageData)
       const yAxisData = []
       const usageData = []
       const allData = []
@@ -403,6 +425,9 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    handlePageChange ({ currentPage }) {
+      this.currentPage = currentPage
     },
   },
 }
