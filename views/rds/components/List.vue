@@ -92,6 +92,7 @@ export default {
           project_domains: getDomainFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['metadata', 'vcpu_count', 'account'],
       }),
       exportDataOptions: {
         items: [
