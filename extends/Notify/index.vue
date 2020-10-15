@@ -11,7 +11,7 @@
       <div class="dashboard-card-body flex-column mini-text justify-content-center">
         <template v-if="data && data[0]">
           <div class="flex-fill position-relative">
-            <div v-html="data[0]['content']" class="dashboard-fco-wrap" />
+            <div class="dashboard-fco-wrap">{{ data[0]['content'] }}</div>
           </div>
           <div class="d-flex flex-shrink-0 flex-grow-0 mt-1">
             <div class="text-color-help flex-fill">{{ data[0]['author'] }} · {{ $moment(data[0]['updated_at']).fromNow() }}</div>
