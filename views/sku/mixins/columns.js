@@ -19,6 +19,8 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'sku' }),
+      getEnabledTableColumn(),
       {
         field: 'cpu_core_count',
         title: i18n.t('compute.text_1051'),
@@ -35,7 +37,6 @@ export default {
           return sizestr(cellValue, 'M', 1024)
         },
       },
-      getStatusTableColumn({ statusModule: 'sku' }),
       {
         field: 'total_guest_count',
         title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
@@ -47,7 +48,6 @@ export default {
           },
         },
       },
-      getEnabledTableColumn(),
     ]
   },
 }

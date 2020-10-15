@@ -63,6 +63,7 @@ export default {
             label: this.$t('res.servertemplate'),
           },
         },
+        hiddenColumns: ['status', 'created_at'],
       }),
       exportDataOptions: {
         items: [

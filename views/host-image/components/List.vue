@@ -53,6 +53,7 @@ export default {
           project_domains: getDomainFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['metadata', 'created_at', 'is_standard'],
       }),
       exportDataOptions: {
         items: [

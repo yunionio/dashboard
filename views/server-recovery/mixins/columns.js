@@ -7,6 +7,7 @@ export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228'), sortable: true }),
+      getStatusTableColumn({ statusModule: 'server' }),
       getIpsTableColumn({ field: 'ips', title: 'IP' }),
       {
         field: 'instance_type',
@@ -42,9 +43,8 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ statusModule: 'server' }),
-      getCopyWithContentTableColumn({ field: 'host', title: i18n.t('compute.text_111') }),
       getBrandTableColumn(),
+      getCopyWithContentTableColumn({ field: 'host', title: i18n.t('compute.text_111') }),
       getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
     ]
   },

@@ -29,6 +29,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'servertemplate' }),
       {
         field: 'instance_type',
         title: i18n.t('table.title.flavor'),
@@ -74,11 +75,10 @@ export default {
         showOverflow: 'ellipsis',
         minWidth: 190,
       },
-      getBillingTypeTableColumn(),
-      getStatusTableColumn({ statusModule: 'servertemplate' }),
       getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
-      getProjectTableColumn(),
+      getBillingTypeTableColumn(),
       getBrandTableColumn(),
+      getProjectTableColumn(),
       getRegionTableColumn(),
     ]
   },

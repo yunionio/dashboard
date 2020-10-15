@@ -8,6 +8,12 @@ export default {
   created () {
     this.columns = [
       getCopyWithContentTableColumn({ field: 'name', title: i18n.t('compute.text_228') }),
+      getStatusTableColumn({ statusModule: 'image' }),
+      {
+        field: 'disk_format',
+        title: i18n.t('compute.text_398'),
+        width: 100,
+      },
       {
         field: 'os_type',
         title: i18n.t('compute.text_267'),
@@ -28,11 +34,6 @@ export default {
         },
       },
       {
-        field: 'disk_format',
-        title: i18n.t('compute.text_398'),
-        width: 100,
-      },
-      {
         field: 'size',
         title: i18n.t('table.title.image_size'),
         width: 100,
@@ -40,9 +41,8 @@ export default {
           return sizestr(cellValue, 'B', 1024)
         },
       },
-      getStatusTableColumn({ statusModule: 'image' }),
-      getProjectTableColumn(),
       getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
+      getProjectTableColumn(),
     ]
   },
 }
