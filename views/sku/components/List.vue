@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
@@ -45,9 +46,9 @@ export default {
               key: 'cpu_core_count',
             },
             mapper: (data) => {
-              return data.map(({ key }) => {
+              return R.sort((a, b) => { return a.key - b.key }, data.map(({ key }) => {
                 return { label: this.$t('compute.text_120', [key]), key }
-              })
+              }))
             },
           },
           memory_size_mb: {
@@ -59,9 +60,9 @@ export default {
               key: 'memory_size_mb',
             },
             mapper: (data) => {
-              return data.map(({ key }) => {
+              return R.sort((a, b) => { return a.key - b.key }, data.map(({ key }) => {
                 return { label: sizestr(key, 'M', 1024), key }
-              })
+              }))
             },
           },
         },
