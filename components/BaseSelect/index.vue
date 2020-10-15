@@ -162,6 +162,7 @@ export default {
       loadMoreClicked: false,
       loadMoreOffset: 0,
       sourceList: [], // 未经过 mapper 的数据
+      isInitLoad: true,
     }
   },
   computed: {
@@ -256,8 +257,7 @@ export default {
       val = del$t(val)
       oldV = del$t(oldV)
       if (needChange || !R.equals(val, oldV)) {
-        const isInitLoad = R.is(Object, oldV) && (R.isEmpty(oldV) || R.isNil(oldV)) // 如果oldV是{}，认为是第一次参数变化，则无需 clearSelect
-        if (needChange || !isInitLoad) this.clearSelect()
+        if (needChange || !this.isInitLoad) this.clearSelect()
         if (needChange || this._valid()) this.loadOptsDebounce()
       }
     },
@@ -396,9 +396,11 @@ export default {
           list = this.mapper(list)
         }
         this.loading = false
+        this.isInitLoad = false
         return { list, data, sourceList }
       } catch (error) {
         this.loading = false
+        this.isInitLoad = false
         throw error
       }
     },
@@ -418,6 +420,8 @@ export default {
         } else {
           this.change(defaultItem[this.idKey])
         }
+      } else if (list.length === 0) {
+        this.clearSelect()
       }
     },
     getLabel (item) {
