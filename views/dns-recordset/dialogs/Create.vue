@@ -84,7 +84,10 @@
             v-for="(item, idx) in trafficPolicies">
             <a-col :span="8">
               <a-form-item>
-                <a-select v-decorator="decorators.provider(item.key)" disabled>
+                <a-select
+                  v-decorator="decorators.provider(item.key)"
+                  @change="(val) => providerChangeHandle(val, item)"
+                  @dropdownVisibleChange="(open) => { dropdownVisibleChangeHandle(open, item) }">
                   <a-select-option
                     :key="i"
                     :value="item.value"
@@ -374,6 +377,9 @@ export default {
       }
       return false
     },
+    exsitProviders () {
+      return this.trafficPolicies.map(v => v.provider)
+    },
   },
   created () {
     this.recordsetManager = new this.$Manager('dns_recordsets')
@@ -588,6 +594,30 @@ export default {
       this.$nextTick(() => {
         this.form.fc.validateFields(['dns_value'], { force: true })
       })
+    },
+    providerChangeHandle (val, item) {
+      item.provider = val
+      item.policy_types = this.getPublicTypes(val, this.zoneType)
+
+      this.$nextTick(() => {
+        if (item.policy_types.length > 0) {
+          this.form.fc.setFieldsValue({
+            [`policy_type[${item.key}]`]: item.policy_types[0].value,
+          })
+        } else {
+          this.form.fc.setFieldsValue({
+            [`policy_type[${item.key}]`]: '',
+          })
+        }
+      })
+    },
+    dropdownVisibleChangeHandle (open, item) {
+      if (open) {
+        const newProviders = this.options.providers.filter((v) => {
+          return !this.exsitProviders.includes(v.value) || v.value === item.provider
+        })
+        item.providers = newProviders
+      }
     },
   },
 }
