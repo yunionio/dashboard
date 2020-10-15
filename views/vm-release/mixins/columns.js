@@ -16,6 +16,7 @@ export default {
           )
         },
       }),
+      k8sStatusColumn({ statusModule: 'release' }),
       {
         field: 'metadata',
         title: i18n.t('helm.text_75'),
@@ -28,7 +29,6 @@ export default {
           return text
         },
       },
-      k8sStatusColumn({ statusModule: 'release' }),
       getTimeTableColumn({ field: 'created_at', fromNow: true, sortable: true }),
       getProjectDomainTableColumn(),
     ]
