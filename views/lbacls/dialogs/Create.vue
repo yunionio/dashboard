@@ -30,6 +30,7 @@
 import { REGEXP } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import i18n from '@/locales'
 
 const ipsValidate = (rule, value, cb) => {
   const pureIps = value.split(/[\s\n]/).filter(v => !!v).map(str => str.trim())
@@ -55,13 +56,13 @@ const ipsValidate = (rule, value, cb) => {
   })
   if (valid) {
     if (isRepeat) {
-      cb(new Error(this.$t('network.text_299')))
+      cb(new Error(i18n.t('network.text_299')))
     } else {
-      if (!descValid) cb(new Error(this.$t('network.text_300')))
+      if (!descValid) return cb(new Error(i18n.t('network.text_300')))
       cb()
     }
   } else {
-    cb(new Error(this.$t('network.text_301')))
+    cb(new Error(i18n.t('network.text_301')))
   }
 }
 
