@@ -3,7 +3,7 @@
     <a-form-item class="mb-0">
       <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorator.backupEnable" @change="change" :disabled="switchDisabled" />
     </a-form-item>
-    <a-form-item class="mt-2" v-if="backupEnable && $store.getters.isAdminMode">
+    <a-form-item class="mt-2" v-if="backupEnable && !isProjectMode">
       <base-select
         v-decorator="decorator.backup"
         :options="hostList"
@@ -45,7 +45,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode']),
+    ...mapGetters(['isProjectMode']),
     switchDisabled () {
       if (this.diskType === 'gpfs') return true
       if (this.availableHostCount < 2) return true
@@ -58,7 +58,7 @@ export default {
       if (val) this.fetchBackupHosts()
     },
     async fetchBackupHosts () {
-      if (!R.is(Object, this.hostParams) || !this.isAdminMode) return
+      if (!R.is(Object, this.hostParams) || this.isProjectMode) return
       try {
         const { data: { data = [] } } = await new this.$Manager('hosts', 'v2').list({ params: this.hostParams })
         this.hostList = data
