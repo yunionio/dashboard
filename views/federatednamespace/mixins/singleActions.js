@@ -17,7 +17,7 @@ export default {
               cluster: obj.clusterID,
             },
             requestParams: {
-              id: obj.name,
+              id: obj.id,
             },
             success: () => {
               this.destroySidePages()
