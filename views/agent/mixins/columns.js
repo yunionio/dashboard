@@ -21,20 +21,9 @@ export default {
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalanceragent', columns: () => this.columns }),
       {
-        field: 'cluster',
-        title: i18n.t('network.text_19'),
-        showOverflow: 'ellipsis',
-        minWidth: 100,
-      },
-      {
         field: 'ha_state',
         title: i18n.t('network.text_22'),
         width: 70,
-      },
-      {
-        field: 'ip',
-        title: 'IP',
-        width: 120,
       },
       {
         field: 'hb_last_seen',
@@ -44,12 +33,23 @@ export default {
           return this.$moment(cellValue).fromNow()
         },
       },
-      getRegionTableColumn(),
+      {
+        field: 'ip',
+        title: 'IP',
+        width: 120,
+      },
       {
         field: 'version',
         title: i18n.t('network.text_25'),
         width: 250,
       },
+      {
+        field: 'cluster',
+        title: i18n.t('network.text_19'),
+        showOverflow: 'ellipsis',
+        minWidth: 100,
+      },
+      getRegionTableColumn(),
     ]
   },
 }

@@ -73,6 +73,7 @@ export default {
           },
           project_domains: getProjectDomainFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [

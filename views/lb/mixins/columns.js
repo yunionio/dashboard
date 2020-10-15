@@ -27,6 +27,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'lb', title: i18n.t('network.text_27') }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalancer', columns: () => this.columns }),
       {
         field: 'address',
@@ -58,22 +59,6 @@ export default {
         },
       },
       {
-        field: 'vpc',
-        title: 'VPC',
-        minWidth: 100,
-        hidden: this.$store.getters.isProjectMode,
-      },
-      getStatusTableColumn({ statusModule: 'lb', title: i18n.t('network.text_27') }),
-      {
-        field: 'charge_type',
-        title: i18n.t('network.text_192'),
-        minWidth: 100,
-        formatter: ({ row }) => {
-          if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
-          return '-'
-        },
-      },
-      {
         field: 'loadbalancer_spec',
         title: i18n.t('network.text_249'),
         minWidth: 100,
@@ -89,6 +74,28 @@ export default {
           }
           return row.loadbalancer_spec || '-'
         },
+      },
+      {
+        field: 'vpc',
+        title: 'VPC',
+        minWidth: 100,
+        hidden: this.$store.getters.isProjectMode,
+      },
+      {
+        field: 'charge_type',
+        title: i18n.t('network.text_192'),
+        minWidth: 100,
+        formatter: ({ row }) => {
+          if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
+          return '-'
+        },
+      },
+      getBrandTableColumn(),
+      {
+        field: 'account',
+        title: i18n.t('network.text_196'),
+        minWidth: 120,
+        hidden: this.$store.getters.isProjectMode,
       },
       {
         field: 'cluster',
@@ -124,14 +131,7 @@ export default {
       //   },
       // },
       getProjectTableColumn(),
-      getBrandTableColumn(),
       getRegionTableColumn(),
-      {
-        field: 'account',
-        title: i18n.t('network.text_196'),
-        minWidth: 120,
-        hidden: this.$store.getters.isProjectMode,
-      },
       // getTimeTableColumn(), // 列表太长先隐藏
     ]
   },

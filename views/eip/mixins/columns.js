@@ -23,14 +23,13 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'eip' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       {
         field: 'ip_addr',
         title: i18n.t('network.text_191'),
         width: 140,
       },
-      getStatusTableColumn({ statusModule: 'eip' }),
-      getAssociateNameTableColumn(),
       {
         field: 'bandwidth',
         title: i18n.t('network.text_195'),
@@ -61,6 +60,7 @@ export default {
         title: i18n.t('network.text_196'),
         hidden: this.$store.getters.isProjectMode,
       }),
+      getAssociateNameTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),
     ]
