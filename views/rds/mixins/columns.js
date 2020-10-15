@@ -21,6 +21,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'rds' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dbinstance', columns: () => this.columns }),
       {
         field: 'category',
@@ -92,15 +93,14 @@ export default {
           default: ({ row }) => row.port || '-',
         },
       },
+      getBillingTableColumn({ vm: this }),
+      getBrandTableColumn(),
       {
         field: 'account',
         minWidth: 100,
         title: i18n.t('db.text_67'),
       },
-      getBillingTableColumn({ vm: this }),
-      getStatusTableColumn({ statusModule: 'rds' }),
       getProjectTableColumn(),
-      getBrandTableColumn(),
       {
         field: 'region',
         minWidth: 120,
