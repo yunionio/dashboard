@@ -401,210 +401,59 @@ export default {
     'dashboard-domain-default': [
       {
         layout: {
-          y: 6,
+          component: 'Quota',
+          h: 7,
           w: 5,
-          h: 3,
-          component: 'Ring',
-          x: 5,
+          x: 15,
+          y: 21,
         },
         params: {
-          all_usage_key: 'disks.count',
-          name: i18n.t('dashboard.text_147'),
-          usage_key: 'disks.detached.count',
+          field: 'snapshot',
+          name: i18n.t('dashboard.text_170'),
+          resource: 'region_quotas',
+          titleKey: 'tenant',
         },
-      }, {
+      },
+      {
         layout: {
-          y: 4,
+          component: 'Ring',
+          h: 3,
           w: 5,
-          h: 2,
-          component: 'NumberCard',
           x: 0,
+          y: 6,
         },
         params: {
-          name: i18n.t('dashboard.text_148'),
-          usage_key: 'eip',
+          all_usage_key: 'servers',
+          name: i18n.t('dashboard.text_151'),
+          usage_key: 'ready_servers',
         },
-      }, {
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 5,
+          y: 4,
+        },
+        params: {
+          name: i18n.t('dashboard.text_158'),
+          usage_key: 'bucket_bytes',
+        },
+      },
+      {
         layout: {
           component: 'BillHistoryLine',
           h: 5,
           w: 10,
           x: 10,
-          y: 14,
+          y: 28,
         },
         params: {
-          name: i18n.t('dashboard.text_138'),
+          name: i18n.t('dashboard.text_88'),
         },
-      }, {
-        params: {
-          usage_key: 'servers.cpu',
-          name: i18n.t('dashboard.text_149'),
-        },
-        layout: {
-          component: 'NumberCard',
-          x: 5,
-          y: 0,
-          w: 5,
-          h: 2,
-        },
-      }, {
-        layout: {
-          component: 'NumberCard',
-          x: 10,
-          y: 4,
-          w: 5,
-          h: 2,
-        },
-        params: {
-          name: i18n.t('dashboard.text_150'),
-          usage_key: 'bucket_objects',
-        },
-      }, {
-        layout: {
-          x: 0,
-          y: 6,
-          w: 5,
-          h: 3,
-          component: 'Ring',
-        },
-        params: {
-          usage_key: 'ready_servers',
-          all_usage_key: 'servers',
-          name: i18n.t('dashboard.text_151'),
-        },
-      }, {
-        params: {
-          all_usage_key: 'ports',
-          name: i18n.t('dashboard.text_152'),
-          usage_key: 'nics',
-        },
-        layout: {
-          component: 'Ring',
-          x: 10,
-          y: 6,
-          w: 5,
-          h: 3,
-        },
-      }, {
-        layout: {
-          x: 15,
-          y: 0,
-          w: 5,
-          h: 4,
-          component: 'Notify',
-        },
-        params: {
-          name: i18n.t('dashboard.text_124'),
-        },
-      }, {
-        layout: {
-          x: 10,
-          y: 2,
-          w: 5,
-          h: 2,
-          component: 'NumberCard',
-        },
-        params: {
-          usage_key: 'servers.isolated_devices',
-          name: i18n.t('dashboard.text_153'),
-        },
-      }, {
-        params: {
-          name: i18n.t('dashboard.text_137'),
-        },
-        layout: {
-          component: 'ResourceHistoryLine',
-          h: 5,
-          w: 10,
-          x: 0,
-          y: 14,
-        },
-      }, {
-        layout: {
-          h: 2,
-          component: 'NumberCard',
-          x: 15,
-          y: 4,
-          w: 5,
-        },
-        params: {
-          usage_key: 'buckets',
-          name: i18n.t('dashboard.text_154'),
-        },
-      }, {
-        layout: {
-          h: 2,
-          component: 'NumberCard',
-          x: 5,
-          y: 2,
-          w: 5,
-        },
-        params: {
-          name: i18n.t('dashboard.text_155'),
-          usage_key: 'nics',
-        },
-      }, {
-        layout: {
-          y: 6,
-          w: 5,
-          h: 3,
-          component: 'Ring',
-          x: 15,
-        },
-        params: {
-          name: i18n.t('dashboard.text_156'),
-          usage_key: 'eip.used',
-          all_usage_key: 'eip',
-        },
-      }, {
-        layout: {
-          x: 10,
-          y: 0,
-          w: 5,
-          h: 2,
-          component: 'NumberCard',
-        },
-        params: {
-          name: i18n.t('dashboard.text_157'),
-          usage_key: 'servers.memory',
-        },
-      }, {
-        params: {
-          name: i18n.t('dashboard.text_158'),
-          usage_key: 'bucket_bytes',
-        },
-        layout: {
-          x: 5,
-          y: 4,
-          w: 5,
-          h: 2,
-          component: 'NumberCard',
-        },
-      }, {
-        params: {
-          usage_key: 'disks',
-          name: i18n.t('dashboard.text_159'),
-        },
-        layout: {
-          w: 5,
-          h: 2,
-          component: 'NumberCard',
-          x: 0,
-          y: 2,
-        },
-      }, {
-        layout: {
-          h: 2,
-          component: 'NumberCard',
-          x: 0,
-          y: 0,
-          w: 5,
-        },
-        params: {
-          usage_key: 'servers',
-          name: i18n.t('dashboard.text_160'),
-        },
-      }, {
+      },
+      {
         layout: {
           component: 'Top5',
           h: 5,
@@ -621,24 +470,119 @@ export default {
           time: 18000,
           usage: 'usage_active,vm_cpu',
         },
-      }, {
+      },
+      {
         layout: {
-          component: 'Top5',
-          h: 5,
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 0,
+          y: 0,
+        },
+        params: {
+          name: i18n.t('dashboard.text_160'),
+          usage_key: 'servers',
+        },
+      },
+      {
+        layout: {
+          component: 'Quota',
+          h: 7,
+          w: 5,
+          x: 15,
+          y: 14,
+        },
+        params: {
+          field: 'eip',
+          name: i18n.t('dashboard.text_173'),
+          resource: 'region_quotas',
+          titleKey: 'tenant',
+        },
+      },
+      {
+        layout: {
+          component: 'Ring',
+          h: 3,
           w: 5,
           x: 5,
+          y: 6,
+        },
+        params: {
+          all_usage_key: 'disks.count',
+          name: i18n.t('dashboard.text_147'),
+          usage_key: 'disks.detached.count',
+        },
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 0,
+          y: 2,
+        },
+        params: {
+          name: i18n.t('dashboard.text_159'),
+          usage_key: 'disks',
+        },
+      },
+      {
+        layout: {
+          component: 'Quota',
+          h: 7,
+          w: 5,
+          x: 10,
+          y: 21,
+        },
+        params: {
+          field: 'image',
+          name: i18n.t('dashboard.text_176'),
+          resource: 'image_quotas',
+          titleKey: 'tenant',
+        },
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 10,
+          y: 4,
+        },
+        params: {
+          name: i18n.t('dashboard.text_150'),
+          usage_key: 'bucket_objects',
+        },
+      },
+      {
+        layout: {
+          component: 'Log',
+          h: 5,
+          w: 5,
+          x: 15,
           y: 9,
         },
         params: {
-          brand: 'OneCloud',
-          limit: 5,
-          name: i18n.t('dashboard.text_133'),
-          order: 'TOP',
-          resType: 'server',
-          time: 18000,
-          usage: 'read_bps,vm_diskio',
+          limit: 4,
+          name: i18n.t('dashboard.text_17'),
         },
-      }, {
+      },
+      {
+        layout: {
+          component: 'Quota',
+          h: 7,
+          w: 5,
+          x: 5,
+          y: 21,
+        },
+        params: {
+          field: 'isolated_device',
+          name: i18n.t('dashboard.text_175'),
+          resource: 'quotas',
+          titleKey: 'tenant',
+        },
+      },
+      {
         layout: {
           component: 'Top5',
           h: 5,
@@ -655,17 +599,213 @@ export default {
           time: 18000,
           usage: 'write_bps,vm_diskio',
         },
-      }, {
+      },
+      {
         layout: {
-          component: 'Log',
-          h: 5,
+          component: 'Ring',
+          h: 3,
           w: 5,
           x: 15,
+          y: 6,
+        },
+        params: {
+          all_usage_key: 'eip',
+          name: i18n.t('dashboard.text_156'),
+          usage_key: 'eip.used',
+        },
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 0,
+          y: 4,
+        },
+        params: {
+          name: i18n.t('dashboard.text_148'),
+          usage_key: 'eip',
+        },
+      },
+      {
+        layout: {
+          component: 'Quota',
+          h: 7,
+          w: 5,
+          x: 10,
+          y: 14,
+        },
+        params: {
+          field: 'storage',
+          name: i18n.t('dashboard.text_172'),
+          resource: 'quotas',
+          titleKey: 'tenant',
+        },
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 10,
+          y: 0,
+        },
+        params: {
+          name: i18n.t('dashboard.text_157'),
+          usage_key: 'servers.memory',
+        },
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 15,
+          y: 4,
+        },
+        params: {
+          name: i18n.t('dashboard.text_154'),
+          usage_key: 'buckets',
+        },
+      },
+      {
+        layout: {
+          component: 'Quota',
+          h: 7,
+          w: 5,
+          x: 0,
+          y: 14,
+        },
+        params: {
+          field: 'cpu',
+          name: i18n.t('dashboard.text_170'),
+          resource: 'quotas',
+          titleKey: 'tenant',
+        },
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 5,
+          y: 0,
+        },
+        params: {
+          name: i18n.t('dashboard.text_149'),
+          usage_key: 'servers.cpu',
+        },
+      },
+      {
+        layout: {
+          component: 'ResourceHistoryLine',
+          h: 5,
+          w: 10,
+          x: 0,
+          y: 28,
+        },
+        params: {
+          name: i18n.t('dashboard.text_90'),
+        },
+      },
+      {
+        layout: {
+          component: 'Quota',
+          h: 7,
+          w: 5,
+          x: 5,
+          y: 14,
+        },
+        params: {
+          field: 'memory',
+          name: i18n.t('dashboard.text_171'),
+          resource: 'quotas',
+          titleKey: 'tenant',
+        },
+      },
+      {
+        layout: {
+          component: 'Notify',
+          h: 4,
+          w: 5,
+          x: 15,
+          y: 0,
+        },
+        params: {
+          name: i18n.t('dashboard.text_19'),
+        },
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 5,
+          y: 2,
+        },
+        params: {
+          name: i18n.t('dashboard.text_155'),
+          usage_key: 'nics',
+        },
+      },
+      {
+        layout: {
+          component: 'Top5',
+          h: 5,
+          w: 5,
+          x: 5,
           y: 9,
         },
         params: {
-          limit: 4,
-          name: i18n.t('dashboard.text_131'),
+          brand: 'OneCloud',
+          limit: 5,
+          name: i18n.t('dashboard.text_133'),
+          order: 'TOP',
+          resType: 'server',
+          time: 18000,
+          usage: 'read_bps,vm_diskio',
+        },
+      },
+      {
+        layout: {
+          component: 'Ring',
+          h: 3,
+          w: 5,
+          x: 10,
+          y: 6,
+        },
+        params: {
+          all_usage_key: 'ports',
+          name: i18n.t('dashboard.text_152'),
+          usage_key: 'nics',
+        },
+      },
+      {
+        layout: {
+          component: 'NumberCard',
+          h: 2,
+          w: 5,
+          x: 10,
+          y: 2,
+        },
+        params: {
+          name: i18n.t('dashboard.text_153'),
+          usage_key: 'servers.isolated_devices',
+        },
+      },
+      {
+        layout: {
+          component: 'Quota',
+          h: 7,
+          w: 5,
+          x: 0,
+          y: 21,
+        },
+        params: {
+          field: 'port',
+          name: i18n.t('dashboard.text_174'),
+          resource: 'region_quotas',
+          titleKey: 'tenant',
         },
       },
     ],
