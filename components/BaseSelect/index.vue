@@ -9,12 +9,13 @@
       @blur="onBlur"
       @change="val => change(val, true)"
       @search="loadOptsDebounce"
+      @dropdownVisibleChange="dropdownChange"
       :loading="loadingC">
       <div slot="dropdownRender" slot-scope="menu">
         <v-nodes :vnodes="menu" />
         <div class="d-flex justify-content-center mb-2" v-if="resList.length > 0">
           <a-button class="mx-auto" :loading="loading" :disabled="loading" v-if="showLoadMore" @mousedown="e => e.preventDefault()" type="link" @click="loadMore">{{$t('common.LoadMore')}}</a-button>
-          <span v-if="loadMoreClicked && noMoreData" class="text-color-secondary pt-2 pb-1">{{$t('common_640')}}</span>
+          <span v-else-if="loadMoreClicked && noMoreData" class="text-color-secondary pt-2 pb-1">{{$t('common_640')}}</span>
         </div>
       </div>
       <slot name="optionTemplate" v-bind:options="resOpts">
@@ -163,6 +164,10 @@ export default {
       loadMoreOffset: 0,
       sourceList: [], // 未经过 mapper 的数据
       isInitLoad: true,
+      currentItem: {},
+      firstResOpts: {}, // 第一次调取接口的数据，用于搜索之后再次点开select时重置数据用
+      fetchDataNum: 0,
+      firstTotal: 0,
     }
   },
   computed: {
@@ -240,6 +245,17 @@ export default {
     this.destroyedCallBack()
   },
   methods: {
+    dropdownChange (open) {
+      if (open && this.remote && !R.isEmpty(this.firstResOpts)) {
+        this.resOpts = { ...this.firstResOpts, [this.currentItem[this.idKey]]: this.currentItem }
+        const list = Object.values(this.resOpts)
+        this.resList = list
+        this.sourceList = list
+        if (this.firstTotal > list.length) {
+          this.showLoadMore = true
+        }
+      }
+    },
     filterOption (input, option) {
       let text = _.get(option, 'componentOptions.children[0].componentInstance.text')
       if (!text) {
@@ -279,8 +295,8 @@ export default {
       this.change(initValue)
     },
     onBlur () {
-      this.query = undefined
       this.loadMoreOffset = 0
+      this.query = undefined
     },
     change (val, isNative) {
       const changeValue = val
@@ -299,6 +315,7 @@ export default {
     syncItem (value) {
       if (value) {
         const syncValue = R.is(Object, value) ? this.resOpts[value.key] : this.resOpts[value]
+        this.currentItem = syncValue
         if (R.is(Object, syncValue)) {
           this.$emit('update:item', syncValue)
         }
@@ -380,6 +397,11 @@ export default {
         this.disabledOpts()
         this.defaultSelect(list)
         this.$emit('update:initLoaded', true)
+        this.fetchDataNum++
+        if (this.fetchDataNum === 1) {
+          this.firstResOpts = resOpts
+          this.firstTotal = data.total
+        }
         return list
       } catch (error) {
         throw error
