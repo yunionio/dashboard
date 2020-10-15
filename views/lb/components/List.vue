@@ -67,6 +67,7 @@ export default {
         steadyStatus: {
           status: Object.values(expectStatus.lb).flat(),
         },
+        hiddenColumns: ['metadata', 'account', 'cluster'],
       }),
       exportDataOptions: {
         items: [

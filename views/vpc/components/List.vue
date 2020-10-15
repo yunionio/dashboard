@@ -61,6 +61,7 @@ export default {
             label: this.$t('common_282'),
           },
         },
+        hiddenColumns: ['metadata', 'wire_count'],
       }),
       exportDataOptions: {
         items: [

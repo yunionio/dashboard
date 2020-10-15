@@ -23,8 +23,8 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'vpc', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'vpc' }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'vpc', columns: () => this.columns }),
       getCopyWithContentTableColumn({
         field: 'cidr_block',
         title: i18n.t('network.text_244'),

@@ -60,6 +60,7 @@ export default {
         resource: 'loadbalanceragents',
         getParams: this.getParam,
         filterOptions,
+        hiddenColumns: ['metadata', 'version'],
       }),
       exportDataOptions: {
         items: [

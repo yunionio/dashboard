@@ -70,6 +70,7 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.eip).flat(),
         responseData: this.responseData,
+        hiddenColumns: ['metadata', 'account'],
       }),
       exportDataOptions: {
         items: [

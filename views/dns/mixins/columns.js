@@ -89,6 +89,7 @@ export default {
           )
         },
       }),
+      getEnabledTableColumn(),
       getCopyWithContentTableColumn({
         field: 'records',
         title: i18n.t('network.text_152'),
@@ -109,7 +110,6 @@ export default {
           }
         },
       },
-      getEnabledTableColumn(),
     ]
   },
 }

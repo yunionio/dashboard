@@ -33,6 +33,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'nat' }),
       {
         field: 'nat_spec',
         title: i18n.t('network.text_536'),
@@ -44,16 +45,6 @@ export default {
         },
       },
       getCopyWithContentTableColumn({ field: 'vpc', title: i18n.t('network.text_535') }),
-      getBrandTableColumn(),
-      getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
-      getProjectDomainTableColumn(),
-      {
-        field: 'region',
-        title: i18n.t('network.text_199'),
-        width: 150,
-      },
-      getStatusTableColumn({ statusModule: 'nat' }),
-      getAccountTableColumn(),
       {
         field: 'billing_type',
         title: i18n.t('network.text_537'),
@@ -63,7 +54,16 @@ export default {
           return BillingType[cellValue]
         },
       },
+      getBrandTableColumn(),
+      getAccountTableColumn(),
+      getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
+      getProjectDomainTableColumn(),
       getTimeTableColumn(),
+      {
+        field: 'region',
+        title: i18n.t('network.text_199'),
+        width: 150,
+      },
     ]
   },
 }

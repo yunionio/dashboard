@@ -49,6 +49,7 @@ export default {
         },
       },
       getStatusTableColumn({ statusModule: 'network' }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
       {
         field: 'server_type',
         title: i18n.t('network.text_249'),
@@ -57,7 +58,7 @@ export default {
           return this.$t('networkServerType')[cellValue] || i18n.t('network.text_507')
         },
       },
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
+      getStatusTableColumn({ field: 'is_auto_alloc', statusModule: 'networIsAutoAlloc', title: i18n.t('common_498'), minWidth: 140 }),
       {
         field: 'ip',
         title: i18n.t('network.text_213'),
@@ -71,7 +72,6 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ field: 'is_auto_alloc', statusModule: 'networIsAutoAlloc', title: i18n.t('common_498'), minWidth: 140 }),
       {
         field: 'ports',
         title: i18n.t('network.text_622'),
@@ -85,13 +85,13 @@ export default {
           },
         },
       },
+      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', hidden: this.$store.getters.isProjectMode }),
       getCopyWithContentTableColumn({ field: 'wire', title: i18n.t('network.text_571') }),
       {
         field: 'vlan_id',
         title: 'VLAN',
         width: 60,
       },
-      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', hidden: this.$store.getters.isProjectMode }),
       {
         field: 'schedtag',
         title: i18n.t('network.text_630'),
