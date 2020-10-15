@@ -58,7 +58,7 @@ export default {
               name: this.$t('k8s.text_23'),
               onManager: this.onManager,
               requestParams: {
-                id: this.list.selectedItems.map(item => { return item.name }),
+                id: this.list.selectedItems.map(item => item.id),
               },
             })
           },
