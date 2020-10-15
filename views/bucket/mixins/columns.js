@@ -19,8 +19,8 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'bucket', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'bucket' }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'bucket', columns: () => this.columns }),
       {
         field: 'storage_class',
         title: i18n.t('storage.text_38'),
@@ -52,8 +52,8 @@ export default {
       getBrandTableColumn(),
       getAccountTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'buckets' }),
-      getRegionTableColumn(),
       getProjectTableColumn(),
+      getRegionTableColumn(),
     ]
   },
 }

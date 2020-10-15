@@ -183,6 +183,7 @@ export default {
             label: this.$t('dictionary.zone'),
           },
         },
+        hiddenColumns: ['metadata', 'storage_type', 'medium_type', 'schedtag'],
       }),
       groupActions: !hasServices('hostagent') ? R.remove(0, 1, groupActions) : groupActions,
       exportDataOptions: {
