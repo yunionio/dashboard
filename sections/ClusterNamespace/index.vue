@@ -4,7 +4,7 @@
       <span>{{$t('k8s.text_28')}}</span>
       <cluster-select
         :value="cluster"
-        @input="setCluster"
+        @input="clusterChange"
         style="width: 140px;" />
     </div>
     <div class="ml-2" v-if="!ignoreNamespace">
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import * as R from 'ramda'
+// import * as R from 'ramda'
 import { mapState, mapMutations } from 'vuex'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
@@ -68,9 +68,15 @@ export default {
       setCluster: 'SET_K8S_CLUSTER',
       setNamespace: 'SET_K8S_NAMESPACE',
     }),
+    clusterChange (val) {
+      if (this.namespace !== 'all_namespace' && !this.ignoreNamespace) {
+        this.setNamespace()
+      }
+      this.setCluster(val)
+    },
     paramsChange () {
       const params = {
-        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        // ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         details: true,
         cluster: this.cluster,
       }
