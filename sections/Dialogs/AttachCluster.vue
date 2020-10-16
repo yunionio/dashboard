@@ -39,7 +39,6 @@ export default {
         cluster_id: [
           'cluster_id',
           {
-            initialValue: this.$store.state.common.k8s.cluster,
             rules: [
               { required: true, message: this.$t('k8s.text_30'), trigger: 'blur' },
             ],
