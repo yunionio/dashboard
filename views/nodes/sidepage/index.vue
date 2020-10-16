@@ -23,6 +23,9 @@
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
+      :showSearchbox="false"
+      :showGroupActions="false"
+      :inSidepageNeedNamepsace="false"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
