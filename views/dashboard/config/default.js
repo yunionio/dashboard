@@ -14,10 +14,7 @@ export default {
           y: 2,
         },
         params: {
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_122'),
-          region: 'default',
           usage_key: 'all.servers.cpu',
         },
       },
@@ -30,10 +27,7 @@ export default {
           y: 2,
         },
         params: {
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_123'),
-          region: 'default',
           usage_key: 'all.servers.disk',
         },
       },
@@ -58,7 +52,6 @@ export default {
           y: 7,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_125'),
           order: 'TOP',
@@ -76,7 +69,6 @@ export default {
           y: 7,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_126'),
           order: 'TOP',
@@ -94,10 +86,7 @@ export default {
           y: 2,
         },
         params: {
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_127'),
-          region: 'default',
           usage_key: 'all.servers.memory',
         },
       },
@@ -111,10 +100,7 @@ export default {
         },
         params: {
           all_usage_key: 'storages',
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_128'),
-          region: 'default',
           usage_key: 'all.servers.disk',
         },
       },
@@ -128,10 +114,7 @@ export default {
         },
         params: {
           all_usage_key: 'isolated_devices',
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_129'),
-          region: 'default',
           usage_key: 'all.servers.isolated_devices',
         },
       },
@@ -144,10 +127,7 @@ export default {
           y: 0,
         },
         params: {
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_130'),
-          region: 'default',
           usage_key: 'all.servers',
         },
       },
@@ -174,10 +154,7 @@ export default {
         },
         params: {
           all_usage_key: 'hosts.memory',
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_132'),
-          region: 'default',
           usage_key: 'all.servers.memory',
         },
       },
@@ -190,7 +167,6 @@ export default {
           y: 7,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_133'),
           order: 'TOP',
@@ -208,10 +184,7 @@ export default {
           y: 0,
         },
         params: {
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_134'),
-          region: 'default',
           usage_key: 'baremetals',
         },
       },
@@ -225,10 +198,7 @@ export default {
         },
         params: {
           all_usage_key: 'hosts.cpu',
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_135'),
-          region: 'default',
           usage_key: 'all.servers.cpu',
         },
       },
@@ -241,10 +211,7 @@ export default {
           y: 0,
         },
         params: {
-          brand: 'OneCloud',
-          cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_136'),
-          region: 'default',
           usage_key: 'hosts',
         },
       },
@@ -462,7 +429,6 @@ export default {
           y: 9,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_126'),
           order: 'TOP',
@@ -591,7 +557,6 @@ export default {
           y: 9,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_125'),
           order: 'TOP',
@@ -757,7 +722,6 @@ export default {
           y: 9,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_133'),
           order: 'TOP',
@@ -903,7 +867,6 @@ export default {
           y: 9,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_126'),
           order: 'TOP',
@@ -948,7 +911,6 @@ export default {
           y: 9,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_133'),
           order: 'TOP',
@@ -1095,7 +1057,6 @@ export default {
           y: 9,
         },
         params: {
-          brand: 'OneCloud',
           limit: 5,
           name: i18n.t('dashboard.text_125'),
           order: 'TOP',
