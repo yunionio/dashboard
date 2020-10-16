@@ -45,6 +45,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    inSidepageNeedNamepsace: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -109,8 +113,10 @@ export default {
     }
   },
   created () {
-    if (this.getParams.owner_kind && this.getParams.owner_name && this.getParams.namespace && this.getParams.cluster) {
-      this.list.fetchData()
+    if (this.getParams.owner_kind && this.getParams.owner_name && this.getParams.cluster) {
+      if ((this.inSidepageNeedNamepsace && this.getParams.namespace) || !this.inSidepageNeedNamepsace) {
+        this.list.fetchData()
+      }
     }
   },
   methods: {

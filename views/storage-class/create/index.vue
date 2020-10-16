@@ -52,7 +52,7 @@
                 filterable
                 showSync
                 :placeholder="$t('k8s.text_349')" />
-              <div class="ml-2" style="font-size: 12px;">{{$t('k8s.text_306')}}<a-button style="font-size: 12px;" type="link" @click="toCreateSecret">{{$t('k8s.text_350')}}</a-button></div>
+              <div slot="extra">{{$t('k8s.text_306')}} <help-link class="pl-1" slot="extra" :href="`/k8s-secret/create?storageType=${form.fc.getFieldValue('storageType')}`">{{$t('k8s.text_350')}}</help-link></div>
             </a-form-item>
           </a-col>
         </a-row>
@@ -63,7 +63,6 @@
         <a-select v-decorator="decorators.clusterId" :placeholder="$t('k8s.text_77')">
           <a-select-option v-for="item in cephcsiOpts" :value="item.clusterId" :key="item.clusterId">{{item.clusterId}}</a-select-option>
         </a-select>
-        <div style="font-size: 12px;">{{$t('k8s.text_407')}}<a-button style="font-size: 12px;" type="link" @click="toCreateCluster">[{{$t('k8s.text_408')}}]</a-button></div>
       </a-form-item>
       <a-form-item
         label="Pool"
@@ -286,10 +285,6 @@ export default {
     },
     secretNamespaceChange (e) {
       this.secretNamespace = e
-    },
-    toCreateSecret () {
-      const storageType = this.form.fc.getFieldValue('storageType')
-      window.open(`${this.$router.resolve('/k8s-secret/create').href}?storageType=${storageType}`)
     },
     toCreateCluster () {
       this.$router.push('/k8s-cluster/create')
