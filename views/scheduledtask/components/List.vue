@@ -60,6 +60,7 @@ export default {
           },
           projects: getTenantFilter(),
         },
+        hiddenColumns: ['resource_type', 'created_at'],
       }),
       exportDataOptions: {
         items: [

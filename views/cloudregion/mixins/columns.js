@@ -22,8 +22,8 @@ export default {
       }),
       getEnabledTableColumn({ title: i18n.t('cloudenv.text_97') }),
       {
-        field: 'guest_count',
-        title: this.$t('dictionary.server'),
+        field: 'zone_count',
+        title: i18n.t('cloudenv.text_11'),
         width: 70,
       },
       {
@@ -33,8 +33,8 @@ export default {
         showOverflow: 'title',
       },
       {
-        field: 'zone_count',
-        title: i18n.t('cloudenv.text_11'),
+        field: 'guest_count',
+        title: this.$t('dictionary.server'),
         width: 70,
       },
       getBrandTableColumn({ field: 'provider' }),

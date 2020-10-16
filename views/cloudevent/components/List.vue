@@ -66,6 +66,18 @@ export default {
           title: this.$t('cloudenv.text_320'),
           field: 'name',
         }),
+        {
+          title: this.$t('cloudenv.text_323'),
+          field: 'success',
+          width: 80,
+          slots: {
+            default: ({ row }) => {
+              const txt = row.success ? this.$t('cloudenv.text_324') : this.$t('cloudenv.text_325')
+              const color = row.success ? '#67C23A' : '#F56C6C'
+              return [<span style={{ color }}>{ txt }</span>]
+            },
+          },
+        },
         getCopyWithContentTableColumn({
           title: this.$t('cloudenv.text_321'),
           field: 'service',
@@ -79,22 +91,6 @@ export default {
             return row.action
           },
         }),
-        {
-          title: this.$t('cloudenv.text_323'),
-          field: 'success',
-          width: 80,
-          slots: {
-            default: ({ row }) => {
-              const txt = row.success ? this.$t('cloudenv.text_324') : this.$t('cloudenv.text_325')
-              const color = row.success ? '#67C23A' : '#F56C6C'
-              return [<span style={{ color }}>{ txt }</span>]
-            },
-          },
-        },
-        getTimeTableColumn({
-          field: 'created_at',
-          title: this.$t('cloudenv.text_326'),
-        }),
         getBrandTableColumn({
           field: 'provider',
         }),
@@ -105,6 +101,10 @@ export default {
         getCopyWithContentTableColumn({
           field: 'manager',
           title: this.$t('cloudenv.text_318'),
+        }),
+        getTimeTableColumn({
+          field: 'created_at',
+          title: this.$t('cloudenv.text_326'),
         }),
         {
           field: 'notes',
