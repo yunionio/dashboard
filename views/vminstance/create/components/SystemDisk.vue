@@ -252,7 +252,13 @@ export default {
   },
   methods: {
     setDefaultType () {
-      if (R.isNil(this.typesMap) || R.isEmpty(this.typesMap)) return
+      if (R.isNil(this.typesMap) || R.isEmpty(this.typesMap)) {
+        this.form.fc.setFieldsValue({
+          systemDiskType: { key: '', label: '' },
+          systemDiskSize: 0,
+        })
+        return
+      }
       if ([IMAGES_TYPE_MAP.host.key, IMAGES_TYPE_MAP.snapshot.key].includes(this.form.fd.imageType)) return // 主机镜像和主机快照设置默认值交给外层处理
       const keys = Object.keys(this.typesMap)
       const firstKey = keys[0]
