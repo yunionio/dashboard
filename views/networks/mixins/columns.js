@@ -19,7 +19,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'driver', title: i18n.t('compute.text_378') }),
       {
         field: 'guest_id',
-        title: i18n.t('compute.text_104'),
+        title: i18n.t('compute.text_106'),
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 100,
