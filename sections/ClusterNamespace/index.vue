@@ -22,7 +22,7 @@
 </template>
 
 <script>
-// import * as R from 'ramda'
+import * as R from 'ramda'
 import { mapState, mapMutations } from 'vuex'
 import ClusterSelect from '@K8S/sections/ClusterSelect'
 import NamespaceSelect from '@K8S/sections/NamespaceSelect'
@@ -70,13 +70,16 @@ export default {
     }),
     clusterChange (val) {
       if (this.namespace !== 'all_namespace' && !this.ignoreNamespace) {
-        this.setNamespace()
+        this.setNamespace('all_namespace')
       }
       this.setCluster(val)
     },
     paramsChange () {
+      const listParams = R.clone(R.is(Function, this.getParams) ? this.getParams() : this.getParams)
+      delete listParams.cluster
+      delete listParams.namespace
       const params = {
-        // ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        ...listParams,
         details: true,
         cluster: this.cluster,
       }
