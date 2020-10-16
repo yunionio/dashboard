@@ -4,7 +4,7 @@
       <span>{{$t('k8s.text_28')}}</span>
       <cluster-select
         :value="cluster"
-        @input="setCluster"
+        @input="clusterChange"
         style="width: 140px;" />
     </div>
     <div class="ml-2" v-if="!ignoreNamespace">
@@ -68,9 +68,18 @@ export default {
       setCluster: 'SET_K8S_CLUSTER',
       setNamespace: 'SET_K8S_NAMESPACE',
     }),
+    clusterChange (val) {
+      if (this.namespace !== 'all_namespace' && !this.ignoreNamespace) {
+        this.setNamespace('all_namespace')
+      }
+      this.setCluster(val)
+    },
     paramsChange () {
+      const listParams = R.clone(R.is(Function, this.getParams) ? this.getParams() : this.getParams)
+      delete listParams.cluster
+      delete listParams.namespace
       const params = {
-        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        ...listParams,
         details: true,
         cluster: this.cluster,
       }
