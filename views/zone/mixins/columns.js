@@ -19,6 +19,11 @@ export default {
         },
       }),
       {
+        field: 'wires',
+        title: i18n.t('cloudenv.text_229'),
+        width: 70,
+      },
+      {
         field: 'hosts',
         title: i18n.t('cloudenv.text_483'),
         width: 140,
@@ -33,11 +38,6 @@ export default {
         formatter: ({ row }) => {
           return `${row.baremetals}/${row.baremetals_enabled}`
         },
-      },
-      {
-        field: 'wires',
-        title: i18n.t('cloudenv.text_229'),
-        width: 70,
       },
     ]
   },

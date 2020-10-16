@@ -25,8 +25,8 @@ export default {
           )
         },
       }),
-      getEnabledTableColumn({ minWidth: 90 }),
       getStatusTableColumn({ statusModule: 'scheduledtask', minWidth: 90 }),
+      getEnabledTableColumn({ minWidth: 90 }),
       getOperationColumns(),
       getResourceTypeColumns(),
       getResourceNumberColumns(this),
