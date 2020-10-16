@@ -96,6 +96,22 @@ export default {
           showOverflow: 'ellipsis',
         },
         getCopyWithContentTableColumn({
+          title: this.$t('table.title.res_name'),
+          field: 'obj_name',
+        }),
+        {
+          title: this.$t('common.status'),
+          field: 'success',
+          width: 80,
+          slots: {
+            default: ({ row }) => {
+              const txt = row.success ? this.$t('common_159') : this.$t('common_160')
+              const color = row.success ? '#67C23A' : '#F56C6C'
+              return [<span style={{ color }}>{ txt }</span>]
+            },
+          },
+        },
+        getCopyWithContentTableColumn({
           title: this.$t('common_56'),
           field: 'obj_type',
           hideField: true,
@@ -116,26 +132,6 @@ export default {
             },
           },
         },
-        getCopyWithContentTableColumn({
-          title: this.$t('table.title.res_name'),
-          field: 'obj_name',
-        }),
-        {
-          title: this.$t('common.status'),
-          field: 'success',
-          width: 80,
-          slots: {
-            default: ({ row }) => {
-              const txt = row.success ? this.$t('common_159') : this.$t('common_160')
-              const color = row.success ? '#67C23A' : '#F56C6C'
-              return [<span style={{ color }}>{ txt }</span>]
-            },
-          },
-        },
-        getTimeTableColumn({
-          field: 'start_time',
-          title: this.$t('common_156'),
-        }),
         {
           field: 'user',
           title: this.$t('table.title.sponsor'),
@@ -158,6 +154,10 @@ export default {
             },
           },
         },
+        getTimeTableColumn({
+          field: 'start_time',
+          title: this.$t('common_156'),
+        }),
         {
           field: 'owner_tenant',
           title: this.$t('table.title.owner_project'),
