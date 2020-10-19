@@ -79,6 +79,7 @@ export default {
             this.createDialog('DeleteResDialog', {
               vm: this,
               title: this.$t('network.text_131'),
+              name: this.$t('network.text_142'),
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
