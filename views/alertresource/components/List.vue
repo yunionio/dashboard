@@ -35,7 +35,7 @@ export default {
       exportDataOptions: {
         items: [
           { key: 'name', label: this.$t('common.name') },
-          { key: 'type', label: '资源类型' },
+          { key: 'type', label: this.$t('monitor.text_97') },
         ],
       },
     }

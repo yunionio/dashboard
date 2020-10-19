@@ -1,5 +1,6 @@
 import { getNameDescriptionTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
+import i18n from '@/locales'
 
 export default {
   data () {
@@ -18,7 +19,7 @@ export default {
       }),
       {
         field: 'alert_table',
-        title: '告警数量',
+        title: i18n.t('monitor.text_98'),
         type: 'expand',
         slots: {
           default: ({ row }) => {
@@ -29,7 +30,7 @@ export default {
               getNameDescriptionTableColumn({
                 onManager: this.onManager,
                 hideField: true,
-                title: '策略名称',
+                title: i18n.t('monitor.text_99'),
                 edit: false,
                 showDesc: false,
                 slotCallback: row => {
@@ -67,7 +68,7 @@ export default {
       },
       {
         field: 'type',
-        title: '资源类型',
+        title: i18n.t('monitor.text_97'),
         formatter: ({ row }) => {
           if (row.type === 'node') return this.$t('dictionary.host')
           return row.type

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header title="报警资源" />
+    <page-header :title="$t('monitor.text_17')" />
     <page-body>
       <list listId="AlertresourceList" />
     </page-body>

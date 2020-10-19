@@ -54,7 +54,7 @@ export default {
       columns: [
         {
           type: 'seq',
-          title: '序号',
+          title: this.$t('monitor.text_100'),
         },
         strategyColumn('alert_rule'),
         levelColumn,
