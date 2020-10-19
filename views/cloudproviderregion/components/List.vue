@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    default-search-key="cloudregion" />
 </template>
 
 <script>
@@ -32,8 +33,9 @@ export default {
         getParams: this.getParams,
         idKey: 'cloudregion_id',
         filterOptions: {
-          joint_filter: {
+          cloudregion: {
             label: this.$t('cloudenv.text_95'),
+            filter: true,
             jointFilter: true,
             formatter: val => {
               return `cloudregions.id(cloudregion_id).name.contains('${val}')`
