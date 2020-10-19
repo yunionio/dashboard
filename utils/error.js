@@ -12,7 +12,7 @@ export const getErrorBody = data => {
       return { code: 500, details: data }
     }
   }
-  if (!data.code || !data.details) {
+  if (!data.code) {
     return { code: 500, details: `${data}` }
   }
   return data
