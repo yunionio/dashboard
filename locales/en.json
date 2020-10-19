@@ -178,5 +178,6 @@
   "monitor.text_97": "Resource Type",
   "monitor.text_98": "Alert Count",
   "monitor.text_99": "Strategy Name",
-  "monitor.text_100": "Sequence"
+  "monitor.text_100": "Sequence",
+  "monitor.text_101": "Filter Condition"
 }

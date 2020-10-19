@@ -178,5 +178,6 @@
   "monitor.text_97": "资源类型",
   "monitor.text_98": "告警数量",
   "monitor.text_99": "策略名称",
-  "monitor.text_100": "序号"
+  "monitor.text_100": "序号",
+  "monitor.text_101": "过滤条件"
 }

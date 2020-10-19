@@ -36,27 +36,50 @@ export const strategyColumn = (field = 'common_alert_metric_details') => ({
   field,
   title: i18n.t('monitor.strategy_detail'),
   minWidth: 120,
-  formatter: ({ row }) => {
-    if (row[field] && ((R.type(row[field]) === 'Array') || R.type(row[field]) === 'Object') && !R.isEmpty(row[field])) {
-      let detail = ''
-      if (R.type(row[field]) === 'Array') {
-        detail = row[field][0]
-      } else if (R.type(row[field]) === 'Object') {
-        detail = row[field]
+  slots: {
+    default: ({ row }, h) => {
+      let strategy = '-'
+      const filters = []
+      if (row[field] && ((R.type(row[field]) === 'Array') || R.type(row[field]) === 'Object') && !R.isEmpty(row[field])) {
+        let detail = ''
+        if (R.type(row[field]) === 'Array') {
+          detail = row[field][0]
+        } else if (R.type(row[field]) === 'Object') {
+          detail = row[field]
+        }
+        let measurement = detail.measurement_display_name || detail.measurement || detail.measurement_desc
+        if (metric_zh[measurement]) measurement = metric_zh[measurement]
+        let metric = _.get(detail, 'field_description.display_name') || detail.field_desc || detail.field
+        if (metric) {
+          metric = metric_zh[metric] || metric
+        }
+        const reduce = (alertStrategyMaps[detail.reduce]) || ''
+        const preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
+        const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? row.eval_data[0].unit : '')
+        const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
+        strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text, preiod])
+        if (detail.filters && detail.filters.length) {
+          detail.filters.forEach(val => {
+            if (val.key) filters.push(`${val.condition} ${val.key} ${val.operator} ${val.value}`)
+          })
+        }
       }
-      let measurement = detail.measurement_display_name || detail.measurement || detail.measurement_desc
-      if (metric_zh[measurement]) measurement = metric_zh[measurement]
-      let metric = _.get(detail, 'field_description.display_name') || detail.field_desc
-      if (metric) {
-        metric = metric_zh[metric] || _.get(detail, 'field_description.name') || detail.field
+      let filterNode = null
+      if (filters.length > 0) {
+        filterNode = (
+          <a-tag>
+            <div>{ i18n.t('monitor.text_101') }: </div>
+            { filters.map(v => <div>{v}</div>) }
+          </a-tag>
+        )
       }
-      const reduce = (alertStrategyMaps[detail.reduce]) || ''
-      const preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
-      const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? row.eval_data[0].unit : '')
-      const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
-      return i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text, preiod])
-    }
-    return '-'
+      return [
+        <div>
+          <div>{strategy}</div>
+          { filterNode }
+        </div>,
+      ]
+    },
   },
 })
 

@@ -4,8 +4,7 @@
     :list="list"
     :columns="columns"
     ref="pagelist"
-    :expandConfig="expandConfig"
-    :export-data-options="exportDataOptions" />
+    :expandConfig="expandConfig" />
 </template>
 
 <script>
@@ -32,12 +31,6 @@ export default {
           tenant: getTenantFilter(),
         },
       }),
-      exportDataOptions: {
-        items: [
-          { key: 'name', label: this.$t('common.name') },
-          { key: 'type', label: this.$t('monitor.text_97') },
-        ],
-      },
     }
   },
   created () {

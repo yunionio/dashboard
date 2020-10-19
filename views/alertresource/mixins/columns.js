@@ -39,6 +39,7 @@ export default {
                   )
                 },
               }),
+              getTagTableColumn({ field: 'data.tags', ignorePerfix: true }),
               strategyColumn(),
               levelColumn,
               {
@@ -53,6 +54,7 @@ export default {
           },
         },
       },
+      getTagTableColumn({ field: 'tags', ignorePerfix: true }),
       {
         field: 'none',
         title: this.$t('common.status'),
@@ -74,7 +76,6 @@ export default {
           return row.type
         },
       },
-      getTagTableColumn({ field: 'tags', ignorePerfix: true }),
     ]
     this.extandData = {}
   },
