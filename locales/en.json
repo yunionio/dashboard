@@ -818,6 +818,9 @@
       "creating": "Creating",
       "create_failed": "Create failed",
       "available": "available"
+    },
+    "alertresource": {
+      "alerted": "发生告警"
     }
   },
   "skuCategoryOptions": {
@@ -2163,7 +2166,8 @@
     "federatedroles": "federatedroles",
     "federatedclusterroles": "federatedclusterroles",
     "federatedrolebindings": "federatedrolebindings",
-    "federatedclusterrolebindings": "federatedclusterrolebindings" 
+    "federatedclusterrolebindings": "federatedclusterrolebindings",
+    "alertresource": "alertresource"
   },
   "res": {
     "role": "Role",

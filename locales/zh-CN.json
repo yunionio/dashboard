@@ -818,6 +818,9 @@
       "creating": "创建中",
       "create_failed": "创建失败",
       "available": "可用"
+    },
+    "alertresource": {
+      "alerted": "发生告警"
     }
   },
   "skuCategoryOptions": {
@@ -2163,7 +2166,8 @@
     "federatedroles": "角色(多集群)",
     "federatedclusterroles": "集群角色(多集群)",
     "federatedrolebindings": "角色绑定(多集群)",
-    "federatedclusterrolebindings": "集群角色绑定(多集群)" 
+    "federatedclusterrolebindings": "集群角色绑定(多集群)",
+    "alertresource": "报警资源"
   },
   "res": {
     "role": "@:dictionary.role",
