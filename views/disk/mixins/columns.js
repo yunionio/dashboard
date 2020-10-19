@@ -81,11 +81,11 @@ export default {
       },
       getBillingTypeTableColumn(),
       getBrandTableColumn(),
+      getAccountTableColumn(),
       getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('table.title.disk_storage') }),
       getTimeTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),
-      getAccountTableColumn(),
     ]
   },
 }
