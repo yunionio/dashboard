@@ -4150,5 +4150,7 @@
   "common_715": "User Tag",
   "common_716": "Insufficient authority, no operation authority",
   "common_717": "Total {0} records",
-  "common_718": "IP cannot be manually configured when the number of hosts is greater than 1"
+  "common_718": "IP cannot be manually configured when the number of hosts is greater than 1",
+  "common_719": "There are {0} resource alarms",
+  "common_720": "There is no resource alarm"
 }
