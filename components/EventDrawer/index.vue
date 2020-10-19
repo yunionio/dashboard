@@ -1,5 +1,5 @@
 <template>
-  <event-list :obj-id="resId" :obj-type="resType" />
+  <event-list :obj-id="resId" :obj-type="resType" :list-id="id" />
 </template>
 
 <script>
@@ -13,6 +13,9 @@ export default {
   },
   mixins: [WindowsMixin],
   props: {
+    id: {
+      type: String,
+    },
     resId: {
       type: String,
     },
