@@ -63,7 +63,7 @@ export default {
         label: i18n.t('monitor.text_17'),
         t: 'dictionary.alertresource',
         permission: 'alertresources_list',
-        hidden: () => !store.getters.isAdminMode,
+        hidden: () => !store.getters.isAdminMode && process.env.VUE_APP_IS_PRIVATE,
       },
       component: Layout,
       children: [
