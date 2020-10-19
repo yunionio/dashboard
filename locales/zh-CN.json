@@ -173,5 +173,6 @@
   "monitor.text_13": "创建报警策略",
   "monitor.text_14": "触发时间",
   "monitor.text_15": "新建报警接收人",
-  "monitor.text_16": "触发值"
+  "monitor.text_16": "触发值",
+  "monitor.text_17": "报警资源"
 }

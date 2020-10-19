@@ -1,10 +1,12 @@
 import CommonalertsIndex from '@Monitor/views/commonalert'
 import commonalertsCreate from '@Monitor/views/commonalert/create'
 import commonalertsUpdate from '@Monitor/views/commonalert/update'
+import AlertresourceIndex from '@Monitor/views/alertresource'
 import Explorer from '@Monitor/views/explorer'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
+import store from '@/store'
 
 export default {
   meta: {
@@ -52,6 +54,23 @@ export default {
           name: 'CommonalertUpdate',
           path: ':id/update',
           component: commonalertsUpdate,
+        },
+      ],
+    },
+    {
+      path: '/alertresource',
+      meta: {
+        label: i18n.t('monitor.text_17'),
+        t: 'dictionary.alertresource',
+        permission: 'alertresources_list',
+        hidden: () => !store.getters.isAdminMode,
+      },
+      component: Layout,
+      children: [
+        {
+          name: 'alertresourceIndex',
+          path: '',
+          component: AlertresourceIndex,
         },
       ],
     },
