@@ -820,7 +820,7 @@
       "available": "available"
     },
     "alertresource": {
-      "alerted": "发生告警"
+      "alerted": "alerted"
     }
   },
   "skuCategoryOptions": {

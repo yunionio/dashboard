@@ -11,7 +11,7 @@
         {{$t('common_719', [total])}},<a-button type="link" size="small" @click="routerPush">{{$t('common.view')}}<icon type="blank" /></a-button>
       </div>
       <div slot="message" v-else>
-        暂无资源报警
+        {{$t('common_720')}}
       </div>
     </a-alert>
   </div>
