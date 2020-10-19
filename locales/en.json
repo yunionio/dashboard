@@ -173,5 +173,11 @@
   "monitor.text_13": "Create Alarm",
   "monitor.text_14": "Triggering Time ",
   "monitor.text_15": "New Alarm Receiver",
-  "monitor.text_16": "Trigger value"
+  "monitor.text_16": "Trigger value",
+  "monitor.text_17": "alertresource",
+  "monitor.text_97": "Resource Type",
+  "monitor.text_98": "Alert Count",
+  "monitor.text_99": "Strategy Name",
+  "monitor.text_100": "Sequence",
+  "monitor.text_101": "Filter Condition"
 }

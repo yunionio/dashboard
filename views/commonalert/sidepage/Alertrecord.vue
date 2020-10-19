@@ -6,9 +6,8 @@
 </template>
 
 <script>
-import { levelMaps } from '@Monitor/constants'
-// eslint-disable-next-line
 import { levelColumn, strategyColumn } from '../utils'
+import { levelMaps } from '@Monitor/constants'
 import { getStatusTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -55,7 +54,7 @@ export default {
       columns: [
         {
           type: 'seq',
-          title: '序号',
+          title: this.$t('monitor.text_100'),
         },
         strategyColumn('alert_rule'),
         levelColumn,
