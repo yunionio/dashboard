@@ -26,7 +26,6 @@ export default {
   },
   data () {
     return {
-      rules: _.get(this.data, this.rulesPath),
       columns: [
         {
           field: 'verbs',
@@ -84,6 +83,11 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    rules () {
+      return _.get(this.data, this.rulesPath)
+    },
   },
   methods: {
     deleteRule (rowIndex) {
