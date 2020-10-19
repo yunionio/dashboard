@@ -177,5 +177,10 @@
   "dashboard.text_178": "CPU使用率TOP5（本地IDC）",
   "dashboard.text_179": "磁盘写入速度TOP5（本地IDC）",
   "dashboard.text_180": "磁盘读取速度TOP5（本地IDC）",
-  "dashboard.text_181": "总量"
+  "dashboard.text_181": "总量",
+  "dashboard.text_182": "CPU配额使用情况",
+  "project_quota_usage": {
+    "cpu": "CPU配额总数量",
+    "usage.cpu": "CPU配额已使用数量"
+  }
 }

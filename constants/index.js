@@ -807,3 +807,12 @@ export const K8S_USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
 }
+
+export const PROJECT_QUOTA_CONFIG = {
+  cpu: {
+    unit: i18n.t('dashboard.text_3'),
+  },
+  'usage.cpu': {
+    unit: i18n.t('dashboard.text_3'),
+  },
+}
