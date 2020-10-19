@@ -48,7 +48,7 @@ export default {
     },
     billTypesMaps: {
       type: Object,
-      default: BILL_TYPES_MAP,
+      default: () => BILL_TYPES_MAP,
     },
   },
   data () {
