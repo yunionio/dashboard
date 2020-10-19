@@ -80,6 +80,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import get from 'lodash/get'
 import { usageConfig } from './constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
@@ -287,20 +288,17 @@ export default {
       this.loading = true
       try {
         const data = await load({
-          res: 'query',
+          res: 'unifiedmonitors',
           actionArgs: {
-            baseURL: '',
-            url: '/query',
-            method: 'GET',
+            url: '/v1/unifiedmonitors/query',
+            method: 'POST',
             params: {
               $t: getRequestT(),
-              db: 'telegraf',
-              epoch: 'ms',
-              q: this.genSQLQuery(),
             },
+            data: this.genQueryData(),
           },
           useManager: false,
-          resPath: 'data.results[0].series',
+          resPath: 'data.series[0]',
         })
         this.seriesData = this.seriesDataMapper(data)
       } finally {
@@ -325,7 +323,7 @@ export default {
         usage: this.usageOptions[e.target.value][0].key,
       })
     },
-    genSQLQuery () {
+    genQueryData () {
       const fd = this.form.fd
       let ret = ''
       const brand = fd.brand
@@ -335,35 +333,143 @@ export default {
       const condition = this.getDomainOrProjectQuery()
       if (this.brandEnv === 'idc' || this.brandEnv === 'private') {
         if (fd.resType === 'server') {
-          ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", ${fd.limit}) FROM "telegraf"."30day_only"."${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
+          // ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", ${fd.limit}) FROM "telegraf"."30day_only"."${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
+          ret = {
+            metric_query: [
+              {
+                model: {
+                  database: 'telegraf',
+                  measurement: usageKeys[1],
+                  select: [
+                    [
+                      {
+                        type: 'func_field',
+                        params: [usageKeys[0], 'vm_name', 'vm_ip'],
+                      },
+                      {
+                        type: fd.order.toLowerCase(),
+                        params: [fd.limit],
+                      },
+                    ],
+                  ],
+                  tags: [
+                    {
+                      key: brandKey,
+                      value: brand,
+                      operator: '=',
+                    },
+                  ],
+                },
+              },
+            ],
+            scope: this.scope,
+            from: `${min}m`,
+            unit: true,
+          }
         }
         if (fd.resType === 'host') {
-          ret = `SELECT ${fd.order}("${usageKeys[0]}", ${fd.limit}) FROM "${usageKeys[1]}" WHERE "res_type" = 'host' AND time > now() - ${min}m AND "${brandKey}" = '${brand}' GROUP BY "host"`
+          // ret = `SELECT ${fd.order}("${usageKeys[0]}", ${fd.limit}) FROM "${usageKeys[1]}" WHERE "res_type" = 'host' AND time > now() - ${min}m AND "${brandKey}" = '${brand}' GROUP BY "host"`
+          ret = {
+            metric_query: [
+              {
+                model: {
+                  database: 'telegraf',
+                  measurement: usageKeys[1],
+                  select: [
+                    [
+                      {
+                        type: 'func_field',
+                        params: [usageKeys[0]],
+                      },
+                      {
+                        type: fd.order.toLowerCase(),
+                        params: [fd.limit],
+                      },
+                    ],
+                  ],
+                  tags: [
+                    {
+                      key: 'res_type',
+                      value: 'host',
+                      operator: '=',
+                    },
+                    {
+                      key: brandKey,
+                      value: brand,
+                      operator: '=',
+                    },
+                  ],
+                  group_by: [
+                    {
+                      type: 'tag',
+                      params: ['host'],
+                    },
+                  ],
+                },
+              },
+            ],
+            scope: this.scope,
+            from: `${min}m`,
+            unit: true,
+          }
         }
-        if (condition && condition.length > 0) {
-          ret += ` AND ${condition}`
+        if (condition) {
+          ret.metric_query[0].model.tags.push(condition)
+          // ret += ` AND ${condition}`
         }
         return ret
       }
       if (this.brandEnv === 'public') {
         if (fd.resType === 'server') {
-          ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", "hypervisor", ${fd.limit}) FROM "${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
+          // ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", "hypervisor", ${fd.limit}) FROM "${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
+          ret = {
+            metric_query: [
+              {
+                model: {
+                  database: 'telegraf',
+                  measurement: usageKeys[1],
+                  select: [
+                    [
+                      {
+                        type: 'func_field',
+                        params: [usageKeys[0], 'vm_name', 'vm_ip', 'hypervisor'],
+                      },
+                      {
+                        type: fd.order.toLowerCase(),
+                        params: [fd.limit],
+                      },
+                    ],
+                  ],
+                  tags: [
+                    {
+                      key: brandKey,
+                      value: brand,
+                      operator: '=',
+                    },
+                  ],
+                },
+              },
+            ],
+            scope: this.scope,
+            from: `${min}m`,
+            unit: true,
+          }
         }
         if (condition && condition.length > 0) {
-          ret += ` AND ${condition}`
+          // ret += ` AND ${condition}`
+          ret.metric_query[0].model.tags.push(condition)
         }
         return ret
       }
       return ret
     },
     seriesDataMapper (series) {
-      if (!series || !series.length) return []
-      const index = series[0].columns.findIndex(v => v === 'vm_name')
-      const arr = series[0].values
-      const data = arr.map(item => {
+      let data = get(series, 'points', [])
+      if (data.length <= 0) return data
+      data = data.map(item => {
         return {
-          host: item[index],
-          value: item[1],
+          host: item[1],
+          value: item[0],
         }
       })
       data.sort((a, b) => {
@@ -385,11 +491,21 @@ export default {
     },
     getDomainOrProjectQuery () {
       if (this.isProjectMode) {
-        return `"tenant_id" = '${this.userInfo.projectId}'`
+        // return `"tenant_id" = '${this.userInfo.projectId}'`
+        return {
+          key: 'tenant_id',
+          value: this.userInfo.projectId,
+          operator: '=',
+        }
       } else if (this.isDomainMode) {
-        return `"domain_id" = '${this.userInfo.projectDomainId}'`
+        // return `"domain_id" = '${this.userInfo.projectDomainId}'`
+        return {
+          key: 'domain_id',
+          value: this.userInfo.projectDomainId,
+          operator: '=',
+        }
       }
-      return ''
+      return null
     },
   },
 }
