@@ -389,6 +389,7 @@ export default {
         order_by: 'ref_count',
         order: 'desc',
         $t: uuid(),
+        valid: true,
         ...this.cacheImageParams,
       }
       if (this.showCloudaccount) {
