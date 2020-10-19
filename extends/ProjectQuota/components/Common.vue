@@ -54,9 +54,9 @@ export default {
   },
   mixins: [mixin],
   data () {
-    const initialNameValue = ((this.params && this.params.type === 'project-quota-common') && this.params.name) || this.$t('dashboard.text_182')
-    const initialAllUsageKeyValue = ((this.params && this.params.type === 'project-quota-common') && this.params.all_usage_key) || 'cpu'
-    const initialUsageKeyValue = ((this.params && this.params.type === 'project-quota-common') && this.params.usage_key) || 'usage.cpu'
+    const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.cpu_quota')
+    const initialAllUsageKeyValue = (this.params && this.params.all_usage_key) || 'cpu'
+    const initialUsageKeyValue = (this.params && this.params.usage_key) || 'usage.cpu'
     return {
       data: {},
       loading: false,
@@ -171,7 +171,7 @@ export default {
   },
   created () {
     this.fetchData()
-    if (this.params && this.params.type === 'project-quota-common') {
+    if (this.params) {
       this.form.fd = this.params
     }
     this.$emit('update', this.options.i, this.form.fd)
@@ -212,7 +212,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.form.fd = values
-        this.$emit('update', this.options.i, values)
+        this.$emit('update', this.options.i, { ...values, type: 'project-quota-common' })
         this.updateVisible(false)
       } catch (error) {
         throw error

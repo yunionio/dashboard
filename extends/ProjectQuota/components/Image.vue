@@ -17,14 +17,6 @@
             <div class="ml-2 flex-fill text-right">{{ this.usage }}</div>
           </div>
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_34')}}</div>
-            <div class="ml-2 flex-fill text-right">{{ this.displayUnUsage }}</div>
-          </div>
-          <div v-if="showReserved" class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('common_586')}}</div>
-            <div class="ml-2 flex-fill text-right">{{ this.reserved }}</div>
-          </div>
-          <div class="d-flex">
             <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_181')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.allUsage }}</div>
           </div>
@@ -49,10 +41,10 @@
 <script>
 import mixin from './mixin'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
-import QuotaConfig from '@Dashboard/sections/QuotaConfig'
-import { USAGE_CONFIG } from '@Dashboard/constants'
+import QuotaConfig from '@Dashboard/sections/ProjectQuotaConfig'
+import { PROJECT_QUOTA_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
-import { getRequestT, sizestrWithUnit } from '@/utils/utils'
+import { getRequestT } from '@/utils/utils'
 
 export default {
   name: 'ProjectQuotaImage',
@@ -62,12 +54,9 @@ export default {
   },
   mixins: [mixin],
   data () {
-    const initialNameValue = ((this.params && this.params.type === 'project-quota-image') && this.params.name) || this.$t('dashboard.text_46')
-    const initialCloudEnvValue = ((this.params && this.params.type === 'project-quota-image') && this.params.cloud_env) || 'onpremise'
-    const initialBrandValue = ((this.params && this.params.type === 'project-quota-image') && this.params.brand) || 'OneCloud'
-    const initialRegionValue = ((this.params && this.params.type === 'project-quota-image') && this.params.region) || 'default'
-    const initialAllUsageKeyValue = ((this.params && this.params.type === 'project-quota-image') && this.params.all_usage_key) || 'hosts.memory'
-    const initialUsageKeyValue = ((this.params && this.params.type === 'project-quota-image') && this.params.usage_key) || 'all.servers.memory'
+    const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.image_quota')
+    const initialAllUsageKeyValue = (this.params && this.params.all_usage_key) || 'image'
+    const initialUsageKeyValue = (this.params && this.params.usage_key) || 'usage.image'
     return {
       data: {},
       loading: false,
@@ -75,9 +64,6 @@ export default {
         fc: this.$form.createForm(this),
         fd: {
           name: initialNameValue,
-          cloud_env: initialCloudEnvValue,
-          brand: initialBrandValue,
-          region: initialRegionValue,
           all_usage_key: initialAllUsageKeyValue,
           usage_key: initialUsageKeyValue,
         },
@@ -90,30 +76,6 @@ export default {
             rules: [
               { required: true, message: this.$t('dashboard.text_8') },
             ],
-          },
-        ],
-        cloud_env: [
-          'cloud_env',
-          {
-            initialValue: initialCloudEnvValue,
-          },
-        ],
-        brand: [
-          'brand',
-          {
-            initialValue: initialBrandValue,
-          },
-        ],
-        region: [
-          'region',
-          {
-            initialValue: initialRegionValue,
-          },
-        ],
-        account: [
-          'account',
-          {
-            initialValue: this.params && this.params.account,
           },
         ],
         all_usage_key: [
@@ -145,10 +107,10 @@ export default {
       return (this.data && this.data[this.form.fd.usage_key]) || 0
     },
     allUsageConfig () {
-      return USAGE_CONFIG[this.form.fd.all_usage_key]
+      return PROJECT_QUOTA_CONFIG[this.form.fd.all_usage_key]
     },
     usageConfig () {
-      return USAGE_CONFIG[this.form.fd.usage_key]
+      return PROJECT_QUOTA_CONFIG[this.form.fd.usage_key]
     },
     allUsage () {
       let ret = this.allUsageNumber
@@ -166,26 +128,6 @@ export default {
         ret = this.usageConfig.formatter(ret)
       }
       if (this.usageConfig && this.usageConfig.unit) {
-        ret = `${ret}${this.usageConfig.unit}`
-      }
-      return ret
-    },
-    unUsage () {
-      const ret = this.allUsageNumber - this.usageNumber
-      return ret < 0 ? 0 : ret
-    },
-    displayUnUsage () {
-      let ret = this.unUsage
-      if (
-        (this.allUsageConfig && this.allUsageConfig.formatter) &&
-        (this.usageConfig && this.usageConfig.formatter)
-      ) {
-        ret = this.usageConfig.formatter(this.unUsage)
-      }
-      if (
-        (this.allUsageConfig && this.allUsageConfig.unit) &&
-        (this.usageConfig && this.usageConfig.unit)
-      ) {
         ret = `${ret}${this.usageConfig.unit}`
       }
       return ret
@@ -213,16 +155,10 @@ export default {
       }
       return ret
     },
-    showReserved () {
-      return this.form.fd.usage_key === 'all.servers.memory' && this.form.fd.all_usage_key === 'hosts.memory'
-    },
-    reserved () {
-      return this.showReserved && sizestrWithUnit(this.data['hosts.memory.reserved'], 'M', 1024)
-    },
   },
   watch: {
     'form.fd' (val) {
-      this.fetchUsage()
+      this.fetchData()
       for (const key in this.decorators) {
         let config = this.decorators[key][1] || {}
         config = {
@@ -234,45 +170,34 @@ export default {
     },
   },
   created () {
-    if (this.params && this.params.type === 'project-quota-image') {
+    this.fetchData()
+    if (this.params) {
       this.form.fd = this.params
     }
     this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {
     refresh () {
-      return this.fetchUsage()
+      return this.fetchData()
     },
-    genUsageParams () {
-      const params = {
-        scope: this.$store.getters.scope,
-        $t: getRequestT(),
-      }
-      const fd = this.form.fd
-      if (fd.cloud_env) params.cloud_env = fd.cloud_env
-      if (fd.region) params.region = fd.region
-      if (fd.account) {
-        params.range_type = 'cloudaccounts'
-        params.range_id = fd.account
-      }
-      if (fd.brand) params.brand = fd.brand
-      return params
-    },
-    async fetchUsage () {
+    async fetchData () {
       this.loading = true
       try {
-        const params = this.genUsageParams()
+        const params = {
+          scope: this.$store.getters.scope,
+          $t: getRequestT(),
+        }
         const data = await load({
-          res: 'usages',
+          res: 'quotas',
           actionArgs: {
-            url: '/v2/rpc/usages/general-usage',
+            url: '/v2/rpc/image_quotas/quota',
             method: 'GET',
             params,
           },
           useManager: false,
           resPath: 'data',
         })
-        this.data = data
+        this.data = data.data[0]
       } finally {
         this.loading = false
       }
@@ -287,7 +212,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.form.fd = values
-        this.$emit('update', this.options.i, values)
+        this.$emit('update', this.options.i, { ...values, type: 'project-quota-image' })
         this.updateVisible(false)
       } catch (error) {
         throw error

@@ -178,9 +178,30 @@
   "dashboard.text_179": "磁盘写入速度TOP5（本地IDC）",
   "dashboard.text_180": "磁盘读取速度TOP5（本地IDC）",
   "dashboard.text_181": "总量",
-  "dashboard.text_182": "CPU配额使用情况",
+  "dashboard.cpu_quota": "CPU配额使用情况",
+  "dashboard.memory_quota": "内存配额使用情况",
+  "dashboard.storage_quota": "存储配额使用情况",
+  "dashboard.eip_quota": "公网IP配额使用情况",
+  "dashboard.port_quota": "IP配额使用情况",
+  "dashboard.gpu_quota": "GPU配额使用情况",
+  "dashboard.image_quota": "镜像配额使用情况",
+  "dashboard.snapshot_quota": "快照配额使用情况",
   "project_quota_usage": {
     "cpu": "CPU配额总数量",
-    "usage.cpu": "CPU配额已使用数量"
+    "usage.cpu": "CPU配额已使用数量",
+    "memory": "内存配额总数量",
+    "usage.memory": "内存配额已使用数量",
+    "storage": "存储配额总数量",
+    "usage.storage": "存储配额已使用数量",
+    "eip": "公网IP配额总数量",
+    "usage.eip": "公网IP配额已使用数量",
+    "port": "IP配额总数量",
+    "usage.port": "IP配额已使用数量",
+    "isolated_device": "GPU配额总数量",
+    "usage.isolated_device": "GPU配额已使用数量",
+    "image": "镜像配额总数量",
+    "usage.image": "镜像配额已使用数量",
+    "snapshot": "快照配额总数量",
+    "usage.snapshot": "快照配额已使用数量"
   }
 }
