@@ -17,6 +17,7 @@ export default {
   name: 'NetworkList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
+    id: String,
     resId: String,
     data: {
       type: Object,
@@ -34,6 +35,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'networks',
         ctx: [['servers', this.resId]],
         idKey: 'index',

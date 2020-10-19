@@ -43,6 +43,16 @@ export default {
       ],
     }
   },
+  computed: {
+    id () {
+      switch (this.currentComponent) {
+        case 'InstanceSnapshotList':
+          return 'InstanceSnapshotListForVminstanceSidepage'
+        default:
+          return 'DiskSnapshotListForVminstanceSidepage'
+      }
+    },
+  },
   methods: {
     callback (key) {
       this.currentComponent = key

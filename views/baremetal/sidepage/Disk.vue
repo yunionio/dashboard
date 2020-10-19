@@ -27,6 +27,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'DiskListForBaremetalSidepage',
         resource: 'disks',
         ctx: [['servers', this.resId]],
         idKey: 'disk_id',

@@ -14,6 +14,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
+      :id="listId"
       :data="detailData"
       res-type="servertemplate"
       :on-manager="onManager"
@@ -46,6 +47,16 @@ export default {
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForServertemplateSidePage'
+        default:
+          return ''
+      }
+    },
   },
 }
 </script>

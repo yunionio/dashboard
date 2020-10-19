@@ -18,6 +18,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
+      :id="listId"
       :data="detailData"
       :resource="resource"
       :on-manager="onManager"
@@ -58,6 +59,14 @@ export default {
         { label: this.$t('compute.text_238'), key: 'system-image-detail' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForSystemImageSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

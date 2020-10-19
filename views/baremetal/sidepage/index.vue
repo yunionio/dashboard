@@ -14,6 +14,7 @@
     <component
       :is="params.windowData.currentTab"
       :data="detailData"
+      :id="listId"
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
@@ -76,6 +77,14 @@ export default {
         }
       }
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForBaremetalSidepage'
+        default:
+          return ''
+      }
     },
   },
 }
