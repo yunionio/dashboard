@@ -22,6 +22,7 @@ export default {
           this.createDialog('DeleteResDialog', {
             vm: this,
             title: i18n.t('network.text_131'),
+            name: this.$t('network.text_142'),
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
