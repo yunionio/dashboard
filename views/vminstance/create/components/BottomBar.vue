@@ -217,7 +217,7 @@ export default {
         CNY: '¥',
       }
       if (this.pricesList && this.pricesList.length > 0) {
-        return currencys[this.pricesList[0].currency]
+        return _.get(currencys, `[${this.pricesList[0].currency}]`) || currencys.CNY
       }
       return '¥'
     },
