@@ -823,6 +823,9 @@
       "creating": "创建中",
       "create_failed": "创建失败",
       "available": "可用"
+    },
+    "alertresource": {
+      "alerted": "发生告警"
     }
   },
   "skuCategoryOptions": {
@@ -2176,7 +2179,8 @@
     "federatedroles": "角色(多集群)",
     "federatedclusterroles": "集群角色(多集群)",
     "federatedrolebindings": "角色绑定(多集群)",
-    "federatedclusterrolebindings": "集群角色绑定(多集群)" 
+    "federatedclusterrolebindings": "集群角色绑定(多集群)",
+    "alertresource": "报警资源"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -4159,5 +4163,7 @@
   "common_715": "用户标签",
   "common_716": "权限不足，暂无操作权限",
   "common_717": "共 {0} 条记录",
-  "common_718": "主机数量大于1时无法手动配置IP"
+  "common_718": "主机数量大于1时无法手动配置IP",
+  "common_719": "有 {0} 个资源发生报警",
+  "common_720": "暂无资源报警"
 }

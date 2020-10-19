@@ -633,6 +633,8 @@ export const PERMISSION = {
   network_globalvpcs_list: ['compute', 'globalvpcs', 'list'],
   // 公有云日志
   cloudevents_list: ['log', 'cloudevents', 'list'],
+  // 报警资源
+  alertresources_list: ['monitor', 'alertresources', 'list'],
   /**
    * 配额更新
    */
