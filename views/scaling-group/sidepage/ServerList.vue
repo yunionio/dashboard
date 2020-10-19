@@ -36,7 +36,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
+        id: 'ServerListForScalingGroupSidePage',
         key: 'id',
         resource: 'servers',
         getParams: this.getParams,

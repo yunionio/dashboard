@@ -1,5 +1,5 @@
 <template>
-  <vxe-grid :data="resourceData" :columns="columns" />
+  <vxe-grid :data="resourceData" :columns="columns" :resizable="true" />
 </template>
 
 <script>

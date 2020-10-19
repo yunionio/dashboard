@@ -3,7 +3,8 @@
     :get-params="params"
     :data="data"
     :alertType="params.type"
-    :metric-opts="metricOpts" />
+    :metric-opts="metricOpts"
+    :list-id="id" />
 </template>
 
 <script>
@@ -17,6 +18,7 @@ export default {
     NodeAlertList,
   },
   props: {
+    id: String,
     data: {
       type: Object,
       required: true,

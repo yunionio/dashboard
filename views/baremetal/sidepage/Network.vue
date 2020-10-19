@@ -30,6 +30,7 @@ export default {
     const isPrivate = type === SERVER_TYPE.public
     return {
       list: this.$list.createList(this, {
+        id: 'NetworkListForBaremetalSidepage',
         resource: 'networks',
         ctx: [['servers', this.resId]],
         idKey: 'network_id',

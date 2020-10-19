@@ -66,10 +66,10 @@ export default {
         },
       },
       getBrandTableColumn(),
+      getAccountTableColumn(),
       getTimeTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),
-      getAccountTableColumn(),
     ]
   },
 }

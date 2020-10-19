@@ -4,7 +4,7 @@
       <a-tab-pane v-for="obj in tabs" :key="obj.key" :tab="obj.label">
         <div class="mt-2">
           <keep-alive>
-            <component v-if="obj.key === currentComponent" :is="currentComponent" :getParams="getParams" />
+            <component v-if="obj.key === currentComponent" :is="currentComponent" :getParams="getParams" :id="id" />
           </keep-alive>
         </div>
       </a-tab-pane>
@@ -41,6 +41,16 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    id () {
+      switch (this.currentComponent) {
+        case 'InstanceSnapshotList':
+          return 'InstanceSnapshotListForVminstanceSidepage'
+        default:
+          return 'DiskSnapshotListForVminstanceSidepage'
+      }
+    },
   },
   methods: {
     callback (key) {

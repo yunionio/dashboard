@@ -14,6 +14,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="detailData.id"
+      :id="listId"
       :data="detailData"
       :on-manager="onManager"
       :getParams="getParams"
@@ -71,6 +72,16 @@ export default {
         return {
           scaling_group: this.detailData.id,
         }
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForScalingGroupSidePage'
+        case 'server-template-list':
+          return 'ServerTemplateForScalingGroupSidePage'
+        default:
+          return ''
       }
     },
   },

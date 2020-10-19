@@ -33,7 +33,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
+        id: 'RuleListForScalingGroupSidePage',
         resource: 'scalingpolicies',
         apiVersion: 'v1',
         getParams: this.getParams,
