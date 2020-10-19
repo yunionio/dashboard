@@ -58,13 +58,16 @@ export default {
     needExt: Boolean,
     resource: {
       type: String,
-      required: true,
     },
     onManager: {
       type: Function,
     },
     columns: [Array, Function],
     tipName: String,
+    ignorePerfix: {
+      type: Boolean,
+      default: false,
+    },
   },
   inject: {
     // 是否处于BaseDialog中
@@ -78,6 +81,7 @@ export default {
         metadata: this.metadata,
         ignoreKeys: this.ignoreKeys,
         needExt: this.needExt,
+        ignorePerfix: this.ignorePerfix,
       })
       return data
     },

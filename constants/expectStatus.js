@@ -354,4 +354,8 @@ export default {
   dnszonecache: {
     success: ['available'],
   },
+  alertresource: {
+    success: [],
+    danger: ['alerted'],
+  },
 }

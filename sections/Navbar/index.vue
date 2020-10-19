@@ -108,6 +108,12 @@
       </div>
     </div>
     <slot name="frontNavbar" />
+    <!-- 资源报警 -->
+    <alertresource v-if="isAdminMode && $appConfig.isPrivate" class="navbar-item-icon primary-color-hover" />
+    <!-- 消息中心 -->
+    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
+    <!-- 工单 -->
+    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
     <!-- 大屏监控 -->
     <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && isAdminMode">
       <a-tooltip :title="$t('navbar.button.monitor')" placement="right">
@@ -116,10 +122,6 @@
         </div>
       </a-tooltip>
     </div>
-    <!-- 消息中心 -->
-    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
-    <!-- 工单 -->
-    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
     <slot name="behindNavbar" />
     <!-- 更多 -->
     <more-popover class="navbar-item-icon primary-color-hover" />
@@ -138,6 +140,7 @@ import NotifyPopover from './components/NotifyPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
 import MorePopover from './components/MorePopover'
 import GlobalSearch from './components/GlobalSearch'
+import Alertresource from './components/Alertresource'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
 import { getSetupInStorage } from '@/utils/auth'
@@ -150,6 +153,7 @@ export default {
     WorkOrderPopover,
     MorePopover,
     GlobalSearch,
+    Alertresource,
   },
   mixins: [WindowsMixin],
   props: {
