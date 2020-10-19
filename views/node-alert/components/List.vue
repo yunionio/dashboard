@@ -37,10 +37,14 @@ export default {
       type: Array,
       required: true,
     },
+    listId: {
+      type: String,
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.listId,
         resource: 'nodealerts',
         apiVersion: 'v1',
         getParams: this.getParams,

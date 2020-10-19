@@ -14,6 +14,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
+      :id="listId"
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager" />
@@ -49,6 +50,14 @@ export default {
   computed: {
     getParams () {
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForDiskSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

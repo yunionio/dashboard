@@ -18,6 +18,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
+      :id="listId"
       :data="detailData"
       :resource="resource"
       :on-manager="onManager"
@@ -50,6 +51,14 @@ export default {
         { label: this.$t('table.title.child_image'), key: 'children-image-list' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ]
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForHostImageSidePage'
+        default:
+          return ''
+      }
     },
   },
 }
