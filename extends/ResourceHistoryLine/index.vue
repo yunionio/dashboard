@@ -71,14 +71,14 @@ export default {
       const rows = []
       R.forEach(item => {
         rows.push({
-          time: this.$moment(item[0]).format(this.$t('dashboard.text_12')),
-          [this.$t('dashboard.text_38')]: (+item[5] || 0).toFixed(2),
-          [this.$t('dashboard.text_40')]: (+item[1] || 0).toFixed(2),
-          [this.$t('dashboard.text_11')]: (+item[3] || 0).toFixed(2),
-          [this.$t('dashboard.text_41')]: (+item[4] || 0).toFixed(2),
-          [this.$t('dashboard.text_42')]: (+item[2] || 0).toFixed(2),
+          time: this.$moment(item[item.length - 1]).format(this.$t('dashboard.text_12')),
+          [this.$t('dashboard.text_38')]: (+item[4] || 0).toFixed(2),
+          [this.$t('dashboard.text_40')]: (+item[0] || 0).toFixed(2),
+          [this.$t('dashboard.text_11')]: (+item[2] || 0).toFixed(2),
+          [this.$t('dashboard.text_41')]: (+item[3] || 0).toFixed(2),
+          [this.$t('dashboard.text_42')]: (+item[1] || 0).toFixed(2),
         })
-      }, (this.data[0] && this.data[0].values) || [])
+      }, (this.data && this.data.points) || [])
       return rows
     },
   },
@@ -99,31 +99,120 @@ export default {
       this.loading = true
       try {
         const data = await load({
-          res: 'query',
+          res: 'unifiedmonitors',
           actionArgs: {
-            baseURL: '',
-            url: '/query',
-            method: 'GET',
+            url: '/v1/unifiedmonitors/query',
+            method: 'POST',
             params: {
               $t: getRequestT(),
-              db: 'meter_db',
-              q: this.genSQLQuery(),
-              epoch: 'ms',
             },
+            data: this.genQueryData(),
           },
           useManager: false,
-          resPath: 'data.results[0].series',
+          resPath: 'data.series[0]',
         })
         this.data = data || []
       } finally {
         this.loading = false
       }
     },
-    genSQLQuery () {
-      if (this.isAdminMode) {
-        return `SELECT sum(cpuCount) AS "cpuCount", sum(memCount) AS "memCount", sum(diskCount) AS "diskCount", sum(gpuCount) AS "gpuCount", sum(baremetalCount) AS "baremetalCount" FROM meter_res_usage where time > now() - ${30 * 24}h and time <= now() - 24h GROUP BY time(24h,-8h)`
+    genQueryData () {
+      const ret = {
+        metric_query: [
+          {
+            model: {
+              database: 'meter_db',
+              measurement: 'meter_res_usage',
+              select: [
+                [
+                  {
+                    type: 'field',
+                    params: ['cpuCount'],
+                  },
+                  {
+                    type: 'sum',
+                    params: [],
+                  },
+                ],
+                [
+                  {
+                    type: 'field',
+                    params: ['memCount'],
+                  },
+                  {
+                    type: 'sum',
+                    params: [],
+                  },
+                ],
+                [
+                  {
+                    type: 'field',
+                    params: ['diskCount'],
+                  },
+                  {
+                    type: 'sum',
+                    params: [],
+                  },
+                ],
+                [
+                  {
+                    type: 'field',
+                    params: ['gpuCount'],
+                  },
+                  {
+                    type: 'sum',
+                    params: [],
+                  },
+                ],
+                [
+                  {
+                    type: 'field',
+                    params: ['baremetalCount'],
+                  },
+                  {
+                    type: 'sum',
+                    params: [],
+                  },
+                ],
+              ],
+              // tags: [
+              //   {
+              //     key: 'res_type',
+              //     value: 'host',
+              //     operator: '=',
+              //   },
+              // ],
+              group_by: [
+                {
+                  type: 'time',
+                  params: ['24h', '-8h'],
+                },
+                {
+                  type: 'fill',
+                  params: ['none'],
+                },
+              ],
+            },
+          },
+        ],
+        scope: this.scope,
+        from: `${30 * 24}h`,
+        now: 'now - 24h',
+        unit: true,
       }
-      return `SELECT sum(cpuCount) AS "cpuCount", sum(memCount) AS "memCount", sum(diskCount) AS "diskCount", sum(gpuCount) AS "gpuCount", sum(baremetalCount) AS "baremetalCount" FROM meter_res_usage where time > now() - ${30 * 24}h and time <= now() - 24h AND projectId='${this.userInfo.projectId}' GROUP BY time(24h,-8h)`
+      if (this.isAdminMode) {
+        // return `SELECT sum(cpuCount) AS "cpuCount", sum(memCount) AS "memCount", sum(diskCount) AS "diskCount", sum(gpuCount) AS "gpuCount", sum(baremetalCount) AS "baremetalCount" FROM meter_res_usage where time > now() - ${30 * 24}h and time <= now() - 24h GROUP BY time(24h,-8h)`
+        return ret
+      }
+      ret.metric_query.model.tags = [
+        {
+          key: 'projectId',
+          value: this.userInfo.projectId,
+          operator: '=',
+        },
+      ]
+      // return `SELECT sum(cpuCount) AS "cpuCount", sum(memCount) AS "memCount", sum(diskCount) AS "diskCount", sum(gpuCount) AS "gpuCount", sum(baremetalCount) AS "baremetalCount" FROM meter_res_usage where time > now() - ${30 * 24}h and time <= now() - 24h AND projectId='${this.userInfo.projectId}' GROUP BY time(24h,-8h)`
+      return ret
     },
     async handleSubmit () {
       try {
