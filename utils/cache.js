@@ -19,10 +19,13 @@ export function load ({
   return new Promise((resolve, reject) => {
     // 根据params和res生成唯一key
     const _params = { ...actionArgs.params }
+    const _data = { ...actionArgs.data }
+    const requestMethod = actionArgs.method || 'GET'
     if (_params.$t) delete _params.$t
-    let key = `${res}$$${qs.stringify(_params)}`
+    const stringifyKey = qs.stringify(requestMethod === 'GET' ? _params : _data)
+    let key = `${res}$$${stringifyKey}`
     if (!useManager && actionArgs.url) {
-      key = `${res}$$${actionArgs.url}$$${qs.stringify(_params)}`
+      key = `${res}$$${actionArgs.url}$$${stringifyKey}`
     }
     const value = _cache[key]
     // 有数据则直接返回

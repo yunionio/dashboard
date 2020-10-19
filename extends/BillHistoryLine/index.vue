@@ -71,12 +71,12 @@ export default {
       const rows = []
       R.forEach(item => {
         rows.push({
-          time: this.$moment(item[0]).format(this.$t('dashboard.text_12')),
-          裸金属资源: (+item[1] || 0).toFixed(2),
-          GPU卡: (+item[2] || 0).toFixed(2),
-          虚拟资源: (+item[3] || 0).toFixed(2),
+          time: this.$moment(item[item.length - 1]).format(this.$t('dashboard.text_12')),
+          裸金属资源: (+item[0] || 0).toFixed(2),
+          GPU卡: (+item[1] || 0).toFixed(2),
+          虚拟资源: (+item[2] || 0).toFixed(2),
         })
-      }, (this.data[0] && this.data[0].values) || [])
+      }, (this.data && this.data.points) || [])
       return rows
     },
   },
@@ -97,31 +97,100 @@ export default {
       this.loading = true
       try {
         const data = await load({
-          res: 'query',
+          res: 'unifiedmonitors',
           actionArgs: {
-            baseURL: '',
-            url: '/query',
-            method: 'GET',
+            url: '/v1/unifiedmonitors/query',
+            method: 'POST',
             params: {
               $t: getRequestT(),
-              db: 'meter_db',
-              q: this.genSQLQuery(),
-              epoch: 'ms',
             },
+            data: this.genQueryData(),
           },
           useManager: false,
-          resPath: 'data.results[0].series',
+          resPath: 'data.series[0]',
         })
         this.data = data || []
       } finally {
         this.loading = false
       }
     },
-    genSQLQuery () {
-      if (this.isAdminMode) {
-        return `SELECT sum(baremetalFee) AS "baremetalFee", sum(gpuFee) AS "gpuFee", sum(serverFee) AS "serverFee" FROM meter_res_fee where time > now() - ${30 * 24}h and time <= now() - 24h GROUP BY time(24h,-8h)`
+    genQueryData () {
+      const ret = {
+        metric_query: [
+          {
+            model: {
+              database: 'meter_db',
+              measurement: 'meter_res_fee',
+              select: [
+                [
+                  {
+                    type: 'field',
+                    params: ['baremetalFee'],
+                  },
+                  {
+                    type: 'sum',
+                    params: [],
+                  },
+                ],
+                [
+                  {
+                    type: 'field',
+                    params: ['gpuFee'],
+                  },
+                  {
+                    type: 'sum',
+                    params: [],
+                  },
+                ],
+                [
+                  {
+                    type: 'field',
+                    params: ['serverFee'],
+                  },
+                  {
+                    type: 'sum',
+                    params: [],
+                  },
+                ],
+              ],
+              // tags: [
+              //   {
+              //     key: 'res_type',
+              //     value: 'host',
+              //     operator: '=',
+              //   },
+              // ],
+              group_by: [
+                {
+                  type: 'time',
+                  params: ['24h', '-8h'],
+                },
+                {
+                  type: 'fill',
+                  params: ['none'],
+                },
+              ],
+            },
+          },
+        ],
+        scope: this.scope,
+        from: `${30 * 24}h`,
+        now: 'now - 24h',
+        unit: true,
       }
-      return `SELECT sum(baremetalFee) AS "baremetalFee", sum(gpuFee) AS "gpuFee", sum(serverFee) AS "serverFee" FROM meter_res_fee where time > now() - ${30 * 24}h and time <= now() - 24h AND projectId='${this.userInfo.projectId}' GROUP BY time(24h,-8h)`
+      if (this.isAdminMode) {
+        // q = `SELECT sum(baremetalFee) AS "baremetalFee", sum(gpuFee) AS "gpuFee", sum(serverFee) AS "serverFee" FROM meter_res_fee where time > now() - ${30 * 24}h and time <= now() - 24h GROUP BY time(24h,-8h)`
+        return ret
+      }
+      // q = `SELECT sum(baremetalFee) AS "baremetalFee", sum(gpuFee) AS "gpuFee", sum(serverFee) AS "serverFee" FROM meter_res_fee where time > now() - ${30 * 24}h and time <= now() - 24h AND projectId='${this.userInfo.projectId}' GROUP BY time(24h,-8h)`
+      ret.metric_query.model.tags = [
+        {
+          key: 'projectId',
+          value: this.userInfo.projectId,
+          operator: '=',
+        },
+      ]
+      return ret
     },
     async handleSubmit () {
       try {
