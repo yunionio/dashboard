@@ -108,7 +108,7 @@ export default {
         }),
         {
           field: 'notes',
-          title: this.$t('cloudenv.text_327'),
+          title: this.$t('table.title.operation'),
           width: 70,
           slots: {
             default: ({ row, column }) => {
