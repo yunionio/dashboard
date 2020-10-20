@@ -284,7 +284,7 @@ export default {
       return this.fetchData()
     },
     async fetchData () {
-      if (!this.form.fd.brand) return
+      // if (!this.form.fd.brand) return
       this.loading = true
       try {
         const data = await load({
@@ -418,8 +418,7 @@ export default {
           // ret += ` AND ${condition}`
         }
         return ret
-      }
-      if (this.brandEnv === 'public') {
+      } else if (this.brandEnv === 'public') {
         if (fd.resType === 'server') {
           // ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", "hypervisor", ${fd.limit}) FROM "${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
           ret = {
@@ -460,8 +459,80 @@ export default {
           ret.metric_query[0].model.tags.push(condition)
         }
         return ret
+      } else {
+        if (fd.resType === 'server') {
+          ret = {
+            metric_query: [
+              {
+                model: {
+                  database: 'telegraf',
+                  measurement: usageKeys[1],
+                  select: [
+                    [
+                      {
+                        type: 'func_field',
+                        params: [usageKeys[0], 'vm_name', 'vm_ip'],
+                      },
+                      {
+                        type: fd.order.toLowerCase(),
+                        params: [fd.limit],
+                      },
+                    ],
+                  ],
+                },
+              },
+            ],
+            scope: this.scope,
+            from: `${min}m`,
+            unit: true,
+          }
+        }
+        if (fd.resType === 'host') {
+          ret = {
+            metric_query: [
+              {
+                model: {
+                  database: 'telegraf',
+                  measurement: usageKeys[1],
+                  select: [
+                    [
+                      {
+                        type: 'func_field',
+                        params: [usageKeys[0]],
+                      },
+                      {
+                        type: fd.order.toLowerCase(),
+                        params: [fd.limit],
+                      },
+                    ],
+                  ],
+                  tags: [
+                    {
+                      key: 'res_type',
+                      value: 'host',
+                      operator: '=',
+                    },
+                  ],
+                  group_by: [
+                    {
+                      type: 'tag',
+                      params: ['host'],
+                    },
+                  ],
+                },
+              },
+            ],
+            scope: this.scope,
+            from: `${min}m`,
+            unit: true,
+          }
+        }
+        if (condition && condition.length > 0) {
+          // ret += ` AND ${condition}`
+          ret.metric_query[0].model.tags.push(condition)
+        }
+        return ret
       }
-      return ret
     },
     seriesDataMapper (series) {
       let data = get(series, 'points', [])
