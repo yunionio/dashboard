@@ -1065,6 +1065,126 @@ export default {
           usage: 'write_bps,vm_diskio',
         },
       },
+      {
+        layout: {
+          component: 'ProjectQuota',
+          h: 3,
+          w: 5,
+          x: 0,
+          y: 19,
+        },
+        params: {
+          all_usage_key: 'cpu',
+          name: i18n.t('dashboard.cpu_quota'),
+          type: 'project-quota-common',
+          usage_key: 'usage.cpu',
+        },
+      },
+      {
+        layout: {
+          component: 'ProjectQuota',
+          h: 3,
+          w: 5,
+          x: 5,
+          y: 19,
+        },
+        params: {
+          all_usage_key: 'memory',
+          name: i18n.t('dashboard.memory_quota'),
+          type: 'project-quota-common',
+          usage_key: 'usage.memory',
+        },
+      },
+      {
+        layout: {
+          component: 'ProjectQuota',
+          h: 3,
+          w: 5,
+          x: 10,
+          y: 19,
+        },
+        params: {
+          all_usage_key: 'storage',
+          name: i18n.t('dashboard.storage_quota'),
+          type: 'project-quota-common',
+          usage_key: 'usage.storage',
+        },
+      },
+      {
+        layout: {
+          component: 'ProjectQuota',
+          h: 3,
+          w: 5,
+          x: 15,
+          y: 19,
+        },
+        params: {
+          all_usage_key: 'eip',
+          name: i18n.t('dashboard.eip_quota'),
+          type: 'project-quota-region',
+          usage_key: 'usage.eip',
+        },
+      },
+      {
+        layout: {
+          component: 'ProjectQuota',
+          h: 3,
+          w: 5,
+          x: 5,
+          y: 22,
+        },
+        params: {
+          all_usage_key: 'isolated_device',
+          name: i18n.t('dashboard.gpu_quota'),
+          type: 'project-quota-common',
+          usage_key: 'usage.isolated_device',
+        },
+      },
+      {
+        layout: {
+          component: 'ProjectQuota',
+          h: 3,
+          w: 5,
+          x: 0,
+          y: 22,
+        },
+        params: {
+          all_usage_key: 'port',
+          name: i18n.t('dashboard.port_quota'),
+          type: 'project-quota-region',
+          usage_key: 'usage.port',
+        },
+      },
+      {
+        layout: {
+          component: 'ProjectQuota',
+          h: 3,
+          w: 5,
+          x: 10,
+          y: 22,
+        },
+        params: {
+          all_usage_key: 'image',
+          name: i18n.t('dashboard.image_quota'),
+          type: 'project-quota-image',
+          usage_key: 'usage.image',
+        },
+      },
+      {
+        layout: {
+          component: 'ProjectQuota',
+          h: 3,
+          w: 5,
+          x: 15,
+          y: 22,
+        },
+        params: {
+          all_usage_key: 'snapshot',
+          name: i18n.t('dashboard.snapshot_quota'),
+          type: 'project-quota-region',
+          usage_key: 'usage.snapshot',
+        },
+      },
     ],
   },
 }
