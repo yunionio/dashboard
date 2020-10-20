@@ -232,8 +232,9 @@ export default {
     this.list.clearWaitJob()
   },
   methods: {
-    refresh () {
-      this.list.refresh()
+    async refresh () {
+      const data = await this.list.refresh()
+      this.$emit('refresh', data)
     },
     reset () {
       this.list.reset()
