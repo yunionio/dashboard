@@ -161,13 +161,14 @@ export default {
               // ...this.params,
               scope: this.$store.getters.scope,
               [item.distinctField.type]: item.distinctField.key,
+              ...(R.is(Function, item.distinctField.getParams) ? item.distinctField.getParams() : item.distinctField.getParams),
             },
           },
         })
         let values = response.data[item.distinctField.key] || []
         values = values.map(item => ({ label: item, key: item }))
         if (item.mapper) {
-          values = item.mapper(values)
+          values = item.mapper(values, response.data)
         }
         return values
       } catch (error) {

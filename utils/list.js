@@ -749,6 +749,23 @@ class CreateList {
   }
 
   /**
+   * @description 更新过滤条件，同时同步至搜索框中
+   *
+   * @param {*} { key, value, items }
+   * @memberof CreateList
+   */
+  updateFilter ({ key, value, items }) {
+    if (items) {
+      let newItems = [...(this.filterOptions[key].items || []), ...items]
+      newItems = R.uniqBy(item => item.key, newItems)
+      this.filterOptions[key].items = newItems
+    }
+    const filter = { ...this.filter }
+    filter[key] = value
+    this.changeFilter(filter)
+  }
+
+  /**
    * @description 生成标签过滤的params
    *
    * @param {Object} params
