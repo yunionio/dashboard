@@ -61,6 +61,24 @@ export default {
       },
       action: {
         label: this.$t('table.title.operation'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'field',
+          key: 'action',
+          getParams: {
+            filter: `obj_id.in(${this.objId})`,
+          },
+        },
+        mapper: (data, originData) => {
+          const newData = get(originData, '_i18n.action', []).map((item, idx) => {
+            return {
+              key: originData.action[idx],
+              label: item,
+            }
+          })
+          return newData
+        },
       },
     }
     if (this.$store.getters.isProjectMode) delete filterOptions.tenant
@@ -131,7 +149,23 @@ export default {
             default: ({ row }) => {
               const action = get(row, '_i18n.action', row.action)
               return [
-                <list-body-cell-wrap copy field='_i18n.action' row={row} hideField={true} message={action}>{action}</list-body-cell-wrap>,
+                <list-body-cell-wrap copy field='_i18n.action' row={row} hideField={true} message={action}>
+                  {action}
+                  <a-button
+                    type="link"
+                    icon="filter"
+                    size="small"
+                    slot="appendActions"
+                    onClick={ () => {
+                      this.list.updateFilter({
+                        key: 'action',
+                        value: [row.action],
+                        items: [
+                          { key: row.action, label: action },
+                        ],
+                      })
+                    } } />
+                </list-body-cell-wrap>,
               ]
             },
           },
