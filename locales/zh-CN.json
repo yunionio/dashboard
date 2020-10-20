@@ -163,7 +163,7 @@
   "monitor.text_3": "全部",
   "monitor.text_4": "自定义策略",
   "monitor.text_5": "默认策略",
-  "monitor.text_6": "{0}：{1}{2} {3} {4} 触发，查询周期 {5}",
+  "monitor.text_6": "{0}：{1}{2} {3} {4} 触发",
   "monitor.text_7": "请输入名称",
   "monitor.text_8": "范围在 1～{0}Mbps",
   "monitor.text_9": "仅系统或{0}管理员支持该操作",
@@ -179,5 +179,10 @@
   "monitor.text_98": "告警数量",
   "monitor.text_99": "策略名称",
   "monitor.text_100": "序号",
-  "monitor.text_101": "过滤条件"
+  "monitor.text_101": "过滤条件",
+  "monitor.text_102": "，查询周期: {0}",
+  "monitor.text_103": "周期",
+  "monitor.text_104": "报警资源标签",
+  "monitor.text_105": "发生告警触发值",
+  "monitor.text_106": "恢复告警触发值"
 }

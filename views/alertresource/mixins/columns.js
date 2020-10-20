@@ -18,6 +18,20 @@ export default {
         edit: false,
       }),
       {
+        field: 'none',
+        title: this.$t('common.status'),
+        slots: {
+          default: ({ row }, h) => {
+            return [
+              <div class='text-truncate'>
+                <status status='alerted' statusModule='alertresource' />
+              </div>,
+            ]
+          },
+        },
+      },
+      getTagTableColumn({ field: 'tags', ignorePerfix: true }),
+      {
         field: 'alert_table',
         title: i18n.t('monitor.text_98'),
         type: 'expand',
@@ -39,32 +53,18 @@ export default {
                   )
                 },
               }),
-              getTagTableColumn({ field: 'data.tags', ignorePerfix: true }),
+              getTagTableColumn({ field: 'data.tags', title: this.$t('monitor.text_104'), ignorePerfix: true }),
               strategyColumn(),
               levelColumn,
               {
                 field: 'value_str',
-                title: this.$t('monitor.text_16'),
+                title: this.$t('monitor.text_105'),
                 align: 'right',
                 formatter: ({ row }) => row.data ? row.data.value_str : '-',
               },
             ]
             const data = row.childData || []
             return <vxe-grid size="mini" border columns={columns} data={data} />
-          },
-        },
-      },
-      getTagTableColumn({ field: 'tags', ignorePerfix: true }),
-      {
-        field: 'none',
-        title: this.$t('common.status'),
-        slots: {
-          default: ({ row }, h) => {
-            return [
-              <div class='text-truncate'>
-                <status status='alerted' statusModule='alertresource' />
-              </div>,
-            ]
           },
         },
       },
