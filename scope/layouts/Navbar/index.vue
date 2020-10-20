@@ -23,7 +23,7 @@
       <a-dropdown :trigger="['click']">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <icon type="navbar-setting" />
-          <span class="ml-2">{{ $t('common_211') }}</span>
+          <span class="ml-2">{{$t('dictionary.endpoint')}}</span>
           <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
@@ -46,12 +46,12 @@
           <template v-if="systemProject || domainProject">
             <template v-if="!systemProject && domainProject">
               <a-menu-item scope="domain" :key="`${domainProject.id}$$domain`">
-                <a-radio :checked="scope === 'domain'" />{{ $t('dictionary.domain') }}{{ $t('common_213') }}
+                <a-radio :checked="scope === 'domain'" />{{ $t('navbar.view.domain_manager') }}
               </a-menu-item>
             </template>
             <template v-else>
               <a-menu-item scope="system" :key="`${systemProject.id}$$system`">
-                <a-radio :checked="scope === 'system'" />{{ $t('common_213') }}
+                <a-radio :checked="scope === 'system'" />{{ $t('navbar.view.system_manager') }}
               </a-menu-item>
             </template>
           </template>
@@ -119,14 +119,14 @@ export default {
       return R.find(R.propEq('domain_capable', true))(this.projects)
     },
     viewLabel () {
-      let ret = this.$t('scope.text_253', [this.$t('dictionary.project')])
+      if (this.reLogging) return '-'
       if (this.$store.getters['auth/isAdmin']) {
-        ret = this.$t('common_213')
+        return this.$t('navbar.view.system_manager')
       }
       if (this.$store.getters['auth/isDomain']) {
-        ret = `${this.$t('dictionary.domain')}${this.$t('common_213')}`
+        return this.isOperation ? this.$t('navbar.view.manager') : this.$t('navbar.view.domain_manager_1var', { domain: this.userInfo.projectDomain || '-' })
       }
-      return ret
+      return this.userInfo.projectName || '-'
     },
     // 认证信息加载完毕
     authInfoLoaded () {
