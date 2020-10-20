@@ -81,6 +81,15 @@ const options = [
     scope: ['domain', 'system'],
     component: 'Quota',
   },
+  {
+    label: i18n.t('dashboard.text_91'),
+    desc: i18n.t('dashboard.text_92'),
+    icon: 'dashboard-quota',
+    h: 3,
+    w: 5,
+    scope: ['project'],
+    component: 'ProjectQuota',
+  },
 ]
 
 export default options
