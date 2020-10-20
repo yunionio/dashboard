@@ -4,6 +4,7 @@
     :list="list"
     :columns="columns"
     ref="pagelist"
+    @refresh="setNavbarAlert"
     :expandConfig="expandConfig" />
 </template>
 
@@ -37,8 +38,18 @@ export default {
     this.fetchData()
   },
   methods: {
-    fetchData () {
-      this.list.fetchData()
+    setNavbarAlert (data) {
+      if (this.$appConfig.isPrivate) {
+        this.$store.commit('app/SET_ALERTRESOURCE', data)
+      }
+    },
+    async fetchData () {
+      try {
+        const data = await this.list.fetchData()
+        this.setNavbarAlert(data)
+      } catch (error) {
+        throw error
+      }
     },
   },
 }
