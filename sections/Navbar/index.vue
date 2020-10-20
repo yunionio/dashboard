@@ -385,7 +385,7 @@ export default {
     this.fetchOEM(this.userInfo.id)
     this.fetchLicense(this.userInfo.id)
     this.pushApiServerUrlAlert(this.userInfo.id)
-    this.CronjobFetchAlertresource()
+    this.cronjobFetchAlertresource()
   },
   methods: {
     checkWorkflow (val) {
@@ -600,7 +600,7 @@ export default {
     handleOpenOverview () {
       window.open('/overview', '_blank')
     },
-    CronjobFetchAlertresource () { // 定时5分钟请求一次
+    cronjobFetchAlertresource () { // 定时5分钟请求一次
       if (this.isAdminMode && this.$appConfig.isPrivate) {
         this.$store.dispatch('app/fetchAlertresource')
         setInterval(() => {
