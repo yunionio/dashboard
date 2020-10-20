@@ -379,7 +379,7 @@ export default {
                     [
                       {
                         type: 'func_field',
-                        params: [usageKeys[0]],
+                        params: [usageKeys[0], 'host', 'host_ip'],
                       },
                       {
                         type: fd.order.toLowerCase(),
@@ -431,7 +431,7 @@ export default {
                     [
                       {
                         type: 'func_field',
-                        params: [usageKeys[0], 'vm_name', 'vm_ip', 'hypervisor'],
+                        params: [usageKeys[0], 'vm_name', 'vm_ip'],
                       },
                       {
                         type: fd.order.toLowerCase(),
@@ -498,7 +498,7 @@ export default {
                     [
                       {
                         type: 'func_field',
-                        params: [usageKeys[0]],
+                        params: [usageKeys[0], 'host', 'host_ip'],
                       },
                       {
                         type: fd.order.toLowerCase(),
