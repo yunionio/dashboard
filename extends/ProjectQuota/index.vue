@@ -6,7 +6,8 @@
     :formItemLayout="formItemLayout"
     :options="options"
     @update="update"
-    :params="params">
+    :params="params"
+    :type="type">
     <a-row class="mb-4">
       <a-col :span="formItemLayout.labelCol.span" class="ant-form-item-label">
         <label>{{$t('dashboard.text_24')}}</label>

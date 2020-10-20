@@ -36,6 +36,10 @@ export default {
       required: true,
     },
     usageLabel: String,
+    type: {
+      type: String,
+      required: true,
+    },
   },
   data () {
     return {
@@ -43,9 +47,12 @@ export default {
     }
   },
   computed: {
+    projectQuotaConfig () {
+      return PROJECT_QUOTA_CONFIG[this.type]
+    },
     usages () {
       const ret = []
-      for (const key in PROJECT_QUOTA_CONFIG) {
+      for (const key in this.projectQuotaConfig) {
         ret.push({
           key,
           label: this.translateUsage[key] ? this.translateUsage[key] : key,

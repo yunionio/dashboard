@@ -32,7 +32,7 @@
         <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <quota-config :fc="form.fc" :decorators="decorators" />
+        <quota-config key="region" :fc="form.fc" :decorators="decorators" :type="type" />
       </a-form>
     </base-drawer>
   </div>
@@ -54,9 +54,9 @@ export default {
   },
   mixins: [mixin],
   data () {
-    const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.eip_quota')
-    const initialAllUsageKeyValue = (this.params && this.params.all_usage_key) || 'eip'
-    const initialUsageKeyValue = (this.params && this.params.usage_key) || 'usage.eip'
+    const initialNameValue = (this.params && this.params.type === 'project-quota-region' && this.params.name) || this.$t('dashboard.eip_quota')
+    const initialAllUsageKeyValue = (this.params && this.params.type === 'project-quota-region' && this.params.all_usage_key) || 'eip'
+    const initialUsageKeyValue = (this.params && this.params.type === 'project-quota-region' && this.params.usage_key) || 'usage.eip'
     return {
       data: {},
       loading: false,
@@ -107,10 +107,10 @@ export default {
       return (this.data && this.data[this.form.fd.usage_key]) || 0
     },
     allUsageConfig () {
-      return PROJECT_QUOTA_CONFIG[this.form.fd.all_usage_key]
+      return PROJECT_QUOTA_CONFIG[this.type][this.form.fd.all_usage_key]
     },
     usageConfig () {
-      return PROJECT_QUOTA_CONFIG[this.form.fd.usage_key]
+      return PROJECT_QUOTA_CONFIG[this.type][this.form.fd.usage_key]
     },
     allUsage () {
       let ret = this.allUsageNumber
@@ -154,19 +154,6 @@ export default {
         ret = 'exception'
       }
       return ret
-    },
-  },
-  watch: {
-    'form.fd' (val) {
-      this.fetchData()
-      for (const key in this.decorators) {
-        let config = this.decorators[key][1] || {}
-        config = {
-          ...config,
-          initialValue: val[key],
-        }
-        this.decorators[key][1] = config
-      }
     },
   },
   created () {
