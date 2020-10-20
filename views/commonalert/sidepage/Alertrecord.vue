@@ -90,7 +90,7 @@ export default {
                 },
                 {
                   field: 'value_str',
-                  title: this.$t('monitor.text_16'),
+                  title: row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
                   align: 'right',
                   formatter: ({ row }) => row.value_str,
                 },
