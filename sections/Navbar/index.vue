@@ -340,7 +340,7 @@ export default {
       return globalSetting.value.key.length > 0
     },
     showAlertresource () {
-      if (this.isAdminMode && this.$appConfig.isPrivate) {
+      if (this.isAdminMode && this.$appConfig.isPrivate && this.alertresource) {
         return this.alertresource.total > 0
       }
       return false
