@@ -807,3 +807,60 @@ export const K8S_USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
   },
 }
+
+export const PROJECT_QUOTA_CONFIG = {
+  'project-quota-common': {
+    cpu: {
+      unit: i18n.t('dashboard.text_3'),
+    },
+    'usage.cpu': {
+      unit: i18n.t('dashboard.text_3'),
+    },
+    memory: {
+      formatter: val => sizestrWithUnit(val, 'M', 1024),
+    },
+    'usage.memory': {
+      formatter: val => sizestrWithUnit(val, 'M', 1024),
+    },
+    storage: {
+      formatter: val => sizestrWithUnit(val, 'M', 1024),
+    },
+    'usage.storage': {
+      formatter: val => sizestrWithUnit(val, 'M', 1024),
+    },
+    isolated_device: {
+      unit: i18n.t('dashboard.text_4'),
+    },
+    'usage.isolated_device': {
+      unit: i18n.t('dashboard.text_4'),
+    },
+  },
+  'project-quota-image': {
+    image: {
+      unit: i18n.t('dashboard.text_1'),
+    },
+    'usage.image': {
+      unit: i18n.t('dashboard.text_1'),
+    },
+  },
+  'project-quota-region': {
+    eip: {
+      unit: i18n.t('dashboard.text_1'),
+    },
+    'usage.eip': {
+      unit: i18n.t('dashboard.text_1'),
+    },
+    port: {
+      unit: i18n.t('dashboard.text_1'),
+    },
+    'usage.port': {
+      unit: i18n.t('dashboard.text_1'),
+    },
+    snapshot: {
+      unit: i18n.t('dashboard.text_1'),
+    },
+    'usage.snapshot': {
+      unit: i18n.t('dashboard.text_1'),
+    },
+  },
+}

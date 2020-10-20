@@ -177,5 +177,31 @@
   "dashboard.text_178": "CPU Usage TOP5 (Local IDC)",
   "dashboard.text_179": "Disk write speed TOP5 (local IDC)",
   "dashboard.text_180": "Disk read speed TOP5 (local IDC)",
-  "dashboard.text_181": "Total"
+  "dashboard.text_181": "Total",
+  "dashboard.cpu_quota": "CPU Quota Usage",
+  "dashboard.memory_quota": "Memory Quota Usage",
+  "dashboard.storage_quota": "Storage Quota Usage",
+  "dashboard.eip_quota": "Public IP Quota Usage",
+  "dashboard.port_quota": "IP Quota Usage",
+  "dashboard.gpu_quota": "GPU quota usage",
+  "dashboard.image_quota": "Mirroring quota usage",
+  "dashboard.snapshot_quota": "Snapshot Quota Usage",
+  "project_quota_usage": {
+    "cpu": "Total number of CPU quotas",
+    "usage.cpu": "CPU quota used",
+    "memory": "Total amount of memory quota",
+    "usage.memory": "Memory quota used amount",
+    "storage": "Total storage quota",
+    "usage.storage": "Used amount of storage quota",
+    "eip": "Total number of public IP quotas",
+    "usage.eip": "The number of public IP quotas used",
+    "port": "Total number of IP quotas",
+    "usage.port": "The number of used IP quotas",
+    "isolated_device": "Total GPU quota",
+    "usage.isolated_device": "GPU quota has been used",
+    "image": "Total amount of mirroring quota",
+    "usage.image": "The amount of mirroring quota used",
+    "snapshot": "Total Snapshot Quota",
+    "usage.snapshot": "The amount of snapshot quota used"
+  }
 }
