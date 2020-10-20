@@ -12,7 +12,7 @@
       <icon type="gaokeyong" class="ml-1" :title="$t('common.text00009')" />
     </template>
     <slot name="append" />
-    <slot name="appendActions" v-if="showAppendActions" />
+    <slot name="appendActions" v-if="showAppendActions && !inBaseDialog && inList" />
     <edit
       slot="edit"
       class="ml-1"
@@ -92,6 +92,10 @@ export default {
   inject: {
     // 是否处于BaseDialog中
     inBaseDialog: {
+      default: false,
+    },
+    // 是否处于PageList中
+    inList: {
       default: false,
     },
   },
