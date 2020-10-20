@@ -168,6 +168,7 @@ export default {
       firstResOpts: {}, // 第一次调取接口的数据，用于搜索之后再次点开select时重置数据用
       fetchDataNum: 0,
       firstTotal: 0,
+      concatFirstOpts: false, // 是否和初始化数据合并的标志位
     }
   },
   computed: {
@@ -246,11 +247,12 @@ export default {
   },
   methods: {
     dropdownChange (open) {
-      if (open && this.remote && !R.isEmpty(this.firstResOpts)) {
+      if (open && this.remote && !R.isEmpty(this.firstResOpts) && !this.concatFirstOpts) {
         this.resOpts = { ...this.firstResOpts, [this.currentItem[this.idKey]]: this.currentItem }
         const list = Object.values(this.resOpts)
         this.resList = list
         this.sourceList = list
+        this.concatFirstOpts = true // 做标识，标识已和初始化数据做过合并
         if (this.firstTotal > list.length) {
           this.showLoadMore = true
         }
@@ -274,7 +276,10 @@ export default {
       oldV = del$t(oldV)
       if (needChange || !R.equals(val, oldV)) {
         if (needChange || !this.isInitLoad) this.clearSelect()
-        if (needChange || this._valid()) this.loadOptsDebounce()
+        if (needChange || this._valid()) {
+          this.fetchDataNum = 0 // paramsChange 后 fetchDataNum 应该重置，这样 firstResOpts 保证能正确更新到
+          this.loadOptsDebounce()
+        }
       }
     },
     _valid () {
@@ -419,6 +424,7 @@ export default {
         }
         this.loading = false
         this.isInitLoad = false
+        this.concatFirstOpts = false
         return { list, data, sourceList }
       } catch (error) {
         this.loading = false
