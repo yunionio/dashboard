@@ -179,5 +179,10 @@
   "monitor.text_98": "Alert Count",
   "monitor.text_99": "Strategy Name",
   "monitor.text_100": "Sequence",
-  "monitor.text_101": "Filter Condition"
+  "monitor.text_101": "Filter Condition",
+  "monitor.text_102": "，period pollin: {0}",
+  "monitor.text_103": "period",
+  "monitor.text_104": "Alarm Resource Tag",
+  "monitor.text_105": "Alert Value",
+  "monitor.text_106": "Recover Alert Value"
 }

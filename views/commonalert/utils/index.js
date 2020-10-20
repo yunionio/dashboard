@@ -54,22 +54,26 @@ export const strategyColumn = (field = 'common_alert_metric_details') => ({
           metric = metric_zh[metric] || metric
         }
         const reduce = (alertStrategyMaps[detail.reduce]) || ''
-        const preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
+        let preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
         const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? row.eval_data[0].unit : '')
         const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
-        strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text, preiod])
+        strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text])
+        if (preiod) {
+          preiod = preiod.replace(i18n.t('monitor.text_103'), '')
+          strategy += `${i18n.t('monitor.text_102', [preiod])}`
+        }
         if (detail.filters && detail.filters.length) {
           detail.filters.forEach(val => {
-            if (val.key) filters.push(`${val.condition} ${val.key} ${val.operator} ${val.value}`)
+            if (val.key) filters.push(`${val.condition || ''} ${val.key} ${val.operator} ${val.value}`)
           })
         }
       }
       let filterNode = null
       if (filters.length > 0) {
         filterNode = (
-          <a-tag>
+          <a-tag class="w-100">
             <div>{ i18n.t('monitor.text_101') }: </div>
-            { filters.map(v => <div>{v}</div>) }
+            { filters.map(v => <div class="w-100 text-truncate" title={v}>{v}</div>) }
           </a-tag>
         )
       }
