@@ -416,7 +416,7 @@ class CreateList {
    * @memberof CreateList
    */
   refresh () {
-    this.fetchData(this.offset, this.getLimit())
+    return this.fetchData(this.offset, this.getLimit())
   }
 
   /**

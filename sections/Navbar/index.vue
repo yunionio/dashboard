@@ -109,7 +109,7 @@
     </div>
     <slot name="frontNavbar" />
     <!-- 资源报警 -->
-    <alertresource v-if="isAdminMode && $appConfig.isPrivate" class="navbar-item-icon primary-color-hover" />
+    <alertresource v-if="showAlertresource" :total="alertresource.total" class="navbar-item-icon primary-color-hover" />
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
@@ -222,6 +222,7 @@ export default {
       computeLicense: state => state.license.compute,
       computeServiceNumbers: state => state.license.service_numbers,
       oem: state => state.oem,
+      alertresource: state => state.alertresource,
     }),
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
@@ -338,6 +339,12 @@ export default {
       }
       return globalSetting.value.key.length > 0
     },
+    showAlertresource () {
+      if (this.isAdminMode && this.$appConfig.isPrivate) {
+        return this.alertresource.total > 0
+      }
+      return false
+    },
   },
   watch: {
     userInfo: {
@@ -378,6 +385,7 @@ export default {
     this.fetchOEM(this.userInfo.id)
     this.fetchLicense(this.userInfo.id)
     this.pushApiServerUrlAlert(this.userInfo.id)
+    this.CronjobFetchAlertresource()
   },
   methods: {
     checkWorkflow (val) {
@@ -591,6 +599,14 @@ export default {
     },
     handleOpenOverview () {
       window.open('/overview', '_blank')
+    },
+    CronjobFetchAlertresource () { // 定时5分钟请求一次
+      if (this.isAdminMode && this.$appConfig.isPrivate) {
+        this.$store.dispatch('app/fetchAlertresource')
+        setInterval(() => {
+          this.$store.dispatch('app/fetchAlertresource')
+        }, 5 * 60 * 1000)
+      }
     },
   },
 }
