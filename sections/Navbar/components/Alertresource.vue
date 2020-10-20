@@ -8,7 +8,7 @@
     <a-alert type="error" v-if="visible" class="alertresource-error">
       <div slot="message" v-if="total > 0">
         <!-- 有 {{ total }} 个资源发生报警，<help-link href="/alertresource" @click="routerPush">查看</help-link> -->
-        {{$t('common_719', [total])}},<a-button type="link" size="small" @click="routerPush">{{$t('common.view')}}<icon type="blank" /></a-button>
+        {{$t('common_719', [total])}},<a-button type="link" size="small" @click="routerPush">{{$t('common.view')}}</a-button>
       </div>
       <div slot="message" v-else>
         {{$t('common_720')}}
@@ -20,14 +20,22 @@
 <script>
 export default {
   name: 'Alertresource',
+  props: {
+    total: {
+      type: Number,
+      default: 0,
+    },
+  },
   data () {
     return {
-      visible: false,
-      total: 0,
+      visible: this.total > 0,
     }
   },
-  created () {
-    this.fetchAlertresource()
+  watch: {
+    total (v) {
+      if (v > 0) this.visible = true
+      else this.visible = false
+    },
   },
   methods: {
     toggle () {
@@ -35,16 +43,6 @@ export default {
     },
     routerPush (e) {
       this.$router.push('alertresource')
-    },
-    async fetchAlertresource () {
-      try {
-        const params = { scope: this.$store.getters.scope, limit: 20, $t: +new Date() }
-        const { data } = await new this.$Manager('alertresources', 'v1').list({ params })
-        this.total = data.total
-        this.visible = this.total > 0
-      } catch (error) {
-        throw error
-      }
     },
   },
 }
