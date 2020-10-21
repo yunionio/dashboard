@@ -190,6 +190,7 @@ export default {
           'sync_info',
           {
             initialValue: false,
+            valuePropName: 'checked',
           },
         ],
         enrollment_number: [
