@@ -18,7 +18,7 @@ const confirm = {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
-      laoding: false,
+      loading: false,
       defaultParams: {
         width: 420,
         type: 'confirm',
@@ -37,15 +37,15 @@ const confirm = {
     async handleConfirm () {
       const { onOk } = this.params
       try {
-        this.laoding = true
+        this.loading = true
         if (onOk) {
           await onOk()
         }
       } catch (err) {
         throw err
       } finally {
-        this.laoding = false
         this.cancelDialog()
+        this.loading = false
       }
     },
   },
@@ -77,7 +77,7 @@ const confirm = {
           </div>
         </div>
         <div slot="footer">
-          <a-button type="primary" onClick={this.handleConfirm}>{okText}</a-button>
+          <a-button type="primary" onClick={this.handleConfirm} loading={this.loading}>{okText}</a-button>
           <a-button onClick={this.cancelDialog}>{cancelText}</a-button>
         </div>
       </base-dialog>
