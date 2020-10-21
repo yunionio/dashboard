@@ -601,7 +601,7 @@ export default {
       window.open('/overview', '_blank')
     },
     cronjobFetchAlertresource () { // 定时5分钟请求一次
-      if (this.isAdminMode && this.$appConfig.isPrivate) {
+      if (this.isAdminMode && this.$appConfig.isPrivate && R.is(Function, this.$store._actions['app/fetchAlertresource'])) {
         this.$store.dispatch('app/fetchAlertresource')
         setInterval(() => {
           this.$store.dispatch('app/fetchAlertresource')
