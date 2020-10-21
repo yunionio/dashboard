@@ -131,7 +131,7 @@ export default {
         }
         return !item.hidden
       }, this.filterOptions)
-      const filterSortKeys = ['name', 'brand', 'provider', 'ip', 'ips', 'status', 'enabled', 'sn', 'os_type', 'cidr', 'ports', 'tenant', 'region', 'host', 'billing_type']
+      const filterSortKeys = ['search', 'name', 'brand', 'provider', 'ip', 'ips', 'status', 'enabled', 'sn', 'os_type', 'cidr', 'ports', 'tenant', 'region', 'host', 'billing_type']
       const ret = {}
       filterSortKeys.forEach(k => {
         const _k = k.toLowerCase()
