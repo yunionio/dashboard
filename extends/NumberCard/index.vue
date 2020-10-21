@@ -58,8 +58,7 @@ export default {
     }
   },
   methods: {
-    typeChange (e) {
-      // console.log(e, this.visible, 'visible')
+    typeChange () {
       this.visible = true
     },
     update (...ret) {
