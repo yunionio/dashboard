@@ -3,7 +3,16 @@
         <div slot="header">{{params.title}}</div>
         <a-form slot="body" :form="form.fc" class="mt-3">
             <a-form-item  v-bind="formItemLayout" :label="$t('db.text_60')">
-                <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
+              <a-input :placeholder="$t('validator.dbName')" v-decorator="decorators.name" />
+            </a-form-item>
+            <a-form-item  v-bind="formItemLayout" :label="$t('db.text_344')" v-if="params.rdsItem.provider === 'Qcloud'">
+              <template #extra>
+                <div>
+                  <p class="mb-0">{{$t('db.text_345')}}</p>
+                  <p class="mb-0">{{$t('db.text_346')}}</p>
+                </div>
+              </template>
+              <a-textarea :auto-size="{ minRows: 3, maxRows: 5 }" v-decorator="decorators.host" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout" :label="$t('db.text_28')" v-if="this.params.rdsItem.brand !== 'Google'">
               <account-privileges :rdsItem="params.rdsItem" />
@@ -66,6 +75,15 @@ export default {
             rules: [
               { required: true, message: this.$t('db.text_136') },
               { validator: validateForm('dbName') },
+            ],
+          },
+        ],
+        host: [
+          'host',
+          {
+            initialValue: initialValues.host,
+            rules: [
+              { required: true, message: this.$t('db.text_347') },
             ],
           },
         ],

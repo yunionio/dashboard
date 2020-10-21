@@ -24,6 +24,11 @@ import { sizestr } from '@/utils/utils'
 export default {
   name: 'rdsSizeFilter',
   inject: ['form', 'formItemLayout', 'scopeParams'],
+  props: {
+    rdsItem: {
+      type: Object,
+    },
+  },
   data () {
     return {
       cpus: [],

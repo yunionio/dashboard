@@ -15,9 +15,19 @@ export default {
           })
         },
         meta: (obj) => {
+          let validate = true
+          let tooltip = ''
+          if (obj.status !== 'ready') {
+            validate = false
+            tooltip = i18n.t('db.text_224')
+          }
+          if (this.data.provider === 'Qcloud') {
+            validate = false
+            tooltip = this.$t('db.text_343')
+          }
           return {
-            validate: obj.status === 'ready',
-            tooltip: obj.status !== 'ready' ? i18n.t('db.text_224') : '',
+            validate: validate,
+            tooltip: tooltip,
           }
         },
       },
