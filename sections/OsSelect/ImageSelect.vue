@@ -272,14 +272,16 @@ export default {
   methods: {
     fetchData () {
       this.images.list = []
+      let params = {}
       switch (this.imageType) { // 自定义镜像
         case IMAGES_TYPE_MAP.host.key: // 主机镜像
           // eslint-disable-next-line no-case-declarations
-          const params = { ...this.imageParams, status: 'active' }
+          params = { ...this.imageParams, status: 'active' }
           this.fetchHostImages(params)
           break
         case IMAGES_TYPE_MAP.snapshot.key: // 主机快照
-          this.fetchSnapshotImages(this.imageParams)
+          params = { ...this.imageParams, status: 'ready' }
+          this.fetchSnapshotImages(params)
           break
         default: // image list
           this.fetchImages()
