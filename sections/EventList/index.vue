@@ -1,7 +1,6 @@
 <template>
   <div class="event-list">
     <page-list
-      default-search-key="obj_name"
       :list="list"
       :columns="columns"
       :export-data-options="exportDataOptions"
