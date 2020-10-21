@@ -10,7 +10,7 @@
         <div class="number-card-unit">{{ this.usage.unit }}</div>
       </div>
     </div>
-    <base-drawer class="drawer-wrapper" @update:visible="updateVisible" :visible="visible" title="配置磁贴" @ok="handleSubmit">
+    <base-drawer class="drawer-wrapper" @update:visible="updateVisible" :visible="visible" title="配置磁贴" @ok="handleSubmit" @cancel="cancel">
       <slot />
       <a-form
         hideRequiredMark
@@ -118,7 +118,6 @@ export default {
     if (this.params && this.params.type === 'k8s') {
       this.form.fd = this.params
     }
-    this.$emit('update', this.options.i, this.form.fd)
     this.$bus.$on('DashboardCardRefresh', args => {
       this.fetchUsage()
     }, this)
