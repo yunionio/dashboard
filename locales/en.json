@@ -2407,7 +2407,7 @@
     }
   },
   "message": {
-    "exec_succee": "Execution succeed",
+    "exec_success": "Execution succeed",
     "exec_fail": "Execution failed"
   },
   "scope.text_1": "Instance List",
