@@ -2253,7 +2253,8 @@
       "owner_project": "所属@:dictionary.project",
       "owner_domain": "所属@:dictionary.domain",
       "sponsor": "发起人",
-      "operation": "操作"
+      "operation": "操作",
+      "search": "模糊匹配"
     },
     "action": {
       "save": "保存",
