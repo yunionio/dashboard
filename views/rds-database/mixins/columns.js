@@ -24,7 +24,7 @@ export default {
           default: ({ row }) => {
             if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
               return row.dbinstanceprivileges.map(({ account, privileges }) => {
-                return <div>{account} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges]})</span></div>
+                return <div>{account} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges] ? RDS_ACCOUNT_PRIVILEGES[privileges] : privileges })</span></div>
               })
             }
           },

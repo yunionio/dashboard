@@ -167,6 +167,8 @@ export default {
         const price_keys = []
         if (pvt === 'google') {
           price_keys.push(`${pvt}::${region_ext_id}::::rds::${category}_${engine}_${name}`)
+        } else if (pvt === 'qcloud') {
+          price_keys.push(`${pvt}::${region_ext_id}::::rds::${category}_${name}`)
         } else {
           price_keys.push(`${pvt}::${region_ext_id}::::rds::${name}`)
         }
@@ -174,6 +176,8 @@ export default {
         if (pvt === 'huawei' || pvt === 'aliyun') {
           price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_${storage_type}::${disk_size_gb}GB`)
         } else if (pvt === 'google') {
+          price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_${storage_type}::${disk_size_gb}GB`)
+        } else if (pvt === 'qcloud') {
           price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_${storage_type}::${disk_size_gb}GB`)
         } else {
           price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${storage_type}::${disk_size_gb}GB`)

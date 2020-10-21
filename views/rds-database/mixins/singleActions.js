@@ -16,6 +16,9 @@ export default {
             refresh: this.refresh,
           })
         },
+        meta: (obj) => ({
+          validate: obj.provider !== 'Qcloud',
+        }),
       },
     ]
   },

@@ -97,10 +97,20 @@ export default {
             })
           },
           meta: () => {
+            let validate = true
+            let tooltip = ''
+            if (this.data.status !== 'running') {
+              validate = false
+              tooltip = this.$t('db.text_212')
+            }
+            if (this.data.provider === 'Qcloud' && this.data.category === 'basic') {
+              validate = false
+              tooltip = this.$t('db.text_342')
+            }
             return {
               buttonType: 'primary',
-              validate: this.data.status === 'running',
-              tooltip: this.data.status === 'running' && this.$t('db.text_212'),
+              validate: validate,
+              tooltip: tooltip,
             }
           },
         },
