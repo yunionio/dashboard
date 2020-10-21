@@ -293,7 +293,6 @@ export default {
     async doSubmit ({ id } = this.cloudAccount, isGoCloudaccount = true) {
       try {
         const values = await this.form.fc.validateFields()
-        debugger
         if (values.sync_info) {
           this.postBillTasks(id, values)
         }
