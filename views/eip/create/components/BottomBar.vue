@@ -3,7 +3,7 @@
     <template v-slot:right>
       <div class="d-flex align-items-center">
         <div class="mr-4 d-flex align-items-center">
-          <div class="text-truncate">{{$t('db.text_108')}}</div>
+          <div class="text-truncate">{{$t('common_419')}}</div>
           <div class="ml-2 prices">
             <div class="hour text-truncate">
               <template v-if="price">
