@@ -6,6 +6,7 @@
     :visible.sync="visible"
     :formItemLayout="formItemLayout"
     :options="options"
+    @cancel="cancel"
     @update="update"
     :params="params">
     <a-row class="mb-4">
@@ -13,7 +14,7 @@
         <label>{{$t('dashboard.text_24')}}</label>
       </a-col>
       <a-col :span="formItemLayout.wrapperCol.span">
-        <a-radio-group v-model="type">
+        <a-radio-group v-model="type" @change="typeChange">
           <a-radio-button v-for="item in typeOpts" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
       </a-col>
@@ -58,11 +59,17 @@ export default {
     }
   },
   methods: {
+    typeChange () {
+      this.visible = true
+    },
     update (...ret) {
       this.$emit('update', ...ret)
     },
     refresh () {
       return this.$refs.usage.refresh()
+    },
+    cancel () { // 关闭抽屉
+      this.type = (this.params && this.params.type) || 'server'
     },
   },
 }
