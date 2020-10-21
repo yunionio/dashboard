@@ -86,7 +86,7 @@ export default {
       return this.step.steps[this.step.currentStep].key
     },
     isBill () {
-      return ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
+      return ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
     },
     brand () {
       return this.currentItem.provider.toLowerCase()
