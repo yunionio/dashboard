@@ -60,12 +60,16 @@ export default {
   computed: {
     commonMeta () {
       const isRun = this.data.status === 'running'
+      const isQcloud = this.data.provider === 'Qcloud'
       let tooltip = ''
       if (!isRun) {
         tooltip = this.$t('db.text_198')
       }
+      if (isQcloud) {
+        tooltip = this.$t('db.text_348')
+      }
       return {
-        validate: isRun,
+        validate: isRun && !isQcloud,
         tooltip: tooltip,
       }
     },

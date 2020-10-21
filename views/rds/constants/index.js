@@ -6,6 +6,7 @@ export const DBINSTANCE_CATEGORY = {
   always_on: i18n.t('db.text_78'),
   finance: i18n.t('db.text_79'),
   ha: i18n.t('db.text_77'),
+  fe: i18n.t('db.text_341'),
   single: i18n.t('db.text_76'),
   replica: i18n.t('db.text_6'),
   gr: i18n.t('db.text_79'),

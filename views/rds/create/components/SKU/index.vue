@@ -1,7 +1,7 @@
 <template>
   <div>
-    <filters ref="FILTERS" />
-    <size-filters ref="SIZE_FILTER">
+    <filters ref="FILTERS" :rds-item="rdsItem" />
+    <size-filters ref="SIZE_FILTER" :rds-item="rdsItem">
       <div v-if="$slots.zone" slot="zone">
         <slot name="zone" />
       </div>
