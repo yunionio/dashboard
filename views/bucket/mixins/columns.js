@@ -19,7 +19,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'bucket', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'bucket', columns: () => this.columns, tipName: this.$t('dictionary.bucket') }),
       getStatusTableColumn({ statusModule: 'bucket' }),
       {
         field: 'storage_class',
