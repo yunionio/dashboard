@@ -16,7 +16,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'storage', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'storage', columns: () => this.columns, tipName: this.$t('dictionary.blockstorage') }),
       {
         field: 'capacity',
         title: this.$t('storage.text_177'),
