@@ -42,7 +42,7 @@ export default {
   mixins: [mixin],
   data () {
     const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || `当前${this.$t('dictionary.project')}${this.$t('dictionary.server')}`
-    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'server'
+    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'servers'
     return {
       data: {},
       loading: false,
