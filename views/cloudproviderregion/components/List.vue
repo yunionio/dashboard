@@ -3,8 +3,7 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions"
-    default-search-key="cloudregion" />
+    :single-actions="singleActions" />
 </template>
 
 <script>
