@@ -14,46 +14,54 @@
       </template>
       <template v-else>
         <a-divider orientation="left">{{$t('cloudenv.text_199')}}</a-divider>
-        <a-form-item :label="$t('cloudenv.text_200')">
-          <a-radio-group  v-model="billingType">
-            <a-radio-button :value="1">{{$t('cloudenv.text_201')}}</a-radio-button>
-            <a-radio-button v-if="!isHuawei" :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_201')" v-if="billingType === 2" :extra="$t('cloudenv.text_203')">
-          <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
-          <template v-for="item in cloudAccounts">
-            <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+        <template v-if="!isQcloud">
+          <a-form-item :label="$t('cloudenv.text_200')">
+            <a-radio-group  v-model="billingType">
+              <a-radio-button :value="1">{{$t('cloudenv.text_201')}}</a-radio-button>
+              <a-radio-button v-if="!isHuawei" :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item :label="$t('cloudenv.text_201')" v-if="billingType === 2" :extra="$t('cloudenv.text_203')">
+            <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
+            <template v-for="item in cloudAccounts">
+              <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+            </template>
+            </a-select>
+          </a-form-item>
+          <a-form-item :label="$t('cloudenv.text_204')">
+            <a-input v-decorator="decorators.billing_report_bucket" />
+            <span slot="extra" v-if="bucketUrl">
+              <!-- 请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com <br /> -->{{$t('cloudenv.text_196')}}<help-link :href="bucketUrl">{{$t('cloudenv.text_205')}}</help-link>
+            </span>
+          </a-form-item>
+          <a-form-item v-if="!isHuawei" :label="$t('cloudenv.text_206')"  :extra="$t('cloudenv.text_207')">
+            <a-input v-decorator="decorators.billing_file_prefix" />
+          </a-form-item>
+          <!-- google -->
+          <template v-if="isGoogle">
+            <a-divider class="mt-5" orientation="left">{{$t('cloudenv.text_208')}}</a-divider>
+            <a-form-item :label="$t('cloudenv.text_204')" :extra="$t('cloudenv.text_209')">
+              <a-input v-decorator="decorators.usage_report_bucket" />
+            </a-form-item>
+            <a-form-item :label="$t('cloudenv.text_206')" :extra="$t('cloudenv.text_207')">
+              <a-input v-decorator="decorators.usage_file_prefix" />
+            </a-form-item>
           </template>
-          </a-select>
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_204')">
-          <a-input v-decorator="decorators.billing_report_bucket" />
-          <span slot="extra" v-if="bucketUrl">
-            <!-- 请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com <br /> -->{{$t('cloudenv.text_196')}}<help-link :href="bucketUrl">{{$t('cloudenv.text_205')}}</help-link>
-          </span>
-        </a-form-item>
-        <a-form-item v-if="!isHuawei" :label="$t('cloudenv.text_206')"  :extra="$t('cloudenv.text_207')">
-          <a-input v-decorator="decorators.billing_file_prefix" />
-        </a-form-item>
-        <!-- google -->
-        <template v-if="isGoogle">
-          <a-divider class="mt-5" orientation="left">{{$t('cloudenv.text_208')}}</a-divider>
-          <a-form-item :label="$t('cloudenv.text_204')" :extra="$t('cloudenv.text_209')">
-            <a-input v-decorator="decorators.usage_report_bucket" />
-          </a-form-item>
-          <a-form-item :label="$t('cloudenv.text_206')" :extra="$t('cloudenv.text_207')">
-            <a-input v-decorator="decorators.usage_file_prefix" />
-          </a-form-item>
         </template>
       </template>
       <a-form-item :label="$t('cloudenv.text_210')"  :extra="$t('cloudenv.text_211')">
         <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_212')" v-if="form.fc.getFieldValue('sync_info')" :extra="$t('cloudenv.text_213')">
-        <a-select v-decorator="decorators.billtask">
-          <a-select-option v-for="(val, key) in billTasks" :key="key" :value="key">{{val}}</a-select-option>
-        </a-select>
+        <a-range-picker
+          v-decorator="decorators.billtask"
+          :disabled-date="current => current && current > $moment().endOf('day')"
+          :ranges="{
+            [billTasks['7 days']]: [$moment().subtract(1, 'w'), $moment()],
+            [billTasks['1 months']]: [$moment().subtract(1, 'M'), $moment()],
+            [billTasks['3 months']]: [$moment().subtract(3, 'M'), $moment()],
+            [billTasks['6 months']]: [$moment().subtract(6, 'M'), $moment()],
+          }" />
       </a-form-item>
     </a-form>
   </div>
@@ -86,7 +94,6 @@ export default {
         '1 months': this.$t('cloudenv.text_215'),
         '3 months': this.$t('cloudenv.text_216'),
         '6 months': this.$t('cloudenv.text_217'),
-        '1 years': this.$t('cloudenv.text_218'),
       },
       formLayout: {
         wrapperCol: {
@@ -125,6 +132,9 @@ export default {
     },
     isAzure () {
       return this.provider === 'Azure'
+    },
+    isQcloud () {
+      return this.provider === 'Qcloud'
     },
     brandCn () {
       const { brand } = this.cloudAccount
@@ -201,7 +211,7 @@ export default {
           },
         ],
         billtask: ['billtask', {
-          initialValue: '7 days',
+          initialValue: [this.$moment().subtract(1, 'w'), this.$moment()],
         }],
       }
     },
@@ -264,12 +274,15 @@ export default {
         const data = {
           sync_info: true,
           cloudaccount_id: id,
+          action: 'override',
         }
-        const [num, format] = billtask.split(' ')
-        const endDayMoment = this.$moment().subtract(1, 'd')
-        const startDayMoment = this.$moment().subtract(num, format)
-        data.end_day = endDayMoment.format('YYYYMMDD')
-        data.start_day = startDayMoment.format('YYYYMMDD')
+        // const [num, format] = billtask.split(' ')
+        // const endDayMoment = this.$moment().subtract(1, 'd')
+        // const startDayMoment = this.$moment().subtract(num, format)
+        // data.end_day = endDayMoment.format('YYYYMMDD')
+        // data.start_day = startDayMoment.format('YYYYMMDD')
+        data.end_day = billtask[1].format('YYYYMMDD')
+        data.start_day = billtask[0].format('YYYYMMDD')
         await manager.create({
           data,
         })
