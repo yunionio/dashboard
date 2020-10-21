@@ -2394,7 +2394,7 @@
     }
   },
   "message": {
-    "exec_succee": "执行成功",
+    "exec_success": "执行成功",
     "exec_fail": "执行失败"
   },
   "scope.text_1": "实例列表",
