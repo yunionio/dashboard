@@ -70,7 +70,7 @@ export default {
     },
     defaultSearchKey: {
       type: String,
-      default: 'name',
+      default: 'search',
     },
     placeholder: {
       type: String,

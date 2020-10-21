@@ -162,7 +162,12 @@ class CreateList {
     getParams,
     limit = 20,
     idKey = 'id',
-    filterOptions,
+    // 默认配置模糊搜索
+    filterOptions = {
+      search: {
+        label: i18n.t('table.title.search'),
+      },
+    },
     filter = {},
     // 期望的状态，如果不符合预期，则进行定时更新
     steadyStatus = null,
@@ -210,6 +215,12 @@ class CreateList {
     this.idKey = idKey
     // 自定义过滤配置
     this.filterOptions = filterOptions
+    // 如果没有search，表示没有配置模糊匹配选项，则将模糊匹配添加上
+    if (!this.filterOptions.search) {
+      this.filterOptions.search = {
+        label: i18n.t('table.title.search'),
+      }
+    }
     // 存放当前过滤的条件
     this.filter = filter
     this.steadyStatus = this.genSteadyStatus(steadyStatus)
