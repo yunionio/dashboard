@@ -33,6 +33,11 @@ const VERSION_SORT = {
 export default {
   name: 'rdsSkuFilter',
   inject: ['form', 'formItemLayout', 'disableds', 'scopeParams'],
+  props: {
+    rdsItem: {
+      type: Object,
+    },
+  },
   data () {
     return {
       dbInstance: undefined,
@@ -156,6 +161,8 @@ export default {
       try {
         const { data } = await new this.$Manager('cloudregions', 'v2').getSpecific({ id: cloudregionId, spec: 'capability', params })
         this.dbInstance = data && data.db_instance ? data.db_instance : {}
+        // 腾讯云暂时只支持MySQL
+        if (this.form.getFieldValue('provider') === 'Qcloud' || (this.rdsItem && this.rdsItem.provider === 'Qcloud')) this.dbInstance = { MySQL: this.dbInstance.MySQL }
         this.form.setFieldsValue({
           engine: undefined,
           engine_version: undefined,

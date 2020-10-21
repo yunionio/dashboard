@@ -17,6 +17,11 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'rdsAccount' }),
       {
+        field: 'host',
+        title: this.$t('db.text_344'),
+        minWidth: 100,
+      },
+      {
         field: 'password',
         title: this.$t('db.text_195'),
         minWidth: 100,
@@ -34,7 +39,7 @@ export default {
           default: ({ row }) => {
             if (row.dbinstanceprivileges && row.dbinstanceprivileges.length > 0) {
               return row.dbinstanceprivileges.map(({ database, privileges }) => {
-                return <div>{database} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges]})</span></div>
+                return <div>{database} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges] ? RDS_ACCOUNT_PRIVILEGES[privileges] : privileges})</span></div>
               })
             }
           },
