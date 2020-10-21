@@ -40,7 +40,7 @@ export default {
 
 .oc-mask {
   position: absolute;
-  z-index: 3000;
+  z-index: 900;
   top: 0;
   background: rgba(255, 255, 255, 0.9);
   width: 100%;
