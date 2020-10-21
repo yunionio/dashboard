@@ -83,7 +83,7 @@ export default {
               },
               meta: obj => {
                 return {
-                  validate: this.$appConfig.isPrivate && ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure'].indexOf(obj.brand) > -1 && ownerDomain,
+                  validate: this.$appConfig.isPrivate && ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud'].indexOf(obj.brand) > -1 && ownerDomain,
                 }
               },
             },
