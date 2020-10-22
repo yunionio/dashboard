@@ -31,13 +31,10 @@ export function filterUserTag ({
   const arr = []
   const obj = {}
   for (const key in metadata) {
-    if (ignoreKeys.length > 0 && ignoreKeys.includes(key)) {
-      if (!ignorePerfix) {
-        if (needExt ? (!isUserTag(key) && !isExtTag(key)) : !isUserTag(key)) {
-          continue
-        }
-      }
-    }
+    if (
+      (ignoreKeys.length > 0 && ignoreKeys.includes(key)) ||
+      (!ignorePerfix && (needExt ? (!isUserTag(key) && !isExtTag(key)) : !isUserTag(key)))
+    ) continue
     arr.push({
       key,
       value: metadata[key],
