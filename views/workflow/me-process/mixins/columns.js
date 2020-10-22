@@ -80,9 +80,10 @@ export default {
         slots: {
           default: ({ row }, h) => {
             const bizStatus = row.variables.biz_status
+            const tooltip = <span class='ml-1'><a-tooltip title={ i18n.t('workflow.biz_field') }><a-icon type="question-circle" /></a-tooltip></span>
             if ((row.state === 'COMPLETED' || row.state === 'CUSTOM_TODO') && bizStatus) {
               return [
-                <status status={ bizStatus } statusModule={ 'workflowBiz' } />,
+                <div class="d-flex"><status status={ bizStatus } statusModule={ 'workflowBiz' } />{ bizStatus === 'fail' ? tooltip : null }</div>,
               ]
             }
             return '-'
