@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="key" v-for="(val, key) in TYPES" :key="key">
-           <a-input :placeholder="val"  v-decorator="[key, getOption(key)]" />
+          <a-input :placeholder="val" v-decorator="decorators[key]" />
         </a-form-item>
       </a-form>
     </div>
@@ -25,6 +25,23 @@ export default {
   name: 'ObjectsUpdateHttpDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const TYPES = {
+      'Content-Type': '',
+      'Content-Encoding': this.$t('storage.text_113'),
+      'Content-Language': this.$t('storage.text_114'),
+      'Content-Disposition': this.$t('storage.text_115'),
+      'Cache-Control': this.$t('storage.text_116'),
+    }
+    const decorators = {}
+    const { data } = this.params
+    Object.keys(TYPES).forEach(item => {
+      decorators[item] = [
+        item,
+        {
+          initialValue: data[0].meta && data[0].meta[item] ? data[0].meta[item].toString() : undefined,
+        },
+      ]
+    })
     return {
       loading: false,
       formItemLayout: {
@@ -35,13 +52,8 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
-      TYPES: {
-        'Content-Type': '',
-        'Content-Encoding': this.$t('storage.text_113'),
-        'Content-Language': this.$t('storage.text_114'),
-        'Content-Disposition': this.$t('storage.text_115'),
-        'Cache-Control': this.$t('storage.text_116'),
-      },
+      TYPES,
+      decorators,
     }
   },
   provide () {
@@ -50,12 +62,6 @@ export default {
     }
   },
   methods: {
-    getOption (k) {
-      const { data } = this.params
-      return {
-        initialValue: data[0].meta && data[0].meta[k] ? data[0].meta[k].toString() : undefined,
-      }
-    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
