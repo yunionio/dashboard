@@ -332,6 +332,7 @@ export default {
           this.$router.push('/servertemplate')
         })
         .catch((error) => {
+          this.submiting = false
           throw error
         })
     },
@@ -362,6 +363,7 @@ export default {
         const res = new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
         return res
       } catch (error) {
+        this.submiting = false
         throw error
       }
     },
@@ -398,7 +400,6 @@ export default {
               storage.set(`${this.form.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, `${this.form.fd.os}:${image}`)
             }
           }
-          this.submiting = false
           if (isSuccess(res)) {
             this.$message.success(i18n.t('compute.text_322'))
           }
