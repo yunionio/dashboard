@@ -180,7 +180,7 @@ export default {
               slots: {
                 default: ({ row }) => {
                   if (row.internal_connection_str) {
-                    return `${row.internal_connection_str}:${row.port}`
+                    return row.provider === 'Qcloud' ? row.internal_connection_str : `${row.internal_connection_str}:${row.port}`
                   }
                   return '-'
                 },
@@ -210,7 +210,7 @@ export default {
                   }
                   return (
                     <div>
-                      {addr ? `${addr}:${row.port}` : '-'}
+                      {addr ? row.provider === 'Qcloud' ? addr : `${addr}:${row.port}` : '-'}
                       {RenderSwitchBtn}
                     </div>
                   )

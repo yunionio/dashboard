@@ -220,8 +220,8 @@ export const RDS_MONITOR_OPTS = {
     {
       name: 'conn',
       label: i18n.t('db.text_18'),
-      seleteItem: 'usage_active',
-      as: i18n.t('db.text_13'),
+      seleteItem: 'used_percent',
+      as: i18n.t('db.text_18'),
       fromItem: 'rds_conn',
       unit: '%',
       transfer: 1,
