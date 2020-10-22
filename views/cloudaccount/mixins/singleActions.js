@@ -183,7 +183,7 @@ export default {
                   onManager: this.onManager,
                   content: () => {
                     if (supportBill) {
-                      return <a-checkbox v-model={ this.deleteBill }>同时删除历史账单数据</a-checkbox>
+                      return <a-checkbox v-model={ this.deleteBill }>{ this.$t('cloudenv.text_497') }</a-checkbox>
                     }
                     return null
                   },
