@@ -64,7 +64,7 @@ export default {
     },
     columns: [Array, Function],
     tipName: String,
-    ignorePerfix: {
+    ignorePrefix: {
       type: Boolean,
       default: false,
     },
@@ -81,7 +81,7 @@ export default {
         metadata: this.metadata,
         ignoreKeys: this.ignoreKeys,
         needExt: this.needExt,
-        ignorePerfix: this.ignorePerfix,
+        ignorePrefix: this.ignorePrefix,
       })
       return data
     },
