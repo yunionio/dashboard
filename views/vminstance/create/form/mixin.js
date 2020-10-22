@@ -292,10 +292,12 @@ export default {
       e.preventDefault()
       this.validateForm()
         .then(async formData => {
+          this.submiting = true
           const genCreteData = new GenCreateData(formData, this.form.fi)
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(genCreteData)
           } else if (this.isOpenWorkflow) { // 提交工单
+            await this.checkCreateData(genCreteData)
             this.doForecast(genCreteData)
               .then(() => {
                 this.doCreateWorkflow(genCreteData)
@@ -309,6 +311,7 @@ export default {
           }
         })
         .catch(error => {
+          this.submiting = false
           throw error
         })
     },
@@ -325,12 +328,12 @@ export default {
       this.submiting = true
       this.servertemplateM.create({ data: templateData })
         .then(() => {
-          this.submiting = false
           this.$message.success(i18n.t('compute.text_423'))
           this.$router.push('/servertemplate')
         })
-        .catch(() => {
+        .catch((error) => {
           this.submiting = false
+          throw error
         })
     },
     doCreateWorkflow (genCreateData) {
@@ -347,12 +350,11 @@ export default {
       new this.$Manager('process-instances', 'v1')
         .create({ data: { variables } })
         .then(() => {
-          this.submiting = false
           this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
           this.$router.push('/workflow')
         })
-        .catch(() => {
-          this.submiting = false
+        .catch((error) => {
+          throw error
         })
     },
     async checkCreateData (genCreateData) {
@@ -361,6 +363,7 @@ export default {
         const res = new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
         return res
       } catch (error) {
+        this.submiting = false
         throw error
       }
     },
@@ -397,7 +400,6 @@ export default {
               storage.set(`${this.form.fi.createType}${SELECT_IMAGE_KEY_SUFFIX}`, `${this.form.fd.os}:${image}`)
             }
           }
-          this.submiting = false
           if (isSuccess(res)) {
             this.$message.success(i18n.t('compute.text_322'))
           }
