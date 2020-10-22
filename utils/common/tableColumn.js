@@ -304,7 +304,7 @@ export const getTagTableColumn = ({
   onManager,
   columns,
   tipName,
-  ignorePerfix,
+  ignorePrefix,
 } = {}) => {
   return {
     field,
@@ -323,7 +323,7 @@ export const getTagTableColumn = ({
               resource,
               columns,
               tipName,
-              ignorePerfix,
+              ignorePrefix,
             },
           }),
         ]
