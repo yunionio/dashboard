@@ -9,7 +9,7 @@
 <script>
 import { getStatusTableColumn, getTimeTableColumn, getBrandTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
 import { getBrandFilter } from '@/utils/common/tableFilter'
-import expectStatus from '@/constants/expectStatus'
+// import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -34,7 +34,7 @@ export default {
           cachedimage_id: this.resId,
           details: true,
         },
-        steadyStatus: Object.values(expectStatus.imageCache).flat(),
+        // steadyStatus: Object.values(expectStatus.imageCache).flat(),
         filterOptions: {
           brand: getBrandFilter('compute_engine_brands'),
         },
