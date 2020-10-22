@@ -315,6 +315,7 @@ export default {
                     columns: this.columns,
                     list: this.list,
                     refresh: this.refresh,
+                    name: this.isDir(row.key) ? this.$t('storage.text_168') : this.$t('storage.text_112'),
                   })
                 },
                 meta: row => {
