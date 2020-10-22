@@ -760,6 +760,37 @@ class CreateList {
   }
 
   /**
+   * @description 远端获取过滤项
+   *
+   * @param { Object } item
+   * @returns values
+   * @memberof CreateList
+   */
+  async fetchDistinctField (item) {
+    try {
+      const response = await this.onManager('get', {
+        managerArgs: {
+          id: 'distinct-field',
+          params: {
+            // ...this.params,
+            scope: this.templateContext.$store.getters.scope,
+            [item.distinctField.type]: item.distinctField.key,
+            ...(R.is(Function, item.distinctField.getParams) ? item.distinctField.getParams() : item.distinctField.getParams),
+          },
+        },
+      })
+      let values = response.data[item.distinctField.key] || []
+      values = values.map(item => ({ label: item, key: item }))
+      if (item.mapper) {
+        values = item.mapper(values, response.data)
+      }
+      return values
+    } catch (error) {
+      return error
+    }
+  }
+
+  /**
    * @description 更新过滤条件，同时同步至搜索框中
    *
    * @param {*} { key, value, items }
@@ -770,6 +801,11 @@ class CreateList {
       let newItems = [...(this.filterOptions[key].items || []), ...items]
       newItems = R.uniqBy(item => item.key, newItems)
       this.filterOptions[key].items = newItems
+      if (this.filterOptions[key].distinctField) {
+        this.fetchDistinctField(this.filterOptions[key]).then(values => {
+          this.filterOptions[key].items = values
+        })
+      }
     }
     const filter = { ...this.filter }
     filter[key] = value
