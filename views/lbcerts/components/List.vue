@@ -81,6 +81,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
+              name: this.$t('network.text_143'),
             })
           },
           meta: () => {
