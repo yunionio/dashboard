@@ -12,6 +12,7 @@ export default {
             data: [obj],
             columns: this.columns,
             onManager: this.onManager,
+            name: this.$t('network.text_143'),
           })
         },
         meta: (obj) => this.$getDeleteResult(obj),
