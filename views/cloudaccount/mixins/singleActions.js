@@ -201,6 +201,10 @@ export default {
                         throw err
                       }
                     }
+                    this.deleteBill = true
+                  },
+                  cancel: () => {
+                    this.deleteBill = true
                   },
                 })
               },
