@@ -4153,5 +4153,6 @@
   "common_717": "Total {0} records",
   "common_718": "IP cannot be manually configured when the number of hosts is greater than 1",
   "common_719": "There are {0} resource alarms",
-  "common_720": "There is no resource alarm"
+  "common_720": "There is no resource alarm",
+  "workflow.biz_field": "You can find the work order on the Pending My Approval page in the upper left corner, and you will retry if you click through the operation. If you still fail after repeated retries, please contact the administrator."
 }
