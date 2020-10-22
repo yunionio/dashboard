@@ -121,6 +121,10 @@ export default {
       type: Function,
       required: true,
     },
+    fetchDistinctField: {
+      type: Function,
+      required: true,
+    },
   },
   computed: {
     _filterOptions () {
@@ -149,32 +153,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * @description 远端获取过滤项
-     */
-    async fetchDistinctField (item) {
-      try {
-        const response = await this.onManager('get', {
-          managerArgs: {
-            id: 'distinct-field',
-            params: {
-              // ...this.params,
-              scope: this.$store.getters.scope,
-              [item.distinctField.type]: item.distinctField.key,
-              ...(R.is(Function, item.distinctField.getParams) ? item.distinctField.getParams() : item.distinctField.getParams),
-            },
-          },
-        })
-        let values = response.data[item.distinctField.key] || []
-        values = values.map(item => ({ label: item, key: item }))
-        if (item.mapper) {
-          values = item.mapper(values, response.data)
-        }
-        return values
-      } catch (error) {
-        return error
-      }
-    },
     handleRefresh () {
       if (this.refreshMethod) {
         this.refreshMethod(() => {
