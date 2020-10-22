@@ -236,6 +236,7 @@ export default {
         disk_type: 'data',
         is_instance_snapshot: false,
         $t: uuid(),
+        status: 'ready',
       }
       const scopeParams = {}
       if (this.$store.getters.isAdminMode) {
