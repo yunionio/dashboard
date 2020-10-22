@@ -10,6 +10,11 @@ const steadyStatus = {
 }
 
 export default {
+  data () {
+    return {
+      deleteBill: true,
+    }
+  },
   computed: {
     ...mapGetters(['l3PermissionEnable']),
   },
@@ -168,6 +173,7 @@ export default {
               label: i18n.t('cloudenv.text_108'),
               permission: 'cloudaccounts_delete',
               action: () => {
+                const supportBill = ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud'].includes(obj.brand)
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
@@ -175,6 +181,32 @@ export default {
                   title: i18n.t('cloudenv.text_109'),
                   name: this.$t('dictionary.cloudaccount'),
                   onManager: this.onManager,
+                  content: () => {
+                    if (supportBill) {
+                      return <a-checkbox v-model={ this.deleteBill }>同时删除历史账单数据</a-checkbox>
+                    }
+                    return null
+                  },
+                  success: async () => {
+                    if (supportBill && this.deleteBill) {
+                      const manager = new this.$Manager('bill_tasks', 'v1')
+                      try {
+                        const data = {
+                          task_type: 'bill_remove',
+                          cloudaccount_id: obj.id,
+                        }
+                        await manager.create({
+                          data,
+                        })
+                      } catch (err) {
+                        throw err
+                      }
+                    }
+                    this.deleteBill = true
+                  },
+                  cancel: () => {
+                    this.deleteBill = true
+                  },
                 })
               },
               meta: () => {
