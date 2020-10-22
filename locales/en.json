@@ -182,7 +182,7 @@
   "db.text_181": "Are you sure to close the Internet address?",
   "db.text_182": "The external IP will not be accessible after closing the external network address",
   "db.text_183": "The current cloud vendor has not yet been docked",
-  "db.text_184": "Currently only Alibaba Cloud and Huawei Cloud support viewing monitoring data",
+  "db.text_184": "Currently only Alibaba Cloud, Huawei Cloud, and Tencent Cloud support viewing monitoring data",
   "db.text_185": "The HUAWEI CLOUD RDS monitoring call interface is being improved, and data cannot be retrieved at this time. We will support data display in subsequent openings, please be aware",
   "db.text_186": "Path:",
   "db.text_187": "Properties",
