@@ -65,8 +65,10 @@ export default {
         distinctField: {
           type: 'field',
           key: 'action',
-          getParams: {
-            filter: `obj_id.in(${this.objId})`,
+          getParams: () => {
+            return this.objId && {
+              filter: `obj_id.in(${this.objId})`,
+            }
           },
         },
         mapper: (data, originData) => {
