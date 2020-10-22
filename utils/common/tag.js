@@ -26,14 +26,14 @@ export function filterUserTag ({
   metadata,
   ignoreKeys = [],
   needExt = false,
-  ignorePerfix = false,
+  ignorePrefix = false,
 }) {
   const arr = []
   const obj = {}
   for (const key in metadata) {
     if (
       (ignoreKeys.length > 0 && ignoreKeys.includes(key)) ||
-      (!ignorePerfix && (needExt ? (!isUserTag(key) && !isExtTag(key)) : !isUserTag(key)))
+      (!ignorePrefix && (needExt ? (!isUserTag(key) && !isExtTag(key)) : !isUserTag(key)))
     ) continue
     arr.push({
       key,
