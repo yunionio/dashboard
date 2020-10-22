@@ -297,6 +297,7 @@ export default {
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(genCreteData)
           } else if (this.isOpenWorkflow) { // 提交工单
+            await this.checkCreateData(genCreteData)
             this.doForecast(genCreteData)
               .then(() => {
                 this.doCreateWorkflow(genCreteData)
