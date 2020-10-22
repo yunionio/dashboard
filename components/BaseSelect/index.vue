@@ -24,7 +24,7 @@
         </a-select-option>
       </slot>
     </a-select>
-    <a-icon v-if="showSync" type="sync" class="ml-2 primary-color" :spin="loading" @click="e => loadOptsDebounce()" />
+    <a-icon v-if="showSync" type="sync" class="ml-2 primary-color" :spin="loading" @click="refresh" />
   </div>
 </template>
 <script>
@@ -247,7 +247,7 @@ export default {
   },
   methods: {
     dropdownChange (open) {
-      if (open && this.remote && !R.isEmpty(this.firstResOpts) && !this.concatFirstOpts) {
+      if (open && this.remote && !R.isEmpty(this.firstResOpts) && !this.concatFirstOpts && !R.isEmpty(this.currentItem)) {
         this.resOpts = { ...this.firstResOpts, [this.currentItem[this.idKey]]: this.currentItem }
         const list = Object.values(this.resOpts)
         this.resList = list
@@ -460,6 +460,10 @@ export default {
         return this.labelFormat(item)
       }
       return item[this.nameKey]
+    },
+    refresh () {
+      this.fetchDataNum = 0
+      this.loadOpts()
     },
   },
 }
