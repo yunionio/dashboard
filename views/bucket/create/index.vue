@@ -124,9 +124,9 @@ export default {
     },
     cloudregionParams () {
       const params = {
-        cloud_env: this.cloudEnv,
         scope: this.scope,
       }
+      params[this.cloudEnv + '_cloud'] = true
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
         delete params.scope
