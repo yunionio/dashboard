@@ -24,6 +24,7 @@
       :selected="selected"
       :api-version="apiVersion"
       :update-config="updateConfig"
+      :fetch-distinct-field="fetchDistinctField"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -288,6 +289,9 @@ export default {
     },
     radioChange (data) {
       this.$emit('radio-change', data)
+    },
+    fetchDistinctField (item) {
+      return this.list.fetchDistinctField(item)
     },
   },
 }
