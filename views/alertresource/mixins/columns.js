@@ -30,7 +30,7 @@ export default {
           },
         },
       },
-      getTagTableColumn({ field: 'tags', ignorePerfix: true }),
+      getTagTableColumn({ field: 'tags', ignorePrefix: true }),
       {
         field: 'alert_table',
         title: i18n.t('monitor.text_98'),
@@ -53,7 +53,7 @@ export default {
                   )
                 },
               }),
-              getTagTableColumn({ field: 'data.tags', title: this.$t('monitor.text_104'), ignorePerfix: true }),
+              getTagTableColumn({ field: 'data.tags', title: this.$t('monitor.text_104'), ignorePrefix: true }),
               strategyColumn(),
               levelColumn,
               {
