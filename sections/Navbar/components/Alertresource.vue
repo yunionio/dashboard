@@ -42,7 +42,7 @@ export default {
       this.visible = !this.visible
     },
     routerPush (e) {
-      this.$router.push('alertresource')
+      this.$router.push('/alertresource')
     },
   },
 }
