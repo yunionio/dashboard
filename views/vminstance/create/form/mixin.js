@@ -292,6 +292,7 @@ export default {
       e.preventDefault()
       this.validateForm()
         .then(async formData => {
+          this.submiting = true
           const genCreteData = new GenCreateData(formData, this.form.fi)
           if (this.isServertemplate) { // 创建主机模板
             this.doCreateServertemplate(genCreteData)
@@ -309,6 +310,7 @@ export default {
           }
         })
         .catch(error => {
+          this.submiting = false
           throw error
         })
     },
@@ -325,12 +327,11 @@ export default {
       this.submiting = true
       this.servertemplateM.create({ data: templateData })
         .then(() => {
-          this.submiting = false
           this.$message.success(i18n.t('compute.text_423'))
           this.$router.push('/servertemplate')
         })
-        .catch(() => {
-          this.submiting = false
+        .catch((error) => {
+          throw error
         })
     },
     doCreateWorkflow (genCreateData) {
@@ -347,12 +348,11 @@ export default {
       new this.$Manager('process-instances', 'v1')
         .create({ data: { variables } })
         .then(() => {
-          this.submiting = false
           this.$message.success(i18n.t('compute.text_1045', [data.generate_name]))
           this.$router.push('/workflow')
         })
-        .catch(() => {
-          this.submiting = false
+        .catch((error) => {
+          throw error
         })
     },
     async checkCreateData (genCreateData) {
