@@ -187,7 +187,7 @@ export default {
                     return null
                   },
                   success: async () => {
-                    if (supportBill) {
+                    if (supportBill && this.deleteBill) {
                       const manager = new this.$Manager('bill_tasks', 'v1')
                       try {
                         const data = {
