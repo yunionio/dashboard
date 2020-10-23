@@ -13,6 +13,10 @@ import { CREATE_METHODS } from '../constants'
 import { getStorageTypeTableColumn } from '../utils/columns'
 import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -27,10 +31,13 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'snapshot', columns: () => this.columns, tipName: this.$t('compute.text_462') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'snapshot', columns: () => this.columns, tipName: this.$t('compute.text_462') }),
         getBrandTableColumn(),
         {
           field: 'size',

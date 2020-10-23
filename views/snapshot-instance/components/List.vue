@@ -68,6 +68,27 @@ export default {
       },
       groupActions: [
         {
+          label: this.$t('table.action.set_tag'),
+          action: () => {
+            this.createDialog('SetTagDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              mode: 'add',
+              params: {
+                resources: 'instance_snapshot',
+              },
+              tipName: this.$t('compute.text_462'),
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selected.length,
+              tooltip: null,
+            }
+          },
+        },
+        {
           label: this.$t('compute.text_261'),
           permission: 'snapshots_delete',
           action: () => {

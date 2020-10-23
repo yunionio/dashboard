@@ -10,7 +10,11 @@
 
 <script>
 import { getMaintenanceTableColumn } from '../utils/columns'
-import { getEnabledTableColumn, getCopyWithContentTableColumn, getTagTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getCopyWithContentTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 import WindowsMixin from '@/mixins/windows'
@@ -104,8 +108,9 @@ export default {
         },
       ],
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'host', columns: () => this.columns, tipName: this.$t('compute.text_112') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'host', columns: () => this.columns, tipName: this.$t('compute.text_112') }),
         getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
         getEnabledTableColumn(),
         getMaintenanceTableColumn(),
         {

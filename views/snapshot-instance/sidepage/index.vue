@@ -17,6 +17,7 @@
       :res-id="data.id"
       :id="listId"
       :on-manager="onManager"
+      :columns="columns"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>

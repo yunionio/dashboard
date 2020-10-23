@@ -9,6 +9,10 @@
 <script>
 import WindowsMixin from '@/mixins/windows'
 import { getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 
 export default {
   name: 'SecgroupDetail',
@@ -22,6 +26,7 @@ export default {
       type: Object,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
@@ -32,6 +37,8 @@ export default {
         domain: this.$t('shareScope.domain'),
       },
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'secgroup', columns: () => this.columns, tipName: this.$t('dictionary.secgroup') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'secgroup', columns: () => this.columns, tipName: this.$t('dictionary.secgroup') }),
         getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
         {
           field: 'guest_cnt',
