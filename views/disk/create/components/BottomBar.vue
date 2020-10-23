@@ -87,7 +87,7 @@ export default {
       if (this.price) {
         const _day = numerify(this.price * 24, '0,0.00')
         const _month = numerify(this.priceTotal.month_price, '0,0.00')
-        return this.$t('db.text_114', [this.currency, _day, this.currency, _month])
+        return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
       }
       return '--'
     },
@@ -124,7 +124,7 @@ export default {
   methods: {
     formatToPrice (val) {
       let ret = `${this.currency} ${numerify(val, '0,0.000')}`
-      ret += this.$t('db.text_115')
+      ret += this.$t('compute.text_296')
       return ret
     },
     async _getPrice () {
