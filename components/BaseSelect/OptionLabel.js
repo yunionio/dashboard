@@ -1,3 +1,4 @@
+import * as R from 'ramda'
 import i18n from '@/locales'
 
 const resourceMode = {
@@ -105,7 +106,8 @@ export default {
         return resourceItem.vnode(this, h)
       }
     }
-    const text = this.getLabel()
+    const str = this.getLabel()
+    const text = R.is(String, str) ? str : this.text
     return (<div title={text}>{ text }</div>)
   },
 }

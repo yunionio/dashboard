@@ -2080,6 +2080,7 @@
     "guestimage": "主机镜像",
     "guestnetwork": "云服务器网络",
     "host": "宿主机",
+    "hostip": "宿主机IP",
     "hostwire": "二层网络",
     "identity_provider": "认证源",
     "image": "系统镜像",
@@ -2123,6 +2124,7 @@
     "secgroup": "安全组",
     "secgrouprule": "安全组规则",
     "server": "虚拟机",
+    "serverip": "虚拟机IP",
     "serverrecovery": "主机",
     "servertemplate": "主机模板",
     "service": "服务",
@@ -4169,5 +4171,7 @@
   "common_718": "主机数量大于1时无法手动配置IP",
   "common_719": "有 {0} 个资源发生报警",
   "common_720": "暂无资源报警",
-  "workflow.biz_field": "您可到左上角待我审批页面找到该工单，点击通过操作会进行重试，若多次重试仍失败请联系管理员处理"
+  "workflow.biz_field": "您可到左上角待我审批页面找到该工单，点击通过操作会进行重试，若多次重试仍失败请联系管理员处理",
+  "common_721": "对象存储ip",
+  "common_722": "负载均衡ip"
 }
