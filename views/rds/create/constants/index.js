@@ -81,8 +81,8 @@ export const DECORATORS = {
       },
     ],
   },
-  count: [
-    'count',
+  __count__: [
+    '__count__',
     {
       initialValue: 1,
     },
