@@ -16,7 +16,8 @@
       :res-id="data.id"
       :data="detailData"
       :getParams="getParams"
-      :on-manager="onManager" />
+      :on-manager="onManager"
+      :columns="columns" />
   </base-side-page>
 </template>
 

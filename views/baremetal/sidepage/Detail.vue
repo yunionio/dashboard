@@ -14,6 +14,10 @@ import {
   getBrandTableColumn,
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
@@ -29,10 +33,13 @@ export default {
       type: Object,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.columns, tipName: this.$t('compute.text_92') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.columns, tipName: this.$t('compute.text_92') }),
         {
           field: 'keypair',
           title: this.$t('compute.text_33'),
