@@ -2258,7 +2258,8 @@
       "sponsor": "Sponsor",
       "operation": "Operation",
       "search": "Fuzzy matching",
-      "local_project": "Local project"
+      "local_project": "Local project",
+      "zone_1_name": "Backup Zone"
     },
     "action": {
       "save": "Save",
@@ -3354,6 +3355,7 @@
   "scope.text_955": "The amount cannot be 0",
   "scope.text_956": "OpenID Connect connection information:",
   "scope.text_957": "Not verified, please click the icon to verify",
+  "scope.text_958": "Backup：{0}",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": " ",

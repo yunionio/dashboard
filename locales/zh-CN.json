@@ -2258,7 +2258,8 @@
       "sponsor": "发起人",
       "operation": "操作",
       "search": "模糊匹配",
-      "local_project": "本地项目"
+      "local_project": "本地项目",
+      "zone_1_name": "备可用区"
     },
     "action": {
       "save": "保存",
@@ -3354,6 +3355,7 @@
   "scope.text_955": "金额不能为0",
   "scope.text_956": "OpenID Connect连接信息：",
   "scope.text_957": "未验证，请点击图标验证",
+  "scope.text_958": "备：{0}",
   "common.text00001": "可用",
   "common.text00002": "你所选的",
   "common.text00003": "个",
