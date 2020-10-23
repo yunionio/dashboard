@@ -90,6 +90,7 @@ export default {
           },
         },
         responseData: this.responseData,
+        hiddenColumns: ['metadata', 'instance_type', 'account'],
       }),
       exportDataOptions: {
         items: [

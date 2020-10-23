@@ -21,6 +21,7 @@ export default {
           )
         },
       }),
+      getStatusTableColumn({ statusModule: 'rds' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dbinstance', columns: () => this.columns }),
       {
         field: 'category',
@@ -35,9 +36,10 @@ export default {
       {
         field: 'vcpu_count',
         title: i18n.t('db.text_109'),
-        width: 100,
+        width: 120,
         slots: {
           default: ({ row }) => {
+            if (row.brand.toLowerCase() === 'qcloud') return i18n.t('db.text_349', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024), row.disk_size_gb])
             return i18n.t('db.text_151', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024)])
           },
         },
@@ -92,15 +94,14 @@ export default {
           default: ({ row }) => row.port || '-',
         },
       },
+      getBillingTableColumn({ vm: this }),
+      getBrandTableColumn(),
       {
         field: 'account',
         minWidth: 100,
         title: i18n.t('db.text_67'),
       },
-      getBillingTableColumn({ vm: this }),
-      getStatusTableColumn({ statusModule: 'rds' }),
       getProjectTableColumn(),
-      getBrandTableColumn(),
       {
         field: 'region',
         minWidth: 120,
