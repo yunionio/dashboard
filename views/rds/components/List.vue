@@ -15,7 +15,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getFilter, getTenantFilter, getDomainFilter, getStatusFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -38,27 +38,8 @@ export default {
         steadyStatus: Object.values(expectStatus.rds).flat(),
         filterOptions: {
           name: getNameFilter(),
-          status: getFilter({
-            title: this.$t('db.text_46'),
-            field: 'status',
-            multiple: true,
-            items: [
-              { label: this.$t('db.text_47'), key: 'running' },
-              { label: this.$t('db.text_48'), key: 'ready' },
-              { label: this.$t('db.text_49'), key: 'unknown' },
-              { label: this.$t('db.text_50'), key: 'sched_fail' },
-            ],
-          }),
-          brand: {
-            label: this.$t('db.text_51'),
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: this.$t('db.text_52'), key: 'Aliyun' },
-              { label: this.$t('db.text_53'), key: 'Huawei' },
-              { label: 'Google', key: 'Google' },
-            ],
-          },
+          status: getStatusFilter('rds'),
+          brand: getBrandFilter('rds_engine_brands'),
           // account: getAccountFilter(),
           projects: getTenantFilter(),
           billing_type: getFilter({
