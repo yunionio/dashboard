@@ -185,6 +185,7 @@ export default {
       }
     },
     async fetchBackendList (bgId) {
+      if (!bgId) return // 如果没有后端服务器组ID，return
       try {
         const { data: { data = [] } } = await new this.$Manager('loadbalancerbackends')
           .list({
