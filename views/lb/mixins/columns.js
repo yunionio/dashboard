@@ -131,7 +131,14 @@ export default {
       //   },
       // },
       getProjectTableColumn(),
-      getRegionTableColumn(),
+      getBrandTableColumn(),
+      getRegionTableColumn({ showOverflow: false }),
+      {
+        field: 'account',
+        title: i18n.t('network.text_196'),
+        minWidth: 120,
+        hidden: this.$store.getters.isProjectMode,
+      },
       // getTimeTableColumn(), // 列表太长先隐藏
     ]
   },
