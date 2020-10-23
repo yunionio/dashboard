@@ -387,3 +387,20 @@ export const metric_zh = {
   'inodes_free/inodes_total': i18n.t('monitor_metric_96'),
   'free/total': i18n.t('monitor_metric_97'),
 }
+
+export const filterKeyMap = {
+  brand: i18n.t('common.brand'),
+  host: i18n.t('dictionary.host'),
+  host_ip: i18n.t('dictionary.hostip'),
+  tenant: i18n.t('common.project'),
+  project_domain: i18n.t('monitor.text_107'),
+  cloudregion: i18n.t('common.region'),
+  zone: i18n.t('common.zone'),
+  vm_name: i18n.t('dictionary.server'),
+  vm_ip: i18n.t('dictionary.serverip'),
+  oss_name: i18n.t('scope.text_77'),
+  oss_ip: i18n.t('common_721'),
+  elb_name: i18n.t('scope.text_105'),
+  elb_ip: i18n.t('common_722'),
+  cloudaccount_name: i18n.t('dictionary.cloudaccount'),
+}
