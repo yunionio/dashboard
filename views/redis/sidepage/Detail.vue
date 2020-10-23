@@ -15,6 +15,10 @@ import {
   getSwitchTableColumn,
   getBillingTypeTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -30,10 +34,13 @@ export default {
       type: Object,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'elasticcache', columns: () => this.columns, tipName: this.$t('dictionary.elasticcache') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'elasticcache', columns: () => this.columns, tipName: this.$t('dictionary.elasticcache') }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
       ],
