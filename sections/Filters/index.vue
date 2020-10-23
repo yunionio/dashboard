@@ -60,6 +60,7 @@
 <script>
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
+import { filterKeyMap } from '@Monitor/constants'
 
 export default {
   name: 'ExplorerFormFilters',
@@ -114,9 +115,11 @@ export default {
     tagKeyOpts () {
       if (R.is(Array, this.metricInfo.tag_key)) {
         return this.metricInfo.tag_key.map(v => {
+          const zh = filterKeyMap[v]
+          const label = zh ? `${zh} (${v})` : v
           return {
             key: v,
-            label: v,
+            label,
           }
         })
       }
@@ -168,9 +171,13 @@ export default {
     tagValueOpts (tagKey) {
       if (R.is(Object, this.metricInfo.tag_value) && tagKey) {
         return (this.metricInfo.tag_value[tagKey] || []).map(v => {
+          let label = v
+          if (v === 'OneCloud') {
+            label = this.$t('brand')
+          }
           return {
             key: v,
-            label: v,
+            label,
           }
         })
       }

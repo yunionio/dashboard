@@ -184,5 +184,6 @@
   "monitor.text_103": "period",
   "monitor.text_104": "Alarm Resource Tag",
   "monitor.text_105": "Alert Value",
-  "monitor.text_106": "Recover Alert Value"
+  "monitor.text_106": "Recover Alert Value",
+  "monitor.text_107": "Domain"
 }
