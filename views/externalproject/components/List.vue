@@ -44,7 +44,7 @@ export default {
           field: 'name',
           title: this.$t('cloudenv.text_386'),
         },
-        getProjectTableColumn(),
+        getProjectTableColumn({ title: this.$t('table.title.local_project') }),
         getTimeTableColumn({
           field: 'created_at',
           title: this.$t('cloudenv.text_103'),
