@@ -191,9 +191,9 @@ export default {
               field: 'acl',
               title: this.$t('storage.text_93'),
               slots: {
-                default: ({ row }) => {
+                default: ({ row }, h) => {
                   return [
-                    ACL_TYPE[row.acl] || row.acl,
+                    <span>{ ACL_TYPE[row.acl] || row.acl }</span>,
                     <a onClick={() => this.handleSetAcl(row)} class='ml-2'>{ this.$t('common.setting') }</a>,
                   ]
                 },
