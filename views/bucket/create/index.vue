@@ -13,6 +13,7 @@
           :labelCol="formItemLayout.labelCol"
           :names="areaselectsName"
           :cloudregionParams="cloudregionParams"
+          :cityParams="cityParams"
           :isRequired="true"
           @change="handleCloudregionChange" />
         <a-form-item :label="$t('storage.text_40')">
@@ -121,6 +122,11 @@ export default {
           },
         ],
       }
+    },
+    cityParams () {
+      const params = {}
+      params[this.cloudEnv + '_cloud'] = true
+      return params
     },
     cloudregionParams () {
       const params = {
