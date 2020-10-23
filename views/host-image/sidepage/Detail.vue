@@ -11,6 +11,10 @@
 <script>
 import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 
 const isStandard = status => status === true || status === 'true'
 export default {
@@ -25,10 +29,13 @@ export default {
       required: true,
     },
     resource: String,
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'guestimage', columns: () => this.columns, tipName: this.$t('dictionary.guestimage') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'guestimage', columns: () => this.columns, tipName: this.$t('dictionary.guestimage') }),
         {
           field: 'project_domain',
           title: this.$t('dictionary.domain'),

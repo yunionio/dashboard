@@ -245,7 +245,7 @@ export default {
                 },
               },
               {
-                label: this.$t('compute.text_283'),
+                label: this.$t('table.action.set_tag'),
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,

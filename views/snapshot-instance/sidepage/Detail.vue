@@ -11,6 +11,10 @@
 <script>
 import { CREATE_METHODS } from '../constants'
 import { sizestr } from '@/utils/utils'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -25,10 +29,13 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'instance_snapshot', columns: () => this.columns, tipName: this.$t('compute.text_462') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'instance_snapshot', columns: () => this.columns, tipName: this.$t('compute.text_462') }),
         {
           field: 'size',
           title: this.$t('compute.text_422'),

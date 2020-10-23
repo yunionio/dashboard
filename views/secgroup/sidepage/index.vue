@@ -19,6 +19,7 @@
       :getParams="getParams"
       res-type="secgroup"
       :on-manager="onManager"
+      :columns="columns"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
