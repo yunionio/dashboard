@@ -43,11 +43,11 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.pr
   }
 }
 
-export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.region') } = {}) => {
+export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.region'), showOverflow = 'ellipsis' } = {}) => {
   return {
     field,
     title,
-    showOverflow: 'ellipsis',
+    showOverflow,
     minWidth: 120,
     slots: {
       default: ({ row }, h) => {
@@ -62,6 +62,13 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
           ret.push(
             <list-body-cell-wrap hide-field copy field="zone" row={row}>
               <span style={{ color: '#53627C' }}>{ row.zone }</span>
+            </list-body-cell-wrap>,
+          )
+        }
+        if (row.zone_1_name) {
+          ret.push(
+            <list-body-cell-wrap hide-field copy field="zone_1_name" row={row}>
+              <span style={{ color: '#53627C' }}>{ i18n.t('scope.text_958', [row.zone_1_name]) }</span>
             </list-body-cell-wrap>,
           )
         }
@@ -589,6 +596,40 @@ export const getBillingTableColumn = ({
           ret.push(<div class='text-truncate' title={text} style={{ color: textColor }}>{ text } { help }</div>)
         }
         return ret
+      },
+    },
+  }
+}
+
+export const getZone1TableColumn = ({
+  vm,
+  field = 'zone_1_name',
+  idField = 'zone_1_id',
+  title = i18n.t('table.title.zone_1_name'),
+  sortable = true,
+} = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }) => {
+        if (!row[idField]) return row[field] || '-'
+        const p = hasPermission({ key: 'zones_get' })
+        let node
+        if (p) {
+          node = (
+            <list-body-cell-wrap copy row={ row } field={field} title={ row[field] } hideField={ true }>
+              <side-page-trigger permission='zones_get' name='ZoneSidePage' id={row[idField]} vm={vm}>{ row[field] }</side-page-trigger>
+            </list-body-cell-wrap>
+          )
+        } else {
+          node = (
+            <list-body-cell-wrap copy row={ row } field={field} title={ row[field] } />
+          )
+        }
+        return [
+          <div class='text-truncate'>{ node }</div>,
+        ]
       },
     },
   }
