@@ -10,6 +10,10 @@
 <script>
 import { getBandwidthTableColumn } from '../utils/columns'
 import { getBrandTableColumn, getCopyWithContentTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -24,10 +28,13 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'wire', columns: () => this.columns, tipName: this.$t('dictionary.hostwire') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'wire', columns: () => this.columns, tipName: this.$t('dictionary.hostwire') }),
         getPublicScopeTableColumn({ vm: this, resource: 'wires' }),
         getBrandTableColumn(),
         getBandwidthTableColumn(),
