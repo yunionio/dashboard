@@ -13,6 +13,10 @@ import {
   getBrandTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -27,10 +31,13 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'vpc', columns: () => this.columns, tipName: this.$t('dictionary.vpc') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'vpc', columns: () => this.columns, tipName: this.$t('dictionary.vpc') }),
         getPublicScopeTableColumn({ vm: this, resource: 'vpcs' }),
         getBrandTableColumn(),
         {

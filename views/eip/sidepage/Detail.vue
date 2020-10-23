@@ -11,6 +11,10 @@
 <script>
 import { getAssociateNameTableColumn } from '../utils/columns'
 import { getBrandTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
@@ -30,6 +34,8 @@ export default {
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'eip', columns: () => this.columns, tipName: this.$t('dictionary.eip') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'eip', columns: () => this.columns, tipName: this.$t('dictionary.eip') }),
         getBrandTableColumn(),
         getAssociateNameTableColumn(this),
         {

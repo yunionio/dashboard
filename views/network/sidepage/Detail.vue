@@ -13,8 +13,11 @@ import {
   getBrandTableColumn,
   getCopyWithContentTableColumn,
   getPublicScopeTableColumn,
-  getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -34,8 +37,9 @@ export default {
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'network', columns: () => this.columns, tipName: this.$t('dictionary.network') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'network', columns: () => this.columns, tipName: this.$t('dictionary.network') }),
         getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'network', columns: () => this.columns }),
         getBrandTableColumn(),
         {
           field: 'guest_ip_start',

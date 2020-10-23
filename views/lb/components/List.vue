@@ -205,6 +205,20 @@ export default {
                 },
               },
               {
+                label: this.$t('table.action.set_tag'),
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'loadbalancer',
+                    },
+                  })
+                },
+              },
+              {
                 label: this.$t('network.text_131'),
                 permission: 'lb_loadbalancers_delete',
                 action: () => {
