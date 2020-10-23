@@ -141,7 +141,7 @@ export default {
               key: 'sn',
             },
           },
-        } : null,
+        } : undefined,
       }),
       timeout: null,
     }
