@@ -10,7 +10,11 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
-import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getTagTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -111,8 +115,9 @@ export default {
         },
       ],
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'host', columns: () => this.columns, tipName: this.$t('dictionary.host') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'host', columns: () => this.columns, tipName: this.$t('dictionary.host') }),
         getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
         getBrandTableColumn(),
         getEnabledTableColumn(),
         {

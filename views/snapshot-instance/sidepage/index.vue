@@ -16,6 +16,7 @@
       :data="detailData"
       :res-id="data.id"
       :on-manager="onManager"
+      :columns="columns"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>

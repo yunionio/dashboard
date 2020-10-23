@@ -17,6 +17,10 @@ import {
   getPublicScopeTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 const isStandard = status => status === true || status === 'true'
@@ -38,6 +42,8 @@ export default {
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'image', columns: () => this.columns, tipName: this.$t('compute.text_97') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'image', columns: () => this.columns, tipName: this.$t('compute.text_97') }),
         getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'image', columns: () => this.columns }),
         {
           field: 'project_domain',
