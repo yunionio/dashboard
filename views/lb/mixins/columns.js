@@ -125,7 +125,7 @@ export default {
       // },
       getProjectTableColumn(),
       getBrandTableColumn(),
-      getRegionTableColumn(),
+      getRegionTableColumn({ showOverflow: false }),
       {
         field: 'account',
         title: i18n.t('network.text_196'),
