@@ -19,6 +19,10 @@ import {
   getEnabledTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 
 export default {
   name: 'BlockStorageDetail',
@@ -36,10 +40,13 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'storage', columns: () => this.columns, tipName: this.$t('storage.text_37') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'storage', columns: () => this.columns, tipName: this.$t('storage.text_37') }),
         getPublicScopeTableColumn({ vm: this, resource: 'storages' }),
         getBrandTableColumn(),
         getEnabledTableColumn(),
