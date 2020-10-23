@@ -105,14 +105,14 @@ export default {
       return 0
     },
     price () {
-      const { count = 1 } = this.values
-      if (count && this.priceTotal) {
+      const { __count__ = 1 } = this.values
+      if (__count__ && this.priceTotal) {
         const { month_price, hour_price } = this.priceTotal
         let _price = hour_price
         if (this.isPackage && this.durationNum) {
           _price = parseFloat(month_price) * this.durationNum
         }
-        return _price * parseFloat(count)
+        return _price * parseFloat(__count__)
       }
       return null
     },

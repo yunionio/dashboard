@@ -19,8 +19,8 @@
       <a-form-item :label="$t('db.text_71')" v-if="form.fd.billing_type !== 'prepaid'">
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>
-      <a-form-item label="数量">
-        <a-input-number v-decorator="decorators.count" />
+      <a-form-item :label="$t('db.text_265')">
+        <a-input-number v-decorator="decorators.__count__" />
       </a-form-item>
       <!-- 区域 -->
       <item-area
