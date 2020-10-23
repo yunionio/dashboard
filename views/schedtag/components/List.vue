@@ -90,7 +90,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               params: {
-                resources: 'schedtags',
+                resources: 'schedtag',
               },
               mode: 'add',
             })
