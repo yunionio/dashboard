@@ -102,6 +102,21 @@ export default {
               //   resource: 'wires',
               // }),
               {
+                label: this.$t('table.action.set_tag'),
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'wire',
+                    },
+                    tipName: this.$t('dictionary.hostwire'),
+                  })
+                },
+              },
+              {
                 label: this.$t('network.text_131'),
                 permission: 'wires_delete',
                 action: () => {

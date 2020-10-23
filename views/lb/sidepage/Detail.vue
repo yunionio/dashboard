@@ -11,6 +11,10 @@
 <script>
 import { LB_SPEC, CHARGE_TYPE } from '@Network/views/lb/constants'
 import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -25,10 +29,13 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
         {
           field: 'loadbalance_type',
           title: this.$t('network.text_249'),

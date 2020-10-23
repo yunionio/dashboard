@@ -138,6 +138,21 @@ export default {
               //   resource: 'vpcs',
               // }),
               {
+                label: this.$t('table.action.set_tag'),
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'vpc',
+                    },
+                    tipName: this.$t('dictionary.vpc'),
+                  })
+                },
+              },
+              {
                 label: this.$t('network.text_131'),
                 permission: 'vpcs_delete',
                 action: () => {

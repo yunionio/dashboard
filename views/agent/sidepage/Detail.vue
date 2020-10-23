@@ -8,6 +8,10 @@
 
 <script>
 import WindowsMixin from '@/mixins/windows'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 
 export default {
   name: 'AgentDetail',
@@ -21,6 +25,7 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     const formatDate = ({ cellValue }) => {
@@ -38,6 +43,8 @@ export default {
         theme: 'material',
       },
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'loadbalanceragent', columns: () => this.columns, tipName: this.$t('network.text_20') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'loadbalanceragent', columns: () => this.columns, tipName: this.$t('network.text_20') }),
         {
           field: 'cluster',
           title: this.$t('network.text_19'),
