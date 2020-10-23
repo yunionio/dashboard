@@ -288,7 +288,7 @@ export default {
           if (updateInfo && updateInfo.current_version) {
             const v = updateInfo.current_version.slice(1, 4)
             this.form.fc.setFieldsValue({
-              repo_base_url: `https://yunioniso.oss-cn-beijing.aliyuncs.com/iso/${v}/rpms`,
+              repo_base_url: `https://iso.yunion.cn/${v}/rpms`,
             })
           }
         }
