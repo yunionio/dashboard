@@ -76,7 +76,7 @@ export default {
         const metricValue = this.form.fc.getFieldValue(this.decorators.metric_value[0])
         if (metricKey) {
           const validMetric = val.find(val => val.key === metricKey)
-          if (!validMetric) {
+          if (!validMetric && !this.disabled) {
             this.resetMetric()
           } else {
             this.metricKeyChange(this.metric_key, false)
