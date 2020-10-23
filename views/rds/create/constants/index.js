@@ -81,4 +81,10 @@ export const DECORATORS = {
       },
     ],
   },
+  count: [
+    'count',
+    {
+      initialValue: 1,
+    },
+  ],
 }
