@@ -2240,6 +2240,7 @@
       "memory_mb": "内存（MB）",
       "disk_mb": "磁盘（MB）",
       "user_tag": "用户标签",
+      "ext_tag": "外部标签",
       "flavor": "配置",
       "enable_status": "启用状态",
       "strategy": "策略",
