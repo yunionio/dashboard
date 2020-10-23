@@ -30,6 +30,12 @@ export default {
                 title: this.$t('common.delete'),
                 name: this.$t('dictionary.commonalert'),
                 onManager: this.onManager,
+                success: () => {
+                  this.destroySidePages()
+                  if (this.params.options.sourceList) {
+                    this.params.options.sourceList.refresh()
+                  }
+                },
               })
             },
             meta: (obj) => this.$getDeleteResult(obj),
