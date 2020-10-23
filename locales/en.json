@@ -347,5 +347,7 @@
   "db.text_346": "2.Multiple hosts are separated by delimiters, delimiters support;,|newlines and spaces",
   "db.text_347": "Please fill in the host",
   "db.text_348": "Tencent Cloud does not currently support this operation, you need to log in to the database to perform this operation",
-  "db.text_349": "{0}core{1}{2}G"
+  "db.text_349": "{0}core{1}{2}G",
+  "db.text_350": "Root account does not support deletion",
+  "db.text_351": "Automatic renewal settings"
 }

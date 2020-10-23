@@ -42,6 +42,7 @@ export default {
                 return <div>{database} <span style="color:#666;margin:0 0 0 3px">({RDS_ACCOUNT_PRIVILEGES[privileges] ? RDS_ACCOUNT_PRIVILEGES[privileges] : privileges})</span></div>
               })
             }
+            return '-'
           },
         },
       },
