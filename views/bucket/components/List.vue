@@ -179,6 +179,21 @@ export default {
                 },
               },
               {
+                label: this.$t('table.action.set_tag'),
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'bucket',
+                    },
+                    tipName: this.$t('storage.text_18'),
+                  })
+                },
+              },
+              {
                 label: this.$t('storage.text_36'),
                 permission: 'buckets_delete',
                 action: obj => {

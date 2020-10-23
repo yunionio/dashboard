@@ -18,6 +18,10 @@ import {
   getCopyWithContentTableColumn,
   getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 
 const RenderSizeTitle = {
   props: ['data'],
@@ -80,6 +84,8 @@ export default {
     return {
       syncLoading: false,
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'bucket', columns: () => this.columns, tipName: this.$t('storage.text_18') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'bucket', columns: () => this.columns, tipName: this.$t('storage.text_18') }),
         getPublicScopeTableColumn({ vm: this, resource: 'buckets' }),
         getBrandTableColumn(),
         getCopyWithContentTableColumn({
