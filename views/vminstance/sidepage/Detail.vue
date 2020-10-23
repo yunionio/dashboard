@@ -16,8 +16,11 @@ import {
   getBrandTableColumn,
   getSwitchTableColumn,
   getBillingTypeTableColumn,
-  getTagTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP } from '@/constants'
@@ -39,7 +42,8 @@ export default {
   data () {
     return {
       baseInfo: [
-        getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
+        getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         {
           field: 'keypair',
           title: this.$t('compute.text_33'),

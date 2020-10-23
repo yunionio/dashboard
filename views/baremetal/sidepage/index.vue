@@ -18,6 +18,7 @@
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
+      :columns="columns"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"

@@ -16,7 +16,8 @@
       :data="detailData"
       :res-id="data.id"
       :id="listId"
-      :on-manager="onManager" />
+      :on-manager="onManager"
+      :columns="columns" />
   </base-side-page>
 </template>
 

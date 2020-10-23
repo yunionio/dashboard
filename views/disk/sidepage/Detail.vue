@@ -13,6 +13,10 @@ import { MEDIUM_MAP } from '../../../constants'
 import { getUnusedTableColumn } from '../utils/columns'
 import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn, getBillingTypeTableColumn } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -27,10 +31,13 @@ export default {
       type: Function,
       required: true,
     },
+    columns: Array,
   },
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'disk', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'disk', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
         {

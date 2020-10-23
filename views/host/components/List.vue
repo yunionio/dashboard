@@ -280,6 +280,21 @@ export default {
                   },
                 },
                 {
+                  label: this.$t('table.action.set_tag'),
+                  action: () => {
+                    this.createDialog('SetTagDialog', {
+                      data: this.list.selectedItems,
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      mode: 'add',
+                      params: {
+                        resources: 'host',
+                      },
+                      tipName: this.$t('dictionary.host'),
+                    })
+                  },
+                },
+                {
                   label: this.$t('compute.text_261'),
                   permission: 'hosts_delete',
                   action: () => {

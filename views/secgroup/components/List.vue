@@ -160,6 +160,26 @@ export default {
         //   },
         // }),
         {
+          label: this.$t('table.action.set_tag'),
+          action: () => {
+            this.createDialog('SetTagDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              mode: 'add',
+              params: {
+                resources: 'secgroup',
+              },
+              tipName: this.$t('dictionary.secgroup'),
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length,
+            }
+          },
+        },
+        {
           index: 3,
           label: this.$t('compute.text_261'),
           permission: 'secgroups_delete',
