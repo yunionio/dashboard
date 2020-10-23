@@ -11,14 +11,14 @@
 <script>
 import { NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
 import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
+import {
   getBrandTableColumn,
   getSwitchTableColumn,
   getBillingTypeTableColumn,
 } from '@/utils/common/tableColumn'
-import {
-  getUserTagColumn,
-  getExtTagColumn,
-} from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
