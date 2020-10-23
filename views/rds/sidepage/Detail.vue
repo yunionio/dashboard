@@ -15,6 +15,10 @@ import {
   getBrandTableColumn,
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
@@ -31,6 +35,7 @@ export default {
       type: Object,
       required: true,
     },
+    columns: Array,
   },
   data () {
     const formatPostpaid = (row) => {
@@ -52,6 +57,8 @@ export default {
     }
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'dbinstance', columns: () => this.columns, tipName: this.$t('dictionary.dbinstances') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'dbinstance', columns: () => this.columns, tipName: this.$t('dictionary.dbinstances') }),
         getBrandTableColumn(),
         {
           title: this.$t('db.text_54'),
