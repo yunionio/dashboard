@@ -26,6 +26,7 @@
       :list="params.list"
       :getParams="getParams"
       :getColumns="getColumns"
+      :columns="columns"
       :res-id="getParams.storage" />
   </base-side-page>
 </template>
