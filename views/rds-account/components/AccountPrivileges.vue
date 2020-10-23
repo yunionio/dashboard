@@ -89,11 +89,12 @@ export default {
           this.setPrivileges()
         })
       }
+      const initialValue = (item.privileges === 'rw' || item.privileges === 'r') ? item.privileges : 'rw'
       return (
         <a-form-item class="radios">
           {
             getFieldDecorator(id, {
-              initialValue: item.privileges || 'rw',
+              initialValue,
             })(
               <a-radio-group onChange={_handleChange}>
                 {renderRadios}

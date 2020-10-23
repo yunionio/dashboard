@@ -51,9 +51,10 @@ export default {
       if (zonesStr) {
         const zoneArr = zonesStr.split('+')
         if (zoneArr && zoneArr.length > 0) {
-          for (let i = 0; i < zoneArr.length; i++) {
-            params[`zones.${i}`] = zoneArr[i]
-          }
+          // for (let i = 0; i < zoneArr.length; i++) {
+          //   params[`zones.${i}`] = zoneArr[i]
+          // }
+          params['zones.0'] = zoneArr[0]
         }
       }
       // zone是redis新建
