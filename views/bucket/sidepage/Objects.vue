@@ -83,7 +83,7 @@ export default {
                 return [
                   <div class="d-flex align-items-center">
                     <a-icon type="folder" theme="filled" style="color: rgb(245,200, 61)" />
-                    <a class="text-truncate" style="margin-right: 3px" onClick={() => this.nextPage(key)}>{ rkey }</a>
+                    <a class="text-truncate" style="margin-right: 3px" onClick={() => this.nextPage(key)} title={rkey}>{ rkey }</a>
                     <copy message={rkey} />
                   </div>,
                 ]
@@ -91,7 +91,7 @@ export default {
               return [
                 <div class="d-flex align-items-center">
                   <a-icon theme="filled" type="file" />
-                  <span class="text-truncate">
+                  <span class="text-truncate" title={rkey}>
                     {rkey}
                   </span>
                   <copy message={rkey} />
