@@ -12,13 +12,13 @@
 // import BrandIcon from '@/sections/BrandIcon'
 import { DBINSTANCE_CATEGORY, DBINSTANCE_STORAGE_TYPE } from '../constants'
 import {
-  getBrandTableColumn,
-  getSwitchTableColumn,
-} from '@/utils/common/tableColumn'
-import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import {
+  getBrandTableColumn,
+  getSwitchTableColumn,
+} from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
