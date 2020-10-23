@@ -10,7 +10,7 @@
 
 <script>
 import { LB_SPEC, CHARGE_TYPE } from '@Network/views/lb/constants'
-import { getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getCopyWithContentTableColumn, getZone1TableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
   getExtTagColumn,
@@ -73,6 +73,7 @@ export default {
         {
           title: this.$t('network.text_308'),
           items: [
+            getZone1TableColumn(),
             {
               field: 'address',
               title: this.$t('network.text_248'),
