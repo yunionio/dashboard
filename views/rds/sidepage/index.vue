@@ -11,7 +11,15 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :params="getParams" :res-id="getParams.dbinstance" :columns="columns" />
+    <component
+      :is="params.windowData.currentTab"
+      :data="detailData"
+      :on-manager="onManager"
+      :params="getParams"
+      :getParams="getParams"
+      :show-create-action="false"
+      :res-id="getParams.dbinstance"
+      :columns="columns" />
   </base-side-page>
 </template>
 
@@ -26,6 +34,7 @@ import DatabaseList from '@DB/views/rds-database/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SecgroupList from '@Compute/views/secgroup/components/List'
 
 export default {
   name: 'RDSSidePage',
@@ -33,6 +42,7 @@ export default {
     Actions,
     AccountList,
     Detail,
+    SecgroupList,
     DatabaseList,
     BackupList,
     Monitor,
@@ -42,6 +52,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('db.text_187'), key: 'detail' },
+        { label: this.$t('db.text_357'), key: 'secgroup-list' },
         { label: this.$t('db.text_188'), key: 'account-list' },
         { label: this.$t('db.text_189'), key: 'database-list' },
         { label: this.$t('db.text_190'), key: 'backup-list' },
@@ -52,6 +63,12 @@ export default {
   },
   computed: {
     getParams () {
+      if (this.params.windowData.currentTab === 'secgroup-list') {
+        return {
+          dbinstance_id: this.detailData.id,
+          details: true,
+        }
+      }
       return {
         dbinstance: this.detailData.id,
         details: true,

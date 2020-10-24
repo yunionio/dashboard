@@ -49,7 +49,7 @@ export default {
   computed: {
     hadMonitor () {
       const brand = this.data.brand.toLowerCase()
-      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key]
+      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key, HYPERVISORS_MAP.qcloud.key]
       return surportBrand.includes(brand)
     },
     monitorConstants () {

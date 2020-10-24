@@ -157,6 +157,10 @@ export default {
               validate = false
               tooltip = this.$t('db.text_320')
             }
+            if (this.data.brand === 'Qcloud') {
+              validate = false
+              tooltip = this.$t('db.text_356')
+            }
             return {
               validate,
               tooltip,
