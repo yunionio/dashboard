@@ -4162,5 +4162,6 @@
   "common_720": "There is no resource alarm",
   "workflow.biz_field": "You can find the work order on the Pending My Approval page in the upper left corner, and you will retry if you click through the operation. If you still fail after repeated retries, please contact the administrator.",
   "common_721": "Object Storage IP",
-  "common_722": "Loadbalance IP"
+  "common_722": "Loadbalance IP",
+  "common_723": "Automatic renewal upon expiry"
 }

@@ -11,6 +11,10 @@ export default {
       type: String,
       default: '1M',
     },
+    auto_renew: {
+      type: Boolean,
+      default: true,
+    },
     labelCol: {
       type: Object,
       default: () => {
@@ -59,6 +63,11 @@ export default {
               )
             })}
           </a-radio-group>,
+        )}
+        {getFieldDecorator('auto_renew', {
+          initialValue: this.auto_renew,
+        })(
+          <a-checkbox class="ml-4" defaultChecked={this.auto_renew}>{this.$t('common_723')}</a-checkbox>,
         )}
       </div>
     ) : null
