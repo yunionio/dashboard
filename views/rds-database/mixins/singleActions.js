@@ -18,6 +18,7 @@ export default {
         },
         meta: (obj) => ({
           validate: obj.provider !== 'Qcloud',
+          tooltip: obj.provider === 'Qcloud' ? this.$t('db.text_348') : '',
         }),
       },
     ]

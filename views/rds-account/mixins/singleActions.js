@@ -10,6 +10,9 @@ export default {
       if (!isRunning) {
         tooltip = this.$t('db.text_198')
       }
+      if (!isRunning) {
+        tooltip = this.$t('db.text_198')
+      }
       return {
         isRunning,
         isHuawei,
@@ -48,6 +51,7 @@ export default {
             title: this.$t('db.text_203'),
             initialValues: {
               account_privilege: obj.account_privilege,
+              host: obj.host,
             },
             data: [obj],
             list: this.list,
@@ -89,7 +93,7 @@ export default {
           const { tooltip, isAliyun } = this.commonMeta
           return {
             validate: obj.name !== 'root' || (!tooltip && isAliyun),
-            tooltip,
+            tooltip: obj.name === 'root' ? this.$t('db.text_350') : tooltip,
           }
         },
       },

@@ -65,6 +65,26 @@ export default {
               },
             },
             {
+              label: i18n.t('db.text_351'),
+              action: () => {
+                this.createDialog('AutoRenewDialog', {
+                  name: i18n.t('dictionary.dbinstances'),
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const isPrepaid = obj.billing_type === 'prepaid'
+                const validate = (isRunning && isPrepaid)
+                return {
+                  validate: validate,
+                  tooltip: notRunninTip || (!isPrepaid ? i18n.t('db.text_158') : null),
+                }
+              },
+            },
+            {
               label: i18n.t('db.text_159'),
               action: () => {
                 this.createDialog('RSDSetConfig', {
