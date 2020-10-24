@@ -38,7 +38,7 @@
       <item-network ref="NETWORK" />
       <!-- 选择安全组 -->
       <a-form-item v-if="form.getFieldValue('provider') === 'Huawei' || form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
-        <secgroup-config :max="1" :decorators="decorators.secgroup" />
+        <secgroup-config :max="form.getFieldValue('provider') === 'Huawei' ? 1 : 5" :decorators="decorators.secgroup" />
       </a-form-item>
       <bottom-bar :values="form.getFieldsValue()" />
     </a-form>

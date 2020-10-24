@@ -36,6 +36,10 @@
       </a-form-item>
       <!-- 网络 -->
       <item-network ref="REF_NETWORK" />
+      <!-- 安全组 -->
+      <a-form-item v-if="form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
+        <secgroup-config :max="5" :decorators="decorators.secgroup" />
+      </a-form-item>
       <bottom-bar :values="form.fc.getFieldsValue()" />
     </a-form>
   </div>
@@ -51,6 +55,7 @@ import ItemArea from '@DB/sections/ItemArea'
 import ItemNetwork from '@DB/sections/ItemNetwork'
 import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
+import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 
 export default {
   name: 'IDCCreate',
@@ -66,6 +71,8 @@ export default {
     ServerPassword,
     // 网络
     ItemNetwork,
+    // 安全组
+    SecgroupConfig,
     // 表单提交
     BottomBar,
     NameRepeated,

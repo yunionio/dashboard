@@ -112,6 +112,10 @@ export default {
             },
           },
         },
+        {
+          field: 'shard_num',
+          title: this.$t('db.text_353'),
+        },
         { field: 'max_connections', title: this.$t('db.text_127'), sortable: true },
         {
           field: 'rate',
