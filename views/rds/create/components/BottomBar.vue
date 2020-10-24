@@ -220,9 +220,8 @@ export default {
         params.instance_type = sku.name
         delete params.sku
       }
-      if (params.secgroup && params.secgroup.length > 0) {
-        params.secgroup = params.secgroup[0]
-      }
+      params.secgroup_ids = params.secgroup
+      delete params.secgroup
       // 到期释放
       if (params.durationStandard !== 'none') {
         params.duration = params.duration || params.durationStandard

@@ -183,6 +183,8 @@ export default {
       params.__count__ = params.count
       params.billing_cycle = params.duration
       delete params.sku
+      params.secgroup_ids = params.secgroup
+      delete params.secgroup
       // 到期释放
       if (params.durationStandard !== 'none') {
         params.duration = params.duration || params.durationStandard

@@ -76,6 +76,9 @@ export default {
             } else if (this.list.total >= 4) {
               tooltip = this.$t('db.text_327')
             }
+            if (this.data.brand === 'Qcloud') {
+              tooltip = this.$t('db.text_355')
+            }
             return {
               buttonType: 'primary',
               validate: !tooltip,

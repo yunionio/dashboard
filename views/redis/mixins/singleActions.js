@@ -38,9 +38,18 @@ export default {
                   })
                 },
                 meta: () => {
+                  let validate = true
+                  let tooltip = ''
+                  if (!isRunning) {
+                    validate = false
+                    tooltip = notRunninTip
+                  } else if (obj.brand === 'Qcloud' && obj.network_type !== 'vpc') {
+                    validate = false
+                    tooltip = i18n.t('db.text_354')
+                  }
                   return {
-                    validate: isRunning,
-                    tooltip: notRunninTip,
+                    validate,
+                    tooltip,
                   }
                 },
               }
@@ -58,9 +67,21 @@ export default {
                 })
               },
               meta: () => {
+                let validate = true
+                let tooltip = ''
+                if (!isRunning) {
+                  validate = false
+                  tooltip = notRunninTip
+                } else if (obj.brand === 'Huawei') {
+                  validate = false
+                  tooltip = i18n.t('db.text_306')
+                } else if (obj.brand === 'Qcloud' && obj.network_type !== 'vpc') {
+                  validate = false
+                  tooltip = i18n.t('db.text_354')
+                }
                 return {
-                  validate: isRunning && obj.brand !== 'Huawei',
-                  tooltip: notRunninTip || (obj.brand === 'Huawei' && i18n.t('db.text_306')),
+                  validate,
+                  tooltip,
                 }
               },
             }
@@ -80,8 +101,8 @@ export default {
               },
               meta: () => {
                 return {
-                  validate: isRunning,
-                  tooltip: notRunninTip,
+                  validate: isRunning && obj.brand !== 'Qcloud',
+                  tooltip: notRunninTip || (obj.brand === 'Qcloud' ? i18n.t('db.text_358') : ''),
                 }
               },
             },
@@ -99,9 +120,11 @@ export default {
               },
               meta: () => {
                 const isPrepaid = obj.billing_type === 'prepaid'
+                // 腾讯云暂不支持调整配置
+                const isQcloud = obj.brand.toLowerCase() === 'qcloud'
                 return {
-                  validate: isRunning && !isPrepaid,
-                  tooltip: notRunninTip || (isPrepaid ? i18n.t('db.text_307') : ''),
+                  validate: isRunning && !isPrepaid && !isQcloud,
+                  tooltip: notRunninTip || (isPrepaid ? i18n.t('db.text_307') : '') || (isQcloud ? i18n.t('db.text_352') : ''),
                 }
               },
             },

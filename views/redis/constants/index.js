@@ -235,4 +235,20 @@ export const DECORATORS = {
       },
     ],
   },
+  secgroup: {
+    type: [
+      'secgroup_type',
+      {
+        initialValue: 'default',
+      },
+    ],
+    secgroup: [
+      'secgroup',
+      {
+        rules: [
+          { required: true, message: i18n.t('db.text_138') },
+        ],
+      },
+    ],
+  },
 }
