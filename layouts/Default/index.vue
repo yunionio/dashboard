@@ -8,7 +8,7 @@
         <div
           id="app-page"
           class="app-page"
-          :class="{ 'l2-menu-show': l2MenuVisible }">
+          :class="{ 'l2-menu-show': l2MenuVisible && l2MenuVisibleForStore }">
           <top-alert />
           <slot />
         </div>
@@ -53,6 +53,9 @@ export default {
         return true
       }
       return globalSetting.value.key.length > 0
+    },
+    l2MenuVisibleForStore () {
+      return this.$store.state.setting.l2MenuVisible
     },
   },
   watch: {
