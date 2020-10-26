@@ -1,4 +1,4 @@
-import AccessInfo from '../components/AccessInfo'
+// import AccessInfo from '../components/AccessInfo'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getBrandTableColumn, getRegionTableColumn, getAccountTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
@@ -37,18 +37,18 @@ export default {
           return ACL_TYPE[row.acl] || row.acl || '-'
         },
       },
-      {
-        field: 'access-info',
-        title: i18n.t('storage.text_91'),
-        width: 120,
-        slots: {
-          default: ({ row }) => {
-            return [
-              <AccessInfo row={row} />,
-            ]
-          },
-        },
-      },
+      // {
+      //   field: 'access-info',
+      //   title: i18n.t('storage.text_91'),
+      //   width: 120,
+      //   slots: {
+      //     default: ({ row }) => {
+      //       return [
+      //         <AccessInfo row={row} />,
+      //       ]
+      //     },
+      //   },
+      // },
       getBrandTableColumn(),
       getAccountTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'buckets' }),
