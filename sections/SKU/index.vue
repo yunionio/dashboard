@@ -254,8 +254,12 @@ export default {
     },
     skuResults: {
       handler (val, oldV) {
-        if (!R.equals(val, oldV) && val.length) {
-          this.setSku(val[0])
+        if (!R.equals(val, oldV)) {
+          if (val.length) {
+            this.setSku(val[0])
+          } else {
+            this.setSku({})
+          }
         }
       },
       deep: true,
