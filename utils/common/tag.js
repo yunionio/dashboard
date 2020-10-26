@@ -85,7 +85,8 @@ export function getTagColor (key, value, type = 'hex') {
   // let str = key
   // if (value) str += value
   // return colorHash[type](str)
-  return colorHash[type](key)
+  const str = key.replace(/^(ext:|user:)/, '')
+  return colorHash[type](str)
 }
 
 export function getTagTitle (key, value) {
