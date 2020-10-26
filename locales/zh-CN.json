@@ -1313,5 +1313,6 @@
   "compute.vmrc_tips": "ESXi版本低于6.5，会用vmrc打开控制台，系统检测到您所使用的机器上没有安装vmrc客户端，请先点击",
   "compute.vmrc_link": "链接",
   "compute.vmrc_download": "下载",
-  "compute.text_1346": "镜像ID"
+  "compute.text_1346": "镜像ID",
+  "compute.text_1347": "回滚中的硬盘快照应不能被删除"
 }
