@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import { getMaintenanceTableColumn } from '../utils/columns'
-import { getEnabledTableColumn, getCopyWithContentTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import { getMaintenanceTableColumn } from '../utils/columns'
+import { getEnabledTableColumn, getCopyWithContentTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 import WindowsMixin from '@/mixins/windows'

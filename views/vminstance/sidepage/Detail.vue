@@ -9,18 +9,17 @@
 </template>
 
 <script>
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import { ALL_STORAGE, SERVER_TYPE } from '@Compute/constants/index'
-
 import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
   getSwitchTableColumn,
   getBillingTypeTableColumn,
 } from '@/utils/common/tableColumn'
-import {
-  getUserTagColumn,
-  getExtTagColumn,
-} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP } from '@/constants'

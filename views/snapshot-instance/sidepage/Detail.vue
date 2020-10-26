@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import { CREATE_METHODS } from '../constants'
-import { sizestr } from '@/utils/utils'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import { CREATE_METHODS } from '../constants'
+import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
