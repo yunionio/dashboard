@@ -1,7 +1,8 @@
 <template>
-  <div class="level-2-wrap" :class="{ 'light-theme': light }">
+  <div class="level-2-wrap" :class="{ 'light-theme': light, 'w-0': !l2MenuVisibleForStore }">
     <scrollbar
-      class="level-2-menu">
+      class="level-2-menu"
+      :class="{ 'w-0': !l2MenuVisibleForStore }">
       <div class="title text-truncate pr-2" :title="getLabel(l2Menu.meta)">{{ getLabel(l2Menu.meta) }}</div>
       <div
         class="level-3-item"
@@ -34,6 +35,13 @@
         </router-link>
       </div>
     </scrollbar>
+    <div class="level-2-menu-collapse" @click="$store.commit('setting/SET_L2_MENU_VISIBLE', !l2MenuVisibleForStore)">
+      <div class="level-2-menu-collapse-bg" />
+      <div class="level-2-menu-collapse-icon d-flex align-items-center">
+        <a-icon type="left" style="font-size: 12px;" v-show="l2MenuVisibleForStore" />
+        <a-icon type="right" style="font-size: 12px;" v-show="!l2MenuVisibleForStore" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -80,6 +88,9 @@ export default {
         }
       })
       return res
+    },
+    l2MenuVisibleForStore () {
+      return this.$store.state.setting.l2MenuVisible
     },
   },
   methods: {
@@ -162,6 +173,9 @@ export default {
       }
     }
   }
+  &.w-0 {
+    width: 0;
+  }
 }
 
 .level-2-menu {
@@ -175,6 +189,9 @@ export default {
     color: #fff;
     font-size: 18px;
     margin-bottom: 16px;
+  }
+  &.w-0 {
+    width: 0;
   }
 }
 
@@ -229,6 +246,44 @@ export default {
   & + & {
     > .menu-item {
       margin-top: 25px;
+    }
+  }
+}
+.level-2-menu-collapse {
+  position: absolute;
+  height: 66px;
+  width: 12px;
+  top: 50%;
+  right: -12px;
+  cursor: pointer;
+  .level-2-menu-collapse-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-bottom: 8px solid transparent;
+    border-right: none;
+    border-left: 12px solid #eeeeee;
+    border-top: 8px solid transparent;
+    z-index: 1;
+  }
+  .level-2-menu-collapse-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background-color: transparent;
+    color: #c7c7c7;
+  }
+  &:hover {
+    .level-2-menu-collapse-bg {
+      border-left-color: #cccccc;
+    }
+    .level-2-menu-collapse-icon {
+      color: #9e9e9e;
     }
   }
 }

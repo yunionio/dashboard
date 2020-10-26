@@ -174,6 +174,9 @@ export default {
     hiddenScrollbar () {
       return !this.gridStyle.width
     },
+    l2MenuVisibleForStore () {
+      return this.$store.state.setting.l2MenuVisible
+    },
   },
   watch: {
     columns: {
@@ -218,6 +221,10 @@ export default {
           })
         })
       }
+    },
+    // 如果切换二级菜单显示隐藏后，重新计算表格宽度
+    l2MenuVisibleForStore () {
+      this.updateFloatingScroll()
     },
   },
   mounted () {
