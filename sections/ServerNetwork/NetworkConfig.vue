@@ -37,6 +37,7 @@
           :need-params="true"
           :params="{ ...networkParamsC, $t: item.key }"
           :mapper="networkResourceMapper"
+          @change="v => networkChange(v, item)"
           :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
           <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.text_18')}}</help-link>
           </div>
@@ -200,6 +201,17 @@ export default {
       }
       this.$set(this.networkList[0], 'ipShow', false)
       this.ipsDisabled = ipsDisabled
+    },
+    networkChange (val, item) {
+      this.$nextTick(() => {
+        const fieldKey = `networkExits[${item.key}]`
+        this.form.fc.getFieldDecorator(fieldKey, {
+          preserve: true,
+        })
+        this.form.fc.setFieldsValue({
+          [fieldKey]: item.network.exit,
+        })
+      })
     },
   },
 }

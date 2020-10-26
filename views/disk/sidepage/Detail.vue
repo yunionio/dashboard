@@ -9,12 +9,12 @@
 </template>
 
 <script>
+import { MEDIUM_MAP } from '../../../constants'
+import { getUnusedTableColumn } from '../utils/columns'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
-import { MEDIUM_MAP } from '../../../constants'
-import { getUnusedTableColumn } from '../utils/columns'
 import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn, getBillingTypeTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
