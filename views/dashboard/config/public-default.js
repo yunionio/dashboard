@@ -136,7 +136,7 @@ export default {
           cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_130'),
           region: 'default',
-          usage_key: 'all.servers',
+          usage_key: 'all.servers.any_pool',
         },
       },
       {
@@ -233,7 +233,7 @@ export default {
           cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_136'),
           region: 'default',
-          usage_key: 'hosts',
+          usage_key: 'hosts.any_pool',
         },
       },
       {
@@ -466,7 +466,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_130'),
-          usage_key: 'domain.servers',
+          usage_key: 'domain.servers.any_pool',
         },
       },
       {
@@ -643,7 +643,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_136'),
-          usage_key: 'domain.hosts',
+          usage_key: 'domain.hosts.any_pool',
         },
       },
       {
