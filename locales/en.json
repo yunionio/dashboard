@@ -1313,5 +1313,6 @@
   "compute.vmrc_tips": "The ESXi version is lower than 6.5, and vmrc will be used to open the console. The system detects that the vmrc client is not installed on the machine you are using, please click first",
   "compute.vmrc_link": "Link",
   "compute.vmrc_download": "Download",
-  "compute.text_1346": "Image ID"
+  "compute.text_1346": "Image ID",
+  "compute.text_1347": "The hard disk snapshot that is being rolled back should not be deleted"
 }

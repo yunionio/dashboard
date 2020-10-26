@@ -53,7 +53,15 @@ export default {
             name: i18n.t('compute.text_462'),
           })
         },
-        meta: obj => this.$getDeleteResult(obj),
+        meta: obj => {
+          const ret = { validate: true }
+          if (obj.guest_status === 'disk_reset') {
+            ret.validate = false
+            ret.tooltip = this.$t('compute.text_1347')
+            return ret
+          }
+          return this.$getDeleteResult(obj)
+        },
       },
     ]
   },
