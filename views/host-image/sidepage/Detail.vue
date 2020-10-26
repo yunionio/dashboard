@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import { sizestr } from '@/utils/utils'
+import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 
 const isStandard = status => status === true || status === 'true'
 export default {

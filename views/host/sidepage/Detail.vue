@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
-import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import WindowsMixin from '@/mixins/windows'
+import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
