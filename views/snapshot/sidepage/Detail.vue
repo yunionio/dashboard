@@ -9,12 +9,12 @@
 </template>
 
 <script>
+import { CREATE_METHODS } from '../constants'
+import { getStorageTypeTableColumn } from '../utils/columns'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
-import { CREATE_METHODS } from '../constants'
-import { getStorageTypeTableColumn } from '../utils/columns'
 import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
