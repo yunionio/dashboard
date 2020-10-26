@@ -629,6 +629,7 @@ export class GenCreateData {
     this.isPublic = this.createType === SERVER_TYPE.public
     this.isIDC = this.createType === SERVER_TYPE.idc
     this.isPrepaid = this.fd.resourceType === RESOURCE_TYPES_MAP.prepaid.key
+    console.log(fd, 'createServerData')
   }
 
   /**
@@ -758,6 +759,12 @@ export class GenCreateData {
           const address = this.fd.networkIps[key]
           if (address) {
             obj.address = address
+          }
+        }
+        if (this.fd.networkExits) {
+          const exit = this.fd.networkExits[key]
+          if (exit) {
+            obj.exit = true
           }
         }
         ret.push(obj)
