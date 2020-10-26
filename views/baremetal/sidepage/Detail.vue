@@ -10,14 +10,14 @@
 <script>
 // import { ALL_STORAGE } from '@Compute/constants/index'
 import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
+import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
-import {
-  getUserTagColumn,
-  getExtTagColumn,
-} from '@/utils/common/detailColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 

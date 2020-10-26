@@ -7,12 +7,12 @@
 </template>
 
 <script>
-import WindowsMixin from '@/mixins/windows'
-import { getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import WindowsMixin from '@/mixins/windows'
+import { getPublicScopeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SecgroupDetail',

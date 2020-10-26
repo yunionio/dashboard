@@ -9,6 +9,10 @@
 </template>
 
 <script>
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import {
   getStatusTableColumn,
@@ -17,10 +21,6 @@ import {
   getPublicScopeTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
-import {
-  getUserTagColumn,
-  getExtTagColumn,
-} from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
 const isStandard = status => status === true || status === 'true'
