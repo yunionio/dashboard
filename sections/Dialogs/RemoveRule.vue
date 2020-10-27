@@ -36,12 +36,20 @@ export default {
         let rules = (_.get(this.params.resourceData, rulesPath) || []).slice(0)
         rules.splice(this.params.rowIndex, 1)
         rules = rules.map(val => ({ apiGroups: val.apiGroups, resources: val.resources, verbs: val.verbs }))
+        let data = { rules }
+        if (this.params.inSpecTemplate) {
+          data = {
+            spec: {
+              template: {
+                rules,
+              },
+            },
+          }
+        }
         await this.params.onManager('update', {
           id: this.params.resourceData.id,
           managerArgs: {
-            data: {
-              rules,
-            },
+            data,
           },
         })
         this.loading = false

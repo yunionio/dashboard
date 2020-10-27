@@ -23,6 +23,9 @@ export default {
       type: String,
       default: 'rules',
     },
+    resource: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -97,6 +100,7 @@ export default {
         rulesPath: this.rulesPath,
         data: [rule],
         rowIndex,
+        inSpecTemplate: this.resource.includes('federated'),
         columns: this.columns.slice(0, 3),
         onManager: this.onManager,
         success: () => {
