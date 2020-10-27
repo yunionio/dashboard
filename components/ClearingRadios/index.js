@@ -67,7 +67,7 @@ export default {
         {getFieldDecorator('auto_renew', {
           initialValue: this.auto_renew,
         })(
-          <a-checkbox class="ml-4" defaultChecked={this.auto_renew}>{this.$t('common_723')}</a-checkbox>,
+          <a-checkbox class="ml-4" defaultChecked={this.auto_renew}>{this.$t('common_728')}</a-checkbox>,
         )}
       </div>
     ) : null
