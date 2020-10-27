@@ -392,7 +392,7 @@ export const filterKeyMap = {
   brand: i18n.t('common.brand'),
   host: i18n.t('dictionary.host'),
   host_ip: i18n.t('dictionary.hostip'),
-  tenant: i18n.t('common.project'),
+  tenant: i18n.t('res.project'),
   project_domain: i18n.t('monitor.text_107'),
   cloudregion: i18n.t('common.region'),
   zone: i18n.t('common.zone'),
