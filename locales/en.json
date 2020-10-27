@@ -529,5 +529,6 @@
   "cloudenv.text_494": "The OpenStack platform must check the automatic creation of projects, and cancellation is not currently supported",
   "cloudenv.text_495": "Is suitable",
   "cloudenv.text_496": "Index",
-  "cloudenv.text_497": "Delete historical billing data"
+  "cloudenv.text_497": "Delete historical billing data",
+  "cloudenv.text_498": "Cloud account"
 }

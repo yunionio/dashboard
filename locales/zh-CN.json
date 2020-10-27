@@ -529,5 +529,6 @@
   "cloudenv.text_494": "OpenStack平台必须勾选自动创建项目，暂不支持取消",
   "cloudenv.text_495": "网络是否满足",
   "cloudenv.text_496": "序号",
-  "cloudenv.text_497": "同时删除历史账单数据"
+  "cloudenv.text_497": "同时删除历史账单数据",
+  "cloudenv.text_498": "云上操作者"
 }
