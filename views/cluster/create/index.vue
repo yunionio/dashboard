@@ -35,7 +35,10 @@
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_152')" v-bind="formItemLayout">
-        <server-config :decorator="decorators.serverConfig" :network-params="params.network" />
+        <server-config
+          :form="form"
+          :decorator="decorators.serverConfig"
+          :network-params="params.network" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_153')" v-bind="formItemLayout">
         <base-select
@@ -76,7 +79,7 @@ import { mapGetters } from 'vuex'
 import { hyperOpts, KUBE_PROVIDER } from '../constants'
 import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionZone from '@/sections/CloudregionZone'
-import { isWithinRange } from '@/utils/validate'
+import { isWithinRange, isRequired } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { HYPERVISORS_MAP } from '@/constants'
 
@@ -114,10 +117,17 @@ export default {
             if (values.cloudregion && values.cloudregion.key) {
               this.fetchCapability(values.cloudregion.key, 'cloudregion')
             }
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
           },
         }),
         fi: {
           hypervisors: ['kvm'],
+          capability: {},
+        },
+        fd: {
+          hypervisor: hyperOpts[0].value,
         },
       },
       decorators: {
@@ -181,16 +191,44 @@ export default {
               ],
             },
           ],
-          disk: i => [
-            `disk[${i}]`,
-            {
-              initialValue: 100,
-              rules: [
-                { required: true, message: this.$t('k8s.text_168') },
-                { validator: this.validator('disk') },
-              ],
-            },
-          ],
+          disk: i => ({
+            type: [
+              `systemDiskType[${i}]`,
+              {
+                rules: [
+                  { validator: isRequired(), message: this.$t('compute.text_121') },
+                ],
+              },
+            ],
+            size: [
+              `systemDiskSize[${i}]`,
+              {
+                rules: [
+                  { required: true, message: this.$t('compute.text_122') },
+                ],
+              },
+            ],
+            schedtag: [
+              `systemDiskSchedtag[${i}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [{
+                  required: true,
+                  message: this.$t('compute.text_123'),
+                }],
+              },
+            ],
+            policy: [
+              `systemDiskPolicy[${i}]`,
+              {
+                validateTrigger: ['blur', 'change'],
+                rules: [{
+                  required: true,
+                  message: this.$t('compute.text_123'),
+                }],
+              },
+            ],
+          }),
           network: i => [
             `network[${i}]`,
             {
@@ -344,6 +382,7 @@ export default {
         }
         hypervisors = Array.from(new Set(hypervisors))
         this.form.fi.hypervisors = hypervisors
+        this.form.fi.capability = data
       } catch (error) {
         throw error
       }
@@ -428,23 +467,33 @@ export default {
         values.image_repository.url = data.image_repository_url
       }
       if (data.image_repository_insecure) values.image_repository.insecure = data.image_repository_insecure
-      data.vcpu_count.map((item, index) => {
+      Object.keys(data.vcpu_count).map(key => {
+        const disks = [{
+          index: 0,
+          size: data.systemDiskSize[key] * 1024,
+          backend: data.systemDiskType[key].key,
+        }]
+        if (data.systemDiskSchedtag) {
+          if (data.systemDiskSchedtag[key] && data.systemDiskPolicy[key]) {
+            disks[0].schedtags = [{ id: data.systemDiskSchedtag[key], strategy: data.systemDiskPolicy[key] }]
+          }
+        }
         const machinesItem = {
           vm: {
-            vcpu_count: item,
-            vmem_size: data.vmem_size[index] * 1024,
+            vcpu_count: data.vcpu_count[key],
+            vmem_size: data.vmem_size[key] * 1024,
             hypervisor,
-            disks: [{ index: 0, size: data.disk[index] * 1024 }],
-            nets: [{ network: data.network[index] }],
+            disks,
+            nets: [{ network: data.network[key] }],
           },
         }
-        if (data.ip && data.ip.length > 0) machinesItem.vm.nets[0].address = data.ip[index]
-        if (data.num[index] > 1) {
-          for (let i = 0; i < data.num[index]; i++) {
-            values.machines.push({ config: machinesItem, role: data.role[index], resource_type: 'vm' })
+        if (data.ip && data.ip[key]) machinesItem.vm.nets[0].address = data.ip[key]
+        if (data.num[key] > 1) {
+          for (let i = 0; i < data.num[key]; i++) {
+            values.machines.push({ config: machinesItem, role: data.role[key], resource_type: 'vm' })
           }
         } else {
-          values.machines.push({ config: machinesItem, role: data.role[index], resource_type: 'vm' })
+          values.machines.push({ config: machinesItem, role: data.role[key], resource_type: 'vm' })
         }
       })
       return values
