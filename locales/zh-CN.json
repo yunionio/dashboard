@@ -210,7 +210,8 @@
       "unknown": "未知",
       "start_delete": "开始删除",
       "deleting": "正在删除",
-      "delete_failed": "删除失败"
+      "delete_failed": "删除失败",
+      "deleted": "已删除"
     },
     "cloudaccountHealthStatus": {
       "normal": "正常",
