@@ -48,7 +48,7 @@ export default {
           name: getNameFilter({ label: this.$t('cloudenv.text_320') }),
           brand: getBrandFilter(),
           account: {
-            label: this.$t('cloudenv.text_94'),
+            label: this.$t('cloudenv.text_498'),
           },
           manager: {
             label: this.$t('cloudenv.text_318'),
@@ -100,7 +100,7 @@ export default {
         }),
         getCopyWithContentTableColumn({
           field: 'account',
-          title: this.$t('cloudenv.text_94'),
+          title: this.$t('cloudenv.text_498'),
         }),
         getCopyWithContentTableColumn({
           field: 'manager',
@@ -134,7 +134,7 @@ export default {
           { label: this.$t('cloudenv.text_323'), key: 'success' },
           { label: this.$t('cloudenv.text_326'), key: 'created_at' },
           { label: this.$t('cloudenv.text_102'), key: 'provider' },
-          { label: this.$t('cloudenv.text_94'), key: 'account' },
+          { label: this.$t('cloudenv.text_498'), key: 'account' },
           { label: this.$t('cloudenv.text_318'), key: 'manager' },
           // { label: '备注', key: 'notes' },
         ],
