@@ -211,7 +211,8 @@
       "unknown": "Unknown",
       "start_delete": "Start deleting",
       "deleting": "Deleting",
-      "delete_failed": "Deletion failed"
+      "delete_failed": "Deletion failed",
+      "deleted": "Deleted"
     },
     "cloudaccountHealthStatus": {
       "normal": "normal",

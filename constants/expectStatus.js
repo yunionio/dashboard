@@ -42,7 +42,7 @@ export default {
   },
   cloudaccount: {
     success: ['connected'],
-    danger: ['disconnected'],
+    danger: ['disconnected', 'deleted'],
     info: ['unknown'],
   },
   cloudaccountHealthStatus: {
