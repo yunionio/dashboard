@@ -51,8 +51,11 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
-    return {
-      detailTabs: [
+    return {}
+  },
+  computed: {
+    detailTabs () {
+      const ret = [
         { label: this.$t('db.text_187'), key: 'redis-detail' },
         { label: this.$t('db.text_357'), key: 'secgroup-list' },
         { label: this.$t('db.text_330'), key: 'redis-white-list' },
@@ -60,10 +63,12 @@ export default {
         { label: this.$t('db.text_332'), key: 'redis-backup-list' },
         { label: this.$t('db.text_191'), key: 'monitor' },
         { label: this.$t('db.text_192'), key: 'event-drawer' },
-      ],
-    }
-  },
-  computed: {
+      ]
+      if (this.detailData.brand !== 'Qcloud') {
+        ret.splice(1, 1)
+      }
+      return ret
+    },
     getParams () {
       return {
         elasticcache_id: this.detailData.id,
