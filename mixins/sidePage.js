@@ -190,7 +190,10 @@ export default {
     if (this.isList) {
       this.$watch('listRowData', (val, oldVal) => {
         if (!R.equals(val, oldVal)) {
-          this.data.data = { ...(this.data.data || {}), ...val }
+          // tips：暂时禁用合并方案
+          // 场景：如果更新后新的数据对象中某个key已删除，那么使用合并方案的话又会把该key合并进去
+          // this.data.data = { ...(this.data.data || {}), ...val }
+          this.data.data = { ...val }
         }
       })
     }
