@@ -1,11 +1,16 @@
 <template>
   <div>
-    <template v-for="item of tags">
-      <span
-        class="tag text-truncate d-inline-block"
-        :key="`${item.key}${item.value}`"
-        :title="item.title"
-        :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">{{ item.title }}</span>
+    <template v-if="tags && tags.length > 0">
+      <template v-for="item of tags">
+        <span
+          class="tag text-truncate d-inline-block"
+          :key="`${item.key}${item.value}`"
+          :title="item.title"
+          :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">{{ item.title }}</span>
+      </template>
+    </template>
+    <template v-else>
+      <template v-if="!showEdit">-</template>
     </template>
     <template v-if="showEdit">
       <span
