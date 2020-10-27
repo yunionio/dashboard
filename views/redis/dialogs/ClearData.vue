@@ -5,7 +5,7 @@
       <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="this.params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" class="mt-3">
-        <a-form-item v-if="params.data[0].provider === 'Qcloud' && params.data[0].auth_mode === 'on'" :label="$t('db.text_291')" v-bind="formItemLayout">
+        <a-form-item v-if="params.data[0].provider === 'Qcloud' && params.data[0].auth_mode === 'on'" :label="$t('db.text_195')" v-bind="formItemLayout">
           <a-input-password v-decorator="decorators.password" />
         </a-form-item>
       </a-form>
