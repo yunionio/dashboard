@@ -109,6 +109,7 @@ export default {
       return {
         filter: 'provider.in(Aws, Aliyun, OneCloud)',
         scope: this.scope,
+        public_cloud: true,
       }
     },
     providerParams () {
