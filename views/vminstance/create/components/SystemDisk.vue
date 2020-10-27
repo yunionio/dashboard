@@ -192,8 +192,8 @@ export default {
       return ret
     },
     currentTypeObj () {
-      if (R.is(Object, this.typesMap) && this.form.fd.systemDiskType && this.form.fd.systemDiskType.key) {
-        return this.typesMap[this.form.fd.systemDiskType.key] || {}
+      if (R.is(Object, this.typesMap) && this.form.fd[this.decorator.type[0]] && this.form.fd[this.decorator.type[0]].key) {
+        return this.typesMap[this.form.fd[this.decorator.type[0]].key] || {}
       }
       return {}
     },
@@ -254,8 +254,8 @@ export default {
     setDefaultType () {
       if (R.isNil(this.typesMap) || R.isEmpty(this.typesMap)) {
         this.form.fc.setFieldsValue({
-          systemDiskType: { key: '', label: '' },
-          systemDiskSize: 0,
+          [this.decorator.type[0]]: { key: '', label: '' },
+          [this.decorator.size[0]]: 0,
         })
         return
       }
@@ -264,11 +264,11 @@ export default {
       const firstKey = keys[0]
       const diskMsg = this.typesMap[firstKey]
       this.form.fc.setFieldsValue(this.defaultType || {
-        systemDiskType: { key: diskMsg.key, label: diskMsg.label },
+        [this.decorator.type[0]]: { key: diskMsg.key, label: diskMsg.label },
       })
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
         this.form.fc.setFieldsValue({
-          systemDiskSize: this.defaultSize || +diskMsg.sysMin,
+          [this.decorator.size[0]]: this.defaultSize || +diskMsg.sysMin,
         })
       })
     },
