@@ -7,17 +7,15 @@
       </div>
       <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <!-- <a-form :form="form.fc">
-        <a-form-item :label="$t('db.text_54')" v-bind="formItemLayout">
-          <a-radio-group v-decorator="['duration', {initialValue: (params.data && params.data.length > 0) ? (params.data[0].duration || '1M') : '1M' }]">
-              <a-radio-button
-                :key="item.value"
-                :value="item.value"
-                v-for="item in BUY_DURATIONS_OPTIONS">
-                {{item.label}}</a-radio-button>
-          </a-radio-group>
+      <a-form :form="form.fc" class="mt-3">
+        <a-form-item
+          :label="$t('db.text_286')"
+          v-bind="formItemLayout"
+          v-if="params.data[0].provider === 'Qcloud' && params.data[0].auth_mode === 'off'"
+          :extra="$t('db.text_359')">
+          <server-password :loginTypes="['random', 'password']" :decorator="decorators.loginConfig" />
         </a-form-item>
-      </a-form> -->
+      </a-form>
     </div>
     <div slot="footer">
       <a-button :loading="loading" @click="handleConfirm" type="primary">{{ $t('dialog.ok') }}</a-button>
@@ -29,11 +27,15 @@
 <script>
 import { BUY_DURATIONS_OPTIONS } from '../constants/index.js'
 import { CreateServerForm } from '@Compute/constants'
+import ServerPassword from '@Compute/sections/ServerPassword'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'RedisUpdateAuthModeDialog',
+  components: {
+    ServerPassword,
+  },
   mixins: [DialogMixin, WindowsMixin],
   provide () {
     return {
@@ -52,14 +54,14 @@ export default {
         labelCol: { span: CreateServerForm.labelCol },
       },
       decorators: {
-        boot_order: [
-          'boot_order',
-          {
-            rules: [
-              { required: true, message: this.$t('db.text_148') },
-            ],
-          },
-        ],
+        loginConfig: {
+          loginType: [
+            'loginType',
+            {
+              initialValue: 'random',
+            },
+          ],
+        },
       },
     }
   },
@@ -77,16 +79,33 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        await this.params.onManager('performAction', {
-          steadyStatus: 'running',
-          id: this.params.data[0].id,
-          managerArgs: {
-            action: '/update-auth-mode',
-            data: {
-              auth_mode: this.params.data[0].auth_mode === 'on' ? 'off' : 'on',
+        if (this.params.data[0].provider === 'Qcloud' && this.params.data[0].auth_mode === 'off') {
+          const values = await this.form.fc.validateFields()
+          if (values.loginType === 'random') {
+            values.reset_password = true
+          }
+          await this.params.onManager('performAction', {
+            id: this.params.data[0].id,
+            steadyStatus: 'running',
+            managerArgs: {
+              action: 'reset-password',
+              data: {
+                ...values,
+              },
             },
-          },
-        })
+          })
+        } else {
+          await this.params.onManager('performAction', {
+            steadyStatus: 'running',
+            id: this.params.data[0].id,
+            managerArgs: {
+              action: 'update-auth-mode',
+              data: {
+                auth_mode: this.params.data[0].auth_mode === 'on' ? 'off' : 'on',
+              },
+            },
+          })
+        }
         this.loading = false
         this.cancelDialog()
       } catch (error) {
