@@ -255,7 +255,8 @@
       "unknown": "未知状态",
       "syncing": "同步中",
       "sync_status": "同步中",
-      "sync_failed": "同步失败"
+      "sync_failed": "同步失败",
+      "flushing_failed": "清空实例失败"
     },
     "instanceGroup": {
       "init": "正常"
