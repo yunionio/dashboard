@@ -356,5 +356,6 @@
   "db.text_355": "Tencent Cloud does not support whitelisting",
   "db.text_356": "Tencent Cloud does not currently support backup and recovery",
   "db.text_357": "Security Group",
-  "db.text_358": "Tencent Cloud does not support restarting"
+  "db.text_358": "Tencent Cloud does not support restarting",
+  "db.text_359": "Tencent Cloud Redis instances only support password-free access by resetting the password"
 }
