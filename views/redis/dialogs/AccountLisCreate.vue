@@ -40,7 +40,6 @@ export default {
     return {
       loading: false,
       loginTypes: ['random', 'password'],
-      privileges: ACCOUNT_PRIVILEGES,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -51,6 +50,13 @@ export default {
     }
   },
   computed: {
+    privileges () {
+      const ret = ACCOUNT_PRIVILEGES
+      if (this.params.redisItem.brand === 'Qcloud') {
+        delete ret.repl
+      }
+      return ret
+    },
     decorators () {
       const { initialValues = {} } = this.params
       const decorators = {
