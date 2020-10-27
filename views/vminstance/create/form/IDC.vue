@@ -23,11 +23,9 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_228')" v-if="!isServertemplate">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
-        <name-repeated
-          v-slot:extra
-          res="servers"
-          :name="form.fd.name"
-          :default-text="$t('compute.text_893')" />
+        <template v-slot:extra>
+          <name-repeated res="servers" :name="form.fd.name" :default-text="$t('compute.text_893')" />
+        </template>
       </a-form-item>
       <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
         <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1042')" />
