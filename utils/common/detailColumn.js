@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import { isUserTag, isExtTag } from './tag'
+import { isExtTag } from './tag'
 import i18n from '@/locales'
 import TagDetailColumn from '@/sections/TagDetailColumn'
 
@@ -17,24 +17,12 @@ const getTagColumn = ({
   columns,
   tipName,
   ignorePrefix,
+  hidden,
 }) => {
   return {
     title,
     field,
-    hidden: (data) => {
-      if (R.isNil(data.metadata) || R.isEmpty(data.metadata)) {
-        return true
-      }
-      const keys = Object.keys(data.metadata)
-      let hasTag = false
-      if (type === 'user') {
-        hasTag = keys.some(item => isUserTag(item))
-      }
-      if (type === 'ext') {
-        hasTag = keys.some(item => isExtTag(item))
-      }
-      return !hasTag
-    },
+    hidden,
     slots: {
       default: ({ row }, h) => {
         return [
@@ -112,5 +100,13 @@ export const getExtTagColumn = ({
     columns,
     tipName,
     ignorePrefix,
+    hidden: (data) => {
+      if (R.isNil(data.metadata) || R.isEmpty(data.metadata)) {
+        return true
+      }
+      const keys = Object.keys(data.metadata)
+      const hasTag = keys.some(item => isExtTag(item))
+      return !hasTag
+    },
   })
 }
