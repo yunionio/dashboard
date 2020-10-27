@@ -211,7 +211,7 @@ export const REGEXP = {
     message: i18n.t('validator.k8sLabel'),
   },
   k8sName: {
-    regexp: /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/,
+    regexp: /^[a-z]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/,
     message: i18n.t('validator.k8sName'),
   },
   domainAccount: {
