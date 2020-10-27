@@ -147,7 +147,7 @@ export default {
                       </a-tooltip>
                     )
                   }
-                  if (row.provider === 'Huawei') {
+                  if (row.provider === 'Huawei' || row.provider === 'Qcloud') {
                     return '-'
                   }
                   return (
