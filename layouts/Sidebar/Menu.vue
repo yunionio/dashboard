@@ -136,7 +136,7 @@ export default {
   bottom: 0;
   background-color: @sidebar-dark-bg-color;
   box-shadow: 1px 0 6px 0 rgba(165,192,207,.3);
-  z-index: 1;
+  z-index: 5;
   transition: width .2s ease;
   ::v-deep {
     .scrollbar-wrap {
