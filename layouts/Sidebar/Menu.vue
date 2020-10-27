@@ -1,8 +1,7 @@
 <template>
   <div class="level-2-wrap" :class="{ 'light-theme': light, 'w-0': !l2MenuVisibleForStore }">
     <scrollbar
-      class="level-2-menu"
-      :class="{ 'w-0': !l2MenuVisibleForStore }">
+      class="level-2-menu">
       <div class="title text-truncate pr-2" :title="getLabel(l2Menu.meta)">{{ getLabel(l2Menu.meta) }}</div>
       <div
         class="level-3-item"
@@ -138,6 +137,7 @@ export default {
   background-color: @sidebar-dark-bg-color;
   box-shadow: 1px 0 6px 0 rgba(165,192,207,.3);
   z-index: 1;
+  transition: width .2s ease;
   ::v-deep {
     .scrollbar-wrap {
       overflow-x: hidden;
@@ -189,9 +189,6 @@ export default {
     color: #fff;
     font-size: 18px;
     margin-bottom: 16px;
-  }
-  &.w-0 {
-    width: 0;
   }
 }
 
@@ -264,7 +261,7 @@ export default {
     height: 100%;
     border-bottom: 8px solid transparent;
     border-right: none;
-    border-left: 12px solid #eeeeee;
+    border-left: 12px solid #EBEBEB;
     border-top: 8px solid transparent;
     z-index: 1;
   }
@@ -276,14 +273,14 @@ export default {
     height: 100%;
     z-index: 2;
     background-color: transparent;
-    color: #c7c7c7;
+    color: #C1C1C1;
   }
   &:hover {
     .level-2-menu-collapse-bg {
-      border-left-color: #cccccc;
+      border-left-color: #DEDEDE;
     }
     .level-2-menu-collapse-icon {
-      color: #9e9e9e;
+      color: #888;
     }
   }
 }
