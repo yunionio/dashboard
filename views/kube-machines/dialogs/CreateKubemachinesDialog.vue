@@ -20,7 +20,7 @@
             :decorator="decorators.regionZone" />
         </a-form-item>
         <a-form-item :label="$t('k8s.text_152')" v-bind="formItemLayout">
-          <server-config :decorator="decorators.serverConfig" :network-params="param.network" />
+          <server-config :decorator="decorators.serverConfig" :network-params="param.network" :form="form" />
         </a-form-item>
       </a-form>
     </div>
@@ -32,13 +32,15 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import ServerConfig from '@K8S/sections/serverConfig'
 import { KUBE_PROVIDER } from '@K8S/views/cluster/constants'
 import CloudregionZone from '@/sections/CloudregionZone'
-import { isWithinRange } from '@/utils/validate'
+import { isWithinRange, isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { typeClouds } from '@/utils/common/hypervisor'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
@@ -70,9 +72,22 @@ export default {
                 filter: 'server_type.notin(ipmi, pxe)',
                 scope: this.scope,
               }
+              this.fetchCapability(values.zone.key, 'zone')
             }
+            if (values.cloudregion && values.cloudregion.key) {
+              this.fetchCapability(values.cloudregion.key, 'cloudregion')
+            }
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
           },
         }),
+        fi: {
+          capability: {},
+        },
+        fd: {
+          hypervisor: _.get(typeClouds.providerlowcaseMap, '[this.data.provider].hypervisor') || 'kvm',
+        },
       },
       decorators: {
         regionZone: {
@@ -116,16 +131,44 @@ export default {
               ],
             },
           ],
-          disk: i => [
-            `disk[${i}]`,
-            {
-              initialValue: 100,
-              rules: [
-                { required: true, message: this.$t('k8s.text_168') },
-                { validator: this.validator('disk') },
-              ],
-            },
-          ],
+          disk: i => ({
+            type: [
+              `systemDiskType[${i}]`,
+              {
+                rules: [
+                  { validator: isRequired(), message: this.$t('compute.text_121') },
+                ],
+              },
+            ],
+            size: [
+              `systemDiskSize[${i}]`,
+              {
+                rules: [
+                  { required: true, message: this.$t('compute.text_122') },
+                ],
+              },
+            ],
+            schedtag: [
+              `systemDiskSchedtag[${i}]`,
+              {
+                validateTrigger: ['change', 'blur'],
+                rules: [{
+                  required: true,
+                  message: this.$t('compute.text_123'),
+                }],
+              },
+            ],
+            policy: [
+              `systemDiskPolicy[${i}]`,
+              {
+                validateTrigger: ['blur', 'change'],
+                rules: [{
+                  required: true,
+                  message: this.$t('compute.text_123'),
+                }],
+              },
+            ],
+          }),
           network: i => [
             `network[${i}]`,
             {
@@ -228,22 +271,33 @@ export default {
       const values = {
         machines: [],
       }
-      data.vcpu_count.map((item, index) => {
+      Object.keys(data.vcpu_count).map(key => {
+        const disks = [{
+          index: 0,
+          size: data.systemDiskSize[key] * 1024,
+          backend: data.systemDiskType[key].key,
+        }]
+        if (data.systemDiskSchedtag) {
+          if (data.systemDiskSchedtag[key] && data.systemDiskPolicy[key]) {
+            disks[0].schedtags = [{ id: data.systemDiskSchedtag[key], strategy: data.systemDiskPolicy[key] }]
+          }
+        }
         const machinesItem = {
           vm: {
-            vcpu_count: item,
-            vmem_size: data.vmem_size[index] * 1024,
-            disks: [{ index: 0, size: data.disk[index] * 1024 }],
-            nets: [{ network: data.network[index] }],
+            vcpu_count: data.vcpu_count[key],
+            vmem_size: data.vmem_size[key] * 1024,
+            hypervisor: this.form.fd.hypervisor,
+            disks,
+            nets: [{ network: data.network[key] }],
           },
         }
-        if (data.ip && data.ip.length > 0) machinesItem.vm.nets[0].address = data.ip[index]
-        if (data.num[index] > 1) {
-          for (let i = 0; i < data.num[index]; i++) {
-            values.machines.push({ config: machinesItem, role: data.role[index], resource_type: 'vm' })
+        if (data.ip && data.ip[key]) machinesItem.vm.nets[0].address = data.ip[key]
+        if (data.num[key] > 1) {
+          for (let i = 0; i < data.num[key]; i++) {
+            values.machines.push({ config: machinesItem, role: data.role[key], resource_type: 'vm' })
           }
         } else {
-          values.machines.push({ config: machinesItem, role: data.role[index], resource_type: 'vm' })
+          values.machines.push({ config: machinesItem, role: data.role[key], resource_type: 'vm' })
         }
       })
       return values
@@ -260,6 +314,23 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
+      }
+    },
+    async fetchCapability (id, resource) {
+      const params = {
+        show_emulated: true,
+        resource_type: 'shared',
+        scope: this.scope,
+      }
+      const capabilityParams = { id, spec: 'capability', params }
+      if (!id) return
+      this.capabilityParams = capabilityParams
+      try {
+        const { data } = await new this.$Manager(`${resource}s`).getSpecific(this.capabilityParams)
+        this.form.fi.capability = data
+      } catch (error) {
+        throw error
       }
     },
   },

@@ -74,6 +74,7 @@ export default {
         field: 'hypervisor',
         slots: {
           default: ({ row }, h) => {
+            if (!row.hypervisor) return '-'
             const brand = HYPERVISORS_MAP[row.hypervisor].brand
             if (!brand) return '-'
             return [

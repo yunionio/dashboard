@@ -3,13 +3,20 @@
     <a-card class="mb-2 card" v-for="(item, i) in serverConfigList" :key="item.key">
       <a-button v-if="i !== 0" @click="decrease(item.key, i)" type="link" size="small" class="error-color position-absolute" style="right: 10px; top: 10px;">{{ $t('common.delete') }}</a-button>
       <a-form-item label="CPU" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.vcpu_count(i)" :formatter="value => $t('k8s.text_119', [value])" :parser="v => parser(v, $t('k8s.text_100'))" :min="4" :max="32" />
+        <a-input-number v-decorator="decorator.vcpu_count(item.key)" :formatter="value => $t('k8s.text_119', [value])" :parser="v => parser(v, $t('k8s.text_100'))" :min="4" :max="32" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_101')" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.vmem_size(i)" :formatter="value => `${value}G`" :parser="v => parser(v, 'G')" :min="1" :max="128" />
+        <a-input-number v-decorator="decorator.vmem_size(item.key)" :formatter="value => `${value}G`" :parser="v => parser(v, 'G')" :min="1" :max="128" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_120')" v-bind="formItemLayout">
-        <a-input-number v-decorator="decorator.disk(i)" :formatter="value => `${value}G`" :parser="v => parser(v, 'G', '100')" :min="40" :max="500" />
+      <a-form-item :label="$t('k8s.text_120')" v-bind="formItemLayout" class="mb-0">
+        <system-disk
+          :decorator="decorator.disk(item.key)"
+          type="idc"
+          :form="form"
+          :image="imageMock"
+          :hypervisor="form.fd.hypervisor"
+          :capability-data="form.fi.capability"
+          :domain="userInfo.projectDomainId" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_121')" v-bind="formItemLayout" required>
         <a-row :gutter="8">
@@ -20,7 +27,7 @@
               class="w-100 mb-0 mr-1">
               <base-select
                 class="w-100"
-                v-decorator="decorator.network(i)"
+                v-decorator="decorator.network(item.key)"
                 resource="networks"
                 remote
                 :item.sync="item.network"
@@ -35,7 +42,7 @@
               <a-input
                 :placeholder="$t('k8s.text_123')"
                 @change="e => ipChange(e, i)"
-                v-decorator="decorator.ip(i, item.network)" />
+                v-decorator="decorator.ip(item.key, item.network)" />
             </a-form-item>
           </a-col>
           <a-col :span="2">
@@ -46,7 +53,7 @@
       </a-form-item>
       <a-form-item :label="$t('dictionary.role')" v-bind="formItemLayout">
         <a-select
-          v-decorator="decorator.role(i)"
+          v-decorator="decorator.role(item.key)"
           :placeholder="$t('k8s.text_118', [$t('dictionary.role')])">
           <a-select-option
             v-for="item in roleList"
@@ -57,7 +64,7 @@
         </a-select>
       </a-form-item>
       <a-form-item :label="$t('k8s.text_125')" v-bind="formItemLayout" :extra="$t('k8s.text_126')">
-        <a-input-number v-decorator="decorator.num(i)" :min="1" :max="item.ipShow ? 1 : 10"  :parser="v => parser(v, '', '1')" />
+        <a-input-number v-decorator="decorator.num(item.key)" :min="1" :max="item.ipShow ? 1 : 10"  :parser="v => parser(v, '', '1')" />
       </a-form-item>
     </a-card>
     <div class="d-flex align-items-center" v-if="serverConfigRemaining > 0">
@@ -73,30 +80,34 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { NODE_ROLE_MAP } from '../../views/cluster/constants'
 import { uuid } from '@/utils/utils'
+import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 
 export default {
   name: 'K8SClusterServerConfig',
+  components: {
+    SystemDisk,
+  },
   props: {
     decorator: {
       type: Object,
       required: true,
     },
-    networkResourceMapper: {
-      type: Function,
-      default: (data) => { return data },
-    },
     networkParams: {
       type: Object,
       required: true,
     },
+    form: {
+      type: Object,
+      validator: val => val.fc,
+    },
   },
-  inject: ['form'],
   data () {
     const roleList = []
     R.forEachObjIndexed((value, key) => {
       roleList.push({ label: value, value: key })
     }, NODE_ROLE_MAP)
     return {
+      imageMock: { min_disk: 40960 }, // 通过mock image数据设置最小磁盘大小
       formItemLayout: {
         wrapperCol: { span: 20 },
         labelCol: { span: 3 },
@@ -144,6 +155,20 @@ export default {
         return value
       }
       return defaultValue
+    },
+    networkResourceMapper (list) {
+      return list
+        .map(val => {
+          const remain = val.ports - val.ports_used
+          if (remain <= 0) {
+            return {
+              ...val,
+              __disabled: true,
+            }
+          }
+          return val
+        })
+        .sort((a, b) => (b.ports - b.ports_used) - (a.ports - a.ports_used))
     },
   },
 }
