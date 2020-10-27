@@ -107,6 +107,9 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
+        if (values.loginType === 'random') {
+          values.reset_password = true
+        }
         const params = {
           ...values,
         }
