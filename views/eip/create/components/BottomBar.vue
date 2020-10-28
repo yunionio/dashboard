@@ -33,6 +33,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { numerify } from '@/filters'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'BottomBar',
@@ -113,7 +114,10 @@ export default {
         if (this.currentCloudregion.external_id) {
           region = this.currentCloudregion.external_id.split('/')[1]
         }
-        const price_keys = `${this.currentCloudregion.provider.toLowerCase()}::${region}::::eip::::${this.size}Mb`
+        const provider = this.currentCloudregion.provider.toLowerCase()
+        const env = findPlatform(provider)
+        if (env === 'private') return // 私有云暂时不支持EIP价格查询
+        const price_keys = `${provider}::${region}::::eip::::${this.size}Mb`
         const { data } = await new this.$Manager('price_infos', 'v1').get({
           id: 'total',
           params: {
