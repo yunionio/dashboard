@@ -59,6 +59,7 @@ export default {
     async handleApplyQuotaByWorkflowSubmit (quota) {
       const params = { ...quota, domain: this.userInfo.domain.id }
       const variables = {
+        project_domain: this.userInfo.projectDomainId,
         process_definition_key: WORKFLOW_TYPES.APPLY_DOMAIN_QUOTA,
         initiator: this.userInfo.id,
         paramter: JSON.stringify(params),
