@@ -161,7 +161,7 @@ export default function localize (errors = [], schema) {
         out = i18n.t('common_49') + (e.params.missingPattern)
         break
       case 'propertyNames':
-        out = i18n.t('common_50') + e.params.propertyName + 18n.t('common_51')
+        out = i18n.t('common_50') + e.params.propertyName + i18n.t('common_51')
         break
       case 'required':
         out = i18n.t('common_52', [title || e.params.missingProperty])
