@@ -11,7 +11,7 @@ export default {
             data: [obj],
             columns: this.columns,
             title: i18n.t('k8s.text_284'),
-            name: i18n.t('k8s.text_23'),
+            name: i18n.t('k8s.text_393'),
             onManager: this.onManager,
             requestData: {
               cluster: obj.clusterID,

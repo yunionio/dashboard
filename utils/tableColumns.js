@@ -113,3 +113,9 @@ export const federatedResClusterCountColumn = () => ({
   minWidth: 100,
   formatter: ({ row }) => `${row.cluster_count}` || '-',
 })
+
+export const federatednamespaceColumn = () => ({
+  field: 'federatednamespace',
+  title: i18n.t('dictionary.federatednamespaces'),
+  formatter: ({ row }) => row.federatednamespace || '-',
+})
