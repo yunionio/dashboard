@@ -756,5 +756,6 @@
   "network.text_738": "Used for DNS resolution in VPC",
   "network.text_739": "For public DNS resolution",
   "network.text_740": "When the resolution line is not set, it means that the record is synchronized to each public cloud platform with the default resolution line.",
-  "network.text_741": "Only the main domain name can be added, subdomains are not supported"
+  "network.text_741": "Only the main domain name can be added, subdomains are not supported",
+  "network.text_742": "Certificate cache"
 }

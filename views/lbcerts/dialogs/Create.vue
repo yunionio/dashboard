@@ -4,6 +4,9 @@
     <div slot="body">
       <a-form
         :form="form.fc">
+        <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
         <a-form-item :label="$t('network.text_317')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
@@ -39,11 +42,16 @@
 </template>
 
 <script>
+import { isRequired } from '@/utils/validate'
+import DomainProject from '@/sections/DomainProject'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'LbcertsCreateDialog',
+  components: {
+    DomainProject,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -52,6 +60,22 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            rules: [
+              { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -96,6 +120,9 @@ export default {
   },
   methods: {
     doCreate (data) {
+      data.project_id = data.project.key
+      delete data.domain
+      delete data.project
       return this.params.onManager('create', {
         managerArgs: {
           data,

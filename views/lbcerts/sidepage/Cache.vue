@@ -1,7 +1,8 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns" />
+    :columns="columns"
+    :single-actions="singleActions" />
 </template>
 
 <script>
@@ -12,11 +13,12 @@ import {
   getRegionTableColumn,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
+import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'LbcertCacheList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     id: String,
     getParams: {
@@ -62,6 +64,22 @@ export default {
         getBrandTableColumn(),
         getRegionTableColumn(),
         getAccountTableColumn(),
+      ],
+      singleActions: [
+        {
+          label: this.$t('network.text_131'),
+          action: (obj) => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              title: this.$t('network.text_131'),
+              name: this.$t('network.text_742'),
+              data: [obj],
+              columns: this.columns,
+              onManager: this.onManager,
+            })
+          },
+          meta: (obj) => this.$getDeleteResult(obj),
+        },
       ],
     }
   },
