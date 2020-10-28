@@ -8,7 +8,7 @@
         <base-select
           resource="federatednamespaces"
           version="v1"
-          idKey="name"
+          @change="v => federatednamespaceId = v"
           v-decorator="decorators.federatednamespace"
           :params="federatednamespaceParams" />
       </a-form-item>
@@ -138,15 +138,23 @@ export default {
         scope: this.$store.getters.scope,
         limit: 0,
       },
-      params: {
-        limit: 0,
-        scope: this.$store.getters.scope,
-      },
+
+      federatednamespaceId: undefined,
     }
   },
   computed: {
     roleLabel () {
       return this.roleRefType === 'Role' ? this.$t('k8s.text_370') : this.$t('k8s.text_373')
+    },
+    params () {
+      const params = {
+        limit: 0,
+        scope: this.$store.getters.scope,
+      }
+      if (this.roleRefType === 'Role' && this.federatednamespaceId) {
+        params.federatednamespace_id = this.federatednamespaceId
+      }
+      return params
     },
   },
   created () {
@@ -158,7 +166,7 @@ export default {
         let spec = ''
         if (this.subjectType === 'User') spec = 'cluster-users'
         if (this.subjectType === 'Group') spec = 'cluster-user-groups'
-        const { data } = await new this.$Manager('federatedroles', 'v1').get({ id: spec })
+        const { data } = await new this.$Manager('federatedroles', 'v1').get({ id: spec, params: { scope: this.$store.getters.scope } })
         this.subjectOpts = data
       } catch (error) {
         throw error
@@ -194,7 +202,6 @@ export default {
             },
           },
         }
-        console.log(data, 'data')
         return data
       } catch (error) {
         throw error

@@ -187,7 +187,7 @@ export default {
         if (this.subjectType === 'User') spec = 'cluster-users'
         if (this.subjectType === 'Group') spec = 'cluster-user-groups'
         if (cluster) {
-          const { data } = await new this.$Manager('kubeclusters', 'v1').getSpecific({ id: cluster, spec })
+          const { data } = await new this.$Manager('kubeclusters', 'v1').getSpecific({ id: cluster, spec, params: { scope: this.$store.getters.scope } })
           this.subjectOpts = data
         }
       } catch (error) {
