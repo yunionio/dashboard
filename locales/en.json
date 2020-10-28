@@ -203,5 +203,6 @@
     "usage.image": "The amount of mirroring quota used",
     "snapshot": "Total Snapshot Quota",
     "usage.snapshot": "The amount of snapshot quota used"
-  }
+  },
+  "dashboard.server_tips": "Only count the number of virtual machine lists, not including the recycle bin list"
 }

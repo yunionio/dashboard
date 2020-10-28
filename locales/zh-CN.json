@@ -203,5 +203,6 @@
     "usage.image": "镜像配额已使用数量",
     "snapshot": "快照配额总数量",
     "usage.snapshot": "快照配额已使用数量"
-  }
+  },
+  "dashboard.server_tips": "只计算虚拟机列表的数量，不包含回收站列表"
 }

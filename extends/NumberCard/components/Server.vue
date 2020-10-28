@@ -2,7 +2,10 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}
+          <a-icon class="ml-2" type="loading" v-if="loading" />
+          <a-tooltip v-if="isServersAnypool"><template slot="title">{{ $t('dashboard.server_tips') }}</template><a-icon type="question-circle" /></a-tooltip>
+        </div>
         <div class="dashboard-card-header-right"><slot name="actions" :handle-edit="handleEdit" /></div>
       </div>
       <div class="dashboard-card-body align-items-center">
@@ -118,6 +121,9 @@ export default {
         ret.unit = config.unit
       }
       return ret
+    },
+    isServersAnypool () {
+      return this.params.usage_key === 'all.servers.any_pool'
     },
   },
   watch: {
