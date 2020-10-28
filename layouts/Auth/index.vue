@@ -124,7 +124,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .header {
   height: 70px;
   top: 0;
