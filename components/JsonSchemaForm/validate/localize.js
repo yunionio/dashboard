@@ -37,7 +37,6 @@ export default function localize (errors = [], schema) {
     }
 
     e.path = path.substr(1).replace(/\//g, '.')
-
     switch (e.keyword) {
       case '$ref':
         out = i18n.t('common_19') + (e.params.ref)
@@ -161,7 +160,7 @@ export default function localize (errors = [], schema) {
         out = i18n.t('common_49') + (e.params.missingPattern)
         break
       case 'propertyNames':
-        out = i18n.t('common_50') + e.params.propertyName + 18n.t('common_51')
+        out = i18n.t('common_50') + e.params.propertyName + i18n.t('common_51')
         break
       case 'required':
         out = i18n.t('common_52', [title || e.params.missingProperty])
