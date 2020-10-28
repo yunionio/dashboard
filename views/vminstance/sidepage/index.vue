@@ -124,7 +124,7 @@ export default {
                   data: [me.detailData],
                   columns: me.columns,
                   onManager: me.onManager,
-                  callback: () => {
+                  refresh: () => {
                     this.refresh()
                   },
                 })
