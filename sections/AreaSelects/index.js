@@ -274,6 +274,7 @@ export default {
       const params = {
         ...DEFAULT_PARAMS,
         ...queryParams,
+        public_cloud: true,
       }
       this.cityLoading = true
       try {
