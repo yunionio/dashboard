@@ -25,7 +25,7 @@
           </a-select>
         </a-form-item>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="showCloudaccount ? 12 : 18">
         <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
           <image-select-template v-decorator="decorator.image" :imageOpts="imageOptions" @imageChange="imageChange" :loading="loading" :imageType="imageType" />
         </a-form-item>
