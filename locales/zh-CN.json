@@ -1314,5 +1314,6 @@
   "compute.vmrc_link": "链接",
   "compute.vmrc_download": "下载",
   "compute.text_1346": "镜像ID",
-  "compute.text_1347": "回滚中的硬盘快照应不能被删除"
+  "compute.text_1347": "回滚中的硬盘快照应不能被删除",
+  "compute.text_1348": "不同项目的资源暂不支持同时发起工单，请选择同一项目的资源重新提交！"
 }
