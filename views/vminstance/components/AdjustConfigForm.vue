@@ -673,6 +673,8 @@ export default {
       params.project_id = this.userInfo.projectId
       params.domain = this.userInfo.projectDomainId
       const variables = {
+        project: this.params.data[0].tenant_id,
+        project_domain: this.params.data[0].domain_id,
         process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG,
         initiator: this.userInfo.id,
         paramter: JSON.stringify(params),
@@ -705,6 +707,12 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         if (this.isOpenWorkflow) {
+          const projects = new Set(this.params.data.map(item => item.tenant_id))
+          if (projects.size > 1) {
+            this.$message.error(this.$t('compute.text_1348'))
+            this.loading = false
+            return
+          }
           await this.doChangeSettingsByWorkflowSubmit(values)
         } else {
           const res = await this.doChangeSettingsSubmit(values)

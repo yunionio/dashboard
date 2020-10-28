@@ -124,6 +124,12 @@ export default {
       this.loading = true
       try {
         if (this.isOpenWorkflow) {
+          const projects = new Set(this.params.data.map(item => item.tenant_id))
+          if (projects.size > 1) {
+            this.$message.error(this.$t('compute.text_1348'))
+            this.loading = false
+            return
+          }
           await this.handleDeleteByWorkflowSubmit()
         } else {
           await this.handleDelete()
@@ -138,6 +144,8 @@ export default {
     async handleDeleteByWorkflowSubmit () {
       const ids = this.params.data.map(item => item.id)
       const variables = {
+        project: this.params.data[0].tenant_id,
+        project_domain: this.params.data[0].domain_id,
         process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_DELETE,
         initiator: this.userInfo.id,
         ids: ids.join(','),
