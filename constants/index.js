@@ -155,6 +155,9 @@ export const USAGE_CONFIG = {
   'all.servers': {
     unit: i18n.t('dashboard.text_2'),
   },
+  'all.servers.any_pool': {
+    unit: i18n.t('dashboard.text_2'),
+  },
   'all.servers.cpu': {
     unit: i18n.t('dashboard.text_3'),
   },
@@ -255,6 +258,9 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   hosts: {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'hosts.any_pool': {
     unit: i18n.t('dashboard.text_2'),
   },
   'hosts.cpu': {
