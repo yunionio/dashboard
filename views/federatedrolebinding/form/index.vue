@@ -166,7 +166,7 @@ export default {
         let spec = ''
         if (this.subjectType === 'User') spec = 'cluster-users'
         if (this.subjectType === 'Group') spec = 'cluster-user-groups'
-        const { data } = await new this.$Manager('federatedroles', 'v1').get({ id: spec })
+        const { data } = await new this.$Manager('federatedroles', 'v1').get({ id: spec, params: { scope: this.$store.getters.scope } })
         this.subjectOpts = data
       } catch (error) {
         throw error
