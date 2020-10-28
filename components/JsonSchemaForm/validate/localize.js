@@ -37,6 +37,7 @@ export default function localize (errors = [], schema) {
     }
 
     e.path = path.substr(1).replace(/\//g, '.')
+
     switch (e.keyword) {
       case '$ref':
         out = i18n.t('common_19') + (e.params.ref)
