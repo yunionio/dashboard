@@ -56,6 +56,7 @@ export default {
   methods: {
     async handleJoinProjectByWorkflowSubmit (values) {
       const variables = {
+        project_domain: this.userInfo.projectDomainId,
         process_definition_key: WORKFLOW_TYPES.APPLY_JOIN_PROJECT,
         initiator: this.userInfo.id,
         paramter: JSON.stringify({ domain: this.userInfo.domain.id }),

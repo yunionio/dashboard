@@ -59,6 +59,8 @@ export default {
     async handleApplyQuotaByWorkflowSubmit (quota) {
       const params = { ...quota, tenant: this.userInfo.projectId }
       const variables = {
+        project_domain: this.userInfo.projectDomainId,
+        project: this.userInfo.projectId,
         process_definition_key: WORKFLOW_TYPES.APPLY_PROJECT_QUOTA,
         initiator: this.userInfo.id,
         paramter: JSON.stringify(params),
