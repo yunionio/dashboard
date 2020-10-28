@@ -117,9 +117,9 @@ export default {
     handleVisibilityChange () {
       if (document.visibilityState === 'visible') {
         if (
-          this.scope !== getScopeFromCookie() ||
-          this.tenant !== getTenantFromCookie() ||
-          this.session !== (decodeToken(getTokenFromCookie()) || {}).session
+          this.scope && this.scope !== getScopeFromCookie() ||
+          this.tenant && this.tenant !== getTenantFromCookie() ||
+          this.session && this.session !== (decodeToken(getTokenFromCookie()) || {}).session
         ) {
           window.location.reload()
         }
