@@ -15,7 +15,7 @@
         </a-form-item>
         <a-form-item :label="$t('network.text_717')">
           <a-select
-            v-decorator="decorators.zoneType">
+            v-decorator="decorators.zoneType" @change="zoneTypeChangeHandle">
             <a-select-option v-for="v in options.zoneTypes" :value="v.value" :key="v.value">
               <div>{{ v.label }}<span class="ml-2">{{ v.desc }}</span></div>
             </a-select-option>
@@ -144,6 +144,11 @@ export default {
         }
       }
       callback()
+    },
+    zoneTypeChangeHandle () {
+      this.$nextTick(() => {
+        this.form.fc.validateFields(['name'], { force: true })
+      })
     },
   },
 }
