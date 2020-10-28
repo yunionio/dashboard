@@ -108,7 +108,7 @@ export default {
     },
     async fetchFederatedData () {
       try {
-        const { data = [] } = await new this.$Manager(this.federatedResource, 'v1').get({ id: 'api-resources' })
+        const { data = [] } = await new this.$Manager(this.federatedResource, 'v1').get({ id: 'api-resources', params: { scope: this.$store.getters.scope } })
         this.getResourceOpts(data)
       } catch (error) {
         throw error
@@ -117,7 +117,7 @@ export default {
     async fetchData () {
       try {
         if (!this.clusterId) return
-        const { data = [] } = await new this.$Manager('kubeclusters', 'v1').getSpecific({ id: this.clusterId, spec: 'api-resources' })
+        const { data = [] } = await new this.$Manager('kubeclusters', 'v1').getSpecific({ id: this.clusterId, spec: 'api-resources', params: { scope: this.$store.getters.scope } })
         this.getResourceOpts(data)
       } catch (error) {
         throw error
