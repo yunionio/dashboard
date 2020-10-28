@@ -46,8 +46,8 @@ export default {
         scope: this.$scope,
         limit: 0,
         project: this.lbDetail.project,
-        // cloudregion: this.lbDetail.cloudregion_id,
-        // manager: this.lbDetail.manager_id,
+        cloudregion: this.lbDetail.cloudregion_id,
+        manager: this.lbDetail.manager_id,
       }
       return params
     },
