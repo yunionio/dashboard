@@ -13,7 +13,7 @@
     <slot name="tool-actions-append" />
     <card-list v-if="hasData" :list="list.data" :cardFields="cardFields" :singleActions="singleActions" :layoutDirection="layoutDirection" />
     <loader v-else :loading="loading" class="mt-3" />
-    <div class="d-flex align-items-center justify-content-center" v-show="showPageer && list.total !== 0">
+    <div class="d-flex align-items-center justify-content-end" v-show="showPageer && list.total !== 0">
       <a-pagination
         class="my-3 text-center"
         showSizeChanger
