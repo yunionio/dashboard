@@ -123,7 +123,7 @@ export default {
       return ret
     },
     isServersAnypool () {
-      return this.params.usage_key === 'all.servers.any_pool'
+      return ['all.servers.any_pool', 'domain.servers.any_pool', 'servers.any_pool'].includes(this.params.usage_key)
     },
   },
   watch: {
