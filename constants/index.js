@@ -383,6 +383,9 @@ export const USAGE_CONFIG = {
   servers: {
     unit: i18n.t('dashboard.text_2'),
   },
+  'servers.any_pool': {
+    unit: i18n.t('dashboard.text_2'),
+  },
   'servers.cpu': {
     unit: i18n.t('dashboard.text_3'),
   },
@@ -551,6 +554,9 @@ export const USAGE_CONFIG = {
   'domain.hosts': {
     unit: i18n.t('dashboard.text_2'),
   },
+  'domain.hosts.any_pool': {
+    unit: i18n.t('dashboard.text_2'),
+  },
   'domain.hosts.cpu': {
     unit: i18n.t('dashboard.text_3'),
   },
@@ -660,6 +666,9 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'domain.servers': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'domain.servers.any_pool': {
     unit: i18n.t('dashboard.text_2'),
   },
   'domain.servers.cpu': {
