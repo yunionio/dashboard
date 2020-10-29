@@ -27,7 +27,7 @@ export default {
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       {
         field: 'ip_addr',
-        title: i18n.t('network.text_191'),
+        title: 'IP',
         width: 140,
       },
       {

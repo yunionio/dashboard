@@ -41,7 +41,7 @@ export default {
           name: getNameFilter(),
           brand: getBrandFilter('brands', ['VMware']),
           ip_addr: {
-            label: this.$t('network.text_191'),
+            label: 'IP',
             filter: true,
             formatter: val => {
               return `ip_addr.contains(${val})`
