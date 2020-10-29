@@ -312,11 +312,12 @@ export const getTagTableColumn = ({
   columns,
   tipName,
   ignorePrefix,
+  width = 50,
 } = {}) => {
   return {
     field,
     title,
-    width: 50,
+    width,
     slots: {
       default: ({ row }, h) => {
         return [
