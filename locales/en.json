@@ -4187,5 +4187,6 @@
   "common_725": "Designated person approves",
   "common_726": "Designated Approval Role",
   "common_727": "Scope of Approvers",
-  "common_728": "Automatic renewal upon expiry"
+  "common_728": "Automatic renewal upon expiry",
+  "common.res_lock_tip": "The resource is locked and cannot be operated. Please contact the system administrator for processing"
 }
