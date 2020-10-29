@@ -256,7 +256,8 @@
       "syncing": "Syncing",
       "sync_status": "Syncing",
       "sync_failed": "Sync failed",
-      "flushing_failed": "Failed to clear instance"
+      "flushing_failed": "Failed to clear instance",
+      "releasing": "To be deleted"
     },
     "instanceGroup": {
       "init": "Normal"
@@ -2184,7 +2185,9 @@
     "federatedclusterroles": "federatedclusterroles",
     "federatedrolebindings": "federatedrolebindings",
     "federatedclusterrolebindings": "federatedclusterrolebindings",
-    "alertresource": "alertresource"
+    "alertresource": "alertresource",
+    "strategyallocation": "strategyallocation",
+    "strategydefinition": "strategydefinition"
   },
   "res": {
     "role": "Role",
