@@ -256,7 +256,8 @@
       "syncing": "同步中",
       "sync_status": "同步中",
       "sync_failed": "同步失败",
-      "flushing_failed": "清空实例失败"
+      "flushing_failed": "清空实例失败",
+      "releasing": "待删除"
     },
     "instanceGroup": {
       "init": "正常"
@@ -2179,7 +2180,9 @@
     "federatedclusterroles": "集群角色(多集群)",
     "federatedrolebindings": "角色绑定(多集群)",
     "federatedclusterrolebindings": "集群角色绑定(多集群)",
-    "alertresource": "报警资源"
+    "alertresource": "报警资源",
+    "strategyallocation": "策略分配",
+    "strategydefinition": "策略定义"
   },
   "res": {
     "role": "@:dictionary.role",
