@@ -391,4 +391,28 @@ export const validateYaml = (content, opts) => {
   })
 }
 
+/**
+ * 检测资源是否被锁定
+ * @param {*} value
+ */
+export const isValidateResourceLock = (value = {}, callback) => {
+  const ret = { validate: true, tooltip: null }
+  if (Array.isArray(value)) {
+    const someResLock = value.some(item => item.freezed)
+    if (someResLock) {
+      ret.validate = false
+      ret.tooltip = i18n.t('common.res_lock_tip')
+    }
+  } else {
+    if (value.freezed) {
+      ret.validate = false
+      ret.tooltip = i18n.t('common.res_lock_tip')
+    }
+  }
+  if (ret.validate) {
+    return (callback && callback()) || ret
+  }
+  return ret
+}
+
 export default validateForm
