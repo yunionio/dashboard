@@ -12,7 +12,7 @@
 import ColumnsMixin from '../mixins/columns'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getTenantFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'AlertresourceList',
@@ -28,8 +28,6 @@ export default {
         apiVersion: 'v1',
         filterOptions: {
           name: getNameFilter(),
-          status: getStatusFilter('alertresource'),
-          tenant: getTenantFilter(),
         },
       }),
     }
