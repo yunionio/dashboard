@@ -5,9 +5,13 @@
         <div class="mr-4 d-flex align-items-center">
           <div class="text-truncate">{{$t('compute.text_286')}}</div>
           <div class="ml-2 prices">
-            <div class="hour text-truncate">
+            <div class="hour position-relative">
               <template v-if="price">
                 <m-animated-number :value="price" :formatValue="formatToPrice" />
+                <div class="discount-badge" v-if="priceTotal && priceTotal.discount !== 1">
+                  <div class="lh-1" v-discount="priceTotal.discount" />
+                  <div class="lh-1 mt-1 text-color-help"><del>{{ priceTotal.hour_gross_price }}</del></div>
+                </div>
               </template>
             </div>
             <div class="tips text-truncate">

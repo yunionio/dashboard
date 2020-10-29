@@ -25,9 +25,13 @@
           <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('compute.text_286')}}</div>
             <div class="ml-2 prices">
-              <div class="hour text-truncate">
+              <div class="hour position-relative">
                 <template v-if="price">
                   <m-animated-number :value="price" :formatValue="formatToPrice" />
+                  <div class="discount-badge" v-if="priceData.discount !== 1">
+                    <div class="lh-1" v-discount="priceData.discount" />
+                    <div class="lh-1 mt-1 text-color-help"><del>{{ originPrice }}</del></div>
+                  </div>
                 </template>
                 <template v-else>---</template>
               </div>
@@ -254,6 +258,22 @@ export default {
         }
       }
       return ''
+    },
+    priceData () {
+      const data = _.get(this.pricesList, '[0]', { discount: 1 })
+      return data
+    },
+    originPrice () {
+      const { count } = this.fd
+      if (count && this.pricesList && this.pricesList.length > 0) {
+        const { month_gross_price: month, hour_gross_price: sum } = this.pricesList[0]
+        let _price = parseFloat(sum)
+        if (this.isPackage && this.durationNum) {
+          _price = parseFloat(month) * this.durationNum
+        }
+        return _price * parseFloat(count)
+      }
+      return null
     },
   },
   watch: {
