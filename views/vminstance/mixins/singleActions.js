@@ -5,6 +5,7 @@ import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip 
 import { SERVER_TYPE } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import { isValidateResourceLock } from '@/utils/validate'
 import i18n from '@/locales'
 
 export default {
@@ -136,6 +137,14 @@ export default {
           eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
           ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
           ret = ret.concat(eips).concat(ips)
+          return ret
+        },
+        meta: (obj) => {
+          let ret = {
+            validate: true,
+            tooltip: null,
+          }
+          ret = isValidateResourceLock(obj)
           return ret
         },
       },
@@ -1140,6 +1149,14 @@ export default {
               ],
             },
           ]
+        },
+        meta: (obj) => {
+          let ret = {
+            validate: true,
+            tooltip: null,
+          }
+          ret = isValidateResourceLock(obj)
+          return ret
         },
       },
     ]

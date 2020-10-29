@@ -34,6 +34,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import { isValidateResourceLock } from '@/utils/validate'
 
 export default {
   name: 'VmInstanceList',
@@ -172,11 +173,16 @@ export default {
             })
           },
           meta: () => {
-            const ret = {
-              validate: false,
+            let ret = {
+              validate: true,
               tooltip: null,
             }
-            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => item.status === 'ready')
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = isValidateResourceLock(this.list.selectedItems, () => {
+              ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
+              return ret
+            })
             return ret
           },
         },
@@ -191,11 +197,16 @@ export default {
             })
           },
           meta: () => {
-            const ret = {
-              validate: false,
+            let ret = {
+              validate: true,
               tooltip: null,
             }
-            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => item.status === 'running')
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = isValidateResourceLock(this.list.selectedItems, () => {
+              ret.validate = this.list.selectedItems.every(item => item.status === 'running')
+              return ret
+            })
             return ret
           },
         },
@@ -210,11 +221,16 @@ export default {
             })
           },
           meta: () => {
-            const ret = {
-              validate: false,
+            let ret = {
+              validate: true,
               tooltip: null,
             }
-            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = isValidateResourceLock(this.list.selectedItems, () => {
+              ret.validate = this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
+              return ret
+            })
             return ret
           },
         },
@@ -238,7 +254,7 @@ export default {
                     },
                     meta: () => {
                       const ret = {
-                        validate: false,
+                        validate: true,
                         tooltip: null,
                       }
                       const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
@@ -269,7 +285,7 @@ export default {
                     },
                     meta: () => {
                       const ret = {
-                        validate: false,
+                        validate: true,
                         tooltip: null,
                       }
                       const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
@@ -334,7 +350,7 @@ export default {
                     },
                     meta: () => {
                       const ret = {
-                        validate: false,
+                        validate: true,
                         tooltip: null,
                       }
                       if (this.isSameHyper) {
@@ -458,7 +474,7 @@ export default {
                     },
                     meta: () => {
                       const ret = {
-                        validate: false,
+                        validate: true,
                         tooltip: null,
                       }
                       // 包年包月机器，不支持此操作
@@ -655,7 +671,7 @@ export default {
                     },
                     meta: () => {
                       const ret = {
-                        validate: false,
+                        validate: true,
                         tooltip: null,
                       }
                       const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
@@ -775,9 +791,14 @@ export default {
             ]
           },
           meta: () => {
-            return {
-              validate: this.list.selected.length,
+            let ret = {
+              validate: true,
+              tooltip: null,
             }
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = isValidateResourceLock(this.list.selectedItems)
+            return ret
           },
         },
       ],
