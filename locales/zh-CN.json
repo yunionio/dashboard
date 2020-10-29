@@ -2382,7 +2382,8 @@
     "intranet_1var": "内网：{0}",
     "extranet_1var": "外网：{0}",
     "setting": "设置",
-    "cloudprovider_1var": "@:dictionary.cloudaccount：{0}"
+    "cloudprovider_1var": "@:dictionary.cloudaccount：{0}",
+    "discount_unit": "{0}折"
   },
   "navbar": {
     "view": {
