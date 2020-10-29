@@ -562,11 +562,18 @@ export default {
       }
     },
     vpcLabelFormat (item) {
-      if (item.manager) {
-        if (item.cidr_block) {
-          return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)
+      if (this.cloudEnv === 'public') {
+        if (item.manager) {
+          if (item.cidr_block) {
+            return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)
+          }
+          return (<div>{ item.name }<span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)
         }
-        return (<div>{ item.name }<span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)
+      } else if (this.cloudEnv === 'onpremise') {
+        if (item.cidr_block) {
+          return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span></div>)
+        }
+        if (item.id === 'default') return (<div>{ item.name }<span v-if="item.cidr_block">（{this.$t('common.text00047')}）</span></div>)
       }
       return (<div>{ item.name }</div>)
     },
