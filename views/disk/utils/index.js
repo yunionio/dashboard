@@ -19,29 +19,27 @@ export const diskResizeConfig = {
     }
   },
   vmware (obj) {
-    const diskType = 'data'
-    const provider = obj.provider
-    // const { validate, tooltip } = diskResizeConfig.base(obj)
-    // if (!validate) {
-    //   return {
-    //     validate: false,
-    //     tooltip,
-    //   }
-    // }
-    if (obj.guest_status === 'running') {
+    const { validate, tooltip } = diskResizeConfig.base(obj)
+    if (!validate) {
       return {
         validate: false,
+        tooltip,
       }
     }
-    if (obj.disk_type !== diskType) {
+    if (obj.disk_type === 'data') { // 数据盘
+      const validate = obj.guest_status === 'running' || obj.guest_status === 'ready' // 开机关机均可以扩容
+      const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['running', 'ready'], serverStatus)])
       return {
-        validate: false,
-        tooltip: i18n.t('compute.text_466', [PROVIDER_MAP[provider].label, DISK_TYPES[diskType]]),
+        validate,
+        tooltip,
       }
-    }
-    return {
-      validate: true,
-      tooltip: '',
+    } else { // 系统盘
+      const validate = obj.guest_status === 'ready' // 关机可以扩容
+      const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['ready'], serverStatus)])
+      return {
+        validate,
+        tooltip,
+      }
     }
   },
   onecloud (obj) {
@@ -68,13 +66,13 @@ export const diskResizeConfig = {
   openstack (obj) {
     const diskType = 'data'
     const provider = obj.provider
-    // const { validate, tooltip } = diskResizeConfig.base(obj)
-    // if (!validate) {
-    //   return {
-    //     validate: false,
-    //     tooltip,
-    //   }
-    // }
+    const { validate, tooltip } = diskResizeConfig.base(obj)
+    if (!validate) {
+      return {
+        validate: false,
+        tooltip,
+      }
+    }
     if (obj.guest_status === 'running') {
       return {
         validate: false,
