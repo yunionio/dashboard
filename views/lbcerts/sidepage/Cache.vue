@@ -12,6 +12,7 @@ import {
   getBrandTableColumn,
   getRegionTableColumn,
   getAccountTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
@@ -48,14 +49,7 @@ export default {
           title: this.$t('network.text_318'),
           width: 70,
         },
-        {
-          field: 'not_after',
-          title: this.$t('network.text_319'),
-          width: 150,
-          formatter: ({ cellValue }) => {
-            return this.$moment(cellValue).format()
-          },
-        },
+        getTimeTableColumn(),
         {
           field: 'subject_alternative_names',
           title: this.$t('network.text_320'),
@@ -76,6 +70,7 @@ export default {
               data: [obj],
               columns: this.columns,
               onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
           meta: (obj) => this.$getDeleteResult(obj),
