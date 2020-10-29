@@ -225,7 +225,7 @@ export default {
       return params
     },
     vpcResource () {
-      if (this.cloudregionZoneParams.cloudregion) return `cloudregions/${this.cloudregionZoneParams.cloudregion}/vpcs`
+      if (R.is(String, this.cloudregionZoneParams.cloudregion)) return `cloudregions/${this.cloudregionZoneParams.cloudregion}/vpcs`
       return ''
     },
     schedtagParams () { // 网络里指定调度标签
