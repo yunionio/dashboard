@@ -19,7 +19,7 @@ export default {
   data () {
     return {
       listId: 'LbList',
-      cloudEnvOptions: getCloudEnvOptions('network_manage_brands'),
+      cloudEnvOptions: getCloudEnvOptions('loadbalancer_engine_brands'),
       cloudEnv: '',
       getParams: {
         details: true,
