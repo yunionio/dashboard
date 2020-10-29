@@ -1,6 +1,6 @@
 import { validateEnabled, validateDisable } from '../utils'
 import expectStatus from '@/constants/expectStatus'
-import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
 export default {
@@ -67,6 +67,9 @@ export default {
                 }
               },
             },
+            disableDeleteAction(this, {
+              name: this.$t('dictionary.loadbalancer'),
+            }),
             {
               label: i18n.t('network.text_131'),
               permission: 'lb_loadbalancers_delete',
