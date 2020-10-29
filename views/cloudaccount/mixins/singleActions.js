@@ -116,6 +116,16 @@ export default {
               },
             },
             {
+              label: i18n.t('cloudaccount.table.action.set_discount'),
+              action: () => {
+                this.createDialog('CloudaccountSetDiscountDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+            },
+            {
               label: i18n.t('cloudenv.text_281'),
               action: () => {
                 this.createDialog('CloudaccountSetShareDialog', {

@@ -33,6 +33,8 @@ export default {
   },
   data () {
     return {
+      discount: 0,
+      discountLoaded: false,
       baseInfo: [
         getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
         getBrandTableColumn(),
@@ -81,6 +83,18 @@ export default {
           items: [
             getAccessUrlTableColumn(),
             getStatusTableColumn({ statusModule: 'cloudaccountHealthStatus', title: this.$t('cloudenv.text_93'), field: 'health_status' }),
+            {
+              field: 'discount',
+              title: this.$t('cloudaccount.table.title.discount'),
+              slots: {
+                default: () => {
+                  if (!this.discountLoaded) {
+                    return [<a-icon type='loading' style='font-size: 12px;' class='primary-color' />]
+                  }
+                  return [<span v-discount={ this.discount } />]
+                },
+              },
+            },
             getBalanceTableColumn(),
             getGuestCountTableColumn(),
             getHostCountTableColumn(),
@@ -88,6 +102,22 @@ export default {
         },
       ],
     }
+  },
+  created () {
+    this.fetchDiscount()
+  },
+  methods: {
+    async fetchDiscount () {
+      try {
+        const response = await this.$http({
+          method: 'GET',
+          url: `/v1/price_infos/discount/${this.data.id}`,
+        })
+        this.discount = response.data.discount
+      } finally {
+        this.discountLoaded = true
+      }
+    },
   },
 }
 </script>

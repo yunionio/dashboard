@@ -530,5 +530,19 @@
   "cloudenv.text_495": "网络是否满足",
   "cloudenv.text_496": "序号",
   "cloudenv.text_497": "同时删除历史账单数据",
-  "cloudenv.text_498": "云上操作者"
+  "cloudenv.text_498": "云上操作者",
+  "cloudenv.text_499": "如填写10%，即折扣后费用=原价*（1-10%）",
+  "cloudaccount": {
+    "table": {
+      "action": {
+        "set_discount": "设置优惠率"
+      },
+      "title": {
+        "discount": "优惠率"
+      }
+    },
+    "validate": {
+      "discount": "请设置优惠率"
+    }
+  }
 }
