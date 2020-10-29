@@ -441,15 +441,6 @@ export const REDIS_MONITOR_OPTS = {
       transfer: 1024,
     },
     {
-      name: 'disk',
-      label: i18n.t('db.text_13'),
-      seleteItem: 'used_percent',
-      as: i18n.t('db.text_13'),
-      fromItem: 'dcs_disk',
-      unit: '%',
-      transfer: 1,
-    },
-    {
       name: 'conn',
       label: i18n.t('db.text_18'),
       seleteItem: 'used_percent',
