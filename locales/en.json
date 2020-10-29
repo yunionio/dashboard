@@ -2382,7 +2382,8 @@
     "intranet_1var": "Intranet: {0}",
     "extranet_1var": "Extranet: {0}",
     "setting": "Setting",
-    "cloudprovider_1var": "Cloud provider: {0}"
+    "cloudprovider_1var": "Cloud provider: {0}",
+    "discount_unit": "{0}% off"
   },
   "navbar": {
     "view": {
