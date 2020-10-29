@@ -83,6 +83,10 @@ export default {
     },
   },
   created () {
+    if (!this.getParam().backend_group) {
+      this.list.configLoaded = true // 手动把list.configLoaded变为true，确保list的表头正确渲染
+      return
+    }
     this.list.fetchData()
   },
   methods: {
