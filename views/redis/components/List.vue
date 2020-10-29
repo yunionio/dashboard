@@ -40,7 +40,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('redis'),
-          brand: getBrandFilter('rds_engine_brands'),
+          brand: getBrandFilter('redis_engine_brands'),
           // account: getAccountFilter(),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
