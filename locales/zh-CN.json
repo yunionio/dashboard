@@ -1436,6 +1436,10 @@
       "label": "密码有效期",
       "desc": "云管本地用户（SQL）默认密码有效期时长。0代表无限制"
     },
+    "identity$token_expiration_seconds": {
+      "label": "会话超时时间",
+      "desc": "默认为1天，当前会话登录超过该会话时间后，系统将不可用，需重新登录。"
+    },
     "common$non_default_domain_projects": {
       "label": "三级权限开关",
       "desc": "设置是否开启三级权限。默认为关闭，设置为开启后将无法关闭。"
@@ -1447,6 +1451,10 @@
     "yunionapi$enable_totp": {
       "label": "双因子认证",
       "desc": "云管用户登录系统时，是否需要进行二次认证"
+    },
+    "yunionapi$session_level_auth_cookie": {
+      "label": "浏览器关闭结束会话",
+      "desc": "如果开启，则关闭浏览器后，当前登录会话立即失效"
     },
     "compute$enable_pending_delete": {
       "label": "主机、硬盘回收站",
