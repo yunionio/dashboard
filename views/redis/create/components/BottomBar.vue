@@ -25,9 +25,13 @@
           <div class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('db.text_108')}}</div>
             <div class="ml-2 prices">
-              <div class="hour text-truncate">
+              <div class="hour position-relative">
                 <template v-if="price">
                   <m-animated-number :value="price" :formatValue="formatToPrice" />
+                  <div class="discount-badge" v-if="priceTotal && priceTotal.discount !== 1">
+                    <div class="lh-1" v-discount="priceTotal.discount" />
+                    <div class="lh-1 mt-1 text-color-help"><del>{{ originPrice }}</del></div>
+                  </div>
                 </template>
               </div>
               <div class="tips text-truncate">
@@ -78,6 +82,7 @@ export default {
   },
   data () {
     return {
+      priceTotal: null,
       loading: false,
     }
   },
@@ -137,6 +142,17 @@ export default {
       }
       return null
     },
+    originPrice () {
+      const { count } = this.values
+      if (this.priceTotal && count) {
+        const { month_gross_price: month, hour_gross_price: hour } = this.priceTotal
+        if (this.isPackage && this.durationNum) {
+          return parseFloat(month) * parseFloat(count) * this.durationNum
+        }
+        return parseFloat(hour) * parseFloat(count)
+      }
+      return null
+    },
     priceTips () {
       if (this.price) {
         if (this.isPackage && this.durationNum) {
@@ -150,6 +166,14 @@ export default {
         }
       }
       return '--'
+    },
+  },
+  watch: {
+    'rate.price_key': {
+      handler (val) {
+        val && this._getPrice(val)
+      },
+      immediate: true,
     },
   },
   methods: {
@@ -191,6 +215,19 @@ export default {
       }
       delete params.durationStandard
       return params
+    },
+    async _getPrice (price_key) {
+      try {
+        const { data } = await new this.$Manager('price_infos', 'v1').get({
+          id: 'total',
+          params: {
+            price_keys: [price_key],
+          },
+        })
+        this.priceTotal = data
+      } catch (err) {
+        throw err
+      }
     },
     async doCreate () {
       if (!this.validateForm()) return false

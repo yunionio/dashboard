@@ -24,9 +24,13 @@
           <div class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('db.text_108')}}</div>
             <div class="ml-2 prices">
-              <div class="hour text-truncate">
+              <div class="hour position-relative">
                 <template v-if="price">
                   <m-animated-number :value="price" :formatValue="formatToPrice" />
+                  <div class="discount-badge" v-if="priceTotal && priceTotal.discount !== 1">
+                    <div class="lh-1" v-discount="priceTotal.discount" />
+                    <div class="lh-1 mt-1 text-color-help"><del>{{ originPrice }}</del></div>
+                  </div>
                 </template>
               </div>
               <div class="tips text-truncate">
@@ -111,6 +115,18 @@ export default {
         let _price = hour_price
         if (this.isPackage && this.durationNum) {
           _price = parseFloat(month_price) * this.durationNum
+        }
+        return _price * parseFloat(__count__)
+      }
+      return null
+    },
+    originPrice () {
+      const { __count__ = 1 } = this.values
+      if (__count__ && this.priceTotal) {
+        const { month_gross_price, hour_gross_price } = this.priceTotal
+        let _price = hour_gross_price
+        if (this.isPackage && this.durationNum) {
+          _price = parseFloat(month_gross_price) * this.durationNum
         }
         return _price * parseFloat(__count__)
       }
