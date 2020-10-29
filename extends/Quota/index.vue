@@ -8,8 +8,10 @@
         </div>
       </div>
       <div class="dashboard-card-body d-flex flex-column">
-        <div class="flex-fill">
-          <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
+        <div class="flex-fill position-relative">
+          <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0;">
+            <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
+          </div>
         </div>
         <div class="flex-shrink-0 flex-grow-0">
           <vxe-pager
