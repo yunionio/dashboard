@@ -19,7 +19,7 @@ import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
-import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import { changeToArr } from '@/utils/utils'
 
@@ -218,6 +218,9 @@ export default {
                   })
                 },
               },
+              disableDeleteAction(this, {
+                name: this.$t('dictionary.loadbalancer'),
+              }),
               {
                 label: this.$t('network.text_131'),
                 permission: 'lb_loadbalancers_delete',
