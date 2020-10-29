@@ -83,6 +83,10 @@
       </a-form-item>
       <a-collapse :bordered="false"  v-if="show">
         <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
+          <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="form.fd.server_type === 'eip'">
+            <a-input v-decorator="decorators.bgp_type" />
+            <span slot="extra">{{$t('network.text_744')}}</span>
+          </a-form-item>
           <a-form-item v-bind="formItemLayout">
             <span slot="label">{{$t('network.text_583')}}</span>
             <a-radio-group v-decorator="decorators.alloc_policy">
@@ -350,6 +354,9 @@ export default {
         is_auto_alloc: ['is_auto_alloc', {
           valuePropName: 'checked',
         }],
+        bgp_type: [
+          'bgp_type',
+        ],
       },
       serverTypeOpts: [
         { label: this.$t('network.text_226'), key: 'guest' },
