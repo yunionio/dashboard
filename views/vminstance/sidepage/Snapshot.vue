@@ -1,14 +1,15 @@
 <template>
   <div>
     <a-tabs :defaultActiveKey="currentComponent" @change="callback" :animated="false">
-      <a-tab-pane v-for="obj in tabs" :key="obj.key" :tab="obj.label">
-        <div class="mt-2">
-          <keep-alive>
-            <component v-if="obj.key === currentComponent" :is="currentComponent" :getParams="getParams" />
-          </keep-alive>
-        </div>
-      </a-tab-pane>
+      <template v-for="obj of tabs">
+        <a-tab-pane :tab="obj.label" :key="obj.key" />
+      </template>
     </a-tabs>
+    <div class="mt-2">
+      <keep-alive>
+        <component :is="currentComponent" :getParams="getParams" />
+      </keep-alive>
+    </div>
   </div>
 </template>
 
