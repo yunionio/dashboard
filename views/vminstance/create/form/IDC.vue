@@ -328,7 +328,7 @@ export default {
     },
     systemdiskSizeDisabled () {
       if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
-        const vmLocalImageType = [IMAGES_TYPE_MAP.standard.key, IMAGES_TYPE_MAP.customize.key]
+        const vmLocalImageType = [IMAGES_TYPE_MAP.vmware.key]
         if (vmLocalImageType.includes(this.form.fd.imageType)) {
           return true
         }
