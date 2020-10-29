@@ -530,5 +530,19 @@
   "cloudenv.text_495": "Is suitable",
   "cloudenv.text_496": "Index",
   "cloudenv.text_497": "Delete historical billing data",
-  "cloudenv.text_498": "Cloud account"
+  "cloudenv.text_498": "Cloud account",
+  "cloudenv.text_499": "If you fill in 10%, the cost after discount = original price* (1-10%)",
+  "cloudaccount": {
+    "table": {
+      "action": {
+        "set_discount": "Set discount"
+      },
+      "title": {
+        "discount": "Discount"
+      }
+    },
+    "validate": {
+      "discount": "Please set discount"
+    }
+  }
 }
