@@ -227,7 +227,7 @@ export const tableColumnMaps = {
     field: 'vm_ip',
   },
   host: {
-    title: i18n.t('dictionary.host'),
+    title: i18n.t('common.name'),
     field: 'host',
   },
   path: {
@@ -235,7 +235,7 @@ export const tableColumnMaps = {
     field: 'path',
   },
   host_ip: {
-    title: `${i18n.t('dictionary.host')}IP`,
+    title: 'IP',
     field: 'host_ip',
   },
   cloudaccount_name: {
