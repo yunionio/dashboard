@@ -68,14 +68,26 @@ export default {
             }
           },
         },
+        filter: true,
         mapper: (data, originData) => {
-          const newData = get(originData, '_i18n.action', []).map((item, idx) => {
-            return {
-              key: originData.action[idx],
-              label: item,
+          const i18n = originData._i18n.action
+          const keys = originData.action
+
+          const obj = {}
+
+          for (let i = 0, len = i18n.length; i < len; i++) {
+            const label = i18n[i]
+            const key = keys[i]
+            if (obj[label]) {
+              obj[label].push(key)
+            } else {
+              obj[label] = [key]
             }
-          })
-          return newData
+          }
+          return Object.keys(obj).filter(item => !!item).map((item) => ({ label: item, key: obj[item].join('","') }))
+        },
+        formatter: val => {
+          return `action.in("${val}")`
         },
       },
     }
