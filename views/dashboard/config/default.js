@@ -447,7 +447,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_160'),
-          usage_key: 'servers',
+          usage_key: 'domain.servers.any_pool',
         },
       },
       {
@@ -816,7 +816,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_160'),
-          usage_key: 'servers',
+          usage_key: 'servers.any_pool',
         },
       },
       {
