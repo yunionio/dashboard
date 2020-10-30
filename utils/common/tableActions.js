@@ -6,7 +6,7 @@ function getSelectedData (row, vm) {
 }
 
 export function disableDeleteAction (params = {}, dialogParams = {}) {
-  const { name = i18n.t('common_92') } = dialogParams
+  const { name = i18n.t('common_92'), hidden } = dialogParams
   const { list, onManager, columns, createDialog, ...optionParams } = params
   const getData = (row) => row ? [row] : list.selectedItems
   const options = {
@@ -26,6 +26,7 @@ export function disableDeleteAction (params = {}, dialogParams = {}) {
         tooltip: !validate && i18n.t('common_278', [name]),
       }
     },
+    hidden,
     ...optionParams,
   }
   return options
