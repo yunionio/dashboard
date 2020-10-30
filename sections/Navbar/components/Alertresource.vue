@@ -60,7 +60,6 @@ export default {
   height: 100%;
   cursor: pointer;
   text-decoration: none;
-  background: url('../')
 }
 .alertresource-icon {
   font-size: 24px;
