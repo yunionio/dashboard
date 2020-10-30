@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_21')" />
+    <page-header :title="$t('k8s.text_411')" />
     <page-body>
       <k8snode-list :id="listId" :getParams="getParams" />
     </page-body>

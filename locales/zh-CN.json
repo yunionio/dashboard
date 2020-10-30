@@ -408,5 +408,6 @@
   "k8s.text_407": "请确保在服务组件-cephCSI中已创建了ceph集群，没有ceph集群？可以前往",
   "k8s.text_408": "新建ceph集群",
   "k8s.text_409": "资源名称",
-  "k8s.text_410": "隐藏IP"
+  "k8s.text_410": "隐藏IP",
+  "k8s.text_411": "节点(Nodes)"
 }
