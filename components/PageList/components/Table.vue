@@ -99,6 +99,7 @@ export default {
     },
     noDataText: String,
     showPage: Boolean,
+    beforeShowMenuLoaded: Boolean,
   },
   data () {
     return {
@@ -211,6 +212,16 @@ export default {
         })
       }
     },
+    beforeShowMenuLoaded (val, oldVal) {
+      if (!R.equals(val, oldVal)) {
+        this.$nextTick(() => {
+          this.tableWidth = 'auto'
+          this.$nextTick(() => {
+            this.tableColumns = this.genTableColumns()
+          })
+        })
+      }
+    },
     // 如果切换二级菜单显示隐藏后，重新计算表格宽度
     l2MenuVisibleForStore () {
       this.$nextTick(() => {
@@ -272,7 +283,7 @@ export default {
       } else if (this.radioEnabled) {
         defaultColumns.unshift({ type: 'radio', width: 40, showHeaderOverflow: false })
       }
-      if (this.showSingleActions && this.singleActions && this.singleActions.length) {
+      if (this.beforeShowMenuLoaded && this.showSingleActions && this.singleActions && this.singleActions.length) {
         defaultColumns.push({
           field: '_action',
           title: this.$t('table.title._action'),

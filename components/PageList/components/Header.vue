@@ -1,6 +1,6 @@
 <template>
   <page-toolbar>
-    <div class="mb-2 d-flex" v-if="showGroupActions">
+    <div class="mb-2 d-flex" v-if="showGroupActions && beforeShowMenuLoaded">
       <div class="d-flex flex-fill">
         <!-- 刷新 -->
         <a-button
@@ -124,6 +124,9 @@ export default {
     fetchDistinctField: {
       type: Function,
       required: true,
+    },
+    beforeShowMenuLoaded: {
+      type: Boolean,
     },
   },
   computed: {
