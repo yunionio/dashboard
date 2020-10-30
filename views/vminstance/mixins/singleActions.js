@@ -146,6 +146,7 @@ export default {
           ret = this.$isValidateResourceLock(obj)
           return ret
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_web_console'),
       },
       {
         label: i18n.t('compute.text_352'),
@@ -171,6 +172,7 @@ export default {
                       validate: obj.status === 'ready' && !commonUnabled(obj),
                     }
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
                 },
                 {
                   label: i18n.t('compute.text_273'),
@@ -187,6 +189,7 @@ export default {
                       validate: obj.status === 'running' && !commonUnabled(obj),
                     }
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop'),
                 },
                 {
                   label: i18n.t('compute.text_274'),
@@ -203,6 +206,7 @@ export default {
                       validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
                     }
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
                 },
                 {
                   label: i18n.t('compute.text_354'),
@@ -227,6 +231,7 @@ export default {
                       validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
                     }
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_reset'),
                 },
                 {
                   label: i18n.t('compute.text_1128'),
@@ -255,6 +260,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
                 },
                 {
                   label: i18n.t('compute.text_478'),
@@ -283,6 +289,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                 },
                 {
                   label: i18n.t('compute.text_282'),
@@ -304,6 +311,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
                 },
               ],
             },
@@ -326,6 +334,7 @@ export default {
                       tooltip: !isOneCloud && i18n.t('compute.text_355'),
                     }
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_update'),
                 },
                 {
                   label: i18n.t('compute.text_357'),
@@ -347,16 +356,19 @@ export default {
                     ret.tooltip = cloudUnabledTip('rebuildRoot', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_rebuild_root'),
                 },
                 {
                   label: i18n.t('compute.text_1100'),
                   permission: 'server_perform_change_config',
                   action: () => {
-                    this.$router.push({
-                      name: 'VMInstanceAdjustConfig',
-                      query: {
-                        id: obj.id,
-                      },
+                    this.$openNewWindowForMenuHook('vminstance_configured_callback_address.adjust_configuration_callback_address', () => {
+                      this.$router.push({
+                        name: 'VMInstanceAdjustConfig',
+                        query: {
+                          id: obj.id,
+                        },
+                      })
                     })
                   },
                   meta: () => {
@@ -377,6 +389,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('adjustConfig', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_config'),
                 },
                 {
                   label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
@@ -402,15 +415,18 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_owner'),
                 },
                 {
                   label: i18n.t('compute.text_1276'),
                   action: () => {
-                    this.createDialog('VmSnapshotCreateDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                      refresh: this.refresh,
+                    this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_snapshot_callback_address', () => {
+                      this.createDialog('VmSnapshotCreateDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
                     })
                   },
                   meta: () => {
@@ -431,6 +447,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('createSnapshot', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_create_snapshot'),
                 },
                 // {
                 //   label: '加入资源池',
@@ -465,10 +482,12 @@ export default {
                 {
                   label: i18n.t('compute.text_359'),
                   action: () => {
-                    this.createDialog('VmCloneDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
+                    this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_same_configuration_callback_address', () => {
+                      this.createDialog('VmCloneDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
                     })
                   },
                   meta: () => {
@@ -487,6 +506,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_create_same_config'),
                 },
                 {
                   label: i18n.t('compute.text_1112'),
@@ -514,6 +534,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('acttachGpu', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
                 },
                 {
                   label: i18n.t('compute.text_1249'),
@@ -540,6 +561,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_disk_speed'),
                 },
                 {
                   label: i18n.t('compute.text_1132'),
@@ -564,15 +586,18 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire'),
                 },
                 {
                   label: i18n.t('compute.text_1208'),
                   action: () => {
-                    this.createDialog('VmCloneDeepDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                      refresh: this.refresh,
+                    this.$openNewWindowForMenuHook('vminstance_configured_callback_address.host_clone_callback_address', () => {
+                      this.createDialog('VmCloneDeepDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        refresh: this.refresh,
+                      })
                     })
                   },
                   meta: () => {
@@ -595,6 +620,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
                 },
                 {
                   label: i18n.t('compute.text_1181', [i18n.t('dictionary.instancegroup')]),
@@ -627,14 +653,17 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_instancegroup'),
                 },
                 {
                   label: i18n.t('compute.text_1117'),
                   action: () => {
-                    this.createDialog('VmResourceFeeDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
+                    this.$openNewWindowForMenuHook('vminstance_configured_callback_address.renew_callback_address', () => {
+                      this.createDialog('VmResourceFeeDialog', {
+                        data: [obj],
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
                     })
                   },
                   meta: () => {
@@ -656,6 +685,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
                 },
                 {
                   label: i18n.t('compute.text_1120'),
@@ -686,6 +716,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
                 },
                 // {
                 //   label: '保存主机模板',
@@ -727,6 +758,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('resetPassword', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_reset_password'),
                 },
                 {
                   label: i18n.t('compute.text_361'),
@@ -765,6 +797,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('bindKeyPair', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_bind_key'),
                 },
                 {
                   label: i18n.t('compute.text_364'),
@@ -790,6 +823,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('unBindKeyPair', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unbind_key'),
                 },
               ],
             },
@@ -829,6 +863,7 @@ export default {
                     ret.tooltip = commonTip(obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_save_image'),
                 },
                 {
                   label: i18n.t('compute.text_366'),
@@ -858,6 +893,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('insertiso', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_mount_iso'),
                 },
                 {
                   label: i18n.t('compute.text_367'),
@@ -887,6 +923,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('ejectiso', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unmount_iso'),
                 },
               ],
             },
@@ -912,6 +949,7 @@ export default {
                     }
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
                 },
                 {
                   label: i18n.t('compute.text_1179'),
@@ -941,6 +979,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('bindEip', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_bind_elastic_public_ip'),
                 },
                 {
                   label: i18n.t('compute.text_1264'),
@@ -970,6 +1009,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('unbindEip', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unbind_elastic_public_ip'),
                 },
                 {
                   label: i18n.t('compute.text_1121'),
@@ -998,6 +1038,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('publicIpToEip', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_public_ip_to_eip'),
                 },
                 {
                   label: i18n.t('compute.text_1124'),
@@ -1023,6 +1064,7 @@ export default {
                     }
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_source_check'),
                 },
               ],
             },
@@ -1057,6 +1099,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_backup'),
                 },
                 {
                   label: i18n.t('compute.text_1209'),
@@ -1085,6 +1128,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete_backup'),
                 },
                 {
                   label: i18n.t('compute.text_1127'),
@@ -1119,6 +1163,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('transfer', obj)
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                 },
               ],
             },
@@ -1127,23 +1172,27 @@ export default {
               submenus: [
                 disableDeleteAction(this, {
                   name: this.$t('dictionary.server'),
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
                 }),
                 {
                   label: i18n.t('compute.text_261'),
                   permission: 'server_delete',
                   action: () => {
-                    this.createDialog('DeleteVmDialog', {
-                      vm: this,
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                      title: i18n.t('compute.text_261'),
-                      success: () => {
-                        this.destroySidePages()
-                      },
+                    this.$openNewWindowForMenuHook('vminstance_configured_callback_address.delete_callback_address', () => {
+                      this.createDialog('DeleteVmDialog', {
+                        vm: this,
+                        data: [obj],
+                        columns: this.columns,
+                        onManager: this.onManager,
+                        title: i18n.t('compute.text_261'),
+                        success: () => {
+                          this.destroySidePages()
+                        },
+                      })
                     })
                   },
                   meta: () => this.$getDeleteResult(obj),
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
                 },
               ],
             },
