@@ -1,3 +1,4 @@
+import Strategyallocation from '@Cloudenv/views/strategyallocation'
 import Cloudgroup from '@Cloudenv/views/cloudgroup'
 import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
@@ -11,6 +12,8 @@ import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
 import Policydefinition from '@Cloudenv/views/policydefinition'
+import Strategydefinition from '@Cloudenv/views/strategydefinition'
+import StrategydefinitionCreate from '@Cloudenv/views/strategydefinition/create'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 
@@ -161,6 +164,47 @@ export default {
               name: 'Tag',
               path: '',
               component: Tag,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('cloudenv.text_499'),
+        hidden: () => store.getters.isAdminMode && !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
+      },
+      submenus: [
+        {
+          path: '/strategyallocation',
+          meta: {
+            label: i18n.t('cloudenv.text_500'),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Strategyallocation',
+              path: '',
+              component: Strategyallocation,
+            },
+          ],
+        },
+        {
+          path: '/strategydefinition',
+          meta: {
+            label: i18n.t('cloudenv.text_501'),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Strategydefinition',
+              path: '',
+              component: Strategydefinition,
+            },
+            {
+              name: 'StrategydefinitionCreate',
+              path: 'create',
+              component: StrategydefinitionCreate,
             },
           ],
         },
