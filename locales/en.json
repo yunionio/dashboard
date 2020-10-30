@@ -531,7 +531,7 @@
   "cloudenv.text_496": "Index",
   "cloudenv.text_497": "Delete historical billing data",
   "cloudenv.text_498": "Cloud account",
-  "cloudenv.text_499": "If you fill in 10%, the cost after discount = original price* (1-10%)",
+  "cloudenv.text_499": "The discount rate will not affect the actual billing data, and only use the lowest discount rate of the platform for cost estimation when creating a new resource. For example, fill in 6.5, that is, the discount rate after the cost = original price * 0.65",
   "cloudaccount": {
     "table": {
       "action": {
@@ -543,6 +543,9 @@
     },
     "validate": {
       "discount": "Please set discount"
+    },
+    "tooltip": {
+      "disable_set_discount": "Non-public cloud accounts do not support setting discount rates"
     }
   }
 }
