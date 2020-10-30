@@ -533,7 +533,7 @@
   "cloudenv.text_498": "Cloud account",
   "cloudenv.text_499": "Scheme",
   "cloudenv.text_500": "Strategy allocation",
-  "cloudenv.text_501": "{0}Strategy definition",
+  "cloudenv.text_501": "Strategy definition",
   "cloudenv.text_502": "Policy Type",
   "cloudenv.text_503": "Scope of Application",
   "cloudenv.text_504": "Global",
@@ -591,5 +591,6 @@
   "cloudenv.text_556": "Please fill in the policy content",
   "cloudenv.text_557": "{0}: {1} pcs",
   "cloudenv.text_558": "Set third-party callback address",
-  "cloudenv.text_559": "remote control"
+  "cloudenv.text_559": "remote control",
+  "cloudenv.text_560": "{0} policy definition"
 }

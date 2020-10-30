@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('cloudenv.text_501',[actions[this.$route.query.type]])" />
+    <page-header :title="$t('cloudenv.text_560',[actions[this.$route.query.type]])" />
     <page-body>
       <a-form
         :form="form.fc">
