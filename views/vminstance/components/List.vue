@@ -34,7 +34,6 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { isValidateResourceLock } from '@/utils/validate'
 
 export default {
   name: 'VmInstanceList',
@@ -179,7 +178,7 @@ export default {
             }
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
-            ret = isValidateResourceLock(this.list.selectedItems, () => {
+            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
               ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
               return ret
             })
@@ -203,7 +202,7 @@ export default {
             }
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
-            ret = isValidateResourceLock(this.list.selectedItems, () => {
+            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
               ret.validate = this.list.selectedItems.every(item => item.status === 'running')
               return ret
             })
@@ -227,7 +226,7 @@ export default {
             }
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
-            ret = isValidateResourceLock(this.list.selectedItems, () => {
+            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
               ret.validate = this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
               return ret
             })
@@ -797,7 +796,7 @@ export default {
             }
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
-            ret = isValidateResourceLock(this.list.selectedItems)
+            ret = this.$isValidateResourceLock(this.list.selectedItems)
             return ret
           },
         },
