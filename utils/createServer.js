@@ -269,6 +269,15 @@ export const createVmDecorators = type => {
           }],
         },
       ],
+      storage: [
+        'systemDiskStorage',
+        {
+          rules: [{
+            required: true,
+            message: i18n.t('compute.text_1351'),
+          }],
+        },
+      ],
     },
     dataDisk: {
       type: i => [
@@ -692,6 +701,9 @@ export class GenCreateData {
       if (this.fd.systemDiskPolicy && this.fd.systemDiskPolicy) {
         systemDisk.schedtags[0].strategy = this.fd.systemDiskPolicy
       }
+    }
+    if (this.fd.systemDiskStorage) {
+      systemDisk.storage_id = this.form.systemDiskStorage
     }
     const dataDisk = []
     R.forEachObjIndexed((value, key) => {

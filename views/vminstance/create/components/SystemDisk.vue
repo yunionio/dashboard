@@ -9,9 +9,11 @@
       :types-map="typesMap"
       :elements="elements"
       :disabled="disabled"
+      :storageParams="storageParams"
       :schedtagParams="getSchedtagParams()"
       :size-disabled="sizeDisabled || disabled"
-      :storage-status-map="storageStatusMap" />
+      :storage-status-map="storageStatusMap"
+      @showStorageChange="showStorageChange" />
   </div>
 </template>
 
@@ -85,6 +87,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    storageParams: {
+      type: Object,
+    },
   },
   computed: {
     isPublic () {
@@ -115,6 +120,9 @@ export default {
       const ret = ['disk-select']
       if (this.isIDC && !this.isServertemplate) {
         ret.push('schedtag')
+        if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+          ret.push('storage') // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        }
       }
       return ret
     },
@@ -321,6 +329,11 @@ export default {
         }
       }
       return ret
+    },
+    showStorageChange (v) {
+      if (this.form.fi) {
+        this.$set(this.form.fi, 'showStorage', v)
+      }
     },
   },
 }

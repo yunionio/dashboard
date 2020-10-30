@@ -37,9 +37,13 @@
         v-else
         :decorators="{ filetype: decorator.filetype, mountPath: decorator.mountPath }" />
     </template>
-    <template v-if="has('schedtag')">
+    <template v-if="has('schedtag') && !showStorage">
       <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
       <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
+    </template>
+    <template v-if="has('storage') && !showSchedtag">
+      <storage :decorators="decorator" :storageParams="storageParams" v-if="showStorage" />
+      <a-button class="mt-1" type="link" @click="() => showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
     <a-tooltip v-if="storageStatusMap.tooltip">
@@ -53,6 +57,7 @@
 
 <script>
 import * as R from 'ramda'
+import Storage from './components/Storage'
 import { HYPERVISORS_MAP } from '@/constants'
 import SchedtagPolicy from '@/sections/SchedtagPolicy'
 import DiskMountpoint from '@/sections/DiskMountpoint'
@@ -62,6 +67,7 @@ export default {
   components: {
     SchedtagPolicy,
     DiskMountpoint,
+    Storage,
   },
   props: {
     decorator: {
@@ -125,12 +131,16 @@ export default {
       type: Object,
       validator: val => !val || val.fc, // 不传 或者 传就有fc
     },
+    storageParams: {
+      type: Object,
+    },
   },
   data () {
     return {
       showSchedtag: false,
       showMountpoint: false,
       showSnapshot: false,
+      showStorage: false,
       snapshotObj: {},
     }
   },
@@ -156,6 +166,12 @@ export default {
         this.$emit('snapshotChange', size)
       }
     },
+    showStorage (v) {
+      this.$emit('showStorageChange', v)
+    },
+    elements () {
+      this.init()
+    },
   },
   methods: {
     has (element) {
@@ -174,6 +190,13 @@ export default {
     },
     typeChange (val) {
       this.$emit('diskTypeChange', val)
+      this.snapshotObj = {}
+    },
+    init () {
+      this.showSchedtag = false
+      this.showMountpoint = false
+      this.showSnapshot = false
+      this.showStorage = false
       this.snapshotObj = {}
     },
   },
