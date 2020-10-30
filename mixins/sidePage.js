@@ -292,6 +292,7 @@ export default {
       const params = {
         scope: this.$store.getters.scope,
         show_fail_reason: true,
+        show_emulated: true,
         ...this.getOptionParams(),
       }
       return params
