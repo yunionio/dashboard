@@ -25,6 +25,7 @@
       :api-version="apiVersion"
       :update-config="updateConfig"
       :fetch-distinct-field="fetchDistinctField"
+      :before-show-menu-loaded="beforeShowMenuLoaded"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -61,6 +62,7 @@
         :noDataText="noDataText"
         :show-page="showPage"
         :span-method="spanMethod"
+        :before-show-menu-loaded="beforeShowMenuLoaded"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -154,6 +156,10 @@ export default {
     spanMethod: {
       type: Function,
     },
+    // 显示按钮之前要做的事情
+    beforeShowMenu: {
+      type: Function,
+    },
   },
   provide: {
     // 声明在List中
@@ -164,6 +170,11 @@ export default {
     inBaseSidePage: {
       default: false,
     },
+  },
+  data () {
+    return {
+      beforeShowMenuLoaded: R.isNil(this.beforeShowMenu) || R.isEmpty(this.beforeShowMenu),
+    }
   },
   computed: {
     id () {
@@ -232,6 +243,12 @@ export default {
   },
   beforeDestroy () {
     this.list.clearWaitJob()
+  },
+  async created () {
+    if (this.beforeShowMenu) {
+      await this.beforeShowMenu()
+      this.beforeShowMenuLoaded = true
+    }
   },
   methods: {
     async refresh () {

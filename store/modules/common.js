@@ -23,7 +23,7 @@ export default {
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
-      if (!state[name]) state[name] = {}
+      if (!state[name]) Vue.set(state, name, {})
       Vue.set(state, name, { ...state[name], ...data })
     },
     DELETE_OBJECT (state, { name, key }) {
