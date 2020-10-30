@@ -388,7 +388,7 @@
   "compute.text_390": "更换IP",
   "compute.text_391": "私有云、公有云不支持此操作",
   "compute.text_394": "已挂载",
-  "compute.text_395": "待挂载",
+  "compute.text_395": "未挂载",
   "compute.text_396": "介质类型",
   "compute.text_397": "容量",
   "compute.text_398": "格式",
