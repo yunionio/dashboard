@@ -5,7 +5,6 @@ import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip 
 import { SERVER_TYPE } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
-import { isValidateResourceLock } from '@/utils/validate'
 import i18n from '@/locales'
 
 export default {
@@ -144,7 +143,7 @@ export default {
             validate: true,
             tooltip: null,
           }
-          ret = isValidateResourceLock(obj)
+          ret = this.$isValidateResourceLock(obj)
           return ret
         },
       },
@@ -1155,7 +1154,7 @@ export default {
             validate: true,
             tooltip: null,
           }
-          ret = isValidateResourceLock(obj)
+          ret = this.$isValidateResourceLock(obj)
           return ret
         },
       },
