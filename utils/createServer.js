@@ -675,6 +675,9 @@ export class GenCreateData {
     if (item.snapshot_id) {
       ret.snapshot_id = item.snapshot_id
     }
+    if (item.storage_id) {
+      ret.storage_id = item.storage_id
+    }
     return ret
   }
 
@@ -703,7 +706,7 @@ export class GenCreateData {
       }
     }
     if (this.fd.systemDiskStorage) {
-      systemDisk.storage_id = this.form.systemDiskStorage
+      systemDisk.storage_id = this.fd.systemDiskStorage
     }
     const dataDisk = []
     R.forEachObjIndexed((value, key) => {
