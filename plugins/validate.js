@@ -1,8 +1,9 @@
 import Vue from 'vue'
-import validateForm from '@/utils/validate'
+import validateForm, { isValidateResourceLock } from '@/utils/validate'
 
 export default {
   install () {
     Vue.prototype.$validate = validateForm
+    Vue.prototype.$isValidateResourceLock = isValidateResourceLock
   },
 }
