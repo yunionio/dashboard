@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('k8s.text_21')"
+    :title="$t('k8s.text_411')"
     icon="res-k8s-node"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
