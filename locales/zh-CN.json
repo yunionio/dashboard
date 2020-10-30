@@ -531,7 +531,7 @@
   "cloudenv.text_496": "序号",
   "cloudenv.text_497": "同时删除历史账单数据",
   "cloudenv.text_498": "云上操作者",
-  "cloudenv.text_499": "如填写10%，即折扣后费用=原价*（1-10%）",
+  "cloudenv.text_499": "优惠率不会影响实际账单数据，只在新建资源时使用该平台的最低优惠率进行费用估算，如填写6.5，即优惠率后费用=原价*0.65",
   "cloudaccount": {
     "table": {
       "action": {
@@ -543,6 +543,9 @@
     },
     "validate": {
       "discount": "请设置优惠率"
+    },
+    "tooltip": {
+      "disable_set_discount": "非公有云账号不支持设置优惠率"
     }
   }
 }

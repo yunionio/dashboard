@@ -16,6 +16,7 @@ import {
   getPublicScopeTableColumn,
 } from '../utils/columns'
 import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { findPlatform } from '@/utils/common/hypervisor'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -91,9 +92,10 @@ export default {
                   if (!this.discountLoaded) {
                     return [<a-icon type='loading' style='font-size: 12px;' class='primary-color' />]
                   }
-                  return [<span v-discount={ this.discount } />]
+                  return [<span>{ Math.round(this.discount * 100) }%</span>]
                 },
               },
+              hidden: () => findPlatform(this.data.brand.toLowerCase()) !== 'public',
             },
             getBalanceTableColumn(),
             getGuestCountTableColumn(),

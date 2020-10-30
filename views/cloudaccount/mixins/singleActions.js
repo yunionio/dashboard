@@ -3,6 +3,7 @@ import { changeToArr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 const steadyStatus = {
   status: Object.values(expectStatus.cloudaccount).flat(),
@@ -123,6 +124,18 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                 })
+              },
+              meta: () => {
+                const isPublic = findPlatform(obj.brand.toLowerCase()) === 'public'
+                const ret = {
+                  validate: true,
+                }
+                if (!isPublic) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('cloudaccount.tooltip.disable_set_discount')
+                  return ret
+                }
+                return ret
               },
             },
             {
