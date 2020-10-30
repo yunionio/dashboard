@@ -81,7 +81,7 @@ export default {
         {
           this.isShowText
             ? (<a-button type="link" onClick={ this.handleShowFormItem }>
-              设置第三方回调地址
+              { i18n.t('cloudenv.text_558') }
             </a-button>)
             : this.renderFormItem()
         }

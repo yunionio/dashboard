@@ -38,7 +38,7 @@ export default {
             R.forEach((item) => {
               if (item.key === row.category) actionType = item.action
             }, categories)
-            return actionType + ':' + len + i18n.t('cloudenv.text_24')
+            return i18n.t('cloudenv.text_557', [actionType, len])
           },
           content: ({ row }, h) => {
             const ret = []

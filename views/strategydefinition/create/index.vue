@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="actions[this.$route.query.type] + $t('cloudenv.text_501')" />
+    <page-header :title="$t('cloudenv.text_501',[actions[this.$route.query.type]])" />
     <page-body>
       <a-form
         :form="form.fc">
@@ -203,7 +203,7 @@ export default {
           await this.doAssign(data)
         }
         this.loading = false
-        this.$message.success(this.actions[type] + this.$t('cloudenv.text_324'))
+        this.$message.success(this.$t('cloudenv.text_324', [this.actions[type]]))
         this.$router.push('/strategydefinition')
       } catch (error) {
         this.loading = false
