@@ -11,10 +11,12 @@ export default {
       {
         label: i18n.t('compute.text_389'),
         action: (obj) => {
-          this.createDialog('VmChangeBandwidthDialog', {
-            data: [obj],
-            columns: this.columns,
-            refresh: this.refresh,
+          this.$openNewWindowForMenuHook('vminstance_configured_callback_address.modify_bandwidth_callback_address', () => {
+            this.createDialog('VmChangeBandwidthDialog', {
+              data: [obj],
+              columns: this.columns,
+              refresh: this.refresh,
+            })
           })
         },
       },

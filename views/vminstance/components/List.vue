@@ -8,7 +8,8 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :before-show-menu="beforeShowMenu" />
 </template>
 
 <script>
@@ -145,11 +146,13 @@ export default {
           label: this.$t('compute.text_18'),
           permission: 'server_create',
           action: () => {
-            this.$router.push({
-              path: '/vminstance/create',
-              query: {
-                type: this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv || 'idc',
-              },
+            this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_callback_address', () => {
+              this.$router.push({
+                path: '/vminstance/create',
+                query: {
+                  type: this.cloudEnv === 'onpremise' ? 'idc' : this.cloudEnv || 'idc',
+                },
+              })
             })
           },
           meta: () => {
@@ -157,6 +160,7 @@ export default {
               buttonType: 'primary',
             }
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_create'),
         },
         {
           label: this.$t('compute.text_272'),
@@ -184,6 +188,7 @@ export default {
             })
             return ret
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
         },
         {
           label: this.$t('compute.text_273'),
@@ -208,6 +213,7 @@ export default {
             })
             return ret
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop'),
         },
         {
           label: this.$t('compute.text_274'),
@@ -232,6 +238,7 @@ export default {
             })
             return ret
           },
+          hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
         },
         {
           label: this.$t('compute.text_275'),
@@ -271,6 +278,7 @@ export default {
                       ret.validate = true
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
                   },
                   {
                     label: this.$t('compute.text_478'), // 恢复
@@ -302,6 +310,7 @@ export default {
                       ret.validate = true
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                   },
                   {
                     label: this.$t('compute.text_282'),
@@ -313,6 +322,7 @@ export default {
                         },
                       })
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
                   },
                 ],
               },
@@ -336,6 +346,7 @@ export default {
                         tooltip: !isOneCloud && this.$t('compute.text_355'),
                       }
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_update'),
                   },
                   {
                     label: this.$t('compute.text_357'),
@@ -361,16 +372,19 @@ export default {
                       ret.tooltip = this.$t('compute.text_278')
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_rebuild_root'),
                   },
                   {
                     label: this.$t('compute.text_1100'),
                     permission: 'server_perform_change_config',
                     action: () => {
-                      this.$router.push({
-                        name: 'VMInstanceAdjustConfig',
-                        query: {
-                          id: this.list.selectedItems.map((item) => { return item.id }),
-                        },
+                      this.$openNewWindowForMenuHook('vminstance_configured_callback_address.adjust_configuration_callback_address', () => {
+                        this.$router.push({
+                          name: 'VMInstanceAdjustConfig',
+                          query: {
+                            id: this.list.selectedItems.map((item) => { return item.id }),
+                          },
+                        })
                       })
                     },
                     meta: () => {
@@ -415,6 +429,7 @@ export default {
                       ret.tooltip = this.$t('compute.text_278')
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_config'),
                   },
                   {
                     label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
@@ -445,6 +460,7 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_owner'),
                   },
                   {
                     label: this.$t('compute.text_283'),
@@ -498,6 +514,7 @@ export default {
                       ret.validate = true
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire'),
                   },
                   {
                     label: this.$t('compute.text_1112'),
@@ -546,6 +563,7 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
                   },
                   {
                     label: this.$t('compute.text_1117'),
@@ -573,6 +591,7 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
                   },
                   {
                     label: this.$t('compute.text_1120'),
@@ -600,6 +619,7 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
                   },
                 ],
               },
@@ -633,6 +653,7 @@ export default {
                         tooltip: cloudUnabledTip('resetPassword', this.list.selectedItems),
                       }
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_deploy'),
                   },
                 ],
               },
@@ -658,6 +679,7 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
                   },
                   {
                     label: this.$t('compute.text_1121'),
@@ -687,6 +709,7 @@ export default {
                       ret.tooltip = cloudUnabledTip('publicIpToEip', this.list.selectedItems)
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_public_ip_to_eip'),
                   },
                   {
                     label: this.$t('compute.text_1124'),
@@ -714,6 +737,7 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_source_check'),
                   },
                 ],
               },
@@ -763,6 +787,7 @@ export default {
                       }
                       return ret
                     },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                   },
                 ],
               },
@@ -770,20 +795,26 @@ export default {
                 /* 删除 */
                 label: this.$t('compute.text_261'),
                 submenus: [
-                  disableDeleteAction(this, { name: this.$t('dictionary.server') }),
+                  disableDeleteAction(this, {
+                    name: this.$t('dictionary.server'),
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
+                  }),
                   {
                     label: this.$t('compute.text_261'),
                     permission: 'server_delete',
                     action: () => {
-                      this.createDialog('DeleteVmDialog', {
-                        vm: this,
-                        data: this.list.selectedItems,
-                        columns: this.columns,
-                        onManager: this.onManager,
-                        title: this.$t('compute.text_261'),
+                      this.$openNewWindowForMenuHook('vminstance_configured_callback_address.delete_callback_address', () => {
+                        this.createDialog('DeleteVmDialog', {
+                          vm: this,
+                          data: this.list.selectedItems,
+                          columns: this.columns,
+                          onManager: this.onManager,
+                          title: this.$t('compute.text_261'),
+                        })
                       })
                     },
                     meta: () => this.$getDeleteResult(this.list.selectedItems),
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
                   },
                 ],
               },
@@ -885,6 +916,11 @@ export default {
         steadyStatus: Object.values(expectStatus.server).flat(),
       }, {
         list: this.list,
+      })
+    },
+    beforeShowMenu () {
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address'],
       })
     },
   },
