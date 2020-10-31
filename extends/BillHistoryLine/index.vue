@@ -32,6 +32,7 @@ import { load } from '@Dashboard/utils/cache'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { getRequestT } from '@/utils/utils'
 import LineChart from '@/sections/Charts/Line'
+import { getSignature } from '@/utils/crypto'
 
 export default {
   name: 'BillHistoryLine',
@@ -96,6 +97,8 @@ export default {
     async fetchData () {
       this.loading = true
       try {
+        const requestData = this.genQueryData()
+        requestData.signature = getSignature(requestData)
         const data = await load({
           res: 'unifiedmonitors',
           actionArgs: {
@@ -104,7 +107,7 @@ export default {
             params: {
               $t: getRequestT(),
             },
-            data: this.genQueryData(),
+            data: requestData,
           },
           useManager: false,
           resPath: 'data.series[0]',

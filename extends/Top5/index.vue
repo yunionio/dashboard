@@ -87,6 +87,7 @@ import { load } from '@Dashboard/utils/cache'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
+import { getSignature } from '@/utils/crypto'
 
 export default {
   name: 'Top5',
@@ -287,6 +288,8 @@ export default {
       // if (!this.form.fd.brand) return
       this.loading = true
       try {
+        const requestData = this.genQueryData()
+        requestData.signature = getSignature(requestData)
         const data = await load({
           res: 'unifiedmonitors',
           actionArgs: {
@@ -295,7 +298,7 @@ export default {
             params: {
               $t: getRequestT(),
             },
-            data: this.genQueryData(),
+            data: requestData,
           },
           useManager: false,
           resPath: 'data.series[0]',
