@@ -1,7 +1,6 @@
 <template>
   <a-dropdown
     v-model="visible"
-    :disabled="disabled"
     :trigger="['click']"
     @visibleChange="handleVisibleChange">
     <action-button ref="dropdown-button" :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" :button-style="buttonStyle" :button-block="buttonBlock" popover-trigger @clear-selected="clearSelected" />
@@ -78,14 +77,10 @@ export default {
   data () {
     return {
       visible: false,
-      disabled: false,
       options: [],
       // 是否为组模式
       isSubmenus: false,
     }
-  },
-  mounted () {
-    this.disabled = this.$refs['dropdown-button'].disabled
   },
   methods: {
     genOptions () {
@@ -99,6 +94,10 @@ export default {
       this.options = options
     },
     handleVisibleChange (visible) {
+      if (this.$refs['dropdown-button'].disabled) {
+        this.visible = false
+        return
+      }
       if (visible) {
         this.genOptions()
       }
