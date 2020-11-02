@@ -183,7 +183,7 @@ export default {
         return ret
       }
       // q = `SELECT sum(baremetalFee) AS "baremetalFee", sum(gpuFee) AS "gpuFee", sum(serverFee) AS "serverFee" FROM meter_res_fee where time > now() - ${30 * 24}h and time <= now() - 24h AND projectId='${this.userInfo.projectId}' GROUP BY time(24h,-8h)`
-      ret.metric_query.model.tags = [
+      ret.metric_query[0].model.tags = [
         {
           key: 'projectId',
           value: this.userInfo.projectId,
