@@ -2277,7 +2277,8 @@
       "operation": "操作",
       "search": "模糊匹配",
       "local_project": "本地项目",
-      "zone_1_name": "备可用区"
+      "zone_1_name": "备可用区",
+      "mfa_validate": "MFA验证"
     },
     "action": {
       "save": "保存",
@@ -2287,7 +2288,8 @@
       "set_tag": "编辑标签"
     },
     "validate": {
-      "no_share_res_permission": "共享资源，无操作权限"
+      "no_share_res_permission": "共享资源，无操作权限",
+      "mfa": "请输入MFA验证码"
     }
   },
   "sidepage": {

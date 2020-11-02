@@ -2277,7 +2277,8 @@
       "operation": "Operation",
       "search": "Fuzzy matching",
       "local_project": "Local project",
-      "zone_1_name": "Backup Zone"
+      "zone_1_name": "Backup Zone",
+      "mfa_validate": "MFA"
     },
     "action": {
       "save": "Save",
@@ -2287,7 +2288,8 @@
       "set_tag": "Set tags"
     },
     "validate": {
-      "no_share_res_permission": "Shared resource, no operation permission"
+      "no_share_res_permission": "Shared resource, no operation permission",
+      "mfa": "Please enter MFA verification code"
     }
   },
   "sidepage": {
