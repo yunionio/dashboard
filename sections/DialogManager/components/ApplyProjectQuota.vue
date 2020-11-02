@@ -103,9 +103,6 @@ export default {
           case 'storage':
             item.originQuota = item.originQuota * 1024
             break
-          case 'object_gb':
-            item.originQuota = item.originQuota * 1024
-            break
         }
         if (quota[item.key] !== item.originQuota) {
           isChange = true

@@ -266,10 +266,6 @@ export default {
             total = total / 1024
             usage = usage / 1024
           }
-          if (key === 'object_gb') {
-            total = total / 1024
-            usage = usage / 1024
-          }
           quotaData[`usage.${key}`] = usage
           quotaData[`${key}`] = total
           const remaining = total - usage
@@ -309,10 +305,6 @@ export default {
             total = total / 1024
             usage = usage / 1024
           }
-          if (key === 'object_gb') {
-            total = total / 1024
-            usage = usage / 1024
-          }
           quotaData[`usage.${key}`] = usage
           quotaData[`${key}`] = total
           const remaining = total - usage
@@ -345,7 +337,7 @@ export default {
       params.eip = this.quota.eip
       params.snapshot = this.quota.snapshot
       params.object_cnt = this.quota.object_cnt
-      params.object_gb = this.quota.object_gb * 1024
+      params.object_gb = this.quota.object_gb
       params.rds = this.quota.rds
       params.secgroup = this.quota.secgroup
       params.cache = this.quota.cache
