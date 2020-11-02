@@ -239,9 +239,14 @@ export default {
             ]
           },
           meta: () => {
-            return {
-              validate: !!this.list.selectedItems.length,
+            let ret = {
+              validate: true,
+              tooltip: null,
             }
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = this.$isValidateResourceLock(this.list.selectedItems)
+            return ret
           },
         },
       ]
