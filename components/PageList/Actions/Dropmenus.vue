@@ -4,7 +4,7 @@
     :disabled="disabled"
     :trigger="['click']"
     @visibleChange="handleVisibleChange">
-    <action-button ref="wrapBtn" :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" :button-style="buttonStyle" :button-block="buttonBlock" popover-trigger @clear-selected="clearSelected" />
+    <action-button ref="dropdown-button" :class="{ 'ml-2': group }" :button-size="buttonSize" :row="row" :item="item" :button-type="buttonType" :button-style="buttonStyle" :button-block="buttonBlock" popover-trigger @clear-selected="clearSelected" />
     <a-menu slot="overlay">
       <template v-if="!isSubmenus">
         <template v-for="item of options">
@@ -45,7 +45,6 @@
 <script>
 import * as R from 'ramda'
 import ActionButton from './ActionButton'
-import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'PageListDropmenus',
@@ -79,27 +78,14 @@ export default {
   data () {
     return {
       visible: false,
+      disabled: false,
       options: [],
       // 是否为组模式
       isSubmenus: false,
     }
   },
-  computed: {
-    meta () {
-      const { validate = true, ...rest } = R.is(Function, this.item.meta) ? this.item.meta(this.row) : {}
-      return {
-        validate,
-        ...rest,
-      }
-    },
-    disabled () {
-      const isValidate = this.meta.validate
-      let isPermission = true
-      if (this.item.permission) {
-        isPermission = hasPermission({ key: this.item.permission, resourceData: this.row })
-      }
-      return !isValidate || !isPermission
-    },
+  mounted () {
+    this.disabled = this.$refs['dropdown-button'].disabled
   },
   methods: {
     genOptions () {
@@ -113,10 +99,6 @@ export default {
       this.options = options
     },
     handleVisibleChange (visible) {
-      // if (this.$ref.wrapBtn.disabled) {
-      //   this.visible = false
-      //   return
-      // }
       if (visible) {
         this.genOptions()
       }
