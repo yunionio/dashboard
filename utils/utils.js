@@ -221,9 +221,9 @@ export const arrToObjByKey = (arr, key, cb) => {
  * @param {Array} series.values 二维数组，表示每列的数据
  */
 export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { // 单位自动缩进
-  let { values } = series
+  let points = series.points
   let unit = 'b'
-  const deleteTimeValues = values.map(arr => arr.slice(1))
+  const deleteTimeValues = points.map(arr => arr.slice(0, 1))
   let valueArr = deleteTimeValues.reduce((a, b) => a.concat(b))
   valueArr = valueArr.filter(val => val) // 过滤掉 0
   const maxValue = Math.max.apply(null, valueArr)
@@ -234,7 +234,7 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
     scaleIndex = scaleIndex || UNITS[UNITS.length - 1]
     scaleIndex = scaleIndex < 0 ? 0 : scaleIndex
     const scale = Math.pow(base, scaleIndex)
-    values = values.map(arr => {
+    points = points.map(arr => {
       return arr.map((item, i) => {
         if (i === 0) { // time
           return item
@@ -251,7 +251,7 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
   if (sourceUnit === 'bps') unit += '/s'
   return { // 主要作用是 改变 values(单位缩进), 加入当前单位 unit
     ...series,
-    values,
+    points,
     unit,
   }
 }
