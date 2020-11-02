@@ -334,6 +334,10 @@ export default {
       if (this.form.fi) {
         this.$set(this.form.fi, 'showStorage', v)
       }
+      const decoratorKey = _.get(this.decorator, 'systemDisk.storage[0]') || 'systemDiskStorage'
+      if (!v) {
+        this.$set(this.form.fd, decoratorKey, undefined)
+      }
     },
   },
 }

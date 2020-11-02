@@ -169,8 +169,8 @@ export default {
     showStorage (v) {
       this.$emit('showStorageChange', v)
     },
-    elements () {
-      this.init()
+    elements (val, oldV) {
+      if (!R.equals(val, oldV)) this.init()
     },
   },
   methods: {

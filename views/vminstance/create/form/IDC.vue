@@ -272,28 +272,35 @@ export default {
     policyHostParams () {
       const zone = _.get(this.form.fd, 'zone.key')
       if (zone) {
-        const parmas = {
+        const params = {
           enabled: 1,
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
           ...this.scopeParams,
         }
-        if (parmas.hypervisor === HYPERVISORS_MAP.esxi.key) {
-          parmas.cloudprovider = this.form.fd.prefer_manager
+        if (params.hypervisor === HYPERVISORS_MAP.esxi.key) {
+          if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
+            params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+          }
+          params.cloudprovider = this.form.fd.prefer_manager
         }
-        return parmas
+        return params
       }
       return {}
     },
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
-      return {
+      const params = {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fd[this.decorators.systemDisk.storage[0]]) {
+        params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+      }
+      return params
     },
     instanceSpecParmas () {
       return {
