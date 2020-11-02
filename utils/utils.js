@@ -223,7 +223,8 @@ export const arrToObjByKey = (arr, key, cb) => {
 export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { // 单位自动缩进
   let points = series.points
   let unit = 'b'
-  const deleteTimeValues = points.map(arr => arr.slice(0, 1))
+  const timeColumnIndex = series.columns.findIndex(val => val === 'time') || 1
+  const deleteTimeValues = points.map(arr => arr.slice(0, timeColumnIndex))
   let valueArr = deleteTimeValues.reduce((a, b) => a.concat(b))
   valueArr = valueArr.filter(val => val) // 过滤掉 0
   const maxValue = Math.max.apply(null, valueArr)
@@ -236,7 +237,7 @@ export const autoComputeUnit = (series, sourceUnit = 'bps', base = 1000) => { //
     const scale = Math.pow(base, scaleIndex)
     points = points.map(arr => {
       return arr.map((item, i) => {
-        if (i === 0) { // time
+        if (i === timeColumnIndex) { // time
           return item
         }
         return item / scale
