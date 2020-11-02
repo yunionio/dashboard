@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="beforeShowMenuLoaded">
     <template v-for="item of options">
       <!-- 一组操作，下拉形式展示 -->
       <template v-if="item.actions">
@@ -68,10 +68,20 @@ export default {
     buttonBlock: {
       type: Boolean,
     },
+    beforeShowMenu: {
+      type: Function,
+    },
   },
   data () {
     return {
       hidden: false,
+      beforeShowMenuLoaded: R.isNil(this.beforeShowMenu) || R.isEmpty(this.beforeShowMenu),
+    }
+  },
+  async created () {
+    if (this.beforeShowMenu) {
+      await this.beforeShowMenu()
+      this.beforeShowMenuLoaded = true
     }
   },
   methods: {
