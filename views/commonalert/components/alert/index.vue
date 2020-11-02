@@ -39,6 +39,7 @@ import MonitorLine from '@Monitor/sections/MonitorLine'
 import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
 import { timeOpts } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
+import { getSignature } from '@/utils/crypto'
 
 export default {
   name: 'Commonalert',
@@ -256,6 +257,7 @@ export default {
         }
         if (!data.metric_query || !data.from || !_.get(data.metric_query, '[0].model.measurement') || !_.get(data.metric_query, '[0].model.select')) return
         this.chartLoading = true
+        data.signature = getSignature(data)
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
         this.series = []
         this.$nextTick(_ => {
