@@ -63,7 +63,7 @@ export default {
           bandwidth: [
             'bandwidth',
             {
-              initialValue: 1,
+              initialValue: 30,
               validateFirst: true,
             },
           ],

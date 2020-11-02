@@ -533,7 +533,7 @@ export const createVmDecorators = type => {
       bandwidth: [
         'eip_bw',
         {
-          initialValue: 1,
+          initialValue: 30,
         },
       ],
       eip: [
