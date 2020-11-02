@@ -10,9 +10,9 @@
         <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
       </a-form-item>
       <a-form-item :label="$t('db.text_60')">
-        <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.serverName')" />
+        <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.resourceCreateName')" />
         <template #extra>
-          <name-repeated res="elasticcaches" :name="form.getFieldValue('generate_name')" />
+          <name-repeated res="dbinstances" :name="form.getFieldValue('generate_name')" />
         </template>
       </a-form-item>
       <!-- 计费方式 -->
@@ -38,7 +38,7 @@
       <item-network ref="REF_NETWORK" />
       <!-- 安全组 -->
       <a-form-item v-if="form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
-        <secgroup-config :max="5" :decorators="decorators.secgroup" />
+        <secgroup-config :max="5" :decorators="decorators.secgroup" :secgroup-params="secgroupParams" />
       </a-form-item>
       <bottom-bar :values="form.fc.getFieldsValue()" />
     </a-form>
@@ -94,11 +94,20 @@ export default {
         },
       },
       decorators: DECORATORS,
-      scopeParams: {
-        scope: this.$store.getters.scope,
-        project_domain: '',
-      },
     }
+  },
+  computed: {
+    secgroupParams () {
+      return this.scopeParams
+    },
+    scopeParams () {
+      if (this.$store.getters.isAdminMode) {
+        return {
+          project_domain: this.project_domain,
+        }
+      }
+      return { scope: this.$store.getters.scope }
+    },
   },
 }
 </script>

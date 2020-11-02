@@ -137,7 +137,7 @@ export const DECORATORS = {
       validateFirst: true,
       rules: [
         { required: true, message: i18n.t('db.text_136') },
-        { validator: validateForm('serverName') },
+        { validator: validateForm('resourceCreateName') },
       ],
     },
   ],
