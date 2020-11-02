@@ -140,6 +140,14 @@ export default {
           })
           return ret
         },
+        meta: (obj) => {
+          let ret = {
+            validate: true,
+            tooltip: null,
+          }
+          ret = this.$isValidateResourceLock(obj)
+          return ret
+        },
       },
       {
         label: i18n.t('compute.text_352'),
@@ -480,6 +488,14 @@ export default {
               ],
             },
           ]
+        },
+        meta: (obj) => {
+          let ret = {
+            validate: true,
+            tooltip: null,
+          }
+          ret = this.$isValidateResourceLock(obj)
+          return ret
         },
       },
     ]

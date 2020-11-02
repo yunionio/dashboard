@@ -127,11 +127,16 @@ export default {
             })
           },
           meta: () => {
-            const ret = {
-              validate: false,
+            let ret = {
+              validate: true,
               tooltip: null,
             }
-            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => item.status === 'ready')
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
+              ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
+              return ret
+            })
             return ret
           },
         },
@@ -146,11 +151,16 @@ export default {
             })
           },
           meta: () => {
-            const ret = {
-              validate: false,
+            let ret = {
+              validate: true,
               tooltip: null,
             }
-            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => item.status === 'running')
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
+              ret.validate = this.list.selectedItems.every(item => item.status === 'running')
+              return ret
+            })
             return ret
           },
         },
@@ -165,11 +175,16 @@ export default {
             })
           },
           meta: () => {
-            const ret = {
-              validate: false,
+            let ret = {
+              validate: true,
               tooltip: null,
             }
-            ret.validate = this.list.selectedItems.length > 0 && this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
+              ret.validate = this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
+              return ret
+            })
             return ret
           },
         },
@@ -287,9 +302,14 @@ export default {
             ]
           },
           meta: () => {
-            return {
-              validate: this.list.selected.length,
+            let ret = {
+              validate: true,
+              tooltip: null,
             }
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            ret = this.$isValidateResourceLock(this.list.selectedItems)
+            return ret
           },
         },
       ],
