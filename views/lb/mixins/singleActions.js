@@ -37,9 +37,21 @@ export default {
         ],
         metas: [
           (obj) => {
+            let ret = {
+              validate: true,
+              tooltip: null,
+            }
+            ret = this.$isValidateResourceLock(obj)
+            if (!ret.validate) return ret
             return validateEnabled([obj])
           },
           (obj) => {
+            let ret = {
+              validate: true,
+              tooltip: null,
+            }
+            ret = this.$isValidateResourceLock(obj)
+            if (!ret.validate) return ret
             return validateDisable([obj])
           },
         ],
@@ -85,6 +97,14 @@ export default {
               meta: () => this.$getDeleteResult(obj),
             },
           ]
+        },
+        meta: (obj) => {
+          let ret = {
+            validate: true,
+            tooltip: null,
+          }
+          ret = this.$isValidateResourceLock(obj)
+          return ret
         },
       },
     ]
