@@ -33,6 +33,7 @@ import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
 import { timeOpts } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT } from '@/utils/utils'
+import { getSignature } from '@/utils/crypto'
 
 export default {
   name: 'ExplorerIndex',
@@ -151,6 +152,7 @@ export default {
           ...this.timeRangeParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
+        data.signature = getSignature(data)
         const { data: resdata } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
         return resdata
       } catch (error) {
