@@ -40,7 +40,7 @@ export default {
         getAssociateNameTableColumn(this),
         {
           field: 'ip_addr',
-          title: this.$t('network.text_213'),
+          title: 'IP',
         },
         {
           field: 'bandwidth',
