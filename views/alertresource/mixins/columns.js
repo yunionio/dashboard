@@ -30,7 +30,7 @@ export default {
           },
         },
       },
-      getTagTableColumn({ field: 'tags', ignorePrefix: true, width: 150 }),
+      getTagTableColumn({ field: 'tags', title: this.$t('monitor.text_104'), ignorePrefix: true, width: 150 }),
       {
         field: 'alert_table',
         title: i18n.t('monitor.text_98'),
