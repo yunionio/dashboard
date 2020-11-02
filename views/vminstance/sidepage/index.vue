@@ -12,6 +12,7 @@
       <actions
         :options="singleActions"
         :row="detailData"
+        :before-show-menu="beforeShowMenu"
         button-type="link"
         button-size="small" />
     </template>
@@ -147,6 +148,13 @@ export default {
         'secgroup-list': this.secgroupListActives,
       }
       return _[this.params.windowData.currentTab] || {}
+    },
+  },
+  methods: {
+    beforeShowMenu () {
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address'],
+      })
     },
   },
 }
