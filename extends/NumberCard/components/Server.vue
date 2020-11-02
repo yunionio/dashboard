@@ -123,6 +123,7 @@ export default {
       return ret
     },
     isServersAnypool () {
+      if (!this.params) return false
       return ['all.servers.any_pool', 'domain.servers.any_pool', 'servers.any_pool'].includes(this.params.usage_key)
     },
   },
