@@ -163,7 +163,7 @@ export default {
           params,
         })
         const { data: { data = [] } } = response
-        data.unshift({ id: 'any_domain_id', name: this.$t('common_95') })
+        data.unshift({ id: '[any_domain_id]', name: this.$t('common_95') })
         this.domains = data
         this.domainLoaded = true
       } catch (error) {
@@ -192,14 +192,14 @@ export default {
     },
     // 全部与选择项互斥交互
     handleHasAllSelect (val, field) {
-      if (val === 'any_domain_id') {
+      if (val === '[any_domain_id]') {
         this.form.fc.setFieldsValue({
-          [field]: ['any_domain_id'],
+          [field]: ['[any_domain_id]'],
         })
         return
       }
       const newVal = [...this.form.fc.getFieldValue(field)]
-      const allIndex = newVal.indexOf('any_domain_id')
+      const allIndex = newVal.indexOf('[any_domain_id]')
       const valIndex = newVal.indexOf(val)
       if (valIndex === -1) {
         newVal.push(val)
