@@ -2,7 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :group-actions="groupActions" />
 </template>
 
 <script>
@@ -33,6 +34,29 @@ export default {
           name: getNameFilter({ field: 'policy_name' }),
         },
       }),
+      groupActions: [
+        {
+          label: this.$t('cloudenv.text_108'),
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('cloudenv.text_108'),
+              name: this.$t('dictionary.strategyallocation'),
+              onManager: this.onManager,
+              success: () => {
+                window.location.reload()
+              },
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.allowDelete(),
+            }
+          },
+        },
+      ],
     }
   },
   created () {
