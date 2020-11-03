@@ -59,8 +59,8 @@ export default {
             { key: '1h', label: i18n.t('common_173') },
           ],
         },
-        [`${7}d`]: {
-          key: `${7}d`,
+        [`${7 * 24}h`]: {
+          key: `${7 * 24}h`,
           label: i18n.t('common_174'),
           timeFormat: 'YYYY-MM-DD HH:mm',
           timeGroupOpts: [
@@ -68,31 +68,31 @@ export default {
             { key: '1h', label: i18n.t('common_173') },
           ],
         },
-        [`${30}d`]: {
-          key: `${30}d`,
+        [`${30 * 24}h`]: {
+          key: `${30 * 24}h`,
           label: i18n.t('common_175'),
           timeFormat: i18n.t('common_176'),
           timeGroupOpts: [
             { key: '6h', label: i18n.t('common_177') },
-            { key: '1d', label: i18n.t('common_178') },
+            { key: '24h', label: i18n.t('common_178') },
           ],
         },
-        [`${30 * 3}d`]: {
-          key: `${30 * 3}d`,
+        [`${30 * 3 * 24}h`]: {
+          key: `${30 * 3 * 24}h`,
           label: i18n.t('common_179'),
           timeFormat: 'YYYY-MM-DD',
           timeGroupOpts: [
-            { key: '1d', label: i18n.t('common_178') },
-            { key: '2d', label: i18n.t('common_180') },
+            { key: '24h', label: i18n.t('common_178') },
+            { key: '48h', label: i18n.t('common_180') },
           ],
         },
-        [`${30 * 6}d`]: {
-          key: `${30 * 6}d`,
+        [`${30 * 6 * 24}h`]: {
+          key: `${30 * 6 * 24}h`,
           label: i18n.t('common_181'),
           timeFormat: 'YYYY-MM-DD',
           timeGroupOpts: [
-            { key: '1d', label: i18n.t('common_178') },
-            { key: '7d', label: i18n.t('common_182') },
+            { key: '24h', label: i18n.t('common_178') },
+            { key: `${7 * 24}h`, label: i18n.t('common_182') },
           ],
         },
       }),

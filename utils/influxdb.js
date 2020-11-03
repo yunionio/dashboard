@@ -6,7 +6,7 @@ import { needLogout } from '@/utils/http'
 const REQUEST_TIMEOUT = 1000 * 60 * 2
 
 const influxdb = axios.create({
-  baseURL: '/query',
+  baseURL: '/unifiedmonitors',
   timeout: REQUEST_TIMEOUT,
 })
 

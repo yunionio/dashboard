@@ -88,7 +88,7 @@ export default {
         const columns = (val.series && val.series.length) ? val.series[0].columns : []
         const rows = []
         val.series.forEach(item => {
-          item.values.forEach(row => {
+          item.points.forEach(row => {
             const rowsItem = {} // eg: { time: '2019-09-01', cpu_usage: 0.7 }
             columns.forEach((column, i) => {
               if (column === 'time') {
@@ -104,13 +104,14 @@ export default {
           })
         })
         const unit = _.get(val.series, '[0].unit') || val.constants.unit || ''
+        const columns1 = columns[0] === 'time' ? columns : columns.reverse() // 确保time是第一列
         return {
           title: val.title,
           constants: val.constants,
           lineConfig: val.lineConfig,
           unit,
           chartData: { // 组成 ve-line 的数据
-            columns, // eg: ['time', 'cpu_usage']
+            columns: columns1, // eg: ['time', 'cpu_usage']
             rows, // [{ time: '2019-09-01', cpu_usage: 0.7 }]
           },
         }
