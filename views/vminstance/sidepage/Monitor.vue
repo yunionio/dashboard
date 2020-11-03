@@ -12,11 +12,11 @@
 import _ from 'lodash'
 import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR } from '@Compute/views/vminstance/constants'
 import { metricItems } from '@Compute/views/node-alert/constants'
-import influxdb from '@/utils/influxdb'
-import { UNITS, autoComputeUnit } from '@/utils/utils'
+import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import { HYPERVISORS_MAP } from '@/constants'
 import WindowsMixin from '@/mixins/windows'
+import { getSignature } from '@/utils/crypto'
 
 export default {
   name: 'VminstanceMonitorSidepage',
@@ -92,9 +92,6 @@ export default {
     serverId () {
       return this.data.id
     },
-    sql () {
-      return `time > now() - ${this.time} AND "vm_id"='${this.serverId}' GROUP BY time(${this.timeGroup}) FILL(none)`
-    },
     hasMemMetric () {
       return this.hypervisor === HYPERVISORS_MAP.esxi.key
     },
@@ -118,14 +115,14 @@ export default {
       for (let idx = 0; idx < this.monitorConstants.length; idx++) {
         const val = this.monitorConstants[idx]
         try {
-          const { data: { results } } = await influxdb.get('', {
-            params: {
-              db: 'telegraf',
-              q: `SELECT mean("${val.seleteItem}") as "${val.label}" FROM "telegraf"."30day_only"."${val.fromItem}" WHERE ${this.sql}`,
-              epoch: 'ms',
-            },
-          })
-          resList.push({ title: val.label, constants: val, ...results[0] })
+          const { data } = await new this.$Manager('unifiedmonitors', 'v1')
+            .performAction({
+              id: 'query',
+              action: '',
+              data: this.genQueryData(val),
+              params: { $t: getRequestT() },
+            })
+          resList.push({ title: val.label, constants: val, series: data.series })
           if (idx === this.monitorConstants.length - 1) {
             this.loading = false
             this.getMonitorList(resList)
@@ -159,6 +156,46 @@ export default {
           constants: result.constants,
         }
       })
+    },
+    genQueryData (val) {
+      const data = {
+        metric_query: [
+          {
+            model: {
+              measurement: val.fromItem,
+              select: [
+                [
+                  {
+                    type: 'field',
+                    params: [val.seleteItem],
+                  },
+                  { // 对应 mean(val.seleteItem)
+                    type: 'mean',
+                    params: [],
+                  },
+                  { // 确保后端返回columns有 val.label 的别名
+                    type: 'alias',
+                    params: [val.label],
+                  },
+                ],
+              ],
+              tags: [
+                {
+                  key: 'vm_id',
+                  value: this.serverId,
+                  operator: '=',
+                },
+              ],
+            },
+          },
+        ],
+        scope: this.$store.getters.scope,
+        from: this.time,
+        interval: this.timeGroup,
+        unit: true,
+      }
+      data.signature = getSignature(data)
+      return data
     },
   },
 }
