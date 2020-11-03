@@ -55,7 +55,7 @@ export default {
     formatSku () {
       if (this.selectedSku) {
         const { name, vmem_size_mb, iops, vcpu_count } = this.selectedSku
-        return this.$t('db.text_122', [name, vcpu_count, sizestr(vmem_size_mb, 'M', 1024), iops])
+        return this.$t('db.text_122', [name, vcpu_count, sizestr(vmem_size_mb, 'M', 1000), iops])
       }
       return ''
     },
@@ -96,7 +96,7 @@ export default {
           minWidth: 200,
           slots: {
             default: ({ row }) => {
-              return sizestr(row.vmem_size_mb, 'M', 1024)
+              return sizestr(row.vmem_size_mb, 'M', 1000)
             },
           },
         },
