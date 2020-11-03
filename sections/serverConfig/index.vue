@@ -2,6 +2,7 @@
   <div>
     <a-card class="mb-2 card" v-for="(item, i) in serverConfigList" :key="item.key">
       <a-button v-if="i !== 0" @click="decrease(item.key, i)" type="link" size="small" class="error-color position-absolute" style="right: 10px; top: 10px;">{{ $t('common.delete') }}</a-button>
+      <slot name="hypervisor" :formItemLayout="formItemLayout" :i="item.key" />
       <a-form-item label="CPU" v-bind="formItemLayout">
         <a-input-number v-decorator="decorator.vcpu_count(item.key)" :formatter="value => $t('k8s.text_119', [value])" :parser="v => parser(v, $t('k8s.text_100'))" :min="4" :max="32" />
       </a-form-item>
@@ -150,7 +151,6 @@ export default {
     parser (val, unit, defaultValue = '4') {
       const value = val.replace(unit, '')
       const valueNum = Number(value)
-      console.log({ val, unit, value, valueNum })
       if (!Number.isNaN(valueNum) && R.is(Number, valueNum)) {
         return value
       }
