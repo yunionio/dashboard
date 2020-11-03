@@ -82,6 +82,7 @@
           :isHostImageType="isHostImageType"
           :disabled="form.fi.sysDiskDisabled"
           :sizeDisabled="systemdiskSizeDisabled"
+          :storageParams="storageParams"
           :domain="project_domain" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
@@ -100,7 +101,9 @@
           :defaultType="form.fd.systemDiskType"
           :domain="project_domain"
           :isWindows="isWindows"
+          :systemStorageShow="systemStorageShow"
           :enableMointpoint="true" />
+        <div slot="extra" class="warning-color" v-if="systemStorageShow">指定块存储后 不再支持 指定调度标签</div>
       </a-form-item>
       <a-form-item :label="$t('compute.text_308')" v-if="!isIso">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
@@ -269,28 +272,35 @@ export default {
     policyHostParams () {
       const zone = _.get(this.form.fd, 'zone.key')
       if (zone) {
-        const parmas = {
+        const params = {
           enabled: 1,
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
           ...this.scopeParams,
         }
-        if (parmas.hypervisor === HYPERVISORS_MAP.esxi.key) {
-          parmas.cloudprovider = this.form.fd.prefer_manager
+        if (params.hypervisor === HYPERVISORS_MAP.esxi.key) {
+          if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
+            params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+          }
+          params.cloudprovider = this.form.fd.prefer_manager
         }
-        return parmas
+        return params
       }
       return {}
     },
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
-      return {
+      const params = {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fd[this.decorators.systemDisk.storage[0]]) {
+        params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+      }
+      return params
     },
     instanceSpecParmas () {
       return {
@@ -364,6 +374,21 @@ export default {
       }
       return false
     },
+    storageParams () {
+      const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
+      const params = {
+        ...this.scopeParams,
+        usable: true, // 包含了 enable:true, status为online的数据
+        brand: HYPERVISORS_MAP.esxi.brand, // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+      }
+      if (systemDiskType) {
+        params.filter = [`storage_type.contains("${systemDiskType}")`]
+      }
+      return params // !!! 下面的指定宿主机和指定IP子网应该支持根据storage_id过滤
+    },
+    systemStorageShow () { // 系统盘是否开启了指定存储
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fi.showStorage
+    }
   },
   watch: {
     'form.fi.imageMsg': {

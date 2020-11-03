@@ -11,10 +11,10 @@
 <script>
 import _ from 'lodash'
 import { KVM_MONITOR_OPTS, VMWARE_MONITOR_OPTS } from '../constants'
-import influxdb from '@/utils/influxdb'
-import { UNITS, autoComputeUnit } from '@/utils/utils'
+import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
+import { getSignature } from '@/utils/crypto'
 
 export default {
   name: 'VminstanceMonitorSidepage',
@@ -90,42 +90,20 @@ export default {
     this.baywatch(['time', 'timeGroup', 'data.id'], this.fetchDataDebounce)
   },
   methods: {
-    sql (dashboardItem) {
-      const sqlObj = {
-        tag: 'host_id',
-        str: `"host_id" = '${this.hostId}'`,
-        str2: '',
-      }
-      if (dashboardItem.fromItem === 'diskio') {
-        sqlObj.str2 = ', "name"'
-      } else if (dashboardItem.fromItem === 'disk') {
-        sqlObj.str2 = ', "path"'
-      } else {
-        sqlObj.str2 = ''
-      }
-      return `${sqlObj.str} AND time > now() - ${this.time} GROUP BY time(${this.timeGroup}), "${sqlObj.tag}"${sqlObj.str2} FILL(none)`
-    },
     async fetchData () {
       this.loading = true
       const resList = []
       for (let idx = 0; idx < this.monitorConstants.length; idx++) {
         const val = this.monitorConstants[idx]
         try {
-          let meanStr = ''
-          if (val.as) {
-            const asItems = val.as.split(',')
-            meanStr = val.seleteItem.split(',').map((val, i) => `mean("${val}") as "${asItems[i]}"`).join(',')
-          } else {
-            meanStr = val.seleteItem.split(',').map(val => `mean("${val}") as "${val}"`).join(',')
-          }
-          const { data: { results } } = await influxdb.get('', {
-            params: {
-              db: 'telegraf',
-              q: `SELECT ${meanStr} FROM "telegraf"."30day_only"."${val.fromItem}" WHERE ${this.sql(val)}`,
-              epoch: 'ms',
-            },
-          })
-          resList.push({ title: val.label, constants: val, ...results[0] })
+          const { data } = await new this.$Manager('unifiedmonitors', 'v1')
+            .performAction({
+              id: 'query',
+              action: '',
+              data: this.genQueryData(val),
+              params: { $t: getRequestT() },
+            })
+          resList.push({ title: val.label, constants: val, series: data.series })
           if (idx === this.monitorConstants.length - 1) {
             this.loading = false
             this.getMonitorList(resList)
@@ -152,33 +130,10 @@ export default {
         },
       }
       this.monitorList = resList.map(result => {
-        const { unit, transfer, fromItem } = result.constants
+        const { unit, transfer } = result.constants
         const isSizestrUnit = UNITS.includes(unit)
         let series = result.series
         if (!series) series = []
-        if (series.length && (fromItem === 'disk' || fromItem === 'diskio')) { // 这里会把不同路径下的磁盘监控信息都返回，在这里整理一下
-          let tag = 'name'
-          let label = ''
-          if (fromItem === 'disk') {
-            tag = 'path'
-            label = this.$t('compute.text_601')
-          }
-          const columns = ['time']
-          const values = series[0].values.map(val => [val[0]])
-          series.forEach(val => {
-            columns.push(`${label}${val.tags[tag]}`)
-            for (let i = 0; i < values.length; i++) {
-              const noTimeValues = val.values[i].slice(1)
-              values[i].push(...noTimeValues)
-            }
-          })
-          series = [{
-            name: series[0].name,
-            columns, // ['time', '/', '/opt', '/opt/test']
-            values,
-            lineConfig,
-          }]
-        }
         if (isSizestrUnit || unit === 'bps') {
           series = series.map(serie => {
             return autoComputeUnit(serie, unit, transfer)
@@ -191,6 +146,68 @@ export default {
           lineConfig,
         }
       })
+    },
+    genQueryData (val) {
+      let select = []
+      if (val.as) {
+        const asItems = val.as.split(',')
+        select = val.seleteItem.split(',').map((val, i) => {
+          return [
+            {
+              type: 'field',
+              params: [val],
+            },
+            { // 对应 mean(val.seleteItem)
+              type: 'mean',
+              params: [],
+            },
+            { // 确保后端返回columns有 val.label 的别名
+              type: 'alias',
+              params: [asItems[i]],
+            },
+          ]
+        })
+      } else {
+        select = val.seleteItem.split(',').map((val, i) => {
+          return [
+            {
+              type: 'field',
+              params: [val],
+            },
+            { // 对应 mean(val.seleteItem)
+              type: 'mean',
+              params: [],
+            },
+            { // 确保后端返回columns有 val.label 的别名
+              type: 'alias',
+              params: [val],
+            },
+          ]
+        })
+      }
+      const data = {
+        metric_query: [
+          {
+            model: {
+              measurement: val.fromItem,
+              select,
+              tags: [
+                {
+                  key: 'host_id',
+                  value: this.hostId,
+                  operator: '=',
+                },
+              ],
+            },
+          },
+        ],
+        scope: this.$store.getters.scope,
+        from: this.time,
+        interval: this.timeGroup,
+        unit: true,
+      }
+      data.signature = getSignature(data)
+      return data
     },
   },
 }
