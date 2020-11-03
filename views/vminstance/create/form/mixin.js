@@ -354,6 +354,7 @@ export default {
           this.$router.push('/workflow')
         })
         .catch((error) => {
+          this.submiting = false
           throw error
         })
     },
