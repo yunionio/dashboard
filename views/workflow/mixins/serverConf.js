@@ -11,10 +11,10 @@ export default {
         const serverParam = JSON.parse(this.data.variables['server-create-paramter'] || this.data.variables.paramter || '{}')
         const skuInfo = await this.getSkuInfo(serverParam.sku)
         this.detailsData.skuInfo = skuInfo.data.data[0] || {}
-        const regionInfo = await this.getRegionInfo(serverParam.prefer_region)
+        const regionInfo = await this.getRegionInfo(serverParam.prefer_region || serverParam.prefer_region_id)
         this.detailsData.regionInfo = regionInfo.data || {}
-        if (serverParam.prefer_zone) {
-          const zoneInfo = await this.getZoneInfo(serverParam.prefer_zone)
+        if (serverParam.prefer_zone || serverParam.prefer_zone_id) {
+          const zoneInfo = await this.getZoneInfo(serverParam.prefer_zone || serverParam.prefer_zone_id)
           this.detailsData.zoneInfo = zoneInfo.data || {}
         }
       } catch (error) {
@@ -137,7 +137,7 @@ export default {
               title: i18n.t('table.title.owner_project'),
               formatter: ({ cellValue, row }) => {
                 const v = this.variables
-                const domain = v.project_domian
+                const domain = v.project_domain
                 const project = v.project_name || v.project
                 if (!project) return '-'
                 return `${domain}/${project}`

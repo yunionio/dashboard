@@ -137,8 +137,8 @@ export default {
         this.initProjectInfo()
         break
       case WORKFLOW_TYPES.APPLY_SERVER_DELETE:
-        this.initDeleteServerInfo()
-        this.getDeleteServerData(that.variables.ids)
+        await this.getDeleteServerData(that.variables.ids)
+        await this.initDeleteServerInfo()
         break
     }
     if (this.isDomainMode || this.isAdminMode) {
