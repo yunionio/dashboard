@@ -5,7 +5,8 @@
     :isEditName="false"
     :data="data"
     :onManager="onManager"
-    :base-info="baseInfo" />
+    :base-info="baseInfo"
+    :nameProps="{ field: 'policy_name' }" />
 </template>
 
 <script>
