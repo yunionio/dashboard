@@ -58,7 +58,7 @@ export default {
             ret = i18n.t('cloudenv.text_505', [row.project_domain])
           }
           if (row.project) {
-            ret += i18n.t('cloudenv.text_506', [row.project])
+            ret = i18n.t('cloudenv.text_506', [row.project])
           }
           return ret
         },

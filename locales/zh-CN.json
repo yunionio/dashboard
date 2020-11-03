@@ -538,7 +538,7 @@
   "cloudenv.text_503": "应用范围",
   "cloudenv.text_504": "全局",
   "cloudenv.text_505": "域：{0}",
-  "cloudenv.text_506": "，项目：{0}",
+  "cloudenv.text_506": "项目：{0}",
   "cloudenv.text_507": "隐藏虚拟机菜单",
   "cloudenv.text_508": "配置虚拟机操作回调地址",
   "cloudenv.text_509": "隐藏菜单",
