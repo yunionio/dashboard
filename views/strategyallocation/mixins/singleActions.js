@@ -14,7 +14,7 @@ export default {
             name: this.$t('dictionary.strategyallocation'),
             onManager: this.onManager,
             success: () => {
-              this.destroySidePages()
+              window.location.reload()
             },
           })
         },
