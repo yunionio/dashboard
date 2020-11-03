@@ -51,6 +51,24 @@ export default {
             }
           },
         },
+        {
+          label: this.$t('cloudenv.text_108'),
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('cloudenv.text_108'),
+              name: this.$t('dictionary.strategydefinition'),
+              onManager: this.onManager,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.allowDelete(),
+            }
+          },
+        },
       ],
     }
   },

@@ -592,5 +592,8 @@
   "cloudenv.text_557": "{0}: {1} pcs",
   "cloudenv.text_558": "Set third-party callback address",
   "cloudenv.text_559": "remote control",
-  "cloudenv.text_560": "{0} policy definition"
+  "cloudenv.text_560": "{0} policy definition",
+  "cloudenv.text_561": "Add network card",
+  "cloudenv.text_562": "Change IP",
+  "cloudenv.text_563": "Select all"
 }

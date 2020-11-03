@@ -592,5 +592,8 @@
   "cloudenv.text_557": "{0}：{1}个",
   "cloudenv.text_558": "设置第三方回调地址",
   "cloudenv.text_559": "远程控制",
-  "cloudenv.text_560": "{0}策略定义"
+  "cloudenv.text_560": "{0}策略定义",
+  "cloudenv.text_561": "添加网卡",
+  "cloudenv.text_562": "更换IP",
+  "cloudenv.text_563": "全选"
 }
