@@ -172,7 +172,7 @@ export default {
     {
       meta: {
         label: i18n.t('cloudenv.text_499'),
-        hidden: () => store.getters.isAdminMode && !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
+        hidden: () => !store.getters.isAdminMode || !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
       },
       submenus: [
         {
