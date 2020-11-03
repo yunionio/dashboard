@@ -20,7 +20,17 @@
             :decorator="decorators.regionZone" />
         </a-form-item>
         <a-form-item :label="$t('k8s.text_152')" v-bind="formItemLayout">
-          <server-config :decorator="decorators.serverConfig" :network-params="param.network" :form="form" />
+          <server-config :decorator="decorators.serverConfig" :network-params="param.network" :form="form">
+            <template v-slot:hypervisor="slotProps">
+              <a-form-item :label="$t('k8s.text_150')" v-if="hypervisorsC.length" v-bind="slotProps.formItemLayout">
+                <a-radio-group v-decorator="decorators.serverConfig.hypervisor(slotProps.i)">
+                  <a-radio-button v-for="item in hypervisorsC" :key="item.value" :value="item.value">
+                    {{ item.label }}
+                  </a-radio-button>
+                </a-radio-group>
+              </a-form-item>
+            </template>
+          </server-config>
         </a-form-item>
       </a-form>
     </div>
@@ -35,7 +45,7 @@
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import ServerConfig from '@K8S/sections/serverConfig'
-import { KUBE_PROVIDER } from '@K8S/views/cluster/constants'
+import { KUBE_PROVIDER, hyperOpts } from '@K8S/views/cluster/constants'
 import CloudregionZone from '@/sections/CloudregionZone'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
@@ -61,6 +71,7 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const hypervisor = _.get(typeClouds.providerlowcaseMap, '[this.data.provider].hypervisor') || 'kvm'
     return {
       loading: false,
       form: {
@@ -86,7 +97,7 @@ export default {
           capability: {},
         },
         fd: {
-          hypervisor: _.get(typeClouds.providerlowcaseMap, '[this.data.provider].hypervisor') || 'kvm',
+          hypervisor,
         },
       },
       decorators: {
@@ -111,6 +122,15 @@ export default {
           ],
         },
         serverConfig: {
+          hypervisor: i => [
+            `hypervisors[${i}]`,
+            {
+              initialValue: hypervisor,
+              rules: [
+                { required: true, message: this.$t('k8s.text_99') },
+              ],
+            },
+          ],
           vcpu_count: i => [
             `vcpu_count[${i}]`,
             {
@@ -236,6 +256,12 @@ export default {
   },
   computed: {
     ...mapGetters(['scope']),
+    hypervisorsC () {
+      const opts = hyperOpts.filter(item => {
+        return (_.get(this.form.fi, 'capability.hypervisors') || []).find(val => val === item.value.toLowerCase())
+      })
+      return opts
+    },
   },
   created () {
     this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
@@ -286,7 +312,7 @@ export default {
           vm: {
             vcpu_count: data.vcpu_count[key],
             vmem_size: data.vmem_size[key] * 1024,
-            hypervisor: this.form.fd.hypervisor,
+            hypervisor: data.hypervisors[key],
             disks,
             nets: [{ network: data.network[key] }],
           },
