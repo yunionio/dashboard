@@ -257,6 +257,8 @@ export default {
         }
         if (this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_MACHINE)) {
           const variables = {
+            project: this.params.data[0].tenant_id,
+            project_domain: this.params.data[0].domain_id,
             process_definition_key: this.WORKFLOW_TYPES.APPLY_MACHINE,
             initiator: this.userInfo.id,
             'server-create-paramter': JSON.stringify(data),
