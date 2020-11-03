@@ -115,13 +115,13 @@ export default {
       immediate: true,
     },
   },
-  created () {
+  async created () {
     const that = this
     switch (this.proccessDefinitionKey) {
       case WORKFLOW_TYPES.APPLY_MACHINE:
-        this.initServerInfo()
-        this.initPriceInfo()
-        this.getApplyMachineData()
+        await this.getApplyMachineData()
+        await this.initServerInfo()
+        await this.initPriceInfo()
         break
       case WORKFLOW_TYPES.APPLY_SERVER_CHANGECONFIG:
         this.initServerConfigInfo()
@@ -137,8 +137,8 @@ export default {
         this.initProjectInfo()
         break
       case WORKFLOW_TYPES.APPLY_SERVER_DELETE:
-        this.initDeleteServerInfo()
-        this.getDeleteServerData(that.variables.ids)
+        await this.getDeleteServerData(that.variables.ids)
+        await this.initDeleteServerInfo()
         break
     }
     if (this.isDomainMode || this.isAdminMode) {
