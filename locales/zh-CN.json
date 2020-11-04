@@ -2222,7 +2222,9 @@
     "cloudprovider": "@:dictionary.cloudprovider",
     "cloudproviders": "@:dictionary.cloudprovider",
     "wire": "@:dictionary.wire",
-    "wires": "@:dictionary.wire"
+    "wires": "@:dictionary.wire",
+    "policy": "@:dictionary.policy",
+    "policies": "@:dictionary.policy"
   },
   "table": {
     "title": {
@@ -2289,7 +2291,8 @@
       "cacel": "取消",
       "delete": "删除",
       "modify": "修改",
-      "set_tag": "编辑标签"
+      "set_tag": "编辑标签",
+      "clone": "克隆"
     },
     "validate": {
       "no_share_res_permission": "共享资源，无操作权限",
@@ -2396,7 +2399,8 @@
     "prev_step": "上一步",
     "next_step": "下一步",
     "tips": {
-      "select": "请选择{0}"
+      "select": "请选择{0}",
+      "input": "请输入{0}"
     },
     "adv_config": "高级配置"
   },

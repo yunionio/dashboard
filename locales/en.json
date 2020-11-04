@@ -2222,7 +2222,9 @@
     "cloudprovider": "Cloud provider",
     "cloudproviders": "Cloud providers",
     "wire": "Wire",
-    "wires": "Wires"
+    "wires": "Wires",
+    "policy": "Policy",
+    "policies": "Policies"
   },
   "table": {
     "title": {
@@ -2289,7 +2291,8 @@
       "cacel": "Cancel",
       "delete": "Delete",
       "modify": "Modify",
-      "set_tag": "Set tags"
+      "set_tag": "Set tags",
+      "clone": "Clone"
     },
     "validate": {
       "no_share_res_permission": "Shared resource, no operation permission",
@@ -2396,7 +2399,8 @@
     "prev_step": "Previous",
     "next_step": "Next",
     "tips": {
-      "select": "Plese select {0}"
+      "select": "Plese select {0}",
+      "input": "Please enter {0}"
     },
     "adv_config": "Advanced configuration"
   },
