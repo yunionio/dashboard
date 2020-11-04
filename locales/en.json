@@ -554,7 +554,7 @@
   "cloudenv.text_503": "Scope of Application",
   "cloudenv.text_504": "Global",
   "cloudenv.text_505": "Domain:{0}",
-  "cloudenv.text_506": ", Project:{0}",
+  "cloudenv.text_506": "Project:{0}",
   "cloudenv.text_507": "Hide virtual machine menu",
   "cloudenv.text_508": "Configure virtual machine operation callback address",
   "cloudenv.text_509": "Hide Menu",

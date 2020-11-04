@@ -20,7 +20,7 @@
             @deselect="val => handleDeselect(val, 'projects')"
             :placeholder="$t('rules.project')">
             <template v-for="item of projects">
-              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+              <a-select-option :key="item.id" :value="item.id">{{ item.name }}<span class="text-color-secondary">（{{ $t('cloudenv.text_505', [item.project_domain]) }}）</span></a-select-option>
             </template>
           </a-select>
         </template>
