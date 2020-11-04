@@ -222,19 +222,7 @@ export default {
                   refresh: this.refresh,
                 })
               },
-              meta: () => {
-                let tooltip = ''
-                const seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
-                if (obj.disable_delete) {
-                  tooltip = i18n.t('db.text_74')
-                } else if (obj.billing_type === 'prepaid' && seconds > 0) {
-                  tooltip = i18n.t('db.text_75')
-                }
-                return {
-                  validate: !tooltip,
-                  tooltip: tooltip,
-                }
-              },
+              meta: () => this.$getDeleteResult(obj),
             },
           ]
         },
