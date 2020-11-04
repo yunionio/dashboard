@@ -9,6 +9,11 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item class="mb-0" v-if="isNew">
+      <a-select v-decorator="decorators.bgp_type">
+        <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('compute.text_1352') : item }}</a-select-option>
+      </a-select>
+    </a-form-item>
+    <a-form-item class="mb-0" v-if="isNew">
       <a-radio-group v-decorator="decorators.charge_type" @change="handleChargeTypeChange">
         <a-radio-button
           v-for="item of chargeTypes"
@@ -82,6 +87,7 @@ export default {
     return {
       type: this.decorators.type[1] && this.decorators.type[1].initialValue,
       chargeType: this.decorators.charge_type[1] && this.decorators.charge_type[1].initialValue,
+      bgpTypeOptions: [],
     }
   },
   computed: {
@@ -193,7 +199,22 @@ export default {
       }
     },
   },
+  created () {
+    this.fetchBgpType()
+  },
   methods: {
+    fetchBgpType () {
+      new this.$Manager('networks/distinct-field').list({
+        params: {
+          usable: true,
+          limit: 0,
+          field: 'bgp_type',
+          scope: this.$scope,
+        },
+      }).then(({ data }) => {
+        this.bgpTypeOptions = data.bgp_type
+      })
+    },
     handleTypeChange (e) {
       this.type = e.target.value
       if (this.type === 'new') {

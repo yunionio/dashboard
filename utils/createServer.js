@@ -539,6 +539,12 @@ export const createVmDecorators = type => {
       charge_type: [
         'eip_charge_type',
       ],
+      bgp_type: [
+        'eip_bgp_type',
+        {
+          initialValue: '',
+        },
+      ],
       bandwidth: [
         'eip_bw',
         {
@@ -1019,6 +1025,8 @@ export class GenCreateData {
         // 自动续费
         data.auto_renew = this.fd.autoRenew
       }
+      // 线路类型
+      data.eip_bgp_type = this.fd.eip_bgp_type
     }
     // gpu
     if (this.fd.gpuEnable) {

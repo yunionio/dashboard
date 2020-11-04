@@ -1318,5 +1318,6 @@
   "compute.text_1348": "The resources of different projects currently do not support simultaneous initiation of work orders. Please select the resources of the same project to resubmit!",
   "compute.text_1349": "The VMware platform system disk can perform this operation only if the guest status is 【{0}】",
   "compute.text_1350": "Appoint Block Storage",
-  "compute.text_1351": "Please select Block Storage"
+  "compute.text_1351": "Please select Block Storage",
+  "compute.text_1352": "No line type"
 }
