@@ -60,6 +60,12 @@ export default {
               initialValue: this.params.data[0].hypervisor === 'kvm' ? 'bandwidth' : 'traffic',
             },
           ],
+          bgp_type: [
+            'bgp_type',
+            {
+              initialValue: '',
+            },
+          ],
           bandwidth: [
             'bandwidth',
             {
@@ -119,6 +125,7 @@ export default {
           data: {
             charge_type: values.charge_type,
             bandwidth: values.bandwidth,
+            bgp_type: values.bgp_type,
           },
         },
       })
