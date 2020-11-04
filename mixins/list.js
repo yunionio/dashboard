@@ -6,5 +6,8 @@ export default {
     refresh () {
       return this.list.refresh(...arguments)
     },
+    singleRefresh () {
+      return this.list.singleRefresh(...arguments)
+    },
   },
 }
