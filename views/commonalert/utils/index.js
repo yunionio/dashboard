@@ -63,8 +63,8 @@ export const strategyColumn = (field = 'common_alert_metric_details') => ({
           strategy += `${i18n.t('monitor.text_102', [preiod])}`
         }
         if (detail.filters && detail.filters.length) {
-          detail.filters.forEach(val => {
-            if (val.key) filters.push(`${val.condition || ''} ${val.key} ${val.operator} ${val.value}`)
+          detail.filters.forEach((val, i) => {
+            if (val.key) filters.push(`${(val.condition && i !== 0) ? val.condition : ''} ${val.key} ${val.operator} ${val.value}`)
           })
         }
       }
