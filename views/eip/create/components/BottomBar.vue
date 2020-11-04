@@ -49,6 +49,9 @@ export default {
     size: {
       type: Number,
     },
+    bgpType: {
+      required: true,
+    },
   },
   data () {
     return {
@@ -97,6 +100,9 @@ export default {
     size () {
       this._getPrice()
     },
+    bgpType () {
+      this._getPrice()
+    },
   },
   created () {
     this._getPrice()
@@ -121,7 +127,7 @@ export default {
         const provider = this.currentCloudregion.provider.toLowerCase()
         const env = findPlatform(provider)
         if (env === 'private') return // 私有云暂时不支持EIP价格查询
-        const price_keys = `${provider}::${region}::::eip::::${this.size}Mb`
+        const price_keys = `${provider}::${region}::::eip::bandwidth${this.bgpType ? '.' + this.bgpType : ''}::${this.size}Mb`
         const { data } = await new this.$Manager('price_infos', 'v1').get({
           id: 'total',
           params: {

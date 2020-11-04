@@ -628,6 +628,7 @@ export default {
         } else {
           R.forEachObjIndexed((value, key) => {
             const obj = {
+              bgp_type: values.bgp_type,
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
               guest_domain: values.guest_domain,

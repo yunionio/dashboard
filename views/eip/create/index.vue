@@ -21,6 +21,11 @@
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
+        <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout">
+          <a-select v-decorator="decorators.bgp_type" @change="handleBgpTypeChange">
+            <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('network.text_749') : item }}</a-select-option>
+          </a-select>
+        </a-form-item>
         <template v-if="showIpSubnet">
           <ip-subnet
             :label="$t('network.text_211')"
@@ -73,7 +78,8 @@
     </page-body>
     <bottom-bar
       :current-cloudregion="selectedRegionItem"
-      :size="bandwidth" />
+      :size="bandwidth"
+      :bgp-type="bgp_type" />
   </div>
 </template>
 
@@ -191,9 +197,9 @@ export default {
         ],
         charge_type: [
           'charge_type',
-          // {
-          //   initialValue: 'bandwidth',
-          // },
+        ],
+        bgp_type: [
+          'bgp_type',
         ],
       },
       formItemLayout: {
@@ -223,6 +229,8 @@ export default {
       },
       regionList: {},
       bandwidth: cloudEnv !== 'private' ? 30 : 0,
+      bgpTypeOptions: [],
+      bgp_type: undefined,
     }
   },
   computed: {
@@ -251,24 +259,21 @@ export default {
       return params
     },
     networkParams () {
+      const ret = {
+        limit: 0,
+        scope: this.scope,
+        bgp_type: this.bgp_type,
+      }
       if (this.manager) {
-        return {
-          manager: this.manager,
-          limit: 0,
-          scope: this.scope,
-        }
+        ret.manager = this.manager
+        return ret
       }
       if (this.cloudEnv === 'onpremise' && !R.isEmpty(this.selectedRegionItem)) {
-        return {
-          limit: 0,
-          scope: this.scope,
-          server_type: 'eip',
-          cloudregion_id: this.selectedRegionItem.id,
-        }
+        ret.server_type = 'eip'
+        ret.cloudregion_id = this.selectedRegionItem.id
+        return ret
       }
-      return {
-        scope: this.scope,
-      }
+      return ret
     },
     vpcParams () {
       const params = {
@@ -338,6 +343,14 @@ export default {
         cloudEnv: this.cloudEnv,
       }
     },
+    bgpTypeParams () {
+      return {
+        usable: true,
+        limit: 0,
+        scope: this.scope,
+        field: 'bgp_type',
+      }
+    },
   },
   watch: {
     cloudEnv (newValue) {
@@ -369,11 +382,27 @@ export default {
     }
   },
   created () {
+    this.fetchBgpType()
     this.$nextTick(() => {
       this.form.fc.getFieldDecorator('charge_type', { initialValue: this.cloudEnv === 'onpremise' ? 'bandwidth' : 'traffic' })
     })
   },
   methods: {
+    fetchBgpType () {
+      new this.$Manager('networks/distinct-field').list({
+        params: {
+          usable: true,
+          limit: 0,
+          field: 'bgp_type',
+          scope: this.$scope,
+        },
+      }).then(({ data }) => {
+        this.bgpTypeOptions = data.bgp_type
+      })
+    },
+    handleBgpTypeChange (value) {
+      this.bgp_type = value
+    },
     format (val) {
       if (this.cloudEnv === 'onpremise') return val
       return +val || 1

@@ -136,7 +136,17 @@ export default {
                 if (cellValue === 'guest') {
                   return this.$t('network.text_226')
                 }
+                if (cellValue === 'eip') {
+                  return this.$t('network.text_221')
+                }
                 return this.$t('network.text_507')
+              },
+            },
+            {
+              field: 'bgp_type',
+              title: this.$t('network.text_743'),
+              formatter: ({ cellValue }) => {
+                return cellValue || '-'
               },
             },
             {
