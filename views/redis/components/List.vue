@@ -247,34 +247,7 @@ export default {
                     name: this.$t('dictionary.elasticcaches'),
                   })
                 },
-                meta: () => {
-                  let validate = true
-                  let tooltip = ''
-                  if (this.list.selectedItems.length === 0) {
-                    validate = false
-                    tooltip = this.$t('db.text_68')
-                  }
-                  if (this.list.selectedItems.length > 0) {
-                    for (let i = 0; i < this.list.selectedItems.length; i++) {
-                      const obj = this.list.selectedItems[i]
-                      if (obj.disable_delete) {
-                        tooltip = this.$t('db.text_74')
-                        validate = false
-                        break
-                      }
-                      const seconds = this.$moment(obj.expired_at).diff(new Date()) / 1000
-                      if (obj.billing_type === 'prepaid' && seconds > 0) {
-                        tooltip = this.$t('db.text_75')
-                        validate = false
-                        break
-                      }
-                    }
-                  }
-                  return {
-                    validate,
-                    tooltip,
-                  }
-                },
+                meta: () => this.$getDeleteResult(this.list.selectedItems),
               },
             ]
           },
