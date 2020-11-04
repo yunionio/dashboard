@@ -406,7 +406,10 @@
       "create_failed": "创建失败",
       "restore_failed": "恢复失败",
       "delete_failed": "删除失败",
-      "syncing": "同步中"
+      "syncing": "同步中",
+      "isolate": "已隔离",
+      "isolating": "隔离中",
+      "upgrading": "升级中"
     },
     "eip": {
       "ready": "可用",
