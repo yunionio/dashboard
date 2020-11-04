@@ -263,17 +263,7 @@ export default {
                   },
                 })
               },
-              meta: () => {
-                const ret = {
-                  validate: false,
-                  tooltip: null,
-                }
-                if (obj.billing_type === 'prepaid') {
-                  ret.tooltip = i18n.t('compute.text_460')
-                  return ret
-                }
-                return this.$getDeleteResult(obj)
-              },
+              meta: () => this.$getDeleteResult(obj),
             },
           ]
         },
