@@ -763,5 +763,6 @@
   "network.text_745": "配置域名",
   "network.text_746": "同步到公有云（可选）",
   "network.text_747": "PrivateZone类型的域名后续可以通过关联VPC同步到公有云",
-  "network.text_748": "PublicZone类型的域名后续可以通过详情-缓存列表-新建缓存的步骤同步到公有云"
+  "network.text_748": "PublicZone类型的域名后续可以通过详情-缓存列表-新建缓存的步骤同步到公有云",
+  "network.text_749": "无线路类型"
 }
