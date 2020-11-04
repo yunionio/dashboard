@@ -406,7 +406,10 @@
       "create_failed": "Create failed",
       "restore_failed": "Restore failed",
       "delete_failed": "Deletion failed",
-      "syncing": "Syncing"
+      "syncing": "Syncing",
+      "isolate": "isolate",
+      "isolating": "isolating",
+      "upgrading": "upgrading"
     },
     "eip": {
       "ready": "Available",
