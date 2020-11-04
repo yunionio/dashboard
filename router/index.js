@@ -1,5 +1,6 @@
 // import FlexNetwork from '@Network/views/flex-network'
 import DnsZone from '@Network/views/dns-zone'
+import DnsZoneCreate from '@Network/views/dns-zone/create'
 import EipCreate from '@Network/views/eip/create'
 import Wire from '@Network/views/wire'
 import Network from '@Network/views/network'
@@ -256,6 +257,11 @@ export default {
               name: 'DnsZone',
               path: '',
               component: DnsZone,
+            },
+            {
+              name: 'DnsZoneCreate',
+              path: 'create',
+              component: DnsZoneCreate,
             },
           ],
         },
