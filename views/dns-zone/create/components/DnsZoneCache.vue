@@ -1,5 +1,8 @@
 <template>
   <div>
+    <a-alert type="info" :showIcon="false" class="mb-4" banner>
+      <div slot="message">{{$t('network.text_748')}}</div>
+    </a-alert>
     <a-form
       :form="form.fc"
       v-bind="formItemLayout">

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <a-alert type="info" :showIcon="false" banner class="mb-4">
+      <div slot="message">{{$t('network.text_747')}}</div>
+    </a-alert>
     <a-form
       class="mt-3"
       :form="form.fc"
