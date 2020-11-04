@@ -135,6 +135,8 @@ export default {
     UPDATE_LOGGED_USERS (state, payload) {
       // 如果是cas登录则不保存信息
       if (state.info && state.info.idp_driver === 'cas') return
+      // 如果是sso登录则不保存信息
+      if (state.auth && state.auth.auth && state.auth.auth.is_sso) return
       const newVal = { ...state.loggedUsers }
       if (payload.action === 'delete') {
         delete newVal[payload.key]
