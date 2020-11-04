@@ -121,14 +121,6 @@ export default {
       }
       return false
     },
-    hasHypervisors (hypervisors) {
-      for (let i = 0, len = hypervisors.length; i < len; i++) {
-        if ((this.userInfo.hypervisors || []).indexOf(hypervisors[i]) !== -1) {
-          return true
-        }
-      }
-      return false
-    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'LoadbalancerclusterSidePage', {
         id: row.id,

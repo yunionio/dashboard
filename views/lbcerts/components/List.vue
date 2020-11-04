@@ -67,7 +67,7 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
-              validate: this.hasService(this.userInfo, 'lbagent') || this.hasHypervisors(['aliyun', 'qcloud', 'huawei', 'aws']),
+              validate: this.hasService(this.userInfo, 'lbagent') || this.hasHypervisors(['Aliyun', 'Qcloud', 'Huawei', 'Aws']),
             }
           },
         },
@@ -118,7 +118,7 @@ export default {
     },
     hasHypervisors (hypervisors) {
       for (let i = 0, len = hypervisors.length; i < len; i++) {
-        if ((this.userInfo.hypervisors || []).indexOf(hypervisors[i]) !== -1) {
+        if ((this.capability.loadbalancer_engine_brands || []).indexOf(hypervisors[i]) !== -1) {
           return true
         }
       }
