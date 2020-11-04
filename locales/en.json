@@ -759,5 +759,7 @@
   "network.text_741": "Only the main domain name can be added, subdomains are not supported",
   "network.text_742": "Certificate cache",
   "network.text_743": "Line type",
-  "network.text_744": "Customize the EIP line type, such as China Unicom, China Mobile, etc.; in [Cost-Rate Configuration], different EIP rates can be set for different line types. If the wireless line type, the default EIP rate will be used"
+  "network.text_744": "Customize the EIP line type, such as China Unicom, China Mobile, etc.; in [Cost-Rate Configuration], different EIP rates can be set for different line types. If the wireless line type, the default EIP rate will be used",
+  "network.text_745": "Configure domain name",
+  "network.text_746": "Sync to public cloud (optional)"
 }

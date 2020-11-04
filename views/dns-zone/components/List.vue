@@ -80,10 +80,13 @@ export default {
           label: this.$t('network.text_26'),
           permission: 'dns_zones_create',
           action: () => {
-            this.createDialog('DnsZoneCreateDialog', {
-              title: this.$t('common_661'),
-              onManager: this.onManager,
-              refresh: this.refresh,
+            // this.createDialog('DnsZoneCreateDialog', {
+            //   title: this.$t('common_661'),
+            //   onManager: this.onManager,
+            //   refresh: this.refresh,
+            // })
+            this.$router.push({
+              path: `${this.$route.path}/create`,
             })
           },
           meta: () => {
