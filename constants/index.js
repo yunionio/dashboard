@@ -548,6 +548,7 @@ export const STORAGE_TYPES = {
       sysMin: 50,
       sysMax: 500,
       resizeStep: 10,
+      sysUnusable: true, // 系统盘不可用
     },
     cloud_premium: {
       label: i18n.t('compute.text_65'),
