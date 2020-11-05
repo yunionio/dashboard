@@ -21,7 +21,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'RedisRenewDialog',
+  name: 'RdsRenewDialog',
   mixins: [DialogMixin, WindowsMixin],
   provide () {
     return {
@@ -37,16 +37,6 @@ export default {
       formItemLayout: {
         wrapperCol: { span: CreateServerForm.wrapperCol },
         labelCol: { span: CreateServerForm.labelCol },
-      },
-      decorators: {
-        boot_order: [
-          'boot_order',
-          {
-            rules: [
-              { required: true, message: this.$t('db.text_148') },
-            ],
-          },
-        ],
       },
     }
   },

@@ -121,6 +121,8 @@ export default {
           actions: (obj) => {
             const selectedLength = this.list.selectedItems.length
             const notSelectedTooltip = selectedLength <= 0 ? this.$t('db.text_68') : ''
+            const isRunning = this.list.selectedItems.every(item => item.status.toLowerCase() === 'running')
+            const notRunninTip = !isRunning ? this.$t('db.text_156') : null
             return [
               {
                 label: this.$t('db.text_69'),
@@ -156,6 +158,21 @@ export default {
                     validate: selectedLength,
                     tooltip: notSelectedTooltip,
                   }
+                },
+              },
+              {
+                label: this.$t('table.action.set_tag'),
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'elasticcache',
+                    },
+                    tipName: this.$t('dictionary.elasticcache'),
+                  })
                 },
               },
               {
@@ -216,24 +233,49 @@ export default {
                   return ret
                 },
               },
-              disableDeleteAction(this, {
-                name: this.$t('dictionary.elasticcaches'),
-              }),
               {
-                label: this.$t('table.action.set_tag'),
+                label: this.$t('db.text_157'),
                 action: () => {
-                  this.createDialog('SetTagDialog', {
+                  this.createDialog('RedisRenewDialog', {
+                    title: this.$t('db.text_157'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
-                    mode: 'add',
-                    params: {
-                      resources: 'elasticcache',
-                    },
-                    tipName: this.$t('dictionary.elasticcache'),
+                    refresh: this.refresh,
                   })
                 },
+                meta: () => {
+                  const isPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                  const validate = (isRunning && isPrepaid)
+                  return {
+                    validate: validate,
+                    tooltip: notRunninTip || (!isPrepaid ? this.$t('db.text_158') : null),
+                  }
+                },
               },
+              {
+                label: this.$t('db.text_351'),
+                action: () => {
+                  this.createDialog('AutoRenewDialog', {
+                    name: this.$t('dictionary.elasticcaches'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const isPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                  const validate = (isRunning && isPrepaid)
+                  return {
+                    validate: validate,
+                    tooltip: notRunninTip || (!isPrepaid ? this.$t('db.text_158') : null),
+                  }
+                },
+              },
+              disableDeleteAction(this, {
+                name: this.$t('dictionary.elasticcaches'),
+              }),
               {
                 label: this.$t('db.text_42'),
                 action: () => {

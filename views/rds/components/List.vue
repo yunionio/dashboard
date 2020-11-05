@@ -113,6 +113,8 @@ export default {
           actions: (obj) => {
             const selectedLength = this.list.selectedItems.length
             const notSelectedTooltip = selectedLength <= 0 ? this.$t('db.text_68') : ''
+            const isRunning = this.list.selectedItems.every(item => item.status.toLowerCase() === 'running')
+            const notRunninTip = !isRunning ? this.$t('db.text_156') : null
             return [
               {
                 label: this.$t('db.text_69'),
@@ -186,6 +188,46 @@ export default {
                   }
                   ret.validate = true
                   return ret
+                },
+              },
+              {
+                label: this.$t('db.text_157'),
+                action: () => {
+                  this.createDialog('RdsRenewDialog', {
+                    title: this.$t('db.text_157'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const isPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                  const validate = (isRunning && isPrepaid)
+                  return {
+                    validate: validate,
+                    tooltip: notRunninTip || (!isPrepaid ? this.$t('db.text_158') : null),
+                  }
+                },
+              },
+              {
+                label: this.$t('db.text_351'),
+                action: () => {
+                  this.createDialog('AutoRenewDialog', {
+                    name: this.$t('dictionary.dbinstances'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const isPrepaid = this.list.selectedItems.every(item => item.billing_type === 'prepaid')
+                  const validate = (isRunning && isPrepaid)
+                  return {
+                    validate: validate,
+                    tooltip: notRunninTip || (!isPrepaid ? this.$t('db.text_158') : null),
+                  }
                 },
               },
               disableDeleteAction(this, {
