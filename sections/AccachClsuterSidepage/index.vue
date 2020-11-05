@@ -24,6 +24,7 @@ export default {
   name: 'K8SFederatedAccachClsuterSidepage',
   mixins: [WindowsMixin],
   props: {
+    id: String,
     data: {
       type: Object,
     },
@@ -43,6 +44,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: this.fetchData,
         idKey: 'cluster_id',
         filterOptions: {
