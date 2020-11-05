@@ -987,7 +987,8 @@
     "sshPassword": "12~30 characters, must contain three items at the same time (uppercase and lowercase letters, numbers, special symbols~`!@#$%^&*()-_=+[]{}|:':\\\",. /<>? at least one), cannot start with “/”",
     "passwordValidator": "Password is not allowed {0}”",
     "validateForm": "The input information is incorrect",
-    "validate": "@:brand: There is no record of {0} rule in REGEXP, please add it in time"
+    "validate": "@:brand: There is no record of {0} rule in REGEXP, please add it in time",
+    "passwordLevel": "The password must contain numbers, uppercase and lowercase letters, {0} of special characters, and at least {1} characters in length"
   },
   "dialog": {
     "ok": "OK",
@@ -1427,76 +1428,6 @@
     "public-read": "This account writes and reads publicly: any user can read the data in the bucket, and write operations require authentication",
     "public-read-write": "Public read and write: Everyone can read and write objects in the Bucket without authentication. This permission has a high security risk. To ensure your data security, please choose carefully",
     "authenticated-read": "Authenticated users can read: authenticated users can read the data in the bucket, and only the user can perform write operations"
-  },
-  "globalSetting": {
-    "identity$password_unique_history_check": {
-      "label": "Number of times the password is not repeated",
-      "desc": "Only valid for local SQL users. Cloud management users set a limit on the number of times the password is not repeated, for example: if it is set to 3, the new password cannot be the same as the historical password that has been used 3 times before. 0 means unlimited ."
-    },
-    "identity$password_minimal_length": {
-      "label": "Minimum Password Length",
-      "desc": "Only valid for local SQL users. Cloud management users set the minimum password length limit. The default is 6 digits."
-    },
-    "identity$password_error_lock_count": {
-      "label": "Number of consecutive failed logins",
-      "desc": "Only valid for local SQL users. The upper limit of the number of consecutive failed logins. When the number of consecutive failed logins exceeds the set value, the user will be locked. The locked user needs to be manually enabled by the administrator. 0 means unlimited ."
-    },
-    "identity$password_expiration_seconds": {
-      "label": "Password validity period",
-      "desc": "The length of the default password validity period for cloud management local users (SQL). 0 means unlimited"
-    },
-    "identity$token_expiration_seconds": {
-      "label": "Session timeout period",
-      "desc": "The default is 1 day. After the current session login exceeds the session time, the system will be unavailable and you need to log in again."
-    },
-    "common$non_default_domain_projects": {
-      "label": "Three-level permission switch",
-      "desc": "Set whether to enable the three-level permission. The default is off, and it cannot be closed after it is set to on."
-    },
-    "yunionapi$show_captcha": {
-      "label": "Verification Code Switch",
-      "desc": "When a cloud management user logs in, do I need to enter a verification code"
-    },
-    "yunionapi$enable_totp": {
-      "label": "Two-factor authentication",
-      "desc": "Whether a second authentication is required for cloud management users to log in to the system"
-    },
-    "yunionapi$session_level_auth_cookie": {
-      "label": "The browser is closed to end the session",
-      "desc": "If enabled, after closing the browser, the current login session will be invalidated immediately"
-    },
-    "compute$enable_pending_delete": {
-      "label": "Host, Hard Disk Recycle Bin",
-      "desc": "After the host and hard disk are deleted, whether the corresponding resources are stored in the recycle bin"
-    },
-    "compute$pending_delete_expire_seconds": {
-      "label": "Storage duration of host and hard disk recycle bin",
-      "desc": "The saving time of the host and hard disk in the recycle bin"
-    },
-    "common$api_server": {
-      "label": "Console address",
-      "desc": "Set the WEB console access address"
-    },
-    "notify$verify_email_url_path": {
-      "label": "Email verification address",
-      "desc": "Set the URL of the verification email"
-    },
-    "image$enable_pending_delete": {
-      "label": "Mirror Recycle Bin",
-      "desc": "After the mirror is deleted, whether the corresponding resource is saved in the recycle bin"
-    },
-    "image$pending_delete_expire_seconds": {
-      "label": "Length of saving mirrored recycle bin",
-      "desc": "Mirror save time in the recycle bin"
-    },
-    "baremetal$auto_register_baremetal": {
-      "label": "Physical machine automatic registration",
-      "desc": "After enabling automatic registration, Baremetal Agent will register it to the @:brand platform and reset the BMC information after receiving a PXE request from any physical machine. Please be careful to enable automatic registration"
-    },
-    "baremetal$default_ipmi_password": {
-      "label": "The default IPMI password of the physical machine",
-      "desc": "The default password used when resetting the BMC information of the physical machine through the pre-registration or automatic registration function"
-    }
   },
   "notificationPriority": {
     "normal": "General",

@@ -987,7 +987,8 @@
     "sshPassword": "12~30个字符，必须同时包含四项（大小写字母、数字、特殊符号 ~`!@#$%^&*()-_=+[]{}|:':\\\",./<>?中至少一个），不能以“/”开头",
     "passwordValidator": "密码不允许是“{0}”",
     "validateForm": "输入信息不正确",
-    "validate": "@:brand: REGEXP 里面没有记录 {0}规则, 请及时添加"
+    "validate": "@:brand: REGEXP 里面没有记录 {0}规则, 请及时添加",
+    "passwordLevel": "密码必须包含数字，大小写字母，特殊字符中的{0}种，长度至少{1}位"
   },
   "dialog": {
     "ok": "确定",
@@ -1427,76 +1428,6 @@
     "public-read": "本账号写公开读：任何用户均可读取Bucket中的数据，写操作需进行身份验证",
     "public-read-write": "公开读写：所有人均可读写Bucket内的Object，无需身份验证。该权限安全风险极高，为确保您的数据安全，请谨慎选择",
     "authenticated-read": "认证用户可读：已认证用户可读取bucket中的数据，仅用户本人可执行写操作"
-  },
-  "globalSetting": {
-    "identity$password_unique_history_check": {
-      "label": "密码不重复次数",
-      "desc": "仅针对本地SQL用户有效。云管用户设置密码不重复的次数限制，例如：若设置为3，则新密码不能与之前3次已使用过的历史密码相同。0代表无限制。"
-    },
-    "identity$password_minimal_length": {
-      "label": "密码最小长度",
-      "desc": "仅针对本地SQL用户有效。云管用户设置密码的最小长度限制。默认为6位。"
-    },
-    "identity$password_error_lock_count": {
-      "label": "连续登录失败次数",
-      "desc": "仅针对本地SQL用户有效。连续登录失败次数的上限。当连续登录失败次数超过设置值时，该用户将被锁定。锁定后的用户需要管理员手动启用用户。0代表无限制。"
-    },
-    "identity$password_expiration_seconds": {
-      "label": "密码有效期",
-      "desc": "云管本地用户（SQL）默认密码有效期时长。0代表无限制"
-    },
-    "identity$token_expiration_seconds": {
-      "label": "会话超时时间",
-      "desc": "默认为1天，当前会话登录超过该会话时间后，系统将不可用，需重新登录。"
-    },
-    "common$non_default_domain_projects": {
-      "label": "三级权限开关",
-      "desc": "设置是否开启三级权限。默认为关闭，设置为开启后将无法关闭。"
-    },
-    "yunionapi$show_captcha": {
-      "label": "验证码开关",
-      "desc": "云管用户登录时，是否需要输入验证码"
-    },
-    "yunionapi$enable_totp": {
-      "label": "双因子认证",
-      "desc": "云管用户登录系统时，是否需要进行二次认证"
-    },
-    "yunionapi$session_level_auth_cookie": {
-      "label": "浏览器关闭结束会话",
-      "desc": "如果开启，则关闭浏览器后，当前登录会话立即失效"
-    },
-    "compute$enable_pending_delete": {
-      "label": "主机、硬盘回收站",
-      "desc": "主机、硬盘删除后，相应资源是否保存在回收站"
-    },
-    "compute$pending_delete_expire_seconds": {
-      "label": "主机、硬盘回收站保存时长",
-      "desc": "主机、硬盘在回收站内保存时间"
-    },
-    "common$api_server": {
-      "label": "控制台地址",
-      "desc": "设置WEB控制台访问地址"
-    },
-    "notify$verify_email_url_path": {
-      "label": "邮箱验证地址",
-      "desc": "设置验证邮箱的URL"
-    },
-    "image$enable_pending_delete": {
-      "label": "镜像回收站",
-      "desc": "镜像删除后，相应资源是否保存在回收站"
-    },
-    "image$pending_delete_expire_seconds": {
-      "label": "镜像回收站保存时长",
-      "desc": "镜像在回收站内保存时间"
-    },
-    "baremetal$auto_register_baremetal": {
-      "label": "物理机自动注册",
-      "desc": "开启自动注册后，Baremetal Agent收到任意物理机发送的PXE请求都会将其注册到@:brand平台并重置BMC信息，请谨慎启用自动注册"
-    },
-    "baremetal$default_ipmi_password": {
-      "label": "物理机默认IPMI密码",
-      "desc": "通过预注册或自动注册功能重置物理机BMC信息时使用的默认密码"
-    }
   },
   "notificationPriority": {
     "normal": "一般",
