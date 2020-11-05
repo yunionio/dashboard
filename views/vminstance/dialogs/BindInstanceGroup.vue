@@ -10,19 +10,25 @@
       </a-alert>
       <dialog-selected-tips :name="params.name || $t('dictionary.instancegroup')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-select
-        v-if="instanceGroupsLoaded"
-        class="w-100"
-        mode="multiple"
-        :placeholder="$t('compute.text_702', [$t('dictionary.instancegroup')])"
-        :defaultValue="defaultSelected"
-        :loading="instanceGroupsLoading"
-        @search="debounceFetchInstanceGroups"
-        @change="handleSelectChange">
-        <a-select-option
-          v-for="item of instanceGroups"
-          :key="item.id">{{ item.name }}</a-select-option>
-      </a-select>
+      <div class="d-flex align-items-center">
+        <div class="mr-2">{{ $t('dictionary.instancegroup') }}:</div>
+        <div class="flex-fill">
+          <a-select
+            v-if="instanceGroupsLoaded"
+            class="w-100"
+            mode="multiple"
+            :placeholder="$t('compute.text_702', [$t('dictionary.instancegroup')])"
+            :defaultValue="defaultSelected"
+            :loading="instanceGroupsLoading"
+            :filter-option="false"
+            @search="debounceFetchInstanceGroups"
+            @change="handleSelectChange">
+            <a-select-option
+              v-for="item of instanceGroups"
+              :key="item.id">{{ item.name }}</a-select-option>
+          </a-select>
+        </div>
+      </div>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
