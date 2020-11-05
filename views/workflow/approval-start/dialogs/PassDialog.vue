@@ -163,7 +163,7 @@ export default {
       const paramter = JSON.parse(this.selectedItems[0].variables.paramter || '{}')
       const manager = new this.$Manager('process-instances/projects', 'v1')
       const params = {
-        domain: this.l3PermissionEnable ? paramter.domain : this.userInfo.projectDomainId,
+        domain: this.l3PermissionEnable ? paramter.project_domain : this.userInfo.projectDomainId,
       }
       this.projectLoading = true
       manager.list({ params }).then(res => {
@@ -177,7 +177,7 @@ export default {
       const paramter = JSON.parse(this.selectedItems[0].variables.paramter || '{}')
       const manager = new this.$Manager('process-instances/roles', 'v1')
       const params = {
-        domain: this.l3PermissionEnable ? paramter.domain : this.userInfo.projectDomainId,
+        domain: this.l3PermissionEnable ? paramter.project_domain : this.userInfo.projectDomainId,
       }
       this.roleLoading = true
       manager.list({ params }).then(res => {
