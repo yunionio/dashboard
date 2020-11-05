@@ -664,3 +664,46 @@ export const uniqueOccurrences = (arr) => {
   }
   return obj
 }
+
+/**
+ * 校验密码强度
+ * 数字、大小写字母、特殊字符
+ * 包含一种：返回1
+ * 包含二种：返回2
+ * 包含三种：返回3
+ * 包含四种：返回4
+ * @param {String} password
+ * @returns {Number}
+ */
+export const passwordLevel = (password) => {
+  let Modes = 0
+  for (let i = 0; i < password.length; i++) {
+    Modes |= CharMode(password.charCodeAt(i))
+  }
+  return bitTotal(Modes)
+
+  // CharMode函数
+  function CharMode (iN) {
+    // 数字
+    if (iN >= 48 && iN <= 57) { return 1 }
+    // 大写字母
+    if (iN >= 65 && iN <= 90) { return 2 }
+    // 大小写
+    if ((iN >= 97 && iN <= 122) || (iN >= 65 && iN <= 90)) {
+      return 4
+    } else {
+      // 特殊字符
+      return 8
+    }
+  }
+
+  // bitTotal函数
+  function bitTotal (num) {
+    let modes = 0
+    for (let i = 0; i < 4; i++) {
+      if (num & 1) modes++
+      num >>>= 1
+    }
+    return modes
+  }
+}

@@ -24,8 +24,9 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-
+import { passwordLevel } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -34,38 +35,45 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const validatePassword = async (rule, value, callback) => {
-      if (this.minPasswordLen) {
-        if (value.length < this.minPasswordLen) return callback(new Error(this.$t('common_143', [this.minPasswordLen])))
-        return callback()
-      }
-      const manager = new this.$Manager('services', 'v1')
-      try {
-        const response = await manager.list({
-          params: {
-            type: 'identity',
-          },
-        })
-        const id = response.data.data && response.data.data[0] && response.data.data[0].id
-        if (id) {
-          const configRes = await manager.getSpecific({
-            id,
-            spec: 'config',
+      if (R.isNil(this.minPasswordLen) || R.isNil(this.complexity)) {
+        const manager = new this.$Manager('services', 'v1')
+        try {
+          const response = await manager.list({
+            params: {
+              type: 'identity',
+            },
           })
-          const len = configRes.data.config && configRes.data.config.default && configRes.data.config.default.password_minimal_length
-          if (len) {
-            this.minPasswordLen = len
-            if (value.length < len) return callback(new Error(this.$t('common_143', [len])))
+          const id = response.data.data && response.data.data[0] && response.data.data[0].id
+          if (id) {
+            const configRes = await manager.getSpecific({
+              id,
+              spec: 'config',
+            })
+            const len = configRes.data.config && configRes.data.config.default && configRes.data.config.default.password_minimal_length
+            const complexity = configRes.data.config && configRes.data.config.default && configRes.data.config.default.password_char_complexity
+            if (!R.isNil(len)) {
+              this.minPasswordLen = len
+            }
+            if (!R.isNil(complexity)) {
+              this.complexity = complexity
+            }
           }
+        } catch (error) {
+          callback()
+          throw error
         }
-        return callback()
-      } catch (error) {
-        callback()
-        throw error
       }
+      const passLevel = passwordLevel(value)
+      const passMaxLen = Math.max(this.minPasswordLen, this.complexity)
+      if (passLevel < this.complexity || passMaxLen < passLevel || value.length < passMaxLen) {
+        return callback(new Error(this.$t('validator.passwordLevel', [this.complexity === 0 ? 1 : this.complexity, passMaxLen])))
+      }
+      return callback()
     }
     return {
       loading: false,
       minPasswordLen: null,
+      complexity: null,
       form: {
         fc: this.$form.createForm(this),
       },
