@@ -14,6 +14,7 @@
     <component
       source="physicalmachine"
       :is="params.windowData.currentTab"
+      :id="listId"
       :res-id="data.id"
       :data="detailData"
       :on-manager="onManager"
@@ -83,6 +84,22 @@ export default {
         }
       }
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForPhysicalmachineSidePage'
+        case 'baremetal-list':
+          return 'BaremetalListForPhysicalmachineSidePage'
+        case 'network-list':
+          return 'NetworkListForPhysicalmachineSidePage'
+        case 'storage-list':
+          return 'StorageListForPhysicalmachineSidePage'
+        case 'gpu-list':
+          return 'GpuListForPhysicalmachineSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

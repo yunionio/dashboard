@@ -7,7 +7,7 @@
     </a-tabs>
     <div class="mt-2">
       <keep-alive>
-        <component :is="currentComponent" :getParams="getParams" />
+        <component :is="currentComponent" :getParams="getParams" :id="id" />
       </keep-alive>
     </div>
   </div>

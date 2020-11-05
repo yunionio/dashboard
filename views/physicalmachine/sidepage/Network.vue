@@ -1,5 +1,5 @@
 <template>
-    <vxe-grid class="mb-2" :data="data.nic_info" :columns="columns" />
+    <vxe-grid resizable class="mb-2" :data="data.nic_info" :columns="columns" />
 </template>
 
 <script>
@@ -19,6 +19,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'NetworkListForPhysicalmachineSidePage',
         resource: 'networks',
         ctx: [['hosts', this.resId]],
         getParams: this.getParams,
