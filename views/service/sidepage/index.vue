@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="k8s_services" :getParams="getParams" :showSearchbox="false" :showGroupActions="false" />
+    <component :is="params.windowData.currentTab" :id="listId" :res-id="data.id" :data="detailData" :onManager="onManager" resource="k8s_services" :getParams="getParams" :showSearchbox="false" :showGroupActions="false" />
   </base-side-page>
 </template>
 
@@ -55,6 +55,18 @@ export default {
         owner_name: this.detailData.name,
         namespace: this.detailData.namespace,
         cluster: this.detailData.clusterID,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SServiceSidePage'
+        case 'pod-list':
+          return 'PodListForK8SServiceSidePage'
+        case 'events-sidepage':
+          return 'EventsForK8SServiceSidePage'
+        default:
+          return ''
       }
     },
   },

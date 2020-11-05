@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :key="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="cronjobs" :getParams="getParams" :showSearchbox="false" :showGroupActions="false" />
+    <component :is="params.windowData.currentTab" :key="params.windowData.currentTab" :id="listId" :res-id="data.id" :data="detailData" :onManager="onManager" resource="cronjobs" :getParams="getParams" :showSearchbox="false" :showGroupActions="false" />
   </base-side-page>
 </template>
 
@@ -65,6 +65,20 @@ export default {
         params.active = false
       }
       return params
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SCronJobsSidePage'
+        case 'active-jobs':
+          return 'ActiveJobsForK8SCronJobsSidePage'
+        case 'inactive-jobs':
+          return 'InactiveJobsForK8SCronJobsSidePage'
+        case 'events-sidepage':
+          return 'EventsForK8SCronJobsSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

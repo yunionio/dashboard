@@ -21,6 +21,7 @@
       resource="rbacrolebindings"
       :serverColumns="columns"
       :res-id="data.id"
+      :id="listId"
       :getParams="getParams"
       :on-manager="onManager"
       @refresh="refresh"
@@ -58,6 +59,14 @@ export default {
   computed: {
     getParams () {
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8sRbacrolebindingSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

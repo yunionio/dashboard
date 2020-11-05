@@ -20,6 +20,7 @@
       :data="detailData"
       resource="storageclasses"
       :serverColumns="columns"
+      :id="listId"
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
@@ -65,6 +66,16 @@ export default {
         owner_name: this.detailData.name,
         namespace: this.detailData.namespace,
         cluster: this.detailData.clusterID,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SStorageclassSidePage'
+        case 'events-sidepage':
+          return 'EventsForK8SStorageclassSidePage'
+        default:
+          return ''
       }
     },
   },
