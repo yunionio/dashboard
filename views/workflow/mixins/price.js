@@ -1,3 +1,4 @@
+import * as R from 'ramda'
 import { getServerConf } from '../utils'
 import i18n from '@/locales'
 
@@ -33,7 +34,9 @@ export default {
               field: 'price',
               title: i18n.t('common_419'),
               formatter: ({ cellValue, row }) => {
-                return this.variables.price || 0
+                const price = this.variables.price
+                if (R.isNil(price)) return '-'
+                return price
               },
             },
           ],
