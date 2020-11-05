@@ -14,6 +14,7 @@
     </template>
     <component
       :is="params.windowData.currentTab"
+      :id="listId"
       :res-id="detailData.id"
       :data="detailData"
       :getParams="getParams"
@@ -57,6 +58,14 @@ export default {
     },
     getParams () {
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForAgentSidePage'
+        default:
+          return ''
+      }
     },
   },
   watch: {

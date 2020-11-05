@@ -18,6 +18,7 @@ export default {
   name: 'HostsList',
   mixins: [DialogMixin, WindowsMixin],
   props: {
+    id: String,
     resId: {
       type: String,
       required: true,
@@ -26,6 +27,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'hosts',
         getParams: {
           details: true,

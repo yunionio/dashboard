@@ -13,6 +13,7 @@
     </template>
     <component
       :is="params.windowData.currentTab"
+      :id="listId"
       :res-id="detailData.id"
       :data="detailData"
       :getParams="getParams"
@@ -60,6 +61,16 @@ export default {
         }
       }
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForLbaclSidePage'
+        case 'lbacl-cache-list':
+          return 'LbaclCacheListForLbaclSidePage'
+        default:
+          return ''
+      }
     },
   },
 }
