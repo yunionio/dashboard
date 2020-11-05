@@ -13,6 +13,7 @@
     </template>
     <component
       :is="params.windowData.currentTab"
+      :id="listId"
       :res-id="detailData.id"
       :data="detailData"
       :getParams="getParams"
@@ -76,6 +77,20 @@ export default {
         }
       }
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForNetworkSidePage'
+        case 'i-p-list':
+          return 'IPListForNetworkSidePage'
+        case 'reserved-ip-list':
+          return 'ReservedIpListForNetworkSidePage'
+        case 'hosts-list':
+          return 'HostsListForNetworkSidePage'
+        default:
+          return ''
+      }
     },
   },
   methods: {

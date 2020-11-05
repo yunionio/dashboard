@@ -21,6 +21,7 @@ export default {
   name: 'DnsAssocoateVpcList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin],
   props: {
+    id: String,
     data: {
       type: Object,
     },

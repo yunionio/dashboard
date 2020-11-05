@@ -13,6 +13,7 @@
     </template>
     <component
       :is="params.windowData.currentTab"
+      :id="listId"
       :res-id="detailData.id"
       :data="detailData"
       :getParams="getParams"
@@ -59,6 +60,18 @@ export default {
     getParams () {
       return {
         cluster: this.detailData.id,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForLoadbalancerclusterSidePage'
+        case 'agent-list':
+          return 'AgentListForLoadbalancerclusterSidePage'
+        case 'lb-list':
+          return 'LbListForLoadbalancerclusterSidePage'
+        default:
+          return ''
       }
     },
   },
