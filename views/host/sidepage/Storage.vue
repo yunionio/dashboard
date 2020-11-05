@@ -21,6 +21,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'StorageListForHostSidePage',
         resource: 'storages',
         ctx: [['hosts', this.resId]],
         idKey: 'storage_id',

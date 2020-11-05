@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :res-id="data.id" :on-manager="onManager" />
+    <component :is="params.windowData.currentTab" :data="detailData" :res-id="data.id" :id="listId" :on-manager="onManager" />
   </base-side-page>
 </template>
 
@@ -38,6 +38,16 @@ export default {
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForKeyPairSidePage'
+        default:
+          return ''
+      }
+    },
   },
 }
 </script>

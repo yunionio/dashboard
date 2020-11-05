@@ -15,6 +15,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.resId"
+      :id="listId"
       :data="detailData"
       :on-manager="onManager"
       :getParams="getParams" />
@@ -55,6 +56,16 @@ export default {
         }
       }
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForGpuSidePage'
+        case 'servers-list':
+          return 'ServersListForGpuSidePage'
+        default:
+          return ''
+      }
     },
   },
   created () {

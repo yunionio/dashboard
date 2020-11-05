@@ -29,6 +29,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'DiskListForVmSnapshotPolicySidePage',
         resource: 'disks',
         steadyStatus: Object.values(expectStatus.disk).flat(),
         getParams: { ...this.getParams, 'filter.0': 'disk_type.notin(volume)', snapshotpolicy_id: this.resId },
