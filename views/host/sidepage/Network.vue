@@ -26,6 +26,7 @@ export default {
     // const isPrivate = type === SERVER_TYPE.public
     return {
       list: this.$list.createList(this, {
+        id: 'NetworkListForHostSidePage',
         resource: 'networks',
         ctx: [['hosts', this.resId]],
         getParams: this.getParams,

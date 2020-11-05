@@ -30,6 +30,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'GpuListForHostSidePage',
         resource: 'isolated_devices',
         getParams: this.getParam,
       }),

@@ -11,7 +11,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :columns="columns" :on-manager="onManager" :refresh="refresh" :getParams="getParams"  @tab-change="handleTabChange" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :columns="columns" :on-manager="onManager" :refresh="refresh" :getParams="getParams"  @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
@@ -86,6 +86,20 @@ export default {
         }
       }
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForHostSidePage'
+        case 'vminstance-list':
+          return 'VminstanceListForHostSidePage'
+        case 'gpu-list':
+          return 'GpuListForHostSidePage'
+        case 'server-recovery':
+          return 'ServerRecoveryListForHostSidePage'
+        default:
+          return ''
+      }
     },
   },
 }
