@@ -143,7 +143,9 @@ export default {
               }
               const imgSrc = require(`../assets/${row.sys_info.oem_name}.svg`)
               return [
-                <img src={ imgSrc } style={ icons[row.sys_info.oem_name] } />,
+                <a-tooltip title={ row.sys_info.oem_name }>
+                  <img src={ imgSrc } style={ icons[row.sys_info.oem_name] } />
+                </a-tooltip>,
               ]
             }
           },
