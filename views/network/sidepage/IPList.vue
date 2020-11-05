@@ -13,6 +13,7 @@
     :data="list"
     :stripe="true"
     :max-height="600"
+    resizable
     :columns="columns">
     <template v-slot:empty>
       <loader :loading="loading" />

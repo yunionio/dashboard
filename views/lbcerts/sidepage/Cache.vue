@@ -30,6 +30,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'cachedloadbalancercertificates',
         getParams: this.getParam,
         filterOptions: {

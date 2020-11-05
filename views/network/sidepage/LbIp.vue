@@ -16,6 +16,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'LbIpForNetworkSidePage',
         resource: 'loadbalancernetworks',
         getParams: {
           details: true,

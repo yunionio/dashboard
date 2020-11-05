@@ -32,6 +32,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'DNatListForNatSidePage',
         resource: 'natdentries',
         getParams: {
           natgateway: this.resId,
