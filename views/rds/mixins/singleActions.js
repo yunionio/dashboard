@@ -140,6 +140,54 @@ export default {
                 return ret
               },
             },
+            {
+              label: i18n.t('db.text_157'),
+              action: () => {
+                this.createDialog('RdsRenewDialog', {
+                  title: i18n.t('db.text_157'),
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: null,
+                }
+                if (obj.billing_type !== 'prepaid') {
+                  ret.tooltip = i18n.t('db.text_158')
+                  return ret
+                }
+                ret.validate = true
+                return ret
+              },
+            },
+            {
+              label: i18n.t('db.text_351'),
+              action: () => {
+                this.createDialog('AutoRenewDialog', {
+                  name: i18n.t('dictionary.dbinstances'),
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: null,
+                }
+                if (obj.billing_type !== 'prepaid') {
+                  ret.tooltip = i18n.t('db.text_158')
+                  return ret
+                }
+                ret.validate = true
+                return ret
+              },
+            },
             disableDeleteAction(this, {
               name: this.$t('dictionary.dbinstances'),
             }),

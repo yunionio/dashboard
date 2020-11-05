@@ -15,7 +15,7 @@
         </template>
       </a-form-item>
       <!-- 计费方式 -->
-      <clearing-radios v-bind="formItemLayout" />
+      <clearing-radios v-bind="formItemLayout" :auto_renew="false" />
       <a-form-item :label="$t('db.text_71')" v-if="form.fd.billing_type !== 'prepaid'">
         <duration :decorators="decorators.duration" :form="form" />
       </a-form-item>

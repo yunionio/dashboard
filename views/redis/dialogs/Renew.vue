@@ -77,7 +77,7 @@ export default {
       try {
         const values = await this.validateForm()
         const ids = this.params.data.map(item => item.id)
-        await this.params.list.onManager('batchUpdate', {
+        await this.params.onManager('batchUpdate', {
           id: ids,
           steadyStatus: 'running',
           managerArgs: {
@@ -89,6 +89,7 @@ export default {
         this.cancelDialog()
       } catch (error) {
         this.loading = false
+        throw error
       }
     },
   },
