@@ -11,7 +11,7 @@ export default {
     if (!R.isNil(discount) && !R.isEmpty(discount)) {
       let discountFormatValue
       if (isZh) {
-        discountFormatValue = numerify(discount * 10, '0.0')
+        discountFormatValue = numerify(1 - discount * 10, '0.0')
       } else {
         discountFormatValue = Math.round(discount * 100)
       }
