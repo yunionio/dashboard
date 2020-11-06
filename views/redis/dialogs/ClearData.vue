@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" class="mt-3">
         <a-form-item v-if="params.data[0].provider === 'Qcloud' && params.data[0].auth_mode === 'on'" :label="$t('db.text_195')" v-bind="formItemLayout">
-          <a-input-password v-decorator="decorators.password" />
+          <a-input-password v-decorator="decorators.password" :plcaeholder="$t('db.text_361')" />
         </a-form-item>
       </a-form>
     </div>
