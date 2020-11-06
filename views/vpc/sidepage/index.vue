@@ -12,6 +12,7 @@
     <component
       :is="params.windowData.currentTab"
       :hiddenColumns="hiddenColumns"
+      :id="listId"
       :res-id="detailData.id"
       :showGroupActions="showGroupActions"
       :showSingleActions="showSingleActions"
@@ -101,6 +102,18 @@ export default {
         return ['public_scope']
       }
       return []
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForVpcSidePage'
+        case 'network-list':
+          return 'NetworkListForVpcSidePage'
+        case 'route-table-list':
+          return 'RouteTableListForVpcSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

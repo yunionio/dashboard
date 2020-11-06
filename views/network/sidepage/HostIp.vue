@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'HostMachineip',
+  name: 'Hostip',
   props: {
     data: {
       type: Object,
@@ -16,6 +16,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'HostipForNetworkSidePage',
         resource: 'guestnetworks',
         getParams: {
           details: true,

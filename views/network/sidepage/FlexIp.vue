@@ -16,6 +16,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'FlexIpForNetworkSidePage',
         resource: 'networkinterfacenetworks',
         getParams: {
           details: true,

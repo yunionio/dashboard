@@ -17,6 +17,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'GloblaVpcSunVpcListSidePage',
         resource: 'vpcs',
         steadyStatus: ['available', 'unavailable'],
         getParams: this.getParams,
