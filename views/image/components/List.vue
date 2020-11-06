@@ -8,7 +8,8 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :before-show-menu="beforeShowMenu" />
 </template>
 
 <script>
@@ -99,6 +100,7 @@ export default {
         meta: () => ({
           buttonType: 'primary',
         }),
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_store'),
       }
       const ImageUpload = {
         label: this.$t('compute.text_643'),
@@ -110,6 +112,7 @@ export default {
             refresh: this.refresh,
           })
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_upload'),
       }
       const batchActions = [
         {
@@ -189,6 +192,7 @@ export default {
                   }
                   return ret
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_change_project'),
               },
               {
                 label: this.$t('compute.text_615'),
@@ -246,6 +250,7 @@ export default {
                   if (ret.tooltip) return ret
                   return { validate: true, tooltip: '' }
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_set_delete_protection'),
               },
               {
                 label: this.$t('table.action.set_tag'),
@@ -322,6 +327,7 @@ export default {
                   }
                   return this.$getDeleteResult(this.list.selectedItems)
                 },
+                hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_delete'),
               },
             ]
           },
@@ -370,6 +376,11 @@ export default {
         return val === 'true'
       }
       return val
+    },
+    beforeShowMenu () {
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: ['image_hidden_menus'],
+      })
     },
   },
 }
