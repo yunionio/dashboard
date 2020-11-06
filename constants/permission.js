@@ -744,6 +744,12 @@ export const PERMISSION = {
   dns_zonecaches_get: ['compute', 'dns_zonecaches', 'get'],
   dns_zonecaches_create: ['compute', 'dns_zonecaches', 'create'],
   dns_zonecaches_delete: ['compute', 'dns_zonecaches', 'delete'],
+  // 策略相关
+  scopedpolicybindings_delete: ['yunionconf', 'scopedpolicybindings', 'delete'],
+  scopedpolicies_list: ['yunionconf', 'scopedpolicies', 'list'],
+  scopedpolicies_create: ['yunionconf', 'scopedpolicies', 'create'],
+  scopedpolicies_update: ['yunionconf', 'scopedpolicies', 'update'],
+  scopedpolicies_delete: ['yunionconf', 'scopedpolicies', 'delete'],
 }
 
 // 已声明权限的资源
