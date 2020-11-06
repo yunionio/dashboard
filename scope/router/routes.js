@@ -32,6 +32,12 @@ const routes = [
             component: LoginChooser,
             meta: { layout: 'full-screen', auth: false, authPage: true, transitionName: 'slide' },
           },
+          {
+            name: 'LoginChooserDefault',
+            path: 'default',
+            component: LoginChooser,
+            meta: { layout: 'full-screen', auth: false, authPage: true, transitionName: 'slide' },
+          },
         ],
       },
       {
