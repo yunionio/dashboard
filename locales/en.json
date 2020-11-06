@@ -604,7 +604,7 @@
   "cloudenv.text_553": "Please select the strategy type",
   "cloudenv.text_554": "Modify",
   "cloudenv.text_555": "Assign",
-  "cloudenv.text_556": "Please fill in the policy content",
+  "cloudenv.text_556": "Please fill in the operation callback address",
   "cloudenv.text_557": "{0}: {1} pcs",
   "cloudenv.text_558": "Set third-party callback address",
   "cloudenv.text_559": "remote control",

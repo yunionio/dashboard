@@ -190,7 +190,7 @@ export default {
         const values = await this.form.fc.validateFields()
         const data = this.genData(values)
         const { type } = this.$route.query
-        if (R.isEmpty(data.policies)) {
+        if (R.isEmpty(data.policies) && data.category.includes('configured_callback_address')) {
           this.loading = false
           this.$message.warn(this.$t('cloudenv.text_556'))
           return
