@@ -7,7 +7,7 @@
     <a-menu slot="overlay">
       <template v-if="!isSubmenus">
         <template v-for="item of options">
-          <a-menu-item :key="item.label" class="sub-link-btn">
+          <a-menu-item v-if="!getHidden(item)" :key="item.label" class="sub-link-btn">
             <action-button
               button-size="small"
               :button-block="true"
