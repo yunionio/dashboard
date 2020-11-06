@@ -323,8 +323,8 @@ export default {
     syncItem (value) {
       if (value) {
         const syncValue = R.is(Object, value) ? this.resOpts[value.key] : this.resOpts[value]
-        this.currentItem = syncValue
         if (R.is(Object, syncValue)) {
+          this.currentItem = syncValue
           this.$emit('update:item', syncValue)
         }
       }
