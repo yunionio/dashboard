@@ -4,22 +4,8 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('cloudenv.text_555'),
-        action: obj => {
-          const { id, policies, category } = obj
-          this.$router.push({
-            path: '/strategydefinition/create',
-            query: {
-              type: 'assign',
-              id,
-              policies,
-              category,
-            },
-          })
-        },
-      },
-      {
         label: i18n.t('cloudenv.text_554'),
+        permission: 'scopedpolicies_update',
         action: obj => {
           const { id, name, policies, category } = obj
           this.$router.push({
@@ -35,7 +21,24 @@ export default {
         },
       },
       {
+        label: i18n.t('cloudenv.text_555'),
+        permission: 'scopedpolicies_update',
+        action: obj => {
+          const { id, policies, category } = obj
+          this.$router.push({
+            path: '/strategydefinition/create',
+            query: {
+              type: 'assign',
+              id,
+              policies,
+              category,
+            },
+          })
+        },
+      },
+      {
         label: i18n.t('cloudenv.text_108'),
+        permission: 'scopedpolicies_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,

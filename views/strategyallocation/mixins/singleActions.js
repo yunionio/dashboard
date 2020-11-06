@@ -5,6 +5,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('cloudenv.text_108'),
+        permission: 'scopedpolicybindings_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
