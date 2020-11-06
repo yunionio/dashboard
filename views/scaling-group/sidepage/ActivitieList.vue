@@ -29,7 +29,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        id: this.id,
+        id: 'ActivitieListForScalingGroupSidePage',
         resource: 'scalingactivities',
         apiVersion: 'v1',
         getParams: this.getParams,

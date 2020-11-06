@@ -15,6 +15,7 @@
       :is="params.windowData.currentTab"
       :data="detailData"
       :res-id="detailData.id"
+      :id="listId"
       :on-manager="onManager"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
@@ -49,6 +50,16 @@ export default {
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForBaremetalSidepage'
+        default:
+          return ''
+      }
+    },
   },
 }
 </script>

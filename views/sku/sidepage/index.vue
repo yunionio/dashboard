@@ -14,6 +14,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
+      :id="listId"
       :data="detailData"
       :on-manager="onManager"
       :getParams="getParams"
@@ -51,6 +52,16 @@ export default {
     getParams () {
       return {
         instance_type: this.detailData.name,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForSkuSidePage'
+        case 'vminstance-list':
+          return 'VminstanceListForSkuSidePage'
+        default:
+          return ''
       }
     },
   },

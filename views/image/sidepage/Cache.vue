@@ -26,6 +26,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'CacheListForSystemImageSidePage',
         resource: 'storagecachedimages',
         apiVersion: 'v2',
         idKey: 'storagecache_id',

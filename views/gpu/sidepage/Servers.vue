@@ -27,7 +27,7 @@ const commonUnabled = (value, statusArr = ['sched_fail', 'net_fail', 'disk_fail'
 }
 
 export default {
-  name: '',
+  name: 'ServersListForGpuSidePage',
   mixins: [WindowsMixin, ListMixin],
   props: {
     data: {
@@ -38,6 +38,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'ServersListForGpuSidePage',
         resource: 'servers',
         getParams: {
           'filter.0': `id.equals(${this.data.guest_id})`,

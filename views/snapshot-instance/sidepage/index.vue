@@ -15,6 +15,7 @@
       :is="params.windowData.currentTab"
       :data="detailData"
       :res-id="data.id"
+      :id="listId"
       :on-manager="onManager"
       :columns="columns"
       @tab-change="handleTabChange" />
@@ -46,6 +47,16 @@ export default {
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForSnapshotInstanceSidePage'
+        default:
+          return ''
+      }
+    },
   },
 }
 </script>

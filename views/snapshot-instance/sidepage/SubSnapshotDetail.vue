@@ -1,5 +1,5 @@
 <template>
-  <vxe-grid class="mb-2" :data="data.snapshots" :columns="columns" />
+  <vxe-grid class="mb-2" :data="data.snapshots" :columns="columns" :resizable="true" />
 </template>
 
 <script>

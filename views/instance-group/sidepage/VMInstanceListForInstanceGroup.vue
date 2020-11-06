@@ -25,6 +25,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'VminstanceListForInstanceGroupSidepage',
         resource: 'servers',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.server).flat(),

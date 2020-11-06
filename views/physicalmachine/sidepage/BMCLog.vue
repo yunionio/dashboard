@@ -20,6 +20,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'BMClogListForPhysicalmachineSidePage',
         resource: 'baremetalevents',
         apiVersion: 'v1',
         getParams: this.getParams,

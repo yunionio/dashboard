@@ -16,6 +16,7 @@
       :data="detailData"
       :on-manager="onManager"
       :res-id="data.id"
+      :id="listId"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
@@ -48,6 +49,16 @@ export default {
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForSnapshotPolicySidePage'
+        default:
+          return ''
+      }
+    },
   },
 }
 </script>

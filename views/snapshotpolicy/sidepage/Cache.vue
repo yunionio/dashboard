@@ -31,6 +31,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'CacheListForVmSnapshotPolicySidePage',
         resource: 'snapshotpolicycaches',
         steadyStatus: Object.values(expectStatus.snapshotpolcyCache).flat(),
         getParams: {

@@ -22,6 +22,7 @@
       :data="detailData"
       :serverColumns="columns"
       :res-id="data.id"
+      :id="listId"
       :getParams="componentParams"
       :on-manager="onManager"
       :show-create-action="false"
@@ -148,6 +149,22 @@ export default {
         'secgroup-list': this.secgroupListActives,
       }
       return _[this.params.windowData.currentTab] || {}
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'network-list-for-vm-instance-sidepage':
+          return 'NetworkListForVminstanceSidepage'
+        case 'disk-list-for-vm-instance-sidepage':
+          return 'DiskLiskForVminstanceSidepage'
+        case 'secgroup-list':
+          return 'SecgroupLiskForVminstanceSidepage'
+        case 'vm-instance-alert-sidepage':
+          return 'AlertLiskForVminstanceSidepage'
+        case 'event-drawer':
+          return 'EventListForVminstanceSidepage'
+        default:
+          return ''
+      }
     },
   },
   methods: {

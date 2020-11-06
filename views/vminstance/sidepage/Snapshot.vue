@@ -7,7 +7,7 @@
     </a-tabs>
     <div class="mt-2">
       <keep-alive>
-        <component :is="currentComponent" :getParams="getParams" />
+        <component :is="currentComponent" :getParams="getParams" :id="id" />
       </keep-alive>
     </div>
   </div>
@@ -42,6 +42,16 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    id () {
+      switch (this.currentComponent) {
+        case 'InstanceSnapshotList':
+          return 'InstanceSnapshotListForVminstanceSidepage'
+        default:
+          return 'DiskSnapshotListForVminstanceSidepage'
+      }
+    },
   },
   methods: {
     callback (key) {

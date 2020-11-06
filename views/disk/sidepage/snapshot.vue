@@ -38,6 +38,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'SnapshotListForDiskSidePage',
         resource: 'snapshots',
         steadyStatus: Object.values(expectStatus.disk).flat(),
         getParams: { details: true, disk_id: this.resId },
