@@ -37,6 +37,7 @@ export default {
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
+          permission: 'scopedpolicies_create',
           action: () => {
             this.$router.push({
               path: '/strategydefinition/create',
@@ -53,6 +54,7 @@ export default {
         },
         {
           label: this.$t('cloudenv.text_108'),
+          permission: 'scopedpolicies_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

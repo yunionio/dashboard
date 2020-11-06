@@ -172,7 +172,7 @@ export default {
     {
       meta: {
         label: i18n.t('cloudenv.text_499'),
-        hidden: () => !store.getters.isAdminMode || !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
+        hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
       },
       submenus: [
         {
@@ -193,6 +193,7 @@ export default {
           path: '/strategydefinition',
           meta: {
             label: i18n.t('cloudenv.text_501'),
+            permission: 'scopedpolicies_list',
           },
           component: Layout,
           children: [
