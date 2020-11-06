@@ -1319,5 +1319,6 @@
   "compute.text_1349": "The VMware platform system disk can perform this operation only if the guest status is 【{0}】",
   "compute.text_1350": "Appoint Block Storage",
   "compute.text_1351": "Please select Block Storage",
-  "compute.text_1352": "No line type"
+  "compute.text_1352": "No line type",
+  "compute.text_1353": "The local hard disk does not support separate creation for the time being. You can add hard disks in the virtual machine list by adjusting the configuration of the specified virtual machine"
 }
