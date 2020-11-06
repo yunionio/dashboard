@@ -20,6 +20,7 @@
       :data="detailData"
       resource="rbacclusterrolebindings"
       :serverColumns="columns"
+      :id="listId"
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
@@ -58,6 +59,14 @@ export default {
   computed: {
     getParams () {
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SRbacclusterrolebindingSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

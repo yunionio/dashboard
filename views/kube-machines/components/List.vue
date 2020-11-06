@@ -22,6 +22,7 @@ export default {
   name: 'kubeMachinesList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
+    id: String,
     resId: String,
     data: {
       type: Object,
@@ -34,6 +35,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'kubemachines',
         apiVersion: 'v1',
         steadyStatus: Object.values(expectStatus.kubemachines).flat(),

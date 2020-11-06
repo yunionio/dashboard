@@ -21,6 +21,7 @@
       :rules="detailData.rules"
       resource="rbacclusterroles"
       :serverColumns="columns"
+      :id="listId"
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
@@ -62,6 +63,14 @@ export default {
   computed: {
     getParams () {
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SRbacclusteroleSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

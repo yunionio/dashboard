@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :onManager="onManager" resource="ingresses" />
+    <component :is="params.windowData.currentTab" :id="listId" :res-id="data.id" :data="detailData" :onManager="onManager" resource="ingresses" />
   </base-side-page>
 </template>
 
@@ -44,6 +44,20 @@ export default {
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SIngressSidePage'
+        case 'service-list':
+          return 'ServiceListForK8SIngressSidePage'
+        case 'events-sidepage':
+          return 'EventsForK8SIngressSidePage'
+        default:
+          return ''
+      }
+    },
   },
 }
 </script>

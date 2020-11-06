@@ -20,6 +20,7 @@
       :data="detailData"
       resource="rbacroles"
       :serverColumns="columns"
+      :id="listId"
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
@@ -61,6 +62,16 @@ export default {
   computed: {
     getParams () {
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SRbacRoleSidePage'
+        case 'events-sidepage':
+          return 'EventsForK8SRbacRoleSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

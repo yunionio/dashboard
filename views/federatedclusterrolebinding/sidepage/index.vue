@@ -22,6 +22,7 @@
       resource="federatedclusterrolebindings"
       :serverColumns="columns"
       :res-id="data.id"
+      :id="listId"
       :getParams="getParams"
       :on-manager="onManager"
       :title="$t('k8s.text_394')"
@@ -64,6 +65,16 @@ export default {
         owner_name: this.detailData.name,
         namespace: this.detailData.namespace,
         cluster: this.detailData.clusterID,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SFederatedclusterrolebindingSidePage'
+        case 'k8s-attach-cluster-list':
+          return 'AttachClusterListForK8SFederatedclusterrolebindingSidePage'
+        default:
+          return ''
       }
     },
   },

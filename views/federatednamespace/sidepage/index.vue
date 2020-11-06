@@ -19,6 +19,7 @@
       :is="params.windowData.currentTab"
       :data="detailData"
       :resId="detailData.id"
+      :id="listId"
       resource="federatednamespaces"
       :serverColumns="columns"
       :res-id="data.id"
@@ -64,6 +65,16 @@ export default {
         owner_name: this.detailData.name,
         namespace: this.detailData.namespace,
         cluster: this.detailData.clusterID,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForK8SFederatednamespaceSidePage'
+        case 'k8s-attach-cluster-list':
+          return 'AttachClusterListForK8SFederatednamespaceSidePage'
+        default:
+          return ''
       }
     },
   },
