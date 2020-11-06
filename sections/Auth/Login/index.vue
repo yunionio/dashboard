@@ -80,9 +80,8 @@ export default {
         if (defaultIdps && defaultIdps.length) {
           return this.handleClickIdp(defaultIdps[0])
         }
-      } else {
-        this.regionsLoading = true
       }
+      this.regionsLoading = true
     } catch (error) {
       this.regionsLoading = true
     }
