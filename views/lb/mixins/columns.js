@@ -132,7 +132,6 @@ export default {
       //   },
       // },
       getProjectTableColumn(),
-      getBrandTableColumn(),
       getRegionTableColumn({ showOverflow: false }),
       {
         field: 'account',
