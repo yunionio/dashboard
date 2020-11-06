@@ -19,6 +19,7 @@ export default {
             })
           })
         },
+        hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_edit_bandwidth'),
       },
       {
         label: i18n.t('compute.text_390'),
@@ -44,6 +45,7 @@ export default {
           ret.validate = true
           return ret
         },
+        hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_change_ip'),
       },
     ]
   },
