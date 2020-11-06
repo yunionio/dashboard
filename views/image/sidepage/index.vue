@@ -13,7 +13,8 @@
         :options="singleActions"
         :row="detailData"
         button-type="link"
-        button-size="small" />
+        button-size="small"
+        :before-show-menu="beforeShowMenu" />
     </template>
     <component
       :is="params.windowData.currentTab"
@@ -67,6 +68,13 @@ export default {
         default:
           return ''
       }
+    },
+  },
+  methods: {
+    beforeShowMenu () {
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: ['image_hidden_menus'],
+      })
     },
   },
 }

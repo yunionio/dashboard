@@ -84,6 +84,7 @@ export default {
           meta: () => ({
             buttonType: 'primary',
           }),
+          hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_cache_list'),
         },
       ],
       singleActions: [

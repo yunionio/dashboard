@@ -45,6 +45,7 @@ export default {
           }
           return ret
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_create_server'),
       },
       {
         label: i18n.t('compute.text_352'),
@@ -83,6 +84,7 @@ export default {
                   tooltip: !isOwnerProject(obj.tenant_id) ? i18n.t('compute.text_623', [i18n.t('dictionary.domain')]) : '',
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_edit_attribute'),
             },
             {
               label: i18n.t('compute.text_683'),
@@ -116,6 +118,7 @@ export default {
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.iamge_set_public_image'),
             },
             {
               label: i18n.t('compute.text_684'),
@@ -149,6 +152,7 @@ export default {
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_set_customize_image'),
             },
             getSetPublicAction(this, {
               name: this.$t('dictionary.image'),
@@ -193,6 +197,7 @@ export default {
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_set_public'),
             }),
             // {
             //   label: '设置共享',
@@ -271,6 +276,7 @@ export default {
                 }
                 return ret
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_change_project'),
             },
             {
               label: i18n.t('compute.text_615'),
@@ -324,6 +330,7 @@ export default {
                 if (ret.tooltip) return ret
                 return { validate: true, tooltip: '' }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_set_delete_protection'),
             },
             {
               label: i18n.t('compute.text_261'),
@@ -391,6 +398,7 @@ export default {
                 if (ret.tooltip) return ret
                 return this.$getDeleteResult(obj)
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_delete'),
             },
           ]
         },
