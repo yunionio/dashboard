@@ -222,6 +222,10 @@ export const REGEXP = {
     regexp: /[a-zA-Z0-9_@#]{6,64}/,
     message: i18n.t('validator.domainPassword'),
   },
+  dnsName: {
+    regexp: /^([a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62}){1}(\.[a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62})*[\._]?$/,
+    message: i18n.t('validator.dnsName'),
+  },
 }
 
 /**
