@@ -138,6 +138,7 @@ export default {
                 }
                 return ret
               },
+              hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
             },
           ]
         },

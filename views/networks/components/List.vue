@@ -73,6 +73,7 @@ export default {
               tooltip,
             }
           },
+          hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_add_network_card'),
         },
       ],
     }
