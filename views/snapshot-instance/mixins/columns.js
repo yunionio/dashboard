@@ -1,5 +1,6 @@
 import { sizestr } from '@/utils/utils'
 import {
+  getBrandTableColumn,
   getNameDescriptionTableColumn,
   getStatusTableColumn,
   getProjectTableColumn,
@@ -65,6 +66,7 @@ export default {
           },
         },
       },
+      getBrandTableColumn(),
       getTimeTableColumn(),
       getProjectTableColumn(),
     ]
