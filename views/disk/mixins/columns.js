@@ -63,7 +63,7 @@ export default {
           default: ({ row }, h) => {
             return [
               <div class='text-truncate'>
-                {row.guest}
+                {row.guest ? <list-body-cell-wrap copy field='guest' row={row} /> : '-'}
                 {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : ''}
               </div>,
             ]
