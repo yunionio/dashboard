@@ -588,7 +588,7 @@
   "cloudenv.text_553": "请选择策略类型",
   "cloudenv.text_554": "修改",
   "cloudenv.text_555": "分配",
-  "cloudenv.text_556": "请填写策略内容",
+  "cloudenv.text_556": "请填写操作回调地址",
   "cloudenv.text_557": "{0}：{1}个",
   "cloudenv.text_558": "设置第三方回调地址",
   "cloudenv.text_559": "远程控制",
