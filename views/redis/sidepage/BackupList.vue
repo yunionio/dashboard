@@ -10,12 +10,13 @@
 import { sizestr } from '@/utils/utils'
 import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'RedisBackupList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     params: {
       type: Object,
@@ -54,7 +55,9 @@ export default {
         },
       }),
       columns: [
-        getNameDescriptionTableColumn(),
+        getNameDescriptionTableColumn({
+          onManager: this.onManager,
+        }),
         {
           field: 'backup_mode',
           title: this.$t('db.text_36'),
