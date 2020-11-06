@@ -2,12 +2,14 @@ import * as R from 'ramda'
 import i18n from '@/locales'
 export const CATEGORY_LABEL_MAP = {
   vminstance_hidden_menus: i18n.t('cloudenv.text_507'),
+  image_hidden_menus: i18n.t('cloudenv.text_564'),
   vminstance_configured_callback_address: i18n.t('cloudenv.text_508'),
 }
 
 export const CATEGORY_KEYS = {
   VMINSTANCE_HIDDEN_MENUS: 'vminstance_hidden_menus',
   VMINSTANCE_CONFIGURED_CALLBACK_ADDRESS: 'vminstance_configured_callback_address',
+  IMAGE_HIDDEN_MENUS: 'image_hidden_menus',
 }
 
 export const categories = [
@@ -22,6 +24,12 @@ export const categories = [
     label: i18n.t('cloudenv.text_508'),
     action: i18n.t('cloudenv.text_510'),
     component: 'ConfiguredCallbackAddress',
+  },
+  {
+    key: CATEGORY_KEYS.IMAGE_HIDDEN_MENUS,
+    label: i18n.t('cloudenv.text_564'),
+    action: i18n.t('cloudenv.text_509'),
+    component: 'HiddenMenus',
   },
 ]
 
@@ -78,6 +86,19 @@ export const policies = {
     { label: i18n.t('cloudenv.text_527'), value: 'renew_callback_address' },
     { label: i18n.t('cloudenv.text_546'), value: 'modify_bandwidth_callback_address' },
     { label: i18n.t('cloudenv.text_108'), value: 'delete_callback_address' },
+  ],
+  [CATEGORY_KEYS.IMAGE_HIDDEN_MENUS]: [
+    { label: i18n.t('cloudenv.text_565'), value: 'image_upload' },
+    { label: i18n.t('cloudenv.text_566'), value: 'image_store' },
+    { label: i18n.t('cloudenv.text_567'), value: 'image_create_server' },
+    { label: i18n.t('cloudenv.text_406'), value: 'image_edit_attribute' },
+    { label: i18n.t('cloudenv.text_568'), value: 'iamge_set_public_image' },
+    { label: i18n.t('cloudenv.text_569'), value: 'image_set_customize_image' },
+    { label: i18n.t('cloudenv.text_281'), value: 'image_set_public' },
+    { label: i18n.t('cloudenv.text_519'), value: 'image_change_project' },
+    { label: i18n.t('cloudenv.text_543'), value: 'image_set_delete_protection' },
+    { label: i18n.t('cloudenv.text_108'), value: 'image_delete' },
+    { label: i18n.t('cloudenv.text_570'), value: 'image_create_cache_list' },
   ],
 }
 

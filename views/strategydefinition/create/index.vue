@@ -204,7 +204,11 @@ export default {
         }
         this.loading = false
         this.$message.success(this.$t('cloudenv.text_324', [this.actions[type]]))
-        this.$router.push('/strategydefinition')
+        if (type === 'assign') {
+          this.$router.push('/strategyallocation')
+        } else {
+          this.$router.push('/strategydefinition')
+        }
       } catch (error) {
         this.loading = false
       }
@@ -217,7 +221,7 @@ export default {
   ::v-deep .ant-checkbox-group {
     width: 800px;
     .ant-checkbox-group-item {
-      width: 140px;
+      width: 150px;
       margin-bottom: 20px;
     }
   }

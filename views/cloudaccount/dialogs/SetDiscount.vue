@@ -9,7 +9,7 @@
         :model="fd"
         :rules="rules"
         v-bind="formItemLayout">
-        <a-form-model-item :label="$t('cloudaccount.table.title.discount')" prop="discount" :extra="$t('cloudenv.text_564')">
+        <a-form-model-item :label="$t('cloudaccount.table.title.discount')" prop="discount" :extra="$t('cloudenv.text_571')">
           <a-input-number
             v-model="fd.discount"
             :min="1"
