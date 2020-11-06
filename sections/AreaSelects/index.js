@@ -530,7 +530,7 @@ export default {
     })
     return (
       <a-form-item labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label} required={this.isRequired}>
-        <a-row gutter={8}>
+        <a-row gutter={8} class="w-100">
           {RenderCols}
         </a-row>
       </a-form-item>
