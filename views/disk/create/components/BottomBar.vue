@@ -8,7 +8,7 @@
             <div class="hour position-relative">
               <template v-if="price">
                 <m-animated-number :value="price" :formatValue="formatToPrice" />
-                <div class="discount-badge" v-if="priceTotal && priceTotal.discount !== 1">
+                <div class="discount-badge" v-if="priceTotal && priceTotal.discount">
                   <div class="lh-1" v-discount="priceTotal.discount" />
                   <div class="lh-1 mt-1 text-color-help"><del>{{ priceTotal.hour_gross_price }}</del></div>
                 </div>
