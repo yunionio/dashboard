@@ -13,9 +13,6 @@ export default {
             title: i18n.t('cloudenv.text_108'),
             name: this.$t('dictionary.strategyallocation'),
             onManager: this.onManager,
-            success: () => {
-              window.location.reload()
-            },
           })
         },
         meta: (obj) => this.$getDeleteResult(obj),
