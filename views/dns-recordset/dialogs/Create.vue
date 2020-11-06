@@ -215,6 +215,15 @@ export default {
           return callback(new Error(this.$t('network.text_179')))
         }
       }
+      if (value !== '*' && value !== '@') {
+        const valid = validate(value, 'dnsName')
+        if (valid === false || valid.result === false) {
+          callback(new Error(this.$t('validator.dnsName')))
+        }
+        if (value.startsWith('-') || value.startsWith('.') || value.endsWith('-') || value.endsWith('.')) {
+          callback(new Error(this.$t('validator.dnsName')))
+        }
+      }
       callback()
     }
 
