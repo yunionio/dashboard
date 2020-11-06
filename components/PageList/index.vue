@@ -39,6 +39,7 @@
     <template v-if="configLoaded">
       <page-list-table
         ref="table"
+        :id="id"
         :id-key="idKey"
         :data="finalData"
         :columns="columns"

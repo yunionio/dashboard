@@ -37,10 +37,12 @@ import _ from 'lodash'
 import Actions from '../Actions'
 import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
 import { getTagTitle } from '@/utils/common/tag'
+import storage from '@/utils/storage'
 
 export default {
   name: 'PageListTable',
   props: {
+    id: String,
     idKey: String,
     data: {
       type: Object,
@@ -102,11 +104,14 @@ export default {
     beforeShowMenuLoaded: Boolean,
   },
   data () {
+    const storageKey = this.id && `__oc_${this.id}__`
     return {
       // table width
       tableWidth: 'auto',
       tableColumns: [],
       finalLimit: this.getLimit(),
+      storageKey,
+      storageConfig: this.id && storage.get(storageKey),
     }
   },
   computed: {
@@ -149,6 +154,9 @@ export default {
       } else if (this.radioEnabled) {
         ret['radio-change'] = this.handleRadioChange
       }
+      if (this.id) {
+        ret['resizable-change'] = this.handleResizeableChange
+      }
       return ret
     },
     // 动态生成额外Props
@@ -158,6 +166,9 @@ export default {
         ret['checkbox-config'] = { reserve: true, highlight: true }
       } else if (this.radioEnabled) {
         ret['radio-config'] = { reserve: true, highlight: true, trigger: 'row' }
+      }
+      if (this.id) {
+        ret.resizable = true
       }
       return ret
     },
@@ -279,15 +290,16 @@ export default {
         })
       }
       if (this.checkboxEnabled) {
-        defaultColumns.unshift({ type: 'checkbox', width: 40, showHeaderOverflow: false })
+        defaultColumns.unshift({ type: 'checkbox', width: 40, showHeaderOverflow: false, resizable: false })
       } else if (this.radioEnabled) {
-        defaultColumns.unshift({ type: 'radio', width: 40, showHeaderOverflow: false })
+        defaultColumns.unshift({ type: 'radio', width: 40, showHeaderOverflow: false, resizable: false })
       }
       if (this.beforeShowMenuLoaded && this.showSingleActions && this.singleActions && this.singleActions.length) {
         defaultColumns.push({
           field: '_action',
           title: this.$t('table.title._action'),
           minWidth: 120,
+          resizable: false,
           slots: {
             default: ({ row }, h) => {
               return [
@@ -325,17 +337,28 @@ export default {
       if (this.config && this.config.hiddenColumns) {
         R.forEach(item => {
           if (item.type !== 'checkbox' || item.type !== 'radio' || item.field !== '_action' || item.field !== '_action_placeholder') {
+            if (this.storageConfig && this.storageConfig[item.field] && this.storageConfig[item.field].width) {
+              item.minWidth = this.storageConfig[item.field].width
+              item.width = this.storageConfig[item.field].width
+            }
             item.visible = !this.config.hiddenColumns.includes(item.field)
           }
         }, defaultColumns)
       }
       if (this.config && this.config.showTagKeys && this.config.showTagKeys.length) {
         const tagColumns = this.config.showTagKeys.map(item => {
+          const config = {
+            minWidth: 100,
+          }
+          if (this.storageConfig && this.storageConfig[item] && this.storageConfig[item].width) {
+            config.minWidth = this.storageConfig[item].width
+            config.width = this.storageConfig[item].width
+          }
           return {
+            ...config,
             field: item,
             title: getTagTitle(item),
             showOverflow: 'title',
-            minWidth: 100,
             sortable: true,
             slots: {
               default: ({ row }) => {
@@ -390,6 +413,16 @@ export default {
     clearRadio () {
       this.$refs.grid.clearRadioReserve()
       this.$refs.grid.clearRadioRow()
+    },
+    handleResizeableChange ({ column }) {
+      const config = {
+        [column.property]: {
+          width: column.resizeWidth,
+        },
+      }
+      const newConfig = R.mergeDeepRight({ ...this.storageConfig }, config)
+      storage.set(this.storageKey, newConfig)
+      this.storageConfig = newConfig
     },
   },
 }

@@ -36,6 +36,9 @@ export default {
     objType: {
       type: String,
     },
+    listId: {
+      type: String,
+    },
   },
   data () {
     const filterOptions = {
@@ -95,6 +98,7 @@ export default {
     return {
       rangeTime: [null, null],
       list: this.$list.createList(this, {
+        id: this.listId,
         resource: 'actions',
         apiVersion: 'v1',
         getParams: this.getParam,
