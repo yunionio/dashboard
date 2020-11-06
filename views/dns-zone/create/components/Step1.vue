@@ -8,9 +8,6 @@
         <a-form-item :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="isAdminMode">
           <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_156')">
-          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_157')" />
-        </a-form-item>
         <a-form-item :label="$t('network.text_717')">
           <a-select
             v-decorator="decorators.zoneType" @change="zoneTypeChangeHandle">
@@ -18,6 +15,9 @@
               <div>{{ v.label }}<span class="ml-2">{{ v.desc }}</span></div>
             </a-select-option>
           </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('network.text_156')">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_157')" />
         </a-form-item>
       </a-form>
   </div>
