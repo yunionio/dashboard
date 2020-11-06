@@ -35,7 +35,7 @@ export default {
         autoRenew: [
           'autoRenew',
           {
-            initialValue: true,
+            initialValue: this.params.data[0].auto_renew,
             valuePropName: 'checked',
           },
         ],
@@ -55,10 +55,6 @@ export default {
       const showFields = ['name', 'billing_type', 'brand']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
-  },
-  mounted () {
-    const autoRenew = this.params.data[0].auto_renew
-    this.form.fc.setFieldsValue({ autoRenew })
   },
   methods: {
     validateForm () {
