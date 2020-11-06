@@ -144,7 +144,7 @@ export default {
             this.createDialog('RedisWhiteListDeleteDialog', {
               data: [obj],
               columns: this.columns,
-              title: this.$t('db.text_314'),
+              title: this.$t('db.text_206'),
               list: this.list,
             })
           },
