@@ -32,10 +32,10 @@
       <div class="container" style="margin: auto">
         <div class="container-wrap d-flex align-items-center justify-content-center w-100">
           <template v-if="!statusLoaded">
-            <div class="text-white">{{ $t('common.text00111') }}</div>
+            <div>{{ $t('common.text00111') }}</div>
           </template>
           <template v-else-if="ticketLogging">
-            <div class="text-white">{{ $t('auth.logging') }}</div>
+            <div>{{ $t('auth.logging') }}</div>
           </template>
           <template v-else>
             <router-view class="content-wrap" />

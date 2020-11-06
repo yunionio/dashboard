@@ -1,5 +1,5 @@
 <template>
-  <div class="login-index-wrap flex-fill d-flex h-100 align-items-center">
+  <div class="login-index-wrap flex-fill d-flex h-100 align-items-center" v-loading.fullscreen="!regionsLoading">
     <div class="login-index-left flex-fill pr-4">
       <h2>{{ $t('login.desc1') }}</h2>
       <h4>{{ $t('login.desc2') }}</h4>
@@ -48,6 +48,7 @@ export default {
   data () {
     return {
       prevHeight: 0,
+      regionsLoading: false,
     }
   },
   computed: {
@@ -69,14 +70,30 @@ export default {
       return this.regions.idps || []
     },
   },
-  created () {
-    this.$store.dispatch('auth/getRegions')
+  async created () {
+    // 获取domains、regions、idps、captcha信息
+    try {
+      // 如果有设置为default的idp，则用default的idp方式登录
+      const { idps } = await this.$store.dispatch('auth/getRegions')
+      if (this.$route.name !== 'LoginChooserDefault') {
+        const defaultIdps = idps.filter(item => item.is_default)
+        if (defaultIdps && defaultIdps.length) {
+          return this.handleClickIdp(defaultIdps[0])
+        }
+      } else {
+        this.regionsLoading = true
+      }
+    } catch (error) {
+      this.regionsLoading = true
+    }
+    // 如果query中指定了domain，那么只将当前domain的历史账号过滤出来
     let data = Object.entries(this.loggedUsers)
     if (this.$route.query.domain) {
       data = data.filter(v => {
         return v[1].domain.name === this.$route.query.domain
       })
     }
+    // 查看SSO登录跳转回来后的query信息，是否有error
     const { query, path } = this.$route
     const { result, error_class } = query
     if (result === 'error') {
@@ -94,6 +111,7 @@ export default {
       })
       return false
     }
+    // 如果包含历史账号，则显示历史账号
     if (!R.isEmpty(data)) {
       this.$router.replace({
         path: '/auth/login/chooser',
