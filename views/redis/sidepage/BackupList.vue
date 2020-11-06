@@ -8,7 +8,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
@@ -54,7 +54,7 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn(),
+        getNameDescriptionTableColumn(),
         {
           field: 'backup_mode',
           title: this.$t('db.text_36'),
