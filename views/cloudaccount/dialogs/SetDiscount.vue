@@ -12,7 +12,7 @@
         <a-form-model-item :label="$t('cloudaccount.table.title.discount')" prop="discount" :extra="$t('cloudenv.text_571')">
           <a-input-number
             v-model="fd.discount"
-            :min="1"
+            :min="0"
             :max="100"
             :formatter="value => `${value}%`"
             :parser="value => value.replace('%', '')" />
