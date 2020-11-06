@@ -22,7 +22,7 @@
       <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_100')" required v-bind="formItemLayout">
+      <a-form-item :label="$t('compute.text_100')" required v-bind="formItemLayout" :extra="extra">
         <a-row>
           <a-col :span="6" class="mr-2">
             <a-select v-decorator="decorators.backend" @change="__newStorageChange">
@@ -190,14 +190,14 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          md: { span: 16 },
-          xl: { span: 18 },
-          xxl: { span: 20 },
+          md: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 22 },
         },
         labelCol: {
-          md: { span: 8 },
-          xl: { span: 6 },
-          xxl: { span: 4 },
+          md: { span: 6 },
+          xl: { span: 4 },
+          xxl: { span: 2 },
         },
       },
       storageOpts: [],
@@ -314,6 +314,9 @@ export default {
     },
     project_domain () {
       return this.form.fd.domain ? this.form.fd.domain : this.userInfo.projectDomainId
+    },
+    extra () {
+      return this.cloudEnv === 'onpremise' ? this.$t('compute.text_1348') : ''
     },
   },
   watch: {
