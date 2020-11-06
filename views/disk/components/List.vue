@@ -158,7 +158,7 @@ export default {
             label: this.$t('table.title.disk_storage'),
             jointFilter: true,
           },
-          guests: {
+          guest_id: {
             label: this.$t('res.server'),
           },
           disk_type: {
