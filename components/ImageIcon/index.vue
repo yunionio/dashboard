@@ -3,11 +3,15 @@
 </template>
 
 <script>
-import { IMAGE_MSG } from './constants'
+import { IMAGE_MSG, CUSTOME_IMG } from './constants'
 import i18n from '@/locales'
 
 const sprites = require('./assets/sprites.png')
 const unknow = require('./assets/unkonw.png')
+const opensuse = require('./assets/opensuse.png')
+const fedora = require('./assets/fedora.png')
+const openeuler = require('./assets/openeuler.png')
+const euleros = require('./assets/euleros.png')
 
 export default {
   name: 'ImageIcon',
@@ -34,10 +38,16 @@ export default {
   },
   computed: {
     imageInfo () {
-      const image = this.image.toLowerCase()
+      const tps = this.image.split(' ')
+      const image = tps[0].toLowerCase()
       if (IMAGE_MSG[image]) {
         return {
           ...IMAGE_MSG[image],
+          isUnknow: false,
+        }
+      } else if (CUSTOME_IMG[image]) {
+        return {
+          ...CUSTOME_IMG[image],
           isUnknow: false,
         }
       } else {
@@ -49,7 +59,7 @@ export default {
       }
     },
     iconStyle () {
-      const { isUnknow } = this.imageInfo
+      const { isUnknow, url } = this.imageInfo
       const style = {
         width: '16px',
         height: '16px',
@@ -58,6 +68,26 @@ export default {
         backgroundRepeat: 'no-repeat',
         backgroundImage: `url("${isUnknow ? unknow : sprites}")`,
         backgroundPosition: this.imageInfo.position,
+      }
+      if (url) {
+        let curImg = opensuse
+        switch (url) {
+          case 'opensuse':
+            curImg = opensuse
+            break
+          case 'fedora':
+            curImg = fedora
+            break
+          case 'openeuler':
+            curImg = openeuler
+            break
+          case 'euleros':
+            curImg = euleros
+            break
+          default:
+            break
+        }
+        style.backgroundImage = `url("${curImg}")`
       }
       return style
     },
