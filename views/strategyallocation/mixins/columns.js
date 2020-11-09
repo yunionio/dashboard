@@ -13,6 +13,7 @@ export default {
         edit: false,
         hideField: true,
         showDesc: false,
+        field: 'scopedpolicy',
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.policy_name }</side-page-trigger>
