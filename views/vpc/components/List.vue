@@ -18,8 +18,7 @@ import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
-import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
-// import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'VPCList',
@@ -132,11 +131,11 @@ export default {
                 name: this.$t('dictionary.vpc'),
                 resource: 'vpcs',
               }),
-              // getSetPublicAction(this, {
-              //   name: this.$t('dictionary.vpc'),
-              //   scope: 'domain',
-              //   resource: 'vpcs',
-              // }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.vpc'),
+                scope: 'domain',
+                resource: 'vpcs',
+              }),
               {
                 label: this.$t('table.action.set_tag'),
                 action: () => {
