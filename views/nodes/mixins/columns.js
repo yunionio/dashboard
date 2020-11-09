@@ -1,27 +1,26 @@
 import { sizestr } from '@/utils/utils'
-import { getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getTimeTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
   created () {
     this.columns = [
-      {
-        field: 'name',
-        title: i18n.t('k8s.text_41'),
-        width: 300,
-        slots: {
-          default: ({ row }, h) => {
-            const ret = [<side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>]
-            if (row.taints) {
-              row.taints.forEach(taint => {
-                const effect = <div style="color: #999">{ taint.key }：{ taint.effect }</div>
-                ret.push(effect)
-              })
-            }
-            return ret
-          },
+      getNameDescriptionTableColumn({
+        onManager: this.onManager,
+        hideField: true,
+        edit: false,
+        showDesc: false,
+        slotCallback: row => {
+          const ret = [<side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>]
+          if (row.taints) {
+            row.taints.forEach(taint => {
+              const effect = <div style="color: #999">{ taint.key }：{ taint.effect }</div>
+              ret.push(effect)
+            })
+          }
+          return ret
         },
-      },
+      }),
       {
         field: 'addresses',
         title: 'IP',
