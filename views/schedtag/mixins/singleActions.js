@@ -15,6 +15,7 @@ export default {
             tipName: i18n.t('cloudenv.text_18'),
             onManager: this.onManager,
             tipname: this.$t('dictionary.schedtag'),
+            action: i18n.t('cloudenv.text_423'),
           })
         },
         meta: () => {

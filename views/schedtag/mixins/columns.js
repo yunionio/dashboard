@@ -37,6 +37,21 @@ export default {
       getResourceCountTableColumn(),
       getDynamicSchedtagCountTableColumn(),
       getSchedpolicyCountTableColumn(),
+      {
+        field: 'scope',
+        title: this.$t('table.title.scope_range'),
+        minWidth: 120,
+        formatter: ({ row }) => {
+          let ret = this.$t('cloudenv.text_504')
+          if (row.project_domain) {
+            ret = this.$t('cloudenv.text_505', [row.project_domain])
+          }
+          if (row.project) {
+            ret = this.$t('cloudenv.text_506', [row.project])
+          }
+          return ret
+        },
+      },
     ]
   },
 }
