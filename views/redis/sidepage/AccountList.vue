@@ -131,9 +131,13 @@ export default {
           },
           meta: (obj) => {
             const isAdmin = obj.account_type === 'admin'
+            const brandMap = {
+              Aliyun: this.$t('db.text_52'),
+              Qcloud: this.$t('db.text_361'),
+            }
             return {
               validate: this.commonMeta.validate && !isAdmin,
-              tooltip: this.commonMeta.tooltip || (isAdmin ? this.$t('db.text_313') : null),
+              tooltip: this.commonMeta.tooltip || (isAdmin ? this.$t('db.text_313', [brandMap[obj.brand]]) : null),
             }
           },
         },
