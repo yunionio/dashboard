@@ -31,7 +31,7 @@ export const IMAGE_MSG = {
     label: 'Gentoo',
     position: '0px -146px',
   },
-  susu: {
+  suse: {
     label: 'SUSE',
     position: '0px -72px',
   },
@@ -39,8 +39,27 @@ export const IMAGE_MSG = {
     label: 'Windows',
     position: '0px 2px',
   },
-  redhat: {
+  rhel: {
     label: 'RedHat',
     position: '0px -34px',
+  },
+}
+
+export const CUSTOME_IMG = {
+  opensuse: {
+    label: 'openSUSE',
+    url: 'opensuse',
+  },
+  fedora: {
+    label: 'Fedora',
+    url: 'fedora',
+  },
+  openeuler: {
+    label: 'openEuler',
+    url: 'openeuler',
+  },
+  euleros: {
+    label: 'euleros',
+    url: 'euleros',
   },
 }
