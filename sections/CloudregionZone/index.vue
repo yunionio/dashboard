@@ -3,20 +3,12 @@
     <a-row :gutter="8">
       <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select dropdownClassName="oc-select-dropdown" label-in-value v-decorator="decorator.cloudregion" @change="handleChange">
-            <a-select-option v-for="item in regionOpts" :key="item.id">
-              <span class="text-color-secondary option-prefix">{{ $t('dictionary.region') }}: </span>{{ item.name }}
-            </a-select-option>
-          </a-select>
+          <cloudregion v-decorator="decorator.cloudregion" @change="handleChange" :options="regionOpts" />
         </a-form-item>
       </a-col>
       <a-col :span="12">
         <a-form-item :wrapperCol="{ span: 24 }">
-          <a-select dropdownClassName="oc-select-dropdown" label-in-value  v-decorator="decorator.zone" allow-clear @change="v => emit(v, 'zone')">
-            <a-select-option v-for="item in zoneOpts" :key="item.id">
-              <span class="text-color-secondary option-prefix">{{ $t('dictionary.zone') }}: </span>{{ item.name }}
-            </a-select-option>
-          </a-select>
+          <zone v-decorator="decorator.zone" @change="v => emit(v, 'zone')" :options="zoneOpts" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -26,10 +18,16 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import Cloudregion from './components/Cloudregion'
+import Zone from './components/Zone'
 import { Manager } from '@/utils/manager'
 
 export default {
   name: 'RegionZoneSelect',
+  components: {
+    Cloudregion,
+    Zone,
+  },
   props: {
     decorator: {
       type: Object,
