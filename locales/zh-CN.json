@@ -1385,7 +1385,7 @@
     "Ctyun": "天翼云"
   },
   "shareScope": {
-    "system": "系统",
+    "system": "全局",
     "domain": "@:dictionary.domain",
     "project": "@:dictionary.project"
   },
@@ -1544,6 +1544,11 @@
     "projectAll": "本@:dictionary.domain共享",
     "domain": "多@:dictionary.domain共享",
     "domainAll": "全局共享"
+  },
+  "shareScopeDesc": {
+    "system": "全局均可使用该资源",
+    "domain": "该@:res.domain管理后台 & 该@:res.domain下的所有@:res.project&系统管理后台可使用该资源",
+    "project": "该@:res.project & 该@:res.project所属@:res.domain & 系统管理后台可使用该资源"
   },
   "cloudAccountShareDesc": {
     "none": "私有",
@@ -2219,7 +2224,8 @@
       "local_project": "本地项目",
       "zone_1_name": "备可用区",
       "mfa_validate": "MFA验证",
-      "exec_result": "执行结果"
+      "exec_result": "执行结果",
+      "scope_range": "所属范围"
     },
     "action": {
       "save": "保存",

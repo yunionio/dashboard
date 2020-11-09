@@ -1545,6 +1545,11 @@
     "domain": "Multiple @:dictionary.domain sharing",
     "domainAll": "Global share"
   },
+  "shareScopeDesc": {
+    "system": "The resource can be used globally",
+    "domain": "The domain management backend & all projects under the domain & system management backend can use the resource",
+    "project": "The project & The project belongs to the domain & system management background can use the resource"
+  },
   "cloudAccountShareDesc": {
     "none": "Private",
     "provider": "Multi-domain shared cloud subscription",
@@ -2219,7 +2224,8 @@
       "local_project": "Local project",
       "zone_1_name": "Backup Zone",
       "mfa_validate": "MFA",
-      "exec_result": "Result"
+      "exec_result": "Result",
+      "scope_range": "Scope"
     },
     "action": {
       "save": "Save",
