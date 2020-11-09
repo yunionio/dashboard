@@ -43,6 +43,7 @@ import { colors } from '@/sections/Charts/constants'
 import LineChart from '@/sections/Charts/Line'
 import { ColorHash } from '@/utils/colorHash'
 import { transformUnit } from '@/utils/utils'
+import { BRAND_MAP } from '@/constants'
 
 const MAX_COLUMNS = 6
 
@@ -293,6 +294,9 @@ export default {
       const names = []
       this.series.forEach((item, i) => {
         let name = item.raw_name
+        if (BRAND_MAP[name] && BRAND_MAP[name].label) {
+          name = BRAND_MAP[name].label
+        }
         if (item.tags && item.tags.path) {
           name += ` (path: ${item.tags.path})`
         }
