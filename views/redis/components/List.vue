@@ -188,9 +188,11 @@ export default {
                   })
                 },
                 meta: () => {
+                  const isNotQcloud = this.list.selectedItems.every(item => item.brand !== 'Qcloud')
+                  const isQcloudTip = isNotQcloud ? null : this.$t('db.text_358')
                   return {
-                    validate: selectedLength,
-                    tooltip: notSelectedTooltip,
+                    validate: selectedLength && isRunning && isNotQcloud,
+                    tooltip: notSelectedTooltip || notRunninTip || isQcloudTip,
                   }
                 },
               },
