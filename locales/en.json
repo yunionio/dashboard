@@ -257,7 +257,11 @@
       "sync_status": "Syncing",
       "sync_failed": "Sync failed",
       "flushing_failed": "Failed to clear instance",
-      "releasing": "To be deleted"
+      "releasing": "To be deleted",
+      "renewing": "Renewing",
+      "renew_failed": "Renewal failed",
+      "set_auto_renew": "Set auto renew",
+      "set_auto_renew_failed": "Set automatic renewal failed"
     },
     "instanceGroup": {
       "init": "Normal"
