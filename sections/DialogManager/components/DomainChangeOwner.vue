@@ -3,7 +3,7 @@
     <div slot="header">{{$t('common.text00078')}}{{ $t('dictionary.domain') }}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="`${$t('common.text00078')}${$t('dictionary.domain')}`" :name="params.name || $t('common.text00006')" />
-      <dialog-table :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" :errors="errors" />
       <template v-if="domainLoaded">
         <a-form :form="form.fc">
           <a-form-item :label="$t('dictionary.domain')" v-bind="formItemLayout" :extra="extra">
@@ -34,6 +34,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { getBatchErrorMessage } from '@/utils/error'
 
 export default {
   name: 'DomainChangeOwenrDialog',
@@ -65,6 +66,7 @@ export default {
       },
       domains: [],
       domainLoaded: false,
+      errors: undefined,
     }
   },
   computed: {
@@ -172,7 +174,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
-        await this.params.onManager('batchPerformAction', {
+        const response = await this.params.onManager('batchPerformAction', {
           id: ids,
           managerArgs: {
             action: 'change-owner',
@@ -180,6 +182,11 @@ export default {
           },
         })
         this.params.refresh()
+        const { errorsObj } = getBatchErrorMessage(response)
+        if (errorsObj) {
+          this.errors = errorsObj
+          return
+        }
         this.cancelDialog()
       } catch (error) {
         throw error
