@@ -21,6 +21,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { getNameFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'ImageList',
@@ -116,50 +117,50 @@ export default {
           label: this.$t('compute.text_275'),
           actions: obj => {
             return [
-              // getSetPublicAction(this, {
-              //   name: this.$t('dictionary.image'),
-              //   scope: 'project',
-              //   resource: 'images',
-              //   apiVersion: 'v1',
-              // }, {
-              //   meta: () => {
-              //     let ret = {
-              //       validate: false,
-              //       tooltip: '',
-              //     }
-              //     const actions = new Map([
-              //       ['admin', () => {
-              //         if (this.list.selectedItems.some(item => this.booleanTransfer(item.is_standard))) {
-              //           ret.tooltip = this.$t('compute.text_644')
-              //         }
-              //         return ret
-              //       }],
-              //       ['domain', () => {
-              //         if (this.list.selectedItems.some(item => this.booleanTransfer(item.is_standard))) {
-              //           ret.tooltip = this.$t('compute.text_644')
-              //           return ret
-              //         }
-              //         if (this.list.selectedItems.some(item => item.public_scope === 'system')) {
-              //           ret.tooltip = this.$t('compute.text_645')
-              //           return ret
-              //         }
-              //         return ret
-              //       }],
-              //       ['user', () => {
-              //         ret.tooltip = this.$t('compute.text_613')
-              //         if (this.list.selectedItems.some(item => !this.booleanTransfer(item.is_standard) && item.public_scope === 'system')) {
-              //           ret.tooltip = this.$t('compute.text_646')
-              //           return ret
-              //         }
-              //         return ret
-              //       }],
-              //     ])
-              //     const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
-              //     ret = action.call(this)
-              //     if (ret.tooltip) return ret
-              //     return { validate: true }
-              //   },
-              // }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.image'),
+                scope: 'project',
+                resource: 'images',
+                apiVersion: 'v1',
+              }, {
+                meta: () => {
+                  let ret = {
+                    validate: false,
+                    tooltip: '',
+                  }
+                  const actions = new Map([
+                    ['admin', () => {
+                      if (this.list.selectedItems.some(item => this.booleanTransfer(item.is_standard))) {
+                        ret.tooltip = this.$t('compute.text_644')
+                      }
+                      return ret
+                    }],
+                    ['domain', () => {
+                      if (this.list.selectedItems.some(item => this.booleanTransfer(item.is_standard))) {
+                        ret.tooltip = this.$t('compute.text_644')
+                        return ret
+                      }
+                      if (this.list.selectedItems.some(item => item.public_scope === 'system')) {
+                        ret.tooltip = this.$t('compute.text_645')
+                        return ret
+                      }
+                      return ret
+                    }],
+                    ['user', () => {
+                      ret.tooltip = this.$t('compute.text_613')
+                      if (this.list.selectedItems.some(item => !this.booleanTransfer(item.is_standard) && item.public_scope === 'system')) {
+                        ret.tooltip = this.$t('compute.text_646')
+                        return ret
+                      }
+                      return ret
+                    }],
+                  ])
+                  const action = actions.get(this.isAdminMode ? 'admin' : '') || actions.get(this.isDomainMode ? 'domain' : 'user')
+                  ret = action.call(this)
+                  if (ret.tooltip) return ret
+                  return { validate: true }
+                },
+              }),
               {
                 label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
                 action: () => {
