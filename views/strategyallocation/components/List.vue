@@ -10,7 +10,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter } from '@/utils/common/tableFilter'
+// import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -31,7 +31,7 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParam,
         filterOptions: {
-          name: getNameFilter({ field: 'policy_name' }),
+          name: { field: 'policy_name', label: this.$t('table.title.name') },
         },
       }),
       groupActions: [

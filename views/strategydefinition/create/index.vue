@@ -17,13 +17,15 @@
       </a-form>
     </page-body>
     <page-footer>
-      <a-button
+      <div slot="right">
+        <a-button
         class="ml-3"
         type="primary"
         native-type="submit"
         html-type="submit"
         @click="handleConfirm"
         :loading="loading">{{ actions[this.$route.query.type] }}</a-button>
+      </div>
     </page-footer>
   </div>
 </template>
