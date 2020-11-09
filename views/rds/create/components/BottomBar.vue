@@ -24,13 +24,10 @@
           <div class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('db.text_108')}}</div>
             <div class="ml-2 prices">
-              <div class="hour position-relative">
+              <div class="hour d-flex">
                 <template v-if="price">
                   <m-animated-number :value="price" :formatValue="formatToPrice" />
-                  <div class="discount-badge" v-if="priceTotal && priceTotal.discount">
-                    <div class="lh-1" v-discount="priceTotal.discount" />
-                    <div class="lh-1 mt-1 text-color-help"><del>{{ originPrice }}</del></div>
-                  </div>
+                  <discount-price class="ml-2 mini-text" :discount="priceTotal.discount" :origin="originPrice" />
                 </template>
               </div>
               <div class="tips text-truncate">
@@ -51,9 +48,13 @@ import { BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import { numerify } from '@/filters'
+import DiscountPrice from '@/sections/DiscountPrice'
 
 export default {
   name: 'BottomBar',
+  components: {
+    DiscountPrice,
+  },
   inject: ['form'],
   props: {
     values: {
