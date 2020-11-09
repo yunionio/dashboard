@@ -2220,7 +2220,8 @@
       "local_project": "Local project",
       "zone_1_name": "Backup Zone",
       "mfa_validate": "MFA",
-      "introduction": "Introduction"
+      "introduction": "Introduction",
+      "exec_result": "Result"
     },
     "action": {
       "save": "Save",
