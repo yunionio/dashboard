@@ -257,7 +257,11 @@
       "sync_status": "同步中",
       "sync_failed": "同步失败",
       "flushing_failed": "清空实例失败",
-      "releasing": "待删除"
+      "releasing": "待删除",
+      "renewing": "续费中",
+      "renew_failed": "续费失败",
+      "set_auto_renew": "设置自动续费",
+      "set_auto_renew_failed": "设置自动续费失败"
     },
     "instanceGroup": {
       "init": "正常"
