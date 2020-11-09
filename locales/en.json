@@ -311,7 +311,7 @@
   "db.text_310": "Administrator",
   "db.text_311": "General Account",
   "db.text_312": "Alibaba Cloud Redis2.8 does not support this operation",
-  "db.text_313": "Alibaba Cloud main account does not support this operation",
+  "db.text_313": "{0} main account does not support this operation",
   "db.text_314": "Delete whitelist",
   "db.text_315": "The main account is not allowed to be deleted",
   "db.text_316": "Manual Backup",
@@ -358,5 +358,6 @@
   "db.text_357": "Security Group",
   "db.text_358": "Tencent Cloud does not support restarting",
   "db.text_359": "Tencent Cloud Redis instances only support password-free access by resetting the password",
-  "db.text_361": "Please enter the administrator password"
+  "db.text_360": "Please enter the administrator password",
+  "db.text_361": "Tencent Cloud"
 }
