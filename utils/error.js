@@ -148,3 +148,27 @@ export const isOwner = (row) => {
   }
   return ret
 }
+
+// 获取批量操作的错误信息
+export const getBatchErrorMessage = (response, idKey = 'id') => {
+  let hasError = false
+  const errorsObj = {}
+  const errorsArr = []
+  const errorData = response.data.data.filter(val => val.status !== 200)
+  for (let i = 0, len = errorData.length; i < len; i++) {
+    const data = errorData[i]
+    const body = getErrorBody(data.data)
+    const errorBody = body.error || body
+    const obj = {
+      ...getHttpErrorMessage(errorBody, true),
+      id: data[idKey],
+    }
+    errorsObj[data[idKey]] = obj
+    errorsArr.push(obj)
+    hasError = true
+  }
+  if (hasError) {
+    return { errorsObj, errorsArr }
+  }
+  return { errorsObj: undefined, errorsArr: undefined }
+}

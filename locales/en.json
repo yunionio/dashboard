@@ -2262,7 +2262,8 @@
       "owner_domain": "Owner domain",
       "sponsor": "Sponsor",
       "operation": "Operation",
-      "search": "Fuzzy matching"
+      "search": "Fuzzy matching",
+      "exec_result": "Result"
     },
     "action": {
       "save": "Save",
