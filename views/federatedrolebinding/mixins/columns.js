@@ -1,20 +1,20 @@
 import { federatedResClusterCountColumn, k8sStatusColumn, federatednamespaceColumn } from '@K8S/utils/tableColumns'
-import { getTimeTableColumn } from '@/utils/common/tableColumn'
-import i18n from '@/locales'
+import { getTimeTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
     this.columns = [
-      {
-        field: 'name',
-        title: i18n.t('k8s.text_41'),
-        slots: {
-          default: ({ row }, h) => {
-            const ret = [<side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>]
-            return ret
-          },
+      getNameDescriptionTableColumn({
+        onManager: this.onManager,
+        hideField: true,
+        edit: false,
+        showDesc: false,
+        slotCallback: row => {
+          return (
+            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>
+          )
         },
-      },
+      }),
       k8sStatusColumn(),
       federatedResClusterCountColumn(),
       federatednamespaceColumn(),
