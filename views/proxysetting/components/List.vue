@@ -13,7 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-// import { getSetPublicAction } from '@/utils/common/tableActions'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'ProxysettingList',
@@ -76,39 +76,39 @@ export default {
             }
           },
         },
-        // getSetPublicAction(this, {
-        //   name: this.$t('dictionary.proxysetting'),
-        //   scope: 'domain',
-        //   resource: 'proxysettings',
-        // }, {
-        //   meta: () => {
-        //     const lent = this.list.selectedItems.length
-        //     if (lent === 0) {
-        //       return {
-        //         validate: false,
-        //       }
-        //     }
-        //     for (let i = 0; i < lent; i++) {
-        //       const row = this.list.selectedItems[i]
-        //       if (row.id === 'DIRECT') {
-        //         return {
-        //           tooltip: this.$t('cloudenv.text_404'),
-        //           validate: false,
-        //         }
-        //       }
-        //       const { isDomainMode, userInfo } = this.$store.getters
-        //       if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
-        //         return {
-        //           validate: false,
-        //           tooltip: this.$t('cloudenv.text_405'),
-        //         }
-        //       }
-        //     }
-        //     return {
-        //       validate: true,
-        //     }
-        //   },
-        // }),
+        getSetPublicAction(this, {
+          name: this.$t('dictionary.proxysetting'),
+          scope: 'domain',
+          resource: 'proxysettings',
+        }, {
+          meta: () => {
+            const lent = this.list.selectedItems.length
+            if (lent === 0) {
+              return {
+                validate: false,
+              }
+            }
+            for (let i = 0; i < lent; i++) {
+              const row = this.list.selectedItems[i]
+              if (row.id === 'DIRECT') {
+                return {
+                  tooltip: this.$t('cloudenv.text_404'),
+                  validate: false,
+                }
+              }
+              const { isDomainMode, userInfo } = this.$store.getters
+              if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
+                return {
+                  validate: false,
+                  tooltip: this.$t('cloudenv.text_405'),
+                }
+              }
+            }
+            return {
+              validate: true,
+            }
+          },
+        }),
         {
           label: this.$t('cloudenv.text_108'),
           permission: 'proxysettings_delete',
