@@ -28,10 +28,13 @@
             :cache-image-params="cacheImageParams"
             :decorator="decorators.imageOS" />
         </a-form-item>
+        <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
+          <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ confirmText }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -131,6 +134,12 @@ export default {
             },
           ],
         },
+        reason: [
+          'reason',
+          {
+            initialValue: '',
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -191,6 +200,12 @@ export default {
         return ['public', 'public_customize']
       }
       return []
+    },
+    isOpenWorkflow () {
+      return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_MACHINE)
+    },
+    confirmText () {
+      return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('dialog.ok')
     },
   },
   created () {
@@ -255,13 +270,14 @@ export default {
           this.$message.warning(this.$t('compute.text_1198'))
           return
         }
-        if (this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_MACHINE)) {
+        if (this.isOpenWorkflow) {
           const variables = {
             project: this.params.data[0].tenant_id,
             project_domain: this.params.data[0].domain_id,
             process_definition_key: this.WORKFLOW_TYPES.APPLY_MACHINE,
             initiator: this.userInfo.id,
             'server-create-paramter': JSON.stringify(data),
+            description: values.reason,
           }
           await this.createWorkflow(variables)
           this.$message.success(this.$t('compute.text_1045', [data.name]))

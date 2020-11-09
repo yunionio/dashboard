@@ -5,18 +5,23 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="this.params.title" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
-        :form="form.fc" v-show="isShowAutoDelete">
-        <a-form-item :label="$t('compute.text_420')" v-bind="formItemLayout">
-          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
+        :form="form.fc">
+        <a-form-item :label="$t('compute.text_1041')" v-bind="formItemLayout" v-if="isOpenWorkflow">
+          <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
         </a-form-item>
-        <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
-          {{ $t('compute.text_1212', [snapshot.list.length]) }}
-        </a-form-item>
+        <template v-show="isShowAutoDelete">
+          <a-form-item :label="$t('compute.text_420')" v-bind="formItemLayout">
+            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
+          </a-form-item>
+          <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
+            {{ $t('compute.text_1212', [snapshot.list.length]) }}
+          </a-form-item>
+        </template>
       </a-form>
       <dialog-table v-if="form.fd.autoDelete" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ confirmText }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -82,6 +87,12 @@ export default {
             initialValue: false,
           },
         ],
+        reason: [
+          'reason',
+          {
+            initialValue: '',
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -111,6 +122,9 @@ export default {
     },
     isOpenWorkflow () {
       return this.checkWorkflowEnabled(this.WORKFLOW_TYPES.APPLY_SERVER_DELETE)
+    },
+    confirmText () {
+      return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('dialog.ok')
     },
   },
   created () {
@@ -143,12 +157,14 @@ export default {
     },
     async handleDeleteByWorkflowSubmit () {
       const ids = this.params.data.map(item => item.id)
+      const values = await this.form.fc.validateFields()
       const variables = {
         project: this.params.data[0].tenant_id,
         project_domain: this.params.data[0].domain_id,
         process_definition_key: this.WORKFLOW_TYPES.APPLY_SERVER_DELETE,
         initiator: this.userInfo.id,
         ids: ids.join(','),
+        description: values.reason,
       }
       await this.createWorkflow(variables)
       this.$message.success(this.$t('compute.text_1214'))

@@ -81,7 +81,7 @@
               </div>
             </div>
           </div>
-          <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{$t('compute.text_907')}}</a-button>
+          <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{confirmText}}</a-button>
           <a-button @click="cancel">{{$t('compute.text_908')}}</a-button>
         </div>
       </div>
@@ -551,6 +551,9 @@ export default {
         diskValueArr.push(value)
       }, this.form.fd.dataDiskSizes)
       return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, 0)
+    },
+    confirmText () {
+      return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_907')
     },
   },
   watch: {
