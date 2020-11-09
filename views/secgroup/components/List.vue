@@ -21,7 +21,7 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import globalSearchMixins from '@/mixins/globalSearch'
-// import { getSetPublicAction } from '@/utils/common/tableActions'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
@@ -147,18 +147,18 @@ export default {
             }
           },
         },
-        // getSetPublicAction(this, {
-        //   name: this.$t('dictionary.secgroup'),
-        //   scope: 'project',
-        //   resource: 'secgroups',
-        // }, {
-        //   permission: 'secgroups_performAction',
-        //   meta: () => {
-        //     return {
-        //       validate: this.list.selectedItems.length,
-        //     }
-        //   },
-        // }),
+        getSetPublicAction(this, {
+          name: this.$t('dictionary.secgroup'),
+          scope: 'project',
+          resource: 'secgroups',
+        }, {
+          permission: 'secgroups_performAction',
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length,
+            }
+          },
+        }),
         {
           label: this.$t('table.action.set_tag'),
           action: () => {
