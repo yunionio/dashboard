@@ -5,13 +5,10 @@
         <div class="mr-4 d-flex align-items-center">
           <div class="text-truncate">{{$t('compute.text_286')}}</div>
           <div class="ml-2 prices">
-            <div class="hour position-relative">
+            <div class="hour d-flex">
               <template v-if="price">
                 <m-animated-number :value="price" :formatValue="formatToPrice" />
-                <div class="discount-badge" v-if="priceTotal && priceTotal.discount">
-                  <div class="lh-1" v-discount="priceTotal.discount" />
-                  <div class="lh-1 mt-1 text-color-help"><del>{{ priceTotal.hour_gross_price }}</del></div>
-                </div>
+                <discount-price class="ml-2 mini-text" :discount="priceTotal.discount" :origin="priceTotal.hour_gross_price" />
               </template>
             </div>
             <div class="tips text-truncate">
@@ -37,9 +34,13 @@
 import { mapGetters } from 'vuex'
 import { PROVIDER_MAP } from '@/constants'
 import { numerify } from '@/filters'
+import DiscountPrice from '@/sections/DiscountPrice'
 
 export default {
   name: 'BottomBar',
+  components: {
+    DiscountPrice,
+  },
   inject: ['form'],
   props: {
     currentCloudregion: {

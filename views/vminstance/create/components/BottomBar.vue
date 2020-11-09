@@ -25,13 +25,10 @@
           <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('compute.text_286')}}</div>
             <div class="ml-2 prices">
-              <div class="hour position-relative">
+              <div class="hour d-flex">
                 <template v-if="price">
                   <m-animated-number :value="price" :formatValue="formatToPrice" />
-                  <div class="discount-badge" v-if="priceData.discount">
-                    <div class="lh-1" v-discount="priceData.discount" />
-                    <div class="lh-1 mt-1 text-color-help"><del>{{ originPrice }}</del></div>
-                  </div>
+                  <discount-price class="ml-2 mini-text" :discount="priceData.discount" :origin="originPrice" />
                 </template>
                 <template v-else>---</template>
               </div>
@@ -64,11 +61,13 @@ import { SERVER_TYPE, BILL_TYPES_MAP } from '@Compute/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import { HYPERVISORS_MAP, PROVIDER_MAP } from '@/constants'
 import SideErrors from '@/sections/SideErrors'
+import DiscountPrice from '@/sections/DiscountPrice'
 
 export default {
   name: 'BottomBar',
   components: {
     SideErrors,
+    DiscountPrice,
   },
   props: {
     loading: {
