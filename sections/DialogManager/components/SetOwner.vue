@@ -1,13 +1,13 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('common.text00104')}}</div>
+    <div slot="header">{{params.action || $t('common.text00104')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="$t('common.text00104')" :name="this.params.tipName || ''" />
+      <dialog-selected-tips :count="params.data.length" :action="params.action || $t('common.text00104')" :name="params.tipName || ''" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item :label="$t('common.text00105')">
+        <a-form-item :label="$t('common.text00105')" :extra="$t(`shareScopeDesc.${formScope}`)">
           <a-radio-group v-model="formScope">
             <a-radio-button
               v-for="item in scopeOptions"
