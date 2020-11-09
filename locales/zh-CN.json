@@ -2220,7 +2220,8 @@
       "local_project": "本地项目",
       "zone_1_name": "备可用区",
       "mfa_validate": "MFA验证",
-      "introduction": "简介"
+      "introduction": "简介",
+      "exec_result": "执行结果"
     },
     "action": {
       "save": "保存",

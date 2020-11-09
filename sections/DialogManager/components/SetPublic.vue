@@ -3,7 +3,7 @@
     <div slot="header">{{$t('common_100')}}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :name="params.name || $t('common_92')" :action="$t('common_100')" />
-      <dialog-table :data="params.data" :columns="columns" />
+      <dialog-table :data="params.data" :columns="columns" :errors="errors" />
       <a-form-model
         ref="form"
         :model="fd"
@@ -74,6 +74,7 @@ import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { getBatchErrorMessage } from '@/utils/error'
 
 export default {
   name: 'SetPublicDialog',
@@ -168,6 +169,7 @@ export default {
       // 是否为批量操作
       isBatch,
       resScope,
+      errors: undefined,
     }
   },
   computed: {
@@ -422,20 +424,26 @@ export default {
       try {
         await this.$refs.form.validate()
         const ids = this.params.data.map(item => item.id)
+        let response
         // 设置私有
         if (this.noShareMode) {
-          await this.setPrivate(ids)
+          response = await this.setPrivate(ids)
         }
         // 设置域共享
         if (this.shareDomainMode) {
-          await this.setPublic(ids, this.genShareDomainsData(this.fd.shared_domains))
+          response = await this.setPublic(ids, this.genShareDomainsData(this.fd.shared_domains))
         }
         // 设置项目共享
         if (this.shareProjectMode) {
-          await this.setPublic(ids, this.genShareProjectsData(this.fd.shared_projects))
+          response = await this.setPublic(ids, this.genShareProjectsData(this.fd.shared_projects))
         }
         this.loading = false
         this.params.refresh()
+        const { errorsObj } = getBatchErrorMessage(response)
+        if (errorsObj) {
+          this.errors = errorsObj
+          return
+        }
         this.cancelDialog()
       } catch (error) {
         this.loading = false
