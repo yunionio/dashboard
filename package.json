@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "sh ./scripts/setup.sh && node --max_old_space_size=${MAX_OLD_SPACE_SIZE:-4096} node_modules/@vue/cli-service/bin/vue-cli-service.js build",
+    "analyz": "sh ./scripts/setup.sh && analyzer_report=true node --max_old_space_size=${MAX_OLD_SPACE_SIZE:-4096} node_modules/@vue/cli-service/bin/vue-cli-service.js build --report-json",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "test:unit:dev": "vue-cli-service test:unit --watchAll",
@@ -63,6 +64,7 @@
     "@vue/cli-service": "~4.4.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/test-utils": "^1.0.3",
+    "autodll-webpack-plugin": "^0.4.2",
     "babel-eslint": "^10.1.0",
     "colors": "^1.4.0",
     "eslint": "^6.7.2",
