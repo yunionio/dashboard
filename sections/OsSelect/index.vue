@@ -123,6 +123,7 @@ export default {
         ret.push(IMAGES_TYPE_MAP.iso, IMAGES_TYPE_MAP.host, IMAGES_TYPE_MAP.snapshot)
       } else if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
         ret.unshift(IMAGES_TYPE_MAP.vmware)
+        ret.push(IMAGES_TYPE_MAP.snapshot)
       } else if (this.isPublic) {
         ret.unshift(IMAGES_TYPE_MAP.public_customize)
         ret.unshift(IMAGES_TYPE_MAP.public)
