@@ -2121,7 +2121,9 @@
     "federatedclusterrolebindings": "集群角色绑定(多集群)",
     "alertresource": "报警资源",
     "strategyallocation": "策略分配",
-    "strategydefinition": "策略定义"
+    "strategydefinition": "策略定义",
+    "scopedpolicybindings": "策略分配",
+    "scopedpolicies": "策略定义"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -2153,7 +2155,11 @@
     "cloudprovider": "@:dictionary.cloudprovider",
     "cloudproviders": "@:dictionary.cloudprovider",
     "wire": "@:dictionary.wire",
-    "wires": "@:dictionary.wire"
+    "wires": "@:dictionary.wire",
+    "scopedpolicybinding": "@:dictionary.scopedpolicybindings",
+    "scopedpolicybindings": "@:dictionary.scopedpolicybindings",
+    "scopedpolicy": "@:dictionary.scopedpolicies",
+    "scopedpolicies": "@:dictionary.scopedpolicies"
   },
   "table": {
     "title": {
@@ -2357,6 +2363,20 @@
   "message": {
     "exec_success": "执行成功",
     "exec_fail": "执行失败"
+  },
+  "service": {
+    "compute": "计算",
+    "image": "镜像",
+    "k8s": "容器",
+    "meter": "计费",
+    "identity": "认证",
+    "notify": "通知",
+    "log": "日志",
+    "yunionagent": "其它",
+    "itsm": "流程",
+    "cloudid": "IAM",
+    "monitor": "监控报警",
+    "yunionconf": "配置"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",

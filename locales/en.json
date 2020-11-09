@@ -2121,7 +2121,9 @@
     "federatedclusterrolebindings": "federatedclusterrolebindings",
     "alertresource": "alertresource",
     "strategyallocation": "strategyallocation",
-    "strategydefinition": "strategydefinition"
+    "strategydefinition": "strategydefinition",
+    "scopedpolicybindings": "Scoped policy bindings",
+    "scopedpolicies": "Scoped policies"
   },
   "res": {
     "role": "Role",
@@ -2153,7 +2155,11 @@
     "cloudprovider": "Cloud provider",
     "cloudproviders": "Cloud providers",
     "wire": "Wire",
-    "wires": "Wires"
+    "wires": "Wires",
+    "scopedpolicybinding": "Scoped policy binding",
+    "scopedpolicybindings": "Scoped policy bindings",
+    "scopedpolicy": "Scoped policy",
+    "scopedpolicies": "Scoped policies"
   },
   "table": {
     "title": {
@@ -2357,6 +2363,20 @@
   "message": {
     "exec_success": "Execution succeed",
     "exec_fail": "Execution failed"
+  },
+  "service": {
+    "compute": "Compute",
+    "image": "Image",
+    "k8s": "K8S",
+    "meter": "Meter",
+    "identity": "Identity",
+    "notify": "Notify",
+    "log": "Log",
+    "yunionagent": "Agent",
+    "itsm": "ITSM",
+    "cloudid": "IAM",
+    "monitor": "Monitor",
+    "yunionconf": "Configuration"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
