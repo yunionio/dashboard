@@ -177,7 +177,7 @@ const actionEableMap = {
       aliyun: ['running', 'ready'],
       aws: ['running', 'ready'],
       onecloud: ['running', 'ready'],
-      vmware: false,
+      vmware: ['running', 'ready'],
       baremetal: ['running', 'ready'],
       huawei: ['running', 'ready'],
       openstack: ['running', 'ready'],

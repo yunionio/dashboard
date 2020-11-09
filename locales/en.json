@@ -1320,5 +1320,10 @@
   "compute.text_1350": "Appoint Block Storage",
   "compute.text_1351": "Please select Block Storage",
   "compute.text_1352": "No line type",
-  "compute.text_1353": "The local hard disk does not support separate creation for the time being. You can add hard disks in the virtual machine list by adjusting the configuration of the specified virtual machine"
+  "compute.text_1353": "The local hard disk does not support separate creation for the time being. You can add hard disks in the virtual machine list by adjusting the configuration of the specified virtual machine",
+  "compute.text_1354": "The data on the system disk after this time will be cleared. Please be cautious! Only the stopped instance and the current disk without creating a snapshot can roll back the disk",
+  "compute.text_1355": "Roll Back Host",
+  "compute.text_1356": "Whether to start automatically after rolling back the host",
+  "compute.text_1357": "The host must be shut down to perform this operation",
+  "compute.text_1358": "VMware does not currently support creating hard disk snapshots"
 }
