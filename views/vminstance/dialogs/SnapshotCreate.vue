@@ -10,11 +10,16 @@
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.text_1071')" v-if="isKvm">
+        <a-form-item :label="$t('compute.text_1071')" v-if="isKvm || isEsxi">
           <a-radio-group
             v-decorator="decorators.snapshotType"
             @change="snapshotTypeChangeHandle">
-            <a-radio value="disk">{{$t('compute.text_1252')}}</a-radio>
+            <a-tooltip>
+              <template slot="title" v-if="isEsxi">
+                <span>{{$t('compute.text_1358')}}</span>
+              </template>
+              <a-radio value="disk" :disabled="isEsxi">{{$t('compute.text_1252')}}</a-radio>
+            </a-tooltip>
             <a-radio value="instance">{{$t('compute.text_1253')}}</a-radio>
           </a-radio-group>
         </a-form-item>
@@ -82,14 +87,14 @@ export default {
         }),
         fd: {
           snapshotName: '',
-          snapshotType: 'disk',
+          snapshotType: this.isKvm ? 'disk' : 'instance',
         },
       },
       decorators: {
         snapshotType: [
           'snapshotType',
           {
-            initialValue: 'disk',
+            initialValue: this.isKvm ? 'disk' : 'instance',
           },
         ],
         disk: [
@@ -122,6 +127,9 @@ export default {
   computed: {
     isKvm () {
       return this.params.data[0].hypervisor === hypervisorMap.kvm.key
+    },
+    isEsxi () {
+      return this.params.data[0].hypervisor === hypervisorMap.esxi.key
     },
     diskParams () {
       return {
