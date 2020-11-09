@@ -20,7 +20,7 @@ import { getNameFilter, getTenantFilter, getStatusFilter, getDomainFilter } from
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-// import { getSetPublicAction } from '@/utils/common/tableActions'
+import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'HostImageList',
@@ -33,12 +33,12 @@ export default {
     },
   },
   data () {
-    // const validateAction = function (obj) {
-    //   if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
-    //     return false
-    //   }
-    //   return true
-    // }
+    const validateAction = function (obj) {
+      if (obj.is_guest_image === true || obj.is_guest_image === 'true') {
+        return false
+      }
+      return true
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -67,56 +67,56 @@ export default {
         ],
       },
       groupActions: [
-        // getSetPublicAction(this, {
-        //   name: this.$t('dictionary.guestimage'),
-        //   scope: 'project',
-        //   resource: 'guestimages',
-        // }, {
-        //   permission: 'images_perform_public',
-        //   meta: () => {
-        //     if (!this.list.selectedItems || this.list.selectedItems.length <= 0) {
-        //       return {
-        //         validate: false,
-        //       }
-        //     }
-        //     if (this.list.selectedItems.some(item => item.is_standard)) {
-        //       return {
-        //         validate: false,
-        //         tooltip: this.$t('compute.text_612'),
-        //       }
-        //     }
-        //     if (this.list.selectedItems.some(item => !validateAction(item))) {
-        //       return {
-        //         validate: false,
-        //       }
-        //     }
-        //     // 1、管理后台视图可以对所有镜像进行操作；
-        //     // 2、域管理后台视图只能对该域下的镜像进行操作，不能对其他域共享的镜像进行操作；
-        //     // 3、项目视图只能对该项目下的镜像进行操作，不能对其他域、其他项目共享的镜像进行操作。
-        //     if (this.isAdminMode) {
-        //       return {
-        //         validate: true,
-        //       }
-        //     }
-        //     if (!this.isAdminMode && !this.isDomainAdmin) {
-        //       if (this.list.selectedItems.some(item => this.userInfo.projectId !== item.tenant_id)) {
-        //         return {
-        //           validate: false,
-        //         }
-        //       }
-        //     }
-        //     if (this.isDomainAdmin) {
-        //       if (this.list.selectedItems.some(item => this.userInfo.projectDomainId !== item.domain_id)) {
-        //         return {
-        //           validate: false,
-        //         }
-        //       }
-        //     }
-        //     return {
-        //       validate: true,
-        //     }
-        //   },
-        // }),
+        getSetPublicAction(this, {
+          name: this.$t('dictionary.guestimage'),
+          scope: 'project',
+          resource: 'guestimages',
+        }, {
+          permission: 'images_perform_public',
+          meta: () => {
+            if (!this.list.selectedItems || this.list.selectedItems.length <= 0) {
+              return {
+                validate: false,
+              }
+            }
+            if (this.list.selectedItems.some(item => item.is_standard)) {
+              return {
+                validate: false,
+                tooltip: this.$t('compute.text_612'),
+              }
+            }
+            if (this.list.selectedItems.some(item => !validateAction(item))) {
+              return {
+                validate: false,
+              }
+            }
+            // 1、管理后台视图可以对所有镜像进行操作；
+            // 2、域管理后台视图只能对该域下的镜像进行操作，不能对其他域共享的镜像进行操作；
+            // 3、项目视图只能对该项目下的镜像进行操作，不能对其他域、其他项目共享的镜像进行操作。
+            if (this.isAdminMode) {
+              return {
+                validate: true,
+              }
+            }
+            if (!this.isAdminMode && !this.isDomainAdmin) {
+              if (this.list.selectedItems.some(item => this.userInfo.projectId !== item.tenant_id)) {
+                return {
+                  validate: false,
+                }
+              }
+            }
+            if (this.isDomainAdmin) {
+              if (this.list.selectedItems.some(item => this.userInfo.projectDomainId !== item.domain_id)) {
+                return {
+                  validate: false,
+                }
+              }
+            }
+            return {
+              validate: true,
+            }
+          },
+        }),
         {
           label: this.$t('common.batchAction'),
           actions: () => {
