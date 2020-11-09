@@ -14,8 +14,7 @@ import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getStatusFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
-import { getDomainChangeOwnerAction } from '@/utils/common/tableActions'
-// import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
   name: 'globalVpcList',
@@ -84,11 +83,11 @@ export default {
                 name: this.$t('dictionary.globalvpc'),
                 resource: 'globalvpcs',
               }),
-              // getSetPublicAction(this, {
-              //   name: this.$t('dictionary.globalvpc'),
-              //   scope: 'domain',
-              //   resource: 'globalvpcs',
-              // }),
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.globalvpc'),
+                scope: 'domain',
+                resource: 'globalvpcs',
+              }),
               {
                 label: this.$t('network.text_131'),
                 action: () => {
