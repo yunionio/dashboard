@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import {
   getUserTagColumn,
   getExtTagColumn,
@@ -314,9 +315,9 @@ export default {
     },
     checkImage () {
       new this.$Manager('images', 'v1')
-        .get({ id: this.diskInfos.imageId, scope: this.$store.getters.scope })
-        .then(() => {
-          this.imageExist = true
+        .list({ params: { id: this.diskInfos.imageId, scope: this.$store.getters.scope } })
+        .then(({ data }) => {
+          this.imageExist = !R.isEmpty(data.data)
         })
         .catch(() => {
           this.imageExist = false
