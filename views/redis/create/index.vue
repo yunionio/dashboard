@@ -94,11 +94,15 @@ export default {
         },
       },
       decorators: DECORATORS,
+      project_id: '',
     }
   },
   computed: {
     secgroupParams () {
-      return this.scopeParams
+      return {
+        project_id: this.project_id,
+        ...this.scopeParam,
+      }
     },
     scopeParams () {
       if (this.$store.getters.isAdminMode) {
