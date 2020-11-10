@@ -103,7 +103,7 @@ export default {
             {
               label: i18n.t('db.text_157'),
               action: () => {
-                this.createDialog('RdsRenewDialog', {
+                this.createDialog('RedisRenewDialog', {
                   title: i18n.t('db.text_157'),
                   data: [obj],
                   columns: this.columns,
