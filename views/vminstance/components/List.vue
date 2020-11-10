@@ -489,7 +489,7 @@ export default {
                     },
                     meta: () => {
                       const ret = {
-                        validate: true,
+                        validate: false,
                         tooltip: null,
                       }
                       // 包年包月机器，不支持此操作
