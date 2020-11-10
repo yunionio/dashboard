@@ -506,7 +506,17 @@ export default {
           osVal = 'Windows'
         }
         if (osVal.toLowerCase().includes('linux')) {
-          osVal = 'Linux'
+          if (osVal.toLowerCase().includes('amazon linux')) {
+            osVal = 'Amazon Linux'
+          } else {
+            osVal = 'Linux'
+          }
+        }
+        if (osVal.toLowerCase().includes('ubuntu')) {
+          osVal = 'Ubuntu'
+        }
+        if (osVal.toLowerCase().includes('suse')) {
+          osVal = 'SUSE'
         }
         // const osDistribution = osVal && osVal.toLowerCase()
         const osDistribution = osVal
