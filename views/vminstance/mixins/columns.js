@@ -119,6 +119,10 @@ export default {
       },
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns, tipName: this.$t('dictionary.server') }),
       getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
+      getCopyWithContentTableColumn({
+        field: 'macs',
+        title: 'MAC',
+      }),
       {
         field: 'instance_type',
         title: i18n.t('table.title.flavor'),
