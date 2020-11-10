@@ -182,7 +182,9 @@ export default {
         }
       }
       for (let i = 0, len = currentTypes.length; i < len; i++) {
-        const type = currentTypes[i].split('/')[0]
+        const typeItemArr = currentTypes[i].split('/')
+        const type = typeItemArr[0]
+        const medium = typeItemArr[1]
         const opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
         if (opt) {
           const min = Math.max(DISK_MIN_SIZE, opt.min)
@@ -190,6 +192,7 @@ export default {
             ret[opt.key] = {
               ...opt,
               min,
+              medium,
             }
           }
         }
@@ -362,6 +365,7 @@ export default {
           value[`dataDiskMountPaths[${key}]`] = mountPath
         }
         this.form.fc.setFieldsValue(value)
+        this.setDiskMedium(dataDiskTypes)
       })
     },
     getExtraDiskOpt (type) {
@@ -427,6 +431,7 @@ export default {
         this.form.fc.setFieldsValue({
           [`dataDiskSizes[${item.key}]`]: Math.max((dataDiskItem.min || 0), this.min),
         })
+        this.setDiskMedium(val)
       })
     },
     snapshotChange (item, val, i) {
@@ -434,6 +439,11 @@ export default {
         [`dataDiskSizes[${item.key}]`]: val,
       })
       item.sizeDisabled = true
+    },
+    setDiskMedium (v) {
+      if (this.form.fi) {
+        this.$set(this.form.fi, 'dataDiskMedium', _.get(this.typesMap, `[${v.key}].medium`))
+      }
     },
   },
 }
