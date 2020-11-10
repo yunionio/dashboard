@@ -1,3 +1,4 @@
+import { mapState, mapMutations } from 'vuex'
 import {
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
@@ -5,6 +6,9 @@ import i18n from '@/locales'
 
 export default {
   computed: {
+    ...mapState('common', {
+      cluster: state => state.k8s.cluster,
+    }),
     singleActions () {
       const actions = [
         {
@@ -71,6 +75,10 @@ export default {
               onManager: this.onManager,
               success: () => {
                 this.destroySidePages()
+                if (this.cluster === obj.id) { // 说明是删除的当前store中的集群
+                  this.setCluster() // 置空集群
+                  this.setNamespace('all_namespace')
+                }
               },
             })
           },
@@ -81,5 +89,11 @@ export default {
       }
       return actions
     },
+  },
+  methods: {
+    ...mapMutations('common', {
+      setCluster: 'SET_K8S_CLUSTER',
+      setNamespace: 'SET_K8S_NAMESPACE',
+    }),
   },
 }
