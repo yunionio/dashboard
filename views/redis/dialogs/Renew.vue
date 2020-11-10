@@ -77,11 +77,12 @@ export default {
       try {
         const values = await this.validateForm()
         const ids = this.params.data.map(item => item.id)
-        await this.params.onManager('batchUpdate', {
+        await this.params.onManager('batchPerformAction', {
           id: ids,
           steadyStatus: 'running',
           managerArgs: {
             data: values,
+            action: 'renew',
           },
         })
         this.loading = false
