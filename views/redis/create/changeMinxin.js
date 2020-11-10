@@ -51,6 +51,10 @@ export default {
         delete this.scopeParams.project_domain
       }
     },
+    project_change () {
+      const { project } = this.form.fd
+      this.project_id = project
+    },
     // 区域字段发生变化，获取Capability信息
     area_change () {
       this.skuRef.fetchCapability()
