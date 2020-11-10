@@ -8,10 +8,13 @@ import i18n from '@/locales'
 
 const sprites = require('./assets/sprites.png')
 const unknow = require('./assets/unkonw.png')
-const opensuse = require('./assets/opensuse.png')
+const opensuse = require('./assets/suse.png')
 const fedora = require('./assets/fedora.png')
 const openeuler = require('./assets/openeuler.png')
 const euleros = require('./assets/euleros.png')
+const amazon = require('./assets/amazon.png')
+const aliyun = require('./assets/aliyun.png')
+const tencent = require('./assets/tencent.png')
 
 export default {
   name: 'ImageIcon',
@@ -83,6 +86,15 @@ export default {
             break
           case 'euleros':
             curImg = euleros
+            break
+          case 'amazon':
+            curImg = amazon
+            break
+          case 'aliyun':
+            curImg = aliyun
+            break
+          case 'tencent':
+            curImg = tencent
             break
           default:
             break
