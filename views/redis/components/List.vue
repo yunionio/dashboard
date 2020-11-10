@@ -88,7 +88,7 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('db.text_60'), key: 'name' },
-          { label: this.$t('db.text_119'), key: 'arch_type' },
+          { label: this.$t('db.text_119'), key: 'local_category' },
           { label: this.$t('db.text_109'), key: 'instance_type' },
           { label: this.$t('db.text_112'), key: 'engine' },
           { label: this.$t('db.text_65'), key: 'private_dns' },
