@@ -441,7 +441,6 @@ export default {
       item.sizeDisabled = true
     },
     setDiskMedium (v) {
-      console.log(v, 'vvv')
       if (this.form.fi) {
         this.$set(this.form.fi, 'dataDiskMedium', _.get(this.typesMap, `[${v.key}].medium`))
       }
