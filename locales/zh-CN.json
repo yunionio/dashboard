@@ -1325,5 +1325,6 @@
   "compute.text_1355": "回滚主机",
   "compute.text_1356": "回滚主机后是否自动启动",
   "compute.text_1357": "主机必须在关机状态下才可进行此操作",
-  "compute.text_1358": "VMware暂不支持创建硬盘快照"
+  "compute.text_1358": "VMware暂不支持创建硬盘快照",
+  "compute.text_1359": "存储池默认挂载点：{0}"
 }
