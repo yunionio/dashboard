@@ -413,7 +413,9 @@
       "syncing": "Syncing",
       "isolate": "isolate",
       "isolating": "isolating",
-      "upgrading": "upgrading"
+      "upgrading": "upgrading",
+      "set_auto_renew": "set_auto_renew",
+      "set_auto_renew_failed": "set_auto_renew_failed"
     },
     "eip": {
       "ready": "Available",
