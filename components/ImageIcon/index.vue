@@ -78,6 +78,9 @@ export default {
           case 'opensuse':
             curImg = opensuse
             break
+          case 'suse':
+            curImg = opensuse
+            break
           case 'fedora':
             curImg = fedora
             break
