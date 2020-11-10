@@ -27,10 +27,6 @@ export const IMAGE_MSG = {
     label: 'Gentoo',
     position: '0px -146px',
   },
-  suse: {
-    label: 'SUSE',
-    position: '0px -72px',
-  },
   windows: {
     label: 'Windows',
     position: '0px 2px',
@@ -45,6 +41,10 @@ export const CUSTOME_IMG = {
   opensuse: {
     label: 'openSUSE',
     url: 'opensuse',
+  },
+  suse: {
+    label: 'SUSE',
+    url: 'suse',
   },
   fedora: {
     label: 'Fedora',
