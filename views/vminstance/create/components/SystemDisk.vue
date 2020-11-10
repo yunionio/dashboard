@@ -11,7 +11,8 @@
       :disabled="disabled"
       :schedtagParams="getSchedtagParams()"
       :size-disabled="sizeDisabled || disabled"
-      :storage-status-map="storageStatusMap" />
+      :storage-status-map="storageStatusMap"
+      @diskTypeChange="setDiskMedium" />
   </div>
 </template>
 
@@ -155,7 +156,9 @@ export default {
         currentTypes = findAndPush(currentTypes, item => item.includes('nova'))
       }
       for (let i = 0, len = currentTypes.length; i < len; i++) {
-        const type = currentTypes[i].split('/')[0]
+        const typeItemArr = currentTypes[i].split('/')
+        const type = typeItemArr[0]
+        const medium = typeItemArr[1]
         const opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
         if (opt && !opt.sysUnusable) {
           // 新建ucloud云服务器时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
@@ -165,6 +168,7 @@ export default {
           }
           ret[opt.key] = {
             ...opt,
+            medium,
             sysMin: Math.max(this.imageMinDisk, opt.sysMin, DISK_MIN_SIZE),
             sysMax: max,
             label: opt.key === 'nova' ? this.$t('compute.text_1141') : opt.label,
@@ -266,6 +270,7 @@ export default {
       this.form.fc.setFieldsValue(this.defaultType || {
         [this.decorator.type[0]]: { key: diskMsg.key, label: diskMsg.label },
       })
+      this.setDiskMedium(diskMsg)
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
         this.form.fc.setFieldsValue({
           [this.decorator.size[0]]: this.defaultSize || +diskMsg.sysMin,
@@ -321,6 +326,11 @@ export default {
         }
       }
       return ret
+    },
+    setDiskMedium (v) {
+      if (this.form.fi) {
+        this.$set(this.form.fi, 'systemDiskMedium', _.get(this.typesMap, `[${v.key}].medium`))
+      }
     },
   },
 }
