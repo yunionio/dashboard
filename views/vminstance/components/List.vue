@@ -474,6 +474,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
+                    refresh: this.refresh,
                   })
                 },
                 meta: () => {
