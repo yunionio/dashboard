@@ -126,6 +126,14 @@ export default {
               },
             }),
             getCopyWithContentTableColumn({
+              field: 'macs',
+              title: 'MAC',
+              hideField: true,
+              slotCallback: row => {
+                return row.macs
+              },
+            }),
+            getCopyWithContentTableColumn({
               field: 'image',
               title: this.$t('compute.text_97'),
               hideField: true,

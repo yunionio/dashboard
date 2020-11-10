@@ -139,6 +139,7 @@ export default {
           { label: this.$t('res.zone'), key: 'zone' },
           { label: this.$t('table.title.bill_type'), key: 'billing_type' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: 'MAC', key: 'macs' },
         ],
       },
       groupActions: [
