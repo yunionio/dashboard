@@ -50,6 +50,7 @@ export default {
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
       ],
+      imageExist: false,
     }
   },
   computed: {
@@ -128,8 +129,9 @@ export default {
               title: this.$t('compute.text_97'),
               hideField: true,
               message: this.diskInfos.image,
-              slotCallback: row => {
+              slotCallback: (row) => {
                 if (!this.diskInfos.image || this.diskInfos.image === '-') return '-'
+                if (!this.imageExist) return this.diskInfos.image
                 return [
                   <side-page-trigger permission='images_get' name='SystemImageSidePage' id={this.diskInfos.imageId} vm={this}>{ this.diskInfos.image }</side-page-trigger>,
                 ]
@@ -280,6 +282,12 @@ export default {
       ]
     },
   },
+  watch: {
+    diskInfos: {
+      handler: 'checkImage',
+      immediate: true,
+    },
+  },
   methods: {
     _diskStringify (diskObj) {
       let str = ''
@@ -303,6 +311,16 @@ export default {
       return sameType1.reduce((a, b) => {
         return a + b
       })
+    },
+    checkImage () {
+      new this.$Manager('images', 'v1')
+        .get({ id: this.diskInfos.imageId, scope: this.$store.getters.scope })
+        .then(() => {
+          this.imageExist = true
+        })
+        .catch(() => {
+          this.imageExist = false
+        })
     },
   },
 }
