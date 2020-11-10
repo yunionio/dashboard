@@ -1,6 +1,14 @@
 
+import * as R from 'ramda'
 import validateForm, { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
+
+function validateTag (rule, value, callback) {
+  if (R.is(Object, value) && Object.keys(value).length > 20) {
+    return callback(new Error(i18n.t('compute.text_209')))
+  }
+  callback()
+}
 
 // 公有云计费方式配置选项
 export const BILL_TYPES_MAP = {
@@ -251,4 +259,12 @@ export const DECORATORS = {
       },
     ],
   },
+  tag: [
+    'tag',
+    {
+      rules: [
+        { validator: validateTag },
+      ],
+    },
+  ],
 }
