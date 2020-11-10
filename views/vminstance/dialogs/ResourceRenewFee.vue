@@ -26,6 +26,8 @@ export default {
   name: 'VmResourceRenewFeeDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const autoRenew = this.params.data[0].auto_renew
+
     return {
       loading: false,
       form: {
@@ -35,7 +37,7 @@ export default {
         autoRenew: [
           'autoRenew',
           {
-            initialValue: true,
+            initialValue: autoRenew,
             valuePropName: 'checked',
           },
         ],
@@ -55,10 +57,6 @@ export default {
       const showFields = ['name', 'billing_type', 'brand']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
-  },
-  mounted () {
-    const autoRenew = this.params.data[0].auto_renew
-    this.form.fc.setFieldsValue({ autoRenew })
   },
   methods: {
     validateForm () {
