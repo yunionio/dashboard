@@ -42,19 +42,35 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   data () {
-    return {
-      detailTabs: [
-        { label: this.$t('cloudenv.text_237'), key: 'schedtag-detail' },
-        { label: this.$t('cloudenv.text_424'), key: 'physicalmachine-list' },
-        { label: this.$t('cloudenv.text_101'), key: 'host-list' },
-        { label: this.$t('cloudenv.text_6'), key: 'storage-list' },
-        { label: this.$t('cloudenv.text_7'), key: 'network-list' },
-        { label: this.$t('cloudenv.text_319'), key: 'dashboard' },
-        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
-      ],
-    }
+    return {}
   },
   computed: {
+    detailTabs () {
+      const data = this.detailData
+      const detailTabs = [
+        { label: this.$t('cloudenv.text_237'), key: 'schedtag-detail' },
+        { label: this.$t('cloudenv.text_319'), key: 'dashboard' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
+      ]
+      if (data.resource_type === 'hosts') {
+        const tabs = [
+          { label: this.$t('cloudenv.text_424'), key: 'physicalmachine-list' },
+          { label: this.$t('cloudenv.text_101'), key: 'host-list' },
+        ]
+        detailTabs.splice(1, 0, ...tabs)
+      } else if (data.resource_type === 'storages') {
+        const tabs = [
+          { label: this.$t('cloudenv.text_6'), key: 'storage-list' },
+        ]
+        detailTabs.splice(1, 0, ...tabs)
+      } else if (data.resource_type === 'networks') {
+        const tabs = [
+          { label: this.$t('cloudenv.text_7'), key: 'network-list' },
+        ]
+        detailTabs.splice(1, 0, ...tabs)
+      }
+      return detailTabs
+    },
     getParams () {
       const params = {
         'physicalmachine-list': {
