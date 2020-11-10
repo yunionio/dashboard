@@ -144,6 +144,13 @@ export default {
       }
       return ret
     },
+    dataDisk () {
+      const diskValueArr = []
+      R.forEachObjIndexed(value => {
+        diskValueArr.push(value)
+      }, this.fd.dataDiskSizes)
+      return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, 0)
+    },
     disk () {
       const diskValueArr = [this.fd.systemDiskSize]
       R.forEachObjIndexed(value => {
@@ -166,7 +173,9 @@ export default {
         ret.push(this.$t('compute.text_292', [vcpu]))
         ret.push(this.$t('compute.text_293', [sizestrWithUnit(vmem, 'M', 1024)]))
       }
-      ret.push(this.$t('compute.text_1136', [this.disk || 0, _.get(this.fd, 'systemDiskType.label') || '-']))
+      let diskStr = `${this.$t('compute.text_49')}:${this.fd.systemDiskSize}GB ${_.get(this.fd, 'systemDiskType.label')}`
+      if (this.dataDisk) diskStr += `,${this.$t('compute.text_50')}:${this.dataDisk}GB ${this.dataDiskLabel}`
+      ret.push(diskStr)
       return ret.join('、')
     },
     image () {
@@ -242,20 +251,28 @@ export default {
       if (this.isServertemplate) return this.$t('compute.text_1139')
       return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_289')
     },
-    dataDiskType () {
+    dataDiskObj () {
       if (R.is(Object, this.fd.dataDiskTypes)) {
         const keys = Object.keys(this.fd.dataDiskTypes)
         if (keys && keys.length) {
-          return this.fd.dataDiskTypes[keys[0]].key
+          return this.fd.dataDiskTypes[keys[0]]
         }
       }
       if (R.is(Object, this.fd.dataDiskSizes)) {
         const keys = Object.keys(this.fd.dataDiskSizes)
         if (keys && keys.length) {
           const disk = this.fd[`dataDiskTypes[${keys[0]}]`]
-          return disk ? disk.key : ''
+          return disk
         }
       }
+      return null
+    },
+    dataDiskType () {
+      if (this.dataDiskObj && this.dataDiskObj.key) return this.dataDiskObj.key
+      return ''
+    },
+    dataDiskLabel () {
+      if (this.dataDiskObj && this.dataDiskObj.label) return this.dataDiskObj.label
       return ''
     },
     priceData () {
@@ -345,11 +362,11 @@ export default {
         brand,
       }
       const { systemDiskSize, systemDiskType } = this.fd
+      const { systemDiskMedium, dataDiskMedium } = this.form.fi
       if (R.isNil(systemDiskSize)) return
       if (this.fi.createType !== SERVER_TYPE.public) {
-        const diskSize = this.disk || 0
-        // params.provider = 'kvm'
-        params.spec = `cpu=${this.fd.vcpu}core;mem=${sizestrWithUnit(this.fd.vmem, 'M', 1024)};disk=${diskSize}GB`
+        const diskSize = this.dataDisk || 0
+        params.spec = `cpu=${this.fd.vcpu}core;mem=${sizestrWithUnit(this.fd.vmem, 'M', 1024)};disk=${systemDiskSize}GB,model=${systemDiskMedium}::${systemDiskType.key};disk=${diskSize}GB,model=${dataDiskMedium}::${this.dataDiskType}`
       } else {
         const { sku } = this.fd
         const { region_ext_id: regionExtId, name, zone_ext_id: zoneExtId } = sku
@@ -357,7 +374,6 @@ export default {
         const osType = image.os_type ? image.os_type.toLowerCase() : ''
         params.region_id = regionExtId
         const provider = skuProvider.toLowerCase()
-        // params.provider = provider
         // price_key
         if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
           params.price_key = `${provider}::${regionExtId}::::instance::`
@@ -368,12 +384,12 @@ export default {
           params.price_key = `${regionExtId}::${name}::${osType}::${zoneExtId}`
         }
         // spec
+        const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
         params.spec = `${systemDiskSize}:${systemDiskType.key}`
-        if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+        if (isUcloudAzure) {
           params.spec = `${systemDiskSize}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`
         }
         const dataDiskSpec = []
-        const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
         // if (this.dataDiskSizes && this.dataDiskSizes.length && !this.dataDiskType) return
         R.forEach((value) => {
           if (isUcloudAzure) {
@@ -425,13 +441,17 @@ export default {
       }
     }
     .value {
-      max-width: 300px;
       &.name-value {
         width: 100px;
       }
       &.placeholder {
         color: #888;
         font-style: italic;
+      }
+    }
+    @media screen and (max-width: 1280px) {
+      .value {
+        max-width: 300px;
       }
     }
   }
