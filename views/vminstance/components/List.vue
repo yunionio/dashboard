@@ -693,7 +693,7 @@ export default {
                     },
                     meta: () => {
                       const ret = {
-                        validate: true,
+                        validate: false,
                         tooltip: null,
                       }
                       const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
