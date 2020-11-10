@@ -20,6 +20,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 
 export default {
   name: 'K8sComponentsNamespace',
@@ -136,8 +137,9 @@ export default {
       }
     },
     filterOption (input, option) {
+      const text = _.get(option.componentOptions, 'children[0].children[0].children[0].text') || ''
       return (
-        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       )
     },
   },
