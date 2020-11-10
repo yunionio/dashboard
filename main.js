@@ -1,3 +1,4 @@
+import './config/vue.config'
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
 import 'xe-utils'
@@ -22,8 +23,6 @@ import './directives'
 import './plugins'
 import './permission'
 import './filters'
-
-Vue.config.productionTip = false
 
 Vue.use(Antd)
 Vue.use(VXETable, {
