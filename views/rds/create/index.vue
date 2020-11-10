@@ -40,6 +40,10 @@
       <a-form-item v-if="form.getFieldValue('provider') === 'Huawei' || form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
         <secgroup-config :max="form.getFieldValue('provider') === 'Huawei' ? 1 : 5" :decorators="decorators.secgroup" />
       </a-form-item>
+      <!-- 标签 -->
+      <a-form-item :label="$t('compute.text_1154')" class="mb-0" key="tag">
+        <tag v-decorator="decorators.tag" />
+      </a-form-item>
       <bottom-bar :values="form.getFieldsValue()" />
     </a-form>
   </div>
@@ -56,6 +60,7 @@ import ItemArea from '@DB/sections/ItemArea'
 import ItemNetwork from '@DB/sections/ItemNetwork'
 import NameRepeated from '@/sections/NameRepeated'
 import DomainProject from '@/sections/DomainProject'
+import Tag from '@Compute/views/vminstance/create/components/Tag'
 import { getInitialValue } from '@/utils/common/ant'
 
 export default {
@@ -70,6 +75,7 @@ export default {
     SecgroupConfig,
     NameRepeated,
     Duration,
+    Tag,
   },
   mixins: [changeMinxin],
   data () {

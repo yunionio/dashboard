@@ -40,6 +40,10 @@
       <a-form-item v-if="form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
         <secgroup-config :max="5" :decorators="decorators.secgroup" :secgroup-params="secgroupParams" />
       </a-form-item>
+      <!-- 标签 -->
+      <a-form-item :label="$t('compute.text_1154')" class="mb-0" key="tag">
+        <tag v-decorator="decorators.tag" />
+      </a-form-item>
       <bottom-bar :values="form.fc.getFieldsValue()" />
     </a-form>
   </div>
@@ -56,6 +60,7 @@ import ItemNetwork from '@DB/sections/ItemNetwork'
 import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
+import Tag from '@Compute/views/vminstance/create/components/Tag'
 
 export default {
   name: 'IDCCreate',
@@ -76,6 +81,8 @@ export default {
     // 表单提交
     BottomBar,
     NameRepeated,
+    // 标签
+    Tag,
   },
   mixins: [changeMinxin],
   data () {
