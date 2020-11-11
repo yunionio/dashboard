@@ -27,6 +27,8 @@ export default {
     async fetchAllNamespaceData () {
       if (this.inBaseSidePage) return
       const params = R.clone(this.list.getParams)
+      params.scope = this.$store.getters.scope
+      params.limit = 0
       delete params.namespace
       this.namespaceMap = {}
       try {
@@ -49,7 +51,7 @@ export default {
     async fetchData () {
       if (this.list.getParams.cluster) {
         await this.list.fetchData()
-        this.fetchAllNamespaceData()
+        if (R.isEmpty(this.namespaceMap)) this.fetchAllNamespaceData()
       }
     },
   },
