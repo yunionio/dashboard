@@ -1326,5 +1326,8 @@
   "compute.text_1356": "Whether to start automatically after rolling back the host",
   "compute.text_1357": "The host must be shut down to perform this operation",
   "compute.text_1358": "VMware does not currently support creating hard disk snapshots",
-  "compute.text_1359": "The default mount point of the storage pool: {0}"
+  "compute.text_1359": "Line type",
+  "compute.text_1360": "Network billing method",
+  "compute.text_1361": "The default mount point of the storage pool: {0}"
+
 }

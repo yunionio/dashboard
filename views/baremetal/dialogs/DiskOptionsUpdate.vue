@@ -7,7 +7,7 @@
         <a-form-item :label="$t('compute.text_327')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :disabled="isDisabled" />
           <template #extra v-if="!isDisabled">
-            {{$t('compute.text_1359', ['/opt/cloud/workspace'])}}
+            {{$t('compute.text_1361', ['/opt/cloud/workspace'])}}
           </template>
         </a-form-item>
         <a-form-item :label="$t('compute.text_328')" v-bind="formItemLayout" v-if="!isDisabled">
