@@ -5,8 +5,8 @@
       :columns="columns"
       :export-data-options="exportDataOptions"
       :show-page="false"
-      :refresh-method="refresh" />
-     <div class="mb-3 search-date">
+      :refresh-method="refresh">
+      <template #right-tools-prepend>
         <a-range-picker
           style="width: 370px;"
           class="mr-2"
@@ -14,7 +14,8 @@
           format="YYYY-MM-DD HH:mm:ss"
           :show-time="{ defaultValue: [$moment('00:00:00', 'HH:mm:ss'), $moment('23:59:59', 'HH:mm:ss')] }"
           @change="handleRangeTimeChange" />
-    </div>
+      </template>
+    </page-list>
   </div>
 </template>
 
@@ -190,7 +191,6 @@ export default {
         {
           field: 'user',
           title: this.$t('table.title.sponsor'),
-          showOverflow: 'title',
           minWidth: 120,
           slots: {
             default: ({ row }, h) => {
@@ -284,13 +284,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .event-list{
-    position: relative;
-    padding-bottom: 20px;
-    .search-date {
-      position: absolute;
-      right: 50px;
-      top: 0;
-    }
-  }
+.event-list{
+  position: relative;
+  padding-bottom: 20px;
+}
 </style>
