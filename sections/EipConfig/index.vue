@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item :label="$t('compute.text_107')" v-bind="formItemLayout">
+    <a-form-item :label="!showBind ? $t('compute.text_107') : $t('compute.text_1180')" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
         <a-radio-button
           v-for="item of types"
