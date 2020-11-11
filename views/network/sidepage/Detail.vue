@@ -42,39 +42,6 @@ export default {
         getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
         getBrandTableColumn(),
         {
-          field: 'guest_ip_start',
-          title: this.$t('network.text_653'),
-          formatter: ({ cellValue, row }) => {
-            return `${cellValue}-${row.guest_ip_end}`
-          },
-        },
-        {
-          field: 'guest_ip_mask',
-          title: this.$t('network.text_609'),
-        },
-        {
-          field: 'guest_gateway',
-          title: this.$t('network.text_654'),
-        },
-        getCopyWithContentTableColumn({ field: 'wire', title: this.$t('res.wire') }),
-        {
-          field: 'ports',
-          title: this.$t('network.text_622'),
-          slots: {
-            default: ({ row }) => {
-              return [
-                <i18n path='network.text_735' tag="div">
-                  <template slot='ports'>{ row.ports }</template>
-                  <template slot='ports_used'>
-                    { row.ports_used <= 0 ? 0 : <a onClick={ () => this.$emit('tab-change', 'i-p-list') }>{row.ports_used}</a> }
-                  </template>
-                  <template slot='reserve_vnics'>{ row.reserve_vnics }</template>
-                </i18n>,
-              ]
-            },
-          },
-        },
-        {
           field: 'schedtags',
           title: this.$t('network.text_630'),
           formatter: ({ cellValue, row }) => {
@@ -102,17 +69,6 @@ export default {
               },
             }),
             {
-              field: 'guest_dns',
-              title: this.$t('network.text_585'),
-            },
-            {
-              field: 'guest_domain',
-              title: this.$t('network.text_586'),
-              formatter: ({ cellValue }) => {
-                return cellValue || '-'
-              },
-            },
-            {
               field: 'wire',
               title: this.$t('network.text_571'),
               slots: {
@@ -125,7 +81,7 @@ export default {
             },
             {
               field: 'server_type',
-              title: this.$t('network.text_655'),
+              title: this.$t('network.text_574'),
               formatter: ({ cellValue }) => {
                 if (cellValue === 'baremetal') {
                   return this.$t('network.text_598')
@@ -150,8 +106,51 @@ export default {
               },
             },
             {
+              field: 'guest_ip_start',
+              title: this.$t('network.text_653'),
+              formatter: ({ cellValue, row }) => {
+                return `${cellValue}-${row.guest_ip_end}`
+              },
+            },
+            {
+              field: 'guest_ip_mask',
+              title: this.$t('network.text_609'),
+            },
+            {
+              field: 'guest_gateway',
+              title: this.$t('network.text_654'),
+            },
+            {
               field: 'vlan_id',
               title: 'VLAN ID',
+              formatter: ({ cellValue }) => {
+                return cellValue || '-'
+              },
+            },
+            {
+              field: 'ports',
+              title: this.$t('network.text_622'),
+              slots: {
+                default: ({ row }) => {
+                  return [
+                    <i18n path='network.text_735' tag="div">
+                      <template slot='ports'>{ row.ports }</template>
+                      <template slot='ports_used'>
+                        { row.ports_used <= 0 ? 0 : <a onClick={ () => this.$emit('tab-change', 'i-p-list') }>{row.ports_used}</a> }
+                      </template>
+                      <template slot='reserve_vnics'>{ row.reserve_vnics }</template>
+                    </i18n>,
+                  ]
+                },
+              },
+            },
+            {
+              field: 'guest_dns',
+              title: this.$t('network.text_585'),
+            },
+            {
+              field: 'guest_domain',
+              title: this.$t('network.text_586'),
               formatter: ({ cellValue }) => {
                 return cellValue || '-'
               },
