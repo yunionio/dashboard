@@ -193,8 +193,9 @@ export default {
               {
                 label: this.$t('db.text_157'),
                 action: () => {
-                  this.createDialog('RdsRenewDialog', {
+                  this.createDialog('RedisRenewDialog', {
                     title: this.$t('db.text_157'),
+                    name: this.$t('dictionary.dbinstances'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
