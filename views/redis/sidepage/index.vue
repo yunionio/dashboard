@@ -20,6 +20,7 @@
       :getParams="getParams"
       :show-create-action="false"
       :res-id="getParams.elasticcache_id"
+      :id="listId"
       :columns="columns" />
   </base-side-page>
 </template>
@@ -115,6 +116,16 @@ export default {
         'secgroup-list': this.secgroupListActives,
       }
       return _[this.params.windowData.currentTab] || {}
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForRedisSidePage'
+        case 'secgroup-list':
+          return 'SecgroupListForRedisSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

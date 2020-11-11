@@ -19,6 +19,7 @@
       :getParams="getParams"
       :show-create-action="false"
       :res-id="getParams.dbinstance"
+      :id="listId"
       :columns="columns" />
   </base-side-page>
 </template>
@@ -72,6 +73,22 @@ export default {
       return {
         dbinstance: this.detailData.id,
         details: true,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForRDSSidePage'
+        case 'secgroup-list':
+          return 'SecgroupListForRDSSidePage'
+        case 'account-list':
+          return 'AccountListForRDSSidePage'
+        case 'database-list':
+          return 'DatabaseListForRDSSidePage'
+        case 'backup-list':
+          return 'BackupListForRDSSidePage'
+        default:
+          return ''
       }
     },
   },

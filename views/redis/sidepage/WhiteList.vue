@@ -29,6 +29,7 @@ export default {
     return {
       steadyStatus,
       list: this.$list.createList(this, {
+        id: 'RedisWhiteListForRedisSidePage',
         resource: 'elasticcacheacls',
         getParams: this.params,
         steadyStatus,
