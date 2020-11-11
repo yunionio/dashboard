@@ -6,41 +6,28 @@
     <a-row :gutter="8" class="w-100" v-else>
       <a-col :span="12">
         <a-form-item :class="{ 'mb-0': mb0 }" v-if="isAdminMode && l3PermissionEnable" :wrapperCol="{ span: 24 }">
-          <a-select
-            :allowClear="allowClear"
+          <domain
             class="w-100"
-            dropdownClassName="oc-select-dropdown"
-            style="width:100%"
+            :allowClear="allowClear"
             :labelInValue="labelInValue"
             v-decorator="decorators.domain"
             :loading="domainLoading"
-            :placeholder="$t('rules.domain')"
             @change="domainChange"
             :filterOption="filterOption"
-            showSearch>
-            <a-select-option v-for="item of domains" :value="item.key" :key="item.key">
-              <span class="text-color-secondary option-prefix">{{ $t('dictionary.domain') }}: </span>{{ item.label }}
-            </a-select-option>
-          </a-select>
+            :options="domains" />
         </a-form-item>
       </a-col>
       <a-col :span="(isAdminMode && l3PermissionEnable) ? 12 : 24">
         <a-form-item :class="{ 'mb-0': mb0 }" :wrapperCol="{ span: 24 }">
-          <a-select
-            :allowClear="allowClear"
+          <project
             class="w-100"
-            dropdownClassName="oc-select-dropdown"
+            :allowClear="allowClear"
             :labelInValue="labelInValue"
             v-decorator="decorators.project"
             :loading="projectLoading"
-            :placeholder="$t('rules.project')"
             @change="projectChange"
             :filterOption="filterOption"
-            showSearch>
-            <a-select-option v-for="item of projects" :value="item.key" :key="item.key">
-              <span class="text-color-secondary option-prefix">{{ $t('dictionary.project') }}: </span>{{ item.label }}
-            </a-select-option>
-          </a-select>
+            :options="projects" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -51,10 +38,16 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import Domain from './components/Domain'
+import Project from './components/Project'
 import { Manager } from '@/utils/manager'
 
 export default {
   name: 'DomainProject',
+  components: {
+    Domain,
+    Project,
+  },
   props: {
     labelInValue: {
       type: Boolean,
