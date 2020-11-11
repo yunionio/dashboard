@@ -2236,7 +2236,7 @@
       "mfa_validate": "MFA验证",
       "introduction": "简介",
       "exec_result": "执行结果",
-      "scope_range": "所属范围"
+      "scope_range": "应用范围"
     },
     "action": {
       "save": "保存",
