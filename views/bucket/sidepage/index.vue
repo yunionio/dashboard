@@ -11,7 +11,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :columns="columns" :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :refresh="refresh" :getParams="getParams" :params="getParams" :res-id="getParams.storage" />
+    <component :columns="columns" :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :refresh="refresh" :getParams="getParams" :params="getParams" :res-id="getParams.storage" :id="listId" />
   </base-side-page>
 </template>
 
@@ -50,6 +50,14 @@ export default {
       return {
         storage: this.data.id,
         details: true,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForBucketStorageSidePage'
+        default:
+          return ''
       }
     },
   },

@@ -27,7 +27,8 @@
       :getParams="getParams"
       :getColumns="getColumns"
       :columns="columns"
-      :res-id="getParams.storage" />
+      :res-id="getParams.storage"
+      :id="listId" />
   </base-side-page>
 </template>
 
@@ -164,6 +165,20 @@ export default {
             },
           ]
         },
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForBlockStorageSidePage'
+        case 'host-list':
+          return 'HostListForBlockStorageSidePage'
+        case 'disk-list':
+          return 'DiskListForBlockStorageSidePage'
+        case 'disk-recovery-list':
+          return 'DiskRecoveryListForBlockStorageSidePage'
+        default:
+          return ''
       }
     },
   },
