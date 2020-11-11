@@ -26,6 +26,7 @@
             :hypervisor="firstData.hypervisor"
             :image-params="imageParams"
             :cache-image-params="cacheImageParams"
+            :cloudproviderParamsExtra="cloudproviderParamsExtra"
             :decorator="decorators.imageOS" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
@@ -42,6 +43,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import { SERVER_TYPE } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
@@ -152,6 +154,9 @@ export default {
       servers: [],
       createParams: {},
       specificationList: [],
+      cloudproviderParamsExtra: {
+        provider: _.get(this.params, 'data[0].provider'),
+      },
     }
   },
   computed: {
