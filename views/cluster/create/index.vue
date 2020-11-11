@@ -14,6 +14,19 @@
       class="mt-3"
       :form="form.fc">
       <a-form-item
+        :label="$t('k8s.text_412')"
+        v-bind="formItemLayout">
+        <base-select
+          v-if="$store.getters.isAdminMode"
+          v-decorator="decorators.project_domain_id"
+          resource="domains"
+          version="v1"
+          :params="params.domain"
+          @change="domainChange"
+          filterable />
+        <div v-else>{{ $store.getters.userInfo.projectDomain }}</div>
+      </a-form-item>
+      <a-form-item
         :label="$t('k8s.text_150')"
         v-bind="formItemLayout">
         <a-radio-group v-if="hypervisorsC.length" v-decorator="decorators.hypervisor" @change="hypervisorChange">
@@ -26,7 +39,7 @@
       <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout">
         <cloudregion-zone
           :zone-params="params.zone"
-          :cloudregion-params="params.region"
+          :cloudregion-params="cloudregionParmas"
           :decorator="decorators.regionZone" />
       </a-form-item>
       <a-form-item
@@ -128,9 +141,18 @@ export default {
         },
         fd: {
           hypervisor: hyperOpts[0].value,
+          project_domain_id: this.$store.getters.projectDomainId,
         },
       },
       decorators: {
+        project_domain_id: [
+          'project_domain_id',
+          {
+            rules: [
+              { required: true, message: this.$t('k8s.text_413') },
+            ],
+          },
+        ],
         hypervisor: [
           'hypervisor',
           {
@@ -320,15 +342,14 @@ export default {
           order: 'asc',
           scope: this.scope,
         },
-        region: {
-          usable: true,
-          scope: this.scope,
-          cloud_env: 'onpremise',
-        },
         network: {},
         k8sVersions: {
           provider: KUBE_PROVIDER,
           resource_type: 'guest',
+        },
+        domain: {
+          scope: this.$store.getters.scope,
+          limit: 0,
         },
       },
       k8sVersionOps: [],
@@ -346,6 +367,14 @@ export default {
         return (this.form.fi.hypervisors || []).find(val => val === item.value.toLowerCase())
       })
       return opts
+    },
+    cloudregionParmas () {
+      const params = {
+        usable: true,
+        cloud_env: 'onpremise',
+        project_domain: this.form.fd.project_domain_id,
+      }
+      return params
     },
   },
   watch: {
@@ -451,7 +480,7 @@ export default {
       const { hypervisor, version: k8sVersion, name, zone, cloudregion } = data
       const values = {
         hypervisor,
-        // is_public: isPublic,
+        project_domain_id: data.project_domain_id,
         version: k8sVersion,
         machines: [],
         name,
@@ -523,6 +552,9 @@ export default {
     },
     cancel () {
       this.$router.push('/k8s-cluster')
+    },
+    domainChange (val) {
+      this.form.fd.project_domain_id = val
     },
   },
 }
