@@ -409,5 +409,7 @@
   "k8s.text_408": "New ceph cluster",
   "k8s.text_409": "Resource name",
   "k8s.text_410": "Hide IP",
-  "k8s.text_411": "Nodes"
+  "k8s.text_411": "Nodes",
+  "k8s.text_412": "Domain",
+  "k8s.text_413": "Please select @:dictionary.domain"
 }
