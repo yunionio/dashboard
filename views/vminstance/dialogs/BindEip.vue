@@ -5,14 +5,14 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1179')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('compute.text_1180')" v-bind="formItemLayout">
-          <eip-config
-            hidden-none-type
-            :decorators="decorators.eipConfig"
-            :eip-params="eipParams"
-            :hypervisor="hypervisor"
-            :form="form" />
-        </a-form-item>
+        <eip-config
+          hidden-none-type
+          :decorators="decorators.eipConfig"
+          :eip-params="eipParams"
+          :hypervisor="hypervisor"
+          :cloud-env="params.data[0].cloud_env"
+          :form="form"
+          :formItemLayout="formItemLayout" />
       </a-form>
     </div>
     <div slot="footer">
@@ -85,10 +85,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
