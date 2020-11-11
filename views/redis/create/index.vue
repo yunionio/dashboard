@@ -93,6 +93,13 @@ export default {
           xxl: { span: 3 },
         },
       },
+      tailFormItemLayout: {
+        wrapperCol: {
+          lg: { span: 18, offset: 6 },
+          xl: { span: 20, offset: 4 },
+          xxl: { span: 21, offset: 3 },
+        },
+      },
       decorators: DECORATORS,
       project_id: '',
     }

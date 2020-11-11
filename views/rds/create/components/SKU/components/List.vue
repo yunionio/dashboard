@@ -1,21 +1,21 @@
 <template>
   <div style="margin-bottom: 20px;" v-if="skuList">
-    <vxe-grid
-      row-id="id"
-      :radio-config="radioConfig"
-      :columns="tableColumn"
-      :data="skuList"
-      :loading="loading"
-      @cell-click="handleSkuChange"
-      @radio-change="handleSkuChange"
-      ref="tableRef">
-      <div slot="empty" style="height: 100px">
-        <page-list-empty :loading="loading" />
-      </div>
-    </vxe-grid>
-    <a-form-item
-      class="mt-1"
-      :validate-status="formatSku ? 'success' : 'error'">
+    <a-form-item :label="$t('compute.text_109')" v-bind="formItemLayout">
+      <vxe-grid
+        row-id="id"
+        :radio-config="radioConfig"
+        :columns="tableColumn"
+        :data="skuList"
+        :loading="loading"
+        @cell-click="handleSkuChange"
+        @radio-change="handleSkuChange"
+        ref="tableRef">
+        <div slot="empty" style="height: 100px">
+          <page-list-empty :loading="loading" />
+        </div>
+      </vxe-grid>
+    </a-form-item>
+    <a-form-item class="mt-1" :validate-status="formatSku ? 'success' : 'error'" v-bind="tailFormItemLayout">
       <p slot="help">
         {{
           formatSku
@@ -34,7 +34,7 @@ import { numerify } from '@/filters'
 
 export default {
   name: 'rdsSkuList',
-  inject: ['form', 'scopeParams'],
+  inject: ['form', 'formItemLayout', 'tailFormItemLayout', 'scopeParams'],
   components: {
     PageListEmpty,
   },

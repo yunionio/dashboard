@@ -23,6 +23,7 @@ export default {
       form: this.form,
       scopeParams: this.scopeParams,
       formItemLayout: this.formItemLayout,
+      tailFormItemLayout: this.tailFormItemLayout,
       redisItem: this.redisItem,
     }
   },

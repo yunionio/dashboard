@@ -1,20 +1,22 @@
 <template>
   <div>
-    <vxe-grid
-      ref="tableRef"
-      row-id="id"
-      max-height="500"
-      :radio-config="radioConfig"
-      :loading="loading"
-      :columns="tableColumn"
-      :data="skuList"
-      @radio-change="handleSkuChange"
-      @cell-click="handleSkuChange">
-      <template v-slot:empty>
-        <page-list-empty :loading="loading" />
-      </template>
-    </vxe-grid>
-    <a-form-item class="redis-sku-valid">
+    <a-form-item class="redis-sku-valid" :label="$t('compute.text_109')" v-bind="formItemLayout">
+      <vxe-grid
+        ref="tableRef"
+        row-id="id"
+        max-height="500"
+        :radio-config="radioConfig"
+        :loading="loading"
+        :columns="tableColumn"
+        :data="skuList"
+        @radio-change="handleSkuChange"
+        @cell-click="handleSkuChange">
+        <template v-slot:empty>
+          <page-list-empty :loading="loading" />
+        </template>
+      </vxe-grid>
+    </a-form-item>
+    <a-form-item class="redis-sku-valid" v-bind="tailFormItemLayout">
       <template v-show="false">
         <a-radio-group v-decorator="skuDecorator" :placeholder="$t('validator.serverName')" />
       </template>
@@ -35,7 +37,7 @@ const ELASTIC_CACHE_STORAGE_TYPE = {
 }
 export default {
   name: 'SKUList',
-  inject: ['form'],
+  inject: ['form', 'formItemLayout', 'tailFormItemLayout'],
   components: {
     PageListEmpty,
   },
