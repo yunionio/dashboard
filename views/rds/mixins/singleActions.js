@@ -105,6 +105,7 @@ export default {
               action: () => {
                 this.createDialog('RedisRenewDialog', {
                   title: i18n.t('db.text_157'),
+                  name: i18n.t('dictionary.dbinstances'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,

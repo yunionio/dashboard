@@ -240,6 +240,7 @@ export default {
                 action: () => {
                   this.createDialog('RedisRenewDialog', {
                     title: this.$t('db.text_157'),
+                    name: this.$t('dictionary.elasticcaches'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
