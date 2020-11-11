@@ -1,3 +1,4 @@
+import Monitor from './Monitor/router'
 import VmRelase from '@Helm/views/vm-release'
 import VmReleaseUpdate from '@Helm/views/vm-release/update'
 import K8sRelease from '@Helm/views/k8s-release'
@@ -10,15 +11,6 @@ import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
-
-let Monitor = { meta: { hidden: true } }
-if (process.env.VUE_APP_IS_PRIVATE) {
-  const modules = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
-  const moduleList = modules.keys()
-  if ([].includes.call(moduleList, './Monitor/router/index.js')) {
-    Monitor = modules('./Monitor/router/index.js').default
-  }
-}
 
 export default {
   index: 7,
