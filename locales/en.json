@@ -995,7 +995,8 @@
     "validateForm": "The input information is incorrect",
     "validate": "@:brand: There is no record of {0} rule in REGEXP, please add it in time",
     "passwordLevel": "The password must contain numbers, uppercase and lowercase letters, {0} of special characters, and at least {1} characters in length",
-    "dnsName": "Only the characters a-z, A-Z, 0-9, dash (-), underscore (_), period (.), @, * are supported, and the dash and period cannot appear at the beginning and end"
+    "dnsName": "Only the characters a-z, A-Z, 0-9, dash (-), underscore (_), period (.), @, * are supported, and the dash and period cannot appear at the beginning and end",
+    "maxLength": "The length cannot exceed {0} characters"
   },
   "dialog": {
     "ok": "OK",

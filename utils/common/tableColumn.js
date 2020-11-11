@@ -197,6 +197,10 @@ export const getNameDescriptionTableColumn = ({
           }),
         ]
         if ((R.type(showDesc) === 'Function' && showDesc(row)) || showDesc === true) {
+          descriptionRules.push({
+            max: 256,
+            message: i18n.t('validator.maxLength', ['256']),
+          })
           ret.push(h('list-body-cell-wrap', {
             props: {
               edit: (R.is(Function, editDesc) && editDesc(row)) || editDesc === true,
