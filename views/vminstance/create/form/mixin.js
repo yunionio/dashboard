@@ -337,6 +337,7 @@ export default {
         })
     },
     doCreateWorkflow (genCreateData) {
+      console.log(genCreateData, 'genCreateData')
       const data = genCreateData.all()
       this.submiting = true
       const variables = {
