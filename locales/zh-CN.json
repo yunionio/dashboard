@@ -409,5 +409,7 @@
   "k8s.text_408": "新建ceph集群",
   "k8s.text_409": "资源名称",
   "k8s.text_410": "隐藏IP",
-  "k8s.text_411": "节点(Nodes)"
+  "k8s.text_411": "节点(Nodes)",
+  "k8s.text_412": "指定域",
+  "k8s.text_413": "请选择@:dictionary.domain"
 }
