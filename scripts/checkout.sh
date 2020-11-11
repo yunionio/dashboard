@@ -8,6 +8,10 @@
 # 📦 ssh://git@git.yunion.io/fep/dashboard-module-network
 # 📦 ssh://git@git.yunion.io/fep/dashboard-module-dashboard
 # 📦 ssh://git@git.yunion.io/fep/dashboard-module-storage
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-k8s
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-helm
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-db
+# 📦 ssh://git@git.yunion.io/fep/dashboard-module-monitor
 # " userConfirm
 
 # if [ "$userConfirm" == "n" ] 
@@ -42,5 +46,9 @@ checkout 'dashboard-module-compute' ../containers/Compute
 checkout 'dashboard-module-dashboard' ../containers/Dashboard
 checkout 'dashboard-module-network' ../containers/Network
 checkout 'dashboard-module-storage' ../containers/Storage
+checkout 'dashboard-module-k8s' ../containers/K8S
+checkout 'dashboard-module-helm' ../containers/Helm
+checkout 'dashboard-module-db' ../containers/DB
+checkout 'dashboard-module-monitor' ../containers/Monitor
 
 exit 0
