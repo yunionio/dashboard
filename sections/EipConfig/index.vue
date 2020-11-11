@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item class="mb-0">
+    <a-form-item :label="$t('compute.text_107')" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
         <a-radio-button
           v-for="item of types"
@@ -8,12 +8,12 @@
           :value="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item class="mb-0" v-if="isNew">
+    <a-form-item :label="$t('compute.text_1359')" v-if="isNew && (cloudEnv === 'idc' || cloudEnv === 'onpremise')" v-bind="formItemLayout">
       <a-select v-decorator="decorators.bgp_type">
         <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('compute.text_1352') : item }}</a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item class="mb-0" v-if="isNew">
+    <a-form-item :label="$t('compute.text_1360')" v-if="isNew" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.charge_type" @change="handleChargeTypeChange">
         <a-radio-button
           v-for="item of chargeTypes"
@@ -21,7 +21,7 @@
           :value="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item class="mb-0" v-if="isNew">
+    <a-form-item :label="$t('compute.text_1186')" v-if="isNew" v-bind="formItemLayout">
       <div class="d-flex">
         <a-tooltip placement="top" :title="$t('compute.text_1324', [maxBindWidth])">
           <a-input-number
@@ -35,7 +35,7 @@
           </a-tooltip>
       </div>
     </a-form-item>
-    <a-form-item class="mb-0" v-if="isBind">
+    <a-form-item :label="$t('compute.text_107')" v-if="isBind" v-bind="formItemLayout">
       <base-select
         remote
         v-decorator="decorators.eip"
@@ -75,8 +75,24 @@ export default {
     eipParams: Object,
     hypervisor: String,
     hiddenNoneType: Boolean,
+    cloudEnv: String,
     form: {
       type: Object,
+    },
+    formItemLayout: {
+      type: Object,
+      default: () => ({
+        wrapperCol: {
+          md: { span: 18 },
+          xl: { span: 20 },
+          xxl: { span: 22 },
+        },
+        labelCol: {
+          md: { span: 6 },
+          xl: { span: 4 },
+          xxl: { span: 2 },
+        },
+      }),
     },
     showBind: {
       type: Boolean,
