@@ -33,6 +33,9 @@ Fork the following repository, then clone dashboard main repository and install 
 - [dashboard-module-dashboard](https://github.com/yunionio/dashboard-module-dashboard)
 - [dashboard-module-monitor](https://github.com/yunionio/dashboard-module-monitor)
 - [dashboard-module-storage](https://github.com/yunionio/dashboard-module-storage)
+- [dashboard-module-k8s](https://github.com/yunionio/dashboard-module-k8s)
+- [dashboard-module-helm](https://github.com/yunionio/dashboard-module-helm)
+- [dashboard-module-db](https://github.com/yunionio/dashboard-module-db)
 
 ```sh
 git clone https://github.com/<owner>/dashboard.git
