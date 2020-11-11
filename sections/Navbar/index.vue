@@ -452,12 +452,7 @@ export default {
           ...this.auth.auth,
         }
         const bStr = window.encodeURI(JSON.stringify(obj))
-        const cookies = Cookies.withConverter({
-          write: function (value, name) {
-            return Object.freeze(value)
-          },
-        })
-        cookies.set('timeauth', bStr)
+        Cookies.set('timeauth', bStr)
       }
       window.open(href, '_blank')
     },
