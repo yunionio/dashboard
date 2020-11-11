@@ -337,9 +337,7 @@ export default {
         })
     },
     doCreateWorkflow (genCreateData) {
-      console.log(genCreateData, 'genCreateData')
       const data = genCreateData.all()
-      this.submiting = true
       const variables = {
         process_definition_key: WORKFLOW_TYPES.APPLY_MACHINE,
         initiator: this.$store.getters.userInfo.id,
@@ -348,6 +346,7 @@ export default {
         price: this.price,
       }
       this._getProjectDomainInfo(variables)
+      this.submiting = true
       new this.$Manager('process-instances', 'v1')
         .create({ data: { variables } })
         .then(() => {
