@@ -94,6 +94,13 @@ export default {
           xxl: { span: 3 },
         },
       },
+      tailFormItemLayout: {
+        wrapperCol: {
+          lg: { span: 18, offset: 6 },
+          xl: { span: 20, offset: 4 },
+          xxl: { span: 21, offset: 3 },
+        },
+      },
       scopeParams: {
         scope: this.$store.getters.scope,
         project_domain: '',
@@ -126,6 +133,7 @@ export default {
       form: this.form,
       formItemLayout: this.formItemLayout,
       scopeParams: this.scopeParams,
+      tailFormItemLayout: this.tailFormItemLayout,
     }
   },
 }
