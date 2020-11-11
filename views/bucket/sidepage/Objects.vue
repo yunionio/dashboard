@@ -53,6 +53,7 @@ export default {
       prefix: '',
       nextFetchListLoading: false,
       list: this.$list.createList(this, {
+        id: 'objectListForBucketStorageSidePage',
         resource: 'objects',
         getParams: this.getParams,
         ctx: [['buckets', this.data.id]],

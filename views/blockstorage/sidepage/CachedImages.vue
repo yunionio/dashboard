@@ -25,6 +25,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'CachedImageListForBlockStorageSidePage',
         resource: 'cachedimages',
         ctx: [['storagecaches', this.data.storagecache_id]],
         getParams: this.getParams,
