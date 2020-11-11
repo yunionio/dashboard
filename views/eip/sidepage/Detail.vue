@@ -39,6 +39,13 @@ export default {
         getBrandTableColumn(),
         getAssociateNameTableColumn(this),
         {
+          field: 'bgp_type',
+          title: this.$t('network.text_743'),
+          formatter: ({ cellValue }) => {
+            return cellValue || '-'
+          },
+        },
+        {
           field: 'ip_addr',
           title: 'IP',
         },
