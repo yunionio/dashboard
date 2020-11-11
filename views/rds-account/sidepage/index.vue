@@ -11,7 +11,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager"  :params="getParams" :res-id="getParams.resId" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager"  :params="getParams" :res-id="getParams.resId" :id="listId" />
   </base-side-page>
 </template>
 
@@ -43,6 +43,14 @@ export default {
       return {
         resId: this.detailData.id,
         details: true,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForRDSAccountSidePage'
+        default:
+          return ''
       }
     },
   },

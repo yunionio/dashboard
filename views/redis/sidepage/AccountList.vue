@@ -29,6 +29,7 @@ export default {
     return {
       steadyStatus,
       list: this.$list.createList(this, {
+        id: 'RedisAccountListForRedisSidePage',
         resource: 'elasticcacheaccounts',
         getParams: this.params,
         steadyStatus,

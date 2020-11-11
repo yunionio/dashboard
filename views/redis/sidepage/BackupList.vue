@@ -28,6 +28,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'RedisBackupListForRedisSidePage',
         resource: 'elasticcachebackups',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.redisBackup).flat(),

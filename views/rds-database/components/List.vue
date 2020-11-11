@@ -24,10 +24,14 @@ export default {
     data: {
       type: Object,
     },
+    id: {
+      type: String,
+    },
   },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'dbinstancedatabases',
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.redisAccount).flat(),
