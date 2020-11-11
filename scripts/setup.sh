@@ -35,6 +35,10 @@ if [ ! -d "./containers" ]; then
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-network.git containers/Network
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-dashboard.git containers/Dashboard
   git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-storage.git containers/Storage
+  git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-db.git containers/DB
+  git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-k8s.git containers/K8S
+  git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-helm.git containers/Helm
+  git clone -b $BRANCH $DEFAULT_GIT_PREFIX/dashboard-module-monitor.git containers/Monitor
 fi
 
 echo
