@@ -179,6 +179,7 @@ export default {
           path: '/strategyallocation',
           meta: {
             label: i18n.t('cloudenv.text_500'),
+            permission: 'scopedpolicies_list',
           },
           component: Layout,
           children: [

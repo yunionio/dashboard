@@ -1,5 +1,5 @@
 <template>
-  <network-list :getParams="getParams" :showGroupActions="false" />
+  <network-list :getParams="getParams" :showGroupActions="false" id="NetworkListForCloudregionSidePage" />
 </template>
 
 <script>

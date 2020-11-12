@@ -1,5 +1,5 @@
 <template>
-  <v-p-c-list :getParams="getParams" :showGroupActions="false" />
+  <v-p-c-list :getParams="getParams" :showGroupActions="false" id="VpcListForCloudregionSidePage" />
 </template>
 
 <script>
