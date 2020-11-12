@@ -87,14 +87,14 @@ export default {
         }),
         fd: {
           snapshotName: '',
-          snapshotType: this.isKvm ? 'disk' : 'instance',
+          snapshotType: this.params.data[0].hypervisor === hypervisorMap.esxi.key ? 'instance' : 'disk',
         },
       },
       decorators: {
         snapshotType: [
           'snapshotType',
           {
-            initialValue: this.isKvm ? 'disk' : 'instance',
+            initialValue: this.params.data[0].hypervisor === hypervisorMap.esxi.key ? 'instance' : 'disk',
           },
         ],
         disk: [
