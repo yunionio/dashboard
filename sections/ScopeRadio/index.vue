@@ -132,10 +132,16 @@ export default {
       this.$emit('change', value)
     },
     projectsLabelFormat (item) {
-      return <div class='d-flex'>
-        <span class='text-truncate flex-fill mr-2' title={ item.name }>{ item.name }</span>
-        {(this.isAdminMode && this.l3PermissionEnable) ? <span style="color: #8492a6; font-size: 13px">{this.$t('common_257')}{this.$t('dictionary.domain')}: {item.project_domain}</span> : null}
-      </div>
+      let text = item.name
+      if (this.isAdminMode && this.l3PermissionEnable) {
+        text += `（${this.$t('monitor.text_107')}: ${item.project_domain}）`
+      }
+      return text
+      // 因为在 BaseSelect 的 OptionLabel 中关闭了 labelformat直接返回vnode，所以会显示出兼容的 name，此vnode不会展示。因此目前展示采用👆样式丑陋的方式展示，至少数据是全的
+      // return <div class='d-flex'>
+      //   <span class='text-truncate flex-fill mr-2' title={ item.name }>{ item.name }</span>
+      //   {(this.isAdminMode && this.l3PermissionEnable) ? <span style="color: #8492a6; font-size: 13px">{this.$t('common_257')}{this.$t('dictionary.domain')}: {item.project_domain}</span> : null}
+      // </div>
     },
     async scopeChange (e) {
       this.formScope = e.target.value
