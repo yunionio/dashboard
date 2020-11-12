@@ -968,7 +968,7 @@ export default {
                     }
                     if (commonUnabled(obj)) return ret
                     if (obj.eip_mode === 'public_ip') {
-                      ret.tooltip = i18n.t('compute.text_1361')
+                      ret.tooltip = i18n.t('compute.public_ip_tooltip')
                       return ret
                     }
                     if (obj.eip) {

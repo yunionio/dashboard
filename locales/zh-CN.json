@@ -1328,5 +1328,5 @@
   "compute.text_1358": "VMware暂不支持创建硬盘快照",
   "compute.text_1359": "线路类型",
   "compute.text_1360": "网络计费方式",
-  "compute.text_1361": "已分配公有IP的虚拟机不支持绑定/解绑弹性公网IP"
+  "compute.public_ip_tooltip": "已分配公有IP的虚拟机不支持绑定/解绑弹性公网IP"
 }
