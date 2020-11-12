@@ -82,10 +82,10 @@ export default {
       type: String,
     },
   },
-  data () {
-    return {
-      text: this.data[this.nameKey],
-    }
+  computed: {
+    text () {
+      return this.data[this.nameKey]
+    },
   },
   methods: {
     getLabel () {
