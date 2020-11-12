@@ -13,7 +13,7 @@
             :select-props="{ placeholder: $t('compute.text_149'), disabled: imageCloudproviderDisabled }" />
         </a-form-item>
       </a-col>
-      <a-col :span="showCloudaccount ? 4 : 6">
+      <a-col :span="showCloudaccount ? 5 : 6">
         <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
           <a-select v-decorator="decorator.os" :loading="loading" @change="osChange" :placeholder="$t('compute.text_153')">
             <a-select-option v-for="item in imagesInfo.osOpts" :key="item.key">
@@ -25,7 +25,7 @@
           </a-select>
         </a-form-item>
       </a-col>
-      <a-col :span="showCloudaccount ? 12 : 18">
+      <a-col :span="showCloudaccount ? 11 : 18">
         <a-form-item :wrapperCol="{ span: 24 }" class="mb-0">
           <image-select-template v-decorator="decorator.image" :imageOpts="imageOptions" @imageChange="imageChange" :loading="loading" :imageType="imageType" />
         </a-form-item>
