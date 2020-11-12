@@ -1329,5 +1329,5 @@
   "compute.text_1359": "Line type",
   "compute.text_1360": "Network billing method",
   "compute.text_1361": "The default mount point of the storage pool: {0}",
-  "compute.text_1362": "Virtual machines that have been assigned a public IP do not support binding/unbinding an elastic public IP"
+  "compute.public_ip_tooltip": "Virtual machines that have been assigned a public IP do not support binding/unbinding an elastic public IP"
 }
