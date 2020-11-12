@@ -13,7 +13,7 @@
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <a-alert :message="$t('cloudenv.clouduser_desc')" class="mb-2" v-if="params.windowData.currentTab === 'clouduser-list'" />
-    <component :is="params.windowData.currentTab" :data="detailData" :cloudaccount="detailData" :on-manager="onManager" :res-id="data.id" resource="cloudaccounts" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :data="detailData" :cloudaccount="detailData" :on-manager="onManager" :res-id="data.id" :id="listId" resource="cloudaccounts" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -97,6 +97,24 @@ export default {
         }
       }
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForCloudaccountSidePage'
+        case 'cloudprovider-list':
+          return 'CloudproviderListForCloudaccountSidePage'
+        case 'externalproject-list':
+          return 'ExternalprojectListForCloudaccountSidePage'
+        case 'host-list':
+          return 'HostListForCloudaccountSidePage'
+        case 'clouduser-list':
+          return 'ClouduserListForCloudaccountSidePage'
+        case 'cloudgroup-list':
+          return 'CloudgroupListForCloudaccountSidePage'
+        default:
+          return ''
+      }
     },
   },
   created () {

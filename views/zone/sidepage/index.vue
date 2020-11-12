@@ -15,6 +15,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
+      :id="listId"
       :data="detailData"
       :on-manager="onManager"
       :getParams="getParams"
@@ -65,6 +66,17 @@ export default {
       }
       return null
     },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForZoneSidePage'
+        case 'host-list':
+          return 'HostListForZoneSidePage'
+        default:
+          return ''
+      }
+    },
+
   },
 }
 </script>

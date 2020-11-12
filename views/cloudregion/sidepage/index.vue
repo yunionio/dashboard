@@ -8,7 +8,7 @@
     :loaded="loaded"
     :tabs="detailTabs"
     @tab-change="handleTabChange">
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" @tab-change="handleTabChange" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :on-manager="onManager" @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
@@ -43,6 +43,16 @@ export default {
         { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForCloudregionSidePage'
+        default:
+          return ''
+      }
+    },
   },
 }
 </script>
