@@ -1315,5 +1315,6 @@
   "compute.vmrc_download": "下载",
   "compute.text_1346": "镜像ID",
   "compute.text_1347": "回滚中的硬盘快照应不能被删除",
-  "compute.text_1348": "本地硬盘暂不支持单独新建，可在虚拟机列表在指定虚拟机进行调整配置操作添加硬盘"
+  "compute.text_1348": "本地硬盘暂不支持单独新建，可在虚拟机列表在指定虚拟机进行调整配置操作添加硬盘",
+  "compute.public_ip_tooltip": "已分配公有IP的虚拟机不支持绑定/解绑弹性公网IP"
 }
