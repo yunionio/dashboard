@@ -137,7 +137,7 @@ export default {
               title: i18n.t('table.title.owner_project'),
               formatter: ({ cellValue, row }) => {
                 const v = this.variables
-                const domain = v.project_domian
+                const domain = v.project_domain
                 const project = v.project_name || v.project
                 if (!project) return '-'
                 return `${domain}/${project}`
