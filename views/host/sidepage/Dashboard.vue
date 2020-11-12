@@ -34,10 +34,10 @@
 import _ from 'lodash'
 import numerify from 'numerify'
 import { GAUGEMSG, HOST_TOP5 } from '../constants'
-import influxdb from '@/utils/influxdb'
 import ProgressCard from '@/sections/ProgressCard'
-import { sizestrWithUnit } from '@/utils/utils'
+import { sizestrWithUnit, getRequestT } from '@/utils/utils'
 import Top5 from '@/sections/Top5'
+import { getSignature } from '@/utils/crypto'
 
 export default {
   name: 'HostDashboard',
@@ -83,7 +83,7 @@ export default {
         return {
           name: this.vmName,
           link: '/a/v',
-          value: Math.max.apply(null, item.values.map(i => i[1])),
+          value: Math.max.apply(null, item.points.map(i => i[0])),
         }
       })
       return data
@@ -95,24 +95,18 @@ export default {
       for (let i = 0; i < top5ResourceData.length; i++) {
         const val = top5ResourceData[i]
         try {
-          let q = ''
-          if (this.topType === 'isKvm') { // kvm 型宿主机
-            q = `SELECT max("${val.seleteItem}") FROM "${val.fromItem}" WHERE ("is_vm" = 'true' AND "host" = '${this.data.name}') AND time >= now() - ${10}m GROUP BY time(1m), "vm_name" FILL(none)`
-          } else { // 其他类型宿主机(esxi、openstack、zstack)
-            q = `SELECT max("${val.seleteItem}") FROM "${val.fromItem}" WHERE ("host_id" = '${this.data.id}') AND time >= now() - ${10}m GROUP BY time(1m), "vm_name" FILL(none)`
-          }
-          const { data: { results } } = await influxdb.get('', {
-            params: {
-              db: 'telegraf', // 用于在组件拼接和表示不同类型的数据,  e.g. `${item.name}Loading`
-              q,
-              epoch: 'ms',
-            },
-          })
-          const data = this._getSeriesMax(results[0].series)
+          const { data } = await new this.$Manager('unifiedmonitors', 'v1')
+            .performAction({
+              id: 'query',
+              action: '',
+              data: this.genQueryData(val),
+              params: { $t: getRequestT() },
+            })
+          const series = this._getSeriesMax(data.series)
           this.topList.push({
             // metric: TOP5REQDATA[i].metrics[0].name[0], // 需要 link 跳转页面的时候可以加上
             title: val.label,
-            data,
+            data: series,
             unit: val.unit,
           })
         } catch (error) {
@@ -127,45 +121,38 @@ export default {
       for (let i = 0; i < GAUGEMSG.length; i++) {
         try {
           const value = GAUGEMSG[i]
-          let q
-          if (value.sql.db === 'net') {
-            q = `SELECT max("${value.sql.key}") FROM "${value.sql.db}" WHERE "interface" = 'eth0' AND "host_id" = '${this.resId}' AND time > now() - 1m GROUP BY time(1m) fill(none)`
-          } else {
-            q = `SELECT max("${value.sql.key}") FROM "${value.sql.db}" WHERE "host_id" = '${this.resId}' AND time > now() - 1m GROUP BY time(1m) fill(none)`
-          }
-          await influxdb.get('', {
-            params: {
-              db: 'telegraf',
-              q,
-              epoch: 'ms',
-            },
-          }).then(({ data: { results } }) => {
-            const series = results[0].series
-            const values = _.get(series, '[0].values')
-            if (values && values.length) {
-              const temValues = values.map(v => (v[1] || 0))
-              const maxNum = temValues.length ? Math.max.apply(null, temValues) : 0
-              let unit = '%'
-              let numerifyFloat = '0.00'
-              let percent = maxNum / 100
-              if (value.label === this.$t('compute.text_517')) {
-                unit = ''
-                numerifyFloat = '0.0000'
-                percent = maxNum
-                var percentFormat = this.percentFormat
-              }
-              this.gaugeList.push({
-                title: value.label,
-                percent,
-                unit,
-                numerifyFloat,
-                percentFormat,
-                progressProps: {
-                  type: 'dashboard',
-                },
-              })
+          const { data } = await new this.$Manager('unifiedmonitors', 'v1')
+            .performAction({
+              id: 'query',
+              action: '',
+              data: this.genGaugeQueryData(value),
+              params: { $t: getRequestT() },
+            })
+          const series = data.series
+          const values = _.get(series, '[0].points')
+          if (values && values.length) {
+            const temValues = values.map(v => (v[0] || 0))
+            const maxNum = temValues.length ? Math.max.apply(null, temValues) : 0
+            let unit = '%'
+            let numerifyFloat = '0.00'
+            let percent = maxNum / 100
+            if (value.label === this.$t('compute.text_517')) {
+              unit = ''
+              numerifyFloat = '0.0000'
+              percent = maxNum
+              var percentFormat = this.percentFormat
             }
-          })
+            this.gaugeList.push({
+              title: value.label,
+              percent,
+              unit,
+              numerifyFloat,
+              percentFormat,
+              progressProps: {
+                type: 'dashboard',
+              },
+            })
+          }
         } catch (error) {
           this.loading = false
           throw error
@@ -233,6 +220,102 @@ export default {
         }
       })()
       this.progressList = tempList
+    },
+    genGaugeQueryData (val) {
+      const select = [
+        {
+          type: 'field',
+          params: [val.sql.key],
+        },
+        { // 对应 mean(val.seleteItem)
+          type: 'max',
+          params: [],
+        },
+      ]
+      let tags = []
+      if (val.sql.db === 'net') {
+        tags = [
+          {
+            key: 'interface',
+            value: 'eth0',
+            operator: '=',
+          },
+          {
+            key: 'host_id',
+            value: this.resId,
+            operator: '=',
+          },
+        ]
+      } else { // 其他类型宿主机(esxi、openstack、zstack)
+        tags.push({
+          key: 'host_id',
+          value: this.resId,
+          operator: '=',
+        })
+      }
+      const data = {
+        metric_query: [
+          {
+            model: {
+              measurement: val.sql.db,
+              select: [select],
+              tags,
+            },
+          },
+        ],
+        scope: this.$store.getters.scope,
+        from: '1m',
+        interval: '1m',
+        unit: true,
+      }
+      data.signature = getSignature(data)
+      return data
+    },
+    genQueryData (val) {
+      const select = [
+        {
+          type: 'field',
+          params: [val.seleteItem],
+        },
+        { // 对应 mean(val.seleteItem)
+          type: 'max',
+          params: [],
+        },
+      ]
+      let tags = []
+      if (this.topType === 'isKvm') { // kvm 型宿主机
+        tags = [
+          {
+            key: 'host_id',
+            value: this.data.id,
+            operator: '=',
+          },
+        ]
+      } else { // 其他类型宿主机(esxi、openstack、zstack)
+        tags.push({
+          key: 'host_id',
+          value: this.data.id,
+          operator: '=',
+        })
+      }
+      const data = {
+        metric_query: [
+          {
+            model: {
+              measurement: val.fromItem,
+              select: [select],
+              group_by: [{ type: 'tag', params: ['vm_name'] }],
+              tags,
+            },
+          },
+        ],
+        scope: this.$store.getters.scope,
+        from: '10m',
+        interval: '1m',
+        unit: true,
+      }
+      data.signature = getSignature(data)
+      return data
     },
   },
 }
