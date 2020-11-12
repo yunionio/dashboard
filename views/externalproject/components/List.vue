@@ -23,10 +23,12 @@ export default {
       type: [Function, Object],
     },
     cloudaccount: Object,
+    id: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'externalprojects',
         getParams: this.getParams,
         filterOptions: {
