@@ -255,7 +255,7 @@ export default {
               slots: {
                 default: ({ row }) => {
                   return [
-                    <side-page-trigger permission='hosts_get' name='HostSidePage' id={row.host_id} vm={this}>{row.backup_host_name}</side-page-trigger>,
+                    <side-page-trigger permission='hosts_get' name='HostSidePage' id={row.backup_host_id} vm={this}>{row.backup_host_name}</side-page-trigger>,
                   ]
                 },
               },
