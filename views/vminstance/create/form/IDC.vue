@@ -385,7 +385,7 @@ export default {
       if (systemDiskType) {
         params.filter = [`storage_type.contains("${systemDiskType}")`]
       }
-      return params // !!! 下面的指定宿主机和指定IP子网应该支持根据storage_id过滤
+      return params
     },
     systemStorageShow () { // 系统盘是否开启了指定存储
       return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fi.showStorage
