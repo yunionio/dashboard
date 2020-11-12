@@ -967,7 +967,11 @@ export default {
                       tooltip: null,
                     }
                     if (commonUnabled(obj)) return ret
-                    if (obj.eip && obj.eip_mode !== 'public_ip') {
+                    if (obj.eip_mode === 'public_ip') {
+                      ret.tooltip = i18n.t('compute.text_1361')
+                      return ret
+                    }
+                    if (obj.eip) {
                       ret.tooltip = i18n.t('compute.text_1291')
                       return ret
                     }
