@@ -9,7 +9,7 @@
         <a-form-item :label="$t('compute.text_1041')" v-bind="formItemLayout" v-if="isOpenWorkflow">
           <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
         </a-form-item>
-        <template v-show="isShowAutoDelete">
+        <template v-if="isShowAutoDelete">
           <a-form-item :label="$t('compute.text_420')" v-bind="formItemLayout">
             <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
           </a-form-item>
