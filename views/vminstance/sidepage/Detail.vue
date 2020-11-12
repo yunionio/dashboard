@@ -130,7 +130,7 @@ export default {
               title: 'MAC',
               hideField: true,
               slotCallback: row => {
-                return row.macs
+                return row.macs || '-'
               },
             }),
             getCopyWithContentTableColumn({
@@ -262,6 +262,7 @@ export default {
               title: this.$t('compute.text_1163'),
               slots: {
                 default: ({ row }) => {
+                  if (!row.backup_host_name) return '-'
                   return [
                     <side-page-trigger permission='hosts_get' name='HostSidePage' id={row.host_id} vm={this}>{row.backup_host_name}</side-page-trigger>,
                   ]
