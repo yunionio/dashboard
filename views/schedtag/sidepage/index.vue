@@ -12,7 +12,7 @@
     <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :res-id="data.id" :getParams="getParams" :columns="columns" />
+    <component :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :res-id="data.id" :id="listId" :getParams="getParams" :columns="columns" />
   </base-side-page>
 </template>
 
@@ -87,6 +87,22 @@ export default {
       return params[this.params.windowData.currentTab] || {
         details: true,
         schedtag: this.data.id,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForSchedtagSidePage'
+        case 'physicalmachine-list':
+          return 'physicalmachineListForSchedtagSidePage'
+        case 'host-list':
+          return 'HostListForSchedtagSidePage'
+        case 'storage-list':
+          return 'StorageListForSchedtagSidePage'
+        case 'network-list':
+          return 'NetworkListForSchedtagSidePage'
+        default:
+          return ''
       }
     },
   },

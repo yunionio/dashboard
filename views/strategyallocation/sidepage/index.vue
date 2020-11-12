@@ -15,6 +15,7 @@
     <component
       :is="params.windowData.currentTab"
       :res-id="data.id"
+      :id="listId"
       :data="detailData"
       :on-manager="onManager"
       :getParams="getParams"
@@ -50,6 +51,14 @@ export default {
   computed: {
     getParams () {
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForStrategyAllocationSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

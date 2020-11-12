@@ -26,12 +26,14 @@ export default {
     cloudaccountListRefresh: {
       type: Function,
     },
+    id: String,
   },
   data () {
     const ownerDomain = list => this.$store.getters.isAdminMode || list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
     const isAccountDomain = data => data.share_mode === 'account_domain'
     return {
       list: this.$list.createList(this, {
+        id: this.id,
         resource: 'cloudproviders',
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.cloudaccount).flat(),
