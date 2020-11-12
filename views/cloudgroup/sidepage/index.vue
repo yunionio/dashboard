@@ -17,6 +17,7 @@
       :data="detailData"
       :on-manager="onManager"
       :res-id="data.id"
+      :id="listId"
       :getParams="getParams"
       @tab-change="handleTabChange" />
   </base-side-page>
@@ -66,6 +67,20 @@ export default {
         }
       }
       return null
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForCloudgroupSidePage'
+        case 'clouduser-list-for-cloudgroup-sidepage':
+          return 'ClouduserListForCloudgroupSidePage'
+        case 'cloudpolicy-list-for-cloudgroup-sidepage':
+          return 'CloudpolicyListForCloudgroupSidePage'
+        case 'cache':
+          return 'CacheForCloudgroupSidePage'
+        default:
+          return ''
+      }
     },
   },
 }

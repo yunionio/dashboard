@@ -16,6 +16,7 @@
       :is="params.windowData.currentTab"
       :data="detailData"
       :res-id="detailData.id"
+      :id="listId"
       :onManager="onManager"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
@@ -45,6 +46,16 @@ export default {
         { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ],
     }
+  },
+  computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForDynamicschedtagSidePage'
+        default:
+          return ''
+      }
+    },
   },
 }
 </script>

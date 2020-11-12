@@ -11,7 +11,7 @@
      <template v-slot:actions>
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
-    <component :is="params.windowData.currentTab" :res-id="data.id" :data="detailData" :on-manager="onManager" :getParams="getParams" />
+    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :on-manager="onManager" :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -45,6 +45,16 @@ export default {
     getParams () {
       return {
         proxy_setting: this.detailData.id,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForProxysettingSidePage'
+        case 'cloudaccount-list':
+          return 'CloudaccountListForProxysettingSidePage'
+        default:
+          return ''
       }
     },
   },
