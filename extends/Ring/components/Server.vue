@@ -20,9 +20,13 @@
             <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_34')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.displayUnUsage }}</div>
           </div>
-          <div v-if="showReserved" class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('common_586')}}</div>
+          <div class="d-flex" v-if="showReserved">
+            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_182')}}</div>
             <div class="ml-2 flex-fill text-right">{{ this.reserved }}</div>
+          </div>
+          <div class="d-flex" v-if="showGpuReserved">
+            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_183')}}</div>
+            <div class="ml-2 flex-fill text-right">{{ this.gpuReserved }}</div>
           </div>
           <div class="d-flex">
             <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_181')}}</div>
@@ -216,8 +220,24 @@ export default {
     showReserved () {
       return this.form.fd.usage_key === 'all.servers.memory' && this.form.fd.all_usage_key === 'hosts.memory'
     },
+    showGpuReserved () {
+      const isMemory = this.form.fd.usage_key === 'all.servers.memory' && this.form.fd.all_usage_key === 'hosts.memory'
+      const isCpu = this.form.fd.usage_key === 'all.servers.cpu' && this.form.fd.all_usage_key === 'hosts.cpu'
+      const isStorage = this.form.fd.usage_key === 'all.servers.disk' && this.form.fd.all_usage_key === 'storages'
+      return isMemory || isCpu || isStorage
+    },
     reserved () {
       return this.showReserved && sizestrWithUnit(this.data['hosts.memory.reserved'], 'M', 1024)
+    },
+    gpuReserved () {
+      if (this.form.fd.all_usage_key === 'hosts.memory') {
+        return sizestrWithUnit(this.data['hosts.memory.reserved.isolated'], 'M', 1024)
+      } else if (this.form.fd.all_usage_key === 'hosts.cpu') {
+        return `${this.data['hosts.cpu.reserved.isolated']}${this.usageConfig.unit}`
+      } if (this.form.fd.all_usage_key === 'storages') {
+        return sizestrWithUnit(this.data['hosts.storage.reserved.isolated'], 'M', 1024)
+      }
+      return '-'
     },
   },
   watch: {
