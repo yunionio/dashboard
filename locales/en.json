@@ -130,7 +130,8 @@
       "set_auto_renew_failed": "Set auto renew failed",
       "converted": "Conversion completed",
       "tempalte_saving": "Start creating host template",
-      "template_save_failed": "Failed to create host"
+      "template_save_failed": "Failed to create host",
+      "instance_snapshot_reset": "Rollback host"
     },
     "network": {
       "init": "Initialize",
