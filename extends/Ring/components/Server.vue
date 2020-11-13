@@ -233,7 +233,7 @@ export default {
       if (this.form.fd.all_usage_key === 'hosts.memory') {
         return sizestrWithUnit(this.data['hosts.memory.reserved.isolated'], 'M', 1024)
       } else if (this.form.fd.all_usage_key === 'hosts.cpu') {
-        return `${this.data['hosts.cpu.reserved.isolated']}${this.usageConfig.unit}`
+        return `${this.data['hosts.cpu.reserved.isolated'] || 0}${this.usageConfig.unit}`
       } if (this.form.fd.all_usage_key === 'storages') {
         return sizestrWithUnit(this.data['hosts.storage.reserved.isolated'], 'M', 1024)
       }
