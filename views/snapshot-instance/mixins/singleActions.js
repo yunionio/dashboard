@@ -32,13 +32,7 @@ export default {
             name: i18n.t('compute.text_462'),
           })
         },
-        meta: obj => {
-          const { validate, tooltip } = this.$getDeleteResult(obj)
-          return {
-            validate: validate && obj.guest_status !== 'start_snapshot_reset',
-            tooltip,
-          }
-        },
+        meta: obj => this.$getDeleteResult(obj),
       },
     ]
   },
