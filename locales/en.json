@@ -178,6 +178,8 @@
   "dashboard.text_179": "Disk write speed TOP5 (local IDC)",
   "dashboard.text_180": "Disk read speed TOP5 (local IDC)",
   "dashboard.text_181": "Total",
+  "dashboard.text_182": "System reserved",
+  "dashboard.text_183": "GPU card reserved",
   "dashboard.cpu_quota": "CPU Quota Usage",
   "dashboard.memory_quota": "Memory Quota Usage",
   "dashboard.storage_quota": "Storage Quota Usage",

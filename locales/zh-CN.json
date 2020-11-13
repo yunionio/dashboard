@@ -178,6 +178,8 @@
   "dashboard.text_179": "磁盘写入速度TOP5（本地IDC）",
   "dashboard.text_180": "磁盘读取速度TOP5（本地IDC）",
   "dashboard.text_181": "总量",
+  "dashboard.text_182": "系统预留",
+  "dashboard.text_183": "GPU卡预留",
   "dashboard.cpu_quota": "CPU配额使用情况",
   "dashboard.memory_quota": "内存配额使用情况",
   "dashboard.storage_quota": "存储配额使用情况",
