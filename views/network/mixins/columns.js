@@ -7,6 +7,7 @@ import {
   getStatusTableColumn,
   getCopyWithContentTableColumn,
   // getNameDescriptionTableColumn,
+  getAccountTableColumn,
   getPublicScopeTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
@@ -110,7 +111,7 @@ export default {
         },
       },
       getBrandTableColumn(),
-      getCopyWithContentTableColumn({ field: 'account', title: i18n.t('network.text_196'), hidden: this.$store.getters.isProjectMode }),
+      getAccountTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
       getProjectTableColumn(),
       getRegionTableColumn(),
