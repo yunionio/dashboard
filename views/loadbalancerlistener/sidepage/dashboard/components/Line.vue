@@ -49,9 +49,9 @@ export default {
           this.options.columns,
         ]
         const timeIndex = this.options.columns.findIndex(column => column === 'time')
-        let values = this.options.values
+        let points = this.options.points
         if (timeIndex >= 0) {
-          values = values.map(itemArr => {
+          points = points.map(itemArr => {
             return itemArr.map((item, idx) => {
               if (idx === timeIndex) {
                 return this.$moment(item).format(this.timeFormat)
@@ -64,7 +64,7 @@ export default {
           console.error(this.$t('network.text_506'))
           return NO_DATA
         }
-        source = source.concat(values)
+        source = source.concat(points)
         const { unit = '' } = this.options
         const exceptTime = this.options.columns.filter(column => column !== 'time')
         const chartOpt = {
