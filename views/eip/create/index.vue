@@ -21,7 +21,7 @@
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="this.cloudEnv === 'onpremise'">
           <a-select v-decorator="decorators.bgp_type" @change="handleBgpTypeChange">
             <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('network.text_749') : item }}</a-select-option>
           </a-select>
