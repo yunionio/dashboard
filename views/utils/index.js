@@ -5,7 +5,6 @@ export const isRequiredData = (data, keys) => {
     return false
   }
   if (!keys || R.isEmpty(keys)) {
-    debugger
     return !!data
   }
   const fn = {
