@@ -88,7 +88,7 @@ export default {
             }
             if (ret.length <= 0) {
               ret.push(
-                <div>暂无规则</div>,
+                <div>{this.$t('compute.norule')}</div>,
               )
             }
             return ret
