@@ -6,6 +6,7 @@ import {
   getProjectTableColumn,
   getTimeTableColumn,
   getTagTableColumn,
+  getOsArch,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -41,6 +42,7 @@ export default {
           },
         },
       },
+      getOsArch(),
       {
         field: 'size',
         title: i18n.t('table.title.snapshot_size'),

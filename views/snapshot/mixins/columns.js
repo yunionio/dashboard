@@ -11,6 +11,7 @@ import {
   getTagTableColumn,
   getRegionTableColumn,
   getAccountTableColumn,
+  getOsArch,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -28,6 +29,7 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'snapshot' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'snapshot', columns: () => this.columns }),
+      getOsArch(),
       {
         field: 'size',
         title: i18n.t('table.title.snapshot_size'),

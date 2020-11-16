@@ -15,7 +15,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -90,9 +90,10 @@ export default {
           },
           project_domains: getProjectDomainFilter(),
           account: getAccountFilter(),
+          cpu_architecture: getOsArchFilter(true),
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region'],
+        hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch'],
       }),
       exportDataOptions: {
         items: [
@@ -120,6 +121,7 @@ export default {
           },
           { label: this.$t('compute.text_506', [this.$t('dictionary.domain')]), key: 'project_domain' },
           { label: this.$t('compute.text_271'), key: 'user_tags' },
+          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
         ],
       },
     }

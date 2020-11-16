@@ -16,7 +16,7 @@ import {
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
-import { getBrandTableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getOsArch } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -60,6 +60,7 @@ export default {
             return this.$t('compute.text_101')
           },
         },
+        getOsArch(),
         {
           field: 'guest',
           title: this.$t('dictionary.server'),

@@ -29,13 +29,13 @@ import {
   getAccountFilter,
   getHostFilter,
   getVpcFilter,
+  getOsArchFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { HOST_CPU_ARCHS1 } from '@/constants/compute'
 
 export default {
   name: 'VmInstanceList',
@@ -115,11 +115,7 @@ export default {
             },
           },
           vpc: getVpcFilter(),
-          os_arch: {
-            label: this.$t('table.title.os_arch'),
-            dropdown: true,
-            items: Object.values(HOST_CPU_ARCHS1),
-          },
+          os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch'],

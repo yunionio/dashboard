@@ -21,7 +21,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { getNameFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getDomainFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 
 export default {
@@ -66,9 +66,10 @@ export default {
           },
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
+          os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'created_at'],
+        hiddenColumns: ['metadata', 'created_at', 'os_arch'],
       }),
       exportDataOptions: {
         items: [
@@ -81,6 +82,7 @@ export default {
           { label: this.$t('table.title.create_time'), key: 'created_at' },
           { label: this.$t('table.title.checksum'), key: 'checksum' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
         ],
       },
     }

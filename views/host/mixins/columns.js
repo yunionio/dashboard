@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getAccountTableColumn, getOsArch } from '@/utils/common/tableColumn'
 import { sizestr, percentstr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -125,6 +125,7 @@ export default {
           return cellValue || '0'
         },
       },
+      getOsArch({ field: 'cpu_architecture' }),
       {
         field: 'cpu_count',
         title: i18n.t('compute.text_563'),

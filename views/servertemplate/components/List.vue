@@ -13,10 +13,9 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { HOST_CPU_ARCHS1 } from '@/constants/compute'
 
 export default {
   name: 'ServertemplateList',
@@ -83,11 +82,7 @@ export default {
               }
             }),
           },
-          os_arch: {
-            label: this.$t('table.title.os_arch'),
-            dropdown: true,
-            items: Object.values(HOST_CPU_ARCHS1),
-          },
+          os_arch: getOsArchFilter(),
         },
         hiddenColumns: ['os_type', 'os_arch'],
       }),

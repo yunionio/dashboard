@@ -43,7 +43,7 @@
         <os-arch
           v-decorator="decorators.os_arch"
           :form="form"
-          :options="form.fi.capability.host_cpu_archs"
+          :options="archOptions"
           :isArm="isArm" />
       </a-form-item>
       <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')" :extra="$t('compute.text_1153')">
@@ -226,7 +226,7 @@ export default {
       return this.form.fd.imageType === IMAGES_TYPE_MAP.iso.key
     },
     isArm () {
-      return this.form.fd.os_arch === HOST_CPU_ARCHS.aarch64.key
+      return this.form.fd.os_arch === HOST_CPU_ARCHS.arm.key
     },
     hypervisors () {
       const { hypervisors = [] } = this.form.fi.capability
@@ -258,11 +258,11 @@ export default {
     cacheImageParams () {
       const params = {
         cloudregion_id: _.get(this.form.fd, 'cloudregion.key'),
-        os_arch: HOST_CPU_ARCHS.x86_64.arch,
+        os_arch: HOST_CPU_ARCHS.x86.key,
       }
       if (!params.cloudregion_id) return {}
       if (this.form.fd.imageType === 'vmware') params.image_type = 'system'
-      if (this.isArm) params.os_arch = HOST_CPU_ARCHS.aarch64.arch
+      if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       return params
     },
     showSku () {
@@ -291,7 +291,7 @@ export default {
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
-          os_arch: HOST_CPU_ARCHS.x86_64.arch,
+          os_arch: HOST_CPU_ARCHS.x86.key,
           ...this.scopeParams,
         }
         if (params.hypervisor === HYPERVISORS_MAP.esxi.key) {
@@ -300,7 +300,7 @@ export default {
           }
           params.cloudprovider = this.form.fd.prefer_manager
         }
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.aarch64.arch
+        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
         return params
       }
       return {}
@@ -408,10 +408,21 @@ export default {
     imageParams () {
       const params = {
         ...this.scopeParams,
-        os_arch: HOST_CPU_ARCHS.x86_64.arch,
+        os_arch: HOST_CPU_ARCHS.x86.key,
       }
-      if (this.isArm) params.os_arch = HOST_CPU_ARCHS.aarch64.arch
+      if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       return params
+    },
+    archOptions () {
+      let opts = []
+      if (this.form.fi.capability.host_cpu_archs && this.form.fi.capability.host_cpu_archs.length) {
+        opts = this.form.fi.capability.host_cpu_archs.map(item => {
+          if (item === HOST_CPU_ARCHS.arm.capabilityKey) return HOST_CPU_ARCHS.arm.key
+          if (item === HOST_CPU_ARCHS.x86.capabilityKey) return HOST_CPU_ARCHS.x86.key
+          return item
+        })
+      }
+      return opts
     },
   },
   watch: {

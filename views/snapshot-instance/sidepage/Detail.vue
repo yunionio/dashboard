@@ -16,6 +16,7 @@ import {
 } from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+import { getOsArch } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SnapshotDetail',
@@ -58,6 +59,7 @@ export default {
             return this.$t('compute.text_102')
           },
         },
+        getOsArch(),
         {
           field: 'rules',
           title: this.$t('table.title.sub_snapshot'),

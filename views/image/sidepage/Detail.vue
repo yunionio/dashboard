@@ -20,6 +20,7 @@ import {
   getSwitchTableColumn,
   getPublicScopeTableColumn,
   getTagTableColumn,
+  getOsArch,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -81,6 +82,7 @@ export default {
         {
           title: this.$t('compute.text_629'),
           items: [
+            getOsArch(),
             {
               field: 'disk_format',
               title: this.$t('compute.text_630'),

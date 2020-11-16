@@ -1,7 +1,7 @@
 import FileProcess from '@Compute/views/image/components/FileProcess'
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn, getPublicScopeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getProjectTableColumn, getTimeTableColumn, getPublicScopeTableColumn, getTagTableColumn, getOsArch } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -49,6 +49,7 @@ export default {
           return cellValue && cellValue.toUpperCase()
         },
       },
+      getOsArch(),
       {
         field: 'os_type',
         title: i18n.t('table.title.os'),

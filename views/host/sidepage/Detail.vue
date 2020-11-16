@@ -14,7 +14,7 @@ import {
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
-import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getBrandTableColumn, getCopyWithContentTableColumn, getStatusTableColumn, getPublicScopeTableColumn, getOsArch } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -290,6 +290,7 @@ export default {
               field: 'cpu_desc',
               title: this.$t('compute.text_596'),
             },
+            getOsArch(),
             {
               field: 'reserved_cpu',
               title: this.$t('compute.text_597'),

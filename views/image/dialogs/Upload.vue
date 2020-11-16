@@ -6,12 +6,19 @@
         <div slot="message">{{$t('compute.text_665')}}<br />{{$t('compute.text_666')}}</div>
       </a-alert>
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
         <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" class="mb-0" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_627')" v-bind="formItemLayout">
           <a-input :placeholder="$t('compute.text_416')" v-decorator="decorators.name" />
+        </a-form-item>
+        <a-form-item label="架构">
+          <os-arch
+            v-decorator="decorators.os_arch"
+            :form="form"
+            :isArm="isArm" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_667')" v-bind="formItemLayout">
           <a-radio-group @change="handleUploadTypeChange" v-decorator="decorators.uploadType">
@@ -64,11 +71,14 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DomainProject from '@/sections/DomainProject'
 import i18n from '@/locales'
+import OsArch from '@/sections/OsArch'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 
 export default {
   name: 'ImageUploadDialog',
   components: {
     DomainProject,
+    OsArch,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -125,6 +135,12 @@ export default {
           'os_type',
           {
             initialValue: 'Linux',
+          },
+        ],
+        os_arch: [
+          'os_arch',
+          {
+            initialValue: HOST_CPU_ARCHS.x86.key,
           },
         ],
       },
@@ -211,9 +227,11 @@ export default {
         project_id: (data.project && data.project.key) || this.userInfo.projectId,
         copy_from: data.copy_from,
         name: data.name,
+        os_arch: data.os_arch,
         properties: {
           os_type: data.os_type,
           os_version: '',
+          os_arch: data.os_arch,
         },
       }
       return this.params.onManager('create', {

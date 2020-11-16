@@ -1009,7 +1009,7 @@ export class GenCreateData {
       vcpu_count: this.getCpuCount(),
       vmem_size: this.getMemSize(),
       project_id: (this.fd.project && this.fd.project.key) || store.getters.userInfo.projectId,
-      os_arch: _.get(HOST_CPU_ARCHS, `[${this.fd.os_arch}].arch`),
+      os_arch: _.get(HOST_CPU_ARCHS, `[${this.fd.os_arch}].key`),
     }
     // 非预付费资源池不会添加sku
     if (!this.isPrepaid) {

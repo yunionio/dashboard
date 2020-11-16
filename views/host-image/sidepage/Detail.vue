@@ -14,7 +14,7 @@ import {
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, getPublicScopeTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn, getSwitchTableColumn, getPublicScopeTableColumn, getOsArch } from '@/utils/common/tableColumn'
 
 const isStandard = status => status === true || status === 'true'
 export default {
@@ -82,6 +82,7 @@ export default {
         {
           title: this.$t('compute.text_629'),
           items: [
+            getOsArch(),
             {
               field: 'disk_format',
               title: this.$t('compute.text_630'),
