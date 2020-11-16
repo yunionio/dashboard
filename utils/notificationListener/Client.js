@@ -36,7 +36,7 @@ class Client {
     this.socket.on('message', (payload) => {
       try {
         const obj = JSON.parse(payload)
-        if (!obj.success || !obj.action) {
+        if (!obj.success || !obj.action || obj.ignore_alert) {
           return
         }
         const type = obj.success === true ? 'success' : 'warning'
