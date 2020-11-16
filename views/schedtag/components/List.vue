@@ -11,13 +11,11 @@
 import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { RES_TYPES } from '../utils'
 import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import i18n from '@/locales'
-
-const RES_TYPES = { hosts: i18n.t('cloudenv.text_5'), storages: i18n.t('cloudenv.text_6'), networks: i18n.t('cloudenv.text_7') }
 
 const getParams = { details: true }
 
