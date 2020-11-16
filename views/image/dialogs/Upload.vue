@@ -17,8 +17,7 @@
         <a-form-item label="架构">
           <os-arch
             v-decorator="decorators.os_arch"
-            :form="form"
-            :isArm="isArm" />
+            :form="form" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_667')" v-bind="formItemLayout">
           <a-radio-group @change="handleUploadTypeChange" v-decorator="decorators.uploadType">

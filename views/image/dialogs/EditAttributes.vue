@@ -3,6 +3,7 @@
     <div slot="header">{{$t('compute.text_247')}}</div>
     <div slot="body">
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
         <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :plcaeholder="$t('compute.text_627')" />
@@ -13,6 +14,11 @@
             <a-radio-button value="false">{{$t('compute.text_569')}}</a-radio-button>
           </a-radio-group>
         </a-form-item> -->
+        <a-form-item label="架构">
+          <os-arch
+            v-decorator="decorators.os_arch"
+            :form="form" />
+        </a-form-item>
         <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout">
           <a-radio-group @change="osTypeChangeHandle" v-decorator="decorators.osType">
             <a-radio-button value="Linux">
@@ -62,9 +68,14 @@
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import OsArch from '@/sections/OsArch'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 
 export default {
   name: 'ImageEditAttributesDialog',
+  components: {
+    OsArch,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -117,6 +128,12 @@ export default {
         ],
         netDriver: [
           'netDriver',
+        ],
+        os_arch: [
+          'os_arch',
+          {
+            initialValue: HOST_CPU_ARCHS.x86.key,
+          },
         ],
       },
       formItemLayout: {
@@ -258,15 +275,17 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver } = values
+        const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver, os_arch } = values
         const params = {
           name,
           // protected: values.protected,
+          os_arch,
           properties: {
             os_type: osType,
             os_distribution: this.isDisOther ? osOtherDistribution : osDistribution,
             disk_driver: diskDriver,
             net_driver: netDriver,
+            os_arch,
           },
         }
         if (!this.isHostImage) {

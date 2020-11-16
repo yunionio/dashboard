@@ -43,8 +43,7 @@
         <os-arch
           v-decorator="decorators.os_arch"
           :form="form"
-          :options="archOptions"
-          :isArm="isArm" />
+          :options="archOptions" />
       </a-form-item>
       <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')" :extra="$t('compute.text_1153')">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
