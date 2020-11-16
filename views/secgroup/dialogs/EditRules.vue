@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{params.title === 'edit' ? $t('compute.text_982') : params.title === 'create' ? $t('compute.text_18') : $t('compute.text_983')}}规则</div>
+    <div slot="header">{{params.title === 'edit' ? $t('compute.text_982') : params.title === 'create' ? $t('compute.text_18') : $t('compute.text_983')}}{{$t('compute.rule')}}</div>
     <div slot="body">
       <a-form
         :form="form.fc">

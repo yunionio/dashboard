@@ -64,7 +64,7 @@ export default {
           slots: {
             default: ({ row }) => {
               const len = (row.snapshots && row.snapshots.length) || 0
-              return <a onClick={ () => this.$emit('tab-change', 'sub-snapshot-detail') }>{len}个</a>
+              return <a onClick={ () => this.$emit('tab-change', 'sub-snapshot-detail') }>{len}{this.$t('common.text00003')}</a>
             },
           },
         },
