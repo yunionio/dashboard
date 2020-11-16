@@ -90,11 +90,11 @@ export default {
         if (approved === undefined) return '-'
         if (approved) {
           return [
-            <span class="pass">已通过</span>,
+            <span class="pass">{this.$t('common.pass')}</span>,
           ]
         }
         return [
-          <span class="error-approved">已驳回</span>,
+          <span class="error-approved">{this.$t('common.reject')}</span>,
         ]
       } else {
         const txt = statusObj[`${row.task.local_variables.approved}`]
