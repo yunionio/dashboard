@@ -1316,5 +1316,7 @@
   "compute.text_1346": "Image ID",
   "compute.text_1347": "The hard disk snapshot that is being rolled back should not be deleted",
   "compute.text_1348": "The local hard disk does not support separate creation for the time being. You can add hard disks in the virtual machine list by adjusting the configuration of the specified virtual machine",
-  "compute.public_ip_tooltip": "Virtual machines that have been assigned a public IP do not support binding/unbinding an elastic public IP"
+  "compute.public_ip_tooltip": "Virtual machines that have been assigned a public IP do not support binding/unbinding an elastic public IP",
+  "compute.rule": "rule",
+  "compute.norule": "No Rules"
 }

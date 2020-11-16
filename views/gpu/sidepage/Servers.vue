@@ -129,9 +129,9 @@ export default {
             default: ({ row }) => {
               const ret = []
               if (row.billing_type === 'postpaid') {
-                ret.push(<div style={{ color: '#0A1F44' }}>按量付费</div>)
+                ret.push(<div style={{ color: '#0A1F44' }}>{this.$t('billingType.postpaid')}</div>)
               } else if (row.billing_type === 'prepaid') {
-                ret.push(<div style={{ color: '#0A1F44' }}>包年包月</div>)
+                ret.push(<div style={{ color: '#0A1F44' }}>{this.$t('billingType.postpaid')}</div>)
               }
               if (row.expired_at) {
                 const dateArr = this.$moment(row.expired_at).fromNow().split(' ')
