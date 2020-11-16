@@ -264,7 +264,7 @@ export default {
                   ret.tooltip = i18n.t('compute.text_613')
                   return ret
                 }
-                if (obj.is_public) {
+                if (obj.is_public === true || obj.is_public === 'true') {
                   ret.validate = false
                   ret.tooltip = i18n.t('compute.text_614')
                   return ret
