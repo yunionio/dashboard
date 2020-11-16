@@ -51,21 +51,21 @@ export default {
             if (row.process_definition_key === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
               if (row.variables.satisfied) {
                 return [
-                  <span style="color: #7ed321;">已通过</span>,
+                  <span style="color: #7ed321;">{this.$t('common.pass')}</span>,
                 ]
               }
               return [
-                <span style="color: #f6a100;">待处理</span>,
+                <span style="color: #f6a100;">{this.$t('common.pending')}</span>,
               ]
             }
             if (R.isNil(row.local_variables) || R.isEmpty(row.local_variables)) return '-'
             if (row.local_variables.approved) {
               return [
-                <span style="color: #7ed321;">已通过</span>,
+                <span style="color: #7ed321;">{this.$t('common.pass')}</span>,
               ]
             }
             return [
-              <span style="color: rgba(240, 61, 61, 1);">已驳回</span>,
+              <span style="color: rgba(240, 61, 61, 1);">{this.$t('common.reject')}</span>,
             ]
           },
         },
