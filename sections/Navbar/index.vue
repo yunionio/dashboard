@@ -304,9 +304,12 @@ export default {
         }
       }
       // 即将过期
-      if (this.computeStatus.expire > 0 && days < 30) {
-        return {
-          message: this.$t('common_219', [this.email]),
+      if (this.computeStatus.expire > 0) {
+        if ((this.computeLicense.license_type === 'test' && days < 7) ||
+          (this.computeLicense.license_type === 'commercial' && days < 30)) {
+          return {
+            message: this.$t('common_219', [this.email]),
+          }
         }
       }
       // 即将超出配额
