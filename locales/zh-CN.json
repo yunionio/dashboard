@@ -179,5 +179,6 @@
   "storage.text_179": "已使用：{0}/总量：{1}",
   "storage.text_180": "总量：{0}",
   "storage.text_181": "已分配：{0}",
-  "storage.text_182": "认证用户可读"
+  "storage.text_182": "认证用户可读",
+  "storage.validDirName": "不允许文件夹名称里包含连续的//"
 }

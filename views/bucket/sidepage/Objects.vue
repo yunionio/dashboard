@@ -31,7 +31,7 @@ const validDirName = (rule, value, callback) => {
   } else if (value.startsWith('/')) {
     callback(new Error(this.$t('storage.text_152')))
   } else if (value.includes('//')) {
-    callback(new Error('不允许文件夹名称里包含连续的//'))
+    callback(new Error(this.$t('storage.validDirName')))
   } else if (value === '..') {
     callback(new Error(this.$t('storage.text_153')))
   } else {
