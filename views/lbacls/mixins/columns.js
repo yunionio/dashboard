@@ -47,7 +47,7 @@ export default {
             }
             if (ret.length <= 0) {
               ret.push(
-                <div>暂无源地址 | 备注</div>,
+                <div>{this.$t('newwork.acl_entries')}</div>,
               )
             }
             return ret
