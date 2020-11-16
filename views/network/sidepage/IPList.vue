@@ -93,7 +93,7 @@ export default {
               if (IP_TYPES[row.owner_type] !== this.$t('network.text_651')) {
                 return [<span>-</span>]
               }
-              return [<a onClick = {() => this.freed(row)}>释放</a>]
+              return [<a onClick = {() => this.freed(row)}>{this.$t('network.text_666')}</a>]
             },
           },
         },
