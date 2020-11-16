@@ -42,6 +42,9 @@ export default {
         title: this.$t('table.title.scope_range'),
         minWidth: 120,
         formatter: ({ row }) => {
+          if (!this.$store.getters.l3PermissionEnable) {
+            return this.$t('shareScope.system')
+          }
           let ret = this.$t('cloudenv.text_504')
           if (row.project_domain) {
             ret = this.$t('cloudenv.text_505', [row.project_domain])
