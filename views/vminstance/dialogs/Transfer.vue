@@ -94,6 +94,7 @@ export default {
         enabled: 1,
         host_status: 'online',
         server_id_for_network: this.firstData.id,
+        os_arch: this.firstData.os_arch,
       }
       if (this.isAdminMode && this.isSingle) {
         ret.project_domain = this.params.data[0].domain_id

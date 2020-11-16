@@ -19,6 +19,7 @@ import {
   getBillingTypeTableColumn,
   getCopyWithContentTableColumn,
   getTagTableColumn,
+  getOsArch,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -62,6 +63,7 @@ export default {
         {
           title: this.$t('compute.text_368'),
           items: [
+            getOsArch({ field: 'content.os_arch' }),
             {
               field: 'os_type',
               title: this.$t('compute.text_267'),

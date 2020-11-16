@@ -1,7 +1,10 @@
 <template>
   <a-form-item>
     <a-radio-group v-decorator="decorator">
-      <a-radio-button value="BIOS" :disabled="uefi">BIOS</a-radio-button>
+      <a-tooltip title="ARM架构不支持该引导方式" v-if="isArm">
+        <a-radio-button value="BIOS" :disabled="isArm">BIOS</a-radio-button>
+      </a-tooltip>
+      <a-radio-button v-else value="BIOS" :disabled="uefi">BIOS</a-radio-button>
       <a-radio-button value="UEFI">UEFI</a-radio-button>
     </a-radio-group>
   </a-form-item>
@@ -16,6 +19,9 @@ export default {
       required: true,
     },
     uefi: {
+      type: Boolean,
+    },
+    isArm: {
       type: Boolean,
     },
   },

@@ -35,6 +35,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import { HOST_CPU_ARCHS1 } from '@/constants/compute'
 
 export default {
   name: 'VmInstanceList',
@@ -114,9 +115,14 @@ export default {
             },
           },
           vpc: getVpcFilter(),
+          os_arch: {
+            label: this.$t('table.title.os_arch'),
+            dropdown: true,
+            items: Object.values(HOST_CPU_ARCHS1),
+          },
         },
         responseData: this.responseData,
-        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs'],
+        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch'],
       }),
       exportDataOptions: {
         items: [
@@ -140,6 +146,7 @@ export default {
           { label: this.$t('table.title.bill_type'), key: 'billing_type' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
           { label: 'MAC', key: 'macs' },
+          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
         ],
       },
       groupActions: [

@@ -6,6 +6,7 @@ import {
   getCopyWithContentTableColumn,
   getNameDescriptionTableColumn,
   getBillingTypeTableColumn,
+  getOsArch,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
@@ -30,6 +31,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'servertemplate' }),
+      getOsArch({ field: 'content.os_arch' }),
       {
         field: 'instance_type',
         title: i18n.t('table.title.flavor'),

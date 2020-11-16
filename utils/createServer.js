@@ -1,5 +1,6 @@
 // 创建主机相应组件的参数
 import * as R from 'ramda'
+import _ from 'lodash'
 import {
   NETWORK_OPTIONS_MAP,
   SERVER_TYPE,
@@ -13,7 +14,7 @@ import {
   FORECAST_FILTERS_MAP,
   RESOURCE_TYPES_MAP,
 } from '@Compute/constants'
-import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, HOST_CPU_ARCHS } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import store from '@/store'
@@ -598,11 +599,19 @@ export const createVmDecorators = type => {
         },
       ],
     },
+    os_arch: [
+      'os_arch',
+      {
+        rules: [
+          { required: true, message: '请选择架构' },
+        ],
+      },
+    ],
   }
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch'],
   public: ['domain', 'project', 'name', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate'],
 }
@@ -1000,6 +1009,7 @@ export class GenCreateData {
       vcpu_count: this.getCpuCount(),
       vmem_size: this.getMemSize(),
       project_id: (this.fd.project && this.fd.project.key) || store.getters.userInfo.projectId,
+      os_arch: _.get(HOST_CPU_ARCHS, `[${this.fd.os_arch}].arch`),
     }
     // 非预付费资源池不会添加sku
     if (!this.isPrepaid) {
