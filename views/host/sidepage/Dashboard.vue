@@ -175,7 +175,7 @@ export default {
     },
     percentFormat (vm) {
       const per = (vm.percent || 0) / 100
-      const oversell = per > 100 ? <a-tag color="red">超售</a-tag> : null
+      const oversell = per > 100 ? <a-tag color="red">{this.$t('common_714')}</a-tag> : null
       return (<div>{oversell}<div class="mt-2 text-color">{ numerify(per, vm.numerifyFloat) }{ vm.unit }</div></div>)
     },
     turnToList (obj) {
