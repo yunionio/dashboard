@@ -125,7 +125,7 @@ const List = {
               style="width: 100%;"
               onClick={ this.add }
             >
-              <a-icon type="plus" />添加
+              <a-icon type="plus" />{this.$t('common_114')}
             </a-button>
           </a-col>
         </a-row>
