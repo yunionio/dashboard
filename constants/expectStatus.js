@@ -358,4 +358,7 @@ export default {
     success: [],
     danger: ['alerted'],
   },
+  samluser: {
+    success: ['available'],
+  },
 }
