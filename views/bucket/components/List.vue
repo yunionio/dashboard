@@ -202,6 +202,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     title: this.$t('storage.text_36'),
+                    name: this.$t('storage.text_18'),
                     onManager: this.onManager,
                     refresh: this.refresh,
                   })
