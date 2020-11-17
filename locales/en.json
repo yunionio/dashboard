@@ -4176,5 +4176,6 @@
   "common.pass": "Pass",
   "common.reject": "Reject",
   "common.pending": "Pending",
-  "common_729": "No architecting platform available please check whether the @:brand host is available"
+  "common_729": "No architecting platform available please check whether the @:brand host is available",
+  "common.all_process": "All work orders"
 }
