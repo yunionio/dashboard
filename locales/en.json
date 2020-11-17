@@ -1328,8 +1328,8 @@
   "compute.text_1358": "VMware does not currently support creating hard disk snapshots",
   "compute.text_1359": "Line type",
   "compute.text_1360": "Network billing method",
-  "compute.text_1361": "Virtual machines that have been assigned a public IP do not support binding/unbinding an elastic public IP",
   "compute.public_ip_tooltip": "Virtual machines that have been assigned a public IP do not support binding/unbinding an elastic public IP",
   "compute.rule": "rule",
-  "compute.norule": "No Rules"
+  "compute.norule": "No Rules",
+  "compute.select_storage_no_schetag": "The specified schedule label is no longer supported after the specified block is stored"
 }
