@@ -12,6 +12,7 @@ import {
   getBillingTableColumn,
   getTimeTableColumn,
   getAccountTableColumn,
+  getOsArch,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
@@ -123,6 +124,7 @@ export default {
         field: 'macs',
         title: 'MAC',
       }),
+      getOsArch(),
       {
         field: 'instance_type',
         title: i18n.t('table.title.flavor'),

@@ -13,7 +13,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -82,8 +82,9 @@ export default {
               }
             }),
           },
+          os_arch: getOsArchFilter(),
         },
-        hiddenColumns: ['os_type'],
+        hiddenColumns: ['os_type', 'os_arch'],
       }),
       exportDataOptions: {
         items: [
@@ -91,6 +92,7 @@ export default {
           { label: this.$t('table.title.name'), key: 'name' },
           { label: this.$t('res.project'), key: 'tenant' },
           { label: this.$t('table.title.create_time'), key: 'created_at' },
+          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
         ],
       },
       groupActions: [

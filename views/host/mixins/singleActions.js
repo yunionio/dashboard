@@ -4,6 +4,7 @@ import qs from 'qs'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 
 export default {
   destroyed () {
@@ -229,6 +230,11 @@ export default {
                     return {
                       validate: false,
                       tooltip: '',
+                    }
+                  } else if (obj.cpu_architecture === HOST_CPU_ARCHS.arm.capabilityKey) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('compute.text_1364'),
                     }
                   }
                   return {

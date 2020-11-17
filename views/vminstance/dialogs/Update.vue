@@ -24,12 +24,7 @@
             </a-radio-group>
           </a-form-item>
           <a-form-item :label="$t('compute.text_1155')" v-bind="formItemLayout">
-            <a-radio-group v-decorator="decorators.bios">
-              <a-radio-button
-                v-for="item of biosOptions"
-                :key="item.key"
-                :value="item.key">{{ item.label }}</a-radio-button>
-            </a-radio-group>
+            <bios :decorator="decorators.bios" :isArm="isArm" />
           </a-form-item>
         </template>
       </a-form>
@@ -44,9 +39,13 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import Bios from '@Compute/sections/BIOS'
 
 export default {
   name: 'VmUpdateDialog',
+  components: {
+    Bios,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -104,16 +103,6 @@ export default {
           key: false,
         },
       ],
-      biosOptions: [
-        {
-          label: 'BIOS',
-          key: 'BIOS',
-        },
-        {
-          label: 'UEFI',
-          key: 'UEFI',
-        },
-      ],
       formItemLayout: {
         wrapperCol: {
           span: 20,
@@ -127,6 +116,9 @@ export default {
   computed: {
     isKvm () {
       return this.params.data.length >= 1 && this.params.data[0].hypervisor === 'kvm'
+    },
+    isArm () {
+      return this.params.data.length >= 1 && this.params.data[0].os_arch === 'arm'
     },
   },
   created () {
@@ -157,7 +149,7 @@ export default {
         }
         if (this.isKvm) {
           updateObj.boot_order = data.boot_order
-          updateObj.bios = data.bios || this.biosOptions[0].key
+          updateObj.bios = data.bios || (this.isArm ? 'UEFI' : 'BIOS')
         }
         this.form.fc.setFieldsValue(updateObj)
       })

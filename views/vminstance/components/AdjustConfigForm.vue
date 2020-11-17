@@ -17,10 +17,10 @@
         v-bind="formItemLayout"
         :form="form.fc">
         <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-          <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" />
+          <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" :disabled="runningArm" :extra="cpuExtra" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_369')" class="mb-0">
-          <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" />
+          <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm" :extra="cpuExtra" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_109')">
           <sku
@@ -344,6 +344,12 @@ export default {
     isSomeRunning () {
       return this.params.data.some(val => val.status === 'running')
     },
+    isSomeArm () {
+      return this.selectedItem.os_arch === 'arm'
+    },
+    runningArm () {
+      return this.isSomeArm && this.isSomeRunning
+    },
     hotplug () { // 做热扩容校验，true 表示置灰 CPU 和 内存，不支持热扩容
       if (this.params.data.every(val => val.statue === 'ready')) {
         return false
@@ -554,6 +560,18 @@ export default {
     },
     confirmText () {
       return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_907')
+    },
+    cpuExtra () {
+      if (this.runningArm) {
+        return this.$t('compute.text_1366')
+      }
+      return null
+    },
+    memExtra () {
+      if (this.runningArm) {
+        return this.$t('compute.text_1367')
+      }
+      return null
     },
   },
   watch: {

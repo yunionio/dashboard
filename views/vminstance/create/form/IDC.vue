@@ -39,6 +39,12 @@
       <a-form-item :label="$t('compute.text_176')" :extra="$t('compute.text_1151')">
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
+      <a-form-item :label="$t('compute.text_1365')" v-if="isKvm && form.fi.capability.host_cpu_archs">
+        <os-arch
+          v-decorator="decorators.os_arch"
+          :form="form"
+          :options="archOptions" />
+      </a-form-item>
       <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')" :extra="$t('compute.text_1153')">
         <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
       </a-form-item>
@@ -62,7 +68,7 @@
           :form="form"
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
-          :image-params="scopeParams"
+          :image-params="imageParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
@@ -159,7 +165,7 @@
               :cloudproviderParamsExtra="cloudproviderParamsExtra" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
-            <bios :decorator="decorators.bios" :uefi="uefi" />
+            <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
             <backup
@@ -188,21 +194,22 @@
   </div>
 </template>
 <script>
-/* eslint-disable */
 import _ from 'lodash'
 import * as R from 'ramda'
 import mixin from './mixin'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { HYPERVISORS_MAP } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
-import { IMAGES_TYPE_MAP, STORAGE_TYPES } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import EipConfig from '@Compute/sections/EipConfig'
+import OsArch from '@/sections/OsArch'
 
 export default {
   name: 'VM_IDCCreate',
   components: {
     SecgroupConfig,
     EipConfig,
+    OsArch,
   },
   mixins: [mixin],
   data () {
@@ -216,6 +223,9 @@ export default {
     },
     isIso () {
       return this.form.fd.imageType === IMAGES_TYPE_MAP.iso.key
+    },
+    isArm () {
+      return this.form.fd.os_arch === HOST_CPU_ARCHS.arm.key
     },
     hypervisors () {
       const { hypervisors = [] } = this.form.fi.capability
@@ -247,9 +257,11 @@ export default {
     cacheImageParams () {
       const params = {
         cloudregion_id: _.get(this.form.fd, 'cloudregion.key'),
+        os_arch: HOST_CPU_ARCHS.x86.key,
       }
       if (!params.cloudregion_id) return {}
       if (this.form.fd.imageType === 'vmware') params.image_type = 'system'
+      if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       return params
     },
     showSku () {
@@ -278,6 +290,7 @@ export default {
           usable: true,
           zone,
           hypervisor: this.form.fd.hypervisor,
+          os_arch: HOST_CPU_ARCHS.x86.key,
           ...this.scopeParams,
         }
         if (params.hypervisor === HYPERVISORS_MAP.esxi.key) {
@@ -286,6 +299,7 @@ export default {
           }
           params.cloudprovider = this.form.fd.prefer_manager
         }
+        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
         return params
       }
       return {}
@@ -389,7 +403,26 @@ export default {
     },
     systemStorageShow () { // 系统盘是否开启了指定存储
       return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fi.showStorage
-    }
+    },
+    imageParams () {
+      const params = {
+        ...this.scopeParams,
+        os_arch: HOST_CPU_ARCHS.x86.key,
+      }
+      if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+      return params
+    },
+    archOptions () {
+      let opts = []
+      if (this.form.fi.capability.host_cpu_archs && this.form.fi.capability.host_cpu_archs.length) {
+        opts = this.form.fi.capability.host_cpu_archs.map(item => {
+          if (item === HOST_CPU_ARCHS.arm.capabilityKey) return HOST_CPU_ARCHS.arm.key
+          if (item === HOST_CPU_ARCHS.x86.capabilityKey) return HOST_CPU_ARCHS.x86.key
+          return item
+        })
+      }
+      return opts
+    },
   },
   watch: {
     'form.fi.imageMsg': {
@@ -461,12 +494,11 @@ export default {
         })
       },
     },
-    uefi (val, oldVal) {
-      if (val) {
-        this.form.fc.setFieldsValue({ [this.decorators.bios[0]]: 'UEFI' })
-      } else {
-        this.form.fc.setFieldsValue({ [this.decorators.bios[0]]: 'BIOS' })
-      }
+    uefi (val) {
+      this.setBios(val)
+    },
+    isArm (val, oldV) {
+      this.setBios(val)
     },
   },
   methods: {
@@ -550,6 +582,14 @@ export default {
           const vcpuInit = vcpuDecorator[1].initialValue
           this.cpuChange(vcpuInit)
         })
+    },
+    setBios (val) {
+      if (val) {
+        this.form.fc.getFieldDecorator(this.decorators.bios[0], { preserve: true })
+        this.form.fc.setFieldsValue({ [this.decorators.bios[0]]: 'UEFI' })
+      } else {
+        this.form.fc.setFieldsValue({ [this.decorators.bios[0]]: 'BIOS' })
+      }
     },
   },
 }

@@ -20,6 +20,7 @@ import {
   getBrandTableColumn,
   getSwitchTableColumn,
   getBillingTypeTableColumn,
+  getOsArch,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -42,6 +43,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getOsArch(),
         getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         {

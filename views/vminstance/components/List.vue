@@ -29,6 +29,7 @@ import {
   getAccountFilter,
   getHostFilter,
   getVpcFilter,
+  getOsArchFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -114,9 +115,10 @@ export default {
             },
           },
           vpc: getVpcFilter(),
+          os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs'],
+        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch'],
       }),
       exportDataOptions: {
         items: [
@@ -140,6 +142,7 @@ export default {
           { label: this.$t('table.title.bill_type'), key: 'billing_type' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
           { label: 'MAC', key: 'macs' },
+          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
         ],
       },
       groupActions: [

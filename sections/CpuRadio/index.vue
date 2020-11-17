@@ -1,5 +1,5 @@
 <template>
-  <a-form-item>
+  <a-form-item :extra="extra">
     <a-radio-group v-decorator="decorator" @change="change" :disabled="disabled">
       <a-radio-button v-for="item in options" :value="item" :key="item" v-show="item < max || !showMore" :disabled="disableOptionHandle(item)">{{$t('compute.text_120', [ item ])}}</a-radio-button>
       <a-radio-button v-if="showMore" @click="showMore = !showMore">...</a-radio-button>
@@ -30,6 +30,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    extra: {
+      type: String,
+      default: '',
     },
   },
   data () {

@@ -25,6 +25,7 @@ import {
   getBrandFilter,
   getDomainFilter,
   getAccountFilter,
+  getOsArchFilter,
 } from '@/utils/common/tableFilter'
 
 export default {
@@ -71,9 +72,10 @@ export default {
           region: {
             label: this.$t('res.region'),
           },
+          os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['storage_type', 'created_at'],
+        hiddenColumns: ['storage_type', 'created_at', 'os_arch'],
       }),
       exportDataOptions: {
         items: [
@@ -91,6 +93,7 @@ export default {
           { label: this.$t('res.zone'), key: 'zone' },
           { label: this.$t('table.title.storage_type'), key: 'storage_type' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
         ],
       },
       groupActions: [

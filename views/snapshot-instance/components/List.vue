@@ -23,6 +23,7 @@ import {
   getTenantFilter,
   getStatusFilter,
   getDomainFilter,
+  getOsArchFilter,
 } from '@/utils/common/tableFilter'
 
 export default {
@@ -50,6 +51,7 @@ export default {
           region: {
             label: this.$t('res.region'),
           },
+          os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
@@ -64,6 +66,7 @@ export default {
           { label: this.$t('res.project'), key: 'tenant' },
           { label: this.$t('res.server'), key: 'guest' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
         ],
       },
       groupActions: [
