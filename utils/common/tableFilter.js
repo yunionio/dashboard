@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import store from '@/store'
 import i18n from '@/locales'
 import { HYPERVISORS_MAP } from '@/constants'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 
 export function getBrandItems (key = 'brands', outBrands = []) {
   let brands = store.getters.capability[key] || []
@@ -242,5 +243,15 @@ export function getVpcFilter () {
       key: 'vpc',
     },
     hidden: () => store.getters.isProjectMode,
+  }
+}
+
+export const getOsArchFilter = (isCapabilityKey = false) => {
+  let items = Object.values(HOST_CPU_ARCHS)
+  if (isCapabilityKey) items = items.map(obj => ({ key: obj.capabilityKey, label: obj.label }))
+  return {
+    label: i18n.t('table.title.os_arch'),
+    dropdown: true,
+    items,
   }
 }

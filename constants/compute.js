@@ -425,3 +425,16 @@ export const DISK_MOUNT_POINT_OPTIONS = [
   { key: 'xfs', label: 'xfs' },
   { key: 'swap', label: 'swap' },
 ]
+
+export const HOST_CPU_ARCHS = {
+  x86: {
+    key: 'x86',
+    label: 'x86',
+    capabilityKey: 'x86_64',
+  },
+  arm: {
+    key: 'arm',
+    label: 'ARM',
+    capabilityKey: 'aarch64',
+  },
+}

@@ -2237,7 +2237,8 @@
       "mfa_validate": "MFA验证",
       "introduction": "简介",
       "exec_result": "执行结果",
-      "scope_range": "应用范围"
+      "scope_range": "应用范围",
+      "os_arch": "CPU架构"
     },
     "action": {
       "save": "保存",
@@ -4175,5 +4176,6 @@
   "common.pass": "已通过",
   "common.reject": "已驳回",
   "common.pending": "待处理",
+  "common_729": "暂无架构平台可选择，请检查@:brand的宿主机是否可用",
   "common.all_process": "所有工单"
 }
