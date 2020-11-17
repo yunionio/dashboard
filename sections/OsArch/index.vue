@@ -5,7 +5,7 @@
         {{ item.label }}
       </a-radio-button>
     </a-radio-group>
-    <div class="warning-color" v-else>暂无架构平台可选择，请检查{{$t('brand')}}的宿主机是否可用</div>
+    <div class="warning-color" v-else>{{$t('common_729')}}</div>
   </div>
 </template>
 

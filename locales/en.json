@@ -4174,5 +4174,6 @@
   "common.res_lock_tip": "The resource is locked and cannot be operated. Please contact the system administrator for processing",
   "common.pass": "Pass",
   "common.reject": "Reject",
-  "common.pending": "Pending"
+  "common.pending": "Pending",
+  "common_729": "No architecting platform available please check whether the @:brand host is available"
 }
