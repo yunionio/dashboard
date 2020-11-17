@@ -545,6 +545,16 @@
     },
     "tooltip": {
       "disable_set_discount": "非公有云账号不支持设置优惠率"
+    },
+    "create_form": {
+      "saml_user_label": "开启免密登录",
+      "saml_user_extra": "开启后，会自动同步本系统SAML信息至云上，本系统即可成为云上登录身份提供商，具有SSO单点登录能力，详见{link}",
+      "saml_user_link": "身份供应商"
+    },
+    "sidepage": {
+      "tab": {
+        "samluser": "免密登录用户"
+      }
     }
   },
   "cloudenv.text_499": "策略",
@@ -619,5 +629,9 @@
   "cloudenv.text_568": "设置为公共镜像",
   "cloudenv.text_569": "设置为自定义镜像",
   "cloudenv.text_570": "新建缓存列表",
-  "cloudenv.text_571": "优惠率不会影响实际账单数据，只在新建资源时使用该平台的最低优惠率进行费用估算，如填写10%，即优惠率后费用=原价*(1-10%)"
+  "cloudenv.text_571": "优惠率不会影响实际账单数据，只在新建资源时使用该平台的最低优惠率进行费用估算，如填写10%，即优惠率后费用=原价*(1-10%)",
+  "samluser": {
+    "create_title": "新建云上SAML用户",
+    "create_cloudgroup_extra": "对应云上用户组，是权限的集合"
+  }
 }

@@ -32,6 +32,7 @@ import { findPlatform } from '@/utils/common/hypervisor'
 import CloudgroupList from '@Cloudenv/views/cloudgroup/components/List'
 import ClouduserList from '@Cloudenv/views/clouduser/components/List'
 import ExternalprojectList from '@Cloudenv/views/externalproject/components/List'
+import SamluserList from '@Cloudenv/views/samluser/components/List'
 
 export default {
   name: 'CloudaccountSidePage',
@@ -44,6 +45,7 @@ export default {
     ClouduserList,
     CloudgroupList,
     ExternalprojectList,
+    SamluserList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
@@ -66,6 +68,9 @@ export default {
       if (['Huawei', 'Aliyun', 'Azure', 'Google', 'Aws', 'Qcloud'].includes(data.provider)) {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
+      }
+      if (['Huawei', 'Aws', 'Qcloud'].includes(data.provider)) {
+        detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('cloudaccount.sidepage.tab.samluser'), key: 'samluser-list' })
       }
       return detailTabs
     },
@@ -95,6 +100,10 @@ export default {
             cloudaccount_id: this.data.id,
           }
         }
+      } else if (this.params.windowData.currentTab === 'samluser-list') {
+        return {
+          cloudaccount: this.data.id,
+        }
       }
       return null
     },
@@ -112,6 +121,8 @@ export default {
           return 'ClouduserListForCloudaccountSidePage'
         case 'cloudgroup-list':
           return 'CloudgroupListForCloudaccountSidePage'
+        case 'samluser-list':
+          return 'SamluserListForCloudaccountSidePage'
         default:
           return ''
       }
