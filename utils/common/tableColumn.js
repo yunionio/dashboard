@@ -8,6 +8,7 @@ import store from '@/store'
 import i18n from '@/locales'
 import { hasPermission } from '@/utils/auth'
 import { typeClouds } from '@/utils/common/hypervisor'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 
 export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
@@ -653,6 +654,25 @@ export const getZone1TableColumn = ({
           <div class='text-truncate'>{ node }</div>,
         ]
       },
+    },
+  }
+}
+
+export const getOsArch = ({
+  field = 'os_arch',
+  title = i18n.t('table.title.os_arch'),
+} = {}) => {
+  return {
+    field,
+    title,
+    formatter: ({ row }) => {
+      let arch = _.get(row, field)
+      if (arch === HOST_CPU_ARCHS.arm.capabilityKey) arch = HOST_CPU_ARCHS.arm.key
+      if (arch === HOST_CPU_ARCHS.x86.capabilityKey) arch = HOST_CPU_ARCHS.x86.key
+      if (arch) {
+        return _.get(HOST_CPU_ARCHS, `${arch}.label`) || arch
+      }
+      return HOST_CPU_ARCHS.x86.label
     },
   }
 }
