@@ -1332,5 +1332,6 @@
   "compute.public_ip_tooltip": "已分配公有IP的虚拟机不支持绑定/解绑弹性公网IP",
   "compute.rule": "规则",
   "compute.norule": "暂无规则",
+  "compute.select_storage_no_schetag": "指定块存储后不再支持指定调度标签",
   "compute.disable_delete_snapshot_tooltip": "VMware平台虚拟机删除主机时必须删除快照"
 }

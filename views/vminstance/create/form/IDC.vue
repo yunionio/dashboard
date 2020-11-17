@@ -103,7 +103,7 @@
           :isWindows="isWindows"
           :systemStorageShow="systemStorageShow"
           :enableMointpoint="true" />
-        <div slot="extra" class="warning-color" v-if="systemStorageShow">指定块存储后 不再支持 指定调度标签</div>
+        <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <a-form-item :label="$t('compute.text_308')" v-if="!isIso">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
