@@ -21,9 +21,9 @@ export default {
             validate = false
             tooltip = i18n.t('db.text_224')
           }
-          if (this.data.provider === 'Qcloud') {
+          if (this.data.provider === 'Qcloud' || this.data.provider === 'Aliyun') {
             validate = false
-            tooltip = this.$t('db.text_343')
+            tooltip = this.data.provider === 'Qcloud' ? this.$t('db.text_343') : this.$t('db.text_343')
           }
           return {
             validate: validate,
