@@ -4,6 +4,12 @@
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
+      <a-form-item :label="$t('cloudenv.environment')" v-if="isAliyun">
+        <base-select
+          :options="environments"
+          v-decorator="decorators.environment"
+          :selectProps="{ placeholder: $t('cloudenv.environment_check') }" />
+      </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
         <div slot="extra">
@@ -26,7 +32,7 @@ import DomainProject from '../../../components/DomainProject'
 import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
-import { CLOUDACCOUNT_DOCS, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import { CLOUDACCOUNT_DOCS, keySecretFields, ACCESS_URL } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
 export default {
@@ -39,9 +45,11 @@ export default {
   mixins: [createMixin],
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
+    const environments = Object.entries(ACCESS_URL[this.provider.toLowerCase()]).map(keyValueArr => ({ key: keyValueArr[0], label: keyValueArr[1] }))
     return {
       docs: CLOUDACCOUNT_DOCS,
       decorators: this.getDecorators(keySecretField),
+      environments,
     }
   },
   methods: {
@@ -55,6 +63,14 @@ export default {
             rules: [
               { required: true, message: this.$t('cloudenv.text_190') },
               { validator: this.$validate('resourceName') },
+            ],
+          },
+        ],
+        environment: [
+          'environment',
+          {
+            rules: [
+              { required: true, message: this.$t('cloudenv.environment_check'), trigger: 'change' },
             ],
           },
         ],

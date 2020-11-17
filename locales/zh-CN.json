@@ -602,5 +602,9 @@
   "cloudenv.text_567": "新建虚拟机",
   "cloudenv.text_568": "设置为公共镜像",
   "cloudenv.text_569": "设置为自定义镜像",
-  "cloudenv.text_570": "新建缓存列表"
+  "cloudenv.text_570": "新建缓存列表",
+  "cloudenv.environment": "账号类型",
+  "cloudenv.environment_check": "请选择账号类型",
+  "cloudenv.international_cloud": "公共云",
+  "cloudenv.finance_cloud": "金融云"
 }

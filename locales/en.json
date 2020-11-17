@@ -602,5 +602,9 @@
   "cloudenv.text_567": "New Virtual Machine",
   "cloudenv.text_568": "Set as a public mirror",
   "cloudenv.text_569": "Set as a custom image",
-  "cloudenv.text_570": "New cache list"
+  "cloudenv.text_570": "New cache list",
+  "cloudenv.environment": "Account Type",
+  "cloudenv.environment_check": "Please select the account type",
+  "cloudenv.international_cloud": "Public Cloud",
+  "cloudenv.finance_cloud": "Financial Cloud"
 }
