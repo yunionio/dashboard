@@ -234,7 +234,7 @@ export default {
                   } else if (obj.cpu_architecture === HOST_CPU_ARCHS.arm.capabilityKey) {
                     return {
                       validate: false,
-                      tooltip: 'ARM架构宿主机暂不支持该操作',
+                      tooltip: i18n.t('compute.text_1364'),
                     }
                   }
                   return {

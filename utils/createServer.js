@@ -603,7 +603,7 @@ export const createVmDecorators = type => {
       'os_arch',
       {
         rules: [
-          { required: true, message: '请选择架构' },
+          { required: true, message: i18n.t('compute.text_1363') },
         ],
       },
     ],

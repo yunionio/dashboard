@@ -1,7 +1,7 @@
 <template>
   <a-form-item>
     <a-radio-group v-decorator="decorator">
-      <a-tooltip title="ARM架构不支持该引导方式" v-if="isArm">
+      <a-tooltip :title="$t('compute.text_1362')" v-if="isArm">
         <a-radio-button value="BIOS" :disabled="isArm">BIOS</a-radio-button>
       </a-tooltip>
       <a-radio-button v-else value="BIOS" :disabled="uefi">BIOS</a-radio-button>

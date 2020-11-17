@@ -14,7 +14,7 @@
             <a-radio-button value="false">{{$t('compute.text_569')}}</a-radio-button>
           </a-radio-group>
         </a-form-item> -->
-        <a-form-item label="架构">
+        <a-form-item :label="$t('compute.text_1365')">
           <os-arch
             v-decorator="decorators.os_arch"
             :form="form" />

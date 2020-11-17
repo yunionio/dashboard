@@ -563,13 +563,13 @@ export default {
     },
     cpuExtra () {
       if (this.runningArm) {
-        return 'ARM架构虚拟机开机不支持调整CPU，请关机后重试'
+        return this.$t('compute.text_1366')
       }
       return null
     },
     memExtra () {
       if (this.runningArm) {
-        return 'ARM架构虚拟机开机不支持调整内存，请关机后重试'
+        return this.$t('compute.text_1367')
       }
       return null
     },

@@ -14,7 +14,7 @@
         <a-form-item :label="$t('compute.text_627')" v-bind="formItemLayout">
           <a-input :placeholder="$t('compute.text_416')" v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item label="架构">
+        <a-form-item :label="$t('compute.text_1365')">
           <os-arch
             v-decorator="decorators.os_arch"
             :form="form" />

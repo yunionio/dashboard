@@ -39,7 +39,7 @@
       <a-form-item :label="$t('compute.text_176')" :extra="$t('compute.text_1151')">
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
-      <a-form-item label="架构" v-if="isKvm && form.fi.capability.host_cpu_archs">
+      <a-form-item :label="$t('compute.text_1365')" v-if="isKvm && form.fi.capability.host_cpu_archs">
         <os-arch
           v-decorator="decorators.os_arch"
           :form="form"
