@@ -19,6 +19,16 @@
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
+      <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')">
+        <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.saml_auth" />
+        <div slot="extra">
+          <i18n path="cloudaccount.create_form.saml_user_extra">
+            <template #link>
+              <help-link href="/">{{$t('cloudaccount.create_form.saml_user_link')}}</help-link>
+            </template>
+          </i18n>
+        </div>
+      </a-form-item>
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
     </a-form>
   </div>
@@ -99,6 +109,13 @@ export default {
         ],
         auto_create_project: [
           'auto_create_project',
+          {
+            initialValue: false,
+            valuePropName: 'checked',
+          },
+        ],
+        saml_auth: [
+          'saml_auth',
           {
             initialValue: false,
             valuePropName: 'checked',
