@@ -19,6 +19,7 @@ import ApprovalStart from './approval-start/components/List'
 import ApprovedDone from './approved-done/components/List'
 import MePartake from './me-partake/components/List'
 import ThirdProcess from './third-process/components/List'
+import AllProcess from './all-process/components/List'
 
 export default {
   components: {
@@ -27,6 +28,7 @@ export default {
     ApprovedDone,
     MePartake,
     ThirdProcess,
+    AllProcess,
   },
   mixins: [mixin],
   data () {
