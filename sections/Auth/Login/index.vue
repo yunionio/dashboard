@@ -116,6 +116,11 @@ export default {
         path: '/auth/login/chooser',
         query,
       })
+    } else {
+      this.$router.replace({
+        path: '/auth/login',
+        query,
+      })
     }
   },
   methods: {
