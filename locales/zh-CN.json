@@ -839,6 +839,9 @@
     },
     "alertresource": {
       "alerted": "发生告警"
+    },
+    "samluser": {
+      "available": "可用"
     }
   },
   "skuCategoryOptions": {
@@ -2137,7 +2140,8 @@
     "strategyallocation": "策略分配",
     "strategydefinition": "策略定义",
     "scopedpolicybindings": "策略分配",
-    "scopedpolicies": "策略定义"
+    "scopedpolicies": "策略定义",
+    "samluser": "SMAL用户"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -2175,7 +2179,9 @@
     "scopedpolicybinding": "@:dictionary.scopedpolicybindings",
     "scopedpolicybindings": "@:dictionary.scopedpolicybindings",
     "scopedpolicy": "@:dictionary.scopedpolicies",
-    "scopedpolicies": "@:dictionary.scopedpolicies"
+    "scopedpolicies": "@:dictionary.scopedpolicies",
+    "samluser": "@:dictionary.samluser",
+    "samlusers": "@:dictionary.samluser"
   },
   "table": {
     "title": {
@@ -4177,5 +4183,14 @@
   "common.reject": "已驳回",
   "common.pending": "待处理",
   "common_729": "暂无架构平台可选择，请检查@:brand的宿主机是否可用",
-  "common.all_process": "所有工单"
+  "common.all_process": "所有工单",
+  "personal_user_tab": {
+    "cloud": "账号登录用户",
+    "saml": "免密登录用户"
+  },
+  "smal_login_message": {
+    "loading": "正在进行免密登录，请稍后",
+    "fail": "免密登录失败",
+    "success": "登录成功"
+  }
 }

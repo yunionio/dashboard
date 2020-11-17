@@ -839,6 +839,9 @@
     },
     "alertresource": {
       "alerted": "alerted"
+    },
+    "samluser": {
+      "available": "available"
     }
   },
   "skuCategoryOptions": {
@@ -2137,7 +2140,8 @@
     "strategyallocation": "strategyallocation",
     "strategydefinition": "strategydefinition",
     "scopedpolicybindings": "Scoped policy bindings",
-    "scopedpolicies": "Scoped policies"
+    "scopedpolicies": "Scoped policies",
+    "samluser": "SMAL user"
   },
   "res": {
     "role": "Role",
@@ -2175,7 +2179,9 @@
     "scopedpolicybinding": "Scoped policy binding",
     "scopedpolicybindings": "Scoped policy bindings",
     "scopedpolicy": "Scoped policy",
-    "scopedpolicies": "Scoped policies"
+    "scopedpolicies": "Scoped policies",
+    "samluser": "SMAL user",
+    "samlusers": "SMAL users"
   },
   "table": {
     "title": {
@@ -4177,5 +4183,14 @@
   "common.reject": "Reject",
   "common.pending": "Pending",
   "common_729": "No architecting platform available please check whether the @:brand host is available",
-  "common.all_process": "All work orders"
+  "common.all_process": "All work orders",
+  "personal_user_tab": {
+    "cloud": "Account login user",
+    "saml": "Password-free login user"
+  },
+  "smal_login_message": {
+    "loading": "Password-free login is in progress, please wait",
+    "fail": "Password-free login failed",
+    "success": "Login successful"
+  }
 }
