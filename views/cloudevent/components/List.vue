@@ -85,7 +85,7 @@ export default {
           width: 80,
           slots: {
             default: ({ row }) => {
-              const txt = row.success ? this.$t('cloudenv.text_324') : this.$t('cloudenv.text_325')
+              const txt = row.success ? this.$t('cloudenv.text_324', ['']) : this.$t('cloudenv.text_325', [''])
               const color = row.success ? '#67C23A' : '#F56C6C'
               return [<span style={{ color }}>{ txt }</span>]
             },
