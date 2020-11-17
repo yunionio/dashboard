@@ -11,7 +11,13 @@
         </a-form-item>
         <template v-if="isShowAutoDelete">
           <a-form-item :label="$t('compute.text_420')" v-bind="formItemLayout">
-            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoDelete" @change="autoDeleteChangeHandle" />
+            <a-tooltip :title="disableToolTip">
+              <a-switch :checkedChildren="$t('compute.text_115')"
+                :unCheckedChildren="$t('compute.text_116')"
+                :disabled="disableDelete"
+                v-decorator="decorators.autoDelete"
+                @change="autoDeleteChangeHandle" />
+            </a-tooltip>
           </a-form-item>
           <a-form-item v-if="!form.fd.autoDelete" v-bind="formItemLayoutWithoutLabel">
             {{ $t('compute.text_1212', [snapshot.list.length]) }}
@@ -41,8 +47,10 @@ export default {
   name: 'DeleteVmDialog',
   mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
   data () {
+    const isVmware = this.params.data[0].hypervisor === 'esxi'
     return {
       loading: false,
+      disableDelete: isVmware,
       snapshot: {
         list: [],
         columns: [
@@ -84,7 +92,7 @@ export default {
           'autoDelete',
           {
             valuePropName: 'checked',
-            initialValue: false,
+            initialValue: isVmware,
           },
         ],
         reason: [
@@ -125,6 +133,12 @@ export default {
     },
     confirmText () {
       return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('dialog.ok')
+    },
+    disableToolTip () {
+      if (this.disableDelete) {
+        return this.$t('compute.disable_delete_snapshot_tooltip')
+      }
+      return ''
     },
   },
   created () {
@@ -175,13 +189,14 @@ export default {
         await this.params.ok()
       } else {
         const ids = this.params.data.map(item => item.id)
+        const values = await this.form.fc.validateFields()
         let params = {}
         params = {
           ...params,
           ...this.params.requestParams,
         }
         if (this.isShowAutoDelete) {
-          params.delete_snapshots = this.form.fd.autoDelete
+          params.delete_snapshots = values.autoDelete
         }
         const response = await this.params.onManager('batchDelete', {
           id: ids,

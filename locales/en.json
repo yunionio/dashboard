@@ -1331,5 +1331,6 @@
   "compute.text_1361": "The default mount point of the storage pool: {0}",
   "compute.public_ip_tooltip": "Virtual machines that have been assigned a public IP do not support binding/unbinding an elastic public IP",
   "compute.rule": "rule",
-  "compute.norule": "No Rules"
+  "compute.norule": "No Rules",
+  "compute.disable_delete_snapshot_tooltip": "The snapshot must be deleted when the VMware platform virtual machine deletes the host"
 }
