@@ -26,16 +26,19 @@ export default {
           )
         },
       }),
-      getCopyWithContentTableColumn({
+      {
         field: 'initiator_name',
         title: i18n.t('common_371'),
         hideField: true,
         minWidth: 80,
         onManager: this.onManager,
-        slotCallback: row => {
-          return row.variables.initiator_name || '-'
+        slots: {
+          default: ({ row }, h) => {
+            const name = row.variables.initiator_name
+            return [<list-body-cell-wrap copy row={ row.variables } field='initiator_name' title={ name } />]
+          },
         },
-      }),
+      },
       getProcessDefinitionNameTableColumn(),
       getResourceNameTableColumn(),
       getResourceProjectTableColumn({
