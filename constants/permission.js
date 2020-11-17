@@ -710,6 +710,8 @@ export const PERMISSION = {
   // 权限组缓存
   cloudgroupcache_get: ['cloudid', 'cloudgroupcaches', 'get'],
   cloudgroupcache_delete: ['cloudid', 'cloudgroupcaches', 'delete'],
+  // 监控报警
+  unifiedmonitors_get: ['monitor', 'unifiedmonitors', 'get'],
   // 报警
   commonalerts_get: ['monitor', 'commonalerts', 'get'],
   commonalerts_create: ['monitor', 'commonalerts', 'create'],
