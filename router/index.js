@@ -19,6 +19,7 @@ export default {
       meta: {
         label: 'Metrics Explorer',
         t: 'dictionary.explorer',
+        permission: 'unifiedmonitors_get',
         hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
       },
       component: Layout,
