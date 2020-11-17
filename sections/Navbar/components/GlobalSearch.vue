@@ -1,5 +1,5 @@
 <template>
-  <search-box :options="options" :value="value" @input="search" :placeholder="$t('common_185')" @click.stop.prevent="handleCloseSidebar" />
+  <search-box :options="options" :value="value" @input="search" :placeholder="$t('common_185')" @click.stop.prevent="handleCloseSidebar" defaultSearchKey="name" />
 </template>
 
 <script>
