@@ -27,7 +27,7 @@
         destroyTooltipOnHide
         :getPopupContainer="triggerNode => triggerNode.parentNode">
         <template slot="content">
-          <ul class="list-unstyled view-list-wrap">
+          <ul class="list-unstyled view-list-wrap" style="max-height: 60vh; overflow-y: auto;">
             <!-- 管理后台 -->
             <template v-if="systemProject">
               <li class="item-link" @click="() => projectChange(systemProject.id, 'system')">
