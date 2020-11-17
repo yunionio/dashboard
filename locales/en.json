@@ -2237,7 +2237,8 @@
       "mfa_validate": "MFA",
       "introduction": "Introduction",
       "exec_result": "Result",
-      "scope_range": "Scope"
+      "scope_range": "Scope",
+      "os_arch": "CPU Architecture"
     },
     "action": {
       "save": "Save",
