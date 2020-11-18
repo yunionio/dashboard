@@ -102,5 +102,6 @@
   "helm.text_101": "Memory",
   "helm.text_102": "release count",
   "helm.text_103": "Create Helm Repo",
-  "helm.text_104": "Update Helm Repo"
+  "helm.text_104": "Update Helm Repo",
+  "helm.text_105": "Try Times"
 }

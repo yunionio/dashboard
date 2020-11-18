@@ -3,8 +3,8 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
-import { getStatusTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'VmReleaseVirtualmachineSidepage',
@@ -33,7 +33,45 @@ export default {
             },
           },
         },
-        getStatusTableColumn({ statusModule: 'vmReleaseVirtualmachine', sortable: false, minWidth: 50 }),
+        {
+          field: 'status',
+          title: this.$t('k8s.text_35'),
+          width: 100,
+          slots: {
+            default: ({ row }, h) => {
+              const warning = row.reason
+              let warnTooltip = null
+              if (warning && row.status === 'Invalid') {
+                warnTooltip = (
+                  <a-tooltip placement="top">
+                    <template slot="title">
+                      { warning }
+                    </template>
+                    <div class='text-truncate'>
+                      <a-icon type="bulb" theme="twoTone" twoToneColor="#f5222d" class="mr-2" />
+                      <span>{ this.$t('k8s.text_402') }</span>
+                    </div>
+                  </a-tooltip>
+                )
+              }
+              return [
+                <div class='text-truncate'>
+                  <status status={ row.status } statusModule='vmReleaseVirtualmachine'>
+                    { warnTooltip }
+                  </status>
+                </div>,
+              ]
+            },
+          },
+        },
+        {
+          field: 'tryTimes',
+          title: this.$t('helm.text_105'),
+          formatter: ({ row }) => {
+            if (R.is(Number, +row.tryTimes) && !Number.isNaN(+row.tryTimes)) return row.tryTimes
+            return '-'
+          },
+        },
         {
           field: 'ips',
           title: 'IP',
