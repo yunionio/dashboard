@@ -294,12 +294,14 @@ export default {
           const { hypervisors = [] } = data[0]
           const hyperItem = this.definition[index]
           const hyperObj = R.is(Object, hyperItem) ? hyperItem : { key: hyperItem }
+          const hypervisorOpts = hypervisors.filter(v => v !== 'baremetal').map(v => ({ value: v, label: (_.get(HYPERVISORS_MAP, `${v}.label`) || v) }))
           this.definition.splice(index, 1, {
             ...hyperObj,
             type: 'a-select',
-            options: hypervisors
-              .filter(v => v !== 'baremetal')
-              .map(v => ({ value: v, label: (_.get(HYPERVISORS_MAP, `${v}.label`) || v) })),
+            options: hypervisorOpts,
+          })
+          this.$refs.formRef.form.fc.setFieldsValue({
+            hypervisor: hypervisorOpts[0] ? hypervisorOpts[0].value : undefined,
           })
         }
       } catch (error) {
