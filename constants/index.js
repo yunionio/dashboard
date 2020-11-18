@@ -404,3 +404,5 @@ export const filterKeyMap = {
   elb_ip: i18n.t('common_722'),
   cloudaccount_name: i18n.t('dictionary.cloudaccount'),
 }
+
+export const MONITOR_MAX_POINTERS = 30
