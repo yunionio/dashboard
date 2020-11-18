@@ -603,6 +603,22 @@
   "cloudenv.text_568": "Set as a public mirror",
   "cloudenv.text_569": "Set as a custom image",
   "cloudenv.text_570": "New cache list",
+  "cloudaccount": {
+    "create_form": {
+      "saml_user_label": "Enable password-free login",
+      "saml_user_extra": "After it is turned on, the SAML information of this system will be automatically synchronized to the cloud, and this system can become an identity provider for cloud login, with SSO single sign-on capability, see {link}",
+      "saml_user_link": "Identity Provider"
+    },
+    "sidepage": {
+      "tab": {
+        "samluser": "Saml users"
+      }
+    }
+  },
+  "samluser": {
+    "create_title": "Create saml user",
+    "create_cloudgroup_extra": "Corresponding to the user group on the cloud, a collection of permissions"
+  },
   "cloudenv.environment": "Account Type",
   "cloudenv.environment_check": "Please select the account type",
   "cloudenv.international_cloud": "Public Cloud",
