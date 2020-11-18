@@ -8,7 +8,7 @@
         class="mb-4"
         :timeOpts="timeOpts"
         :time.sync="time"
-        :timeGroup.sync="timeGroup"
+        :showTimegroup="false"
         @refresh="fetchAllData">
         <template v-slot:radio-button-append>
           <custom-date :time.sync="time" :customTime.sync="customTime" />
@@ -30,7 +30,7 @@ import echarts from 'echarts'
 import MonitorForms from './forms'
 import MonitorLine from '@Monitor/sections/MonitorLine'
 import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
-import { timeOpts } from '@Monitor/constants'
+import { timeOpts, MONITOR_MAX_POINTERS } from '@Monitor/constants'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT } from '@/utils/utils'
 
@@ -45,7 +45,7 @@ export default {
   data () {
     return {
       time: '1h',
-      timeGroup: '1m',
+      timeGroup: '2m',
       customTime: null,
       timeOpts,
       metricList: [],
@@ -75,16 +75,25 @@ export default {
   },
   watch: {
     time () {
-      this.fetchAllData()
-    },
-    timeGroup () {
-      this.fetchAllData()
+      this.smartFetchAllData()
     },
     customTime () {
-      this.fetchAllData()
+      this.smartFetchAllData()
     },
   },
   methods: {
+    smartFetchAllData () { // 根据选择的时间范围智能的赋值时间间隔进行查询
+      let diffHour = 1
+      const noNumberReg = /\D+/g
+      if (this.time === 'custom') {
+        diffHour = this.customTime.from.replace(noNumberReg, '') - this.customTime.to.replace(noNumberReg, '')
+      } else {
+        diffHour = this.time.replace(noNumberReg, '')
+      }
+      const diff = diffHour * 60 // 变分钟
+      this.timeGroup = `${diff / MONITOR_MAX_POINTERS}m`
+      this.$nextTick(this.fetchAllData)
+    },
     remove (i) {
       this.metricList.splice(i, 1)
       this.chartInstanceList.splice(i, 1)
