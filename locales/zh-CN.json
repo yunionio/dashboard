@@ -102,5 +102,6 @@
   "helm.text_101": "内存",
   "helm.text_102": "发布数量",
   "helm.text_103": "创建Helm仓库",
-  "helm.text_104": "更新Helm仓库"
+  "helm.text_104": "更新Helm仓库",
+  "helm.text_105": "尝试次数"
 }
