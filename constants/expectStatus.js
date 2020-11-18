@@ -365,4 +365,8 @@ export default {
   samluser: {
     success: ['available'],
   },
+  externalproject: {
+    success: ['available'],
+    info: ['unavailable', 'unknown'],
+  },
 }

@@ -752,6 +752,20 @@ export const PERMISSION = {
   scopedpolicies_create: ['yunionconf', 'scopedpolicies', 'create'],
   scopedpolicies_update: ['yunionconf', 'scopedpolicies', 'update'],
   scopedpolicies_delete: ['yunionconf', 'scopedpolicies', 'delete'],
+  // 主机磁盘
+  guestdisks_list: ['compute', 'guestdisks', 'list'],
+  // 主机网卡
+  guestnetworks_list: ['compute', 'guestnetworks', 'list'],
+  // 主机安全组
+  guestsecgroups_list: ['compute', 'guestsecgroups', 'list'],
+  // 主机弹性伸缩组
+  scalinggroupguests_list: ['compute', 'scalinggroupguests', 'list'],
+  // 宿主机网络
+  baremetalnetworks_list: ['compute', 'baremetalnetworks', 'list'],
+  // 宿主机存储
+  hoststorages_list: ['compute', 'hoststorages', 'list'],
+  // 宿主机二层网络
+  hostwires_list: ['compute', 'hostwires', 'list'],
 }
 
 // 已声明权限的资源

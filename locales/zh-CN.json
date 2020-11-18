@@ -842,6 +842,13 @@
     },
     "samluser": {
       "available": "可用"
+    },
+    "externalproject": {
+      "available": "可用",
+      "unavailable": "不可用",
+      "creating": "创建中",
+      "deleting": "删除中",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
@@ -2036,7 +2043,7 @@
     "guestnetwork": "云服务器网络",
     "host": "宿主机",
     "hostip": "宿主机IP",
-    "hostwire": "二层网络",
+    "hostwire": "宿主机二层网络",
     "identity_provider": "认证源",
     "image": "系统镜像",
     "infos": "系统",
@@ -2142,7 +2149,10 @@
     "strategydefinition": "策略定义",
     "scopedpolicybindings": "策略分配",
     "scopedpolicies": "策略定义",
-    "samluser": "SMAL用户"
+    "samluser": "SMAL用户",
+    "guestsecgroup": "云服务器安全组",
+    "scalinggroupguest": "云服务器弹性伸缩组",
+    "hoststorage": "宿主机存储"
   },
   "res": {
     "role": "@:dictionary.role",

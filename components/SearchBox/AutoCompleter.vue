@@ -413,4 +413,10 @@ export default {
     }
   }
 }
+
+@media only screen and (max-height: 720px) {
+  .auto-completer-items {
+    max-height: 300px;
+  }
+}
 </style>
