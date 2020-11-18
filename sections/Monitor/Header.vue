@@ -5,12 +5,14 @@
       <a-radio-button v-for="item in timeOpts" v-show="!item.hidden" :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
       <slot name="radio-button-append" />
     </a-radio-group>
-    <div class="ant-form-item-label">
-      <label :title="$t('common_166')">{{$t('common_166')}}</label>
-    </div>
-    <a-select :value="timeGroup" @change="timeGroupChange">
-      <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
-    </a-select>
+    <template v-if="showTimegroup">
+      <div class="ant-form-item-label">
+        <label :title="$t('common_166')">{{$t('common_166')}}</label>
+      </div>
+      <a-select :value="timeGroup" @change="timeGroupChange">
+        <a-select-option v-for="item in timeGroupOpts" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
+      </a-select>
+    </template>
   </div>
 </template>
 
@@ -30,7 +32,6 @@ export default {
     },
     timeGroup: {
       type: String,
-      required: true,
     },
     loading: {
       type: Boolean,
@@ -96,6 +97,10 @@ export default {
           ],
         },
       }),
+    },
+    showTimegroup: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {
