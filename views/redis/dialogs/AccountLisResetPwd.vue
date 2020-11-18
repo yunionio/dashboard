@@ -2,7 +2,7 @@
     <base-dialog @cancel="cancelDialog">
         <div slot="header">{{$t('db.text_201')}}</div>
         <div slot="body">
-             <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="$t('db.text_201')" />
+             <dialog-selected-tips :name="params.name ? params.name : $t('dictionary.elasticcaches')" :count="params.data.length" :action="$t('db.text_201')" />
             <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
             <a-form slot="body" :form="form.fc" class="mt-3">
               <a-form-item v-bind="formItemLayout" :label="$t('db.text_285')">

@@ -30,6 +30,7 @@ export default {
         action: (obj) => {
           this.createDialog('RedisAccountLisResetPwdDialog', {
             data: [obj],
+            name: this.$t('dictionary.dbinstances'),
             list: this.list,
             columns: this.columns,
           })
