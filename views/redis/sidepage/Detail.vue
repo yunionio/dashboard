@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
 import {
   getUserTagColumn,
@@ -43,6 +44,20 @@ export default {
         getExtTagColumn({ onManager: this.onManager, resource: 'elasticcache', columns: () => this.columns, tipName: this.$t('dictionary.elasticcache') }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
+        {
+          field: 'zone',
+          title: this.$t('db.text_133'),
+          slots: {
+            default: ({ row }) => {
+              if (!R.isNil(row.slave_zone_infos)) {
+                return row.slave_zone_infos.map(v => {
+                  return <div>{v.name}({this.$t('db.text_165')})</div>
+                })
+              }
+              return row.zone || '-'
+            },
+          },
+        },
       ],
       extraInfo: [
         {

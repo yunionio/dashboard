@@ -360,5 +360,6 @@
   "db.text_359": "Tencent Cloud Redis instances only support password-free access by resetting the password",
   "db.text_360": "Please enter the administrator password",
   "db.text_361": "Tencent Cloud",
-  "db.text_362": "Alibaba Cloud does not currently support backup and recovery"
+  "db.text_362": "Alibaba Cloud does not currently support backup and recovery",
+  "db.slave_zone": "Standby Availability Zone"
 }
