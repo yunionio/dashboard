@@ -68,6 +68,24 @@ export default {
             return '-'
           },
         },
+        {
+          field: 'zone',
+          title: this.$t('network.text_199'),
+          slots: {
+            default: ({ row }) => {
+              if (row.zone_1) {
+                const ret = [<div>{ row.zone }({this.$t('db.text_165')})</div>]
+                ret.push(
+                  <div>
+                    {row.zone_1_name}({this.$t('db.text_164')})
+                  </div>,
+                )
+                return ret
+              }
+              return row.zone || '-'
+            },
+          },
+        },
       ],
       extraInfo: [
         {
