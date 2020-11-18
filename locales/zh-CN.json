@@ -206,5 +206,8 @@
     "snapshot": "快照配额总数量",
     "usage.snapshot": "快照配额已使用数量"
   },
-  "dashboard.server_tips": "只计算虚拟机列表的数量，不包含回收站列表"
+  "dashboard.server_tips": "只计算虚拟机列表的数量，不包含回收站列表",
+  "dashboard.gpu_reserved_tips": "只有创建GPU卡虚拟机时才可用",
+  "dashboard.un_usage_tips": "包含GPU卡等预留资源，有些资源在特定情况下可用",
+  "dashboard.all_usage_tips": "总量指物理容量"
 }

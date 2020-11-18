@@ -17,7 +17,9 @@
             <div class="ml-2 flex-fill text-right">{{ this.usage }}</div>
           </div>
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_34')}}</div>
+            <div class="flex-shrink-0 flex-grow-0">
+              {{$t('dashboard.text_34')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><a-icon type="question-circle" /></a-tooltip>
+            </div>
             <div class="ml-2 flex-fill text-right">{{ this.displayUnUsage }}</div>
           </div>
           <div class="d-flex" v-if="showReserved">
@@ -25,11 +27,15 @@
             <div class="ml-2 flex-fill text-right">{{ this.reserved }}</div>
           </div>
           <div class="d-flex" v-if="showGpuReserved">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_183')}}</div>
+            <div class="flex-shrink-0 flex-grow-0">
+              {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><a-icon type="question-circle" /></a-tooltip>
+            </div>
             <div class="ml-2 flex-fill text-right">{{ this.gpuReserved }}</div>
           </div>
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_181')}}</div>
+            <div class="flex-shrink-0 flex-grow-0">
+              {{$t('dashboard.text_181')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><a-icon type="question-circle" /></a-tooltip>
+            </div>
             <div class="ml-2 flex-fill text-right">{{ this.allUsage }}</div>
           </div>
         </div>
@@ -238,6 +244,10 @@ export default {
         return sizestrWithUnit(this.data['hosts.storage.reserved.isolated'], 'M', 1024)
       }
       return '-'
+    },
+    showTips () {
+      const keyTips = ['hosts.memory', 'hosts.cpu', 'storages']
+      return keyTips.includes(this.form.fd.all_usage_key)
     },
   },
   watch: {
