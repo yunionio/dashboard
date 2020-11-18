@@ -1457,7 +1457,8 @@
     "German": "Germany District",
     "AzureUSGovernmentCloud": "US Government District",
     "Public": "International Zone",
-    "Internation": "International Zone"
+    "Internation": "International Zone",
+    "FinanceCloud": "Financial Cloud"
   },
   "flexGroupCycles": {
     "300": "5 minutes",
