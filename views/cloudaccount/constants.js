@@ -17,6 +17,7 @@ const cephLogo = require('../../../../src/assets/images/providers/ceph.svg')
 const xskyLogo = require('../../../../src/assets/images/providers/xsky.svg')
 const googleLogo = require('../../../../src/assets/images/providers/gcp.svg')
 const ctyunLogo = require('../../../../src/assets/images/providers/tianyi.svg')
+const apsaraLogo = require('../../../../src/assets/images/providers/apsara.svg')
 
 export const CLOUDACCOUNT_TYPES = {
   public: {
@@ -94,6 +95,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'ZstackCreate',
       provider: providerMap.zstack.key,
     },
+    apsara: {
+      name: providerMap.apsara.label,
+      logo: apsaraLogo,
+      component: 'ApsaraCreate',
+      provider: providerMap.apsara.key,
+    },
   },
   storage: {
     s3: {
@@ -140,6 +147,7 @@ export const CLOUDACCOUNT_DOCS = {
   xsky: `${DOCS_PATH}#新建xsky账号`,
   google: `${DOCS_PATH}#新建google账号`,
   ctyun: `${DOCS_PATH}#新建天翼云账号`,
+  apsara: `${DOCS_PATH}#新建飞天云账号`,
 }
 
 export const ACCESS_URL = {
@@ -354,6 +362,19 @@ export const keySecretFields = {
     k: 'access_key_id',
     s: 'access_key_secret',
     text: i18n.t('cloudenv.text_163'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  apsara: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: i18n.t('cloudPrvidersMap.Apsara'),
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),

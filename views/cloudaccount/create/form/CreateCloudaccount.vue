@@ -11,6 +11,7 @@ import VMware from './components/VMware'
 import OpenstackZstack from './components/OpenstackZstack'
 import S3CephXsky from './components/S3CephXsky'
 import Google from './components/Google'
+import Apsara from './components/Apsara'
 
 export default {
   name: 'CreateCloudaccount',
@@ -30,6 +31,7 @@ export default {
     XskyCreate: S3CephXsky,
     GoogleCreate: Google,
     CtyunCreate: AwsHuawei,
+    ApsaraCreate: Apsara,
   },
   props: {
     currentItem: {

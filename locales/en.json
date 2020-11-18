@@ -637,5 +637,16 @@
   "cloudenv.environment": "Account Type",
   "cloudenv.environment_check": "Please select the account type",
   "cloudenv.international_cloud": "Public Cloud",
-  "cloudenv.finance_cloud": "Financial Cloud"
+  "cloudenv.finance_cloud": "Financial Cloud",
+  "cloudenv.cloudaccount.apsara.ecs_endpoint": "EcsEndpoint",
+  "cloudenv.cloudaccount.apsara.rds_endpoint": "RdsEndpoint",
+  "cloudenv.cloudaccount.apsara.vpc_endpoint": "VpcEndpoint",
+  "cloudenv.cloudaccount.apsara.kvs_endpoint": "KvsEndpoint",
+  "cloudenv.cloudaccount.apsara.slb_endpoint": "SlbEndpoint",
+  "cloudenv.cloudaccount.apsara.oss_endpoint": "OssEndpoint",
+  "cloudenv.cloudaccount.apsara.sts_endpoint": "StsEndpoint",
+  "cloudenv.cloudaccount.apsara.action_trail_endpoint": "ActionTrailEndpoint",
+  "cloudenv.cloudaccount.apsara.ram_endpoint": "RamEndpoint",
+  "cloudenv.cloudaccount.apsara.metrics_endpoint": "MetricsEndpoint",
+  "cloudenv.cloudaccount.apsara.resourcemanager_endpoint": "ResourcemanagerEndpoint"
 }
