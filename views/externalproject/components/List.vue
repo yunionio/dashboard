@@ -13,7 +13,9 @@ import ListMixin from '@/mixins/list'
 import {
   getTimeTableColumn,
   getProjectTableColumn,
+  getStatusTableColumn,
 } from '@/utils/common/tableColumn'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'ExternalprojectList',
@@ -31,6 +33,7 @@ export default {
         id: this.id,
         resource: 'externalprojects',
         getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.externalproject).flat(),
         filterOptions: {
           name: {
             label: this.$t('cloudenv.text_95'),
@@ -46,6 +49,7 @@ export default {
           field: 'name',
           title: this.$t('cloudenv.text_386'),
         },
+        getStatusTableColumn({ statusModule: 'externalproject' }),
         getProjectTableColumn({ title: this.$t('table.title.local_project') }),
         getTimeTableColumn({
           field: 'created_at',
