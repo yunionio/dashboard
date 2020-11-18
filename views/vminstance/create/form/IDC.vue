@@ -381,6 +381,7 @@ export default {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
         brand: HYPERVISORS_MAP.esxi.brand, // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        manager: this.form.fd.prefer_manager,
       }
       if (systemDiskType) {
         params.filter = [`storage_type.contains("${systemDiskType}")`]
