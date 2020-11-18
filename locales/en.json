@@ -2042,7 +2042,7 @@
     "guestnetwork": "Cloud Server Network",
     "host": "Host",
     "hostip": "Host Ip",
-    "hostwire": "Layer 2 network",
+    "hostwire": "Host Layer 2 network",
     "identity_provider": "Identity Provides",
     "image": "Images",
     "infos": "System",
@@ -2148,7 +2148,10 @@
     "strategydefinition": "strategydefinition",
     "scopedpolicybindings": "Scoped policy bindings",
     "scopedpolicies": "Scoped policies",
-    "samluser": "SMAL user"
+    "samluser": "SMAL user",
+    "guestsecgroup": "Server secgroup",
+    "scalinggroupguest": "Server scaling",
+    "hoststorage": "Host storage"
   },
   "res": {
     "role": "Role",
