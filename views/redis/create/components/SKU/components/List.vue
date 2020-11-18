@@ -89,6 +89,15 @@ export default {
           },
         },
         {
+          field: 'slave_zone',
+          title: this.$t('db.slave_zone'),
+          slots: {
+            default: ({ row }) => {
+              return row.slave_zone || '-'
+            },
+          },
+        },
+        {
           field: 'memory_size_mb',
           title: this.$t('db.text_278'),
           sortable: true,
@@ -168,17 +177,18 @@ export default {
       return skuList ? skuList.sort((a, b) => a.memory_size_mb - b.memory_size_mb) : []
     },
     skuRepeat (skuList) {
-      const skuObj = {}
+      // const skuObj = {}
       return skuList.filter(item => {
         // 20191112不支持华为3.0创建
         if (item.provider === 'Huawei' && item.engine_version === '3.0') {
           return false
         }
-        const key = `${item.name}-${item.provider}-${item.memory_size_mb}`
-        if (!skuObj[key]) {
-          skuObj[key] = true
-          return true
-        }
+        // const key = `${item.name}-${item.provider}-${item.memory_size_mb}`
+        // if (!skuObj[key]) {
+        //   skuObj[key] = true
+        //   return true
+        // }
+        return true
       })
     },
     async fetchGetRates (skuList = this.skuList) {
