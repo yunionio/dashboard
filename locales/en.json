@@ -205,5 +205,8 @@
     "usage.image": "The amount of mirroring quota used",
     "snapshot": "Total Snapshot Quota",
     "usage.snapshot": "The amount of snapshot quota used"
-  }
+  },
+  "dashboard.gpu_reserved_tips": "Available only when creating a GPU card virtual machine",
+  "dashboard.un_usage_tips": "Contains reserved resources such as GPU cards, some resources are available under certain circumstances",
+  "dashboard.all_usage_tips": "Total refers to physical capacity"
 }
