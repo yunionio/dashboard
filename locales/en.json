@@ -618,5 +618,9 @@
   "samluser": {
     "create_title": "Create saml user",
     "create_cloudgroup_extra": "Corresponding to the user group on the cloud, a collection of permissions"
-  }
+  },
+  "cloudenv.environment": "Account Type",
+  "cloudenv.environment_check": "Please select the account type",
+  "cloudenv.international_cloud": "Public Cloud",
+  "cloudenv.finance_cloud": "Financial Cloud"
 }

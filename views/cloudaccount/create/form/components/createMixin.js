@@ -38,6 +38,9 @@ export default {
     keySecretField () {
       return keySecretFields[this.provider.toLowerCase()]
     },
+    isAliyun () {
+      return this.provider.toLowerCase() === 'aliyun'
+    },
   },
   watch: {
     provider (val) {
