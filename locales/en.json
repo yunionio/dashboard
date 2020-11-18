@@ -842,6 +842,13 @@
     },
     "samluser": {
       "available": "available"
+    },
+    "externalproject": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "creating": "Creating",
+      "deleting": "Deleting",
+      "unknown": "Unknown"
     }
   },
   "skuCategoryOptions": {

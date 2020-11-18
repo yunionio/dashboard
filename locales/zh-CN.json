@@ -842,6 +842,13 @@
     },
     "samluser": {
       "available": "可用"
+    },
+    "externalproject": {
+      "available": "可用",
+      "unavailable": "不可用",
+      "creating": "创建中",
+      "deleting": "删除中",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
