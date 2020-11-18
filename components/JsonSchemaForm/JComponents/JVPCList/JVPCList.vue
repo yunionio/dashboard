@@ -24,6 +24,7 @@ export default {
       const p = {
         limit: 0,
         show_emulated: true,
+        ...this.scopeParams.scopeParams,
       }
       return p
     },

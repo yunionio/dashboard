@@ -76,9 +76,19 @@ export default {
         storageTypeList = findAndUnshift(storageTypeList, item => item.includes('local'))
       }
       if (this.jsonschema && !R.isNil(this.jsonschema.sku) && !R.isEmpty(this.jsonschema.sku)) {
-        for (const obj in hypervisorDisks) {
-          if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.jsonschema.sku.instance_type_family)) {
-            delete hypervisorDisks[obj]
+        if (this.jsonschema.sku.sys_disk_type) {
+          const skuDiskTypes = this.jsonschema.sku.sys_disk_type.split(',')
+          if (skuDiskTypes && skuDiskTypes.length) {
+            storageTypeList = storageTypeList.filter(val => {
+              const type = val.split('/')[0]
+              return skuDiskTypes.includes(type)
+            })
+          }
+        } else {
+          for (const obj in hypervisorDisks) {
+            if (hypervisorDisks[obj].skuFamily && !hypervisorDisks[obj].skuFamily.includes(this.jsonschema.sku.instance_type_family)) {
+              delete hypervisorDisks[obj]
+            }
           }
         }
       } else {
