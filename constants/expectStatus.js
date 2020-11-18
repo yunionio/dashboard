@@ -289,7 +289,7 @@ export default {
   vmReleaseVirtualmachine: {
     info: [],
     success: ['Running'],
-    danger: ['delete_fail', 'deploy_fail', 'update_fail', 'create_fail'],
+    danger: ['delete_fail', 'deploy_fail', 'update_fail', 'create_fail', 'Invalid'],
   },
   vmReleaseAnsibleplaybook: {
     info: [],
