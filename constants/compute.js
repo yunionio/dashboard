@@ -417,6 +417,65 @@ export const STORAGE_TYPES = {
       sort: 3,
     },
   },
+  [HYPERVISORS_MAP.apsara.key]: {
+    cloud: {
+      label: i18n.t('common.storage.cloud'),
+      key: 'cloud',
+      min: 5, // 数据盘或者新建云硬盘的取值范围【G】
+      max: 2000, // 数据盘或者新建云硬盘的取值范围【G】
+      sysMin: 20, // 系统盘取值范围【G】
+      sysMax: 500, // 系统盘取值范围【G】
+    },
+    cloud_ssd: {
+      label: i18n.t('common.storage.cloudssd'),
+      key: 'cloud_ssd',
+      min: 20,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd: {
+      label: i18n.t('common.storage.cloudessd'),
+      key: 'cloud_essd',
+      min: 20,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd_pl2: {
+      label: i18n.t('common.storage.cloudessdpl2'),
+      key: 'cloud_essd_pl2',
+      min: 461,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd_pl3: {
+      label: i18n.t('common.storage.cloudessdpl3'),
+      key: 'cloud_essd_pl3',
+      min: 1261,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_efficiency: {
+      label: i18n.t('common.storage.cloudefficiency'),
+      key: 'cloud_efficiency',
+      min: 20,
+      max: 32768,
+      default: true,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    ephemeral_ssd: {
+      label: i18n.t('common.storage.ephemeralssd'),
+      key: 'ephemeral_ssd',
+      min: 5,
+      max: 800,
+      sysMin: 20,
+      sysMax: 500,
+    },
+  },
 }
 
 // 磁盘挂载点配置
