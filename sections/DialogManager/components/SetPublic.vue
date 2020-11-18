@@ -254,7 +254,7 @@ export default {
         let data
         // 是否需要加入全部选项
         let needAll = true
-        if (!this.isBatch) {
+        if (!this.isBatch && !this.params.noCandidateDomains) {
           data = await this.fetchChangeOwnerCandidateDomains(query)
           if (data.length > 0) {
             needAll = false
