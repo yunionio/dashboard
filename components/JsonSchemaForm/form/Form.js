@@ -80,19 +80,22 @@ export default {
     }
   },
   watch: {
-    extendFd (fd) {
-      if (fd.domain) {
-        let domain = fd.domain
-        if (R.is(Object, domain) && domain.key) {
-          domain = domain.key
+    extendFd: {
+      handler (fd) {
+        if (fd.domain) {
+          let domain = fd.domain
+          if (R.is(Object, domain) && domain.key) {
+            domain = domain.key
+          }
+          if (this.$store.getters.isAdminMode) {
+            delete this.formScopeparams.scopeParams.scope
+            this.formScopeparams.scopeParams.project_domain = domain
+          } else {
+            this.formScopeparams.scopeParams.scope = this.$store.getters.scope
+          }
         }
-        if (this.$store.getters.isAdminMode) {
-          delete this.formScopeparams.scopeParams.scope
-          this.formScopeparams.scopeParams.project_domain = domain
-        } else {
-          this.formScopeparams.scopeParams.scope = this.$store.getters.scope
-        }
-      }
+      },
+      deep: true,
     },
   },
   provide () {
