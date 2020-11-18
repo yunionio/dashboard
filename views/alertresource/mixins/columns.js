@@ -1,4 +1,4 @@
-import { getNameDescriptionTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getTagTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
 import i18n from '@/locales'
 
@@ -62,6 +62,7 @@ export default {
                 align: 'right',
                 formatter: ({ row }) => row.data ? row.data.value_str : '-',
               },
+              getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
             ]
             const data = row.childData || []
             return <vxe-grid size="mini" border columns={columns} data={data} />
