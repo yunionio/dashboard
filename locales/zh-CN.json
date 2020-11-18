@@ -633,5 +633,9 @@
   "samluser": {
     "create_title": "新建云上SAML用户",
     "create_cloudgroup_extra": "对应云上用户组，是权限的集合"
-  }
+  },
+  "cloudenv.environment": "账号类型",
+  "cloudenv.environment_check": "请选择账号类型",
+  "cloudenv.international_cloud": "公共云",
+  "cloudenv.finance_cloud": "金融云"
 }

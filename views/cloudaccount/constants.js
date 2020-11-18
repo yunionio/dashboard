@@ -161,6 +161,10 @@ export const ACCESS_URL = {
     InternationalCloud: i18n.t('cloudenv.text_139'),
     ChinaCloud: i18n.t('cloudenv.text_140'),
   },
+  aliyun: {
+    InternationalCloud: i18n.t('cloudenv.international_cloud'),
+    FinanceCloud: i18n.t('cloudenv.finance_cloud'),
+  },
 }
 
 export const keySecretFields = {

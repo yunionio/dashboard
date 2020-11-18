@@ -4,11 +4,11 @@
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_10')">
+      <a-form-item :label="$t('cloudenv.environment')">
         <base-select
           :options="environments"
           v-decorator="decorators.environment"
-          :selectProps="{ placeholder: $t('cloudenv.text_231') }" />
+          :selectProps="{ placeholder: $t('cloudenv.environment_check') }" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
@@ -84,7 +84,7 @@ export default {
           'environment',
           {
             rules: [
-              { required: true, message: this.$t('cloudenv.text_238'), trigger: 'change' },
+              { required: true, message: this.$t('cloudenv.environment_check'), trigger: 'change' },
             ],
           },
         ],
