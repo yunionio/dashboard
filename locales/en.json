@@ -206,5 +206,8 @@
     "snapshot": "Total Snapshot Quota",
     "usage.snapshot": "The amount of snapshot quota used"
   },
-  "dashboard.server_tips": "Only count the number of virtual machine lists, not including the recycle bin list"
+  "dashboard.server_tips": "Only count the number of virtual machine lists, not including the recycle bin list",
+  "dashboard.gpu_reserved_tips": "Available only when creating a GPU card virtual machine",
+  "dashboard.un_usage_tips": "Contains reserved resources such as GPU cards, some resources are available under certain circumstances",
+  "dashboard.all_usage_tips": "Total refers to physical capacity"
 }
