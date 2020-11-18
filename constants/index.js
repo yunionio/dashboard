@@ -836,6 +836,65 @@ export const STORAGE_TYPES = {
       sort: 3,
     },
   },
+  apsara: {
+    cloud: {
+      label: i18n.t('compute.text_52'),
+      value: 'cloud',
+      min: 5, // 数据盘或者新建云硬盘的取值范围【G】
+      max: 2000, // 数据盘或者新建云硬盘的取值范围【G】
+      sysMin: 20, // 系统盘取值范围【G】
+      sysMax: 500, // 系统盘取值范围【G】
+    },
+    cloud_ssd: {
+      label: i18n.t('compute.text_53'),
+      value: 'cloud_ssd',
+      min: 20,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd: {
+      label: i18n.t('compute.text_54'),
+      value: 'cloud_essd',
+      min: 20,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd_pl2: {
+      label: i18n.t('compute.text_55'),
+      value: 'cloud_essd_pl2',
+      min: 461,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_essd_pl3: {
+      label: i18n.t('compute.text_56'),
+      value: 'cloud_essd_pl3',
+      min: 1261,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    cloud_efficiency: {
+      label: i18n.t('compute.text_57'),
+      value: 'cloud_efficiency',
+      min: 20,
+      max: 32768,
+      default: true,
+      sysMin: 20,
+      sysMax: 500,
+    },
+    ephemeral_ssd: {
+      label: i18n.t('compute.text_58'),
+      value: 'ephemeral_ssd',
+      min: 5,
+      max: 800,
+      sysMin: 20,
+      sysMax: 500,
+    },
+  },
 }
 export const ALL_STORAGE = {}
 export const ALL_STORAGE_LABEL = {}
