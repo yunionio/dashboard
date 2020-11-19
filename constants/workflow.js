@@ -67,3 +67,5 @@ export const getWorkflowType = function (pdk) {
   })
   return pdkObj
 }
+
+export const MULTIPLE_APPROVAL_PROCESS = [WORKFLOW_TYPES.APPLY_MACHINE, WORKFLOW_TYPES.APPLY_SERVER_DELETE]
