@@ -229,5 +229,10 @@
   "storage.text_228": "海外",
   "storage.text_229": "全球",
   "storage.text_230": "静态网站",
-  "storage.text_231": "访问地址"
+  "storage.text_231": "访问地址",
+  "storage.text_232": "{0}暂不支持设置防盗链",
+  "storage.text_233": "{0}暂不支持设置静态网站",
+  "storage.text_234": "目前仅腾讯云支持设置跨域访问规则",
+  "storage.text_235": "{0}暂不支持设置防盗链",
+  "storage.text_236": "{0}暂不支持设置静态网站"
 }
