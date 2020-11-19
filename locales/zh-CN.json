@@ -637,5 +637,16 @@
   "cloudenv.environment": "账号类型",
   "cloudenv.environment_check": "请选择账号类型",
   "cloudenv.international_cloud": "公共云",
-  "cloudenv.finance_cloud": "金融云"
+  "cloudenv.finance_cloud": "金融云",
+  "cloudenv.cloudaccount.apsara.ecs_endpoint": "ECS端点",
+  "cloudenv.cloudaccount.apsara.rds_endpoint": "RDS端点",
+  "cloudenv.cloudaccount.apsara.vpc_endpoint": "VPC端点",
+  "cloudenv.cloudaccount.apsara.kvs_endpoint": "KVS Redis端点",
+  "cloudenv.cloudaccount.apsara.slb_endpoint": "SLB端点",
+  "cloudenv.cloudaccount.apsara.oss_endpoint": "OSS对象存储端点",
+  "cloudenv.cloudaccount.apsara.sts_endpoint": "STS端点",
+  "cloudenv.cloudaccount.apsara.action_trail_endpoint": "ActionTrail日志端点",
+  "cloudenv.cloudaccount.apsara.ram_endpoint": "RAM子账号端点",
+  "cloudenv.cloudaccount.apsara.metrics_endpoint": "Metrics监控端点",
+  "cloudenv.cloudaccount.apsara.resourcemanager_endpoint": "Resourcemanager组织管理端点"
 }
