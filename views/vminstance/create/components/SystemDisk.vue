@@ -91,6 +91,10 @@ export default {
     storageParams: {
       type: Object,
     },
+    ignoreStorageStatus: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     isPublic () {
@@ -221,6 +225,7 @@ export default {
         tooltip: '',
         isError: false,
       }
+      if (this.ignoreStorageStatus) return statusMap
       if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic) {
         const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor] || {}
         const allStorageTypes = []

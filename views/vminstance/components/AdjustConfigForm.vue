@@ -41,7 +41,8 @@
             :defaultSize="sysdisk.value"
             :defaultType="form.fd.defaultType"
             :capability-data="form.fi.capability"
-            :disabled="true" />
+            :disabled="true"
+            :ignoreStorageStatus="true" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1">
           <data-disk
