@@ -1,15 +1,25 @@
 <template>
-  <page-list
-    :list="list"
-    :columns="columns"
-    :group-actions="groupActions"
-    :single-actions="singleActions" />
+  <div>
+    <a-alert banner v-if="!isQcloud">
+      <template #message>
+        <p>{{$t('storage.text_148')}}</p>
+        <p>{{$t('storage.text_234')}}</p>
+      </template>
+    </a-alert>
+    <page-list
+      v-else
+      :list="list"
+      :columns="columns"
+      :group-actions="groupActions"
+      :single-actions="singleActions" />
+  </div>
 </template>
 
 <script>
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'BucketCrossDomainRuleList',
@@ -20,8 +30,12 @@ export default {
     getParams: {
       type: [Function, Object],
     },
+    data: {
+      type: Object,
+    },
   },
   data () {
+    const isQcloud = this.data.provider === HYPERVISORS_MAP.qcloud.provider
     return {
       list: this.$list.createList(this, {
         id: 'BucketCrossDomainRuleList',
@@ -147,10 +161,13 @@ export default {
           title: this.$t('storage.text_199'),
         },
       ],
+      isQcloud,
     }
   },
   created () {
-    this.list.fetchData()
+    if (this.data.provider === HYPERVISORS_MAP.qcloud.provider) {
+      this.list.fetchData()
+    }
   },
 }
 </script>
