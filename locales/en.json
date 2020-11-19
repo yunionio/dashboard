@@ -1401,7 +1401,8 @@
     "Huawei": "Huawei Cloud",
     "Qcloud": "Tencent Cloud",
     "Azure": "Microsoft Cloud",
-    "Ctyun": "eCloud"
+    "Ctyun": "eCloud",
+    "Apsara": "Apsara"
   },
   "shareScope": {
     "system": "System",
