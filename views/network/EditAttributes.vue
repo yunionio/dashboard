@@ -16,7 +16,7 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item :label="$t('network.text_574')" v-bind="formItemLayout">
-        <a-radio-group v-decorator="decorators.server_type">
+        <a-radio-group v-decorator="decorators.server_type" @change="handleServerTypeChange">
           <a-radio-button
             v-for="item of serverTypeOpts"
             :key="item.key"
@@ -44,6 +44,10 @@
       </a-form-item>
       <a-collapse :bordered="false">
         <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
+          <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="server_type === 'eip'">
+            <a-input v-decorator="decorators.bgp_type" />
+            <span slot="extra">{{$t('network.text_744')}}</span>
+          </a-form-item>
           <a-form-item v-bind="formItemLayout">
             <span slot="label">{{$t('network.text_583')}}<help-tooltip class="ml-1" name="networkPolicy" /></span>
             <a-radio-group v-decorator="decorators.alloc_policy">
@@ -192,6 +196,9 @@ export default {
             ],
           },
         ],
+        bgp_type: [
+          'bgp_type',
+        ],
       },
       params: {
         wire: {
@@ -237,6 +244,7 @@ export default {
       wire_id: '',
       cloudEnv: '',
       vpcId: '',
+      server_type: 'guest',
     }
   },
   provide () {
@@ -250,6 +258,9 @@ export default {
   methods: {
     fetchData () {
       return new this.$Manager('networks').get({ id: this.$route.query.network_id })
+    },
+    handleServerTypeChange (e) {
+      this.server_type = e.target.value
     },
     async bindData () {
       const { data } = await this.fetchData()
@@ -265,9 +276,11 @@ export default {
         guest_dns: data.guest_dns || '',
         guest_domain: data.guest_domain || '',
       })
+      this.form.fc.getFieldDecorator('bgp_type', { initialValue: data.bgp_type })
       this.wire_id = data.wire_id
       this.cloudEnv = data.cloud_env
       this.vpcId = data.vpc_id
+      this.server_type = data.server_type
     },
     validateGateway (rule, value, callback) {
       if (!value) {
