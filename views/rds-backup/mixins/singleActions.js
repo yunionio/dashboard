@@ -9,6 +9,7 @@ export default {
           this.createDialog('RDSBackupRecovery', {
             title: i18n.t('db.text_45'),
             data: [obj],
+            rdsItem: this.data,
             columns: this.columns,
             onManager: this.onManager,
             refresh: this.refresh,
@@ -21,9 +22,13 @@ export default {
             validate = false
             tooltip = i18n.t('db.text_224')
           }
-          if (this.data.provider === 'Qcloud' || this.data.provider === 'Aliyun') {
+          if (this.data.provider === 'Qcloud') {
             validate = false
-            tooltip = this.data.provider === 'Qcloud' ? this.$t('db.text_343') : this.$t('db.text_343')
+            tooltip = this.$t('db.text_343')
+          }
+          if (this.data.provider === 'Aliyun' && obj.backup_method === 'Logical') {
+            validate = false
+            tooltip = i18n.t('db.text_370')
           }
           return {
             validate: validate,
