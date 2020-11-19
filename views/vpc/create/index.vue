@@ -15,6 +15,7 @@
         :names="areaselectsName"
         :cityParams="cityParams"
         :cloudregionParams="regionParams"
+        :providerParams="providerParams"
         :isRequired="true"
         :cloudregionMapper="cloudregionMapper"
         @change="handleRegionChange" />
@@ -144,6 +145,9 @@ export default {
       cityParams: {
         usable: false,
       },
+      providerParams: {
+        usable: false,
+      },
     }
   },
   computed: {
@@ -180,6 +184,8 @@ export default {
           usable: true,
           show_emulated: true,
         }
+      } else if (this.cloudEnv === 'public') {
+        res.usable = false
       }
       return res
     },
