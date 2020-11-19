@@ -31,6 +31,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    lbData: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -71,6 +74,8 @@ export default {
               refresh: this.refresh,
               lbBackendgroupData: this.data,
               maxWeight,
+              lbData: this.lbData,
+              listData: this.list.data,
             })
           },
           meta: () => {
