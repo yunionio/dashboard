@@ -32,7 +32,8 @@
     </a-form-item>
     <a-form-item :label="$t('db.text_132')" v-bind="formItemLayout" v-if="memorys && memorys.length > 0">
       <a-radio-group v-decorator="decorators.memory_size_mb || ['memory_size_mb']">
-        <a-radio-button :key="size" :disabled="getIsMemoryDisabled(size)" :value="size" v-for="size in memorys">{{sizestr(size, 'M', 1024)}}</a-radio-button>
+        <a-radio-button v-for="size in memorys" :key="size" :value="size" v-show="(size / 1024) < max || !showMore" :disabled="getIsMemoryDisabled(size)">{{sizestr(size, 'M', 1024)}}</a-radio-button>
+        <a-radio-button v-if="showMore" @click="showMore = !showMore">...</a-radio-button>
       </a-radio-group>
     </a-form-item>
   </div>
@@ -61,6 +62,10 @@ export default {
         }
       },
     },
+    max: {
+      type: Number,
+      default: 32,
+    },
   },
   data () {
     return {
@@ -88,6 +93,7 @@ export default {
         },
       },
       filterItems: {},
+      showMore: false,
     }
   },
   computed: {
@@ -107,6 +113,10 @@ export default {
   watch: {
     filterItems () {
       this.getEngines()
+    },
+    memorys (newValue) {
+      const max = Math.max.apply(null, newValue) / 1024
+      this.showMore = max > this.max
     },
   },
   methods: {
