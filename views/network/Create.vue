@@ -15,6 +15,7 @@
         :labelCol="formItemLayout.labelCol"
         :names="areaselectsName"
         :cityParams="cityParams"
+        :providerParams="providerParams"
         :cloudregionParams="cloudregionParams"
         :isRequired="true"
         @change="handleRegionChange" />
@@ -379,6 +380,10 @@ export default {
         usable: false,
         usable_vpc: true,
       },
+      providerParams: {
+        usable: false,
+        usable_vpc: true,
+      },
     }
   },
   computed: {
@@ -424,6 +429,7 @@ export default {
         delete params.is_on_premise
       } else if (this.cloudEnv === 'public') {
         params.is_public = true
+        params.usable = false
         delete params.is_private
         delete params.is_on_premise
       } else {
