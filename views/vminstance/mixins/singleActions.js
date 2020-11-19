@@ -419,6 +419,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1276'),
+                  permission: 'guestdisks_list',
                   action: () => {
                     this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_snapshot_callback_address', () => {
                       this.createDialog('VmSnapshotCreateDialog', {

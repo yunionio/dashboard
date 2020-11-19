@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import HostDetail from './Detail'
@@ -31,6 +32,7 @@ import GpuList from '@Compute/views/gpu/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'HostSidePage',
@@ -48,19 +50,26 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
+    let detailTabs = [
+      { label: this.$t('compute.text_238'), key: 'host-detail' },
+      { label: this.$t('compute.text_606'), key: 'dashboard' },
+      { label: this.$t('compute.text_91'), key: 'vminstance-list' },
+      { label: this.$t('compute.text_104'), key: 'network-list' },
+      { label: this.$t('compute.text_99'), key: 'storage-list' },
+      { label: this.$t('compute.text_607'), key: 'gpu-list' },
+      { label: this.$t('compute.text_114'), key: 'server-recovery' },
+      { label: this.$t('compute.text_608'), key: 'monitor' },
+      // { label: '报警', key: 'alert' },
+      { label: this.$t('compute.text_240'), key: 'event-drawer' },
+    ]
+    if (!hasPermission({ key: 'baremetalnetworks_list' })) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'network-list'))(detailTabs), 1, detailTabs)
+    }
+    if (!hasPermission({ key: 'hoststorages_list' })) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'storage-list'))(detailTabs), 1, detailTabs)
+    }
     return {
-      detailTabs: [
-        { label: this.$t('compute.text_238'), key: 'host-detail' },
-        { label: this.$t('compute.text_606'), key: 'dashboard' },
-        { label: this.$t('compute.text_91'), key: 'vminstance-list' },
-        { label: this.$t('compute.text_104'), key: 'network-list' },
-        { label: this.$t('compute.text_99'), key: 'storage-list' },
-        { label: this.$t('compute.text_607'), key: 'gpu-list' },
-        { label: this.$t('compute.text_114'), key: 'server-recovery' },
-        { label: this.$t('compute.text_608'), key: 'monitor' },
-        // { label: '报警', key: 'alert' },
-        { label: this.$t('compute.text_240'), key: 'event-drawer' },
-      ],
+      detailTabs,
     }
   },
   computed: {

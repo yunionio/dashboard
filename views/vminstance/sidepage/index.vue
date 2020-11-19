@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 // import HostList from '@Compute/views/host/components/List'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -49,6 +50,7 @@ import SecgroupList from '@Compute/views/secgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'VmInstanceSidePage',
@@ -67,20 +69,30 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
+    let detailTabs = [
+      { label: this.$t('compute.text_238'), key: 'vm-instance-detail' },
+      { label: this.$t('compute.text_105'), key: 'secgroup-list' },
+      // { label: '宿主机', key: 'host-list' },
+      { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
+      { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
+      { label: this.$t('compute.text_462'), key: 'vm-snapshot-sidepage' },
+      // { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
+      // { label: this.$t('compute.text_102'), key: 'instance-snapshot-list-for-vm-instance-sidepage' },
+      { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
+      { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
+      { label: this.$t('compute.text_240'), key: 'event-drawer' },
+    ]
+    if (!hasPermission({ key: 'guestsecgroups_list' })) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'secgroup-list'))(detailTabs), 1, detailTabs)
+    }
+    if (!hasPermission({ key: 'guestnetworks_list' })) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'network-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
+    }
+    if (!hasPermission({ key: 'guestdisks_list' })) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'disk-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
+    }
     return {
-      detailTabs: [
-        { label: this.$t('compute.text_238'), key: 'vm-instance-detail' },
-        { label: this.$t('compute.text_105'), key: 'secgroup-list' },
-        // { label: '宿主机', key: 'host-list' },
-        { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
-        { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
-        { label: this.$t('compute.text_462'), key: 'vm-snapshot-sidepage' },
-        // { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
-        // { label: this.$t('compute.text_102'), key: 'instance-snapshot-list-for-vm-instance-sidepage' },
-        { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
-        { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
-        { label: this.$t('compute.text_240'), key: 'event-drawer' },
-      ],
+      detailTabs,
     }
   },
   computed: {
