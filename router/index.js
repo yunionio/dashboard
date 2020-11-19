@@ -12,6 +12,7 @@ export default {
   meta: {
     label: i18n.t('monitor.text_1'),
     t: 'dictionary.monitor_commonalert',
+    hiddenInRootMenu: true,
   },
   submenus: [
     {
