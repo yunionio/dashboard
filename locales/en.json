@@ -355,5 +355,10 @@
   "db.text_367": "New instance name",
   "db.text_368": "Please select the database to be restored",
   "db.text_369": "Please select a new instance name",
-  "db.text_370": "Logical backup does not currently support this operation"
+  "db.text_370": "Logical backup does not currently support this operation",
+  "db.text_371": "Backup Method",
+  "db.text_372": "Logical Backup",
+  "db.text_373": "Physical Backup",
+  "db.text_374": "Snapshot Backup",
+  "db.text_375": "This backup method does not currently support this operation"
 }

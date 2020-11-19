@@ -168,11 +168,18 @@ export default {
         const manager = new this.$Manager('dbinstances', 'v2')
         const data = this.genData(values)
         const id = values.dbinstance_id
-        await manager.performAction({
-          id,
-          action: 'recovery',
-          data,
-        })
+        if (this.recoveryType === 2) {
+          await manager.create({
+            id,
+            data,
+          })
+        } else {
+          await manager.performAction({
+            id,
+            action: 'recovery',
+            data,
+          })
+        }
         this.cancelDialog()
       } finally {
         this.loading = false

@@ -13,6 +13,9 @@ export default {
             columns: this.columns,
             onManager: this.onManager,
             refresh: this.refresh,
+            success: () => {
+              this.destroySidePages()
+            },
           })
         },
         meta: (obj) => {
@@ -26,9 +29,9 @@ export default {
             validate = false
             tooltip = this.$t('db.text_343')
           }
-          if (this.data.provider === 'Aliyun' && obj.backup_method === 'Logical') {
+          if (this.data.provider === 'Aliyun' && (obj.backup_method === 'Logical' || obj.backup_method === 'Snapshot')) {
             validate = false
-            tooltip = i18n.t('db.text_370')
+            tooltip = i18n.t('db.text_375')
           }
           return {
             validate: validate,
