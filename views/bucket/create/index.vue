@@ -125,14 +125,14 @@ export default {
     },
     cityParams () {
       const params = {}
-      params[this.cloudEnv + '_cloud'] = true
+      params.cloud_env = this.cloudEnv
       return params
     },
     cloudregionParams () {
       const params = {
         scope: this.scope,
       }
-      params[this.cloudEnv + '_cloud'] = true
+      params.cloud_env = this.cloudEnv
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
         delete params.scope
