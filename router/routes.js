@@ -59,6 +59,7 @@ function getModulesRouteConfig () {
     ret = ret.concat(r(dir).default)
   })
   ret.sort((a, b) => a.index - b.index)
+  ret = ret.filter(val => !val.meta.hiddenInRootMenu)
   for (let i = 0, len = ret.length; i < len; i++) {
     const item = ret[i]
     item.meta.group = i
