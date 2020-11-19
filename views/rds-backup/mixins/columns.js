@@ -46,6 +46,31 @@ export default {
         },
       },
       {
+        field: 'db_names',
+        title: i18n.t('db.text_232'),
+        width: 100,
+        slots: {
+          default: ({ row }) => {
+            return `${row.engine || ''} ${row.engine_version || ''}`
+          },
+        },
+      },
+      {
+        field: 'backup_method',
+        title: i18n.t('db.text_371'),
+        width: 100,
+        slots: {
+          default: ({ row }) => {
+            const map = {
+              Logical: i18n.t('db.text_372'),
+              Physical: i18n.t('db.text_373'),
+              Snapshot: i18n.t('db.text_374'),
+            }
+            return map[row.backup_method]
+          },
+        },
+      },
+      {
         field: 'backup_size_mb',
         title: i18n.t('db.text_38'),
         width: 70,
