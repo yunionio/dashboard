@@ -181,12 +181,18 @@ export default {
         scope: this.$store.getters.scope,
         project: this.params.lbBackendgroupData.tenant_id,
       }
-      if (this.params.lbBackendgroupData.vpc_id) {
-        params.vpc = this.params.lbBackendgroupData.vpc_id
+      if (this.params.lbData.vpc_id) {
+        params.vpc = this.params.lbData.vpc_id
       }
-      // 网络是公网的阿里云LB实例，添加服务器时不应传参数vp
-      if ((this.params.lbBackendgroupData.address_type === 'internet' && this.params.lbBackendgroupData.brand.toLowerCase() === 'aliyun') || this.params.lbBackendgroupData.brand.toLowerCase() === 'openstack') {
+      if (this.params.lbBackendgroupData.brand.toLowerCase() === 'openstack') {
         delete params.vpc
+      } else if (this.params.lbData.address_type === 'internet' && this.params.lbBackendgroupData.brand.toLowerCase() === 'aliyun') {
+        // 网络是公网的阿里云LB实例，添加服务器时不应传参数vpc，但是如果已经有后端服务器数据，那么久取第一条的vpc
+        delete params.vpc
+        const firstLbBackendData = Object.values(this.params.listData)[0]
+        if (firstLbBackendData && firstLbBackendData.vpc_id) {
+          params.vpc = firstLbBackendData.vpc_id
+        }
       }
       return params
     },

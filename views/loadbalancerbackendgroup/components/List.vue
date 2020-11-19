@@ -28,6 +28,9 @@ export default {
       type: String,
       required: true,
     },
+    data: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -93,6 +96,7 @@ export default {
         id: row.id,
         resource: 'loadbalancerbackendgroups',
         getParams: this.getParam,
+        lbData: this.data,
       }, {
         list: this.list,
       })
