@@ -262,7 +262,8 @@
       "renewing": "续费中",
       "renew_failed": "续费失败",
       "set_auto_renew": "设置自动续费",
-      "set_auto_renew_failed": "设置自动续费失败"
+      "set_auto_renew_failed": "设置自动续费失败",
+      "backing_up_failed": "实例备份失败"
     },
     "instanceGroup": {
       "init": "正常"

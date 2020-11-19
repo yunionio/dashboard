@@ -262,7 +262,8 @@
       "renewing": "Renewing",
       "renew_failed": "Renewal failed",
       "set_auto_renew": "Set auto renew",
-      "set_auto_renew_failed": "Set automatic renewal failed"
+      "set_auto_renew_failed": "Set automatic renewal failed",
+      "backing_up_failed": "Instance backup failed"
     },
     "instanceGroup": {
       "init": "Normal"
