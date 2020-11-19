@@ -24,7 +24,9 @@
           ref="page-list"
           v-bind="listProps"
           @radio-change="handleRadioChange" />
-        <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
+        <template v-if="params.multiple">
+          <a-button type="link" size="small" class="choose-all" @click="chooseAllHandle" v-if="isShowChooseAll">{{$t('common_98')}}</a-button>
+        </template>
       </div>
     </div>
     <div slot="footer">
