@@ -14,6 +14,7 @@
         :wrapperCol="formItemLayout.wrapperCol"
         :labelCol="formItemLayout.labelCol"
         :names="areaselectsName"
+        :cityParams="cityParams"
         :cloudregionParams="cloudregionParams"
         :isRequired="true"
         @change="handleRegionChange" />
@@ -374,6 +375,10 @@ export default {
       zoneList: [],
       project_domain: '',
       vpcId: '',
+      cityParams: {
+        usable: false,
+        usable_vpc: true,
+      },
     }
   },
   computed: {

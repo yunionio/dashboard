@@ -16,6 +16,7 @@
         :wrapperCol="formItemLayout.wrapperCol"
         :labelCol="formItemLayout.labelCol"
         :names="areaselectsName"
+        :cityParams="cityParams"
         :cloudregionParams="regionParams"
         :isRequired="true"
         :cloudregionMapper="cloudregionMapper"
@@ -140,6 +141,9 @@ export default {
       project_domain: this.$store.getters.userInfo.projectDomainId,
       cloudproviderData: [],
       cloudregion: '',
+      cityParams: {
+        usable: false,
+      },
     }
   },
   computed: {
