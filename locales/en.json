@@ -255,7 +255,8 @@
       "unknown": "Unknown status",
       "syncing": "Syncing",
       "sync_status": "Syncing",
-      "sync_failed": "Sync failed"
+      "sync_failed": "Sync failed",
+      "backing_up_failed": "Instance backup failed"
     },
     "instanceGroup": {
       "init": "Normal"
