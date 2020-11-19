@@ -107,7 +107,7 @@ export default {
           await this.doDelete()
         }
         this.loading = false
-        this.$message.success(this.$t(this.$t('storage.text_191')))
+        this.$message.success(this.$t('storage.text_191'))
         this.$router.push('/bucket')
       } catch (err) {
         this.loading = false

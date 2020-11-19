@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 
 export default {
@@ -111,6 +112,12 @@ export default {
                   refresh: this.refresh,
                 })
               },
+              meta: (obj) => {
+                return {
+                  validate: obj.provider === HYPERVISORS_MAP.qcloud.provider,
+                  tooltip: obj.provider !== HYPERVISORS_MAP.qcloud.provider ? i18n.t('storage.text_232', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : '',
+                }
+              },
             },
             {
               label: i18n.t('storage.text_183'),
@@ -121,6 +128,12 @@ export default {
                     id: row.id,
                   },
                 })
+              },
+              meta: (obj) => {
+                return {
+                  validate: obj.provider === HYPERVISORS_MAP.qcloud.provider,
+                  tooltip: obj.provider !== HYPERVISORS_MAP.qcloud.provider ? i18n.t('storage.text_233', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : '',
+                }
               },
             },
             {
