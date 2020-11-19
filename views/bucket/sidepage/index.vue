@@ -22,6 +22,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
 import Objects from './Objects'
 import Monitor from './Monitor'
+import Rules from './CrossDomainRules'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -33,6 +34,7 @@ export default {
     Detail,
     Objects,
     Monitor,
+    Rules,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -40,6 +42,7 @@ export default {
       detailTabs: [
         { label: this.$t('storage.text_81'), key: 'detail' },
         { label: this.$t('storage.text_169'), key: 'objects' },
+        { label: this.$t('storage.text_211'), key: 'rules' },
         { label: this.$t('storage.text_170'), key: 'monitor' },
         { label: this.$t('storage.text_85'), key: 'event-drawer' },
       ],
