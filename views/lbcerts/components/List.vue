@@ -94,7 +94,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'capability']),
   },
   created () {
     this.initSidePageTab('lbcert-detail')
