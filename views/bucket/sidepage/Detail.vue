@@ -32,10 +32,9 @@ const RenderSizeTitle = {
   },
   methods: {
     async fetchSync () {
-      const manager = new this.$Manager('buckets')
       this.loading = true
       try {
-        const { data } = await manager.performAction({
+        const { data } = await this.bucketsM.performAction({
           id: this.data.id,
           action: 'sync',
           data: {
@@ -52,6 +51,7 @@ const RenderSizeTitle = {
     },
   },
   created () {
+    this.bucketsM = new this.$Manager('buckets')
     this.fetchSync()
   },
   render () {
@@ -83,6 +83,7 @@ export default {
   data () {
     return {
       syncLoading: false,
+      websiteData: {},
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'bucket', columns: () => this.columns, tipName: this.$t('storage.text_18') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'bucket', columns: () => this.columns, tipName: this.$t('storage.text_18') }),
@@ -104,7 +105,55 @@ export default {
           title: this.$t('storage.text_38'),
         },
       ],
-      extraInfo: [
+    }
+  },
+  computed: {
+    extraInfo () {
+      const referer = {
+        title: this.$t('storage.text_213'),
+        items: [
+          {
+            field: 'referer.enabled',
+            title: this.$t('storage.text_214'),
+            slots: {
+              default: ({ row }, h) => {
+                return [
+                  <span>{ row.referer && row.referer.enabled ? this.$t('storage.text_215') : this.$t('storage.text_216') }</span>,
+                  <a class="float-left" onClick={() => this.handleSetReferer(row)} class='ml-2'>{ this.$t('common.setting') }</a>,
+                ]
+              },
+            },
+          },
+        ],
+      }
+      if (this.data.referer && this.data.referer.enabled) {
+        const others = [
+          {
+            field: 'referer.allow_empty_refer',
+            title: this.$t('storage.text_208'),
+            formatter: ({ row }) => {
+              return row.referer.allow_empty_refer ? this.$t('storage.text_217') : this.$t('storage.text_218')
+            },
+          },
+          {
+            field: 'referer_domain_list',
+            title: this.$t('storage.text_219'),
+            slots: {
+              default: ({ row }) => {
+                return row.referer_domain_list.map(item => {
+                  return (
+                    <list-body-cell-wrap hideField copy title={ item } message={ item }>
+                      <span>{ item }</span>
+                    </list-body-cell-wrap>
+                  )
+                })
+              },
+            },
+          },
+        ]
+        referer.items = referer.items.concat(others)
+      }
+      const ret = [
         {
           title: this.$t('storage.text_139'),
           field: 'url',
@@ -137,6 +186,77 @@ export default {
               ]
             },
           },
+        },
+        {
+          title: this.$t('storage.text_220'),
+          field: 'cdn_domains',
+          slots: {
+            default: ({ row }, h) => {
+              if (!this.data.cdn_domains) {
+                return '-'
+              }
+              const columns = [
+                {
+                  field: 'domain',
+                  title: this.$t('storage.text_221'),
+                  slots: {
+                    default: ({ row }) => {
+                      return [
+                        <div>
+                          <a href={row.domain}>{row.domain}</a>
+                          <copy class="ml-1" message={row.domain} />
+                        </div>]
+                    },
+                  },
+                },
+                {
+                  field: 'status',
+                  title: this.$t('storage.text_41'),
+                  formatter: ({ cellValue, row }) => {
+                    const map = {
+                      rejected: this.$t('storage.text_222'),
+                      processing: this.$t('storage.text_223'),
+                      online: this.$t('storage.text_224'),
+                      offline: this.$t('storage.text_225'),
+                    }
+                    return map[cellValue] || '-'
+                  },
+                },
+                {
+                  field: 'area',
+                  title: this.$t('storage.text_226'),
+                  formatter: ({ cellValue, row }) => {
+                    const map = {
+                      mainland: this.$t('storage.text_227'),
+                      overseas: this.$t('storage.text_228'),
+                      global: this.$t('storage.text_229'),
+                    }
+                    return map[cellValue] || '-'
+                  },
+                },
+              ]
+              return [
+                <vxe-grid class="mb-2" data={ this.data.cdn_domains || [] } columns={ columns } />,
+              ]
+            },
+          },
+        },
+        {
+          title: this.$t('storage.text_230'),
+          items: [
+            {
+              field: 'website_url',
+              title: this.$t('storage.text_231'),
+              slots: {
+                default: ({ row }, h) => {
+                  return [
+                    <list-body-cell-wrap class="float-left" copy row={ row } field='website_url' title={ row.website_url } />,
+                    <a class="float-left" onClick={() => this.handleSetWebsite(row)} class='ml-2'>{ this.$t('common.setting') }</a>,
+                  ]
+                },
+              },
+            },
+          ],
         },
         {
           title: <RenderSizeTitle data={this.data} />,
@@ -201,10 +321,62 @@ export default {
             },
           ],
         },
-      ],
-    }
+        referer,
+      ]
+      return ret
+    },
+  },
+  created () {
+    this.bucketsM = new this.$Manager('buckets')
+    this.fetchWebsite()
+    this.fetchReferer()
+    this.fetchCdnDomain()
   },
   methods: {
+    async fetchWebsite () {
+      this.loading = true
+      try {
+        const { data } = await this.bucketsM.getSpecific({
+          id: this.data.id,
+          spec: 'website',
+        })
+        this.$set(this.data, 'website_url', data.url)
+        this.websiteData = data
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+    async fetchReferer () {
+      this.loading = true
+      try {
+        const { data } = await this.bucketsM.getSpecific({
+          id: this.data.id,
+          spec: 'referer',
+        })
+        this.$set(this.data, 'referer_domain_list', data.domain_list)
+        this.$set(this.data, 'referer', data)
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+    async fetchCdnDomain () {
+      this.loading = true
+      try {
+        const { data: { data } } = await this.bucketsM.getSpecific({
+          id: this.data.id,
+          spec: 'cdn-domain',
+        })
+        this.$set(this.data, 'cdn_domains', data)
+      } catch (err) {
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
     handleSetAcl (row) {
       this.createDialog('ObjectsUpdateAclDialog', {
         title: this.$t('storage.text_138'),
@@ -214,6 +386,27 @@ export default {
         columns: this.columns,
         list: this.list,
         refresh: this.refresh,
+      })
+    },
+    handleSetWebsite (row) {
+      this.$router.push({
+        path: '/bucket/setstaticwebsit',
+        query: {
+          id: row.id,
+          ...this.websiteData,
+        },
+      })
+    },
+    handleSetReferer (row) {
+      this.createDialog('SetAntiLeechDialog', {
+        name: this.$t('storage.text_18'),
+        data: [row],
+        columns: this.columns,
+        onManager: this.onManager,
+        refresh: this.refresh,
+        success: () => {
+          this.fetchReferer()
+        },
       })
     },
   },

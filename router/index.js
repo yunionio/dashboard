@@ -1,3 +1,4 @@
+import BucketSetStaticWebsit from '@Storage/views/bucket/components/SetStaticWebsit'
 import BucketCreate from '@Storage/views/bucket/create'
 import BlockStorage from '@Storage/views/blockstorage'
 import Bucket from '@Storage/views/bucket'
@@ -66,6 +67,11 @@ export default {
               name: 'BucketCreate',
               path: 'create',
               component: BucketCreate,
+            },
+            {
+              name: 'BucketSetStaticWebsit',
+              path: 'setstaticwebsit',
+              component: BucketSetStaticWebsit,
             },
           ],
         },

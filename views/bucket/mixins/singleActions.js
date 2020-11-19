@@ -101,6 +101,29 @@ export default {
               },
             },
             {
+              label: i18n.t('storage.text_205'),
+              action: row => {
+                this.createDialog('SetAntiLeechDialog', {
+                  data: [row],
+                  name: i18n.t('storage.text_18'),
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+            },
+            {
+              label: i18n.t('storage.text_183'),
+              action: row => {
+                this.$router.push({
+                  path: '/bucket/setstaticwebsit',
+                  query: {
+                    id: row.id,
+                  },
+                })
+              },
+            },
+            {
               label: i18n.t('storage.text_36'),
               permission: 'buckets_delete',
               action: row => {
