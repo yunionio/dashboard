@@ -16,7 +16,7 @@
     <edit
       slot="edit"
       class="ml-1"
-      v-if="showEdit"
+      v-if="showEdit && isOwner.validate"
       @update="update"
       :label="labelCn"
       :formRules="formRulesComputer"
@@ -166,6 +166,9 @@ export default {
         }
       }
       return false
+    },
+    isOwner () {
+      return this.$isOwner(this.row)
     },
   },
   created () {
