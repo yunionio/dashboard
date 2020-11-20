@@ -648,5 +648,6 @@
   "cloudenv.cloudaccount.apsara.action_trail_endpoint": "ActionTrailEndpoint",
   "cloudenv.cloudaccount.apsara.ram_endpoint": "RamEndpoint",
   "cloudenv.cloudaccount.apsara.metrics_endpoint": "MetricsEndpoint",
-  "cloudenv.cloudaccount.apsara.resourcemanager_endpoint": "ResourcemanagerEndpoint"
+  "cloudenv.cloudaccount.apsara.resourcemanager_endpoint": "ResourcemanagerEndpoint",
+  "cloudenv.text_572": "Contract number and key can be obtained by reference"
 }

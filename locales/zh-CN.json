@@ -648,5 +648,6 @@
   "cloudenv.cloudaccount.apsara.action_trail_endpoint": "ActionTrail日志端点",
   "cloudenv.cloudaccount.apsara.ram_endpoint": "RAM子账号端点",
   "cloudenv.cloudaccount.apsara.metrics_endpoint": "Metrics监控端点",
-  "cloudenv.cloudaccount.apsara.resourcemanager_endpoint": "Resourcemanager组织管理端点"
+  "cloudenv.cloudaccount.apsara.resourcemanager_endpoint": "Resourcemanager组织管理端点",
+  "cloudenv.text_572": "合约编号及密钥获取可参考"
 }
