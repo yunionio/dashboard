@@ -190,8 +190,8 @@ export default {
         // 网络是公网的阿里云LB实例，添加服务器时不应传参数vpc，但是如果已经有后端服务器数据，那么久取第一条的vpc
         delete params.vpc
         const firstLbBackendData = Object.values(this.params.listData)[0]
-        if (firstLbBackendData && firstLbBackendData.vpc_id) {
-          params.vpc = firstLbBackendData.vpc_id
+        if (firstLbBackendData && firstLbBackendData.data && firstLbBackendData.data.vpc_id) {
+          params.vpc = firstLbBackendData.data.vpc_id
         }
       }
       return params
