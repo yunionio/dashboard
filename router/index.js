@@ -29,7 +29,7 @@ export default {
             label: 'RDS实例',
             permission: 'rds_dbinstances_list',
             t: 'dictionary.dbinstance',
-            hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud']),
+            hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara']),
           },
           children: [
             {
@@ -72,7 +72,7 @@ export default {
     {
       meta: {
         label: 'Redis',
-        hidden: () => !hasSetupKey(['aliyun', 'huawei', 'qcloud']),
+        hidden: () => !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'apsara']),
       },
       submenus: [
         {
