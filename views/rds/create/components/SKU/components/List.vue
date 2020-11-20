@@ -163,6 +163,7 @@ export default {
       return row.status === 'available'
     },
     async handleSkuChange ({ row }) {
+      if (row && !this.isAvailable(row)) return
       const _row = (row && this.isAvailable(row)) ? row : undefined
       this.form.setFieldsValue({
         sku: _row,
