@@ -187,7 +187,7 @@ export default {
       }
       if (this.params.lbBackendgroupData.brand.toLowerCase() === 'openstack') {
         delete params.vpc
-      } else if (this.params.lbData.address_type === 'internet' && this.params.lbBackendgroupData.brand.toLowerCase() === 'aliyun') {
+      } else if (this.isPublicAliyun) {
         // 网络是公网的阿里云LB实例，添加服务器时不应传参数vpc，但是如果已经有后端服务器数据，那么久取第一条的vpc
         delete params.vpc
         params.vpc = this.firstLbBackendVpc
@@ -201,9 +201,14 @@ export default {
         'filter.0': 'status.equals(running,ready)',
       }
     },
+    isPublicAliyun () {
+      return this.params.lbData.address_type === 'internet' && this.params.lbBackendgroupData.brand.toLowerCase() === 'aliyun'
+    },
   },
   created () {
-    this.fetchFirstdataVpc()
+    if (this.isPublicAliyun) {
+      this.fetchFirstdataVpc()
+    }
   },
   methods: {
     handleBackendTypeChange (e) {
