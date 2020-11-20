@@ -3,6 +3,9 @@
   <div>
     <page-header :title="$t('storage.text_183')" />
     <page-body>
+      <dialog-selected-tips :name="$t('storage.text_18')" :count="1" :action="$t('storage.text_183')" />
+      <dialog-table class="mb-2" :data="currentItem" :columns="bucketColumns" />
+      <a-divider />
       <a-form :form="form.fc">
         <a-form-item :label="$t('storage.text_41')" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.status" :checked-children="$t('storage.text_184')" :un-checked-children="$t('storage.text_185')" @change="handleStatusChange" />
@@ -31,6 +34,7 @@
 </template>
 
 <script>
+import { getNameDescriptionTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SetStaticWebsit',
@@ -72,9 +76,34 @@ export default {
           },
         ],
       },
+      currentItem: [],
+      bucketColumns: [
+        getNameDescriptionTableColumn(),
+        getStatusTableColumn({ statusModule: 'bucket' }),
+        {
+          field: 'storage_class',
+          title: this.$t('storage.text_38'),
+          width: 120,
+          formatter: ({ row }) => {
+            return row.storage_class || '-'
+          },
+        },
+      ],
     }
   },
+  async created () {
+    const { data: { data } } = await this.fetchBucketData(this.$route.query.id)
+    this.currentItem = data
+  },
   methods: {
+    fetchBucketData (id) {
+      return new this.$Manager('buckets').list({
+        params: {
+          id,
+          batchGet: true,
+        },
+      })
+    },
     doSet (data) {
       return new this.$Manager('buckets').performAction({
         id: this.$route.query.id,
