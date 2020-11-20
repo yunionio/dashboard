@@ -6,7 +6,12 @@
         <a-form-item label="合约编号">
           <a-input v-decorator="decorators.enrollment_number" />
           <span slot="extra">
-             账单文件存储桶获取可参考 <help-link :href="enrollmentNumberUrl">如何获取azure合约编号和密钥</help-link>
+            <template v-if="isAzure">
+              合约编号及密钥获取可参考 <help-link :href="enrollmentNumberUrl">如何获取azure合约编号和密钥</help-link>
+            </template>
+            <template v-else>
+              账单文件存储桶获取可参考 <help-link :href="enrollmentNumberUrl">如何获取azure合约编号和密钥</help-link>
+            </template>
           </span>
         </a-form-item>
         <a-form-item label="密钥">
