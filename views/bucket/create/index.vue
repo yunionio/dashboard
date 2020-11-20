@@ -126,7 +126,7 @@ export default {
       const params = {
         scope: this.scope,
       }
-      params[this.cloudEnv + '_cloud'] = true
+      params.cloud_env = this.cloudEnv
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
         delete params.scope
