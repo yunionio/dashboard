@@ -183,7 +183,6 @@ export default {
       }
     },
     async create (data) {
-      console.log(data)
       this.loading = true
       try {
         await this.params.onManager('create', {

@@ -688,7 +688,6 @@ export default {
       const ListPath = this.$router.resolve(this.$route.path)
       try {
         const values = await this.form.fc.validateFields()
-        console.log(values)
         this.submiting = true
         if (this.cloudEnv === 'onpremise' && !this.isGroupGuestIpPrefix && (R.isNil(values.startip) || R.isEmpty(values.startip))) {
           this.ipSubnetsValidateStatus = 'error'
