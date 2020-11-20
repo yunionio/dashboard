@@ -165,6 +165,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 import * as R from 'ramda'
 import mixin from './mixin'
 import Bill from '@Compute/sections/Bill'
@@ -201,12 +202,16 @@ export default {
     },
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
-      return {
+      const params = {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
+      if (this.form.fd.sku && this.form.fd.sku.zone) {
+        params.zone_id = this.form.fd.sku.zone_id
+      }
+      return params
     },
     cityParams () {
       return {
