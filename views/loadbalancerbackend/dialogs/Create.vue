@@ -76,6 +76,7 @@ export default {
           span: 4,
         },
       },
+      firstLbBackendVpc: undefined,
     }
   },
   computed: {
@@ -189,10 +190,7 @@ export default {
       } else if (this.params.lbData.address_type === 'internet' && this.params.lbBackendgroupData.brand.toLowerCase() === 'aliyun') {
         // 网络是公网的阿里云LB实例，添加服务器时不应传参数vpc，但是如果已经有后端服务器数据，那么久取第一条的vpc
         delete params.vpc
-        const firstLbBackendData = Object.values(this.params.listData)[0]
-        if (firstLbBackendData && firstLbBackendData.data && firstLbBackendData.data.vpc_id) {
-          params.vpc = firstLbBackendData.data.vpc_id
-        }
+        params.vpc = this.firstLbBackendVpc
       }
       return params
     },
@@ -203,6 +201,9 @@ export default {
         'filter.0': 'status.equals(running,ready)',
       }
     },
+  },
+  created () {
+    this.fetchFirstdataVpc()
   },
   methods: {
     handleBackendTypeChange (e) {
@@ -242,6 +243,19 @@ export default {
         this.params.refresh()
       } catch (error) {
         this.loading = false
+      }
+    },
+    async fetchFirstdataVpc () {
+      try {
+        const firstLbBackendList = Object.values(this.params.listData).filter(val => val.data.backend_type === 'guest')
+        if (firstLbBackendList && firstLbBackendList.length) {
+          const firstLbBackendData = firstLbBackendList[0]
+          const firstId = firstLbBackendData.data.backend_id
+          const { data } = await new this.$Manager('servers').get({ id: firstId })
+          this.firstLbBackendVpc = data.vpc_id
+        }
+      } catch (error) {
+        throw error
       }
     },
   },
