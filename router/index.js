@@ -25,6 +25,35 @@ export default {
     icon: 'menu-helm',
   },
   menus: [
+    Monitor,
+    {
+      meta: {
+        label: i18n.t('helm.text_7'),
+      },
+      submenus: [
+        {
+          path: '/scheduledtask',
+          meta: {
+            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
+            label: i18n.t('helm.text_8'),
+            permission: 'scheduledtasks_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Scheduledtasks',
+              path: '',
+              component: Scheduledtask,
+            },
+            {
+              name: 'ScheduledtaskCreate',
+              path: 'create',
+              component: ScheduledtaskCreate,
+            },
+          ],
+        },
+      ],
+    },
     {
       meta: {
         label: i18n.t('helm.text_2'),
@@ -107,35 +136,6 @@ export default {
               name: 'K8sRepoList',
               path: '',
               component: Repo,
-            },
-          ],
-        },
-      ],
-    },
-    Monitor,
-    {
-      meta: {
-        label: i18n.t('helm.text_7'),
-      },
-      submenus: [
-        {
-          path: '/scheduledtask',
-          meta: {
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
-            label: i18n.t('helm.text_8'),
-            permission: 'scheduledtasks_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Scheduledtasks',
-              path: '',
-              component: Scheduledtask,
-            },
-            {
-              name: 'ScheduledtaskCreate',
-              path: 'create',
-              component: ScheduledtaskCreate,
             },
           ],
         },
