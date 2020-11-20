@@ -52,6 +52,10 @@ export default {
     },
   },
   data () {
+    const filter = {}
+    if (this.$route.query.id) {
+      filter.id = [this.$route.query.id]
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -63,7 +67,11 @@ export default {
             return val.metadata && (val.metadata.create_backup || val.metadata.switch_backup)
           },
         },
+        filter,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           brand: getBrandFilter('compute_engine_brands'),
           ip_addr: {
@@ -891,7 +899,13 @@ export default {
   },
   created () {
     this.initSidePageTab('vm-instance-detail')
-    this.list.fetchData()
+    this.list.fetchData().then(() => {
+      this.$nextTick(() => {
+        if (this.$route.query.id) {
+          this.handleOpenSidepage(this.list.data[this.$route.query.id].data)
+        }
+      })
+    })
     this.$bus.$on('VMInstanceListSingleUpdate', args => {
       this.list.singleUpdate(...args)
     }, this)
