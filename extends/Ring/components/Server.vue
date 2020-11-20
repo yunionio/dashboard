@@ -246,7 +246,7 @@ export default {
       return '-'
     },
     showTips () {
-      const keyTips = ['hosts.memory', 'hosts.cpu', 'storages']
+      const keyTips = ['hosts.memory.total', 'hosts.cpu.total', 'storages']
       return keyTips.includes(this.form.fd.all_usage_key)
     },
   },
