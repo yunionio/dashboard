@@ -9,6 +9,7 @@
     <page-list
       v-else
       :list="list"
+      :showSearchbox="false"
       :columns="columns"
       :group-actions="groupActions"
       :single-actions="singleActions" />
@@ -16,7 +17,6 @@
 </template>
 
 <script>
-import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -42,9 +42,6 @@ export default {
         resource: 'cors',
         ctx: [['buckets', this.resId]],
         getParams: this.getParam,
-        filterOptions: {
-          name: getNameFilter(),
-        },
       }),
       groupActions: [
         {

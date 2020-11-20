@@ -115,7 +115,7 @@ export default {
               meta: (obj) => {
                 return {
                   validate: obj.provider === HYPERVISORS_MAP.qcloud.provider,
-                  tooltip: obj.provider !== HYPERVISORS_MAP.qcloud.provider ? i18n.t('storage.text_232', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : '',
+                  tooltip: obj.provider !== HYPERVISORS_MAP.qcloud.provider ? (HYPERVISORS_MAP[obj.provider.toLowerCase()] ? i18n.t('storage.text_232', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : '') : '',
                 }
               },
             },
@@ -132,7 +132,7 @@ export default {
               meta: (obj) => {
                 return {
                   validate: obj.provider === HYPERVISORS_MAP.qcloud.provider,
-                  tooltip: obj.provider !== HYPERVISORS_MAP.qcloud.provider ? i18n.t('storage.text_233', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : '',
+                  tooltip: obj.provider !== HYPERVISORS_MAP.qcloud.provider ? (HYPERVISORS_MAP[obj.provider.toLowerCase()] ? i18n.t('storage.text_233', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : '') : '',
                 }
               },
             },
