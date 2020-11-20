@@ -2154,7 +2154,8 @@
     "samluser": "SMAL用户",
     "guestsecgroup": "云服务器安全组",
     "scalinggroupguest": "云服务器弹性伸缩组",
-    "hoststorage": "宿主机存储"
+    "hoststorage": "宿主机存储",
+    "usage": "使用量"
   },
   "res": {
     "role": "@:dictionary.role",

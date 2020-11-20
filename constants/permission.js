@@ -766,6 +766,15 @@ export const PERMISSION = {
   hoststorages_list: ['compute', 'hoststorages', 'list'],
   // 宿主机二层网络
   hostwires_list: ['compute', 'hostwires', 'list'],
+  // 计算使用量
+  compute_usages_list: ['compute', 'usages', 'list'],
+  compute_usages_get: ['compute', 'usages', 'get'],
+  // 镜像使用量
+  // image_usages_list: ['image', 'usages', 'list'],
+  // image_usages_get: ['image', 'usages', 'get'],
+  // // 认证使用量
+  // identity_usages_list: ['identity', 'usages', 'list'],
+  // identity_usages_get: ['identity', 'usages', 'get'],
 }
 
 // 已声明权限的资源

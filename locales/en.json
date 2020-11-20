@@ -2154,7 +2154,8 @@
     "samluser": "SMAL user",
     "guestsecgroup": "Server secgroup",
     "scalinggroupguest": "Server scaling",
-    "hoststorage": "Host storage"
+    "hoststorage": "Host storage",
+    "usage": "Usage"
   },
   "res": {
     "role": "Role",
