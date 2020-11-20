@@ -248,7 +248,7 @@ export default {
       try {
         this.metricKeyItem = metricKeyItem
         this.mertricItem = mertricItem
-        this.$emit('mertricItemChange', { ...mertricItem, title: this.getTitle() })
+        this.$emit('mertricItemChange', { ...mertricItem, title: this.getTitle(), metricKeyItem })
         const params = {
           $t: getRequestT(),
           database: metricKeyItem.database,
