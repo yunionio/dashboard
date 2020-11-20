@@ -13,7 +13,7 @@ export default {
           })
         },
         meta: obj => {
-          const { provider } = this.data
+          const { provider } = obj
           if (provider.toLowerCase() === 'huawei') {
             return {
               validate: false,
@@ -48,7 +48,7 @@ export default {
           })
         },
         meta: obj => {
-          const { provider } = this.data
+          const { provider } = obj
           if (provider.toLowerCase() === 'aws') {
             return {
               validate: false,

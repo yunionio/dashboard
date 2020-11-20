@@ -246,7 +246,6 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        console.log(values)
         let params = {}
         if (values.cloudregion) {
           params = {

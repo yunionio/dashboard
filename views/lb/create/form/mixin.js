@@ -291,7 +291,6 @@ export default {
         ...this.formItemLayout,
         event: {
           providerFetchSuccess: (list) => {
-            console.log(list)
             return list
           },
         },
@@ -315,9 +314,6 @@ export default {
         return false
       }
       return true
-    },
-    handleVpcChange (changeValue) {
-      console.log(changeValue)
     },
     onValuesChange (props, values) {
       R.forEachObjIndexed((value, key) => {

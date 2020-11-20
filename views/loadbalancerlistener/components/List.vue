@@ -131,6 +131,7 @@ export default {
         resource: 'loadbalancerlisteners',
         getParams: this.getParam,
         rowData: row,
+        lbData: this.data,
       }, {
         list: this.list,
         lbDetail: this.data,
