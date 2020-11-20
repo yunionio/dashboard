@@ -123,7 +123,7 @@ export default {
                   <span>{ row.referer ? row.referer.enabled ? this.$t('storage.text_215') : this.$t('storage.text_216') : '-' }</span>,
                   <a-tooltip>
                     { row.provider !== HYPERVISORS_MAP.qcloud.provider ? (
-                      <template slot="title">{i18n.t('storage.text_235', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template>
+                      HYPERVISORS_MAP[row.provider.toLowerCase()] ? <template slot="title">{i18n.t('storage.text_235', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template> : ''
                     ) : null }
                     <a-button type="link" class="ml-2" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider } onClick={() => this.handleSetReferer(row)}>{ this.$t('common.setting') }</a-button>
                   </a-tooltip>,
@@ -260,7 +260,7 @@ export default {
                     <list-body-cell-wrap class="float-left" copy row={ row } field='website_url' title={ row.website_url } />,
                     <a-tooltip>
                       { row.provider !== HYPERVISORS_MAP.qcloud.provider ? (
-                        <template slot="title">{i18n.t('storage.text_236', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template>
+                        HYPERVISORS_MAP[row.provider.toLowerCase()] ? <template slot="title">{i18n.t('storage.text_236', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template> : ''
                       ) : null }
                       <a-button type="link" class="float-left ml-2" style="display: grid;" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider } onClick={() => this.handleSetWebsite(row)}>{ this.$t('common.setting') }</a-button>
                     </a-tooltip>,
@@ -381,11 +381,11 @@ export default {
     async fetchCdnDomain () {
       this.loading = true
       try {
-        const { data } = await this.bucketsM.getSpecific({
+        const { data: { data } } = await this.bucketsM.getSpecific({
           id: this.data.id,
           spec: 'cdn-domain',
         })
-        this.$set(this.data, 'cdn_domains', data.domains)
+        this.$set(this.data, 'cdn_domains', data)
       } catch (err) {
         throw err
       } finally {
