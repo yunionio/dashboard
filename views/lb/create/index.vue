@@ -87,7 +87,6 @@ export default {
   },
   watch: {
     cloudEnv (val) {
-      console.log(val)
       this.$nextTick(() => {
         const query = this.getQuery(this.$router.history.current.query)
         const path = this.$router.history.current.path

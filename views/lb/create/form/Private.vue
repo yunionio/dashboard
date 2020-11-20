@@ -61,7 +61,6 @@ export default {
   },
   methods: {
     async submit () {
-      console.log(this.vpcObj)
       const { manager_id } = this.vpcObj
       try {
         const values = await this.form.fc.validateFields()
