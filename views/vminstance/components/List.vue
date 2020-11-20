@@ -904,7 +904,7 @@ export default {
     this.initSidePageTab('vm-instance-detail')
     this.list.fetchData().then(() => {
       this.$nextTick(() => {
-        if (this.$route.query.id) {
+        if (this.$route.query.id && this.list.data[this.$route.query.id]) {
           this.handleOpenSidepage(this.list.data[this.$route.query.id].data)
         }
       })
