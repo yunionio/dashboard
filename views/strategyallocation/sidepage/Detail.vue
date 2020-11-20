@@ -6,7 +6,8 @@
     :data="data"
     :onManager="onManager"
     :base-info="baseInfo"
-    :nameProps="{ field: 'policy_name' }" />
+    :nameProps="{ field: 'policy_name' }"
+    :hiddenKeys="['project_domain', 'tenant', 'status']" />
 </template>
 
 <script>
@@ -59,7 +60,7 @@ export default {
               ret = this.$t('cloudenv.text_505', [row.project_domain])
             }
             if (row.project) {
-              ret += this.$t('cloudenv.text_506', [row.project])
+              ret = this.$t('cloudenv.text_506', [row.project])
             }
             return ret
           },
