@@ -2236,7 +2236,8 @@
       "zone_1_name": "Backup Zone",
       "mfa_validate": "MFA",
       "exec_result": "Result",
-      "scope_range": "Scope"
+      "scope_range": "Scope",
+      "id": "ID"
     },
     "action": {
       "save": "Save",
