@@ -7,7 +7,7 @@
     </a-form-item>
     <a-form-item :label="$t('db.text_132')" v-bind="formItemLayout">
       <a-radio-group v-decorator="['vmem_size_mb']" @change="$emit('change')">
-        <a-radio-button :key="size" :value="size" v-for="size in mems_mbs">{{sizestr(size, 'M', 1000)}}</a-radio-button>
+        <a-radio-button :key="size" :value="size" v-for="size in mems_mbs">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item :label="$t('db.text_133')" v-bind="formItemLayout">
