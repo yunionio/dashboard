@@ -5,7 +5,13 @@
       <template v-if="isAzure">
         <a-form-item :label="$t('cloudenv.text_195')">
           <a-input v-decorator="decorators.enrollment_number" />
-          <span slot="extra">{{$t('cloudenv.text_196')}}<help-link :href="enrollmentNumberUrl">{{$t('cloudenv.text_197')}}</help-link>
+          <span slot="extra">
+            <template v-if="isAzure">
+              {{$t('cloudenv.text_499')}} <help-link :href="enrollmentNumberUrl">{{$t('cloudenv.text_197')}}</help-link>
+            </template>
+            <template v-else>
+              {{$t('cloudenv.text_196')}} <help-link :href="enrollmentNumberUrl">{{$t('cloudenv.text_197')}}</help-link>
+            </template>
           </span>
         </a-form-item>
         <a-form-item :label="$t('cloudenv.text_198')">
