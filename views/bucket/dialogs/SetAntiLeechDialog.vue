@@ -113,7 +113,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        values.domain_list = values.domain_list.trim().split('\n')
+        if (values.domain_list) values.domain_list = values.domain_list.trim().split('\n')
         await this.doSet(values)
         this.loading = false
         this.cancelDialog()
