@@ -224,11 +224,11 @@ export default {
       return ret
     },
     showReserved () {
-      return this.form.fd.usage_key === 'all.servers.memory' && this.form.fd.all_usage_key === 'hosts.memory'
+      return this.form.fd.usage_key === 'all.servers.memory' && this.form.fd.all_usage_key === 'hosts.memory.total'
     },
     showGpuReserved () {
-      const isMemory = this.form.fd.usage_key === 'all.servers.memory' && this.form.fd.all_usage_key === 'hosts.memory'
-      const isCpu = this.form.fd.usage_key === 'all.servers.cpu' && this.form.fd.all_usage_key === 'hosts.cpu'
+      const isMemory = this.form.fd.usage_key === 'all.servers.memory' && this.form.fd.all_usage_key === 'hosts.memory.total'
+      const isCpu = this.form.fd.usage_key === 'all.servers.cpu' && this.form.fd.all_usage_key === 'hosts.cpu.total'
       const isStorage = this.form.fd.usage_key === 'all.servers.disk' && this.form.fd.all_usage_key === 'storages'
       return isMemory || isCpu || isStorage
     },
@@ -236,9 +236,9 @@ export default {
       return this.showReserved && sizestrWithUnit(this.data['hosts.memory.reserved'], 'M', 1024)
     },
     gpuReserved () {
-      if (this.form.fd.all_usage_key === 'hosts.memory') {
+      if (this.form.fd.all_usage_key === 'hosts.memory.total') {
         return sizestrWithUnit(this.data['hosts.memory.reserved.isolated'], 'M', 1024)
-      } else if (this.form.fd.all_usage_key === 'hosts.cpu') {
+      } else if (this.form.fd.all_usage_key === 'hosts.cpu.total') {
         return `${this.data['hosts.cpu.reserved.isolated'] || 0}${this.usageConfig.unit}`
       } if (this.form.fd.all_usage_key === 'storages') {
         return sizestrWithUnit(this.data['hosts.storage.reserved.isolated'], 'M', 1024)
