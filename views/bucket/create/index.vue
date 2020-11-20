@@ -15,6 +15,8 @@
           :cloudregionParams="cloudregionParams"
           :cityParams="cityParams"
           :isRequired="true"
+          :cloudregionParamsMapper="cloudregionParamsMapper"
+          :providerParams="providerParams"
           @change="handleCloudregionChange" />
         <a-form-item :label="$t('storage.text_40')">
           <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />
@@ -161,6 +163,12 @@ export default {
       }
       return ['city', 'provider', 'cloudregion']
     },
+    providerParams () {
+      return {
+        scope: this.scope,
+        projecct_domain: this.project_domain,
+      }
+    },
   },
   watch: {
     cloudEnv (newValue) {
@@ -235,6 +243,11 @@ export default {
         this.loading = false
         throw error
       }
+    },
+    cloudregionParamsMapper (params) {
+      const p = { ...params }
+      delete p.usable
+      return p
     },
   },
 }
