@@ -153,7 +153,7 @@ export default {
           y: 4,
         },
         params: {
-          all_usage_key: 'hosts.memory',
+          all_usage_key: 'hosts.memory.total',
           name: i18n.t('dashboard.text_132'),
           usage_key: 'all.servers.memory',
         },
@@ -197,7 +197,7 @@ export default {
           y: 4,
         },
         params: {
-          all_usage_key: 'hosts.cpu',
+          all_usage_key: 'hosts.cpu.total',
           name: i18n.t('dashboard.text_135'),
           usage_key: 'all.servers.cpu',
         },

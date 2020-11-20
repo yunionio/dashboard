@@ -266,10 +266,16 @@ export const USAGE_CONFIG = {
   'hosts.cpu': {
     unit: i18n.t('dashboard.text_3'),
   },
+  'hosts.cpu.total': {
+    unit: i18n.t('dashboard.text_3'),
+  },
   'hosts.cpu.virtual': {
     unit: i18n.t('dashboard.text_3'),
   },
   'hosts.memory': {
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
+  },
+  'hosts.memory.total': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'hosts.memory.virtual': {
