@@ -127,7 +127,6 @@ export default {
       return ret
     },
     handleOpenSidepage (row) {
-      console.log(this.$store)
       this.sidePageTriggerHandle(this, 'AgentSidePage', {
         id: row.id,
         resource: 'loadbalanceragents',
