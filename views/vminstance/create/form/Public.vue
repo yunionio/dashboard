@@ -120,15 +120,15 @@
       <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
-          <a-form-item :label="$t('compute.text_107')">
-            <eip-config
-              :decorators="decorators.eip"
-              :eip-params="eipParams"
-              :hypervisor="hypervisor"
-              :showBind="false"
-              :isServertemplate="isServertemplate"
-              :form="form" />
-          </a-form-item>
+          <eip-config
+            :decorators="decorators.eip"
+            :eip-params="eipParams"
+            :hypervisor="hypervisor"
+            :showBind="false"
+            :isServertemplate="isServertemplate"
+            :cloud-env="type"
+            :form="form"
+            :formItemLayout="formItemLayout" />
           <a-form-item :label="$t('compute.text_105')">
             <secgroup-config
               :provider="hypervisor"
@@ -165,6 +165,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 import * as R from 'ramda'
 import mixin from './mixin'
 import Bill from '@Compute/sections/Bill'
@@ -201,12 +202,16 @@ export default {
     },
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
-      return {
+      const params = {
         filter: 'server_type.notin(ipmi, pxe)',
         usable: true,
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
+      if (this.form.fd.sku && this.form.fd.sku.zone) {
+        params.zone_id = this.form.fd.sku.zone_id
+      }
+      return params
     },
     cityParams () {
       return {
