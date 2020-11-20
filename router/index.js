@@ -67,7 +67,7 @@ export default {
             label: 'VPC',
             permission: 'vpcs_list',
             t: 'dictionary.vpc',
-            hidden: () => !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal']),
+            hidden: () => !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara']),
           },
           component: Layout,
           children: [
@@ -273,7 +273,7 @@ export default {
     {
       meta: {
         label: i18n.t('network.text_713'),
-        hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s']),
+        hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara']),
         labelAlias: '网络负载均衡',
         // hidden: () => !hasServices('lbagent') && !hasHypervisors(['aliyun', 'qcloud', 'huawei', 'aws']),
       },
