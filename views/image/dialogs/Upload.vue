@@ -19,6 +19,12 @@
             v-decorator="decorators.os_arch"
             :form="form" />
         </a-form-item>
+        <a-form-item :label="$t('compute.text_1368')">
+          <a-radio-group v-decorator="decorators.os_bit">
+            <a-radio-button value="64">{{ $t('compute.text_1370') }}</a-radio-button>
+            <a-radio-button value="32">{{ $t('compute.text_1369') }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
         <a-form-item :label="$t('compute.text_667')" v-bind="formItemLayout">
           <a-radio-group @change="handleUploadTypeChange" v-decorator="decorators.uploadType">
             <a-radio-button value="file">{{$t('compute.text_668')}}</a-radio-button>
@@ -142,6 +148,12 @@ export default {
             initialValue: HOST_CPU_ARCHS.x86.key,
           },
         ],
+        os_bit: [
+          'os_bit',
+          {
+            initialValue: '64',
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -247,9 +259,18 @@ export default {
         const values = await this.form.fc.validateFields()
         formData.append('domain_id', (values.domain && values.domain.key) || this.userInfo.projectDomainId)
         formData.append('project_id', (values.project && values.project.key) || this.userInfo.projectId)
+        const os_bit = values.os_bit
+        if (values.os_arch === HOST_CPU_ARCHS.arm.key) {
+          values.os_arch = `aarch${os_bit}`
+        } else {
+          if (os_bit === '64') { // else 情况就是x86，既 os_arch 本身的值
+            values.os_arch = 'x86-64'
+          }
+        }
         if (values.uploadType === 'file') {
           formData.append('name', values.name)
           formData.append('os_version', '')
+          formData.append('os_arch', values.os_arch)
           if (fileList.length > 0) {
             formData.append('image_size', fileList[0].size)
             fileList.forEach(file => {
