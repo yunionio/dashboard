@@ -44,6 +44,7 @@ export default {
       const { fd } = this.form
       const params = {
         cloudregion_id: fd.cloudregion_id || fd.cloudregion,
+        zone_id: fd.zones || fd.sku.zone_id,
         ...this.scopeParams,
       }
       // zones是rds新建
