@@ -3,7 +3,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('storage.text_205')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="params.name" :count="params.data.length" :action="params.title" />
+      <dialog-selected-tips :name="params.name" :count="params.data.length" :action="$t('storage.text_205')" />
       <dialog-table class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
