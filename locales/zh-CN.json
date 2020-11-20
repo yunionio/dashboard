@@ -622,5 +622,6 @@
   "cloudenv.environment": "账号类型",
   "cloudenv.environment_check": "请选择账号类型",
   "cloudenv.international_cloud": "公共云",
-  "cloudenv.finance_cloud": "金融云"
+  "cloudenv.finance_cloud": "金融云",
+  "cloudenv.text_571": "合约编号及密钥获取可参考"
 }
