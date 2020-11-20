@@ -93,6 +93,7 @@ export default {
       type: Function,
       required: false,
     },
+    cloudregionParamsMapper: Function,
   },
   watch: {
     cityParams (val, oldVal) {
@@ -356,7 +357,7 @@ export default {
     async fetchCloudregion (queryParams) {
       const { getFieldsValue } = this.FC
       const { city, provider } = getFieldsValue(this.names)
-      const params = {
+      let params = {
         city,
         provider,
         capability: 'compute',
@@ -365,6 +366,9 @@ export default {
       }
       if (queryParams.is_on_premise || (params.cloud_env && params.cloud_env === 'onpremise')) {
         delete params.capability
+      }
+      if (this.cloudregionParamsMapper) {
+        params = this.cloudregionParamsMapper(params)
       }
       this.cloudregionLoading = true
       try {
