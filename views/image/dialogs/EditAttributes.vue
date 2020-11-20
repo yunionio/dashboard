@@ -66,6 +66,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import OsArch from '@/sections/OsArch'
@@ -78,6 +79,7 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const os_arch = _.get(this.params.data, '[0].os_arch').includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
     return {
       loading: false,
       form: {
@@ -132,7 +134,7 @@ export default {
         os_arch: [
           'os_arch',
           {
-            initialValue: HOST_CPU_ARCHS.x86.key,
+            initialValue: os_arch,
           },
         ],
       },
