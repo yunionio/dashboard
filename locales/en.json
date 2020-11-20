@@ -2258,7 +2258,8 @@
       "introduction": "Introduction",
       "exec_result": "Result",
       "scope_range": "Scope",
-      "os_arch": "CPU Architecture"
+      "os_arch": "CPU Architecture",
+      "id": "ID"
     },
     "action": {
       "save": "Save",

@@ -2258,7 +2258,8 @@
       "introduction": "简介",
       "exec_result": "执行结果",
       "scope_range": "应用范围",
-      "os_arch": "CPU架构"
+      "os_arch": "CPU架构",
+      "id": "ID"
     },
     "action": {
       "save": "保存",
