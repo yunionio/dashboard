@@ -36,10 +36,10 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import AlertForm from './form'
 import MonitorLine from '@Monitor/sections/MonitorLine'
-import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
-import { timeOpts } from '@Monitor/constants'
+import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getSignature } from '@/utils/crypto'
+import { timeOpts } from '@/constants/monitor'
 
 export default {
   name: 'Commonalert',

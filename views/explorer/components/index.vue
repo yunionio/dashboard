@@ -29,11 +29,12 @@ import get from 'lodash/get'
 import echarts from 'echarts'
 import MonitorForms from './forms'
 import MonitorLine from '@Monitor/sections/MonitorLine'
-import CustomDate from '@Monitor/sections/MonitorLine/CustomDate'
-import { timeOpts, MONITOR_MAX_POINTERS } from '@Monitor/constants'
+import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
+import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
+import { timeOpts } from '@/constants/monitor'
 
 export default {
   name: 'ExplorerIndex',
