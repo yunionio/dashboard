@@ -6,6 +6,7 @@ import { SERVER_TYPE } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 
 export default {
   computed: {
@@ -382,6 +383,10 @@ export default {
                     }
                     if (obj.backup_host_id) {
                       ret.tooltip = i18n.t('compute.text_1111')
+                      return ret
+                    }
+                    if (obj.os_arch === HOST_CPU_ARCHS.arm.key && obj.status === 'running') {
+                      ret.tooltip = i18n.t('compute.text_1371')
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
