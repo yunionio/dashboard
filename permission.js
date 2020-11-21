@@ -16,6 +16,20 @@ scopePermission.keys().forEach(name => {
   scopeBeforeEach = obj.beforeEach
 })
 
+const toLogin = (to, from, next) => {
+  const query = {
+    pathAuth: true,
+    path: to.path,
+  }
+  if (!R.isNil(to.query) && !R.isEmpty(to.query)) {
+    query.pathQuery = JSON.stringify(to.query)
+  }
+  return next({
+    path: '/auth/login',
+    query,
+  })
+}
+
 router.beforeEach(async (to, from, next) => {
   const { auth = true } = to.meta
   // 无token情况
@@ -23,13 +37,7 @@ router.beforeEach(async (to, from, next) => {
   const hasToken = !!store.getters.auth.token
   if (!hasToken) {
     if (auth) {
-      return next({
-        path: '/auth/login',
-        query: {
-          pathAuth: true,
-          path: to.path,
-        },
-      })
+      return toLogin(to, from, next)
     }
     return next()
   }
@@ -52,13 +60,7 @@ router.beforeEach(async (to, from, next) => {
   }
   // 需要认证页面
   if (!hasToken) {
-    return next({
-      path: '/auth/login',
-      query: {
-        pathAuth: true,
-        path: to.path,
-      },
-    })
+    return toLogin(to, from, next)
   }
   const hasRoles = !R.isEmpty(store.getters.userInfo.roles) && !R.isNil(store.getters.userInfo.roles)
   const hasPermission = !R.isEmpty(store.getters.permission) && !R.isNil(store.getters.permission)
