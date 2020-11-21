@@ -124,5 +124,11 @@ export default {
 <style lang="less" scoped>
 .influx-line-wrapper {
   height: 400px;
+  ::v-deep {
+    .echarts {
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 </style>

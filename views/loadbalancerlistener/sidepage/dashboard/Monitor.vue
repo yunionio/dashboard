@@ -3,12 +3,22 @@
     <div class="detail-title">{{$t('network.text_487')}}</div>
     <monitor-control v-model="form" @refresh="fetchData" />
     <div class="mt-5">
-      <div class="title mt-2">{{$t('network.text_488', [bpsUnit])}}</div>
-      <influx-line :options="netOpt" :time-format="timeFormat" />
-      <div class="title mt-3">{{$t('network.text_489')}}</div>
-      <influx-line :options="connectOpt" :time-format="timeFormat" />
-      <div class="title mt-3">{{$t('network.text_490')}}</div>
-      <influx-line :options="negativeOpt" :time-format="timeFormat" />
+      <a-row :gutter="8">
+        <a-col :span="12">
+          <div class="title mt-2">{{$t('network.text_488', [bpsUnit])}}</div>
+          <influx-line :options="netOpt" :time-format="timeFormat" />
+        </a-col>
+        <a-col :span="12">
+          <div class="title mt-3">{{$t('network.text_489')}}</div>
+          <influx-line :options="connectOpt" :time-format="timeFormat" />
+        </a-col>
+      </a-row>
+      <a-row :gutter="8">
+        <a-col :span="12">
+          <div class="title mt-3">{{$t('network.text_490')}}</div>
+          <influx-line :options="negativeOpt" :time-format="timeFormat" />
+        </a-col>
+      </a-row>
     </div>
   </div>
 </template>
@@ -40,7 +50,9 @@ export default {
       negativeOpt: {},
       bpsUnit: 'B',
       form: {
-        timeRange: [this.$moment(+new Date() - 1000 * 3600 * 24 * 30), this.$moment(+new Date())], // 1个月
+        time: {
+          from: 'now-1h',
+        }, // 1个月
         aggregate: 'mean',
       },
     }
@@ -53,16 +65,17 @@ export default {
       return HAD_DASHBOARD_DATA.includes(this.data.listener_type)
     },
     timeFormat () {
-      const [startTime, endTime] = this.form.timeRange
-      const timeRange = (endTime - startTime) / 1000 // 秒
+      const from = this.form.time.from.replace(/\D+/g, '')
+      const to = this.form.time.to ? this.form.time.to.replace(/\D+/g, '') : 0
+      const timeRange = (from - to) * 3600 // 小时 -> 秒
       if (timeRange <= 3600 * 24) { // 小于1天
         return 'HH:mm:ss'
       } else if (timeRange >= (3600 * 24) && timeRange <= (3600 * 24 * 30)) { // 大于1天，小于30天
-        return this.$t('network.text_493')
+        return 'MM-DD HH:mm:ss'
       } else if (timeRange >= (3600 * 24 * 30) && timeRange <= (3600 * 24 * 30 * 12)) { // 大于1月，小于1年
-        return this.$t('network.text_494')
+        return 'MM-DD HH:mm:ss'
       } else { // 大于1年
-        return this.$t('network.text_495')
+        return 'YYYY-MM-DD HH:mm:ss'
       }
     },
   },
@@ -82,17 +95,17 @@ export default {
   },
   methods: {
     fetchData () {
-      this.getData('bps', this.form.timeRange, this.form.aggregate)
-      this.getData('rate', this.form.timeRange, this.form.aggregate)
-      this.getData('accident', this.form.timeRange, this.form.aggregate)
+      this.getData('bps', this.form.time, this.form.aggregate)
+      this.getData('rate', this.form.time, this.form.aggregate)
+      this.getData('accident', this.form.time, this.form.aggregate)
     },
-    async getData (fieldType, timeRange, aggregate) {
+    async getData (fieldType, time, aggregate) {
       const isRule = this.data.type === 2
       const p = {
         fieldType,
         lsType: this.listenerType,
         lsId: this.data.id,
-        timeRange,
+        time,
         aggregate,
         isRule,
         scope: this.$store.getters.scope,
