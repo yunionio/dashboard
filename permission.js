@@ -53,6 +53,18 @@ router.beforeEach(async (to, from, next) => {
     ) {
       return next()
     }
+    // sso登录携带query的情况
+    const { rf, pathAuthPage, pathAuth, path, pathQuery } = to.query
+    if (rf) {
+      document.location.href = rf
+      return
+    }
+    if (!pathAuthPage && pathAuth && path) {
+      return next({
+        path,
+        query: pathQuery && JSON.parse(pathQuery),
+      })
+    }
     return next('/')
   }
   if (!auth) {
