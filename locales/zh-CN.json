@@ -1342,5 +1342,6 @@
   "compute.text_1367": "ARM架构虚拟机开机不支持调整内存，请关机后重试",
   "compute.text_1368": "系统位数",
   "compute.text_1369": "32位",
-  "compute.text_1370": "64位"
+  "compute.text_1370": "64位",
+  "compute.text_1371": "ARM架构虚拟机开机不支持调整配置，请关机后重试"
 }
