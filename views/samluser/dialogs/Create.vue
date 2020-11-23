@@ -193,6 +193,7 @@ export default {
           values.cloudaccount_id = this.params.cloudaccount.id
         }
         values.project_id = this.form.fi.project.id
+        values.project_domain = this.form.fi.user.project_domain
         await this.params.onManager('create', {
           managerArgs: {
             data: values,
