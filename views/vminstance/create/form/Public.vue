@@ -448,11 +448,6 @@ export default {
       }
       this.$refs.areaSelectRef.fetchs(['provider'])
     },
-    'form.fd.sku' (val, oldVal) {
-      if (val && !R.equals(val, oldVal)) {
-        this.fetchCapability()
-      }
-    },
     'form.fd.duration' (val, oldVal) {
       if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
         if (val === '1W' || oldVal === '1W') {
@@ -468,6 +463,7 @@ export default {
   },
   created () {
     this.baywatch(['form.fd.city', 'form.fd.provider', 'form.fd.cloudregion', 'form.fd.zone'], this.fetchInstanceSpecs)
+    this.baywatch(['form.fd.sku', 'form.fd.zone'], this.withFetchCapbilites)
   },
   methods: {
     providerFetchSuccess (list) {
@@ -494,7 +490,7 @@ export default {
         this._setNewFieldToFd(newField, formValue)
       })
     },
-    fetchCapability () {
+    async fetchCapability () {
       const params = {
         show_emulated: true,
         ...this.scopeParams,
@@ -510,21 +506,30 @@ export default {
       if (!id) return
       if (R.equals(this.capabilityParams, capabilityParams)) return // 和已有的参数一样则不发请求
       this.capabilityParams = capabilityParams
-      new this.$Manager(resource).getSpecific(this.capabilityParams)
-        .then(({ data }) => {
-          this.form.fi.capability = data
-        })
+      try {
+        const { data } = await new this.$Manager(resource).getSpecific(this.capabilityParams)
+        this.form.fi.capability = data
+      } catch (error) {
+        throw error
+      }
     },
-    fetchInstanceSpecs () {
-      this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParams })
-        .then(({ data }) => {
-          this.form.fi.cpuMem = data
-          const vcpuDecorator = this.decorators.vcpu
-          const vcpuInit = vcpuDecorator[1].initialValue
-          const cpu = this.form.fd.vcpu || vcpuInit
-          this.cpuChange(cpu)
-        })
+    async fetchInstanceSpecs () {
+      try {
+        const { data } = await this.serverskusM.get({ id: 'instance-specs', params: this.instanceSpecParams })
+        this.form.fi.cpuMem = data
+        const vcpuDecorator = this.decorators.vcpu
+        const vcpuInit = vcpuDecorator[1].initialValue
+        const cpu = this.form.fd.vcpu || vcpuInit
+        this.cpuChange(cpu)
+      } catch (error) {
+        throw error
+      }
     },
+    withFetchCapbilites (val, oldVal) {
+      if (val && !R.equals(val, oldVal)) {
+        this.fetchCapability()
+      }
+    }
   },
 }
 </script>
