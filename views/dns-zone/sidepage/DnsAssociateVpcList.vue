@@ -176,7 +176,6 @@ export default {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
-      if (this.id) ret.dns_zone_id = this.id
       return ret
     },
     handleOpenSidepage (row) {
