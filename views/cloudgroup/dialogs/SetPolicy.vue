@@ -51,9 +51,6 @@ export default {
           {
             validateFirst: true,
             initialValue: get(this.params.data[0], 'cloudpolicies', []).map(item => item.id),
-            rules: [
-              { required: true, message: this.$t('common.select') },
-            ],
           },
         ],
       },
