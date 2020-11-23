@@ -565,6 +565,7 @@ export const getBillingTableColumn = ({
   title = i18n.t('table.title.bill_type'),
   minWidth = 120,
   showOverflow = 'ellipsis',
+  hiddenSetBtn,
 } = {}) => {
   return {
     title,
@@ -594,7 +595,11 @@ export const getBillingTableColumn = ({
           let tooltipCon = <div slot="help"></div>
           if (billingType === 'postpaid') {
             if (hasPermission({ key: 'server_perform_cancel_expire' })) {
-              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }<span class="link-color" style="cursor: pointer" onClick={ openVmSetDurationDialog }>{ i18n.t('common_453') }</span></div>
+              if (hiddenSetBtn) {
+                tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }</div>
+              } else {
+                tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }<span class="link-color" style="cursor: pointer" onClick={ openVmSetDurationDialog }>{ i18n.t('common_453') }</span></div>
+              }
             } else {
               tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }</div>
             }
