@@ -47,7 +47,7 @@ export const strategyColumn = (field = 'common_alert_metric_details') => ({
         } else if (R.type(row[field]) === 'Object') {
           detail = row[field]
         }
-        let measurement = detail.measurement_display_name || detail.measurement || detail.measurement_desc
+        let measurement = detail.measurement_display_name || detail.measurement_desc || detail.measurement
         if (metric_zh[measurement]) measurement = metric_zh[measurement]
         let metric = _.get(detail, 'field_description.display_name') || detail.field_desc || detail.field
         if (metric) {
