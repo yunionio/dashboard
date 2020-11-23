@@ -219,7 +219,7 @@ export default {
       const params = {
         // usable: true,
         limit: 0,
-        show_emulated: true,
+        // show_emulated: true,
         ...this.scopeParams,
       }
       return params
