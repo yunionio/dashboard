@@ -42,7 +42,7 @@ export default {
         {
           label: this.$t('common_326'),
           action: (obj) => {
-            this.createDialog('CloudgroupListForClouduserForUserDialog', {
+            this.createDialog('CloudpoliciesListForClouduserForUserDialog', {
               data: [obj],
             })
           },
@@ -69,38 +69,11 @@ export default {
         },
         {
           field: 'cloudgroups',
-          title: this.$t('common_460', [this.$t('dictionary.cloudgroup')]),
-          // type: 'expand',
+          title: this.$t('common_624', [this.$t('dictionary.cloudgroup')]),
           slots: {
             default: ({ row }) => {
-              return this.$t('common_323', [(row.cloudgroups && row.cloudgroups.length) || 0])
+              return row.cloudgroup
             },
-            // content: ({ row }) => {
-            //   if (R.isNil(row.cloudgroups) || R.isEmpty(row.cloudgroups)) return this.$t('common_708', [this.$t('dictionary.cloudgroup')])
-            //   return [
-            //     <vxe-grid
-            //       showOverflow='title'
-            //       data={ row.cloudgroups }
-            //       columns={[
-            //         getNameDescriptionTableColumn({
-            //           onManager: this.onManager,
-            //           hideField: true,
-            //           showDesc: false,
-            //           edit: false,
-            //           slotCallback: row => {
-            //             return (
-            //               <side-page-trigger permission='cloudgroup_get' name='CloudgroupSidePage' id={row.id} vm={this}>{ row.name }</side-page-trigger>
-            //             )
-            //           },
-            //         }),
-            //         {
-            //           field: 'id',
-            //           title: 'ID',
-            //           formatter: ({ cellValue }) => cellValue || '-',
-            //         },
-            //       ]} />,
-            //   ]
-            // },
           },
         },
       ],
