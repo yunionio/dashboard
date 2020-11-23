@@ -1,6 +1,5 @@
 
 import * as R from 'ramda'
-import moment from 'moment'
 import { getSignature } from '@/utils/crypto'
 import i18n from '@/locales'
 
@@ -30,14 +29,14 @@ const commonLbSql = ({ select, tags, time, interval, scope } = {}) => {
   return data
 }
 
-export const lbQuery = ({ fieldType, lsType, lsId, timeRange, aggregate, isRule, scope } = {}) => {
-  const timeDiff = (timeRange[1] - timeRange[0]) / 1000
+export const lbQuery = ({ fieldType, lsType, lsId, time, aggregate, isRule, scope } = {}) => {
+  const from = time.from.replace(/\D+/g, '')
+  const to = time.to ? time.to.replace(/\D+/g, '') : 0
+  const timeDiff = (from - to) * 3600 // 小时 -> 秒
   const interval = `${timeDiff / LINE_POINT}s`
-  const from = timeRange[0].diff(moment(), 'hours')
-  const to = timeRange[1].diff(moment(), 'hours')
-  const time = {
-    from: from === 0 ? 'now - 1h' : `now${from}h`,
-    to: to === 0 ? 'now' : `now${to}h`,
+  const timeObj = {
+    from: time.from,
+    to: time.to ? 'now' : time.to,
   }
   const accidentArr = ['1xx', '2xx', '3xx', '4xx', '5xx', 'other']
   const commonAccident = accidentArr.map(code => {
@@ -498,5 +497,5 @@ export const lbQuery = ({ fieldType, lsType, lsId, timeRange, aggregate, isRule,
   if (isObject(select) && !R.is(Array, select)) select = select[lsType]
   if (!select) console.error(i18n.t('network.text_491', [lsType, fieldType]))
   if (!select) console.error(i18n.t('network.text_492', [lsType, fieldType]))
-  return commonLbSql({ select, tags, time, interval, scope })
+  return commonLbSql({ select, tags, time: timeObj, interval, scope })
 }
