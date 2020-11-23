@@ -29,6 +29,7 @@
               <a-select-option v-for="item in storageOpts" :key="item.value">
                 <div class="d-flex">
                   <span class="text-truncate flex-fill mr-2" :title="item.label">{{ item.label }}</span>
+                  <span v-if="item.multiple" style="width: 90px; color: rgb(132, 146, 166); font-size: 13px;">介质: {{ item.medium }}</span>
                 </div>
               </a-select-option>
             </a-select>
@@ -76,6 +77,7 @@ import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
+import { MEDIUM_MAP } from '@Compute/constants'
 
 export default {
   name: 'DiskCreate',
@@ -349,21 +351,26 @@ export default {
           try {
             const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
             this.storageOpts = data.data_storage_types.map((item) => {
-              const type = item.split('/')[0]
-              const storageType = CommonConstants.STORAGE_TYPES[provider][type]
-              const getLabel = (type) => { return type.includes('rbd') ? 'Ceph' : type }
+              const types = item.split('/')
+              const backend = types[0]
+              const medium = types[1]
+              const storageType = CommonConstants.STORAGE_TYPES[provider][backend]
+              const getLabel = (backend) => { return backend.includes('rbd') ? 'Ceph' : backend }
+              const backends = data.data_storage_types.filter(v => v.includes(backend))
               return {
-                value: type,
-                label: storageType ? storageType.label : getLabel(type),
+                value: `${backend}-${medium}`,
+                label: storageType ? storageType.label : getLabel(backend),
+                medium: MEDIUM_MAP[medium] || medium,
+                multiple: backends.length > 1,
               }
             })
-            if (this.diskType === 'idc') {
+            if (this.diskType === 'onpremise') {
               this.storageOpts = this.storageOpts.filter((item) => {
-                return item.value !== 'local'
+                return !item.value.includes('local')
               })
             } else if (this.diskType === 'private') {
               this.storageOpts = this.storageOpts.filter((item) => {
-                return item.value !== 'nova'
+                return !item.value.includes('nova')
               })
             } else {
               // 公有云隐藏带local关键字的硬盘类型
@@ -380,7 +387,7 @@ export default {
             this.form.fc.setFieldsValue({ backend: '' })
             if (this.storageOpts.length > 0) {
               if (this.cloudEnv === 'onpremise') {
-                this.storageOpts = this.storageOpts.filter(item => { return item.value !== 'local' })
+                this.storageOpts = this.storageOpts.filter(item => { return !item.value.includes('local') })
               }
               this.form.fc.setFieldsValue({ backend: this.storageOpts[0].value })
               this.__newStorageChange(this.storageOpts[0].value)

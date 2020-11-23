@@ -167,11 +167,13 @@ export default {
       this.loading = true
       try {
         let values = await this.form.fc.validateFields()
-        const { project, domain, cloudregion, zone, manager_id, ...rest } = values
+        const { project, domain, cloudregion, zone, manager_id, backend, ...rest } = values
         const oProvider = PROVIDER_MAP[this.currentCloudregion.provider]
         const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
           ...rest,
+          backend: backend.split('-')[0],
+          medium: backend.split('-')[1],
           hypervisor: oProvider ? oProvider.hypervisor : provider,
           size: values.size * 1024,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
