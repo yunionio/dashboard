@@ -409,7 +409,7 @@ export default {
     },
     vpcParams () {
       const params = {
-        show_emulated: true,
+        // show_emulated: true,
         limit: 0,
         usable_vpc: true,
         scope: this.scope,
