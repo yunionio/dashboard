@@ -77,7 +77,8 @@ export default {
           'cloudgroup_id',
           {
             rules: [
-              { required: this.params.cloudaccount.brand === 'Google', message: this.$t('common.select') },
+              { required: true, message: this.$t('common.select') },
+              // { required: this.params.cloudaccount.brand === 'Google', message: this.$t('common.select') },
             ],
           },
         ],
