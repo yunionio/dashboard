@@ -15,7 +15,7 @@
           type="idc"
           :form="form"
           :image="imageMock"
-          :hypervisor="form.fd.hypervisor"
+          :hypervisor="form.fd.hypervisor || (form.fd.hypervisors ? form.fd.hypervisors[item.key] : form.fd[`hypervisors[${item.key}]`])"
           :capability-data="form.fi.capability"
           :domain="userInfo.projectDomainId" />
       </a-form-item>
@@ -33,7 +33,7 @@
                 remote
                 :item.sync="item.network"
                 :need-params="true"
-                :params="networkParams"
+                :params="getNetworkParams(item.key)"
                 :mapper="networkResourceMapper"
                 :select-props="{ allowClear: true, placeholder: $t('k8s.text_122') }" />
             </a-form-item>
@@ -147,6 +147,9 @@ export default {
         key: uid,
       }
       this.serverConfigList.push(data)
+      this.$nextTick(() => {
+        this.$emit('vmAdd', data)
+      })
     },
     parser (val, unit, defaultValue = '4') {
       const value = val.replace(unit, '')
@@ -169,6 +172,12 @@ export default {
           return val
         })
         .sort((a, b) => (b.ports - b.ports_used) - (a.ports - a.ports_used))
+    },
+    getNetworkParams (key) {
+      return {
+        ...this.networkParams,
+        $t: key,
+      }
     },
   },
 }
