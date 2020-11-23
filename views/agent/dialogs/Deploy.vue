@@ -55,7 +55,6 @@
           </a-form-item>
           <a-form-item class="mb-0" v-if="this.hostName === 'server'">
             <base-select
-              filterable
               v-decorator="decorators.server"
               resource="servers"
               style="width: 320px"
@@ -63,17 +62,20 @@
               :params="serversParams"
               :label-format="labelFormat"
               :select-props="{ placeholder: $t('network.text_60') }"
+              remote
+              :remote-fn="q => ({ search: q })"
               @change="handleServerChange"
               @update:resList="serversSuccess" />
               <a-alert v-if="isOut" :message="$t('network.text_61')" banner />
           </a-form-item>
           <a-form-item v-if="this.hostName === 'host'">
             <base-select
-              filterable
               v-decorator="decorators.host"
               resource="hosts"
               :params="hostsParams"
               :label-format="labelFormat"
+              remote
+              :remote-fn="q => ({ search: q })"
               :select-props="{ placeholder: $t('network.text_62') }"
               style="width: 320px" />
           </a-form-item>

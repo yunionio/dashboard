@@ -14,10 +14,11 @@
           <base-select
             resource="servers"
             need-params
-            filterable
             :params="serverParams"
             v-decorator="decorators.guest_backend"
             show-sync
+            remote
+            :remote-fn="q => ({ search: q })"
             :mapper="serverlistMapper"
             :select-props="{ placeholder: $t('network.text_334', [$t('dictionary.server')]) }" />
             <div slot="extra">{{$t('network.text_335', [$t('dictionary.server')])}}<help-link :href="serverHref">{{$t('network.text_26')}}</help-link>
@@ -29,6 +30,8 @@
             class="w-100"
             v-decorator="decorators.host_backend"
             resource="hosts"
+            remote
+            :remote-fn="q => ({ search: q })"
             :params="hostParams"
             :select-props="{ placeholder: $t('network.text_62') }" />
         </a-form-item>
