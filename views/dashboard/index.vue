@@ -33,6 +33,7 @@ import defaultConfig from './config/default'
 import DashboardHeader from './components/Header'
 import DashboardContent from './components/Content'
 import storage from '@/utils/storage'
+import { addClass, removeClass, hasClass } from '@/utils/dom'
 
 // option
 // [{ id: 'xxx', name: 'xxx', index: 2, hidden: true, type: 'default' }]
@@ -81,7 +82,8 @@ export default {
   },
   beforeDestroy () {
     this.pm = null
-    this.removeAppPageClass()
+    removeClass(this.$appPage, this.appPageAddedClass.join(' '))
+    this.$appPage = null
   },
   async created () {
     this.pm = new this.$Manager('parameters', 'v1')
@@ -99,23 +101,19 @@ export default {
     this.handleCurrentOptionSelect(selected)
   },
   mounted () {
+    this.$appPage = document.getElementById('app-page')
     this.addAppPageClass()
   },
   methods: {
     addAppPageClass () {
-      const appPage = document.getElementById('app-page')
       const toBeAddedClass = ['h-100', 'd-flex', 'flex-column', 'mb-0']
       this.appPageAddedClass = []
       for (let i = 0, len = toBeAddedClass.length; i < len; i++) {
-        if (!appPage.classList.contains(toBeAddedClass[i])) {
-          appPage.classList.add(toBeAddedClass[i])
+        if (!hasClass(this.$appPage, toBeAddedClass[i])) {
+          addClass(this.$appPage, toBeAddedClass[i])
           this.appPageAddedClass.push(toBeAddedClass[i])
         }
       }
-    },
-    removeAppPageClass () {
-      const appPage = document.getElementById('app-page')
-      appPage && appPage.classList.remove(this.appPageAddedClass)
     },
     // 选择面板
     async handleCurrentOptionSelect (option) {
