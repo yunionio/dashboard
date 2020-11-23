@@ -20,7 +20,7 @@
             :decorator="decorators.regionZone" />
         </a-form-item>
         <a-form-item :label="$t('k8s.text_152')" v-bind="formItemLayout">
-          <server-config :decorator="decorators.serverConfig" :network-params="param.network" :form="form">
+          <server-config :decorator="decorators.serverConfig" :network-params="param.network" :form="form" @vmAdd="vmAdd">
             <template v-slot:hypervisor="slotProps">
               <a-form-item :label="$t('k8s.text_150')" v-if="hypervisorsC.length" v-bind="slotProps.formItemLayout">
                 <a-radio-group v-decorator="decorators.serverConfig.hypervisor(slotProps.i)">
@@ -71,7 +71,7 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const hypervisor = _.get(typeClouds.providerlowcaseMap, '[this.data.provider].hypervisor') || 'kvm'
+    const hypervisor = _.get(typeClouds.providerlowcaseMap, `[${this.params.data.provider}].hypervisor`) || 'kvm'
     return {
       loading: false,
       form: {
@@ -95,9 +95,9 @@ export default {
         }),
         fi: {
           capability: {},
+          clusterHypervisor: hypervisor, // 该集群的默认 hypervisor
         },
         fd: {
-          hypervisor,
         },
       },
       decorators: {
@@ -355,8 +355,29 @@ export default {
       try {
         const { data } = await new this.$Manager(`${resource}s`).getSpecific(this.capabilityParams)
         this.form.fi.capability = data
+        await this.$nextTick()
+        if (this.hypervisorsC.length) {
+          const hasDefaultHypervisor = this.hypervisorsC.find(val => val.value === this.form.fi.clusterHypervisor)
+          if (!hasDefaultHypervisor) {
+            const { hypervisors } = this.form.fc.getFieldsValue()
+            const values = {}
+            for (const key in hypervisors) {
+              values[`hypervisors[${key}]`] = this.hypervisorsC[0].value
+            }
+            console.log(this.form.fc.getFieldsValue())
+            console.log(hypervisors, values)
+            this.form.fc.setFieldsValue(values)
+          }
+        }
       } catch (error) {
         throw error
+      }
+    },
+    vmAdd ({ key }) {
+      if (this.hypervisorsC.length) {
+        this.form.fc.setFieldsValue({
+          [`hypervisors[${key}]`]: this.hypervisorsC[0].value,
+        })
       }
     },
   },
