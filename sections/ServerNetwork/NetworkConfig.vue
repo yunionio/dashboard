@@ -18,6 +18,7 @@
           :need-params="true"
           :params="vpcParams"
           :mapper="vpcResourceMapper"
+          :remote-fn="q => ({ search: q })"
           @change="v => vpcChange(v, i)"
           :disabled="vpcObj && !!vpcObj.id"
           :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" />
@@ -38,6 +39,7 @@
           :need-params="true"
           :params="{ ...networkParamsC, $t: item.key }"
           :mapper="networkResourceMapper"
+          :remote-fn="q => ({ search: q })"
           @change="v => networkChange(v, item)"
           :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
           <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.text_18')}}</help-link>
