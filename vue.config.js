@@ -5,6 +5,7 @@
  */
 const path = require('path')
 const fs = require('fs')
+const child_process = require('child_process')
 const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./src/config/plugin.config')
 
@@ -25,6 +26,39 @@ function fsExistsSync (path) {
 
 function getModuleList () {
   return fs.readdirSync(resolve('./containers'))
+}
+
+const getBuildInfo = () => {
+  const getDate = D => `${D.getFullYear() + '-' + (D.getMonth() + 1) + '-' + D.getDate() + ' ' + D.getHours() + ':' + D.getMinutes()}`
+  const getCommitMSg = dirPath => {
+    const commitDateObj = new Date(child_process.execSync(`cd ${dirPath} && git show -s --format=%cd`).toString())
+    const commit = child_process.execSync(`cd ${dirPath} && git show -s --format=%H`).toString().trim()
+    const commitUserName = child_process.execSync(`cd ${dirPath} && git show -s --format=%cn`).toString().trim()
+    const commitDate = getDate(commitDateObj)
+    let head = '-'
+    const gitHEAD = path.join(dirPath, '.git/HEAD') // git 最后一次提交的 Head
+    if (fsExistsSync(path.resolve(__dirname, gitHEAD))) {
+      head = fs.readFileSync(path.resolve(__dirname, gitHEAD), 'utf-8').trim()
+    }
+    return {
+      commit,
+      commitUserName,
+      commitDate,
+      head,
+    }
+  }
+  const nowDate = new Date()
+  const buildDate = `${nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate() + ' ' + nowDate.getHours() + ':' + nowDate.getMinutes()}`
+  const containers = fs.readdirSync('./containers').filter(item => !/^\..*/.test(item)) // 忽略隐藏文件
+  const info = {
+    scope: getCommitMSg('./'),
+    src: getCommitMSg('./src'),
+    buildDate,
+  }
+  containers.forEach(dir => {
+    info[dir] = getCommitMSg(path.join('./containers', dir))
+  })
+  return info
 }
 
 const devServerCoustomConfig = fsExistsSync(resolve('./dev.server.config.js')) ? require('./dev.server.config.js') : {}
@@ -70,6 +104,14 @@ module.exports = {
     const imagesRule = config.module.rule('images')
     imagesRule.exclude.add(resolve('./src/components/Icon'))
     config.module.rule('images').test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
+    // 设置环境变量
+    config.plugin('define').tap((definitions) => {
+      definitions[0]['process.env'].VUE_APP_BUILDINFO = JSON.stringify(getBuildInfo())
+      definitions[0]['process.env'].THEME_COLOR = JSON.stringify(process.env.THEME_COLOR)
+      definitions[0]['process.env'].THEME = JSON.stringify(process.env.THEME)
+      definitions[0]['process.env'].BRAND = process.env.BRAND
+      return definitions
+    })
   },
   css: {
     loaderOptions: {

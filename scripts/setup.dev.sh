@@ -33,19 +33,19 @@ if [ ! -d "./containers/Storage" ]; then
   git clone $DEFAULT_GIT_PREFIX/dashboard-module-storage.git containers/Storage
 fi
 
-if [ ! -d "./containers/K8S" ]; then
-  git clone $DEFAULT_GIT_PREFIX/dashboard-module-k8s.git containers/K8S
-fi
+# if [ ! -d "./containers/K8S" ]; then
+#   git clone $DEFAULT_GIT_PREFIX/dashboard-module-k8s.git containers/K8S
+# fi
 
-if [ ! -d "./containers/Helm" ]; then
-  git clone $DEFAULT_GIT_PREFIX/dashboard-module-helm.git containers/Helm
-fi
+# if [ ! -d "./containers/Helm" ]; then
+#   git clone $DEFAULT_GIT_PREFIX/dashboard-module-helm.git containers/Helm
+# fi
 
-if [ ! -d "./containers/DB" ]; then
-  git clone $DEFAULT_GIT_PREFIX/dashboard-module-db.git containers/DB
-fi
+# if [ ! -d "./containers/DB" ]; then
+#   git clone $DEFAULT_GIT_PREFIX/dashboard-module-db.git containers/DB
+# fi
 
-if [ ! -d "./containers/DB" ]; then
+if [ ! -d "./containers/Monitor" ]; then
   git clone $DEFAULT_GIT_PREFIX/dashboard-module-monitor.git containers/Monitor
 fi
 
