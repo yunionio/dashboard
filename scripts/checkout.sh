@@ -46,9 +46,9 @@ checkout 'dashboard-module-compute' ../containers/Compute
 checkout 'dashboard-module-dashboard' ../containers/Dashboard
 checkout 'dashboard-module-network' ../containers/Network
 checkout 'dashboard-module-storage' ../containers/Storage
-# checkout 'dashboard-module-k8s' ../containers/K8S
-# checkout 'dashboard-module-helm' ../containers/Helm
-# checkout 'dashboard-module-db' ../containers/DB
+checkout 'dashboard-module-k8s' ../containers/K8S
+checkout 'dashboard-module-helm' ../containers/Helm
+checkout 'dashboard-module-db' ../containers/DB
 checkout 'dashboard-module-monitor' ../containers/Monitor
 
 exit 0
