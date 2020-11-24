@@ -44,6 +44,7 @@ export default {
         title: i18n.t('table.title.snapshot_size'),
         width: 70,
         formatter: ({ row }) => {
+          if (!row.snapshots) return '-'
           const size = row.snapshots.reduce((a, b) => a + b.size, 0)
           return sizestr(size, 'M', 1024)
         },
