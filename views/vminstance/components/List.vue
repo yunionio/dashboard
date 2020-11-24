@@ -711,10 +711,12 @@ export default {
                       const isSomeBindEip = this.list.selectedItems.some((item) => { return item.eip && item.eip_mode === 'elastic_ip' })
                       const isAllBindPublicIp = this.list.selectedItems.every((item) => { return item.eip_mode === 'public_ip' })
                       if (isSomeBindEip) {
+                        ret.validate = false
                         ret.tooltip = this.$t('compute.text_1122')
                         return ret
                       }
                       if (!isAllBindPublicIp) {
+                        ret.validate = false
                         ret.tooltip = this.$t('compute.text_1123')
                         return ret
                       }
