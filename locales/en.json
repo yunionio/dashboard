@@ -2244,7 +2244,8 @@
       "cacel": "Cancel",
       "delete": "Delete",
       "modify": "Modify",
-      "set_tag": "Set tags"
+      "set_tag": "Set tags",
+      "smal_login": "Password-free login"
     },
     "validate": {
       "no_share_res_permission": "Shared resource, no operation permission",
