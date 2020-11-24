@@ -65,7 +65,7 @@ export default {
           meta: {
             label: i18n.t('helm.text_3'),
             permission: 'k8s_releases_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
+            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware']),
           },
           children: [
             {
@@ -106,7 +106,7 @@ export default {
           meta: {
             label: i18n.t('helm.text_5'),
             permission: 'k8s_charts_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
+            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware']),
           },
           component: Layout,
           children: [
@@ -127,7 +127,7 @@ export default {
           meta: {
             label: i18n.t('helm.text_6'),
             permission: 'k8s_repos_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'k8s', 'vmware']),
+            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware']),
             invisible: () => true,
           },
           component: Layout,
