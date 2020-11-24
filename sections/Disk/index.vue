@@ -20,8 +20,7 @@
     </a-form-item>
     <!-- 快照和挂载点不能共存 -->
     <template v-if="!showMountpoint && has('snapshot') && !disabled">
-      <a-button class="mt-1" v-if="!showSnapshot" type="link" @click="() => showSnapshot = true">{{$t('compute.text_133')}}</a-button>
-      <a-form-item v-else class="mx-1" :wrapperCol="{ span: 24 }">
+      <a-form-item v-if="showSnapshot" class="mx-1" :wrapperCol="{ span: 24 }">
         <base-select
           v-decorator="decorator.snapshot"
           resource="snapshots"
@@ -29,13 +28,14 @@
           :item.sync="snapshotObj"
           :select-props="{ placeholder: $t('compute.text_124') }" />
       </a-form-item>
+      <a-button class="mt-1" type="link" @click="() => showSnapshot = !showSnapshot">{{ showSnapshot ? $t('compute.text_135') : $t('compute.text_133') }}</a-button>
     </template>
     <template v-if="!showSnapshot && has('mount-point') && !disabled">
-      <a-button class="mt-1" v-if="!showMountpoint" type="link" @click="() => showMountpoint = true">{{$t('compute.text_134')}}</a-button>
       <disk-mountpoint
         class="mx-1"
-        v-else
+        v-if="showMountpoint"
         :decorators="{ filetype: decorator.filetype, mountPath: decorator.mountPath }" />
+        <a-button class="mt-1" type="link" @click="() => showMountpoint = !showMountpoint">{{ showMountpoint ? $t('compute.text_135') : $t('compute.text_134') }}</a-button>
     </template>
     <template v-if="has('schedtag') && !showStorage">
       <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
