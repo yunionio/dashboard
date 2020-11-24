@@ -80,7 +80,8 @@ export default {
       return null
     },
     showGroupActions () {
-      if (this.params.windowData.currentTab === 'network-list' || this.params.windowData.currentTab === 'route-table-list') {
+      // this.params.windowData.currentTab === 'network-list' ||
+      if (this.params.windowData.currentTab === 'route-table-list') {
         return false
       }
       return true
@@ -92,9 +93,9 @@ export default {
       return true
     },
     showSearchbox () {
-      if (this.params.windowData.currentTab === 'network-list') {
-        return false
-      }
+      // if (this.params.windowData.currentTab === 'network-list') {
+      //   return false
+      // }
       return true
     },
     hiddenColumns () {
