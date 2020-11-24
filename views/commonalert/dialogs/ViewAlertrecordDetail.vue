@@ -9,7 +9,7 @@
         <div class="tag-wrapper">
           <div class="tag-item d-flex align-items-center" v-for="(v, k) in item.tags" :key="k">
             <span class="tag-item-key text-truncate" :title="k">{{ k }}： </span>
-            <span>{{ v }}</span>
+            <span>{{ format(k, v) }}</span>
           </div>
         </div>
       </a-card>
@@ -24,6 +24,7 @@
 import { metric_zh } from '@Monitor/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { BRAND_MAP } from '@/constants'
 
 export default {
   name: 'ViewAlertrecordDetailDialog',
@@ -45,6 +46,14 @@ export default {
         }
       })
       return ret
+    },
+  },
+  methods: {
+    format (k, v) {
+      if (k === 'brand') {
+        return BRAND_MAP[v] ? BRAND_MAP[v].label : v
+      }
+      return v
     },
   },
 }
