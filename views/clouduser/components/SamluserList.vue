@@ -47,6 +47,12 @@ export default {
             })
           },
         },
+        {
+          label: this.$t('table.action.smal_login'),
+          action: (obj) => {
+            this.samlLogin(obj)
+          },
+        },
       ],
       columns: [
         {
@@ -55,18 +61,6 @@ export default {
           showOverflow: 'title',
         },
         getBrandTableColumn(),
-        {
-          field: 'iam_login_url',
-          title: this.$t('common_329'),
-          slots: {
-            default: ({ row }) => {
-              if (!row.iam_login_url) return '-'
-              return [
-                <a-icon type='global' onClick={ () => this.samlLogin(row) } />,
-              ]
-            },
-          },
-        },
         {
           field: 'cloudgroups',
           title: this.$t('common_624', [this.$t('dictionary.cloudgroup')]),
@@ -91,7 +85,11 @@ export default {
           id: row.cloudaccount_id,
           spec: 'saml',
         })
-        window.open(response.data.init_login_url, '_blank')
+        if (response.data.init_login_url) {
+          window.open(response.data.init_login_url, '_blank')
+        } else {
+          this.$message.error(this.$t('smal_login_message.fail'))
+        }
       } catch (error) {
         this.$message.error(this.$t('smal_login_message.fail'))
         throw error
