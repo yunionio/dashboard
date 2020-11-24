@@ -34,6 +34,7 @@ const actionEableMap = {
       ucloud: ['ready'],
       ctyun: ['ready'],
       google: ['ready'],
+      apsara: ['running', 'ready'],
     },
   },
   resetPassword: {
@@ -53,6 +54,7 @@ const actionEableMap = {
       ucloud: ['ready'],
       ctyun: ['ready'],
       google: ['ready'],
+      apsara: ['running'],
     },
   },
   bindKeyPair: {
@@ -72,6 +74,7 @@ const actionEableMap = {
       ucloud: false,
       ctyun: false,
       google: ['ready'],
+      apsara: ['running'],
     },
   },
   unBindKeyPair: {
@@ -91,6 +94,7 @@ const actionEableMap = {
       ucloud: false,
       ctyun: false,
       google: ['ready'],
+      apsara: ['running'],
     },
   },
   adjustConfig: {
@@ -110,6 +114,7 @@ const actionEableMap = {
       ucloud: ['ready'],
       ctyun: ['ready'],
       google: ['ready'],
+      apsara: ['ready'],
     },
   },
   vnc: {
@@ -129,6 +134,7 @@ const actionEableMap = {
       ucloud: false,
       ctyun: false,
       google: false,
+      apsara: ['running'],
     },
   },
   'EIP SSH': {
@@ -148,6 +154,7 @@ const actionEableMap = {
       ucloud: ['running'],
       ctyun: ['running'],
       google: ['running'],
+      apsara: ['running'],
     },
   },
   'IP SSH': {
@@ -167,6 +174,7 @@ const actionEableMap = {
       ucloud: false,
       ctyun: false,
       google: false,
+      apsara: false,
     },
   },
   createSnapshot: {
@@ -186,6 +194,7 @@ const actionEableMap = {
       ucloud: false,
       ctyun: false,
       google: ['running', 'ready'],
+      apsara: false,
     },
   },
   transfer: {
@@ -205,6 +214,7 @@ const actionEableMap = {
       ucloud: false,
       ctyun: false,
       google: false,
+      apsara: false,
     },
   },
   assignSecgroup: {
@@ -224,6 +234,7 @@ const actionEableMap = {
       ucloud: true,
       ctyun: true,
       google: true,
+      apsara: false,
     },
   },
   insertiso: {
@@ -243,6 +254,7 @@ const actionEableMap = {
       ucloud: false,
       ctyun: false,
       google: false,
+      apsara: false,
     },
   },
   ejectiso: {
@@ -262,6 +274,7 @@ const actionEableMap = {
       ucloud: false,
       ctyun: false,
       google: false,
+      apsara: false,
     },
   },
   bindEip: {
@@ -281,6 +294,7 @@ const actionEableMap = {
       ucloud: ['running', 'ready'],
       ctyun: ['running', 'ready'],
       google: ['running', 'ready'],
+      apsara: false,
     },
   },
   unbindEip: {
@@ -300,6 +314,7 @@ const actionEableMap = {
       ucloud: ['running', 'ready'],
       ctyun: ['running', 'ready'],
       google: ['running', 'ready'],
+      apsara: false,
     },
   },
   acttachGpu: {

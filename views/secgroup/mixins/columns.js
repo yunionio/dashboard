@@ -106,6 +106,7 @@ export default {
             ]
           },
         },
+        hidden: () => this.hiddenColumns.includes('guest_cnt'),
       },
       getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
       getProjectTableColumn(),
