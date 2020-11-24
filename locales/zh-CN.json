@@ -549,7 +549,7 @@
     "create_form": {
       "saml_user_label": "开启免密登录",
       "saml_user_extra": "开启后，会自动同步本系统SAML信息至云上，本系统即可成为云上登录身份提供商，具有SSO单点登录能力，详见{link}",
-      "saml_user_link": "身份供应商"
+      "saml_user_link": "身份提供商"
     },
     "sidepage": {
       "tab": {

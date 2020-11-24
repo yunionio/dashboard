@@ -11,6 +11,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'CloudproviderregionList',
@@ -30,6 +31,7 @@ export default {
       list: this.$list.createList(this, {
         resource: 'cloudproviderregions',
         getParams: this.getParams,
+        steadyStatus: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
         idKey: 'cloudregion_id',
         filterOptions: {
           cloudregion: {
