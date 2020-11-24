@@ -1337,7 +1337,7 @@
   "compute.text_1362": "This boot is not supported by the ARM architecture",
   "compute.text_1363": "Please select Architecture",
   "compute.text_1364": "This operation is temporarily not supported by the ARM architecture host",
-  "compute.text_1365": "Architecture",
+  "compute.text_1365": "CPU Architecture",
   "compute.text_1366": "ARM Architecture Virtual machine does not support CPU adjustment when it is booted, please shut down and try again",
   "compute.text_1367": "ARM Architecture Virtual machine does not support memory adjustment when it is booted. Please try again after shutdown",
   "compute.text_1368": "OS Version",
