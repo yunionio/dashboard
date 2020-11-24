@@ -290,7 +290,7 @@ export default {
               field: 'cpu_desc',
               title: this.$t('compute.text_596'),
             },
-            getOsArch(),
+            getOsArch({ field: 'cpu_architecture' }),
             {
               field: 'reserved_cpu',
               title: this.$t('compute.text_597'),
