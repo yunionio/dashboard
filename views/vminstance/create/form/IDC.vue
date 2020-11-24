@@ -391,6 +391,7 @@ export default {
     },
     storageParams () {
       const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
+      const { systemDiskSize } = this.form.fd
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
@@ -399,6 +400,9 @@ export default {
       }
       if (systemDiskType) {
         params.filter = [`storage_type.contains("${systemDiskType}")`]
+      }
+      if (systemDiskSize) {
+        params.filter = (params.filter || []).concat([`capacity.ge(${systemDiskSize * 1024})`])
       }
       return params
     },
