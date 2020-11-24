@@ -1337,7 +1337,7 @@
   "compute.text_1362": "ARM架构不支持该引导方式",
   "compute.text_1363": "请选择架构",
   "compute.text_1364": "ARM架构宿主机暂不支持该操作",
-  "compute.text_1365": "架构",
+  "compute.text_1365": "CPU架构",
   "compute.text_1366": "ARM架构虚拟机开机不支持调整CPU，请关机后重试",
   "compute.text_1367": "ARM架构虚拟机开机不支持调整内存，请关机后重试",
   "compute.text_1368": "系统位数",
