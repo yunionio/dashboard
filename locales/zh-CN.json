@@ -2267,7 +2267,8 @@
       "delete": "删除",
       "modify": "修改",
       "set_tag": "编辑标签",
-      "clone": "克隆"
+      "clone": "克隆",
+      "smal_login": "免密登录"
     },
     "validate": {
       "no_share_res_permission": "共享资源，无操作权限",
