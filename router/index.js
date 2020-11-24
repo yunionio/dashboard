@@ -21,7 +21,7 @@ export default {
         label: 'Metrics Explorer',
         t: 'dictionary.explorer',
         permission: 'unifiedmonitors_get',
-        hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
+        hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware']),
       },
       component: Layout,
       children: [
@@ -38,7 +38,7 @@ export default {
         label: i18n.t('monitor.text_2'),
         t: 'dictionary.commonalert',
         permission: 'commonalerts_list',
-        hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
+        hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware']),
       },
       component: Layout,
       children: [
