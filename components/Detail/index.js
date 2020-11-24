@@ -352,7 +352,10 @@ export default {
         class: 'detail-items',
       }, children)
     },
-    renderTitle (h, icon, title) {
+    renderTitle (h, icon, title, items) {
+      if (R.type(title) === 'Function') {
+        return title({ row: this.data }, h)
+      }
       return h('div', {
         class: 'detail-title',
       }, [
