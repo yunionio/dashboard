@@ -23,7 +23,7 @@
       <a-form-item :label="$t('network.text_406')" v-if="['tcp', 'udp', 'http'].includes(allFd.listener_type)">
         <a-input v-decorator="decorators.health_check_timeout" :addonAfter="$t('network.text_76')" :placeholder="$t('network.text_407')" />
       </a-form-item>
-      <a-form-item :label="$t('network.text_408')" v-if="['http', 'https'].includes(allFd.listener_type)">
+      <a-form-item :label="$t('network.text_408')">
         <a-input v-decorator="decorators.health_check_interval" :addonAfter="$t('network.text_76')" :placeholder="$t('network.text_409')" />
       </a-form-item>
       <a-form-item :label="$t('network.text_410')">
