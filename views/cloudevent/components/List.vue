@@ -6,17 +6,7 @@
       :export-data-options="exportDataOptions"
       :show-group-actions="true"
       :show-page="false"
-      :refresh-method="refresh">
-      <template v-slot:right-tools-prepend>
-        <a-range-picker
-          style="width: 370px;"
-          class="mr-2"
-          v-model="rangeTime"
-          format="YYYY-MM-DD HH:mm:ss"
-          :show-time="{ defaultValue: [$moment('00:00:00', 'HH:mm:ss'), $moment('23:59:59', 'HH:mm:ss')] }"
-          @change="handleRangeTimeChange" />
-      </template>
-    </page-list>
+      :refresh-method="refresh" />
   </div>
 </template>
 
@@ -37,7 +27,6 @@ export default {
   },
   data () {
     return {
-      rangeTime: [null, null],
       list: this.$list.createList(this, {
         id: this.id,
         getParams: this.getParam,
@@ -58,6 +47,21 @@ export default {
           },
           action: {
             label: this.$t('cloudenv.text_322'),
+          },
+          created_at: {
+            label: this.$t('cloudenv.text_326'),
+            dropdown: true,
+            date: true,
+            filter: true,
+            formatter: (val, type) => {
+              if (type === 'before') {
+                return `created_at.le("${val}")`
+              }
+              if (type === 'after') {
+                return `created_at.ge("${val}")`
+              }
+              return `created_at.between("${val[0]}", "${val[1]}")`
+            },
           },
         },
       }),
@@ -156,34 +160,11 @@ export default {
         data: val,
       })
     },
-    getParam () {
-      const param = {}
-      if (this.rangeTime[0] && this.rangeTime[1]) {
-        param.filter = `created_at.between('${this.$moment.utc(this.rangeTime[0]).format()}', '${this.$moment.utc(this.rangeTime[1]).format()}')`
-      } else {
-        delete param.filter
-      }
-      return param
-    },
     refresh (clearSelected) {
       clearSelected()
-      this.list.reset()
-      this.list.fetchData()
-    },
-    handleRangeTimeChange () {
       this.list.reset()
       this.list.fetchData()
     },
   },
 }
 </script>
-<style lang="less" scoped>
-  .event-list{
-    position: relative;
-    .search-date {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-  }
-</style>
