@@ -234,5 +234,6 @@
   "storage.text_233": "{0}暂不支持设置静态网站",
   "storage.text_234": "目前仅腾讯云支持设置跨域访问规则",
   "storage.text_235": "{0}暂不支持设置防盗链",
-  "storage.text_236": "{0}暂不支持设置静态网站"
+  "storage.text_236": "{0}暂不支持设置静态网站",
+  "storage.text_237": "黑名单Referer"
 }
