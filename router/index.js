@@ -215,7 +215,7 @@ export default {
     {
       meta: {
         label: i18n.t('cloudenv.text_17'),
-        hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
+        hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware']),
       },
       submenus: [
         {
