@@ -417,7 +417,7 @@ export default {
           meta: {
             label: i18n.t('compute.text_111'),
             permission: 'hosts_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
+            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware']),
             // hidden: () => {
             //   const hasBMAgent = hasServices('bmagent')
             //   const hasHostAgent = hasServices('hostagent')
