@@ -4,8 +4,9 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.schedtag')" :count="params.data.length" :action="$t('cloudenv.text_454')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <loader loading v-if="!(bindedResourcesLoaded && resourcesInitLoaded)" />
       <a-form
-        :form="form.fc">
+        :form="form.fc" hideRequiredMark v-show="bindedResourcesLoaded && resourcesInitLoaded">
         <a-form-item :label="$t('cloudenv.text_384')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.resource_type">
             <a-radio-button
@@ -20,6 +21,9 @@
               version="v1"
               remote
               :params="resourceParams"
+              :mapper="mapperResources"
+              :init-loaded.sync="resourcesInitLoaded"
+              :select-props="{ allowClear: true, placeholder: $t('cloudenv.text_284', [$t('cloudenv.text_454')]), mode: 'multiple' }"
               :remote-fn="q => ({ filter: `name.contains(${q})` })">
               <template v-slot:optionTemplate="{ options }">
                 <a-select-option v-for="item in options" :key="item.id" :value="item.id" :disabled="item.__disabled">
@@ -41,6 +45,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import * as R from 'ramda'
 import { RES_TYPES } from '../utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -51,6 +56,9 @@ export default {
   data () {
     return {
       loading: false,
+      bindedResources: [],
+      bindedResourcesLoaded: false,
+      resourcesInitLoaded: false,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -65,9 +73,6 @@ export default {
           'resource',
           {
             initialValue: '',
-            rules: [
-              { required: true, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.text_454')]) },
-            ],
           },
         ],
       },
@@ -101,7 +106,35 @@ export default {
       }
     },
   },
+  created () {
+    this.fetchBindedResources()
+  },
   methods: {
+    mapperResources (data) {
+      let newData = [...data, ...this.bindedResources]
+      newData = R.uniqBy(item => item.id, newData)
+      return newData
+    },
+    async fetchBindedResources () {
+      try {
+        const { data: { data = [] } } = await new this.$Manager('schedtags').get({
+          id: `${this.params.data[0].id}/${this.resource}`,
+        })
+        this.bindedResources = data.map(v => {
+          const field = this.resource.substring(0, this.resource.length - 1)
+          return {
+            id: v[`${field}_id`],
+            name: v[field],
+          }
+        })
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ resource: this.bindedResources.map(v => v.id) })
+        })
+        this.bindedResourcesLoaded = true
+      } catch (error) {
+        throw error
+      }
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
@@ -117,7 +150,10 @@ export default {
       this.params.onManager('performAction', {
         id: this.params.data[0].id,
         managerArgs: {
-          action: `${values.resource_type}/${values.resource}`,
+          action: 'set-resource',
+          data: {
+            resource_ids: values.resource,
+          },
         },
       })
     },
