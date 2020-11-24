@@ -122,6 +122,17 @@ export default {
         export: 'custom',
         exportType: {
           custom: { label: this.$t('common_158'), key: 'custom' },
+          allFilter: { label: this.$t('common_96'), key: 'allFilter' },
+        },
+        getParams: ({ exportType }) => {
+          let params = {}
+          if (exportType === 'allFilter') {
+            params = {
+              filter: this.list.params.filter,
+              export_limit: 0,
+            }
+          }
+          return params
         },
       },
       columns: [
