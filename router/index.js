@@ -273,7 +273,6 @@ export default {
     {
       meta: {
         label: i18n.t('network.text_713'),
-        hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara']),
         labelAlias: '网络负载均衡',
         // hidden: () => !hasServices('lbagent') && !hasHypervisors(['aliyun', 'qcloud', 'huawei', 'aws']),
       },
@@ -283,6 +282,7 @@ export default {
           meta: {
             label: i18n.t('network.text_714'),
             permission: 'lb_loadbalancers_list',
+            hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara']),
           },
           component: Layout,
           children: [
@@ -313,6 +313,7 @@ export default {
           meta: {
             label: i18n.t('network.text_715'),
             permission: 'lb_loadbalanceracls_list',
+            hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s']),
           },
           component: Layout,
           children: [
@@ -328,6 +329,7 @@ export default {
           meta: {
             label: i18n.t('network.text_716'),
             permission: 'lb_loadbalancercertificates_list',
+            hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara']),
           },
           component: Layout,
           children: [
