@@ -234,5 +234,6 @@
   "storage.text_233": "{0} does not currently support setting up static websites",
   "storage.text_234": "Currently only Tencent Cloud supports setting cross-domain access rules",
   "storage.text_235": "{0} does not support setting anti-theft chain",
-  "storage.text_236": "{0} does not currently support setting up static websites"
+  "storage.text_236": "{0} does not currently support setting up static websites",
+  "storage.text_237": "Blacklist Referer"
 }
