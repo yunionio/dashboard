@@ -28,7 +28,7 @@ export default {
             label: '块存储',
             permission: 'storages_list',
             t: 'dictionary.blockstorage',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
+            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware']),
           },
           component: Layout,
           children: [
