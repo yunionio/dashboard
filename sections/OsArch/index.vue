@@ -58,6 +58,11 @@ export default {
       }
     },
   },
+  mounted () {
+    if (!this.form.fc.getFieldValue('os_arch') && this.optionsC.length) {
+      this.emit(this.optionsC[0].key)
+    }
+  },
   methods: {
     emit (v) {
       this.$emit('change', v)
