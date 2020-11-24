@@ -27,6 +27,7 @@ export default {
       required: true,
     },
     columns: Array,
+    hiddenColumns: Array,
   },
   data () {
     return {
@@ -46,6 +47,7 @@ export default {
           formatter: ({ row }) => {
             return <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a>
           },
+          hidden: () => this.hiddenColumns.includes('guest_cnt'),
         },
         {
           field: 'cache_cnt',

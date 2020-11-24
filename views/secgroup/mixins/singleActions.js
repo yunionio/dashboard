@@ -91,6 +91,7 @@ export default {
                   resource: 'secgroups',
                 }, { tab: 'vminstance-list' })
               },
+              hidden: () => this.hiddenActions.includes('openSecgroupSidepageTab'),
             },
             {
               label: i18n.t('compute.text_983'),

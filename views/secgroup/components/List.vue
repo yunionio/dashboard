@@ -42,6 +42,18 @@ export default {
       type: Boolean,
       default: true,
     },
+    hiddenSidepageTabs: {
+      type: Array,
+      default: () => ([]),
+    },
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
+    },
+    hiddenColumns: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     return {
@@ -240,6 +252,9 @@ export default {
         getParams: this.getParam,
       }, {
         list: this.list,
+        hiddenSidepageTabs: this.hiddenSidepageTabs,
+        hiddenColumns: this.hiddenColumns,
+        hiddenActions: this.hiddenActions,
       })
     },
     async loadRules ({ row }) {
