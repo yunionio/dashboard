@@ -4,6 +4,9 @@
     <div slot="body">
       <a-form
         :form="form.fc">
+        <a-form-item class="mb-0" :label="$t('network.text_205', [$t('dictionary.project')])" v-bind="formItemLayout" v-if="params.type === 'create'">
+          <domain-project :fc="form.fc" :decorators="decorators" :labelInValue="false" />
+        </a-form-item>
         <a-form-item :label="$t('network.text_291')" v-bind="formItemLayout" v-if="params.type === 'create'">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
@@ -27,7 +30,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { REGEXP } from '@/utils/validate'
+import DomainProject from '@/sections/DomainProject'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
@@ -68,6 +73,9 @@ const ipsValidate = (rule, value, cb) => {
 
 export default {
   name: 'LbaclsCreateDialog',
+  components: {
+    DomainProject,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
@@ -90,6 +98,24 @@ export default {
         }),
       },
       decorators: {
+        domain: [
+          'domain',
+          {
+            initialValue: this.$store.getters.userInfo.projectDomainId,
+            rules: [
+              { required: true, message: this.$t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            initialValue: this.$store.getters.userInfo.projectId,
+            rules: [
+              { required: true, message: this.$t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
         name: [
           'name',
           {
@@ -124,6 +150,9 @@ export default {
       aclEntries: [],
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+  },
   created () {
     if (this.params.type === 'update') {
       const initialValue = this.params.data[0].acl_entries.map(v => {
@@ -138,9 +167,15 @@ export default {
   },
   methods: {
     doCreate (data) {
+      if (this.isAdminMode) {
+        data.admin = true
+      } else {
+        delete data.domain
+      }
       return this.params.onManager('create', {
         managerArgs: {
           data: {
+            ...data,
             name: data.name,
             acl_entries: this.aclEntries,
           },
@@ -152,6 +187,7 @@ export default {
         id: this.params.data[0].id,
         managerArgs: {
           data: {
+            ...data,
             name: data.name,
             acl_entries: this.aclEntries,
           },
