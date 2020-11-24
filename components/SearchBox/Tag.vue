@@ -100,7 +100,7 @@ export default {
       let ret = `${label}${this.keySeparator}`
       if (this.isDate) {
         if (this.value[0] && this.value[1]) {
-          ret += this.value.join('-')
+          ret += this.value.join('~')
         } else if (this.value[0]) {
           ret += `<${this.value[0]}`
         } else if (this.value[1]) {

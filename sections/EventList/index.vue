@@ -5,17 +5,7 @@
       :columns="columns"
       :export-data-options="exportDataOptions"
       :show-page="false"
-      :refresh-method="refresh">
-      <template #right-tools-prepend>
-        <a-range-picker
-          style="width: 370px;"
-          class="mr-2"
-          v-model="rangeTime"
-          format="YYYY-MM-DD HH:mm:ss"
-          :show-time="{ defaultValue: [$moment('00:00:00', 'HH:mm:ss'), $moment('23:59:59', 'HH:mm:ss')] }"
-          @change="handleRangeTimeChange" />
-      </template>
-    </page-list>
+      :refresh-method="refresh" />
   </div>
 </template>
 
@@ -94,10 +84,24 @@ export default {
           return `action.in("${val}")`
         },
       },
+      start_time: {
+        label: this.$t('common_156'),
+        dropdown: true,
+        date: true,
+        filter: true,
+        formatter: (val, type) => {
+          if (type === 'before') {
+            return `start_time.le("${val}")`
+          }
+          if (type === 'after') {
+            return `start_time.ge("${val}")`
+          }
+          return `start_time.between("${val[0]}", "${val[1]}")`
+        },
+      },
     }
     if (this.$store.getters.isProjectMode) delete filterOptions.tenant
     return {
-      rangeTime: [null, null],
       list: this.$list.createList(this, {
         id: this.listId,
         resource: 'actions',
@@ -276,15 +280,8 @@ export default {
       if (this.objType) {
         param.obj_type = this.objType
       }
-      if (this.rangeTime[0] && this.rangeTime[1]) {
-        filter.push(`start_time.between('${this.$moment.utc(this.rangeTime[0]).format()}', '${this.$moment.utc(this.rangeTime[1]).format()}')`)
-      }
       param.filter = filter
       return param
-    },
-    handleRangeTimeChange () {
-      this.list.reset()
-      this.list.fetchData()
     },
     refresh (clearSelected) {
       clearSelected()

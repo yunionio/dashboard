@@ -200,7 +200,7 @@ export default {
       const values = val[0]
       let labelStr
       if (values[0] && values[1]) {
-        labelStr = values.map(item => item.format('YYYY-MM-DD HH:mm:ss')).join('-')
+        labelStr = values.map(item => item.format('YYYY-MM-DD HH:mm:ss')).join('~')
       } else if (values[0]) {
         labelStr = `<${values[0].format('YYYY-MM-DD HH:mm:ss')}`
       } else if (values[1]) {
@@ -229,15 +229,15 @@ export default {
       if (selectValueEmpty) return
       let value = this.search.split(this.keySeparator)[1]
       if (this.isDate) {
-        if (value.includes('-')) {
-          value = value.split('-')
-          value = [value[0], value[1]]
-        } else if (value.includes('<')) {
+        if (value.startsWith('<')) {
           value = value.split('<')
           value = [value[1], null]
-        } else if (value.includes('>')) {
+        } else if (value.startsWith('>')) {
           value = value.split('>')
           value = [null, value[1]]
+        } else if (value.includes('~')) {
+          value = value.split('~')
+          value = [value[0], value[1]]
         }
       } else {
         value = value.split(this.valueSeparator)
