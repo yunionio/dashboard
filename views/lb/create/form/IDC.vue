@@ -43,7 +43,7 @@
               filterable
               :params="networkParams"
               :item.sync="networkObj"
-              :select-props="{ placeholder: $t('network.text_275') }" />
+              :select-props="{ placeholder: $t('network.text_212') }" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -114,7 +114,6 @@ export default {
     async submit () {
       try {
         const values = await this.form.fc.validateFields()
-        if (!this.validateIp()) throw Error(this.$t('network.text_276'))
         const data = {
           cluster_id: values.cluster_id,
           name: values.name.trim(),
