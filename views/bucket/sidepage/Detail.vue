@@ -112,28 +112,22 @@ export default {
   computed: {
     extraInfo () {
       const referer = {
-        title: this.$t('storage.text_213'),
-        items: [
-          {
-            field: 'referer.enabled',
-            title: this.$t('storage.text_214'),
-            slots: {
-              default: ({ row }, h) => {
-                return [
-                  <span>{ row.referer ? row.referer.enabled ? this.$t('storage.text_215') : this.$t('storage.text_216') : '-' }</span>,
-                  <a-tooltip>
-                    { row.provider !== HYPERVISORS_MAP.qcloud.provider ? (
-                      HYPERVISORS_MAP[row.provider.toLowerCase()] ? <template slot="title">{i18n.t('storage.text_235', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template> : ''
-                    ) : null }
-                    <a-button type="link" class="ml-2" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider } onClick={() => this.handleSetReferer(row)}>{ this.$t('common.setting') }</a-button>
-                  </a-tooltip>,
-                ]
-              },
-            },
-          },
-        ],
+        title: ({ row }, h) => {
+          return h('div', {
+            class: 'detail-title',
+          }, [
+            <span class='ml-2'>{i18n.t('storage.text_213')}</span>,
+            <a-tooltip>
+              { row.provider !== HYPERVISORS_MAP.qcloud.provider ? (
+                HYPERVISORS_MAP[row.provider.toLowerCase()] ? <template slot="title">{i18n.t('storage.text_235', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template> : ''
+              ) : null }
+              <a-button type="link" class="ml-2" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider } onClick={() => this.handleSetReferer(row)}>{ i18n.t('common.setting') }</a-button>
+            </a-tooltip>,
+          ])
+        },
+        items: [],
       }
-      if (this.data.referer && this.data.referer.enabled) {
+      if (this.data.referer) {
         const others = [
           {
             field: 'referer.allow_empty_refer',
@@ -143,11 +137,26 @@ export default {
             },
           },
           {
-            field: 'referer_domain_list',
+            field: 'referer_white_list',
             title: this.$t('storage.text_219'),
             slots: {
               default: ({ row }) => {
-                return row.referer_domain_list ? row.referer_domain_list.map(item => {
+                return row.referer_white_list ? row.referer_white_list.map(item => {
+                  return (
+                    <list-body-cell-wrap hideField copy title={ item } message={ item }>
+                      <span>{ item }</span>
+                    </list-body-cell-wrap>
+                  )
+                }) : '-'
+              },
+            },
+          },
+          {
+            field: 'referer_black_list',
+            title: this.$t('storage.text_237'),
+            slots: {
+              default: ({ row }) => {
+                return row.referer_black_list ? row.referer_black_list.map(item => {
                   return (
                     <list-body-cell-wrap hideField copy title={ item } message={ item }>
                       <span>{ item }</span>
@@ -370,7 +379,8 @@ export default {
           id: this.data.id,
           spec: 'referer',
         })
-        this.$set(this.data, 'referer_domain_list', data.domain_list)
+        this.$set(this.data, 'referer_white_list', data.white_list)
+        this.$set(this.data, 'referer_black_list', data.black_list)
         this.$set(this.data, 'referer', data)
       } catch (err) {
         throw err

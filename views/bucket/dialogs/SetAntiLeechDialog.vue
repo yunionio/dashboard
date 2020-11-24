@@ -4,30 +4,18 @@
     <div slot="header">{{$t('storage.text_205')}}</div>
     <div slot="body">
       <dialog-selected-tips :name="params.name" :count="params.data.length" :action="$t('storage.text_205')" />
-      <dialog-table class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table class="mb-2" :data="params.data" :columns="[params.columns[0], params.columns[7], params.columns[9]]" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('storage.text_41')" v-bind="formItemLayout">
-          <a-switch v-decorator="decorators.enabled" :checked-children="$t('storage.text_184')" :un-checked-children="$t('storage.text_185')" @change="handleEnabledChange" />
+        <a-form-item :label="$t('storage.text_208')" v-bind="formItemLayout" :extra="$t('storage.text_209')">
+          <a-switch v-decorator="decorators.allow_empty_refer" :checked-children="$t('storage.text_184')" :un-checked-children="$t('storage.text_185')" />
         </a-form-item>
-        <template v-if="this.enabled">
-          <div>
-            <a-form-item :label="$t('storage.text_86')" v-bind="formItemLayout">
-              <a-radio-group v-decorator="decorators.type">
-                <a-radio-button value="White-List">{{$t('storage.text_206')}}</a-radio-button>
-              </a-radio-group>
-            </a-form-item>
-            <a-form-item label="Referer" v-bind="formItemLayout">
-              <a-textarea
-                v-decorator="decorators.domain_list"
-                :placeholder="$t('storage.text_207')"
-                :auto-size="{ minRows: 3, maxRows: 5 }" />
-            </a-form-item>
-            <a-form-item :label="$t('storage.text_208')" v-bind="formItemLayout" :extra="$t('storage.text_209')">
-              <a-switch v-decorator="decorators.allow_empty_refer" :checked-children="$t('storage.text_184')" :un-checked-children="$t('storage.text_185')" />
-            </a-form-item>
-          </div>
-        </template>
+        <a-form-item :label="$t('storage.text_219')" v-bind="formItemLayout">
+          <a-textarea
+            v-decorator="decorators.white_list"
+            :placeholder="$t('storage.text_207')"
+            :auto-size="{ minRows: 3, maxRows: 5 }" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -53,26 +41,10 @@ export default {
       },
       enabled: this.params.data[0].referer?.enabled || false,
       decorators: {
-        enabled: [
-          'enabled',
+        white_list: [
+          'white_list',
           {
-            valuePropName: 'checked',
-            initialValue: this.params.data[0].referer?.enabled || false,
-          },
-        ],
-        type: [
-          'type',
-          {
-            initialValue: 'White-List',
-          },
-        ],
-        domain_list: [
-          'domain_list',
-          {
-            initialValue: this.params.data[0].referer?.domain_list ? this.params.data[0].referer.domain_list.join('\n') : '',
-            rules: [
-              { required: true, message: this.$t('storage.text_210') },
-            ],
+            initialValue: this.params.data[0].referer?.white_list ? this.params.data[0].referer.white_list.join('\n') : '',
           },
         ],
         allow_empty_refer: [
@@ -85,10 +57,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
@@ -113,7 +85,8 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        if (values.domain_list) values.domain_list = values.domain_list.trim().split('\n')
+        if (values.white_list) values.white_list = values.white_list.trim().split('\n')
+        if (values.white_list === '') delete values.white_list
         await this.doSet(values)
         this.loading = false
         this.cancelDialog()
