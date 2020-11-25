@@ -33,45 +33,53 @@ export default {
       type: [Function, Object],
     },
     cloudEnv: String,
+    hiddenFilterOptions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
+    const filterOptions = {
+      name: getNameFilter(),
+      ips: {
+        label: 'IP',
+        filter: true,
+        formatter: val => {
+          return `guestnetworks.guest_id(id).ip_addr.contains("${val}")`
+        },
+        jointFilter: true,
+      },
+      host_sn: {
+        label: 'SN',
+        distinctField: {
+          type: 'extra_field',
+          key: 'account',
+        },
+      },
+      host: {
+        label: this.$t('res.machine'),
+        hidden: () => this.$store.getters.isProjectMode,
+      },
+      region: {
+        label: this.$t('res.region'),
+      },
+      zone: {
+        label: this.$t('res.zone'),
+      },
+      projects: getTenantFilter(),
+      project_domains: getDomainFilter(),
+      status: getStatusFilter({ statusModule: 'server' }),
+      os_type: getOsTypeFilter(),
+    }
+    this.hiddenFilterOptions.forEach(key => {
+      delete filterOptions[key]
+    })
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'servers',
         getParams: this.getParam,
-        filterOptions: {
-          name: getNameFilter(),
-          ips: {
-            label: 'IP',
-            filter: true,
-            formatter: val => {
-              return `guestnetworks.guest_id(id).ip_addr.contains("${val}")`
-            },
-            jointFilter: true,
-          },
-          host_sn: {
-            label: 'SN',
-            distinctField: {
-              type: 'extra_field',
-              key: 'account',
-            },
-          },
-          host: {
-            label: this.$t('res.machine'),
-            hidden: () => this.$store.getters.isProjectMode,
-          },
-          region: {
-            label: this.$t('res.region'),
-          },
-          zone: {
-            label: this.$t('res.zone'),
-          },
-          projects: getTenantFilter(),
-          project_domains: getDomainFilter(),
-          status: getStatusFilter({ statusModule: 'server' }),
-          os_type: getOsTypeFilter(),
-        },
+        filterOptions,
         steadyStatus: Object.values(expectStatus.server).flat(),
         responseData: this.responseData,
         hiddenColumns: ['host_sn'],

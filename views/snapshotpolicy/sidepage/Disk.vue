@@ -2,7 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :group-actions="groupActions" />
 </template>
 
 <script>
@@ -84,6 +85,26 @@ export default {
                 </div>,
               ]
             },
+          },
+        },
+      ],
+      groupActions: [
+        {
+          label: this.$t('compute.text_723'),
+          action: () => {
+            this.createDialog('UnbindDisksDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('compute.text_723'),
+              resId: this.resId,
+              onManager: this.onManager,
+              refresh: this.refresh,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
           },
         },
       ],

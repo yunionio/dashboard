@@ -2,7 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :group-actions="groupActions" />
 </template>
 
 <script>
@@ -110,6 +111,25 @@ export default {
           title: this.$t('compute.text_722'),
         }),
         getCopyWithContentTableColumn({ field: 'host', title: this.$t('compute.text_111') }),
+      ],
+      groupActions: [
+        {
+          label: this.$t('compute.text_723'),
+          action: () => {
+            this.createDialog('InstanceGroupUnbindServerDialog', {
+              instanceGroupId: this.resId,
+              columns: this.columns,
+              data: this.list.selectedItems,
+              onManager: this.onManager,
+              refresh: this.refresh,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length > 0,
+            }
+          },
+        },
       ],
       singleActions: [
         {

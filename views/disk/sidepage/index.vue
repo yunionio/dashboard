@@ -60,6 +60,9 @@ export default {
           return ''
       }
     },
+    hiddenColumns () {
+      return this.params.hiddenColumns || []
+    },
   },
 }
 </script>
