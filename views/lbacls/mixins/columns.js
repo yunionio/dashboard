@@ -54,6 +54,10 @@ export default {
           },
         },
       },
+      {
+        field: 'lb_listener_count',
+        title: '关联的监听（数量）',
+      },
       getTimeTableColumn(),
       {
         field: 'updated_at',
