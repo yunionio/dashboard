@@ -616,7 +616,7 @@
     }
   },
   "samluser": {
-    "create_title": "新建云上SAML用户",
+    "create_title": "新建免密登录用户",
     "create_cloudgroup_extra": "对应云上用户组，是权限的集合"
   },
   "cloudenv.environment": "账号类型",
