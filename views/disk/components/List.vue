@@ -37,6 +37,14 @@ export default {
       type: Boolean,
       default: true,
     },
+    hiddenColumns: {
+      type: Array,
+      default: () => ([]),
+    },
+    hiddenFilterOptions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     const createAction = {
@@ -146,59 +154,63 @@ export default {
     if (this.showCreateAction) {
       groupActions.unshift(createAction)
     }
+    const filterOptions = {
+      name: getNameFilter(),
+      status: getStatusFilter('disk'),
+      storage: {
+        label: this.$t('table.title.disk_storage'),
+        jointFilter: true,
+      },
+      guest_id: {
+        label: this.$t('res.server'),
+      },
+      disk_type: {
+        label: this.$t('table.title.disk_type'),
+        dropdown: true,
+        // multiple: true,
+        items: [
+          { label: this.$t('compute.text_50'), key: 'data' },
+          { label: this.$t('compute.text_49'), key: 'sys' },
+        ],
+      },
+      unused: {
+        label: this.$t('table.title.disk_mounted'),
+        dropdown: true,
+        items: [
+          { label: this.$t('compute.text_394'), key: false },
+          { label: this.$t('compute.text_395'), key: true },
+        ],
+      },
+      brand: getBrandFilter(),
+      projects: getTenantFilter(),
+      project_domains: getDomainFilter(),
+      account: getAccountFilter(),
+      region: {
+        label: this.$t('res.region'),
+      },
+      medium_type: {
+        label: this.$t('table.title.disk_medium_type'),
+        dropdown: true,
+        multiple: true,
+        jointFilter: true,
+        filter: true,
+        formatter: val => {
+          return `storages.id(storage_id).medium_type.equals(${val})`
+        },
+        items: Object.keys(MEDIUM_MAP).map((k) => {
+          return { label: MEDIUM_MAP[k], key: k }
+        }),
+      },
+    }
+    for (let i = 0, len = this.hiddenFilterOptions.length; i < len; i++) {
+      delete filterOptions[this.hiddenFilterOptions[i]]
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'disks',
         getParams: this.getParam,
-        filterOptions: {
-          name: getNameFilter(),
-          status: getStatusFilter('disk'),
-          storage: {
-            label: this.$t('table.title.disk_storage'),
-            jointFilter: true,
-          },
-          guest_id: {
-            label: this.$t('res.server'),
-          },
-          disk_type: {
-            label: this.$t('table.title.disk_type'),
-            dropdown: true,
-            // multiple: true,
-            items: [
-              { label: this.$t('compute.text_50'), key: 'data' },
-              { label: this.$t('compute.text_49'), key: 'sys' },
-            ],
-          },
-          unused: {
-            label: this.$t('table.title.disk_mounted'),
-            dropdown: true,
-            items: [
-              { label: this.$t('compute.text_394'), key: false },
-              { label: this.$t('compute.text_395'), key: true },
-            ],
-          },
-          brand: getBrandFilter(),
-          projects: getTenantFilter(),
-          project_domains: getDomainFilter(),
-          account: getAccountFilter(),
-          region: {
-            label: this.$t('res.region'),
-          },
-          medium_type: {
-            label: this.$t('table.title.disk_medium_type'),
-            dropdown: true,
-            multiple: true,
-            jointFilter: true,
-            filter: true,
-            formatter: val => {
-              return `storages.id(storage_id).medium_type.equals(${val})`
-            },
-            items: Object.keys(MEDIUM_MAP).map((k) => {
-              return { label: MEDIUM_MAP[k], key: k }
-            }),
-          },
-        },
+        filterOptions,
         steadyStatus: {
           status: Object.values(expectStatus.disk).flat(),
           guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
@@ -260,6 +272,7 @@ export default {
         },
       }, {
         list: this.list,
+        hiddenColumns: this.hiddenColumns,
       })
     },
   },

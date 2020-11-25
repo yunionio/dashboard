@@ -54,7 +54,9 @@ export default {
           return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
       },
-      getUnusedTableColumn(),
+      getUnusedTableColumn({
+        hidden: this.hiddenColumns.includes('unused'),
+      }),
       {
         field: 'guest',
         title: this.$t('res.server'),
@@ -70,6 +72,7 @@ export default {
             ]
           },
         },
+        hidden: this.hiddenColumns.includes('guest'),
       },
       {
         field: 'medium_type',
@@ -78,6 +81,7 @@ export default {
         formatter: ({ cellValue }) => {
           return MEDIUM_MAP[cellValue]
         },
+        hidden: this.hiddenColumns.includes('medium_type'),
       },
       getBillingTypeTableColumn(),
       getBrandTableColumn(),

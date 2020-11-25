@@ -51,12 +51,75 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    hiddenFilterOptions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     const filter = {}
     if (this.$route.query.id) {
       filter.id = [this.$route.query.id]
     }
+    const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
+      name: getNameFilter(),
+      brand: getBrandFilter('compute_engine_brands'),
+      ip_addr: {
+        label: 'IP',
+      },
+      status: getStatusFilter('server'),
+      os_type: {
+        label: this.$t('table.title.os'),
+        dropdown: true,
+        multiple: true,
+        items: [
+          { label: 'Windows', key: 'windows' },
+          { label: 'Linux', key: 'linux' },
+          { label: 'VMware', key: 'VMWare' },
+        ],
+        filter: true,
+        formatter: val => {
+          return `os_type.in(${val})`
+        },
+      },
+      projects: getTenantFilter(),
+      project_domains: getDomainFilter(),
+      billing_type: {
+        label: this.$t('table.title.bill_type'),
+        dropdown: true,
+        items: [
+          { label: this.$t('billingType.postpaid'), key: 'postpaid' },
+          { label: this.$t('billingType.prepaid'), key: 'prepaid' },
+        ],
+      },
+      cloudaccount: getAccountFilter(),
+      host: getHostFilter(),
+      gpu: {
+        label: this.$t('table.title.type'),
+        dropdown: true,
+        items: [
+          { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: false },
+          { label: `GPU${this.$t('dictionary.server')}`, key: true },
+        ],
+      },
+      region: {
+        label: this.$t('res.region'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'extra_field',
+          key: 'region',
+        },
+      },
+      vpc: getVpcFilter(),
+      os_arch: getOsArchFilter(),
+    }
+    this.hiddenFilterOptions.forEach(key => {
+      delete filterOptions[key]
+    })
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -69,62 +132,7 @@ export default {
           },
         },
         filter,
-        filterOptions: {
-          id: {
-            label: this.$t('table.title.id'),
-          },
-          name: getNameFilter(),
-          brand: getBrandFilter('compute_engine_brands'),
-          ip_addr: {
-            label: 'IP',
-          },
-          status: getStatusFilter('server'),
-          os_type: {
-            label: this.$t('table.title.os'),
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: 'Windows', key: 'windows' },
-              { label: 'Linux', key: 'linux' },
-              { label: 'VMware', key: 'VMWare' },
-            ],
-            filter: true,
-            formatter: val => {
-              return `os_type.in(${val})`
-            },
-          },
-          projects: getTenantFilter(),
-          project_domains: getDomainFilter(),
-          billing_type: {
-            label: this.$t('table.title.bill_type'),
-            dropdown: true,
-            items: [
-              { label: this.$t('billingType.postpaid'), key: 'postpaid' },
-              { label: this.$t('billingType.prepaid'), key: 'prepaid' },
-            ],
-          },
-          cloudaccount: getAccountFilter(),
-          host: getHostFilter(),
-          gpu: {
-            label: this.$t('table.title.type'),
-            dropdown: true,
-            items: [
-              { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: false },
-              { label: `GPU${this.$t('dictionary.server')}`, key: true },
-            ],
-          },
-          region: {
-            label: this.$t('res.region'),
-            dropdown: true,
-            multiple: true,
-            distinctField: {
-              type: 'extra_field',
-              key: 'region',
-            },
-          },
-          vpc: getVpcFilter(),
-          os_arch: getOsArchFilter(),
-        },
+        filterOptions,
         responseData: this.responseData,
         hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch'],
       }),

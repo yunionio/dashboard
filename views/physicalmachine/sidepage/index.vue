@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import BaremetalList from '../../baremetal/components/List'
 import StorageList from '../../host/sidepage/Storage'
 import GpuList from '../../host/sidepage/Gpu'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import BaremetalList from './Baremetal'
 import PhysicalmachineDetail from './Detail'
 import NetworkList from './Network'
 import BmcLog from './BMCLog'
