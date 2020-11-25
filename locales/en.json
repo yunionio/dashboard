@@ -98,7 +98,7 @@
   "storage.text_97": "Please select a bucket under the same {0}",
   "storage.text_99": "Set upper limit",
   "storage.text_100": "Sync Status",
-  "storage.text_101": "4~62 bytes, beginning and ending with lowercase letters and numbers, the middle can be: lowercase letters, numbers, .-_:",
+  "storage.text_101": "4~62 bytes, beginning and ending with lowercase letters and numbers, the middle can be: lowercase letters, numbers, .-_:, The bucket name is globally unique. It is recommended not to use commonly used names to prevent creation failure",
   "storage.text_102": "Azure name is not allowed -",
   "storage.text_103": "Link effective time",
   "storage.text_104": "Please enter an integer",
