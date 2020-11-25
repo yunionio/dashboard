@@ -1,5 +1,6 @@
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import i18n from '@/locales'
+import { BRAND_MAP } from '@/constants'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
@@ -80,6 +81,15 @@ export default {
                 })
               },
               meta: () => {
+                if (obj.brand) {
+                  const brand = obj.brand.toLowerCase()
+                  if (brand === 'vmware' && obj.disk_type === 'data') {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('compute.text_1287', [BRAND_MAP[obj.brand].label]),
+                    }
+                  }
+                }
                 if (!obj.guest) {
                   return {
                     validate: !!obj.guest,
