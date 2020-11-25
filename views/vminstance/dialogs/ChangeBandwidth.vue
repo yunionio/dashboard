@@ -76,6 +76,7 @@ export default {
         })
         this.params.refresh()
         this.cancelDialog()
+        this.$message.success(this.$t('compute.text_423'))
       } finally {
         this.loading = false
         manager = null
