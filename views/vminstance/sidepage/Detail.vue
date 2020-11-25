@@ -21,6 +21,7 @@ import {
   getSwitchTableColumn,
   getBillingTypeTableColumn,
   getOsArch,
+  getIpsTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -116,17 +117,7 @@ export default {
                 return distribution + (version === '-' ? '' : version)
               },
             },
-            getCopyWithContentTableColumn({
-              field: 'ips',
-              title: 'IP',
-              hideField: true,
-              slotCallback: row => {
-                if (!row.ips) return '-'
-                return [
-                  <a onClick={ () => this.$emit('tab-change', 'network-list-for-vm-instance-sidepage') }>{row.ips}</a>,
-                ]
-              },
-            }),
+            getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
             getCopyWithContentTableColumn({
               field: 'macs',
               title: 'MAC',
