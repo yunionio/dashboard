@@ -9,7 +9,7 @@
           :form="form"
           :schedtagParams="getSchedtagParams()"
           :snapshots-params="getSnapshotsParams"
-          :diskTypeLabel="i === 0 ? '' : diskTypeLabel"
+          :diskTypeLabel="getDiskTypeLabel(i, diskTypeLabel)"
           :decorator="genDecorator(item.key)"
           :hypervisor="hypervisor"
           :types-map="typesMap"
@@ -444,6 +444,12 @@ export default {
       if (this.form.fi) {
         this.$set(this.form.fi, 'dataDiskMedium', _.get(this.typesMap, `[${v.key}].medium`))
       }
+    },
+    getDiskTypeLabel (i, diskTypeLabel) {
+      if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
+        return diskTypeLabel
+      }
+      return i === 0 ? '' : diskTypeLabel
     },
   },
 }
