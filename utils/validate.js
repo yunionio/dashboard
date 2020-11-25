@@ -256,7 +256,7 @@ export const passwordValidator = (rule, value, _callback) => {
   const ALL_LETTERS = /[a-z]/g
   const ALL_UPPERS = /[A-Z]/g
   /* eslint-disable no-useless-escape */
-  const ALL_PUNC = '~`!@#$%^&*()-_=+[]{}|;\':\",./<>?'.split('')
+  const ALL_PUNC = '@^-+='.split('')
   let spec = false
   ALL_PUNC.forEach(v => {
     if (value.includes(v)) {
