@@ -4,6 +4,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_261'),
+        permission: 'snapshots_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
