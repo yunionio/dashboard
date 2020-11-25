@@ -88,7 +88,7 @@ export default {
         if (response.data.init_login_url) {
           window.open(response.data.init_login_url, '_blank')
         } else {
-          this.$message.error(this.$t('smal_login_message.fail'))
+          this.$message.error(this.$t('smal_login_message.no_login_url'))
         }
       } catch (error) {
         this.$message.error(this.$t('smal_login_message.fail'))

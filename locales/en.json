@@ -4207,6 +4207,7 @@
   "smal_login_message": {
     "loading": "Password-free login is in progress, please wait",
     "fail": "Password-free login failed",
-    "success": "Login successful"
+    "success": "Login successful",
+    "no_login_url": "The address is empty, please contact the administrator"
   }
 }

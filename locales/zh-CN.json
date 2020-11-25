@@ -2151,7 +2151,7 @@
     "strategydefinition": "策略定义",
     "scopedpolicybindings": "策略分配",
     "scopedpolicies": "策略定义",
-    "samluser": "SMAL用户",
+    "samluser": "免密登录用户",
     "guestsecgroup": "云服务器安全组",
     "scalinggroupguest": "云服务器弹性伸缩组",
     "hoststorage": "宿主机存储",
@@ -4207,6 +4207,7 @@
   "smal_login_message": {
     "loading": "正在进行免密登录，请稍后",
     "fail": "免密登录失败",
-    "success": "登录成功"
+    "success": "登录成功",
+    "no_login_url": "地址为空，请联系管理员处理"
   }
 }
