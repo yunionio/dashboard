@@ -16,7 +16,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getTenantFilter, getStatusFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getDomainFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -51,6 +51,7 @@ export default {
           status: getStatusFilter('image'),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
+          os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'created_at', 'is_standard'],
