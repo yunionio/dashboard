@@ -91,9 +91,11 @@ export const RollbackDiskValidate = {
   },
   huawei (obj) {
     const ret = RollbackDiskValidate.base(obj)
-    if (obj.guest) {
-      ret.validate = false
-      ret.tooltip = i18n.t('compute.text_1079', [BRAND_MAP[obj.brand].label])
+    if (obj.disk_type === 'data') {
+      if (obj.guest) {
+        ret.validate = false
+        ret.tooltip = i18n.t('compute.text_1079', [BRAND_MAP[obj.brand].label])
+      }
     }
     return ret
   },
