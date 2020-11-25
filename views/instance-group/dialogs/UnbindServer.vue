@@ -28,11 +28,15 @@ export default {
     async handleConfirm () {
       this.loading = true
       const manager = new this.$Manager('instancegroups')
+      const data = {}
+      for (let i = 0, len = this.params.data.length; i < len; i++) {
+        data[`guest.${i}`] = this.params.data[i].id
+      }
       try {
         await manager.performAction({
           id: this.params.instanceGroupId,
           action: 'unbind-guests',
-          data: { 'guest.0': this.params.data[0].id },
+          data,
         })
         this.params.refresh()
         this.cancelDialog()
