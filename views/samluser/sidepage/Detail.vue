@@ -26,16 +26,6 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
-        {
-          field: 'iam_login_url',
-          title: this.$t('cloudenv.clouduser_list_t3'),
-          slots: {
-            default: ({ row }) => {
-              if (!row.iam_login_url) return '-'
-              return [<help-link href={ row.iam_login_url } />]
-            },
-          },
-        },
         getCopyWithContentTableColumn({
           field: 'owner_name',
           title: this.$t('cloudenv.clouduser_list_t4'),
