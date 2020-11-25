@@ -1,6 +1,6 @@
 import { sizestr } from '@/utils/utils'
 import SystemIcon from '@/sections/SystemIcon'
-import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTimeTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn, getProjectTableColumn, getPublicScopeTableColumn, getTimeTableColumn, getTagTableColumn, getOsArch } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -52,6 +52,7 @@ export default {
           return cellValue && cellValue.toUpperCase()
         },
       },
+      getOsArch(),
       {
         field: 'os_type',
         title: i18n.t('table.title.os'),
