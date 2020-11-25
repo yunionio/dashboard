@@ -40,6 +40,7 @@ export default {
           field: 'size',
           title: this.$t('compute.text_422'),
           formatter: ({ cellValue, row }) => {
+            if (!row.snapshots) return '-'
             const size = row.snapshots.reduce((a, b) => a + b.size, 0)
             return sizestr(size, 'M', 1024)
           },
