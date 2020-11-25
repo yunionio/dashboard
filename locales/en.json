@@ -765,5 +765,6 @@
   "network.text_747": "PrivateZone type domain names can subsequently be synchronized to the public cloud through the associated VPC",
   "network.text_748": "PublicZone type domain names can be synchronized to the public cloud through the steps of Details-Cache List-New Cache",
   "network.text_749": "No line type",
-  "newwork.acl_entries": "No Adress | Comment"
+  "newwork.acl_entries": "No Adress | Comment",
+  "network.text_750": "Associated monitors (number)"
 }

@@ -54,6 +54,10 @@ export default {
           },
         },
       },
+      {
+        field: 'lb_listener_count',
+        title: this.$t('network.text_750'),
+      },
       getTimeTableColumn(),
       {
         field: 'updated_at',
