@@ -56,7 +56,7 @@ export default {
       },
       {
         field: 'lb_listener_count',
-        title: '关联的监听（数量）',
+        title: this.$t('network.text_750'),
       },
       getTimeTableColumn(),
       {
