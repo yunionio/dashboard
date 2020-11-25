@@ -20,7 +20,7 @@
           @change="handleCloudregionChange" />
         <a-form-item :label="$t('storage.text_40')">
           <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />
-          <span slot="extra">{{$t('storage.text_101')}}<br />{{$t('storage.text_102')}}</span>
+          <span slot="extra">{{$t('storage.text_101')}}<template v-if="cloudregion.provider === 'Azure'"><br />{{$t('storage.text_102')}}</template></span>
         </a-form-item>
         <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout">
           <base-select
