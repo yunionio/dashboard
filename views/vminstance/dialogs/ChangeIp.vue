@@ -154,6 +154,7 @@ export default {
         this.params.refresh()
         this.$bus.$emit('VMInstanceListSingleUpdate', [this.params.resId])
         this.cancelDialog()
+        this.$message.success(this.$t('compute.text_423'))
       } finally {
         this.loading = false
         manager = null

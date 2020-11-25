@@ -18,9 +18,9 @@
               <template slot="title" v-if="isEsxi">
                 <span>{{$t('compute.text_1358')}}</span>
               </template>
-              <a-radio value="disk" :disabled="isEsxi">{{$t('compute.text_1252')}}</a-radio>
+              <a-radio value="disk" :disabled="isEsxi">{{$t('compute.text_101')}}</a-radio>
             </a-tooltip>
-            <a-radio value="instance">{{$t('compute.text_1253')}}</a-radio>
+            <a-radio value="instance">{{$t('compute.text_102')}}</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -222,6 +222,7 @@ export default {
         this.loading = false
         this.params.refresh()
         this.cancelDialog()
+        this.$message.success(this.$t('compute.text_322'))
       } catch (error) {
         this.loading = false
       }
