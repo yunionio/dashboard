@@ -2137,7 +2137,7 @@
     "strategydefinition": "策略定义",
     "scopedpolicybindings": "策略分配",
     "scopedpolicies": "策略定义",
-    "samluser": "SMAL用户"
+    "samluser": "免密登录用户"
   },
   "res": {
     "role": "@:dictionary.role",
