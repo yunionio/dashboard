@@ -594,12 +594,9 @@ export const getBillingTableColumn = ({
           const time = vm.$moment(row.expired_at).format()
           let tooltipCon = <div slot="help"></div>
           if (billingType === 'postpaid') {
-            if (hasPermission({ key: 'server_perform_cancel_expire' })) {
-              if (hiddenSetBtn) {
-                tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }</div>
-              } else {
-                tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }<span class="link-color" style="cursor: pointer" onClick={ openVmSetDurationDialog }>{ i18n.t('common_453') }</span></div>
-              }
+            const isHiddenSetButton = R.is(Function, hiddenSetBtn) ? hiddenSetBtn() : hiddenSetBtn
+            if (hasPermission({ key: 'server_perform_cancel_expire' }) && !isHiddenSetButton) {
+              tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }<span class="link-color" style="cursor: pointer" onClick={ openVmSetDurationDialog }>{ i18n.t('common_453') }</span></div>
             } else {
               tooltipCon = <div slot="help">{ i18n.t('common_301', [time]) }</div>
             }
