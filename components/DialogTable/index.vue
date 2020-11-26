@@ -9,6 +9,7 @@
       :columns="tableColumns"
       :max-height="280"
       :scroll-y="{gt: 5}"
+      resizable
       v-bind="{ ...vxeGridProps }" />
   </div>
 </template>
