@@ -2376,7 +2376,8 @@
     "next_step": "下一步",
     "tips": {
       "select": "请选择{0}",
-      "input": "请输入{0}"
+      "input": "请输入{0}",
+      "optional_input": "选填，请输入{0}"
     },
     "adv_config": "高级配置"
   },
