@@ -20,32 +20,23 @@
       <a-form-item :label="$t('cloudenv.cloudaccount.apsara.vpc_endpoint')">
         <a-input v-decorator="decorators.vpc_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.vpc_endpoint')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.rds_endpoint')">
-        <a-input v-decorator="decorators.rds_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.rds_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.kvs_endpoint')">
-        <a-input v-decorator="decorators.kvs_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.kvs_endpoint')])" />
-      </a-form-item>
       <a-form-item :label="$t('cloudenv.cloudaccount.apsara.slb_endpoint')">
-        <a-input v-decorator="decorators.slb_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.slb_endpoint')])" />
+        <a-input v-decorator="decorators.slb_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.slb_endpoint')])" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.cloudaccount.apsara.oss_endpoint')">
-        <a-input v-decorator="decorators.oss_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.oss_endpoint')])" />
+        <a-input v-decorator="decorators.oss_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.oss_endpoint')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.sts_endpoint')">
-        <a-input v-decorator="decorators.sts_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.sts_endpoint')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.rds_endpoint')">
+        <a-input v-decorator="decorators.rds_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.rds_endpoint')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')">
-        <a-input v-decorator="decorators.action_trail_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.ram_endpoint')">
-        <a-input v-decorator="decorators.ram_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.ram_endpoint')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.kvs_endpoint')">
+        <a-input v-decorator="decorators.kvs_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.kvs_endpoint')])" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.cloudaccount.apsara.metrics_endpoint')">
-        <a-input v-decorator="decorators.metrics_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.metrics_endpoint')])" />
+        <a-input v-decorator="decorators.metrics_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.metrics_endpoint')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.resourcemanager_endpoint')">
-        <a-input v-decorator="decorators.resourcemanager_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.resourcemanager_endpoint')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')">
+        <a-input v-decorator="decorators.action_trail_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')])" />
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
