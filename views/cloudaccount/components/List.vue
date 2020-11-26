@@ -31,6 +31,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     return {
@@ -107,6 +111,7 @@ export default {
               validate: this.isAllowCreate,
             }
           },
+          hidden: () => this.hiddenActions.includes('create'),
         },
         {
           label: this.$t('common.batchAction'),
@@ -256,6 +261,7 @@ export default {
         refresh: this.refresh,
       }, {
         list: this.list,
+        hiddenActions: this.params.hiddenActions,
       })
     },
   },

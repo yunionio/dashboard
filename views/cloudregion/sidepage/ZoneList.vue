@@ -1,5 +1,9 @@
 <template>
-  <zone-list :getParams="getParams" :disable-create="data.provider !== 'OneCloud'" id="ZoneListForCloudregionSidePage" />
+  <zone-list
+    :getParams="getParams"
+    :disable-create="data.provider !== 'OneCloud'"
+    :hidden-actions="['create']"
+    id="ZoneListForCloudregionSidePage" />
 </template>
 
 <script>
