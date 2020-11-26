@@ -90,6 +90,12 @@ export default {
           return ''
       }
     },
+    hiddenColumns () {
+      return this.params.hiddenColumns
+    },
+    hiddenActions () {
+      return this.params.hiddenActions
+    },
   },
 }
 </script>
