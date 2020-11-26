@@ -2376,7 +2376,8 @@
     "next_step": "Next",
     "tips": {
       "select": "Plese select {0}",
-      "input": "Please enter {0}"
+      "input": "Please enter {0}",
+      "optional_input": "Optional, Please enter {0}"
     },
     "adv_config": "Advanced configuration"
   },

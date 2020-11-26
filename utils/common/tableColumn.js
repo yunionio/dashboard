@@ -44,7 +44,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.pr
   }
 }
 
-export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.region'), showOverflow = 'ellipsis' } = {}) => {
+export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.region'), showOverflow = 'ellipsis', hidden } = {}) => {
   return {
     field,
     title,
@@ -76,6 +76,7 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
         return ret
       },
     },
+    hidden,
   }
 }
 
@@ -391,13 +392,20 @@ export const getTimeTableColumn = ({
 export const getAccountTableColumn = ({
   field = 'account',
   title = i18n.t('res.cloudaccount'),
+  hidden,
 } = {}) => {
   return {
     field,
     title,
     minWidth: 120,
     showOverflow: 'ellipsis',
-    hidden: () => store.getters.isProjectMode,
+    hidden: () => {
+      if (store.getters.isProjectMode) {
+        return true
+      }
+      if (R.is(Function, hidden)) return hidden()
+      return hidden
+    },
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)
@@ -454,6 +462,7 @@ export const getPublicScopeTableColumn = ({
   vm,
   resource,
   width = '110px',
+  hidden,
 } = {}) => {
   return {
     title,
@@ -461,7 +470,11 @@ export const getPublicScopeTableColumn = ({
     showOverflow: 'title',
     width,
     hidden: () => {
-      return !store.getters.l3PermissionEnable && (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource))
+      if (!store.getters.l3PermissionEnable && (store.getters.scopeResource && store.getters.scopeResource.domain.includes(resource))) {
+        return true
+      }
+      if (R.is(Function, hidden)) return hidden()
+      return hidden
     },
     slots: {
       default: ({ row }, h) => {
