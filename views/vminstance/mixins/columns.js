@@ -181,7 +181,7 @@ export default {
         title: 'VPC',
         hidden: () => this.$store.getters.isProjectMode,
       }),
-      getBillingTableColumn({ vm: this, hiddenSetBtn: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire') }),
+      getBillingTableColumn({ vm: this, hiddenSetBtn: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire') }),
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
         field: 'account',
