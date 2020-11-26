@@ -144,7 +144,7 @@ export default {
       // 如果是自定义导出范围配置，则不进行默认的导出范围参数计算
       if (!this.params.options.exportType) {
         const listParams = this.params.listParams
-        if (formValues.type === this.exportType.custom && this.exportType.custom.key) { // 导出范围选择根据筛选条件时
+        if (this.exportType.custom && formValues.type === this.exportType.custom.key) { // 导出范围选择根据筛选条件时
           params = {
             ...params,
             ...listParams,
@@ -156,7 +156,7 @@ export default {
               params.filter = [`id.in(${this.params.selected.join(',')})`]
             }
           }
-        } else if (formValues.type === this.exportType.all && this.exportType.all.key) { // 导出范围选择全部时
+        } else if (this.exportType.all && formValues.type === this.exportType.all.key) { // 导出范围选择全部时
           if (listParams.scope) params.scope = listParams.scope
           // 如果没有自定义limit，导出全部直接把limt重置为0
           if (R.isNil(this.params.options.limit) || R.isEmpty(this.params.options.limit)) {
