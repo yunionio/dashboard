@@ -642,7 +642,7 @@
   "cloudenv.cloudaccount.apsara.rds_endpoint": "RDS端点",
   "cloudenv.cloudaccount.apsara.vpc_endpoint": "VPC端点",
   "cloudenv.cloudaccount.apsara.kvs_endpoint": "Redis端点",
-  "cloudenv.cloudaccount.apsara.slb_endpoint": "SLB端点",
+  "cloudenv.cloudaccount.apsara.slb_endpoint": "负载均衡端点",
   "cloudenv.cloudaccount.apsara.oss_endpoint": "对象存储端点",
   "cloudenv.cloudaccount.apsara.sts_endpoint": "STS端点",
   "cloudenv.cloudaccount.apsara.action_trail_endpoint": "操作日志端点",
