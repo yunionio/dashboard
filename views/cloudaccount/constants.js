@@ -392,3 +392,5 @@ export const BILL_BUCKET_URL_DOCS = {
   huawei: `${DOCS_PATH}#如何获取账单存储桶url-2`,
   google: `${DOCS_PATH}#如何获取账单文件的存储桶url以及文件前缀`,
 }
+
+export const SAML_USER_DOCS = `${DOCS_PATH}#身份提供商`
