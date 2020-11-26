@@ -32,9 +32,13 @@ export default {
       type: Boolean,
       default: true,
     },
+    defaultHiddenColumns: {
+      type: Array,
+      default: () => ([]),
+    },
     hiddenColumns: {
       type: Array,
-      default: () => [],
+      default: () => ([]),
     },
   },
   data () {
@@ -53,7 +57,7 @@ export default {
           },
           project_domain: getProjectDomainFilter(),
         },
-        hiddenColumns: this.hiddenColumns,
+        hiddenColumns: this.defaultHiddenColumns,
       }),
       exportDataOptions: {
         items: [

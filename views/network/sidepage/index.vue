@@ -92,6 +92,12 @@ export default {
           return ''
       }
     },
+    hiddenActions () {
+      return this.params.hiddenActions || []
+    },
+    hiddenColumns () {
+      return this.params.hiddenColumns || []
+    },
   },
   methods: {
     handleUpdateDetail () {
