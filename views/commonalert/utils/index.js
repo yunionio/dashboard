@@ -125,3 +125,14 @@ export const recipientsColumn = recipientList => ({
     },
   },
 })
+
+export const getResTypeColumn = ({ field = 'common_alert_metric_details' } = {}) => ({
+  field: 'res_type',
+  title: i18n.t('monitor.text_97'),
+  formatter: ({ row }) => {
+    const str = _.get(row[field], '[0].res_type')
+    if (!str) return '-'
+    if (i18n.te(`dictionary.${str}`)) return i18n.t(`dictionary.${str}`)
+    return str
+  },
+})

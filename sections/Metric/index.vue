@@ -1,9 +1,21 @@
 <template>
-  <a-row>
-    <a-col :span="12">
+  <a-row :gutter="8">
+    <a-col :span="8">
       <a-form-item class="mr-1">
         <base-select
-          minWidth="194px"
+          minWidth="192px"
+          v-decorator="decorators.metric_res_type"
+          :options="metricTypeOpts"
+          filterable
+          :disabled="disabled"
+          :select-props="{ placeholder: $t('common.select'), loading }"
+          @change="metricTypeChange" />
+      </a-form-item>
+    </a-col>
+    <a-col :span="8">
+      <a-form-item class="mr-1">
+        <base-select
+          minWidth="192px"
           v-decorator="decorators.metric_key"
           :options="metricKeyOpts"
           filterable
@@ -13,10 +25,10 @@
           @change="metricKeyChange" />
       </a-form-item>
     </a-col>
-    <a-col :span="12">
+    <a-col :span="8">
       <a-form-item>
         <base-select
-          minWidth="196px"
+          minWidth="192px"
           filterable
           v-decorator="decorators.metric_value"
           :item.sync="metricValueItem"
@@ -41,10 +53,6 @@ export default {
       type: Object,
       required: true,
     },
-    metricKeyOpts: {
-      type: Array,
-      default: () => [],
-    },
     form: {
       type: Object,
       required: true,
@@ -58,14 +66,36 @@ export default {
       type: Boolean,
       default: false,
     },
+    res_type_measurements: {
+      type: Object,
+      default: () => ({}),
+    },
+    res_types: {
+      type: Array,
+      default: () => [],
+    },
   },
   data () {
     return {
       metric_key: _.get(this.decorators.metric_key, '[1].initialValue'),
+      metric_res_type: _.get(this.decorators.metric_res_type, '[1].initialValue'),
       metricValueItem: {},
       metricKeyItem: {},
       metricOpts: [],
+      metricKeyOpts: [],
     }
+  },
+  computed: {
+    metricTypeOpts () {
+      return this.res_types.map(val => {
+        let label = val
+        if (this.$te(`dictionary.${val}`)) label = this.$t(`dictionary.${val}`)
+        return {
+          key: val,
+          label,
+        }
+      })
+    },
   },
   watch: {
     metricKeyOpts (val) {
@@ -94,6 +124,22 @@ export default {
         {item.label}<span class="text-black-50">({item.description.name})</span>
       </div>)
     },
+    metricTypeChange (val) {
+      this.metric_res_type = val
+      this.metricKeyOpts = (this.res_type_measurements[val] || []).map(val => {
+        let label = val.measurement
+        const displayName = val.measurement_display_name
+        if (displayName && metric_zh[displayName]) {
+          label = metric_zh[displayName]
+        }
+        return {
+          ...val,
+          metric_res_type: this.metric_res_type,
+          key: val.measurement,
+          label,
+        }
+      })
+    },
     metricKeyChange (val, isNative = true) {
       this.metric_key = val
       const metricKeyItem = this.metricKeyOpts.find(item => item.key === val)
@@ -111,6 +157,7 @@ export default {
             key: val,
             label,
             description,
+            metric_res_type: metricKeyItem.metric_res_type,
           }
         })
       }
