@@ -41,6 +41,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    hiddenFilterOptions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     const brandFilter = getBrandFilter()
@@ -48,50 +52,54 @@ export default {
       ...Object.values(HYPERVISORS_MAP).filter(item => item.cloud_env === 'public').map(item => item.brand),
       ...Object.values(EXTRA_HYPERVISORS).map(item => item.brand),
     ]
+    const filterOptions = {
+      name: getNameFilter(),
+      status: getStatusFilter('host'),
+      enabled: getEnabledFilter(),
+      host_status: {
+        label: this.$t('compute.text_502'),
+        dropdown: true,
+        items: Object.keys(this.$t('status.host_status')).map(key => {
+          return { label: this.$t('status.host_status')[key], key }
+        }),
+      },
+      sn: {
+        label: 'SN',
+        distinctField: {
+          type: 'extra_field',
+          key: 'account',
+        },
+      },
+      access_ip: {
+        label: 'IP',
+        filter: true,
+        formatter: val => {
+          return `access_ip.contains("${val}")`
+        },
+      },
+      region: {
+        label: this.$t('compute.text_177'),
+      },
+      zone: {
+        label: this.$t('compute.text_270'),
+      },
+      brand: {
+        ...brandFilter,
+        items: brandFilter.items.filter(val => !notSupportBrand.includes(val.key)),
+      },
+      project_domains: getProjectDomainFilter(),
+      account: getAccountFilter(),
+      cpu_architecture: getOsArchFilter(true),
+    }
+    this.hiddenFilterOptions.forEach(key => {
+      delete filterOptions[key]
+    })
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'hosts',
         getParams: this.getParam,
-        filterOptions: {
-          name: getNameFilter(),
-          status: getStatusFilter('host'),
-          enabled: getEnabledFilter(),
-          host_status: {
-            label: this.$t('compute.text_502'),
-            dropdown: true,
-            items: Object.keys(this.$t('status.host_status')).map(key => {
-              return { label: this.$t('status.host_status')[key], key }
-            }),
-          },
-          sn: {
-            label: 'SN',
-            distinctField: {
-              type: 'extra_field',
-              key: 'account',
-            },
-          },
-          access_ip: {
-            label: 'IP',
-            filter: true,
-            formatter: val => {
-              return `access_ip.contains("${val}")`
-            },
-          },
-          region: {
-            label: this.$t('compute.text_177'),
-          },
-          zone: {
-            label: this.$t('compute.text_270'),
-          },
-          brand: {
-            ...brandFilter,
-            items: brandFilter.items.filter(val => !notSupportBrand.includes(val.key)),
-          },
-          project_domains: getProjectDomainFilter(),
-          account: getAccountFilter(),
-          cpu_architecture: getOsArchFilter(true),
-        },
+        filterOptions,
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch'],
       }),
