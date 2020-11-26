@@ -10,7 +10,7 @@
 
 <script>
 import { LB_SPEC, CHARGE_TYPE } from '@Network/views/lb/constants'
-import { getBrandTableColumn, getCopyWithContentTableColumn, getZone1TableColumn } from '@/utils/common/tableColumn'
+import { getBrandTableColumn, getCopyWithContentTableColumn, getZone1TableColumn, getSwitchTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
   getExtTagColumn,
@@ -126,6 +126,23 @@ export default {
                 ]
               },
               hidden: this.$store.getters.isProjectMode,
+            }),
+          ],
+        },
+        {
+          title: this.$t('db.text_179'),
+          items: [
+            getSwitchTableColumn({
+              field: 'disable_delete',
+              title: this.$t('common.text00076'),
+              change: val => {
+                this.onManager('update', {
+                  id: this.data.id,
+                  managerArgs: {
+                    data: { disable_delete: val },
+                  },
+                })
+              },
             }),
           ],
         },
