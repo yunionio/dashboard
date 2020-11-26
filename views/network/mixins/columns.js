@@ -86,8 +86,16 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', hidden: this.$store.getters.isProjectMode }),
-      getCopyWithContentTableColumn({ field: 'wire', title: i18n.t('network.text_571') }),
+      getCopyWithContentTableColumn({
+        field: 'vpc',
+        title: 'VPC',
+        hidden: () => this.$store.getters.isProjectMode || this.hiddenColumns.includes('vpc'),
+      }),
+      getCopyWithContentTableColumn({
+        field: 'wire',
+        title: i18n.t('network.text_571'),
+        hidden: () => this.hiddenColumns.includes('wire'),
+      }),
       {
         field: 'vlan_id',
         title: 'VLAN',
@@ -110,11 +118,19 @@ export default {
           },
         },
       },
-      getBrandTableColumn(),
-      getAccountTableColumn(),
+      getBrandTableColumn({
+        hidden: () => this.hiddenColumns.includes('brand'),
+      }),
+      getAccountTableColumn({
+        hidden: () => this.hiddenColumns.includes('account'),
+      }),
       getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
-      getProjectTableColumn(),
-      getRegionTableColumn(),
+      getProjectTableColumn({
+        hidden: () => this.hiddenColumns.includes('tenant'),
+      }),
+      getRegionTableColumn({
+        hidden: () => this.hiddenColumns.includes('region'),
+      }),
     ]
   },
   computed: {

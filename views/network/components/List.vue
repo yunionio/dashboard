@@ -40,91 +40,107 @@ export default {
       type: Boolean,
       default: true,
     },
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
+    },
+    hiddenColumns: {
+      type: Array,
+      default: () => ([]),
+    },
+    hiddenFilterOptions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     const brandFilter = getBrandFilter('network_manage_brands')
     if (!R.find(R.propEq('key', 'OneCloud'))(brandFilter.items)) {
       brandFilter.items.push({ key: 'OneCloud', label: 'OneCloud' })
     }
+    const filterOptions = {
+      name: getNameFilter(),
+      guest_ip_start: {
+        label: this.$t('network.text_607'),
+        filter: true,
+        formatter: val => {
+          return `guest_ip_start.contains(${val})`
+        },
+      },
+      guest_ip_end: {
+        label: this.$t('network.text_608'),
+        filter: true,
+        formatter: val => {
+          return `guest_ip_end.contains(${val})`
+        },
+      },
+      status: {
+        label: this.$t('network.text_27'),
+        dropdown: true,
+        items: [
+          { label: this.$t('network.text_613'), key: 'init' },
+          { label: this.$t('network.text_614'), key: 'pending' },
+          { label: this.$t('network.text_615'), key: 'available' },
+          { label: this.$t('network.text_616'), key: 'failed' },
+          { label: this.$t('network.text_617'), key: 'start_delete' },
+          { label: this.$t('network.text_618'), key: 'deleting' },
+          { label: this.$t('network.text_619'), key: 'deleted' },
+          { label: this.$t('network.text_620'), key: 'delete_failed' },
+          { label: this.$t('network.text_507'), key: 'unknown' },
+          { label: this.$t('common_715'), key: 'user_tags' },
+        ],
+        filter: true,
+        formatter: val => {
+          return `status.in(${val})`
+        },
+      },
+      is_auto_alloc: {
+        label: this.$t('common_498'),
+        dropdown: true,
+        items: Object.keys(this.$t('status.networIsAutoAlloc')).map(k => {
+          return { label: this.$t('status.networIsAutoAlloc')[k], key: k }
+        }),
+      },
+      server_type: {
+        label: this.$t('network.text_249'),
+        dropdown: true,
+        multiple: true,
+        items: [
+          { label: this.$t('network.text_598'), key: 'baremetal' },
+          { label: this.$t('network.text_599'), key: 'container' },
+          { label: this.$t('network.text_226'), key: 'guest' },
+          { label: 'PXE', key: 'pxe' },
+          { label: 'IPMI', key: 'ipmi' },
+          { label: this.$t('network.text_221'), key: 'eip' },
+        ],
+      },
+      brand: brandFilter,
+      cloudaccount: getAccountFilter(),
+      projects: getTenantFilter(),
+      project_domains: getDomainFilter(),
+      region: {
+        label: this.$t('network.text_199'),
+      },
+      vpc: getVpcFilter(),
+      wire: {
+        label: this.$t('network.text_571'),
+        filter: true,
+        jointFilter: true,
+        formatter: val => {
+          return `wire.contains(${val})`
+        },
+      },
+    }
+    this.hiddenFilterOptions.forEach(key => {
+      delete filterOptions[key]
+    })
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'networks',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.network).flat(),
-        filterOptions: {
-          name: getNameFilter(),
-          guest_ip_start: {
-            label: this.$t('network.text_607'),
-            filter: true,
-            formatter: val => {
-              return `guest_ip_start.contains(${val})`
-            },
-          },
-          guest_ip_end: {
-            label: this.$t('network.text_608'),
-            filter: true,
-            formatter: val => {
-              return `guest_ip_end.contains(${val})`
-            },
-          },
-          status: {
-            label: this.$t('network.text_27'),
-            dropdown: true,
-            items: [
-              { label: this.$t('network.text_613'), key: 'init' },
-              { label: this.$t('network.text_614'), key: 'pending' },
-              { label: this.$t('network.text_615'), key: 'available' },
-              { label: this.$t('network.text_616'), key: 'failed' },
-              { label: this.$t('network.text_617'), key: 'start_delete' },
-              { label: this.$t('network.text_618'), key: 'deleting' },
-              { label: this.$t('network.text_619'), key: 'deleted' },
-              { label: this.$t('network.text_620'), key: 'delete_failed' },
-              { label: this.$t('network.text_507'), key: 'unknown' },
-              { label: this.$t('common_715'), key: 'user_tags' },
-            ],
-            filter: true,
-            formatter: val => {
-              return `status.in(${val})`
-            },
-          },
-          is_auto_alloc: {
-            label: this.$t('common_498'),
-            dropdown: true,
-            items: Object.keys(this.$t('status.networIsAutoAlloc')).map(k => {
-              return { label: this.$t('status.networIsAutoAlloc')[k], key: k }
-            }),
-          },
-          server_type: {
-            label: this.$t('network.text_249'),
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: this.$t('network.text_598'), key: 'baremetal' },
-              { label: this.$t('network.text_599'), key: 'container' },
-              { label: this.$t('network.text_226'), key: 'guest' },
-              { label: 'PXE', key: 'pxe' },
-              { label: 'IPMI', key: 'ipmi' },
-              { label: this.$t('network.text_221'), key: 'eip' },
-            ],
-          },
-          brand: brandFilter,
-          cloudaccount: getAccountFilter(),
-          projects: getTenantFilter(),
-          project_domains: getDomainFilter(),
-          region: {
-            label: this.$t('network.text_199'),
-          },
-          vpc: getVpcFilter(),
-          wire: {
-            label: this.$t('network.text_571'),
-            filter: true,
-            jointFilter: true,
-            formatter: val => {
-              return `wire.contains(${val})`
-            },
-          },
-        },
+        filterOptions,
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope'],
       }),
@@ -164,6 +180,7 @@ export default {
               buttonType: 'primary',
             }
           },
+          hidden: () => this.hiddenActions.includes('create'),
         },
         {
           label: this.$t('common.batchAction'),
@@ -522,6 +539,8 @@ export default {
         getParams: this.getParam,
       }, {
         list: this.list,
+        hiddenActions: this.hiddenActions,
+        hiddenColumns: this.hiddenColumns,
       })
     },
   },

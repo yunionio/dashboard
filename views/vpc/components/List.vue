@@ -33,33 +33,49 @@ export default {
       type: Boolean,
       default: true,
     },
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
+    },
+    hiddenColumns: {
+      type: Array,
+      default: () => ([]),
+    },
+    hiddenFilterOptions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
+    const filterOptions = {
+      name: {
+        label: this.$t('network.text_21'),
+        filter: true,
+        formatter: val => {
+          return `name.contains("${val}")`
+        },
+      },
+      status: getStatusFilter('vpc'),
+      cloudaccount: getAccountFilter(),
+      brand: getBrandFilter('brands', ['VMware']),
+      cidr_block: {
+        label: this.$t('network.text_244'),
+      },
+      project_domains: getProjectDomainFilter(),
+      region: {
+        label: this.$t('common_282'),
+      },
+    }
+    this.hiddenFilterOptions.forEach(key => {
+      delete filterOptions[key]
+    })
     return {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'vpcs',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.vpc).flat(),
-        filterOptions: {
-          name: {
-            label: this.$t('network.text_21'),
-            filter: true,
-            formatter: val => {
-              return `name.contains("${val}")`
-            },
-          },
-          status: getStatusFilter('vpc'),
-          cloudaccount: getAccountFilter(),
-          brand: getBrandFilter('brands', ['VMware']),
-          cidr_block: {
-            label: this.$t('network.text_244'),
-          },
-          project_domains: getProjectDomainFilter(),
-          region: {
-            label: this.$t('common_282'),
-          },
-        },
+        filterOptions,
         hiddenColumns: ['metadata', 'wire_count'],
       }),
       exportDataOptions: {
@@ -100,6 +116,7 @@ export default {
               buttonType: 'primary',
             }
           },
+          hidden: () => this.hiddenActions.includes('create'),
         },
         {
           label: this.$t('network.text_200'),
@@ -207,6 +224,8 @@ export default {
         getParams: this.getParam,
       }, {
         list: this.list,
+        hiddenActions: this.hiddenActions,
+        hiddenColumns: this.hiddenColumns,
       })
     },
   },

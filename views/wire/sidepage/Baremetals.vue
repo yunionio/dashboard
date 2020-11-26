@@ -9,6 +9,7 @@ import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import {
   getEnabledTableColumn,
   getStatusTableColumn,
+  getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
@@ -45,10 +46,15 @@ export default {
         },
       }),
       columns: [
-        {
-          field: 'name',
-          title: this.$t('network.text_21'),
-        },
+        getNameDescriptionTableColumn({
+          edit: false,
+          hideField: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger permission='hosts_get' name='PhysicalmachineSidePage' id={ row.id } list={this.list} vm={this}>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'server' }),
         {
