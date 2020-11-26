@@ -8,7 +8,13 @@
     :loaded="loaded"
     :tabs="detailTabs"
     @tab-change="handleTabChange">
-    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :on-manager="onManager" @tab-change="handleTabChange" />
+    <component
+      :is="params.windowData.currentTab"
+      :res-id="data.id"
+      :id="listId"
+      :data="detailData"
+      :on-manager="onManager"
+      @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 

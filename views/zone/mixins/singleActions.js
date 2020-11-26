@@ -16,11 +16,7 @@ export default {
             },
           })
         },
-        meta: obj => {
-          return {
-            validate: obj.can_delete,
-          }
-        },
+        meta: obj => this.$getDeleteResult(obj),
       },
     ]
   },
