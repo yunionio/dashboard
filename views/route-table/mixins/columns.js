@@ -36,6 +36,9 @@ export default {
         showOverflow: 'title',
         slots: {
           default: ({ row }, h) => {
+            if (!row.routes || row.routes.length === 0) {
+              return '-'
+            }
             return [
               h('div', row.routes.map(route => {
                 const { type, cidr, next_hop_type: next } = route
@@ -63,12 +66,19 @@ export default {
         title: i18n.t('network.text_535'),
         minWidth: 120,
         showOverflow: 'ellipsis',
+        hidden: () => this.hiddenColumns.includes('vpc'),
       },
-      getBrandTableColumn(),
-      getAccountTableColumn(),
+      getBrandTableColumn({
+        hidden: () => this.hiddenColumns.includes('brand'),
+      }),
+      getAccountTableColumn({
+        hidden: () => this.hiddenColumns.includes('account'),
+      }),
       getPublicScopeTableColumn({ vm: this, resource: 'routetables' }),
       getProjectDomainTableColumn(),
-      getRegionTableColumn(),
+      getRegionTableColumn({
+        hidden: () => this.hiddenColumns.includes('region'),
+      }),
     ]
   },
 }

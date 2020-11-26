@@ -9,14 +9,13 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
+    <template v-slot:actions>
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
+    </template>
     <component
       :is="params.windowData.currentTab"
-      :hiddenColumns="hiddenColumns"
       :id="listId"
       :res-id="detailData.id"
-      :showGroupActions="showGroupActions"
-      :showSingleActions="showSingleActions"
-      :showSearchbox="showSearchbox"
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
@@ -32,8 +31,8 @@
 <script>
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import NetworkList from '../../network/components/List'
-import RouteTableList from '../../route-table/components/List'
+import RouteTableList from './RouteTable'
+import NetworkList from './Network'
 import VpcDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -78,31 +77,6 @@ export default {
         }
       }
       return null
-    },
-    showGroupActions () {
-      // this.params.windowData.currentTab === 'network-list' ||
-      if (this.params.windowData.currentTab === 'route-table-list') {
-        return false
-      }
-      return true
-    },
-    showSingleActions () {
-      if (this.params.windowData.currentTab === 'route-table-list') {
-        return false
-      }
-      return true
-    },
-    showSearchbox () {
-      // if (this.params.windowData.currentTab === 'network-list') {
-      //   return false
-      // }
-      return true
-    },
-    hiddenColumns () {
-      if (this.params.windowData.currentTab === 'route-table-list') {
-        return ['public_scope']
-      }
-      return []
     },
     listId () {
       switch (this.params.windowData.currentTab) {

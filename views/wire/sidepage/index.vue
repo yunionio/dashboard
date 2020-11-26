@@ -31,7 +31,7 @@
 <script>
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import NetworkList from '../../network/components/List'
+import NetworkList from './Network'
 import WireDetail from './Detail'
 import BaremetalsList from './Baremetals'
 import HostsList from './Hosts'
