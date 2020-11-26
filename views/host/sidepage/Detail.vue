@@ -321,13 +321,6 @@ export default {
               },
             },
             {
-              field: 'mem_reserved',
-              title: this.$t('compute.text_598'),
-              formatter: ({ cellValue, row }) => {
-                return sizestr(cellValue, 'M', 1024)
-              },
-            },
-            {
               field: 'mem_commint_bound',
               title: this.$t('compute.text_594'),
               slots: {
@@ -340,6 +333,13 @@ export default {
             {
               field: 'mem_commit_rate',
               title: this.$t('compute.text_595'),
+            },
+            {
+              field: 'mem_reserved',
+              title: this.$t('compute.text_598'),
+              formatter: ({ cellValue, row }) => {
+                return sizestr(cellValue, 'M', 1024)
+              },
             },
             {
               field: 'reserved_memory',
@@ -394,6 +394,13 @@ export default {
               title: this.$t('compute.text_595'),
             },
             {
+              field: 'storage_waste',
+              title: this.$t('compute.text_599'),
+              formatter: ({ cellValue, row }) => {
+                return sizestr(cellValue || 0, 'M', 1024)
+              },
+            },
+            {
               field: 'reserved_storage',
               title: this.$t('compute.text_597'),
               slots: {
@@ -406,13 +413,6 @@ export default {
                   }
                   return '-'
                 },
-              },
-            },
-            {
-              field: 'storage_waste',
-              title: this.$t('compute.text_599'),
-              formatter: ({ cellValue, row }) => {
-                return sizestr(cellValue || 0, 'M', 1024)
               },
             },
             {
