@@ -3,7 +3,7 @@
     <div slot="header">{{ params.title }}</div>
     <div slot="body">
       <a-alert v-if="alertProps" v-bind="alertProps" class="mb-2" />
-      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" />
+      <dialog-selected-tips :count="params.data.length" :action="this.params.title" :name="this.params.name" :unit="params.unit" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <dialog-content :content="params.content" />
     </div>
