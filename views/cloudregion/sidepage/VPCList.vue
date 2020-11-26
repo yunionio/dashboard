@@ -1,5 +1,9 @@
 <template>
-  <v-p-c-list :getParams="getParams" :showGroupActions="false" id="VpcListForCloudregionSidePage" />
+  <v-p-c-list
+    :getParams="getParams"
+    id="VpcListForCloudregionSidePage"
+    :hidden-actions="['create']"
+    :hidden-filter-options="['brand', 'region', 'cloudaccount']" />
 </template>
 
 <script>

@@ -24,6 +24,10 @@ export default {
       default: () => ({}),
     },
     disableCreate: Boolean,
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
     return {
@@ -66,6 +70,20 @@ export default {
               validate: !this.disableCreate,
             }
           },
+          hidden: () => this.hiddenActions.includes('create'),
+        },
+        {
+          label: this.$t('cloudenv.text_108'),
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('cloudenv.text_108'),
+              onManager: this.onManager,
+            })
+          },
+          meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
       ],
     }
@@ -82,6 +100,7 @@ export default {
         getParams: this.getParams,
       }, {
         list: this.list,
+        hiddenActions: this.hiddenActions,
       })
     },
   },

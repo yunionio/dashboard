@@ -13,7 +13,16 @@
       <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
     </template>
     <a-alert :message="$t('cloudenv.clouduser_desc')" class="mb-2" v-if="params.windowData.currentTab === 'clouduser-list'" />
-    <component :is="params.windowData.currentTab" :data="detailData" :cloudaccount="detailData" :on-manager="onManager" :res-id="data.id" :id="listId" resource="cloudaccounts" :cloudaccount-list-refresh="params.options.refresh" :getParams="getParams" />
+    <component
+      :is="params.windowData.currentTab"
+      :data="detailData"
+      :cloudaccount="detailData"
+      :on-manager="onManager"
+      :res-id="data.id"
+      :id="listId"
+      resource="cloudaccounts"
+      :cloudaccount-list-refresh="params.options.refresh"
+      :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -22,8 +31,8 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import CloudaccountDetail from './Detail'
+import HostList from './Host'
 import CloudproviderList from '@Cloudenv/views/cloudprovider/components/List'
-import HostList from '@Compute/views/host/components/List'
 import Usage from '@Cloudenv/sections/UsageSidepage'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -126,6 +135,9 @@ export default {
         default:
           return ''
       }
+    },
+    hiddenActions () {
+      return this.params.hiddenActions || []
     },
   },
   created () {

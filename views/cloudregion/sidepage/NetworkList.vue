@@ -1,5 +1,10 @@
 <template>
-  <network-list :getParams="getParams" :showGroupActions="false" id="NetworkListForCloudregionSidePage" />
+  <network-list
+    :getParams="getParams"
+    :hidden-actions="['create']"
+    :hidden-columns="['brand', 'region']"
+    :hidden-filter-options="['brand', 'region', 'cloudaccount']"
+    id="NetworkListForCloudregionSidePage" />
 </template>
 
 <script>
