@@ -24,7 +24,7 @@
         <div slot="extra">
           <i18n path="cloudaccount.create_form.saml_user_extra">
             <template #link>
-              <help-link href="/">{{$t('cloudaccount.create_form.saml_user_link')}}</help-link>
+              <help-link :href="smaluserDoc">{{$t('cloudaccount.create_form.saml_user_link')}}</help-link>
             </template>
           </i18n>
         </div>
@@ -39,7 +39,7 @@ import DomainProject from '../../../components/DomainProject'
 import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
-import { CLOUDACCOUNT_DOCS, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import { CLOUDACCOUNT_DOCS, keySecretFields, SAML_USER_DOCS } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
 export default {
@@ -54,6 +54,7 @@ export default {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
       docs: CLOUDACCOUNT_DOCS,
+      smaluserDoc: SAML_USER_DOCS,
       decorators: {
         name: [
           'name',
