@@ -2155,7 +2155,8 @@
     "guestsecgroup": "云服务器安全组",
     "scalinggroupguest": "云服务器弹性伸缩组",
     "hoststorage": "宿主机存储",
-    "usage": "使用量"
+    "usage": "使用量",
+    "guest": "@:dictionary.server"
   },
   "res": {
     "role": "@:dictionary.role",
