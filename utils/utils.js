@@ -607,7 +607,7 @@ export const compactObj = (obj, fn = R.isEmpty) => {
  */
 export const transformUnit = (value, unit = '', base = 1000, numerifyFormat = '0.00') => {
   const number = Number(value)
-  const valueStr = numerify(number, numerifyFormat)
+  const valueStr = parseFloat(numerify(number, numerifyFormat))
   if (!R.is(Number, number) || Number.isNaN(number)) {
     console.error('onecloud: value must be Number type by used transformUnit util')
     return { text: '0', value: 0, unit: '' }
