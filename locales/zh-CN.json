@@ -186,5 +186,12 @@
   "monitor.text_105": "发生告警触发值",
   "monitor.text_106": "恢复告警触发值",
   "monitor.text_107": "所属域",
-  "monitor.text_108": "资源：上报数据为空时触发"
+  "monitor.text_108": "资源：上报数据为空时触发",
+  "monitor.text_109": "请选择过滤项",
+  "monitor.text_110": "请选择过滤值",
+  "monitor.text_111": "请选择资源类型",
+  "monitor.text_112": "请选择监控指标",
+  "monitor.text_113": "请选择指标项",
+  "monitor.text_114": "请选择分组",
+  "monitor.text_115": "请选择函数"
 }

@@ -33,14 +33,14 @@
           :options="groupbyOpts"
           @change="groupbyChange"
           class="w-100"
-          :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
+          :select-props="{ placeholder: $t('monitor.text_114'), allowClear: true }" />
       </a-form-item>
       <a-form-item :label="$t('monitor.monitor_function')">
         <base-select
           v-decorator="decorators.function"
           :options="functionOpts"
           class="w-100"
-          :select-props="{ placeholder: $t('common.select'), allowClear: true }" />
+          :select-props="{ placeholder: $t('monitor.text_115'), allowClear: true }" />
       </a-form-item>
     </a-form>
   </a-card>

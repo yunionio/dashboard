@@ -8,7 +8,7 @@
           :options="metricTypeOpts"
           filterable
           :disabled="disabled"
-          :select-props="{ placeholder: $t('common.select'), loading }"
+          :select-props="{ placeholder: $t('monitor.text_111'), loading }"
           @change="metricTypeChange" />
       </a-form-item>
     </a-col>
@@ -21,7 +21,7 @@
           filterable
           :disabled="disabled"
           :item.sync="metricKeyItem"
-          :select-props="{ placeholder: $t('common.select'), loading }"
+          :select-props="{ placeholder: $t('monitor.text_112'), loading }"
           @change="metricKeyChange" />
       </a-form-item>
     </a-col>
@@ -36,7 +36,7 @@
           :labelFormat="metricValueLabelFormat"
           :disabled="disabled"
           @change="metricValueChange"
-          :select-props="{ placeholder: $t('common.select'), allowClear: true, loading }" />
+          :select-props="{ placeholder: $t('monitor.text_113'), allowClear: true, loading }" />
       </a-form-item>
     </a-col>
   </a-row>

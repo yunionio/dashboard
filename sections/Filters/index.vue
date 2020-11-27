@@ -19,7 +19,7 @@
             filterable
             :disabled="disabled"
             @change="val => tagKeyChange(val, i, item)"
-            :select-props="{ placeholder: $t('common.select'), allowClear: true, loading }" />
+            :select-props="{ placeholder: $t('monitor.text_109'), allowClear: true, loading }" />
         </a-form-item>
       </a-col>
       <a-col :span="3">
@@ -40,7 +40,7 @@
             :options="item.tagValueOpts"
             filterable
             :disabled="disabled"
-            :select-props="{ placeholder: $t('common.select'), allowClear: true, loading }" />
+            :select-props="{ placeholder: $t('monitor.text_110'), allowClear: true, loading }" />
         </a-form-item>
         <a-form-item style="width: 20px;" v-if="!disabled && i !== 0">
           <a-icon
