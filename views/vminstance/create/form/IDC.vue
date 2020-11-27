@@ -391,7 +391,14 @@ export default {
     },
     storageParams () {
       const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
-      const { systemDiskSize } = this.form.fd
+      const { systemDiskSize, dataDiskSizes } = this.form.fd
+      let dataSizeTotal = 0
+      if (R.is(Object, dataDiskSizes)) {
+        const list = Object.values(dataDiskSizes)
+        if (list && list.length) {
+          dataSizeTotal = list.reduce((a, b) => a + b)
+        }
+      }
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
@@ -401,8 +408,9 @@ export default {
       if (systemDiskType) {
         params.filter = [`storage_type.contains("${systemDiskType}")`]
       }
-      if (systemDiskSize) {
-        params.filter = (params.filter || []).concat([`capacity.ge(${systemDiskSize * 1024})`])
+      const diskSize = systemDiskSize + dataSizeTotal
+      if (R.is(Number, diskSize)) {
+        params.filter = (params.filter || []).concat([`capacity.ge(${(diskSize) * 1024})`])
       }
       return params
     },
