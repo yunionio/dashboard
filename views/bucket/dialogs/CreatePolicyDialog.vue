@@ -43,14 +43,15 @@
             <a-radio value="designatedResource">{{$t('storage.text_246')}}</a-radio>
           </a-radio-group>
         </a-form-item>
-        <a-form-item v-bind="formItemLayout">
-          <span slot="label">
-            {{$t('storage.text_247')}}&nbsp;
-            <a-tooltip :title="$t('storage.text_249')">
-              <a-icon type="question-circle-o" />
-            </a-tooltip>
-          </span>
-          <a-textarea :disabled="isEntirebucket" v-decorator="decorators.ResourcePath" :placeholder="$t('storage.text_250')" :auto-size="{ minRows: 3, maxRows: 5 }" />
+        <a-form-item :label="$t('storage.text_247')" v-bind="formItemLayout">
+          <div class="d-flex">
+            <div>
+              {{ params.bucketData.name }}/
+            </div>
+            <div class="flex-grow-1">
+              <a-textarea :disabled="isEntirebucket" v-decorator="decorators.ResourcePath" :placeholder="$t('storage.text_250')" :auto-size="{ minRows: 3, maxRows: 5 }" />
+            </div>
+          </div>
         </a-form-item>
         <a-form-item :label="$t('storage.text_251')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.CannedAction">
@@ -114,7 +115,7 @@ export default {
         ResourcePath: [
           'ResourcePath',
           {
-            initialValue: '/*',
+            initialValue: '*',
             rules: [
               { required: true, message: this.$t('storage.text_256') },
             ],
@@ -160,7 +161,7 @@ export default {
     },
     handleResourceTypeChange (e) {
       if (e.target.value === 'entirebucket') {
-        this.form.fc.setFieldsValue({ ResourcePath: '/*' })
+        this.form.fc.setFieldsValue({ ResourcePath: '*' })
       } else {
         this.form.fc.setFieldsValue({ ResourcePath: '' })
       }
@@ -179,7 +180,8 @@ export default {
       } else {
         ret.PrincipalId = data.PrincipalId + ':'
       }
-      ret.ResourcePath = data.ResourcePath.trim().split(',')
+      ret.ResourcePath = data.ResourcePath.trim().split('\n')
+      ret.ResourcePath = ret.ResourcePath.map(item => '/' + item)
       return ret
     },
     doCreate (data) {
@@ -194,7 +196,6 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const data = this.genData(values)
-        console.log(values)
         await this.doCreate(data)
         this.loading = false
         this.cancelDialog()
