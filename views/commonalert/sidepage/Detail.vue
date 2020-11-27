@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { levelColumn, conditionColumn, strategyColumn, projectTableColumn, recipientsColumn } from '../utils'
+import { levelColumn, conditionColumn, strategyColumn, projectTableColumn, recipientsColumn, getResTypeColumn } from '../utils'
 import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -30,6 +30,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getResTypeColumn(),
         projectTableColumn,
         getEnabledTableColumn(),
         strategyColumn(),
