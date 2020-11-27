@@ -65,7 +65,7 @@ export default {
       }
       const passLevel = passwordLevel(value)
       const passMaxLen = Math.max(this.minPasswordLen, this.complexity)
-      if (passLevel < this.complexity || passMaxLen < passLevel || value.length < passMaxLen) {
+      if (passLevel < this.complexity || value.length < passMaxLen) {
         return callback(new Error(this.$t('validator.passwordLevel', [this.complexity === 0 ? 1 : this.complexity, passMaxLen])))
       }
       return callback()
