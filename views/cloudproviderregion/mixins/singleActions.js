@@ -32,6 +32,10 @@ export default {
                 obj.cloudregion_id,
               ],
             },
+            params: {
+              full_sync: true,
+              force: true,
+            },
           }).then(() => {
             this.list.refresh()
             this.$message.success(i18n.t('cloudenv.text_367'))
