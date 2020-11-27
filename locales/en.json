@@ -247,7 +247,7 @@
   "storage.text_246": "Specify Resource",
   "storage.text_247": "Resource Path",
   "storage.text_249": "Must start with'/', please separate multiple resources with English commas",
-  "storage.text_250": "Please enter the resource path, it must start with'/', please separate multiple resources with commas",
+  "storage.text_250": "Please enter the resource path, please use a new line for multiple resources",
   "storage.text_251": "Operation",
   "storage.text_252": "Read Only",
   "storage.text_253": "Read/Write",
