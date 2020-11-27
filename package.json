@@ -52,6 +52,7 @@
     "vxe-table": "^2.9.22",
     "vxe-table-plugin-antd": "^1.9.2",
     "xe-utils": "^2.7.12",
+    "xlsx": "^0.16.9",
     "xterm": "3.7.0"
   },
   "devDependencies": {
