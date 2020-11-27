@@ -151,7 +151,7 @@ export default {
         },
       },
       {
-        field: 'storage_size',
+        field: 'storage_virtual',
         title: i18n.t('compute.text_565'),
         minWidth: 80,
         showOverflow: 'title',
