@@ -36,18 +36,18 @@
         <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item :label="$t('dashboard.text_55')">
-          <a-select v-decorator="decorators.brand">
-            <template v-for="item of capability.brands">
-              <a-select-option :key="item" :value="item">{{ item }}</a-select-option>
-            </template>
-          </a-select>
-        </a-form-item>
         <a-form-item :label="$t('dashboard.text_56')">
           <a-radio-group v-decorator="decorators.resType" @change="handleResTypeChange">
             <a-radio-button value="server">{{$t('dashboard.text_57')}}</a-radio-button>
-            <a-radio-button value="host" v-if="showResTypeHost">{{$t('dashboard.text_58')}}</a-radio-button>
+            <a-radio-button value="host">{{$t('dashboard.text_58')}}</a-radio-button>
           </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('dashboard.text_55')">
+          <a-select v-decorator="decorators.brand" allowClear :placeholder="$t('dashboard.text_99')" mode="multiple">
+            <template v-for="item of brands">
+              <a-select-option :key="item" :value="item">{{ item }}</a-select-option>
+            </template>
+          </a-select>
         </a-form-item>
         <a-form-item :label="$t('dashboard.text_20')">
           <a-select v-decorator="decorators.usage">
@@ -116,7 +116,7 @@ export default {
       { label: this.$t('dashboard.text_65'), key: 'bps_sent,net' },
     ]
     const initialNameValue = (this.params && this.params.name) || 'TOP5'
-    const initialBrandValue = (this.params && this.params.brand) || ''
+    const initialBrandValue = (this.params && this.params.brand && R.split(',', this.params.brand)) || []
     const initialResTypeValue = (this.params && this.params.resType) || 'server'
     let initialUsage = this.params && this.params.usage
     if (!initialUsage) {
@@ -180,9 +180,9 @@ export default {
           'brand',
           {
             initialValue: initialBrandValue,
-            rules: [
-              { required: true, message: this.$t('dashboard.text_72') },
-            ],
+            // rules: [
+            //   { required: true, message: this.$t('dashboard.text_72') },
+            // ],
           },
         ],
         resType: [
@@ -243,41 +243,60 @@ export default {
   },
   computed: {
     ...mapGetters(['scope', 'capability', 'isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
-    brandEnv () {
-      return findPlatform(this.form.fd.brand)
-    },
-    showResTypeHost () {
-      return this.brandEnv === 'private' || this.brandEnv === 'idc'
+    brandEnvs () {
+      const brand = this.form.fd.brand
+      return brand.map(key => findPlatform(key))
     },
     maxSeriesData () {
       const dataList = this.seriesData.map(item => Number(item.value))
       const maxData = Math.max.apply(null, dataList)
       return maxData > 100 ? maxData : 100
     },
-  },
-  watch: {
-    'form.fd' (val) {
-      this.fetchData()
-      for (const key in this.decorators) {
-        let config = this.decorators[key][1] || {}
-        config = {
-          ...config,
-          initialValue: val[key],
-        }
-        this.decorators[key][1] = config
-      }
-    },
-    showResTypeHost (val) {
-      if (!val) {
-        this.form.fc.setFieldsValue({
-          resType: 'server',
-          usage: this.usageOptions.server[0].key,
+    brands () {
+      const isServer = this.form.fd.resType === 'server'
+      if (isServer) {
+        return this.capability.brands.filter(key => {
+          const env = findPlatform(key)
+          return env !== 'private' || env !== 'idc'
         })
       }
+      return this.capability.brands.filter(key => {
+        const env = findPlatform(key)
+        return env === 'private' || env === 'idc'
+      })
+    },
+  },
+  watch: {
+    // 'form.fd' (val) {
+    //   this.fetchData()
+    //   for (const key in this.decorators) {
+    //     let config = this.decorators[key][1] || {}
+    //     const initialValue = val[key]
+    //     if (key === 'brand') {
+    //       this.form.fd.brand = initialValue.split(',')
+    //     }
+    //     config = {
+    //       ...config,
+    //       initialValue,
+    //     }
+    //     this.decorators[key][1] = config
+    //   }
+    // },
+    'form.fd' (val) {
+      const newVal = { ...val }
+      for (const key in newVal) {
+        this.decorators[key][1].initialValue = newVal[key]
+      }
+      this.form.fc.setFieldsValue(newVal)
+      this.$nextTick(() => {
+        this.fetchData()
+      })
     },
   },
   created () {
-    this.$emit('update', this.options.i, this.form.fd)
+    const values = { ...this.form.fd }
+    values.brand = R.join(',', values.brand || [])
+    this.$emit('update', this.options.i, values)
     this.fetchData()
   },
   methods: {
@@ -315,7 +334,9 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.form.fd = values
-        this.$emit('update', this.options.i, values)
+        const updateValues = { ...values }
+        updateValues.brand = updateValues.brand.join(',')
+        this.$emit('update', this.options.i, updateValues)
         this.visible = false
       } catch (error) {
         throw error
@@ -324,17 +345,61 @@ export default {
     handleResTypeChange (e) {
       this.form.fc.setFieldsValue({
         usage: this.usageOptions[e.target.value][0].key,
+        brand: [],
       })
     },
     genQueryData () {
       const fd = this.form.fd
       let ret = ''
-      const brand = fd.brand
       const brandKey = 'brand'
+      const brand = this.form.fd.brand
       const usageKeys = fd.usage.split(',')
       const min = fd.time / 60 / 60
       const condition = this.getDomainOrProjectQuery()
-      if (this.brandEnv === 'idc' || this.brandEnv === 'private') {
+      const brandTags = brand.map(key => {
+        return {
+          key: brandKey,
+          value: key,
+          operator: '=',
+          condition: 'or',
+        }
+      })
+      if (this.brandEnvs.every(env => env === 'public')) {
+        if (fd.resType === 'server') {
+          // ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", "hypervisor", ${fd.limit}) FROM "${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
+          ret = {
+            metric_query: [
+              {
+                model: {
+                  database: 'telegraf',
+                  measurement: usageKeys[1],
+                  select: [
+                    [
+                      {
+                        type: 'func_field',
+                        params: [usageKeys[0], 'vm_name', 'vm_ip'],
+                      },
+                      {
+                        type: fd.order.toLowerCase(),
+                        params: [fd.limit],
+                      },
+                    ],
+                  ],
+                  tags: brandTags,
+                },
+              },
+            ],
+            scope: this.scope,
+            from: `${min}m`,
+            unit: true,
+          }
+        }
+        if (condition && condition.length > 0) {
+          // ret += ` AND ${condition}`
+          ret.metric_query[0].model.tags.push(condition)
+        }
+        return ret
+      } else if (this.brandEnvs.includes('idc') || this.brandEnvs.includes('private')) {
         if (fd.resType === 'server') {
           // ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", ${fd.limit}) FROM "telegraf"."30day_only"."${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
           ret = {
@@ -355,13 +420,7 @@ export default {
                       },
                     ],
                   ],
-                  tags: [
-                    {
-                      key: brandKey,
-                      value: brand,
-                      operator: '=',
-                    },
-                  ],
+                  tags: brandTags,
                 },
               },
             ],
@@ -396,11 +455,7 @@ export default {
                       value: 'host',
                       operator: '=',
                     },
-                    {
-                      key: brandKey,
-                      value: brand,
-                      operator: '=',
-                    },
+                    ...brandTags,
                   ],
                   group_by: [
                     {
@@ -419,47 +474,6 @@ export default {
         if (condition) {
           ret.metric_query[0].model.tags.push(condition)
           // ret += ` AND ${condition}`
-        }
-        return ret
-      } else if (this.brandEnv === 'public') {
-        if (fd.resType === 'server') {
-          // ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", "hypervisor", ${fd.limit}) FROM "${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
-          ret = {
-            metric_query: [
-              {
-                model: {
-                  database: 'telegraf',
-                  measurement: usageKeys[1],
-                  select: [
-                    [
-                      {
-                        type: 'func_field',
-                        params: [usageKeys[0], 'vm_name', 'vm_ip'],
-                      },
-                      {
-                        type: fd.order.toLowerCase(),
-                        params: [fd.limit],
-                      },
-                    ],
-                  ],
-                  tags: [
-                    {
-                      key: brandKey,
-                      value: brand,
-                      operator: '=',
-                    },
-                  ],
-                },
-              },
-            ],
-            scope: this.scope,
-            from: `${min}m`,
-            unit: true,
-          }
-        }
-        if (condition && condition.length > 0) {
-          // ret += ` AND ${condition}`
-          ret.metric_query[0].model.tags.push(condition)
         }
         return ret
       } else {
