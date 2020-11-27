@@ -53,6 +53,7 @@
             :form="form"
             :hypervisor="hypervisor"
             :capability-data="form.fi.capability"
+            :defaultType="form.fd.systemDiskType"
             :sku="form.fd.sku"
             :image="form.fi.imageMsg"
             :domain="domain" />
