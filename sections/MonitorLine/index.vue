@@ -1,5 +1,5 @@
 <template>
-  <a-card :title="description ? description.title : ''" size="small" class="explorer-monitor-line">
+  <a-card :title="title" size="small" class="explorer-monitor-line">
     <loader v-if="loading" :loading="true" />
     <template v-else>
       <div class="d-flex">
@@ -138,7 +138,7 @@ export default {
         R.forEachObjIndexed((value, key) => {
           const isColumn = !R.isNil(this.tableData[0][key])
           if (isColumn) {
-            if (this.description.metricKeyItem.res_type === 'guest') {
+            if (this.description.metricKeyItem && this.description.metricKeyItem.res_type === 'guest') {
               if (value.field.startsWith('host')) {
                 return
               }
@@ -176,6 +176,18 @@ export default {
       }
       const ret = transformUnit(this.threshold, unit, 1000, formatStr)
       return `${ret.value}${ret.unit}`
+    },
+    title () {
+      let title = ''
+      if (this.series.length && this.description) {
+        title = this.description.title
+        if (this.description.metric_res_type && this.description.metric_res_type === 'host') {
+          if (this.$te(`dictionary.${this.description.metric_res_type}`)) {
+            title = `${this.$t(`dictionary.${this.description.metric_res_type}`)}${title}`
+          }
+        }
+      }
+      return title
     },
   },
   watch: {

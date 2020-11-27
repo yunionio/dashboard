@@ -9,7 +9,8 @@
       <metric
         :form="form"
         :decorators="decorators"
-        :metricKeyOpts="metricKeyOpts"
+        :res_types="res_types"
+        :res_type_measurements="res_type_measurements"
         :disabled="disabled"
         :loading="metricLoading"
         @metricClear="resetChart"
@@ -72,7 +73,7 @@ import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
 import ScopeRadio from '@/sections/ScopeRadio'
 import NameRepeated from '@/sections/NameRepeated'
-import { levelMaps, metric_zh } from '@Monitor/constants'
+import { levelMaps } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import NotifyTypes from '@/sections/NotifyTypes'
 
@@ -118,6 +119,7 @@ export default {
       initialValue.level = this.alertData.level
       initialValue.domain = this.alertData.domain_id
       initialValue.project = this.alertData.tenant_id
+      initialValue.res_type = _.get(this.alertData, 'common_alert_metric_details[0].res_type')
       tags = _.get(this.alertData, 'settings.conditions[0].query.model.tags') || []
       initialValue.metric_key = _.get(this.alertData, 'settings.conditions[0].query.model.measurement')
       initialValue.metric_value = _.get(this.alertData, 'settings.conditions[0].query.model.select[0][0].params[0]')
@@ -180,6 +182,15 @@ export default {
             initialValue: initialValue.name,
             rules: [
               { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
+            ],
+          },
+        ],
+        metric_res_type: [
+          'metric_res_type',
+          {
+            initialValue: initialValue.res_type,
+            rules: [
+              { required: true, message: this.$t('common.select') },
             ],
           },
         ],
@@ -295,7 +306,6 @@ export default {
       },
       tags,
       oldParams: {},
-      metricKeyOpts: [],
       metricInfo: {},
       conditionUnit: '',
       metricKeyItem: {},
@@ -312,6 +322,8 @@ export default {
       hadRobot: false,
       showChannel,
       recipientOpts: [],
+      res_type_measurements: {},
+      res_types: [],
     }
   },
   computed: {
@@ -369,19 +381,9 @@ export default {
       try {
         this.metricLoading = true
         this.formScopeParams = params
-        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { ...params, ...this.timeRangeParams } })
-        this.metricKeyOpts = measurements.map(val => {
-          let label = val.measurement
-          const displayName = val.measurement_display_name
-          if (displayName && metric_zh[displayName]) {
-            label = metric_zh[displayName]
-          }
-          return {
-            ...val,
-            key: val.measurement,
-            label,
-          }
-        })
+        const { data: { res_type_measurements, res_types } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: { ...params, ...this.timeRangeParams } })
+        this.res_type_measurements = res_type_measurements
+        this.res_types = res_types
         if (R.is(Object, this.alertData)) { // 说明是 更新
           this.toParams()
         }

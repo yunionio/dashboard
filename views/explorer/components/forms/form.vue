@@ -12,7 +12,8 @@
         <metric
           :form="form"
           :decorators="decorators"
-          :metricKeyOpts="metricKeyOpts"
+          :res_type_measurements="res_type_measurements"
+          :res_types="res_types"
           :loading="metricLoading"
           @metricChange="getMetricInfo"
           @metricClear="resetChart" />
@@ -93,6 +94,14 @@ export default {
         fd: {},
       },
       decorators: {
+        metric_res_type: [
+          'metric_res_type',
+          {
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
         metric_key: [
           'metric_key',
           {
@@ -162,6 +171,8 @@ export default {
       oldParams: {},
       metricLoading: false,
       metricInfoLoading: false,
+      res_type_measurements: {},
+      res_types: [],
     }
   },
   computed: {
@@ -225,19 +236,9 @@ export default {
       try {
         this.metricLoading = true
         const params = { scope: this.$store.getters.scope, ...this.timeRangeParams }
-        const { data: { measurements = [] } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params })
-        this.metricKeyOpts = measurements.map(val => {
-          let label = val.measurement
-          const displayName = val.measurement_display_name
-          if (displayName && metric_zh[displayName]) {
-            label = metric_zh[displayName]
-          }
-          return {
-            ...val,
-            key: val.measurement,
-            label,
-          }
-        })
+        const { data: { res_type_measurements, res_types } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params })
+        this.res_type_measurements = res_type_measurements
+        this.res_types = res_types
         this.metricLoading = false
       } catch (error) {
         this.metricLoading = false
