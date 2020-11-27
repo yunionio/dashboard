@@ -186,5 +186,12 @@
   "monitor.text_105": "Alert Value",
   "monitor.text_106": "Recover Alert Value",
   "monitor.text_107": "Domain",
-  "monitor.text_108": "Resource: Triggered when the reported data is empty"
+  "monitor.text_108": "Resource: Triggered when the reported data is empty",
+  "monitor.text_109": "Please select the filter key",
+  "monitor.text_110": "Please select the filter value",
+  "monitor.text_111": "Please select the resource type",
+  "monitor.text_112": "Please select the metric key",
+  "monitor.text_113": "Please select the metric value",
+  "monitor.text_114": "Please select the groupby",
+  "monitor.text_115": "Please select the function"
 }
