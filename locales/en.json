@@ -417,7 +417,8 @@
       "isolating": "isolating",
       "upgrading": "upgrading",
       "set_auto_renew": "set_auto_renew",
-      "set_auto_renew_failed": "set_auto_renew_failed"
+      "set_auto_renew_failed": "set_auto_renew_failed",
+      "backing_up_failed": "Instance backup failed"
     },
     "eip": {
       "ready": "Available",
