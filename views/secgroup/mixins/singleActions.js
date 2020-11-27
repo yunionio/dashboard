@@ -112,6 +112,17 @@ export default {
               },
             },
             {
+              label: i18n.t('compute.import_secgroup_rule', []),
+              action: () => {
+                this.createDialog('ImportSecgroupRuleDialog', {
+                  data: [obj],
+                  exportDataOptions: this.exportDataOptions,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+            },
+            {
               label: i18n.t('compute.text_1012'),
               permission: 'secgroups_create',
               action: () => {
