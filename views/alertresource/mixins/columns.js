@@ -1,4 +1,4 @@
-import { getNameDescriptionTableColumn, getTagTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
 import i18n from '@/locales'
 
@@ -30,7 +30,6 @@ export default {
           },
         },
       },
-      getTagTableColumn({ field: 'tags', title: this.$t('monitor.text_104'), ignorePrefix: true, width: 150 }),
       {
         field: 'alert_table',
         title: i18n.t('monitor.text_98'),
@@ -53,7 +52,7 @@ export default {
                   )
                 },
               }),
-              getTagTableColumn({ field: 'data.tags', title: this.$t('monitor.text_104'), ignorePrefix: true, width: 150 }),
+              getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
               strategyColumn(),
               levelColumn,
               {
@@ -62,10 +61,31 @@ export default {
                 align: 'right',
                 formatter: ({ row }) => row.data ? row.data.value_str : '-',
               },
-              getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
+              {
+                field: 'action',
+                title: this.$t('compute.text_863'),
+                slots: {
+                  default: ({ row }, h) => {
+                    const ret = []
+                    ret.push(
+                      <a-button type="link" onClick = {() => viewTag(row)}>{ this.$t('common.view') }</a-button>,
+                    )
+                    return ret
+                  },
+                },
+              },
             ]
+            const viewTag = obj => {
+              this.createDialog('ViewItemTagsDialog', {
+                vm: this,
+                data: [obj],
+                columns: columns.slice(0, 3),
+                title: this.$t('monitor.text_104'),
+                field: 'data.tags',
+              })
+            }
             const data = row.childData || []
-            return <vxe-grid size="mini" border columns={columns} data={data} />
+            return <vxe-grid size="mini" resizable border columns={columns} data={data} />
           },
         },
       },
