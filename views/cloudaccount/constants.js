@@ -173,6 +173,7 @@ export const ACCESS_URL = {
     InternationalCloud: i18n.t('cloudenv.international_cloud'),
     FinanceCloud: i18n.t('cloudenv.finance_cloud'),
   },
+  ucloud: {},
 }
 
 export const keySecretFields = {
