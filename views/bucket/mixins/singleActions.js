@@ -1,11 +1,15 @@
 import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
-import { HYPERVISORS_MAP } from '@/constants'
+// import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 
 export default {
   computed: {
     ...mapGetters(['isProjectMode']),
+    _isOwner () {
+      if (this.$store.getters.scope === 'project' && this.data.tenant_id !== this.$store.getters.auth.tenant) return false
+      return this.$isOwner(this.data).validate
+    },
   },
   created () {
     this.singleActions = [
@@ -101,41 +105,59 @@ export default {
                 }
               },
             },
-            {
-              label: i18n.t('storage.text_205'),
-              action: row => {
-                this.createDialog('SetAntiLeechDialog', {
-                  data: [row],
-                  name: i18n.t('storage.text_18'),
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                })
-              },
-              meta: (obj) => {
-                return {
-                  validate: obj.provider === HYPERVISORS_MAP.qcloud.provider,
-                  tooltip: obj.provider !== HYPERVISORS_MAP.qcloud.provider ? (HYPERVISORS_MAP[obj.provider.toLowerCase()] ? i18n.t('storage.text_232', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : '') : '',
-                }
-              },
-            },
-            {
-              label: i18n.t('storage.text_183'),
-              action: row => {
-                this.$router.push({
-                  path: '/bucket/setstaticwebsit',
-                  query: {
-                    id: row.id,
-                  },
-                })
-              },
-              meta: (obj) => {
-                return {
-                  validate: obj.provider === HYPERVISORS_MAP.qcloud.provider,
-                  tooltip: obj.provider !== HYPERVISORS_MAP.qcloud.provider ? (HYPERVISORS_MAP[obj.provider.toLowerCase()] ? i18n.t('storage.text_233', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : '') : '',
-                }
-              },
-            },
+            // {
+            //   label: i18n.t('storage.text_205'),
+            //   action: row => {
+            //     this.createDialog('SetAntiLeechDialog', {
+            //       data: [row],
+            //       name: i18n.t('storage.text_18'),
+            //       columns: this.columns,
+            //       onManager: this.onManager,
+            //       refresh: this.refresh,
+            //     })
+            //   },
+            //   meta: (obj) => {
+            //     let validate = false
+            //     let tooltip = HYPERVISORS_MAP[obj.provider.toLowerCase()] ? i18n.t('storage.text_232', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : ''
+            //     if (obj.provider === HYPERVISORS_MAP.qcloud.provider && this._isOwner) {
+            //       validate = true
+            //       tooltip = ''
+            //     }
+            //     if (!this._isOwner) {
+            //       tooltip = i18n.t('storage.text_257')
+            //     }
+            //     return {
+            //       validate,
+            //       tooltip,
+            //     }
+            //   },
+            // },
+            // {
+            //   label: i18n.t('storage.text_183'),
+            //   action: row => {
+            //     this.$router.push({
+            //       path: '/bucket/setstaticwebsit',
+            //       query: {
+            //         id: row.id,
+            //       },
+            //     })
+            //   },
+            //   meta: (obj) => {
+            //     let validate = false
+            //     let tooltip = HYPERVISORS_MAP[obj.provider.toLowerCase()] ? i18n.t('storage.text_232', [HYPERVISORS_MAP[obj.provider.toLowerCase()].label]) : ''
+            //     if (obj.provider === HYPERVISORS_MAP.qcloud.provider && this._isOwner) {
+            //       validate = true
+            //       tooltip = ''
+            //     }
+            //     if (!this._isOwner) {
+            //       tooltip = i18n.t('storage.text_257')
+            //     }
+            //     return {
+            //       validate,
+            //       tooltip,
+            //     }
+            //   },
+            // },
             {
               label: i18n.t('storage.text_36'),
               permission: 'buckets_delete',

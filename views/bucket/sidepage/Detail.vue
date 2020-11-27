@@ -118,10 +118,14 @@ export default {
           }, [
             <span class='ml-2'>{i18n.t('storage.text_213')}</span>,
             <a-tooltip>
-              { row.provider !== HYPERVISORS_MAP.qcloud.provider ? (
-                HYPERVISORS_MAP[row.provider.toLowerCase()] ? <template slot="title">{i18n.t('storage.text_235', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template> : ''
-              ) : null }
-              <a-button type="link" class="ml-2" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider } onClick={() => this.handleSetReferer(row)}>{ i18n.t('common.setting') }</a-button>
+              { row.provider !== HYPERVISORS_MAP.qcloud.provider
+                ? (this._isOwner
+                  ? (HYPERVISORS_MAP[row.provider.toLowerCase()]
+                    ? <template slot="title">{i18n.t('storage.text_235', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template>
+                    : '')
+                  : this.$t('storage.text_257'))
+                : null }
+              <a-button type="link" class="ml-2" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider && this._isOwner } onClick={() => this.handleSetReferer(row)}>{ i18n.t('common.setting') }</a-button>
             </a-tooltip>,
           ])
         },
@@ -268,10 +272,14 @@ export default {
                   return [
                     <list-body-cell-wrap class="float-left" copy row={ row } field='website_url' title={ row.website_url } />,
                     <a-tooltip>
-                      { row.provider !== HYPERVISORS_MAP.qcloud.provider ? (
-                        HYPERVISORS_MAP[row.provider.toLowerCase()] ? <template slot="title">{i18n.t('storage.text_236', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template> : ''
-                      ) : null }
-                      <a-button type="link" class="float-left ml-2" style="display: grid;" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider } onClick={() => this.handleSetWebsite(row)}>{ this.$t('common.setting') }</a-button>
+                      { row.provider !== HYPERVISORS_MAP.qcloud.provider
+                        ? (this._isOwner
+                          ? (HYPERVISORS_MAP[row.provider.toLowerCase()]
+                            ? <template slot="title">{i18n.t('storage.text_236', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template>
+                            : '')
+                          : this.$t('storage.text_257'))
+                        : null }
+                      <a-button type="link" class="float-left ml-2" style="display: grid;" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider && this._isOwner } onClick={() => this.handleSetWebsite(row)}>{ this.$t('common.setting') }</a-button>
                     </a-tooltip>,
                   ]
                 },
@@ -345,6 +353,10 @@ export default {
         referer,
       ]
       return ret
+    },
+    _isOwner () {
+      if (this.$store.getters.scope === 'project' && this.data.tenant_id !== this.$store.getters.auth.tenant) return false
+      return this.$isOwner(this.data).validate
     },
   },
   created () {
