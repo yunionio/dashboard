@@ -5,18 +5,20 @@
     :columns="columns"
     ref="pagelist"
     @refresh="setNavbarAlert"
+    :single-actions="singleActions"
     :expandConfig="expandConfig" />
 </template>
 
 <script>
 import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'AlertresourceList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     listId: String,
   },

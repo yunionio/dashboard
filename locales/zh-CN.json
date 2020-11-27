@@ -185,5 +185,6 @@
   "monitor.text_104": "报警资源标签",
   "monitor.text_105": "发生告警触发值",
   "monitor.text_106": "恢复告警触发值",
-  "monitor.text_107": "所属域"
+  "monitor.text_107": "所属域",
+  "monitor.text_108": "资源：上报数据为空时触发"
 }

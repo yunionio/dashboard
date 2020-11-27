@@ -185,5 +185,6 @@
   "monitor.text_104": "Alarm Resource Tag",
   "monitor.text_105": "Alert Value",
   "monitor.text_106": "Recover Alert Value",
-  "monitor.text_107": "Domain"
+  "monitor.text_107": "Domain",
+  "monitor.text_108": "Resource: Triggered when the reported data is empty"
 }
