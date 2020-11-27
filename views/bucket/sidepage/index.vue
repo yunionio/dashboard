@@ -23,6 +23,7 @@ import Detail from './Detail'
 import Objects from './Objects'
 import Monitor from './Monitor'
 import Rules from './CrossDomainRules'
+import Policies from './Policies'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -35,6 +36,7 @@ export default {
     Objects,
     Monitor,
     Rules,
+    Policies,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -43,6 +45,7 @@ export default {
         { label: this.$t('storage.text_81'), key: 'detail' },
         { label: this.$t('storage.text_169'), key: 'objects' },
         { label: this.$t('storage.text_211'), key: 'rules' },
+        { label: this.$t('storage.text_259'), key: 'Policies' },
         { label: this.$t('storage.text_170'), key: 'monitor' },
         { label: this.$t('storage.text_85'), key: 'event-drawer' },
       ],
