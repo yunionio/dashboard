@@ -408,7 +408,8 @@
       "syncing": "Syncing",
       "isolate": "isolate",
       "isolating": "isolating",
-      "upgrading": "upgrading"
+      "upgrading": "upgrading",
+      "backing_up_failed": "Instance backup failed"
     },
     "eip": {
       "ready": "Available",

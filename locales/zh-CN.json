@@ -408,7 +408,8 @@
       "syncing": "同步中",
       "isolate": "已隔离",
       "isolating": "隔离中",
-      "upgrading": "升级中"
+      "upgrading": "升级中",
+      "backing_up_failed": "实例备份失败"
     },
     "eip": {
       "ready": "可用",
