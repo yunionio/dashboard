@@ -261,7 +261,7 @@ export default {
         refresh: this.refresh,
       }, {
         list: this.list,
-        hiddenActions: this.params.hiddenActions,
+        hiddenActions: this.hiddenActions,
       })
     },
   },
