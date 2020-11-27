@@ -2155,7 +2155,8 @@
     "guestsecgroup": "Server secgroup",
     "scalinggroupguest": "Server scaling",
     "hoststorage": "Host storage",
-    "usage": "Usage"
+    "usage": "Usage",
+    "guest": "@:dictionary.server"
   },
   "res": {
     "role": "Role",
