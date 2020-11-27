@@ -69,7 +69,7 @@ export default {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }
-      if ((this.$store.getters.capability.saml_auth_brands || []).includes(data.provider)) {
+      if ((this.$store.getters.capability.saml_auth_brands || []).includes(data.provider) && data.saml_auth) {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('cloudaccount.sidepage.tab.samluser'), key: 'samluser-list' })
       }
       return detailTabs
