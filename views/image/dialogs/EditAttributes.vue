@@ -181,6 +181,7 @@ export default {
         { text: 'e1000', value: 'e1000' },
         { text: 'vmxnet3', value: 'vmxnet3' },
       ],
+      initMinDisk: 0,
     }
   },
   computed: {
@@ -199,6 +200,7 @@ export default {
           const { name, min_disk: minDisk } = res.data
           const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver } = res.data.properties
           this.initName = name
+          this.initMinDisk = minDisk
           this.$nextTick(() => {
             this.form.fc.setFieldsValue({
               name,
@@ -271,6 +273,9 @@ export default {
         }
         if (!this.isHostImage) {
           params['min-disk'] = minDisk * 1024
+          if (params['min-disk'] === 0) { // 说明上传了一个小于1G的镜像,被四舍五入成0了，要取源数据
+            params['min-disk'] = this.initMinDisk
+          }
         }
         await this.doEdit(params)
         this.loading = false
