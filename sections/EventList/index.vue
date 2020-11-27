@@ -85,10 +85,10 @@ export default {
               obj[label] = [key]
             }
           }
-          return Object.keys(obj).filter(item => !!item).map((item) => ({ label: item, key: obj[item].join('","') }))
+          return Object.keys(obj).filter(item => !!item).map((item) => ({ label: item, key: obj[item].join(',') }))
         },
         formatter: val => {
-          return `action.in("${val}")`
+          return `action.in(${val.join(',').split(',')})`
         },
       },
     }
