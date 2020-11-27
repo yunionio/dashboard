@@ -247,7 +247,7 @@
   "storage.text_246": "指定资源",
   "storage.text_247": "资源路径",
   "storage.text_249": "必须以'/'开头，多个资源时请用英文逗号分隔",
-  "storage.text_250": "请输入资源路径，必须以'/'开头，多个资源时请用英文逗号分隔",
+  "storage.text_250": "请输入资源路径，多个资源时请换行表示",
   "storage.text_251": "操作",
   "storage.text_252": "只读",
   "storage.text_253": "读/写",
