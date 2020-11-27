@@ -347,8 +347,10 @@ export default {
         <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.provider}>
           {this.providerList.map(provider => {
             const { name } = provider
+            let showName = cloudProvidersMap[name] || name
+            if (showName === 'OneCloud') showName = this.$t('brand')
             return <a-select-option key={name} value={name}>
-              <span class="text-color-secondary option-prefix">{ this.$t('compute.text_176') }: </span>{cloudProvidersMap[name] || name}
+              <span class="text-color-secondary option-prefix">{ this.$t('compute.text_176') }: </span>{showName}
             </a-select-option>
           })}
         </a-select>
