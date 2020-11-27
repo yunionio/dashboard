@@ -1,7 +1,7 @@
 <template>
   <div class="mb-2">
     <span>{{$t('common.text00002') }}</span>
-    <span class="ml-2 mr-2 primary-color">{{ count }}{{$t('common.text00003') }}{{ name }}</span>
+    <span class="ml-2 mr-2 primary-color">{{ count }}{{ unit }}{{ name }}</span>
     <span>{{$t('common.text00004')}}</span>
     <span class="ml-2 mr-2 warning-color">{{ action }}</span>
     <span>{{$t('common.text00005')}}</span>
@@ -26,6 +26,11 @@ export default {
       type: String,
       default: i18n.t('common.text00007'),
     },
+    unit: {
+      type: String,
+      default: i18n.t('common.text00003'),
+    },
+    vm: {},
   },
 }
 </script>
