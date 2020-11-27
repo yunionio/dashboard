@@ -417,7 +417,8 @@
       "isolating": "隔离中",
       "upgrading": "升级中",
       "set_auto_renew": "设置自动续费中",
-      "set_auto_renew_failed": "设置自动续费失败"
+      "set_auto_renew_failed": "设置自动续费失败",
+      "backing_up_failed": "实例备份失败"
     },
     "eip": {
       "ready": "可用",
