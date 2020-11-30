@@ -2320,7 +2320,12 @@
     "dingtalk": "Dingtalk",
     "feishu": "Feishu",
     "feishu_robot": "Feishu Rebot",
+    "feishu-robot": "Feishu Rebot",
     "workwx": "WeCom",
+    "workwx_robot": "Enterprise WeChat Rebot",
+    "workwx-robot": "Enterprise WeChat Rebot",
+    "dingtalk-robot": "Dingtalk Rebot",
+    "mobile": "Mobile Phone",
     "nickname": "Nickname",
     "storage": {
       "cloud": "common cloud disk",
@@ -4213,5 +4218,6 @@
     "success": "Login successful",
     "no_login_url": "The address is empty, please contact the administrator"
   },
-  "common_730": "View Tag"
+  "common_730": "View Tag",
+  "common_731": "No Notification Channel"
 }
