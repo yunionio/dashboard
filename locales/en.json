@@ -1939,8 +1939,8 @@
     "cas": "CAS",
     "feishu_oauth2": "FeiShu",
     "dingtalk_oauth2": "Dingtalk",
-    "qywechat_oauth2": "Wechat",
-    "wechat_oauth2": "Wechat",
+    "qywechat_oauth2": "WeCom",
+    "wechat_oauth2": "WeChat",
     "alipay_oauth2": "Alipay"
   },
   "idpAzureCloudEnv": {
