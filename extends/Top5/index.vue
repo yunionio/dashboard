@@ -45,7 +45,7 @@
         <a-form-item :label="$t('dashboard.text_55')">
           <a-select v-decorator="decorators.brand" allowClear :placeholder="$t('dashboard.text_99')" mode="multiple">
             <template v-for="item of brands">
-              <a-select-option :key="item" :value="item">{{ item }}</a-select-option>
+              <a-select-option :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
             </template>
           </a-select>
         </a-form-item>
@@ -85,7 +85,7 @@ import { usageConfig } from './constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { resolveValueChangeField } from '@/utils/common/ant'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 
@@ -254,14 +254,27 @@ export default {
     },
     brands () {
       const isServer = this.form.fd.resType === 'server'
+      const brands = this.capability.brands.map(item => {
+        const opt = typeClouds.brandMap[item]
+        if (opt) {
+          return {
+            label: opt.label,
+            key: opt.key,
+          }
+        }
+        return {
+          label: item,
+          key: item,
+        }
+      })
       if (isServer) {
-        return this.capability.brands.filter(key => {
-          const env = findPlatform(key)
+        return brands.filter(item => {
+          const env = findPlatform(item.key)
           return env !== 'private' || env !== 'idc'
         })
       }
-      return this.capability.brands.filter(key => {
-        const env = findPlatform(key)
+      return brands.filter(item => {
+        const env = findPlatform(item.key)
         return env === 'private' || env === 'idc'
       })
     },
