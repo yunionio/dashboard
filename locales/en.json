@@ -4029,7 +4029,7 @@
   "common_589": "Error obtaining storage type:",
   "common_590": "Friendly reminder: To receive system messages through WeCom, you first need to create a self-built application in the WeCom management background. After the following parameter configuration is completed, you also need to enable WeCom for users in the recipient management",
   "common_591": "Obtaining path: Log in to the WeCom management background as an administrator -> My Company -> Obtain the enterprise ID",
-  "common_592": "Enterprise ID",
+  "common_592": "Crop ID",
   "common_593": "For example",
   "common_594": "Create or obtain path: Log in to the WeCom management background as an administrator -> Application Management -> Create a self-built application -> Obtain application credentials in the application details after creation",
   "common_595": "WeCom",
