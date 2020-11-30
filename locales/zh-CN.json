@@ -2320,7 +2320,12 @@
     "dingtalk": "钉钉",
     "feishu": "飞书",
     "feishu_robot": "飞书机器人",
+    "feishu-robot": "飞书机器人",
     "workwx": "企业微信",
+    "workwx_robot": "企业微信机器人",
+    "workwx-robot": "企业微信机器人",
+    "dingtalk-robot": "钉钉机器人",
+    "mobile": "电话",
     "nickname": "昵称",
     "storage": {
       "cloud": "普通云盘",
@@ -4213,5 +4218,6 @@
     "success": "登录成功",
     "no_login_url": "地址为空，请联系管理员处理"
   },
-  "common_730": "查看标签"
+  "common_730": "查看标签",
+  "common_731": "暂无通知渠道"
 }
