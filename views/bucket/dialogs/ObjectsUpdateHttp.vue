@@ -34,11 +34,12 @@ export default {
     }
     const decorators = {}
     const { data } = this.params
+    const meta = data[0].meta
     Object.keys(TYPES).forEach(item => {
       decorators[item] = [
         item,
         {
-          initialValue: data[0].meta && data[0].meta[item] ? data[0].meta[item].toString() : undefined,
+          initialValue: meta && meta[item] ? meta[item].toString() : undefined,
         },
       ]
     })
@@ -90,7 +91,7 @@ export default {
             metadata: valies,
           },
         })
-        this.params.list.fetchData()
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false

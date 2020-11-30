@@ -211,16 +211,19 @@ export default {
             return [
               {
                 label: this.$t('storage.text_163'),
-                action: async (row) => {
+                action: () => {
                   this.createDialog('ObjectsUpdateHttpDialog', {
                     title: this.$t('storage.text_163'),
                     data: this.list.selectedItems,
                     resName: this.resName,
                     columns: this.columns,
                     list: this.list,
+                    refresh: () => {
+                      this.nextPage(this.prefix)
+                    },
                   })
                 },
-                meta: row => {
+                meta: () => {
                   return {
                     validate: this.list.selectedItems.every(row => !this.isDir(row.key)),
                   }
@@ -239,7 +242,7 @@ export default {
                     refresh: this.refresh,
                   })
                 },
-                meta: row => {
+                meta: () => {
                   return {
                     validate: this.list.selectedItems.every(row => !this.isDir(row.key)),
                   }
@@ -247,7 +250,7 @@ export default {
               },
               {
                 label: this.$t('storage.text_36'),
-                action: (row) => {
+                action: () => {
                   this.createDialog('ObjectsDeleteDialog', {
                     alert: this.$t('storage.text_164'),
                     data: this.list.selectedItems,
@@ -284,11 +287,11 @@ export default {
         },
         {
           label: this.$t('storage.text_65'),
-          actions: () => {
+          actions: (row) => {
             return [
               {
                 label: this.$t('storage.text_166'),
-                action: async (row) => {
+                action: () => {
                   // await curl = controller.getUrl(row, this.data.name)
                   this.createDialog('ObjectsCreateUrlDialog', {
                     title: this.$t('storage.text_167'),
@@ -299,7 +302,7 @@ export default {
                     list: this.list,
                   })
                 },
-                meta: row => {
+                meta: () => {
                   return {
                     validate: !this.isDir(row.key),
                   }
@@ -307,7 +310,7 @@ export default {
               },
               {
                 label: this.$t('storage.text_138'),
-                action: async (row) => {
+                action: () => {
                   this.createDialog('ObjectsUpdateAclDialog', {
                     title: this.$t('storage.text_138'),
                     data: [row],
@@ -319,7 +322,7 @@ export default {
                     name: this.isDir(row.key) ? this.$t('storage.text_168') : this.$t('storage.text_112'),
                   })
                 },
-                meta: row => {
+                meta: () => {
                   return {
                     validate: !this.isDir(row.key),
                   }
@@ -327,16 +330,19 @@ export default {
               },
               {
                 label: this.$t('storage.text_163'),
-                action: async (row) => {
+                action: () => {
                   this.createDialog('ObjectsUpdateHttpDialog', {
                     title: this.$t('storage.text_163'),
                     data: [row],
                     resName: this.resName,
                     columns: this.columns,
                     list: this.list,
+                    refresh: () => {
+                      this.nextPage(this.prefix)
+                    },
                   })
                 },
-                meta: row => {
+                meta: () => {
                   return {
                     validate: !this.isDir(row.key),
                   }
@@ -344,7 +350,7 @@ export default {
               },
               {
                 label: this.$t('storage.text_36'),
-                action: (row) => {
+                action: () => {
                   this.createDialog('ObjectsDeleteDialog', {
                     alert: this.$t('storage.text_164'),
                     data: [row],
