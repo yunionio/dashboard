@@ -103,6 +103,10 @@ export default {
     resource: {
       type: String,
     },
+    applyOptionLabel: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     text () {
@@ -122,9 +126,9 @@ export default {
     },
   },
   render (h) {
-    const resourceItem = resourceMode[this.resource]
     if (this.resource) { // 兼容外传 options 的情况
-      if (resourceItem && resourceItem.vnode) {
+      const resourceItem = resourceMode[this.resource]
+      if (this.applyOptionLabel && resourceItem && resourceItem.vnode) {
         return resourceItem.vnode(this, h)
       }
     }
