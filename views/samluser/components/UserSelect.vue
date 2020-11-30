@@ -309,7 +309,7 @@ export default {
         domains = [accountDomain]
       }
       if (query) {
-        domains = domains.filter(item => item.name.includes(query))
+        domains = domains.filter(item => item.name.toLowerCase().includes(query))
       }
       this.domainLoading = false
       this.domains = domains
