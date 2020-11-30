@@ -412,12 +412,12 @@ export default {
         })
     },
     validateForm () {
-      this.collapseActive = ['1']
       return new Promise((resolve, reject) => {
         this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
           if (!err) {
             resolve(values)
           } else {
+            this.collapseActive = ['1'] // 仅仅在报错的时候展开高级配置
             reject(err)
           }
         })
