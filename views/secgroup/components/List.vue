@@ -95,7 +95,7 @@ export default {
           if (params.filter) {
             params.filter = params.filter.map((item) => {
               if (item.includes('name.contains(')) {
-                const val = /"(.+?)"/.exec(item)[1]
+                const val = /\((.+?)\)/.exec(item)[1]
                 params.secgroup_name = val
                 return ''
               }
