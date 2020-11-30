@@ -2,32 +2,34 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.import_secgroup_rule', [])}}</div>
     <div slot="body">
-      <a-form
-        :form="form.fc">
-        <a-alert type="warning" class="mb-2">
-          <template v-slot:message>
-            <div class="messages-list">
-              <p>{{ $t('system.text_501') }}<a-button type="link" @click="handleDownloadTemplate">{{$t('system.text_502')}}</a-button></p>
-            </div>
-          </template>
-        </a-alert>
-        <div class="pt-3 pb-3">
-          <a-form-item>
-            <a-upload-dragger
-              v-decorator="decorators.fileList"
-              :beforeUpload="beforeUpload"
-              :fileList="fileList"
-              :accept="accept"
-              :remove="handleRemove">
-              <div class="pt-3 pb-3">
-                <p class="ant-upload-drag-icon"><a-icon type="inbox" /></p>
-                <p class="ant-upload-text">{{$t('system.text_505')}}</p>
-                <p class="ant-upload-hint">{{$t('system.text_506')}}</p>
+      <a-spin :spinning="loading">
+        <a-form
+          :form="form.fc">
+          <a-alert type="warning" class="mb-2">
+            <template v-slot:message>
+              <div class="messages-list">
+                <p>{{ $t('system.text_501') }}<a-button type="link" @click="handleDownloadTemplate">{{$t('system.text_502')}}</a-button></p>
               </div>
-            </a-upload-dragger>
-          </a-form-item>
-        </div>
-     </a-form>
+            </template>
+          </a-alert>
+          <div class="pt-3 pb-3">
+            <a-form-item>
+              <a-upload-dragger
+                v-decorator="decorators.fileList"
+                :beforeUpload="beforeUpload"
+                :fileList="fileList"
+                :accept="accept"
+                :remove="handleRemove">
+                <div class="pt-3 pb-3">
+                  <p class="ant-upload-drag-icon"><a-icon type="inbox" /></p>
+                  <p class="ant-upload-text">{{$t('system.text_505')}}</p>
+                  <p class="ant-upload-hint">{{$t('system.text_506')}}</p>
+                </div>
+              </a-upload-dragger>
+            </a-form-item>
+          </div>
+        </a-form>
+      </a-spin>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -71,17 +73,15 @@ export default {
         const converVal = (v) => { return v || '' }
         const rules = []
         if (sheetArr) {
-          console.log(sheetArr)
           for (let i = 1; i < sheetArr.length; i++) {
             const obj = sheetArr[i]
             rules.push({
-              secgroup: converVal(obj[0]),
-              direction: converVal(obj[1]),
-              action: converVal(obj[2]),
-              protocol: converVal(obj[3]),
-              ports: converVal(obj[4]),
-              priority: converVal(obj[5]),
-              cidr: converVal(obj[6]),
+              direction: converVal(obj[3]),
+              action: converVal(obj[4]),
+              protocol: converVal(obj[5]),
+              ports: converVal(obj[6]),
+              priority: converVal(obj[7]),
+              cidr: converVal(obj[8]),
             })
           }
         }
@@ -107,7 +107,15 @@ export default {
     },
     async handleDownloadTemplate () {
       const exportDataOptions = this.params.exportDataOptions
-      const items = exportDataOptions.items.filter(v => !['id', 'secgroup_id', 'tenant', 'user_tags'].includes(v.key))
+      const items = exportDataOptions.items.map(v => {
+        if (['id', 'secgroup', 'secgroup_id', 'tenant', 'user_tags'].includes(v.key)) {
+          return {
+            ...v,
+            label: `${v.label}(${this.$t('compute.no_required')})`,
+          }
+        }
+        return v
+      })
       const params = {
         export: 'xls',
         export_keys: items.map(v => v.key).join(','),
@@ -143,7 +151,7 @@ export default {
         }
         this.loading = true
         await this.form.fc.validateFields()
-        new this.$Manager('secgroups').performAction({
+        await new this.$Manager('secgroups').performAction({
           id: this.params.data[0].id,
           action: 'import-rules',
           data: { rules: this.rules },
