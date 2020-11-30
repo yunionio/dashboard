@@ -43,6 +43,11 @@ export default {
             },
           },
         },
+        itemGet: (data, params) => {
+          return this.$http.get(`/v2/cloudproviders/${data.cloudprovider_id}/cloudregions/${data.cloudregion_id}`, {
+            params,
+          })
+        },
       }),
       groupActions: [
         {
