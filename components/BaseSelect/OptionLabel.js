@@ -62,6 +62,28 @@ const resourceMode = {
   //     )
   //   },
   // },
+  receivers: {
+    vnode: (vm, h) => {
+      const text = vm.getLabel()
+      let concats = []
+      if (vm.data.enabled_contact_types && vm.data.enabled_contact_types.length) {
+        concats = vm.data.enabled_contact_types.map(val => {
+          if (i18n.te(`common.${val}`)) {
+            return i18n.t(`common.${val}`)
+          }
+          return val
+        })
+      }
+      let concatText = concats.length ? concats.join('、') : null
+      concatText = concatText ? `${i18n.t('common_599')}: ${concatText}` : i18n.t('common_731')
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
+          <div style="color: #8492a6; font-size: 13px">{ concatText }</div>
+        </div>
+      )
+    },
+  },
 }
 
 export default {
