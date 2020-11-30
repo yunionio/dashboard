@@ -62,10 +62,16 @@ class WaitStatusJob {
     delete params.offset
     delete params.limit
     try {
-      const { data = {} } = await this.data.list.manager.get({
-        id: this.data.id,
-        params,
-      })
+      let response
+      if (this.data.list.itemGet) {
+        response = await this.data.list.itemGet(this.data.data, params)
+      } else {
+        response = await this.data.list.manager.get({
+          id: this.data.id,
+          params,
+        })
+      }
+      const data = response.data || {}
       this.data.data = data
       const isSteadyStatus = this.data.isSteadyStatus(this.status)
       if (!isSteadyStatus) {
@@ -181,6 +187,8 @@ class CreateList {
     responseData = {},
     // get status 额外参数
     itemGetParams = {},
+    // get item 自定义方法
+    itemGet,
     // 不使用localstorage中的limit参数
     disableStorageLimit = false,
     // 额外的data获取方法Object
@@ -240,6 +248,7 @@ class CreateList {
     this.params = {}
     // 特殊根据某条数据进行get时的参数，如 k8s/deployment/list
     this.itemGetParams = itemGetParams
+    this.itemGet = itemGet
     this.disableStorageLimit = disableStorageLimit
     // extraDataFecther
     this.extraDataFecther = extraDataFecther
