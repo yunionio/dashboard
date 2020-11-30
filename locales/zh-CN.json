@@ -3981,7 +3981,7 @@
   "common_541": "请导入xml文件",
   "common_542": "不是合法的SAML IDP metadata xml文件！",
   "common_543": "只能上传xml文件!",
-  "common_544": "请输入CorpId",
+  "common_544": "请输入企业ID",
   "common_545": "请输入AgentId",
   "common_546": "请输入CorpSecret",
   "common_547": "归属{0}",
