@@ -113,6 +113,7 @@ export default {
             },
             {
               label: i18n.t('compute.import_secgroup_rule', []),
+              permission: 'secgroups_update',
               action: () => {
                 this.createDialog('ImportSecgroupRuleDialog', {
                   data: [obj],
