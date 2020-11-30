@@ -181,7 +181,7 @@ export default {
               ReadWrite: this.$t('storage.text_264'),
               FullControl: this.$t('storage.text_254'),
             }
-            return obj[row.canned_action]
+            return obj[row.canned_action] || row.canned_action
           },
         },
       ],
