@@ -131,6 +131,7 @@
             :isServertemplate="isServertemplate"
             :cloud-env="type"
             :form="form"
+            hasPublicIp
             :formItemLayout="formItemLayout" />
           <a-form-item :label="$t('compute.text_105')">
             <secgroup-config
