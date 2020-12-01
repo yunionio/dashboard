@@ -83,6 +83,7 @@ export default {
       default: () => [
         { key: '=', label: '=' },
         { key: '!=', label: '!=' },
+        { key: '==', label: '==' },
       ],
     },
     conditionOpts: {
