@@ -251,18 +251,26 @@ export default {
   },
   methods: {
     dropdownChange (open) {
-      if (open && this.remote && !R.isEmpty(this.firstResOpts) && !this.concatFirstOpts && !R.isEmpty(this.currentItem)) {
-        this.resOpts = { ...this.firstResOpts, [this.currentItem[this.idKey]]: this.currentItem }
-        const list = Object.values(this.resOpts)
-        this.resList = list
-        if (!this.sourceList.find(val => val[this.idKey] === this.currentItem[this.idKey])) {
-          this.sourceList.push(this.currentItem)
+      if (!this.remote) return
+      if (open) { // 打开
+        if (!R.isEmpty(this.firstResOpts) && !this.concatFirstOpts && !R.isEmpty(this.currentItem)) {
+          this.resOpts = { ...this.firstResOpts, [this.currentItem[this.idKey]]: this.currentItem }
+          const list = Object.values(this.resOpts)
+          this.resList = list
+          if (!this.sourceList.find(val => val[this.idKey] === this.currentItem[this.idKey])) {
+            this.sourceList.push(this.currentItem)
+          }
+          this.concatFirstOpts = true // 做标识，标识已和初始化数据做过合并
+          if (this.firstTotal > this.sourceList.length) {
+          // if (!this.mapper && this.firstTotal > list.length) { 暂时先不用mapper这种hack的修复方式
+            this.showLoadMore = true
+          }
         }
-        this.concatFirstOpts = true // 做标识，标识已和初始化数据做过合并
-        if (this.firstTotal > this.sourceList.length) {
-        // if (!this.mapper && this.firstTotal > list.length) { 暂时先不用mapper这种hack的修复方式
-          this.showLoadMore = true
-        }
+      } else { // 关闭
+        this.$nextTick(() => {
+          this.loadMoreClicked = false
+          this.noMoreData = false
+        })
       }
     },
     filterOption (input, option) {
@@ -373,7 +381,7 @@ export default {
       this.loadMoreOffset += (this.params.limit || 20)
       const { manager, params } = this.genParams(this.query, this.loadMoreOffset)
       const { list, data, sourceList } = await this.fetchData(manager, params)
-      if (data.total > (sourceList.length + this.sourceList.length)) {
+      if (data.length > 0 && (data.total > (sourceList.length + this.sourceList.length))) { // 前提是点击加载更多后data得有数据，才能展示加载更多
         this.noMoreData = false
         this.showLoadMore = true
       } else {
