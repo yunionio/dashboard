@@ -98,6 +98,7 @@ export default {
           clusterHypervisor: hypervisor, // 该集群的默认 hypervisor
         },
         fd: {
+          hypervisor,
         },
       },
       decorators: {
@@ -364,8 +365,6 @@ export default {
             for (const key in hypervisors) {
               values[`hypervisors[${key}]`] = this.hypervisorsC[0].value
             }
-            console.log(this.form.fc.getFieldsValue())
-            console.log(hypervisors, values)
             this.form.fc.setFieldsValue(values)
           }
         }
