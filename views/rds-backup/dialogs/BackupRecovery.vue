@@ -29,7 +29,7 @@
           <rds-list :backupItem="backupItem" v-if="recoveryType === 1" />
         </div>
       </a-form-item>
-      <a-form-item :label="$t('db.text_366')" v-bind="formItemLayout" v-if="recoveryType !== 2">
+      <a-form-item :label="$t('db.text_366')" v-bind="formItemLayout" v-if="recoveryType === 1 || recoveryType === 0">
         <a-select v-decorator="decorators.databases" mode="multiple">
           <a-select-option :key="item" v-for="item in dbNameOptions">{{item}}</a-select-option>
         </a-select>
@@ -58,7 +58,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
-      recoveryType: 0,
+      recoveryType: '',
       loading: false,
       form: {
         fc: this.$form.createForm(this),
@@ -164,6 +164,10 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
+        if (!this.recoveryType) {
+          this.$message.warn(this.$t('db.text_376'))
+          return
+        }
         const values = await this.validateForm()
         const manager = new this.$Manager('dbinstances', 'v2')
         const data = this.genData(values)

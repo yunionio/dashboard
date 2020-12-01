@@ -374,5 +374,6 @@
   "db.text_372": "Logical Backup",
   "db.text_373": "Physical Backup",
   "db.text_374": "Snapshot Backup",
-  "db.text_375": "This backup method does not currently support this operation"
+  "db.text_375": "This backup method does not currently support this operation",
+  "db.text_376": "Please select the type to be restored"
 }
