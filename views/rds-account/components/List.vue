@@ -10,12 +10,13 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'RDSAccountList',
-  mixins: [WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ColumnsMixin, SingleActionsMixin, ListMixin],
   props: {
     params: {
       type: Object,
