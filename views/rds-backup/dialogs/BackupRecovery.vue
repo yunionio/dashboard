@@ -164,6 +164,10 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
+        if (!this.recoveryType) {
+          this.$message.warn(this.$t('db.text_376'))
+          return
+        }
         const values = await this.validateForm()
         const manager = new this.$Manager('dbinstances', 'v2')
         const data = this.genData(values)
