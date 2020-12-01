@@ -86,3 +86,14 @@ export const OSS_MONITOR_OPTS = {
     },
   ],
 }
+
+export const LOCATION_MAP = {
+  'oss-cn-shanghai-finance-1': i18n.t('storage.aliyun_shanghai_finance_1'), // 上海金融云内网
+  'oss-cn-shanghai-finance-1-pub': i18n.t('storage.aliyun_shanghai_finance_1_pub'), // 上海金融云外网
+  'oss-cn-hzjbp': i18n.t('storage.aliyun_oss_cn_hzjbp'), // 杭州金融云内网
+  'oss-cn-hzfinance': i18n.t('storage.aliyun_oss_cn_hzfinance'), // 杭州金融云外网
+  'oss-cn-shenzhen-finance-1': i18n.t('storage.aliyun_shenzhen_finance_1'), // 深圳金融云内网
+  'oss-cn-szfinance': i18n.t('storage.aliyun_oss_cn_szfinance'), // 深圳金融云外网
+}
+
+export const FINANCE_INTERNAL = ['oss-cn-shanghai-finance-1', 'oss-cn-hzjbp', 'oss-cn-shenzhen-finance-1']

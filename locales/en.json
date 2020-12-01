@@ -262,5 +262,12 @@
   "storage.text_262": "Authorized Resources",
   "storage.text_263": "Authorized Operation",
   "storage.text_264": "Read and Write",
-  "storage.text_265": "Others"
+  "storage.text_265": "Others",
+  "storage.internal_bucket_file": "Buckets in the intranet area do not support viewing file lists and related file operations",
+  "storage.aliyun_shanghai_finance_1": "Shanghai Financial Cloud Intranet",
+  "storage.aliyun_shanghai_finance_1_pub": "Shanghai Financial Cloud Outer Network",
+  "storage.aliyun_oss_cn_hzjbp": "Hangzhou Financial Cloud Intranet",
+  "storage.aliyun_oss_cn_hzfinance": "Hangzhou Financial Cloud Outer Network",
+  "storage.aliyun_shenzhen_finance_1": "Shenzhen Financial Cloud Intranet",
+  "storage.aliyun_oss_cn_szfinance": "Shenzhen Financial Cloud Outer Network"
 }
