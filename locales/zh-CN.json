@@ -1350,5 +1350,6 @@
   "compute.storage_commit_rate": "存储使用率",
   "compute.text_1373": "新建静态公网IP",
   "compute.text_1374": "公网IP",
-  "compute.text_1375": "新建弹性公网IP"
+  "compute.text_1375": "新建弹性公网IP",
+  "compute.text_1376": "无效存储是指该宿主机下状态不是可用的磁盘容量总和"
 }

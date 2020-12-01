@@ -1350,5 +1350,6 @@
   "compute.storage_commit_rate": "Storage usage",
   "compute.text_1373": "Create Public Ip",
   "compute.text_1374": "Public IP",
-  "compute.text_1375": "Create Elastic IP"
+  "compute.text_1375": "Create Elastic IP",
+  "compute.text_1376": "Invalid storage refers to the total disk capacity of the host that is not available in the state"
 }
