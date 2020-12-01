@@ -652,6 +652,7 @@ export default {
               project_id: values.project.key,
               server_type: values.server_type,
               wire_id: values.wire,
+              is_auto_alloc: values.is_auto_alloc,
             }
             data.push(obj)
           }, values.startip)
