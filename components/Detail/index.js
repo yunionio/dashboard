@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import i18n from '@/locales'
 import WindowsMixin from '@/mixins/windows'
 import { hasPermission } from '@/utils/auth'
+import { changeToArr } from '@/utils/utils'
 import store from '@/store'
 
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
@@ -331,7 +332,7 @@ export default {
       }
       const children = []
       if (renderTitle && item.title) {
-        children.push(h('div', { class: 'detail-item-title', attrs: { title: item.title } }, item.title))
+        children.push(h('div', { class: 'detail-item-title', attrs: { title: item.title } }, R.is(String, item.title) ? item.title : changeToArr(item.title(h))))
       }
       children.push(<div class={classNames('detail-item-value', { 'ml-0': !renderTitle || !item.title })}>{val}</div>)
       return h('div', {
