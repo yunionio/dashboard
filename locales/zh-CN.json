@@ -1347,5 +1347,8 @@
   "compute.import_secgroup_rule": "导入安全组规则{0}",
   "compute.no_required": "选填",
   "compute.text_1372": "管理员账号",
-  "compute.storage_commit_rate": "存储使用率"
+  "compute.storage_commit_rate": "存储使用率",
+  "compute.text_1373": "新建静态公网IP",
+  "compute.text_1374": "公网IP",
+  "compute.text_1375": "新建弹性公网IP"
 }

@@ -1017,13 +1017,18 @@ export class GenCreateData {
     }
     // 弹性IP
     if (this.isPublic || this.isIDC) {
-      if (this.fd.eip_type === EIP_TYPES_MAP.new.key) {
+      if (this.fd.eip_type === EIP_TYPES_MAP.new.key || this.fd.eip_type === EIP_TYPES_MAP.public.key) {
         if (
           this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.traffic.key ||
           this.fd.eip_charge_type === EIP_CHARGE_TYPES_MAP.bandwidth.key
         ) {
-          data.eip_charge_type = this.fd.eip_charge_type
-          data.eip_bw = this.fd.eip_bw
+          if (this.fd.eip_type === EIP_TYPES_MAP.public.key) {
+            data.public_ip_charge_type = this.fd.eip_charge_type
+            data.public_ip_bw = this.fd.eip_bw
+          } else {
+            data.eip_charge_type = this.fd.eip_charge_type
+            data.eip_bw = this.fd.eip_bw
+          }
         }
       }
       if (this.fd.eip_type === EIP_TYPES_MAP.bind.key) {

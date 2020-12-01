@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item :label="!showBind ? $t('compute.text_107') : $t('compute.text_1180')" v-bind="formItemLayout">
+    <a-form-item :label="label" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
         <a-radio-button
           v-for="item of types"
@@ -98,6 +98,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    hasPublicIp: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -130,6 +134,9 @@ export default {
       if (this.hiddenNoneType) {
         delete ret.none
       }
+      if (!this.hasPublicIp) {
+        delete ret.public
+      }
       return ret
     },
     chargeTypes () {
@@ -149,7 +156,7 @@ export default {
       return ret
     },
     isNew () {
-      return this.type === 'new'
+      return this.type === 'new' || this.type === 'public'
     },
     isBind () {
       return this.type === 'bind'
@@ -199,6 +206,10 @@ export default {
         },
         ...this.eipParams,
       }
+    },
+    label () {
+      if (this.hasPublicIp) return this.$t('compute.text_1374')
+      return !this.showBind ? this.$t('compute.text_107') : this.$t('compute.text_1180')
     },
   },
   watch: {
