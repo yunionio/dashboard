@@ -138,7 +138,7 @@ export default {
         R.forEachObjIndexed((value, key) => {
           const isColumn = !R.isNil(this.tableData[0][key])
           if (isColumn) {
-            if (this.description.metricKeyItem.res_type === 'guest') {
+            if (this.description.metricKeyItem && this.description.metricKeyItem.res_type === 'guest') {
               if (value.field.startsWith('host')) {
                 return
               }
