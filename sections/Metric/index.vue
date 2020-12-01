@@ -1,6 +1,6 @@
 <template>
-  <a-row :gutter="8">
-    <a-col :span="8">
+  <a-row :gutter="gutter">
+    <a-col :span="span" v-if="showResType">
       <a-form-item class="mr-1">
         <base-select
           minWidth="192px"
@@ -12,7 +12,7 @@
           @change="metricTypeChange" />
       </a-form-item>
     </a-col>
-    <a-col :span="8">
+    <a-col :span="span">
       <a-form-item class="mr-1">
         <base-select
           minWidth="192px"
@@ -25,7 +25,7 @@
           @change="metricKeyChange" />
       </a-form-item>
     </a-col>
-    <a-col :span="8">
+    <a-col :span="span">
       <a-form-item>
         <base-select
           minWidth="192px"
@@ -74,6 +74,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    showResType: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -95,6 +99,14 @@ export default {
           label,
         }
       })
+    },
+    span () {
+      if (this.showResType) return 8
+      return 12
+    },
+    gutter () {
+      if (this.showResType) return 8
+      return 0
     },
   },
   watch: {
