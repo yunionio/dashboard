@@ -262,5 +262,12 @@
   "storage.text_262": "授权资源",
   "storage.text_263": "授权操作",
   "storage.text_264": "读写",
-  "storage.text_265": "其他"
+  "storage.text_265": "其他",
+  "storage.internal_bucket_file": "内网区域的存储桶不支持查看文件列表以及相关文件操作",
+  "storage.aliyun_shanghai_finance_1": "上海金融云内网",
+  "storage.aliyun_shanghai_finance_1_pub": "上海金融云外网",
+  "storage.aliyun_oss_cn_hzjbp": "杭州金融云内网",
+  "storage.aliyun_oss_cn_hzfinance": "杭州金融云外网",
+  "storage.aliyun_shenzhen_finance_1": "深圳金融云内网",
+  "storage.aliyun_oss_cn_szfinance": "深圳金融云外网"
 }
