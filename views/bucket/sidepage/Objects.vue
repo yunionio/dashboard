@@ -1,25 +1,32 @@
 <template>
-  <page-list
-    :list="list"
-    :columns="columns"
-    :group-actions="groupActions"
-    :single-actions="singleActions">
-    <div slot="table-prepend" class="d-flex align-items-center pt-2 pb-2">
-      <span><a-icon type="folder-open" theme="filled" style="color: rgb(245,200, 61);font-size:15px" />{{$t('storage.text_150')}}</span>
-      <a-breadcrumb>
-        <a-breadcrumb-item>
-          <a-button style="padding:0" type="link" @click="nextPage('')">{{data.name}}</a-button>
-        </a-breadcrumb-item>
-        <a-breadcrumb-item v-for="(value, key) in breadcrumbs" :key="key">
-          <a-button style="padding:0" type="link" @click="nextPage(key)">{{value}}</a-button>
-        </a-breadcrumb-item>
-      </a-breadcrumb>
-    </div>
-  </page-list>
+  <div>
+    <template v-if="isInternal">
+      <a-alert type="warning" class="mb-2" :message="$t('storage.internal_bucket_file')" />
+      <a-empty />
+    </template>
+    <page-list
+      v-else
+      :list="list"
+      :columns="columns"
+      :group-actions="groupActions"
+      :single-actions="singleActions">
+      <div slot="table-prepend" class="d-flex align-items-center pt-2 pb-2">
+        <span><a-icon type="folder-open" theme="filled" style="color: rgb(245,200, 61);font-size:15px" />{{$t('storage.text_150')}}</span>
+        <a-breadcrumb>
+          <a-breadcrumb-item>
+            <a-button style="padding:0" type="link" @click="nextPage('')">{{data.name}}</a-button>
+          </a-breadcrumb-item>
+          <a-breadcrumb-item v-for="(value, key) in breadcrumbs" :key="key">
+            <a-button style="padding:0" type="link" @click="nextPage(key)">{{value}}</a-button>
+          </a-breadcrumb-item>
+        </a-breadcrumb>
+      </div>
+    </page-list>
+  </div>
 </template>
 
 <script>
-import { ACL_TYPE } from '@Storage/constants/index.js'
+import { ACL_TYPE, FINANCE_INTERNAL } from '@Storage/constants/index.js'
 import { objectsModel } from '@Storage/views/bucket/utils/controller.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -403,9 +410,12 @@ export default {
       }
       return _
     },
+    isInternal () {
+      return FINANCE_INTERNAL.includes(this.data.location)
+    },
   },
   created () {
-    this.list.fetchData()
+    !this.isInternal && this.list.fetchData()
     this.initSidePageTab('detail')
   },
   methods: {
