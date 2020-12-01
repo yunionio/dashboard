@@ -191,6 +191,21 @@ export default {
                 },
               },
               {
+                label: this.$t('table.action.set_tag'),
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'dbinstance',
+                    },
+                    tipName: this.$t('dictionary.dbinstance'),
+                  })
+                },
+              },
+              {
                 label: this.$t('db.text_157'),
                 action: () => {
                   this.createDialog('RedisRenewDialog', {
@@ -234,21 +249,6 @@ export default {
               disableDeleteAction(this, {
                 name: this.$t('dictionary.dbinstances'),
               }),
-              {
-                label: this.$t('table.action.set_tag'),
-                action: () => {
-                  this.createDialog('SetTagDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    mode: 'add',
-                    params: {
-                      resources: 'dbinstance',
-                    },
-                    tipName: this.$t('dictionary.dbinstance'),
-                  })
-                },
-              },
               {
                 label: this.$t('db.text_42'),
                 permission: 'rds_dbinstances_delete',
