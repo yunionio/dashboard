@@ -1346,5 +1346,6 @@
   "compute.text_1371": "ARM Architecture Virtual machine does not support adjustment config when it is booted, please shut down and try again",
   "compute.import_secgroup_rule": "Import Security Group Rules {0}",
   "compute.no_required": "Optional",
-  "compute.text_1372": "Admin Account"
+  "compute.text_1372": "Admin Account",
+  "compute.storage_commit_rate": "Storage usage"
 }
