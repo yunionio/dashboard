@@ -10,7 +10,7 @@
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
-import { ACL_TYPE } from '@Storage/constants/index.js'
+import { ACL_TYPE, LOCATION_MAP } from '@Storage/constants/index.js'
 import { sizestrWithUnit } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 import {
@@ -102,6 +102,15 @@ export default {
             ]
           },
         }),
+        {
+          field: 'location',
+          title: '位置',
+          slots: {
+            default: ({ row }) => {
+              return LOCATION_MAP[row.location] || row.location || '-'
+            },
+          },
+        },
         {
           field: 'storage_class',
           title: this.$t('storage.text_38'),
