@@ -15,7 +15,6 @@
         :names="areaselectsName"
         :cloudregionParams="param.region"
         :zoneParams="param.zone"
-        :cityParams="cityParams"
         :providerParams="param.provider"
         :isRequired="true"
         :region.sync="regionList"
@@ -212,9 +211,6 @@ export default {
       cloudproviderData: [],
       regionList: {},
       zoneList: {},
-      cityParams: {
-        usable: false,
-      },
     }
   },
   computed: {
@@ -262,18 +258,18 @@ export default {
       } else if (this.diskType === 'public') {
         return {
           zone: {
-            usable: false,
+            usable: true,
             show_emulated: true,
             order_by: 'created_at',
             order: 'asc',
             ...project_domain,
           },
           region: {
-            usable: false,
+            usable: true,
             cloud_env: 'public',
             ...project_domain,
           },
-          provider: { cloud_env: 'public', usable: false },
+          provider: { cloud_env: 'public' },
         }
       }
       if (this.isAdminMode) {
