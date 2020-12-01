@@ -338,7 +338,8 @@
       "apply_snapshot_failed": "绑定快照策略失败",
       "cancel_snapshot_failed": "解绑快照策略失败",
       "syncing": "同步中",
-      "sync_status": "同步中"
+      "sync_status": "同步中",
+      "sched_fail": "调度失败"
     },
     "secgroupCache": {
       "ready": "正常",
