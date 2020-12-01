@@ -1332,5 +1332,6 @@
   "compute.rule": "rule",
   "compute.norule": "No Rules",
   "compute.select_storage_no_schetag": "The specified schedule label is no longer supported after the specified block is stored",
-  "compute.disable_delete_snapshot_tooltip": "The snapshot must be deleted when the VMware platform virtual machine deletes the host"
+  "compute.disable_delete_snapshot_tooltip": "The snapshot must be deleted when the VMware platform virtual machine deletes the host",
+  "compute.storage_commit_rate": "Storage usage"
 }
