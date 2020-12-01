@@ -1332,5 +1332,6 @@
   "compute.rule": "规则",
   "compute.norule": "暂无规则",
   "compute.select_storage_no_schetag": "指定块存储后不再支持指定调度标签",
-  "compute.disable_delete_snapshot_tooltip": "VMware平台虚拟机删除主机时必须删除快照"
+  "compute.disable_delete_snapshot_tooltip": "VMware平台虚拟机删除主机时必须删除快照",
+  "compute.storage_commit_rate": "存储使用率"
 }
