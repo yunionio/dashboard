@@ -331,7 +331,8 @@
       "apply_snapshot_failed": "Failed to bind snapshot policy",
       "cancel_snapshot_failed": "Failed to unbind the snapshot policy",
       "syncing": "Syncing",
-      "sync_status": "Syncing"
+      "sync_status": "Syncing",
+      "sched_fail": "Scheduling failed"
     },
     "secgroupCache": {
       "ready": "Normal",
