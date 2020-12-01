@@ -124,6 +124,15 @@ export default {
           remaining: 0,
         },
         {
+          key: 'instance_snapshot',
+          label: this.$t('common.text00023'),
+          max: 0,
+          step: 1,
+          unit: this.$t('common_61'),
+          originQuota: 0,
+          remaining: 0,
+        },
+        {
           key: 'bucket',
           label: this.$t('common_243'),
           max: 0,
@@ -336,6 +345,7 @@ export default {
       params.isolated_device = this.quota.isolated_device
       params.eip = this.quota.eip
       params.snapshot = this.quota.snapshot
+      params.instance_snapshot = this.quota.instance_snapshot
       params.object_cnt = this.quota.object_cnt
       params.object_gb = this.quota.object_gb
       params.rds = this.quota.rds
