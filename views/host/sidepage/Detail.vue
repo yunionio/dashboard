@@ -395,7 +395,14 @@ export default {
             },
             {
               field: 'storage_waste',
-              title: this.$t('compute.text_599'),
+              title: h => {
+                return [
+                  <span class="mr-1">{this.$t('compute.text_599')}</span>,
+                  <a-tooltip title={ this.$t('compute.text_1376') }>
+                    <a-icon type="question-circle-o" />
+                  </a-tooltip>,
+                ]
+              },
               formatter: ({ cellValue, row }) => {
                 return sizestr(cellValue || 0, 'M', 1024)
               },
