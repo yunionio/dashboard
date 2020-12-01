@@ -332,7 +332,7 @@ export default {
       return this.$route.query.alertType === 'system'
     },
     showResType () {
-      if (this.alertData.alert_type === 'system') {
+      if (this.alertData && this.alertData.alert_type === 'system') {
         const { initialValue } = this.decorators.metric_res_type[1]
         if (!initialValue) {
           return false // 如果是默认策略并且资源类型没有默认值的话，不显示
