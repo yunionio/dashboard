@@ -13,6 +13,7 @@ import sku from '@Compute/sections/SKU'
 import gpu from '@Compute/sections/GPU/index'
 import { Decorator, GenCreateData } from '@Compute/utils/createServer'
 import ServerNetwork from '@Compute/sections/ServerNetwork'
+import ServerAccount from '@Compute/sections/ServerAccount'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
 import Bios from '@Compute/sections/BIOS'
 import Backup from '@Compute/sections/Backup'
@@ -69,6 +70,7 @@ export default {
     Tag,
     Servertemplate,
     NameRepeated,
+    ServerAccount,
   },
   mixins: [workflowMixin],
   props: {
@@ -250,6 +252,9 @@ export default {
         isWindows = true
       }
       return isWindows
+    },
+    osType () {
+      return this.isWindows ? 'windows' : 'linux'
     },
   },
   created () {
