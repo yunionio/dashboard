@@ -17,7 +17,7 @@
         class="mb-4"
         :timeOpts="timeOpts"
         :time.sync="time"
-        :timeGroup.sync="timeGroup"
+        :showTimegroup="false"
         @refresh="fetchData">
         <template v-slot:radio-button-append>
           <custom-date :time.sync="time" :customTime.sync="customTime" />
@@ -40,6 +40,7 @@ import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
+import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
 
 export default {
   name: 'Commonalert',
@@ -63,7 +64,6 @@ export default {
       series: [],
       timeOpts,
       time: '1h',
-      timeGroup: '1m',
       customTime: null,
       formmMetric: null,
       threshold: undefined,
@@ -122,12 +122,22 @@ export default {
       }
       return params
     },
+    timeGroup () {
+      let tg = '1m'
+      let diffHour = 1
+      const noNumberReg = /\D+/g
+      if (this.time === 'custom') {
+        diffHour = this.customTime.from.replace(noNumberReg, '') - this.customTime.to.replace(noNumberReg, '')
+      } else {
+        diffHour = this.time.replace(noNumberReg, '')
+      }
+      const diff = diffHour * 60 // 变分钟
+      tg = `${diff / MONITOR_MAX_POINTERS}m`
+      return tg
+    },
   },
   watch: {
     time () {
-      this.fetchData()
-    },
-    timeGroup () {
       this.fetchData()
     },
     customTime () {
@@ -162,7 +172,6 @@ export default {
         } else {
           this.time = this.timeOpts[time] ? time : '1h'
         }
-        this.timeGroup = _.get(this.alertData, 'settings.conditions[0].query.model.interval')
         this.loading = false
       } catch (error) {
         this.loading = false
