@@ -12,7 +12,7 @@
         <a-form-item :label="$t('storage.text_240')" v-bind="formItemLayout" required>
           <a-row>
             <a-col :span="11" class="mr-1">
-              <a-form-item>
+              <a-form-item class="mb-0">
                 <a-select v-decorator="decorators.PrincipalType" @change="handleTypeChange">
                   <a-select-option value="root">{{$t('storage.text_241')}}</a-select-option>
                   <a-select-option value="child">{{$t('storage.text_242')}}</a-select-option>
@@ -20,7 +20,7 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item>
+              <a-form-item class="mb-0">
                 <a-input v-decorator="decorators.PrincipalId" v-if="isRoot" />
                 <base-select
                   v-else
@@ -80,7 +80,7 @@ export default {
   data () {
     return {
       loading: false,
-      type: 'root',
+      type: 'child',
       resourceType: 'entirebucket',
       form: {
         fc: this.$form.createForm(this),
@@ -95,7 +95,7 @@ export default {
         PrincipalType: [
           'PrincipalType',
           {
-            initialValue: 'root',
+            initialValue: 'child',
           },
         ],
         PrincipalId: [
