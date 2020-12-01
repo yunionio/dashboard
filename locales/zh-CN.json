@@ -1346,5 +1346,6 @@
   "compute.text_1371": "ARM架构虚拟机开机不支持调整配置，请关机后重试",
   "compute.import_secgroup_rule": "导入安全组规则{0}",
   "compute.no_required": "选填",
-  "compute.text_1372": "管理员账号"
+  "compute.text_1372": "管理员账号",
+  "compute.storage_commit_rate": "存储使用率"
 }
