@@ -185,12 +185,16 @@ export const EIP_TYPES_MAP = {
     key: 'none',
   },
   new: {
-    label: i18n.t('compute.text_18'),
+    label: i18n.t('compute.text_1375'),
     key: 'new',
   },
   bind: {
     label: i18n.t('compute.text_19'),
     key: 'bind',
+  },
+  public: {
+    label: i18n.t('compute.text_1373'),
+    key: 'public',
   },
 }
 
