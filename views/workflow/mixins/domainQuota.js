@@ -66,6 +66,13 @@ export default {
               },
             },
             {
+              field: 'instance_snapshot',
+              title: i18n.t('common.text00023'),
+              formatter: ({ cellVal, row }) => {
+                return `${paramter.instance_snapshot || 0}(${diff(row.domainQuota.instance_snapshot, paramter.instance_snapshot)})`
+              },
+            },
+            {
               field: 'bucket',
               title: i18n.t('common_243'),
               formatter: ({ cellVal, row }) => {
@@ -236,6 +243,13 @@ export default {
               title: i18n.t('common_242'),
               formatter: ({ cellVal, row }) => {
                 return `${row.domainQuota.snapshot || 0}${i18n.t('common_411')}(${i18n.t('common_407')}${row.domainQuota['usage.snapshot'] || 0}${i18n.t('common_411')})`
+              },
+            },
+            {
+              field: 'instance_snapshot',
+              title: i18n.t('common.text00023'),
+              formatter: ({ cellVal, row }) => {
+                return `${row.domainQuota.instance_snapshot || 0}${i18n.t('common_411')}(${i18n.t('common_407')}${row.domainQuota['usage.instance_snapshot'] || 0}${i18n.t('common_411')})`
               },
             },
             {

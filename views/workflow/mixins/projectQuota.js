@@ -68,6 +68,13 @@ export default {
               },
             },
             {
+              field: 'instance_snapshot',
+              title: i18n.t('common.text00023'),
+              formatter: ({ cellValue, row }) => {
+                return i18n.t('common_421', [paramter.instance_snapshot, getIncrementFlag(paramter.instance_snapshot, row.projectQuota.instance_snapshot) || 0])
+              },
+            },
+            {
               field: 'bucket',
               title: i18n.t('common_243'),
               formatter: ({ cellValue, row }) => {
@@ -176,6 +183,13 @@ export default {
               title: i18n.t('common_242'),
               formatter: ({ cellValue, row }) => {
                 return `${row.projectQuota.snapshot || 0}${i18n.t('common_411')}(${i18n.t('common_407')}${row.projectQuota['usage.snapshot'] || 0}${i18n.t('common_411')})`
+              },
+            },
+            {
+              field: 'instance_snapshot',
+              title: i18n.t('common.text00023'),
+              formatter: ({ cellValue, row }) => {
+                return `${row.projectQuota.instance_snapshot || 0}${i18n.t('common_411')}(${i18n.t('common_407')}${row.projectQuota['usage.instance_snapshot'] || 0}${i18n.t('common_411')})`
               },
             },
             {
