@@ -14,6 +14,17 @@ export default {
             onManager: this.onManager,
           })
         },
+        meta: () => {
+          const ret = {
+            validate: true,
+            tooltip: null,
+          }
+          if (!this.isAdminMode) {
+            ret.validate = false
+            return ret
+          }
+          return ret
+        },
       },
       {
         label: i18n.t('cloudenv.text_311'),
