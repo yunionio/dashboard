@@ -269,5 +269,6 @@
   "storage.aliyun_oss_cn_hzjbp": "Hangzhou Financial Cloud Intranet",
   "storage.aliyun_oss_cn_hzfinance": "Hangzhou Financial Cloud Outer Network",
   "storage.aliyun_shenzhen_finance_1": "Shenzhen Financial Cloud Intranet",
-  "storage.aliyun_oss_cn_szfinance": "Shenzhen Financial Cloud Outer Network"
+  "storage.aliyun_oss_cn_szfinance": "Shenzhen Financial Cloud Outer Network",
+  "storage.internal_bucket": "Buckets in the intranet zone do not support this operation"
 }
