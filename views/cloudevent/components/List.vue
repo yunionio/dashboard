@@ -144,6 +144,7 @@ export default {
         ],
         limit: () => Object.keys(this.list.data).length,
         export: 'custom',
+        notCombineListParams: true,
         exportType: {
           custom: { label: this.$t('cloudenv.text_328'), key: 'custom' },
         },
