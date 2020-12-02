@@ -129,25 +129,11 @@ export default {
       {
         field: 'cpu_count',
         title: i18n.t('compute.text_563'),
-        minWidth: 110,
+        minWidth: 80,
         showOverflow: 'title',
-        sortable: true,
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
-            return cellValue
-          }
-          return 'N/A'
-        },
-      },
-      {
-        field: 'cpu_commit_rate',
-        title: i18n.t('compute.text_523'),
-        minWidth: 110,
-        showOverflow: 'title',
-        sortable: true,
-        formatter: ({ cellValue, row }) => {
-          if (cellValue) {
-            return percentstr(row.cpu_commit_rate)
+            return '' + cellValue + '/' + percentstr(row.cpu_commit_rate)
           }
           return 'N/A'
         },
@@ -155,51 +141,21 @@ export default {
       {
         field: 'mem_size',
         title: i18n.t('compute.text_564'),
-        minWidth: 110,
-        showOverflow: 'title',
-        sortable: true,
+        minWidth: 80,
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
-            return sizestr(cellValue, 'M', 1024)
+            return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.mem_commit_rate)
           }
           return 'N/A'
         },
       },
       {
-        field: 'mem_commit_rate',
-        title: i18n.t('compute.text_518'),
-        minWidth: 110,
-        showOverflow: 'title',
-        sortable: true,
-        formatter: ({ cellValue, row }) => {
-          if (cellValue) {
-            return percentstr(row.mem_commit_rate)
-          }
-          return 'N/A'
-        },
-      },
-      {
-        field: 'storage_virtual',
+        field: 'storage',
         title: i18n.t('compute.text_565'),
-        minWidth: 110,
-        showOverflow: 'title',
-        sortable: true,
+        minWidth: 80,
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
-            return sizestr(cellValue, 'M', 1024)
-          }
-          return 'N/A'
-        },
-      },
-      {
-        field: 'storage_commit_rate',
-        title: i18n.t('compute.storage_commit_rate'),
-        minWidth: 110,
-        showOverflow: 'title',
-        sortable: true,
-        formatter: ({ cellValue, row }) => {
-          if (cellValue) {
-            return percentstr(row.storage_commit_rate)
+            return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.storage_commit_rate)
           }
           return 'N/A'
         },

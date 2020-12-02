@@ -212,9 +212,6 @@ export default {
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
-      if (this.form.fd.sku && this.form.fd.sku.zone) {
-        params.zone_id = this.form.fd.sku.zone_id
-      }
       return params
     },
     cityParams () {
