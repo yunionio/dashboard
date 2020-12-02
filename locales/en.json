@@ -1347,9 +1347,10 @@
   "compute.import_secgroup_rule": "Import Security Group Rules {0}",
   "compute.no_required": "Optional",
   "compute.text_1372": "Admin Account",
-  "compute.storage_commit_rate": "Storage usage",
   "compute.text_1373": "Create Public Ip",
   "compute.text_1374": "Public IP",
   "compute.text_1375": "Create Elastic IP",
-  "compute.text_1376": "Invalid storage refers to the total disk capacity of the host that is not available in the state"
+  "compute.text_1376": "Invalid storage refers to the total disk capacity of the host that is not available in the state",
+  "compute.storage_commit_rate": "Storage usage",
+  "compute.gpu_not_support_add_host": "The virtual machine bound to the GPU card does not support adding a backup machine"
 }

@@ -1106,6 +1106,10 @@ export default {
                       ret.tooltip = i18n.t('compute.text_1296')
                       return ret
                     }
+                    if (obj.is_gpu) {
+                      ret.tooltip = i18n.t('compute.gpu_not_support_add_host')
+                      return ret
+                    }
                     ret.validate = true
                     return ret
                   },
