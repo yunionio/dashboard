@@ -170,7 +170,8 @@ export default {
         ret.push(this.$t('compute.text_292', [vcpu]))
         ret.push(this.$t('compute.text_293', [sizestrWithUnit(vmem, 'M', 1024)]))
       }
-      let diskStr = `${this.$t('compute.text_49')}:${this.fd.systemDiskSize}GB ${_.get(this.fd, 'systemDiskType.label')}`
+      let diskStr = ''
+      if (this.fd.systemDiskSize) diskStr = `${this.$t('compute.text_49')}:${this.fd.systemDiskSize}GB ${_.get(this.fd, 'systemDiskType.label')}`
       if (this.dataDisk) diskStr += `,${this.$t('compute.text_50')}:${this.dataDisk}GB ${this.dataDiskLabel}`
       ret.push(diskStr)
       return ret.join('、')
