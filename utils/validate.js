@@ -348,6 +348,7 @@ export const validate = (value, regexpItem) => {
  * @return {Boolean}            True or false
  */
 export const isWithinRange = (ip, lowerBound, upperBound) => {
+  if (!lowerBound || !upperBound) return false // 没有起始IP或结束IP
   // Put all IPs into one array for iterating and split all into their own
   // array of segments
   var ips = [ip.split('.'), lowerBound.split('.'), upperBound.split('.')]
