@@ -66,11 +66,15 @@ export default {
                   refresh: this.refresh,
                 })
               },
-              // meta: row => {
-              //   return {
-              //     validate: this.list.selectedItems.every(row => !this.isDir(row.key)),
-              //   }
-              // },
+              meta: row => {
+                const ret = { validate: true, tooltip: '' }
+                if (this.isInternal(row.location)) {
+                  ret.tooltip = this.$t('storage.internal_bucket')
+                  ret.validate = false
+                  return ret
+                }
+                return ret
+              },
             },
             {
               label: this.$t('storage.text_96', [this.$t('dictionary.project')]),
@@ -172,7 +176,15 @@ export default {
                   refresh: this.refresh,
                 })
               },
-              meta: (row) => this.$getDeleteResult(row),
+              meta: (row) => {
+                const ret = { validate: true, tooltip: '' }
+                if (this.isInternal(row.location)) {
+                  ret.tooltip = this.$t('storage.internal_bucket')
+                  ret.validate = false
+                  return ret
+                }
+                return this.$getDeleteResult(row)
+              },
             },
           ]
         },
