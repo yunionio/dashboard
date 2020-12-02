@@ -164,7 +164,7 @@ export default {
           permission: 'networks_create',
           action: () => {
             this.$router.push({
-              path: `${this.$route.path}/create`,
+              name: 'NetworkCreate',
               query: {
                 type: this.cloudEnv,
               },
