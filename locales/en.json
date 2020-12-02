@@ -1271,10 +1271,6 @@
     "project.cluster.node.memory.request": "Current project memory usage"
   },
   "physicalmachineAddTypes": {
-    "scriptAdd": {
-      "label": "Hosting",
-      "desc": "Hosting: used to host the server of the existing operating system, after hosting, the physical machine and bare metal records will be generated at the same time"
-    },
     "isoAdd": {
       "label": "ISO boot registration",
       "desc": "ISO boot registration: used to immediately register the server with configured BMC information. This function does not require the server to be in a DHCP relay network environment, but requires the server to support the Redfish function"
@@ -1286,6 +1282,10 @@
     "preAdd": {
       "label": "Pre-registration",
       "desc": "Pre-registration: used to pre-shelves the server without BMC information, configure the basic information of the server through the pre-registration function, after the server is powered on, the MAC information can be matched to register and configure BMC information, etc. The server is required DHCP relay network environment"
+    },
+    "scriptAdd": {
+      "label": "Hosting",
+      "desc": "Hosting: used to host the server of the existing operating system, after hosting, the physical machine and bare metal records will be generated at the same time"
     }
   },
   "physicalmachineAddModes": {
