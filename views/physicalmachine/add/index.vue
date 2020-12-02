@@ -153,8 +153,8 @@ export default {
             validateFirst: true,
             rules: [
               { required: this.ipmi_ip_addr_required, message: this.$t('compute.text_808') },
-              { validator: this.validateIpAddr },
-              { validator: this.checkIpInNetwork },
+              { validator: this.validateIpAddr, trigger: 'change' },
+              { validator: this.checkIpInNetwork, trigger: 'change' },
             ],
           },
         ],
@@ -407,9 +407,9 @@ export default {
       this.$router.push('/physicalmachine')
     },
     async handleAdd () {
-      this.adding = true
       try {
         await this.form.fc.validateFields()
+        this.adding = true
         if (this.isPreSingleAdd) {
           await this.doPreSingleAdd()
         }
@@ -432,6 +432,8 @@ export default {
           await this.doPxeFileAdd()
         }
         this.$router.push('/physicalmachine')
+      } catch (error) {
+        throw error
       } finally {
         this.adding = false
       }
