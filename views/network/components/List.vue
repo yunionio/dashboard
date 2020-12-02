@@ -124,11 +124,6 @@ export default {
       vpc: getVpcFilter(),
       wire: {
         label: this.$t('network.text_571'),
-        filter: true,
-        jointFilter: true,
-        formatter: val => {
-          return `wire.contains(${val})`
-        },
       },
     }
     this.hiddenFilterOptions.forEach(key => {
