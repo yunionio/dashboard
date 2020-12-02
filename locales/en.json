@@ -1333,5 +1333,6 @@
   "compute.norule": "No Rules",
   "compute.select_storage_no_schetag": "The specified schedule label is no longer supported after the specified block is stored",
   "compute.disable_delete_snapshot_tooltip": "The snapshot must be deleted when the VMware platform virtual machine deletes the host",
-  "compute.storage_commit_rate": "Storage usage"
+  "compute.storage_commit_rate": "Storage usage",
+  "compute.gpu_not_support_add_host": "The virtual machine bound to the GPU card does not support adding a backup machine"
 }
