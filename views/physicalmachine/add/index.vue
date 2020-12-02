@@ -56,7 +56,7 @@ export default {
     }
   },
   data () {
-    const typeInitialValue = 'scriptAdd'
+    const typeInitialValue = 'isoAdd'
     const modeInitialValue = 'single'
     const projectDomainInitialValue = this.$store.getters.userInfo.projectDomainId
     return {
