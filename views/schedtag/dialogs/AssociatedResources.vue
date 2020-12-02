@@ -165,6 +165,7 @@ export default {
         await this.doSubmit(values)
         this.loading = false
         this.cancelDialog()
+        this.$message.success(this.$t('cloudenv.text_381'))
       } catch (error) {
         this.loading = false
       }
