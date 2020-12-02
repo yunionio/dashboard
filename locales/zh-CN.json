@@ -1284,10 +1284,6 @@
     "project.cluster.node.memory.request": "当前项目内存使用量"
   },
   "physicalmachineAddTypes": {
-    "scriptAdd": {
-      "label": "托管",
-      "desc": "托管：用于托管已有操作系统的服务器，托管后将同时生成物理机和裸金属记录"
-    },
     "isoAdd": {
       "label": "ISO引导注册",
       "desc": "ISO引导注册：用于立即注册已配置 BMC 信息的服务器，该功能不要求服务器处于 DHCP relay 网络环境，但是要求服务器支持 Redfish 功能"
@@ -1299,6 +1295,10 @@
     "preAdd": {
       "label": "预注册",
       "desc": "预注册：用于预上架未配置 BMC 信息的服务器，通过预注册功能配置服务器基本信息，待服务器上电后， MAC 信息匹配即可进行注册并配置 BMC 信息等，要求服务器处于 DHCP relay 网络环境"
+    },
+    "scriptAdd": {
+      "label": "托管",
+      "desc": "托管：用于托管已有操作系统的服务器，托管后将同时生成物理机和裸金属记录"
     }
   },
   "physicalmachineAddModes": {
