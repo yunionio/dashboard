@@ -142,7 +142,7 @@ export default {
         }
       }
       // 如果是自定义导出范围配置，则不进行默认的导出范围参数计算
-      if (!this.params.options.exportType) {
+      if (!this.params.options.notCombineListParams) {
         const listParams = this.params.listParams
         if (this.exportType.custom && formValues.type === this.exportType.custom.key) { // 导出范围选择根据筛选条件时
           params = {
