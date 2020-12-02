@@ -5,6 +5,9 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_359')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
+        <a-form-item :label="$t('dictionary.project')" v-if="isAdminMode">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        </a-form-item>
         <a-form-item :label="$t('compute.text_228')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />
           <template #extra>
@@ -51,12 +54,15 @@ import { findPlatform } from '@/utils/common/hypervisor'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import NameRepeated from '@/sections/NameRepeated'
 import { HYPERVISORS_MAP } from '@/constants'
+import DomainProject from '@/sections/DomainProject'
+import { isRequired } from '@/utils/validate'
 
 export default {
   name: 'VmCloneDialog',
   components: {
     OsSelect,
     NameRepeated,
+    DomainProject,
   },
   mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
   provide () {
@@ -98,6 +104,22 @@ export default {
             initialValue: 1,
             rules: [
               { required: true, message: this.$t('compute.text_1195') },
+            ],
+          },
+        ],
+        domain: [
+          'domain',
+          {
+            rules: [
+              { validator: isRequired(), message: this.$t('rules.domain'), trigger: 'change' },
+            ],
+          },
+        ],
+        project: [
+          'project',
+          {
+            rules: [
+              { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
             ],
           },
         ],
@@ -151,7 +173,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope', 'userInfo']),
+    ...mapGetters(['scope', 'isAdminMode', 'userInfo']),
     firstData () {
       return this.params.data[0]
     },
@@ -283,7 +305,7 @@ export default {
     },
     genCloneData (fd) {
       const server = {
-        ...this.createParams,
+        ...this.generateCreateParams(this.createParams, fd),
         __count__: fd.__count__,
         name: fd.name,
         generate_name: fd.name,
@@ -303,6 +325,16 @@ export default {
         server.prefer_manager = fd.prefer_manager
       }
       return server
+    },
+    generateCreateParams (createParams, fd) {
+      if (this.isAdminMode) {
+        const delProps = ['domain', 'domain_id', 'project', 'project_domain', 'project_domain_id', 'project_id', 'tenant', 'tenant_id']
+        delProps.forEach(v => {
+          delete createParams[v]
+        })
+        createParams.project_id = fd.project && fd.project.key
+      }
+      return createParams
     },
   },
 }
