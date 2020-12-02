@@ -124,6 +124,7 @@ export default {
         ],
         limit: () => Object.keys(this.list.data).length,
         export: 'custom',
+        notCombineListParams: true,
         exportType: {
           custom: { label: this.$t('common_158'), key: 'custom' },
           allFilter: { label: this.$t('common_96'), key: 'allFilter' },
