@@ -127,7 +127,7 @@ const actionEableMap = {
       onecloud: ['running', 'block_stream'],
       vmware: ['running'],
       baremetal: false,
-      huawei: false,
+      huawei: ['running'],
       openstack: ['running'],
       zstack: ['running'],
       dstack: ['running'],
