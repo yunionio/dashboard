@@ -1352,5 +1352,6 @@
   "compute.text_1375": "新建弹性公网IP",
   "compute.text_1376": "无效存储是指该宿主机下状态不是可用的磁盘容量总和",
   "compute.storage_commit_rate": "存储使用率",
-  "compute.gpu_not_support_add_host": "绑定GPU卡的虚拟机不支持添加备份机"
+  "compute.gpu_not_support_add_host": "绑定GPU卡的虚拟机不支持添加备份机",
+  "compute.backup": "高可用虚拟机"
 }

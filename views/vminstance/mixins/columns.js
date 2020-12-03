@@ -114,6 +114,10 @@ export default {
               tooltip = `GPU${this.$t('dictionary.server')}`
               icontype = 'gpu'
             }
+            if (row.backup_host_id) {
+              tooltip = this.$t('compute.backup')
+              icontype = 'gaokeyong'
+            }
             return [<icon type={icontype} style={{ fontSize: '16px' }} title={tooltip} />]
           },
         },
