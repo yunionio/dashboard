@@ -95,12 +95,13 @@ export default {
           },
           cloudaccount: getAccountFilter(),
           host: getHostFilter(),
-          gpu: {
+          server_type: {
             label: this.$t('table.title.type'),
             dropdown: true,
             items: [
-              { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: false },
-              { label: `GPU${this.$t('dictionary.server')}`, key: true },
+              { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: 'normal' },
+              { label: `GPU${this.$t('dictionary.server')}`, key: 'gpu' },
+              { label: this.$t('compute.backup'), key: 'backup' },
             ],
           },
           region: {
