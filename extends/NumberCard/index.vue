@@ -6,7 +6,6 @@
     :visible.sync="visible"
     :formItemLayout="formItemLayout"
     :options="options"
-    @cancel="cancel"
     @update="update"
     :params="params">
     <a-row class="mb-4">
@@ -58,6 +57,13 @@ export default {
       },
     }
   },
+  watch: {
+    visible (v) {
+      if (!v) { // 当关闭抽屉的时候重置type
+        this.type = (this.params && this.params.type) || 'server'
+      }
+    },
+  },
   methods: {
     typeChange () {
       this.visible = true
@@ -67,9 +73,6 @@ export default {
     },
     refresh () {
       return this.$refs.usage.refresh()
-    },
-    cancel () { // 关闭抽屉
-      this.type = (this.params && this.params.type) || 'server'
     },
   },
 }
