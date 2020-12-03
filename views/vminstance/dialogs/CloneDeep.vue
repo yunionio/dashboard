@@ -10,7 +10,7 @@
       <dialog-table
         :data="params.data"
         :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc" v-bind="formItemLayout">
+      <a-form :form="form.fc" v-bind="formItemLayout" v-if="!isBatch">
         <a-form-item :label="$t('compute.text_1202')">
           <a-radio-group
             v-decorator="decorators.cloneType">
@@ -145,6 +145,9 @@ export default {
     oldSnapshotDisabled () {
       return this.snapshotOptions.length === 0
     },
+    isBatch () {
+      return this.params.data.length > 1
+    },
   },
   created () {
     this.fetchSnapshotList()
@@ -168,6 +171,26 @@ export default {
         },
       })
     },
+    async doBatchCreateByNewSnapshot () {
+      return this.params.data.map((obj) => {
+        const name = `${obj.name}-copy`
+        const params = {
+          generate_name: name,
+          name: name,
+          count: 1,
+          auto_start: true,
+          auto_delete_instance_snapshot: true,
+        }
+        return this.params.onManager('performAction', {
+          id: obj.id,
+          steadyStatus: ['running', 'ready'],
+          managerArgs: {
+            action: 'snapshot-and-clone',
+            data: params,
+          },
+        })
+      })
+    },
     async doCreateByOldSnapshot () {
       const values = await this.form.fc.validateFields()
       const params = {
@@ -184,7 +207,11 @@ export default {
       this.loading = true
       try {
         if (this.isNewSnapshotClone) {
-          await this.doCreateByNewSnapshot()
+          if (this.isBatch) {
+            await this.doBatchCreateByNewSnapshot()
+          } else {
+            await this.doCreateByNewSnapshot()
+          }
         } else {
           await this.doCreateByOldSnapshot()
         }
@@ -193,6 +220,7 @@ export default {
         }, 2000)
         this.loading = false
         this.cancelDialog()
+        this.$message.success(this.$t('compute.text_423'))
       } catch (error) {
         this.loading = false
         throw error
