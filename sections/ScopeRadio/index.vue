@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item :label="$t('common.text00105')">
+    <a-form-item :label="label">
       <a-radio-group v-decorator="decorators.scope" @change="scopeChange" :disabled="disabled">
         <a-radio-button
           v-for="item in scopeOptions"
@@ -45,6 +45,7 @@
 <script>
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import i18n from '@/locales'
 
 export default {
   name: 'ScopeRadio',
@@ -66,6 +67,10 @@ export default {
     isDefaultSelect: {
       type: Boolean,
       default: true,
+    },
+    label: {
+      type: String,
+      default: i18n.t('common.text00105'),
     },
   },
   data () {
