@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     tableColumns () {
-      const ret = [...this.columns]
+      const ret = this.columns.map(v => { return { ...v, visible: true } })
       if (this.errors) {
         ret.push({
           field: '_result',
