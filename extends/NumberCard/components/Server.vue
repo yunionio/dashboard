@@ -46,6 +46,7 @@ export default {
   data () {
     const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || `${this.$t('dashboard.text_23')}${this.$t('dictionary.project')}${this.$t('dictionary.server')}`
     const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'servers'
+    const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
     return {
       data: {},
       loading: false,
@@ -85,6 +86,12 @@ export default {
           'region',
           {
             initialValue: this.params && this.params.region,
+          },
+        ],
+        regionAccountType: [
+          'regionAccountType',
+          {
+            initialValue: initialRegionAccountType,
           },
         ],
         account: [
