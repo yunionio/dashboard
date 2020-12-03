@@ -196,7 +196,7 @@ export default {
     if (this.params && this.params.type === 'k8s') {
       this.form.fd = this.params
     }
-    this.$emit('update', this.options.i, this.form.fd)
+    // this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {
     refresh () {

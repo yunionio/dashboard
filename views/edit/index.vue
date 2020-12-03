@@ -296,8 +296,8 @@ export default {
         y: item.y,
       })
     },
-    handleUpdateDashboardParams (key, data) {
-      this.dashboardParams[key] = data
+    handleUpdateDashboardParams (key, params) {
+      this.$set(this.dashboardParams, key, params)
     },
     updateDashboardOptions (id) {
       return new Promise((resolve, reject) => {

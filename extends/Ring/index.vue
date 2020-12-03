@@ -56,6 +56,13 @@ export default {
       visible: false,
     }
   },
+  watch: {
+    visible (v) {
+      if (!v) { // 当关闭抽屉的时候重置type
+        this.type = (this.params && this.params.type) || 'server'
+      }
+    },
+  },
   methods: {
     refresh () {
       return this.$refs.usage.refresh()

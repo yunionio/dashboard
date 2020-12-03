@@ -78,6 +78,7 @@ export default {
     const initialRegionValue = ((this.params && this.params.type !== 'k8s') && this.params.region) || 'default'
     const initialAllUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.all_usage_key) || 'hosts.memory'
     const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'all.servers.memory'
+    const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
     return {
       data: {},
       loading: false,
@@ -112,6 +113,12 @@ export default {
           'brand',
           {
             initialValue: initialBrandValue,
+          },
+        ],
+        regionAccountType: [
+          'regionAccountType',
+          {
+            initialValue: initialRegionAccountType,
           },
         ],
         region: [
@@ -267,7 +274,7 @@ export default {
     if (this.params && this.params.type !== 'k8s') {
       this.form.fd = this.params
     }
-    this.$emit('update', this.options.i, this.form.fd)
+    // this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {
     refresh () {
