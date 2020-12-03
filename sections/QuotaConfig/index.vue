@@ -33,7 +33,7 @@
       </a-row>
     </a-form-item>
     <a-form-item :label="$t('dashboard.text_100')" class="mb-0">
-      <a-radio-group v-model="regionAccountType">
+      <a-radio-group v-decorator="decorators.regionAccountType" @change="regionAccountTypeChange">
         <a-radio-button value="region">{{$t('dashboard.text_101')}}</a-radio-button>
         <a-radio-button value="account">{{$t('dashboard.text_102')}}</a-radio-button>
       </a-radio-group>
@@ -113,7 +113,7 @@ export default {
   },
   data () {
     return {
-      regionAccountType: 'region',
+      regionAccountType: _.get(this.decorators, 'regionAccountType[1].initialValue') || 'region',
       cloudEnvs: [],
       cloudEnvData: {},
       brands: [],
@@ -398,6 +398,9 @@ export default {
     },
     usageChange (usage) {
       this.$emit('update:usage_key', usage)
+    },
+    regionAccountTypeChange (e) {
+      this.regionAccountType = e.target.value
     },
   },
 }
