@@ -587,6 +587,44 @@ export default {
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
                   },
                   {
+                    label: this.$t('compute.text_1208'),
+                    action: () => {
+                      this.$openNewWindowForMenuHook('vminstance_configured_callback_address.host_clone_callback_address', () => {
+                        this.createDialog('VmCloneDeepDialog', {
+                          data: this.list.selectedItems,
+                          columns: this.columns,
+                          onManager: this.onManager,
+                          refresh: this.refresh,
+                        })
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      for (const obj of this.list.selectedItems) {
+                        if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.text_355')
+                          break
+                        }
+                        if (!['running', 'ready'].includes(obj.status)) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.text_1126')
+                          break
+                        }
+                        if (obj.backup_host_id) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.text_1283')
+                          break
+                        }
+                      }
+                      return ret
+                    },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
+                  },
+                  {
                     label: this.$t('compute.text_1117'),
                     action: () => {
                       this.createDialog('VmResourceFeeDialog', {
