@@ -147,7 +147,7 @@
   "monitor.text00012": "6 hours",
   "monitor.text00013": "1 day",
   "monitor.text00014": "Average Line",
-  "monitor.text00015": "Strategy Attribution",
+  "monitor.text00015": "Strategy Owner",
   "monitor.text00016": "When no domain or project is specified, the policy belongs to the system administrator, and the policy can only be viewed in the system manager view. The resource selection range is all.",
   "monitor.text00017": "When you specify a domain or project, the policy belongs to that domain or project, and the resource selection range will correspond to the specified domain or project",
   "monitor.text00018": "5 minutes period",
