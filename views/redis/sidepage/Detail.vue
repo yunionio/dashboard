@@ -201,6 +201,21 @@ export default {
                 },
               },
             },
+            {
+              field: 'secgroups',
+              title: this.$t('compute.text_105'),
+              slots: {
+                default: ({ row }) => {
+                  if (!row.secgroups) return '-'
+                  return row.secgroups.map((item) => {
+                    return <list-body-cell-wrap copy hideField={true} field='name' row={item} message={item.name}>
+                      <side-page-trigger permission='secgroups_get' name='SecGroupSidePage' id={item.id} vm={this}>{ item.name }</side-page-trigger>
+                    </list-body-cell-wrap>
+                  })
+                },
+              },
+              hidden: () => this.data.brand !== 'Qcloud',
+            },
           ],
         },
         {
