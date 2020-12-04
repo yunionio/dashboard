@@ -16,8 +16,13 @@
         <template v-if="isDropdown">
           <!-- 如果有配置项则渲染 -->
           <template v-if="config.items">
+            <a-input-search
+              id="dropdownSearchInput"
+              class="dropdown-search-input"
+              :placeholder="$t('common.search')"
+              @change="onSearch" />
             <li
-              v-for="item of config.items"
+              v-for="item of getItems()"
               :key="item.key">
               <span>
                 <a-checkbox
@@ -104,6 +109,7 @@ export default {
       // input 输入的值
       search: '',
       completerWrapStyle: {},
+      dropdownSearch: '',
     }
   },
   computed: {
@@ -150,6 +156,7 @@ export default {
         this.$emit('update-show', false)
         this.completerWrapStyle = {}
       } else {
+        this.dropdownSearch = ''
         if (this.config.distinctField) {
           try {
             const values = await this.fetchDistinctField(item)
@@ -315,6 +322,16 @@ export default {
     getDateSelectPopupContainer (trigger) {
       return this.$parent.$refs['search-box-wrap']
     },
+    onSearch (e) {
+      this.dropdownSearch = e.target.value
+    },
+    getItems () {
+      return this.config.items.filter(v => {
+        if (!v.label) return true
+        const label = v.label.toLowerCase()
+        return label.includes(this.dropdownSearch.toLowerCase())
+      })
+    },
   },
 }
 </script>
@@ -412,6 +429,11 @@ export default {
       color: rgba(0, 0, 0, 0.25);
     }
   }
+}
+
+.dropdown-search-input ::v-deep .ant-input {
+  border: none;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 @media only screen and (max-height: 720px) {
