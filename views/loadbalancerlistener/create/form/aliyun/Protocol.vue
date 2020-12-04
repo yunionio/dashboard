@@ -26,7 +26,7 @@
           <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
         </a-form-item>
         <sticky-session :decorators="decorators" :form="form" v-if="['http'].includes(form.fd.listener_type)" />
-        <acl :decorators="decorators" :form="form" />
+        <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" />
         <!-- !!! 下面的这些 v-if 会影响scheduler 的回填(原因未知)，所以在formStepItem里面回填时会单独getFieldDecorator -->
         <a-form-item :label="$t('network.text_424')" v-if="['http', 'https'].includes(form.fd.listener_type)">
           <a-input v-decorator="decorators.client_idle_timeout" :addonAfter="$t('network.text_76')" type="number" />

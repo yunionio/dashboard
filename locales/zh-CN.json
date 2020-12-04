@@ -766,5 +766,8 @@
   "network.text_748": "PublicZone类型的域名后续可以通过详情-缓存列表-新建缓存的步骤同步到公有云",
   "network.text_749": "无线路类型",
   "newwork.acl_entries": "暂无源地址 | 备注",
-  "network.text_750": "关联的监听（数量）"
+  "network.text_750": "关联的监听（数量）",
+  "network.text_751": "格式为：优先级、空格、权重、空格、端口、空格、主机名，5 0 5269 example.com",
+  "network.text_752": "删除缓存将会同时删除公有云上对应区域的证书",
+  "network.text_753": "该证书只能绑定详情-缓存列表中对应平台上的监听"
 }
