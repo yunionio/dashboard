@@ -85,12 +85,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import * as R from 'ramda'
 import ServerPropsMixin from '../mixins/serverProps'
 import Tag from '@/sections/Tag'
 import DomainProject from '@/sections/DomainProject'
 import ListSelect from '@/sections/ListSelect'
-import { isRequired } from '@/utils/validate'
+import validateForm, { isRequired } from '@/utils/validate'
 
 export default {
   name: 'ScheduledtaskCreateIndex',
@@ -101,12 +100,6 @@ export default {
   },
   mixins: [ServerPropsMixin],
   data () {
-    const validateTag = function (rule, value, callback) {
-      if (R.is(Object, value) && Object.keys(value).length > 20) {
-        return callback(new Error(this.$t('cloudenv.text_442')))
-      }
-      callback()
-    }
     return {
       loading: false,
       decorators: {
@@ -225,7 +218,7 @@ export default {
             // initialValue: { 'user:a': '3', 'user:b': '9' },
             rules: [
               { required: true, message: this.$t('cloudenv.text_451') },
-              { validator: validateTag },
+              { validator: validateForm('tagName') },
             ],
           },
         ],

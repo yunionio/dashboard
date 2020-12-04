@@ -28,12 +28,12 @@
 </template>
 
 <script>
-import * as R from 'ramda'
 import ServerPropsMixin from '../mixins/serverProps'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import Tag from '@/sections/Tag'
 import ListSelect from '@/sections/ListSelect'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'ScheduledtaskEditDialog',
@@ -43,12 +43,6 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin, ServerPropsMixin],
   data () {
-    const validateTag = function (rule, value, callback) {
-      if (R.is(Object, value) && Object.keys(value).length > 20) {
-        return callback(new Error(this.$t('cloudenv.text_442')))
-      }
-      callback()
-    }
     const getInitTags = (labels) => {
       const tag = {}
       labels.forEach((v) => {
@@ -77,7 +71,7 @@ export default {
             initialValue: getInitTags(labels),
             rules: [
               { required: true, message: this.$t('cloudenv.text_451') },
-              { validator: validateTag },
+              { validator: validateForm('tagName') },
             ],
           },
         ],
