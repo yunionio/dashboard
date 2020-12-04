@@ -79,7 +79,7 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const os_arch = _.get(this.params.data, '[0].os_arch').includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
+    const os_arch = (_.get(this.params.data, '[0].properties.os_arch') || '').includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
     return {
       loading: false,
       form: {
