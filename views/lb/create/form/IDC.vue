@@ -48,6 +48,9 @@
         </a-col>
       </a-row>
     </a-form-item>
+    <a-form-item :label="$t('table.title.tag')">
+      <tag v-decorator="decorators.__meta__" />
+    </a-form-item>
   </a-form>
 </template>
 
@@ -120,6 +123,7 @@ export default {
           network: values.network,
           domain: values.domain,
           project: values.project,
+          __meta__: values.__meta__,
         }
         return data
       } catch (error) {
