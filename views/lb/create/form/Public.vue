@@ -80,6 +80,9 @@
         <div slot="extra">{{$t('system.text_439')}}<help-link href="/eip">{{$t('system.text_440')}}</help-link>
         </div>
     </a-form-item>
+    <a-form-item :label="$t('table.title.tag')">
+      <tag v-decorator="decorators.__meta__" />
+    </a-form-item>
   </a-form>
 </template>
 
