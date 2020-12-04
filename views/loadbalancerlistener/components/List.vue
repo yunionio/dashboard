@@ -47,6 +47,7 @@ export default {
   },
   computed: {
     groupActions () {
+      if (this.$route.name === 'LbaclList') { return [] }
       if (this.$route.name === 'LbcertList') {
         return [
           {
