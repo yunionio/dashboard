@@ -9,9 +9,14 @@
               <i class="tip-icon fa fa-hand-o-right" />
               <span class="tip-text">{{$t('common_84')}}</span>
             </div>
-            <div class="qr-wrap">
-              <div>
-                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQr})` }" />
+            <div class="qr-wrap d-flex">
+              <div class="d-flex flex-column align-items-center">
+                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrIOS})` }" />
+                <div class="mt-1"><a-icon type="apple" theme="filled" style="font-size: 20px" /></div>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrAndroid})` }" />
+                <div class="mt-1"><a-icon type="android" theme="filled" style="font-size: 20px" /></div>
               </div>
             </div>
             <div class="qr-tip">{{$t('common_85')}}</div>
@@ -57,7 +62,8 @@ export default {
   name: 'BindSecret',
   data () {
     return {
-      oneloginprotectAppQr: require('./assets/onelogin-protect-qrcode.png'),
+      oneloginprotectAppQrIOS: require('./assets/onelogin-protect-qrcode-ios.png'),
+      oneloginprotectAppQrAndroid: require('./assets/onelogin-protect-qrcode-android.png'),
       securityCode: '',
       error: false,
       loading: false,
@@ -167,14 +173,14 @@ export default {
   > div {
     height: 100%;
     &:first-child {
-      margin-right: 10px;
+      margin-right: 30px;
     }
     > img {
       width: 150px;
     }
     .qr-code-bg-wrap {
-      width: 150px;
-      height: 150px;
+      width: 90px;
+      height: 90px;
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center;
