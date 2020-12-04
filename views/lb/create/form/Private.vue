@@ -35,6 +35,9 @@
         </a-col>
       </a-row>
     </a-form-item>
+    <a-form-item :label="$t('table.title.tag')">
+      <tag v-decorator="decorators.__meta__" />
+    </a-form-item>
   </a-form>
 </template>
 
@@ -69,6 +72,7 @@ export default {
           name: values.name.trim(),
           project: values.project,
           network: values.network,
+          __meta__: values.__meta__,
         }
         if (this.isAdminMode) {
           data.domain = values.domain

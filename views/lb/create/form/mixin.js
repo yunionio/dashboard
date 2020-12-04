@@ -5,11 +5,13 @@ import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
 import CloudproviderRegionZone from '@/sections/CloudproviderRegionZone'
 import i18n from '@/locales'
+import Tag from '@/sections/Tag'
 
 export default {
   components: {
     DomainProject,
     CloudproviderRegionZone,
+    Tag,
   },
   props: {
     type: String,
@@ -166,6 +168,14 @@ export default {
           {
             rules: [
               { required: true, message: i18n.t('network.text_278') },
+            ],
+          },
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: this.$validate('tagName') },
             ],
           },
         ],
