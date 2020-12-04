@@ -4179,5 +4179,6 @@
     "fail": "Password-free login failed",
     "success": "Login successful",
     "no_login_url": "The address is empty, please contact the administrator"
-  }
+  },
+  "common.search": "Please enter search content"
 }

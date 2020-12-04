@@ -114,7 +114,7 @@ export default {
         this.focus = true
         this.showCompleter = true
         this.$nextTick(() => {
-          this.focusInput()
+          e.target.id !== 'dropdownSearchInput' && this.focusInput()
         })
       }
     },
