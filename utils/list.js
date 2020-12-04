@@ -193,6 +193,8 @@ class CreateList {
     disableStorageLimit = false,
     // 额外的data获取方法Object
     extraDataFecther = {},
+    // 重新生成list的params
+    genParamsCb = null,
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -253,6 +255,7 @@ class CreateList {
     // extraDataFecther
     this.extraDataFecther = extraDataFecther
     this.extraData = {}
+    this.genParamsCb = genParamsCb
   }
 
   // 重写selectedItems getter和setter
@@ -516,6 +519,10 @@ class CreateList {
       params.paging_marker = this.nextMarker
       delete params.limit
       delete params.offset
+    }
+    if (R.is(Function, this.genParamsCb)) {
+      const p = this.genParamsCb(params)
+      if (R.is(Object, p)) params = p
     }
     return params
   }
