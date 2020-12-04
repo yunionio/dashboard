@@ -49,7 +49,7 @@ export default {
           return cellValue && cellValue.toUpperCase()
         },
       },
-      getOsArch(),
+      getOsArch('properties.os_arch'),
       {
         field: 'os_type',
         title: i18n.t('table.title.os'),
