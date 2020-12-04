@@ -99,9 +99,9 @@ export default {
           y: 4,
         },
         params: {
-          all_usage_key: 'storages',
-          name: i18n.t('dashboard.text_128'),
-          usage_key: 'all.servers.disk',
+          all_usage_key: 'all.ports',
+          name: i18n.t('dashboard.text_152'),
+          usage_key: 'all.nics',
         },
       },
       {
@@ -113,9 +113,9 @@ export default {
           y: 4,
         },
         params: {
-          all_usage_key: 'isolated_devices',
-          name: i18n.t('dashboard.text_129'),
-          usage_key: 'all.servers.isolated_devices',
+          all_usage_key: 'all.eip.floating_ip',
+          name: i18n.t('dashboard.text_156'),
+          usage_key: 'all.eip.floating_ip.used',
         },
       },
       {
@@ -153,9 +153,9 @@ export default {
           y: 4,
         },
         params: {
-          all_usage_key: 'hosts.memory.total',
-          name: i18n.t('dashboard.text_132'),
-          usage_key: 'all.servers.memory',
+          all_usage_key: 'all.disks.count',
+          name: i18n.t('dashboard.text_147'),
+          usage_key: 'all.disks.attached.count',
         },
       },
       {
@@ -197,9 +197,9 @@ export default {
           y: 4,
         },
         params: {
-          all_usage_key: 'hosts.cpu.total',
-          name: i18n.t('dashboard.text_135'),
-          usage_key: 'all.servers.cpu',
+          all_usage_key: 'all.servers',
+          name: i18n.t('dashboard.text_151'),
+          usage_key: 'all.ready_servers',
         },
       },
       {
