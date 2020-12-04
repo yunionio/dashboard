@@ -14,7 +14,7 @@
           v-decorator="decorators.acl"
           resource="loadbalanceracls"
           show-sync
-          :params="{ scope: $store.getters.scope, limit: 0 }"
+          :params="{ scope: $store.getters.scope, limit: 0, project: lbDetail.project, }"
           :select-props="{ placeholder: $t('network.text_363') }" />
       </a-form-item>
     </template>
@@ -27,6 +27,10 @@ import i18n from '@/locales'
 export default {
   name: 'LbAcl',
   props: {
+    lbDetail: {
+      type: Object,
+      required: true,
+    },
     decorators: {
       type: Object,
       required: true,

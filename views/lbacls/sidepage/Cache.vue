@@ -1,7 +1,8 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns" />
+    :columns="columns"
+    :singleActions="singleActions" />
 </template>
 
 <script>
@@ -52,6 +53,24 @@ export default {
         getBrandTableColumn(),
         getRegionTableColumn(),
         getAccountTableColumn(),
+      ],
+      singleActions: [
+        {
+          label: this.$t('network.text_131'),
+          permission: 'lb_loadbalancerlisteners_delete',
+          action: (obj) => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              title: this.$t('network.text_131'),
+              name: this.$t('network.text_142'),
+              data: [obj],
+              columns: this.columns,
+              onManager: this.onManager,
+              alert: this.$t('network.text_752'),
+            })
+          },
+          meta: (obj) => this.$getDeleteResult(obj),
+        },
       ],
     }
   },

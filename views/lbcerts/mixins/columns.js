@@ -21,16 +21,36 @@ export default {
         field: 'common_name',
         title: i18n.t('network.text_318'),
         width: 150,
-        formatter: ({ cellValue }) => {
-          return cellValue || '-'
+        slots: {
+          default: ({ row }) => {
+            if (row.common_name) return row.common_name
+            return [<div slot="label">
+              <span class="mr-1"> - </span>
+              <a-tooltip title={i18n.t('network.text_753')}>
+                <a-icon type="question-circle-o" />
+              </a-tooltip>
+            </div>]
+          },
         },
       },
       {
         field: 'not_after',
         title: i18n.t('network.text_319'),
         width: 150,
-        formatter: ({ cellValue }) => {
-          return cellValue ? this.$moment(cellValue).format(i18n.t('network.text_36')) : '-'
+        slots: {
+          default: ({ row }) => {
+            if (row.not_after) {
+              if (this.$moment().isAfter(this.$moment(row.not_after))) {
+                return [
+                  <span style="color: red">{this.$moment(row.not_after).format(i18n.t('network.text_36'))}</span>,
+                ]
+              }
+              return [
+                <span>{this.$moment(row.not_after).format(i18n.t('network.text_36'))}</span>,
+              ]
+            }
+            return '-'
+          },
         },
       },
       {
@@ -40,6 +60,10 @@ export default {
         formatter: ({ cellValue }) => {
           return cellValue || '-'
         },
+      },
+      {
+        field: 'lb_listener_count',
+        title: this.$t('network.text_750'),
       },
       getProjectTableColumn(),
     ]

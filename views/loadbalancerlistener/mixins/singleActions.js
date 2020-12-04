@@ -37,6 +37,7 @@ export default {
           },
         ]
       }
+      if (name === 'LbaclList') { return [] }
       return [
         {
           label: i18n.t('network.text_130'),
