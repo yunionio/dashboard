@@ -44,13 +44,6 @@ export function diskValidator (rule, value, callback) {
   callback()
 }
 
-function validateTag (rule, value, callback) {
-  if (R.is(Object, value) && Object.keys(value).length > 20) {
-    return callback(new Error(i18n.t('compute.text_209')))
-  }
-  callback()
-}
-
 export const createVmDecorators = type => {
   let imageTypeInitValue = IMAGES_TYPE_MAP.standard.key
   if (type === SERVER_TYPE.public) {
@@ -583,7 +576,7 @@ export const createVmDecorators = type => {
       'tag',
       {
         rules: [
-          { validator: validateTag },
+          { validator: validateForm('tagName') },
         ],
       },
     ],
