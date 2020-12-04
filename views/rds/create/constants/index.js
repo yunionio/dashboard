@@ -1,13 +1,5 @@
-import * as R from 'ramda'
 import validateForm from '@/utils/validate'
 import i18n from '@/locales'
-
-function validateTag (rule, value, callback) {
-  if (R.is(Object, value) && Object.keys(value).length > 20) {
-    return callback(new Error(i18n.t('compute.text_209')))
-  }
-  callback()
-}
 
 export const DECORATORS = {
   duration: {
@@ -95,11 +87,11 @@ export const DECORATORS = {
       initialValue: 1,
     },
   ],
-  tag: [
-    'tag',
+  __meta__: [
+    '__meta__',
     {
       rules: [
-        { validator: validateTag },
+        { validator: validateForm('tagName') },
       ],
     },
   ],
