@@ -4220,5 +4220,6 @@
     "no_login_url": "The address is empty, please contact the administrator"
   },
   "common_730": "View Tag",
-  "common_731": "No Notification Channel"
+  "common_731": "No Notification Channel",
+  "common.search": "Please enter search content"
 }
