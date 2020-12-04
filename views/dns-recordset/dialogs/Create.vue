@@ -28,7 +28,7 @@
             {{ $t('network.text_152') }}
             <a-tooltip class="item" effect="dark" placement="top" v-if="isSRV">
               <a-icon type="info-circle" />
-              <div slot="title">格式为：优先级、空格、权重、空格、端口、空格、主机名，5 0 5269 example.com</div>
+              <div slot="title">{{$t('network.text_751')}}</div>
             </a-tooltip>
           </span>
           <a-input v-decorator="decorators.dns_value" :placeholder="$t('network.text_175')" />

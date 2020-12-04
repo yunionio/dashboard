@@ -766,5 +766,8 @@
   "network.text_748": "PublicZone type domain names can be synchronized to the public cloud through the steps of Details-Cache List-New Cache",
   "network.text_749": "No line type",
   "newwork.acl_entries": "No Adress | Comment",
-  "network.text_750": "Associated monitors (number)"
+  "network.text_750": "Associated monitors (number)",
+  "network.text_751": "The format is: priority, space, weight, space, port, space, host name, 5 0 5269 example.com",
+  "network.text_752": "Deleting the cache will also delete the certificate of the corresponding region on the public cloud",
+  "network.text_753": "The certificate can only be bound to details-listeners on the corresponding platform in the cache list"
 }

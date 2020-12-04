@@ -4,6 +4,7 @@ import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
   getProjectTableColumn,
+  getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -26,6 +27,7 @@ export default {
           },
         }),
         getStatusTableColumn({ statusModule: 'lb' }),
+        getBrandTableColumn(),
         {
           field: 'listener_type&listener_port',
           title: i18n.t('network.text_472'),
