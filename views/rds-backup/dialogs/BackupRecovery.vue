@@ -23,7 +23,7 @@
             </template>
             <a-radio-button :value="1" :disabled="isDisabled">{{$t('db.text_223')}}</a-radio-button>
           </a-tooltip>
-          <a-radio-button :value="2">{{$t('db.text_365')}}</a-radio-button>
+          <a-radio-button :value="2" v-if="params.data[0].provider === 'Aliyun'">{{$t('db.text_365')}}</a-radio-button>
         </a-radio-group>
         <div style="width:100%">
           <rds-list :backupItem="backupItem" v-if="recoveryType === 1" />
