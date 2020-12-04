@@ -226,6 +226,15 @@ export const REGEXP = {
     regexp: /^([a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62}){1}(\.[a-zA-Z0-9_]{1}[a-zA-Z0-9_-]{0,62})*[\._]?$/,
     message: i18n.t('validator.dnsName'),
   },
+  tagName: {
+    func: value => {
+      if (R.is(Object, value) && Object.keys(value).length > 20) {
+        return false
+      }
+      return true
+    },
+    message: i18n.t('common_732'),
+  },
 }
 
 /**
