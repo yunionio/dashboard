@@ -1004,7 +1004,7 @@
     "k8sName": "Begin with a lowercase letter, a combination of lowercase letters and numbers",
     "domainAccount": "The administrator account needs to start with a lowercase letter, a combination of lowercase letters and numbers, and the length is no less than 6 digits",
     "domainPassword": "Administrator password, a combination of letters, numbers and _@#, length 6~64 bits",
-    "sshPassword": "12~30 characters, must contain three items at the same time (uppercase and lowercase letters, numbers, special symbols@^-+= at least one), cannot start with “/”",
+    "sshPassword": "12~30 characters, must contain four items at the same time: uppercase letters, lowercase letters, numbers, special symbols in @^-+=",
     "passwordValidator": "Password is not allowed {0}”",
     "validateForm": "The input information is incorrect",
     "validate": "@:brand: There is no record of {0} rule in REGEXP, please add it in time",
