@@ -1396,7 +1396,10 @@
     "tianjin": "Tianjin",
     "wuhan": "Wuhan",
     "zhengzhou": "Zhengzhou",
-    "wulanchabu": "Wulanchabu"
+    "wulanchabu": "Wulanchabu",
+    "heyuan": "HeYuan",
+    "neimenggu": "Neimenggu",
+    "foshan": "Foshan"
   },
   "cloudPrvidersMap": {
     "Aliyun": "Aliyun",
