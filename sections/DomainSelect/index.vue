@@ -6,6 +6,7 @@
         :loading="loading"
         :placeholder="$t('rules.domain')"
         :filterOption="false"
+        show-search
         @search="fetchDomains"
         @change="handleChange">
         <a-select-option v-for="item of domains" :value="item.id" :key="item.id">{{ item.name }}</a-select-option>
