@@ -18,6 +18,7 @@
           :placeholder="$t('compute.text_702', [this.$t('dictionary.server')])"
           :defaultValue="defaultSelected"
           :loading="serversLoading"
+          :filter-option="false"
           @search="debounceFetchServers"
           @change="handleSelectChange">
           <a-select-option
@@ -113,9 +114,9 @@ export default {
         scope: this.scope,
         project: this.params.data[0].tenant_id,
         limit: 20,
-        filter: 'hypervisor.notin(baremetal,container)',
+        filter: ['hypervisor.notin(baremetal,container)'],
       }
-      if (query) params.filter = `name.contains("${query}")`
+      if (query) params.filter.push(`name.contains(${query})`)
       try {
         const { data: { data = [] } } = await this.serversManager.list({
           params,
@@ -123,8 +124,10 @@ export default {
         const servers = this.serversMapper(data)
         this.servers = servers
         this.serversLoaded = true
-      } finally {
         this.serversLoading = false
+      } catch (error) {
+        this.serversLoading = false
+        throw error
       }
     },
     doUpdateBindServers (action, ids) {
