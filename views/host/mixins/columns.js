@@ -129,8 +129,9 @@ export default {
       {
         field: 'cpu_count',
         title: i18n.t('compute.text_563'),
-        minWidth: 80,
+        minWidth: 100,
         showOverflow: 'title',
+        sortable: true,
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
             return '' + cellValue + '/' + percentstr(row.cpu_commit_rate)
@@ -141,7 +142,8 @@ export default {
       {
         field: 'mem_size',
         title: i18n.t('compute.text_564'),
-        minWidth: 80,
+        minWidth: 100,
+        sortable: true,
         formatter: ({ cellValue, row }) => {
           if (cellValue) {
             return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.mem_commit_rate)
