@@ -13,7 +13,7 @@
           <a-form-item :label="$t('compute.text_428')" v-bind="formItemLayout">
             <a-row :gutter="8">
               <a-col :span="12">
-                <a-select v-decorator="decorators.snapshotpolicy">
+                <a-select v-decorator="decorators.snapshotpolicy" :filterOption="filterOption" showSearch>
                   <a-select-option v-for="item in snapshotpolicyOptions" :key="item.id">
                     {{getPolicyLabel(item)}}
                   </a-select-option>
@@ -229,6 +229,11 @@ export default {
     async successCallback () {
       await this.fetchSnaphotpolicy()
       this.form.fc.setFieldsValue({ snapshotpolicy: this.snapshotpolicyOptions[0].id })
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }

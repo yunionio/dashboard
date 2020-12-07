@@ -29,7 +29,7 @@ export default {
   data () {
     return {
       ipShow: false,
-      networkId: '',
+      networkId: undefined,
       network: {},
       ip: '',
     }
