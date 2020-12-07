@@ -40,7 +40,7 @@
           :params="wireParams" />
       </a-form-item>
       <a-form-item :label="$t('network.text_24')" :extra="$t('network.text_573')" v-bind="formItemLayout" v-if="!show && !isShowWire">
-        <a-select v-decorator="decorators.zone" :placeholder="$t('network.text_287')">
+        <a-select v-decorator="decorators.zone" :placeholder="$t('network.text_287')" :filterOption="filterOption" show-search>
           <a-select-option v-for="item in zoneList" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
         </a-select>
       </a-form-item>
@@ -723,6 +723,12 @@ export default {
       } finally {
         this.submiting = false
       }
+    },
+    filterOption (input, option) {
+      const lastIdx = option.componentOptions.children.length - 1
+      return (
+        option.componentOptions.children[lastIdx].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }

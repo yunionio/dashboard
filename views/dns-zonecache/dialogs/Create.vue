@@ -6,7 +6,7 @@
         :form="form.fc"
         v-bind="formItemLayout">
         <a-form-item :label="$t('network.text_198')">
-          <a-select v-decorator="decorators.provider" @change="handlePlatformChange" :placeholder="$t('network.text_334', [$t('common_283')])">
+          <a-select v-decorator="decorators.provider" @change="handlePlatformChange" :placeholder="$t('network.text_334', [$t('common_283')])" :filterOption="filterOption" show-search>
             <a-select-option
               v-for="(item, index) in providerOptions"
               :key="index"
@@ -111,6 +111,12 @@ export default {
         this.loading = false
         throw error
       }
+    },
+    filterOption (input, option) {
+      const lastIdx = option.componentOptions.children.length - 1
+      return (
+        option.componentOptions.children[lastIdx].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
