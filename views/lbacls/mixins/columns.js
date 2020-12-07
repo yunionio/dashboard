@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getTimeTableColumn,
+  isPublicTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
@@ -67,6 +68,7 @@ export default {
           return this.$moment(cellValue).format()
         },
       },
+      isPublicTableColumn(),
       getProjectTableColumn(),
     ]
   },
