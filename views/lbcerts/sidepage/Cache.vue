@@ -1,8 +1,11 @@
 <template>
-  <page-list
-    :list="list"
-    :columns="columns"
-    :single-actions="singleActions" />
+  <div>
+    <a-alert :message="$t('network.text_752')" banner class="mb-2" />
+    <page-list
+      :list="list"
+      :columns="columns"
+      :single-actions="singleActions" />
+  </div>
 </template>
 
 <script>

@@ -14,7 +14,7 @@ export default {
             columns: this.columns,
             name: this.$t('network.text_142'),
             onManager: this.onManager,
-            resource: 'loadbalanceracls',
+            resource: 'loadbalancercertificates',
           })
         },
         meta: (obj) => {
@@ -39,7 +39,7 @@ export default {
       getSetPublicAction(this, {
         name: this.$t('network.text_142'),
         scope: 'project',
-        resource: 'loadbalanceracls',
+        resource: 'loadbalancercertificates',
       }),
       {
         label: i18n.t('network.text_131'),
