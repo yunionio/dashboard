@@ -46,11 +46,6 @@ export default {
       return ret
     },
   },
-  watch: {
-    projectDomain (val, oldVal) {
-      this.form.fc.resetFields(['project_domain'])
-    },
-  },
   methods: {
     handleShowIp () {
       this.ipShow = true
