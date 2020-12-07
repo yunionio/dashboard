@@ -5,7 +5,7 @@
       <dialog-selected-tips :name="$t('dictionary.lb_listener')" :count="params.data.length" :action="$t('network.text_470')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" v-bind="formItemLayout">
-        <acl :decorators="decorators" :form="form" />
+        <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" />
       </a-form>
     </div>
     <div slot="footer">
@@ -63,6 +63,7 @@ export default {
           span: 7,
         },
       },
+      lbDetail: this.params.lbDetail,
     }
   },
   mounted () {
