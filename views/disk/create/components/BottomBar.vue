@@ -138,19 +138,20 @@ export default {
           this.key = ''
           return
         }
-        let _storageTypes = this.storageTypes.map(item => {
-          return item.split('/')
-        })
-        _storageTypes = Object.fromEntries(_storageTypes)
+        // let _storageTypes = this.storageTypes.map(item => {
+        //   return item.split('/')
+        // })
+        // _storageTypes = Object.fromEntries(_storageTypes)
         let key = ''
         let region = ''
         let zone = ''
+        const { type, backend } = this.getType(this.currentStorage.value)
         if (this.currentCloudregion.cloud_env === 'public') {
-          key = this.currentStorage.value
+          key = type
           region = this.currentCloudregion.external_id.split('/')[1]
           zone = this.currentCloudzone.external_id.split('/')[2]
         } else {
-          key = `${_storageTypes[this.currentStorage.value]}.${this.currentStorage.value}`
+          key = `${backend}.${type}`
         }
         this.key = key
         const price_keys = `${this.currentCloudregion.provider.toLowerCase()}::${region}::${zone}::disk::${key}::${this.size}GB`
@@ -197,6 +198,12 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    getType (curVal) {
+      const curIndex = curVal.lastIndexOf('-')
+      const type = curVal.substring(0, curIndex)
+      const backend = curVal.substr(curIndex + 1)
+      return { type, backend }
     },
   },
 }
