@@ -209,7 +209,7 @@ export default {
         field: 'ips1',
         title: this.type === 'host' ? this.$t('cloudenv.text_171') : this.$t('cloudenv.text_172'),
         formatter: ({ row }) => {
-          return row[1] && row[1].ips && row[1].ips.length > 1 ? row[1].ips.map(ip => ip).join('、') : '-'
+          return row[1] && row[1].ips && row[1].ips.length > 0 ? row[1].ips.map(ip => ip).join('、') : '-'
         },
       },
       {
