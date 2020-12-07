@@ -4,7 +4,6 @@ import {
   getStatusTableColumn,
   getBrandTableColumn,
   getProjectTableColumn,
-  getCopyWithContentTableColumn,
   getRegionTableColumn,
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
@@ -55,11 +54,30 @@ export default {
         },
       },
       getBrandTableColumn(),
-      getCopyWithContentTableColumn({
+      {
         field: 'account',
         title: i18n.t('network.text_196'),
+        minWidth: 120,
+        slots: {
+          default: ({ row }) => {
+            const ret = []
+            ret.push(
+              <list-body-cell-wrap hide-field copy field='account' row={row}>
+                <span style={{ color: '#0A1F44' }}>{ row.account }</span>
+              </list-body-cell-wrap>,
+            )
+            if (row.manager) {
+              ret.push(
+                <list-body-cell-wrap hide-field copy field='manager' row={row}>
+                  <span style={{ color: '#53627C' }}>{ row.manager }</span>
+                </list-body-cell-wrap>,
+              )
+            }
+            return ret
+          },
+        },
         hidden: this.$store.getters.isProjectMode,
-      }),
+      },
       getAssociateNameTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),
