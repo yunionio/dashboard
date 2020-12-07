@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 import { LB_LISTENEER_ACTION_POLICIES } from '@Network/constants/lb'
 import { PROVIDER_MAP } from '@/constants'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
@@ -129,6 +130,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
+                  lbDetail: _.get(this.params, 'lbDetail') || this.data,
                 })
               },
               meta: () => {
