@@ -193,5 +193,6 @@
   "monitor.text_112": "请选择监控指标",
   "monitor.text_113": "请选择指标项",
   "monitor.text_114": "请选择分组",
-  "monitor.text_115": "请选择函数"
+  "monitor.text_115": "请选择函数",
+  "monitor.text_116": "宿主机下线"
 }

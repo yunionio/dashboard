@@ -193,5 +193,6 @@
   "monitor.text_112": "Please select the metric key",
   "monitor.text_113": "Please select the metric value",
   "monitor.text_114": "Please select the groupby",
-  "monitor.text_115": "Please select the function"
+  "monitor.text_115": "Please select the function",
+  "monitor.text_116": "Host offline"
 }
