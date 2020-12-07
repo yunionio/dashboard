@@ -1396,7 +1396,10 @@
     "tianjin": "天津",
     "wuhan": "武汉",
     "zhengzhou": "郑州",
-    "wulanchabu": "乌兰察布"
+    "wulanchabu": "乌兰察布",
+    "heyuan": "河源",
+    "neimenggu": "内蒙古",
+    "foshan": "佛山"
   },
   "cloudPrvidersMap": {
     "Aliyun": "阿里云",
