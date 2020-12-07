@@ -91,6 +91,7 @@ export default {
     },
     filterable: { // 是否开启本地搜索
       type: Boolean,
+      default: true,
     },
     remote: { // 是否开启远程搜索
       type: Boolean,
@@ -177,17 +178,17 @@ export default {
   },
   computed: {
     filterOpts () {
+      if (this.remote && _.get(this.selectProps, 'mode') !== 'mutiple') {
+        return {
+          filterOption: false,
+          showSearch: true,
+        }
+      }
       if (this.filterable) {
         return {
           optionFilterProp: 'children',
           showSearch: true,
           filterOption: this.filterOption,
-        }
-      }
-      if (this.remote && _.get(this.selectProps, 'mode') !== 'mutiple') {
-        return {
-          filterOption: false,
-          showSearch: true,
         }
       }
       return {
@@ -396,36 +397,37 @@ export default {
       this.disabledOpts()
     },
     async loadOpts (query) {
-      if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
-      const { manager, params } = this.genParams(query)
-      this.loadMoreOffset = 0
-      this.query = query
-      try {
-        const { list, data, sourceList } = await this.fetchData(manager, params)
-        if (data && data.data && data.total > data.data.length) {
-          this.noMoreData = false
-          this.showLoadMore = true
-        } else {
-          this.showLoadMore = false
-          this.noMoreData = true // 没有更多了
+      if (!query || (!R.isNil(query) && this.remote)) { // 没有query或者是有query但是需要有remote才执行
+        const { manager, params } = this.genParams(query)
+        this.loadMoreOffset = 0
+        this.query = query
+        try {
+          const { list, data, sourceList } = await this.fetchData(manager, params)
+          if (data && data.data && data.total > data.data.length) {
+            this.noMoreData = false
+            this.showLoadMore = true
+          } else {
+            this.showLoadMore = false
+            this.noMoreData = true // 没有更多了
+          }
+          this.sourceList = sourceList
+          this.resList = list
+          this.$emit('update:resList', list)
+          const resOpts = arrayToObj(list)
+          this.resOpts = resOpts
+          this.concatFirstOpts = false
+          this.disabledOpts()
+          this.defaultSelect(list)
+          this.$emit('update:initLoaded', true)
+          this.fetchDataNum++
+          if (this.fetchDataNum === 1) {
+            this.firstResOpts = resOpts
+            this.firstTotal = data.total
+          }
+          return list
+        } catch (error) {
+          throw error
         }
-        this.sourceList = sourceList
-        this.resList = list
-        this.$emit('update:resList', list)
-        const resOpts = arrayToObj(list)
-        this.resOpts = resOpts
-        this.concatFirstOpts = false
-        this.disabledOpts()
-        this.defaultSelect(list)
-        this.$emit('update:initLoaded', true)
-        this.fetchDataNum++
-        if (this.fetchDataNum === 1) {
-          this.firstResOpts = resOpts
-          this.firstTotal = data.total
-        }
-        return list
-      } catch (error) {
-        throw error
       }
     },
     async fetchData (manager, params) {
