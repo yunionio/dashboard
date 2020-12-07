@@ -255,6 +255,9 @@ export default {
               if (isWithinRange(ip, guest_ip_start, guest_ip_end)) {
                 isSuitable = true
                 break
+              } else if (item.ip_nets[i].suitable_network) {
+                isSuitable = true
+                break
               }
             }
             item.isSuitable = isSuitable
