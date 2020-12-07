@@ -156,8 +156,9 @@ export default {
       return promise
     },
     filterOption (input, option) {
+      const lastIdx = option.componentOptions.children.length - 1
       return (
-        option.componentOptions.children[1].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        option.componentOptions.children[lastIdx].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       )
     },
     firstName (name) {
