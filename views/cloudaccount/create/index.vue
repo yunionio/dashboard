@@ -132,7 +132,7 @@ export default {
           action: 'prepare-nets',
           data: performData,
         })
-        this.prepareNetData = data || {}
+        this.prepareNetData = data.wire_networks[0] || {}
       } catch (err) {
         throw err
       }
