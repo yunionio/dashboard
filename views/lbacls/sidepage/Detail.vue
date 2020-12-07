@@ -7,6 +7,9 @@
 </template>
 
 <script>
+import {
+  isPublicTableColumn,
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'LbaclDetail',
@@ -23,6 +26,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        isPublicTableColumn(),
         {
           field: 'acl_entries',
           title: this.$t('network.text_312'),

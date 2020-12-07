@@ -7,6 +7,9 @@
 </template>
 
 <script>
+import {
+  isPublicTableColumn,
+} from '@/utils/common/tableColumn'
 
 export default {
   name: 'LbcertDetail',
@@ -23,6 +26,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        isPublicTableColumn(),
         {
           field: 'fingerprint',
           title: this.$t('network.text_332'),
