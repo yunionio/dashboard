@@ -18,6 +18,7 @@
                 @change="handleAreaChange"
                 :placeholder="$t('network.text_199')">
                 <a-select-option v-for="item in areas" :value="item.value" :key="item.value">
+                  <span class="text-color-secondary option-prefix">{{ $t('network.text_199') }}:</span>
                   {{item.label}}
                 </a-select-option>
               </a-select>
@@ -27,6 +28,7 @@
                   v-decorator="decorators.vpc"
                   placeholder="VPC">
                 <a-select-option v-for="item in vpcs" :value="item.value" :key="item.value">
+                  <span class="text-color-secondary option-prefix">VPC:</span>
                   {{item.label}}
                 </a-select-option>
               </a-select>
@@ -35,8 +37,10 @@
         </a-form-item>
         <a-form-item :label="$t('network.text_24')" v-bind="formItemLayout">
           <a-select
-              v-decorator="decorators.zone"
-              :placeholder="$t('network.text_24')">
+            show-search
+            :filterOption="filterOption"
+            v-decorator="decorators.zone"
+            :placeholder="$t('network.text_24')">
             <a-select-option v-for="item in zones" :value="item.value" :key="item.value">
               {{item.label}}
             </a-select-option>
@@ -189,6 +193,13 @@ export default {
             value: item.id,
           }
         })
+        if (this.areas.length) {
+          const defaultValue = this.areas[0].value
+          this.form.fc.setFieldsValue({
+            [this.decorators.area[0]]: defaultValue,
+          })
+          this.handleAreaChange(defaultValue)
+        }
       })
     },
     fetchVpcs (area) {
@@ -209,6 +220,11 @@ export default {
           }
         })
         if (area === 'default') this.vpcs = this.vpcs.filter(({ value }) => value === 'default')
+        if (this.vpcs.length) {
+          this.form.fc.setFieldsValue({
+            [this.decorators.vpc[0]]: this.vpcs[0].value,
+          })
+        }
       })
     },
     fetchZones () {
@@ -272,6 +288,12 @@ export default {
       } catch (error) {
         this.loading = false
       }
+    },
+    filterOption (input, option) {
+      const lastIdx = option.componentOptions.children.length - 1
+      return (
+        option.componentOptions.children[lastIdx].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
