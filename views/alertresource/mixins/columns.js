@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
 import i18n from '@/locales'
@@ -59,7 +60,11 @@ export default {
                 field: 'value_str',
                 title: this.$t('monitor.text_105'),
                 align: 'right',
-                formatter: ({ row }) => row.data ? row.data.value_str : '-',
+                formatter: ({ row }) => {
+                  const val = _.get(row, 'data.value_str') || '-'
+                  if (val === 'nodata') return this.$t('monitor.text_116')
+                  return val
+                },
               },
               {
                 field: 'action',
