@@ -151,7 +151,7 @@ export default {
       return brand ? BILL_BUCKET_URL_DOCS[brand.toLowerCase()] : ''
     },
     enrollmentNumberUrl () {
-      return '/docs/user/multiplecloud/cloudaccount/cloudaccount/#如何获取azure合约编号和密钥'
+      return '/docs/docs/user/multiplecloud/cloudaccount/cloudaccount/#如何获取azure合约编号和密钥'
     },
     decorators () {
       const { options = {} } = this.cloudAccount
