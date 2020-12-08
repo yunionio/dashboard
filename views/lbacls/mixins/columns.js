@@ -1,7 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getTimeTableColumn,
-  isPublicTableColumn,
+  getPublicScopeTableColumn,
   getProjectTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
@@ -68,7 +68,7 @@ export default {
           return this.$moment(cellValue).format()
         },
       },
-      isPublicTableColumn(),
+      getPublicScopeTableColumn({ vm: this, resource: 'loadbalanceracls' }),
       getProjectTableColumn(),
     ]
   },

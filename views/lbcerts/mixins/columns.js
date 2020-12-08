@@ -1,7 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getProjectTableColumn,
-  isPublicTableColumn,
+  getPublicScopeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -66,7 +66,7 @@ export default {
         field: 'lb_listener_count',
         title: this.$t('network.text_750'),
       },
-      isPublicTableColumn(),
+      getPublicScopeTableColumn({ vm: this, resource: 'loadbalancercertificates' }),
       getProjectTableColumn(),
     ]
   },
