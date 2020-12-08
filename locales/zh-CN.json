@@ -1335,5 +1335,7 @@
   "compute.disable_delete_snapshot_tooltip": "VMware平台虚拟机删除主机时必须删除快照",
   "compute.storage_commit_rate": "存储使用率",
   "compute.gpu_not_support_add_host": "绑定GPU卡的虚拟机不支持添加备份机",
-  "compute.backup": "高可用虚拟机"
+  "compute.backup": "高可用虚拟机",
+  "compute.text_1377": "服务状态为在线的宿主机不支持该操作",
+  "compute.text_1378": "只有共享范围为私有的才支持该操作"
 }
