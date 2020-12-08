@@ -134,8 +134,9 @@ export default {
     },
     price () {
       const { count } = this.values
-      if (this.rate && count) {
-        const { month_price: month, hour_price: hour } = this.rate
+      if (this.rate && count && this.priceTotal) {
+        const { month_price: month } = this.rate
+        const { hour_price: hour } = this.priceTotal
         if (this.isPackage && this.durationNum) {
           return parseFloat(month) * parseFloat(count) * this.durationNum
         }
