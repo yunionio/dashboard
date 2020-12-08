@@ -156,8 +156,11 @@ export default {
               },
               meta: () => {
                 if (!this.isProjectMode) {
+                  const isPower = this.isPower(obj)
+                  const isPrivate = !obj.is_public
                   return {
-                    validate: this.isPower(obj),
+                    validate: isPower && isPrivate,
+                    tooltip: isPower && !isPrivate ? i18n.t('compute.text_1378') : '',
                   }
                 }
                 return {
