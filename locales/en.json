@@ -1458,7 +1458,8 @@
     "AzureUSGovernmentCloud": "US Government District",
     "Public": "International Zone",
     "Internation": "International Zone",
-    "FinanceCloud": "Financial Cloud"
+    "FinanceCloud": "Financial Cloud",
+    "InternationalCloud": "International Cloud"
   },
   "flexGroupCycles": {
     "300": "5 minutes",

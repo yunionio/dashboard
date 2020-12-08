@@ -1458,7 +1458,8 @@
     "AzureUSGovernmentCloud": "美国政务区",
     "Public": "国际区",
     "Internation": "国际区",
-    "FinanceCloud": "金融云"
+    "FinanceCloud": "金融云",
+    "InternationalCloud": "公共区"
   },
   "flexGroupCycles": {
     "300": "5分钟",
