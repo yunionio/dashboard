@@ -707,3 +707,19 @@ export const passwordLevel = (password) => {
     return modes
   }
 }
+
+/**
+ * 四舍五入保留n位小数，e.g: 12.343 -> 12.34
+ * @param {String|Number} num 数值
+ * @param {String} precision 小数点后有效位数
+ * @param {Boolean} needFixZero 不够有效位数是否补0
+ * @returns {Number}
+ */
+export const mathRoundFix = (num, precision = 2, needFixZero) => {
+  if (!num) return '0'
+  const multiple = Math.pow(10, precision) // 倍数
+  const n = Math.round(num * multiple) / multiple
+  let res = n.toFixed(precision)
+  if (!needFixZero) res = parseFloat(res)
+  return res
+}
