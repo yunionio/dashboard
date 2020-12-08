@@ -225,7 +225,7 @@ export default {
         tooltip: '',
         isError: false,
       }
-      if (this.ignoreStorageStatus) return statusMap
+      if (this.ignoreStorageStatus || !this.form.fd.systemDiskType || !this.form.fd.systemDiskType.key) return statusMap
       if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic) {
         const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor] || {}
         const allStorageTypes = []
