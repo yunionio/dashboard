@@ -1353,5 +1353,7 @@
   "compute.text_1376": "Invalid storage refers to the total disk capacity of the host that is not available in the state",
   "compute.storage_commit_rate": "Storage usage",
   "compute.gpu_not_support_add_host": "The virtual machine bound to the GPU card does not support adding a backup machine",
-  "compute.backup": "Highly Available Virtual Machine"
+  "compute.backup": "Highly Available Virtual Machine",
+  "compute.text_1377": "The host whose service status is online does not support this operation",
+  "compute.text_1378": "This operation is only supported if the shared scope is private"
 }

@@ -259,6 +259,12 @@ export default {
                       validate: false,
                     }
                   }
+                  if (obj.host_type === 'hypervisor' && obj.host_status === 'online') {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('compute.text_1377'),
+                    }
+                  }
                   return {
                     validate: ['running', 'maintain_fail'].includes(obj.status) && ownerDomain,
                     tooltip: obj.status !== 'running' ? i18n.t('compute.text_571') : '',
