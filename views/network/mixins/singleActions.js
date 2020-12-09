@@ -118,6 +118,8 @@ export default {
               name: this.$t('dictionary.network'),
               scope: 'project',
               resource: 'networks',
+            }, {
+              permission: 'networks_perform_public',
             }),
             // {
             //   label: '设置为共享',
