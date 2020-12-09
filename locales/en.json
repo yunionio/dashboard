@@ -623,5 +623,6 @@
   "cloudenv.environment_check": "Please select the account type",
   "cloudenv.international_cloud": "Public Cloud",
   "cloudenv.finance_cloud": "Financial Cloud",
-  "cloudenv.text_571": "Contract number and key can be obtained by reference"
+  "cloudenv.text_571": "Contract number and key can be obtained by reference",
+  "cloudenv.text_573": "All Domains"
 }
