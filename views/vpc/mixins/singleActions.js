@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_201'),
+        permission: 'vpcs_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
@@ -39,6 +40,8 @@ export default {
               name: this.$t('dictionary.vpc'),
               scope: 'domain',
               resource: 'vpcs',
+            }, {
+              permission: 'vpcs_perform_public',
             }),
             {
               label: i18n.t('network.text_131'),
