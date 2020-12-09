@@ -14,7 +14,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { ACL_TYPE, FINANCE_INTERNAL } from '@Storage/constants/index.js'
+import { ACL_TYPE } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter, getDomainFilter } from '@/utils/common/tableFilter'
@@ -265,9 +265,6 @@ export default {
           this.list.singleRefresh(row.id, Object.values(expectStatus.bucket).flat())
         },
       })
-    },
-    isInternal (location) {
-      return FINANCE_INTERNAL.includes(location)
     },
   },
 }
