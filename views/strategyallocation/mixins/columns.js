@@ -58,6 +58,9 @@ export default {
           if (row.project_domain) {
             ret = i18n.t('cloudenv.text_505', [row.project_domain])
           }
+          if (row.domain_id && row.domain_id === '[any_domain_id]') {
+            ret = i18n.t('cloudenv.text_573')
+          }
           if (row.project) {
             ret = i18n.t('cloudenv.text_506', [row.project])
           }
