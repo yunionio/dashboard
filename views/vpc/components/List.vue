@@ -103,6 +103,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
+          permission: 'vpcs_create',
           action: () => {
             this.$router.push({
               path: '/vpc/create',
@@ -124,6 +125,7 @@ export default {
             return [
               {
                 label: this.$t('network.text_201'),
+                permission: 'vpcs_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
@@ -152,9 +154,12 @@ export default {
                 name: this.$t('dictionary.vpc'),
                 scope: 'domain',
                 resource: 'vpcs',
+              }, {
+                permission: 'vpcs_perform_public',
               }),
               {
                 label: this.$t('table.action.set_tag'),
+                permission: 'vpcs_perform_set_schedtag',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
