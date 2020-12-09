@@ -2162,7 +2162,8 @@
     "scalinggroupguest": "Server scaling",
     "hoststorage": "Host storage",
     "usage": "Usage",
-    "guest": "@:dictionary.server"
+    "guest": "@:dictionary.server",
+    "webconsole": "webconsole"
   },
   "res": {
     "role": "Role",
