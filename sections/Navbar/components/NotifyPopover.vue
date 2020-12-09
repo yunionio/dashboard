@@ -11,7 +11,7 @@
         <div class="notify-wrap">
           <div class="notify-header d-flex align-items-center">
             <div class="flex-fill title">{{$t('navbar.button.system_messages')}}</div>
-            <a v-if="showMore && $appConfig.isPrivate" @click="toMore">{{$t('common.more')}}</a>
+            <a v-if="showMore && $appConfig.isPrivate" @click="toMore">{{`${$t('common.more')}${$t('dictionary.webconsole')}`}}</a>
           </div>
           <div class="loading" v-if="loading">
             <loading-block :layout="loadingLayout" />
