@@ -228,35 +228,22 @@ export default {
       if (this.ignoreStorageStatus || !this.form.fd.systemDiskType || !this.form.fd.systemDiskType.key) return statusMap
       if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic) {
         const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor] || {}
-        const allStorageTypes = []
-        Object.keys(storageTypes3).forEach((item) => {
+        const storageTypes = Object.keys(storageTypes3)
+        for (const item of storageTypes) {
           const key = Array.isArray(item.split('/')) ? item.split('/')[0] : ''
           const storages = storageTypes3[item] || {}
           const isAllEmpty = storages.capacity === 0
-          allStorageTypes.push(storages)
-          if (isAllEmpty && key === this.currentTypeObj.key) {
+          if (key === this.currentTypeObj.key && isAllEmpty) {
+            // 没有设置容量：XXX存储的容量没有设置，无法创建虚拟机，请到存储--块存储进行设置，如无法查看请联系管理员设置
             statusMap = { type: 'error', tooltip: this.$t('compute.text_1142', [key]), isError: true }
+            break
           }
           if (key === this.currentTypeObj.key && storages.capacity) {
+            // 选择磁盘容量不足：XXX存储的容量不足，无法创建虚拟机，请到存储--块存储进行查看，如无法查看请联系管理员查看
             if (storages.free_capacity === 0 || storages.free_capacity / 1024 < this.form.fd.systemDiskSize) {
               statusMap = { type: 'error', tooltip: this.$t('compute.text_1143', [key]), isError: true }
+              break
             }
-          }
-        })
-        if (!statusMap.type) {
-          const emptyStorageArr = allStorageTypes.filter((item) => { return item.capacity === 0 })
-          if (emptyStorageArr.length > 0) {
-            const storageNames = (emptyStorageArr.map((v) => { return v.storages })).flat()
-            const names = (storageNames.map((v) => { return v.name })).join(',')
-            statusMap = { type: 'warning', tooltip: this.$t('compute.text_1144', [names]) }
-          }
-        }
-        if (!statusMap.type) {
-          const freeStorageArr = allStorageTypes.filter((item) => { return item.free_capacity / 1024 < 100 })
-          if (freeStorageArr.length > 0) {
-            const storageNames = (freeStorageArr.map((v) => { return v.storages })).flat()
-            const names = (storageNames.map((v) => { return v.name })).join(',')
-            statusMap = { type: 'warning', tooltip: this.$t('compute.text_1145', [names]) }
           }
         }
       }
