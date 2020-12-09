@@ -68,6 +68,7 @@ export default {
           },
         },
         filter,
+        search: true,
         filterOptions: {
           id: {
             label: this.$t('table.title.id'),
@@ -116,7 +117,6 @@ export default {
           region: {
             label: this.$t('res.region'),
             dropdown: true,
-            multiple: true,
             distinctField: {
               type: 'extra_field',
               key: 'region',
