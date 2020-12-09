@@ -109,7 +109,6 @@ export default {
       region: {
         label: this.$t('res.region'),
         dropdown: true,
-        multiple: true,
         distinctField: {
           type: 'extra_field',
           key: 'region',
@@ -134,6 +133,7 @@ export default {
         },
         filter,
         filterOptions,
+        search: true,
         responseData: this.responseData,
         hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch'],
       }),
