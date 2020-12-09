@@ -2258,7 +2258,7 @@
       "owner_domain": "所属@:dictionary.domain",
       "sponsor": "发起人",
       "operation": "操作",
-      "search": "模糊匹配",
+      "search": "名称或IP",
       "local_project": "本地项目",
       "zone_1_name": "备可用区",
       "mfa_validate": "MFA验证",

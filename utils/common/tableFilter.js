@@ -194,7 +194,7 @@ export function getHostFilter () {
     filter: true,
     jointFilter: true,
     formatter: val => {
-      return `hosts.id(host_id).name.in(${val})`
+      return `hosts.id(host_id).name.contains(${val})`
     },
     hidden: () => store.getters.isProjectMode,
   }
@@ -215,6 +215,7 @@ export function getDomainFilter () {
   return {
     label: i18n.t('table.title.domain'),
     dropdown: true,
+    multiple: true,
     distinctField: {
       type: 'extra_field',
       key: 'domain',

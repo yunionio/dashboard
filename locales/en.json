@@ -2258,7 +2258,7 @@
       "owner_domain": "Owner domain",
       "sponsor": "Sponsor",
       "operation": "Operation",
-      "search": "Fuzzy matching",
+      "search": "Name or IP",
       "local_project": "Local project",
       "zone_1_name": "Backup Zone",
       "mfa_validate": "MFA",
