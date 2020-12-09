@@ -77,6 +77,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
+          permission: 'wires_create',
           action: () => {
             this.createDialog('WireCreateDialog', {
               title: this.$t('network.text_26'),
@@ -99,9 +100,12 @@ export default {
                 name: this.$t('dictionary.wire'),
                 scope: 'domain',
                 resource: 'wires',
+              }, {
+                permission: 'wires_perform_public',
               }),
               {
                 label: this.$t('table.action.set_tag'),
+                permission: 'wires_perform_set_schedtag',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
