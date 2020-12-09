@@ -125,10 +125,6 @@ export const PERMISSION = {
   isolated_devices_list: ['compute', 'isolated-devices', 'list'],
   // GPU透传详情
   isolated_devices_get: ['compute', 'isolated-devices', 'get'],
-  // VPC
-  vpcs_list: ['compute', 'vpcs', 'list'],
-  // VPC详情
-  vpcs_get: ['compute', 'vpcs', 'get'],
   // 路由表
   route_tables_list: ['compute', 'route_tables', 'list'],
   // NAT网关
@@ -139,6 +135,10 @@ export const PERMISSION = {
   wires_get: ['compute', 'wires', 'get'],
   // IP子网
   networks_list: ['compute', 'networks', 'list'],
+  // VPC
+  vpcs_list: ['compute', 'vpcs', 'list'],
+  // VPC详情
+  vpcs_get: ['compute', 'vpcs', 'get'],
   // 预留IP
   reservedips_list: ['compute', 'reservedips', 'list'],
   // 域名服务
@@ -467,6 +467,28 @@ export const PERMISSION = {
   networks_perform_change_owner: ['compute', 'networks', 'perform', 'change-owner'],
   networks_perform_syncstatus: ['compute', 'networks', 'perform', 'syncstatus'],
   networks_perform_set_schedtag: ['compute', 'networks', 'perform', 'set-schedtag'],
+  /**
+   * VPC 相关操作
+   */
+  vpcs_create: ['compute', 'vpcs', 'create'],
+  vpcs_update: ['compute', 'vpcs', 'update'],
+  vpcs_delete: ['compute', 'vpcs', 'delete'],
+  vpcs_perform_change_owner: ['compute', 'vpcs', 'perform', 'change-owner'],
+  vpcs_perform_syncstatus: ['compute', 'vpcs', 'perform', 'syncstatus'],
+  vpcs_perform_public: ['compute', 'vpcs', 'perform', 'public'],
+  vpcs_perform_private: ['compute', 'vpcs', 'perform', 'private'],
+  vpcs_perform_set_schedtag: ['compute', 'vpcs', 'perform', 'set-schedtag'],
+  /**
+   * 二层网络 相关操作
+   */
+  wires_create: ['compute', 'wires', 'create'],
+  wires_update: ['compute', 'wires', 'update'],
+  wires_delete: ['compute', 'wires', 'delete'],
+  wires_perform_change_owner: ['compute', 'wires', 'perform', 'change-owner'],
+  wires_perform_syncstatus: ['compute', 'wires', 'perform', 'syncstatus'],
+  wires_perform_public: ['compute', 'wires', 'perform', 'public'],
+  wires_perform_private: ['compute', 'wires', 'perform', 'private'],
+  wires_perform_set_schedtag: ['compute', 'wires', 'perform', 'set-schedtag'],
   /**
    * notices 相关操作
    */
