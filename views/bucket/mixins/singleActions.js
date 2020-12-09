@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import { FINANCE_INTERNAL } from '@Storage/constants'
 // import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 
@@ -190,5 +191,10 @@ export default {
         },
       },
     ]
+  },
+  methods: {
+    isInternal (location) {
+      return FINANCE_INTERNAL.includes(location)
+    },
   },
 }
