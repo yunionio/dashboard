@@ -145,6 +145,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
     },
   }
   if (params.permission) options.permission = params.permission
+  if (params.hidden) options.hidden = params.hidden
   return options
 }
 
