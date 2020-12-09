@@ -2077,7 +2077,7 @@
     "nat": "NAT网关",
     "network": "IP子网",
     "networkinterface": "弹性网卡",
-    "notification": "消息",
+    "notification": "消息中心",
     "notify": "通知服务",
     "parameter": "配置",
     "physicalmachine": "物理机",
@@ -2162,7 +2162,8 @@
     "scalinggroupguest": "云服务器弹性伸缩组",
     "hoststorage": "宿主机存储",
     "usage": "使用量",
-    "guest": "@:dictionary.server"
+    "guest": "@:dictionary.server",
+    "webconsole": "站内信"
   },
   "res": {
     "role": "@:dictionary.role",
