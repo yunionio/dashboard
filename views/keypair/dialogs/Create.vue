@@ -4,13 +4,13 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item label="新建方式" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_1379')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.createType" @change="handleCreateTypeChange">
             <a-radio-button value="new">
-              创建新密钥对
+              {{ $t('compute.text_1380') }}
             </a-radio-button>
             <a-radio-button value="old">
-              使用已有密钥对
+              {{ $t('compute.text_1381') }}
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
