@@ -1337,5 +1337,8 @@
   "compute.gpu_not_support_add_host": "The virtual machine bound to the GPU card does not support adding a backup machine",
   "compute.backup": "Highly Available Virtual Machine",
   "compute.text_1377": "The host whose service status is online does not support this operation",
-  "compute.text_1378": "This operation is only supported if the shared scope is private"
+  "compute.text_1378": "This operation is only supported if the shared scope is private",
+  "compute.text_1379": "New Method",
+  "compute.text_1380": "Create a new key pair",
+  "compute.text_1381": "Use an existing key pair"
 }
