@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
@@ -17,6 +18,12 @@ export default {
           })
         },
         meta: (obj) => {
+          if (!this.isPower(obj)) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_627'),
+            }
+          }
           if (obj.brand.toLowerCase() === 'onecloud') {
             return {
               validate: false,
@@ -62,5 +69,15 @@ export default {
         },
       },
     ]
+  },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+  },
+  methods: {
+    isPower (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return obj.tenant_id === this.userInfo.projectId
+    },
   },
 }

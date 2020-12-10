@@ -58,7 +58,24 @@ export default {
                   onManager: this.onManager,
                 })
               },
-              meta: () => this.$getDeleteResult(obj),
+              meta: () => {
+                if (!this.isPower(obj)) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_627'),
+                  }
+                }
+                if (!this.$getDeleteResult(obj).validate) {
+                  return {
+                    validate: false,
+                    tooltip: this.$getDeleteResult(obj).tooltip,
+                  }
+                }
+                return {
+                  validate: true,
+                  tooltip: '',
+                }
+              },
             },
           ]
         },
