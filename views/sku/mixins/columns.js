@@ -2,6 +2,7 @@ import {
   getEnabledTableColumn,
   getNameDescriptionTableColumn,
   getStatusTableColumn,
+  getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
@@ -19,6 +20,7 @@ export default {
           )
         },
       }),
+      getBrandTableColumn({ field: 'provider' }),
       getStatusTableColumn({ statusModule: 'sku' }),
       getEnabledTableColumn(),
       {
