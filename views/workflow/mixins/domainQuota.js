@@ -45,6 +45,13 @@ export default {
               },
             },
             {
+              field: 'eport',
+              title: i18n.t('common.eport'),
+              formatter: ({ cellVal, row }) => {
+                return `${paramter.eport || 0}(${diff(row.domainQuota.eport, paramter.eport)})`
+              },
+            },
+            {
               field: 'isolated_device',
               title: 'GPU',
               formatter: ({ cellVal, row }) => {
@@ -222,6 +229,13 @@ export default {
               title: i18n.t('common_240'),
               formatter: ({ cellVal, row }) => {
                 return `${row.domainQuota.port || 0}${i18n.t('common_411')}(${i18n.t('common_407')}${row.domainQuota['usage.port'] || 0}${i18n.t('common_411')})`
+              },
+            },
+            {
+              field: 'eport',
+              title: i18n.t('common.eport'),
+              formatter: ({ cellVal, row }) => {
+                return `${row.domainQuota.eport || 0}${i18n.t('common_411')}(${i18n.t('common_407')}${row.domainQuota['usage.eport'] || 0}${i18n.t('common_411')})`
               },
             },
             {
