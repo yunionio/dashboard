@@ -118,6 +118,17 @@ export default {
                     tipName: this.$t('dictionary.hostwire'),
                   })
                 },
+                meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
               },
               {
                 label: this.$t('network.text_131'),
@@ -133,6 +144,12 @@ export default {
                   })
                 },
                 meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
                   return {
                     validate: this.list.allowDelete(),
                   }
@@ -154,6 +171,11 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    isPower (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return obj.tenant_id === this.userInfo.projectId
+    },
     getParam () {
       const ret = {
         details: true,

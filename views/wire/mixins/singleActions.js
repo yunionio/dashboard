@@ -19,6 +19,11 @@ export default {
             refresh: this.refresh,
           })
         },
+        meta: obj => {
+          return {
+            validate: this.isPower(obj),
+          }
+        },
       },
       {
         label: i18n.t('network.text_129'),
