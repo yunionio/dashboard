@@ -4,10 +4,20 @@
     <div slot="body">
       <a-form
         :form="form.fc">
+        <a-form-item label="新建方式" v-bind="formItemLayout">
+          <a-radio-group v-decorator="decorators.createType" @change="handleCreateTypeChange">
+            <a-radio-button value="new">
+              创建新密钥对
+            </a-radio-button>
+            <a-radio-button value="old">
+              使用已有密钥对
+            </a-radio-button>
+          </a-radio-group>
+        </a-form-item>
         <a-form-item :label="$t('compute.text_727')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_728')" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_725')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_725')" v-bind="formItemLayout" v-if="createType === 'old'">
           <a-textarea v-decorator="decorators.public_key" :placeholder="$t('compute.text_729')" :rows="4" />
         </a-form-item>
       </a-form>
@@ -52,6 +62,12 @@ export default {
         fc: this.$form.createForm(this),
       },
       decorators: {
+        createType: [
+          'createType',
+          {
+            initialValue: 'new',
+          },
+        ],
         name: [
           'name',
           {
@@ -82,9 +98,26 @@ export default {
           span: 5,
         },
       },
+      createType: 'new',
     }
   },
   methods: {
+    fake_click (obj) {
+      const ev = document.createEvent('MouseEvents')
+      ev.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+      obj.dispatchEvent(ev)
+    },
+    download (name, data) {
+      const urlObject = window.URL || window.webkitURL || window
+      const downloadData = new Blob([data])
+      const save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a')
+      save_link.href = urlObject.createObjectURL(downloadData)
+      save_link.download = name
+      this.fake_click(save_link)
+    },
+    handleCreateTypeChange (e) {
+      this.createType = e.target.value
+    },
     validateForm () {
       return new Promise((resolve, reject) => {
         this.form.fc.validateFields((err, values) => {
@@ -103,12 +136,25 @@ export default {
         },
       })
     },
+    doDownload (data, id) {
+      return this.params.onManager('get', {
+        managerArgs: {
+          id: id + '/privatekey',
+        },
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.validateForm()
+        delete values.createType
         this.loading = true
-        await this.doCreate(values)
+        const { data } = await this.doCreate(values)
+        if (this.createType === 'new') {
+          // 调用方法
+          const { data: ret } = await this.doDownload(values, data.id)
+          this.download(`${ret.name}.pem`, ret.private_key)
+        }
         this.loading = false
         this.cancelDialog()
       } catch (error) {
