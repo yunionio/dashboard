@@ -1323,5 +1323,8 @@
   "compute.disable_delete_snapshot_tooltip": "VMware平台虚拟机删除主机时必须删除快照",
   "compute.storage_commit_rate": "存储使用率",
   "compute.gpu_not_support_add_host": "绑定GPU卡的虚拟机不支持添加备份机",
-  "compute.backup": "高可用虚拟机"
+  "compute.backup": "高可用虚拟机",
+  "compute.text_1379": "新建方式",
+  "compute.text_1380": "创建新密钥对",
+  "compute.text_1381": "使用已有密钥对"
 }
