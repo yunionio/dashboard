@@ -2342,7 +2342,7 @@
       "cloudefficiency": "高效云盘",
       "ephemeralssd": "本地 SSD 盘",
       "gp2": "通用型 SSD",
-      "io1": "预配置 IOPS SSD",
+      "io": "EBS 预置 IOPS SSD ({0})",
       "st1": "吞吐优化 HDD",
       "standard": "磁介质",
       "cloudbasic": "普通云硬盘",
@@ -2363,7 +2363,8 @@
       "EXCLUSIVE_LOCAL_DISK": "独享本地盘",
       "pd-ssd": "SSD永久性磁盘",
       "pd-standard": "标准永久性磁盘",
-      "cloudhssd": "增强型SSD云硬盘"
+      "cloudhssd": "增强型SSD云硬盘",
+      "pd-balanced": "平衡永久性磁盘"
     },
     "view": "查看",
     "total": "共：{0}",
