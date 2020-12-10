@@ -68,7 +68,6 @@ export default {
           },
         },
         filter,
-        search: true,
         filterOptions: {
           id: {
             label: this.$t('table.title.id'),
