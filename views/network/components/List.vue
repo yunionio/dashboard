@@ -337,6 +337,12 @@ export default {
                   })
                 },
                 meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
                   if (this.list.selectedItems.some(obj => obj.server_type !== 'guest')) {
                     return {
                       validate: false,
@@ -391,6 +397,17 @@ export default {
                     tipName: this.$t('dictionary.network'),
                   })
                 },
+                meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
               },
               {
                 label: this.$t('network.text_131'),
@@ -406,6 +423,12 @@ export default {
                   })
                 },
                 meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
                   return {
                     validate: this.list.allowDelete(),
                   }
