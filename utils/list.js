@@ -190,8 +190,6 @@ class CreateList {
     extraDataFecther = {},
     // 重新生成list的params
     genParamsCb = null,
-    // 是否配置模糊搜索
-    search = false,
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -223,12 +221,12 @@ class CreateList {
     // 自定义过滤配置
     this.filterOptions = filterOptions
     // 如果有search，表示需要配置模糊匹配选项，则将模糊匹配添加上
-    if (search) {
-      this.search = search
-      this.filterOptions.search = {
-        label: i18n.t('table.title.search'),
-      }
-    }
+    // if (search) {
+    //   this.search = search
+    //   this.filterOptions.search = {
+    //     label: i18n.t('table.title.search'),
+    //   }
+    // }
     // 存放当前过滤的条件
     this.filter = filter
     this.steadyStatus = this.genSteadyStatus(steadyStatus)
