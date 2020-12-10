@@ -117,6 +117,12 @@ export default {
                   })
                 },
                 meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
                   if (this.list.selectedItems.some(v => v.brand.toLowerCase() === 'onecloud')) {
                     return {
                       validate: false,
@@ -153,6 +159,17 @@ export default {
                     },
                     tipName: this.$t('dictionary.vpc'),
                   })
+                },
+                meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
                 },
               },
               {
@@ -197,6 +214,11 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    isPower (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return obj.tenant_id === this.userInfo.projectId
+    },
     getParam () {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),

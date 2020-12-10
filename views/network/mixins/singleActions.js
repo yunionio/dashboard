@@ -211,6 +211,12 @@ export default {
                 })
               },
               meta: (obj) => {
+                if (!this.isPower(obj)) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_627'),
+                  }
+                }
                 if (obj.server_type !== 'guest') {
                   return {
                     validate: false,
