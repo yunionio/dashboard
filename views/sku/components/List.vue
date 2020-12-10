@@ -23,9 +23,9 @@ export default {
   props: {
     id: String,
     getParams: {
-      type: Object,
-      default: () => ({}),
+      type: [Function, Object],
     },
+    cloudEnv: String,
   },
   data () {
     return {
@@ -118,6 +118,13 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudEnv (val) {
+      this.$nextTick(() => {
+        this.list.fetchData(0)
+      })
+    },
+  },
   created () {
     this.initSidePageTab('sku-detail')
     this.list.fetchData()
@@ -127,9 +134,9 @@ export default {
       const ret = {
         details: true,
         with_meta: true,
-        cloud_env: 'onpremise',
-        ...this.getParams,
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
+      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {
