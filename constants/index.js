@@ -485,7 +485,15 @@ export const STORAGE_TYPES = {
       sysMax: 16384,
     },
     io1: {
-      label: i18n.t('compute.text_60'),
+      label: i18n.t('common.storage.io', ['io1']),
+      value: 'io1',
+      min: 4,
+      max: 16384,
+      sysMin: 1,
+      sysMax: 16384,
+    },
+    io2: {
+      label: i18n.t('common.storage.io', ['io2']),
       value: 'io1',
       min: 4,
       max: 16384,
@@ -838,6 +846,15 @@ export const STORAGE_TYPES = {
       sysMin: 375,
       sysMax: 375,
       sort: 3,
+    },
+    'pd-balanced': {
+      label: i18n.t('common.storage.pd-balanced'),
+      value: 'pd-balanced',
+      min: 10,
+      max: 65536,
+      sysMin: 10,
+      sysMax: 65536,
+      sort: 2,
     },
   },
   apsara: {
