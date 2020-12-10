@@ -97,6 +97,15 @@ export default {
           remaining: 0,
         },
         {
+          key: 'eport',
+          label: this.$t('common.eport'),
+          max: 0,
+          step: 10,
+          unit: this.$t('common_61'),
+          originQuota: 0,
+          remaining: 0,
+        },
+        {
           key: 'isolated_device',
           label: 'GPU',
           max: 0,
@@ -340,6 +349,7 @@ export default {
       params.storage = this.quota.storage * 1024
       params.image = this.quota.image
       params.port = this.quota.port
+      params.eport = this.quota.eport
       params.count = this.quota.count
       params.bw = this.quota.port * 10000
       params.isolated_device = this.quota.isolated_device
