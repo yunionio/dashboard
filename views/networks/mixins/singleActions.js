@@ -16,6 +16,7 @@ export default {
               data: [obj],
               columns: this.columns,
               refresh: this.refresh,
+              resData: [this.data],
             })
           })
         },
