@@ -5,6 +5,7 @@ export const initProjectQuota = {
   image: 50,
   count: 200,
   port: 50,
+  eport: 50,
   isolated_device: 50,
   eip: 20,
   snapshot: 50,
@@ -25,6 +26,7 @@ export const initDomainQuota = {
   image: 500,
   count: 500,
   port: 500,
+  eport: 500,
   isolated_device: 500,
   eip: 200,
   snapshot: 200,
@@ -49,7 +51,7 @@ export const initDomainQuota = {
 
 export const QUOTA_KEYS = {
   HOST: ['count', 'cpu', 'memory', 'storage', 'isolated_device'],
-  REGION: ['port', 'eip', 'snapshot', 'bucket', 'object_cnt', 'object_gb', 'rds', 'cache', 'loadbalancer'],
+  REGION: ['port', 'eport', 'eip', 'snapshot', 'instance_snapshot', 'bucket', 'object_cnt', 'object_gb', 'rds', 'cache', 'loadbalancer'],
   IMAGE: ['image'],
   PROJECT: ['secgroup'],
 }
