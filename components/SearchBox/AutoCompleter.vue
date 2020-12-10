@@ -435,4 +435,10 @@ export default {
   border: none;
   border-bottom: 1px solid #d9d9d9;
 }
+
+@media only screen and (max-height: 720px) {
+  .auto-completer-items {
+    max-height: 300px;
+  }
+}
 </style>
