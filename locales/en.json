@@ -4184,5 +4184,6 @@
     "success": "Login successful",
     "no_login_url": "The address is empty, please contact the administrator"
   },
-  "common.search": "Please enter search content"
+  "common.search": "Please enter search content",
+  "common.eport": "Public IP address"
 }
