@@ -70,7 +70,7 @@ export default {
     },
     defaultSearchKey: {
       type: String,
-      default: 'search',
+      default: 'name',
     },
     placeholder: {
       type: String,
@@ -144,7 +144,13 @@ export default {
             })
           }
         } else {
-          this.newValues[key] = value
+          let newKey = key
+          if (/^\d+.*$/.test(value)) {
+            newKey = 'ip_addr'
+          } else {
+            newKey = 'name'
+          }
+          this.newValues[newKey] = value
         }
       }, values)
       this.$emit('input', this.newValues)
