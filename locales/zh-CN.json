@@ -4181,5 +4181,8 @@
   "common.pass": "已通过",
   "common.reject": "已驳回",
   "common.pending": "待处理",
-  "common.all_process": "所有工单"
+  "common.all_process": "所有工单",
+  "common.system.no_quota": "全局配额不足",
+  "common.domain.no_quota": "域配额不足，请调整后重试",
+  "common.project.no_quota": "项目配额不足，请调整后重试"
 }

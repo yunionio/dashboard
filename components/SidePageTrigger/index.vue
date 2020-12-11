@@ -37,6 +37,9 @@ export default {
     permission: {
       type: String,
     },
+    noStore: {
+      type: Boolean,
+    },
   },
   inject: {
     // 是否处于List中
@@ -54,6 +57,7 @@ export default {
   },
   computed: {
     isLink () {
+      if (this.noStore) return true // 兼容在http.js那的notification里面调用此组件，会有获取不到this.$store的报错
       const { globalSidePages } = this.$store.state.common
       return hasPermission({ key: this.permission }) && (globalSidePages.names.indexOf(this.name) > -1 || !this.name)
     },
