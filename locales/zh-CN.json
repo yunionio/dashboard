@@ -4185,5 +4185,8 @@
     "no_login_url": "地址为空，请联系管理员处理"
   },
   "common.search": "请输入搜索内容",
-  "common.eport": "公网IP地址"
+  "common.eport": "公网IP地址",
+  "common.system.no_quota": "全局配额不足",
+  "common.domain.no_quota": "域配额不足，请调整后重试",
+  "common.project.no_quota": "项目配额不足，请调整后重试"
 }
