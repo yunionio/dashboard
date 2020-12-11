@@ -10,7 +10,7 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '@/store'
 import router from '@/router'
-import { getHttpErrorMessage, getHttpReqMessage, getErrorBody } from '@/utils/error'
+import { getHttpErrorMessage, getHttpReqMessage, getErrorBody, getDescription } from '@/utils/error'
 import { uuid, genReferRouteQuery } from '@/utils/utils'
 import { SHOW_SYSTEM_RESOURCE } from '@/constants'
 import i18n from '@/locales'
@@ -77,13 +77,13 @@ const resolveError = error => {
 
 const showErrorNotify = ({ errorMsg, reqMsg }) => {
   const message = R.is(Array, errorMsg) ? i18n.t('common.text00123') : errorMsg.class
-  const description = R.is(Array, errorMsg) ? errorMsg[0].class : errorMsg.detail
   const key = `notification-${uuid(32)}`
   notification.error({
     key,
     class: 'error-notification',
     message,
-    description,
+    description: h => getDescription(errorMsg, h),
+    duration: null,
     icon: h => <a-icon type="info-circle" class="error-color" />,
     btn: h => {
       const id = `ErrorDialog-${uuid(32)}`

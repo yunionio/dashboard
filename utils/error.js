@@ -1,8 +1,14 @@
 // import { message } from 'ant-design-vue'
 import * as R from 'ramda'
+import Vue from 'vue'
 // import ERROR_INFO from '@/constants/error'
 import i18n from '@/locales'
 import store from '@/store'
+import windowsMixin from '@/mixins/windows'
+
+const WindowVue = Vue.extend({
+  mixins: [windowsMixin],
+})
 
 export const getErrorBody = data => {
   if (R.is(String, data)) {
@@ -171,4 +177,60 @@ export const getBatchErrorMessage = (response, idKey = 'id') => {
     return { errorsObj, errorsArr }
   }
   return { errorsObj: undefined, errorsArr: undefined }
+}
+
+export const getDescription = (errorMsg, h) => {
+  if (R.is(Array, errorMsg)) { // 批量报错的话直接返回第一个class
+    return <div>{ errorMsg[0].class }</div>
+  }
+  const vnode = classDriver(errorMsg, h)
+  return vnode
+}
+
+const classDriver = (errorMsg, h) => {
+  const className = errorMsg.class
+  const desc = R.is(Array, errorMsg) ? errorMsg[0].class : errorMsg.detail
+  const Maps = {
+    OutOfQuotaError: () => { // 配额报错
+      const quotaErrorsMap = {}
+      if (desc.includes('[system.')) {
+        quotaErrorsMap.system = { label: i18n.t('common.system.no_quota') }
+      }
+      if (desc.includes('[domain.')) {
+        quotaErrorsMap.domain = { label: i18n.t('common.domain.no_quota'), path: '/domain', tab: 'quota', sidePageName: 'DomainSidePage', resource: 'domains' }
+      }
+      if (desc.includes('[project.')) {
+        quotaErrorsMap.project = { label: i18n.t('common.project.no_quota'), path: '/project', tab: 'quota', sidePageName: 'ProjectSidePage', resource: 'projects' }
+      }
+      const { detail } = errorMsg
+      if (!detail) return desc
+      const domainTenantReg = /^.*domain_id=(\w+?),tenant_id=(\w+?): .*$/g
+      const [, domainId, tenantId] = domainTenantReg.exec(detail)
+      if (domainId && quotaErrorsMap.domain) quotaErrorsMap.domain.id = domainId
+      if (tenantId && quotaErrorsMap.project) quotaErrorsMap.project.id = tenantId
+      const vm = new WindowVue({ store })
+      const handleOpenSidepage = (item) => {
+        if (!item.sidePageName || !item.id || !item.resource) return
+        vm.sidePageTriggerHandle(vm, item.sidePageName, {
+          id: item.id,
+          resource: item.resource,
+          apiVersion: 'v1',
+        }, {
+          tab: item.tab,
+        })
+      }
+      const quotaErrors = Object.values(quotaErrorsMap)
+      return (
+        <div>
+          {
+            quotaErrors.length ? quotaErrors.map(item => {
+              return <div class="mt-1"><side-page-trigger onTrigger={ () => handleOpenSidepage(item) } noStore>{item.label}</side-page-trigger></div>
+            }) : desc
+          }
+        </div>
+      )
+    },
+  }
+  if (Maps[className]) return Maps[className]() // 采用策略模式，命中则执行对应的driver
+  return desc
 }

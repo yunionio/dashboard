@@ -4229,5 +4229,8 @@
   "common_731": "No Notification Channel",
   "common.search": "Please enter search content",
   "common_732": "No more than 20 tags",
-  "common.eport": "Public IP address"
+  "common.eport": "Public IP address",
+  "common.system.no_quota": "Global quota shortage",
+  "common.domain.no_quota": "Domain quota shortage, Please try again after adjustment",
+  "common.project.no_quota": "Project quota shortage, Please try again after adjustment"
 }
