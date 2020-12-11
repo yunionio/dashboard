@@ -4229,5 +4229,8 @@
   "common_731": "暂无通知渠道",
   "common.search": "请输入搜索内容",
   "common_732": "标签不可超过20个",
-  "common.eport": "公网IP地址"
+  "common.eport": "公网IP地址",
+  "common.system.no_quota": "全局配额不足",
+  "common.domain.no_quota": "域配额不足，请调整后重试",
+  "common.project.no_quota": "项目配额不足，请调整后重试"
 }
