@@ -83,7 +83,6 @@ const showErrorNotify = ({ errorMsg, reqMsg }) => {
     class: 'error-notification',
     message,
     description: h => getDescription(errorMsg, h),
-    duration: null,
     icon: h => <a-icon type="info-circle" class="error-color" />,
     btn: h => {
       const id = `ErrorDialog-${uuid(32)}`
