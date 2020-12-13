@@ -26,7 +26,7 @@
           <scheduler-types :decorators="decorators" :form="form" :schedulerTypeOpts="schedulerTypeOpts" />
         </a-form-item>
         <sticky-session :decorators="decorators" :form="form" :stickySessionTypeOpts="stickySessionTypeOpts" :sticky_session_cookie_timeout_decorator="sticky_session_cookie_timeout_decorator" />
-        <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" :aclTypeOpts="aclTypeOpts" />
+        <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" :aclTypeOpts="aclTypeOpts" :listenerData="listenerData" />
         <a-form-item :label="$t('network.text_426')" v-if="['https'].includes(form.fd.listener_type)">
           <a-switch v-decorator="decorators.enable_http2" />
         </a-form-item>

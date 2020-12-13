@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 import { getDecorators } from '../utils'
 import ListenerTypes from '@Network/views/loadbalancerlistener/components/ListenerTypes'
 import SchedulerTypes from '@Network/views/loadbalancerlistener/components/SchedulerTypes'
@@ -43,11 +44,16 @@ export default {
     certificateParams () {
       const params = {
         usable: true,
-        scope: this.$scope,
         limit: 0,
         project: this.lbDetail.project,
         cloudregion: this.lbDetail.cloudregion_id,
         manager: this.lbDetail.manager_id,
+      }
+      if (this.$store.getters.isAdminMode) {
+        const domain = _.get(this.listenerData, 'domain_id') || _.get(this.lbDetail, 'domain_id')
+        params.project_domain = domain
+      } else {
+        params.scope = this.$store.getters.scope
       }
       return params
     },
