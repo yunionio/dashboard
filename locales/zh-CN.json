@@ -1469,6 +1469,10 @@
       "label": "控制台地址",
       "desc": "设置WEB控制台访问地址"
     },
+    "common$enable_quota_check": {
+      "label": "配额检查开关",
+      "desc": "如果开启，新建资源将按照项目或域的配额限制进行检查"
+    },
     "notify$verify_email_url_path": {
       "label": "邮箱验证地址",
       "desc": "设置验证邮箱的URL"
