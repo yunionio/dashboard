@@ -1469,6 +1469,10 @@
       "label": "Console address",
       "desc": "Set the WEB console access address"
     },
+    "common$enable_quota_check": {
+      "label": "Quota check switch",
+      "desc": "If enabled, new resources are checked against project or domain quota limits"
+    },
     "notify$verify_email_url_path": {
       "label": "Email verification address",
       "desc": "Set the URL of the verification email"
