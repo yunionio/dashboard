@@ -9,8 +9,8 @@ function show_br_commit(){
     cd $path
     path=$(readlink -f $path 2>/dev/null || pwd)
     repo=$(basename -s .git `git config --get remote.origin.url`)
-    commit=$(git rev-parse --verify HEAD |cut -c 1-8)
-    branch=$(git rev-parse --abbrev-ref HEAD)
+    commit=$(git rev-parse --verify HEAD | sed -e "s%^heads/%%" |cut -c 1-8)
+    branch=$(git rev-parse --abbrev-ref HEAD |sed -e "s%^heads/%%")
     echo "repo: $repo; branch: $branch; commit: $commit; path: $path"
   )
 }
