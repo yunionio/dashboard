@@ -28,7 +28,7 @@
       <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
         <!-- 开启重定向 -->
         <div v-if="isLbRedirected">
-          <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" :aclTypeOpts="aclTypeOpts" />
+          <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" :aclTypeOpts="aclTypeOpts" :listenerData="listenerData" />
           <a-form-item :label="$t('network.text_424')" v-if="['http', 'tcp', 'udp'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.client_idle_timeout" :addonAfter="$t('network.text_76')" type="number" />
           </a-form-item>
@@ -49,7 +49,7 @@
             v-if="['http', 'https'].includes(form.fd.listener_type)"
             :disabled-sticky-session-cookie-timeout="['http', 'https'].includes(form.fd.listener_type)"
             :stickySessionTypeOpts="[{key: 'server',label: $t('network.text_385')}]" />
-          <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" :aclTypeOpts="aclTypeOpts" />
+          <acl :decorators="decorators" :form="form" :lbDetail="lbDetail" :aclTypeOpts="aclTypeOpts" :listenerData="listenerData" />
           <a-form-item :label="$t('network.text_435')" v-if="['http', 'tcp', 'udp'].includes(form.fd.listener_type)">
             <a-input v-decorator="decorators.backend_connect_timeout" :addonAfter="$t('network.text_76')" type="number" :disabled="isUpdate && ['http', 'tcp', 'udp'].includes(form.fd.listener_type)" />
           </a-form-item>
