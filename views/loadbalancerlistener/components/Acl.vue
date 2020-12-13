@@ -14,7 +14,7 @@
           v-decorator="decorators.acl"
           resource="loadbalanceracls"
           show-sync
-          :params="{ scope: $store.getters.scope, limit: 0, project: lbDetail.project, }"
+          :params="aclParams"
           :select-props="{ placeholder: $t('network.text_363') }" />
       </a-form-item>
     </template>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import i18n from '@/locales'
 
 export default {
@@ -48,11 +49,28 @@ export default {
       required: true,
       validator: val => val.fc,
     },
+    listenerData: {
+      type: Object,
+    },
   },
   data () {
     return {
       acl_status: this.decorators.acl_status[1].initialValue,
     }
+  },
+  computed: {
+    aclParams () {
+      const params = {
+        limit: 0,
+      }
+      if (this.$store.getters.isAdminMode) {
+        const domain = _.get(this.listenerData, 'domain_id') || _.get(this.lbDetail, 'domain_id')
+        params.project_domain = domain
+      } else {
+        params.scope = this.$store.getters.scope
+      }
+      return params
+    },
   },
   methods: {
     change (val) {
