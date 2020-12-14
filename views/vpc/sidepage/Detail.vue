@@ -66,6 +66,14 @@ export default {
           field: 'natgateway_count',
           title: this.$t('network.text_693'),
         },
+        {
+          field: 'external_access_mode',
+          title: this.$t('network.external_access_mode_label'),
+          formatter: ({ row }) => {
+            if (row.external_access_mode === 'none') return this.$t('status.enabled.false')
+            return this.$t('status.enabled.true')
+          },
+        },
       ],
       extraInfo: [],
     }

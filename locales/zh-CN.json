@@ -769,5 +769,7 @@
   "network.text_750": "关联的监听（数量）",
   "network.text_751": "格式为：优先级、空格、权重、空格、端口、空格、主机名，5 0 5269 example.com",
   "network.text_752": "证书正在被对应平台区域上的监听使用",
-  "network.text_753": "该证书只能绑定详情-缓存列表中对应平台上的监听"
+  "network.text_753": "该证书只能绑定详情-缓存列表中对应平台上的监听",
+  "network.external_access_mode_label": "允许外网访问",
+  "network.external_access_mode_extra": "启用该项后，VPC下的IP子网可以通过绑定EIP的方式访问外网"
 }
