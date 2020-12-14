@@ -749,11 +749,9 @@ export default {
       const params = { host_type: 'baremetal', filter: `id.equals(${this.$route.query.id})`, ...this.scopeParams }
       manager.rpc({ methodname: 'GetHostSpecs', params }).then(res => {
         const specs = res.data
-        this.form.fi.capability = {
-          specs: {
-            hosts: specs,
-          },
-        }
+        this.$set(this.form.fi.capability, 'specs', {
+          hosts: specs,
+        })
         if (!R.isNil(specs) && !R.isEmpty(specs)) {
           this._loadSpecificationOptions(specs)
         } else {
@@ -787,6 +785,7 @@ export default {
           this.form.fi.capability = {
             ...this.form.fi.capability,
             public_network_count: data.public_network_count,
+            auto_alloc_network_count: data.auto_alloc_network_count,
           }
         } else {
           this.form.fi.capability = {
