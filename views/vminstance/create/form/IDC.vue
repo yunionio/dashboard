@@ -370,7 +370,7 @@ export default {
       if (R.is(Object, vpcs)) {
         const vpcList = Object.values(vpcs)
         if (vpcList.length && !~vpcList.indexOf('default')) {
-          return true
+          return this.enableEip
         }
       }
       return false

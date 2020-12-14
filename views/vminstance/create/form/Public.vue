@@ -120,15 +120,16 @@
       <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
-          <a-form-item :label="$t('compute.text_107')">
-            <eip-config
-              :decorators="decorators.eip"
-              :eip-params="eipParams"
-              :hypervisor="hypervisor"
-              :showBind="false"
-              :isServertemplate="isServertemplate"
-              :form="form" />
-          </a-form-item>
+          <eip-config
+            v-if="enableEip"
+            :decorators="decorators.eip"
+            :eip-params="eipParams"
+            :hypervisor="hypervisor"
+            :showBind="false"
+            :isServertemplate="isServertemplate"
+            :cloud-env="type"
+            :form="form"
+            :formItemLayout="formItemLayout" />
           <a-form-item :label="$t('compute.text_105')">
             <secgroup-config
               :provider="hypervisor"
