@@ -979,6 +979,10 @@ export default {
                       ret.tooltip = i18n.t('compute.text_1292')
                       return ret
                     }
+                    if (obj.vpc_external_access_mode === 'none') {
+                      ret.tooltip = i18n.t('compute.disable_bind_eip')
+                      return ret
+                    }
                     ret.validate = cloudEnabled('bindEip', obj)
                     ret.tooltip = cloudUnabledTip('bindEip', obj)
                     return ret
