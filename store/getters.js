@@ -30,4 +30,5 @@ export default {
     return (profile.value && profile.value.themeColor) || state.setting.themeColor
   },
   setting: state => state.setting,
+  globalConfig: state => state.common.globalConfig,
 }

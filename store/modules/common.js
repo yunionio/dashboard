@@ -20,6 +20,7 @@ export default {
     jsonschema: {
       sku: {},
     },
+    globalConfig: {},
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -44,6 +45,9 @@ export default {
     REST_BILL_CURRENCY (state) {
       state.bill.currencyOpts = []
     },
+    SET_GLOBAL_CONFIG (state, payload) {
+      state.globalConfig = payload
+    },
   },
   actions: {
     updateObject ({ commit }, payload) {
@@ -65,6 +69,29 @@ export default {
         }
       } catch (error) {
         throw error
+      }
+    },
+    async fetchGlobalConfig ({ commit }) {
+      let manager = new Manager('services', 'v1')
+      try {
+        const response = await manager.list({
+          params: {
+            type: ['common'],
+          },
+        })
+        const id = (response.data.data && response.data.data.length && response.data.data[0].id) || ''
+        if (id) {
+          const configResponse = await manager.getSpecific({
+            id,
+            spec: 'config',
+          })
+          const config = (configResponse.data.config && configResponse.data.config.default) || {}
+          commit('SET_GLOBAL_CONFIG', config)
+        }
+      } catch (error) {
+        throw error
+      } finally {
+        manager = null
       }
     },
   },
