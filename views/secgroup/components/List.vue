@@ -99,11 +99,13 @@ export default {
                 params.secgroup_name = val
                 return ''
               }
+              if (item.startsWith('id.in(')) {
+                return item.replace('id', 'secgroup_id')
+              }
+              return item
+            }).filter((item) => {
               return item
             })
-            if (params.filter.length === 1) {
-              delete params.filter
-            }
           }
           return params
         },
