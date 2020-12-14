@@ -68,6 +68,7 @@ export default {
         details: true,
         with_meta: true,
         scope: this.scope,
+        eip_associable: true, // 过滤出允许挂载EIP的虚拟机
       }
       if (this.isAdminMode || this.isDomainMode) params.project_id = this.params.data[0].project_id
       return params
