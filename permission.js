@@ -87,6 +87,7 @@ router.beforeEach(async (to, from, next) => {
     !hasScopeResource && await store.dispatch('auth/getScopeResource')
     !hasGlobalSettings && await store.dispatch('globalSetting/getFetchGlobalSetting')
     !hasProfile && await store.dispatch('profile/get')
+    await store.dispatch('common/fetchGlobalConfig')
   } catch (error) {
     throw error
   } finally {
