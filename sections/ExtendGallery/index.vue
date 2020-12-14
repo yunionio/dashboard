@@ -39,11 +39,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope']),
+    ...mapGetters(['scope', 'globalConfig']),
     options () {
       const ret = options.filter(item => {
         let effective = true
         if (item.scope && !item.scope.includes(this.scope)) {
+          effective = false
+        }
+        if (!this.globalConfig.enable_quota_check && item.component === 'Quota') {
           effective = false
         }
         return effective

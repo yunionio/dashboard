@@ -2,6 +2,10 @@
   <div class="position-relative h-100 w-100 overflow-auto">
     <template v-for="(item, key) of data">
       <div
+        v-if="item.layout.component === 'Quota' && !globalConfig.enable_quota_check"
+        :key="key" />
+      <div
+        v-else
         class="item"
         :key="key"
         :style="getItemStyles(item.layout)">
@@ -16,6 +20,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import * as R from 'ramda'
 import { clear as clearCache } from '@Dashboard/utils/cache'
 import extendsComponents from '@Dashboard/extends'
@@ -31,6 +36,9 @@ export default {
       type: [Array, Object],
       required: true,
     },
+  },
+  computed: {
+    ...mapGetters(['globalConfig']),
   },
   methods: {
     refresh () {
