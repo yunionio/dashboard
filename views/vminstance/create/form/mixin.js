@@ -256,6 +256,11 @@ export default {
     osType () {
       return this.isWindows ? 'windows' : 'linux'
     },
+    enableEip () {
+      const externalAccessMode = _.get(this.form.fi, 'networkVpcObj.external_access_mode')
+      if (externalAccessMode === 'none') return false // "eip-distgw" "eip" 是正常可以使用EIP的，"none"不可以
+      return true
+    },
   },
   created () {
     this.zoneM = new Manager('zones')

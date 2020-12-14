@@ -124,6 +124,7 @@
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <eip-config
+            v-if="enableEip"
             :decorators="decorators.eip"
             :eip-params="eipParams"
             :hypervisor="hypervisor"
