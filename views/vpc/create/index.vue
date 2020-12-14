@@ -30,6 +30,10 @@
           <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
         </a-select>
       </a-form-item>
+      <a-form-item :label="$t('network.external_access_mode_label')" v-if="cloudEnv === 'public'" v-bind="formItemLayout">
+        <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
+        <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
+      </a-form-item>
       <template v-if="cloudEnv !== 'onpremise'">
         <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
           <base-select
@@ -77,6 +81,7 @@ export default {
     return {
       loading: false,
       isGoogle: false,
+      isAws: false,
       cloudEnvOptions,
       cloudEnv,
       routerQuery,
@@ -124,6 +129,13 @@ export default {
           'project_domain',
           {
             initialValue: this.$store.getters.userInfo.projectDomainId,
+          },
+        ],
+        external_access_mode: [
+          'external_access_mode',
+          {
+            valuePropName: 'checked',
+            initialValue: true,
           },
         ],
       },
@@ -211,6 +223,7 @@ export default {
       if (!R.isEmpty(data.cloudregion) && !R.isNil(data.cloudregion)) {
         const { provider } = data.cloudregion.value
         this.isGoogle = provider.toLowerCase() === 'google'
+        this.isAws = provider.toLowerCase() === 'aws'
       }
     },
     cloudregionMapper (data) {
@@ -265,6 +278,7 @@ export default {
         if (values.project_domain) {
           params.project_domain = values.project_domain
         }
+        params.external_access_mode = values.external_access_mode ? 'eip' : 'none'
         await this.doCreate(params)
         this.loading = false
         this.$message.success(this.$t('k8s.text_184'))
