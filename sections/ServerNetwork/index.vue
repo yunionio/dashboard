@@ -142,7 +142,7 @@ export default {
   watch: {
     'form.fi.capability.auto_alloc_network_count' (val) {
       if (val === 0) {
-        delete this.networkMaps[NETWORK_OPTIONS_MAP.default.key]
+        this.$delete(this.networkMaps, NETWORK_OPTIONS_MAP.default.key)
         this.form.fc.setFieldsValue({
           networkType: NETWORK_OPTIONS_MAP.manual.key,
         })
