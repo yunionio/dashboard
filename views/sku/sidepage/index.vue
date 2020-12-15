@@ -52,6 +52,8 @@ export default {
     getParams () {
       return {
         instance_type: this.detailData.name,
+        cloudregion_id: this.detailData.cloudregion_id,
+        zone_id: this.detailData.zone_id,
       }
     },
     listId () {
