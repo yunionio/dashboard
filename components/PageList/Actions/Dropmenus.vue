@@ -7,7 +7,7 @@
     <a-menu slot="overlay">
       <template v-if="!isSubmenus">
         <template v-for="item of options">
-          <a-menu-item :key="item.label" class="sub-link-btn">
+          <a-menu-item v-if="!getHidden(item)" :key="item.label" class="sub-link-btn">
             <action-button
               button-size="small"
               :button-block="true"
@@ -19,18 +19,24 @@
           </a-menu-item>
         </template>
       </template>
-      <a-sub-menu v-else v-for="item of options" :key="item.label" :title="item.label" class="submenu-item">
-        <a-menu-item v-for="submenu of item.submenus" :key="submenu.label" class="submenu-item sub-link-btn">
-          <action-button
-            :item="submenu"
-            :row="row"
-            button-size="small"
-            :button-block="true"
-            :button-style="{ fontSize: '12px' }"
-            @hidden-popover="hiddenPopover"
-            @clear-selected="clearSelected" />
-        </a-menu-item>
-      </a-sub-menu>
+      <template v-else>
+        <template v-for="item of options">
+          <a-sub-menu v-if="!getSubmenusHidden(item.submenus)" :key="item.label" :title="item.label" class="submenu-item">
+            <template v-for="submenu of item.submenus">
+              <a-menu-item v-if="!getHidden(submenu)" :key="submenu.label" class="submenu-item sub-link-btn">
+                <action-button
+                  :item="submenu"
+                  :row="row"
+                  button-size="small"
+                  :button-block="true"
+                  :button-style="{ fontSize: '12px' }"
+                  @hidden-popover="hiddenPopover"
+                  @clear-selected="clearSelected" />
+              </a-menu-item>
+            </template>
+          </a-sub-menu>
+        </template>
+      </template>
     </a-menu>
   </a-dropdown>
 </template>
@@ -101,6 +107,22 @@ export default {
     },
     clearSelected () {
       this.$emit('clear-selected')
+    },
+    getHidden (item) {
+      return R.is(Function, item.hidden) ? item.hidden(this.row) : item.hidden === true
+    },
+    getSubmenusHidden (submenus) {
+      // 默认隐藏，当遇到任意一个不隐藏的按钮，直接跳出循环返回
+      let hidden = true
+      for (let i = 0, len = submenus.length; i < len; i++) {
+        const option = submenus[i]
+        const optionHidden = this.getHidden(option)
+        if (!optionHidden) {
+          hidden = false
+          break
+        }
+      }
+      return hidden
     },
   },
 }
