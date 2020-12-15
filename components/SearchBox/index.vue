@@ -148,7 +148,7 @@ export default {
           if (/^\d+.*$/.test(value)) {
             newKey = 'ip_addr'
           } else {
-            newKey = 'name'
+            newKey = this.defaultSearchKey
           }
           this.newValues[newKey] = value
         }
