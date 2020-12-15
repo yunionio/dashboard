@@ -66,7 +66,7 @@ export default {
               data: [obj],
               columns: this.columns,
               onManager: this.onManager,
-              alert: this.$t('network.text_752'),
+              alert: this.$t('network.text_752_1'),
             })
           },
           meta: (obj) => this.$getDeleteResult(obj),
