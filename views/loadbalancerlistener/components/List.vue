@@ -12,7 +12,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 
 export default {
@@ -40,6 +40,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
+          project_domains: getDomainFilter(),
         },
         steadyStatus,
       }),
@@ -74,6 +75,13 @@ export default {
                 return {
                   validate: false,
                   tooltip: this.$t('network.text_367'),
+                }
+              }
+              const domainsList = Array.from(new Set(this.list.selectedItems.map(val => val.domain_id)))
+              if (domainsList.length > 1) { // 去重后的数组长度大于1说明有多个不同的域
+                return {
+                  validate: false,
+                  tooltip: this.$t('network.text_754'),
                 }
               }
               return { validate: true }

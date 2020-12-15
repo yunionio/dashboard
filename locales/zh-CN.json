@@ -771,5 +771,6 @@
   "network.text_752": "证书正在被对应平台区域上的监听使用",
   "network.text_753": "该证书只能绑定详情-缓存列表中对应平台上的监听",
   "network.external_access_mode_label": "允许外网访问",
-  "network.external_access_mode_extra": "启用该项后，VPC下的IP子网可以通过绑定EIP的方式访问外网"
+  "network.external_access_mode_extra": "启用该项后，VPC下的IP子网可以通过绑定EIP的方式访问外网",
+  "network.text_754": "请选择同一个域的监听"
 }
