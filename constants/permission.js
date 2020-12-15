@@ -446,6 +446,7 @@ export const PERMISSION = {
    * cloudregions 相关操作
    */
   cloudregions_get: ['compute', 'cloudregions', 'get'],
+  cloudregions_perform_sync_skus: ['compute', 'cloudregions', 'perform', 'sync-skus'],
   /**
    * zones 相关操作
    */
