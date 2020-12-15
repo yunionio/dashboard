@@ -12,6 +12,6 @@ export default {
 
 <style lang="less" scoped>
 .page-body {
-  margin: 20px 0 20px 0;
+  margin: 20px 0 74px 0;
 }
 </style>
