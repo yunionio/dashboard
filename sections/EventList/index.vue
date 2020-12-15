@@ -5,7 +5,8 @@
       :columns="columns"
       :export-data-options="exportDataOptions"
       :show-page="false"
-      :refresh-method="refresh" />
+      :refresh-method="refresh"
+      default-search-key="obj_name" />
   </div>
 </template>
 
