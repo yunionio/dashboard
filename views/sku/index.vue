@@ -17,14 +17,16 @@ export default {
     SkuList,
   },
   data () {
+    // 分类只有本地IDC和公有云，没有全部、私有云
+    const cloudEnvOptions = getCloudEnvOptions('compute_engine_brands').filter(val => ['onpremise', 'public'].includes(val.key))
     return {
       listId: 'SkuList',
       getParams: {
         details: true,
         'filter.0': 'disk_type.notin(volume)',
       },
-      cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
-      cloudEnv: '',
+      cloudEnvOptions,
+      cloudEnv: 'onpremise',
     }
   },
 }

@@ -66,6 +66,7 @@ export default {
             },
           },
         },
+        hiddenColumns: ['postpaid_status'],
       }),
       exportDataOptions: {
         items: [
@@ -88,9 +89,23 @@ export default {
               onManager: this.onManager,
             })
           },
-          meta: () => ({
-            buttonType: 'primary',
-          }),
+          meta: () => {
+            const validate = this.cloudEnv !== 'public'
+            const meta = {
+              buttonType: 'primary',
+              validate,
+              tooltip: validate ? '' : this.$t('commpute.public_sku_disable_tooltip'),
+            }
+            return meta
+          },
+        },
+        {
+          label: this.$t('commpute.sku_sync_title'),
+          permission: 'cloudregions_perform_sync_skus', // 套餐这里因为接口是cloudregions的，所以权限也只能走cloudregions的
+          action: () => {
+            this.createDialog('SkuSyncDialog')
+          },
+          hidden: () => this.cloudEnv !== 'public',
         },
         {
           label: this.$t('common.batchAction'),
@@ -110,7 +125,15 @@ export default {
                     onManager: this.onManager,
                   })
                 },
-                meta: () => this.$getDeleteResult(this.list.selectedItems),
+                meta: () => {
+                  if (this.cloudEnv === 'public') {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('commpute.public_sku_disable_tooltip'),
+                    }
+                  }
+                  return this.$getDeleteResult(this.list.selectedItems)
+                },
               },
             ]
           },
@@ -144,6 +167,7 @@ export default {
         id: row.id,
         resource: 'serverskus',
         getParams: this.getParam,
+        cloudEnv: this.cloudEnv,
       }, {
         list: this.list,
       })
