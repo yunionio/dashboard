@@ -769,6 +769,7 @@
   "network.text_750": "Associated monitors (number)",
   "network.text_751": "The format is: priority, space, weight, space, port, space, host name, 5 0 5269 example.com",
   "network.text_752": "Deleting the cache will also delete the certificate of the corresponding region on the public cloud",
+  "network.text_752_1": "Deleting the cache will also delete the ACL of the corresponding region on the public cloud",
   "network.text_753": "The certificate can only be bound to details-listeners on the corresponding platform in the cache list",
   "network.external_access_mode_label": "Allow external network access",
   "network.external_access_mode_extra": "After enabling this item, the IP subnet under VPC can access the external network by binding EIP"
