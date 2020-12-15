@@ -771,5 +771,6 @@
   "network.text_752": "The certificate is being used by listeners on the corresponding platform area",
   "network.text_753": "The certificate can only be bound to details-listeners on the corresponding platform in the cache list",
   "network.external_access_mode_label": "Allow external network access",
-  "network.external_access_mode_extra": "After enabling this item, the IP subnet under VPC can access the external network by binding EIP"
+  "network.external_access_mode_extra": "After enabling this item, the IP subnet under VPC can access the external network by binding EIP",
+  "network.text_754": "Please select a listener in the same field"
 }
