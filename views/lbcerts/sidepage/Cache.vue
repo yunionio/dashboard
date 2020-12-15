@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <a-alert :message="$t('network.text_752')" banner class="mb-2" />
-    <page-list
-      :list="list"
-      :columns="columns"
-      :single-actions="singleActions" />
-  </div>
+  <page-list
+    :list="list"
+    :columns="columns"
+    :single-actions="singleActions" />
 </template>
 
 <script>
@@ -75,6 +72,7 @@ export default {
               columns: this.columns,
               onManager: this.onManager,
               refresh: this.refresh,
+              alert: this.$t('network.text_752'),
             })
           },
           meta: (obj) => this.$getDeleteResult(obj),
