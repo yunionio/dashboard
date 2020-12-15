@@ -4,7 +4,10 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_1379')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_727')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_728')" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_1379')" v-bind="formItemLayout" :extra="extra">
           <a-radio-group v-decorator="decorators.createType" @change="handleCreateTypeChange">
             <a-radio-button value="new">
               {{ $t('compute.text_1380') }}
@@ -13,9 +16,6 @@
               {{ $t('compute.text_1381') }}
             </a-radio-button>
           </a-radio-group>
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_727')" v-bind="formItemLayout">
-          <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_728')" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_725')" v-bind="formItemLayout" v-if="createType === 'old'">
           <a-textarea v-decorator="decorators.public_key" :placeholder="$t('compute.text_729')" :rows="4" />
@@ -99,6 +99,7 @@ export default {
         },
       },
       createType: 'new',
+      extra: this.$t('compute.keypair_create_method'),
     }
   },
   methods: {
@@ -116,7 +117,13 @@ export default {
       this.fake_click(save_link)
     },
     handleCreateTypeChange (e) {
-      this.createType = e.target.value
+      const type = e.target.value
+      this.createType = type
+      if (type === 'new') {
+        this.extra = this.$t('compute.keypair_create_method')
+      } else {
+        this.extra = ''
+      }
     },
     validateForm () {
       return new Promise((resolve, reject) => {
