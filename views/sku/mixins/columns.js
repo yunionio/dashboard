@@ -38,6 +38,7 @@ export default {
           return sizestr(cellValue, 'M', 1024)
         },
       },
+      getStatusTableColumn({ statusModule: 'sku' }),
       {
         field: 'total_guest_count',
         title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
