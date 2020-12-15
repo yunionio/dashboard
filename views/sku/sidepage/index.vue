@@ -18,11 +18,13 @@
       :data="detailData"
       :on-manager="onManager"
       :getParams="getParams"
+      :cloudEnv="cloudEnvData"
       @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
 <script>
+import _ from 'lodash'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SkuDetail from './Detail'
@@ -46,6 +48,7 @@ export default {
         { label: this.$t('compute.text_1023'), key: 'vminstance-list' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
+      cloudEnvData: _.get(this.params, 'options.cloudEnv') || this.cloudEnv,
     }
   },
   computed: {

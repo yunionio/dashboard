@@ -1,15 +1,17 @@
+import { chargeTypeColumn } from '../utils'
 import {
   getEnabledTableColumn,
   getNameDescriptionTableColumn,
   getStatusTableColumn,
   getBrandTableColumn,
+  getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
 export default {
   created () {
-    this.columns = [
+    const columns = [
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
@@ -20,7 +22,6 @@ export default {
           )
         },
       }),
-      getBrandTableColumn({ field: 'provider' }),
       {
         field: 'cpu_core_count',
         title: i18n.t('compute.text_1051'),
@@ -45,11 +46,20 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.total_guest_count <= 0) return row.total_guest_count
-            return [<side-page-trigger name='SkuSidePage' id={row.id} tab='vminstance-list' vm={this}>{ row.total_guest_count }</side-page-trigger>]
+            const options = { cloudEnv: this.cloudEnv }
+            return [<side-page-trigger name='SkuSidePage' id={row.id} tab='vminstance-list' vm={this} options={ options }>{ row.total_guest_count }</side-page-trigger>]
           },
         },
       },
       getEnabledTableColumn(),
+      getBrandTableColumn({ field: 'provider' }),
     ]
+    if (this.cloudEnv === 'public') {
+      columns.push(
+        getRegionTableColumn(),
+        chargeTypeColumn(),
+      )
+    }
+    this.columns = columns
   },
 }
