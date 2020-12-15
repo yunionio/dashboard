@@ -300,7 +300,7 @@ export default {
       if (this.computeStatus.prohibited) {
         return {
           message: this.$t('common_218', [this.email]),
-          to: 'licenses',
+          to: '/licenses',
         }
       }
       // 即将过期
@@ -316,14 +316,14 @@ export default {
       if (this.computeStatus.exceeded) {
         return {
           message: this.$t('common_220', [this.email]),
-          to: 'licenses',
+          to: '/licenses',
         }
       }
       // 发现未被授权的服务器
       if (this.unAuthServiceNumbers && this.unAuthServiceNumbers.length) {
         return {
           message: this.$t('common_221', [this.email]),
-          to: 'licenses',
+          to: '/licenses',
         }
       }
       return null
