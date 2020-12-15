@@ -1345,5 +1345,6 @@
   "compute.keypair_create_method": "创建完成后请保存自动下载的私钥，你只有一次下载私钥的机会",
   "commpute.public_sku_disable_tooltip": "公有云套餐不支持该操作",
   "commpute.sku_sync_label": "公有云套餐默认每天自动刷新一次，此功能可支持手动进行刷新获取最新的套餐",
-  "commpute.sku_sync_title": "刷新套餐"
+  "commpute.sku_sync_title": "刷新套餐",
+  "commpute.sku_sync_result": "操作成功，开始同步套餐，约{0}"
 }

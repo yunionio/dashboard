@@ -78,13 +78,24 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await this.doAction(values)
+        const { data } = await this.doAction(values)
+        const { timeUnit, tasksTime } = this.getTime(data)
         this.loading = false
         this.cancelDialog()
-        this.params.refresh()
+        this.$message.success(this.$t('commpute.sku_sync_result', [`${tasksTime}${timeUnit}`]))
       } catch (error) {
         this.loading = false
       }
+    },
+    getTime (data) {
+      const tasksLen = data.tasks.length
+      let timeUnit = this.$t('common_time.second')
+      let tasksTime = tasksLen * 2 // 一个任务2秒的时间
+      if (tasksTime >= 60) { // 够60s换算成分钟
+        timeUnit = this.$t('common_time.minute')
+        tasksTime = Math.round(tasksTime / 60)
+      }
+      return { timeUnit, tasksTime }
     },
   },
 }

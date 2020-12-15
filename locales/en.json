@@ -1344,6 +1344,7 @@
   "compute.disable_bind_eip": "The HOST VPC does not support binding EIP",
   "compute.keypair_create_method": "Please save the automatically downloaded private key after creation, you only have one chance to download the private key",
   "commpute.public_sku_disable_tooltip": "Public cloud plans do not support this operation",
-  "commpute.sku_sync_label": "By default, the public cloud plan automatically refreshes once a day. This feature enables manual refresh to get the latest plan",
-  "commpute.sku_sync_title": "Sync Sku"
+  "commpute.sku_sync_label": "By default, the public cloud plan automatically refreshes once a day.",
+  "commpute.sku_sync_title": "Sync Sku",
+  "commpute.sku_sync_result": "Operation successfully started synchronization package total {0}"
 }
