@@ -11,7 +11,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getEnabledFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -65,6 +65,7 @@ export default {
               }))
             },
           },
+          brand: getBrandFilter(),
         },
         hiddenColumns: ['postpaid_status'],
       }),
