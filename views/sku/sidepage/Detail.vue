@@ -11,8 +11,9 @@
 </template>
 
 <script>
+import { chargeTypeColumn } from '../utils'
 import { sizestr } from '@/utils/utils'
-import { getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SkuDetail',
@@ -24,6 +25,9 @@ export default {
     onManager: {
       type: Function,
       required: true,
+    },
+    cloudEnv: {
+      type: String,
     },
   },
   data () {
@@ -56,7 +60,11 @@ export default {
           title: this.$t('compute.text_176'),
         },
       ],
-      extraInfo: [
+    }
+  },
+  computed: {
+    extraInfo () {
+      const extraInfo = [
         {
           title: this.$t('compute.text_497'),
           items: [
@@ -69,8 +77,12 @@ export default {
             },
           ],
         },
-      ],
-    }
+      ]
+      if (this.cloudEnv === 'public') {
+        extraInfo[0].items.push(getRegionTableColumn(), chargeTypeColumn())
+      }
+      return extraInfo
+    },
   },
 }
 </script>
