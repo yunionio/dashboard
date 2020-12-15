@@ -120,6 +120,11 @@ export default {
       project_domains: getDomainFilter(),
       region: {
         label: this.$t('network.text_199'),
+        dropdown: true,
+        distinctField: {
+          type: 'extra_field',
+          key: 'region',
+        },
       },
       vpc: getVpcFilter(),
       wire: {
