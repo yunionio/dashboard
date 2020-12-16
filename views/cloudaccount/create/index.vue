@@ -115,7 +115,6 @@ export default {
     async getFetchPrepareNets () {
       if (!this.vmwareFormData) return false
       try {
-        console.log(this.vmwareFormData)
         const { name, host, password, port, project, username, proxy_setting } = this.vmwareFormData
         const performData = {
           name,
