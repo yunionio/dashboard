@@ -7,6 +7,7 @@
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
+    :extra-export-params="extraExportParams"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions" />
 </template>
@@ -372,6 +373,10 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    extraExportParams ({ currentExportType }) {
+      if (currentExportType === 'all') return { baremetal: false }
+      return {}
+    },
     getParam () {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
