@@ -45,6 +45,7 @@ export default {
       comparatorOpts: [
         { key: '>=', label: '>=' },
         { key: '<=', label: '<=' },
+        { key: '==', label: '==' },
       ],
     }
   },
