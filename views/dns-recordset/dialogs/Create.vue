@@ -85,6 +85,8 @@
             <a-col :span="8">
               <a-form-item>
                 <a-select
+                  showSearch
+                  :filterOption="filterOption"
                   v-decorator="decorators.provider(item.key)"
                   @change="(val) => providerChangeHandle(val, item)"
                   @dropdownVisibleChange="(open) => { dropdownVisibleChangeHandle(open, item) }">
@@ -627,6 +629,11 @@ export default {
         })
         item.providers = newProviders
       }
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
