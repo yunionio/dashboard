@@ -1,5 +1,5 @@
 <template>
-  <a-select dropdownClassName="oc-select-dropdown" :value="valueC" @change="handleChange">
+  <a-select dropdownClassName="oc-select-dropdown" :value="valueC" allow-clear @change="handleChange" showSearch :filterOption="filterOption">
     <a-select-option v-for="item in options" :key="item.id">
       <span class="text-color-secondary option-prefix">{{ $t('dictionary.region') }}: </span>{{ item.name }}
     </a-select-option>
@@ -29,8 +29,14 @@ export default {
   },
   methods: {
     handleChange (v) {
-      const label = this.options.find(val => val.id === v).name
+      const opt = this.options.find(val => val.id === v)
+      const label = opt ? opt.name : ''
       this.$emit('change', { key: v, label })
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[1].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
