@@ -772,5 +772,6 @@
   "network.text_752_1": "Deleting the cache will also delete the ACL of the corresponding region on the public cloud",
   "network.text_753": "The certificate can only be bound to details-listeners on the corresponding platform in the cache list",
   "network.external_access_mode_label": "Allow external network access",
-  "network.external_access_mode_extra": "After enabling this item, the IP subnet under VPC can access the external network by binding EIP"
+  "network.external_access_mode_extra": "After enabling this item, the IP subnet under VPC can access the external network by binding EIP",
+  "network.vpc_aws_delete_alert": "When delete AWS VPC, The routing table security group and the Internet gateway under the VPC will be synchronously removed"
 }
