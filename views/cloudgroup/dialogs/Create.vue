@@ -27,6 +27,8 @@
         </a-form-item>
         <a-form-item :label="$t('common.brand')">
           <a-select
+            showSearch
+            :filterOption="filterOption"
             v-decorator="decorators.provider"
             :placeholder="$t('rules.provider')"
             :disabled="!!params.provider"
@@ -191,6 +193,11 @@ export default {
     },
     handleProviderChange (val) {
       this.form.fi.provider = val
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
