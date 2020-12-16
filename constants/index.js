@@ -522,6 +522,14 @@ export const STORAGE_TYPES = {
       sysMin: 1,
       sysMax: 16384,
     },
+    gp3: {
+      label: i18n.t('compute.storage_gp3'),
+      value: 'gp3',
+      min: 1,
+      max: 16384,
+      sysMin: 1,
+      sysMax: 16384,
+    },
   },
   qcloud: {
     local_basic: { // 公有云下架了这两款磁盘类型
