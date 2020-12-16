@@ -2366,7 +2366,8 @@
       "pd-ssd": "SSD永久性磁盘",
       "pd-standard": "标准永久性磁盘",
       "cloudhssd": "增强型SSD云硬盘",
-      "pd-balanced": "平衡永久性磁盘"
+      "pd-balanced": "平衡永久性磁盘",
+      "gp3": "通用型SSD (gp3)"
     },
     "view": "查看",
     "total": "共：{0}",
