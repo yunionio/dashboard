@@ -65,7 +65,7 @@ export default {
               }))
             },
           },
-          brand: getBrandFilter(),
+          provider: getBrandFilter(),
         },
         hiddenColumns: ['postpaid_status'],
       }),
