@@ -16,6 +16,7 @@
       :on-manager="onManager"
       :params="params"
       :export-data-options="exportDataOptions"
+      :extra-export-params="extraExportParams"
       :refresh-method="refreshMethod"
       :config="config"
       :show-tag-columns="showTagColumns"
@@ -130,6 +131,10 @@ export default {
     showCheckbox: Boolean,
     // 导出数据配置
     exportDataOptions: Object,
+    extraExportParams: {
+      type: [Object, Function],
+      default: () => ({}),
+    },
     // 分页布局
     pagerLayout: {
       type: Array,
