@@ -176,6 +176,10 @@ export default {
                 label: this.$t('network.text_131'),
                 permission: 'vpcs_delete',
                 action: () => {
+                  let alert = null
+                  if (this.list.selectedItems.some(item => item.provider === 'Aws')) {
+                    alert = this.$t('network.vpc_aws_delete_alert')
+                  }
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     title: this.$t('network.text_131'),
@@ -183,6 +187,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
+                    alert,
                   })
                 },
                 meta: () => {

@@ -772,5 +772,6 @@
   "network.text_752_1": "删除缓存将会同时删除公有云上对应区域的访问控制",
   "network.text_753": "该证书只能绑定详情-缓存列表中对应平台上的监听",
   "network.external_access_mode_label": "允许外网访问",
-  "network.external_access_mode_extra": "启用该项后，VPC下的IP子网可以通过绑定EIP的方式访问外网"
+  "network.external_access_mode_extra": "启用该项后，VPC下的IP子网可以通过绑定EIP的方式访问外网",
+  "network.vpc_aws_delete_alert": "删除AWS平台的VPC时将会同步删除VPC下的路由表、安全组和互联网网关"
 }
