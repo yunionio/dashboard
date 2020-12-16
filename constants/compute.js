@@ -167,6 +167,14 @@ export const STORAGE_TYPES = {
       resizeStep: 10,
       sysUnusable: true, // 系统盘不可用
     },
+    gp3: {
+      label: i18n.t('common.storage.gp3'),
+      key: 'gp3',
+      min: 1,
+      max: 16384,
+      sysMin: 1,
+      sysMax: 16384,
+    },
   },
   [HYPERVISORS_MAP.azure.key]: {
     standard_lrs: {
