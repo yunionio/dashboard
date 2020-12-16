@@ -115,7 +115,7 @@ export default {
     async getFetchPrepareNets () {
       if (!this.vmwareFormData) return false
       try {
-        const { name, host, password, port, project, username } = this.vmwareFormData
+        const { name, host, password, port, project, username, proxy_setting } = this.vmwareFormData
         const performData = {
           name,
           host,
@@ -124,6 +124,7 @@ export default {
           project: project.key,
           provider: 'VMware',
           username,
+          proxy_setting,
         }
         if (this.$store.getters.isAdminMode && this.vmwareFormData.domain && this.vmwareFormData.domain.key) {
           performData.project_domain = this.vmwareFormData.domain.key
