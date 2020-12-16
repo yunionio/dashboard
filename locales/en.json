@@ -1346,5 +1346,6 @@
   "commpute.public_sku_disable_tooltip": "Public cloud plans do not support this operation",
   "commpute.sku_sync_label": "By default, the public cloud plan automatically refreshes once a day.",
   "commpute.sku_sync_title": "Sync Sku",
-  "commpute.sku_sync_result": "Operation successfully started synchronization package total {0}"
+  "commpute.sku_sync_result": "Operation successfully started synchronization package total {0}",
+  "compute.storage_gp3": "General-purpose SSD (gp3)"
 }
