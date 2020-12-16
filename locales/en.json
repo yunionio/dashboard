@@ -2335,7 +2335,8 @@
       "EXCLUSIVE_LOCAL_DISK": "Exclusive local disk",
       "pd-ssd": "SSD Persistent Disk",
       "pd-standard": "Standard Persistent Disk",
-      "cloudhssd": "Enhanced SSD cloud hard disk"
+      "cloudhssd": "Enhanced SSD cloud hard disk",
+      "gp3": "General-purpose SSD (gp3)"
     },
     "view": "View",
     "total": "Total:{0}",
