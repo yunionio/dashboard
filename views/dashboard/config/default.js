@@ -156,6 +156,8 @@ export default {
           all_usage_key: 'all.disks.count',
           name: i18n.t('dashboard.text_147'),
           usage_key: 'all.disks.attached.count',
+          usage_label: i18n.t('dashboard.mounted'),
+          un_usage_label: i18n.t('dashboard.not_mounted'),
         },
       },
       {
@@ -200,6 +202,8 @@ export default {
           all_usage_key: 'all.servers',
           name: i18n.t('dashboard.text_151'),
           usage_key: 'all.ready_servers',
+          usage_label: i18n.t('dashboard.shutdown'),
+          un_usage_label: i18n.t('dashboard.not_shutdown'),
         },
       },
       {
@@ -393,6 +397,8 @@ export default {
           all_usage_key: 'servers',
           name: i18n.t('dashboard.text_151'),
           usage_key: 'ready_servers',
+          usage_label: i18n.t('dashboard.shutdown'),
+          un_usage_label: i18n.t('dashboard.not_shutdown'),
         },
       },
       {
@@ -476,7 +482,9 @@ export default {
         params: {
           all_usage_key: 'disks.count',
           name: i18n.t('dashboard.text_147'),
-          usage_key: 'disks.detached.count',
+          usage_key: 'disks.attached.count',
+          usage_label: i18n.t('dashboard.mounted'),
+          un_usage_label: i18n.t('dashboard.not_mounted'),
         },
       },
       {
@@ -803,7 +811,9 @@ export default {
         params: {
           all_usage_key: 'disks.count',
           name: i18n.t('dashboard.text_147'),
-          usage_key: 'disks.detached.count',
+          usage_key: 'disks.attached.count',
+          usage_label: i18n.t('dashboard.mounted'),
+          un_usage_label: i18n.t('dashboard.not_mounted'),
         },
       },
       {
@@ -981,6 +991,8 @@ export default {
           all_usage_key: 'servers',
           name: i18n.t('dashboard.text_151'),
           usage_key: 'ready_servers',
+          usage_label: i18n.t('dashboard.shutdown'),
+          un_usage_label: i18n.t('dashboard.not_shutdown'),
         },
       },
       {

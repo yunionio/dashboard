@@ -143,7 +143,7 @@
   "dashboard.text_144": "GPU quota usage in each domain",
   "dashboard.text_145": "Mirroring quota usage of each domain",
   "dashboard.text_146": "Snapshot quota usage of each domain",
-  "dashboard.text_147": "Disk not mounted rate",
+  "dashboard.text_147": "Disk mounted rate",
   "dashboard.text_148": "Elastic public network IP and total public network IP",
   "dashboard.text_149": "Total CPU Usage",
   "dashboard.text_150": "Number of Object Storage Files",
@@ -209,5 +209,9 @@
   "dashboard.server_tips": "Only count the number of virtual machine lists, not including the recycle bin list",
   "dashboard.gpu_reserved_tips": "Available only when creating a GPU card virtual machine",
   "dashboard.un_usage_tips": "Contains reserved resources such as GPU cards, some resources are available under certain circumstances",
-  "dashboard.all_usage_tips": "Total refers to physical capacity"
+  "dashboard.all_usage_tips": "Total refers to physical capacity",
+  "dashboard.shutdown": "Shutdown",
+  "dashboard.not_shutdown": "Not shut down",
+  "dashboard.mounted": "Mounted",
+  "dashboard.not_mounted": "Not mounted"
 }

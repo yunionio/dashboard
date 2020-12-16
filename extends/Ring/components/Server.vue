@@ -13,12 +13,12 @@
         </a-progress>
         <div class="flex-fill ml-4">
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_43')}}</div>
+            <div class="flex-shrink-0 flex-grow-0">{{ useLabel }}</div>
             <div class="ml-2 flex-fill text-right">{{ this.usage }}</div>
           </div>
           <div class="d-flex">
             <div class="flex-shrink-0 flex-grow-0">
-              {{$t('dashboard.text_34')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><a-icon type="question-circle" /></a-tooltip>
+              {{unUseLabel}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><a-icon type="question-circle" /></a-tooltip>
             </div>
             <div class="ml-2 flex-fill text-right">{{ this.displayUnUsage }}</div>
           </div>
@@ -255,6 +255,12 @@ export default {
     showTips () {
       const keyTips = ['hosts.memory.total', 'hosts.cpu.total', 'storages']
       return keyTips.includes(this.form.fd.all_usage_key)
+    },
+    useLabel () {
+      return this.params.usage_label || this.$t('dashboard.text_43')
+    },
+    unUseLabel () {
+      return this.params.un_usage_label || this.$t('dashboard.text_34')
     },
   },
   watch: {

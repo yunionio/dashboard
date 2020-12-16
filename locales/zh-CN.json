@@ -143,7 +143,7 @@
   "dashboard.text_144": "各域GPU配额使用情况",
   "dashboard.text_145": "各域镜像配额使用情况",
   "dashboard.text_146": "各域快照配额使用情况",
-  "dashboard.text_147": "磁盘未挂载率",
+  "dashboard.text_147": "磁盘挂载率",
   "dashboard.text_148": "弹性公网IP和公网IP总量",
   "dashboard.text_149": "CPU使用总量",
   "dashboard.text_150": "对象存储文件数量",
@@ -209,5 +209,9 @@
   "dashboard.server_tips": "只计算虚拟机列表的数量，不包含回收站列表",
   "dashboard.gpu_reserved_tips": "只有创建GPU卡虚拟机时才可用",
   "dashboard.un_usage_tips": "包含GPU卡等预留资源，有些资源在特定情况下可用",
-  "dashboard.all_usage_tips": "总量指物理容量"
+  "dashboard.all_usage_tips": "总量指物理容量",
+  "dashboard.shutdown": "关机",
+  "dashboard.not_shutdown": "未关机",
+  "dashboard.mounted": "已挂载",
+  "dashboard.not_mounted": "未挂载"
 }
