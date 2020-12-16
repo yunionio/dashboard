@@ -713,6 +713,8 @@ export default {
       this.hostResourceMapper(this.hostData)
       // 获取此规格的包含的wire
       this.getSpecWire(value)
+      // 规格变动清空历史硬盘配置
+      this.diskOptionsDate = []
     },
     // 获取物理机数据
     loadHostOpt () {
