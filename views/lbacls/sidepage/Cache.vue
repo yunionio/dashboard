@@ -17,10 +17,11 @@ import {
 } from '@/utils/common/tableColumn'
 import { getNameFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'LbaclCacheList',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ListMixin],
   props: {
     id: String,
     getParams: {
