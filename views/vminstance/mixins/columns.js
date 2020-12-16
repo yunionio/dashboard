@@ -11,7 +11,6 @@ import {
   getTagTableColumn,
   getBillingTableColumn,
   getTimeTableColumn,
-  getAccountTableColumn,
   getOsArch,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
