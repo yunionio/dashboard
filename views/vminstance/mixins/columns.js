@@ -15,7 +15,7 @@ import {
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
 import { findPlatform } from '@/utils/common/hypervisor'
-import i18n from '@/locales'
+import i18nLocale from '@/locales'
 
 export default {
   created () {
@@ -79,7 +79,7 @@ export default {
         addLock: true,
         addBackup: true,
         formRules: [
-          { required: true, message: i18n.t('compute.text_210') },
+          { required: true, message: i18nLocale.t('compute.text_210') },
           { validator: this.$validate('resourceCreateName') },
         ],
         slotCallback: row => {
@@ -102,11 +102,11 @@ export default {
       }),
       {
         field: 'is_gpu',
-        title: i18n.t('table.title.type'),
+        title: i18nLocale.t('table.title.type'),
         width: 50,
         slots: {
           default: ({ row }) => {
-            let tooltip = i18n.t('compute.text_291', [i18n.t('dictionary.server')])
+            let tooltip = i18nLocale.t('compute.text_291', [i18nLocale.t('dictionary.server')])
             let icontype = 'cpu'
             if (row.is_gpu) {
               tooltip = `GPU${this.$t('dictionary.server')}`
@@ -124,7 +124,7 @@ export default {
       getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
       {
         field: 'instance_type',
-        title: i18n.t('table.title.flavor'),
+        title: i18nLocale.t('table.title.flavor'),
         showOverflow: 'ellipsis',
         minWidth: 120,
         sortable: true,
@@ -141,7 +141,7 @@ export default {
       },
       {
         field: 'os_type',
-        title: i18n.t('table.title.os'),
+        title: i18nLocale.t('table.title.os'),
         width: 50,
         slots: {
           default: ({ row }) => {
@@ -150,7 +150,7 @@ export default {
               name = 'Windows'
             }
             const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || i18n.t('compute.text_339') // 去重
+            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || i18nLocale.t('compute.text_339') // 去重
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
@@ -159,7 +159,7 @@ export default {
       },
       {
         field: 'password',
-        title: i18n.t('table.title.init_keypair'),
+        title: i18nLocale.t('table.title.init_keypair'),
         minWidth: 50,
         slots: {
           default: ({ row }) => {
@@ -169,7 +169,7 @@ export default {
       },
       {
         field: 'secgroups',
-        title: i18n.t('res.secgroup'),
+        title: i18nLocale.t('res.secgroup'),
         minWidth: 80,
         showOverflow: 'ellipsis',
         formatter: ({ cellValue = [] }) => {
@@ -185,12 +185,12 @@ export default {
       getBrandTableColumn(),
       getCopyWithContentTableColumn({
         field: 'account',
-        title: i18n.t('res.cloudaccount'),
+        title: i18nLocale.t('res.cloudaccount'),
         hidden: () => this.$store.getters.isProjectMode,
       }),
       {
         field: 'host',
-        title: i18n.t('res.host'),
+        title: i18nLocale.t('res.host'),
         sortable: true,
         showOverflow: 'ellipsis',
         minWidth: 100,
