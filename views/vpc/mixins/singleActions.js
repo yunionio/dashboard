@@ -61,6 +61,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
+                  alert: obj.provider === 'Aws' ? this.$t('network.vpc_aws_delete_alert') : null,
                 })
               },
               meta: () => this.$getDeleteResult(obj),
