@@ -2366,7 +2366,8 @@
       "pd-ssd": "SSD Persistent Disk",
       "pd-standard": "Standard Persistent Disk",
       "cloudhssd": "Enhanced SSD cloud hard Disk",
-      "pd-balanced": "Balanced Persistent Disk"
+      "pd-balanced": "Balanced Persistent Disk",
+      "gp3": "General-purpose SSD (gp3)"
     },
     "view": "View",
     "total": "Total:{0}",
