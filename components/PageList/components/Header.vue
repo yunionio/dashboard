@@ -97,6 +97,7 @@ export default {
     params: Object,
     // 导出数据配置
     exportDataOptions: Object,
+    extraExportParams: [Object, Function],
     refreshMethod: Function,
     config: Object,
     // 开启标签列
@@ -173,6 +174,7 @@ export default {
         config: this.config,
         total: this.total,
         options: this.exportDataOptions,
+        extraParams: this.extraExportParams,
         listParams: this.params,
         selected: this.selected,
         apiVersion: this.apiVersion,
