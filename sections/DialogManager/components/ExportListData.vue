@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item :label="$t('common.text00097')">
-          <a-radio-group v-decorator="decorators.type">
+          <a-radio-group v-decorator="decorators.type" @change="handleExportTypeChange">
             <a-radio-button
               v-for="item of exportType"
               :key="item.key"
@@ -97,6 +97,7 @@ export default {
         all: { label: this.$t('common_95'), key: 'all' },
         custom: { label: this.$t('common_96'), key: 'custom' },
       },
+      currentExportType: 'custom',
       indeterminate: false,
       checkAll: true,
     }
@@ -123,6 +124,7 @@ export default {
         export_keys: keys.join(','),
         export_texts: texts.join(','),
         export_limit: total || this.params.total,
+        ...(R.is(Function, this.params.extraParams) ? this.params.extraParams({ currentExportType: this.currentExportType }) : this.params.extraParams),
       }
       if (this.params.options.limit) {
         params.export_limit = R.is(Function, this.params.options.limit) ? this.params.options.limit() : this.params.options.limit
@@ -209,6 +211,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    handleExportTypeChange (e) {
+      this.currentExportType = e.target.value
     },
     handleSelectedChange (val) {
       this.indeterminate = !!val.length && val.length < this.allExportKeys.length
