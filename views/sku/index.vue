@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import SkuList from './components/List'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
@@ -26,7 +27,7 @@ export default {
         'filter.0': 'disk_type.notin(volume)',
       },
       cloudEnvOptions,
-      cloudEnv: 'onpremise',
+      cloudEnv: _.get(cloudEnvOptions, '[0].key'),
     }
   },
 }
