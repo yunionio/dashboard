@@ -4244,5 +4244,6 @@
     "day": "day",
     "month": "month",
     "year": "year"
-  }
+  },
+  "common.yunion_cloud": "YunionCloud"
 }
