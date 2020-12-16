@@ -3,7 +3,7 @@
     <div slot="header">{{ params.title }}</div>
     <div slot="body">
       <dialog-selected-tips :count="params.data.length" :action="params.title" :name="this.params.name" />
-      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <vxe-grid v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
