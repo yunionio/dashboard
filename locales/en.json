@@ -4245,5 +4245,8 @@
     "month": "month",
     "year": "year"
   },
-  "common.yunion_cloud": "YunionCloud"
+  "common.yunion_cloud": "YunionCloud",
+  "common.not_limited": "not limited",
+  "common.change_bandwidth": "Adjust Bandwidth",
+  "common.change_config": "Adjust configuration"
 }
