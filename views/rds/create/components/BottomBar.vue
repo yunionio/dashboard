@@ -180,7 +180,8 @@ export default {
       }
       try {
         const { region_ext_id, storage_type, provider, name, category, engine } = sku
-        const pvt = provider.toLowerCase()
+        let pvt = provider.toLowerCase()
+        if (sku.cloud_env) pvt = sku.cloud_env.toLowerCase() // 阿里金融云
         const price_keys = []
         if (pvt === 'google') {
           price_keys.push(`${pvt}::${region_ext_id}::::rds::${category}_${engine}_${name}`)
@@ -190,7 +191,7 @@ export default {
           price_keys.push(`${pvt}::${region_ext_id}::::rds::${name}`)
         }
 
-        if (pvt === 'huawei' || pvt === 'aliyun') {
+        if (pvt === 'huawei' || pvt.includes('aliyun')) {
           price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_${storage_type}::${disk_size_gb}GB`)
         } else if (pvt === 'google') {
           price_keys.push(`${pvt}::${region_ext_id}::::rds_storage::${category}_${engine}_${storage_type}::${disk_size_gb}GB`)

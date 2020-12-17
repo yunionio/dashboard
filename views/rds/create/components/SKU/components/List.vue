@@ -178,13 +178,14 @@ export default {
       const params = []
       skuList.forEach(sku => {
         const { provider, region_ext_id, zone_id, cache = 'rds', name, category, engine } = sku
-        const pvt = provider.toLowerCase()
+        let pvt = provider.toLowerCase()
+        if (sku.cloud_env) pvt = sku.cloud_env.toLowerCase()
         if (pvt === 'google') {
           const key = `${pvt}::${region_ext_id}::::${cache}::${category}_${engine}_${name}`
           sku.data_key = key
           params.push(key)
         } else {
-          const _arr = [provider.toLowerCase(), region_ext_id, zone_id, cache, name]
+          const _arr = [pvt, region_ext_id, zone_id, cache, name]
           const key = _arr.join('::')
           sku.data_key = key
           params.push(key)
