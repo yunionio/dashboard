@@ -88,3 +88,7 @@ export const diff = (compareValue, baseValue, unit = i18n.t('common_61')) => {
     return `${sign}${Math.abs(diff)}${unit}`
   }
 }
+
+export const CHANGE_TYPES = {
+  'change-bandwidth': i18n.t('common.change_bandwidth'),
+}

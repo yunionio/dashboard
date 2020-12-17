@@ -149,14 +149,13 @@ export default {
   },
   methods: {
     initServerConfigInfo () {
-      const serverConfigs = JSON.parse(this.variables.serverConf || '[]')
       const serverConfList = {
         title: this.$t('common_376'),
         field: 'serverConfList',
         slots: {
           default: ({ row }, h) => {
             return [
-              <ServerConfigList serverConfigs={ serverConfigs } />,
+              <ServerConfigList variables={ this.variables } />,
             ]
           },
         },
