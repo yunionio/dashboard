@@ -1,7 +1,7 @@
 <template>
   <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :label="label" :required="isRequired">
     <a-row :gutter="8">
-      <a-col :span="8">
+      <a-col :span="showIpConfig ? 8 : 12">
         <a-form-item
           :wrapperCol="{ span: 24 }"
           class="mb-0 mr-1">
@@ -19,7 +19,7 @@
             :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" />
         </a-form-item>
       </a-col>
-      <a-col :span="8">
+      <a-col :span="showIpConfig ? 8 : 12">
         <a-form-item
           :wrapperCol="{ span: 24 }"
           class="mb-0 mr-1">
@@ -35,7 +35,7 @@
             :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
         </a-form-item>
       </a-col>
-      <a-col :span="8">
+      <a-col :span="8" v-if="showIpConfig">
         <a-button v-if="!this.ipShow" type="link" class="mr-1 mt-1" @click="triggerShowIp">{{$t('compute.text_198')}}</a-button>
         <a-row v-else>
           <a-col :span="21">
@@ -106,6 +106,10 @@ export default {
     vpcResourceMapper: {
       type: Function,
       default: data => { return data },
+    },
+    showIpConfig: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
