@@ -108,7 +108,7 @@ export default {
         ret.splice(0, 0, { label: this.$t('shareScope.domain'), key: 'domain' })
       }
       if (this.isAdminMode) {
-        ret.splice(0, 0, { label: this.$t('shareScope.system'), key: 'system' })
+        ret.splice(0, 0, { label: this.$t('dictionary.infos'), key: 'system' })
       }
       return ret
     },
