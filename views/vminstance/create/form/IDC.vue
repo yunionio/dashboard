@@ -61,7 +61,7 @@
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_267')" :extra="$t('compute.text_302')">
+      <a-form-item :label="$t('compute.text_267')" :extra="extra">
         <os-select
           :type="type"
           :uefi="uefi"
@@ -438,6 +438,12 @@ export default {
         })
       }
       return opts
+    },
+    extra () {
+      if (this.isIso && this.isWindows) {
+        return this.$t('compute.iso_windows_help')
+      }
+      return this.$t('compute.text_302')
     },
   },
   watch: {
