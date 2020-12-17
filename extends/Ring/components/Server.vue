@@ -257,10 +257,16 @@ export default {
       return keyTips.includes(this.form.fd.all_usage_key)
     },
     useLabel () {
-      return this.params.usage_label || this.$t('dashboard.text_43')
+      if (this.params) {
+        return this.params.usage_label || this.$t('dashboard.text_43')
+      }
+      return this.$t('dashboard.text_43')
     },
     unUseLabel () {
-      return this.params.un_usage_label || this.$t('dashboard.text_34')
+      if (this.params) {
+        return this.params.un_usage_label || this.$t('dashboard.text_34')
+      }
+      return this.$t('dashboard.text_34')
     },
   },
   watch: {
