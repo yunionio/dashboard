@@ -130,7 +130,7 @@ export default {
       return this.$t('compute.text_334', [this.params.item.remainder])
     },
     isDisabled () {
-      if (this.params.title === this.$t('compute.text_318') && this.params.selectedArea.name === this.$t('compute.text_316')) {
+      if (this.params.title === this.$t('compute.text_318') && (this.params.selectedArea.name === this.$t('compute.text_316') || this.params.selectedArea.name === '/')) {
         return true
       }
       return false
