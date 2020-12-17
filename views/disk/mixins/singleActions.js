@@ -1,7 +1,7 @@
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import i18n from '@/locales'
 import { BRAND_MAP } from '@/constants'
-const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
+const supportShpolcyBrand = [i18n.t('common.yunion_cloud'), 'Qcloud', 'Aliyun']
 
 export default {
   created () {
