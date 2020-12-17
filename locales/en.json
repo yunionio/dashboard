@@ -681,7 +681,7 @@
   "network.text_682": "Number of IP subnets",
   "network.text_683": "New VPC",
   "network.text_684": "At the beginning of a letter, a combination of uppercase and lowercase numbers and letters, with a length of 2-20 characters, including'-','_'",
-  "network.text_685": "Once the creation is successful, the network segment cannot be modified. It supports the use of 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 and its subnets as the VPC address segment.",
+  "network.text_685": "Once the creation is successful, the network segment cannot be modified. ",
   "network.text_686": "Once created successfully, the network segment cannot be modified.",
   "network.text_687": "Please enter the IP segment, for example: 192.168.0.0/16",
   "network.text_688": "Please enter the VPC name",
