@@ -93,17 +93,19 @@ export default {
       })
     },
     async doChangeBandwidthByWorkflow (values) {
+      const curData = this.params.data[0]
       const params = {
         bandwidth: values.bandwidth,
-        index: this.params.data[0].index,
+        index: curData.index,
       }
       const resData = this.params.resData
       const serverConf = resData.map((item) => {
         return {
           name: item.name,
           project: item.tenant,
+          ip_addr: curData.ip_addr,
           before: {
-            bw_limit: this.params.data[0].bw_limit,
+            bw_limit: curData.bw_limit,
           },
           after: {
             bw_limit: values.bandwidth,

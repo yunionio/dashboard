@@ -39,18 +39,21 @@ export default {
         title: i18n.t('compute.text_387'),
         width: 100,
         formatter: ({ row }) => {
-          return `${row.bw_limit}Mbps`
+          if (row.bw_limit) {
+            return `${row.bw_limit}Mbps`
+          }
+          return this.$t('common.not_limited')
         },
-        slots: {
-          header: ({ column }) => {
-            return [
-              <a-tooltip title={i18n.t('compute.text_388')}>
-                <span class='mr-1'>{ column.title }</span>
-                <icon type="question" />
-              </a-tooltip>,
-            ]
-          },
-        },
+        // slots: {
+        //   header: ({ column }) => {
+        //     return [
+        //       <a-tooltip title={i18n.t('compute.text_388')}>
+        //         <span class='mr-1'>{ column.title }</span>
+        //         <icon type="question" />
+        //       </a-tooltip>,
+        //     ]
+        //   },
+        // },
       },
     ]
   },
