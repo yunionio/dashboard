@@ -362,6 +362,11 @@ export default {
         quantity: this.fd.count,
         brand,
       }
+      if (this.isPublic) {
+        if (this.fd.sku && this.fd.sku.cloud_env) {
+          params.brand = this.fd.sku.cloud_env.toLowerCase() // 阿里金融云
+        }
+      }
       const { systemDiskSize, systemDiskType } = this.fd
       const { systemDiskMedium, dataDiskMedium } = this.form.fi
       if (R.isNil(systemDiskSize)) return
