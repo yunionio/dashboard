@@ -47,11 +47,11 @@ export default {
         },
         {
           field: 'total_guest_count',
-          label: this.$t('compute.text_699', [this.$t('dictionary.server')]),
+          title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
           slots: {
             default: ({ row }) => {
               if (row.total_guest_count <= 0) return row.total_guest_count
-              return [<a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{ `${row.total_guest_count}` }</a>]
+              return [<a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{ row.total_guest_count }</a>]
             },
           },
         },
