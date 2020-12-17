@@ -122,10 +122,13 @@ export default {
           return
         }
         let region = ''
+        let externalProvider = ''
         if (this.currentCloudregion.external_id) {
-          region = this.currentCloudregion.external_id.split('/')[1]
+          const arr = this.currentCloudregion.external_id.split('/')
+          region = arr[1]
+          externalProvider = arr[0].toLowerCase()
         }
-        const provider = this.currentCloudregion.provider.toLowerCase()
+        const provider = externalProvider || this.currentCloudregion.provider.toLowerCase()
         const env = findPlatform(provider)
         if (env === 'private') return // 私有云暂时不支持EIP价格查询
         const price_keys = `${provider}::${region}::::eip::bandwidth${this.bgpType ? '.' + this.bgpType : ''}::${this.size}Mb`
