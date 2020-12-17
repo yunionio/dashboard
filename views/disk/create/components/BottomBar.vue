@@ -129,7 +129,7 @@ export default {
     },
     async _getPrice () {
       try {
-        if (!this.currentStorage.value) {
+        if (!this.currentStorage.value || !this.currentCloudregion) {
           this.key = ''
           return
         }
@@ -141,15 +141,21 @@ export default {
         let region = ''
         let zone = ''
         const { type, backend } = this.getType(this.currentStorage.value)
+        const cloudregionExternalArr = this.currentCloudregion.external_id.split('/')
         if (this.currentCloudregion.cloud_env === 'public') {
+          if (!this.currentCloudzone) return
           key = type
-          region = this.currentCloudregion.external_id.split('/')[1]
+          region = cloudregionExternalArr[1]
           zone = this.currentCloudzone.external_id.split('/')[2]
         } else {
           key = `${backend}.${type}`
         }
         this.key = key
-        const price_keys = `${this.currentCloudregion.provider.toLowerCase()}::${region}::${zone}::disk::${key}::${this.size}GB`
+        let pv = this.currentCloudregion.provider.toLowerCase()
+        if (this.currentCloudregion.external_id && this.currentCloudregion.external_id.includes('/')) {
+          pv = cloudregionExternalArr[0].toLowerCase()
+        }
+        const price_keys = `${pv}::${region}::${zone}::disk::${key}::${this.size}GB`
         const { data } = await new this.$Manager('price_infos', 'v1').get({
           id: 'total',
           params: {
