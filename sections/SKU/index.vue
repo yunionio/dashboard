@@ -341,7 +341,10 @@ export default {
       if (!this.isPublic) return
       if (!this.skuList || !this.skuList.length) return
       let paramKeys = this.skuList.map(item => {
-        const provider = item.provider.toLowerCase()
+        let provider = item.provider.toLowerCase()
+        if (this.isPublic && item.cloud_env) {
+          provider = item.cloud_env.toLowerCase() // 兼容阿里金融云
+        }
         let ret = `${provider}::${item.region_ext_id || 'NA'}::${item.name || 'NA'}`
         if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
           ret = `${provider}::${item.region_ext_id}::::instance::${item.name}`
