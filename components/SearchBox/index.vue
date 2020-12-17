@@ -145,10 +145,14 @@ export default {
           }
         } else {
           let newKey = key
-          if (/^\d+.*$/.test(value)) {
-            newKey = 'ip_addr'
-          } else {
-            newKey = this.defaultSearchKey
+          if (!this.autocompleterSearch) {
+            if (/^\d+.*$/.test(value)) {
+              newKey = 'ip_addr'
+            } else {
+              if (this.options[this.defaultSearchKey]) {
+                newKey = this.defaultSearchKey
+              }
+            }
           }
           this.newValues[newKey] = value
         }
