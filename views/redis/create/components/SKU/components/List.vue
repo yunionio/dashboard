@@ -196,7 +196,8 @@ export default {
       const params = []
       skuList.forEach(sku => {
         // eslint-disable-next-line camelcase
-        const { provider, region_ext_id, zone_ext_id, cache = 'cache', name } = sku
+        let { provider, region_ext_id, zone_ext_id, cache = 'cache', name } = sku
+        if (sku.cloud_env) provider = sku.cloud_env.toLowerCase()
         // eslint-disable-next-line camelcase
         const _arr = [provider.toLowerCase(), region_ext_id, zone_ext_id, cache, name]
         const key = _arr.join('::')
