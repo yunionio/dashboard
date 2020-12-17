@@ -45,7 +45,7 @@ export default {
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
-            if (row.before && row.before.bw_limit) {
+            if (row.before && row.before.bw_limit !== undefined) {
               return `${row.before.bw_limit}Mbps`
             }
             return `${row.before && row.before.cpu}${this.$t('common_390')}${sizestr(row.before && row.before.memory, 'M', 1024)}${sizestr(row.before && row.before.disk, 'M', 1024)}`
@@ -57,7 +57,7 @@ export default {
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
-            if (row.after && row.after.bw_limit) {
+            if (row.after && row.after.bw_limit !== undefined) {
               return `${row.after.bw_limit}Mbps`
             }
             if (row.after && row.after.disk) {
