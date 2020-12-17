@@ -221,7 +221,7 @@ export default {
         usable: true,
         enabled: true,
         'provider.0': HYPERVISORS_MAP.kvm.provider,
-        'provider.1': this.form.fd.hypervisor,
+        'provider.1': _.get(HYPERVISORS_MAP, `[${this.form.fd.hypervisor}].provider`),
       }
     },
     cloudproviderParamsExtra () {
