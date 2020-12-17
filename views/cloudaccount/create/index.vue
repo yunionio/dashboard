@@ -249,6 +249,8 @@ export default {
             dta.wire = wire.id
             dta.generate_name = dta.name
             dta.tenant = this.newAccountInfo.tenant
+            dta.public_scope = 'domain'
+            dta.is_public = true
             if (this.isAdminMode && this.l3PermissionEnable) {
               dta.domain_id = this.newAccountInfo.domain_id
             }
