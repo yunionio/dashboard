@@ -1,47 +1,49 @@
 <template>
   <div class="redis-create-index">
     <page-header :title="$t('db.text_280')" />
-    <a-form
-      class="mt-3"
-      v-bind="formItemLayout"
-      :form="form.fc"
-      hideRequiredMark>
-      <a-form-item :label="$t('db.text_281')" class="mb-0">
-        <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
-      </a-form-item>
-      <a-form-item :label="$t('db.text_60')">
-        <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.resourceCreateName')" />
-        <template #extra>
-          <name-repeated res="dbinstances" :name="form.getFieldValue('generate_name')" />
-        </template>
-      </a-form-item>
-      <!-- 计费方式 -->
-      <clearing-radios v-bind="formItemLayout" :auto_renew="false" />
-      <a-form-item :label="$t('db.text_71')" v-if="form.fd.billing_type !== 'prepaid'">
-        <duration :decorators="decorators.duration" :form="form" />
-      </a-form-item>
-      <a-form-item :label="$t('db.text_265')">
-        <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
-      </a-form-item>
-      <!-- 区域 -->
-      <item-area
-        v-if="form.fd.project"
-        class="mb-0"
-       :defaultActiveFirstOption="['city']"
-       :values="form.fc.getFieldsValue()" />
-      <!-- 套餐 -->
-      <s-k-u ref="REF_SKU" />
-      <a-form-item :label="$t('db.text_143')">
-        <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
-      </a-form-item>
-      <!-- 网络 -->
-      <item-network ref="REF_NETWORK" />
-      <!-- 安全组 -->
-      <a-form-item v-if="form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
-        <secgroup-config :max="5" :decorators="decorators.secgroup" :secgroup-params="secgroupParams" />
-      </a-form-item>
-      <bottom-bar :values="form.fc.getFieldsValue()" />
-    </a-form>
+    <page-body>
+      <a-form
+        class="mt-3"
+        v-bind="formItemLayout"
+        :form="form.fc"
+        hideRequiredMark>
+        <a-form-item :label="$t('db.text_281')" class="mb-0">
+          <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
+        </a-form-item>
+        <a-form-item :label="$t('db.text_60')">
+          <a-input v-decorator="decorators.generate_name" :placeholder="$t('validator.resourceCreateName')" />
+          <template #extra>
+            <name-repeated res="dbinstances" :name="form.getFieldValue('generate_name')" />
+          </template>
+        </a-form-item>
+        <!-- 计费方式 -->
+        <clearing-radios v-bind="formItemLayout" :auto_renew="false" />
+        <a-form-item :label="$t('db.text_71')" v-if="form.fd.billing_type !== 'prepaid'">
+          <duration :decorators="decorators.duration" :form="form" />
+        </a-form-item>
+        <a-form-item :label="$t('db.text_265')">
+          <a-input-number v-decorator="decorators.count" :min="1" :max="10" />
+        </a-form-item>
+        <!-- 区域 -->
+        <item-area
+          v-if="form.fd.project"
+          class="mb-0"
+        :defaultActiveFirstOption="['city']"
+        :values="form.fc.getFieldsValue()" />
+        <!-- 套餐 -->
+        <s-k-u ref="REF_SKU" />
+        <a-form-item :label="$t('db.text_143')">
+          <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
+        </a-form-item>
+        <!-- 网络 -->
+        <item-network ref="REF_NETWORK" />
+        <!-- 安全组 -->
+        <a-form-item v-if="form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
+          <secgroup-config :max="5" :decorators="decorators.secgroup" :secgroup-params="secgroupParams" />
+        </a-form-item>
+        <bottom-bar :values="form.fc.getFieldsValue()" />
+      </a-form>
+    </page-body>
   </div>
 </template>
 <script>
