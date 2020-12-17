@@ -259,7 +259,7 @@ export default {
                       validate: false,
                     }
                   }
-                  if (obj.host_type === 'hypervisor' && obj.host_status === 'online') {
+                  if (obj.host_type === 'hypervisor' && obj.host_status === 'offline') {
                     return {
                       validate: false,
                       tooltip: this.$t('compute.text_1377'),

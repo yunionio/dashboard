@@ -544,7 +544,7 @@
   "compute.text_552": "After the host enters maintenance mode, the virtual machine on the host will be automatically migrated to other hosts. If the host fails to enter the maintenance mode, the user needs to manually shut down the virtual machine on the host , And try to enter maintenance mode again after the virtual machine shuts down.",
   "compute.text_553": "The list of virtual machines on the host ({0} units)",
   "compute.text_554": "Prompt: {0}",
-  "compute.text_555": "The status of the virtual machine under the host can only be any one of ready, running, and unknown, otherwise it is not allowed to enter maintenance mode",
+  "compute.text_555": "The status of the virtual machine on the host machine can only be any one of ready, running, and unknown, among which the unknown state is only supported by the shared storage type",
   "compute.text_556": "If any virtual machine under the host machine has a backup machine, it is not allowed to enter maintenance mode",
   "compute.text_557": "If any virtual machine under the host has a GPU or CD mounted and the virtual machine is running, it is not allowed to enter maintenance mode",
   "compute.text_558": "If the host's host_status=offline and the status of any virtual machine under the host is not unknown, it is not allowed to enter maintenance mode",
