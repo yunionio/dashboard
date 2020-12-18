@@ -46,6 +46,7 @@ export default {
   },
   data () {
     const isPrivate = process.env.VUE_APP_IS_PRIVATE
+    console.log(defaultConfig[this.$store.getters.scope].options)
     return {
       isPrivate,
       loading: false,
