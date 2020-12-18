@@ -70,6 +70,15 @@ export default {
                   validate: false,
                 }
               }
+              if (this.$store.getters.isAdminMode) {
+                const isOtherItem = this.list.selectedItems.every(item => item.project_domain !== this.list.selectedItems[0].project_domain)
+                if (isOtherItem) { // 存在不一样的 project_domain
+                  return {
+                    validate: false,
+                    tooltip: this.$t('common.need_same_resource'),
+                  }
+                }
+              }
               const isHttps = this.list.selectedItems.every(item => item.listener_type === 'https')
               if (!isHttps) {
                 return {
