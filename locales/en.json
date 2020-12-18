@@ -16,7 +16,7 @@
   "storage.text_15": "Average delay in the first byte of GET requests",
   "storage.text_16": "Storage",
   "storage.text_17": "Object Storage",
-  "storage.text_18": "Storage Bucket",
+  "storage.text_18": "OSS",
   "storage.text_19": "For example: 192.168.1.1,192.168.1.2",
   "storage.text_20": "For example: AQCP4L1aORs8HRAAdcVS2y2R1oERNa+3xyacTA==",
   "storage.text_21": "Please enter the storage pool name",
