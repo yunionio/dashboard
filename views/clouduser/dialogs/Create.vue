@@ -40,6 +40,12 @@
             :project.sync="form.fi.project"
             :cloudprovider-id="form.fi.cloudprovider.id" />
         </a-form-item>
+        <a-form-item :label="$t('system.text_146')" class="mb-0">
+          <a-input v-decorator="decorators.email" :placeholder="$t('system.email_placeholder')" />
+        </a-form-item>
+        <a-form-item :wrapperCol="{ offset: 4 }">
+          <a-checkbox v-decorator="decorators.notify" :disabled="!isCanSendNotify">{{ $t('system.email_checkbox_text') }}</a-checkbox>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -70,7 +76,20 @@ export default {
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            if (values.email) {
+              this.$nextTick(() => {
+                const isError = this.form.fc.getFieldError('email')
+                if (R.isNil(isError) || R.isEmpty(isError)) {
+                  this.isCanSendNotify = true
+                } else {
+                  this.isCanSendNotify = false
+                }
+              })
+            }
+          },
+        }),
         fi: {
           generate_name: '',
           user: {},
@@ -112,6 +131,17 @@ export default {
               { required: this.params.cloudaccount.brand === 'Google', message: this.$t('common.select') },
             ],
           },
+        ],
+        email: [
+          'email',
+          {
+            rules: [
+              { validator: this.emailValidator },
+            ],
+          },
+        ],
+        notify: [
+          'notify',
         ],
       },
       cloudgroupListSelectProps: {
@@ -184,6 +214,7 @@ export default {
           span: 4,
         },
       },
+      isCanSendNotify: false,
     }
   },
   computed: {
@@ -216,7 +247,31 @@ export default {
       return this.$t('cloudenv.clouduser_text1')
     },
   },
+  watch: {
+    'form.fi.user': {
+      handler (val, oldVal) {
+        if (val.id) this.fetchEmail(val.id)
+      },
+    },
+    deep: true,
+  },
   methods: {
+    async fetchEmail (userId) {
+      const { data } = await new this.$Manager('receivers', 'v1').performClassAction({
+        action: 'intellij-get',
+        data: {
+          scope: this.$store.getters.scope,
+          user_id: userId,
+        },
+      })
+      this.form.fc.setFieldsValue({ email: data.email || '' })
+    },
+    emailValidator (rule, value, callback) {
+      if (R.isEmpty(value) || R.isNil(value)) {
+        return callback()
+      }
+      return this.$validate('email')(rule, value, callback)
+    },
     async handleConfirm () {
       this.loading = true
       try {
