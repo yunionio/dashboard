@@ -4249,5 +4249,6 @@
   "common.not_limited": "不限制",
   "common.change_bandwidth": "调整带宽",
   "common.change_config": "调整配置",
-  "common.share": "被共享的{0}不支持该操作"
+  "common.share": "被共享的{0}不支持该操作",
+  "common.need_same_domain_resource": "请选择同一@:dictionary.domain的资源"
 }
