@@ -4248,5 +4248,6 @@
   "common.yunion_cloud": "YunionCloud",
   "common.not_limited": "not limited",
   "common.change_bandwidth": "Adjust Bandwidth",
-  "common.change_config": "Adjust configuration"
+  "common.change_config": "Adjust configuration",
+  "common.share": "The shared {0} does not support this operation"
 }
