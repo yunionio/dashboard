@@ -51,7 +51,7 @@ export default {
       detailTabs: [
         { label: this.$t('network.text_67'), key: 'Loadbalancercluster-detail' },
         { label: this.$t('network.text_20'), key: 'agent-list' },
-        { label: this.$t('network.text_303'), key: 'lb-list' },
+        { label: this.$t('network.text_714'), key: 'lb-list' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }

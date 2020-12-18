@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('network.text_303')"
+    :title="$t('network.text_714')"
     icon="res-lb"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
