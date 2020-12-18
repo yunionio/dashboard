@@ -17,7 +17,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['l3PermissionEnable']),
+    ...mapGetters(['l3PermissionEnable', 'userInfo']),
   },
   created () {
     this.singleActions = [
@@ -133,6 +133,11 @@ export default {
                 if (!isPublic) {
                   ret.validate = false
                   ret.tooltip = this.$t('cloudaccount.tooltip.disable_set_discount')
+                  return ret
+                }
+                if (this.userInfo.domain.id !== obj.domain_id) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('common.share', [this.$t('cloudenv.text_12')])
                   return ret
                 }
                 return ret
