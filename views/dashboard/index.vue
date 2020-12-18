@@ -46,7 +46,6 @@ export default {
   },
   data () {
     const isPrivate = process.env.VUE_APP_IS_PRIVATE
-    console.log(defaultConfig[this.$store.getters.scope].options)
     return {
       isPrivate,
       loading: false,
@@ -78,7 +77,13 @@ export default {
     },
     // 所有的面板配置
     allOptions () {
-      return R.unionWith(R.eqBy(R.prop('id')), this.customOptions, this.defaultOptions)
+      const customOptions = this.customOptions.map((v) => {
+        if (v.id === 'dashboard-system-default') {
+          v.name = this.$t('dashboard.text_121')
+        }
+        return v
+      })
+      return R.unionWith(R.eqBy(R.prop('id')), customOptions, this.defaultOptions)
     },
   },
   beforeDestroy () {
