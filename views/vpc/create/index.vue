@@ -278,7 +278,7 @@ export default {
         if (values.project_domain) {
           params.project_domain = values.project_domain
         }
-        params.external_access_mode = values.external_access_mode ? 'eip' : 'none'
+        if (this.cloudEnv === 'public') params.external_access_mode = values.external_access_mode ? 'eip' : 'none'
         await this.doCreate(params)
         this.loading = false
         this.$message.success(this.$t('k8s.text_184'))
