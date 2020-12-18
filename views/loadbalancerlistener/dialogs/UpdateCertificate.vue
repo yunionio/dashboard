@@ -62,10 +62,15 @@ export default {
       const { lbDetail } = this.params
       const params = {
         usable: true,
-        scope: this.$store.getters.scope,
         limit: 0,
         cloudregion: lbDetail.cloudregion_id,
         manager: lbDetail.manager_id,
+      }
+      const projectDomain = this.params.data[0].project_domain
+      if (this.$store.getters.isAdminMode) {
+        params.project_domain = projectDomain
+      } else {
+        params.scope = this.$store.getters.scope
       }
       return params
     },
