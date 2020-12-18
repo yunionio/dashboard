@@ -56,10 +56,10 @@ export default {
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             if (row.before && row.before.bw_limit !== undefined) {
-              if (row.before.bw_limit) {
+              if (+row.before.bw_limit) {
                 return `${row.before.bw_limit}Mbps (ip: ${row.ip_addr || ''})`
               }
-              return this.$t('common.not_limited')
+              return `0(${this.$t('common.not_limited')})`
             }
             return `${row.before && row.before.cpu}${this.$t('common_390')}${sizestr(row.before && row.before.memory, 'M', 1024)}${sizestr(row.before && row.before.disk, 'M', 1024)}`
           },
@@ -71,10 +71,10 @@ export default {
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
             if (row.after && row.after.bw_limit !== undefined) {
-              if (row.after.bw_limit) {
+              if (+row.after.bw_limit) {
                 return `${row.after.bw_limit}Mbps (ip: ${row.ip_addr || ''})`
               }
-              return this.$t('common.not_limited')
+              return `0(${this.$t('common.not_limited')})`
             }
             if (row.after && row.after.disk) {
               return `${row.after && row.after.cpu}${this.$t('common_390')}${sizestr(row.after && row.after.memory, 'M', 1024)}${sizestr(row.after && row.after.disk, 'M', 1024)}`
