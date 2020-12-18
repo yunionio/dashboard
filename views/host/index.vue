@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('dictionary.host')" />
+    <page-header :title="$t('compute.text_111')" />
     <page-body>
       <server-error-status-tab
         resource="hosts"
