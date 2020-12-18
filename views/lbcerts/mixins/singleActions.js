@@ -26,7 +26,7 @@ export default {
             ret.tooltip = i18n.t('monitor.text_9', [this.$t('dictionary.domain')])
             return ret
           }
-          if (obj.is_public && obj.public_scope !== 'none') {
+          if (obj.is_public) {
             ret.validate = false
             ret.tooltip = this.$t('common_280')
             return ret
@@ -59,7 +59,7 @@ export default {
     ]
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'isProjectMode']),
   },
   methods: {
     isPower (obj) {
