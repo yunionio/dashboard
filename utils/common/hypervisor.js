@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import _ from 'lodash'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import { changeToArr } from '@/utils/utils'
 import store from '@/store'
@@ -106,9 +107,10 @@ export const getCloudEnvOptions = (capabilityBrandKey, ignoreAll) => {
   let ret = !ignoreAll ? [{ key: '', label: i18n.t('common_95') }] : []
   const brands = store.getters.capability[capabilityBrandKey] || store.getters.capability.brands
   for (let i = 0, len = brands.length; i < len; i++) {
-    const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]].cloud_env))(ret)
-    if (!data) {
-      ret.push({ key: typeClouds.brandMap[brands[i]].cloud_env, label: i18n.t(`cloud_env.${typeClouds.brandMap[brands[i]].cloud_env}`) })
+    const key = _.get(typeClouds.brandMap, `[${brands[i]}].cloud_env`)
+    const data = R.find(R.propEq('key', key))(ret)
+    if (key && !data) {
+      ret.push({ key: key, label: i18n.t(`cloud_env.${key}`) })
     }
   }
   ret = ret.sort((a, b) => orderKeys.indexOf(a.key) - orderKeys.indexOf(b.key))

@@ -240,6 +240,7 @@ export default {
         })
       }
       this[`${name}List`] = _list
+      return _list
     },
     async fetchs (fetchNames = this.names) {
       await this.resetSelect(fetchNames)
@@ -250,7 +251,8 @@ export default {
           const fetchFn = this[`fetch${sn}`]
           const getParams = R.is(Function, this[`${name}Params`]) ? await this[`${name}Params`]() : this[`${name}Params`]
           if (this.names.indexOf(name) > -1 && fetchFn) {
-            const list = await fetchFn(getParams)
+            const resList = await fetchFn(getParams)
+            const list = await this.fetchChange(name, resList) // 把mapper函数对list有过滤的情况考虑进去，list应该是mapper后的return值
             if (list.length === 0) {
               const nextNames = fetchNames.slice(i, fetchNames.length)
               nextNames.forEach(name => {
@@ -259,7 +261,6 @@ export default {
               this.FC.resetFields(nextNames)
               return
             }
-            await this.fetchChange(name, list)
             if (R.type(list) === 'Array' && list.length === 0) {
               const nextNames = fetchNames.slice(i, fetchNames.length)
               if (nextNames.length > 0) {
