@@ -39,10 +39,10 @@ export default {
         title: i18n.t('compute.text_387'),
         width: 100,
         formatter: ({ row }) => {
-          if (row.bw_limit) {
+          if (+row.bw_limit) {
             return `${row.bw_limit}Mbps`
           }
-          return this.$t('common.not_limited')
+          return `0(${this.$t('common.not_limited')})`
         },
         // slots: {
         //   header: ({ column }) => {
