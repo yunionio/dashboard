@@ -36,7 +36,7 @@
             :vpcParams="vpcParams"
             :networkParams="networkParams"
             :vpcResourceMapper="vpcResourceMapper"
-            :showIpConfig="false" />
+            :showIpConfig="cloudEnv !== 'public'" />
         </template>
         <template v-if="cloudEnv !== 'private'">
           <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout">
