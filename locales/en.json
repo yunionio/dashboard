@@ -1388,7 +1388,12 @@
     "neimenggu": "Neimenggu",
     "foshan": "Foshan",
     "las vegas": "Las Vegas",
-    "salt lake city": "Salt Lake City"
+    "salt lake city": "Salt Lake City",
+    "canada central": "Canada Central",
+    "ireland": "Ireland",
+    "ohio": "Ohio",
+    "paris": "Paris",
+    "stockholm": "Stockholm"
   },
   "cloudPrvidersMap": {
     "Aliyun": "Aliyun",
