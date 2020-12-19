@@ -240,7 +240,7 @@ export default {
     },
   },
   mounted () {
-    if (this._valid()) this.loadOptsDebounce()
+    if (this._valid()) this.loadOpts()
   },
   destroyed () {
     this.destroyedCallBack()
@@ -289,7 +289,9 @@ export default {
         if (needChange || !this.isInitLoad) this.clearSelect()
         if (needChange || this._valid()) {
           this.fetchDataNum = 0 // paramsChange 后 fetchDataNum 应该重置，这样 firstResOpts 保证能正确更新到
-          this.loadOptsDebounce()
+          this.firstResOpts = {}
+          this.firstTotal = 0
+          this.loadOpts()
         }
       }
     },
