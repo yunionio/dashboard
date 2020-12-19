@@ -31,10 +31,10 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   computed: {
     title () {
-      return this.params.alertData.name
+      return 'haha'
     },
     records () {
-      const { eval_data } = this.params.data[0]
+      const { eval_data = [] } = this.params.data[0]
       const ret = eval_data.map(item => {
         let metric = item.metric
         if (item.measurement_desc) {
