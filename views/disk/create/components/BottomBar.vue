@@ -184,8 +184,8 @@ export default {
         const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
         values = {
           ...rest,
-          backend: backend.split('-')[0],
-          medium: backend.split('-')[1],
+          backend: backend.split('__')[0],
+          medium: backend.split('__')[1],
           hypervisor: oProvider ? oProvider.hypervisor : provider,
           size: values.size * 1024,
           project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
