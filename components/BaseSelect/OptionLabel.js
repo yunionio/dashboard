@@ -68,6 +68,7 @@ const resourceMode = {
       let concats = []
       if (vm.data.enabled_contact_types && vm.data.enabled_contact_types.length) {
         concats = vm.data.enabled_contact_types.map(val => {
+          if (val === 'mobile') val = 'message' // mobile 应该翻译为 短信
           if (i18n.te(`common.${val}`)) {
             return i18n.t(`common.${val}`)
           }
