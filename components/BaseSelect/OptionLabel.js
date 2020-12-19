@@ -68,8 +68,8 @@ const resourceMode = {
       let concats = []
       if (vm.data.enabled_contact_types && vm.data.enabled_contact_types.length) {
         concats = vm.data.enabled_contact_types.map(val => {
-          if (i18n.te(`common.${val}`)) {
-            return i18n.t(`common.${val}`)
+          if (i18n.te(`dictionary.${val}`)) {
+            return i18n.t(`dictionary.${val}`)
           }
           return val
         })
