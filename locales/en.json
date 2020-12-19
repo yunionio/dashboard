@@ -2170,7 +2170,9 @@
     "hoststorage": "Host storage",
     "usage": "Usage",
     "guest": "@:dictionary.server",
-    "webconsole": "webconsole"
+    "webconsole": "webconsole",
+    "message": "Message",
+    "alertrecord": "Alertrecord"
   },
   "res": {
     "role": "Role",

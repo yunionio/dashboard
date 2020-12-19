@@ -658,6 +658,8 @@ export const PERMISSION = {
   cloudevents_list: ['cloudevent', 'cloudevents', 'list'],
   // 报警资源
   alertresources_list: ['monitor', 'alertresources', 'list'],
+  // 报警记录
+  alertrecords_list: ['monitor', 'alertrecords', 'list'],
   /**
    * 配额更新
    */
