@@ -74,7 +74,7 @@ import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
 import ScopeRadio from '@/sections/ScopeRadio'
 import NameRepeated from '@/sections/NameRepeated'
-import { levelMaps } from '@Monitor/constants'
+import { levelMaps, metric_zh } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import NotifyTypes from '@/sections/NotifyTypes'
 
@@ -437,7 +437,7 @@ export default {
       try {
         this.metricKeyItem = metricKeyItem
         this.conditionUnit = _.get(mertricItem, 'description.unit') || ''
-        this.$emit('mertricItemChange', mertricItem)
+        this.$emit('mertricItemChange', { ...mertricItem, title: this.getTitle(mertricItem) })
         const scopeFormValues = this.form.fc.getFieldsValue([this.decorators.scope[0], this.decorators.domain[0], this.decorators.project[0]])
         const scopeParams = {}
         for (const k in scopeFormValues) {
@@ -514,6 +514,14 @@ export default {
     resetChart () {
       this.$emit('resetChart')
       this.$refs.filtersRef.reset()
+    },
+    getTitle (mertricItem) {
+      let label = this.metricKeyItem.label || '-'
+      const metricLabel = _.get(mertricItem, 'description.display_name')
+      if (metricLabel) {
+        label += `(${metric_zh[metricLabel] ? metric_zh[metricLabel] : metricLabel})`
+      }
+      return label
     },
   },
 }
