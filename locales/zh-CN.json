@@ -2170,7 +2170,9 @@
     "hoststorage": "宿主机存储",
     "usage": "使用量",
     "guest": "@:dictionary.server",
-    "webconsole": "站内信"
+    "webconsole": "站内信",
+    "message": "短信",
+    "alertrecord": "报警记录"
   },
   "res": {
     "role": "@:dictionary.role",
