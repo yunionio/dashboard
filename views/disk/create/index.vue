@@ -358,7 +358,7 @@ export default {
               const getLabel = (backend) => { return backend.includes('rbd') ? 'Ceph' : backend }
               const backends = data.data_storage_types.filter(v => v.includes(backend))
               return {
-                value: `${backend}-${medium}`,
+                value: `${backend}__${medium}`,
                 label: storageType ? storageType.label : getLabel(backend),
                 medium: MEDIUM_MAP[medium] || medium,
                 multiple: backends.length > 1,
