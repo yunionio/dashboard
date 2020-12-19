@@ -2045,7 +2045,7 @@
     "dnsrecord": "Domain Name Service",
     "domain": "Domains",
     "dynamicschedtag": "Dynamicschedtag",
-    "eip": "Elastic IPs",
+    "eip": "EIP",
     "elasticcaches": "Redis Instances",
     "elasticcache": "Redis Instances",
     "endpoint": "External Links",
