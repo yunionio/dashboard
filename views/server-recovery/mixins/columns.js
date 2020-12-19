@@ -2,6 +2,8 @@ import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn, getStatusTableColumn, getCopyWithContentTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import i18n from '@/locales'
+import { SERVER_TYPE } from '@Compute/constants'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   created () {
@@ -44,7 +46,16 @@ export default {
         },
       },
       getBrandTableColumn(),
-      getCopyWithContentTableColumn({ field: 'host', title: i18n.t('compute.text_111') }),
+      getCopyWithContentTableColumn({
+        field: 'host',
+        title: i18n.t('compute.text_111'),
+        slotCallback: row => {
+          if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
+            return '-'
+          }
+          return row.host
+        },
+      }),
       getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
     ]
   },
