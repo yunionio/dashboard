@@ -2,6 +2,7 @@ import CommonalertsIndex from '@Monitor/views/commonalert'
 import commonalertsCreate from '@Monitor/views/commonalert/create'
 import commonalertsUpdate from '@Monitor/views/commonalert/update'
 import AlertresourceIndex from '@Monitor/views/alertresource'
+import AlertrecordIndex from '@Monitor/views/alertrecord'
 import Explorer from '@Monitor/views/explorer'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
@@ -73,6 +74,21 @@ export default {
           name: 'alertresourceIndex',
           path: '',
           component: AlertresourceIndex,
+        },
+      ],
+    },
+    {
+      path: '/alertrecord',
+      meta: {
+        label: i18n.t('dictionary.alertrecord'),
+        permission: 'alertrecords_list',
+      },
+      component: Layout,
+      children: [
+        {
+          name: 'AlertrecordIndex',
+          path: '',
+          component: AlertrecordIndex,
         },
       ],
     },

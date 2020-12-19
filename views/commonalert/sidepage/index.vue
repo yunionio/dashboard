@@ -21,7 +21,8 @@
       :alertId="data.id"
       :data="detailData"
       :resource="resource"
-      :on-manager="onManager" />
+      :on-manager="onManager"
+      :getParams="getParams" />
   </base-side-page>
 </template>
 
@@ -29,7 +30,7 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import CommonalertDetail from './Detail'
-import Commonalertrecord from './Alertrecord'
+import AlertrecortList from '@Monitor/views/alertrecord/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -39,20 +40,28 @@ export default {
   components: {
     CommonalertDetail,
     Actions,
-    Commonalertrecord,
+    AlertrecortList,
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   computed: {
     detailTabs () {
       const tabs = [
         { label: this.$t('sidepage.tab.label.detail'), key: 'commonalert-detail' },
-        { label: this.$t('monitor.text_10'), key: 'commonalertrecord' },
         { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ]
       // if (this.$store.getters.isAdminMode) {
-      //   tabs.splice(1, 0, { label: this.$t('monitor.text_10'), key: 'commonalertrecord' })
+      //   tabs.splice(1, 0, { label: this.$t('monitor.text_10'), key: 'AlertrecortList' })
       // }
+      if (this.data.id) {
+        tabs.splice(1, 0, { label: this.$t('monitor.text_10'), key: 'AlertrecortList' })
+      }
       return tabs
+    },
+    getParams () {
+      return {
+        alert_id: this.data.id,
+        scope: 'system', // 仅管理后台可以查看报警记录
+      }
     },
   },
 }
