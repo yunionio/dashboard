@@ -2341,6 +2341,7 @@
     "mobile": "电话",
     "nickname": "昵称",
     "webconsole": "站内信",
+    "message": "短信",
     "storage": {
       "cloud": "普通云盘",
       "cloudssd": "SSD 云盘",
