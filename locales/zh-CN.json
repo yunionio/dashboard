@@ -2340,6 +2340,7 @@
     "dingtalk-robot": "钉钉机器人",
     "mobile": "电话",
     "nickname": "昵称",
+    "webconsole": "站内信",
     "storage": {
       "cloud": "普通云盘",
       "cloudssd": "SSD 云盘",

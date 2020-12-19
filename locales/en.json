@@ -2340,6 +2340,7 @@
     "dingtalk-robot": "Dingtalk Rebot",
     "mobile": "Mobile Phone",
     "nickname": "Nickname",
+    "webconsole": "Webconsole",
     "storage": {
       "cloud": "common cloud Disk",
       "cloudssd": "SSD Cloud Disk",
