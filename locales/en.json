@@ -219,7 +219,7 @@
   "network.text_218": "Please fill in the name",
   "network.text_219": "Untie",
   "network.text_220": "Modify Bandwidth",
-  "network.text_221": "Elastic IPs",
+  "network.text_221": "EIP",
   "network.text_222": "Please bind the machine first",
   "network.text_223": "{0} Cannot modify bandwidth",
   "network.text_224": "Only public cloud eip supports bandwidth modification",
