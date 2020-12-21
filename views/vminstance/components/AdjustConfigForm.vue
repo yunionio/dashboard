@@ -12,60 +12,62 @@
       </template>
       <dialog-table :data="params.data" :columns="columns" />
     </a-card>
-    <div class="form-wrapper">
-      <a-form
-        v-bind="formItemLayout"
-        :form="form.fc">
-        <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-          <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" :disabled="runningArm" :extra="cpuExtra" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_369')" class="mb-0">
-          <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm" :extra="cpuExtra" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_109')">
-          <sku
-            v-decorator="decorators.sku"
-            :type="type"
-            :sku-params="skuParam"
-            :instance-type="instanceType"
-            :hypervisor="hypervisor" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
-          <system-disk
-            v-if="hypervisor && form.fi.capability.storage_types && form.fd.defaultType"
-            :decorator="decorators.systemDisk"
-            :type="type"
-            :hypervisor="hypervisor"
-            :sku="form.fd.sku"
-            :form="form"
-            :defaultSize="sysdisk.value"
-            :defaultType="form.fd.defaultType"
-            :capability-data="form.fi.capability"
-            :disabled="true"
-            :ignoreStorageStatus="true" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1">
-          <data-disk
-            v-if="hypervisor && form.fi.capability.storage_types"
-            ref="dataDiskRef"
-            :decorator="decorators.dataDisk"
-            :type="type"
-            :form="form"
-            :hypervisor="hypervisor"
-            :capability-data="form.fi.capability"
-            :defaultType="form.fd.systemDiskType"
-            :sku="form.fd.sku"
-            :image="form.fi.imageMsg"
-            :domain="domain" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
-          <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
-        </a-form-item>
-        <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1106')">
-          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
-        </a-form-item>
-      </a-form>
-    </div>
+    <page-body>
+      <div class="form-wrapper">
+        <a-form
+          v-bind="formItemLayout"
+          :form="form.fc">
+          <a-form-item :label="$t('compute.text_1058')" class="mb-0">
+            <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" :disabled="runningArm" :extra="cpuExtra" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.text_369')" class="mb-0">
+            <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm" :extra="cpuExtra" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.text_109')">
+            <sku
+              v-decorator="decorators.sku"
+              :type="type"
+              :sku-params="skuParam"
+              :instance-type="instanceType"
+              :hypervisor="hypervisor" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
+            <system-disk
+              v-if="hypervisor && form.fi.capability.storage_types && form.fd.defaultType"
+              :decorator="decorators.systemDisk"
+              :type="type"
+              :hypervisor="hypervisor"
+              :sku="form.fd.sku"
+              :form="form"
+              :defaultSize="sysdisk.value"
+              :defaultType="form.fd.defaultType"
+              :capability-data="form.fi.capability"
+              :disabled="true"
+              :ignoreStorageStatus="true" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1">
+            <data-disk
+              v-if="hypervisor && form.fi.capability.storage_types"
+              ref="dataDiskRef"
+              :decorator="decorators.dataDisk"
+              :type="type"
+              :form="form"
+              :hypervisor="hypervisor"
+              :capability-data="form.fi.capability"
+              :defaultType="form.fd.systemDiskType"
+              :sku="form.fd.sku"
+              :image="form.fi.imageMsg"
+              :domain="domain" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
+            <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1106')">
+            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
+          </a-form-item>
+        </a-form>
+      </div>
+    </page-body>
     <page-footer>
       <div slot="right">
         <div class="d-flex align-items-center">
