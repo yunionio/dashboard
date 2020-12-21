@@ -269,7 +269,7 @@ export default {
                   title: i18n.t('compute.text_261'),
                   onManager: this.onManager,
                   success: () => {
-                    this.destroySidePages()
+                    this.destroySidePage(this.windowId)
                   },
                 })
               },
