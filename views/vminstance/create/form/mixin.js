@@ -31,6 +31,7 @@ import HypervisorRadio from '@/sections/HypervisorRadio'
 import DomainProject from '@/sections/DomainProject'
 import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 
 const CreateServerForm = {
@@ -224,6 +225,9 @@ export default {
         // show_emulated: true,
         ...this.scopeParams,
       }
+      if (this.isZStack) {
+        params.show_emulated = true
+      }
       return params
     },
     vpcResource () {
@@ -260,6 +264,9 @@ export default {
       const externalAccessMode = _.get(this.form.fi, 'networkVpcObj.external_access_mode')
       if (externalAccessMode === 'none') return false // "eip-distgw" "eip" 是正常可以使用EIP的，"none"不可以
       return true
+    },
+    isZStack () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.zstack.key
     },
   },
   created () {
