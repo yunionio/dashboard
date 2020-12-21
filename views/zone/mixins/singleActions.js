@@ -9,6 +9,7 @@ export default {
             vm: this,
             data: [obj],
             columns: this.columns,
+            name: i18n.t('cloudenv.text_11'),
             title: i18n.t('cloudenv.text_108'),
             onManager: this.onManager,
             success: () => {
