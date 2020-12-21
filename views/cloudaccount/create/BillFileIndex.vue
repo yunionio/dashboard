@@ -5,7 +5,9 @@
     <a-spin :spinning="!isRender">
       <content-info :params="params" v-if="isRender" />
     </a-spin>
-    <bill-form ref="BILL_FORM" />
+    <page-body>
+      <bill-form ref="BILL_FORM" />
+    </page-body>
     <page-footer>
       <div slot="right">
         <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{$t('cloudenv.text_169')}}</a-button>
