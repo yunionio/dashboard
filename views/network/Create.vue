@@ -1,122 +1,124 @@
 <template>
   <div>
     <page-header :title="$t('network.text_570')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit" v-bind="formItemLayout">
-      <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
-      </a-form-item>
-      <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
-      </a-form-item>
-      <area-selects
-        class="mb-0"
-        ref="areaSelects"
-        :wrapperCol="formItemLayout.wrapperCol"
-        :labelCol="formItemLayout.labelCol"
-        :names="areaselectsName"
-        :cityParams="cityParams"
-        :providerParams="providerParams"
-        :cloudregionParams="cloudregionParams"
-        :isRequired="true"
-        @change="handleRegionChange" />
-      <a-form-item label="VPC" v-bind="formItemLayout">
-        <base-select
-          v-decorator="decorators.vpc"
-          resource="vpcs"
-          :params="vpcParams"
-          :isDefaultSelect="true"
-          :needParams="true"
-          @change="vpcChange"
-          :labelFormat="vpcLabelFormat"
-          :select-props="{ placeholder: $t('common_226') }" />
-      </a-form-item>
-      <a-form-item :label="$t('network.text_571')" v-bind="formItemLayout" v-if="show || isShowWire">
-        <base-select
-          resource="wires"
-          v-decorator="decorators.wire"
-          :selectProps="{ 'placeholder': $t('network.text_572') }"
-          :isDefaultSelect="true"
-          :labelFormat="wireLabelFormat"
-          :params="wireParams" />
-      </a-form-item>
-      <a-form-item :label="$t('network.text_24')" :extra="$t('network.text_573')" v-bind="formItemLayout" v-if="!show && !isShowWire">
-        <a-select v-decorator="decorators.zone" :placeholder="$t('network.text_287')">
-          <a-select-option v-for="item in zoneList" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('network.text_574')" v-bind="formItemLayout" v-if="show">
-        <a-radio-group v-decorator="decorators.server_type">
-          <a-radio-button
-            v-for="item of serverTypeOpts"
-            :key="item.key"
-            :value="item.key">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required v-if="show">
-        <template slot="extra">
-          <div>{{$t('network.text_576')}}</div>
-          <div>{{$t('network.text_577')}}</div>
-        </template>
-        <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
-      </a-form-item>
-      <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
-        <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.text_579')" />
-      </a-form-item>
-      <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
-        <template slot="extra">
-          <div>{{$t('network.text_578')}}</div>
-          <div>{{$t('network.text_580')}}</div>
-        </template>
-        <div class="d-flex" v-for="(item, i) in guestIpPrefix" :key="item.key">
-          <a-form-item>
-            <a-input style="width: 400px" v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.text_581')" />
-          </a-form-item>
-          <a-button shape="circle" icon="minus" size="small" v-if="guestIpPrefix.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
-        </div>
-        <div class="d-flex align-items-center" v-if="remain > 0">
-          <a-button type="primary" shape="circle" icon="plus" size="small" @click="addGuestIpPrefix" />
-          <a-button type="link" @click="addGuestIpPrefix">{{$t('network.text_582')}}</a-button>
-          <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
-        </div>
-      </a-form-item>
-      <a-form-item :label="$t('common_498')" v-if="isShowIsAutoAlloc">
-        <a-switch v-decorator="decorators.is_auto_alloc" />
-        <template slot="extra">{{$t('common_500')}}</template>
-      </a-form-item>
-      <a-collapse :bordered="false"  v-if="show">
-        <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
-          <a-form-item v-bind="formItemLayout">
-            <span slot="label">{{$t('network.text_583')}}</span>
-            <a-radio-group v-decorator="decorators.alloc_policy">
-              <a-radio-button
-                v-for="item of allocPolicyoptions"
-                :key="item.key"
-                :value="item.key">{{ item.label }}</a-radio-button>
-            </a-radio-group>
-            <span slot="extra" v-if="form.fc.getFieldValue('alloc_policy') === 'none'">{{$t('network.text_584')}}</span>
-          </a-form-item>
-          <a-form-item :label="$t('network.text_585')" v-bind="formItemLayout">
-            <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout">
-            <span slot="label">{{$t('network.text_586')}}</span>
-            <template slot="extra">
-              <div>{{$t('network.text_587')}}</div>
-              <div>{{$t('network.text_588')}}</div>
-              <div>{{$t('network.text_589')}}</div>
-              <div>{{$t('network.text_590')}}</div>
-            </template>
-            <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
-          </a-form-item>
-        </a-collapse-panel>
-      </a-collapse>
-      <page-footer>
-        <template v-slot:right>
-          <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_30')}}</a-button>
-          <a-button class="ml-3" size="large" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
-        </template>
-      </page-footer>
-    </a-form>
+    <page-body>
+      <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_205', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" @update:domain="handleDomainChange" />
+        </a-form-item>
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
+        </a-form-item>
+        <area-selects
+          class="mb-0"
+          ref="areaSelects"
+          :wrapperCol="formItemLayout.wrapperCol"
+          :labelCol="formItemLayout.labelCol"
+          :names="areaselectsName"
+          :cityParams="cityParams"
+          :providerParams="providerParams"
+          :cloudregionParams="cloudregionParams"
+          :isRequired="true"
+          @change="handleRegionChange" />
+        <a-form-item label="VPC" v-bind="formItemLayout">
+          <base-select
+            v-decorator="decorators.vpc"
+            resource="vpcs"
+            :params="vpcParams"
+            :isDefaultSelect="true"
+            :needParams="true"
+            @change="vpcChange"
+            :labelFormat="vpcLabelFormat"
+            :select-props="{ placeholder: $t('common_226') }" />
+        </a-form-item>
+        <a-form-item :label="$t('network.text_571')" v-bind="formItemLayout" v-if="show || isShowWire">
+          <base-select
+            resource="wires"
+            v-decorator="decorators.wire"
+            :selectProps="{ 'placeholder': $t('network.text_572') }"
+            :isDefaultSelect="true"
+            :labelFormat="wireLabelFormat"
+            :params="wireParams" />
+        </a-form-item>
+        <a-form-item :label="$t('network.text_24')" :extra="$t('network.text_573')" v-bind="formItemLayout" v-if="!show && !isShowWire">
+          <a-select v-decorator="decorators.zone" :placeholder="$t('network.text_287')">
+            <a-select-option v-for="item in zoneList" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('network.text_574')" v-bind="formItemLayout" v-if="show">
+          <a-radio-group v-decorator="decorators.server_type">
+            <a-radio-button
+              v-for="item of serverTypeOpts"
+              :key="item.key"
+              :value="item.key">{{ item.label }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="ipSubnetsValidateStatus" :help="ipSubnetsHelp" required v-if="show">
+          <template slot="extra">
+            <div>{{$t('network.text_576')}}</div>
+            <div>{{$t('network.text_577')}}</div>
+          </template>
+          <ip-subnets :decorator="decorators.ipSubnets" @clear-error="clearIpSubnetsError" />
+        </a-form-item>
+        <a-form-item :label="$t('network.text_575')" :extra="$t('network.text_578')" v-bind="formItemLayout" v-if="!show && !isGroupGuestIpPrefix">
+          <a-input v-decorator="decorators.guest_ip_prefix(0)" :placeholder="$t('network.text_579')" />
+        </a-form-item>
+        <a-form-item :label="$t('network.text_575')" v-bind="formItemLayout" :validate-status="guestIpPrefixValidateStatus" :help="guestIpPrefixHelp" required v-if="isGroupGuestIpPrefix">
+          <template slot="extra">
+            <div>{{$t('network.text_578')}}</div>
+            <div>{{$t('network.text_580')}}</div>
+          </template>
+          <div class="d-flex" v-for="(item, i) in guestIpPrefix" :key="item.key">
+            <a-form-item>
+              <a-input style="width: 400px" v-decorator="decorators.guest_ip_prefix(i)" :placeholder="$t('network.text_581')" />
+            </a-form-item>
+            <a-button shape="circle" icon="minus" size="small" v-if="guestIpPrefix.length > 1" @click="decrease(i)" class="mt-2 ml-2" />
+          </div>
+          <div class="d-flex align-items-center" v-if="remain > 0">
+            <a-button type="primary" shape="circle" icon="plus" size="small" @click="addGuestIpPrefix" />
+            <a-button type="link" @click="addGuestIpPrefix">{{$t('network.text_582')}}</a-button>
+            <span class="count-tips">{{$t('network.text_169')}}<span class="remain-num">{{ remain }}</span>{{$t('network.text_170')}}</span>
+          </div>
+        </a-form-item>
+        <a-form-item :label="$t('common_498')" v-if="isShowIsAutoAlloc">
+          <a-switch v-decorator="decorators.is_auto_alloc" />
+          <template slot="extra">{{$t('common_500')}}</template>
+        </a-form-item>
+        <a-collapse :bordered="false"  v-if="show">
+          <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
+            <a-form-item v-bind="formItemLayout">
+              <span slot="label">{{$t('network.text_583')}}</span>
+              <a-radio-group v-decorator="decorators.alloc_policy">
+                <a-radio-button
+                  v-for="item of allocPolicyoptions"
+                  :key="item.key"
+                  :value="item.key">{{ item.label }}</a-radio-button>
+              </a-radio-group>
+              <span slot="extra" v-if="form.fc.getFieldValue('alloc_policy') === 'none'">{{$t('network.text_584')}}</span>
+            </a-form-item>
+            <a-form-item :label="$t('network.text_585')" v-bind="formItemLayout">
+              <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
+            </a-form-item>
+            <a-form-item v-bind="formItemLayout">
+              <span slot="label">{{$t('network.text_586')}}</span>
+              <template slot="extra">
+                <div>{{$t('network.text_587')}}</div>
+                <div>{{$t('network.text_588')}}</div>
+                <div>{{$t('network.text_589')}}</div>
+                <div>{{$t('network.text_590')}}</div>
+              </template>
+              <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
+            </a-form-item>
+          </a-collapse-panel>
+        </a-collapse>
+        <page-footer>
+          <template v-slot:right>
+            <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_30')}}</a-button>
+            <a-button class="ml-3" size="large" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
+          </template>
+        </page-footer>
+      </a-form>
+    </page-body>
   </div>
 </template>
 
