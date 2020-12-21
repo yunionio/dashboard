@@ -1,90 +1,92 @@
 <template>
   <div>
     <page-header :title="$t('compute.text_892')" />
-    <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
-      <a-form-item class="mb-0" :label="$t('compute.text_297', [$t('dictionary.project')])">
-        <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_228')">
-        <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.generate_name" />
-        <!-- <name-repeated
-          v-slot:extra
-          res="scalinggroups"
-          :default-text="$t('compute.text_893')"  /> -->
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_176')">
-        <a-radio-group v-decorator="decorators.brand">
-          <a-radio-button v-for="item in brands" :key="item.brand" :value="item.brand">{{item.label}}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_873')">
-        <a-select :filterOption="filterOption" showSearch @change="handleServerTemplateChange" v-decorator="decorators.guest_template_id" :loading="serverTemplateListLoading">
-          <a-select-option v-for="item in serverTemplateList" :row="item" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
-        </a-select>
-        <div slot="extra">{{$t('compute.text_894')}}</div>
-      </a-form-item>
-      <network-selects
-        isRequired
-        :decorators="networlDecorators"
-        :isDefaultFetch="false"
-        :defaultActiveFirstOption="false"
-        :disabled="networlDisabled"
-        ref="NETWORK"
-        :label="$t('compute.text_104')"
-        :form="form"
-        v-bind="formItemLayout"
-        :networkParams="networkParams"
-        :vpcParams="vpcParams" />
-      <a-form-item :label="$t('compute.text_877')">
-        <a-tooltip placement="top" :title="$t('compute.text_895')">
-          <a-input-number v-decorator="decorators.max_instance_number" :min="1" :max="1000" />
-        </a-tooltip>
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_875')">
-        <a-tooltip placement="top" :title="$t('compute.text_896')">
-          <a-input-number v-decorator="decorators.desire_instance_number" :min="form.fd.min_instance_number" :max="form.fd.max_instance_number" />
-        </a-tooltip>
-        <div slot="extra">{{$t('compute.text_897')}}</div>
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_876')">
-        <a-tooltip placement="top" :title="$t('compute.text_891')">
-          <a-input-number @blur="handleMinBlur" v-model="min" :min="0" :max="form.fd.desire_instance_number"  />
-          <a-input v-show="false" v-decorator="decorators.min_instance_number" />
-        </a-tooltip>
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_898')">
-        <a-select v-decorator="decorators.shrink_principle">
-          <a-select-option v-for="(v, k) in $t('flexGrouPprinciple')" :key="k" :value="k">{{v}}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item required :label="$t('compute.text_899')">
-        <a-radio-group v-model="isLoadbalancer">
-          <a-radio-button :value="false">{{$t('compute.text_900')}}</a-radio-button>
-          <a-tooltip v-if="form.fd.brand === 'Azure'" placement="top" :title="$t('compute.text_901')">
-            <a-radio-button :disabled="true" :value="true">{{$t('compute.text_902')}}</a-radio-button>
+    <page-body>
+      <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
+        <a-form-item class="mb-0" :label="$t('compute.text_297', [$t('dictionary.project')])">
+          <domain-project :decorators="decorators.projectDomain" :fc="form.fc" :labelInValue="false" />
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_228')">
+          <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.generate_name" />
+          <!-- <name-repeated
+            v-slot:extra
+            res="scalinggroups"
+            :default-text="$t('compute.text_893')"  /> -->
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_176')">
+          <a-radio-group v-decorator="decorators.brand">
+            <a-radio-button v-for="item in brands" :key="item.brand" :value="item.brand">{{item.label}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_873')">
+          <a-select :filterOption="filterOption" showSearch @change="handleServerTemplateChange" v-decorator="decorators.guest_template_id" :loading="serverTemplateListLoading">
+            <a-select-option v-for="item in serverTemplateList" :row="item" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+          </a-select>
+          <div slot="extra">{{$t('compute.text_894')}}</div>
+        </a-form-item>
+        <network-selects
+          isRequired
+          :decorators="networlDecorators"
+          :isDefaultFetch="false"
+          :defaultActiveFirstOption="false"
+          :disabled="networlDisabled"
+          ref="NETWORK"
+          :label="$t('compute.text_104')"
+          :form="form"
+          v-bind="formItemLayout"
+          :networkParams="networkParams"
+          :vpcParams="vpcParams" />
+        <a-form-item :label="$t('compute.text_877')">
+          <a-tooltip placement="top" :title="$t('compute.text_895')">
+            <a-input-number v-decorator="decorators.max_instance_number" :min="1" :max="1000" />
           </a-tooltip>
-          <a-radio-button v-else :value="true">{{$t('compute.text_902')}}</a-radio-button>
-        </a-radio-group>
-        <div v-if="isLoadbalancer" style="max-width: 920px">
-          <bind-lb :fc="form.fc" ref="BIND_LB" />
-        </div>
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_903')">
-        <a-select v-decorator="decorators.health_check_mode">
-          <template v-for="(v, k) in $t('flexGroupHealthCheckMode')">
-            <a-select-option v-if="k !== 'loadbalancer' || (isLoadbalancer && k === 'loadbalancer')" :key="k" :value="k">{{v}}</a-select-option>
-          </template>
-        </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_904')">
-        <a-select v-decorator="decorators.health_check_cycle">
-          <a-select-option v-for="(v, k) in $t('flexGroupCycles')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_905')">
-        <a-input-number :min="1"  v-decorator="decorators.health_check_gov" />{{$t('compute.text_767')}}<div slot="extra">{{$t('compute.text_906')}}</div>
-      </a-form-item>
-    </a-form>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_875')">
+          <a-tooltip placement="top" :title="$t('compute.text_896')">
+            <a-input-number v-decorator="decorators.desire_instance_number" :min="form.fd.min_instance_number" :max="form.fd.max_instance_number" />
+          </a-tooltip>
+          <div slot="extra">{{$t('compute.text_897')}}</div>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_876')">
+          <a-tooltip placement="top" :title="$t('compute.text_891')">
+            <a-input-number @blur="handleMinBlur" v-model="min" :min="0" :max="form.fd.desire_instance_number"  />
+            <a-input v-show="false" v-decorator="decorators.min_instance_number" />
+          </a-tooltip>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_898')">
+          <a-select v-decorator="decorators.shrink_principle">
+            <a-select-option v-for="(v, k) in $t('flexGrouPprinciple')" :key="k" :value="k">{{v}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item required :label="$t('compute.text_899')">
+          <a-radio-group v-model="isLoadbalancer">
+            <a-radio-button :value="false">{{$t('compute.text_900')}}</a-radio-button>
+            <a-tooltip v-if="form.fd.brand === 'Azure'" placement="top" :title="$t('compute.text_901')">
+              <a-radio-button :disabled="true" :value="true">{{$t('compute.text_902')}}</a-radio-button>
+            </a-tooltip>
+            <a-radio-button v-else :value="true">{{$t('compute.text_902')}}</a-radio-button>
+          </a-radio-group>
+          <div v-if="isLoadbalancer" style="max-width: 920px">
+            <bind-lb :fc="form.fc" ref="BIND_LB" />
+          </div>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_903')">
+          <a-select v-decorator="decorators.health_check_mode">
+            <template v-for="(v, k) in $t('flexGroupHealthCheckMode')">
+              <a-select-option v-if="k !== 'loadbalancer' || (isLoadbalancer && k === 'loadbalancer')" :key="k" :value="k">{{v}}</a-select-option>
+            </template>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_904')">
+          <a-select v-decorator="decorators.health_check_cycle">
+            <a-select-option v-for="(v, k) in $t('flexGroupCycles')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('compute.text_905')">
+          <a-input-number :min="1"  v-decorator="decorators.health_check_gov" />{{$t('compute.text_767')}}<div slot="extra">{{$t('compute.text_906')}}</div>
+        </a-form-item>
+      </a-form>
+    </page-body>
     <page-footer>
       <div slot="right">
         <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{$t('compute.text_907')}}</a-button>
