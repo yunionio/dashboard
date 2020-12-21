@@ -96,7 +96,7 @@ export default {
       }
       this.$router.push({
         path: '/vminstance/create',
-        query: { type: values.platform, imageId: obj.id, imageType: type, imageOs: os, sence: 'image' },
+        query: { type: values.platform, imageId: obj.id, imageType: type, imageOs: os, sence: 'image', domain_id: obj.domain_id, tenant_id: obj.tenant_id },
       })
     },
   },
