@@ -1,79 +1,81 @@
 <template>
   <div class="scheduletask">
     <page-header :title="$t('cloudenv.text_432')" />
-    <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
-      <a-form-item :label="$t('cloudenv.text_410', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_95')">
-        <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_433')">
-        <a-radio-group v-decorator="decorators.cycle_type">
-          <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskGroupCycleType')" :key="k" :value="k">{{v}}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_434')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'week'">
-        <a-select v-decorator="decorators.weekDays" mode="multiple">
-          <a-select-option v-for="(v, k) in $t('flexGroupSubCycleTypeWeek')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_435')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'month'">
-        <a-select v-decorator="decorators.monthDays" mode="multiple">
-          <a-select-option v-for="i in 31" :key="i" :value="parseInt(i)">{{$t('cloudenv.text_436', [i])}}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <!-- 单次策略 -->
-      <template v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'one'">
-        <a-form-item :label="$t('cloudenv.text_437')">
-          <a-date-picker
-            :showTime="{
-              format: 'HH:mm',
-            }"
-            :disabledDate="disabledDate"
-            :disabledTime="disabledDateTime"
-            v-decorator="decorators.execTime"
-            format="YYYY-MM-DD HH:mm" />
+    <page-body>
+      <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
+        <a-form-item :label="$t('cloudenv.text_410', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
+          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
         </a-form-item>
-      </template>
-      <!-- 非单次策略 -->
-      <template v-if="form.fc.getFieldValue('cycleTimer.cycle_type') !== 'one'">
-        <a-form-item :label="$t('cloudenv.text_437')">
-          <a-time-picker v-decorator="decorators.hourMinute" format="HH:mm" />
+        <a-form-item :label="$t('cloudenv.text_95')">
+          <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_438')">
-          <a-range-picker
-            v-decorator="decorators.startEndTime"
-            :disabledDate="disabledDate"
-            format="YYYY-MM-DD" />
+        <a-form-item :label="$t('cloudenv.text_433')">
+          <a-radio-group v-decorator="decorators.cycle_type">
+            <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskGroupCycleType')" :key="k" :value="k">{{v}}</a-radio-button>
+          </a-radio-group>
         </a-form-item>
-      </template>
-      <a-form-item :label="$t('cloudenv.text_384')">
-        <a-select v-decorator="decorators.resourceType">
-          <a-select-option v-for="(v, k) in $t('cloudenvScheduledtaskResourceType')" :key="k" :value="k">{{v}}</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_425')">
-        <a-radio-group v-decorator="decorators.action">
-          <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskRuleAction')" :key="k" :value="k">{{v}}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_439')" v-show="false">
-        <a-radio-group v-decorator="decorators.labelType">
-          <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskLabelType')" :key="k" :value="k">{{v}}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_440')" v-if="form.fc.getFieldValue('labelType') === 'id'">
-        <list-select
-          v-decorator="decorators.servers"
-          :list-props="serverProps"
-          :multiple="true"
-          :formatter="formatter" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_16')" class="mb-0" v-if="form.fc.getFieldValue('labelType') === 'tag'">
-        <tag v-decorator="decorators.tag" :extra="$t('cloudenv.text_441')" />
-      </a-form-item>
-    </a-form>
+        <a-form-item :label="$t('cloudenv.text_434')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'week'">
+          <a-select v-decorator="decorators.weekDays" mode="multiple">
+            <a-select-option v-for="(v, k) in $t('flexGroupSubCycleTypeWeek')" :key="k" :value="parseInt(k)">{{v}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_435')" v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'month'">
+          <a-select v-decorator="decorators.monthDays" mode="multiple">
+            <a-select-option v-for="i in 31" :key="i" :value="parseInt(i)">{{$t('cloudenv.text_436', [i])}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <!-- 单次策略 -->
+        <template v-if="form.fc.getFieldValue('cycleTimer.cycle_type') === 'one'">
+          <a-form-item :label="$t('cloudenv.text_437')">
+            <a-date-picker
+              :showTime="{
+                format: 'HH:mm',
+              }"
+              :disabledDate="disabledDate"
+              :disabledTime="disabledDateTime"
+              v-decorator="decorators.execTime"
+              format="YYYY-MM-DD HH:mm" />
+          </a-form-item>
+        </template>
+        <!-- 非单次策略 -->
+        <template v-if="form.fc.getFieldValue('cycleTimer.cycle_type') !== 'one'">
+          <a-form-item :label="$t('cloudenv.text_437')">
+            <a-time-picker v-decorator="decorators.hourMinute" format="HH:mm" />
+          </a-form-item>
+          <a-form-item :label="$t('cloudenv.text_438')">
+            <a-range-picker
+              v-decorator="decorators.startEndTime"
+              :disabledDate="disabledDate"
+              format="YYYY-MM-DD" />
+          </a-form-item>
+        </template>
+        <a-form-item :label="$t('cloudenv.text_384')">
+          <a-select v-decorator="decorators.resourceType">
+            <a-select-option v-for="(v, k) in $t('cloudenvScheduledtaskResourceType')" :key="k" :value="k">{{v}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_425')">
+          <a-radio-group v-decorator="decorators.action">
+            <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskRuleAction')" :key="k" :value="k">{{v}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_439')" v-show="false">
+          <a-radio-group v-decorator="decorators.labelType">
+            <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskLabelType')" :key="k" :value="k">{{v}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_440')" v-if="form.fc.getFieldValue('labelType') === 'id'">
+          <list-select
+            v-decorator="decorators.servers"
+            :list-props="serverProps"
+            :multiple="true"
+            :formatter="formatter" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_16')" class="mb-0" v-if="form.fc.getFieldValue('labelType') === 'tag'">
+          <tag v-decorator="decorators.tag" :extra="$t('cloudenv.text_441')" />
+        </a-form-item>
+      </a-form>
+    </page-body>
     <page-footer>
       <template class="content" v-slot:right>
         <a-button class="mr-2" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common.create') }}</a-button>
