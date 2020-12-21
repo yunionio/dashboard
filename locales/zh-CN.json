@@ -1328,5 +1328,6 @@
   "compute.text_1380": "创建新密钥对",
   "compute.text_1381": "使用已有密钥对",
   "compute.keypair_create_method": "创建完成后请保存自动下载的私钥，你只有一次下载私钥的机会",
-  "compute.storage_gp3": "通用型SSD (gp3)"
+  "compute.storage_gp3": "通用型SSD (gp3)",
+  "compute.host_convert": "未探测到磁盘，无法转换成宿主机"
 }
