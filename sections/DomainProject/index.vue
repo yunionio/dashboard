@@ -61,6 +61,10 @@ export default {
       type: Object,
       required: true,
     },
+    fd: {
+      type: Object,
+      required: true,
+    },
     allowClear: Boolean,
     getDomainList: Function,
     isDefaultSelect: {
@@ -79,9 +83,18 @@ export default {
       projectData: {},
       projects: [],
       projectLoading: false,
+      isDomainFirstLoadData: true,
+      isProjectFirstLoadData: true,
     }
   },
   computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+  watch: {
+    'fd.domain' (val) {
+      if (val && this.isProjectFirstLoadData) {
+        this.fetchProjects(val.key || val)
+      }
+    },
+  },
   mounted () {
     this.dm = new Manager('domains', 'v1')
     this.pm = new Manager('projects', 'v1')
@@ -175,6 +188,10 @@ export default {
             domainChange()
           }
         }
+        if (this.isDomainFirstLoadData) {
+          this.$emit('fetchDomainCallback')
+          this.isDomainFirstLoadData = false
+        }
       } catch (error) {
         throw error
       } finally {
@@ -228,6 +245,10 @@ export default {
           if (this.isDefaultSelect) {
             projectChange()
           }
+        }
+        if (this.isProjectFirstLoadData) {
+          this.$emit('fetchProjectCallback')
+          this.isProjectFirstLoadData = false
         }
       } catch (error) {
         throw error
