@@ -507,5 +507,21 @@ export default {
         })
       }
     },
+    fetchDomainCallback () {
+      const domain = this.$route.query.domain_id
+      if (!R.isNil(domain) && !R.isEmpty(domain)) {
+        this.form.fc.setFieldsValue({
+          domain,
+        })
+      }
+    },
+    fetchProjectCallback () {
+      const project = this.$route.query.tenant_id
+      if (!R.isNil(project) && !R.isEmpty(project)) {
+        this.form.fc.setFieldsValue({
+          project: { key: project },
+        })
+      }
+    },
   },
 }
