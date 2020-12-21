@@ -1347,5 +1347,6 @@
   "commpute.sku_sync_label": "公有云套餐默认每天自动刷新一次，此功能可支持手动进行刷新获取最新的套餐",
   "commpute.sku_sync_title": "刷新套餐",
   "commpute.sku_sync_result": "操作成功，开始同步套餐，约{0}",
-  "compute.storage_gp3": "通用型SSD (gp3)"
+  "compute.storage_gp3": "通用型SSD (gp3)",
+  "compute.host_convert": "未探测到磁盘，无法转换成宿主机"
 }
