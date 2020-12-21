@@ -260,6 +260,12 @@ export default {
                     tooltip: i18n.t('compute.text_852'),
                   }
                 }
+                if (obj.spec && !obj.spec.disk) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.host_convert'),
+                  }
+                }
                 return {
                   validate: true,
                 }
