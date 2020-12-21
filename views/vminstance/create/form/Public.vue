@@ -13,7 +13,12 @@
       </servertemplate>
       <!-- <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider> -->
       <a-form-item v-if="!isServertemplate" :label="$t('compute.text_297', [$t('dictionary.project')])">
-        <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
+        <domain-project
+          :fc="form.fc"
+          :fd="form.fd"
+          :decorators="{ project: decorators.project, domain: decorators.domain }"
+          @fetchDomainCallback="fetchDomainCallback"
+          @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_228')" v-if="!isServertemplate">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
