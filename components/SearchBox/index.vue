@@ -145,7 +145,7 @@ export default {
           }
         } else {
           let newKey = key
-          if (!this.autocompleterSearch) {
+          if (this.autocompleterSearch && !this.autocompleterSearch.includes('：')) {
             if (/^\d+.*$/.test(value)) {
               newKey = 'ip_addr'
             } else {
