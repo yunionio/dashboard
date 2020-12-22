@@ -4,6 +4,8 @@ import _ from 'lodash'
 import i18n from '@/locales'
 import { numerify } from '@/filters'
 
+import { getLanguage } from '@/utils/common/cookie'
+
 let tIndex = 0
 
 export const UNITS = ['B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
@@ -723,3 +725,4 @@ export const mathRoundFix = (num, precision = 2, needFixZero) => {
   if (!needFixZero) res = parseFloat(res)
   return res
 }
+export const language = getLanguage() === 'zh-CN' ? 'zh' : 'en'
