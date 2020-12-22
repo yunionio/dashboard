@@ -1,6 +1,7 @@
 import { typeClouds } from '@/utils/common/hypervisor'
+import { language } from '@/utils/utils'
 import i18n from '@/locales'
-const DOCS_PATH = `${window.location.origin}/docs/docs/user/multiplecloud/cloudaccount/cloudaccount/`
+const DOCS_PATH = `${window.location.origin}/docs/${language}/docs/user/multiplecloud/cloudaccount/cloudaccount/`
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
 const awsLogo = require('../../../../src/assets/images/providers/aws.svg')
