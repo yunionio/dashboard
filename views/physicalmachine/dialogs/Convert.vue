@@ -478,7 +478,7 @@ export default {
           k++
         }
       }
-      const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1] && item.type === arr[2] && item.size === arr[3])
+      const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1] && item.type === arr[2] && item.unitSize === arr[3])
       if (isRepeat.length > 0) {
         if (data.option[2] === 'none') {
           range = [data.start_index + this.count + 1]
