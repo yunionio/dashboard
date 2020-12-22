@@ -215,7 +215,7 @@ export default {
           }
         }
         this.projects = projects
-        this.fd.project = initProjectId || ((this.projects[0] && this.projects[0].id) || '')
+        this.fd.project = initProjectId || ((this.params.data[0].tenant_id) || '')
       } catch (error) {
         throw error
       }
