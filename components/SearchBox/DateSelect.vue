@@ -127,11 +127,11 @@ export default {
         const time2 = val.time2 && val.time2.format('HH:mm:ss')
         let selectValue = []
         if (val.type === 'before') {
-          selectValue = [[moment(`${date1} ${time1}`), null]]
+          selectValue = [[moment(`${date1} ${time1}`).utc(), null]]
         } else if (val.type === 'after') {
-          selectValue = [[null, moment(`${date2} ${time2}`)]]
+          selectValue = [[null, moment(`${date2} ${time2}`).utc()]]
         } else if (val.type === 'range') {
-          selectValue = [[moment(`${date1} ${time1}`), moment(`${date2} ${time2}`)]]
+          selectValue = [[moment(`${date1} ${time1}`).utc(), moment(`${date2} ${time2}`).utc()]]
         }
         this.$emit('change', selectValue)
       },
