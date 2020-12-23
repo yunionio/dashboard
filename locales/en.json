@@ -1,7 +1,7 @@
 {
   "db.text_1": "Randomly Generated",
   "db.text_2": "Associated Key",
-  "db.text_3": "Keep mirroring settings",
+  "db.text_3": "Keep image settings",
   "db.text_4": "Manual input",
   "db.text_5": "Read and Write",
   "db.text_6": "Read Only",
@@ -46,7 +46,7 @@
   "db.text_45": "Restore",
   "db.text_46": "Status",
   "db.text_47": "Running",
-  "db.text_48": "Shutdown",
+  "db.text_48": "Stop",
   "db.text_49": "Unknown",
   "db.text_50": "Scheduling failed",
   "db.text_51": "Platform",
