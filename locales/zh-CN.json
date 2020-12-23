@@ -759,9 +759,9 @@
   "compute.text_776": "IPMI用户名",
   "compute.text_777": "IPMI密码",
   "compute.text_778": "管理口IP",
-  "compute.text_779": "会根据输入的IP子网或者IP地址设置物理机的管理口IP",
+  "compute.text_779": "会根据输入的IP子网或者IP地址设置物理机的管理口IP，没有想要的IP子网，前往",
   "compute.text_780": "只注册不引导",
-  "compute.text_781": "会根据输入的IP子网或者IP地址设置物理机的管理口IP，留空则使用DHCP自动分配的IP作为管理口IP",
+  "compute.text_781": "会根据输入的IP子网或者IP地址设置物理机的管理口IP，留空则使用DHCP自动分配的IP作为管理口IP，没有想要的IP子网，前往",
   "compute.text_782": "为空时，系统默认使用 {0}；不为空时，则使用用户输入信息。新机器建议留空，老机器建议输入旧密码",
   "compute.text_783": "请输入物理机管理口的MAC地址，一般为eth0",
   "compute.text_784": "为空时，系统默认自动分配IP；不为空时，则使用用户输入信息。新机器建议留空，老机器建议输入旧IP",
@@ -1329,5 +1329,6 @@
   "compute.text_1381": "使用已有密钥对",
   "compute.keypair_create_method": "创建完成后请保存自动下载的私钥，你只有一次下载私钥的机会",
   "compute.storage_gp3": "通用型SSD (gp3)",
-  "compute.host_convert": "未探测到磁盘，无法转换成宿主机"
+  "compute.host_convert": "未探测到磁盘，无法转换成宿主机",
+  "compute.physicalmachine_add": "在添加物理机之前，请确保已经在平台创建物理机所需要的IPMI类型的IP子网和物理机类型的IP子网等"
 }
