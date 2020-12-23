@@ -1,7 +1,7 @@
 <template>
   <a-select dropdownClassName="oc-select-dropdown" :value="valueC" allow-clear @change="handleChange" showSearch :filterOption="filterOption">
     <a-select-option v-for="item in options" :key="item.id">
-      <span class="text-color-secondary option-prefix">{{ $t('dictionary.zone') }}: </span>{{ item.name }}
+      <span class="text-color-secondary option-prefix">{{ $t('dictionary.zone') }}: </span>{{ _$t(item) }}
     </a-select-option>
   </a-select>
 </template>

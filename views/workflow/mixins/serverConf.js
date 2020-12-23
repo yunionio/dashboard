@@ -45,9 +45,9 @@ export default {
               title: i18n.t('common_282'),
               formatter: ({ cellValue, row }) => {
                 if (row.zoneInfo && row.zoneInfo.name) {
-                  return `${row.regionInfo && row.regionInfo.name} ${row.zoneInfo && row.zoneInfo.name}`
+                  return `${row.regionInfo && this._$t(row.regionInfo)} ${row.zoneInfo && this._$t(row.zoneInfo)}`
                 }
-                return row.regionInfo && row.regionInfo.name
+                return row.regionInfo && this._$t(row.regionInfo)
               },
             },
             {

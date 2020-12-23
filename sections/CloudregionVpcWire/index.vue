@@ -4,24 +4,24 @@
       <a-col :span="8">
         <a-form-item>
           <a-select label-in-value v-decorator="decorator.cloudregion" :placeholder="$t('rules.region')" @change="regionChange">
-            <a-select-option v-for="item in regionOpts" :key="item.id" :provider="item.provider">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in regionOpts" :key="item.id" :provider="item.provider">{{ _$t(item) }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item>
           <a-select label-in-value  v-decorator="decorator.vpc" allow-clear :placeholder="$t('rules.vpc')" @change="vpcChange">
-            <a-select-option v-for="item in vpcOpts" :key="item.id">{{ item.name }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}</a-select-option>
+            <a-select-option v-for="item in vpcOpts" :key="item.id">{{ _$t(item) }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item>
           <a-select label-in-value  v-decorator="decorator.wire" allow-clear :placeholder="$t('rules.wire')" v-if="show">
-            <a-select-option v-for="item in wireOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in wireOpts" :key="item.id">{{ _$t(item) }}</a-select-option>
           </a-select>
           <a-select label-in-value  v-decorator="decorator.zone" allow-clear :placeholder="$t('rules.zone')" v-if="!show">
-            <a-select-option v-for="item in zonesOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in zonesOpts" :key="item.id">{{ _$t(item) }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
