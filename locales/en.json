@@ -1776,7 +1776,7 @@
     "password": "Manual input"
   },
   "enabledSwitchMessage": {
-    "instancegroups.disable": "After disabling, the virtual machine will not be able to join the anti-affinity group.",
+    "instancegroups.disable": "After disabling, the virtual machine will not be able to join the unaffinity group.",
     "scalinggroups.enable": "When enabled, the scaling group will create or delete virtual machines according to the scaling policy.",
     "scalinggroups.disable": "After disabling, all scaling policies under the scaling group cannot be executed, but scaling policies can still be created.",
     "scalingpolicies.enable": "When enabled, the scaling policy will create or delete virtual machines based on the policy settings.",
@@ -2064,7 +2064,7 @@
     "identity_provider": "Identity Provides",
     "image": "Images",
     "infos": "System",
-    "instancegroup": "Anti-Affinity Group",
+    "instancegroup": "Unaffinity Group",
     "isolated_device": "GPU transparent transmission device",
     "keypair": "Key",
     "kubecluster": "K8S-Cluster",
@@ -2243,7 +2243,7 @@
       "disk_mb": "Disk(MB)",
       "user_tag": "User tag",
       "ext_tag": "External tag",
-      "flavor": "Flavor",
+      "flavor": "Configuration",
       "enable_status": "Enable status",
       "strategy": "Strategy",
       "granularity": "Granularity",
