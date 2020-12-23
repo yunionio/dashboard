@@ -200,7 +200,8 @@ export default {
         <a-select class="w-100" allowClear showSearch filterOption={this.filterOption}loading={loading} onChange={onChange}>
           {
             list.map(item => {
-              const { id, name } = item
+              const { id } = item
+              const name = this._$t(item)
               return <a-select-option row={item} value={id} >{name}</a-select-option>
             })
           }
