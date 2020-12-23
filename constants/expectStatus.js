@@ -160,7 +160,7 @@ export default {
   },
   hostImageCache: {
     info: ['init', 'saving', 'caching', 'deleting'],
-    success: ['ready'],
+    success: ['ready', 'active'],
     danger: ['cache_fail'],
   },
   nat: {
