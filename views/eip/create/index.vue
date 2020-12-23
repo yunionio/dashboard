@@ -87,8 +87,8 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import IpSubnet from '../../../sections/IpSubnet'
 import BottomBar from './components/BottomBar'
+import IpSubnet from '@Network/sections/IpSubnet'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
