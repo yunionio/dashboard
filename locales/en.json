@@ -55,7 +55,7 @@
   "network.text_54": "2. Supports selecting hosts in all operating states of the host list.",
   "network.text_55": "3. To support the selection of external machines not managed by @:brand by IP address, the following requirements must be met:",
   "network.text_56": "a. The Ansible Server of the control node can access the target machine",
-  "network.text_57": "b. The target machine has a cloudroot user and supports sudo password-free login",
+  "network.text_57": "b. The target machine has a cloudroot user and supports sudo sso login",
   "network.text_58": "c. The target machine allows the administrator to log in with the public key without password, and obtain the public key through the climc sshkeypair-show --admin command",
   "network.text_59": "Please enter the IP of the external machine",
   "network.text_60": "Please select a cloud host",
