@@ -79,6 +79,7 @@ export default {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
+              name: this.$t('cloudenv.text_11'),
               title: this.$t('cloudenv.text_108'),
               onManager: this.onManager,
             })
