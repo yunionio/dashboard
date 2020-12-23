@@ -1926,7 +1926,9 @@
     "REDIS_UNREASONABLE": "Free redis",
     "SECGROUPRULEINSERVER_ALLIN": "The in rule of the security group rule is a fully open host",
     "SNAPSHOT_UNUSED": "Unused snapshot",
-    "OSS_SEC_ACL": "Object storage permissions are open to read and write buckets and files"
+    "OSS_SEC_ACL": "Object storage permissions are open to read and write buckets and files",
+    "CLOUDACCOUNT_AMOUNT_DAILY": "Cloud account day abnormal consumption",
+    "CLOUDACCOUNT_AMOUNT_MONTH": "Cloud account monthly abnormal consumption"
   },
   "idpDrivers": {
     "LDAP": [
