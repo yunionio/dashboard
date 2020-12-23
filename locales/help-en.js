@@ -10,13 +10,13 @@ export default {
     `,
     serverPassword: `
       <h4>Associated key</h4>
-      <p>Log in to the server by setting the SSH key</p>
+      <p>Log in to the server by setting the Key Pairs</p>
       <h4>Keep image settings</h4>
       <p>Use the original password of the mirror, please make sure you know the original password of the selected mirror. </p>
     `,
     keypairPassword: `
       <h4>Associated key</h4>
-      <p>Log in to the server by setting the SSH key</p>
+      <p>Log in to the server by setting the Key Pairs</p>
     `,
     imagePassword: `
       <h4>Keep image settings</h4>
@@ -29,7 +29,7 @@ export default {
       <p>The names are network0, network1, network2 in sequence. </p>
     `,
     networkPolicy: `
-      <p>The default policy is: physical machines are allocated from high addresses, and virtual machines are allocated from low addresses</p>
+      <p>The default policy is: physical machines are allocated from high addresses, and servers are allocated from low addresses</p>
     `,
     networkDomain: `
       <p>When the system assigns an IP to a host, it will also create a domain name record pointing to the IP. The domain name consists of the host name + the host domain name suffix. For example:</p>
