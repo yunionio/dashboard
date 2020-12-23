@@ -104,7 +104,7 @@
           :capability-data="form.fi.capability"
           ref="dataDiskRef" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1372')">
+      <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_308')">
