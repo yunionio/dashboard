@@ -17,7 +17,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['l3PermissionEnable', 'userInfo']),
+    ...mapGetters(['l3PermissionEnable', 'userInfo', 'isAdminMode']),
   },
   created () {
     this.singleActions = [
@@ -42,7 +42,7 @@ export default {
       {
         label: i18n.t('cloudenv.text_311'),
         actions: obj => {
-          const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
+          const ownerDomain = this.isAdminMode || obj.domain_id === this.userInfo.projectDomainId
           return [
             {
               label: i18n.t('cloudenv.text_106'),
@@ -135,7 +135,7 @@ export default {
                   ret.tooltip = this.$t('cloudaccount.tooltip.disable_set_discount')
                   return ret
                 }
-                if (this.userInfo.domain.id !== obj.domain_id) {
+                if (!this.isAdminMode && this.userInfo.domain.id !== obj.domain_id) {
                   ret.validate = false
                   ret.tooltip = this.$t('common.share', [this.$t('cloudenv.text_12')])
                   return ret
@@ -157,11 +157,11 @@ export default {
                 let tooltip = ''
                 if (!this.l3PermissionEnable) {
                   tooltip = i18n.t('cloudenv.text_314')
-                } else if (!this.$store.getters.isAdminMode) {
+                } else if (!this.isAdminMode) {
                   tooltip = i18n.t('cloudenv.text_315')
                 }
                 return {
-                  validate: this.l3PermissionEnable && this.$store.getters.isAdminMode,
+                  validate: this.l3PermissionEnable && this.isAdminMode,
                   tooltip,
                 }
               },
@@ -271,7 +271,7 @@ export default {
         }
         return true
       })
-      const ownerDomain = this.$store.getters.isAdminMode || items.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
+      const ownerDomain = this.isAdminMode || items.every(obj => obj.domain_id === this.userInfo.projectDomainId)
       return {
         validate: enabledValid && autoSyncValid && ownerDomain,
         tooltip,
