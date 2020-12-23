@@ -1400,7 +1400,7 @@
     "Aws": "AWS",
     "Huawei": "Huawei Cloud",
     "Qcloud": "Tencent Cloud",
-    "Azure": "Microsoft Cloud",
+    "Azure": "Azure",
     "Ctyun": "eCloud"
   },
   "shareScope": {
