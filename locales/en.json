@@ -2287,7 +2287,7 @@
       "modify": "Modify",
       "set_tag": "Set tags",
       "clone": "Clone",
-      "smal_login": "Password-free login"
+      "smal_login": "SSO login"
     },
     "validate": {
       "no_share_res_permission": "Shared resource, no operation permission",
@@ -3422,7 +3422,7 @@
   "common.text00010": "Export Data",
   "common.text00011": "Custom List Item",
   "common.text00012": "Tag",
-  "common.text00013": "No local tag",
+  "common.text00013": "No any tag",
   "common.text00014": "Select attributes to filter",
   "common.text00015": "Add Filter Item",
   "common.text00016": "The public image provided by the @:brand platform can be adapted to all platforms",
@@ -3762,7 +3762,7 @@
   "common_257": "Belonging",
   "common_258": "Create",
   "common_259": "Each resource can bind up to 20 tags",
-  "common_260": "No local tag",
+  "common_260": "No any tag",
   "common_261": "Local Tag",
   "common_262": "External label",
   "common_263": "Tag value:",
@@ -4231,11 +4231,11 @@
   "common.all_process": "All work orders",
   "personal_user_tab": {
     "cloud": "Account login user",
-    "saml": "Password-free login user"
+    "saml": "SSO login user"
   },
   "smal_login_message": {
-    "loading": "Password-free login is in progress, please wait",
-    "fail": "Password-free login failed",
+    "loading": "SSO login is in progress, please wait",
+    "fail": "SSO login failed",
     "success": "Login successful",
     "no_login_url": "The address is empty, please contact the administrator"
   },
