@@ -46,6 +46,8 @@ export const LB_LISTENEER_ACTION_POLICIES = {
     },
   },
   qcloud: {
+    enable: false,
+    disable: false,
     aclUpdate: false,
   },
   huawei: {
