@@ -211,6 +211,7 @@ export default {
       cloudproviderData: [],
       regionList: {},
       zoneList: {},
+      instance_capabilities: [],
     }
   },
   computed: {
@@ -320,6 +321,14 @@ export default {
     extra () {
       return this.cloudEnv === 'onpremise' ? this.$t('compute.text_1353') : ''
     },
+    instanceCapabilitieStorage () {
+      if (R.isEmpty(this.instance_capabilities)) return {}
+      return this.instance_capabilities[0].storages
+    },
+    instanceCapabilitieDataDisk () {
+      if (R.isEmpty(this.instanceCapabilitieStorage)) return []
+      return this.instanceCapabilitieStorage.data_disk
+    },
   },
   watch: {
     cloudEnv (val) {
@@ -350,6 +359,7 @@ export default {
         .then(({ data }) => {
           try {
             const provider = Array.isArray(this.provider) ? this.provider[0] : this.provider
+            this.instance_capabilities = data.instance_capabilities
             this.storageOpts = data.data_storage_types.map((item) => {
               const types = item.split('/')
               const backend = types[0]
@@ -452,38 +462,14 @@ export default {
         }
       })
     },
-    __storageChange (storageId) {
-      const item = this.storageOpts.find(v => v.value === storageId)
-      this.storageItem = item
-      const provider = item.provider.toLowerCase()
-      try {
-        const storageItem = CommonConstants.STORAGE_TYPES[provider]
-        if (storageItem && storageItem[item.storage_type]) {
-          this.minDiskData = CommonConstants.STORAGE_TYPES[provider][item.storage_type].min
-          this.maxDiskData = CommonConstants.STORAGE_TYPES[provider][item.storage_type].max
-        } else {
-          this.minDiskData = 1
-          this.maxDiskData = 2048
-        }
-      } catch (error) {
-        console.warn(this.$t('compute.text_413', [CommonConstants.STORAGE_TYPES[provider], item.storage_type]))
-      }
-      this.form.fc.setFieldsValue({ size: 10 })
-      const size = this.form.fc.getFieldValue('size')
-      if (size > this.maxDiskData) { // 如果当前容量大于当前集群的最大值，那么取最大值
-        this.form.fc.setFieldsValue({ size: this.maxDiskData })
-      } else if (size < this.minDiskData) { // 如果当前容量小于当前集群的最大值，那么取最小值
-        this.form.fc.setFieldsValue({ size: this.minDiskData })
-      }
-    },
     __newStorageChange (val) {
       const item = this.storageOpts.find(v => v.value === val)
       this.storageItem = item
       try {
         const storageItem = CommonConstants.STORAGE_TYPES[this.provider]
         if (storageItem && storageItem[item.value]) {
-          this.minDiskData = CommonConstants.STORAGE_TYPES[this.provider][item.value].min
-          this.maxDiskData = CommonConstants.STORAGE_TYPES[this.provider][item.value].max
+          this.minDiskData = this.getDataDiskMin(item)
+          this.maxDiskData = this.getDataDiskMax(item)
         } else {
           this.minDiskData = 1
           this.maxDiskData = 2048
@@ -498,6 +484,20 @@ export default {
       } else if (size < this.minDiskData) { // 如果当前容量小于当前集群的最大值，那么取最小值
         this.form.fc.setFieldsValue({ size: this.minDiskData })
       }
+    },
+    getDataDiskMin (item) {
+      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === item.value)
+      if (curDisk) {
+        return curDisk.min_size_gb
+      }
+      return CommonConstants.STORAGE_TYPES[this.provider][item.value].min
+    },
+    getDataDiskMax (item) {
+      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === item.value)
+      if (curDisk) {
+        return curDisk.max_size_gb
+      }
+      return CommonConstants.STORAGE_TYPES[this.provider][item.value].max
     },
   },
 }
