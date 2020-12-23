@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import _ from 'lodash'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
@@ -42,6 +43,10 @@ export default {
           if (obj.status !== 'active') {
             ret.validate = false
             ret.tooltip = i18n.t('compute.text_681')
+          }
+          if (!_.get(obj, 'properties.os_type')) {
+            ret.validate = false
+            ret.tooltip = i18n.t('compute.image_create_server')
           }
           return ret
         },
