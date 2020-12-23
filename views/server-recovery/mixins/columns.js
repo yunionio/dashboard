@@ -48,6 +48,7 @@ export default {
       getCopyWithContentTableColumn({
         field: 'host',
         title: i18n.t('compute.text_111'),
+        hideField: true,
         slotCallback: row => {
           if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
             return '-'
