@@ -1367,5 +1367,6 @@
   "commpute.sku_sync_result": "Operation successfully started synchronization package total {0}",
   "compute.storage_gp3": "General-purpose SSD (gp3)",
   "compute.iso_windows_help": "Windows ISO images need to pay attention to driver issues to prevent startup failures",
-  "compute.host_convert": "No disk detected and cannot be converted to host"
+  "compute.host_convert": "No disk detected and cannot be converted to host",
+  "compute.image_create_server": "No OS type detected and cannot to create @:dictionary.server"
 }
