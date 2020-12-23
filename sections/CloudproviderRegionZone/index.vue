@@ -4,21 +4,21 @@
       <a-col :span="8">
         <a-form-item :wrapperCol="{ span: 24 }">
           <a-select label-in-value v-decorator="decorators.cloudregion" @change="cloudregionChange" :placeholder="$t('rules.region')" show-search :filterOption="filterOption" :loading="loading.cloudregion">
-            <a-select-option v-for="item in cloudregionOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in cloudregionOpts" :key="item.id">{{ _$t(item) }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item :wrapperCol="{ span: 24 }">
           <a-select label-in-value v-decorator="decorators.zone" @change="zoneChange" :placeholder="$t('rules.zone')" show-search :filterOption="filterOption" :loading="loading.zone">
-            <a-select-option v-for="item in zoneOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in zoneOpts" :key="item.id">{{ _$t(item) }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="8">
         <a-form-item :wrapperCol="{ span: 24 }">
           <a-select label-in-value v-decorator="decorators.cloudprovider" :placeholder="$t('rules.account')" show-search :filterOption="filterOption" :loading="loading.cloudprovider">
-            <a-select-option v-for="item in cloudproviderOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in cloudproviderOpts" :key="item.id">{{ _$t(item) }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>

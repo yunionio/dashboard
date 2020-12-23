@@ -5,7 +5,7 @@
         <a-form-item>
           <a-select label-in-value v-decorator="decorator.cloudregion" :placeholder="$t('dictionary.region')" @change="regionChange">
             <a-select-option v-for="item in regionOpts" :key="item.id" :provider="item.provider">
-              <span class="text-color-secondary">{{ $t('dictionary.region') }}: </span>{{ item.name }}
+              <span class="text-color-secondary">{{ $t('dictionary.region') }}: </span>{{ _$t(item) }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -15,7 +15,7 @@
           <a-select label-in-value  v-decorator="decorator.vpc" allow-clear :placeholder="$t('common.text00046')" @change="vpcChange">
             <a-select-option v-for="item in vpcOpts" :key="item.id">
               <span class="text-color-secondary">{{ $t('dictionary.vpc') }}: </span>
-              {{ item.account ? `${ item.account }/` : '' }}{{ item.name === 'Default' ? `${$t('common_91')}` : item.name }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}
+              {{ item.account ? `${ item.account }/` : '' }}{{ item.name === 'Default' ? `${$t('common_91')}` : _$t(item) }}{{ item.cidr_block ? `（${item.cidr_block}）` : '' }}
             </a-select-option>
           </a-select>
         </a-form-item>

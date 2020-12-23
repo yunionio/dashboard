@@ -421,7 +421,8 @@ export default {
       return (
         <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder={this.placeholders.cloudregion}>
           {this.cloudregionList.map(cloudregion => {
-            const { id, name } = cloudregion
+            const { id } = cloudregion
+            const name = this._$t(cloudregion)
             if (this.names.length === 1) {
               return <a-select-option key={id} value={id}>
                 {name}
@@ -497,7 +498,8 @@ export default {
       return (
         <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder={this.placeholders.zone}>
           {this.zoneList.map(zone => {
-            const { id, name } = zone
+            const { id } = zone
+            const name = this._$t(zone)
             if (this.names.length === 1) {
               return <a-select-option key={id} value={id}>
                 {name}

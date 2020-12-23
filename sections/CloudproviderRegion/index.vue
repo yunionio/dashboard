@@ -4,14 +4,14 @@
       <a-col :span="12">
         <a-form-item>
           <a-select label-in-value v-decorator="decorator.cloudprovider" @change="handleChange" :placeholder="$t('common.text00044')">
-            <a-select-option v-for="item in providerOpts" :key="item.id">{{ item.name }}/{{item.cloudaccount}}</a-select-option>
+            <a-select-option v-for="item in providerOpts" :key="item.id">{{ _$t(item) }}/{{item.cloudaccount}}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>
       <a-col :span="12">
         <a-form-item>
           <a-select label-in-value  v-decorator="decorator.region" allow-clear @change="emit" :placeholder="$t('dictionary.region')">
-            <a-select-option v-for="item in regionOpts" :key="item.id">{{ item.name }}</a-select-option>
+            <a-select-option v-for="item in regionOpts" :key="item.id">{{ _$t(item) }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-col>

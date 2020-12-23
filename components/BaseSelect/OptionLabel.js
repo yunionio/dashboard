@@ -111,12 +111,12 @@ export default {
   },
   computed: {
     text () {
-      return this.data[this.nameKey]
+      return this._$t(this.data, this.nameKey)
     },
   },
   methods: {
     getLabel () {
-      let text = this.data[this.nameKey]
+      let text = this.text
       const resourceItem = resourceMode[this.resource]
       if (this.labelFormat) {
         text = this.labelFormat(this.data)
