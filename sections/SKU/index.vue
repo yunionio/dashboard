@@ -306,7 +306,7 @@ export default {
       return data.provider ? PROVIDER_MAP[data.provider].label : PROVIDER_MAP.OneCloud.label
     },
     genRateKey (data) {
-      const provider = data.provider.toLowerCase()
+      const provider = this.getSkuItemProvider(data)
       let ret = `${provider}::${data.region_ext_id}::${data.name}`
       if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
         ret = `${provider}::${data.region_ext_id}::::instance::${data.name}`
@@ -341,10 +341,7 @@ export default {
       if (!this.isPublic) return
       if (!this.skuList || !this.skuList.length) return
       let paramKeys = this.skuList.map(item => {
-        let provider = item.provider.toLowerCase()
-        if (this.isPublic && item.cloud_env) {
-          provider = item.cloud_env.toLowerCase() // 兼容阿里金融云
-        }
+        const provider = this.getSkuItemProvider(item)
         let ret = `${provider}::${item.region_ext_id || 'NA'}::${item.name || 'NA'}`
         if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
           ret = `${provider}::${item.region_ext_id}::::instance::${item.name}`
@@ -364,6 +361,13 @@ export default {
         .catch(() => {
           this.rateLoading = false
         })
+    },
+    getSkuItemProvider (item) { // 兼容阿里金融云
+      let provider = item.provider.toLowerCase()
+      if (this.isPublic && item.cloud_env) {
+        provider = item.cloud_env.toLowerCase()
+      }
+      return provider
     },
   },
 }
