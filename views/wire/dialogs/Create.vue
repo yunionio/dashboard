@@ -189,7 +189,7 @@ export default {
       }).then((res) => {
         this.areas = res.data.data.map((item) => {
           return {
-            label: item.name,
+            label: this._$t(item),
             value: item.id,
           }
         })
@@ -241,7 +241,7 @@ export default {
       const results = []
       for (let i = 0; i < data.length; i++) {
         const zone = data[i]
-        let name = zone.name
+        let name = this._$t(zone)
         if (zone.name_cn) {
           name += '(' + zone.name_cn + ')'
         }
