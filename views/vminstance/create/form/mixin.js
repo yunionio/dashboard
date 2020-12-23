@@ -268,6 +268,9 @@ export default {
     isZStack () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.zstack.key
     },
+    showServerAccount () {
+      return this.form.fd.loginType !== LOGIN_TYPES_MAP.image.key
+    },
   },
   created () {
     this.zoneM = new Manager('zones')

@@ -116,7 +116,7 @@
           :enableMointpoint="true" />
         <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1372')">
+      <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="form.fd.hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_308')" v-if="!isIso">
