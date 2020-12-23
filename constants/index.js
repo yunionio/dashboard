@@ -319,6 +319,7 @@ export const metric_zh = {
   'The number of threads used by the process': i18n.t('monitor_metric_94'),
   'inodes_free/inodes_total': i18n.t('monitor_metric_96'),
   'free/total': i18n.t('monitor_metric_97'),
+  'Guest network traffic': i18n.t('monitor_metric_98'),
 }
 
 export const filterKeyMap = {
