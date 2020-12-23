@@ -759,9 +759,9 @@
   "compute.text_776": "IPMI username",
   "compute.text_777": "IPMI password",
   "compute.text_778": "Management port IP",
-  "compute.text_779": "The management port IP of the physical machine will be set according to the entered IP subnet or IP address",
+  "compute.text_779": "The management port IP of the physical machine will be set according to the entered IP subnet or IP address, there is no desired IP subnet, go to",
   "compute.text_780": "Only register but not boot",
-  "compute.text_781": "The management port IP of the physical machine will be set according to the entered IP subnet or IP address. Leave it blank to use the IP automatically assigned by DHCP as the management port IP",
+  "compute.text_781": "The management port IP of the physical machine will be set according to the entered IP subnet or IP address. Leave it blank to use the IP automatically assigned by DHCP as the management port IP, there is no desired IP subnet, go to",
   "compute.text_782": "When it is empty, the system defaults to {0}; when it is not empty, the user input information is used. It is recommended to leave it blank for new machines, and to enter the old password for old machines",
   "compute.text_783": "Please enter the MAC address of the physical machine management port, usually eth0",
   "compute.text_784": "When it is empty, the system automatically assigns an IP by default; when it is not empty, the user input information is used. It is recommended to leave it blank for the new machine, and to enter the old IP for the old machine",
@@ -1348,5 +1348,6 @@
   "commpute.sku_sync_title": "Sync Sku",
   "commpute.sku_sync_result": "Operation successfully started synchronization package total {0}",
   "compute.storage_gp3": "General-purpose SSD (gp3)",
-  "compute.host_convert": "No disk detected and cannot be converted to host"
+  "compute.host_convert": "No disk detected and cannot be converted to host",
+  "compute.physicalmachine_add": "Before adding physical machines, make sure that you have created IP subnets of the type IPMI and IP subnets of the type physical machines need on the platform"
 }
