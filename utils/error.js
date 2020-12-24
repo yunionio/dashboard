@@ -204,8 +204,18 @@ const classDriver = (errorMsg, h) => {
       }
       const { detail } = errorMsg
       if (!detail) return desc
-      const domainTenantReg = /^.*domain_id=(\w+?),tenant_id=(\w+?): .*$/g
-      const [, domainId, tenantId] = domainTenantReg.exec(detail)
+      let domainId = null
+      let tenantId = null
+      if (detail.includes('domain_id')) {
+        const domainReg = /^.*domain_id=(\w+).*$/g
+        const ret = domainReg.exec(detail)
+        if (ret && ret.length) domainId = ret[1]
+      }
+      if (detail.includes('tenant_id')) {
+        const tenantReg = /^.*tenant_id=(\w+).*$/g
+        const ret = tenantReg.exec(detail)
+        if (ret && ret.length) tenantId = ret[1]
+      }
       if (domainId && quotaErrorsMap.domain) quotaErrorsMap.domain.id = domainId
       if (tenantId && quotaErrorsMap.project) quotaErrorsMap.project.id = tenantId
       const vm = new WindowVue({ store })
