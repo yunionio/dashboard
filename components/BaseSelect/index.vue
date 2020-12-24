@@ -296,6 +296,7 @@ export default {
           this.fetchDataNum = 0 // paramsChange 后 fetchDataNum 应该重置，这样 firstResOpts 保证能正确更新到
           this.firstResOpts = {}
           this.firstTotal = 0
+          this.currentItem = {}
           this.loadOpts()
         }
       }
