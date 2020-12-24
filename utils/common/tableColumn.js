@@ -169,6 +169,7 @@ export const getNameDescriptionTableColumn = ({
   edit = true,
   editDesc = true,
   minWidth = 100,
+  descField = 'description',
 } = {}) => {
   return {
     field,
@@ -206,7 +207,7 @@ export const getNameDescriptionTableColumn = ({
           ret.push(h('list-body-cell-wrap', {
             props: {
               edit: (R.is(Function, editDesc) && editDesc(row)) || editDesc === true,
-              field: 'description',
+              field: descField,
               row,
               onManager,
               steadyStatus,
