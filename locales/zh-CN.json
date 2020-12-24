@@ -1927,8 +1927,8 @@
     "SECGROUPRULEINSERVER_ALLIN": "安全组规则的in规则为全开放的主机",
     "SNAPSHOT_UNUSED": "未使用的快照",
     "OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件",
-    "CLOUDACCOUNT_AMOUNT_DAILY": "云账号天异常消费",
-    "CLOUDACCOUNT_AMOUNT_MONTH": "云账号月异常消费"
+    "CLOUDACCOUNT_AMOUNT_DAILY": "云账号天消费异常",
+    "CLOUDACCOUNT_AMOUNT_MONTH": "云账号月消费异常"
   },
   "idpDrivers": {
     "LDAP": [
