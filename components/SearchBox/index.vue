@@ -146,8 +146,9 @@ export default {
         } else {
           let newKey = key
           if (this.autocompleterSearch && !this.autocompleterSearch.includes('：')) {
-            if (/^\d+.*$/.test(value)) {
-              newKey = 'ip_addr'
+            const ipKey = Object.keys(this.options).find(v => v.startsWith('ip'))
+            if (/^\d+.*$/.test(value) && ipKey) {
+              newKey = ipKey
             } else {
               if (this.options[this.defaultSearchKey]) {
                 newKey = this.defaultSearchKey
