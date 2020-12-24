@@ -33,7 +33,6 @@ import ColumnsMixin from '../mixins/columns'
 import LoadbalancerlistenerDetail from './Detail'
 import LoadbalancerlistenerDashboard from './dashboard'
 import LoadbalancerlistenerruleList from '@Network/views/loadbalancerlistenerrule/components/List'
-import LoadbalancerbackendList from '@Network/views/loadbalancerbackend/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -43,7 +42,6 @@ export default {
   components: {
     LoadbalancerlistenerDetail,
     Actions,
-    LoadbalancerbackendList,
     LoadbalancerlistenerruleList,
     LoadbalancerlistenerDashboard,
   },
@@ -54,7 +52,6 @@ export default {
       const dashboardItem = { label: this.$t('network.text_520'), key: 'loadbalancerlistener-dashboard' }
       const rules = [
         { label: this.$t('network.text_67'), key: 'loadbalancerlistener-detail' },
-        { label: this.$t('network.text_140'), key: 'loadbalancerbackend-list' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (this.detailData.redirect === 'raw') {

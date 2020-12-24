@@ -27,6 +27,9 @@ export default {
       type: Object,
       required: true,
     },
+    lbData: { // lb实例的数据
+      type: Object,
+    },
   },
   data () {
     return {

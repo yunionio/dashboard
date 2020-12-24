@@ -48,9 +48,12 @@ export default {
           field: 'backend_group',
           title: i18n.t('network.text_139'),
           minWidth: 200,
-          formatter: ({ row }) => {
-            if (!row.backend_group || row.redirect === 'raw') return '-'
-            return row.backend_group
+          slots: {
+            default: ({ row }) => {
+              return [
+                <side-page-trigger onTrigger={ () => this.handleOpenLbbgSidepage(row) }>{ row.backend_group }</side-page-trigger>,
+              ]
+            },
           },
         },
         getStatusTableColumn({
@@ -68,6 +71,17 @@ export default {
       ]
       if (this.data.provider && this.data.provider.toUpperCase() !== 'onecloud') arr.splice(7, 1)
       return arr
+    },
+  },
+  methods: {
+    handleOpenLbbgSidepage (row) {
+      this.sidePageTriggerHandle(this, 'LoadbalancerbackendgroupSidePage', {
+        id: row.backend_group_id,
+        resource: 'loadbalancerbackendgroups',
+        lbData: this.data, // this.data 就是 list.vue 里面接收的prop
+      }, {
+        list: this.list,
+      })
     },
   },
 }
