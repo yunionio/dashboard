@@ -126,6 +126,7 @@ export default {
                 })
               },
               meta: () => {
+                const ownerDomain = this.isAdminMode || obj.domain_id === this.userInfo.projectDomainId
                 const isPublic = findPlatform(obj.brand.toLowerCase()) === 'public'
                 const ret = {
                   validate: true,
@@ -135,7 +136,7 @@ export default {
                   ret.tooltip = this.$t('cloudaccount.tooltip.disable_set_discount')
                   return ret
                 }
-                if (!this.isAdminMode && this.userInfo.domain.id !== obj.domain_id) {
+                if (!ownerDomain) {
                   ret.validate = false
                   ret.tooltip = this.$t('common.share', [this.$t('cloudenv.text_12')])
                   return ret
