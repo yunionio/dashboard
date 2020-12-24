@@ -169,7 +169,6 @@ export const getNameDescriptionTableColumn = ({
   edit = true,
   editDesc = true,
   minWidth = 100,
-  descField = 'description',
 } = {}) => {
   return {
     field,
@@ -204,10 +203,12 @@ export const getNameDescriptionTableColumn = ({
             max: 256,
             message: i18n.t('validator.maxLength', ['256']),
           })
+          let field = 'description'
+          if (_.get(row, '_i18n.description')) field = '_i18n.description' // 如果多语言里面有备注，则取多语言里的字段
           ret.push(h('list-body-cell-wrap', {
             props: {
               edit: (R.is(Function, editDesc) && editDesc(row)) || editDesc === true,
-              field: descField,
+              field,
               row,
               onManager,
               steadyStatus,
