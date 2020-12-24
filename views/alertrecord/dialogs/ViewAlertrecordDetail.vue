@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { metric_zh } from '@Monitor/constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -31,7 +32,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   computed: {
     title () {
-      return 'haha'
+      return _.get(this.params, 'data[0].name', '')
     },
     records () {
       const { eval_data = [] } = this.params.data[0]

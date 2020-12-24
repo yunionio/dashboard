@@ -8,6 +8,13 @@ export default {
       getNameDescriptionTableColumn({
         edit: false,
         title: this.$t('monitor.text_99'),
+        hideField: true,
+        field: 'alert_name',
+        slotCallback: row => {
+          return (
+            <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.alert_name }</side-page-trigger>
+          )
+        },
       }),
       getTimeTableColumn({ title: this.$t('monitor.text_14') }),
       {
