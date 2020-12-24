@@ -3,7 +3,7 @@
     <span
       v-if="!hideField"
       class="text-truncate"
-      :class="{ 'text-weak': field === 'description', [titleClass]: titleClass }">{{ row[field] || '-' }}</span>
+      :class="{ 'text-weak': field.includes('description'), [titleClass]: titleClass }">{{ l.get(row, field) || '-' }}</span>
     <div class="text-truncate slot-wrap" v-if="$scopedSlots.default"><slot /></div>
     <template v-if="showDeleteLock">
       <a-icon class="ml-1" type="lock" :title="$t('common.text00008')" />
@@ -104,6 +104,7 @@ export default {
       // 是否在弹框里
       showBtn: false,
       editVisible: false, // edit form 的显隐
+      l: _,
     }
   },
   computed: {

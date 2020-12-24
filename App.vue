@@ -84,14 +84,6 @@ export default {
       },
       immediate: true,
     },
-    theme: {
-      handler (val) {
-        if (val && val !== process.env.THEME) {
-          console.log(val)
-        }
-      },
-      immediate: true,
-    },
     themeColor: {
       handler (val) {
         if (val && val !== process.env.THEME_COLOR) {
