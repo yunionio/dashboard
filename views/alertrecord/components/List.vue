@@ -2,7 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -25,10 +26,12 @@ export default {
       type: Object,
       required: true,
     },
+    listId: String,
   },
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.listId,
         resource: 'alertrecords',
         apiVersion: 'v1',
         getParams: this.getParams,
@@ -65,12 +68,46 @@ export default {
               })
             },
           },
+          created_at: {
+            label: this.$t('monitor.text_14'),
+            dropdown: true,
+            date: true,
+            filter: true,
+            formatter: (val, type) => {
+              if (type === 'before') {
+                return `created_at.le("${val}")`
+              }
+              if (type === 'after') {
+                return `created_at.ge("${val}")`
+              }
+              return `created_at.between("${val[0]}", "${val[1]}")`
+            },
+          },
         },
       }),
+      exportDataOptions: {
+        items: [
+          { key: 'alert_name', label: this.$t('monitor.text_99') },
+          { key: 'created_at', label: this.$t('monitor.text_14') },
+          { key: 'alert_rule', label: this.$t('monitor.strategy_detail') },
+          { key: 'level', label: this.$t('monitor.level') },
+          { key: 'res_num', label: this.$t('cloudenv.text_417') },
+          { key: 'status', label: this.$t('common.status') },
+        ],
+      },
     }
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'CommonalertsSidePage', {
+        id: row.alert_id,
+        resource: 'commonalerts',
+        apiVersion: 'v1',
+      })
+    },
   },
 }
 </script>
