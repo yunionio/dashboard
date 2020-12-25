@@ -2174,7 +2174,8 @@
     "guest": "@:dictionary.server",
     "webconsole": "webconsole",
     "message": "Message",
-    "alertrecord": "Alertrecord"
+    "alertrecord": "Alertrecord",
+    "rds": "RDS"
   },
   "res": {
     "role": "Role",
