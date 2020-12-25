@@ -16,7 +16,7 @@
   "db.text_15": "Mysql网络出流量",
   "db.text_16": "SQLServer网络入流量",
   "db.text_17": "SQLServer网络出流量",
-  "db.text_18": "连接数使用率",
+  "db.text_18": "连接使用率",
   "db.text_19": "网络入流量",
   "db.text_20": "网络出流量",
   "db.text_21": "网络瞬时输入流量",
