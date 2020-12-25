@@ -1,4 +1,5 @@
 import { disableDeleteAction } from '@/utils/common/tableActions'
+import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance/utils'
 import i18n from '@/locales'
 
 export default {
@@ -178,6 +179,27 @@ export default {
                   name: this.$t('dictionary.elasticcaches'),
                   resource: 'elasticcaches',
                 })
+              },
+            },
+            {
+              label: this.$t('compute.text_1116'),
+              permission: 'server_perform_add_secgroup',
+              action: () => {
+                this.createDialog('SetSecgroupDialog', {
+                  data: [obj],
+                  name: this.$t('dictionary.elasticcache'),
+                  resource: 'elasticcache_id',
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: cloudEnabled('assignSecgroup', obj),
+                  tooltip: cloudUnabledTip('assignSecgroup', obj),
+                }
+                return ret
               },
             },
             setAuthMode(),

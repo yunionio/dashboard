@@ -241,12 +241,26 @@ export default {
                 },
               },
             },
+            // {
+            //   field: 'secgroup',
+            //   title: this.$t('db.text_144'),
+            //   slots: {
+            //     default: ({ row }) => {
+            //       return row.secgroup || '-'
+            //     },
+            //   },
+            // },
             {
-              field: 'secgroup',
-              title: this.$t('db.text_144'),
+              field: 'secgroups',
+              title: this.$t('compute.text_105'),
               slots: {
                 default: ({ row }) => {
-                  return row.secgroup || '-'
+                  if (!row.secgroups) return '-'
+                  return row.secgroups.map((item) => {
+                    return <list-body-cell-wrap copy hideField={true} field='name' row={item} message={item.name}>
+                      <side-page-trigger permission='secgroups_get' name='SecGroupSidePage' id={item.id} vm={this}>{ item.name }</side-page-trigger>
+                    </list-body-cell-wrap>
+                  })
                 },
               },
             },
