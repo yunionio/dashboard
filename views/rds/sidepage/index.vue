@@ -53,7 +53,6 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('db.text_187'), key: 'detail' },
-        { label: this.$t('db.text_357'), key: 'secgroup-list' },
         { label: this.$t('db.text_188'), key: 'account-list' },
         { label: this.$t('db.text_189'), key: 'database-list' },
         { label: this.$t('db.text_190'), key: 'backup-list' },
@@ -64,12 +63,6 @@ export default {
   },
   computed: {
     getParams () {
-      if (this.params.windowData.currentTab === 'secgroup-list') {
-        return {
-          dbinstance_id: this.detailData.id,
-          details: true,
-        }
-      }
       return {
         dbinstance: this.detailData.id,
         details: true,
@@ -79,8 +72,6 @@ export default {
       switch (this.params.windowData.currentTab) {
         case 'event-drawer':
           return 'EventListForRDSSidePage'
-        case 'secgroup-list':
-          return 'SecgroupListForRDSSidePage'
         case 'account-list':
           return 'AccountListForRDSSidePage'
         case 'database-list':
