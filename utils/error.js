@@ -5,6 +5,7 @@ import Vue from 'vue'
 import i18n from '@/locales'
 import store from '@/store'
 import windowsMixin from '@/mixins/windows'
+import { hasPermission } from '@/utils/auth'
 
 const WindowVue = Vue.extend({
   mixins: [windowsMixin],
@@ -216,11 +217,10 @@ const classDriver = (errorMsg, h) => {
         const ret = tenantReg.exec(detail)
         if (ret && ret.length) tenantId = ret[1]
       }
-      if (domainId && quotaErrorsMap.domain) quotaErrorsMap.domain.id = domainId
-      if (tenantId && quotaErrorsMap.project) quotaErrorsMap.project.id = tenantId
+      if (domainId && quotaErrorsMap.domain && hasPermission({ key: 'domains_get' })) quotaErrorsMap.domain.id = domainId
+      if (tenantId && quotaErrorsMap.project && hasPermission({ key: 'projects_get' })) quotaErrorsMap.project.id = tenantId
       const vm = new WindowVue({ store })
       const handleOpenSidepage = (item) => {
-        if (!item.sidePageName || !item.id || !item.resource) return
         vm.sidePageTriggerHandle(vm, item.sidePageName, {
           id: item.id,
           resource: item.resource,
@@ -234,7 +234,11 @@ const classDriver = (errorMsg, h) => {
         <div>
           {
             quotaErrors.length ? quotaErrors.map(item => {
-              return <div class="mt-1"><side-page-trigger onTrigger={ () => handleOpenSidepage(item) } noStore>{item.label}</side-page-trigger></div>
+              let vnode = item.label
+              if (item.sidePageName && item.id && item.resource) {
+                vnode = <div class="mt-1"><side-page-trigger onTrigger={ () => handleOpenSidepage(item) } noStore>{item.label}</side-page-trigger></div>
+              }
+              return vnode
             }) : desc
           }
         </div>
