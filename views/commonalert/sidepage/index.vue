@@ -60,7 +60,6 @@ export default {
     getParams () {
       return {
         alert_id: this.data.id,
-        scope: 'system', // 仅管理后台可以查看报警记录
       }
     },
   },
