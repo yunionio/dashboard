@@ -2455,7 +2455,8 @@
     "itsm": "流程",
     "cloudid": "IAM",
     "monitor": "监控报警",
-    "yunionconf": "配置"
+    "yunionconf": "配置",
+    "cloudevent": "云上日志"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",

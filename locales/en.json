@@ -2455,7 +2455,8 @@
     "itsm": "ITSM",
     "cloudid": "IAM",
     "monitor": "Monitor",
-    "yunionconf": "Configuration"
+    "yunionconf": "Configuration",
+    "cloudevent": "Cloud Log"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
