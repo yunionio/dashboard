@@ -271,6 +271,7 @@ export const metric_zh = {
   'Request average E2E delay': i18n.t('monitor_metric_46'),
   'Object storage network traffic': i18n.t('monitor_metric_47'),
   'Receive byte': i18n.t('monitor_metric_48'),
+  'Send byte': i18n.t('monitor.text_117'),
   'Object store request': i18n.t('monitor_metric_49'),
   'Connection usage': i18n.t('db.text_18'),
   'Average memory usage': i18n.t('monitor_metric_50'),
@@ -320,6 +321,7 @@ export const metric_zh = {
   'inodes_free/inodes_total': i18n.t('monitor_metric_96'),
   'free/total': i18n.t('monitor_metric_97'),
   'Guest network traffic': i18n.t('monitor_metric_98'),
+  'request count': i18n.t('monitor.text_118'),
 }
 
 export const filterKeyMap = {
