@@ -650,5 +650,7 @@
   "cloudenv.cloudaccount.apsara.metrics_endpoint": "监控端点",
   "cloudenv.cloudaccount.apsara.resourcemanager_endpoint": "Resourcemanager组织管理端点",
   "cloudenv.text_572": "合约编号及密钥获取可参考",
-  "cloudenv.text_573": "全部域"
+  "cloudenv.text_573": "全部域",
+  "cloudenv.dentity_provider": "身份提供商",
+  "cloudenv.create_apsara_cloud_account": "新建阿里飞天云"
 }
