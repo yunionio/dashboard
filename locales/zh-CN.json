@@ -2174,7 +2174,8 @@
     "guest": "@:dictionary.server",
     "webconsole": "站内信",
     "message": "短信",
-    "alertrecord": "报警记录"
+    "alertrecord": "报警记录",
+    "rds": "RDS"
   },
   "res": {
     "role": "@:dictionary.role",
