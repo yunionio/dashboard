@@ -4206,5 +4206,6 @@
     "month": "month",
     "year": "year"
   },
-  "common.need_same_domain_resource": "Please select resource in the same @:dictionary.domain"
+  "common.need_same_domain_resource": "Please select resource in the same @:dictionary.domain",
+  "common.set_secgroup_max": "There are at most {0} of them"
 }

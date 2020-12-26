@@ -4206,5 +4206,6 @@
     "month": "月",
     "year": "年"
   },
-  "common.need_same_domain_resource": "请选择同一@:dictionary.domain的资源"
+  "common.need_same_domain_resource": "请选择同一@:dictionary.domain的资源",
+  "common.set_secgroup_max": "最多关联{0}个"
 }
