@@ -8,7 +8,7 @@
       <loader loading v-if="!(bindedSecgroupsLoaded && secgroupsInitLoaded)" />
       <a-form :form="form.fc" hideRequiredMark v-show="bindedSecgroupsLoaded && secgroupsInitLoaded" v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_105')" v-if="bindedSecgroupsLoaded">
-          <div slot="extra">{{$t('compute.text_1242', [max])}}<!-- <help-link :href="href">{{$t('compute.text_189')}}</help-link> -->
+          <div slot="extra">{{$t('compute.text_1242', [bindMaxNum])}}<!-- <help-link :href="href">{{$t('compute.text_189')}}</help-link> -->
             <dialog-trigger :vm="params.vm" :extParams="{ tenant, domain }" :name="$t('compute.text_189')" value="CreateSecgroupDialog" resource="secgroups" @success="successCallback" />
           </div>
           <base-select
@@ -40,14 +40,22 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 
+const MAX_BIND_NUM = {
+  [HYPERVISORS_MAP.aliyun.provider]: 3,
+  [HYPERVISORS_MAP.qcloud.provider]: 5,
+  [HYPERVISORS_MAP.azure.provider]: 1,
+  [HYPERVISORS_MAP.ucloud.provider]: 1,
+  [HYPERVISORS_MAP.zstack.provider]: 1,
+}
+
 export default {
   name: 'SetSecgroupDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const validateSecgroups = (rule, value, callback) => {
-      const maxError = this.isBindOne ? this.$t('compute.text_1243') : this.$t('compute.text_1244')
+      const maxError = this.$t('common.set_secgroup_max', [this.bindMaxNum])
       const minError = this.$t('compute.text_192')
-      const max = this.isBindOne ? 1 : 5
+      const max = this.bindMaxNum
       if (value.length > max) {
         return callback(maxError)
       }
@@ -89,21 +97,12 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope']),
-    isAzure () {
-      return this.params.data[0].provider === HYPERVISORS_MAP.azure.provider
-    },
-    isUCloud () {
-      return this.params.data[0].provider === HYPERVISORS_MAP.ucloud.provider
-    },
-    isZStack () {
-      return this.params.data[0].provider === HYPERVISORS_MAP.zstack.provider
-    },
-    isBindOne () {
-      return this.isAzure || this.isUCloud || this.isZStack
+    bindMaxNum () {
+      return MAX_BIND_NUM[this.params.data[0].provider] || 1
     },
     message () {
       let str = this.$t('compute.text_1245')
-      if (this.isBindOne) {
+      if (this.bindMaxNum === 1) {
         str = this.$t('compute.text_1246')
       }
       return str
@@ -111,12 +110,6 @@ export default {
     href () {
       const url = this.$router.resolve('/secgroup')
       return url.href
-    },
-    max () {
-      if (this.isBindOne) {
-        return 1
-      }
-      return 5
     },
     domain () {
       return this.params.data[0].domain_id
