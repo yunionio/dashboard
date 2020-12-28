@@ -14,6 +14,13 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
+      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.endpoint')">
+        <a-input v-decorator="decorators.endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.endpoint')])" />
+        <div slot="extra">
+          {{$t('cloudenv.text_574', [keySecretField.text])}}
+          <help-link :href="`https://help.aliyun.com/apsara/enterprise/v_3_12_0_20200630/apsara_stack_platform/enterprise-developer-guide/obtain-the-endpoint-of-api-operations.html`">{{$t('cloudenv.text_575')}}</help-link>
+        </div>
+      </a-form-item>
       <a-form-item :label="$t('cloudenv.cloudaccount.apsara.ecs_endpoint')">
         <a-input v-decorator="decorators.ecs_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.ecs_endpoint')])" />
       </a-form-item>
@@ -123,24 +130,22 @@ export default {
             valuePropName: 'checked',
           },
         ],
-        ecs_endpoint: [
-          'ecs_endpoint',
+        endpoint: [
+          'endpoint',
           {
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.apsara.ecs_endpoint')]) },
+              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.apsara.endpoint')]) },
             ],
           },
+        ],
+        ecs_endpoint: [
+          'ecs_endpoint',
         ],
         rds_endpoint: [
           'rds_endpoint',
         ],
         vpc_endpoint: [
           'vpc_endpoint',
-          {
-            rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.apsara.vpc_endpoint')]) },
-            ],
-          },
         ],
         kvs_endpoint: [
           'kvs_endpoint',
