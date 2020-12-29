@@ -17,6 +17,7 @@ export default {
     this.columns = [
       getNameDescriptionTableColumn({
         edit: false,
+        onManager: this.onManager,
       }),
       {
         field: 'none',
