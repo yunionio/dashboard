@@ -40,8 +40,8 @@
             :project.sync="form.fi.project"
             :cloudprovider-id="form.fi.cloudprovider.id" />
         </a-form-item>
-        <a-form-item :label="$t('system.text_146')" class="mb-0">
-          <a-input v-decorator="decorators.email" :placeholder="$t('system.email_placeholder')" />
+        <a-form-item :label="$t('system.text_146')" class="mb-0" :extra="isEnableMail ? '' : $t('system.is_config_mail_tips')">
+          <a-input v-decorator="decorators.email" :disabled="!isEnableMail" :placeholder="$t('system.email_placeholder')" />
         </a-form-item>
         <a-form-item :wrapperCol="{ offset: 4 }">
           <a-checkbox v-decorator="decorators.notify" :disabled="!isCanSendNotify">{{ $t('system.email_checkbox_text') }}</a-checkbox>
@@ -215,6 +215,7 @@ export default {
         },
       },
       isCanSendNotify: false,
+      isEnableMail: false,
     }
   },
   computed: {
@@ -292,6 +293,25 @@ export default {
     },
     formatterLabel (row) {
       return row.description ? `${row.name} / ${row.description}` : row.name
+    },
+    async fetchReceivers () {
+      this.isEnableMail = false
+      try {
+        const params = { scope: this.$store.getters.scope, id: this.params.user.id }
+        const response = await new this.$Manager('receivers', 'v1').list({ params })
+        const receivers = response.data.data || []
+        if (receivers.length > 0) {
+          const receiver = receivers[0]
+          if (receiver.enabled_contact_types.includes('email')) {
+            this.isEnableMail = true
+            this.form.fc.setFieldsValue({
+              email: receiver.email,
+            })
+          }
+        }
+      } catch (error) {
+        throw error
+      }
     },
   },
 }
