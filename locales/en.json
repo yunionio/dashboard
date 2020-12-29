@@ -638,6 +638,7 @@
   "cloudenv.environment_check": "Please select the account type",
   "cloudenv.international_cloud": "Public Cloud",
   "cloudenv.finance_cloud": "Financial Cloud",
+  "cloudenv.cloudaccount.apsara.endpoint": "ASAPI Endpoint",
   "cloudenv.cloudaccount.apsara.ecs_endpoint": "EcsEndpoint",
   "cloudenv.cloudaccount.apsara.rds_endpoint": "RdsEndpoint",
   "cloudenv.cloudaccount.apsara.vpc_endpoint": "VpcEndpoint",
@@ -652,5 +653,7 @@
   "cloudenv.text_572": "Contract number and key can be obtained by reference",
   "cloudenv.text_573": "All Domains",
   "cloudenv.dentity_provider": "identity-provider",
-  "cloudenv.create_apsara_cloud_account": "create-apsara-cloud-account"
+  "cloudenv.create_apsara_cloud_account": "create-apsara-cloud-account",
+  "cloudenv.text_574": "How to get {0} ASAPI endpoint",
+  "cloudenv.text_575": "v_3_12_0_20200630"
 }
