@@ -36,7 +36,7 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParams,
         filterOptions: {
-          name: getNameFilter(),
+          name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
           level: {
             label: this.$t('monitor.level'),
             dropdown: true,
