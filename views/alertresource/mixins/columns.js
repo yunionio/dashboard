@@ -99,8 +99,14 @@ export default {
         field: 'type',
         title: i18n.t('monitor.text_97'),
         formatter: ({ row }) => {
-          if (row.type === 'node') return this.$t('dictionary.host')
-          return row.type
+          if (row.type) {
+            if (this.$te(`dictionary.${row.type}`)) {
+              return this.$t(`dictionary.${row.type}`)
+            }
+
+            return row.type
+          }
+          return '-'
         },
       },
     ]

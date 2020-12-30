@@ -20,7 +20,7 @@ export default {
       getTimeTableColumn({ title: this.$t('monitor.text_14') }),
       {
         field: 'type',
-        title: this.$t('table.title.type'),
+        title: this.$t('monitor.text_97'),
         formatter: ({ row }) => {
           if (row.alert_rule.res_type) {
             if (this.$te(`dictionary.${row.alert_rule.res_type}`)) {
