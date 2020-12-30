@@ -127,7 +127,7 @@
   "monitor.condition": "Trigger Condition",
   "monitor.level": "Alarm Level",
   "monitor.recipient": "Alarm Recipient",
-  "monitor.channel": "Notification Channel",
+  "monitor.channel": "Channel",
   "monitor.strategy_detail": "Strategy Details",
   "monitor.avg": "Average",
   "monitor.max": "Maximum",
