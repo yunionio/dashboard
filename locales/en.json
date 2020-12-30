@@ -625,7 +625,7 @@
   "network.text_626": "Please select two IP subnets",
   "network.text_627": "Insufficient permissions",
   "network.text_628": "The selected item cannot contain on-premise resources",
-  "network.text_629": "Adjust scheduling label",
+  "network.text_629": "Adjust scheduler tag",
   "network.text_630": "Scheduling Label",
   "network.text_631": "Please select a scheduling tag",
   "network.text_632": "Split IP subnet",
