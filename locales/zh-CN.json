@@ -515,8 +515,8 @@
   "cloudenv.text_480": "新建可用区",
   "cloudenv.text_481": "请输入位置、例如望京、酒仙桥等",
   "cloudenv.text_482": "请输入位置",
-  "cloudenv.text_483": "物理机/可用物理机",
-  "cloudenv.text_484": "受管物理机/可用受管物理机",
+  "cloudenv.text_483": "宿主机/可用宿主机",
+  "cloudenv.text_484": "物理机/可用物理机",
   "cloudenv.text_485": "物理机(数量)",
   "cloudenv.text_486": "宿主机(数量)",
   "cloudenv.text_487": "可用宿主机",
@@ -549,7 +549,7 @@
     "create_form": {
       "saml_user_label": "开启免密登录",
       "saml_user_extra": "开启后，会自动同步本系统SAML信息至云上，本系统即可成为云上登录身份提供商，具有SSO单点登录能力，详见{link}",
-      "saml_user_link": "身份提供商"
+      "saml_user_link": "{0}#身份提供商"
     },
     "sidepage": {
       "tab": {
@@ -653,7 +653,7 @@
   "cloudenv.text_572": "合约编号及密钥获取可参考",
   "cloudenv.text_573": "全部域",
   "cloudenv.dentity_provider": "身份提供商",
-  "cloudenv.create_apsara_cloud_account": "新建阿里飞天云",
+  "cloudenv.create_apsara_cloud_account": "{0}#新建阿里飞天云",
   "cloudenv.text_574": "如何获取 {0} ASAPI endpoint",
   "cloudenv.text_575": "v_3_12_0_20200630"
 }
