@@ -299,7 +299,7 @@ export const metric_zh = {
   'Redis CPU usage': i18n.t('monitor_metric_72'),
   'Memory': i18n.t('monitor_metric_73'),
   'CPU usage': i18n.t('monitor_metric_74'),
-  'Rds CPU usage': i18n.t('monitor_metric_75'),
+  'Rds CPU usage': i18n.t('monitor_metric_74'),
   'Cloud account balance': i18n.t('monitor_metric_76'),
   'balance': i18n.t('monitor_metric_77'),
   'Disk read rate': i18n.t('monitor_metric_79'),
@@ -321,6 +321,7 @@ export const metric_zh = {
   'inodes_free/inodes_total': i18n.t('monitor_metric_96'),
   'free/total': i18n.t('monitor_metric_97'),
   'Guest network traffic': i18n.t('monitor_metric_98'),
+  'memory usage': i18n.t('monitor_metric_85'),
   'request count': i18n.t('monitor.text_118'),
 }
 

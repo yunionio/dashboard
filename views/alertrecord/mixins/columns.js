@@ -21,6 +21,7 @@ export default {
       {
         field: 'type',
         title: this.$t('monitor.text_97'),
+        minWidth: 80,
         formatter: ({ row }) => {
           if (row.alert_rule.res_type) {
             if (this.$te(`dictionary.${row.alert_rule.res_type}`)) {
@@ -35,6 +36,7 @@ export default {
       {
         field: 'res_num',
         title: this.$t('cloudenv.text_417'),
+        minWidth: 80,
         type: 'expand',
         slots: {
           default: ({ row }) => {
