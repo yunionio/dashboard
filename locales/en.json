@@ -655,5 +655,9 @@
   "cloudenv.dentity_provider": "identity-provider",
   "cloudenv.create_apsara_cloud_account": "create-apsara-cloud-account",
   "cloudenv.text_574": "How to get {0} ASAPI endpoint",
-  "cloudenv.text_575": "v_3_12_0_20200630"
+  "cloudenv.text_575": "v_3_12_0_20200630",
+  "cloudaccount.tooltip.already_enable_sso": "Account has already enable SSO",
+  "cloudaccount.tooltip.not_support_sso": "{0} not support SSO",
+  "cloudenv.text_576": "Enable SSO",
+  "table.title.sso_status": "SSO status"
 }
