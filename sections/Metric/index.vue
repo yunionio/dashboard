@@ -85,8 +85,6 @@ export default {
       metric_res_type: _.get(this.decorators.metric_res_type, '[1].initialValue'),
       metricValueItem: {},
       metricKeyItem: {},
-      metricOpts: [],
-      metricKeyOpts: [],
     }
   },
   computed: {
@@ -100,6 +98,44 @@ export default {
         }
       })
     },
+    metricKeyOpts () {
+      return (this.res_type_measurements[this.metric_res_type] || []).map(val => {
+        let label = val.measurement
+        const displayName = val.measurement_display_name
+        if (displayName && metric_zh[displayName]) {
+          label = metric_zh[displayName]
+        }
+        return {
+          ...val,
+          metric_res_type: this.metric_res_type,
+          key: val.measurement,
+          label,
+        }
+      })
+    },
+    metricOpts () {
+      const metricKeyItem = this.metricKeyOpts.find(item => item.key === this.metric_key)
+      if (metricKeyItem && _.isArray(metricKeyItem.field_key)) {
+        return metricKeyItem.field_key.map(val => {
+          let label = val
+          const fieldDes = metricKeyItem.field_descriptions
+          let description = {}
+          if (fieldDes) {
+            description = fieldDes[val]
+            const displayName = _.get(fieldDes, `${val}.display_name`)
+            if (displayName && metric_zh[displayName]) label = metric_zh[displayName]
+          }
+          return {
+            key: val,
+            label,
+            description,
+            metric_res_type: metricKeyItem.metric_res_type,
+          }
+        })
+      } else {
+        return []
+      }
+    },
     span () {
       if (this.showResType) return 8
       return 12
@@ -110,14 +146,14 @@ export default {
     },
   },
   watch: {
-    metricKeyOpts (val) {
-      if (!val) {
+    metric_res_type (val) {
+      if (!this.metricTypeOpts) {
         this.resetMetric()
       } else {
         const metricKey = this.form.fc.getFieldValue(this.decorators.metric_key[0])
         const metricValue = this.form.fc.getFieldValue(this.decorators.metric_value[0])
         if (metricKey) {
-          const validMetric = val.find(val => val.key === metricKey)
+          const validMetric = this.metricTypeOpts.find(option => option.key === metricKey)
           if (!validMetric && !this.disabled) {
             this.resetMetric()
           } else {
@@ -138,43 +174,9 @@ export default {
     },
     metricTypeChange (val) {
       this.metric_res_type = val
-      this.metricKeyOpts = (this.res_type_measurements[val] || []).map(val => {
-        let label = val.measurement
-        const displayName = val.measurement_display_name
-        if (displayName && metric_zh[displayName]) {
-          label = metric_zh[displayName]
-        }
-        return {
-          ...val,
-          metric_res_type: this.metric_res_type,
-          key: val.measurement,
-          label,
-        }
-      })
     },
     metricKeyChange (val, isNative = true) {
       this.metric_key = val
-      const metricKeyItem = this.metricKeyOpts.find(item => item.key === val)
-      if (metricKeyItem && _.isArray(metricKeyItem.field_key)) {
-        this.metricOpts = metricKeyItem.field_key.map(val => {
-          let label = val
-          const fieldDes = metricKeyItem.field_descriptions
-          let description = {}
-          if (fieldDes) {
-            description = fieldDes[val]
-            const displayName = _.get(fieldDes, `${val}.display_name`)
-            if (displayName && metric_zh[displayName]) label = metric_zh[displayName]
-          }
-          return {
-            key: val,
-            label,
-            description,
-            metric_res_type: metricKeyItem.metric_res_type,
-          }
-        })
-      } else {
-        this.metricOpts = []
-      }
       if (this.form && this.form.fc && isNative) {
         this.form.fc.setFieldsValue({
           [this.decorators.metric_value[0]]: undefined,
