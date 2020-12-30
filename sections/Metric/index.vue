@@ -172,6 +172,8 @@ export default {
             metric_res_type: metricKeyItem.metric_res_type,
           }
         })
+      } else {
+        this.metricOpts = []
       }
       if (this.form && this.form.fc && isNative) {
         this.form.fc.setFieldsValue({
