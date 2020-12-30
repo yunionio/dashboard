@@ -655,5 +655,9 @@
   "cloudenv.dentity_provider": "身份提供商",
   "cloudenv.create_apsara_cloud_account": "{0}#新建阿里飞天云",
   "cloudenv.text_574": "如何获取 {0} ASAPI endpoint",
-  "cloudenv.text_575": "v_3_12_0_20200630"
+  "cloudenv.text_575": "v_3_12_0_20200630",
+  "cloudaccount.tooltip.already_enable_sso": "云账号已开启免密认证",
+  "cloudaccount.tooltip.not_support_sso": "{0} 不支持免密认证",
+  "cloudenv.text_576": "开启免密登录", 
+  "table.title.sso_status": "免密认证"
 }
