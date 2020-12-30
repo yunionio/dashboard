@@ -10,6 +10,7 @@ export default {
         title: this.$t('monitor.text_99'),
         hideField: true,
         field: 'alert_name',
+        onManager: this.onManager,
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.alert_name }</side-page-trigger>
@@ -19,7 +20,8 @@ export default {
       getTimeTableColumn({ title: this.$t('monitor.text_14') }),
       {
         field: 'type',
-        title: this.$t('table.title.type'),
+        title: this.$t('monitor.text_97'),
+        minWidth: 80,
         formatter: ({ row }) => {
           if (row.alert_rule.res_type) {
             if (this.$te(`dictionary.${row.alert_rule.res_type}`)) {
@@ -34,6 +36,7 @@ export default {
       {
         field: 'res_num',
         title: this.$t('cloudenv.text_417'),
+        minWidth: 80,
         type: 'expand',
         slots: {
           default: ({ row }) => {

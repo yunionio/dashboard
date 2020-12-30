@@ -373,7 +373,7 @@ export default {
       params[`${scope}_id`] = this.decorators[scope][1].initialValue
     }
     this.formScopeParams = params
-    this.getMeasurement(params)
+    this.scopeChange(params)
   },
   mounted () {
     if (R.is(Object, this.alertData)) {

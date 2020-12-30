@@ -36,7 +36,7 @@ export default {
         apiVersion: 'v1',
         getParams: this.getParams,
         filterOptions: {
-          name: getNameFilter(),
+          name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
           level: {
             label: this.$t('monitor.level'),
             dropdown: true,
@@ -89,6 +89,7 @@ export default {
         items: [
           { key: 'alert_name', label: this.$t('monitor.text_99') },
           { key: 'created_at', label: this.$t('monitor.text_14') },
+          { key: 'res_type', label: this.$t('monitor.text_97') },
           { key: 'alert_rule', label: this.$t('monitor.strategy_detail') },
           { key: 'level', label: this.$t('monitor.level') },
           { key: 'res_num', label: this.$t('cloudenv.text_417') },
