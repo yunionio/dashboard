@@ -2061,7 +2061,7 @@
     "host": "Host",
     "hostip": "Host Ip",
     "hostwire": "Host L2 network",
-    "identity_provider": "Identity Provides",
+    "identity_provider": "Identity Providers",
     "image": "Images",
     "infos": "System",
     "instancegroup": "Unaffinity Group",
