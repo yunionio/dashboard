@@ -121,7 +121,7 @@ export default {
           meta: {
             label: i18n.t('compute.text_94'),
             permission: 'servertemplates_list',
-            hidden: () => !hasSetupKey(['onestack']),
+            hidden: () => !hasSetupKey(['onestack', 'azure']),
           },
           component: Layout,
           children: [
