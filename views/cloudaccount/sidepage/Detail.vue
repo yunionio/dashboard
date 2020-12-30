@@ -70,6 +70,7 @@ export default {
           },
         },
         getEnabledTableColumn(),
+        getStatusTableColumn({ statusModule: 'enabled', field: 'saml_auth', title: this.$t('table.title.sso_status') }),
         {
           field: 'last_sync',
           title: this.$t('cloudenv.text_103'),
