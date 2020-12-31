@@ -3,10 +3,10 @@ export default {
     cloudregionZone: `
       <h4>Region</h4>
       <p>Region refers to the physical location of the ECS instance. </p>
-      <h4>Availability Zone</h4>
-      <p>Availability zone refers to a physical area where electricity and network are independent of each other in the same area. In the same region, the availability zone and the availability zone can communicate with each other in the intranet, and the available zones can achieve fault isolation.
-      If your application requires high disaster tolerance, it is recommended that you deploy cloud server ECS instances in different availability zones in the same region.
-      If your application requires low network latency between instances, it is recommended that you create ECS instances in the same Availability Zone. </p>
+      <h4>Zone</h4>
+      <p>Zone refers to a physical area where electricity and network are independent of each other in the same area. In the same region, the zone and the zone can communicate with each other in the intranet, and the zones can achieve fault isolation.
+      If your application requires high disaster tolerance, it is recommended that you deploy cloud server ECS instances in different zones in the same region.
+      If your application requires low network latency between instances, it is recommended that you create ECS instances in the same Zone. </p>
     `,
     serverPassword: `
       <h4>Associated key</h4>
