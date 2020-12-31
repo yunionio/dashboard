@@ -2428,7 +2428,7 @@
       "feature_select": "Feature config",
       "docs": "Documentation",
       "about": "About",
-      "work_order_undone": "Undone {num}",
+      "work_order_undone": "Open {num}",
       "pending_work_order": "Pending {num}",
       "join_project": "Apply to join the project",
       "work_order_support": "Apply for technical support",
