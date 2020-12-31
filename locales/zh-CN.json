@@ -4264,5 +4264,9 @@
   "common.change_config": "调整配置",
   "common.share": "被共享的{0}不支持该操作",
   "common.need_same_domain_resource": "请选择同一@:dictionary.domain的资源",
-  "common.set_secgroup_max": "最多关联{0}个"
+  "common.set_secgroup_max": "最多关联{0}个",
+  "common.workflow_priority": "优先级",
+  "common.workflow_priority_normal": "普通",
+  "common.workflow_priority_important": "重要",
+  "common.workflow_priority_fatal": "致命"
 }
