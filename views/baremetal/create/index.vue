@@ -932,15 +932,26 @@ export default {
         },
       })
     },
+    _isNoneRaid (raidOpt) {
+      return raidOpt === 'none'
+    },
     // 添加硬盘配置后的回调
     addDiskCallBack (data) {
       let arr = []
+      // data.option format: `["HPSARaid:adapter0", "HDD:279G", "raid10"]`
       data.option.forEach(item => {
         arr = arr.concat(item.split(':'))
       })
+      // arr format: `["HPSARaid", "adapter0", "HDD", "279G", "raid10"]`
+      const raidOpt = data.option[2]
+      const raidType = arr[0]
+      const adapter = arr[1]
+      const diskType = arr[2]
+      const diskSize = arr[3]
+
       let range = []
       let k = data.start_index
-      if (data.option[2] === 'none') {
+      if (this._isNoneRaid(raidOpt)) {
         range = [data.start_index]
       } else {
         while (k < data.start_index + data.count) {
@@ -948,54 +959,30 @@ export default {
           k++
         }
       }
-      const isRepeat = this.diskOptionsDate.filter(item => item.diskInfo[1] === arr[1] && item.type === arr[2] && item.unitSize === arr[3])
-      if (isRepeat.length > 0) {
-        if (data.option[2] === 'none') {
-          range = [data.start_index + this.count + 1]
-        } else {
-          if (data.start_index === 0) {
-            const lastIndexRange = isRepeat[isRepeat.length - 1].range
-            let i = lastIndexRange[lastIndexRange.length - 1]
-            let p = 0
-            range = []
-            while (p < data.count) {
-              i++
-              range.push(i)
-              p++
-            }
-          } else {
-            let j = data.start_index
-            range = []
-            while (j < data.start_index + data.count) {
-              j++
-              range.push(j)
-            }
-          }
-        }
-      }
+
       let sizeNumber = 0
       let n = 0
-      if (arr[3].substr(arr[3].length - 1, 1) === 'T') {
-        n = Number(arr[3].substr(0, arr[3].length - 1)) * 1024
+      if (diskSize.substr(diskSize.length - 1, 1) === 'T') {
+        n = Number(diskSize.substr(0, diskSize.length - 1)) * 1024
       } else {
-        n = Number(arr[3].substr(0, arr[3].length - 1))
+        n = Number(diskSize.substr(0, diskSize.length - 1))
       }
-      if (arr[4] === 'none') {
+      if (this._isNoneRaid(raidOpt)) {
         sizeNumber = n
       } else {
-        sizeNumber = this.raidUtil(n, arr[4], data.count)
+        sizeNumber = this.raidUtil(n, raidOpt, data.count)
       }
       const option = {
-        title: arr[3] + ' ' + arr[2] + ' X ' + `${data.option[2] === 'none' ? 1 : data.count}`,
+        title: diskSize + ' ' + diskType + ' X ' + `${raidOpt === 'none' ? 1 : data.count}`,
         size: sizestr(sizeNumber, 'G', 1024),
         unitSize: sizestr(n, 'G', 1024),
         chartData: {
           columns: ['name', 'size'],
           rows: [],
         },
-        diskInfo: [arr[0], arr[1], arr[4]],
-        count: data.option[2] === 'none' ? 1 : data.count,
-        type: arr[2],
+        diskInfo: [raidType, adapter, raidOpt],
+        count: this._isNoneRaid(raidOpt) ? 1 : data.count,
+        type: diskType,
         range,
       }
       if (this.diskOptionsDate.length === 0) {
@@ -1013,7 +1000,8 @@ export default {
       option.chartData.rows.push({ name: i18n.t('compute.text_315'), size: sizeNumber })
       this.diskOptionsDate.push(option)
       data.computeCount--
-      if (data.option[2] === 'none' && data.computeCount > 0) {
+      if (this._isNoneRaid(raidOpt) && data.computeCount > 0) {
+        data.start_index += 1
         this.addDiskCallBack(data)
       }
     },
