@@ -1,3 +1,4 @@
+import Overview from '@Monitor/views/overview'
 import CommonalertsIndex from '@Monitor/views/commonalert'
 import commonalertsCreate from '@Monitor/views/commonalert/create'
 import commonalertsUpdate from '@Monitor/views/commonalert/update'
@@ -16,6 +17,14 @@ export default {
     undetected: true,
   },
   submenus: [
+    {
+      path: '/monitoroverview',
+      meta: {
+        label: i18n.t('总览'),
+        permission: 'monitoroverview',
+      },
+      component: Overview,
+    },
     {
       path: '/explorer',
       meta: {
