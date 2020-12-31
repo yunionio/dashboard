@@ -164,7 +164,7 @@
   "k8s.text_163": "The entered IP is not in the selected subnet segment",
   "k8s.text_164": "Please select a platform",
   "k8s.text_165": "Please select a region",
-  "k8s.text_166": "Please select an availability zone",
+  "k8s.text_166": "Please select a zone",
   "k8s.text_167": "Please enter the memory size",
   "k8s.text_168": "Please enter the disk size",
   "k8s.text_169": "Please enter ip",
