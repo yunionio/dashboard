@@ -1,8 +1,8 @@
 {
-  "db.text_1": "Randomly Generated",
-  "db.text_2": "Associated Key",
+  "db.text_1": "Random Password",
+  "db.text_2": "Key Pair",
   "db.text_3": "Keep image settings",
-  "db.text_4": "Manual input",
+  "db.text_4": "Custom Password",
   "db.text_5": "Read and Write",
   "db.text_6": "Read Only",
   "db.text_7": "DDL only",
