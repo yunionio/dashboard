@@ -235,8 +235,24 @@ export default {
       disksOptions: [],
       maxcount: 0,
       mincount: 0,
+      /*
+       * this.params.diskData structure:
+       * {
+       *  "MegaRaid": {
+       *   "adapter0": [
+       *    {
+       *     "count": 4,
+       *     "end_index": 3,
+       *     "size": 3814912,
+       *     "start_index": 0,
+       *     "type": "HDD"
+       *    }
+       *   ]
+       *  }
+       * }
+       */
       diskData: JSON.parse(JSON.stringify(this.params.diskData)), // 拷贝参数
-      diskDataKeys: [...Object.keys(this.params.diskData)],
+      raidTypes: [...Object.keys(this.params.diskData)],
       step: 1,
       startIndex: 0,
       endIndex: 0,
@@ -253,22 +269,23 @@ export default {
   methods: {
     // 组装联动数据
     handleDiskDate () {
-      this.diskDataKeys.map(item => {
-        const level1 = this.diskData[item]
-        const diskDataKeyItem = item
+      this.raidTypes.map(raidType => {
+        const raidAdapter = this.diskData[raidType]
         this.params.diskOptionsDate.forEach(item => {
-          level1[item.diskInfo[1]].forEach(item2 => {
-            if (item2.type === item.type && sizestr(item2.size, 'M', 1024) === item.unitSize) {
-              item2.count = item2.count - item.count
+          const adapterKey = item.diskInfo[1]
+          raidAdapter[adapterKey].forEach(disks => {
+            if (disks.type === item.type && sizestr(disks.size, 'M', 1024) === item.unitSize) {
+              disks.count = disks.count - item.count
+              disks.start_index = disks.start_index + item.count
             }
           })
         })
-        Object.keys(level1).forEach((key) => {
+        Object.keys(raidAdapter).forEach((key) => {
           const option = {}
-          option.value = diskDataKeyItem + ':' + key
-          option.label = diskDataKeyItem + ':' + key
+          option.value = raidType + ':' + key
+          option.label = raidType + ':' + key
           option.children = []
-          level1[key].forEach((item) => {
+          raidAdapter[key].forEach((item) => {
             let optionL2 = {}
             optionL2 = {
               ...item,
@@ -276,7 +293,7 @@ export default {
               value: item.type + ':' + sizestr(item.size, 'M', 1024),
               start_index: item.start_index,
               end_index: item.end_index,
-              children: this._getRaidOptions(diskDataKeyItem, item.count),
+              children: this._getRaidOptions(raidType, item.count),
             }
             if (optionL2.children.length === 0) return
             option.children.push(optionL2)
@@ -309,12 +326,17 @@ export default {
     // 监听联动改变回调
     cascaderChange (value, selectedOptions) {
       if (selectedOptions) {
-        this.maxcount = selectedOptions[2].props.max
-        this.mincount = selectedOptions[2].props.min
-        this.step = selectedOptions[2].props.step
-        this.step = selectedOptions[2].props.step
-        this.startIndex = selectedOptions[1].start_index
-        this.endIndex = selectedOptions[1].end_index
+        // e.g. 'MegaRaid:adapter0'
+        // const adapterOpt = selectedOptions[0]
+        // e.g. 'HDD:3.6T'
+        const diskOpt = selectedOptions[1]
+        // e.g. 'Raid0'
+        const raidOpt = selectedOptions[2]
+        this.maxcount = raidOpt.props.max
+        this.mincount = raidOpt.props.min
+        this.step = raidOpt.props.step
+        this.startIndex = diskOpt.start_index
+        this.endIndex = diskOpt.end_index
       }
     },
     validateForm () {
