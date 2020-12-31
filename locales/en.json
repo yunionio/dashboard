@@ -1770,10 +1770,10 @@
     "eip": "EIP"
   },
   "passwordInputTypes": {
-    "random": "Randomly Generated",
-    "keypair": "Associated Key",
+    "random": "Random Password",
+    "keypair": "Key Pair",
     "image": "Keep image settings",
-    "password": "Manual input"
+    "password": "Custom Password"
   },
   "enabledSwitchMessage": {
     "instancegroups.disable": "After disabling, the server will not be able to join the unaffinity group.",
