@@ -4,6 +4,7 @@ import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import { changeToArr } from '@/utils/utils'
 import store from '@/store'
 import i18n from '@/locales'
+import { hasSetupKey } from '@/utils/auth'
 
 export class TypeClouds {
   hypervisorMap = {}
@@ -111,6 +112,9 @@ export const getCloudEnvOptions = (capabilityBrandKey, ignoreAll) => {
     const data = R.find(R.propEq('key', key))(ret)
     if (key && !data) {
       ret.push({ key: key, label: i18n.t(`cloud_env.${key}`) })
+      if (capabilityBrandKey === 'network_manage_brands' && !hasSetupKey(['onecloud', 'onestack', 'baremetal', 'lb', 'vmware'])) {
+        ret = ret.filter(v => v.key !== 'onpremise')
+      }
     }
   }
   ret = ret.sort((a, b) => orderKeys.indexOf(a.key) - orderKeys.indexOf(b.key))
