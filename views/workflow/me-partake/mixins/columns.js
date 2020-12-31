@@ -2,6 +2,7 @@ import {
   getProcessDefinitionNameTableColumn,
   getResourceNameTableColumn,
   getResourceProjectTableColumn,
+  getPriorityTableColumn,
 } from '../../utils/columns'
 import { statusMap } from '../../utils'
 import {
@@ -26,6 +27,7 @@ export default {
         },
       }),
       getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name' }),
+      getPriorityTableColumn(),
       getResourceNameTableColumn(),
       getResourceProjectTableColumn({
         field: 'variables.resource_project_name',

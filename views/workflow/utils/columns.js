@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import i18n from '@/locales'
+import { PRIORITY_MAP } from '@/constants/workflow'
 
 export const getProcessDefinitionNameTableColumn = ({ field = 'process_definition_name', title = i18n.t('common_375') } = {}) => {
   return {
@@ -83,6 +84,24 @@ export const getCommentTableColumn = () => {
       default: ({ row }) => {
         const veriables = JSON.parse(row.variables || '{}')
         return veriables.comment || '-'
+      },
+    },
+  }
+}
+
+export const getPriorityTableColumn = () => {
+  return {
+    field: 'priority',
+    title: i18n.t('common.workflow_priority'),
+    minWidth: 80,
+    showOverflow: 'title',
+    slots: {
+      default: ({ row }) => {
+        const veriables = row.variables
+        if (veriables.priority) {
+          return PRIORITY_MAP[veriables.priority].value
+        }
+        return '-'
       },
     },
   }
