@@ -1,4 +1,4 @@
-import { i18nSetProperty } from '@/utils/utils'
+import { i18nSetProperty, arrayToObj } from '@/utils/utils'
 import i18n from '@/locales'
 
 export const WORKFLOW_TYPES = {
@@ -69,3 +69,10 @@ export const getWorkflowType = function (pdk) {
 }
 
 export const MULTIPLE_APPROVAL_PROCESS = [WORKFLOW_TYPES.APPLY_MACHINE, WORKFLOW_TYPES.APPLY_SERVER_DELETE]
+
+export const PRIORITY_OPTS = [
+  { key: 'normal', value: i18n.t('common.workflow_priority_normal') },
+  { key: 'important', value: i18n.t('common.workflow_priority_important') },
+  { key: 'fatal', value: i18n.t('common.workflow_priority_fatal') },
+]
+export const PRIORITY_MAP = arrayToObj(PRIORITY_OPTS, 'key')
