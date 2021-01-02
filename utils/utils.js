@@ -548,6 +548,7 @@ export const completionDate = (data, currentMonth, keys = [], monthInYear) => {
   const result = []
   const maxDay = monthInYear ? 12 : moment(currentMonth).daysInMonth()
   const momentFormat = monthInYear ? 'YYYY' : 'MM'
+  var maxOffset = 0
   for (let i = 1; i <= maxDay; i++) {
     let day = 1
     let obj = {}
@@ -559,6 +560,7 @@ export const completionDate = (data, currentMonth, keys = [], monthInYear) => {
     for (let j = 0; j < data.length; j++) {
       const dataItemDay = data[j].time.substring(data[j].time.length - 2)
       if (day === dataItemDay) {
+        maxOffset = j + 1
         obj = data[j]
         obj = {
           ...obj,
@@ -577,6 +579,11 @@ export const completionDate = (data, currentMonth, keys = [], monthInYear) => {
       }
     })
     result.push(obj)
+  }
+  if (maxOffset < data.length) {
+    for (let j = maxOffset; j < data.length; j++) {
+      result.push(data[j])
+    }
   }
   return result
 }
