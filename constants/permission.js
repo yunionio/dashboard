@@ -583,6 +583,11 @@ export const PERMISSION = {
   bill_details_list: ['meter', 'bill_details', 'list'],
   rates_list: ['meter', 'rates', 'list'],
   rates_update: ['meter', 'rates', 'post'],
+  bill_budgets_get: ['meter', 'budgets', 'get'],
+  bill_budgets_list: ['meter', 'budgets', 'list'],
+  bill_budgets_create: ['meter', 'budgets', 'create'],
+  bill_budgets_delete: ['meter', 'budgets', 'delete'],
+  bill_budgets_perform: ['meter', 'budgets', 'perform'],
   /**
    * cloudwatcher 相关操作
    */
