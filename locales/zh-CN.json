@@ -2142,9 +2142,10 @@
     "clouduser": "云用户",
     "cloudgroupcache": "权限组缓存",
     "cloudpolicy": "云权限",
-    "commonalert": "报警策略",
-    "monitor_commonalert": "监控报警",
-    "explorer": "监控查询",
+    "commonalert": "报警定义",
+    "monitor_commonalert": "报警",
+    "monitor_metrics": "监控指标",
+    "explorer": "查询",
     "instance_snapshot": "主机快照",
     "dbinstance": "RDS实例",
     "loadbalancerclusters": "负载均衡-集群",
@@ -2174,7 +2175,7 @@
     "guest": "@:dictionary.server",
     "webconsole": "站内信",
     "message": "短信",
-    "alertrecord": "报警记录",
+    "alertrecord": "报警历史",
     "rds": "RDS"
   },
   "res": {
