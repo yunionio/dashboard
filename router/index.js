@@ -19,7 +19,7 @@ if ([].includes.call(moduleList, './Monitor/router/index.js')) {
 }
 
 export default {
-  index: 7,
+  index: 70,
   meta: {
     label: i18n.t('helm.text_1'),
     icon: 'menu-helm',
