@@ -198,5 +198,12 @@
   "monitor.text_115": "Please select the function",
   "monitor.text_116": "Host offline",
   "monitor.text_117": "Send byte per second",
-  "monitor.text_118": "Request count"
+  "monitor.text_118": "Request count",
+  "monitor.overview_alert_sum": "Total Alerts",
+  "monitor.overview_alert_trend": "Alerts trends in the last 30 days",
+  "monitor.overview_usage_active": "Average VM CPU usage for the last 7 days",
+  "monitor.overview_bps_recv": "The total number of bytes received by the network interface for the last 7 days",
+  "monitor.overview_bps_sent": "The total number of bytes send by the network interface for the last 7 days",
+  "monitor.overview_read_bps": "Disk read rate for the last 7 days",
+  "monitor.overview_write_bps": "Disk write rate for the last 7 days"
 }

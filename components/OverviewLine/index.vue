@@ -1,16 +1,31 @@
 <template>
   <div>
-    <base-chart :chartType="chartType" :chartData="chartData" :chartConfig="chartConfig" :chartSettings="chartSettings" :chartExtend="chartExtend" :loading="loading" :emptyContent="emptyContent" />
+    <div>
+      <header v-if="header" class="header clearfix" style="padding: 10px">
+        <div class="title-wrapper float-left" v-if="header.title">
+          <div class="title">{{ header.title }}</div>
+          <div class="subtitle" v-if="header.subtitle">{{ header.subtitle }}</div>
+        </div>
+      </header>
+      <base-chart :chartType="chartType" :chartData="chartData" :chartConfig="chartConfig" :chartSettings="chartSettings" :chartExtend="chartExtend" :loading="loading" :emptyContent="emptyContent" />
+    </div>
   </div>
 </template>
 
 <script>
-import * as R from 'ramda'
-import { numerify } from '@/filters'
+// import { completionDate } from '@/utils/utils'
 
 export default {
   name: 'OverviewLine',
   props: {
+    header: {
+      type: Object,
+      default: () => ({}),
+    },
+    chartData: {
+      type: Object,
+      required: true,
+    },
     isHistogram: { // 默认表示 Y 轴是数据轴，竖向
       type: Boolean,
       default: false,
@@ -19,12 +34,24 @@ export default {
       type: Boolean,
       default: false,
     },
-    chartData: {},
-    emptyContent: {},
+    height: {
+      type: String,
+      default: '100%',
+    },
     chartSettings: {
       type: Object,
       default: () => ({}),
     },
+    splitLineShow: { // 是否显示分隔线。默认数值轴显示，类目轴不显示。
+      type: Boolean,
+      default: false,
+    },
+    emptyContent: {},
+    showLegend: { // 图例显示
+      type: Boolean,
+      default: false,
+    },
+    dateMode: {},
   },
   data () {
     return {
@@ -50,7 +77,7 @@ export default {
           },
         }
       }
-      return {
+      const ce = {
         series (v) {
           if (v) return v.map(i => ({ ...i, ...commonSerie }))
           return []
@@ -81,27 +108,31 @@ export default {
           axisLine: {
             show: false,
           },
-          axisLabel: {
-            formatter (value, index) {
-              if (value.length > 24) {
-                const start12 = value.slice(0, 6)
-                const end12 = value.slice(value.length - 6)
-                return `${start12}...${end12}`
-              }
-              return value
-            },
-          },
         },
         toolbox: {
           showTitle: false,
         },
       }
+      if (!this.isHistogram) {
+        ce.yAxis.axisLabel = {
+          formatter (value, index) {
+            // value = value.split(':')[1]
+            if (value.length > 15) {
+              const prefix = value.slice(0, 6)
+              const surfix = value.slice(value.length - 6)
+              return `${prefix}...${surfix}`
+            }
+            return value
+          },
+        }
+      }
+      return ce
     },
     chartConfig () {
       const config = {
         // title,
         height: this.height,
-        width: '100%',
+        width: '95%',
         legend: {
           show: this.showLegend,
         },
@@ -114,26 +145,14 @@ export default {
               opacity: 0.1,
             },
           },
-          position: (point, params, dom, rect, size) => {
-            const series = params.map(line => `<div style="color: #616161;">${line.marker} <span>${line.seriesName}</span>  <span>${this.currencySign} ${R.is(Number, line.value) ? (this.isFormatNumber ? numerify(line.value, this.numerifyFormat) : line.value) : line.value}</span></div>`).join('')
-            const wrapper = `<div class="chart-tooltip-wrapper">
-                          <div style="color: #5D6F80;">${params[0].name}</div>
-                          <div class="lines-wrapper">${series}</div>
-                        </div>`
-            dom.style.border = 'none'
-            dom.style.backgroundColor = 'transparent'
-            dom.innerHTML = wrapper
-          },
         },
         grid: {
           left: '3%',
           right: '4%',
           bottom: '3%',
-          // top: '3%',
           containLabel: true,
         },
       }
-
       if (this.isHistogram) {
         config.toolbox = {
           show: true,
@@ -142,7 +161,7 @@ export default {
           },
           right: 20,
         }
-        config.grid.top = '40px'
+        config.grid.top = '10px'
       }
       return config
     },
@@ -150,6 +169,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+::v-deep {
+  .ve-bar {
+    max-height: 1400px; // 30条数据的高度，超过30条数据滚动
+    overflow: auto;
+  }
+}
 </style>

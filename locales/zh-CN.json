@@ -198,5 +198,12 @@
   "monitor.text_115": "请选择函数",
   "monitor.text_116": "宿主机下线",
   "monitor.text_117": "每秒发送字节数",
-  "monitor.text_118": "请求数量"
+  "monitor.text_118": "请求数量",
+  "monitor.overview_alert_sum": "告警总数",
+  "monitor.overview_alert_trend": "近30日告警趋势",
+  "monitor.overview_usage_active": "近7日虚拟机平均CPU使用率",
+  "monitor.overview_bps_recv": "近7日网络接口收到的总字节数",
+  "monitor.overview_bps_sent": "近7日网络接口发送的总字节数",
+  "monitor.overview_read_bps": "近7日磁盘读速率",
+  "monitor.overview_write_bps": "近7日磁盘写速率"
 }
