@@ -14,10 +14,15 @@
 
 <script>
 // import { completionDate } from '@/utils/utils'
+import { transformUnit } from '@/utils/utils'
 
 export default {
   name: 'OverviewLine',
   props: {
+    unit: {
+      type: Object,
+      default: () => ({}),
+    },
     header: {
       type: Object,
       default: () => ({}),
@@ -60,6 +65,7 @@ export default {
   },
   computed: {
     chartExtend () {
+      const unit = this.unit.unit
       const commonSerie = {
         barMaxWidth: '16px',
         barCategoryGap: '60%',
@@ -108,6 +114,16 @@ export default {
           axisLine: {
             show: false,
           },
+          axisLabel: {
+            formatter: (value, index) => {
+              if (unit) {
+                const val = transformUnit(value, unit, 1000, '0')
+                return val.text
+              } else {
+                return value
+              }
+            },
+          },
         },
         toolbox: {
           showTitle: false,
@@ -129,6 +145,7 @@ export default {
       return ce
     },
     chartConfig () {
+      const unit = this.unit.unit
       const config = {
         // title,
         height: this.height,
@@ -144,6 +161,16 @@ export default {
               color: 'rgb(77, 161, 255)',
               opacity: 0.1,
             },
+          },
+          formatter: function (params, ticket, callback) {
+            for (const i in params) {
+              if (unit) {
+                const val = transformUnit(params[i].data, unit, 1000, '0')
+                return `${params[i].seriesName}: ${val.text}`
+              } else {
+                return `${params[i].seriesName}: ${params[i].data}`
+              }
+            }
           },
         },
         grid: {
