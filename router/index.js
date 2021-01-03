@@ -7,7 +7,7 @@ import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 
 export default {
-  index: 5,
+  index: 50,
   meta: {
     label: i18n.t('storage.text_16'),
     icon: 'menu-storage',
