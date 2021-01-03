@@ -30,7 +30,7 @@ import i18n from '@/locales'
 import store from '@/store'
 
 export default {
-  index: 4,
+  index: 40,
   meta: {
     label: i18n.t('network.text_16'),
     icon: 'menu-network',
