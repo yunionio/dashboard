@@ -21,7 +21,7 @@ import store from '@/store'
 import i18n from '@/locales'
 
 export default {
-  index: 9,
+  index: 90,
   meta: {
     label: i18n.t('cloudenv.text_8'),
     icon: 'onecloud',
