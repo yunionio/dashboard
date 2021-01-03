@@ -27,27 +27,28 @@ export default {
     },
     {
       meta: {
+        label: i18n.t('monitor.monitor_metric'),
+        t: 'dictionary.monitor_metrics',
+      },
+      submenus: [
+        {
+          name: 'Query',
+          meta: {
+            label: i18n.t('monitor.text_119'),
+            permission: 'unifiedmonitors_get',
+            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware']),
+          },
+          path: '/explorer',
+          component: Explorer,
+        },
+      ],
+    },
+    {
+      meta: {
         label: i18n.t('monitor.text_1'),
         t: 'dictionary.monitor_commonalert',
       },
       submenus: [
-        {
-          path: '/explorer',
-          meta: {
-            label: 'Metrics Explorer',
-            t: 'dictionary.explorer',
-            permission: 'unifiedmonitors_get',
-            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware']),
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Explorer',
-              path: '',
-              component: Explorer,
-            },
-          ],
-        },
         {
           path: '/commonalerts',
           meta: {
@@ -76,6 +77,21 @@ export default {
           ],
         },
         {
+          path: '/alertrecord',
+          meta: {
+            label: i18n.t('dictionary.alertrecord'),
+            permission: 'alertrecords_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AlertrecordIndex',
+              path: '',
+              component: AlertrecordIndex,
+            },
+          ],
+        },
+        {
           path: '/alertresource',
           meta: {
             label: i18n.t('monitor.text_17'),
@@ -89,21 +105,6 @@ export default {
               name: 'alertresourceIndex',
               path: '',
               component: AlertresourceIndex,
-            },
-          ],
-        },
-        {
-          path: '/alertrecord',
-          meta: {
-            label: i18n.t('dictionary.alertrecord'),
-            permission: 'alertrecords_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'AlertrecordIndex',
-              path: '',
-              component: AlertrecordIndex,
             },
           ],
         },
