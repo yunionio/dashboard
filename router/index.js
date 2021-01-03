@@ -11,7 +11,7 @@ import i18n from '@/locales'
 import store from '@/store'
 
 export default {
-  index: 10,
+  index: 65,
   meta: {
     label: i18n.t('monitor.text_0'),
     icon: 'menu-monitor',
