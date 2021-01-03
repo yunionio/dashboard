@@ -56,7 +56,7 @@ import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 
 export default {
-  index: 3,
+  index: 30,
   meta: {
     label: i18n.t('k8s.text_1'),
     icon: 'menu-k8s',
