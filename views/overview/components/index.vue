@@ -17,10 +17,10 @@
             </a-radio-group>
           </div>
           <div :style="{'margin-top': '30px'}" v-if="scope!=='project'">
-            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" />
+            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" />
           </div>
           <div :style="{'margin-top': '30px'}" v-else>
-            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="true" height="320px" :chartData="charts[activeTab].chartData" :chartSettings="{ showLine: charts[activeTab].chartData.columns}" />
+            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="true" height="320px" :chartData="charts[activeTab].chartData" :chartSettings="{ showLine: charts[activeTab].chartData.columns}" :unit="charts[activeTab].unit" />
           </div>
         </div>
       </a-col>
@@ -45,7 +45,6 @@
 import OverviewLine from '@Monitor/components/OverviewLine'
 import OverviewPie from '@Monitor/components/OverviewPie'
 import { getSignature } from '@/utils/crypto'
-import { transformUnit } from '@/utils/utils'
 import i18n from '@/locales'
 
 const allTabs = {
@@ -273,20 +272,26 @@ export default {
               const cloumnName = item.tags.tenant
               chartData.columns.push(cloumnName)
               item.points.map((point) => {
-                const v = transformUnit(point[0], unit.unit, 1000, '0.00')
                 if (datas[point[1]]) {
-                  datas[point[1]][cloumnName] = v.value
+                  datas[point[1]][cloumnName] = parseFloat(point[0].toFixed(2))
                 } else {
                   datas[point[1]] = {}
                   datas[point[1]].time = point[1]
-                  datas[point[1]][cloumnName] = v.value
+                  datas[point[1]][cloumnName] = parseFloat(point[0].toFixed(2))
                 }
               })
             })
 
             const dataKeys = Object.keys(datas).sort((a, b) => { return a - b })
             for (const k of dataKeys) {
-              datas[k].time = new Date(datas[k].time).toLocaleString()
+              const d = new Date(datas[k].time)
+              const darr = [String(d.getMonth() + 1), String(d.getDate()), String(d.getHours()), String(d.getMinutes())]
+              for (const i in darr) {
+                if (darr[i].length < 2) {
+                  darr[i] = '0' + darr[i]
+                }
+              }
+              datas[k].time = `${darr[0]}/${darr[1]} ${darr[2]}:${darr[3]}`
               chartData.rows.push(datas[k])
             }
           }
@@ -298,8 +303,7 @@ export default {
           if (series.length) {
             chartData.columns = ['raw_name', 'value']
             chartData.rows = series.map((item) => {
-              const v = transformUnit(item.value, unit.unit, 1000, '0.00')
-              return { raw_name: item.name, value: v.value }
+              return { raw_name: item.name, value: parseFloat(item.value.toFixed(2)) }
             }).sort((a, b) => {
               return a.value - b.value
             })
@@ -323,7 +327,7 @@ export default {
         const self = this
         this.$nextTick(_ => {
           this.charts[field].rawDatas = series
-          this.charts[field].unit = self.units[self.activeTab] || []
+          this.charts[field].unit = self.units[measurement + '/' + field] || []
           this.charts[field].chartData = self.tabChartData(field, series, this.charts[field].unit)
           this.charts[field].chartLoading = false
         })
