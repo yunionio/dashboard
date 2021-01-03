@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center flex-column">
-        <div class="flex-shrink-0 flex-grow-0 font-weight-bold mt-2">{{$t('dashboard.text_50')}}<span class="success-color">{{ percent }}%</span>{{$t('dashboard.text_51')}}</div>
+        <div class="flex-shrink-0 flex-grow-0 font-weight-bold mt-2">{{$t('dashboard.text_50')}} <span class="success-color">{{ percent }}%</span> {{$t('dashboard.text_51')}}</div>
         <div class="flex-fill w-100">
           <e-chart :options="chartOptions" style="height: 100%; width: 100%;" autoresize />
         </div>
