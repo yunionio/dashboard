@@ -53,6 +53,10 @@ export default {
     LineChart,
   },
   props: {
+    unit: {
+      type: Object,
+      default: () => ({}),
+    },
     series: {
       type: Array,
       required: true,
