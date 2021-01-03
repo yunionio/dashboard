@@ -8,7 +8,7 @@ import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 
 export default {
-  index: 6,
+  index: 60,
   meta: {
     label: i18n.t('db.text_28'),
     icon: 'menu-db',
