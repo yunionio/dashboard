@@ -2142,9 +2142,10 @@
     "clouduser": "Cloud Users",
     "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
-    "commonalert": "Alarms",
-    "monitor_commonalert": "Monitor Alarm",
-    "explorer": "Metrics",
+    "commonalert": "Configurations",
+    "monitor_commonalert": "Alters",
+    "monitor_metrics": "Metrics",
+    "explorer": "Query",
     "instance_snapshot": "Server Snapshot",
     "dbinstance": "RDS Instances",
     "loadbalancerclusters": "Load Balance-Cluster",
@@ -2174,7 +2175,7 @@
     "guest": "@:dictionary.server",
     "webconsole": "Webconsole",
     "message": "Message",
-    "alertrecord": "Alertrecord",
+    "alertrecord": "History",
     "rds": "RDS"
   },
   "res": {
