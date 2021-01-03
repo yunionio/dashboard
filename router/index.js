@@ -11,12 +11,12 @@ import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 
-let Monitor = { meta: { hidden: true } }
-const modules = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
-const moduleList = modules.keys()
-if ([].includes.call(moduleList, './Monitor/router/index.js')) {
-  Monitor = modules('./Monitor/router/index.js').default
-}
+// let Monitor = { meta: { hidden: true } }
+// const modules = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
+// const moduleList = modules.keys()
+// if ([].includes.call(moduleList, './Monitor/router/index.js')) {
+//  Monitor = modules('./Monitor/router/index.js').default
+// }
 
 export default {
   index: 70,
@@ -25,7 +25,7 @@ export default {
     icon: 'menu-helm',
   },
   menus: [
-    Monitor,
+    // Monitor,
     {
       meta: {
         label: i18n.t('helm.text_7'),
