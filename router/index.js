@@ -40,7 +40,7 @@ import i18n from '@/locales'
 import { hasSetupKey } from '@/utils/auth'
 
 export default {
-  index: 2,
+  index: 20,
   meta: {
     label: i18n.t('compute.text_90'),
     icon: 'menu-compute',
