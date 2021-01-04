@@ -210,6 +210,7 @@ export default {
   computed: {
     ...mapGetters([
       'isAdminMode',
+      'isDomainMode',
       'userInfo',
       'scope',
       'logo',
