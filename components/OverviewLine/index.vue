@@ -72,12 +72,21 @@ export default {
         barCategoryGap: '60%',
       }
       if (!this.isHistogram) {
+        const unit = this.unit.unit
         commonSerie.label = {
           show: !this.isHistogram,
           normal: {
             position: 'right',
             show: true,
             color: '#939EAB',
+            formatter: function (params) {
+              if (unit) {
+                const val = transformUnit(params.value, unit, 1000, '0')
+                return val.text
+              } else {
+                return params.value
+              }
+            },
           },
           emphasis: {
             color: '#4DA1FF',
