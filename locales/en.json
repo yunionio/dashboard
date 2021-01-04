@@ -592,7 +592,7 @@
   "cloudenv.text_531": "Unbind Key",
   "cloudenv.text_532": "Save Image",
   "cloudenv.text_533": "Mount ISO",
-  "cloudenv.text_534": "Uninstall ISO",
+  "cloudenv.text_534": "Unmount ISO",
   "cloudenv.text_535": "Associated Security Group",
   "cloudenv.text_536": "Bind EIP",
   "cloudenv.text_537": "Unbind EIP",
