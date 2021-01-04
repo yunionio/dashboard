@@ -206,5 +206,10 @@
   "monitor.overview_bps_recv": "The total number of bytes received by the network interface for the last 7 days",
   "monitor.overview_bps_sent": "The total number of bytes send by the network interface for the last 7 days",
   "monitor.overview_read_bps": "Disk read rate for the last 7 days",
-  "monitor.overview_write_bps": "Disk write rate for the last 7 days"
+  "monitor.overview_write_bps": "Disk write rate for the last 7 days",
+  "monitor.overview_tab_usage_active": "CPU Usage",
+  "monitor.overview_tab_bps_recv": "Incoming network traffic",
+  "monitor.overview_tab_bps_sent": "Network outgoing traffic",
+  "monitor.overview_tab_read_bps": "Disk Read Rate",
+  "monitor.overview_tab_write_bps": "Disk Write Rate"
 }
