@@ -80,9 +80,8 @@ export default {
         width: '100%',
         legend: {
           show: this.showLegend,
-          orient: 'vertical',
-          right: '0%',
-          center: '50%',
+          orient: 'horizontal',
+          bottom: '0%',
         },
         title: {
           show: true,

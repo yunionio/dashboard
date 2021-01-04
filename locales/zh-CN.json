@@ -206,5 +206,10 @@
   "monitor.overview_bps_recv": "近7日网络接口收到的总字节数",
   "monitor.overview_bps_sent": "近7日网络接口发送的总字节数",
   "monitor.overview_read_bps": "近7日磁盘读速率",
-  "monitor.overview_write_bps": "近7日磁盘写速率"
+  "monitor.overview_write_bps": "近7日磁盘写速率",
+  "monitor.overview_tab_usage_active": "CPU使用率",
+  "monitor.overview_tab_bps_recv": "网络入流量",
+  "monitor.overview_tab_bps_sent": "网路出流量",
+  "monitor.overview_tab_read_bps": "磁盘读速率",
+  "monitor.overview_tab_write_bps": "磁盘写速率"
 }
