@@ -17,7 +17,7 @@
             </a-radio-group>
           </div>
           <div :style="{'margin-top': '30px'}" v-if="scope!=='project'">
-            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" />
+            <overview-line height="460px" :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" />
           </div>
           <div :style="{'margin-top': '30px'}" v-else>
             <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="true" height="320px" :chartData="charts[activeTab].chartData" :chartSettings="{ showLine: charts[activeTab].chartData.columns}" :unit="charts[activeTab].unit" />
@@ -49,31 +49,31 @@ import i18n from '@/locales'
 
 const allTabs = {
   usage_active: {
-    label: i18n.t('monitor.metrics_vm_cpu_usage_active'),
+    label: i18n.t('monitor.overview_tab_usage_active'),
     measurement: 'vm_cpu',
     key: 'usage_active',
     index: 1,
   },
   bps_recv: {
-    label: i18n.t('monitor_metric_36'),
+    label: i18n.t('monitor.overview_tab_bps_recv'),
     measurement: 'vm_netio',
     key: 'bps_recv',
     index: 2,
   },
   bps_sent: {
-    label: i18n.t('monitor_metric_35'),
+    label: i18n.t('monitor.overview_tab_bps_sent'),
     measurement: 'vm_netio',
     key: 'bps_sent',
     index: 3,
   },
   read_bps: {
-    label: i18n.t('monitor_metric_79'),
+    label: i18n.t('monitor.overview_tab_read_bps'),
     measurement: 'vm_diskio',
     key: 'read_bps',
     index: 4,
   },
   write_bps: {
-    label: i18n.t('monitor_metric_80'),
+    label: i18n.t('monitor.overview_tab_write_bps'),
     measurement: 'vm_diskio',
     key: 'write_bps',
     index: 5,
@@ -116,7 +116,7 @@ export default {
 
     const charts = {}
     for (const k in allTabs) {
-      charts[k] = newChart(`monitor.overview_${k}`, '', allTabs[k].labal)
+      charts[k] = newChart(`monitor.overview_tab_${k}`, '', allTabs[k].labal)
     }
 
     charts.alert_sum = newChart('monitor.overview_alert_sum', '', '')
@@ -197,7 +197,7 @@ export default {
           metric_query: [
             {
               model: {
-                database: 'telegraf',
+                database: 'monitor',
                 measurement: measurement,
                 select: [
                   [{ params: [field], type: 'field' }, { type: 'sum' }],
@@ -224,6 +224,7 @@ export default {
       return {
         from: from,
         interval: interval,
+        show_meta: true,
         scope: this.scope,
         metric_query: [
           {
@@ -231,7 +232,7 @@ export default {
               database: 'telegraf',
               measurement: measurement,
               select: [
-                [{ params: [field], type: 'field' }],
+                [{ params: [field], type: 'field' }, { type: 'mean' }, { type: 'abs' }],
               ],
               group_by: [{ type: 'field', params: [group] }],
             },
