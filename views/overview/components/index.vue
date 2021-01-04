@@ -240,7 +240,7 @@ export default {
         ],
       }
     },
-    tabChartData (field, rawDatas, unit) {
+    tabChartData (field, rawDatas) {
       const chartData = {
         columns: [],
         rows: [],
@@ -350,7 +350,7 @@ export default {
         this.$nextTick(_ => {
           this.charts[field].rawDatas = series
           this.charts[field].unit = self.units[measurement + '/' + field] || []
-          this.charts[field].chartData = self.tabChartData(field, series, this.charts[field].unit)
+          this.charts[field].chartData = self.tabChartData(field, series)
           this.charts[field].chartLoading = false
         })
       } catch (error) {
