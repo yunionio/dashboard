@@ -2093,6 +2093,7 @@
     "policy": "Policies",
     "project": "Project",
     "proxysetting": "Proxy",
+    "redis": "Redis",
     "region": "Region",
     "reserved-ip": "Reserved IP",
     "role": "Roles",
