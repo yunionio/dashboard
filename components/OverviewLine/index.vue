@@ -67,7 +67,8 @@ export default {
     chartExtend () {
       const unit = this.unit.unit
       const commonSerie = {
-        barMaxWidth: '16px',
+        barWidth: '12px',
+        barMaxWidth: '24px',
         barCategoryGap: '60%',
       }
       if (!this.isHistogram) {
@@ -174,10 +175,10 @@ export default {
           },
         },
         grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true,
+          // left: '3%',
+          // right: '4%',
+          // bottom: '3%',
+          // containLabel: true,
         },
       }
       if (this.isHistogram) {
