@@ -1,8 +1,8 @@
 {
   "status": {
     "enabled": {
-      "true": "Enable",
-      "false": "Disable",
+      "true": "Enabled",
+      "false": "Disabled",
       "enable": "Enable",
       "disable": "Disable"
     },
@@ -569,7 +569,7 @@
       "ready": "Normal",
       "deleting": "Deleting",
       "wait_activity_over": "Waiting for completion of scaling activity",
-      "destroy_instance": "Destroy the scaling instance",
+      "destroy_instance": "Destroy the scaling server",
       "delete_failed": "Deletion failed",
       "deleted": "Delete",
       "joining": "Joining",
@@ -794,8 +794,8 @@
       "false": "Close"
     },
     "networIsAutoAlloc": {
-      "true": "Enable",
-      "false": "Disable"
+      "true": "Enabled",
+      "false": "Disabled"
     },
     "verified": {
       "true": "Verified",
@@ -1491,8 +1491,8 @@
     "10800": "3 hours"
   },
   "flexGrouPprinciple": {
-    "earliest": "Remove the earliest created instance first",
-    "latest": "Remove the latest instance first"
+    "earliest": "Remove the earliest created server first",
+    "latest": "Remove the latest server first"
   },
   "flexGrouTriggerType": {
     "alarm": "Alarm Strategy",
@@ -1776,24 +1776,24 @@
     "password": "Custom Password"
   },
   "enabledSwitchMessage": {
-    "instancegroups.disable": "After disabling, the server will not be able to join the unaffinity group.",
+    "instancegroups.disable": "After disabled, the server will not be able to join the unaffinity group.",
     "scalinggroups.enable": "When enabled, the scaling group will create or delete servers according to the scaling policy.",
-    "scalinggroups.disable": "After disabling, all scaling policies under the scaling group cannot be executed, but scaling policies can still be created.",
+    "scalinggroups.disable": "After disabled, all scaling policies under the scaling group cannot be executed, but scaling policies can still be created.",
     "scalingpolicies.enable": "When enabled, the scaling policy will create or delete servers based on the policy settings.",
     "scalingpolicies.disable": "After being disabled, the scaling policy in the disabled state will not take effect.",
     "serverskus.disable": "When creating a local IDC or private cloud server, you cannot choose a disabled package.",
     "hosts.disable": "Hosts in the disabled state cannot be used to create servers.",
     "physicalmachine.disable": "Disabled physical machines cannot be used to create baremetal.",
     "devtool_templates.disable": "After being disabled, the operation and maintenance template cannot be associated with the server.",
-    "dnsrecords.disable": "After disabling, the domain name service will no longer resolve domain names.",
+    "dnsrecords.disable": "After disabled, the domain name service will no longer resolve domain names.",
     "storages.disable": "When disabled, block storage cannot be used to create server disks.",
-    "cloudaccounts.disable": "After disabling, you cannot use the cloud account to create resources, and the created resources cannot be used.",
+    "cloudaccounts.disable": "After disabled, you cannot use the cloud account to create resources, and the created resources cannot be used.",
     "identity_providers.disable": "Once disabled, the authentication source will no longer be synchronized. The user cannot log in.",
     "domains.disable": "High-risk operation. After being disabled, all users under the domain cannot log in to the system and cannot create resources under the domain.",
-    "users.disable": "After disabling, users will not be able to log in to the system",
+    "users.disable": "After disabled, users will not be able to log in to the system",
     "contacts.disable": "After the contact method is disabled, users will not be able to receive system notifications.",
     "endpoints.enable": "After enabling, it will not take effect immediately, and it will take effect after logging in to the system again.",
-    "endpoints.disable": "After disabling, it will not take effect immediately, you need to log in to the system to take effect",
+    "endpoints.disable": "After disabled, it will not take effect immediately, you need to log in to the system to take effect",
     "loadbalancers.disable": "After being disabled, instances in the disabled state cannot provide load balancing services.",
     "loadbalancerlisteners.disable": "Disabled listeners cannot provide services."
   },
