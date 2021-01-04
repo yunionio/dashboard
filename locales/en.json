@@ -2143,7 +2143,7 @@
     "clouduser": "Cloud Users",
     "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
-    "commonalert": "Configurations",
+    "commonalert": "Policies",
     "monitor_commonalert": "Alters",
     "monitor_metrics": "Metrics",
     "explorer": "Query",
