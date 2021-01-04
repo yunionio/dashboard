@@ -115,7 +115,7 @@
     <!-- 工单 -->
     <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
     <!-- 大屏监控 -->
-    <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && isAdminMode">
+    <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && (isAdminMode || isDomainMode)">
       <a-tooltip :title="$t('navbar.button.monitor')" placement="right">
         <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
           <icon type="daping" style="font-size: 20px;" />
