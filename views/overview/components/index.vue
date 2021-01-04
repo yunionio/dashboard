@@ -17,7 +17,7 @@
             </a-radio-group>
           </div>
           <div :style="{'margin-top': '30px'}" v-if="scope!=='project'">
-            <overview-line height="460px" :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" />
+            <overview-line :height="`${Math.max(200, charts[activeTab].chartData.rows.length * 50)}px`" :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" />
           </div>
           <div :style="{'margin-top': '30px'}" v-else>
             <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="true" height="320px" :chartData="charts[activeTab].chartData" :chartSettings="{ showLine: charts[activeTab].chartData.columns}" :unit="charts[activeTab].unit" />
@@ -45,6 +45,7 @@
 import OverviewLine from '@Monitor/components/OverviewLine'
 import OverviewPie from '@Monitor/components/OverviewPie'
 import { getSignature } from '@/utils/crypto'
+import { transformUnit } from '@/utils/utils'
 import i18n from '@/locales'
 
 const allTabs = {
@@ -116,7 +117,7 @@ export default {
 
     const charts = {}
     for (const k in allTabs) {
-      charts[k] = newChart(`monitor.overview_tab_${k}`, '', allTabs[k].labal)
+      charts[k] = newChart(`monitor.overview_${k}`, '', allTabs[k].label)
     }
 
     charts.alert_sum = newChart('monitor.overview_alert_sum', '', '')
@@ -224,7 +225,6 @@ export default {
       return {
         from: from,
         interval: interval,
-        show_meta: true,
         scope: this.scope,
         metric_query: [
           {
@@ -258,10 +258,28 @@ export default {
               return a.name - b.name
             })
             chartData.columns = ['raw_name', 'value']
-            chartData.rows = series.map((item) => {
-              const v = new Date(item.name)
-              return { raw_name: `${v.getMonth()}-${v.getDate()}`, value: item.value }
-            })
+            const _temp = {}
+            for (const i in series) {
+              const d = new Date(series[i].name)
+              const rn = `${d.getMonth() + 1}/${d.getDate()}`
+              _temp[rn] = { raw_name: rn, value: series[i].value }
+            }
+
+            // fill data
+            const rows = []
+            if (Object.keys(_temp).length < 30) {
+              const now = new Date()
+              for (let i = 30; i > 0; i--) {
+                const cur = new Date(now - i * 24 * 60 * 60 * 1000)
+                const rn = `${cur.getMonth() + 1}/${cur.getDate()}`
+                if (_temp.hasOwnProperty(rn)) {
+                  rows.push(_temp[rn])
+                } else {
+                  rows.push({ raw_name: rn, value: 0 })
+                }
+              }
+            }
+            chartData.rows = rows
           }
         } else if (this.scope === 'project') {
           // vm
@@ -324,7 +342,10 @@ export default {
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
         this.charts[field].chartLoading = true
         this.charts[field].rawDatas = []
-        this.charts[field].chartData = {}
+        this.charts[field].chartData = {
+          columns: [],
+          rows: [],
+        }
         const self = this
         this.$nextTick(_ => {
           this.charts[field].rawDatas = series
@@ -343,7 +364,10 @@ export default {
         const { data: series = { } } = await new this.$Manager('alertrecords', 'v1').get({ id: 'total-alert', params: params })
         this.charts.alert_sum.chartLoading = true
         this.charts.alert_sum.rawDatas = {}
-        this.charts.alert_sum.chartData = {}
+        this.charts.alert_sum.chartData = {
+          columns: [],
+          rows: [],
+        }
 
         this.$nextTick(_ => {
           const chartData = {
@@ -389,14 +413,16 @@ export default {
         var datas = {}
         for (const k in allTabs) {
           const chart = this.charts[k].chartData
-          this.tableData.columns.push({ field: k, title: this.charts[k].title })
+          this.tableData.columns.push({ field: k, title: this.charts[k].label })
           for (let i = 0; i < chart.rows.length; i++) {
             const name = chart.rows[i].raw_name
             if (datas[name]) {
-              datas[name][k] = chart.rows[i].value
+              const val = transformUnit(chart.rows[i].value, this.charts[k].unit.unit, 1000, '0')
+              datas[name][k] = val.text
             } else {
               const item = { scope: name }
-              item[k] = chart.rows[i].value
+              const val = transformUnit(chart.rows[i].value, this.charts[k].unit.unit, 1000, '0')
+              item[k] = val.text
               datas[name] = item
             }
           }
