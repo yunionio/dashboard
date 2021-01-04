@@ -9,13 +9,13 @@ export default {
       If your application requires low network latency between instances, it is recommended that you create ECS instances in the same Zone. </p>
     `,
     serverPassword: `
-      <h4>Associated key</h4>
+      <h4>Key Pair</h4>
       <p>Log in to the server by setting the Key Pairs</p>
       <h4>Keep image settings</h4>
       <p>Use the original password of the mirror, please make sure you know the original password of the selected mirror. </p>
     `,
     keypairPassword: `
-      <h4>Associated key</h4>
+      <h4>Key Pair</h4>
       <p>Log in to the server by setting the Key Pairs</p>
     `,
     imagePassword: `
