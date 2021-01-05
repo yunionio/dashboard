@@ -1463,10 +1463,10 @@
     "authenticated-read": "Authenticated users can read: authenticated users can read the data in the bucket, and only the user can perform write operations"
   },
   "notificationPriority": {
-    "normal": "General",
-    "important": "Important",
-    "fatal": "Serious",
-    "silence": "Slightly"
+    "silence": "Minor",
+    "normal": "Moderate",
+    "important": "Critical",
+    "fatal": "Fatal"
   },
   "currencys": {
     "CNY": "CNY",
