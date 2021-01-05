@@ -234,6 +234,12 @@ export default {
               select: [
                 [{ params: [field], type: 'field' }, { type: 'mean' }, { type: 'abs' }],
               ],
+              tags: [
+                {
+                  key: group,
+                  operator: '!=',
+                  value: '',
+                }],
               group_by: [{ type: 'field', params: [group] }],
             },
           },
