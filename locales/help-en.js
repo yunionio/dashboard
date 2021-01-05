@@ -25,14 +25,14 @@ export default {
     networkIpSubnets: `
       <p>1. VLAN ID is used for network physical isolation, the default is 1, IP subnets with the same VLAN ID are interoperable, and IP subnets with different VLAN IDs are blocked. </p>
       <p>2. When creating multiple IP subnets, the system automatically assigns names</p>
-      <p>E.g: the name is network, add 3 IP subnets</p>
+      <p>E.g. the name is network, add 3 IP subnets</p>
       <p>The names are network0, network1, network2 in sequence. </p>
     `,
     networkPolicy: `
       <p>The default policy is: physical machines are allocated from high addresses, and servers are allocated from low addresses</p>
     `,
     networkDomain: `
-      <p>When the system assigns an IP to a host, it will also create a domain name record pointing to the IP. The domain name consists of the host name + the host domain name suffix. E.g:</p>
+      <p>When the system assigns an IP to a host, it will also create a domain name record pointing to the IP. The domain name consists of the host name + the host domain name suffix. E.g.</p>
       <p>The host name is vm01, and the host ip is 192.168.1.1</p>
       <p>The host domain name suffix is 'gh.baidu.com'</p>
       <p>After the host is successfully created, ping vm01.gh.baidu.com will get the ip of vm01</p>
