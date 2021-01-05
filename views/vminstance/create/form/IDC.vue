@@ -40,7 +40,7 @@
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
       <a-form-item v-if="form.fd.hypervisor === 'kvm'" :label="$t('compute.text_1152')" :extra="$t('compute.text_1153')">
-        <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" />
+        <gpu :decorators="decorators.gpu" :gpu-options="gpuOptions" @change="gpuChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
@@ -525,6 +525,11 @@ export default {
           this.cpuChange(vcpuInit)
         })
     },
+    gpuChange (val) {
+      if (!val) {
+        this.form.fc.setFieldsValue({ gpu: '' })
+      }
+    }
   },
 }
 </script>
