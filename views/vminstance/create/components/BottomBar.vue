@@ -308,6 +308,8 @@ export default {
       'fd.systemDiskType.key',
       'fd.count',
       'dataDiskSizes',
+      'fd.gpu',
+      'fd.gpuCount',
     ], (val) => {
       if (val) {
         this.getPriceList()
@@ -349,6 +351,13 @@ export default {
       if (this.fi.createType !== SERVER_TYPE.public) {
         const diskSize = this.dataDisk || 0
         params.spec = `cpu=${this.fd.vcpu}core;mem=${sizestrWithUnit(this.fd.vmem, 'M', 1024)};disk=${systemDiskSize}GB,model=${systemDiskMedium}::${systemDiskType.key};disk=${diskSize}GB,model=${dataDiskMedium}::${this.dataDiskType}`
+        if (this.fd.gpuEnable && this.fd.gpu) {
+          const vendor = this.fd.gpu.split('=')[1]
+          if (vendor) {
+            const tmps = vendor.split(':')
+            params.spec += `;gpu=${this.fd.gpuCount},model=${tmps[0]}.${tmps[1]}`
+          }
+        }
       } else {
         const { sku } = this.fd
         const { region_ext_id: regionExtId, name, zone_ext_id: zoneExtId } = sku
