@@ -52,7 +52,7 @@ export default {
         priority: [
           'priority',
           {
-            initialValue: 'normal',
+            initialValue: 'minor',
           },
         ],
       },

@@ -98,7 +98,7 @@ export const getPriorityTableColumn = () => {
     slots: {
       default: ({ row }) => {
         const veriables = row.variables
-        if (veriables.priority) {
+        if (veriables.priority && PRIORITY_MAP[veriables.priority]) {
           return PRIORITY_MAP[veriables.priority].value
         }
         return '-'
