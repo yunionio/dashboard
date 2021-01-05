@@ -137,7 +137,7 @@
             :isServertemplate="isServertemplate"
             :cloud-env="type"
             :form="form"
-            :hasPublicIp="hypervisor === 'qcloud'"
+            :hasPublicIp="hypervisor === 'qcloud' || hypervisor === 'aliyun'"
             :formItemLayout="formItemLayout" />
           <a-form-item :label="$t('compute.text_105')">
             <secgroup-config
