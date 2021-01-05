@@ -4268,7 +4268,8 @@
   "common.need_same_domain_resource": "Please select resource in the same @:dictionary.domain",
   "common.set_secgroup_max": "There are at most {0} of them",
   "common.workflow_priority": "Priority",
-  "common.workflow_priority_normal": "Normal",
-  "common.workflow_priority_important": "Important",
+  "common.workflow_priority_minor": "Minor",
+  "common.workflow_priority_moderate": "Moderate",
+  "common.workflow_priority_critical": "Critical",
   "common.workflow_priority_fatal": "Fatal"
 }
