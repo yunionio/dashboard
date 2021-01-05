@@ -55,6 +55,7 @@ export default {
   methods: {
     change (val) {
       this.gpuEnable = val
+      this.$emit('change', val)
     },
   },
 }
