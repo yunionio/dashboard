@@ -224,7 +224,7 @@
   "db.text_223": "An existing instance",
   "db.text_224": "Backup under normal conditions can only be restored",
   "db.text_225": "Instance Information",
-  "db.text_226": "Belonging to {0}",
+  "db.text_226": "{0}",
   "db.text_227": "Subaccount",
   "db.text_228": "RDS Backup Management",
   "db.text_229": "Unauthorized account",
