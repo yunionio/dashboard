@@ -4,7 +4,7 @@
   "monitor_metric_3": "CPU 用户态时间",
   "monitor_metric_4": "CPU 系统态时间",
   "monitor_metric_5": "CPU 使用率",
-  "monitor_metric_6": "CPU 用户态使用率",
+  "monitor_metric_6": "CPU Guest使用率",
   "monitor_metric_7": "CPU 用户态nice使用率",
   "monitor_metric_8": "CPU 空闲态使用率",
   "monitor_metric_9": "CPU IO使用率",
