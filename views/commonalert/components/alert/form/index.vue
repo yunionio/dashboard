@@ -29,7 +29,7 @@
         :metricInfo="metricInfo" />
     </a-form-item>
     <a-form-item :label="$t('monitor.condition')" class="mb-0">
-      <condition :decorators="decorators" :disabled="disabled" @thresholdChange="emitThreshold" :unit="conditionUnit" />
+      <condition :decorators="decorators" :disabled="disabled" @comparatorChange="emitComparator"  @thresholdChange="emitThreshold" :unit="conditionUnit" />
     </a-form-item>
     <a-form-item :label="$t('monitor.level')">
       <a-radio-group v-decorator="decorators.level" :disabled="disabled">
@@ -415,6 +415,12 @@ export default {
     },
     emitThreshold (val) {
       this.$emit('update:threshold', val)
+    },
+    emitComparator (val) {
+      if (val === 'nodata_query') {
+        this.form.fc.setFieldsValue({ threshold: '0' })
+      }
+      this.$emit('update:comparator', val)
     },
     onValuesChange (props, values) {
       const newField = resolveValueChangeField(values)
