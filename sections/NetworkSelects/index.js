@@ -246,6 +246,10 @@ export default {
           })
         }
       } catch (err) {
+        this.networkList = []
+        this.FC.setFieldsValue({
+          network: undefined,
+        })
         throw err
       } finally {
         if (callback && R.type(callback) === 'Function') {
