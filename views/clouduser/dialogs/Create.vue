@@ -78,7 +78,7 @@ export default {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
-            if (values.email) {
+            if (values.email && this.isEnableMail) {
               this.$nextTick(() => {
                 const isError = this.form.fc.getFieldError('email')
                 if (R.isNil(isError) || R.isEmpty(isError)) {
@@ -252,12 +252,11 @@ export default {
     'form.fi.user': {
       handler (val, oldVal) {
         if (val.id) {
-          this.fetchEmail(val.id)
-          this.fetchReceivers(val.id)
+          this.isEnableMail && this.fetchEmail(val.id)
         }
       },
+      deep: true,
     },
-    deep: true,
   },
   created () {
     this.fetchConfigEmail()
@@ -308,7 +307,6 @@ export default {
             type: 'email',
           },
         })
-        console.log(res)
         if (res.data.data.length > 0) {
           this.isEnableMail = true
         }
@@ -316,23 +314,6 @@ export default {
         throw error
       } finally {
         this.$emit('update:loading', false)
-      }
-    },
-    async fetchReceivers (uid) {
-      try {
-        const params = { scope: this.$store.getters.scope, id: uid }
-        const response = await new this.$Manager('receivers', 'v1').list({ params })
-        const receivers = response.data.data || []
-        if (receivers.length > 0) {
-          const receiver = receivers[0]
-          if (receiver.enabled_contact_types.includes('email')) {
-            this.form.fc.setFieldsValue({
-              email: receiver.email,
-            })
-          }
-        }
-      } catch (error) {
-        throw error
       }
     },
   },
