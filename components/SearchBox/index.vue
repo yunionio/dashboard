@@ -147,7 +147,7 @@ export default {
           let newKey = key
           if (this.autocompleterSearch && !this.autocompleterSearch.includes('：')) {
             const ipKey = Object.keys(this.options).find(v => v.startsWith('ip'))
-            if (/^\d+.*$/.test(value) && ipKey) {
+            if (/^\d+.*$/.test(value) && value <= 255 && ipKey) {
               newKey = ipKey
             } else {
               if (this.options[this.defaultSearchKey]) {
