@@ -466,14 +466,9 @@ export default {
       const item = this.storageOpts.find(v => v.value === val)
       this.storageItem = item
       try {
-        const storageItem = CommonConstants.STORAGE_TYPES[this.provider]
-        if (storageItem && storageItem[item.value]) {
-          this.minDiskData = this.getDataDiskMin(item)
-          this.maxDiskData = this.getDataDiskMax(item)
-        } else {
-          this.minDiskData = 1
-          this.maxDiskData = 2048
-        }
+        this.minDiskData = this.getDataDiskMin(val)
+        this.maxDiskData = this.getDataDiskMax(val)
+        this.step = this.getDataDiskStep(val)
       } catch (error) {
         console.warn(this.$t('compute.text_413', [CommonConstants.STORAGE_TYPES[this.provider], item.storage_type]))
       }
@@ -485,19 +480,26 @@ export default {
         this.form.fc.setFieldsValue({ size: this.minDiskData })
       }
     },
-    getDataDiskMin (item) {
-      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === item.value)
+    getDataDiskMin (val) {
+      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === val)
       if (curDisk) {
         return curDisk.min_size_gb
       }
-      return CommonConstants.STORAGE_TYPES[this.provider][item.value].min
+      return CommonConstants.STORAGE_TYPES[this.provider][val].min
     },
-    getDataDiskMax (item) {
-      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === item.value)
+    getDataDiskMax (val) {
+      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === val)
       if (curDisk) {
         return curDisk.max_size_gb
       }
-      return CommonConstants.STORAGE_TYPES[this.provider][item.value].max
+      return CommonConstants.STORAGE_TYPES[this.provider][val].max
+    },
+    getDataDiskStep (val) {
+      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === val)
+      if (curDisk) {
+        return curDisk.step_size_gb
+      }
+      return 10
     },
   },
 }
