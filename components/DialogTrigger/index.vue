@@ -43,7 +43,6 @@ export default {
     },
     openDialog () {
       const manager = this.resource ? new this.$Manager(this.resource, this.apiVersion) : this.onManager
-
       this.vm.createDialog(this.value, {
         data: this.data,
         columns: this.columns,
