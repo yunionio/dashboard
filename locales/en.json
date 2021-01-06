@@ -387,7 +387,7 @@
   "cloudenv.text_352": "Development/Test",
   "cloudenv.text_353": "Subscription ID",
   "cloudenv.text_354": "Sync Status",
-  "cloudenv.text_355": "Belonging to {0}",
+  "cloudenv.text_355": "{0}",
   "cloudenv.text_356": "Resources are attributable by default {0}",
   "cloudenv.text_357": "Please enable first",
   "cloudenv.text_358": "Insufficient permissions",
