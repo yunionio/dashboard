@@ -1,5 +1,5 @@
 <template>
-  <page-footer>
+  <page-footer isForm>
      <template class="content" v-slot:left>
       <div
         v-for="(tip, idx) of tips"
