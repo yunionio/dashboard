@@ -495,7 +495,7 @@
   "compute.text_503": "Management IP",
   "compute.text_504": "Out-of-band IP",
   "compute.text_505": "Shared Range",
-  "compute.text_506": "Belonging to {0}",
+  "compute.text_506": "{0}",
   "compute.text_507": "Adjust tags",
   "compute.text_508": "Recycle as a physical machine",
   "compute.text_509": "Please select the data to be operated",
