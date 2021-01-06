@@ -186,6 +186,7 @@ export default {
               permission: 'server_perform_add_secgroup',
               action: () => {
                 this.createDialog('SetSecgroupDialog', {
+                  vm: this,
                   data: [obj],
                   name: this.$t('dictionary.elasticcache'),
                   resource: 'elasticcache_id',
