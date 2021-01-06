@@ -12,7 +12,7 @@
             class="d-flex align-items-center">
             <span class="label" :class="obj.labelClass">{{ obj.label }}：</span>
             <template v-if="obj.value">
-              <span class="value text-truncate" :class="obj.valueClass">{{ obj.value }}</span>
+              <span class="value config text-truncate" :class="obj.valueClass">{{ obj.value }}</span>
             </template>
             <template v-else>
               <span class="value placeholder text-truncate" :class="obj.valueClass">------</span>
@@ -464,9 +464,9 @@ export default {
         font-style: italic;
       }
     }
-    @media screen and (max-width: 1280px) {
+    @media screen and (max-width: 1366px) {
       .value {
-        max-width: 300px;
+        max-width: 154px;
       }
     }
   }
