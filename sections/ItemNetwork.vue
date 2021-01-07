@@ -44,7 +44,6 @@ export default {
       const { fd } = this.form
       const params = {
         cloudregion_id: fd.cloudregion_id || fd.cloudregion,
-        zone_id: fd.zones || fd.sku.zone_id,
         ...this.scopeParams,
       }
       // zones是rds新建
@@ -52,15 +51,15 @@ export default {
       if (zonesStr) {
         const zoneArr = zonesStr.split('+')
         if (zoneArr && zoneArr.length > 0) {
-          for (let i = 0; i < zoneArr.length; i++) {
-            params[`zones.${i}`] = zoneArr[i]
-          }
+          params['zones.0'] = zoneArr[0]
         }
       }
       // zone是redis新建
       const zone = this.form.getFieldValue('zone')
       if (zone) {
         params.zone = zone
+      } else {
+        params.zone = fd.sku.zone_id
       }
       return params
     },
