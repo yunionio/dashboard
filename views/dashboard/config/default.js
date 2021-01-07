@@ -376,7 +376,7 @@ export default {
           h: 7,
           w: 5,
           x: 15,
-          y: 21,
+          y: 26,
         },
         params: {
           field: 'snapshot',
@@ -420,7 +420,7 @@ export default {
           h: 5,
           w: 10,
           x: 10,
-          y: 28,
+          y: 14,
         },
         params: {
           name: i18n.t('dashboard.text_88'),
@@ -462,7 +462,7 @@ export default {
           h: 7,
           w: 5,
           x: 15,
-          y: 14,
+          y: 19,
         },
         params: {
           field: 'eip',
@@ -506,7 +506,7 @@ export default {
           h: 7,
           w: 5,
           x: 10,
-          y: 21,
+          y: 26,
         },
         params: {
           field: 'image',
@@ -547,7 +547,7 @@ export default {
           h: 7,
           w: 5,
           x: 5,
-          y: 21,
+          y: 26,
         },
         params: {
           field: 'isolated_device',
@@ -606,7 +606,7 @@ export default {
           h: 7,
           w: 5,
           x: 10,
-          y: 14,
+          y: 19,
         },
         params: {
           field: 'storage',
@@ -647,7 +647,7 @@ export default {
           h: 7,
           w: 5,
           x: 0,
-          y: 14,
+          y: 19,
         },
         params: {
           field: 'cpu',
@@ -675,7 +675,7 @@ export default {
           h: 5,
           w: 10,
           x: 0,
-          y: 28,
+          y: 14,
         },
         params: {
           name: i18n.t('dashboard.text_90'),
@@ -687,7 +687,7 @@ export default {
           h: 7,
           w: 5,
           x: 5,
-          y: 14,
+          y: 19,
         },
         params: {
           field: 'memory',
@@ -771,7 +771,7 @@ export default {
           h: 7,
           w: 5,
           x: 0,
-          y: 21,
+          y: 26,
         },
         params: {
           field: 'port',
