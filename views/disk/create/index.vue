@@ -481,21 +481,21 @@ export default {
       }
     },
     getDataDiskMin (val) {
-      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === val)
+      const curDisk = this.instanceCapabilitieDataDisk.find(v => val.startsWith(v.storage_type))
       if (curDisk) {
         return curDisk.min_size_gb
       }
       return CommonConstants.STORAGE_TYPES[this.provider][val].min
     },
     getDataDiskMax (val) {
-      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === val)
+      const curDisk = this.instanceCapabilitieDataDisk.find(v => val.startsWith(v.storage_type))
       if (curDisk) {
         return curDisk.max_size_gb
       }
       return CommonConstants.STORAGE_TYPES[this.provider][val].max
     },
     getDataDiskStep (val) {
-      const curDisk = this.instanceCapabilitieDataDisk.find(v => v.storage_type === val)
+      const curDisk = this.instanceCapabilitieDataDisk.find(v => val.startsWith(v.storage_type))
       if (curDisk) {
         return curDisk.step_size_gb
       }
