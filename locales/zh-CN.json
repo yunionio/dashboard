@@ -1463,10 +1463,10 @@
     "authenticated-read": "认证用户可读：已认证用户可读取bucket中的数据，仅用户本人可执行写操作"
   },
   "notificationPriority": {
-    "normal": "一般",
-    "important": "重要",
-    "fatal": "严重",
-    "silence": "轻微"
+    "silence": "次要",
+    "normal": "中等",
+    "important": "危急",
+    "fatal": "致命"
   },
   "currencys": {
     "CNY": "元",
