@@ -68,7 +68,7 @@ export const REGEXP = {
     message: i18n.t('validator.email'),
   },
   phone: {
-    regexp: /^1[0-9-]{10}$/,
+    regexp: /^[0-9-]{6,14}$/,
     message: i18n.t('validator.phone'),
   },
   isChinese: {
