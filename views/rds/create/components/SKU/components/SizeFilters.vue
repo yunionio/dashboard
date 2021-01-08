@@ -55,7 +55,7 @@ export default {
       const zones = this.form.getFieldValue('zones')
       if (!zones || this.cpus.indexOf(zones) === -1) {
         this.form.setFieldsValue({
-          zones: Object.keys(this.zones)[0].split('+')[0],
+          zones: Object.keys(this.zones)[0],
         })
       }
     },
