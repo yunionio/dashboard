@@ -198,7 +198,7 @@ export default {
                 hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_change_project'),
               },
               {
-                label: this.$t('compute.text_615'),
+                label: this.$t('common_277'),
                 action: (row) => {
                   this.createDialog('ChangeDisableDelete', {
                     name: this.$t('compute.text_97'),
@@ -325,7 +325,7 @@ export default {
                     }
                   }
                   if (someDisableDelete) {
-                    ret.tooltip = this.$t('compute.text_652')
+                    ret.tooltip = this.$t('common.text00008')
                     return ret
                   }
                   return this.$getDeleteResult(this.list.selectedItems)
