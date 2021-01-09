@@ -2035,7 +2035,7 @@
     "blockstorage": "Block Storage",
     "cachedimage": "Image Cache",
     "cloudaccount": "Cloud Accounts",
-    "cloudevents": "Cloud Events",
+    "cloudevents": "Cloud Logs",
     "cloudprovider": "Cloud Subscription",
     "companyinfo": "Branding",
     "contact": "Recipients",
