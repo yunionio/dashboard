@@ -22,6 +22,16 @@
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
+      <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-if="provider==='Aliyun'">
+        <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.saml_auth" />
+        <div slot="extra">
+          <i18n path="cloudaccount.create_form.saml_user_extra">
+            <template #link>
+              <help-link :href="smaluserDoc">{{$t('cloudaccount.create_form.saml_user_link')}}</help-link>
+            </template>
+          </i18n>
+        </div>
+      </a-form-item>
       <auto-sync :fc="form.fc" />
     </a-form>
   </div>
@@ -32,7 +42,7 @@ import DomainProject from '../../../components/DomainProject'
 import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
-import { CLOUDACCOUNT_DOCS, keySecretFields, ACCESS_URL } from '@Cloudenv/views/cloudaccount/constants'
+import { CLOUDACCOUNT_DOCS, keySecretFields, ACCESS_URL, SAML_USER_DOCS } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
 export default {
@@ -48,6 +58,7 @@ export default {
     const environments = Object.entries(ACCESS_URL[this.provider.toLowerCase()]).map(keyValueArr => ({ key: keyValueArr[0], label: keyValueArr[1] }))
     return {
       docs: CLOUDACCOUNT_DOCS,
+      smaluserDoc: SAML_USER_DOCS,
       decorators: this.getDecorators(keySecretField),
       environments,
     }
@@ -110,6 +121,13 @@ export default {
         ],
         auto_create_project: [
           'auto_create_project',
+          {
+            initialValue: false,
+            valuePropName: 'checked',
+          },
+        ],
+        saml_auth: [
+          'saml_auth',
           {
             initialValue: false,
             valuePropName: 'checked',
