@@ -160,7 +160,7 @@ export const PERMISSION = {
   // 用户
   users_list: ['identity', 'users', 'list'],
   // 联系方式
-  contacts_list: ['notify', 'contacts', 'list'],
+  contacts_list: ['notify', 'receivers', 'list'],
   // 项目
   projects_list: ['identity', 'projects', 'list'],
   // 项目详情
