@@ -243,7 +243,7 @@ export default {
             },
             {
               field: 'cache',
-              title: i18n.t('common_246'),
+              title: i18n.t('common_247'),
               formatter: ({ cellValue, row }) => {
                 return `${row.projectQuota.cache || 0}${i18n.t('common_411')}(${i18n.t('common_407')}${row.projectQuota['usage.cache'] || 0}${i18n.t('common_411')})`
               },
