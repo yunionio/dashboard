@@ -473,7 +473,7 @@
   "cloudenv.text_438": "Valid date",
   "cloudenv.text_439": "Binding Resources",
   "cloudenv.text_440": "Specify Servers",
-  "cloudenv.text_441": "Up to 20 tags can be bound",
+  "cloudenv.text_441": "Maximum number of tags per resource – 20",
   "cloudenv.text_442": "Tag cannot exceed 20",
   "cloudenv.text_443": "Please select the repetition period",
   "cloudenv.text_444": "Please select the trigger week",
