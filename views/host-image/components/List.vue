@@ -153,7 +153,7 @@ export default {
                 },
               },
               {
-                label: this.$t('compute.text_615'),
+                label: this.$t('common_277'),
                 action: () => {
                   this.createDialog('ChangeDisableDelete', {
                     name: this.$t('dictionary.guestimage'),

@@ -8,7 +8,7 @@
         <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :plcaeholder="$t('compute.text_627')" />
         </a-form-item>
-        <!-- <a-form-item :label="$t('compute.text_372')" v-bind="formItemLayout">
+        <!-- <a-form-item :label="$t('common.text00076')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.protected">
             <a-radio-button value="true">{{$t('compute.text_656')}}</a-radio-button>
             <a-radio-button value="false">{{$t('compute.text_569')}}</a-radio-button>
