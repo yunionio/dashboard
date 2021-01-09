@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <!-- <a-form-item :label="$t('compute.text_372')" v-bind="formItemLayout">
+        <!-- <a-form-item :label="$t('common.text00076')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.disable_delete">
             <a-radio-button
               v-for="item of disableDeleteOptions"

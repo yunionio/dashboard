@@ -284,7 +284,7 @@ export default {
               hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_change_project'),
             },
             {
-              label: i18n.t('compute.text_615'),
+              label: i18n.t('common_277'),
               permission: 'images_delete',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
@@ -362,7 +362,7 @@ export default {
                       return ret
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {
-                      ret.tooltip = i18n.t('compute.text_652')
+                      ret.tooltip = i18n.t('common.text00008')
                       return ret
                     }
                     return ret
@@ -377,7 +377,7 @@ export default {
                       return ret
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {
-                      ret.tooltip = i18n.t('compute.text_652')
+                      ret.tooltip = i18n.t('common.text00008')
                       return ret
                     }
                     return ret
@@ -392,7 +392,7 @@ export default {
                       return ret
                     }
                     if (this.booleanTransfer(obj.disable_delete) && this.booleanTransfer(obj.protected)) {
-                      ret.tooltip = i18n.t('compute.text_652')
+                      ret.tooltip = i18n.t('common.text00008')
                       return ret
                     }
                     return ret
