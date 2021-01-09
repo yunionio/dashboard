@@ -584,7 +584,7 @@
   "cloudenv.text_523": "Set Disk Speed",
   "cloudenv.text_524": "Expired release",
   "cloudenv.text_525": "Host Clone",
-  "cloudenv.text_526": "Join unaffinity group",
+  "cloudenv.text_526": "Join anti-affinity group",
   "cloudenv.text_527": "Renewal",
   "cloudenv.text_528": "Auto renewal settings",
   "cloudenv.text_529": "Reset Password",
