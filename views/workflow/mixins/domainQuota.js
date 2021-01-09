@@ -303,7 +303,7 @@ export default {
             },
             {
               field: 'cache',
-              title: i18n.t('common_246'),
+              title: i18n.t('common_247'),
               formatter: ({ cellVal, row }) => {
                 return `${row.domainQuota.cache || 0}${i18n.t('common_411')}(${i18n.t('common_407')}${row.domainQuota['usage.cache'] || 0}${i18n.t('common_411')})`
               },
