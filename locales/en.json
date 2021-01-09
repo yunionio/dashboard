@@ -2144,7 +2144,7 @@
     "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
     "commonalert": "Policies",
-    "monitor_commonalert": "Alters",
+    "monitor_commonalert": "Alerts",
     "monitor_metrics": "Metrics",
     "explorer": "Query",
     "instance_snapshot": "Server Snapshot",
