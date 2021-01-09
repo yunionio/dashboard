@@ -134,6 +134,9 @@ export default {
               }
             },
           },
+          max: function (value) { // 坐标轴刻度最大值
+            return value.max * 1.2
+          },
         },
         toolbox: {
           showTitle: false,

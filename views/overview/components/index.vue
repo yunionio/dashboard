@@ -168,7 +168,7 @@ export default {
         data.signature = getSignature(data)
         this.units = {}
         const self = this
-        new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', data }).then((res) => {
+        new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: data }).then((res) => {
           if (!res.data.res_type_measurements) {
             return
           }
