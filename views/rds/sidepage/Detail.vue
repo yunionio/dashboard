@@ -285,7 +285,7 @@ export default {
           items: [
             getSwitchTableColumn({
               field: 'disable_delete',
-              title: this.$t('db.text_145'),
+              title: this.$t('common.text00076'),
               change: val => {
                 this.onManager('update', {
                   id: this.data.id,
