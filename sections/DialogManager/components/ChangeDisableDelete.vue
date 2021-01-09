@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     title () {
-      return this.params.title || this.$t('common.text00077')
+      return this.params.title || this.$t('common_277')
     },
   },
   created () {},
