@@ -146,7 +146,7 @@ export default {
         ce.yAxis.axisLabel = {
           formatter (value, index) {
             // value = value.split(':')[1]
-            if (value.length > 15) {
+            if (value && value.length > 15) {
               const prefix = value.slice(0, 6)
               const surfix = value.slice(value.length - 6)
               return `${prefix}...${surfix}`
