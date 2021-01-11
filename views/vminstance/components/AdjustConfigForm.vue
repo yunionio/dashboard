@@ -896,8 +896,13 @@ export default {
         const image = this.form.fi.imageMsg || {}
         const osType = image.os_type ? image.os_type.toLowerCase() : ''
         params.region_id = regionExtId
-        const provider = skuProvider.toLowerCase()
+        let provider = skuProvider.toLowerCase()
         if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+          if (provider === HYPERVISORS_MAP.azure.key) {
+            const cloud_env = this.form.fd.sku.cloud_env
+            params.brand = cloud_env
+            provider = cloud_env
+          }
           params.price_key = `${provider}::${regionExtId}::::instance::`
           if (sku.name) {
             params.price_key += `${sku.name}`
