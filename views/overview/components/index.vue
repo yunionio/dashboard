@@ -1,5 +1,20 @@
 <template>
   <div class="overview-index">
+    <a-row v-if="scope !=='project'">
+      <a-breadcrumb style="padding: 5px;">
+        <a-breadcrumb-item v-for="(item, index) in navs" :style="{ 'font-size': '16px', 'font-weight': '500'}" :key="item.id">
+          <template v-if="index === navs.length - 1">
+            {{ item.title }}
+          </template>
+          <template v-else>
+            <a @click="changeNav(index)">{{ item.title }}</a>
+          </template>
+        </a-breadcrumb-item>
+        <a-breadcrumb-item />
+        <a-breadcrumb-item />
+        <a-breadcrumb-item />
+      </a-breadcrumb>
+    </a-row>
     <a-row>
       <a-col style="padding-left: 6px; padding-right: 6px;" :span="8">
         <overview-pie class="monitor-overview-card mb-2" :loading="charts.alert_sum.chartLoading" :chartData="charts.alert_sum.chartData" showLegend="true" :legendData="charts.alert_sum.legendData" :pieTitle="charts.alert_sum.title" :pieSubtext="charts.alert_sum.subtitle" />
@@ -16,11 +31,11 @@
               <a-radio-button :value="item.key" v-for="item in tabs" :key="item.key">{{ item.label }}</a-radio-button>
             </a-radio-group>
           </div>
-          <div :style="{'margin-top': '30px'}" v-if="scope!=='project'">
-            <overview-line :height="`${Math.max(200, charts[activeTab].chartData.rows.length * 50)}px`" :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" />
+          <div :style="{'margin-top': '30px'}" v-if="currentNav.scope !=='project'">
+            <overview-line :height="`${Math.max(200, charts[activeTab].chartData.rows.length * 45)}px`" :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" :chartEvents="chartEvents()"  key="domainView" />
           </div>
           <div :style="{'margin-top': '30px'}" v-else>
-            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="true" height="320px" :chartData="charts[activeTab].chartData" :chartSettings="{ showLine: charts[activeTab].chartData.columns}" :unit="charts[activeTab].unit" />
+            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="true" height="320px" :chartData="charts[activeTab].chartData" :chartSettings="{ showLine: charts[activeTab].chartData.columns}" :unit="charts[activeTab].unit" key="projectView" />
           </div>
         </div>
       </a-col>
@@ -122,28 +137,63 @@ export default {
 
     charts.alert_sum = newChart('monitor.overview_alert_sum', '', '')
     charts.res_num = newChart('monitor.overview_alert_trend', '', '')
+    const scope = this.$store.getters.scope
+    let navs = []
+    if (scope === 'system') {
+      navs = [{ title: this.$t('navbar.view.system_manager'), scope: scope }]
+    } else if (scope === 'domain') {
+      navs = [{ title: this.$store.getters.userInfo.projectDomain, scope: scope }]
+    }
     return {
-      scope: this.$store.getters.scope,
+      scope: scope,
       tabs: tabs,
       activeTab: tabs[0].key,
       charts: charts,
       tableData: {
-        showtable: (this.$store.getters.scope !== 'project'),
+        showtable: (scope !== 'project'),
         columns: [],
         rows: [],
       },
       units: {}, // 度量单位
+      currentNav: { index: 0, scope: scope, status: 'loading' },
+      navs: navs,
     }
   },
   watch: {
     scope () {
       this.fetchAllData()
     },
+    currentNav () {
+      this.fetchAllCharts()
+    },
   },
   created () {
     this.fetchAllData()
   },
   methods: {
+    chartEvents: function () {
+      const self = this
+      return {
+        click: function (e) {
+          self.nextNav(e)
+        },
+      }
+    },
+    nextNav: function (e) {
+      if (this.currentNav.status === 'loaded' && this.currentNav.scope !== 'project') {
+        if (this.currentNav.scope === 'system') {
+          this.navs.push({ title: e.name, scope: 'domain' })
+        } else if (this.currentNav.scope === 'domain') {
+          this.navs.push({ title: e.name, scope: 'project' })
+        }
+        this.currentNav = { index: this.navs.length - 1, scope: this.navs[this.navs.length - 1].scope, status: 'loading' }
+      }
+    },
+    changeNav: function (e) {
+      this.navs = this.navs.slice(0, e + 1)
+      this.navs[e].status = 'loading'
+      this.currentNav = this.navs[e]
+    },
     radioChange: function (e) {
       const tab = allTabs[this.activeTab]
       this.fetchTabChartData(tab.measurement, tab.key)
@@ -162,6 +212,7 @@ export default {
       await this.fetchTabChartData(tab.measurement, tab.key)
       // table
       await this.fetchTableData()
+      this.currentNav.status = 'loaded'
     },
     fetchMeasurementsData () {
       try {
@@ -194,7 +245,27 @@ export default {
         throw error
       }
     },
+    commonParams () {
+      const extendParams = {
+        scope: this.currentNav.scope,
+      }
+
+      if (this.currentNav.index >= 1) {
+        if (this.currentNav.scope === 'domain') {
+          extendParams.domain_id = this.navs[this.currentNav.index].title
+          extendParams.identity_name = true
+        }
+
+        if (this.currentNav.scope === 'project') {
+          extendParams.domain_id = this.navs[this.currentNav.index - 1].title
+          extendParams.project_id = this.navs[this.currentNav.index].title
+          extendParams.identity_name = true
+        }
+      }
+      return extendParams
+    },
     chartQueryData (measurement, field) {
+      const extendParams = this.commonParams()
       if (measurement === 'alert_record_history' && field === 'res_num') {
         return {
           from: '720h',
@@ -210,26 +281,22 @@ export default {
               },
             },
           ],
-          scope: this.scope,
           unit: true,
+          ...extendParams,
         }
       }
 
-      const from = '168h'
       let group = 'tenant'
-      let interval = from
-      if (this.scope === 'system') {
+      let interval = '168h'
+      if (this.currentNav.scope === 'system') {
         group = 'project_domain'
-      }
-
-      if (this.scope === 'project') {
+      } else if (this.currentNav.scope === 'project') {
         interval = '1h'
       }
 
       return {
-        from: from,
+        from: '168h',
         interval: interval,
-        scope: this.scope,
         metric_query: [
           {
             model: {
@@ -248,6 +315,7 @@ export default {
             },
           },
         ],
+        ...extendParams,
       }
     },
     tabChartData (field, rawDatas) {
@@ -291,7 +359,7 @@ export default {
             }
             chartData.rows = rows
           }
-        } else if (this.scope === 'project') {
+        } else if (this.currentNav.scope === 'project') {
           // vm
           if (rawDatas.length) {
             chartData.columns = ['time']
@@ -343,19 +411,19 @@ export default {
     },
     async fetchTabChartData (measurement, field) {
       try {
-        if (Object.values(this.charts[field].chartData.rows).length) {
-          return this.charts[field].chartData
-        }
-        this.charts[field].chartLoading = true
-        var data = this.chartQueryData(measurement, field)
-        data.signature = getSignature(data)
-        const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
+        // if (Object.values(this.charts[field].chartData.rows).length) {
+        //   return this.charts[field].chartData
+        // }
         this.charts[field].chartLoading = true
         this.charts[field].rawDatas = []
         this.charts[field].chartData = {
           columns: [],
           rows: [],
         }
+        var data = this.chartQueryData(measurement, field)
+        data.signature = getSignature(data)
+        const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
+
         const self = this
         this.$nextTick(_ => {
           this.charts[field].rawDatas = series
@@ -370,14 +438,15 @@ export default {
     },
     async fetchPieChartData () {
       try {
-        const params = { scope: this.scope }
-        const { data: series = { } } = await new this.$Manager('alertrecords', 'v1').get({ id: 'total-alert', params: params })
         this.charts.alert_sum.chartLoading = true
         this.charts.alert_sum.rawDatas = {}
         this.charts.alert_sum.chartData = {
           columns: [],
           rows: [],
         }
+
+        const params = this.commonParams()
+        const { data: series = { } } = await new this.$Manager('alertrecords', 'v1').get({ id: 'total-alert', params: params })
 
         this.$nextTick(_ => {
           const chartData = {
@@ -405,11 +474,11 @@ export default {
     async fetchTableData () {
       this.tableData.showtable = false
       let scopeTitle = ''
-      if (this.scope === 'project') {
+      if (this.currentNav.scope === 'project') {
         return
-      } else if (this.scope === 'system') {
+      } else if (this.currentNav.scope === 'system') {
         scopeTitle = this.$t('dictionary.domain')
-      } else if (this.scope === 'domain') {
+      } else if (this.currentNav.scope === 'domain') {
         scopeTitle = this.$t('dictionary.project')
       }
       for (const t in allTabs) {
