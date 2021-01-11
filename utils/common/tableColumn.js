@@ -256,7 +256,6 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
   return {
     field,
     title,
-    showOverflow: 'ellipsis',
     width: '180px',
     slots: {
       default: ({ row }, h) => {
