@@ -99,8 +99,8 @@ export default {
               field: 'object_gb',
               title: i18n.t('common_244'),
               formatter: ({ cellValue, row }) => {
-                const objectGb = Math.floor(paramter.object_gb / 1024) || 0
-                return `${objectGb}GB(${getIncrementFlag(objectGb, Math.floor(row.projectQuota.object_gb / 1024)) || 0}GB)`
+                const objectGb = paramter.object_gb || 0
+                return `${objectGb}GB(${getIncrementFlag(objectGb, row.projectQuota.object_gb) || 0}GB)`
               },
             },
             {
@@ -224,7 +224,7 @@ export default {
               field: 'object_gb',
               title: i18n.t('common_244'),
               formatter: ({ cellValue, row }) => {
-                return `${Math.floor(row.projectQuota.object_gb / 1024)}GB(${i18n.t('common_407')}${Math.floor(row.projectQuota['usage.object_gb'] / 1024 || 0)}GB)`
+                return `${row.projectQuota.object_gb || 0}GB(${i18n.t('common_407')}${row.projectQuota['usage.object_gb'] || 0}GB)`
               },
             },
             {
