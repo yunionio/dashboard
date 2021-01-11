@@ -58,8 +58,6 @@ export default {
       const zone = this.form.getFieldValue('zone')
       if (zone) {
         params.zone = zone
-      } else {
-        params.zone = fd.sku.zone_id
       }
       return params
     },
