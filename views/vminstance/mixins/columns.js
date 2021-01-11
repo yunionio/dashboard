@@ -123,10 +123,20 @@ export default {
       },
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns, tipName: this.$t('dictionary.server') }),
       getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
-      getCopyWithContentTableColumn({
+      {
         field: 'macs',
         title: 'MAC',
-      }),
+        slots: {
+          default: ({ row }) => {
+            if (row.macs) {
+              return row.macs.split(',').map(mac => {
+                return <list-body-cell-wrap copy row={{ mac }} hide-field field="mac">{ mac }</list-body-cell-wrap>
+              })
+            }
+            return []
+          },
+        },
+      },
       getOsArch(),
       {
         field: 'instance_type',
