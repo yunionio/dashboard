@@ -94,7 +94,7 @@
   "helm.text_97": "Please select [unused] storage volume",
   "helm.text_98": "Storage Claim (Persistentvolumeclaim)",
   "helm.text_99": "Package",
-  "helm.text_100": "{0} Core",
+  "helm.text_100": "{0}",
   "helm.text_101": "Memory",
   "helm.text_102": "release count",
   "helm.text_103": "Create Helm Repo",
