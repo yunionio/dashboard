@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
+import { arrayToObj } from '@/utils/utils'
 
 // 平台的配置
 export const HYPERVISORS_MAP = {
@@ -151,3 +152,9 @@ export const channelMaps = {
   'workwx-robot': { value: 'workwx-robot', label: i18n.t('common_596'), sort: 7 },
   'dingtalk-robot': { value: 'dingtalk-robot', label: i18n.t('system.text_303'), sort: 8 },
 }
+
+export const CURRENCYS = [
+  { key: 'CNY', value: i18n.t('currencys.CNY') },
+  { key: 'USD', value: i18n.t('currencys.USD') },
+]
+export const CURRENCYS_MAP = arrayToObj(CURRENCYS, 'key')
