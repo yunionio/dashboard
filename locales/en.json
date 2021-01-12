@@ -123,7 +123,7 @@
   "db.text_122": "{0} ({1} core, {2}, IOPS:{3})",
   "db.text_123": "Specifications",
   "db.text_124": "CPU",
-  "db.text_125": "{0}Core",
+  "db.text_125": "{0}",
   "db.text_126": "Memory",
   "db.text_127": "Maximum number of connections",
   "db.text_128": "Price",
