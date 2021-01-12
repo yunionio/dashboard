@@ -1380,7 +1380,19 @@
     "ireland": "爱尔兰",
     "ohio": "俄亥俄州",
     "paris": "巴黎",
-    "stockholm": "斯德哥尔摩"
+    "stockholm": "斯德哥尔摩",
+    "Delmenhorst": "代尔门霍斯特",
+    "Geneva": "日内瓦",
+    "Kuala Lumpur": "吉隆坡",
+    "Oslo": "奥斯陆",
+    "Siliconvalley": "硅谷",
+    "Stavanger": "斯塔万格",
+    "Johannesburg": "约翰内斯堡",
+    "Mexico": "墨西哥",
+    "Santiago": "圣地亚哥",
+    "Changsha": "长沙",
+    "Xian": "西安"
+    
   },
   "cloudPrvidersMap": {
     "Aliyun": "阿里云",
