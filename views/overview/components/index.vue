@@ -148,8 +148,12 @@ export default {
       const tab = allTabs[this.activeTab]
       this.fetchTabChartData(tab.measurement, tab.key)
     },
-    async fetchAllData () {
-      await this.fetchMeasurementsData()
+    fetchAllData () {
+      this.fetchMeasurementsData().then((res) => {
+        this.fetchAllCharts()
+      })
+    },
+    async fetchAllCharts () {
       await this.fetchPieChartData()
       // 近30日告警趋势图
       await this.fetchTabChartData('alert_record_history', 'res_num')
@@ -168,7 +172,7 @@ export default {
         data.signature = getSignature(data)
         this.units = {}
         const self = this
-        new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', data }).then((res) => {
+        return new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: data }).then((res) => {
           if (!res.data.res_type_measurements) {
             return
           }
