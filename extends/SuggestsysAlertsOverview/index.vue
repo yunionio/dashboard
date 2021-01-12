@@ -16,11 +16,11 @@
         <div class="w-100">
           <div class="d-flex">
             <div class="flex-grow-0 flex-shrink-0 text-color-help">{{$t('dashboard.text_52')}}</div>
-            <div class="flex-fill text-right error-color font-weight-bold">￥{{ forcastAmount }}</div>
+            <div class="flex-fill text-right error-color font-weight-bold">{{ forcastAmount }}</div>
           </div>
           <div class="d-flex mt-2">
             <div class="flex-grow-0 flex-shrink-0 text-color-help">{{$t('dashboard.text_53')}}</div>
-            <div class="flex-fill text-right success-color font-weight-bold">￥{{ suggestAmount }}</div>
+            <div class="flex-fill text-right success-color font-weight-bold">{{ suggestAmount }}</div>
           </div>
         </div>
       </div>
@@ -34,6 +34,13 @@
         <a-form-model-item :label="$t('dashboard.text_6')" prop="name">
           <a-input v-model="fd.name" />
         </a-form-model-item>
+        <a-form-model-item :label="$t('dashboard.currency')" prop="currency">
+          <a-select v-model="fd.currency">
+            <a-select-option v-for="obj in CURRENCYS" :key="obj.key" :value="obj.key">
+              {{ obj.value }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
       </a-form-model>
     </base-drawer>
   </div>
@@ -44,6 +51,8 @@ import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
+import { getCurrency } from '@/utils/common/cookie'
+import { CURRENCYS } from '@/constants'
 
 export default {
   name: 'SuggestsysAlertsOverview',
@@ -60,12 +69,15 @@ export default {
   },
   data () {
     const initNameValue = (this.params && this.params.name) || this.$t('dashboard.text_54')
+    const initCurrencyValue = (this.params && this.params.currency) || getCurrency()
     return {
+      CURRENCYS,
       data: {},
       visible: false,
       loading: false,
       fd: {
         name: initNameValue,
+        currency: initCurrencyValue,
       },
       rules: {
         name: [
@@ -77,10 +89,13 @@ export default {
   computed: {
     ...mapGetters(['scope']),
     forcastAmount () {
-      return ((this.data.meter_forcast_cost && this.data.meter_forcast_cost.amount) || 0).toFixed(2)
+      return `${this.currencySign}${((this.data.meter_forcast_cost && this.data.meter_forcast_cost.amount) || 0).toFixed(2)}`
     },
     suggestAmount () {
-      return ((this.data.suggest_cost && this.data.suggest_cost[0] && this.data.suggest_cost[0].amount) || 0).toFixed(2)
+      return `${this.currencySign}${((this.data.suggest_cost && this.data.suggest_cost[0] && this.data.suggest_cost[0].amount) || 0).toFixed(2)}`
+    },
+    currencySign () {
+      return this.fd.currency === 'USD' ? '$' : '¥'
     },
     percent () {
       let percent = ((this.suggestAmount / this.forcastAmount) || 0) * 100
