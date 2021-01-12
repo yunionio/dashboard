@@ -467,6 +467,7 @@ export default {
       const params = {
         scope: this.scope,
         show_emulated: true,
+        'filter.0': 'status.equals(enable)',
       }
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
