@@ -68,19 +68,20 @@ export default {
         { label: this.$t('cloudenv.text_237'), key: 'cloudaccount-detail' },
         { label: this.$t('cloudenv.text_318'), key: 'cloudprovider-list' },
         { label: this.$t('cloudenv.text_386'), key: 'externalproject-list' },
-        { label: this.$t('cloudenv.text_319'), key: 'usage' },
-        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
       ]
       if (platform === 'idc' || platform === 'private') {
         detailTabs.splice(1, 0, { label: this.$t('cloudenv.text_101'), key: 'host-list' })
+      }
+      if ((this.$store.getters.capability.saml_auth_brands || []).includes(data.provider) && data.saml_auth) {
+        detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('cloudaccount.sidepage.tab.samluser'), key: 'samluser-list' })
       }
       if ((this.$store.getters.capability.cloud_id_brands || []).includes(data.provider)) {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }
-      if ((this.$store.getters.capability.saml_auth_brands || []).includes(data.provider) && data.saml_auth) {
-        detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('cloudaccount.sidepage.tab.samluser'), key: 'samluser-list' })
-      }
+
+      detailTabs.push({ label: this.$t('cloudenv.text_319'), key: 'usage' })
+      detailTabs.push({ label: this.$t('cloudenv.text_15'), key: 'event-drawer' })
       return detailTabs
     },
     getParams () {
