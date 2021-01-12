@@ -115,9 +115,9 @@ export default {
           minSize = (image.root_image.min_disk_mb / 1024) || 0
         }
       } else if (image.info) {
-        minSize = (image.info.min_disk / 1024) || 0
+        minSize = ((image.info.min_disk_mb || image.info.min_disk) / 1024) || 0
       } else {
-        minSize = (image.min_disk / 1024) || 0
+        minSize = ((image.min_disk_mb || image.min_disk) / 1024) || 0
       }
       return Math.ceil(minSize)
     },
