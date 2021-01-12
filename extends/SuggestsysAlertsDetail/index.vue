@@ -21,6 +21,13 @@
         <a-form-model-item :label="$t('dashboard.text_6')" prop="name">
           <a-input v-model="fd.name" />
         </a-form-model-item>
+        <a-form-model-item :label="$t('dashboard.currency')" prop="currency">
+          <a-select v-model="fd.currency">
+            <a-select-option v-for="obj in CURRENCYS" :key="obj.key" :value="obj.key">
+              {{ obj.value }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
       </a-form-model>
     </base-drawer>
   </div>
@@ -32,8 +39,9 @@ import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
-import { chartColors } from '@/constants'
+import { chartColors, CURRENCYS } from '@/constants'
 import { numerify } from '@/filters'
+import { getCurrency } from '@/utils/common/cookie'
 
 export default {
   name: 'SuggestsysAlertsDetail',
@@ -50,12 +58,15 @@ export default {
   },
   data () {
     const initNameValue = (this.params && this.params.name) || this.$t('dashboard.text_47')
+    const initCurrencyValue = (this.params && this.params.currency) || getCurrency()
     return {
+      CURRENCYS,
       data: [],
       visible: false,
       loading: false,
       fd: {
         name: initNameValue,
+        currency: initCurrencyValue,
       },
       rules: {
         name: [
@@ -69,6 +80,9 @@ export default {
     allData () {
       const arr = this.data.filter(item => item.cost_type === 'all')
       return arr[0] || {}
+    },
+    currencySign () {
+      return this.fd.currency === 'USD' ? '$' : '¥'
     },
     outherData () {
       return this.data.filter(item => item.cost_type !== 'all').map(item => {
@@ -87,7 +101,7 @@ export default {
         title: [
           {
             text: this.$t('dashboard.text_48'),
-            subtext: `￥${numerify(this.allData.amount, '0,0.00')}`,
+            subtext: `${this.currencySign}${numerify(this.allData.amount, '0,0.00')}`,
             textStyle: {
               fontSize: 12,
               color: '#ccc',
@@ -140,7 +154,7 @@ export default {
           formatter: name => {
             const item = R.find(R.propEq('name', name))(this.outherData)
             if (item) {
-              return `{name|${name}}\n{formatted_amount|￥${item.formatted_amount}}  {percent|${item.percent}%}`
+              return `{name|${name}}\n{formatted_amount|${this.currencySign}${item.formatted_amount}}  {percent|${item.percent}%}`
             }
             return name
           },

@@ -215,5 +215,6 @@
   "dashboard.shutdown": "Stopped servers",
   "dashboard.not_shutdown": "Unstopped servers",
   "dashboard.mounted": "Mounted",
-  "dashboard.not_mounted": "Unmounted"
+  "dashboard.not_mounted": "Unmounted",
+  "dashboard.currency": "Currency"
 }
