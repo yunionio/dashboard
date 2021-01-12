@@ -2143,7 +2143,7 @@
     "clouduser": "云用户",
     "cloudgroupcache": "权限组缓存",
     "cloudpolicy": "云权限",
-    "commonalert": "报警定义",
+    "commonalert": "报警策略",
     "monitor_commonalert": "报警",
     "monitor_metrics": "监控指标",
     "explorer": "查询",
