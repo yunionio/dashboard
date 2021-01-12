@@ -7,7 +7,7 @@
           <div class="subtitle" v-if="header.subtitle">{{ header.subtitle }}</div>
         </div>
       </header>
-      <base-chart :chartType="chartType" :chartData="chartData" :chartConfig="chartConfig" :chartSettings="chartSettings" :chartExtend="chartExtend" :loading="loading" :emptyContent="emptyContent" />
+      <base-chart :chartType="chartType" :chartData="chartData" :chartConfig="chartConfig" :chartSettings="chartSettings" :chartExtend="chartExtend" :loading="loading" :emptyContent="emptyContent" :chartEvents="chartEvents" />
     </div>
   </div>
 </template>
@@ -30,6 +30,10 @@ export default {
     chartData: {
       type: Object,
       required: true,
+    },
+    chartEvents: {
+      type: Object,
+      default: () => ({}),
     },
     isHistogram: { // 默认表示 Y 轴是数据轴，竖向
       type: Boolean,
@@ -66,6 +70,8 @@ export default {
   computed: {
     chartExtend () {
       const unit = this.unit.unit
+      const chartType = this.chartType
+
       const commonSerie = {
         barWidth: '12px',
         barMaxWidth: '24px',
@@ -135,7 +141,10 @@ export default {
             },
           },
           max: function (value) { // 坐标轴刻度最大值
-            return value.max * 1.2
+            if (chartType === 've-histogram') {
+              return value.max * 1.2
+            }
+            return value.max
           },
         },
         toolbox: {
@@ -162,7 +171,7 @@ export default {
       const config = {
         // title,
         height: this.height,
-        width: '95%',
+        width: '100%',
         legend: {
           show: this.showLegend,
         },
