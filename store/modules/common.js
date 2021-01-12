@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import storage from '@/utils/storage'
+import { getCurrency } from '@/utils/common/cookie'
 import { Manager } from '@/utils/manager'
 
 export default {
@@ -7,7 +8,7 @@ export default {
     recentMenus: storage.get('__oc_recent_menus__') || [],
     topAlert: {},
     bill: {
-      currency: '',
+      currency: getCurrency() || '',
       currencyOpts: [],
     },
     k8s: {
