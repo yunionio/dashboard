@@ -1393,7 +1393,18 @@
     "ireland": "Ireland",
     "ohio": "Ohio",
     "paris": "Paris",
-    "stockholm": "Stockholm"
+    "stockholm": "Stockholm",
+    "delmenhorst": "Delmenhorst",
+    "geneva": "Geneva",
+    "kuala lumpur": "Kuala Lumpur",
+    "oslo": "Oslo",
+    "siliconvalley": "Siliconvalley",
+    "stavanger": "Stavanger",
+    "johannesburg": "Johannesburg",
+    "mexico": "Mexico",
+    "santiago": "Santiago",
+    "changsha": "Changsha",
+    "xian": "Xian"
   },
   "cloudPrvidersMap": {
     "Aliyun": "Aliyun",
