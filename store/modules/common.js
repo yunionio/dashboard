@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import storage from '@/utils/storage'
-import { getCurrency } from '@/utils/common/cookie'
+import { getCurrency, setCookieVal } from '@/utils/common/cookie'
 import { Manager } from '@/utils/manager'
 
 export default {
@@ -32,6 +32,7 @@ export default {
       Vue.delete(state[name], key)
     },
     SET_BILL_CURRENCY (state, payload) {
+      setCookieVal('currency', payload)
       state.bill.currency = payload
     },
     SET_BILL_CURRENCYOPTS (state, payload) {
@@ -65,7 +66,7 @@ export default {
         }
         const { data: { data = [] } } = await new Manager('bill_conditions', 'v1').list({ params })
         commit('SET_BILL_CURRENCYOPTS', data)
-        if (data.length && data.every(val => val.item_id !== state.bill.currency)) {
+        if (data && data.length > 0) {
           commit('SET_BILL_CURRENCY', data[0].item_id)
         }
       } catch (error) {
