@@ -3811,7 +3811,7 @@
   "common_293": "OFF",
   "common_295": "Cloud Account",
   "common_296": "Expired",
-  "common_297": "Expires after {0}",
+  "common_297": "Expires {0}",
   "common_298": "This resource has been shared with the following {0} projects",
   "common_300": "This resource has been shared to the following {0} domains",
   "common_301": "The resource will be released on {0}",

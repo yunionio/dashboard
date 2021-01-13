@@ -445,10 +445,10 @@ export const getBillingTypeTableColumn = ({ field = 'billing_type', title = i18n
         }
         if (row.expired_at) {
           const dateArr = moment(row.expired_at).fromNow().split(' ')
-          const date = dateArr.join('')
+          const date = dateArr.join(' ')
           const seconds = moment(row.expired_at).diff(new Date()) / 1000
           const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-          const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date.substring(0, date.length - 1)])
+          const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date])
           ret.push(<div style={{ color: textColor }}>{ text }</div>)
         }
         return ret
@@ -628,10 +628,10 @@ export const getBillingTableColumn = ({
             <a-icon type="question-circle-o" />
           </a-tooltip>
           const dateArr = vm.$moment(row.expired_at).fromNow().split(' ')
-          const date = dateArr.join('')
+          const date = dateArr.join(' ')
           const seconds = vm.$moment(row.expired_at).diff(new Date()) / 1000
           const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-          const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date.substring(0, date.length - 1)])
+          const text = seconds < 0 ? i18n.t('common_296') : i18n.t('common_297', [date])
           ret.push(<div class='text-truncate' title={text} style={{ color: textColor }}>{ text } { help }</div>)
         }
         return ret
