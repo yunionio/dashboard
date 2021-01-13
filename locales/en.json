@@ -489,7 +489,7 @@
   "compute.text_497": "Other Information",
   "compute.text_498": "Billing type",
   "compute.text_499": "Expired",
-  "compute.text_500": "Expires after {0}",
+  "compute.text_500": "Expires {0}",
   "compute.text_501": "Host reserved resources",
   "compute.text_502": "Service",
   "compute.text_503": "Management IP",

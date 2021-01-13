@@ -136,10 +136,10 @@ export default {
               }
               if (row.expired_at) {
                 const dateArr = this.$moment(row.expired_at).fromNow().split(' ')
-                const date = dateArr.join('')
+                const date = dateArr.join(' ')
                 const seconds = this.$moment(row.expired_at).diff(new Date()) / 1000
                 const textColor = seconds / 24 / 60 / 60 < 7 ? '#DD2727' : '#53627C'
-                const text = seconds < 0 ? this.$t('compute.text_499') : this.$t('compute.text_500', [date.substring(0, date.length - 1)])
+                const text = seconds < 0 ? this.$t('compute.text_499') : this.$t('compute.text_500',[date])
                 ret.push(<div style={{ color: textColor }}>{ text }</div>)
               }
               return ret
