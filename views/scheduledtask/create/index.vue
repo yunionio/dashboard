@@ -179,6 +179,7 @@ export default {
         execTime: [
           'timer.execTime',
           {
+            initialValue: this.$moment().add(1, 'h'),
             rules: [
               { required: true, message: this.$t('cloudenv.text_437') },
             ],
