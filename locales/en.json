@@ -484,7 +484,7 @@
   "cloudenv.text_449": "Please choose an action",
   "cloudenv.text_450": "Please select resource binding",
   "cloudenv.text_451": "Please select a tag",
-  "cloudenv.text_452": "Untie",
+  "cloudenv.text_452": "Dissociate",
   "cloudenv.text_453": "After disabling, scheduled tasks will not take effect",
   "cloudenv.text_454": "Associated Resources",
   "cloudenv.text_455": "Please select a disabled scheduled task",
