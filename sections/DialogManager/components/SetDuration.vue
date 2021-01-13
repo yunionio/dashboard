@@ -62,7 +62,7 @@ export default {
       R.descend(R.prop('expired_at')),
     ])
     const datas = expiredAtSort(this.params.data)
-    const expireDate = datas[0].expired_at ? moment(datas[0].expired_at) : moment()
+    const expireDate = datas[0].expired_at ? moment(datas[0].expired_at) : moment().add(1, 'h')
     return {
       loading: false,
       action: this.$t('common.text00061'),
