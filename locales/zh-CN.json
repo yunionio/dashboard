@@ -2189,7 +2189,8 @@
     "webconsole": "站内信",
     "message": "短信",
     "alertrecord": "报警历史",
-    "rds": "RDS"
+    "rds": "RDS",
+    "security-alerts": "安全告警"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -3426,6 +3427,9 @@
   "scope.text_956": "OpenID Connect连接信息：",
   "scope.text_957": "未验证，请点击图标验证",
   "scope.text_958": "备：{0}",
+  "scope.text_959": "认证与安全",
+  "scope.text_960": "安全建议",
+  "scope.text_961": "安全告警",
   "common.text00001": "可用",
   "common.text00002": "你所选的",
   "common.text00003": "个",

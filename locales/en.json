@@ -2188,7 +2188,8 @@
     "webconsole": "Webconsole",
     "message": "Message",
     "alertrecord": "History",
-    "rds": "RDS"
+    "rds": "RDS",
+    "security-alerts": "Security Alerts"
   },
   "res": {
     "role": "Role",
@@ -3425,6 +3426,9 @@
   "scope.text_956": "OpenID Connect connection information:",
   "scope.text_957": "Not verified, please click the icon to verify",
   "scope.text_958": "Backup：{0}",
+  "scope.text_959": "IAM & Security",
+  "scope.text_960": "Security Optimization",
+  "scope.text_961": "Security Alerts",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": " ",
