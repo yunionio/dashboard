@@ -18,7 +18,7 @@
       <div class="d-flex">
         <div style="line-height: 40px;">
           <tag-select global v-model="checked" :params="params" :button-text="$t('compute.text_1147')" :defaultChecked="defaultChecked" />
-          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_18')}}</a-button>
+          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_1382')}}</a-button>
         </div>
         <a-form
           class="ml-2"

@@ -1347,7 +1347,7 @@
   "compute.import_secgroup_rule": "Import Security Group Rules {0}",
   "compute.no_required": "Optional",
   "compute.text_1372": "Username",
-  "compute.text_1373": "Create Public Ip",
+  "compute.text_1373": "Create Public IP",
   "compute.text_1374": "Public IP",
   "compute.text_1375": "Create EIP",
   "compute.text_1376": "Invalid storage refers to the total disk capacity of the host that is not available in the state",
@@ -1369,5 +1369,6 @@
   "compute.iso_windows_help": "Windows ISO images need to pay attention to driver issues to prevent startup failures",
   "compute.image_create_server": "No OS type detected and cannot to create @:dictionary.server",
   "compute.host_convert": "No disk detected and cannot be converted to host",
-  "compute.physicalmachine_add": "Before adding physical machines, make sure that you have created IP subnets of the type IPMI and IP subnets of the type physical machines need on the platform"
+  "compute.physicalmachine_add": "Before adding physical machines, make sure that you have created IP subnets of the type IPMI and IP subnets of the type physical machines need on the platform",
+  "compute.text_1382": "New Tag" 
 }
