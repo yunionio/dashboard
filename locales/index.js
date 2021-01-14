@@ -34,7 +34,7 @@ register(scopeCtx)
 const i18n = new VueI18n({
   locale: getLanguage(),
   messages,
-  fallbackLocale: 'zh-CN',
+  fallbackLocale: 'en',
   // silentTranslationWarn: true,
 })
 
