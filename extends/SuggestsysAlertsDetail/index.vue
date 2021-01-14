@@ -23,7 +23,7 @@
         </a-form-model-item>
         <a-form-model-item :label="$t('dashboard.currency')" prop="currency">
           <a-select v-model="fd.currency">
-            <a-select-option v-for="obj in CURRENCYS" :key="obj.key" :value="obj.key">
+            <a-select-option v-for="obj in newCurrencys" :key="obj.key" :value="obj.key">
               {{ obj.value }}
             </a-select-option>
           </a-select>
@@ -35,7 +35,7 @@
 
 <script>
 import * as R from 'ramda'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
@@ -76,6 +76,10 @@ export default {
     }
   },
   computed: {
+    ...mapState('common', {
+      currency: state => state.bill.currency,
+      currencyOpts: state => state.bill.currencyOpts,
+    }),
     ...mapGetters(['scope']),
     allData () {
       const arr = this.data.filter(item => item.cost_type === 'all')
@@ -181,8 +185,16 @@ export default {
         ],
       }
     },
+    newCurrencys () {
+      return this.CURRENCYS.filter(v => {
+        return this.currencyOpts.find(obj => obj.item_id === v.key)
+      })
+    },
   },
   created () {
+    if (this.params && !this.params.currency) {
+      this.fd.currency = this.currency
+    }
     this.fetchData()
     this.$emit('update', this.options.i, {
       ...this.fd,
