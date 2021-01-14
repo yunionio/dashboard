@@ -2185,7 +2185,7 @@
     "hoststorage": "Host storage",
     "usage": "Usage",
     "guest": "@:dictionary.server",
-    "webconsole": "Webconsole",
+    "webconsole": "Messages",
     "message": "Message",
     "alertrecord": "History",
     "rds": "RDS"
@@ -2358,7 +2358,7 @@
     "dingtalk-robot": "Dingtalk Bot",
     "mobile": "Mobile",
     "nickname": "Nickname",
-    "webconsole": "Webconsole",
+    "webconsole": "Messages",
     "message": "SMS",
     "storage": {
       "cloud": "common cloud Disk",
