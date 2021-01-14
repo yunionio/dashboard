@@ -1931,6 +1931,8 @@
     "EIP_UNUSED": "Unmounted EIP",
     "DISK_UNUSED": "Unmounted cloud disk",
     "LB_UNUSED": "Unused Load Balancing Instance",
+    "DOWN_SIZE": "Recommended to down size server configuration",
+    "UP_SIZE": "Recommended to up size server configuration",
     "SCALE_DOWN": "Server with low load",
     "RDS_UNREASONABLE": "Free rds",
     "OSS_UNREASONABLE": "Free Object Storage",

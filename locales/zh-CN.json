@@ -1932,6 +1932,8 @@
     "EIP_UNUSED": "未挂载的弹性公网IP",
     "DISK_UNUSED": "未挂载的云硬盘",
     "LB_UNUSED": "未使用的负载均衡实例",
+    "DOWN_SIZE": "建议降配的虚拟机",
+    "UP_SIZE": "建议升配的虚拟机",
     "SCALE_DOWN": "低负载的虚拟机",
     "RDS_UNREASONABLE": "空闲的rds",
     "OSS_UNREASONABLE": "空闲的对象存储",
