@@ -1931,6 +1931,8 @@
     "EIP_UNUSED": "Unmounted EIP",
     "DISK_UNUSED": "Unmounted cloud disk",
     "LB_UNUSED": "Unused Load Balancing Instance",
+    "DOWN_SIZE": "Recommended to down size server configuration",
+    "UP_SIZE": "Recommended to up size server configuration",
     "SCALE_DOWN": "Server with low load",
     "RDS_UNREASONABLE": "Free rds",
     "OSS_UNREASONABLE": "Free Object Storage",
@@ -2188,7 +2190,8 @@
     "webconsole": "Messages",
     "message": "Message",
     "alertrecord": "History",
-    "rds": "RDS"
+    "rds": "RDS",
+    "security-alerts": "Security Alerts"
   },
   "res": {
     "role": "Role",
@@ -3425,6 +3428,9 @@
   "scope.text_956": "OpenID Connect connection information:",
   "scope.text_957": "Not verified, please click the icon to verify",
   "scope.text_958": "Backup：{0}",
+  "scope.text_959": "IAM & Security",
+  "scope.text_960": "Security Optimization",
+  "scope.text_961": "Security Alerts",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": " ",
