@@ -29,7 +29,7 @@
       "start_deploy": "Start deployment",
       "deploying": "Deploying",
       "deploy_fail": "Fail to deploy",
-      "ready": "Ready",
+      "ready": "Stopped",
       "start_start": "Start to start",
       "starting": "Starting",
       "start_fail": "Fail to start",
@@ -559,7 +559,7 @@
       "operating": "operating"
     },
     "billrate": {
-      "is_effective": "Is effective",
+      "is_effective": "effective",
       "is_not_effective": "Not effective",
       "is_expire": "Expired",
       "unknown": "Unknown"
