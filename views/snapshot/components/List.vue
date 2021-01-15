@@ -26,6 +26,7 @@ import {
   getDomainFilter,
   getAccountFilter,
   getOsArchFilter,
+  getRegionFilter,
 } from '@/utils/common/tableFilter'
 
 export default {
@@ -69,9 +70,7 @@ export default {
               { label: this.$t('compute.text_49'), key: 'sys' },
             ],
           },
-          region: {
-            label: this.$t('res.region'),
-          },
+          region: getRegionFilter(),
           os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,

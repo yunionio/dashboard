@@ -1369,5 +1369,6 @@
   "compute.iso_windows_help": "windows类型的ISO镜像需注意驱动问题，以防启动失败",
   "compute.image_create_server": "未探测到系统类型，无法新建@:dictionary.server",
   "compute.host_convert": "未探测到磁盘，无法转换成宿主机",
-  "compute.physicalmachine_add": "在添加物理机之前，请确保已经在平台创建物理机所需要的IPMI类型的IP子网和物理机类型的IP子网等"
+  "compute.physicalmachine_add": "在添加物理机之前，请确保已经在平台创建物理机所需要的IPMI类型的IP子网和物理机类型的IP子网等",
+  "compute.text_1382": "新建标签" 
 }

@@ -18,7 +18,7 @@ import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { disableDeleteAction } from '@/utils/common/tableActions'
-import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter, getRegionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
@@ -60,9 +60,7 @@ export default {
         label: this.$t('res.machine'),
         hidden: () => this.$store.getters.isProjectMode,
       },
-      region: {
-        label: this.$t('res.region'),
-      },
+      region: getRegionFilter(),
       zone: {
         label: this.$t('res.zone'),
       },
