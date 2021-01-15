@@ -30,6 +30,7 @@ import {
   getHostFilter,
   getVpcFilter,
   getOsArchFilter,
+  getRegionFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -106,14 +107,7 @@ export default {
           { label: this.$t('compute.backup'), key: 'backup' },
         ],
       },
-      region: {
-        label: this.$t('res.region'),
-        dropdown: true,
-        distinctField: {
-          type: 'extra_field',
-          key: 'region',
-        },
-      },
+      region: getRegionFilter(),
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
     }

@@ -18,7 +18,15 @@ import { mapGetters } from 'vuex'
 import { MEDIUM_MAP } from '../../../constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getTenantFilter, getStatusFilter, getBrandFilter, getNameFilter, getDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import {
+  getTenantFilter,
+  getStatusFilter,
+  getBrandFilter,
+  getNameFilter,
+  getDomainFilter,
+  getAccountFilter,
+  getRegionFilter,
+} from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -185,9 +193,7 @@ export default {
       projects: getTenantFilter(),
       project_domains: getDomainFilter(),
       account: getAccountFilter(),
-      region: {
-        label: this.$t('res.region'),
-      },
+      region: getRegionFilter(),
       medium_type: {
         label: this.$t('table.title.disk_medium_type'),
         dropdown: true,
