@@ -13,7 +13,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter, getRegionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -69,9 +69,7 @@ export default {
           vpc: {
             label: 'VPC',
           },
-          region: {
-            label: this.$t('res.region'),
-          },
+          region: getRegionFilter(),
           billing_type: {
             label: this.$t('table.title.bill_type'),
             dropdown: true,
