@@ -1929,17 +1929,17 @@
   },
   "suggestsyRuleTypes": {
     "EIP_UNUSED": "Unmounted EIP",
-    "DISK_UNUSED": "Unmounted cloud disk",
-    "LB_UNUSED": "Unused Load Balancing Instance",
-    "SCALE_DOWN": "Server with low load",
-    "RDS_UNREASONABLE": "Free rds",
-    "OSS_UNREASONABLE": "Free Object Storage",
-    "REDIS_UNREASONABLE": "Free redis",
-    "SECGROUPRULEINSERVER_ALLIN": "The in rule of the security group rule is a fully open host",
-    "SNAPSHOT_UNUSED": "Unused snapshot",
-    "OSS_SEC_ACL": "Object storage permissions are open to read and write buckets and files",
-    "CLOUDACCOUNT_AMOUNT_DAILY": "Cloud account day abnormal consumption",
-    "CLOUDACCOUNT_AMOUNT_MONTH": "Cloud account monthly abnormal consumption"
+    "DISK_UNUSED": "Unmounted Disk",
+    "LB_UNUSED": "Unused LB",
+    "SCALE_DOWN": "Low Load Server",
+    "RDS_UNREASONABLE": "Underutilized RDS",
+    "OSS_UNREASONABLE": "Underutilized OSS",
+    "REDIS_UNREASONABLE": "Underutilized Redis",
+    "SECGROUPRULEINSERVER_ALLIN": "Public Inbound Security Groups Of Server",
+    "SNAPSHOT_UNUSED": "Unused Snapshot",
+    "OSS_SEC_ACL": "Public Read&Write OSS",
+    "CLOUDACCOUNT_AMOUNT_DAILY": "Abnormal Daily Cost Of CloudAccount",
+    "CLOUDACCOUNT_AMOUNT_MONTH": "Abnormal Monthly Cost Of CloudAccount"
   },
   "idpDrivers": {
     "LDAP": [
