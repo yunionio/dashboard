@@ -24,6 +24,7 @@ import {
   getStatusFilter,
   getDomainFilter,
   getOsArchFilter,
+  getRegionFilter,
 } from '@/utils/common/tableFilter'
 
 export default {
@@ -48,9 +49,7 @@ export default {
           status: getStatusFilter('snapshot'),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
-          region: {
-            label: this.$t('res.region'),
-          },
+          region: getRegionFilter(),
           os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,
