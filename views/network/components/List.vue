@@ -17,7 +17,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows.js'
-import { getNameFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
@@ -118,14 +118,7 @@ export default {
       cloudaccount: getAccountFilter(),
       projects: getTenantFilter(),
       project_domains: getDomainFilter(),
-      region: {
-        label: this.$t('network.text_199'),
-        dropdown: true,
-        distinctField: {
-          type: 'extra_field',
-          key: 'region',
-        },
-      },
+      region: getRegionFilter(),
       vpc: getVpcFilter(),
       wire: {
         label: this.$t('network.text_571'),
