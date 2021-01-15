@@ -17,7 +17,7 @@
   "db.text_16": "SQLServer network inbound traffic",
   "db.text_17": "SQLServer network outbound traffic",
   "db.text_18": "Connection Usage Rate",
-  "db.text_19": "Incoming network traffic",
+  "db.text_19": "Network Inbound Traffic",
   "db.text_20": "Network Outbound Traffic",
   "db.text_21": "Network instantaneous input traffic",
   "db.text_22": "Network instantaneous output traffic",
