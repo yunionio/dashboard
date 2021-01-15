@@ -358,7 +358,7 @@ export default {
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
       if (!R.is(Number, this.fd.count)) return
-      const skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
+      let skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
       const brand = PROVIDER_MAP[skuProvider].brand
       const params = {
         quantity: this.fd.count,
@@ -366,7 +366,8 @@ export default {
       }
       if (this.isPublic) {
         if (this.fd.sku && this.fd.sku.cloud_env) {
-          params.brand = this.fd.sku.cloud_env.toLowerCase() // 阿里金融云
+          params.brand = this.fd.sku.cloud_env
+          skuProvider = this.fd.sku.cloud_env
         }
       }
       const { systemDiskSize, systemDiskType } = this.fd
