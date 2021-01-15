@@ -1429,9 +1429,10 @@
     "Apsara": "飞天"
   },
   "shareScope": {
-    "system": "全局",
+    "system": "系统",
     "domain": "@:dictionary.domain",
-    "project": "@:dictionary.project"
+    "project": "@:dictionary.project",
+    "none": "私有"
   },
   "authChooser": {
     "system": "管理后台",
