@@ -791,12 +791,19 @@ class CreateList {
           },
         },
       })
-      let values = response.data[item.distinctField.key] || []
-      values = values.map(item => ({ label: item, key: item }))
-      if (item.mapper) {
-        values = item.mapper(values, response.data)
+      let options = []
+      const values = response.data[item.distinctField.key] || []
+      if (item.distinctField.afterFetch && R.is(Function, item.distinctField.afterFetch)) {
+        options = await item.distinctField.afterFetch(values)
+      } else {
+        options = values.map(item => ({ label: item, key: item }))
       }
-      return values
+
+      if (item.mapper) {
+        options = item.mapper(options, response.data)
+      }
+
+      return options
     } catch (error) {
       return error
     }
