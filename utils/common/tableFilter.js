@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import store from '@/store'
 import i18n from '@/locales'
+import { Manager } from '@/utils/manager'
 import { HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 
@@ -254,5 +255,39 @@ export const getOsArchFilter = (isCapabilityKey = false) => {
     label: i18n.t('table.title.os_arch'),
     dropdown: true,
     items,
+  }
+}
+
+export function getRegionFilter () {
+  return {
+    label: i18n.t('res.region'),
+    dropdown: true,
+    distinctField: {
+      type: 'extra_field',
+      key: 'region',
+      afterFetch: async (items) => {
+        if (items.length === 0) {
+          return items
+        }
+
+        try {
+          const params = { 'filter.0': `name.in(${items.map(item => { return `"${item}"` }).join(',')})`, order_by: 'name' }
+          const manager = new Manager('cloudregions', 'v2')
+          const { data: { data = [] } } = await manager.list({
+            params,
+          })
+
+          return data.map((region) => {
+            if (region._i18n && region._i18n.name) {
+              return { key: region.id, label: region._i18n.name }
+            } else {
+              return { key: region.id, label: region.name }
+            }
+          })
+        } catch (error) {
+          return error
+        }
+      },
+    },
   }
 }
