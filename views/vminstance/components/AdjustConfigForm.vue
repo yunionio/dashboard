@@ -559,6 +559,9 @@ export default {
     confirmText () {
       return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_907')
     },
+    isPublic () {
+      return this.params.data[0].cloud_env === SERVER_TYPE.public
+    },
   },
   watch: {
     isSomeRunning: {
@@ -859,11 +862,17 @@ export default {
     async _getPriceList () {
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
       if (R.isEmpty(this.form.fd.sku) || R.isNil(this.form.fd.sku)) return
-      const skuProvider = this.form.fd.sku.provider || PROVIDER_MAP.OneCloud.key
+      let skuProvider = this.form.fd.sku.provider || PROVIDER_MAP.OneCloud.key
       const brand = PROVIDER_MAP[skuProvider].brand
       const params = {
         quantity: this.count,
         brand,
+      }
+      if (this.isPublic) {
+        if (this.fd.sku && this.fd.sku.cloud_env) {
+          params.brand = this.fd.sku.cloud_env
+          skuProvider = this.fd.sku.cloud_env
+        }
       }
       const { systemDiskSize = 0, systemDiskType = {}, sysdisks = [] } = this.form.fd
       if (this.params.data[0].cloud_env !== SERVER_TYPE.public) {
