@@ -4,10 +4,10 @@
       <a-breadcrumb style="padding: 5px;">
         <a-breadcrumb-item v-for="(item, index) in navs" :style="{ 'font-size': '16px', 'font-weight': '500'}" :key="item.id">
           <template v-if="index === navs.length - 1">
-            {{ item.title }}
+            <span class="monitor-overview-breadcrumb-span">{{ item.title }}</span>
           </template>
           <template v-else>
-            <a @click="changeNav(index)">{{ item.title }}</a>
+            <a class="monitor-overview-breadcrumb-link" @click="changeNav(index)">{{ item.title }}</a>
           </template>
         </a-breadcrumb-item>
         <a-breadcrumb-item />
@@ -516,6 +516,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '../../../../../src/styles/less/theme';
+
 .monitor-overview-card {
   border: 1px solid #F1F1F1;
   padding: 12px 24px;
@@ -529,4 +531,13 @@ export default {
     }
   }
 }
+
+.monitor-overview-breadcrumb-span {
+  color: @text-color-secondary !important;
+}
+
+.monitor-overview-breadcrumb-link {
+  color: @primary-color !important;
+}
+
 </style>
