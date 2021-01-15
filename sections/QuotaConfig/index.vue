@@ -138,6 +138,7 @@ export default {
       for (const key in USAGE_CONFIG) {
         ret.push({
           key,
+          scope: USAGE_CONFIG[key].scope,
           label: this.translateUsage[key] ? this.translateUsage[key] : key,
         })
       }

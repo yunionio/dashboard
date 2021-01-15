@@ -5,7 +5,7 @@
     :filterOption="filterOption"
     showSearch
     optionLabelProp="value">
-    <a-select-option v-for="item of usages" :value="item.key" :key="item.key">
+    <a-select-option v-for="item of scopedUsages" :value="item.key" :key="item.key">
       <div style="font-size: 14px;">{{ item.key }}</div>
       <div class="text-color-help">{{ item.label }}</div>
     </a-select-option>
@@ -25,6 +25,17 @@ export default {
     value: {
       type: String,
       required: true,
+    },
+  },
+  computed: {
+    scopedUsages () {
+      const ret = {}
+      for (const k in this.usages) {
+        if (this.usages[k].scope === this.$store.getters.scope) {
+          ret[k] = this.usages[k]
+        }
+      }
+      return ret
     },
   },
   methods: {
