@@ -1513,8 +1513,8 @@
   },
   "flexGroupIndicator": {
     "cpu": "Average CPU Usage",
-    "flow_into": "Average network incoming traffic",
-    "flow_out": "Average network outgoing traffic",
+    "flow_into": "Average Network Inbound Traffic",
+    "flow_out": "Average Network Outbound Traffic",
     "disk_read": "Average Disk Read Rate",
     "disk_write": "Average disk write rate"
   },
@@ -3979,7 +3979,7 @@
   "common_450": "User Abandoned",
   "common_451": "Automatically renew after expiration",
   "common_452": "No renewal is due",
-  "common_453": "Go to Settings",
+  "common_453": "Modify",
   "common_456": "There are comments",
   "common_457": "No comment",
   "common_458": "Error Log",
