@@ -265,13 +265,17 @@ export function getRegionFilter () {
     distinctField: {
       type: 'extra_field',
       key: 'region',
-      afterFetch: async (items) => {
+      afterFetch: async (items, extraParams = {}) => {
         if (items.length === 0) {
           return items
         }
 
         try {
-          const params = { 'filter.0': `name.in(${items.map(item => { return `"${item}"` }).join(',')})`, order_by: 'name' }
+          const params = {
+            'filter.0': `name.in(${items.map(item => { return `"${item}"` }).join(',')})`,
+            order_by: 'name',
+            ...extraParams,
+          }
           const manager = new Manager('cloudregions', 'v2')
           const { data: { data = [] } } = await manager.list({
             params,
