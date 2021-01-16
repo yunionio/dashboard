@@ -149,7 +149,7 @@ export default {
     const scope = this.$store.getters.scope
     let navs = []
     if (scope === 'system') {
-      navs = [{ title: this.$t('shareScope.system'), scope: scope }]
+      navs = [{ title: this.$t('cloudenv.text_457'), scope: scope }]
     } else if (scope === 'domain') {
       navs = [{ title: this.$store.getters.userInfo.projectDomain, scope: scope }]
     }
