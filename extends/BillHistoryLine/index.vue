@@ -33,6 +33,7 @@ import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { getRequestT } from '@/utils/utils'
 import LineChart from '@/sections/Charts/Line'
 import { getSignature } from '@/utils/crypto'
+import i18n from '@/locales'
 
 export default {
   name: 'BillHistoryLine',
@@ -71,12 +72,12 @@ export default {
     lineChartRows () {
       const rows = []
       R.forEach(item => {
-        rows.push({
-          time: this.$moment(item[item.length - 1]).format(this.$t('dashboard.text_12')),
-          裸金属资源: (+item[0] || 0).toFixed(2),
-          GPU卡: (+item[1] || 0).toFixed(2),
-          虚拟资源: (+item[2] || 0).toFixed(2),
-        })
+        const data = {}
+        data.time = this.$moment(item[item.length - 1]).format(this.$t('dashboard.text_12'))
+        data[i18n.t('dashboard.text_9')] = (+item[0] || 0).toFixed(2)
+        data[i18n.t('dashboard.text_10')] = (+item[1] || 0).toFixed(2)
+        data[i18n.t('dashboard.text_11')] = (+item[2] || 0).toFixed(2)
+        rows.push(data)
       }, (this.data && this.data.points) || [])
       return rows
     },
