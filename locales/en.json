@@ -1431,7 +1431,8 @@
   "shareScope": {
     "system": "System",
     "domain": "@:dictionary.domain",
-    "project": "@:dictionary.project"
+    "project": "@:dictionary.project",
+    "none": "None"
   },
   "authChooser": {
     "system": "System Manager View",
