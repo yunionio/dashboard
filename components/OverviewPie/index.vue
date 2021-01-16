@@ -84,7 +84,7 @@ export default {
           bottom: '0%',
         },
         title: {
-          show: true,
+          show: (this.chartData.rows && this.chartData.rows.length > 0),
           text: this.pieTitle,
           subtext: this.pieSubtext,
           left: 'center',

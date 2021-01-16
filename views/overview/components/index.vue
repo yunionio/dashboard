@@ -2,6 +2,7 @@
   <div class="overview-index">
     <a-row v-if="scope !=='project'">
       <a-breadcrumb style="padding: 5px;">
+        <span :style="{ 'font-size': '16px', 'color': '#1a2736','font-weight': '400'}">{{ $t('cloudenv.text_374') + ": " }}</span>
         <a-breadcrumb-item v-for="(item, index) in navs" :style="{ 'font-size': '16px', 'font-weight': '500'}" :key="item.id">
           <template v-if="index === navs.length - 1">
             <span class="monitor-overview-breadcrumb-span">{{ item.title }}</span>
@@ -17,14 +18,14 @@
     </a-row>
     <a-row>
       <a-col style="padding-left: 6px; padding-right: 6px;" :span="8">
-        <overview-pie class="monitor-overview-card mb-2" :loading="charts.alert_sum.chartLoading" :chartData="charts.alert_sum.chartData" showLegend="true" :legendData="charts.alert_sum.legendData" :pieTitle="charts.alert_sum.title" :pieSubtext="charts.alert_sum.subtitle" />
+        <overview-pie class="monitor-overview-card mb-2" :header="{ title: $t('monitor.overview_alert_sum') }" :loading="charts.alert_sum.chartLoading" :chartData="charts.alert_sum.chartData" showLegend="true" :legendData="charts.alert_sum.legendData" :pieTitle="charts.alert_sum.title" :pieSubtext="charts.alert_sum.subtitle" />
       </a-col>
       <a-col style="padding-left: 6px; padding-right: 6px;" :span="16">
-        <overview-line :header="{ title: charts.res_num.title }" class="monitor-overview-card mb-2" height="279px" :loading="charts.res_num.chartLoading"  :isHistogram="true" :chartData="charts.res_num.chartData" />
+        <overview-line :header="{ title: charts.res_num.title }" class="monitor-overview-card mb-2" height="300px" :loading="charts.res_num.chartLoading" :isHistogram="true" :chartData="charts.res_num.chartData" :numerify-format="charts.res_num.numerifyFormat" splitLineShow />
       </a-col>
     </a-row>
     <a-row>
-      <a-col  style="padding-left: 6px; padding-right: 6px;" :span="24">
+      <a-col style="padding-left: 6px; padding-right: 6px;" :span="24">
         <div class="monitor-overview-card mb-2">
           <div class="float-left">
             <a-radio-group v-model="activeTab" @change="radioChange">
@@ -32,16 +33,16 @@
             </a-radio-group>
           </div>
           <div :style="{'margin-top': '30px'}" v-if="currentNav.scope !=='project'">
-            <overview-line :height="`${Math.max(200, charts[activeTab].chartData.rows.length * 45)}px`" :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" :chartEvents="chartEvents()"  key="domainView" />
+            <overview-line :height="`${Math.max(200, charts[activeTab].chartData.rows.length * 45)}px`" :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="false" :chartData="charts[activeTab].chartData" :unit="charts[activeTab].unit" :chartEvents="chartEvents()" :numerify-format="charts[activeTab].numerifyFormat" key="domainView" />
           </div>
           <div :style="{'margin-top': '30px'}" v-else>
-            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="true" height="320px" :chartData="charts[activeTab].chartData" :chartSettings="{ showLine: charts[activeTab].chartData.columns}" :unit="charts[activeTab].unit" key="projectView" />
+            <overview-line :header="{ title: charts[activeTab].title }" :loading="charts[activeTab].chartLoading"  :isHistogram="true" height="320px" :chartData="charts[activeTab].chartData" :chartSettings="{ showLine: charts[activeTab].chartData.columns}" :unit="charts[activeTab].unit" :numerify-format="charts[activeTab].numerifyFormat" key="projectView" splitLineShow />
           </div>
         </div>
       </a-col>
     </a-row>
     <a-row  v-if="tableData.showtable">
-      <a-col>
+      <a-col style="padding-left: 6px; padding-right: 6px;">
         <div class="table">
           <vxe-grid
             class="mt-4"
@@ -50,6 +51,13 @@
             :columns="tableData.columns"
             max-height="400"
             :data="tableData.rows" />
+          <div class="vxe-grid--pager-wrapper">
+            <div class="vxe-pager size--mini">
+              <div class="vxe-pager--wrapper">
+                <span class="vxe-pager--total">{{ total }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </a-col>
     </a-row>
@@ -96,13 +104,14 @@ const allTabs = {
   },
 }
 
-function newChart (title, subtitle, label) {
+function newChart (title, subtitle, label, numerifyFormat) {
   const chart = {
     label: label,
     title: '',
     subtitle: '',
     rawDatas: {},
     chartLoading: false,
+    numerifyFormat: numerifyFormat || '0.00',
     chartUint: {},
     chartData: {
       columns: [],
@@ -135,8 +144,8 @@ export default {
       charts[k] = newChart(`monitor.overview_${k}`, '', allTabs[k].label)
     }
 
-    charts.alert_sum = newChart('monitor.overview_alert_sum', '', '')
-    charts.res_num = newChart('monitor.overview_alert_trend', '', '')
+    charts.alert_sum = newChart('monitor.overview_alert_sum_pie', '', '', '0')
+    charts.res_num = newChart('monitor.overview_alert_trend', '', '', '0')
     const scope = this.$store.getters.scope
     let navs = []
     if (scope === 'system') {
@@ -158,6 +167,12 @@ export default {
       currentNav: { index: 0, scope: scope, status: 'loading' },
       navs: navs,
     }
+  },
+  computed: {
+    total () {
+      const total = this.tableData.rows.length || 0
+      return this.$t('monitor_metric_78', [total])
+    },
   },
   watch: {
     scope () {
@@ -398,11 +413,14 @@ export default {
             return { name: item.tags.tenant || item.tags.project_domain, value: item.points[0][0] }
           })
           if (series.length) {
-            chartData.columns = ['raw_name', 'value']
+            const v = allTabs[field].label
+            chartData.columns = ['raw_name', v]
             chartData.rows = series.map((item) => {
-              return { raw_name: item.name, value: parseFloat(item.value.toFixed(2)) }
+              const _item = { raw_name: item.name }
+              _item[v] = parseFloat(item.value.toFixed(2))
+              return _item
             }).sort((a, b) => {
-              return a.value - b.value
+              return a[v] - b[v]
             })
           }
         }
@@ -473,6 +491,7 @@ export default {
     },
     async fetchTableData () {
       this.tableData.showtable = false
+      const self = this
       let scopeTitle = ''
       if (this.currentNav.scope === 'project') {
         return
@@ -485,7 +504,29 @@ export default {
         const tab = allTabs[t]
         await this.fetchTabChartData(tab.measurement, tab.key)
       }
-      this.tableData.columns = [{ field: 'scope', title: scopeTitle }]
+      const namecolumn = {
+        edit: false,
+        field: 'scope',
+        title: scopeTitle,
+        slots: {
+          default: ({ row }, h) => {
+            return [h('a', {
+              domProps: {
+                innerHTML: row.scope,
+              },
+              props: {
+                value: row.scope,
+              },
+              on: {
+                click: () => {
+                  self.nextNav({ name: row.scope })
+                },
+              },
+            })]
+          },
+        },
+      }
+      this.tableData.columns = [namecolumn]
       this.tableData.rows = []
       this.$nextTick(_ => {
         this.tableData.showtable = true
@@ -495,12 +536,13 @@ export default {
           this.tableData.columns.push({ field: k, title: this.charts[k].label })
           for (let i = 0; i < chart.rows.length; i++) {
             const name = chart.rows[i].raw_name
+            const vkey = chart.columns[1] || 'value'
             if (datas[name]) {
-              const val = transformUnit(chart.rows[i].value, this.charts[k].unit.unit, 1000, '0')
+              const val = transformUnit(chart.rows[i][vkey], this.charts[k].unit.unit, 1000, this.charts[k].numerifyFormat)
               datas[name][k] = val.text
             } else {
               const item = { scope: name }
-              const val = transformUnit(chart.rows[i].value, this.charts[k].unit.unit, 1000, '0')
+              const val = transformUnit(chart.rows[i][vkey], this.charts[k].unit.unit, 1000, this.charts[k].numerifyFormat)
               item[k] = val.text
               datas[name] = item
             }
