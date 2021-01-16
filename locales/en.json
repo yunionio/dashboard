@@ -145,7 +145,7 @@
   "storage.text_145": "Unlimited",
   "storage.text_146": "{0}",
   "storage.text_147": "Access Permission",
-  "storage.text_148": "The current cloud vendor has not yet been docked",
+  "storage.text_148": "The current cloud provider has not yet been supported.",
   "storage.text_149": "Currently only Alibaba Cloud and Huawei Cloud support viewing monitoring data",
   "storage.text_150": "Current file directory:",
   "storage.text_151": "Please enter the folder name",
