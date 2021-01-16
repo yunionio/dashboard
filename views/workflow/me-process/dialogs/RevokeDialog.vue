@@ -7,8 +7,8 @@
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
-        <a-form-item :label="$t('common_157')">
-          <a-input :placeholder="$t('common_367')" v-decorator="decorators.remarks" />
+        <a-form-item :label="$t('common.reason')">
+          <a-textarea :placeholder="$t('common_367')" v-decorator="decorators.remarks" />
         </a-form-item>
       </a-form>
     </div>
@@ -37,14 +37,19 @@ export default {
       decorators: {
         remarks: [
           'remarks',
+          {
+            rules: [
+              { required: true, message: this.$t('common.reason') },
+            ],
+          },
         ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 22,
+          span: 20,
         },
         labelCol: {
-          span: 2,
+          span: 4,
         },
       },
     }

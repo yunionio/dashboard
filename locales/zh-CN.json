@@ -2943,7 +2943,6 @@
   "scope.text_448": "实际支付金额",
   "scope.text_449": "支付货币",
   "scope.text_450": "支付",
-  "scope.text_451": "编号",
   "scope.text_452": "订阅",
   "scope.text_453": "账单类型",
   "scope.text_454": "后付费",
@@ -3487,7 +3486,7 @@
   "common.text00033": "主机申请",
   "common.text00034": "主机调整配置",
   "common.text00035": "主机删除",
-  "common.text00036": "技术支持工单",
+  "common.text00036": "技术支持",
   "common.text00037": "配额申请",
   "common.text00038": "申请",
   "common.text00039": "加入",
@@ -4309,5 +4308,6 @@
   "common.workflow_priority_minor": "次要",
   "common.workflow_priority_moderate": "中等",
   "common.workflow_priority_critical": "危急",
-  "common.workflow_priority_fatal": "致命"
+  "common.workflow_priority_fatal": "致命",
+  "common.reason": "原因"
 }
