@@ -31,6 +31,9 @@ export const getResourceNameTableColumn = ({ field = 'resource_name', title = i1
         if (Array.isArray(rs)) {
           name = rs.map((item) => item.name).join(',')
         }
+        if (!name) {
+          name = '-'
+        }
         return [
           <list-body-cell-wrap copy row={row} hideField={ true } message={ name }>
             { name }
@@ -74,16 +77,20 @@ export const getInitiatorTableColumn = ({ field = 'initiator' } = {}) => {
   }
 }
 
-export const getCommentTableColumn = () => {
+export const getCommentTableColumn = ({ field = 'comment', title = i18n.t('common_438') } = {}) => {
   return {
-    field: 'comment',
-    title: i18n.t('common_438'),
+    field,
+    title,
     minWidth: 80,
     showOverflow: 'title',
     slots: {
       default: ({ row }) => {
-        const veriables = JSON.parse(row.variables || '{}')
-        return veriables.comment || '-'
+        console.log(row)
+        const variables = row.variables
+        if (variables.comment) {
+          return variables.comment
+        }
+        return '-'
       },
     },
   }

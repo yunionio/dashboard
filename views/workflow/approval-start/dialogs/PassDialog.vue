@@ -47,6 +47,7 @@ import {
   getProcessDefinitionNameTableColumn,
   getResourceNameTableColumn,
   getInitiatorTableColumn,
+  getCommentTableColumn,
 } from '../../utils/columns'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import DialogMixin from '@/mixins/dialog'
@@ -101,6 +102,7 @@ export default {
         getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name', title: this.$t('common_186') }),
         getResourceNameTableColumn({ title: this.$t('common_357') }),
         getInitiatorTableColumn({ field: 'process_instance.start_user_name' }),
+        getCommentTableColumn({ title: this.$t('common_157'), field: 'process_instance.comment' }),
       ],
     }
   },
