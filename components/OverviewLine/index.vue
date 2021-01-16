@@ -61,6 +61,10 @@ export default {
       default: false,
     },
     dateMode: {},
+    numerifyFormat: {
+      type: String,
+      default: '0.00',
+    },
   },
   data () {
     return {
@@ -70,7 +74,8 @@ export default {
   computed: {
     chartExtend () {
       const unit = this.unit.unit
-      const chartType = this.chartType
+      const numberFormat = this.numerifyFormat
+      // const chartType = this.chartType
 
       const commonSerie = {
         barWidth: '12px',
@@ -133,7 +138,7 @@ export default {
           axisLabel: {
             formatter: (value, index) => {
               if (unit) {
-                const val = transformUnit(value, unit, 1000, '0')
+                const val = transformUnit(value, unit, 1000, numberFormat)
                 return val.text
               } else {
                 return value
@@ -141,9 +146,9 @@ export default {
             },
           },
           max: function (value) { // 坐标轴刻度最大值
-            if (chartType === 've-histogram') {
-              return value.max * 1.2
-            }
+            // if (chartType === 've-histogram') {
+            //   return Math.ceil(value.max * 1.2)
+            // }
             return value.max
           },
         },
@@ -168,6 +173,7 @@ export default {
     },
     chartConfig () {
       const unit = this.unit.unit
+      const numberFormat = this.numberFormat
       const config = {
         // title,
         height: this.height,
@@ -187,20 +193,15 @@ export default {
           formatter: function (params, ticket, callback) {
             for (const i in params) {
               if (unit) {
-                const val = transformUnit(params[i].data, unit, 1000, '0')
-                return `${params[i].seriesName}: ${val.text}`
+                const val = transformUnit(params[i].data, unit, 1000, numberFormat)
+                return `${params[i].name}<br />${params[i].seriesName}: ${val.text}`
               } else {
-                return `${params[i].seriesName}: ${params[i].data}`
+                return `${params[i].name}<br />${params[i].seriesName}: ${params[i].data}`
               }
             }
           },
         },
-        grid: {
-          // left: '3%',
-          // right: '4%',
-          // bottom: '3%',
-          // containLabel: true,
-        },
+        grid: {},
       }
       if (this.isHistogram) {
         config.toolbox = {
@@ -210,7 +211,9 @@ export default {
           },
           right: 20,
         }
-        config.grid.top = '10px'
+        config.grid.top = '30px'
+        // config.grid.height = '50%'
+        // config.grid.containLabel = true
       }
       return config
     },
