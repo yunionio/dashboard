@@ -292,7 +292,7 @@ export default {
         if (this.brand) params.brand = this.brand
         const response = await this.rm.list({ params })
         const data = response.data.data
-        this.regions = data.map(val => ({ ...val, key: val.id, label: val.name })) || []
+        this.regions = data.map(val => ({ ...val, key: val.id, label: val._i18n ? val._i18n.name : val.name })) || []
         let defaultData
         const initialValue = _.get(this.decorators, 'region[1].initialValue')
         if (initialValue) {
