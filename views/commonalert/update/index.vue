@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="`${$t('common.edit')}${$t('dictionary.commonalert')}`" />
+    <page-header :title="$t('monitor.text_120', [$t('dictionary.commonalert')])" />
     <page-body>
       <alert ref="alertRef" :isUpdate="true" :commonalertId="$route.params.id" :loading.sync="loading" />
     </page-body>

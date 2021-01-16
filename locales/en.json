@@ -200,6 +200,7 @@
   "monitor.text_117": "Send byte per second",
   "monitor.text_118": "Request count",
   "monitor.text_119": "Query",
+  "monitor.text_120": "Modify {0}",
   "monitor.overview_alert_sum": "Uncovered Alarm",
   "monitor.overview_alert_sum_pie": "Total Alerts",
   "monitor.overview_alert_trend": "Alerts trends in the last 30 days",
