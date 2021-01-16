@@ -794,7 +794,7 @@ class CreateList {
       let options = []
       const values = response.data[item.distinctField.key] || []
       if (item.distinctField.afterFetch && R.is(Function, item.distinctField.afterFetch)) {
-        options = await item.distinctField.afterFetch(values)
+        options = await item.distinctField.afterFetch(values, { scope: this.templateContext.$store.getters.scope })
       } else {
         options = values.map(item => ({ label: item, key: item }))
       }
