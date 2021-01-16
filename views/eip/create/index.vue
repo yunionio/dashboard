@@ -13,6 +13,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
           :labelCol="formItemLayout.labelCol"
           :names="areaselectsName"
+          :city-params="cityParams"
           :cloudregionParams="regionParams"
           :providerParams="cloudProviderParams"
           :isRequired="true"
@@ -338,6 +339,13 @@ export default {
       if (this.cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id) return true
       if (this.cloudEnv === 'private' && this.selectedRegionItem && this.selectedRegionItem.id) return true
       return false
+    },
+    cityParams () {
+      return {
+        usable: true,
+        scope: this.scope,
+        public_cloud: true,
+      }
     },
     cloudProviderParams () {
       return {
