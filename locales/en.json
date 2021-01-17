@@ -121,7 +121,7 @@
   "monitor.metrics_vm_diskio": "Server disk read and write status",
   "monitor.metrics_vm_mem": "Server Memory Usage",
   "monitor.metrics_vm_netio": "Server network traffic conditions",
-  "monitor.normal": "normal",
+  "monitor.normal": "Normal",
   "monitor.important": "Important",
   "monitor.fatal": "Fatal",
   "monitor.condition": "Trigger Condition",
