@@ -4,10 +4,10 @@
     @change="handleChange"
     :filterOption="filterOption"
     showSearch
-    optionLabelProp="value">
-    <a-select-option v-for="item of scopedUsages" :value="item.key" :key="item.key">
-      <div style="font-size: 14px;">{{ item.key }}</div>
-      <div class="text-color-help">{{ item.label }}</div>
+    optionLabelProp="title">
+    <a-select-option v-for="item of scopedUsages" :value="item.key" :key="item.key" :title="item.label">
+      <div style="font-size: 14px;">{{ item.label }}</div>
+      <div class="text-color-help">{{ item.key }}</div>
     </a-select-option>
   </a-select>
 </template>
