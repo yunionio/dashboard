@@ -207,11 +207,11 @@ export default {
       const values = val[0]
       let labelStr
       if (values[0] && values[1]) {
-        labelStr = values.map(item => item.format('YYYY-MM-DD HH:mm:ss')).join('~')
+        labelStr = values.map(item => item.local().format('YYYY-MM-DD HH:mm:ss')).join('~')
       } else if (values[0]) {
-        labelStr = `<${values[0].format('YYYY-MM-DD HH:mm:ss')}`
+        labelStr = `<${values[0].local().format('YYYY-MM-DD HH:mm:ss')}`
       } else if (values[1]) {
-        labelStr = `>${values[1].format('YYYY-MM-DD HH:mm:ss')}`
+        labelStr = `>${values[1].local().format('YYYY-MM-DD HH:mm:ss')}`
       }
       this.search = `${this.config.label}${this.keySeparator}${labelStr}`
     },

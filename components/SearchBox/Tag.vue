@@ -194,11 +194,11 @@ export default {
       const values = val[0]
       let labelArr
       if (values[0] && values[1]) {
-        labelArr = values.map(item => item.format('YYYY-MM-DD HH:mm:ss'))
+        labelArr = values.map(item => item.local().format('YYYY-MM-DD HH:mm:ss'))
       } else if (values[0]) {
-        labelArr = [values[0].format('YYYY-MM-DD HH:mm:ss'), null]
+        labelArr = [values[0].local().format('YYYY-MM-DD HH:mm:ss'), null]
       } else if (values[1]) {
-        labelArr = [null, values[1].format('YYYY-MM-DD HH:mm:ss')]
+        labelArr = [null, values[1].local().format('YYYY-MM-DD HH:mm:ss')]
       }
       this.newValue = labelArr
     },
