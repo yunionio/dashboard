@@ -8,7 +8,7 @@
         <p class="text-center">{{ $t('common.notData') }}</p>
       </template>
       <template v-else>
-        <page-header :title="$t('common_325')" :tabs="tabs" :current-tab.sync="currentTab" />
+        <page-header :title="$t('scope.cloudid')" :tabs="tabs" :current-tab.sync="currentTab" />
         <page-body>
           <component :is="currentTab" />
         </page-body>
