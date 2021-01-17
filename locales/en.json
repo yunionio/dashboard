@@ -557,10 +557,10 @@
       }
     }
   },
-  "cloudenv.text_499": "Policy",
+  "cloudenv.text_499": "Customization",
   "cloudenv.text_500": "Assignments",
   "cloudenv.text_501": "Definitions",
-  "cloudenv.text_502": "Policy Type",
+  "cloudenv.text_502": "Customization Type",
   "cloudenv.text_503": "Scope of Application",
   "cloudenv.text_504": "Global",
   "cloudenv.text_505": "Domain:{0}",
