@@ -1,4 +1,3 @@
-import Strategyallocation from '@Cloudenv/views/strategyallocation'
 import Cloudgroup from '@Cloudenv/views/cloudgroup'
 import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
@@ -12,8 +11,6 @@ import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
 import Policydefinition from '@Cloudenv/views/policydefinition'
-import Strategydefinition from '@Cloudenv/views/strategydefinition'
-import StrategydefinitionCreate from '@Cloudenv/views/strategydefinition/create'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 
@@ -169,7 +166,7 @@ export default {
         },
       ],
     },
-    {
+    /* {
       meta: {
         label: i18n.t('cloudenv.text_499'),
         hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
@@ -211,7 +208,7 @@ export default {
           ],
         },
       ],
-    },
+    }, */
     {
       meta: {
         label: i18n.t('cloudenv.text_17'),
