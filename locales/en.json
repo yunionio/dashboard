@@ -468,7 +468,7 @@
   "cloudenv.text_433": "Trigger Frequency",
   "cloudenv.text_434": "Trigger week",
   "cloudenv.text_435": "Trigger Date",
-  "cloudenv.text_436": "Number {0}",
+  "cloudenv.text_436": "{0}",
   "cloudenv.text_437": "Trigger time",
   "cloudenv.text_438": "Valid date",
   "cloudenv.text_439": "Binding Resources",
