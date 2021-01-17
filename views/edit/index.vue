@@ -3,7 +3,7 @@
     <!-- header -->
     <div class="edit-topbar position-relative d-flex justify-content-center align-items-center flex-grow-0 flex-shrink-0">
       <div class="mr-2">{{$t('dashboard.text_118')}}</div>
-      <a-button size="small" type="primary" @click="handleConfirm" :loading="submiting">{{ $t('dialog.ok') }}</a-button>
+      <a-button size="small" type="primary" @click="handleConfirm" :loading="submiting">{{ $t('common.save') }}</a-button>
       <a-button size="small" @click="handleBack" class="ml-2">{{ $t('dialog.cancel') }}</a-button>
     </div>
     <!-- main -->
