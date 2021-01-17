@@ -200,6 +200,7 @@
   "monitor.text_117": "每秒发送字节数",
   "monitor.text_118": "请求数量",
   "monitor.text_119": "监控查询",
+  "monitor.text_120": "修改{0}",
   "monitor.overview_alert_sum": "未恢复告警",
   "monitor.overview_alert_sum_pie": "告警总数",
   "monitor.overview_alert_trend": "近30日告警趋势",
