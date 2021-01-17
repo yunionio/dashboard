@@ -75,12 +75,12 @@ export default {
             filter: true,
             formatter: (val, type) => {
               if (type === 'before') {
-                return `created_at.le("${val}")`
+                return `created_at.le("${this.utcTime(val)}")`
               }
               if (type === 'after') {
-                return `created_at.ge("${val}")`
+                return `created_at.ge("${this.utcTime(val)}")`
               }
-              return `created_at.between("${val[0]}", "${val[1]}")`
+              return `created_at.between("${this.utcTime(val[0])}", "${this.utcTime(val[1])}")`
             },
           },
         },
@@ -108,6 +108,9 @@ export default {
         resource: 'commonalerts',
         apiVersion: 'v1',
       })
+    },
+    utcTime (v) {
+      return this.$moment(v).utc().format('YYYY-MM-DD HH:mm:ss')
     },
   },
 }
