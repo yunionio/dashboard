@@ -311,6 +311,12 @@ export default {
             options: values,
           },
         }
+        if (this.billingType === 1) {
+          params.data = {
+            remove_options: ['billing_bucket_account'],
+            ...params.data,
+          }
+        }
         await this.manager.update(params)
         if (isGoCloudaccount) {
           this.$router.push('/cloudaccount')
