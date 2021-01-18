@@ -185,8 +185,7 @@ export default {
   },
   billrate: {
     success: ['is_effective'],
-    info: ['is_expire'],
-    danger: ['is_not_effective'],
+    info: ['is_expire', 'is_not_effective', 'unknown'],
   },
   scalinggroup: {
     success: ['ready'],
