@@ -1,7 +1,7 @@
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import i18n from '@/locales'
 import { BRAND_MAP } from '@/constants'
-const supportShpolcyBrand = [i18n.t('common.yunion_cloud'), 'Qcloud', 'Aliyun']
+const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
   created () {
@@ -201,9 +201,15 @@ export default {
                   }
                 }
                 if (!supportShpolcyBrand.includes(obj.brand)) {
+                  const newSupportShpolcyBrand = supportShpolcyBrand.map(v => {
+                    if (v === 'OneCloud') {
+                      return i18n.t('common.yunion_cloud')
+                    }
+                    return v
+                  })
                   return {
                     validate: false,
-                    tooltip: i18n.t('compute.text_456', [supportShpolcyBrand.join('、')]),
+                    tooltip: i18n.t('compute.text_456', [newSupportShpolcyBrand.join('、')]),
                   }
                 }
                 if (obj.snapshotpolicy_status === 'deleting' || obj.snapshotpolicy_status === 'init') {
