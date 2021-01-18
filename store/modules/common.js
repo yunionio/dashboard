@@ -67,7 +67,8 @@ export default {
         const { data: { data = [] } } = await new Manager('bill_conditions', 'v1').list({ params })
         commit('SET_BILL_CURRENCYOPTS', data)
         if (data && data.length > 0) {
-          commit('SET_BILL_CURRENCY', data[0].item_id)
+          const isExsit = data.find(v => v.item_id === state.bill.currency)
+          commit('SET_BILL_CURRENCY', isExsit ? state.bill.currency : data[0].item_id)
         }
       } catch (error) {
         throw error

@@ -34,19 +34,19 @@ export default {
       {
         field: 'activity_name',
         title: this.$t('common_391'),
-        minWidth: 80,
+        minWidth: 40,
         showOverflow: 'title',
       },
       {
         field: 'task_assignee_name',
         title: this.$t('common_392'),
-        minWidth: 80,
+        minWidth: 40,
         showOverflow: 'title',
       },
-      {
+      /* {
         field: 'task_approved',
         title: this.$t('common_364'),
-        minWidth: 80,
+        minWidth: 40,
         showOverflow: 'title',
         slots: {
           default: ({ row }, h) => {
@@ -57,7 +57,7 @@ export default {
             }
           },
         },
-      },
+      }, */
       {
         field: 'comment',
         title: this.$t('common_157'),
@@ -72,7 +72,7 @@ export default {
     ]
   },
   methods: {
-    getApproveHandle (row) {
+    getApproveHandle (msg, row) {
       const statusObj = approveStatusMap[`${row.activity_id}`]
       const approved = row.task.local_variables.approved
       const pdk = this.processInstanceInfo.process_definition_key
@@ -83,6 +83,7 @@ export default {
       if (pdk === WORKFLOW_TYPES.CUSTOMER_SERVICE) {
         const state = row.task.local_variables.state
         return [
+          <span>{msg}</span>,
           <span class="error-approved">{state}</span>,
         ]
       }
@@ -90,27 +91,32 @@ export default {
         if (approved === undefined) return '-'
         if (approved) {
           return [
+            <span>{msg}</span>,
             <span class="pass">{this.$t('common.pass')}</span>,
           ]
         }
         return [
+          <span>{msg}</span>,
           <span class="error-approved">{this.$t('common.reject')}</span>,
         ]
       } else {
         const txt = statusObj[`${row.task.local_variables.approved}`]
         if (approved) {
           return [
+            <span>{msg}</span>,
             <span class="pass">{txt}</span>,
           ]
         }
         if (isLatest) {
           this.errorLogs = row.task.local_variables.biz_message || this.processInstanceInfo.variables.biz_message
           return [
+            <span>{msg}</span>,
             <span class="error-approved">{txt}</span>,
             <span class="error-link">({this.$t('common_394')}<span class="error-log" onClick={ this.showErrorLog.bind(this) }>{this.$t('common_458')}</span>)</span>,
           ]
         }
         return [
+          <span>{msg}</span>,
           <span class="error-approved">{txt}</span>,
         ]
       }
