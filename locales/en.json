@@ -559,8 +559,8 @@
       "operating": "operating"
     },
     "billrate": {
-      "is_effective": "effective",
-      "is_not_effective": "Not effective",
+      "is_effective": "Effective",
+      "is_not_effective": "Not Effective",
       "is_expire": "Expired",
       "unknown": "Unknown"
     },
@@ -2014,8 +2014,8 @@
   "login.desc2": "Simple·Open·Unified·Intelligent",
   "login.desc3": "To unify many distinct clouds into the one cloud that behaves like an integral cloud platform",
   "billWarningCostTypes": {
-    "day": "Daily consumption alerts",
-    "month": "Monthly consumption alerts"
+    "day": "Daily consumption alarms",
+    "month": "Monthly consumption alarms"
   },
   "auth.login": "User Login",
   "auth.chooser": "Select Account",
@@ -2179,7 +2179,7 @@
     "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
     "commonalert": "Policies",
-    "monitor_commonalert": "Alerts",
+    "monitor_commonalert": "Alarms",
     "monitor_metrics": "Metrics",
     "explorer": "Query",
     "instance_snapshot": "Server Snapshot",
@@ -2213,7 +2213,7 @@
     "message": "Message",
     "alertrecord": "History",
     "rds": "RDS",
-    "security-alerts": "Security Alerts"
+    "security-alerts": "Security Alarms"
   },
   "res": {
     "role": "Role",
@@ -2355,7 +2355,7 @@
     "region": "Region",
     "zone": "Zone",
     "account": "Cloud account",
-    "createdAt": "Created At",
+    "createdAt": "Created time",
     "updatedAt": "Updated time",
     "status": "Status",
     "description": "Remarks",
@@ -3452,7 +3452,7 @@
   "scope.text_958": "Backup：{0}",
   "scope.text_959": "IAM & Security",
   "scope.text_960": "Security Optimization",
-  "scope.text_961": "Security Alerts",
+  "scope.text_961": "Security Alarms",
   "common.text00001": "Available",
   "common.text00002": "The one you selected",
   "common.text00003": " ",
