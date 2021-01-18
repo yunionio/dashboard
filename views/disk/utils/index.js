@@ -5,7 +5,7 @@ import i18n from '@/locales'
 const { disk: diskStatus, server: serverStatus } = status.status
 
 const _tran = (enArr, status = diskStatus) => {
-  return enArr.map(v => status[v] || v).filter(v => v).join('，')
+  return enArr.map(v => status[v] ? i18n.t(`status.disk.${v}`) : v).filter(v => v).join('，')
 }
 
 // 磁盘扩容的逻辑梳理
@@ -383,25 +383,61 @@ export const diskCreateSnapshotConfig = {
       tooltip: '',
     }
   },
-  qcloud () {
+  qcloud (obj) {
+    const provider = obj.provider
+    const guestStatus = ['ready', 'running']
+    if (obj.guest && !guestStatus.includes(obj.guest_status)) {
+      return {
+        validate: false,
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+      }
+    }
+
     return {
       validate: true,
       tooltip: '',
     }
   },
-  aws () {
+  aws (obj) {
+    const provider = obj.provider
+    const guestStatus = ['ready', 'running']
+    if (obj.guest && !guestStatus.includes(obj.guest_status)) {
+      return {
+        validate: false,
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+      }
+    }
+
     return {
       validate: true,
       tooltip: '',
     }
   },
-  huawei () {
+  huawei (obj) {
+    const provider = obj.provider
+    const guestStatus = ['ready', 'running']
+    if (obj.guest && !guestStatus.includes(obj.guest_status)) {
+      return {
+        validate: false,
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+      }
+    }
+
     return {
       validate: true,
       tooltip: '',
     }
   },
-  azure () {
+  azure (obj) {
+    const provider = obj.provider
+    const guestStatus = ['ready', 'running']
+    if (obj.guest && !guestStatus.includes(obj.guest_status)) {
+      return {
+        validate: false,
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+      }
+    }
+
     return {
       validate: true,
       tooltip: '',
@@ -428,13 +464,31 @@ export const diskCreateSnapshotConfig = {
       tooltip: '',
     }
   },
-  google () {
+  google (obj) {
+    const provider = obj.provider
+    const guestStatus = ['ready', 'running']
+    if (obj.guest && !guestStatus.includes(obj.guest_status)) {
+      return {
+        validate: false,
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+      }
+    }
+
     return {
       validate: true,
       tooltip: '',
     }
   },
-  ctyun () {
+  ctyun (obj) {
+    const provider = obj.provider
+    const guestStatus = ['ready', 'running']
+    if (obj.guest && !guestStatus.includes(obj.guest_status)) {
+      return {
+        validate: false,
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+      }
+    }
+
     return {
       validate: false,
       tooltip: i18n.t('compute.text_476'),
