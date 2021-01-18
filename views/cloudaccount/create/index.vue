@@ -5,7 +5,7 @@
     <keep-alive>
       <component :prepareNetData="prepareNetData" :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     </keep-alive>
-    <page-footer>
+    <page-footer isForm>
       <div slot="left">
         <div class="d-flex align-items-center">
           <div class="mr-2">{{$t('cloudenv.text_272')}}</div>
