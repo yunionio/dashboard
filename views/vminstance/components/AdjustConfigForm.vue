@@ -74,9 +74,10 @@
           <div v-if="hasMeterService" class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('compute.text_286')}}</div>
             <div class="ml-2 prices">
-              <div class="hour error-color text-truncate">
+              <div class="hour error-color d-flex">
                 <template v-if="price">
                   <m-animated-number :value="price" :formatValue="formatToPrice" />
+                  <discount-price class="ml-2 mini-text" :discount="priceData.discount" :origin="originPrice" />
                 </template>
                 <template v-else>---</template>
               </div>
@@ -119,6 +120,7 @@ import { findPlatform } from '@/utils/common/hypervisor'
 import { isRequired } from '@/utils/validate'
 import { sizestr, sizestrWithUnit } from '@/utils/utils'
 import { STORAGE_TYPES } from '@/constants/compute'
+import DiscountPrice from '@/sections/DiscountPrice'
 
 export default {
   name: 'AdjustConfig',
@@ -128,6 +130,7 @@ export default {
     sku,
     DataDisk,
     SystemDisk,
+    DiscountPrice,
   },
   mixins: [WindowsMixin, WorkflowMixin],
   props: {
@@ -579,6 +582,23 @@ export default {
     },
     isPublic () {
       return this.params.data[0].cloud_env === SERVER_TYPE.public
+    },
+    priceData () {
+      const data = _.get(this.pricesList, '[0]', { discount: 1 })
+      return data
+    },
+    originPrice () {
+      if (this.pricesList && this.pricesList.length > 0) {
+        const { month_gross_price: month, hour_gross_price: sum } = this.pricesList[0]
+        let _price = parseFloat(sum)
+        if (this.isPackage && this.durationNum) {
+          _price = parseFloat(month) * this.durationNum
+        }
+
+        return _price
+      }
+
+      return null
     },
   },
   watch: {
