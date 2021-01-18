@@ -131,7 +131,9 @@
       "converted": "Conversion completed",
       "tempalte_saving": "Start creating host template",
       "template_save_failed": "Failed to create host",
-      "instance_snapshot_reset": "Rollback host"
+      "instance_snapshot_reset": "Rollback host",
+      "update_tags": "Update tag",
+      "update_tags_fail": "Failed to update tag"
     },
     "network": {
       "init": "Initialize",
