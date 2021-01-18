@@ -887,9 +887,9 @@ export default {
         brand,
       }
       if (this.isPublic) {
-        if (this.fd.sku && this.fd.sku.cloud_env) {
-          params.brand = this.fd.sku.cloud_env
-          skuProvider = this.fd.sku.cloud_env
+        if (this.form.fd.sku && this.form.fd.sku.cloud_env) {
+          params.brand = this.form.fd.sku.cloud_env
+          skuProvider = this.form.fd.sku.cloud_env
         }
       }
       const { systemDiskSize = 0, systemDiskType = {}, sysdisks = [] } = this.form.fd
