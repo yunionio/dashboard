@@ -43,13 +43,13 @@
         </a-form-item>
         <a-form-item :label="$t('compute.text_875')">
           <a-tooltip placement="top" :title="$t('compute.text_896')">
-            <a-input-number v-decorator="decorators.desire_instance_number" :min="form.fd.min_instance_number" :max="form.fd.max_instance_number" />
+            <a-input-number v-decorator="decorators.desire_instance_number" :min="form.fd.min_instance_number" :max="Math.max(0, form.fd.max_instance_number)" />
           </a-tooltip>
           <div slot="extra">{{$t('compute.text_897')}}</div>
         </a-form-item>
         <a-form-item :label="$t('compute.text_876')">
           <a-tooltip placement="top" :title="$t('compute.text_891')">
-            <a-input-number @blur="handleMinBlur" v-model="min" :min="0" :max="form.fd.desire_instance_number"  />
+            <a-input-number @blur="handleMinBlur" v-model="min" :min="0" :max="Math.max(0, form.fd.desire_instance_number)"  />
             <a-input v-show="false" v-decorator="decorators.min_instance_number" />
           </a-tooltip>
         </a-form-item>
