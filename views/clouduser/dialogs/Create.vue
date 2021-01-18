@@ -87,6 +87,8 @@ export default {
                   this.isCanSendNotify = false
                 }
               })
+            } else {
+              this.isCanSendNotify = false
             }
           },
         }),
