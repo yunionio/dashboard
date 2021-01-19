@@ -48,6 +48,19 @@ const resourceMode = {
       )
     },
   },
+  cloudproviders: {
+    vnode: (vm, h) => {
+      const { name, cloudaccount } = vm.data
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-3' title={ name }>{ name }</span>
+          {
+            cloudaccount ? <span style="color: #8492a6; font-size: 13px">{i18n.t('common.account')}: { cloudaccount}</span> : null
+          }
+        </div>
+      )
+    },
+  },
   // repos: {
   //   vnode: (vm, h) => {
   //     const text = vm.getLabel()
