@@ -133,25 +133,35 @@ export const getDeleteResult = (row, deleteField = 'can_delete', failKey = 'dele
   }
 }
 
+function isResourceOwner (row, resource) {
+  if (resource === 'keypairs' || resource === 'keypair') {
+    const userId = store.getters.userInfo.id
+    if (row.owner_id && row.owner_id === userId) {
+      return true
+    }
+  }
+
+  return false
+}
+
 // 获取列表跨域权限
-export const isOwner = (row) => {
-  const projectDomainId = store.getters.userInfo.projectDomainId
-  const projectId = store.getters.userInfo.projectId
+export const isOwner = (row, resource = '') => {
   const dataArr = R.is(Array, row) ? row : [row]
   const ret = { validate: true, tooltip: '' }
   if (store.getters.isAdminMode) return ret
+
+  let is_owner = false
   if (store.getters.isDomainMode) {
-    const isAllSameDomain = dataArr.every(item => item.domain_id === projectDomainId)
-    if (!isAllSameDomain) {
-      ret.validate = false
-      ret.tooltip = i18n.t('common_716')
-    }
+    const projectDomainId = store.getters.userInfo.projectDomainId
+    is_owner = dataArr.every(item => (item.domain_id === projectDomainId || isResourceOwner(row, resource)))
   } else {
-    const isAllSameProject = dataArr.every(item => item.tenant_id === projectId)
-    if (!isAllSameProject) {
-      ret.validate = false
-      ret.tooltip = i18n.t('common_716')
-    }
+    const projectId = store.getters.userInfo.projectId
+    is_owner = dataArr.every(item => (item.tenant_id === projectId || isResourceOwner(row, resource)))
+  }
+
+  if (!is_owner) {
+    ret.validate = false
+    ret.tooltip = i18n.t('common_716')
   }
   return ret
 }
