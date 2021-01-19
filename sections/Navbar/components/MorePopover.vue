@@ -21,6 +21,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { getDocsUrl } from '../../../utils/utils'
 
 export default {
   name: 'HelpPopover',
@@ -32,7 +33,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode']),
     docsUrl () {
-      return `${window.location.origin}/docs/${this.$language}/docs/`
+      return getDocsUrl(this.$store.getters.scope)
     },
   },
   destroyed () {
