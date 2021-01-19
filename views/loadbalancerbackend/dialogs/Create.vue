@@ -190,7 +190,11 @@ export default {
       } else if (this.isPublicAliyun) {
         // 网络是公网的阿里云LB实例，添加服务器时不应传参数vpc，但是如果已经有后端服务器数据，那么久取第一条的vpc
         delete params.vpc
-        params.vpc = this.firstLbBackendVpc
+        if (this.firstLbBackendVpc) {
+          params.vpc = this.firstLbBackendVpc
+        } else {
+          params.manager_id = this.params.lbBackendgroupData.manager_id
+        }
       }
       return params
     },
