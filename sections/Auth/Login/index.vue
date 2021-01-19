@@ -74,7 +74,11 @@ export default {
     // 获取domains、regions、idps、captcha信息
     try {
       // 如果有设置为default的idp，则用default的idp方式登录
-      const { idps } = await this.$store.dispatch('auth/getRegions')
+      var params = {}
+      if (this.$route.query.domain) {
+        params.domain = this.$route.query.domain
+      }
+      const { idps } = await this.$store.dispatch('auth/getRegions', params)
       if (this.$route.name !== 'LoginChooserDefault') {
         const defaultIdps = idps.filter(item => item.is_default)
         if (defaultIdps && defaultIdps.length) {
