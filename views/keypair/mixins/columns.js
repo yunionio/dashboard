@@ -8,6 +8,7 @@ export default {
   created () {
     this.columns = [
       getNameDescriptionTableColumn({
+        resource: this.list.resource,
         onManager: this.onManager,
         hideField: true,
         slotCallback: row => {
