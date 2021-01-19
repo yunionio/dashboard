@@ -4,8 +4,12 @@ import { PROVIDER_MAP } from '@/constants'
 import i18n from '@/locales'
 const { disk: diskStatus, server: serverStatus } = status.status
 
-const _tran = (enArr, status = diskStatus) => {
-  return enArr.map(v => status[v] ? i18n.t(`status.disk.${v}`) : v).filter(v => v).join('，')
+const _tran = (enArr, status = diskStatus, res = 'disk') => {
+  return enArr.map(v => status[v] ? i18n.t(`status.${res}.${v}`) : v).filter(v => v).join('，')
+}
+
+const _tran2 = (enArr, status = diskStatus) => {
+  return enArr.map(v => status[v] || v).filter(v => v).join('，')
 }
 
 // 磁盘扩容的逻辑梳理
@@ -28,14 +32,14 @@ export const diskResizeConfig = {
     }
     if (obj.disk_type === 'data') { // 数据盘
       const validate = obj.guest_status === 'running' || obj.guest_status === 'ready' // 开机关机均可以扩容
-      const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['running', 'ready'], serverStatus)])
+      const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['running', 'ready'], serverStatus, 'server')])
       return {
         validate,
         tooltip,
       }
     } else { // 系统盘
       const validate = obj.guest_status === 'ready' // 关机可以扩容
-      const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['ready'], serverStatus)])
+      const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['ready'], serverStatus, 'server')])
       return {
         validate,
         tooltip,
@@ -103,7 +107,7 @@ export const diskResizeConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
     return {
@@ -124,7 +128,7 @@ export const diskResizeConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
     return {
@@ -152,7 +156,7 @@ export const diskResizeConfig = {
     if (!storageType.includes(obj.storage_type)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_470', [PROVIDER_MAP[provider].label, _tran(storageType, ALL_STORAGE_LABEL)]),
+        tooltip: i18n.t('compute.text_470', [PROVIDER_MAP[provider].label, _tran2(storageType, ALL_STORAGE_LABEL)]),
       }
     }
     return {
@@ -175,7 +179,7 @@ export const diskResizeConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
     if (obj.disk_type !== diskType) {
@@ -187,7 +191,7 @@ export const diskResizeConfig = {
     if (notInStorageType.includes(obj.storage_type)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_471', [PROVIDER_MAP[provider].label, _tran(notInStorageType, ALL_STORAGE_LABEL)]),
+        tooltip: i18n.t('compute.text_471', [PROVIDER_MAP[provider].label, _tran2(notInStorageType, ALL_STORAGE_LABEL)]),
       }
     }
     return {
@@ -234,7 +238,7 @@ export const diskResizeConfig = {
     const azureValid = guestStatus.includes(obj.guest_status)
     return {
       validate: azureValid,
-      tooltip: azureValid ? '' : i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+      tooltip: azureValid ? '' : i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
     }
   },
   ucloud (obj) {
@@ -307,7 +311,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
     if (!obj.guest && obj.storage_type === 'local') {
@@ -333,7 +337,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest_status && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
     return {
@@ -347,7 +351,7 @@ export const diskCreateSnapshotConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
     return {
@@ -361,7 +365,7 @@ export const diskCreateSnapshotConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
     return {
@@ -375,7 +379,7 @@ export const diskCreateSnapshotConfig = {
     if (!guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_469', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
     return {
@@ -389,7 +393,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
 
@@ -404,7 +408,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
 
@@ -419,7 +423,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
 
@@ -434,7 +438,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
 
@@ -450,7 +454,7 @@ export const diskCreateSnapshotConfig = {
     if (notInStorageType.includes(obj.storage_type)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_471', [PROVIDER_MAP[provider].label, _tran(notInStorageType, ALL_STORAGE_LABEL)]),
+        tooltip: i18n.t('compute.text_471', [PROVIDER_MAP[provider].label, _tran2(notInStorageType, ALL_STORAGE_LABEL)]),
       }
     }
     if (obj.disk_type !== diskType) {
@@ -470,7 +474,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
 
@@ -485,7 +489,7 @@ export const diskCreateSnapshotConfig = {
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {
       return {
         validate: false,
-        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus)]),
+        tooltip: i18n.t('compute.text_474', [PROVIDER_MAP[provider].label, _tran(guestStatus, serverStatus, 'server')]),
       }
     }
 
