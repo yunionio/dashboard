@@ -38,6 +38,11 @@ import * as R from 'ramda'
 export default {
   name: 'ListBodyCellWrap',
   props: {
+    resource: {
+      type: String,
+      default: '',
+      required: false,
+    },
     alwaysShowCopyBtn: {
       type: Boolean,
       default: false,
@@ -169,7 +174,7 @@ export default {
       return false
     },
     isOwner () {
-      return this.$isOwner(this.row)
+      return this.$isOwner(this.row, this.resource)
     },
   },
   created () {
