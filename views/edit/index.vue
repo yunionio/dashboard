@@ -3,8 +3,8 @@
     <!-- header -->
     <div class="edit-topbar position-relative d-flex justify-content-center align-items-center flex-grow-0 flex-shrink-0">
       <div class="mr-2">{{$t('dashboard.text_118')}}</div>
-      <a-button size="small" type="primary" @click="handleConfirm" :loading="submiting">{{ $t('common.save') }}</a-button>
-      <a-button size="small" @click="handleBack" class="ml-2">{{ $t('dialog.cancel') }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="submiting">{{ $t('common.save') }}</a-button>
+      <a-button @click="handleBack" class="ml-2">{{ $t('dialog.cancel') }}</a-button>
     </div>
     <!-- main -->
     <div class="edit-main position-relative flex-fill flex-nowrap align-items-stretch d-flex">
@@ -96,6 +96,7 @@ export default {
       defaultGridH: 2,
       currentOption: null,
       dashboardOptions: [],
+      isCheckSave: true,
     }
   },
   computed: {
@@ -116,6 +117,7 @@ export default {
     },
   },
   destroyed () {
+    window.onbeforeunload = null
     this.pm = null
     this.debounceUpdateGridItem = null
     clearCache()
@@ -127,7 +129,29 @@ export default {
       this.fetchDashboard()
     }
   },
+  beforeRouteLeave (to, from, next) {
+    if (!this.isCheckSave) {
+      next()
+    } else {
+      const answer = window.confirm(this.$t('dashboard.leave_page_tips'))
+      if (answer) {
+        next()
+      } else {
+        next(false)
+      }
+    }
+  },
   mounted () {
+    const tip = this.$t('dashboard.leave_page_tips')
+    window.onbeforeunload = function (e) {
+      e = e || window.event
+      // 兼容IE8和Firefox 4之前的版本
+      if (e) {
+        e.returnValue = tip
+      }
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      return tip
+    }
     this.extendGallery = this.$refs['extend-gallery']
     this.editMain = this.$refs['edit-main']
     this.dropzone = this.$refs['grid-shadow'].getContainerRef()
@@ -363,6 +387,7 @@ export default {
         return
       }
       this.submting = true
+      this.isCheckSave = false
       try {
         let id = this.id
         let response
@@ -453,7 +478,7 @@ export default {
 .edit-topbar {
   z-index: 5;
   box-shadow: 0 2px 4px 0 rgba(237, 237, 237, 0.5), 0 2px 4px 0 rgba(237, 237, 237, 0.5);
-  height: 40px;
+  height: 50px;
 }
 .edit-main {
   height: calc(100% - 40px);

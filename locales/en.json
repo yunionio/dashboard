@@ -216,5 +216,6 @@
   "dashboard.not_shutdown": "Unstopped servers",
   "dashboard.mounted": "Mounted",
   "dashboard.not_mounted": "Unmounted",
-  "dashboard.currency": "Currency"
+  "dashboard.currency": "Currency",
+  "dashboard.leave_page_tips": "The current page data is not saved. Are you sure you want to leave?"
 }

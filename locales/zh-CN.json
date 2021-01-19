@@ -216,5 +216,6 @@
   "dashboard.not_shutdown": "未关机",
   "dashboard.mounted": "已挂载",
   "dashboard.not_mounted": "未挂载",
-  "dashboard.currency": "币种"
+  "dashboard.currency": "币种",
+  "dashboard.leave_page_tips": "当前页面数据未保存，确定要离开？"
 }
