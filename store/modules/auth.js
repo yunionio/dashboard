@@ -359,9 +359,12 @@ export default {
         throw error
       }
     },
-    async getRegions ({ commit, state }) {
+    async getRegions ({ commit, state }, params) {
       try {
-        const response = await http.get('/v1/auth/regions')
+        console.log(params)
+        const response = await http.get('/v1/auth/regions', {
+          params: params,
+        })
         // 如果当前region不在regions列表中，则重新设置region
         const regions = response.data.regions
         if (
