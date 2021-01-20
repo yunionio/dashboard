@@ -4311,5 +4311,8 @@
   "common.workflow_priority_moderate": "中等",
   "common.workflow_priority_critical": "危急",
   "common.workflow_priority_fatal": "致命",
-  "common.reason": "原因"
+  "common.reason": "原因",
+  "common.copy_and_login": "复制且登录",
+  "common.saml_login_tips": "免密登录Azure平台需要输入你的账户信息，具体信息如下：",
+  "common.saml_login_accout": "账户"
 }

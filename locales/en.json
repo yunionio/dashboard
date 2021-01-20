@@ -4312,5 +4312,8 @@
   "common.workflow_priority_moderate": "Moderate",
   "common.workflow_priority_critical": "Critical",
   "common.workflow_priority_fatal": "Fatal",
-  "common.reason": "Reason"
+  "common.reason": "Reason",
+  "common.copy_and_login": "Copy and log in",
+  "common.saml_login_tips": "You need to enter your account information for password-free login to the Azure platform. The specific information is as follows:",
+  "common.saml_login_accout": "Account"
 }
