@@ -87,7 +87,7 @@ export default {
       const fields = Object.keys(changedFields)
       if (changedFields && fields.length > 0) {
         fields.forEach(field => {
-          if (changedFields.hasOwnProperty('domain')) {
+          if (changedFields.hasOwnProperty('domain') || changedFields.hasOwnProperty('environment')) {
             this.form.fd[field] = changedFields[field]
           }
           const fn = this[`${field}_change`]
