@@ -8,7 +8,8 @@
         <base-select
           :options="environments"
           v-decorator="decorators.environment"
-          :selectProps="{ placeholder: $t('cloudenv.environment_check') }" />
+          :selectProps="{ placeholder: $t('cloudenv.environment_check') }"
+          @change="envChangeHandle" />
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
         <a-input v-decorator="decorators.username" :placeholder="keySecretField.placeholder.k" />
@@ -32,7 +33,7 @@
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
-      <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')">
+      <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-if="isAzurePublicCloud">
         <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.saml_auth" />
         <div slot="extra">
           <i18n path="cloudaccount.create_form.saml_user_extra">
@@ -156,7 +157,13 @@ export default {
           'balanceKey',
         ],
       },
+      isAzurePublicCloud: false,
     }
+  },
+  methods: {
+    envChangeHandle (changeValue) {
+      this.isAzurePublicCloud = changeValue === 'AzurePublicCloud'
+    },
   },
 }
 </script>
