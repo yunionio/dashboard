@@ -40,15 +40,20 @@ export default {
     },
   },
   data () {
+    let showThreshold = true
+    if (this.decorators.comparator === 'nodata') {
+      showThreshold = false
+    }
+
     return {
       preiodOpts: Object.values(preiodMaps),
       comparatorOpts: [
         { key: '>=', label: '>=' },
         { key: '<=', label: '<=' },
         { key: '==', label: '==' },
-        { key: 'nodata_query', label: 'No Data' },
+        { key: 'nodata', label: 'No Data' },
       ],
-      showThreshold: true,
+      showThreshold: showThreshold,
     }
   },
   methods: {
@@ -56,12 +61,12 @@ export default {
       this.$emit('thresholdChange', e.target.value)
     },
     onComparatorChange (e) {
-      if (e === 'nodata_query') {
+      if (e === 'nodata') {
         this.showThreshold = false
-        this.$emit('comparatorChange', e)
       } else {
         this.showThreshold = true
       }
+      this.$emit('comparatorChange', e)
     },
   },
 }

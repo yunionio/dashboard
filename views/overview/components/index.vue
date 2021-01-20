@@ -2,23 +2,30 @@
   <div class="overview-index">
     <a-row v-if="scope !=='project'">
       <a-breadcrumb style="padding: 5px;">
-        <span :style="{ 'font-size': '16px', 'color': '#1a2736','font-weight': '400'}">{{ $t('cloudenv.text_374') + ": " }}</span>
-        <a-breadcrumb-item v-for="(item, index) in navs" :style="{ 'font-size': '16px', 'font-weight': '500'}" :key="item.id">
+        <span>{{ $t('cloudenv.text_374') + ": " }}</span>
+        <a-breadcrumb-item v-for="(item, index) in navs" :key="item.id">
           <template v-if="index === navs.length - 1">
-            <span class="monitor-overview-breadcrumb-span">{{ item.title }}</span>
+            <span class="monitor-overview-breadcrumb-span">{{ locationTitle(item.location) }}</span>
           </template>
           <template v-else>
-            <a class="monitor-overview-breadcrumb-link" @click="changeNav(index)">{{ item.title }}</a>
+            <a class="monitor-overview-breadcrumb-link" @click="changeNav(index)">{{ item.location }}</a>
           </template>
         </a-breadcrumb-item>
         <a-breadcrumb-item />
         <a-breadcrumb-item />
         <a-breadcrumb-item />
       </a-breadcrumb>
+      <div
+        v-if="navs.length > 1"
+        class="col-3"
+        :style="{ fontSize: '20px', padding: '5px'}">
+        <a-icon type="arrow-left" class="anticon anticon-arrow-left monitor-overview-breadcrumb-link" :style="{ cursor: 'pointer', }" @click="changeNav(navs.length-2)" />
+        <span :style="{ paddingLeft: '5px' }">{{ navs[navs.length-1].title }}</span>
+      </div>
     </a-row>
     <a-row>
       <a-col style="padding-left: 6px; padding-right: 6px;" :span="8">
-        <overview-pie class="monitor-overview-card mb-2" :header="{ title: $t('monitor.overview_alert_sum') }" :loading="charts.alert_sum.chartLoading" :chartData="charts.alert_sum.chartData" showLegend="true" :legendData="charts.alert_sum.legendData" :pieTitle="charts.alert_sum.title" :pieSubtext="charts.alert_sum.subtitle" />
+        <overview-pie class="monitor-overview-card mb-2" :header="{ title: $t('monitor.overview_alert_sum') }" :loading="charts.alert_sum.chartLoading" :chartEvents="pieChartEvent()" :chartData="charts.alert_sum.chartData" showLegend="true" :legendData="charts.alert_sum.legendData" :pieTitle="charts.alert_sum.title" :pieSubtext="charts.alert_sum.subtitle" />
       </a-col>
       <a-col style="padding-left: 6px; padding-right: 6px;" :span="16">
         <overview-line :header="{ title: charts.res_num.title }" class="monitor-overview-card mb-2" height="300px" :loading="charts.res_num.chartLoading" :isHistogram="true" :chartData="charts.res_num.chartData" :numerify-format="charts.res_num.numerifyFormat" splitLineShow />
@@ -149,9 +156,9 @@ export default {
     const scope = this.$store.getters.scope
     let navs = []
     if (scope === 'system') {
-      navs = [{ title: this.$t('cloudenv.text_457'), scope: scope }]
+      navs = [{ id: 'system', location: this.$t('cloudenv.text_457'), title: this.$t('cloudenv.text_457'), scope: scope }]
     } else if (scope === 'domain') {
-      navs = [{ title: this.$store.getters.userInfo.projectDomain, scope: scope }]
+      navs = [{ id: this.$store.getters.userInfo.domain_id, location: this.$t('dictionary.domain'), title: this.$store.getters.userInfo.projectDomain, scope: scope }]
     }
     return {
       scope: scope,
@@ -186,6 +193,9 @@ export default {
     this.fetchAllData()
   },
   methods: {
+    locationTitle: function (base) {
+      return this.$t('monitor.overview.location', [base])
+    },
     chartEvents: function () {
       const self = this
       return {
@@ -195,11 +205,12 @@ export default {
       }
     },
     nextNav: function (e) {
+      const segs = e.name.split('__::__')
       if (this.currentNav.status === 'loaded' && this.currentNav.scope !== 'project') {
         if (this.currentNav.scope === 'system') {
-          this.navs.push({ title: e.name, scope: 'domain' })
+          this.navs.push({ id: segs[0], location: this.$t('dictionary.domain'), title: segs[1], scope: 'domain' })
         } else if (this.currentNav.scope === 'domain') {
-          this.navs.push({ title: e.name, scope: 'project' })
+          this.navs.push({ id: segs[0], location: this.$t('dictionary.project'), title: segs[1], scope: 'project' })
         }
         this.currentNav = { index: this.navs.length - 1, scope: this.navs[this.navs.length - 1].scope, status: 'loading' }
       }
@@ -208,6 +219,19 @@ export default {
       this.navs = this.navs.slice(0, e + 1)
       this.navs[e].status = 'loading'
       this.currentNav = this.navs[e]
+      this.currentNav.index = e
+    },
+    pieChartEvent: function () {
+      const self = this
+      return {
+        click: function (e) {
+          self.toHistory(e)
+        },
+      }
+    },
+    toHistory: function (e) {
+      const rn = this.charts.alert_sum.chartData.rows[e.dataIndex].raw_name
+      this.$router.push({ path: '/alertrecord', query: { res_type: rn } })
     },
     radioChange: function (e) {
       const tab = allTabs[this.activeTab]
@@ -267,14 +291,12 @@ export default {
 
       if (this.currentNav.index >= 1) {
         if (this.currentNav.scope === 'domain') {
-          extendParams.domain_id = this.navs[this.currentNav.index].title
-          extendParams.identity_name = true
+          extendParams.domain_id = this.navs[this.currentNav.index].id
         }
 
         if (this.currentNav.scope === 'project') {
-          extendParams.domain_id = this.navs[this.currentNav.index - 1].title
-          extendParams.project_id = this.navs[this.currentNav.index].title
-          extendParams.identity_name = true
+          extendParams.domain_id = this.navs[this.currentNav.index - 1].id
+          extendParams.project_id = this.navs[this.currentNav.index].id
         }
       }
       return extendParams
@@ -302,9 +324,11 @@ export default {
       }
 
       let group = 'tenant'
+      let groupId = 'tenant_id'
       let interval = '168h'
       if (this.currentNav.scope === 'system') {
         group = 'project_domain'
+        groupId = 'domain_id'
       } else if (this.currentNav.scope === 'project') {
         interval = '1h'
       }
@@ -326,7 +350,7 @@ export default {
                   operator: '!=',
                   value: '',
                 }],
-              group_by: [{ type: 'field', params: [group] }],
+              group_by: [{ type: 'field', params: [group] }, { type: 'field', params: [groupId] }],
             },
           },
         ],
@@ -350,12 +374,12 @@ export default {
             series = series.sort((a, b) => {
               return a.name - b.name
             })
-            chartData.columns = ['raw_name', 'value']
+            chartData.columns = ['name', 'alerts']
             const _temp = {}
             for (const i in series) {
               const d = new Date(series[i].name)
               const rn = `${d.getMonth() + 1}/${d.getDate()}`
-              _temp[rn] = { raw_name: rn, value: series[i].value }
+              _temp[rn] = { name: rn, alerts: series[i].value }
             }
 
             // fill data
@@ -368,7 +392,7 @@ export default {
                 if (_temp.hasOwnProperty(rn)) {
                   rows.push(_temp[rn])
                 } else {
-                  rows.push({ raw_name: rn, value: 0 })
+                  rows.push({ name: rn, alerts: 0 })
                 }
               }
             }
@@ -410,13 +434,13 @@ export default {
         } else {
           // 域/项目
           const series = rawDatas.map((item) => {
-            return { name: item.tags.tenant || item.tags.project_domain, value: item.points[0][0] }
+            return { name: item.tags.tenant || item.tags.project_domain, id: item.tags.tenant_id || item.tags.domain_id, value: item.points[0][0], timestamp: item.points[0][1] }
           })
           if (series.length) {
             const v = allTabs[field].label
-            chartData.columns = ['raw_name', v]
+            chartData.columns = ['name', v]
             chartData.rows = series.map((item) => {
-              const _item = { raw_name: item.name }
+              const _item = { raw_name: item.name, raw_id: item.id, name: item.id + '__::__' + item.name, timestamp: item.timestamp }
               _item[v] = parseFloat(item.value.toFixed(2))
               return _item
             }).sort((a, b) => {
@@ -468,16 +492,18 @@ export default {
 
         this.$nextTick(_ => {
           const chartData = {
-            columns: [],
+            columns: ['name', 'count', 'raw_name'],
             rows: [],
           }
+
           let count = 0
           if (Object.keys(series).length > 0) {
-            chartData.columns = ['name', 'count']
             for (const item in series) {
               count += series[item]
-              chartData.rows.push({ name: this.$t(`dictionary.${item}`), count: series[item] })
+              chartData.rows.push({ raw_name: item, name: this.$t(`dictionary.${item}`), count: series[item] })
             }
+          } else {
+            chartData.rows.push({ raw_name: '', name: '', count: 0 })
           }
           this.charts.alert_sum.subtitle = String(count)
           this.charts.alert_sum.rawDatas = series
@@ -514,13 +540,21 @@ export default {
               domProps: {
                 innerHTML: row.scope,
               },
+              style: {
+                color: row.deleted ? 'red' : '',
+                textDecoration: row.deleted ? 'line-through' : 'auto',
+              },
               props: {
                 value: row.scope,
               },
               on: {
                 click: () => {
-                  self.nextNav({ name: row.scope })
+                  self.nextNav({ name: row.scope_id + '__::__' + row.scope })
                 },
+              },
+            }), h('span', {
+              domProps: {
+                innerHTML: row.deleted ? `(${self.$t('monitor.text_121')})` : '',
               },
             })]
           },
@@ -535,20 +569,33 @@ export default {
           const chart = this.charts[k].chartData
           this.tableData.columns.push({ field: k, title: this.charts[k].label })
           for (let i = 0; i < chart.rows.length; i++) {
+            const id = chart.rows[i].raw_id
             const name = chart.rows[i].raw_name
             const vkey = chart.columns[1] || 'value'
-            if (datas[name]) {
+            if (datas[id + name]) {
               const val = transformUnit(chart.rows[i][vkey], this.charts[k].unit.unit, 1000, this.charts[k].numerifyFormat)
-              datas[name][k] = val.text
+              datas[id + name][k] = val.text
             } else {
-              const item = { scope: name }
+              const item = { scope: name, scope_id: id, timestamp: chart.rows[i].timestamp }
               const val = transformUnit(chart.rows[i][vkey], this.charts[k].unit.unit, 1000, this.charts[k].numerifyFormat)
               item[k] = val.text
-              datas[name] = item
+              datas[id + name] = item
             }
           }
         }
+
+        const ids = {}
         for (const k in datas) {
+          if (!ids[datas[k].scope_id]) {
+            ids[datas[k].scope_id] = { timestamp: datas[k].timestamp, current: k }
+          } else {
+            if (ids[datas[k].scope_id].timestamp >= datas[k].timestamp) {
+              datas[k].deleted = true
+            } else {
+              datas[ids[datas[k].scope_id].current].deleted = true
+              ids[datas[k].scope_id].timestamp = datas[k].timestamp
+            }
+          }
           this.tableData.rows.push(datas[k])
         }
       })

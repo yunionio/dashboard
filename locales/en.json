@@ -201,6 +201,7 @@
   "monitor.text_118": "Request count",
   "monitor.text_119": "Query",
   "monitor.text_120": "Modify {0}",
+  "monitor.text_121": "renamed?",
   "monitor.overview_alert_sum": "Unrecovered Alerts",
   "monitor.overview_alert_sum_pie": "Total Alerts",
   "monitor.overview_alert_trend": "Alerts trends in the last 30 days",
@@ -213,5 +214,6 @@
   "monitor.overview_tab_bps_recv": "Network Inbound Traffic",
   "monitor.overview_tab_bps_sent": "Network Outbound Traffic",
   "monitor.overview_tab_read_bps": "Disk Read Rate",
-  "monitor.overview_tab_write_bps": "Disk Write Rate"
+  "monitor.overview_tab_write_bps": "Disk Write Rate",
+  "monitor.overview.location": "{0} Overview"
 }

@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { levelMaps } from '@Monitor/constants'
@@ -26,6 +27,8 @@ export default {
       type: Object,
       required: true,
     },
+    alertType: String,
+    resType: String,
     listId: String,
   },
   data () {
@@ -34,7 +37,8 @@ export default {
         id: this.listId,
         resource: 'alertrecords',
         apiVersion: 'v1',
-        getParams: this.getParams,
+        getParams: this.getParam,
+        filter: this.resType ? { res_type: [this.resType] } : {},
         filterOptions: {
           name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
           level: {
@@ -98,10 +102,24 @@ export default {
       },
     }
   },
+  watch: {
+    alertType (val) {
+      this.$nextTick(() => {
+        this.list.fetchData()
+      })
+    },
+  },
   created () {
     this.list.fetchData()
   },
   methods: {
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      if (this.alertType && this.alertType === 'un-recovered') ret.alerting = true
+      return ret
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'CommonalertsSidePage', {
         id: row.alert_id,

@@ -6,7 +6,7 @@
         <div class="subtitle" v-if="header.subtitle">{{ header.subtitle }}</div>
       </div>
     </div>
-    <base-chart chartType="ve-ring" :chartData="chartData" :chartConfig="chartConfig" :chartSettings="chartSettings" :loading="loading" :emptyContent="emptyContent" />
+    <base-chart chartType="ve-ring" :chartData="chartData" :chartConfig="chartConfig" :chartSettings="chartSettings" :chartEvents="chartEvents" :loading="loading" :emptyContent="emptyContent" />
   </div>
 </template>
 
@@ -21,6 +21,10 @@ export default {
     chartData: {
       type: Object,
       required: true,
+    },
+    chartEvents: {
+      type: Object,
+      default: () => ({}),
     },
     legendData: {
       type: Array,

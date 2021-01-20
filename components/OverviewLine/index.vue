@@ -92,7 +92,7 @@ export default {
             color: '#939EAB',
             formatter: function (params) {
               if (unit) {
-                const val = transformUnit(params.value, unit, 1000, '0')
+                const val = transformUnit(params.value, unit, 1000, numberFormat)
                 return val.text
               } else {
                 return params.value
@@ -159,13 +159,18 @@ export default {
       if (!this.isHistogram) {
         ce.yAxis.axisLabel = {
           formatter (value, index) {
-            // value = value.split(':')[1]
-            if (value && value.length > 15) {
-              const prefix = value.slice(0, 6)
-              const surfix = value.slice(value.length - 6)
-              return `${prefix}...${surfix}`
+            if (!value) {
+              return value
             }
-            return value
+
+            value = value.split('__::__')[1]
+            if (value.length < 15) {
+              return value
+            }
+
+            const prefix = value.slice(0, 6)
+            const surfix = value.slice(value.length - 6)
+            return `${prefix}...${surfix}`
           },
         }
       }
@@ -191,14 +196,30 @@ export default {
             },
           },
           formatter: function (params, ticket, callback) {
-            for (const i in params) {
-              if (unit) {
-                const val = transformUnit(params[i].data, unit, 1000, numberFormat)
-                return `${params[i].name}<br />${params[i].seriesName}: ${val.text}`
+            let label = ''
+            if (params.length > 0 && params[0].name) {
+              if (params[0].name.indexOf('__::__') >= 0) {
+                label = `${params[0].name.split('__::__')[1]}<br />`
               } else {
-                return `${params[i].name}<br />${params[i].seriesName}: ${params[i].data}`
+                label = `${params[0].name}<br />`
               }
             }
+            for (const i in params) {
+              if (!params[i].data) {
+                continue
+              }
+
+              if (params[i].seriesName) {
+                label += `${params[i].seriesName}:`
+              }
+              if (unit) {
+                const val = transformUnit(params[i].data, unit, 1000, numberFormat)
+                label += `${val.text}<br />`
+              } else {
+                label += `${params[i].data}<br />`
+              }
+            }
+            return label
           },
         },
         grid: {},
