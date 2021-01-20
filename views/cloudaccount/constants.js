@@ -396,7 +396,7 @@ export const keySecretFields = {
 }
 
 export function getBillBucketUrlDocs (scope) {
-  const docsUrl = getDocsUrl(scope)
+  const docsUrl = getDocsCloudaccountPath(scope)
   return {
     aliyun: i18n.t('cloudenv.text_164', [docsUrl]),
     aws: i18n.t('cloudenv.text_165', [docsUrl]),
@@ -406,6 +406,11 @@ export function getBillBucketUrlDocs (scope) {
 }
 
 export function getSamlUserDocs (scope) {
-  const docsUrl = getDocsUrl(scope)
+  const docsUrl = getDocsCloudaccountPath(scope)
   return i18n.t('cloudenv.dentity_provider', [docsUrl])
+}
+
+export function getEnrollmentNumberDocs (scope) {
+  const docsUrl = getDocsCloudaccountPath(scope)
+  return docsUrl + i18n.t('cloudenv.text_219')
 }
