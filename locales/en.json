@@ -75,7 +75,7 @@
   "monitor_metric_74": "CPU usage",
   "monitor_metric_77": "balance",
   "monitor_metric_76": "Cloud account balance",
-  "monitor_metric_78": "total {0} records",
+  "monitor_metric_78": "Total {0} records",
   "monitor_metric_79": "Disk read rate",
   "monitor_metric_80": "Disk write rate",
   "monitor_metric_81": "Disk read operate rate",
