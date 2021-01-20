@@ -33,7 +33,7 @@ import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
-import { CLOUDACCOUNT_DOCS, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
+import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
 export default {
@@ -48,7 +48,7 @@ export default {
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
-      docs: CLOUDACCOUNT_DOCS,
+      docs: getCloudaccountDocs(this.$store.getters.scope),
       keySecretField,
       decorators: {
         name: [
