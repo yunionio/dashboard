@@ -8,16 +8,19 @@
 
 <script>
 // import * as R from 'ramda'
+import SamlMixin from '../mixin'
 import { getBrandTableColumn } from '@/utils/common/tableColumn'
 // import { getBrandTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'SamluserListForUser',
-  mixins: [WindowsMixin, ListMixin],
+  mixins: [WindowsMixin, ListMixin, SamlMixin],
   data () {
+    const isAzure = (provider = '') => { return provider.toLowerCase() === HYPERVISORS_MAP.azure.key }
     return {
       list: this.$list.createList(this, {
         id: 'SamluserForUser',
@@ -50,7 +53,13 @@ export default {
         {
           label: this.$t('table.action.smal_login'),
           action: (obj) => {
-            this.samlLogin(obj)
+            if (isAzure(obj.provider)) {
+              this.createDialog('SamlLoginForAzureDialog', {
+                data: [obj],
+              })
+            } else {
+              this.samlLogin(obj)
+            }
           },
         },
       ],
@@ -75,29 +84,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-  },
-  methods: {
-    async samlLogin (row) {
-      let manager = new this.$Manager('cloudaccounts')
-      const hiddenLoadingMessage = this.$message.loading(this.$t('smal_login_message.loading'), 0)
-      try {
-        const response = await manager.getSpecific({
-          id: row.cloudaccount_id,
-          spec: 'saml',
-        })
-        if (response.data.init_login_url) {
-          window.open(response.data.init_login_url, '_blank')
-        } else {
-          this.$message.error(this.$t('smal_login_message.no_login_url'))
-        }
-      } catch (error) {
-        this.$message.error(this.$t('smal_login_message.fail'))
-        throw error
-      } finally {
-        hiddenLoadingMessage()
-        manager = null
-      }
-    },
   },
 }
 </script>
