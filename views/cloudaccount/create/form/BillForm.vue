@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import { keySecretFields, BILL_BUCKET_URL_DOCS } from '../../constants'
+import { keySecretFields, getBillBucketUrlDocs } from '../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -148,7 +148,7 @@ export default {
     },
     bucketUrl () {
       const { brand } = this.cloudAccount
-      return brand ? BILL_BUCKET_URL_DOCS[brand.toLowerCase()] : ''
+      return brand ? getBillBucketUrlDocs(this.$store.getters.scope)[brand.toLowerCase()] : ''
     },
     enrollmentNumberUrl () {
       return this.$t('cloudenv.text_219')
