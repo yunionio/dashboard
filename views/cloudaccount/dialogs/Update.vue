@@ -67,7 +67,7 @@
 
 <script>
 import * as R from 'ramda'
-import { keySecretFields, CLOUDACCOUNT_DOCS } from '../constants'
+import { keySecretFields, getCloudaccountDocs } from '../constants'
 import UploadJsonFile from '@Cloudenv/views/cloudaccount/components/UploadJsonFile'
 import TestButton from '@/sections/TestButton'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -148,7 +148,7 @@ export default {
       return keySecretFields[this.provider]
     },
     doc () {
-      return CLOUDACCOUNT_DOCS[this.provider]
+      return getCloudaccountDocs(this.$store.getters.scope)[this.provider]
     },
     isQcloud () {
       return this.provider === HYPERVISORS_MAP.qcloud.key
