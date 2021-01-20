@@ -1,7 +1,6 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-import { language } from '@/utils/utils'
+import { getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
-const DOCS_PATH = `${window.location.origin}/docs/${language}/docs/user/multiplecloud/cloudaccount/cloudaccount/`
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
 const awsLogo = require('../../../../src/assets/images/providers/aws.svg')
@@ -19,6 +18,11 @@ const xskyLogo = require('../../../../src/assets/images/providers/xsky.svg')
 const googleLogo = require('../../../../src/assets/images/providers/gcp.svg')
 const ctyunLogo = require('../../../../src/assets/images/providers/tianyi.svg')
 const apsaraLogo = require('../../../../src/assets/images/providers/apsara.svg')
+
+function getDocsCloudaccountPath (scope) {
+  const docsUrl = getDocsUrl(scope)
+  return `${docsUrl}/user/multiplecloud/cloudaccount/cloudaccount/`
+}
 
 export const CLOUDACCOUNT_TYPES = {
   public: {
@@ -132,23 +136,26 @@ export const ENV_TITLE = {
   private: i18n.t('cloudenv.text_124'),
 }
 
-export const CLOUDACCOUNT_DOCS = {
-  aliyun: i18n.t('cloudenv.text_125', [DOCS_PATH]),
-  azure: i18n.t('cloudenv.text_126', [DOCS_PATH]),
-  aws: i18n.t('cloudenv.text_127', [DOCS_PATH]),
-  qcloud: i18n.t('cloudenv.text_128', [DOCS_PATH]),
-  huawei: i18n.t('cloudenv.text_129', [DOCS_PATH]),
-  ucloud: i18n.t('cloudenv.text_130', [DOCS_PATH]),
-  zstack: i18n.t('cloudenv.text_131', [DOCS_PATH]),
-  dstack: i18n.t('cloudenv.text_131', [DOCS_PATH]),
-  openstack: i18n.t('cloudenv.text_132', [DOCS_PATH]),
-  vmware: i18n.t('cloudenv.text_133', [DOCS_PATH]),
-  s3: i18n.t('cloudenv.text_134', [DOCS_PATH]),
-  ceph: i18n.t('cloudenv.text_135', [DOCS_PATH]),
-  xsky: i18n.t('cloudenv.text_136', [DOCS_PATH]),
-  google: i18n.t('cloudenv.text_137', [DOCS_PATH]),
-  ctyun: i18n.t('cloudenv.text_138', [DOCS_PATH]),
-  apsara: i18n.t('cloudenv.create_apsara_cloud_account', [DOCS_PATH]),
+export function getCloudaccountDocs (scope) {
+  const docs_path = getDocsCloudaccountPath(scope)
+  return {
+    aliyun: i18n.t('cloudenv.text_125', [docs_path]),
+    azure: i18n.t('cloudenv.text_126', [docs_path]),
+    aws: i18n.t('cloudenv.text_127', [docs_path]),
+    qcloud: i18n.t('cloudenv.text_128', [docs_path]),
+    huawei: i18n.t('cloudenv.text_129', [docs_path]),
+    ucloud: i18n.t('cloudenv.text_130', [docs_path]),
+    zstack: i18n.t('cloudenv.text_131', [docs_path]),
+    dstack: i18n.t('cloudenv.text_131', [docs_path]),
+    openstack: i18n.t('cloudenv.text_132', [docs_path]),
+    vmware: i18n.t('cloudenv.text_133', [docs_path]),
+    s3: i18n.t('cloudenv.text_134', [docs_path]),
+    ceph: i18n.t('cloudenv.text_135', [docs_path]),
+    xsky: i18n.t('cloudenv.text_136', [docs_path]),
+    google: i18n.t('cloudenv.text_137', [docs_path]),
+    ctyun: i18n.t('cloudenv.text_138', [docs_path]),
+    apsara: i18n.t('cloudenv.create_apsara_cloud_account', [docs_path]),
+  }
 }
 
 export const ACCESS_URL = {
@@ -388,11 +395,17 @@ export const keySecretFields = {
   },
 }
 
-export const BILL_BUCKET_URL_DOCS = {
-  aliyun: i18n.t('cloudenv.text_164', [DOCS_PATH]),
-  aws: i18n.t('cloudenv.text_165', [DOCS_PATH]),
-  huawei: i18n.t('cloudenv.text_166', [DOCS_PATH]),
-  google: i18n.t('cloudenv.text_167', [DOCS_PATH]),
+export function getBillBucketUrlDocs (scope) {
+  const docsUrl = getDocsUrl(scope)
+  return {
+    aliyun: i18n.t('cloudenv.text_164', [docsUrl]),
+    aws: i18n.t('cloudenv.text_165', [docsUrl]),
+    huawei: i18n.t('cloudenv.text_166', [docsUrl]),
+    google: i18n.t('cloudenv.text_167', [docsUrl]),
+  }
 }
 
-export const SAML_USER_DOCS = i18n.t('cloudenv.dentity_provider', [DOCS_PATH])
+export function getSamlUserDocs (scope) {
+  const docsUrl = getDocsUrl(scope)
+  return i18n.t('cloudenv.dentity_provider', [docsUrl])
+}

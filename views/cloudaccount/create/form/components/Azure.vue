@@ -55,7 +55,7 @@ import DomainProject from '../../../components/DomainProject'
 import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
-import { CLOUDACCOUNT_DOCS, keySecretFields, ACCESS_URL, SAML_USER_DOCS } from '@Cloudenv/views/cloudaccount/constants'
+import { getCloudaccountDocs, keySecretFields, ACCESS_URL, getSamlUserDocs } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
 export default {
@@ -74,8 +74,8 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 10 },
       },
-      docs: CLOUDACCOUNT_DOCS,
-      smaluserDoc: SAML_USER_DOCS,
+      docs: getCloudaccountDocs(this.$store.getters.scope),
+      smaluserDoc: getSamlUserDocs(this.$store.getters.scope),
       environments,
       decorators: {
         name: [
