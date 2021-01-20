@@ -733,3 +733,11 @@ export const mathRoundFix = (num, precision = 2, needFixZero) => {
   return res
 }
 export const language = getLanguage() === 'zh-CN' ? 'zh' : 'en'
+
+export function getDocsUrl (scope) {
+  let prefix = 'docs'
+  if (scope === 'domain' || scope === 'project') {
+    prefix = prefix + '/domain'
+  }
+  return `${window.location.origin}/${prefix}/${language}/docs/`
+}
