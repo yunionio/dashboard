@@ -12,6 +12,18 @@ export function getLanguage () {
   return lang
 }
 
+export function setLoginDomain (val) {
+  if (val) {
+    return Cookies.set('login_domain', val, { expires: 365 })
+  } else {
+    return Cookies.remove('login_domain')
+  }
+}
+
+export function getLoginDomain () {
+  return Cookies.get('login_domain')
+}
+
 // 替换指定传入参数的值,paramName为参数,replaceWith为新值
 function replaceParamVal (paramName, replaceWith) {
   var oUrl = window.location.href.toString()
