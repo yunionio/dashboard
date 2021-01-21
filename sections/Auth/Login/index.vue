@@ -10,6 +10,10 @@
       <div class="flex-fill position-relative">
         <div class="login-content-wrap h-100 w-100 overflow-hidden">
           <h4 class="text-center">{{ title }}</h4>
+          <div class="login-domain-title d-flex justify-content-center align-items-center" v-if="loginDomain">
+            <div class="d-flex justify-content-center flex-wrap p-1">{{ $t('auth.current.domain') }}@{{ loginDomain }}</div>
+            <div class="d-flex justify-content-center flex-wrap p-1"><a-button type="link" icon="login" class="pl-0 week-link-button" @click="cleanLoginDomain" size="small">{{ $t('auth.clean.scope.domain') }}</a-button></div>
+          </div>
           <transition-page>
             <router-view />
           </transition-page>
@@ -42,6 +46,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
+import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
 
 export default {
   name: 'AccountIndex',
@@ -69,14 +74,23 @@ export default {
     idps () {
       return this.regions.idps || []
     },
+    loginDomain () {
+      if (this.$route.query.domain) {
+        return this.$route.query.domain
+      }
+      if (getLoginDomain()) {
+        return getLoginDomain()
+      }
+      return ''
+    },
   },
   async created () {
     // 获取domains、regions、idps、captcha信息
     try {
       // 如果有设置为default的idp，则用default的idp方式登录
       var params = {}
-      if (this.$route.query.domain) {
-        params.domain = this.$route.query.domain
+      if (this.loginDomain) {
+        params.domain = this.loginDomain
       }
       const { idps } = await this.$store.dispatch('auth/getRegions', params)
       if (this.$route.name !== 'LoginChooserDefault') {
@@ -134,9 +148,18 @@ export default {
       return require(`../../../assets/images/idp-icons/round/${key}.png`)
     },
     handleClickIdp (idpItem) {
+      if (this.loginDomain) {
+        setLoginDomain(this.loginDomain)
+      }
       const { origin, search } = window.location
       const { id } = idpItem
       window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}${search || ''}`
+    },
+    cleanLoginDomain () {
+      setLoginDomain('')
+      this.$router.replace({
+        path: '/auth/login',
+      })
     },
   },
 }
@@ -192,6 +215,14 @@ export default {
   overflow: hidden;
   img {
     height: 60%;
+  }
+}
+.login-domain-title {
+  color: #999;
+  > div {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 40px;
   }
 }
 </style>

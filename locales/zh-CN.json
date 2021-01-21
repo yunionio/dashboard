@@ -4316,5 +4316,7 @@
   "common.saml_login_tips": "免密登录Azure平台需要输入你的账户信息，具体信息如下：",
   "common.saml_login_accout": "账户",
   "common.currency_cny": "人民币",
-  "common.currency_usd": "美元"
+  "common.currency_usd": "美元",
+  "auth.clean.scope.domain": "平台登录",
+  "auth.current.domain": "登录"
 }
