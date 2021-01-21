@@ -4315,5 +4315,7 @@
   "common.reason": "Reason",
   "common.copy_and_login": "Copy and log in",
   "common.saml_login_tips": "You need to enter your account information for password-free login to the Azure platform. The specific information is as follows:",
-  "common.saml_login_accout": "Account"
+  "common.saml_login_accout": "Account",
+  "common.currency_cny": "CNY",
+  "common.currency_usd": "USD"
 }
