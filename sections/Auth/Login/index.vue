@@ -92,7 +92,26 @@ export default {
       if (this.loginDomain) {
         params.domain = this.loginDomain
       }
-      const { idps } = await this.$store.dispatch('auth/getRegions', params)
+      const { api_server, idps } = await this.$store.dispatch('auth/getRegions', params)
+      const { origin, search } = window.location
+      if (origin !== api_server) {
+        const real_host = this.gethost(origin)
+        const api_host = this.gethost(api_server)
+        if (real_host !== api_host) {
+          if (real_host.endsWith('.' + api_host)) {
+            // redirect
+            const domain = real_host.substr(0, real_host.length - api_host.length - 1)
+            var nsearch = 'domain=' + domain
+            if (search) {
+              nsearch = search + '&' + nsearch
+            } else {
+              nsearch = '?' + nsearch
+            }
+            window.location.href = `${api_server}/auth/login${nsearch}`
+            return
+          }
+        }
+      }
       if (this.$route.name !== 'LoginChooserDefault') {
         const defaultIdps = idps.filter(item => item.is_default)
         if (defaultIdps && defaultIdps.length) {
@@ -160,6 +179,15 @@ export default {
       this.$router.replace({
         path: '/auth/login',
       })
+    },
+    gethost (str) {
+      if (str.startsWith('http://')) {
+        return str.substr(7)
+      }
+      if (str.startsWith('https://')) {
+        return str.substr(8)
+      }
+      return str
     },
   },
 }
