@@ -191,6 +191,11 @@ export default {
       })
     },
   },
+  watch: {
+    'fd.currency' (val) {
+      this.fetchData()
+    },
+  },
   created () {
     if (this.params && !this.params.currency) {
       this.fd.currency = this.currency
