@@ -216,6 +216,7 @@ export default {
               $t: getRequestT(),
               details: true,
               scope: this.scope,
+              currency: this.fd.currency,
             },
           },
           useManager: false,
