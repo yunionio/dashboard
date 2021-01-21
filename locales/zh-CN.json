@@ -4314,5 +4314,7 @@
   "common.reason": "原因",
   "common.copy_and_login": "复制且登录",
   "common.saml_login_tips": "免密登录Azure平台需要输入你的账户信息，具体信息如下：",
-  "common.saml_login_accout": "账户"
+  "common.saml_login_accout": "账户",
+  "common.currency_cny": "人民币",
+  "common.currency_usd": "美元"
 }
