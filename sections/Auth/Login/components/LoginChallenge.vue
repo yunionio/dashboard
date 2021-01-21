@@ -240,6 +240,9 @@ export default {
           this.$store.commit('SET_REGION', data.region)
         }
         if (fd.domain) data.domain = fd.domain
+        if (!data.domain && this.loginDomain) {
+          data.domain = this.loginDomain
+        }
         // ------------ 拼接请求所需数据 end ------------
         await this.$store.commit('auth/SET_LOGIN_FORM_DATA', data)
         await this.$store.dispatch('auth/login', data)
