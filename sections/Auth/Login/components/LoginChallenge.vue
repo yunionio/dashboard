@@ -90,6 +90,7 @@
 import * as R from 'ramda'
 import { mapState } from 'vuex'
 import { Base64 } from 'js-base64'
+import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
 
 export default {
   name: 'LoginChallenge',
@@ -165,6 +166,15 @@ export default {
       const word = (this.$route.query.displayname || this.$route.query.username || '').split('')[0]
       return word && word.toUpperCase()
     },
+    loginDomain () {
+      if (this.$route.query.domain) {
+        return this.$route.query.domain
+      }
+      if (getLoginDomain()) {
+        return getLoginDomain()
+      }
+      return ''
+    },
   },
   watch: {
     showCaptchaInput: {
@@ -235,6 +245,10 @@ export default {
         await this.$store.dispatch('auth/login', data)
         await this.$emit('after-login')
         await this.$store.dispatch('auth/onAfterLogin')
+        // ---- save login domain ---- //
+        if (this.loginDomain) {
+          setLoginDomain(this.loginDomain)
+        }
       } catch (error) {
         // 登录失败，如果domain已存在则清除domain，主要是应对历史账号存储的domain被更改的情况。（异常情况）
         if (this.fd.domain) {
