@@ -94,7 +94,7 @@ export default {
       }
       const { api_server, idps } = await this.$store.dispatch('auth/getRegions', params)
       const { origin, search } = window.location
-      if (origin !== api_server) {
+      if (api_server && origin && origin !== api_server) {
         const real_host = this.gethost(origin)
         const api_host = this.gethost(api_server)
         if (real_host !== api_host) {
