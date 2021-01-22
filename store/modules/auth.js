@@ -133,8 +133,6 @@ export default {
       state.historyUsers = newVal
     },
     UPDATE_LOGGED_USERS (state, payload) {
-      console.log('__state', state)
-      console.log('__payload', payload)
       // 如果是cas登录则不保存信息
       if (state.info && state.info.idp_driver === 'cas') return
       // 如果是sso登录则不保存信息
