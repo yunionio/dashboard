@@ -611,7 +611,7 @@ export const compactObj = (obj, fn = R.isEmpty) => {
 /*
  * 去除对象中所有符合条件的对象，默认是去除对象属性为空值
  * @param {String|Number} value
- * @param {String} unit e.g: "%", "bps", "Mbps", "Bps", "cps", "count", "ms", "byte"
+ * @param {String} unit e.g: '%', 'bps', 'Mbps', 'Bps', 'cps', 'count', 'ms', 'byte'
  * @param {Number} base
  * @return {Object} e.g: { text: '123 MB', value: '123', unit: 'MB'  }
  */
@@ -787,4 +787,69 @@ export function removeQueryKeys (search, keys) {
     }
   }
   return encodeQuery(query)
+}
+
+/**
+ * check a domain not a subdomain
+ */
+export function isValidDomain (domain) {
+  // http://xn--eqrt2g.xn--vuq861b/
+  const validCnDomains = [
+    '政务',
+    '公益',
+    'mil',
+    'gov',
+    'ac',
+    'org',
+    'net',
+    'edu',
+    'com',
+    'bj',
+    'tj',
+    'sh',
+    'cq',
+    'he',
+    'sx',
+    'nm',
+    'ln',
+    'jl',
+    'hl',
+    'js',
+    'zj',
+    'ah',
+    'fj',
+    'jx',
+    'sd',
+    'ha',
+    'hb',
+    'hn',
+    'gd',
+    'gx',
+    'hi',
+    'sc',
+    'gz',
+    'yn',
+    'xz',
+    'sn',
+    'gs',
+    'qh',
+    'nx',
+    'xj',
+    'tw',
+    'hk',
+    'mo',
+  ]
+  const validDomains = '.REN.WANG.CITIC.TOP.SOHU.XIN.COM.NET.CLUB.XYZ.VIP.SITE.SHOP.INK.INFO.MOBI.RED.PRO.KIM.LTD.GROUP.BIZ.AUTO.LINK.WORK.LAW.BEER.STORE.TECH.FUN.ONLINE.ART.DESIGN.WIKI.LOVE.CENTER.VIDEO.SOCIAL.TEAM.SHOW.COOL.ZONE.WORLD.TODAY.CITY.CHAT.COMPANY.LIVE.FUND.GOLD.PLUS.GURU.RUN.PUB.EMAIL.LIFE.CO.FASHION.FIT.LUXE.YOGA.BAIDU.CLOUD.HOST.SPACE.PRESS.WEBSITE.ARCHI.ASIA.BIO.BLACK.BLUE.GREEN.LOTTO.ORGANIC.PET.PINK.POKER.PROMO.SKI.VOTE.VOTO.ICU.FANS.UNICOM.JPMORGAN.CHASE.CC.TV.BAND.CAB.CAFE.CASH.FAN.FYI.GAMES.MARKET.MBA.NEWS.MEDIA.SALE.SHOPPING.STUDIO.TAX.TECHNOLOGY.VIN.'
+  const domains = domain.toLowerCase().split('.')
+  if (domains.length === 2) {
+    if (validDomains.toLowerCase().indexOf('.' + domains[1] + '.') >= 0) {
+      return true
+    }
+    if (domains[1].length === 2) {
+      return true
+    }
+  } else if (domains.length === 3) {
+    return domains[2] === 'cn' && validCnDomains.indexOf(domains[1]) >= 0
+  }
+  return false
 }
