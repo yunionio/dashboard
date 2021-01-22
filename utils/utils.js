@@ -5,6 +5,7 @@ import i18n from '@/locales'
 import { numerify } from '@/filters'
 
 import { getLanguage } from '@/utils/common/cookie'
+// import { encodeURI } from 'js-base64'
 
 let tIndex = 0
 
@@ -740,4 +741,50 @@ export function getDocsUrl (scope) {
     prefix = prefix + '/domain'
   }
   return `${window.location.origin}/${prefix}/${language}/docs/`
+}
+
+/**
+ * search string to query map
+ * @param {String} queryString a search string
+ */
+export function decodeQuery (queryString) {
+  var query = {}
+  var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&')
+  for (var i = 0; i < pairs.length; i++) {
+    var pair = pairs[i].split('=')
+    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '')
+  }
+  return query
+}
+
+/**
+ * query map to search string
+ * @param {Map} query a query oibject
+ */
+export function encodeQuery (query) {
+  var search = ''
+  for (var k in query) {
+    if (search.length === 0) {
+      search = '?'
+    } else {
+      search += '&'
+    }
+    search += encodeURIComponent(k) + '=' + encodeURIComponent(query[k])
+  }
+  return search
+}
+
+/**
+ * remove specific keys from a query search
+ * @param {*} search a search string
+ * @param {*} keys the key to remove
+ */
+export function removeQueryKeys (search, keys) {
+  const query = decodeQuery(search)
+  for (var i = 0; i < keys.length; i++) {
+    if (query[keys[i]]) {
+      delete query[keys[i]]
+    }
+  }
+  return encodeQuery(query)
 }

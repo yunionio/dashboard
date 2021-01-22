@@ -11,8 +11,9 @@
         <div class="login-content-wrap h-100 w-100 overflow-hidden">
           <h4 class="text-center">{{ title }}</h4>
           <div class="login-domain-title d-flex justify-content-center align-items-center" v-if="loginDomain">
-            <div class="d-flex justify-content-center flex-wrap p-1">{{ $t('auth.current.domain') }}@{{ loginDomain }}</div>
-            <div class="d-flex justify-content-center flex-wrap p-1"><a-button type="link" icon="login" class="pl-0 week-link-button" @click="cleanLoginDomain" size="small">{{ $t('auth.clean.scope.domain') }}</a-button></div>
+            <div class="d-flex justify-content-center flex-wrap p-1">
+              <a-button type="default" icon="close-circle" @click="cleanLoginDomain" size="default" shape="round">{{ $t('auth.current.domain') }}@{{ loginDomain }}</a-button>
+            </div>
           </div>
           <transition-page>
             <router-view />
@@ -47,6 +48,7 @@
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
+import { removeQueryKeys } from '@/utils/utils'
 
 export default {
   name: 'AccountIndex',
@@ -190,9 +192,9 @@ export default {
     },
     cleanLoginDomain () {
       setLoginDomain('')
-      this.$router.replace({
-        path: '/auth/login',
-      })
+      const { origin, pathname, search } = window.location
+      const newsearch = removeQueryKeys(search, ['domain'])
+      window.location.href = origin + pathname + newsearch
     },
     gethost (str) {
       if (str.startsWith('http://')) {
