@@ -151,7 +151,12 @@ export default {
         this.completerWrapStyle = { width: '300px', right: '-300px' }
       }
       this.selectKey = key
-      this.search = `${item.label}${this.keySeparator}`
+      var prefix = `${item.label}${this.keySeparator}`
+      if (!this.search.startsWith(prefix) && !prefix.startsWith(this.search)) {
+        this.search = prefix + this.search
+      } else if (prefix.startsWith(this.search)) {
+        this.search = prefix
+      }
       if (!this.isDropdown) {
         this.$emit('update-show', false)
         this.completerWrapStyle = {}

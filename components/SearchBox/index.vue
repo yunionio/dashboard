@@ -97,7 +97,7 @@ export default {
   },
   created () {
     // 选择的key分隔符
-    this.keySeparator = '：'
+    this.keySeparator = ': '
     // 多个value的分隔符
     this.valueSeparator = '|'
   },
@@ -145,7 +145,7 @@ export default {
           }
         } else {
           let newKey = key
-          if (this.autocompleterSearch && !this.autocompleterSearch.includes('：')) {
+          if (this.autocompleterSearch && !this.autocompleterSearch.includes(this.keySeparator)) {
             const ipKey = Object.keys(this.options).find(v => v.startsWith('ip'))
             if (/^\d+.*$/.test(value) && value <= 255 && ipKey) {
               newKey = ipKey
