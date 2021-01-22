@@ -201,6 +201,7 @@
   "monitor.text_118": "请求数量",
   "monitor.text_119": "监控查询",
   "monitor.text_120": "修改{0}",
+  "monitor.text_121": "已改名?",
   "monitor.overview_alert_sum": "未恢复告警",
   "monitor.overview_alert_sum_pie": "告警总数",
   "monitor.overview_alert_trend": "近30日告警趋势",
@@ -213,5 +214,6 @@
   "monitor.overview_tab_bps_recv": "网络入流量",
   "monitor.overview_tab_bps_sent": "网络出流量",
   "monitor.overview_tab_read_bps": "磁盘读速率",
-  "monitor.overview_tab_write_bps": "磁盘写速率"
+  "monitor.overview_tab_write_bps": "磁盘写速率",
+  "monitor.overview.location": "{0}总览"
 }

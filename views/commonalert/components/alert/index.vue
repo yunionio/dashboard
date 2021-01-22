@@ -212,9 +212,7 @@ export default {
           }],
         }
 
-        if (fd.comparator === 'nodata_query') {
-          data.metric_query[0].comparator = '=='
-          data.metric_query[0].threshold = 0
+        if (fd.comparator === 'nodata') {
           data.metric_query[0].condition_type = 'nodata_query'
         }
         if (fd.showChannel) {
