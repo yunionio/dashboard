@@ -48,9 +48,22 @@
         version="v1"
         filterable
         show-sync
+        @change="contactArrOptsChange"
         :resList.sync="recipientOpts"
         :select-props="{ mode: 'multiple', placeholder: $t('compute.text_741') }"
         :params="contactParams" />
+    </a-form-item>
+    <a-form-item :label="$t('monitor.channel')">
+      <a-checkbox-group
+        v-decorator="decorators.enabled_contact_types">
+        <a-checkbox
+          v-for="(v, index) in contactArrOpts"
+          :key="index"
+          :value="v.value"
+          :disabled="v.disabled">
+          {{ v.label }}
+        </a-checkbox>
+      </a-checkbox-group>
     </a-form-item>
     <template>
       <a-form-item :label="$t('monitor_metric_95')">
@@ -126,6 +139,11 @@ export default {
       initialValue.metric_value = _.get(this.alertData, 'settings.conditions[0].query.model.select[0][0].params[0]')
       initialValue.threshold = _.get(this.alertData, 'settings.conditions[0].evaluator.params[0]')
       if (this.alertData.recipients && this.alertData.recipients.length) initialValue.recipients = this.alertData.recipients
+      if (this.alertData.enabled_contact_types && this.alertData.enabled_contact_types.length) {
+        initialValue.enabled_contact_types = this.alertData.enabled_contact_types
+      } else {
+        initialValue.enabled_contact_types = ['webconsole']
+      }
       if (this.alertData.channel && this.alertData.channel.length) initialValue.channel = this.alertData.channel
       const comparator = _.get(this.alertData, 'settings.conditions[0].evaluator.type')
       if (comparator === 'lt') initialValue.comparator = '<='
@@ -304,6 +322,12 @@ export default {
             initialValue: initialValue.channel,
           },
         ],
+        enabled_contact_types: [
+          'enabled_contact_types',
+          {
+            initialValue: initialValue.enabled_contact_types,
+          },
+        ],
       },
       tags,
       oldParams: {},
@@ -323,6 +347,7 @@ export default {
       hadRobot: false,
       showChannel,
       recipientOpts: [],
+      contactArrOpts: [],
       res_type_measurements: {},
       res_types: [],
       label: this.$t('monitor.text00015'),
@@ -352,6 +377,7 @@ export default {
           this.form.fc.setFieldsValue({
             [this.decorators.recipients[0]]: [val[0].id],
           })
+          this.contactArrOptsChange([val[0].id])
         } else if (val.length > 1) {
           const currentUser = this.$store.getters.userInfo.id
           const hasCurrentUser = val.find(val => val.id === currentUser)
@@ -359,9 +385,14 @@ export default {
             this.form.fc.setFieldsValue({
               [this.decorators.recipients[0]]: [hasCurrentUser.id],
             })
+            this.contactArrOptsChange([hasCurrentUser.id])
           }
         }
       }
+      this.contactArrOptsChange(this.alertData.recipients)
+    },
+    contactArrOpts () {
+      this.form.fc.setFieldsValue({ enabled_contact_types: this.contactArrOpts.map((c) => { return c.value }) })
     },
   },
   created () {
@@ -381,6 +412,29 @@ export default {
     }
   },
   methods: {
+    contactArrOptsChange (rs) {
+      const getLabel = (val) => {
+        if (val === 'mobile') val = 'message' // mobile 应该翻译为 短信
+        if (this.$t(`common.${val}`)) {
+          return this.$t(`common.${val}`)
+        }
+        return val
+      }
+      if (rs) {
+        const ect = this.recipientOpts.filter((opt) => {
+          return rs.indexOf(opt.id) >= 0
+        }).map((opt) => {
+          return opt.enabled_contact_types
+        })
+        this.contactArrOpts = _.intersection(...ect).map((c) => {
+          return {
+            value: c,
+            label: getLabel(c),
+            disabled: c === 'webconsole',
+          }
+        })
+      }
+    },
     channelOptsChange (val) {
       this.hadRobot = val.find(val => ~val.value.indexOf('robot'))
     },
@@ -417,7 +471,7 @@ export default {
       this.$emit('update:threshold', val)
     },
     emitComparator (val) {
-      if (val === 'nodata_query') {
+      if (val === 'nodata') {
         this.form.fc.setFieldsValue({ threshold: '0' })
       }
       this.$emit('update:comparator', val)
