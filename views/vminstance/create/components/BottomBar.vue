@@ -56,7 +56,7 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
-import { SERVER_TYPE, BILL_TYPES_MAP } from '@Compute/constants'
+import { SERVER_TYPE, BILL_TYPES_MAP, EIP_TYPES_MAP } from '@Compute/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import { HYPERVISORS_MAP, PROVIDER_MAP } from '@/constants'
 import SideErrors from '@/sections/SideErrors'
@@ -119,6 +119,9 @@ export default {
     },
     isPublic () {
       return this.type === SERVER_TYPE.public
+    },
+    isIDC () {
+      return this.type === SERVER_TYPE.idc
     },
     // 是否为包年包月
     isPackage () {
@@ -297,6 +300,9 @@ export default {
     'fd.backupEnable' (val, oldV) {
       this.getPriceList()
     },
+    'fd.eip_bgp_type' (val, oldV) {
+      this.getPriceList()
+    },
   },
   created () {
     this.baywatch([
@@ -344,6 +350,9 @@ export default {
       const params = {
         quantity: this.fd.count,
         brand,
+      }
+      if (this.isIDC && this.fd.eip_type === EIP_TYPES_MAP.new.key && this.fd.eip_bgp_type) {
+        params.eip_bgp_type = this.fd.eip_bgp_type
       }
       if (this.isPublic) {
         if (this.fd.sku && this.fd.sku.cloud_env) {
@@ -405,7 +414,7 @@ export default {
         if (R.isNil(params.region_id) || R.isEmpty(params.region_id)) return
       }
       if (R.isNil(params.brand) || R.isEmpty(params.brand)) return
-      if (this.fd.eip_type === 'new') {
+      if (this.fd.eip_type === EIP_TYPES_MAP.new.key) {
         params.eip = this.fd.eip_bw + 'Mb'
       }
       if (this.fd.backupEnable) {
