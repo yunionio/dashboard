@@ -20,6 +20,7 @@ import {
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
+import { removeKeyIgnoreCase, getKeyIgnoreCase } from '@/utils/utils'
 
 const initialState = {
   scope: getScopeFromCookie() || 'project',
@@ -104,11 +105,13 @@ export default {
     UPDATE_HISTORY_USERS (state, payload) {
       const newVal = { ...state.historyUsers }
       if (payload.action === 'delete') {
-        delete newVal[payload.key]
+        removeKeyIgnoreCase(newVal, payload.key)
       } else {
-        const key = payload.key || state.info.name
+        const key = payload.key || (state.info.name.toLowerCase() + '@' + state.info.domain.name.toLowerCase())
+        const oldVal = getKeyIgnoreCase(newVal, key)
+        removeKeyIgnoreCase(newVal, key)
         const data = {
-          ...newVal[key],
+          ...oldVal,
           ...payload.value,
         }
         // 设置创建时间
@@ -139,11 +142,13 @@ export default {
       if (state.auth && state.auth.is_sso) return
       const newVal = { ...state.loggedUsers }
       if (payload.action === 'delete') {
-        delete newVal[payload.key]
+        removeKeyIgnoreCase(newVal, payload.key)
       } else {
-        const key = payload.key || state.info.name
+        const key = payload.key || (state.info.name.toLowerCase() + '@' + state.info.domain.name.toLowerCase())
+        const oldVal = getKeyIgnoreCase(newVal, key)
+        removeKeyIgnoreCase(newVal, key)
         const data = {
-          ...newVal[key],
+          ...oldVal,
           ...payload.value,
         }
         // 设置创建时间
@@ -238,7 +243,7 @@ export default {
       return ret
     },
     currentLoggedUserKey (state) {
-      return `${state.info.name}@${state.info.domain.name}`
+      return `${state.info.name.toLowerCase()}@${state.info.domain.name.toLowerCase()}`
     },
     currentHistoryUserKey (state) {
       return state.auth.user || state.loginFormData.username
@@ -361,7 +366,6 @@ export default {
     },
     async getRegions ({ commit, state }, params) {
       try {
-        console.log(params)
         const response = await http.get('/v1/auth/regions', {
           params: params,
         })
