@@ -745,9 +745,9 @@ export const PERMISSION = {
   commonalerts_perform_enable: ['monitor', 'commonalerts', 'perform', 'enable'],
   commonalerts_perform_disable: ['monitor', 'commonalerts', 'perform', 'disable'],
   /** 费用优化 */
-  suggestsysalerts_list: ['monitor', 'suggestsysalerts', 'list'],
-  suggestsysrules_list: ['monitor', 'suggestsysrules', 'list'],
-  suggestsysruleconfigs_list: ['monitor', 'suggestsysrules', 'list'],
+  suggestsysruleconfigs_list: ['suggestion', 'suggestsysruleconfigs', 'list'],
+  suggestsysrules_list: ['suggestion', 'suggestsysrules', 'list'],
+  suggestsysalerts_list: ['suggestion', 'suggestsysalerts', 'list'],
   // 资源消费预警
   costalerts_create: ['meter', 'costalerts', 'create'],
   costalerts_delete: ['meter', 'costalerts', 'delete'],
