@@ -853,3 +853,24 @@ export function isValidDomain (domain) {
   }
   return false
 }
+
+export function removeKeyIgnoreCase (dict, needle) {
+  var removeKeys = []
+  for (var k in dict) {
+    if (k.toLowerCase() === needle.toLowerCase()) {
+      removeKeys.push(k)
+    }
+  }
+  for (var i = 0; i < removeKeys.length; i++) {
+    delete dict[removeKeys[i]]
+  }
+}
+
+export function getKeyIgnoreCase (dict, needle) {
+  for (var k in dict) {
+    if (k.toLowerCase() === needle.toLowerCase()) {
+      return dict[k]
+    }
+  }
+  return null
+}

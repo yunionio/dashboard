@@ -52,7 +52,7 @@ export default {
             initialValue: this.defaultValue,
             validateFirst: true,
             rules: this.formRules || [
-              { required: true, message: `${this.$t('common.placeholder')}${this.label}` },
+              { required: true, message: `${this.$t('common.placeholder')} ${this.label.toLowerCase()}` },
               { validator: this.$validate('resourceName') },
             ],
           },
@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     placeholder () {
-      if (this.label) return `${this.$t('common.placeholder')}${this.label}`
+      if (this.label) return `${this.$t('common.placeholder')} ${this.label.toLowerCase()}`
       return this.$t('common.placeholder')
     },
   },

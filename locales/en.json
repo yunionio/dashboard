@@ -4320,5 +4320,8 @@
   "common.currency_cny": "CNY",
   "common.currency_usd": "USD",
   "auth.clean.scope.domain": "Platform Login",
-  "auth.current.domain": "Login"
+  "auth.current.domain": "Current Domain",
+  "auth.set.current.domain": "Set Login Domain",
+  "auth.click.set.current.domain": "Click to set login domain",
+  "auth.clean.current.domain": "Click to reset login domain"
 }
