@@ -2498,7 +2498,8 @@
     "cloudid": "IAM",
     "monitor": "监控告警",
     "yunionconf": "配置",
-    "cloudevent": "云上日志"
+    "cloudevent": "云上日志",
+    "suggestion": "优化建议"
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
