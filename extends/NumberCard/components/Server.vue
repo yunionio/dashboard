@@ -45,7 +45,7 @@ export default {
   mixins: [mixin],
   data () {
     const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || `${this.$t('dashboard.text_23')}${this.$t('dictionary.project')}${this.$t('dictionary.server')}`
-    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'servers'
+    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || ''
     const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
     return {
       data: {},
