@@ -48,6 +48,7 @@ export default {
       for (const key in K8S_USAGE_CONFIG) {
         ret.push({
           key,
+          scope: K8S_USAGE_CONFIG[key].scope,
           label: this.translateUsage[key] ? this.translateUsage[key] : key,
         })
       }

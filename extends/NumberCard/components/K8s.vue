@@ -43,7 +43,7 @@ export default {
   mixins: [mixin],
   data () {
     const initialNameValue = ((this.params && this.params.type === 'k8s') && this.params.name) || this.$t('dashboard.text_21')
-    const initialUsageKeyValue = ((this.params && this.params.type === 'k8s') && this.params.usage_key) || 'all.cluster.count'
+    const initialUsageKeyValue = ((this.params && this.params.type === 'k8s') && this.params.usage_key) || ''
 
     return {
       data: {},
