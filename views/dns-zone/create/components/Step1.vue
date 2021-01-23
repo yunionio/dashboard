@@ -28,6 +28,7 @@ import { mapGetters } from 'vuex'
 import { zoneTypes } from '../../constants'
 import DomainSelect from '@/sections/DomainSelect'
 import { validate } from '@/utils/validate'
+import { isValidDomain } from '@/utils/utils'
 
 export default {
   name: 'DnsZoneCreateStep1',
@@ -107,9 +108,8 @@ export default {
         if (validate(value, 'domain') === false || validate(value, 'domain').result === false) {
           callback(new Error(this.$t('network.text_178')))
         }
-        const domains = value.split('.')
-        if (domains.length > 2) {
-          callback(new Error(this.$t('network.text_741')))
+        if (!isValidDomain(value)) {
+          callback(new Error(this.$t('network.subdomain_not_supported')))
         }
       }
       callback()
