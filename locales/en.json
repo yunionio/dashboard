@@ -2499,7 +2499,8 @@
     "cloudid": "IAM",
     "monitor": "Monitor",
     "yunionconf": "Configuration",
-    "cloudevent": "Cloud Log"
+    "cloudevent": "Cloud Log",
+    "suggestion": "Recommendation"
   },
   "scope.text_1": "Instance List",
   "scope.text_2": "User Profile",
