@@ -10,9 +10,19 @@
       <div class="flex-fill position-relative">
         <div class="login-content-wrap h-100 w-100 overflow-hidden">
           <h4 class="text-center">{{ title }}</h4>
-          <div class="login-domain-title d-flex justify-content-center align-items-center" v-if="loginDomain">
-            <div class="d-flex justify-content-center flex-wrap p-1">
-              <a-button type="default" icon="close-circle" @click="cleanLoginDomain" size="default" shape="round">{{ $t('auth.current.domain') }}@{{ loginDomain }}</a-button>
+          <div class="login-domain-title d-flex justify-content-center align-items-center">
+            <div v-if="hasLoginDomain" class="d-flex justify-content-center flex-wrap p-1">
+              <a-tooltip :title="$t('auth.clean.current.domain')">
+                <a-button type="round" @click="cleanLoginDomain">{{ $t('auth.current.domain') }}: {{ loginDomain }}</a-button>
+              </a-tooltip>
+            </div>
+            <div v-else class="d-flex justify-content-center flex-wrap p-1">
+              <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
+                <a-tooltip :title="$t('auth.click.set.current.domain')">
+                  <a-button icon="apartment" type="round">{{ $t('auth.set.current.domain') }}</a-button>
+                </a-tooltip>
+                <edit-form slot="content" @submit="submitLoginDomain" @cancel="showSetDomainPopover=false" />
+              </a-popover>
             </div>
           </div>
           <transition-page>
@@ -47,15 +57,20 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
+import EditForm from '@/components/Edit/Form'
 import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
 import { removeQueryKeys } from '@/utils/utils'
 
 export default {
   name: 'AccountIndex',
+  components: {
+    EditForm,
+  },
   data () {
     return {
       prevHeight: 0,
       regionsLoading: false,
+      showSetDomainPopover: false,
     }
   },
   computed: {
@@ -84,6 +99,9 @@ export default {
         return getLoginDomain()
       }
       return ''
+    },
+    hasLoginDomain () {
+      return this.loginDomain.length > 0
     },
   },
   async created () {
@@ -190,11 +208,17 @@ export default {
       const { id } = idpItem
       window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}${search || ''}`
     },
-    cleanLoginDomain () {
+    cleanLoginDomain (e) {
       setLoginDomain('')
       const { origin, pathname, search } = window.location
       const newsearch = removeQueryKeys(search, ['domain'])
       window.location.href = origin + pathname + newsearch
+    },
+    submitLoginDomain (value) {
+      if (value.input) {
+        setLoginDomain(value.input)
+        window.location.reload()
+      }
     },
     gethost (str) {
       if (str.startsWith('http://')) {
@@ -266,7 +290,7 @@ export default {
   > div {
     width: 100%;
     height: 1px;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
 }
 </style>
