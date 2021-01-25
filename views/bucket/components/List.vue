@@ -27,6 +27,9 @@ export default {
   props: {
     id: String,
     cloudEnv: String,
+    cloudEnvOptions: {
+      type: Array,
+    },
     getParams: {
       type: [Object, Function],
       default: () => ({}),
@@ -106,6 +109,7 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: !this.cloudEnvEmpty,
             }
           },
         },

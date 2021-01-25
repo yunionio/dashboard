@@ -2,7 +2,7 @@
   <div>
     <page-header :title="$t('storage.text_18')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <list :id="listId" :cloud-env="cloudEnv" />
+      <list :id="listId" :cloud-env="cloudEnv" :cloudEnvOptions="cloudEnvOptions" />
     </page-body>
   </div>
 </template>
