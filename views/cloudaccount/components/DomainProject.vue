@@ -13,7 +13,7 @@
         <a-select-option v-for="item of domains" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
       </a-select>
     </a-form-item>
-    <a-form-item :label="$t('cloudenv.text_90', [$t('dictionary.project')])" v-bind="formLayout" :extra="$t('cloudenv.text_91', [$t('dictionary.project'),$t('dictionary.project'),$t('dictionary.project')])">
+    <a-form-item :label="$t('scope.text_573', [$t('dictionary.project')])" v-bind="formLayout" :extra="$t('cloudenv.text_91', [$t('dictionary.project'),$t('dictionary.project'),$t('dictionary.project')])">
       <a-select
         :disabled="disableProjectSelect || isOpenstack"
         :allowClear="allowClear"

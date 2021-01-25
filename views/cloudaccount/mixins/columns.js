@@ -78,7 +78,7 @@ export default {
       getProjectDomainTableColumn(),
       {
         field: 'tenant',
-        title: i18n.t('cloudenv.text_310', [i18n.t('dictionary.project')]),
+        title: i18n.t('scope.text_573', [i18n.t('dictionary.project')]),
         minWidth: 120,
         showOverflow: 'title',
         slots: {
