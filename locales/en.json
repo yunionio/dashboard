@@ -2217,7 +2217,8 @@
     "message": "Message",
     "alertrecord": "History",
     "rds": "RDS",
-    "security-alerts": "Security Alarms"
+    "security-alerts": "Security Alarms",
+    "suggestsysrule": "suggestsysrule"
   },
   "res": {
     "role": "Role",
