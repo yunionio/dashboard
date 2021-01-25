@@ -22,7 +22,6 @@
   "helm.text_21": "Configuration",
   "helm.text_22": "Variable",
   "helm.text_23": "E.g. image or image.pullSecrets",
-  "helm.text_24": "Resource attribution {0}",
   "helm.text_25": "Release (Release)",
   "helm.text_26": "Server Application",
   "helm.text_27": "Container Application",
