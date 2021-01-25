@@ -2216,7 +2216,8 @@
     "message": "短信",
     "alertrecord": "告警历史",
     "rds": "RDS",
-    "security-alerts": "安全告警"
+    "security-alerts": "安全告警",
+    "suggestsysrule": "规则配置"
   },
   "res": {
     "role": "@:dictionary.role",
