@@ -31,7 +31,7 @@
               </a-select>
             </a-form-item>
             <template v-if="isVm">
-              <a-form-item :label="$t('helm.text_24', [$t('dictionary.project')])">
+              <a-form-item :label="$t('scope.text_573', [$t('dictionary.project')])">
                 <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
               </a-form-item>
             </template>

@@ -22,7 +22,6 @@
   "helm.text_21": "配置",
   "helm.text_22": "变量",
   "helm.text_23": "例如：image或者image.pullSecrets",
-  "helm.text_24": "资源归属{0}",
   "helm.text_25": "部署发布(Release)",
   "helm.text_26": "虚拟机应用",
   "helm.text_27": "容器应用",
