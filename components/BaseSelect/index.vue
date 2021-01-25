@@ -6,6 +6,7 @@
       v-bind="{ ...selectProps, ...filterOpts }"
       :style="{ width: (showSync ? 'calc(100% - 22px)' : '100%'), 'min-width': minWidth }"
       :value="value"
+      :option-label-prop="optionLabelProp"
       @blur="onBlur"
       @change="val => change(val, true)"
       @search="loadOptsDebounce"
@@ -19,7 +20,7 @@
         </div>
       </div>
       <slot name="optionTemplate" v-bind:options="resOpts">
-        <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :disabled="item.__disabled">
+        <a-select-option v-for="item of resOpts" :key="item.id" :value="item.id" :label="getLabel(item)" :disabled="item.__disabled">
           <option-label :nameKey="nameKey" :labelFormat="labelFormat" :data="item" :resource="resource" :applyOptionLabel="applyOptionLabel" />
         </a-select-option>
       </slot>
@@ -154,6 +155,11 @@ export default {
     applyOptionLabel: {
       type: Boolean,
       default: true,
+    },
+    optionLabelProp: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
   data () {
