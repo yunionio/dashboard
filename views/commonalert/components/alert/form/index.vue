@@ -44,6 +44,7 @@
       </template>
       <base-select
         v-decorator="decorators.recipients"
+        optionLabelProp="label"
         resource="receivers"
         version="v1"
         filterable
@@ -68,7 +69,6 @@
               </template>
               {{ v.label }}
             </a-tooltip>
-            <a-popover title="1123" />
           </template>
           <template v-else>
             {{ v.label }}
@@ -155,7 +155,7 @@ export default {
       } else {
         initialValue.enabled_contact_types = ['webconsole']
       }
-      if (this.alertData.channel && this.alertData.channel.length) initialValue.channel = this.alertData.channel
+      if (this.alertData.channel && this.alertData.channel.length) initialValue.channel = this.alertData.channel.filter((c) => c.endsWith('robot'))
       const comparator = _.get(this.alertData, 'settings.conditions[0].evaluator.type')
       if (comparator === 'lt') initialValue.comparator = '<='
       if (comparator === 'gt') initialValue.comparator = '>='
@@ -405,7 +405,8 @@ export default {
     contactArrOpts () {
       const ect = this.form.fc.getFieldValue('enabled_contact_types')
       if (ect) {
-        this.form.fc.setFieldsValue({ enabled_contact_types: this.contactArrOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value) })
+        const newContactTypes = this.contactArrOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value)
+        this.form.fc.setFieldsValue({ enabled_contact_types: newContactTypes })
       }
     },
   },

@@ -220,7 +220,6 @@ export default {
         } else {
           data.channel = []
         }
-
         if (fd.enabled_contact_types) {
           data.channel.push(...fd.enabled_contact_types)
         }
