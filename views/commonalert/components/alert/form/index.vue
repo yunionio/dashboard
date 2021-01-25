@@ -57,11 +57,22 @@
       <a-checkbox-group
         v-decorator="decorators.enabled_contact_types">
         <a-checkbox
-          v-for="(v, index) in contactArrOpts"
-          :key="index"
+          v-for="v in contactArrOpts"
+          :key="v.label"
           :value="v.value"
           :disabled="v.disabled">
-          {{ v.label }}
+          <template v-if="v.disabled">
+            <a-tooltip placement="top">
+              <template slot="title">
+               {{$t('monitor.commonalerts.channel.disable.tips', [v.label])}}
+              </template>
+              {{ v.label }}
+            </a-tooltip>
+            <a-popover title="1123" />
+          </template>
+          <template v-else>
+            {{ v.label }}
+          </template>
         </a-checkbox>
       </a-checkbox-group>
     </a-form-item>
@@ -139,8 +150,8 @@ export default {
       initialValue.metric_value = _.get(this.alertData, 'settings.conditions[0].query.model.select[0][0].params[0]')
       initialValue.threshold = _.get(this.alertData, 'settings.conditions[0].evaluator.params[0]')
       if (this.alertData.recipients && this.alertData.recipients.length) initialValue.recipients = this.alertData.recipients
-      if (this.alertData.enabled_contact_types && this.alertData.enabled_contact_types.length) {
-        initialValue.enabled_contact_types = this.alertData.enabled_contact_types
+      if (this.alertData.channel && this.alertData.channel.length) {
+        initialValue.enabled_contact_types = this.alertData.channel.filter((c) => !c.endsWith('robot'))
       } else {
         initialValue.enabled_contact_types = ['webconsole']
       }
@@ -392,7 +403,10 @@ export default {
       this.contactArrOptsChange(this.alertData.recipients)
     },
     contactArrOpts () {
-      this.form.fc.setFieldsValue({ enabled_contact_types: this.contactArrOpts.map((c) => { return c.value }) })
+      const ect = this.form.fc.getFieldValue('enabled_contact_types')
+      if (ect) {
+        this.form.fc.setFieldsValue({ enabled_contact_types: this.contactArrOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value) })
+      }
     },
   },
   created () {

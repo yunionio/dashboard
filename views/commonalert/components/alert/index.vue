@@ -220,6 +220,11 @@ export default {
         } else {
           data.channel = []
         }
+
+        if (fd.enabled_contact_types) {
+          data.channel.push(...fd.enabled_contact_types)
+        }
+
         if (fd.domain || fd.domain_id) data.domain_id = (fd.domain || fd.domain_id)
         if (fd.project) data.project_id = fd.project
         if (this.time === 'custom') { // 自定义时间

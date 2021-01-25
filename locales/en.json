@@ -215,5 +215,6 @@
   "monitor.overview_tab_bps_sent": "Network Outbound Traffic",
   "monitor.overview_tab_read_bps": "Disk Read Rate",
   "monitor.overview_tab_write_bps": "Disk Write Rate",
-  "monitor.overview.location": "{0} Overview"
+  "monitor.overview.location": "{0} Overview",
+  "monitor.commonalerts.channel.disable.tips": "Alter channel {0} can not be disabled"
 }
