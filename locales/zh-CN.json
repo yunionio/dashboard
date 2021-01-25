@@ -2504,7 +2504,7 @@
   },
   "scope.text_1": "实例列表",
   "scope.text_2": "用户信息",
-  "scope.cloudid": "多云SSO",
+  "scope.cloudid": "多云统一登录",
   "scope.text_4": "AccessKey 管理",
   "scope.text_5": "更改密码",
   "scope.text_6": "退出",
