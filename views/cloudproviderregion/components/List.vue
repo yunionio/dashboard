@@ -31,7 +31,9 @@ export default {
       list: this.$list.createList(this, {
         resource: 'cloudproviderregions',
         getParams: this.getParams,
-        steadyStatus: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
+        steadyStatus: {
+          sync_status: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
+        },
         idKey: 'cloudregion_id',
         filterOptions: {
           cloudregion: {
