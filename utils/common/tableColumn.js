@@ -170,6 +170,7 @@ export const getNameDescriptionTableColumn = ({
   edit = true,
   editDesc = true,
   minWidth = 100,
+  message,
 } = {}) => {
   return {
     field,
@@ -179,9 +180,11 @@ export const getNameDescriptionTableColumn = ({
     minWidth,
     slots: {
       default: ({ row }, h) => {
+        const text = (message && R.type(message) === 'Function') ? message(row) : (message || (row[field] && row[field].toString()) || '-')
         const ret = [
           h('list-body-cell-wrap', {
             props: {
+              message: text,
               resource: resource,
               copy: true,
               edit: (R.type(edit) === 'Function' && edit(row)) || edit === true,
