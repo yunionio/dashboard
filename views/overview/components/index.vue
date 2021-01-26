@@ -434,7 +434,10 @@ export default {
         } else {
           // 域/项目
           const series = rawDatas.map((item) => {
-            return { name: item.tags.tenant || item.tags.project_domain, id: item.tags.tenant_id || item.tags.domain_id, value: item.points[0][0], timestamp: item.points[0][1] }
+            const lastPoint = item.points ? item.points[item.points.length - 1] : undefined
+            if (lastPoint) {
+              return { name: item.tags.tenant || item.tags.project_domain, id: item.tags.tenant_id || item.tags.domain_id, value: lastPoint[0], timestamp: lastPoint[1] }
+            }
           })
           if (series.length) {
             const v = allTabs[field].label
