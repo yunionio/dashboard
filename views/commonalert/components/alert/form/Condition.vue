@@ -41,10 +41,9 @@ export default {
   },
   data () {
     let showThreshold = true
-    if (this.decorators.comparator === 'nodata') {
+    if (this.decorators.comparator[1].initialValue === 'nodata') {
       showThreshold = false
     }
-
     return {
       preiodOpts: Object.values(preiodMaps),
       comparatorOpts: [

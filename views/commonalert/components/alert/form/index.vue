@@ -137,6 +137,7 @@ export default {
       comparator: '>=',
       level: 'normal',
       scope: this.$store.getters.scope,
+      recipients: [],
     }
     if (R.is(Object, this.alertData)) {
       initialValue.name = this.alertData.name
@@ -155,10 +156,12 @@ export default {
       } else {
         initialValue.enabled_contact_types = ['webconsole']
       }
+
       if (this.alertData.channel && this.alertData.channel.length) initialValue.channel = this.alertData.channel.filter((c) => c.endsWith('robot'))
-      const comparator = _.get(this.alertData, 'settings.conditions[0].evaluator.type')
-      if (comparator === 'lt') initialValue.comparator = '<='
-      if (comparator === 'gt') initialValue.comparator = '>='
+      initialValue.comparator = _.get(this.alertData, 'common_alert_metric_details[0].comparator')
+      if (initialValue.comparator === 'lt') initialValue.comparator = '<='
+      if (initialValue.comparator === 'gt') initialValue.comparator = '>='
+
       if (!initialValue.project && !initialValue.domain) {
         initialValue.scope = 'system'
       }
@@ -400,7 +403,9 @@ export default {
           }
         }
       }
-      this.contactArrOptsChange(this.alertData.recipients)
+      if (this.alertData) {
+        this.contactArrOptsChange(this.alertData.recipients)
+      }
     },
     contactArrOpts () {
       const ect = this.form.fc.getFieldValue('enabled_contact_types')
