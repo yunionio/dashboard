@@ -1589,9 +1589,9 @@
   },
   "shareDesc": {
     "none": "Private",
-    "project": "Multiple @:dictionary.project sharing within this @:dictionary.domain",
-    "projectAll": "This @:dictionary.domain is shared",
-    "domain": "Multiple @:dictionary.domain sharing",
+    "project": "Multiple @:dictionary.project",
+    "projectAll": "@:dictionary.domain",
+    "domain": "Multiple @:dictionary.domain",
     "domainAll": "Global share"
   },
   "shareScopeDesc": {
