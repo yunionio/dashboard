@@ -104,7 +104,7 @@ export default {
         }),
         {
           field: 'location',
-          title: '位置',
+          title: this.$t('storage.location'),
           slots: {
             default: ({ row }) => {
               return LOCATION_MAP[row.location] || row.location || '-'
