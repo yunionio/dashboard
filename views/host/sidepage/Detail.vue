@@ -317,7 +317,7 @@ export default {
               formatter: ({ cellValue, row }) => {
                 const allowedBrands = ['OneCloud', 'VMware']
                 if (!allowedBrands.includes(row.brand)) return sizestr(cellValue, 'M', 1024)
-                return sizestr(cellValue, 'M', 1024) + this.$t('compute.text_1328') + sizestr(row.mem_commit, 'M', 1024)
+                return this.$t('compute.text_1330') + sizestr(row.mem_commit, 'M', 1024) + this.$t('compute.text_1331') + sizestr(cellValue, 'M', 1024)
               },
             },
             {
