@@ -7,9 +7,9 @@
   "storage.text_6": "Mechanical Disk",
   "storage.text_7": "SSD",
   "storage.text_8": "Mixed Disk",
-  "storage.text_9": "Read and write this account",
-  "storage.text_10": "This account is written for public reading",
-  "storage.text_11": "Public Read and Write",
+  "storage.text_9": "Private Read/Write",
+  "storage.text_10": "Public Read/Private Write",
+  "storage.text_11": "Public Read/Write",
   "storage.text_12": "Average E2E latency of GetObject requests",
   "storage.text_13": "Number of GET requests",
   "storage.text_14": "Number of successful GetObject requests",
@@ -91,7 +91,7 @@
   "storage.text_90": "Unlink the host",
   "storage.text_91": "Back-end access information",
   "storage.text_92": "Please select a sub-account/account",
-  "storage.text_93": "Read and Write Access",
+  "storage.text_93": "Permission",
   "storage.text_94": "Cloud Account",
   "storage.text_95": "Create Bucket",
   "storage.text_96": "Change {0}",
@@ -270,5 +270,6 @@
   "storage.aliyun_oss_cn_hzfinance": "Hangzhou Financial Cloud Outer Network",
   "storage.aliyun_shenzhen_finance_1": "Shenzhen Financial Cloud Intranet",
   "storage.aliyun_oss_cn_szfinance": "Shenzhen Financial Cloud Outer Network",
-  "storage.internal_bucket": "Buckets in the intranet zone do not support this operation"
+  "storage.internal_bucket": "Buckets in the intranet zone do not support this operation",
+  "storage.location": "Location"
 }
