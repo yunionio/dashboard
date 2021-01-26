@@ -1,4 +1,4 @@
-import { levelColumn, strategyColumn, projectTableColumn } from '../utils'
+import { levelColumn, strategyColumn, projectTableColumn, getResTypeColumn } from '../utils'
 import { getNameDescriptionTableColumn, getStatusTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -17,6 +17,7 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'commonalert', minWidth: 50 }),
       getEnabledTableColumn({ minWidth: 50 }),
+      getResTypeColumn(),
       strategyColumn(),
       levelColumn,
       projectTableColumn,
