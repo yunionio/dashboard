@@ -2,6 +2,7 @@ import './config/vue.config'
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
 import 'xe-utils'
+import '../mock'
 import VXETable from 'vxe-table'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
 
