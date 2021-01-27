@@ -220,7 +220,9 @@ http.interceptors.response.use(
       showHttpBatchErrorMessage(response)
     }
     // 处理不可见字符
-    response.data = transSpecChart(response.data)
+    if (response.headers['content-type'].startsWith('application/json')) {
+      response.data = transSpecChart(response.data)
+    }
     return response
   },
   (error) => {
