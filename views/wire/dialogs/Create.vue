@@ -238,6 +238,7 @@ export default {
     },
     doCreate (data) {
       const params = {
+        project_domain: data.project_domain,
         name: data.name,
         zone_id: data.zone,
         vpc_id: data.vpc,
