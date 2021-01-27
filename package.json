@@ -33,6 +33,7 @@
     "jsrsasign": "^8.0.20",
     "lodash": "^4.17.15",
     "marked": "^1.1.0",
+    "mockjs": "^1.1.0",
     "moment": "^2.24.0",
     "numerify": "^1.2.9",
     "objectpath": "^2.0.0",
