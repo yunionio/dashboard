@@ -37,6 +37,7 @@
 <script>
 import * as R from 'ramda'
 import { mapState } from 'vuex'
+import { getLoginDomain } from '@/utils/common/cookie'
 
 export default {
   name: 'LoginChooser',
@@ -53,12 +54,30 @@ export default {
     ...mapState('auth', {
       loggedUsers: state => state.loggedUsers,
     }),
+    loginDomain () {
+      if (this.$route.query.domain) {
+        return this.$route.query.domain
+      }
+      if (getLoginDomain()) {
+        return getLoginDomain()
+      }
+      return ''
+    },
     dataSource () {
       let data = Object.entries(this.loggedUsers)
-      if (this.$route.query.domain) {
+      if (this.loginDomain) {
         data = data.filter(v => {
-          return v[1].domain.name === this.$route.query.domain
+          return v[1].domain.name === this.loginDomain
         })
+      }
+      if (data.length === 0) {
+        this.$router.replace({
+          path: '/auth/login',
+          query: {
+            rf: this.$route.query.rf,
+          },
+        })
+        return data
       }
       return R.sort((a, b) => {
         return b[1].update_time - a[1].update_time
@@ -67,7 +86,29 @@ export default {
   },
   watch: {
     loggedUsers (val) {
-      if (Object.keys(val).length === 0) {
+      let data = Object.entries(this.loggedUsers)
+      if (this.loginDomain) {
+        data = data.filter(v => {
+          return v[1].domain.name === this.loginDomain
+        })
+      }
+      if (data.length === 0) {
+        this.$router.replace({
+          path: '/auth/login',
+          query: {
+            rf: this.$route.query.rf,
+          },
+        })
+      }
+    },
+    loginDomain (val) {
+      let data = Object.entries(this.loggedUsers)
+      if (this.loginDomain) {
+        data = data.filter(v => {
+          return v[1].domain.name === this.loginDomain
+        })
+      }
+      if (data.length === 0) {
         this.$router.replace({
           path: '/auth/login',
           query: {
