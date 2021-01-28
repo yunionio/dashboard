@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('k8s.text_49')" />
+    <page-header :title="$t('k8s.create')" />
     <a-form-model
       class="mt-3"
       ref="formRef"

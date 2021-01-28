@@ -3,6 +3,8 @@ import {
   getStatusTableColumn,
   getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
+import { HYPERVISORS_MAP } from '@/constants'
+import BrandIcon from '@/sections/BrandIcon'
 import i18n from '@/locales'
 
 export default {
@@ -19,24 +21,45 @@ export default {
         },
       }),
       {
+        title: i18n.t('k8s.text_150'),
+        field: 'provider',
+        sortable: true,
+        slots: {
+          default: ({ row }, _) => {
+            if (!row.provider) return '-'
+            if (row.provider === 'onecloud') {
+              row.provider = 'kvm'
+            }
+            const data = HYPERVISORS_MAP[row.provider]
+            if (!data || !data.brand) return '-'
+            return [
+              <BrandIcon name={ data.brand } />,
+            ]
+          },
+        },
+      },
+      {
         field: 'distribution',
         title: i18n.t('k8s.text_401'),
         minWidth: 100,
         slots: {
           default: ({ row }) => {
-            let title = 'Kubernetes'
+            let title = ''
+            // let title = 'Kubernetes'
             let type = 'k8s'
             const styles = { color: 'rgb(50, 109, 230)', fontSize: '20px' }
             if (row.distribution === 'openshift') {
-              title = 'OpenShift'
+              // title = 'OpenShift'
               type = 'openshift'
               styles.color = 'rgb(225, 38, 52)'
             }
             if (row.distribution_info && row.distribution_info.version) {
-              title += `(${row.distribution_info.version})`
+              title += `${row.distribution_info.version}`
+            } else if (row.version) {
+              title += `${row.version} `
             }
             return [
-              <div class="d-inline-flex align-items-center flex-column">
+              <div class="d-inline-flex align-items-right flex-column">
                 <Icon class="d-block text-left" type={ type } style={ styles } />
                 <div>{ title }</div>
               </div>,
@@ -72,18 +95,20 @@ export default {
           }
         },
       },
-      {
-        field: 'version',
-        title: i18n.t('k8s.text_153'),
-        minWidth: 100,
-        slots: {
-          default: ({ row }, h) => {
-            return [
-              <a-tag color="blue">{ row.version }</a-tag>,
-            ]
-          },
-        },
-      },
+      /*
+       * {
+       *   field: 'version',
+       *   title: i18n.t('k8s.text_153'),
+       *   minWidth: 100,
+       *   slots: {
+       *     default: ({ row }, h) => {
+       *       return [
+       *         <a-tag color="blue">{ row.version }</a-tag>,
+       *       ]
+       *     },
+       *   },
+       * },
+       */
       {
         field: 'machines',
         title: i18n.t('k8s.text_191'),

@@ -19,10 +19,11 @@ import expectStatus from '@/constants/expectStatus'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'kubeMachinesList',
+  name: 'KubeMachinesList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    // resId is cluster Id
     resId: String,
     data: {
       type: Object,
@@ -52,11 +53,11 @@ export default {
       }),
       groupActions: [
         {
-          label: this.$t('k8s.text_280'),
+          label: this.$t('k8s.add_node'),
           permission: 'k8s_kubeclusters_perform_add_machines',
           action: () => {
             this.createDialog('CreateKubemachinesDialog', {
-              title: this.$t('k8s.text_49'),
+              title: this.$t('k8s.create'),
               data: this.data,
               onManager: this.onManager,
               refresh: this.refresh,
