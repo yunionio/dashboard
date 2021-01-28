@@ -11,11 +11,19 @@
         <div class="login-content-wrap h-100 w-100 overflow-hidden">
           <h4 class="text-center">{{ title }}</h4>
           <div class="login-domain-title d-flex justify-content-center align-items-center">
-            <div v-if="hasLoginDomain" class="d-flex justify-content-center flex-wrap p-1">
+            <div v-if="hasLoginDomain" class="selected-user-wrap d-flex justify-content-center flex-wrap p-1">
+              <div class="selected-user-content" @click="cleanLoginDomain">
+                <div class="selected-user-name">{{ $t('auth.current.domain') }}: {{ loginDomain }}</div>
+                <div class="ml-2 d-flex align-items-center">
+                  <a-icon type="close" />
+                </div>
+              </div>
+            </div>
+            <!--div v-if="hasLoginDomain" class="d-flex justify-content-center flex-wrap p-1">
               <a-tooltip :title="$t('auth.clean.current.domain')">
                 <a-button type="round" @click="cleanLoginDomain">{{ $t('auth.current.domain') }}: {{ loginDomain }}</a-button>
               </a-tooltip>
-            </div>
+            </div-->
             <div v-else class="d-flex justify-content-center flex-wrap p-1">
               <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
                 <a-tooltip :title="$t('auth.click.set.current.domain')">
@@ -291,6 +299,31 @@ export default {
     width: 100%;
     height: 1px;
     margin-bottom: 50px;
+  }
+}
+.selected-user-wrap {
+  height: 82px;
+  margin-bottom: 50px;
+}
+.selected-user-content {
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  color: #3c4043;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  letter-spacing: .25px;
+  max-width: 100%;
+  border-radius: 16px;
+  padding: 5px 7px 5px 5px;
+  .selected-user-name {
+    direction: ltr;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &:hover {
+    background: rgba(60,64,67,0.039);
   }
 }
 </style>

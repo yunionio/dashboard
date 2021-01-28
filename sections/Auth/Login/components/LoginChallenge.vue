@@ -6,7 +6,8 @@
           <div class="mr-2 name-icon">{{ firstNameWord }}</div>
           <div class="selected-user-name">{{ fd.username }}</div>
           <div class="ml-2 d-flex align-items-center">
-            <svg aria-hidden="true" fill="currentColor" focusable="false" width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="12,16.41 5.29,9.71 6.71,8.29 12,13.59 17.29,8.29 18.71,9.71" /></svg>
+            <a-icon type="close" />
+            <!--svg aria-hidden="true" fill="currentColor" focusable="false" width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="12,16.41 5.29,9.71 6.71,8.29 12,13.59 17.29,8.29 18.71,9.71" /></svg-->
           </div>
         </div>
       </div>
@@ -146,7 +147,6 @@ export default {
       captchaImg: '',
       submiting: false,
       showUsernameInput: !this.$route.query.username,
-      hasLoggedUsers: false,
     }
   },
   computed: {
@@ -175,6 +175,15 @@ export default {
       }
       return ''
     },
+    hasLoggedUsers () {
+      let data = Object.entries(this.loggedUsers)
+      if (this.loginDomain) {
+        data = data.filter(v => {
+          return v[1].domain.name === this.loginDomain
+        })
+      }
+      return data.length > 0
+    },
   },
   watch: {
     showCaptchaInput: {
@@ -185,10 +194,6 @@ export default {
       },
       immediate: true,
     },
-  },
-  created () {
-    // hasLoggedUsers 没使用compute。主要希望只触发一次
-    this.hasLoggedUsers = Object.keys(this.loggedUsers).length > 0
   },
   methods: {
     // 获取验证码图片
