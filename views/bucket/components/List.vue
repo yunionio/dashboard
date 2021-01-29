@@ -110,6 +110,7 @@ export default {
             return {
               buttonType: 'primary',
               validate: !this.cloudEnvEmpty,
+              tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
             }
           },
         },
