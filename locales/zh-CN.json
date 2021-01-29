@@ -1233,7 +1233,7 @@
   "compute.text_1263": "迁移成功后是否自动启动",
   "compute.text_1264": "解绑弹性公网IP",
   "compute.text_1265": "是否释放",
-  "compute.text_1266": "取消绑定之后，立即释放弹性公网IP",
+  "compute.text_1266": "取消绑定之后，立即删除弹性公网IP",
   "compute.text_1267": "OpenStack机器在解绑密钥后需手动重置密码",
   "compute.text_1268": "解绑密钥成功后是否自动启动",
   "compute.text_1269": "启动介质",

@@ -64,7 +64,7 @@ export default {
           span: 8,
         },
         labelCol: {
-          span: 2,
+          span: 4,
         },
       },
       driverLimiations: {
