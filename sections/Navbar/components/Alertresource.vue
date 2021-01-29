@@ -7,7 +7,12 @@
     </div>
     <a-alert type="info" v-if="visible" class="alertresource-error">
       <div slot="message" v-if="total > 0">
-        {{$t('common_719', [total])}},<a-button type="link" size="small" @click="routerPush">{{$t('common.view')}}</a-button>
+        <div>
+          {{$t('common_719', [res_total])}},<a-button type="link" size="small" @click="routerRes">{{$t('common.view')}}</a-button>
+        </div>
+        <div>
+          {{$t('common_alert_tips', [alert_total])}},<a-button type="link" size="small" @click="routerAlert">{{$t('common.view')}}</a-button>
+        </div>
       </div>
       <div slot="message" v-else>
         {{$t('common_720')}}
@@ -20,15 +25,24 @@
 export default {
   name: 'Alertresource',
   props: {
-    total: {
+    res_total: {
+      type: Number,
+      default: 0,
+    },
+    alert_total: {
       type: Number,
       default: 0,
     },
   },
   data () {
     return {
-      visible: this.total > 0,
+      visible: (this.res_total + this.alert_total) > 0,
     }
+  },
+  computed: {
+    total () {
+      return this.res_total + this.alert_total
+    },
   },
   watch: {
     total (v) {
@@ -40,8 +54,11 @@ export default {
     toggle () {
       this.visible = !this.visible
     },
-    routerPush (e) {
+    routerRes (e) {
       this.$router.push('/alertresource')
+    },
+    routerAlert (e) {
+      this.$router.push('/alertrecord')
     },
   },
 }

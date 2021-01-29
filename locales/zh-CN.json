@@ -2178,6 +2178,7 @@
     "serverskus": "套餐",
     "cloudregion": "区域",
     "cloudgroup": "云用户组",
+    "cloudusergroup": "云用户组",
     "clouduser": "云用户",
     "cloudgroupcache": "权限组缓存",
     "cloudpolicy": "云权限",
@@ -4258,6 +4259,7 @@
   "common_717": "共 {0} 条记录",
   "common_718": "主机数量大于1时无法手动配置IP",
   "common_719": "有 {0} 个资源发生告警",
+  "common_alert_tips": "有 {0} 个策略发生告警",
   "common_720": "暂无资源告警",
   "workflow.biz_field": "您可到左上角待我审批页面找到该工单，点击通过操作会进行重试，若多次重试仍失败请联系管理员处理",
   "common_721": "对象存储ip",
@@ -4550,5 +4552,6 @@
     "1784": "圣文森特和格林纳丁斯",
     "1868": "特立尼达和多巴哥共和国",
     "1869": "圣基茨和尼维斯联邦"
-  }
+  },
+  "common.no_platform_available": "暂无可用的平台，请检查后重试！"
 }

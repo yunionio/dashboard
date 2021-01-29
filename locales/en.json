@@ -2178,6 +2178,7 @@
     "serverskus": "Package",
     "cloudregion": "Region",
     "cloudgroup": "Cloud User Groups",
+    "cloudusergroup": "Groups",
     "clouduser": "Cloud Users",
     "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
@@ -4248,7 +4249,7 @@
   "common_707": "Operation Log-Cloud Account",
   "common_708": "No association {0}",
   "common_709": "{0} @:dictionary.identity_provider information method can be obtained for reference",
-  "common_710": "Specify {0}",
+  "common_710": "{0}",
   "common_711": "Cloud Subscription",
   "common_712": "Default",
   "common_713": "Strategy",
@@ -4258,6 +4259,7 @@
   "common_717": "Total {0} records",
   "common_718": "IP cannot be manually configured when the number of hosts is greater than 1",
   "common_719": "There are {0} resource alarms",
+  "common_alert_tips": "There are {0} alerts",
   "common_720": "There is no resource alarm",
   "workflow.biz_field": "The ticket can be found in the ticket list of 'wait for process', and the execution can be retried. If the execution is always failed, please contact the administrator.",
   "common_721": "Object Storage IP",
@@ -4550,5 +4552,6 @@
     "1784": "Saint Vincent and the Grenadines",
     "1868": "Trinidad and Tobago",
     "1869": "Saint Kitts and Nevis"
-  }
+  },
+  "common.no_platform_available": "There is no platform available, please check and try again!"
 }
