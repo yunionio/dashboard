@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row>
-      <a-col :span="8">
+      <a-col :span="10">
         <a-select
           :value="area_code"
           showSearch
@@ -12,7 +12,7 @@
           </a-select-option>
         </a-select>
       </a-col>
-      <a-col :span="16">
+      <a-col :span="14">
           <a-input :value="mobile" @change="handleMobileChange" />
       </a-col>
     </a-row>
