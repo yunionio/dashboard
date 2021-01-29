@@ -109,7 +109,7 @@
     </div>
     <slot name="frontNavbar" />
     <!-- 资源报警 -->
-    <alertresource v-if="showAlertresource" :total="alertresource.total" class="navbar-item-icon primary-color-hover" />
+    <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
@@ -224,6 +224,7 @@ export default {
       computeServiceNumbers: state => state.license.service_numbers,
       oem: state => state.oem,
       alertresource: state => state.alertresource,
+      alertrecords: state => state.alertrecords,
     }),
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
@@ -344,8 +345,14 @@ export default {
       return globalSetting.value.key.length > 0
     },
     showAlertresource () {
-      if (this.isAdminMode && this.$appConfig.isPrivate && this.alertresource) {
-        return this.alertresource.total > 0
+      if (this.isAdminMode && this.$appConfig.isPrivate) {
+        if (this.alertresource) {
+          return this.alertresource.total > 0
+        }
+
+        if (this.alertrecords) {
+          return this.alertrecords.total > 0
+        }
       }
       return false
     },
@@ -389,7 +396,7 @@ export default {
     this.fetchOEM(this.userInfo.id)
     this.fetchLicense(this.userInfo.id)
     this.pushApiServerUrlAlert(this.userInfo.id)
-    this.cronjobFetchAlertresource()
+    this.cronjobFetchAlerts()
   },
   methods: {
     checkWorkflow (val) {
@@ -604,11 +611,13 @@ export default {
     handleOpenOverview () {
       window.open('/overview', '_blank')
     },
-    cronjobFetchAlertresource () { // 定时5分钟请求一次
+    cronjobFetchAlerts () { // 定时5分钟请求一次
       if (this.isAdminMode && this.$appConfig.isPrivate && this.$store._actions['app/fetchAlertresource']) {
         this.$store.dispatch('app/fetchAlertresource')
+        this.$store.dispatch('app/fetchAlertingrecords')
         setInterval(() => {
           this.$store.dispatch('app/fetchAlertresource')
+          this.$store.dispatch('app/fetchAlertingrecords')
         }, 5 * 60 * 1000)
       }
     },
