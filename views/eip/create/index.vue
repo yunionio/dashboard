@@ -403,7 +403,7 @@ export default {
           usable: true,
           limit: 0,
           field: 'bgp_type',
-          scope: this.$scope,
+          scope: this.$store.getters.scope,
         },
       }).then(({ data }) => {
         this.bgpTypeOptions = data.bgp_type
