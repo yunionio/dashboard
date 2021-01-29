@@ -345,13 +345,13 @@ export default {
       return globalSetting.value.key.length > 0
     },
     showAlertresource () {
+      if (this.alertrecords && this.alertrecords.total > 0) {
+        return true
+      }
+
       if (this.isAdminMode && this.$appConfig.isPrivate) {
         if (this.alertresource) {
           return this.alertresource.total > 0
-        }
-
-        if (this.alertrecords) {
-          return this.alertrecords.total > 0
         }
       }
       return false
@@ -612,11 +612,14 @@ export default {
       window.open('/overview', '_blank')
     },
     cronjobFetchAlerts () { // 定时5分钟请求一次
+      this.$store.dispatch('app/fetchAlertingrecords')
+      setInterval(() => {
+        this.$store.dispatch('app/fetchAlertingrecords')
+      }, 5 * 60 * 1000)
+
       if (this.isAdminMode && this.$appConfig.isPrivate && this.$store._actions['app/fetchAlertresource']) {
         this.$store.dispatch('app/fetchAlertresource')
-        this.$store.dispatch('app/fetchAlertingrecords')
         setInterval(() => {
-          this.$store.dispatch('app/fetchAlertresource')
           this.$store.dispatch('app/fetchAlertingrecords')
         }, 5 * 60 * 1000)
       }
