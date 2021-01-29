@@ -203,7 +203,7 @@
   "network.text_202": "绑定",
   "network.text_203": "请选择",
   "network.text_204": "请选择要绑定的云服务器",
-  "network.text_205": "指定{0}",
+  "network.text_205": "{0}",
   "network.text_206": "新建弹性公网IP",
   "network.text_207": "本地IDC",
   "network.text_208": "私有云",
