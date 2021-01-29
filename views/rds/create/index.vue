@@ -37,8 +37,8 @@
       <!-- 网络 -->
       <item-network ref="NETWORK" />
       <!-- 选择安全组 -->
-      <a-form-item v-if="form.getFieldValue('provider') === 'Huawei' || form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
-        <secgroup-config :max="form.getFieldValue('provider') === 'Huawei' ? 1 : 5" :decorators="decorators.secgroup" />
+      <a-form-item v-if="showSecgroup(form)" :label="$t('db.text_144')">
+        <secgroup-config :max="getSecgroupMax(form)" :decorators="decorators.secgroup" />
       </a-form-item>
       <!-- 标签 -->
       <a-form-item :label="$t('table.title.tag')" class="mb-3">
@@ -135,6 +135,20 @@ export default {
       scopeParams: this.scopeParams,
       tailFormItemLayout: this.tailFormItemLayout,
     }
+  },
+  methods: {
+    showSecgroup (form) {
+      const supportSecgroupProviders = ['Huawei', 'Qcloud', 'Aliyun']
+      return supportSecgroupProviders.includes(form.getFieldValue('provider'))
+    },
+    getSecgroupMax (form) {
+      const secgroupMaxMap = {
+        Huawei: 1,
+        Qcloud: 5,
+        Aliyun: 5,
+      }
+      return secgroupMaxMap[form.getFieldValue('provider')] || 5
+    },
   },
 }
 </script>
