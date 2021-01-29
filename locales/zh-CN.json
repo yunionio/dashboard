@@ -2151,6 +2151,7 @@
     "serverskus": "套餐",
     "cloudregion": "区域",
     "cloudgroup": "云用户组",
+    "cloudusergroup": "云用户组",
     "clouduser": "云用户",
     "cloudgroupcache": "权限组缓存",
     "cloudpolicy": "云权限",
