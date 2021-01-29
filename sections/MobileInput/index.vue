@@ -4,10 +4,11 @@
       <a-col :span="10">
         <a-select
           :value="area_code"
+          :filter-option="filterOption"
           showSearch
           style="width: 100%"
           @change="handleCountryChange">
-          <a-select-option v-for="c in datas" :key="c.value" :value="c.value" :label="c.label">
+          <a-select-option v-for="c in countries" :key="c.value" :value="c.value" :label="c.label">
             {{`${c.label}(+${c.value})`}}
           </a-select-option>
         </a-select>
@@ -45,6 +46,9 @@ export default {
     },
   },
   methods: {
+    filterOption (input, option) {
+      return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    },
     handleMobileChange (e) {
       this.handleChange({ mobile: e.target.value })
     },
