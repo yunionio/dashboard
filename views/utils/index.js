@@ -1,4 +1,6 @@
 import * as R from 'ramda'
+import i18n from '@/locales'
+import { getI18n } from '@/utils/i18n'
 
 export const isRequiredData = (data, keys) => {
   if (!data || R.type(data) !== 'Object' || R.isEmpty(data)) {
@@ -34,4 +36,36 @@ export const isRequiredData = (data, keys) => {
   }
   const keyType = R.type(keys)
   return fn[keyType] && fn[keyType]()
+}
+
+export const checkSecgroup = (val, supportProviders = ['Huawei', 'Qcloud', 'Aliyun']) => {
+  const errorMsgs = []
+  if (Array.isArray(val)) {
+    val.forEach(obj => {
+      const brand = obj.brand ? obj.brand : obj.hypervisor
+      if (!supportProviders.includes(brand)) {
+        errorMsgs.push({
+          validate: false,
+          tooltip: i18n.t('db.action_diable_tooltip', [getI18n(`cloudPrvidersMap.${brand}`, brand)]),
+        })
+      }
+    })
+  } else {
+    const brand = val.brand ? val.brand : val.hypervisor
+    if (!supportProviders.includes(brand)) {
+      errorMsgs.push({
+        validate: false,
+        tooltip: i18n.t('db.action_diable_tooltip', [getI18n(`cloudPrvidersMap.${brand}`, brand)]),
+      })
+    }
+  }
+  if (errorMsgs.length > 0) {
+    return {
+      validate: false,
+      tooltip: errorMsgs[0].tooltip,
+    }
+  }
+  return {
+    validate: true,
+  }
 }
