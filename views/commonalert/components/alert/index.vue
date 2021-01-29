@@ -198,6 +198,7 @@ export default {
         const data = {
           scope: fd.scope,
           interval: this.timeGroup,
+          alert_duration: fd.alert_duration,
           generate_name: fd.name,
           period: fd.period,
           channel: fd.channel,
@@ -206,7 +207,7 @@ export default {
           level: fd.level,
           metric_query: [{
             model: monitorParams,
-            reduce: 'avg',
+            reduce: fd.reduce,
             comparator: fd.comparator,
             threshold: fd.threshold,
           }],

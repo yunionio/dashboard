@@ -148,6 +148,7 @@ export default {
       })
       this.$nextTick(() => {
         this.form.fc.setFieldsValue(tagFields)
+        this.$forceUpdate()
       })
     },
     reset () {
