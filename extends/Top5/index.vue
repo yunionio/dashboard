@@ -582,9 +582,10 @@ export default {
       return data
     },
     getLabel (val) {
+      const fixedVal = isNaN(Number(val)) ? 0 : Number(val).toFixed(2)
       const formatter = usageConfig[this.form.fd.usage] && usageConfig[this.form.fd.usage].formatter
-      if (formatter) return formatter(val)
-      return val
+      if (formatter) return formatter(fixedVal)
+      return fixedVal
     },
     getPercent (val) {
       const num = (val / this.maxSeriesData).toFixed(2) * 100
