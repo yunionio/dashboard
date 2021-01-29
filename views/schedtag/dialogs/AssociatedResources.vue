@@ -14,7 +14,7 @@
               :key="resType.key">{{ resType.label }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_454')" v-bind="formItemLayout">
+        <a-form-item :label="$t('cloudenv.text_469')" v-bind="formItemLayout">
           <base-select
               v-decorator="decorators.resource"
               :resource="resource"
@@ -78,10 +78,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
