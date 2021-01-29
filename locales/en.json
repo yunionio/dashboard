@@ -202,7 +202,7 @@
   "network.text_201": "Sync Status",
   "network.text_202": "Assiciate",
   "network.text_203": "Please select",
-  "network.text_204": "Please select the cloud server to associate",
+  "network.text_204": "Please select the cloud server to be bound",
   "network.text_205": "{0}",
   "network.text_206": "Create EIP",
   "network.text_207": "On-premise",
