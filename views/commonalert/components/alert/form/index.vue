@@ -135,6 +135,8 @@ export default {
     const initialValue = {
       period: '5m',
       comparator: '>=',
+      alert_duration: 2,
+      reduce: 'avg',
       level: 'normal',
       scope: this.$store.getters.scope,
       recipients: [],
@@ -164,10 +166,12 @@ export default {
       initialValue.comparator = _.get(this.alertData, 'common_alert_metric_details[0].comparator')
       if (initialValue.comparator === 'lt') initialValue.comparator = '<='
       if (initialValue.comparator === 'gt') initialValue.comparator = '>='
-
       if (!initialValue.project && !initialValue.domain) {
         initialValue.scope = 'system'
       }
+      const reduce = _.get(this.alertData, 'common_alert_metric_details[0].reduce')
+      if (reduce) initialValue.reduce = reduce
+      if (this.alertData.alert_duration) initialValue.alert_duration = this.alertData.alert_duration
       if (!initialValue.project && initialValue.domain) {
         initialValue.scope = 'domain'
       }
@@ -288,6 +292,24 @@ export default {
           'period',
           {
             initialValue: initialValue.period,
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
+        alert_duration: [
+          'alert_duration',
+          {
+            initialValue: initialValue.alert_duration,
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
+        reduce: [
+          'reduce',
+          {
+            initialValue: initialValue.reduce,
             rules: [
               { required: true, message: this.$t('common.select') },
             ],
