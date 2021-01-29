@@ -13,7 +13,7 @@
             :project.sync="form.fi.project"
             :cloudprovider-id="form.fi.cloudprovider.id" />
         </a-form-item>
-        <a-form-item :label="$t('dictionary.cloudgroup')" :extra="$t('samluser.create_cloudgroup_extra')">
+        <a-form-item :label="$t('dictionary.cloudusergroup')" :extra="$t('samluser.create_cloudgroup_extra')">
           <list-select
             v-decorator="decorators.cloudgroup_id"
             :listProps="cloudgroupListSelectProps"
