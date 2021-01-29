@@ -203,7 +203,7 @@
   "network.text_202": "Assiciate",
   "network.text_203": "Please select",
   "network.text_204": "Please select the cloud server to associate",
-  "network.text_205": "Specify {0}",
+  "network.text_205": "{0}",
   "network.text_206": "Create EIP",
   "network.text_207": "On-premise",
   "network.text_208": "Private Cloud",
