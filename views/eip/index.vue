@@ -2,7 +2,10 @@
   <div>
     <page-header :title="$t('network.text_221')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <eip-list :id="listId" :cloud-env="cloudEnv" />
+      <eip-list
+        :id="listId"
+        :cloud-env="cloudEnv"
+        :cloudEnvOptions="cloudEnvOptions" />
     </page-body>
   </div>
 </template>
