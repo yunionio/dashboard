@@ -270,7 +270,7 @@
   "network.text_269": "Please select a specification",
   "network.text_270": "Public Network",
   "network.text_271": "Private Network",
-  "network.text_272": "Network billing method",
+  "network.text_272": "Billing type",
   "network.text_273": "IP Version",
   "network.text_274": "Please select a VPC",
   "network.text_275": "Please select a network with available IP greater than or equal to 8",
