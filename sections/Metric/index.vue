@@ -166,6 +166,12 @@ export default {
       }
     },
   },
+  mounted: function () {
+    this.$nextTick(function () {
+      const metricValue = this.form.fc.getFieldValue(this.decorators.metric_value[0])
+      if (metricValue) this.metricValueChange(metricValue)
+    })
+  },
   methods: {
     metricValueLabelFormat (item) {
       return (<div>
