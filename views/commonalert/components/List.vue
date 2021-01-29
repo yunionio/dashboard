@@ -48,6 +48,24 @@ export default {
           status: getStatusFilter('commonalert'),
           enabled: getEnabledFilter(),
           tenant: getTenantFilter(),
+          res_type: {
+            label: this.$t('monitor.text_97'),
+            dropdown: true,
+            distinctField: {
+              type: 'extra_field',
+              key: 'res_type',
+            },
+            mapper: data => {
+              return data.map(val => {
+                let label = val.label
+                if (this.$te(`dictionary.${val.key}`)) label = this.$t(`dictionary.${val.key}`)
+                return {
+                  key: val.key,
+                  label,
+                }
+              })
+            },
+          },
           level: {
             label: this.$t('monitor.level'),
             dropdown: true,
