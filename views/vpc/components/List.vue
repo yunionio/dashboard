@@ -45,6 +45,9 @@ export default {
       type: Array,
       default: () => ([]),
     },
+    cloudEnvOptions: {
+      type: Array,
+    },
   },
   data () {
     const filterOptions = {
@@ -115,6 +118,8 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: !this.cloudEnvEmpty,
+              tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
             }
           },
           hidden: () => this.hiddenActions.includes('create'),
