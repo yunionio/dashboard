@@ -30,6 +30,9 @@ export default {
     getParams: {
       type: Object,
     },
+    cloudEnvOptions: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -102,6 +105,8 @@ export default {
           },
           meta: () => ({
             buttonType: 'primary',
+            validate: !this.cloudEnvEmpty,
+            tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
           }),
         },
         {
