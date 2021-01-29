@@ -2178,6 +2178,7 @@
     "serverskus": "Package",
     "cloudregion": "Region",
     "cloudgroup": "Cloud User Groups",
+    "cloudusergroup": "Groups",
     "clouduser": "Cloud Users",
     "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
