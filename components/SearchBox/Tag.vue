@@ -142,6 +142,20 @@ export default {
       }
     },
   },
+  created () {
+    const conf = this.options[this.id]
+    if (conf && conf.distinctField && !conf.items && this.fetchDistinctField) {
+      try {
+        this.fetchDistinctField(conf).then((values) => {
+          this.$nextTick(() => {
+            this.$set(conf, 'items', values)
+          })
+        })
+      } catch (error) {
+        throw error
+      }
+    }
+  },
   methods: {
     handleClose (e) {
       e.stopPropagation()

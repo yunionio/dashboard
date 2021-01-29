@@ -7,7 +7,7 @@
           showSearch
           style="width: 100%"
           @change="handleCountryChange">
-          <a-select-option v-for="c in countries" :key="c.value" :value="c.value" :label="c.label">
+          <a-select-option v-for="c in datas" :key="c.value" :value="c.value" :label="c.label">
             {{`${c.label}(+${c.value})`}}
           </a-select-option>
         </a-select>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 
 export default {
   name: 'MobileInput',
@@ -30,6 +31,7 @@ export default {
   data () {
     const value = this.value || {}
     const countries = Object.entries(this.$t('countries')).map((c) => { return { value: c[0], label: c[1] } }).sort((a, b) => { return a.value > b.value })
+    this.handleMobileChange = _.debounce(this.handleMobileChange, 500)
     return {
       area_code: value.area_code || '86',
       mobile: value.mobile || '',
