@@ -9,6 +9,7 @@
       <vm-instance-list
         :id="listId"
         :cloud-env="cloudEnv"
+        :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams" />
     </page-body>
   </div>
