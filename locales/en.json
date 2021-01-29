@@ -831,8 +831,8 @@
       "sync_vpcs": "Syncing VPC"
     },
     "alertrecord": {
-      "ok": "Alarm has been restored",
-      "alerting": "Alarming"
+      "ok": "Alert has been restored",
+      "alerting": "Alerting"
     },
     "dnszonecache": {
       "init": "Initialize",
@@ -1509,7 +1509,7 @@
     "latest": "Remove the latest server first"
   },
   "flexGrouTriggerType": {
-    "alarm": "Alarm Strategy",
+    "alarm": "Alert Strategy",
     "timing": "timing strategy",
     "cycle": "cycle strategy"
   },
@@ -2017,8 +2017,8 @@
   "login.desc2": "Simple·Open·Unified·Intelligent",
   "login.desc3": "To unify many distinct clouds into the one cloud that behaves like an integral cloud platform",
   "billWarningCostTypes": {
-    "day": "Daily consumption alarms",
-    "month": "Monthly consumption alarms"
+    "day": "Daily consumption alerts",
+    "month": "Monthly consumption alerts"
   },
   "auth.login": "User Login",
   "auth.chooser": "Select Account",
@@ -2183,7 +2183,7 @@
     "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
     "commonalert": "Policies",
-    "monitor_commonalert": "Alarms",
+    "monitor_commonalert": "Alerts",
     "monitor_metrics": "Metrics",
     "explorer": "Query",
     "instance_snapshot": "Server Snapshot",
@@ -2217,7 +2217,7 @@
     "message": "Message",
     "alertrecord": "History",
     "rds": "RDS",
-    "security-alerts": "Security Alarms",
+    "security-alerts": "Security Alerts",
     "suggestsysrule": "suggestsysrule"
   },
   "res": {
@@ -3456,7 +3456,7 @@
   "scope.text_958": "Backup：{0}",
   "scope.text_959": "IAM & Security",
   "scope.text_960": "Security Optimization",
-  "scope.text_961": "Security Alarms",
+  "scope.text_961": "Security Alerts",
   "common.text00001": "Available",
   "common.text00002": "The following",
   "common.text00003": " ",
@@ -4258,9 +4258,9 @@
   "common_716": "Insufficient authority, no operation authority",
   "common_717": "Total {0} records",
   "common_718": "IP cannot be manually configured when the number of hosts is greater than 1",
-  "common_719": "There are {0} resource alarms",
+  "common_719": "There are {0} resource alerts",
   "common_alert_tips": "There are {0} alerts",
-  "common_720": "There is no resource alarm",
+  "common_720": "There is no resource alert",
   "workflow.biz_field": "The ticket can be found in the ticket list of 'wait for process', and the execution can be retried. If the execution is always failed, please contact the administrator.",
   "common_721": "Object Storage IP",
   "common_722": "Loadbalance IP",
