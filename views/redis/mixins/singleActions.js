@@ -1,5 +1,5 @@
 import { disableDeleteAction } from '@/utils/common/tableActions'
-import { cloudEnabled, cloudUnabledTip } from '@Compute/views/vminstance/utils'
+import { checkSecgroup } from '@DB/views/utils'
 import i18n from '@/locales'
 
 export default {
@@ -196,11 +196,7 @@ export default {
                 })
               },
               meta: () => {
-                const ret = {
-                  validate: cloudEnabled('assignSecgroup', obj),
-                  tooltip: cloudUnabledTip('assignSecgroup', obj),
-                }
-                return ret
+                return checkSecgroup(obj, ['Qcloud'])
               },
             },
             setAuthMode(),
