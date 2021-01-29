@@ -34,6 +34,9 @@ export default {
     cloudEnv: {
       type: String,
     },
+    cloudEnvOptions: {
+      type: Array,
+    },
   },
   data () {
     const allBrandsFilter = getBrandFilter()
@@ -104,6 +107,8 @@ export default {
         meta: () => {
           return {
             buttonType: 'primary',
+            validate: !this.cloudEnvEmpty,
+            tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
           }
         },
       }

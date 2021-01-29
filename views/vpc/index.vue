@@ -2,7 +2,11 @@
   <div>
    <page-header :title="$t('dictionary.vpc')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
    <page-body>
-     <list :id="listId" :cloud-env="cloudEnv" :get-params="getParams" />
+     <list
+      :id="listId"
+      :cloud-env="cloudEnv"
+      :get-params="getParams"
+      :cloudEnvOptions="cloudEnvOptions" />
    </page-body>
   </div>
 </template>
