@@ -147,3 +147,43 @@ export const getResTypeColumn = ({ field = 'common_alert_metric_details' } = {})
     return str
   },
 })
+
+export const getVerifiedContactTypesTableColumn = ({ field = 'channel', title = i18n.t('common_599'), vm } = {}) => {
+  return {
+    title: i18n.t('common_599'),
+    field: 'channel',
+    minWidth: 120,
+    slots: {
+      default: ({ row }, h) => {
+        const color = '#52c41a'
+        const channel = row.channel || []
+        const renderComponents = []
+        channel.forEach((ctype) => {
+          switch (ctype) {
+            case 'webconsole':
+              renderComponents.push(<icon type='webconsole' style={{ color: color }} title={i18n.t('dictionary.webconsole')} />)
+              break
+            case 'email':
+              renderComponents.push(<icon class='ml-2' type='email' style={{ color: color }} title={i18n.t('common.email')} />)
+              break
+            case 'mobile':
+              renderComponents.push(<icon class='ml-2' type='mobile' style={{ color: color }} title={i18n.t('common.mobile')} />)
+              break
+            case 'dingtalk':
+              renderComponents.push(<icon class='ml-2' type='dingtalk' style={{ color: color }} title={i18n.t('common.dingtalk')} />)
+              break
+            case 'feishu':
+              renderComponents.push(<icon class='ml-2' type='feishu' style={{ color: color }} title={i18n.t('common.feishu')} />)
+              break
+            case 'workwx':
+              renderComponents.push(<icon class='ml-2' type='workwx' style={{ color: color }} title={i18n.t('common.workwx')} />)
+              break
+            default:
+              break
+          }
+        })
+        return renderComponents
+      },
+    },
+  }
+}

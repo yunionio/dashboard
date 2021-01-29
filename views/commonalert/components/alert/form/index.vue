@@ -138,6 +138,7 @@ export default {
       level: 'normal',
       scope: this.$store.getters.scope,
       recipients: [],
+      enabled_contact_types: ['webconsole'],
     }
     if (R.is(Object, this.alertData)) {
       initialValue.name = this.alertData.name
@@ -152,9 +153,11 @@ export default {
       initialValue.threshold = _.get(this.alertData, 'settings.conditions[0].evaluator.params[0]')
       if (this.alertData.recipients && this.alertData.recipients.length) initialValue.recipients = this.alertData.recipients
       if (this.alertData.channel && this.alertData.channel.length) {
-        initialValue.enabled_contact_types = this.alertData.channel.filter((c) => !c.endsWith('robot'))
-      } else {
-        initialValue.enabled_contact_types = ['webconsole']
+        if (this.alertData.channel.indexOf('webconsole') < 0) {
+          initialValue.enabled_contact_types.push(...this.alertData.channel.filter((c) => !c.endsWith('robot')))
+        } else {
+          initialValue.enabled_contact_types = this.alertData.channel.filter((c) => !c.endsWith('robot'))
+        }
       }
 
       if (this.alertData.channel && this.alertData.channel.length) initialValue.channel = this.alertData.channel.filter((c) => c.endsWith('robot'))

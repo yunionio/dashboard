@@ -17,6 +17,7 @@
     </template>
     <component
       :is="params.windowData.currentTab"
+      :listId="params.windowData.currentTab"
       :resId="data.id"
       :alertId="data.id"
       :data="detailData"

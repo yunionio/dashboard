@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { levelColumn, conditionColumn, strategyColumn, projectTableColumn, recipientsColumn, getResTypeColumn } from '../utils'
+import { levelColumn, conditionColumn, strategyColumn, projectTableColumn, recipientsColumn, getResTypeColumn, getVerifiedContactTypesTableColumn } from '../utils'
 import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -37,6 +37,7 @@ export default {
         levelColumn,
         conditionColumn,
         getProjectTableColumn(),
+        getVerifiedContactTypesTableColumn({ vm: this }),
       ],
       extraInfo: [],
       hiddenKeys: ['project_domain', 'tenant'],
