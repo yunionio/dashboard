@@ -775,5 +775,5 @@
   "network.external_access_mode_label": "Allow external network access",
   "network.external_access_mode_extra": "After enabling this item, the IP subnet under VPC can access the external network by binding EIP",
   "network.text_754": "Please select a listener in the same field",
-  "network.vpc_aws_delete_alert": "When delete AWS VPC, The routing table security group and the Internet gateway under the VPC will be synchronously removed"
+  "network.vpc_aws_delete_alert": "Deleting an AWS VPC will also cause removal of all its route tables, security groups and internet gateways."
 }
