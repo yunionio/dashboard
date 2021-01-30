@@ -357,7 +357,7 @@
   "network.text_356": "It has been assoicated with listeners thus cannot be deleted",
   "network.text_357": "Create Cluster",
   "network.text_358": "Deleting a cluster will also delete forwarding nodes in the cluster. Please confirm that all forwarding nodes in the cluster are offline?",
-  "network.text_359": "Please confirm that the load balancing instance has been migrated to another cluster",
+  "network.text_359": "Please confirm that the load balancing instances have been assigned to other clusters",
   "network.text_360": "Enable access control",
   "network.text_361": "Access Control Method",
   "network.text_362": "Access Control Policy Group",
