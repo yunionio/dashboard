@@ -371,8 +371,8 @@
   "network.text_370": "Redirect to",
   "network.text_371": "Please enter the domain name or IP address (port number)",
   "network.text_372": "Please enter the URL path",
-  "network.text_373": "Please enter the correct path starting with '/'",
-  "network.text_374": "The URL address after redirection cannot be the same as before the redirection",
+  "network.text_373": "Please enter a correct path starting with '/'",
+  "network.text_374": "URL for redirection cannot be the same as the one before",
   "network.text_375": "RR",
   "network.text_376": "WRR",
   "network.text_377": "WLC",
@@ -774,6 +774,6 @@
   "network.text_753": "The certificate can only be bound to listeners of platforms as listed in cached list",
   "network.external_access_mode_label": "Allow external network access",
   "network.external_access_mode_extra": "After enabling this item, the IP subnet under VPC can access the external network by binding EIP",
-  "network.text_754": "Please select a listener in the same field",
+  "network.text_754": "Please select a listener of the same zone",
   "network.vpc_aws_delete_alert": "Deleting an AWS VPC will also cause removal of all its route tables, security groups and internet gateways."
 }
