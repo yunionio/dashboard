@@ -4259,7 +4259,7 @@
   "common_717": "Total {0} records",
   "common_718": "IP cannot be manually configured when the number of hosts is greater than 1",
   "common_719": "There are {0} resource alerts",
-  "common_alert_tips": "There are {0} alerts",
+  "common_alert_tips": "There are {0} unrecovered alerts",
   "common_720": "There is no resource alert",
   "workflow.biz_field": "The ticket can be found in the ticket list of 'wait for process', and the execution can be retried. If the execution is always failed, please contact the administrator.",
   "common_721": "Object Storage IP",
