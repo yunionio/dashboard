@@ -339,7 +339,7 @@
   "network.text_338": "Please enter IP",
   "network.text_339": "The port range is 1-65535, the same server is in a group, and the port cannot be repeated",
   "network.text_340": "Access back-end server through encryption",
-  "network.text_341": "Specify server",
+  "network.text_341": "Specify Server",
   "network.text_342": "Specify Host",
   "network.text_343": "Please select the type",
   "network.text_344": "Please specify a server",
