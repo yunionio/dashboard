@@ -43,7 +43,7 @@ export default {
   methods: {
     async fetchData () {
       try {
-        const { data: { types = [] } } = await new this.$Manager('notifyconfigs', 'v1').performClassAction({ action: 'get-types', data: this.getParams })
+        const { data: { types = [] } } = await new this.$Manager('receivers', 'v1').performClassAction({ action: 'get-types', data: this.getParams })
         const channelOpts = types.map(val => {
           const channel = channelMaps[val]
           let label = channel ? channel.label : val
