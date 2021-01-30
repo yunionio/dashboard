@@ -560,7 +560,7 @@
   "network.text_560": "Create DNAT entry",
   "network.text_561": "Delete DNAT entry",
   "network.text_562": "DNAT entry",
-  "network.text_563": "Prompt: Please make sure the data is backed up before deleting, the data cannot be retrieved after deletion",
+  "network.text_563": "Prompt: Please make sure the data is backed up before deleting. Data cannot be recovered after deletion",
   "network.text_564": "SNAT name",
   "network.text_565": "IP Subnets",
   "network.text_566": "{0} (start: {1} and end: {2})",
