@@ -697,7 +697,7 @@
   "network.text_697": "Network Bandwidth",
   "network.text_698": "The name already exists",
   "network.text_699": "Please select the bandwidth",
-  "network.text_700": "The size of the network transmission data packet. The MTU parameter ranges from 68 bytes to 9216 bytes, usually set to 1500",
+  "network.text_700": "MTU, Maximum Tranmission Unit. It should be in range from 68 bytes to 9216 bytes and more often than not it's 1500",
   "network.text_704": "Assign",
   "network.text_705": "Allocated",
   "network.text_706": "Unallocated",
