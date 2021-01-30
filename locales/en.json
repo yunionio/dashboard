@@ -421,7 +421,7 @@
   "network.text_420": "Protocol",
   "network.text_421": "Please select a certificate",
   "network.text_422": "Nothing you want? Can go",
-  "network.text_423": "Scheduling Algorithm",
+  "network.text_423": "Scheduling Method",
   "network.text_424": "Connection idle timeout period",
   "network.text_425": "Connection request timeout period",
   "network.text_426": "Enable HTTP2.0",
