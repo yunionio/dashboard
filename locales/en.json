@@ -156,7 +156,7 @@
   "network.text_154": "Create DNS",
   "network.text_155": "Clone",
   "network.text_156": "Domain Name",
-  "network.text_157": "Please enter the full domain name, otherwise the creation may be invalid",
+  "network.text_157": "Please enter the full domain name, otherwise the creation may fail",
   "network.text_158": "Please enter domain name",
   "network.text_159": "When the record type is PTR, please invert and fill in the IP to be reversed. If the IP is 1.2.3.4, then please fill in 4.3.2.1",
   "network.text_160": "Record Type",
