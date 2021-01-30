@@ -182,7 +182,7 @@
   "network.text_180": "Please enter a valid SRV domain name",
   "network.text_181": "Please enter the record value in IPv4 format",
   "network.text_182": "Please enter the record value in IPv6 format",
-  "network.text_183": "The record type is A, please fill in legal IPv4, the record type is AAAA, please fill in legal IPv6",
+  "network.text_183": "For A record type please fill in ipv4 address and for AAAA ipv6 address",
   "network.text_184": "DNS",
   "network.text_185": "{0} days",
   "network.text_186": "{0} hours",
