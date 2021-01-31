@@ -629,7 +629,7 @@
   "cloudenv.text_570": "Creat cache list",
   "cloudenv.text_571": "The discount rate will not affect the actual billing data, and only use the lowest discount rate of the platform for cost estimation when creating new resources. E.g, fill in 10%, that is, the discount rate after the cost = original price * (1-10%)",
   "samluser": {
-    "create_title": "Create saml user",
+    "create_title": "Create SAML User",
     "create_cloudgroup_extra": "Corresponding to the user group on the cloud, a collection of permissions"
   },
   "cloudenv.environment": "Account Type",
