@@ -347,7 +347,7 @@
   "cloudenv.text_311": "More",
   "cloudenv.text_312": "Please enable cloud account first",
   "cloudenv.text_313": "Please cancel the auto sync first",
-  "cloudenv.text_314": "Unable to operate without third-level permission",
+  "cloudenv.text_314": "Unable to operate without three level permission model",
   "cloudenv.text_315": "Only available in the system manager view",
   "cloudenv.text_316": "Set up proxy",
   "cloudenv.text_317": "Account Information",
@@ -654,8 +654,8 @@
   "cloudenv.create_apsara_cloud_account": "{0}#create-apsara-accounts",
   "cloudenv.text_574": "How to get {0} ASAPI endpoint",
   "cloudenv.text_575": "Offical Docs",
-  "cloudaccount.tooltip.already_enable_sso": "Account has already enable SSO",
-  "cloudaccount.tooltip.not_support_sso": "{0} not support SSO",
+  "cloudaccount.tooltip.already_enable_sso": "Account has already enabled SSO",
+  "cloudaccount.tooltip.not_support_sso": "{0} does not support SSO",
   "cloudenv.text_576": "Enable SSO",
   "table.title.sso_status": "SSO status"
 }
