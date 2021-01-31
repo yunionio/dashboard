@@ -442,7 +442,7 @@
   "cloudenv.text_409": "{1} connection test failed",
   "cloudenv.text_410": "Specify {0}",
   "cloudenv.text_411": "Create Proxy Setting",
-  "cloudenv.text_412": "The cloud account has been linked, please unlink the cloud account and try again",
+  "cloudenv.text_412": "It has been associated with some cloud accounts. Please disassociate and try again",
   "cloudenv.text_413": "Preferences",
   "cloudenv.text_414": "Create Scheduler Policy",
   "cloudenv.text_415": "Delete Scheduler Policy",
