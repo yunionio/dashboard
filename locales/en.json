@@ -614,7 +614,7 @@
   "cloudenv.text_555": "Assign",
   "cloudenv.text_556": "Please fill in the operation callback address",
   "cloudenv.text_557": "{0}: {1} ",
-  "cloudenv.text_558": "Set third-party callback address",
+  "cloudenv.text_558": "Set third-party callback URL",
   "cloudenv.text_559": "Remote Control",
   "cloudenv.text_560": "{0} policy definition",
   "cloudenv.text_561": "Add Network Card",
