@@ -21,7 +21,7 @@
     "timing": "timing strategy"
   },
   "cloudenv.scheduled_task_desc": "Through scheduled tasks, you can perform operations such as scheduled power on and off or restart of associated servers",
-  "cloudenv.cloudgroup_desc": "@:dictionary.cloudgroup corresponds to the 'user group' on the cloud. This page can add, delete, modify and check @:dictionary.cloudgroup. We will automatically synchronize the @:dictionary.cloudgroup on all cloud accounts. , You can use any one of the apps in the @:dictionary.cloudgroup list to other accounts on the same platform, regardless of whether the @:dictionary.cloudgroup is available on the account. We will sync it for you automatically, you don’t need to worry about it",
+  "cloudenv.cloudgroup_desc": "@:dictionary.cloudgroup corresponds to the 'user group' on the cloud. On this page you can add, delete, modify and inspect @:dictionary.cloudgroup. We will automatically synchronize the @:dictionary.cloudgroup for all cloud accounts. , You can apply any in the @:dictionary.cloudgroup list to other accounts of same platform, regardless of whether the @:dictionary.cloudgroup is already available on the account. We will sync it for you automatically",
   "cloudenv.cloudgroup_single_action1": "Associate @:dictionary.clouduser",
   "cloudenv.cloudgroup_single_action2": "Associated Permission",
   "cloudenv.cloudgroup_delete_tip": "Delete@:dictionary.cloudgroup",
