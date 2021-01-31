@@ -272,7 +272,7 @@
   "compute.text_272": "Start",
   "compute.text_273": "Stop",
   "compute.text_274": "Restart",
-  "compute.text_275": "Bulk Action",
+  "compute.text_275": "Batch Action",
   "compute.text_276": "Reset Password",
   "compute.text_277": "The cloud server with the key bound cannot reset the password",
   "compute.text_278": "Please select resources under the same platform",
