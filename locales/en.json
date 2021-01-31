@@ -395,7 +395,7 @@
   "cloudenv.text_362": "Quota on the Cloud",
   "cloudenv.text_363": "Set up synchronization",
   "cloudenv.text_364": "Sync",
-  "cloudenv.text_365": "When synchronizing resources on the cloud, self-synchronize resources in this area",
+  "cloudenv.text_365": "Whether to include resources in this zone when synchronizing",
   "cloudenv.text_366": "Enable synchronization",
   "cloudenv.text_367": "Sync completed",
   "cloudenv.text_368": "This operation is not supported in {0} state",
