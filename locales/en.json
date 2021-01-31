@@ -396,7 +396,7 @@
   "cloudenv.text_363": "Set up synchronization",
   "cloudenv.text_364": "Sync",
   "cloudenv.text_365": "Whether to include resources in this zone when synchronizing",
-  "cloudenv.text_366": "Enable synchronization",
+  "cloudenv.text_366": "Enable Synchronization",
   "cloudenv.text_367": "Sync completed",
   "cloudenv.text_368": "This operation is not supported in {0} state",
   "cloudenv.text_369": "Cloud Server",
