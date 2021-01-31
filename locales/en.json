@@ -8,7 +8,7 @@
     },
     "host_status": {
       "online": "Online",
-      "offline": "offline"
+      "offline": "Offline"
     },
     "sync": {
       "queuing": "Queuing",
@@ -2347,7 +2347,7 @@
   },
   "common": {
     "more": "More",
-    "batchAction": "Bulk Action",
+    "batchAction": "Batch Action",
     "action": "Action",
     "ok": "OK",
     "save": "Save",
