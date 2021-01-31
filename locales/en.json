@@ -388,7 +388,7 @@
   "cloudenv.text_355": "{0}",
   "cloudenv.text_356": "Resources will be attributed to {0} by default",
   "cloudenv.text_357": "Please enable first",
-  "cloudenv.text_358": "Insufficient permissions",
+  "cloudenv.text_358": "Lacks Permission",
   "cloudenv.text_359": "Other Information",
   "cloudenv.text_360": "Type",
   "cloudenv.text_361": "Usage Status",
