@@ -285,7 +285,7 @@
   "cloudenv.text_243": "Please enter the tenant (Tenant) ID",
   "cloudenv.text_244": "Following",
   "cloudenv.text_245": "{0}",
-  "cloudenv.text_246": "The cloud account will update the billing file",
+  "cloudenv.text_246": "cloud account(s) will get billing file updated",
   "cloudenv.text_247": "Please enter project_id",
   "cloudenv.text_248": "{0}",
   "cloudenv.text_249": "Please enter client_email",
