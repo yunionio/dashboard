@@ -30,7 +30,7 @@ export default {
             const actual_capacity_used = allowedBrands.includes(row.brand) ? sizestr(row.actual_capacity_used, 'M', 1024) : '-'
             return [<div>
               <div>{this.$t('storage.text_178', [actual_capacity_used])}</div>
-              <div>{this.$t('storage.text_180', [capacity])}</div>
+              <div>{this.$t('common_717', [capacity])}</div>
             </div>]
           },
         },
@@ -45,7 +45,7 @@ export default {
             const used_capacity = sizestr(row.used_capacity, 'M', 1024)
             return [<div>
               <div>{this.$t('storage.text_181', [used_capacity])}</div>
-              <div>{this.$t('storage.text_180', [virtual_capacity])}</div>
+              <div>{this.$t('common_717', [virtual_capacity])}</div>
             </div>]
           },
         },
