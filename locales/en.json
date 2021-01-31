@@ -415,7 +415,7 @@
   "cloudenv.text_382": "Modify dynamic scheduler tags",
   "cloudenv.text_383": "Strategy Adjustment",
   "cloudenv.text_384": "Resource Type",
-  "cloudenv.text_385": "Tag (dispatch tag)",
+  "cloudenv.text_385": "Tag (Scheduler)",
   "cloudenv.text_386": "Cloud Project",
   "cloudenv.text_387": "Local Project",
   "cloudenv.text_388": "Switch local project",
