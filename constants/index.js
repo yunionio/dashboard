@@ -134,7 +134,7 @@ export const contactMap = {
     value: 'feishu',
   },
   workwx: {
-    label: i18n.t('common_595'),
+    label: i18n.t('system.wecom.1'),
     value: 'workwx',
   },
 }
@@ -149,7 +149,7 @@ export const channelMaps = {
   dingtalk: { value: 'dingtalk', label: i18n.t('common.dingtalk'), sort: 4 },
   feishu: { value: 'feishu', label: i18n.t('common.feishu'), sort: 5 },
   'feishu-robot': { value: 'feishu', label: i18n.t('common.feishu_robot'), sort: 6 },
-  'workwx-robot': { value: 'workwx-robot', label: i18n.t('common_596'), sort: 7 },
+  'workwx-robot': { value: 'workwx-robot', label: i18n.t('system.wecom.bot'), sort: 7 },
   'dingtalk-robot': { value: 'dingtalk-robot', label: i18n.t('system.text_303'), sort: 8 },
 }
 
