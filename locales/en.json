@@ -262,7 +262,7 @@
   "cloudenv.text_220": "Please enter the bucket URL",
   "cloudenv.text_221": "Please enter the contract number",
   "cloudenv.text_222": "Please enter the key",
-  "cloudenv.text_223": "The optional platform for creating a new cloud account is the same as the platform you selected in 'Function Selection'. If you need to adjust, click ",
+  "cloudenv.text_223": "Platforms available for creation is constrained by the selection in 'Function Selection'. Go there to enable/disable if needed",
   "cloudenv.text_224": "Select 'Function selection' to re-enter the configuration (Note: If there is no corresponding menu, please contact the administrator to set)",
   "cloudenv.text_225": "Note: When connecting to a VMware account, you need to ensure that the local IP subnet contains the IP of all hosts under the vCenter. If there is no corresponding IP subnet, you cannot use and synchronize resources under the host.",
   "cloudenv.text_226": "You can create a missing IP subnet below, you don't need to create a new one and turn off the configuration IP subnet switch below",
