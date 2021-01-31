@@ -143,7 +143,7 @@ export default {
       },
       columns: [
         {
-          title: '#',
+          title: '#ID',
           field: 'id',
           minWidth: 80,
           showOverflow: 'ellipsis',
@@ -152,20 +152,8 @@ export default {
           title: this.$t('table.title.res_name'),
           field: 'obj_name',
         }),
-        {
-          title: this.$t('common.status'),
-          field: 'success',
-          width: 80,
-          slots: {
-            default: ({ row }) => {
-              const txt = row.success ? this.$t('common_159') : this.$t('common_160')
-              const color = row.success ? '#67C23A' : '#F56C6C'
-              return [<span style={{ color }}>{ txt }</span>]
-            },
-          },
-        },
         getCopyWithContentTableColumn({
-          title: this.$t('common_56'),
+          title: this.$t('scope.text_653'),
           field: 'obj_type',
           hideField: true,
           message: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
@@ -202,6 +190,18 @@ export default {
           },
         },
         {
+          title: this.$t('table.title.action_result'),
+          field: 'success',
+          width: 80,
+          slots: {
+            default: ({ row }) => {
+              const txt = row.success ? this.$t('common_159') : this.$t('common_160')
+              const color = row.success ? '#67C23A' : '#F56C6C'
+              return [<span style={{ color }}>{ txt }</span>]
+            },
+          },
+        },
+        {
           field: 'user',
           title: this.$t('table.title.sponsor'),
           minWidth: 120,
@@ -211,12 +211,10 @@ export default {
               const tenant = row.tenant
               const ret = [
                 <list-body-cell-wrap style="margin: 3px 0 2px 0" copy field='user' row={row} />,
-                <list-body-cell-wrap style="line-height: 1" hide-field copy field="tenant" row={{ tenant }}>
-                  <span class='text-weak'>{ tenant }</span>
-                </list-body-cell-wrap>,
-                <list-body-cell-wrap style="margin-bottom: 3px" hide-field copy field="domain" row={{ domain }}>
-                  <span class='text-weak'>{ domain }</span>
-                </list-body-cell-wrap>,
+                <a-space>
+                  <span class='text-weak' title={ this.$t('shareScope.domain') }> { domain } </span>
+                  <span class='text-weak' title={ this.$t('shareScope.project') }> { tenant } </span>
+                </a-space>,
               ]
               return ret
             },
@@ -246,7 +244,7 @@ export default {
         },
         {
           field: 'notes',
-          title: this.$t('table.title.desc'),
+          title: '',
           width: 70,
           slots: {
             default: ({ row, column }) => {
