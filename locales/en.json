@@ -532,7 +532,7 @@
   "cloudaccount": {
     "table": {
       "action": {
-        "set_discount": "Set discount"
+        "set_discount": "Set Discount"
       },
       "title": {
         "discount": "Discount"
