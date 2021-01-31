@@ -7,7 +7,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          span: 3,
+          span: 6,
         }
       },
     },
@@ -15,7 +15,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          span: 21,
+          span: 18,
         }
       },
     },
@@ -50,7 +50,7 @@ export default {
     renderFormItem () {
       const { getFieldDecorator } = this.form.fc
       return (
-        <a-row gutter={ 8 }>
+        <a-row gutter={ 24 }>
           <a-col span={ 12 } >
             {getFieldDecorator(this.option.value, {
               initialValue: this.presentPolicies[this.option.value],
@@ -65,7 +65,7 @@ export default {
             !this.disabled
               ? (<a-col span={ 12 }>
                 <a-button type="link" onClick={ this.handleHiddenFormItem }>
-                  取消
+                  { i18n.t('system.text_491') }
                 </a-button>
               </a-col>)
               : null
