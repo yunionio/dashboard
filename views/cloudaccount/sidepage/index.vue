@@ -66,6 +66,7 @@ export default {
       }
       const detailTabs = [
         { label: this.$t('cloudenv.text_237'), key: 'cloudaccount-detail' },
+        { label: this.$t('cloudenv.text_319'), key: 'usage' },
         { label: this.$t('cloudenv.text_318'), key: 'cloudprovider-list' },
         { label: this.$t('cloudenv.text_386'), key: 'externalproject-list' },
       ]
@@ -79,8 +80,6 @@ export default {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }
-
-      detailTabs.push({ label: this.$t('cloudenv.text_319'), key: 'usage' })
       detailTabs.push({ label: this.$t('cloudenv.text_15'), key: 'event-drawer' })
       return detailTabs
     },
