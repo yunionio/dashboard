@@ -2143,6 +2143,7 @@
     "secgrouprule": "Security Group Rule",
     "server": "Server",
     "serverip": "Server IP",
+    "disktype": "Disk Type",
     "serverrecovery": "Host",
     "servertemplate": "Server Template",
     "service": "Service",

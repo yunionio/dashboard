@@ -2143,6 +2143,7 @@
     "secgrouprule": "安全组规则",
     "server": "虚拟机",
     "serverip": "虚拟机IP",
+    "disktype": "磁盘类型",
     "serverrecovery": "主机",
     "servertemplate": "主机模板",
     "service": "服务",
