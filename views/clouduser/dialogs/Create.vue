@@ -25,7 +25,7 @@
               :params="nameRepeatParams" />
           </template>
         </a-form-item>
-        <a-form-item :label="$t('dictionary.cloudgroup')" :extra="$t('cloudenv.clouduser_text2')">
+        <a-form-item :label="$t('dictionary.cloudusergroup')" :extra="$t('cloudenv.clouduser_text2')">
           <list-select
             v-decorator="decorators.cloudgroup_ids"
             :listProps="cloudgroupListSelectProps"
