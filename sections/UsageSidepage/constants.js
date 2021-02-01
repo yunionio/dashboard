@@ -236,3 +236,74 @@ export const USAGE_CONFIG = {
     noPerfix: true,
   },
 }
+
+export const USAGE_CONFIG_MAP = {
+  servers: {
+    zh_cn: i18n.t('cloudenv.res_servers'),
+  },
+  loadbalancer: {
+    zh_cn: i18n.t('cloudenv.res_loadbalancer'),
+  },
+  rds: {
+    zh_cn: i18n.t('cloudenv.res_rds'),
+  },
+  cache: {
+    zh_cn: i18n.t('cloudenv.res_cache'),
+  },
+  bucket_objects: {
+    zh_cn: i18n.t('cloudenv.res_bucket_objects'),
+  },
+  bucket_bytes: {
+    formatter: val => sizestrWithUnit(val, 'M', 1024),
+    zh_cn: i18n.t('cloudenv.res_bucket_bytes'),
+  },
+  'eip.floating_ip': {
+    zh_cn: i18n.t('cloudenv.res_eip_floating_ip'),
+  },
+  'eip.public_ip': {
+    zh_cn: i18n.t('cloudenv.res_eip_public_ip'),
+  },
+  snapshot: {
+    zh_cn: i18n.t('cloudenv.res_snapshot'),
+  },
+  vpcs: {
+    zh_cn: i18n.t('cloudenv.res_vpcs'),
+  },
+  networks: {
+    zh_cn: i18n.t('cloudenv.res_networks'),
+  },
+  ports: {
+    zh_cn: i18n.t('cloudenv.res_ports'),
+  },
+}
+
+export const USAGE_RING_DATAS = [
+  {
+    name: i18n.t('dashboard.text_151'),
+    sum: 'servers',
+    use: 'ready_servers',
+    use_label: i18n.t('dashboard.shutdown'),
+    unuse_label: i18n.t('dashboard.not_shutdown'),
+  },
+  {
+    name: i18n.t('dashboard.text_147'),
+    sum: 'disks.count',
+    use: 'disks.attached.count',
+    use_label: i18n.t('dashboard.mounted'),
+    unuse_label: i18n.t('dashboard.not_mounted'),
+  },
+  {
+    name: i18n.t('dashboard.text_152'),
+    sum: 'eip.floating_ip',
+    use: 'eip.floating_ip.used',
+    use_label: i18n.t('dashboard.text_33'),
+    unuse_label: i18n.t('dashboard.text_34'),
+  },
+  {
+    name: i18n.t('dashboard.text_156'),
+    sum: 'ports',
+    use: 'nics',
+    use_label: i18n.t('dashboard.text_33'),
+    unuse_label: i18n.t('dashboard.text_34'),
+  },
+]
