@@ -659,5 +659,17 @@
   "cloudaccount.tooltip.already_enable_sso": "云账号已开启免密认证",
   "cloudaccount.tooltip.not_support_sso": "{0} 不支持免密认证",
   "cloudenv.text_576": "开启免密登录", 
-  "table.title.sso_status": "免密认证"
+  "table.title.sso_status": "免密认证",
+  "cloudenv.res_servers": "虚拟机",
+  "cloudenv.res_loadbalancer": "LB实例",
+  "cloudenv.res_rds": "RDS实例",
+  "cloudenv.res_cache": "Redis实例",
+  "cloudenv.res_bucket_objects": "对象存储数量",
+  "cloudenv.res_bucket_bytes": "对象存储容量",
+  "cloudenv.res_eip_floating_ip": "EIP",
+  "cloudenv.res_eip_public_ip": "公网IP",
+  "cloudenv.res_snapshot": "快照",
+  "cloudenv.res_vpcs": "VPC",
+  "cloudenv.res_networks": "IP子网",
+  "cloudenv.res_ports": "IP总量"
 }

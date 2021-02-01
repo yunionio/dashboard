@@ -657,5 +657,17 @@
   "cloudaccount.tooltip.already_enable_sso": "Account has already enable SSO",
   "cloudaccount.tooltip.not_support_sso": "{0} not support SSO",
   "cloudenv.text_576": "Enable SSO",
-  "table.title.sso_status": "SSO status"
+  "table.title.sso_status": "SSO status",
+  "cloudenv.res_servers": "Servers",
+  "cloudenv.res_loadbalancer": "LB Instances",
+  "cloudenv.res_rds": "RDS Instances",
+  "cloudenv.res_cache": "Redis Instances",
+  "cloudenv.res_bucket_objects": "#OSS",
+  "cloudenv.res_bucket_bytes": "OSS Usage",
+  "cloudenv.res_eip_floating_ip": "EIP",
+  "cloudenv.res_eip_public_ip": "Public IPs",
+  "cloudenv.res_snapshot": "Snapshots",
+  "cloudenv.res_vpcs": "VPC",
+  "cloudenv.res_networks": "IP Subnets",
+  "cloudenv.res_ports": "#IP"
 }
