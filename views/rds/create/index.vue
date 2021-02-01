@@ -139,7 +139,7 @@ export default {
       const secgroupMaxMap = {
         Huawei: 1,
         Qcloud: 5,
-        Aliyun: 5,
+        Aliyun: 3,
       }
       return secgroupMaxMap[form.getFieldValue('provider')] || 5
     },
