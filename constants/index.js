@@ -352,6 +352,7 @@ export const filterKeyMap = {
   elb_name: i18n.t('scope.text_105'),
   elb_ip: i18n.t('common_722'),
   cloudaccount_name: i18n.t('dictionary.cloudaccount'),
+  disk_type: i18n.t('dictionary.disktype'),
 }
 
 export const MONITOR_MAX_POINTERS = 30
