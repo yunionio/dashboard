@@ -216,7 +216,7 @@ export default {
         if (fd.comparator === 'nodata') {
           data.metric_query[0].condition_type = 'nodata_query'
         }
-        if (fd.showChannel) {
+        if (fd.showChannel && fd.channel) {
           data.channel = fd.channel
         } else {
           data.channel = []
