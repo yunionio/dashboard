@@ -123,6 +123,7 @@ export default {
   },
   snapshot: {
     success: ['ready'],
+    danger: ['delete_failed'],
   },
   snapshotpolicy: {
     success: ['ready'],

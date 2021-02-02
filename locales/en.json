@@ -445,6 +445,7 @@
       "creating": "Creating",
       "ready": "Available",
       "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
       "unknown": "Status abnormal",
       "instance_snapshot_create_failed": "Server snapshot creation failed",
       "instance_snapshot_start_delete": "The server snapshot starts to be deleted",
