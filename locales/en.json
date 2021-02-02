@@ -4218,5 +4218,6 @@
     "year": "year"
   },
   "common.need_same_domain_resource": "Please select resource in the same @:dictionary.domain",
-  "common.set_secgroup_max": "There are at most {0} of them"
+  "common.set_secgroup_max": "There are at most {0} of them",
+  "common.set_secgroup_max_message": "Prompt message: Up to {0} security groups can be associated"
 }
