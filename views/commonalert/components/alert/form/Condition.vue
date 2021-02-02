@@ -10,19 +10,19 @@
         <base-select v-decorator="decorators.alert_duration" :options="durationOpts" :disabled="disabled" />
       </a-form-item>
     </a-col>
-    <a-col :span="5">
-      <a-form-item class="mr-1">
-        <base-select v-decorator="decorators.reduce" :options="reduceOpts" :disabled="disabled" />
-      </a-form-item>
-    </a-col>
     <a-col :span="4">
       <a-form-item class="mr-1">
-        <base-select v-decorator="decorators.comparator"  :options="comparatorOpts" minWidth="100px" :disabled="disabled" @change="onComparatorChange" />
+        <base-select v-decorator="decorators.reduce" :options="reduceOpts" :disabled="disabled" minWidth="80px" />
       </a-form-item>
     </a-col>
     <a-col :span="3">
+      <a-form-item class="mr-1">
+        <base-select v-decorator="decorators.comparator"  :options="comparatorOpts" minWidth="90px" :disabled="disabled" @change="onComparatorChange" />
+      </a-form-item>
+    </a-col>
+    <a-col :span="5" v-show="showThreshold">
       <a-form-item>
-        <a-input v-decorator="decorators.threshold" :disabled="disabled" v-show="showThreshold" @blur="blur" :suffix="unit" />
+        <a-input v-decorator="decorators.threshold" :disabled="disabled" @blur="blur" :suffix="unit" />
       </a-form-item>
     </a-col>
   </a-row>
