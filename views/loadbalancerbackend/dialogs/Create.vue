@@ -196,7 +196,7 @@ export default {
         if (this.firstLbBackendVpc) {
           params.vpc = this.firstLbBackendVpc
         } else {
-          params.manager_id = this.params.lbBackendgroupData.manager_id
+          params.manager_id = this.params.lbData.manager_id
         }
       }
       return params
