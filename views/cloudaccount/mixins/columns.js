@@ -41,7 +41,7 @@ export default {
         field: 'last_auto_sync',
         title: i18n.t('cloudenv.text_103'),
         minWidth: 70,
-        showOverflow: 'title',
+        showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
             if (row.sync_status !== 'idle') { // 表示正在同步中
