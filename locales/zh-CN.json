@@ -4543,5 +4543,6 @@
     "1868": "特立尼达和多巴哥共和国",
     "1869": "圣基茨和尼维斯联邦"
   },
-  "common.no_platform_available": "暂无可用的平台，请检查后重试！"
+  "common.no_platform_available": "暂无可用的平台，请检查后重试！",
+  "common.set_secgroup_max_message": "提示信息：安全组最多可关联{0}个"
 }

@@ -4543,5 +4543,6 @@
     "1868": "Trinidad and Tobago",
     "1869": "Saint Kitts and Nevis"
   },
-  "common.no_platform_available": "There is no platform available, please check and try again!"
+  "common.no_platform_available": "There is no platform available, please check and try again!",
+  "common.set_secgroup_max_message": "Prompt message: Up to {0} security groups can be associated"
 }
