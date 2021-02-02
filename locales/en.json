@@ -4279,5 +4279,6 @@
   "common.share": "The shared {0} does not support this operation",
   "common.need_same_domain_resource": "Please select resource in the same @:dictionary.domain",
   "common.set_secgroup_max": "There are at most {0} of them",
-  "common.no_platform_available": "There is no platform available, please check and try again!"
+  "common.no_platform_available": "There is no platform available, please check and try again!",
+  "common.set_secgroup_max_message": "Prompt message: Up to {0} security groups can be associated"
 }
