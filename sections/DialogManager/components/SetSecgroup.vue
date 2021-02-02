@@ -101,11 +101,7 @@ export default {
       return MAX_BIND_NUM[this.params.data[0].provider] || 1
     },
     message () {
-      let str = this.$t('compute.text_1245')
-      if (this.bindMaxNum === 1) {
-        str = this.$t('compute.text_1246')
-      }
-      return str
+      return this.$t('common.set_secgroup_max_message', [this.bindMaxNum])
     },
     href () {
       const url = this.$router.resolve('/secgroup')
