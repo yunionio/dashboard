@@ -31,7 +31,7 @@
   "cloudenv.coludgroup_text004": "Permission group cache",
   "cloudenv.coludgroup_text005": "Number of Permissions",
   "cloudenv.coludgroup_text006": "Number of Users",
-  "cloudenv.clouduser_list_t1": "User Name",
+  "cloudenv.clouduser_list_t1": "Username",
   "cloudenv.clouduser_list_t2": "Password",
   "cloudenv.clouduser_list_t3": "Login Address",
   "cloudenv.clouduser_list_t4": "Associated User",
