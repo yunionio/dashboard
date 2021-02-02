@@ -250,7 +250,7 @@ export const USAGE_CONFIG_MAP = {
   cache: {
     zh_cn: i18n.t('cloudenv.res_cache'),
   },
-  bucket_objects: {
+  buckets: {
     zh_cn: i18n.t('cloudenv.res_bucket_objects'),
   },
   bucket_bytes: {
