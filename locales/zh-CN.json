@@ -4279,5 +4279,6 @@
   "common.share": "被共享的{0}不支持该操作",
   "common.need_same_domain_resource": "请选择同一@:dictionary.domain的资源",
   "common.set_secgroup_max": "最多关联{0}个",
-  "common.no_platform_available": "暂无可用的平台，请检查后重试！"
+  "common.no_platform_available": "暂无可用的平台，请检查后重试！",
+  "common.set_secgroup_max_message": "提示信息：安全组最多可关联{0}个"
 }
