@@ -96,7 +96,7 @@ export default {
       if (this.isAdminMode) {
         params.scope = 'system'
       } else if (this.isDomainMode) {
-        params.project_domain = this.userInfo.domain.id
+        params.project_domain_id = this.userInfo.projectDomainId
       }
       return params
     },
