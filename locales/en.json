@@ -218,5 +218,6 @@
   "monitor.overview_tab_write_bps": "Disk Write Rate",
   "monitor.overview.location": "{0} Overview",
   "monitor.commonalerts.channel.disable.tips": "Alter channel {0} can not be disabled",
-  "monitor.duration.label": "{0} consecutive cycles"
+  "monitor.duration.label": "{0} consecutive cycles",
+  "monitor.commonalerts.robot.disable.tips": "no available robot channel currently, please setup first"
 }

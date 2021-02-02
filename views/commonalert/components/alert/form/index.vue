@@ -78,7 +78,12 @@
     </a-form-item>
     <template>
       <a-form-item :label="$t('monitor_metric_95')">
-        <a-switch v-decorator="decorators.showChannel" @change="v => showChannel = v" />
+        <a-tooltip placement="top">
+          <template slot="title">
+            <span v-if="!hadRobot">{{ $t('monitor.commonalerts.robot.disable.tips') }}</span>
+          </template>
+          <a-switch v-decorator="decorators.showChannel" @change="v => showChannel = v " :disabled="!hadRobot" />
+        </a-tooltip>
       </a-form-item>
       <notify-types
         :label="$t('monitor.text_11')"
@@ -437,6 +442,33 @@ export default {
       if (ect) {
         const newContactTypes = this.contactArrOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value)
         this.form.fc.setFieldsValue({ enabled_contact_types: newContactTypes })
+      }
+    },
+    res_type_measurements () {
+      if (!this.conditionUnit || this.conditionUnit === '') {
+        const data = this.form.fc.getFieldsValue([this.decorators.metric_res_type[0], this.decorators.metric_key[0], this.decorators.metric_value[0]])
+        if (!this.res_type_measurements) {
+          return
+        }
+        const opts = this.res_type_measurements[data.metric_res_type]
+        if (!opts) {
+          return
+        }
+        const keyOpts = opts.filter((o) => {
+          return o.measurement === data.metric_key
+        })
+        if (!keyOpts || keyOpts.length <= 0) {
+          return
+        }
+        if (!keyOpts[0].field_descriptions) {
+          return
+        }
+        const ds = keyOpts[0].field_descriptions
+        for (const k in ds) {
+          if (k === data.metric_value && ds[k].unit) {
+            this.conditionUnit = ds[k].unit
+          }
+        }
       }
     },
   },
