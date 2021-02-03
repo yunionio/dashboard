@@ -80,7 +80,7 @@ export default {
         slots: {
           default: ({ row }) => {
             return [
-              <div class='text-truncate'>{ this.$t('common_717', [row.ports])}</div>,
+              <div class='text-truncate'>{ this.$t('network.text_727', [row.ports])}</div>,
               <div class='text-truncate'>{ this.$t('network.text_728', [row.ports_used])}</div>,
             ]
           },
