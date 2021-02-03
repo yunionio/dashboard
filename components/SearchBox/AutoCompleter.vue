@@ -148,7 +148,7 @@ export default {
     async handleKeyClick (e, key, item) {
       e.stopPropagation()
       if (item.date) {
-        this.completerWrapStyle = { width: '300px', right: '-300px' }
+        this.completerWrapStyle = { width: '360px', right: '-300px' }
       }
       this.selectKey = key
       var prefix = `${item.label}${this.keySeparator}`
