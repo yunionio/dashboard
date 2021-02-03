@@ -2325,6 +2325,7 @@
       "exec_result": "执行结果",
       "scope_range": "应用范围",
       "os_arch": "CPU架构",
+      "operation_status": "执行状态",
       "id": "ID"
     },
     "action": {
@@ -4546,5 +4547,23 @@
     "1869": "圣基茨和尼维斯联邦"
   },
   "common.no_platform_available": "暂无可用的平台，请检查后重试！",
-  "common.set_secgroup_max_message": "提示信息：安全组最多可关联{0}个"
+  "common.set_secgroup_max_message": "提示信息：安全组最多可关联{0}个",
+  "cloudevent": {
+     "title": {
+       "account": "云上操作者",
+       "manager": "订阅",
+       "brand": "平台",
+       "provider": "平台",
+       "service": "服务类型",
+       "resource_type": "资源类别",
+       "action": "操作类型"
+      }
+  },
+  "operation": {
+    "success": {
+      "true": "成功",
+      "false": "失败"
+    }
+  }
 }
+

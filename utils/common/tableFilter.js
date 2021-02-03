@@ -295,3 +295,27 @@ export function getRegionFilter () {
     },
   }
 }
+
+export function distinctFieldFilter ({ service = '', field = '', multiple = true } = {}) {
+  return {
+    label: i18n.t(`${service}.title.${field}`),
+    dropdown: true,
+    multiple: multiple,
+    distinctField: {
+      type: 'field',
+      key: `${field}`,
+    },
+  }
+}
+
+export function getSuccessFilter (params = {}) {
+  const { label = i18n.t('table.title.operation_status') } = params
+  return {
+    label,
+    dropdown: true,
+    items: [
+      { label: i18n.t('operation.success.true'), key: true },
+      { label: i18n.t('operation.success.false'), key: false },
+    ],
+  }
+}
