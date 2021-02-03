@@ -985,7 +985,7 @@
     "isChinese": "Please enter Chinese characters",
     "domain": "Please enter a legal domain name",
     "url": "Please enter a valid URL",
-    "resourceName": "Start with a letter, followed by a combination of letters, digits or hyphens '-', but cannot end with a hyphen '-', length 2-128",
+    "resourceName": "2-128 characters, contains letters, digits, hyphens ‘-’, start with a letter and can't end with ‘-’.",
     "password": "At least 8 characters, only uppercase and lowercase letters and digits supported",
     "publicKey": "Invalid public key, only supports RSA type public key",
     "secretKeyName": "Start with a letter, followed by a combination of letters, digits, and ._@- characters",
