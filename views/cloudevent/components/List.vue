@@ -16,7 +16,7 @@ import {
   getTimeTableColumn,
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
-import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, distinctFieldFilter, getSuccessFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -35,19 +35,13 @@ export default {
         idKey: 'event_id',
         filterOptions: {
           name: getNameFilter({ label: this.$t('cloudenv.text_320') }),
-          brand: getBrandFilter(),
-          account: {
-            label: this.$t('cloudenv.text_498'),
-          },
-          manager: {
-            label: this.$t('cloudenv.text_318'),
-          },
-          service: {
-            label: this.$t('cloudenv.text_321'),
-          },
-          action: {
-            label: this.$t('cloudenv.text_322'),
-          },
+          provider: distinctFieldFilter({ service: 'cloudevent', field: 'provider' }),
+          account: distinctFieldFilter({ service: 'cloudevent', field: 'account' }),
+          manager: distinctFieldFilter({ service: 'cloudevent', field: 'manager' }),
+          service: distinctFieldFilter({ service: 'cloudevent', field: 'service' }),
+          resource: distinctFieldFilter({ service: 'cloudevent', field: 'resource_type' }),
+          action: distinctFieldFilter({ service: 'cloudevent', field: 'action' }),
+          success: getSuccessFilter(),
           created_at: {
             label: this.$t('cloudenv.text_326'),
             dropdown: true,
