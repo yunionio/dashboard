@@ -39,7 +39,7 @@ export default {
           account: distinctFieldFilter({ service: 'cloudevent', field: 'account' }),
           manager: distinctFieldFilter({ service: 'cloudevent', field: 'manager' }),
           service: distinctFieldFilter({ service: 'cloudevent', field: 'service' }),
-          resource: distinctFieldFilter({ service: 'cloudevent', field: 'resource_type' }),
+          resource_type: distinctFieldFilter({ service: 'cloudevent', field: 'resource_type' }),
           action: distinctFieldFilter({ service: 'cloudevent', field: 'action' }),
           success: getSuccessFilter(),
           created_at: {
