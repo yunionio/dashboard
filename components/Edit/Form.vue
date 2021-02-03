@@ -27,8 +27,8 @@ export default {
     formLayout: {
       type: Object,
       default: () => ({
-        wrapperCol: { span: 20 },
-        labelCol: { span: 4 },
+        wrapperCol: { span: 19 },
+        labelCol: { span: 5 },
       }),
     },
     label: {
