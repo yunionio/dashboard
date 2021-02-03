@@ -2325,6 +2325,7 @@
       "exec_result": "Result",
       "scope_range": "Scope",
       "os_arch": "CPU Architecture",
+      "operation_status": "Execution Status",
       "id": "ID"
     },
     "action": {
@@ -4546,5 +4547,22 @@
     "1869": "Saint Kitts and Nevis"
   },
   "common.no_platform_available": "There is no platform available, please check and try again!",
-  "common.set_secgroup_max_message": "Prompt message: Up to {0} security groups can be associated"
+  "common.set_secgroup_max_message": "Prompt message: Up to {0} security groups can be associated",
+  "cloudevent": {
+    "title": {
+      "account": "Cloud account",
+      "manager": "Subscription",
+      "brand": "Platform",
+      "provider": "Platform",
+      "service": "Service Type",
+      "resource_type": "Resource Type",
+      "action": "Operation Type"
+    }
+  },
+  "operation": {
+    "success": {
+      "true": "Success",
+      "false": "Failed"
+    }
+  }
 }
