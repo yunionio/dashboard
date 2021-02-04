@@ -8,10 +8,10 @@
     <a-alert type="info" v-if="visible" class="alertresource-error">
       <div slot="message" v-if="total > 0">
         <div v-if="res_total > 0">
-          {{$t('common_719', [res_total])}},<a-button type="link" size="small" @click="routerRes">{{$t('common.view')}}</a-button>
+          {{$t('common_719', [res_total])}}<a-button type="link" size="small" @click="routerRes">{{$t('common.view')}}</a-button>
         </div>
         <div v-if="alert_total > 0">
-          {{$t('common_alert_tips', [alert_total])}},<a-button type="link" size="small" @click="routerAlert">{{$t('common.view')}}</a-button>
+          {{$t('common_alert_tips', [alert_total])}}<a-button type="link" size="small" @click="routerAlert">{{$t('common.view')}}</a-button>
         </div>
       </div>
       <div slot="message" v-else>
