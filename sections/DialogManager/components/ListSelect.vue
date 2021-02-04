@@ -30,7 +30,7 @@
       </div>
     </div>
     <div slot="footer">
-      <a-button @click="handleOk">{{$t('common_99')}}</a-button>
+      <a-button @click="handleOk" type="primary">{{$t('common_99')}}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
