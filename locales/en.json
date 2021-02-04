@@ -157,7 +157,7 @@
   "db.text_156": "Only the running instance supports this operation",
   "db.text_157": "Renewal",
   "db.text_158": "This operation is only supported by the instances with annual and monthly subscriptions",
-  "db.text_159": "Adjust Configuration",
+  "db.text_159": "Change Configuration",
   "db.text_160": "Change {0}",
   "db.text_161": "Please click modify properties to disable delete protection and try again",
   "db.text_162": "Expired",
