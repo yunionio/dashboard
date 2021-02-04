@@ -293,14 +293,14 @@ export const USAGE_RING_DATAS = [
     unuse_label: i18n.t('dashboard.not_mounted'),
   },
   {
-    name: i18n.t('dashboard.text_152'),
+    name: i18n.t('dashboard.text_156'),
     sum: 'eip.floating_ip',
     use: 'eip.floating_ip.used',
     use_label: i18n.t('dashboard.text_33'),
     unuse_label: i18n.t('dashboard.text_34'),
   },
   {
-    name: i18n.t('dashboard.text_156'),
+    name: i18n.t('dashboard.text_152'),
     sum: 'ports',
     use: 'nics',
     use_label: i18n.t('dashboard.text_33'),
