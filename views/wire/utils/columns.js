@@ -14,3 +14,18 @@ export const getBandwidthTableColumn = () => {
     },
   }
 }
+
+export const getHostsTableColumn = () => {
+  return {
+    field: 'hosts',
+    title: i18n.t('network.wire.hosts'),
+    type: 'expand',
+    width: 100,
+    slots: {
+      default: ({ row }, h) => {
+        return row.host_count || 0
+      },
+      content: ({ row }, h) => {},
+    },
+  }
+}

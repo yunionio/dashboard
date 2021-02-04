@@ -775,5 +775,8 @@
   "network.external_access_mode_label": "Allow external network access",
   "network.external_access_mode_extra": "When enabled, hosts in this subnet can access external network with EIP",
   "network.text_754": "Please select a listener of the same zone",
-  "network.vpc_aws_delete_alert": "Deleting an AWS VPC will also cause removal of all its route tables, security groups and internet gateways."
+  "network.vpc_aws_delete_alert": "Deleting an AWS VPC will also cause removal of all its route tables, security groups and internet gateways.",
+  "network.wire.merge": "Merge wire",
+  "network.wire.hosts": "Hosts",
+  "network.wire.merge.subnet": "automatically merge consecutive subnets under the new L2 network"
 }
