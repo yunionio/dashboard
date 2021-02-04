@@ -108,10 +108,10 @@ export default {
       decorators,
       formItemLayout: {
         wrapperCol: {
-          span: 16,
+          span: 18,
         },
         labelCol: {
-          span: 8,
+          span: 6,
         },
       },
       backendgroup: {},
