@@ -114,10 +114,12 @@ export function getMetircAlertUtil (row, field) {
       metric = metric_zh[metric] || metric
     }
     const reduce = (alertStrategyMaps[detail.reduce]) || ''
+    const alert_duration = row.alert_duration ? 'for ' + i18n.t('monitor.duration.label', [row.alert_duration]) : ''
     let preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
     const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? (_.get(row, 'eval_data[0].unit') || '') : '')
     const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
-    strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text])
+    strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, alert_duration, detail.comparator, threshold.text])
+    debugger
     if (detail.condition_type === 'nodata_query') { // 系统上报数据为空
       strategy = i18n.t('monitor.text_108')
     }

@@ -164,7 +164,7 @@
   "monitor.text_3": "All",
   "monitor.text_4": "Custom Policies",
   "monitor.text_5": "Default Policies",
-  "monitor.text_6": "{0}: {1}{2} {3} {4} triggered",
+  "monitor.text_6": "{0}: triggered when {1} {2} {4} {5} {3} ",
   "monitor.text_7": "Please enter a name",
   "monitor.text_8": "The range is 1～{0}Mbps",
   "monitor.text_9": "Only the system or {0} administrator supports this operation",
