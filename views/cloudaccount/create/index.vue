@@ -92,9 +92,9 @@ export default {
       return this.currentItem.provider.toLowerCase()
     },
     nextDisabled () {
-      if (this.currentComponent === 'host-network' && (!this.prepareNetData.hosts || (this.prepareNetData.hosts && !this.prepareNetData.hosts.length))) {
-        return true
-      }
+      // if (this.currentComponent === 'host-network' && (!this.prepareNetData.hosts || (this.prepareNetData.hosts && !this.prepareNetData.hosts.length))) {
+      //   return true
+      // }
       return false
     },
   },
@@ -112,32 +112,32 @@ export default {
     this.changeSteps()
   },
   methods: {
-    async getFetchPrepareNets () {
-      if (!this.vmwareFormData) return false
-      try {
-        const { name, host, password, port, project, username, proxy_setting } = this.vmwareFormData
-        const performData = {
-          name,
-          host,
-          password,
-          port,
-          project: project.key,
-          provider: 'VMware',
-          username,
-          proxy_setting,
-        }
-        if (this.$store.getters.isAdminMode && this.vmwareFormData.domain && this.vmwareFormData.domain.key) {
-          performData.project_domain = this.vmwareFormData.domain.key
-        }
-        const { data } = await this.cloudaccountsM.performClassAction({
-          action: 'prepare-nets',
-          data: performData,
-        })
-        this.prepareNetData = data.wire_networks[0] || {}
-      } catch (err) {
-        throw err
-      }
-    },
+    // async getFetchPrepareNets () {
+    //   if (!this.vmwareFormData) return false
+    //   try {
+    //     const { name, host, password, port, project, username, proxy_setting } = this.vmwareFormData
+    //     const performData = {
+    //       name,
+    //       host,
+    //       password,
+    //       port,
+    //       project: project.key,
+    //       provider: 'VMware',
+    //       username,
+    //       proxy_setting,
+    //     }
+    //     if (this.$store.getters.isAdminMode && this.vmwareFormData.domain && this.vmwareFormData.domain.key) {
+    //       performData.project_domain = this.vmwareFormData.domain.key
+    //     }
+    //     const { data } = await this.cloudaccountsM.performClassAction({
+    //       action: 'prepare-nets',
+    //       data: performData,
+    //     })
+    //     this.prepareNetData = data.wire_networks[0] || {}
+    //   } catch (err) {
+    //     throw err
+    //   }
+    // },
     changeSteps (val) {
       if (this.isBill) {
         this.step.steps = [
@@ -261,58 +261,58 @@ export default {
       }
       await Promise.all(promises)
     },
-    async createWire () {
-      const manager = new this.$Manager('wires')
-      try {
-        if (!this.prepareNetData.suitable_wire && this.prepareNetData.suggested_wire) {
-          const { name, description, zone_id, zone_ids } = this.prepareNetData.suggested_wire
-          const params = {
-            generate_name: name,
-            description,
-            zone_id: zone_id || ((zone_ids && zone_ids.length > 0) ? zone_ids[0] : undefined),
-            vpc_id: 'default',
-            bandwidth: '1000',
-          }
-          params.tenant = this.newAccountInfo.tenant
-          if (this.isAdminMode && this.l3PermissionEnable) {
-            params.domain_id = this.newAccountInfo.domain_id
-          }
-          const { data } = await manager.create({
-            data: params,
-          })
-          return data
-        }
-        return {
-          id: this.prepareNetData.suitable_wire,
-        }
-      } catch (err) {
-        throw err
-      }
-    },
-    async vmwareForm (values) {
-      if (this.step.currentStep === 1) {
-        this.vmwareFormData = values
-        await this.getFetchPrepareNets()
-      }
-      if (this.step.currentStep > 1) {
-        this.networkData[this.currentComponent] = values
-      }
-      if (this.step.currentStep === 3) {
-        try {
-          this.newAccountInfo = await this.doCreateCloudaccount(this.vmwareFormData)
-          const wireDta = await this.createWire()
-          try {
-            await this.doCreateNetwork(wireDta)
-          } catch (error) {
-            this.$router.push('/cloudaccount')
-            throw error
-          }
-          this.$router.push('/cloudaccount')
-        } catch (err) {
-          throw err
-        }
-      }
-    },
+    // async createWire () {
+    //   const manager = new this.$Manager('wires')
+    //   try {
+    //     if (!this.prepareNetData.suitable_wire && this.prepareNetData.suggested_wire) {
+    //       const { name, description, zone_id, zone_ids } = this.prepareNetData.suggested_wire
+    //       const params = {
+    //         generate_name: name,
+    //         description,
+    //         zone_id: zone_id || ((zone_ids && zone_ids.length > 0) ? zone_ids[0] : undefined),
+    //         vpc_id: 'default',
+    //         bandwidth: '1000',
+    //       }
+    //       params.tenant = this.newAccountInfo.tenant
+    //       if (this.isAdminMode && this.l3PermissionEnable) {
+    //         params.domain_id = this.newAccountInfo.domain_id
+    //       }
+    //       const { data } = await manager.create({
+    //         data: params,
+    //       })
+    //       return data
+    //     }
+    //     return {
+    //       id: this.prepareNetData.suitable_wire,
+    //     }
+    //   } catch (err) {
+    //     throw err
+    //   }
+    // },
+    // async vmwareForm (values) {
+    //   if (this.step.currentStep === 1) {
+    //     this.vmwareFormData = values
+    //     await this.getFetchPrepareNets()
+    //   }
+    //   if (this.step.currentStep > 1) {
+    //     this.networkData[this.currentComponent] = values
+    //   }
+    //   if (this.step.currentStep === 3) {
+    //     try {
+    //       this.newAccountInfo = await this.doCreateCloudaccount(this.vmwareFormData)
+    //       const wireDta = await this.createWire()
+    //       try {
+    //         await this.doCreateNetwork(wireDta)
+    //       } catch (error) {
+    //         this.$router.push('/cloudaccount')
+    //         throw error
+    //       }
+    //       this.$router.push('/cloudaccount')
+    //     } catch (err) {
+    //       throw err
+    //     }
+    //   }
+    // },
     async validateForm () {
       let createForm = this.$refs.stepRef.$refs.createForm
       if (this.brand === 'vmware' && this.step.currentStep > 1) {
@@ -325,9 +325,9 @@ export default {
       try {
         this.loading = true
         const values = await createForm.validateForm()
-        if (this.brand === 'vmware') {
-          return await this.vmwareForm(values)
-        }
+        // if (this.brand === 'vmware') {
+        //   return await this.vmwareForm(values)
+        // }
         this.newAccountInfo = await this.doCreateCloudaccount(values)
         if (this.isBill) {
           this.currentComponent = 'billConfig'
