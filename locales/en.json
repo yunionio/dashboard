@@ -603,7 +603,7 @@
   "network.text_603": "Random",
   "network.text_604": "Invalid mask. It should be in range {0}~{1}",
   "network.text_605": "Add at least one subnet",
-  "network.text_606": "Modify Attributes",
+  "network.text_606": "Edit",
   "network.text_607": "Starting IP",
   "network.text_608": "End IP",
   "network.text_609": "Mask",
