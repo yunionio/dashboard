@@ -144,7 +144,13 @@ export function getMetircAlertUtil (row, field) {
 
     if (detail.filters && detail.filters.length) {
       detail.filters.forEach((val, i) => {
-        if (val.key) filters.push(`${(val.condition && i !== 0) ? val.condition : ''} ${val.key} ${val.operator} ${val.value}`)
+        if (val.key) {
+          if (val.key !== 'brand' || val.value.toLowerCase() !== 'onecloud') {
+            filters.push(`${(val.condition && i !== 0) ? val.condition : ''} ${val.key} ${val.operator} ${val.value}`)
+          } else {
+            filters.push(`${(val.condition && i !== 0) ? val.condition : ''} ${val.key} ${val.operator} ${i18n.t('brand')}`)
+          }
+        }
       })
     }
   }
