@@ -16,11 +16,11 @@
         <div class="w-100">
           <div class="d-flex">
             <div class="flex-grow-0 flex-shrink-0 text-color-help">{{$t('dashboard.text_52')}}</div>
-            <div class="flex-fill text-right error-color font-weight-bold">{{ forcastAmount }}</div>
+            <div class="flex-fill text-right error-color font-weight-bold">{{ forcastAmountFormat }}</div>
           </div>
           <div class="d-flex mt-2">
             <div class="flex-grow-0 flex-shrink-0 text-color-help">{{$t('dashboard.text_53')}}</div>
-            <div class="flex-fill text-right success-color font-weight-bold">{{ suggestAmount }}</div>
+            <div class="flex-fill text-right success-color font-weight-bold">{{ suggestAmountFormat }}</div>
           </div>
         </div>
       </div>
@@ -93,16 +93,22 @@ export default {
     }),
     ...mapGetters(['scope']),
     forcastAmount () {
-      return `${this.currencySign}${((this.data.meter_forcast_cost && this.data.meter_forcast_cost.amount) || 0).toFixed(2)}`
+      return this.data.meter_forcast_cost && this.data.meter_forcast_cost.amount
     },
     suggestAmount () {
-      return `${this.currencySign}${((this.data.suggest_cost && this.data.suggest_cost[0] && this.data.suggest_cost[0].amount) || 0).toFixed(2)}`
+      return this.data.suggest_cost && this.data.suggest_cost[0] && this.data.suggest_cost[0].amount
     },
     currencySign () {
       return this.fd.currency === 'USD' ? '$' : '¥'
     },
+    forcastAmountFormat () {
+      return `${this.currencySign}${this.forcastAmount.toFixed(2)}`
+    },
+    suggestAmountFormat () {
+      return `${this.currencySign}${this.suggestAmount.toFixed(2)}`
+    },
     percent () {
-      let percent = ((+(this.suggestAmount.substring(1)) / (+(this.forcastAmount).substring(1))) || 0) * 100
+      let percent = ((this.suggestAmount / this.forcastAmount) || 0) * 100
       if (percent < 10) {
         return percent.toFixed(1)
       }
