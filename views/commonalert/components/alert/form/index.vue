@@ -544,7 +544,10 @@ export default {
       }
     },
     channelOptsChange (val) {
-      this.hadRobot = val.find(val => ~val.value.indexOf('robot'))
+      const vs = val.filter((item) => {
+        return isNaN(item.disabled)
+      })
+      this.hadRobot = vs.length > 0
     },
     scopeChange (scopeParams) {
       this.getMeasurement(scopeParams)
