@@ -102,7 +102,7 @@ export default {
       return this.fd.currency === 'USD' ? '$' : '¥'
     },
     percent () {
-      let percent = ((this.suggestAmount / this.forcastAmount) || 0) * 100
+      let percent = ((+(this.suggestAmount.substring(1)) / (+(this.forcastAmount).substring(1))) || 0) * 100
       if (percent < 10) {
         return percent.toFixed(1)
       }
