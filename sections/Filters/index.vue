@@ -126,6 +126,13 @@ export default {
       return []
     },
   },
+  watch: {
+    metricInfo () {
+      if (this.tags && this.tags.length) {
+        this.fillFilters(this.tags)
+      }
+    },
+  },
   mounted () {
     if (this.tags && this.tags.length) {
       this.fillFilters(this.tags)
