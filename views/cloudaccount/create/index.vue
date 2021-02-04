@@ -139,14 +139,7 @@ export default {
       }
     },
     changeSteps (val) {
-      if (val && val.provider === 'VMware') {
-        this.step.steps = [
-          { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
-          { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
-          { title: this.$t('cloudenv.text_175'), key: 'host-network' },
-          { title: this.$t('cloudenv.text_176'), key: 'guest-network' },
-        ]
-      } else if (this.isBill) {
+      if (this.isBill) {
         this.step.steps = [
           { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
           { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
