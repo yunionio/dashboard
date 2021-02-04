@@ -31,6 +31,16 @@
     <a-form-item :label="$t('monitor.condition')" class="mb-0">
       <condition :decorators="decorators" :disabled="disabled" @comparatorChange="emitComparator"  @thresholdChange="emitThreshold" :unit="conditionUnit" />
     </a-form-item>
+    <a-form-item :label="$t('monitor.commonalerts.form.column.silent')" class="mb-0">
+      <a-form-item class="mr-1">
+        <base-select v-decorator="decorators.silent_period" :options="silentOpts" :disabled="disabled" style="display: inline-flex;" />
+        <a-tooltip style="padding-left: 5px;" placement="top"><a-icon type="question-circle" />
+        <template slot="title">
+          <span>{{ $t('monitor.commonalerts.form.column.silent.tips') }}</span>
+        </template>
+        </a-tooltip>
+      </a-form-item>
+    </a-form-item>
     <a-form-item :label="$t('monitor.level')">
       <a-radio-group v-decorator="decorators.level" :disabled="disabled">
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
@@ -141,6 +151,7 @@ export default {
       period: '5m',
       comparator: '>=',
       alert_duration: 2,
+      silent_period: 360,
       reduce: 'avg',
       level: 'normal',
       scope: this.$store.getters.scope,
@@ -153,6 +164,7 @@ export default {
       initialValue.level = this.alertData.level
       initialValue.domain = this.alertData.domain_id
       initialValue.project = this.alertData.tenant_id
+      initialValue.silent_period = this.alertData.silent_period
       initialValue.res_type = _.get(this.alertData, 'common_alert_metric_details[0].res_type')
       tags = _.get(this.alertData, 'settings.conditions[0].query.model.tags') || []
       initialValue.metric_key = _.get(this.alertData, 'settings.conditions[0].query.model.measurement')
@@ -311,6 +323,13 @@ export default {
             ],
           },
         ],
+        silent_period: [
+          'silent_period',
+          {
+            initialValue: initialValue.silent_period,
+            rules: [],
+          },
+        ],
         reduce: [
           'reduce',
           {
@@ -385,6 +404,18 @@ export default {
         enabled: true,
       },
       levelOpts: Object.values(levelMaps),
+      silentOpts: [
+        { key: '5m', label: this.$t('monitor.duration.silent.minute', [5]) },
+        { key: '10m', label: this.$t('monitor.duration.silent.minute', [10]) },
+        { key: '15m', label: this.$t('monitor.duration.silent.minute', [15]) },
+        { key: '30m', label: this.$t('monitor.duration.silent.minute', [30]) },
+        { key: '60m', label: this.$t('monitor.duration.silent.hour', [1]) },
+        { key: '120m', label: this.$t('monitor.duration.silent.hour', [2]) },
+        { key: '180m', label: this.$t('monitor.duration.silent.hour', [3]) },
+        { key: '360m', label: this.$t('monitor.duration.silent.hour', [6]) },
+        { key: '720m', label: this.$t('monitor.duration.silent.hour', [12]) },
+        { key: '1440m', label: this.$t('monitor.duration.silent.hour', [24]) },
+      ],
       projectItem: {},
       metricLoading: false,
       metricInfoLoading: false,

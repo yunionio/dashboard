@@ -219,5 +219,10 @@
   "monitor.overview.location": "{0}总览",
   "monitor.commonalerts.channel.disable.tips": "{0}通知渠道不支持取消",
   "monitor.duration.label": "连续{0}个周期",
-  "monitor.commonalerts.robot.disable.tips": "没有可用的机器人，请配置后重试"
+  "monitor.duration.silent.hour": "{0}小时",
+  "monitor.duration.silent.minute": "{0}分钟",
+  "monitor.commonalerts.robot.disable.tips": "没有可用的机器人，请配置后重试",
+  "monitor.commonalerts.list.silent": "，静默期: {0}",
+  "monitor.commonalerts.form.column.silent": "消息静默期",
+  "monitor.commonalerts.form.column.silent.tips": "若一直处于告警状态，首次触发告警后，静默期后才会发送第二次告警信息。当告警恢复后，会收到告警恢复通知并解除告警。若数据再次触发告警，则会再次发送告警信息。"
 }

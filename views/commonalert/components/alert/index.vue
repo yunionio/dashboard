@@ -213,6 +213,10 @@ export default {
           }],
         }
 
+        if (fd.silent_period) {
+          data.silent_period = fd.silent_period
+        }
+
         if (fd.comparator === 'nodata') {
           data.metric_query[0].condition_type = 'nodata_query'
         }

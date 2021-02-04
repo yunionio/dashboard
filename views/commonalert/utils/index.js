@@ -125,6 +125,22 @@ export function getMetircAlertUtil (row, field) {
       preiod = preiod.replace(i18n.t('monitor.text_103'), '')
       strategy += `${i18n.t('monitor.text_102', [preiod])}`
     }
+
+    if (row.silent_period) {
+      let p = row.silent_period
+      if (p.endsWith('m')) {
+        const pi = parseInt(p.replace('m', ''))
+        if (pi && pi >= 60 && pi % 60 === 0) {
+          p = i18n.t('monitor.duration.silent.hour', [pi / 60])
+        } else {
+          p = i18n.t('monitor.duration.silent.minute', [p.replace('m', '')])
+        }
+      } else if (p.endsWith('h')) {
+        p = i18n.t('monitor.duration.silent.hour', [p.replace('h', '')])
+      }
+      strategy += `${i18n.t('monitor.commonalerts.list.silent', [p])}`
+    }
+
     if (detail.filters && detail.filters.length) {
       detail.filters.forEach((val, i) => {
         if (val.key) filters.push(`${(val.condition && i !== 0) ? val.condition : ''} ${val.key} ${val.operator} ${val.value}`)
