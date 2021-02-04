@@ -63,7 +63,6 @@ export default {
             }
           },
         },
-        filter: true,
         mapper: (data, originData) => {
           const i18n = originData._i18n.action
           const keys = originData.action
@@ -81,9 +80,76 @@ export default {
           }
           return Object.keys(obj).filter(item => !!item).map((item) => ({ label: item, key: obj[item].join(',') }))
         },
-        formatter: val => {
-          return `action.in(${val.join(',').split(',')})`
+      },
+      service: {
+        label: this.$t('table.title.service'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'field',
+          key: 'service',
+          getParams: () => {
+            return this.objId && {
+              filter: `obj_id.in(${this.objId})`,
+            }
+          },
         },
+        mapper: (data, originData) => {
+          const i18n = originData._i18n.service
+          const keys = originData.service
+
+          const obj = {}
+
+          for (let i = 0, len = i18n.length; i < len; i++) {
+            const label = i18n[i]
+            const key = keys[i]
+            if (obj[label]) {
+              obj[label].push(key)
+            } else {
+              obj[label] = [key]
+            }
+          }
+          return Object.keys(obj).filter(item => !!item).map((item) => ({ label: item, key: obj[item].join(',') }))
+        },
+      },
+      obj_type: {
+        label: this.$t('table.title.obj_type'),
+        dropdown: true,
+        multiple: true,
+        distinctField: {
+          type: 'field',
+          key: 'obj_type',
+          getParams: () => {
+            return this.objId && {
+              filter: `obj_id.in(${this.objId})`,
+            }
+          },
+        },
+        mapper: (data, originData) => {
+          const i18n = originData._i18n.obj_type
+          const keys = originData.obj_type
+
+          const obj = {}
+
+          for (let i = 0, len = i18n.length; i < len; i++) {
+            const label = i18n[i]
+            const key = keys[i]
+            if (obj[label]) {
+              obj[label].push(key)
+            } else {
+              obj[label] = [key]
+            }
+          }
+          return Object.keys(obj).filter(item => !!item).map((item) => ({ label: item, key: obj[item].join(',') }))
+        },
+      },
+      success: {
+        label: this.$t('table.title.action_result'),
+        dropdown: true,
+        items: [
+          { label: this.$t('operation.success.true'), key: true },
+          { label: this.$t('operation.success.false'), key: false },
+        ],
       },
       start_time: {
         label: this.$t('common_156'),
