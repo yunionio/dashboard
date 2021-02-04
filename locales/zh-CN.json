@@ -774,5 +774,8 @@
   "network.external_access_mode_label": "允许外网访问",
   "network.external_access_mode_extra": "启用该项后，VPC下的IP子网可以通过绑定EIP的方式访问外网",
   "network.text_754": "请选择同一个域的监听",
-  "network.vpc_aws_delete_alert": "删除AWS平台的VPC时将会同步删除VPC下的路由表、安全组和互联网网关"
+  "network.vpc_aws_delete_alert": "删除AWS平台的VPC时将会同步删除VPC下的路由表、安全组和互联网网关",
+  "network.wire.merge": "合并wire",
+  "network.wire.hosts": "宿主机",
+  "network.wire.merge.subnet": "自动合并新二层网络下网段连续的子网"
 }

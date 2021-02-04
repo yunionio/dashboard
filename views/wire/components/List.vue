@@ -4,6 +4,7 @@
     show-tag-filter
     :list="list"
     :columns="columns"
+    :expandConfig="expandConfig"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions" />
@@ -13,6 +14,7 @@
 import { BAND_WIDTH_OPTION } from '../../../constants'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { getWiresMergeAction } from '../utils/groupactions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
@@ -30,11 +32,26 @@ export default {
   },
   data () {
     return {
+      expandConfig: {
+        loadMethod: this.loadDetails,
+        lazy: true,
+      },
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'wires',
         getParams: this.getParam,
         filterOptions: {
+          status: {
+            label: this.$t('network.text_27'),
+            dropdown: true,
+            items: [
+              { label: this.$t('network.text_615'), key: 'available' },
+            ],
+            filter: true,
+            formatter: val => {
+              return `status.in(${val})`
+            },
+          },
           name: getNameFilter(),
           bandwidth: {
             label: this.$t('network.text_694'),
@@ -92,6 +109,12 @@ export default {
           label: this.$t('common.batchAction'),
           actions: () => {
             return [
+              getWiresMergeAction(this, {
+                data: this.list.selectedItems,
+                name: this.$t('network.wire.merge'),
+                scope: 'domain',
+                resource: 'wires',
+              }),
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.wire'),
                 resource: 'wires',
@@ -171,6 +194,53 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    loadDetails ({ row }) {
+      return new Promise(resolve => {
+        if (row.wireNetworks && row.wireHosts) {
+          resolve()
+        }
+
+        this.getDetails(row.id).then(data => {
+          row.wireNetworks = data.wireNetworks
+          row.wireHosts = data.wireHosts
+          resolve()
+        })
+      })
+    },
+    async getDetails (wireId) {
+      const wireNetworks = await this.getNetworkDetails(wireId)
+      const wireHosts = await this.getHostDetails(wireId)
+      return { wireNetworks, wireHosts }
+    },
+    async getNetworkDetails (wireId) {
+      try {
+        const { data: { data } } = await new this.$Manager('networks').list({
+          params: {
+            limit: 0,
+            wire: wireId,
+            scope: this.$store.getters.scope,
+          },
+        })
+        return data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getHostDetails (wireId) {
+      try {
+        const { data: { data } } = await new this.$Manager('hosts').list({
+          params: {
+            limit: 0,
+            wire: wireId,
+            baremetal: false,
+            scope: this.$store.getters.scope,
+          },
+        })
+        return data
+      } catch (error) {
+        throw error
+      }
+    },
     isPower (obj) {
       if (this.isAdminMode) return true
       if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
