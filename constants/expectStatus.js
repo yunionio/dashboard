@@ -10,6 +10,10 @@ export default {
     success: ['available'],
     danger: ['deleted'],
   },
+  wire: {
+    success: ['available'],
+    danger: ['merge_network_failed'],
+  },
   host: {
     success: ['online', 'running'],
     info: ['offline', 'ready'],

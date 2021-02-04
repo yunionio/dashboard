@@ -149,6 +149,11 @@
       "syncing": "Syncing",
       "sync_status": "Syncing"
     },
+    "wire": {
+      "available": "Normal",
+      "merge_network": "Network merging",
+      "merge_network_failed": "Network merge failed"
+    },
     "host": {
       "init": "Initialize",
       "ready": "Stop",
@@ -4268,6 +4273,7 @@
   "common.reject": "Reject",
   "common.pending": "Pending",
   "common_729": "No architecting platform available please check whether the @:brand host is available",
+  "common.select.rows.limit": "Select at least {0} column of data",
   "common.all_process": "All",
   "personal_user_tab": {
     "cloud": "Account login user",
