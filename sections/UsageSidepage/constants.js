@@ -254,7 +254,7 @@ export const USAGE_CONFIG_MAP = {
     zh_cn: i18n.t('cloudenv.res_bucket_objects'),
   },
   bucket_bytes: {
-    formatter: val => sizestrWithUnit(val, 'M', 1024),
+    formatter: val => sizestrWithUnit(val, 'B', 1024),
     zh_cn: i18n.t('cloudenv.res_bucket_bytes'),
   },
   'eip.floating_ip': {
