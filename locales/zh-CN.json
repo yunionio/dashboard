@@ -149,6 +149,11 @@
       "syncing": "同步中",
       "sync_status": "同步中"
     },
+    "wire": {
+      "available": "正常",
+      "merge_network": "网络合并中",
+      "merge_network_failed": "网络合并失败"
+    },
     "host": {
       "init": "初始化",
       "ready": "关机",
@@ -4268,6 +4273,7 @@
   "common.reject": "已驳回",
   "common.pending": "待处理",
   "common_729": "暂无架构平台可选择，请检查@:brand的宿主机是否可用",
+  "common.select.rows.limit": "请选择至少{0}列数据",
   "common.all_process": "所有工单",
   "personal_user_tab": {
     "cloud": "账号登录用户",

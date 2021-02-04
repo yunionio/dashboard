@@ -6,6 +6,7 @@
       highlight-hover-row
       :row-id="idKey"
       :data="data"
+      :expandConfig="expandConfig"
       :columns="tableColumns"
       :max-height="280"
       :scroll-y="{gt: 5}"
@@ -31,6 +32,10 @@ export default {
       type: Array,
       required: true,
       default: () => ([]),
+    },
+    expandConfig: {
+      type: Object,
+      required: false,
     },
     errors: {
       type: Object,
