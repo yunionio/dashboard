@@ -79,6 +79,7 @@ export default {
     const initialAllUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.all_usage_key) || 'hosts.memory'
     const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'all.servers.memory'
     const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
+    const initialColorValue = ((this.params && this.params.type !== 'k8s') && this.params.color) || 'default'
     return {
       data: {},
       loading: false,
@@ -91,6 +92,7 @@ export default {
           region: initialRegionValue,
           all_usage_key: initialAllUsageKeyValue,
           usage_key: initialUsageKeyValue,
+          color: initialColorValue,
         },
       },
       decorators: {
@@ -151,6 +153,12 @@ export default {
             ],
           },
         ],
+        color: [
+          'color',
+          {
+            initialValue: initialRegionValue,
+          },
+        ],
       },
     }
   },
@@ -166,6 +174,9 @@ export default {
     },
     usageConfig () {
       return USAGE_CONFIG[this.form.fd.usage_key]
+    },
+    colorConfig () {
+      return (this.params && this.params.color) || 'default'
     },
     allUsage () {
       let ret = this.allUsageNumber
@@ -215,13 +226,24 @@ export default {
       return `${this.percent} %`
     },
     percentColor () {
-      if (this.percent < 80) {
-        return '#52c41a'
+      switch (this.colorConfig) {
+        case 'reverse':
+          if (this.percent < 60) {
+            return '#f5222d'
+          }
+          if (this.percent < 80) {
+            return '#faad14'
+          }
+          return '#52c41a'
+        default:
+          if (this.percent < 60) {
+            return '#52c41a'
+          }
+          if (this.percent < 80) {
+            return '#faad14'
+          }
+          return '#f5222d'
       }
-      if (this.percent < 100) {
-        return '#faad14'
-      }
-      return '#f5222d'
     },
     status () {
       let ret = 'normal'
