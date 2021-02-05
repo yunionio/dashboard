@@ -2322,6 +2322,8 @@
       "owner_domain": "Owner Domain",
       "sponsor": "Operator",
       "operation": "Action",
+      "obj_type": "Object Type",
+      "service": "Service",
       "search": "Name or IP",
       "local_project": "Local Project",
       "zone_1_name": "Backup Zone",
