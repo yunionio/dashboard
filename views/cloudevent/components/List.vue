@@ -60,6 +60,34 @@ export default {
         },
       }),
       columns: [
+        getTimeTableColumn({
+          field: 'created_at',
+          title: this.$t('cloudenv.text_326'),
+        }),
+        getBrandTableColumn({
+          field: 'provider',
+        }),
+        getCopyWithContentTableColumn({
+          field: 'account',
+          title: this.$t('cloudenv.text_498'),
+        }),
+        getCopyWithContentTableColumn({
+          title: this.$t('cloudenv.text_322'),
+          field: 'logAction',
+          hideField: true,
+          message: row => row.action,
+          slotCallback: (row) => {
+            return row.action
+          },
+        }),
+        getCopyWithContentTableColumn({
+          title: this.$t('cloudenv.Service'),
+          field: 'service',
+        }),
+        getCopyWithContentTableColumn({
+          title: this.$t('cloudenv.text_321'),
+          field: 'resource_type',
+        }),
         getCopyWithContentTableColumn({
           title: this.$t('cloudenv.text_320'),
           field: 'name',
@@ -77,32 +105,8 @@ export default {
           },
         },
         getCopyWithContentTableColumn({
-          title: this.$t('cloudenv.text_321'),
-          field: 'service',
-        }),
-        getCopyWithContentTableColumn({
-          title: this.$t('cloudenv.text_322'),
-          field: 'logAction',
-          hideField: true,
-          message: row => row.action,
-          slotCallback: (row) => {
-            return row.action
-          },
-        }),
-        getBrandTableColumn({
-          field: 'provider',
-        }),
-        getCopyWithContentTableColumn({
-          field: 'account',
-          title: this.$t('cloudenv.text_498'),
-        }),
-        getCopyWithContentTableColumn({
           field: 'manager',
           title: this.$t('cloudenv.text_318'),
-        }),
-        getTimeTableColumn({
-          field: 'created_at',
-          title: this.$t('cloudenv.text_326'),
         }),
         {
           field: 'notes',
@@ -127,7 +131,7 @@ export default {
         items: [
           // { label: 'ID', key: 'id' },
           { label: this.$t('cloudenv.text_320'), key: 'name' },
-          { label: this.$t('cloudenv.text_321'), key: 'service' },
+          { label: this.$t('cloudenv.Service'), key: 'service' },
           { label: this.$t('cloudenv.text_322'), key: 'action' },
           { label: this.$t('cloudenv.text_323'), key: 'success' },
           { label: this.$t('cloudenv.text_326'), key: 'created_at' },

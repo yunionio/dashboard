@@ -354,8 +354,9 @@
   "cloudenv.text_318": "订阅",
   "cloudenv.text_319": "资源统计",
   "cloudenv.text_320": "资源名称",
-  "cloudenv.text_321": "服务类型",
-  "cloudenv.text_322": "操作类型",
+  "cloudenv.text_321": "资源类型",
+  "cloudenv.text_322": "事件名称",
+  "cloudenv.Service": "服务名称",
   "cloudenv.text_323": "执行状态",
   "cloudenv.text_324": "{0}成功",
   "cloudenv.text_325": "失败",
@@ -528,7 +529,7 @@
   "cloudenv.text_495": "网络是否满足",
   "cloudenv.text_496": "序号",
   "cloudenv.text_497": "同时删除历史账单数据",
-  "cloudenv.text_498": "云上操作者",
+  "cloudenv.text_498": "云上用户名",
   "cloudaccount": {
     "table": {
       "action": {
