@@ -80,6 +80,13 @@
           @change="usageChange" />
       </a-form-item>
     </a-form-item>
+    <a-form-item :label="colorLabel || $t('dashboard.color.scheme')" class="mb-0">
+      <a-select
+        @change="colorChange"
+        v-decorator="decorators.color">
+        <a-select-option v-for="item in colors" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
+      </a-select>
+    </a-form-item>
   </div>
 </template>
 
@@ -110,6 +117,9 @@ export default {
     usageLabel: {
       type: String,
     },
+    colorLabel: {
+      type: String,
+    },
   },
   data () {
     return {
@@ -123,6 +133,16 @@ export default {
       regions: [],
       regionLoading: false,
       translateUsage: this.$t('usage'),
+      colors: [
+        {
+          key: 'default',
+          label: this.$t('dashboard.color.scheme.default'),
+        },
+        {
+          key: 'reverse',
+          label: this.$t('dashboard.color.scheme.reverse'),
+        },
+      ],
     }
   },
   computed: {
@@ -399,6 +419,9 @@ export default {
     },
     usageChange (usage) {
       this.$emit('update:usage_key', usage)
+    },
+    colorChange (color) {
+      this.$emit('update:color', color)
     },
     regionAccountTypeChange (e) {
       this.regionAccountType = e.target.value
