@@ -17,7 +17,8 @@
     </template>
     <component
       :is="params.windowData.currentTab"
-      :listId="params.windowData.currentTab"
+      :listId="listId"
+      :id="listId"
       :resId="data.id"
       :alertId="data.id"
       :data="detailData"
@@ -45,6 +46,18 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   computed: {
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForHostSidePage'
+        case 'commonalert-detail':
+          return 'CommonalertDetailSidePage'
+        case 'AlertrecortList':
+          return 'AlertrecortListSidePage'
+        default:
+          return ''
+      }
+    },
     detailTabs () {
       const tabs = [
         { label: this.$t('sidepage.tab.label.detail'), key: 'commonalert-detail' },
