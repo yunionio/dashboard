@@ -76,7 +76,11 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ statusModule: 'alertSendState', field: 'send_state' }),
+      {
+        field: 'send_state',
+        title: this.$t('common.sendState'),
+        formatter: ({ row }) => this.$t(`status.alertSendState.${row.send_state}`),
+      },
     ]
     this.extandData = {}
   },
