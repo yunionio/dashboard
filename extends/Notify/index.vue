@@ -35,6 +35,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { SCOPES_MAP } from '@/constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
@@ -140,7 +141,7 @@ export default {
           action: 'list',
           actionArgs: {
             params: {
-              scope: this.scope,
+              scope: SCOPES_MAP.system.key,
               $t: getRequestT(),
             },
           },
