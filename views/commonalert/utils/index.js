@@ -114,10 +114,11 @@ export function getMetircAlertUtil (row, field) {
       metric = metric_zh[metric] || metric
     }
     const reduce = (alertStrategyMaps[detail.reduce]) || ''
+    const alert_duration = row.alert_duration ? 'for ' + i18n.t('monitor.duration.label', [row.alert_duration]) : ''
     let preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
     const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? (_.get(row, 'eval_data[0].unit') || '') : '')
     const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
-    strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, detail.comparator, threshold.text])
+    strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, alert_duration, detail.comparator, threshold.text])
     if (detail.condition_type === 'nodata_query') { // 系统上报数据为空
       strategy = i18n.t('monitor.text_108')
     }
@@ -125,9 +126,31 @@ export function getMetircAlertUtil (row, field) {
       preiod = preiod.replace(i18n.t('monitor.text_103'), '')
       strategy += `${i18n.t('monitor.text_102', [preiod])}`
     }
+
+    if (row.silent_period) {
+      let p = row.silent_period
+      if (p.endsWith('m')) {
+        const pi = parseInt(p.replace('m', ''))
+        if (pi && pi >= 60 && pi % 60 === 0) {
+          p = i18n.t('monitor.duration.silent.hour', [pi / 60])
+        } else {
+          p = i18n.t('monitor.duration.silent.minute', [p.replace('m', '')])
+        }
+      } else if (p.endsWith('h')) {
+        p = i18n.t('monitor.duration.silent.hour', [p.replace('h', '')])
+      }
+      strategy += `${i18n.t('monitor.commonalerts.list.silent', [p])}`
+    }
+
     if (detail.filters && detail.filters.length) {
       detail.filters.forEach((val, i) => {
-        if (val.key) filters.push(`${(val.condition && i !== 0) ? val.condition : ''} ${val.key} ${val.operator} ${val.value}`)
+        if (val.key) {
+          if (val.key !== 'brand' || val.value.toLowerCase() !== 'onecloud') {
+            filters.push(`${(val.condition && i !== 0) ? val.condition : ''} ${val.key} ${val.operator} ${val.value}`)
+          } else {
+            filters.push(`${(val.condition && i !== 0) ? val.condition : ''} ${val.key} ${val.operator} ${i18n.t('brand')}`)
+          }
+        }
       })
     }
   }

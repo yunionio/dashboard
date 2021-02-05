@@ -149,7 +149,13 @@ export default {
   },
   created () {
     if (this.isUpdate) {
-      this.fetchCommonalert()
+      this.fetchCommonalert().then((res) => {
+        if (this.alertData && this.alertData.common_alert_metric_details && this.alertData.common_alert_metric_details.length > 0) {
+          const desc = this.alertData.common_alert_metric_details[0].field_description
+          this.lineDescription.isUpdate = true
+          this.$set(this.lineDescription, 'description', desc || {})
+        }
+      })
     }
   },
   methods: {
@@ -211,6 +217,10 @@ export default {
             comparator: fd.comparator,
             threshold: fd.threshold,
           }],
+        }
+
+        if (fd.silent_period) {
+          data.silent_period = fd.silent_period
         }
 
         if (fd.comparator === 'nodata') {
@@ -294,7 +304,13 @@ export default {
         this.time = '72h'
         this.$message.warning(this.$t('common_562', [val.label]))
       }
-      this.lineDescription = val
+
+      if (this.lineDescription && this.lineDescription.isUpdate) {
+        delete this.lineDescription.isUpdate
+        Object.assign(this.lineDescription, val)
+      } else {
+        this.lineDescription = val
+      }
     },
   },
 }
