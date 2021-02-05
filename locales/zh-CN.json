@@ -840,6 +840,10 @@
       "ok": "告警已恢复",
       "alerting": "发生告警"
     },
+    "alertSendState": {
+      "ok": "已发送",
+      "silent": "已收敛"
+    },
     "dnszonecache": {
       "init": "初始化",
       "deleting": "删除中",
@@ -2332,7 +2336,7 @@
       "exec_result": "执行结果",
       "scope_range": "应用范围",
       "os_arch": "CPU架构",
-      "operation_status": "执行状态",
+      "operation_status": "状态",
       "id": "ID"
     },
     "action": {
@@ -4558,13 +4562,13 @@
   "common.set_secgroup_max_message": "提示信息：安全组最多可关联{0}个",
   "cloudevent": {
      "title": {
-       "account": "云上操作者",
+       "account": "云上用户名",
        "manager": "订阅",
        "brand": "平台",
        "provider": "平台",
-       "service": "服务类型",
-       "resource_type": "资源类别",
-       "action": "操作类型"
+       "service": "服务名称",
+       "resource_type": "资源类型",
+       "action": "事件名称"
       }
   },
   "operation": {
