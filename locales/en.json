@@ -354,12 +354,13 @@
   "cloudenv.text_318": "Subscription",
   "cloudenv.text_319": "Resource Statistics",
   "cloudenv.text_320": "Resource name",
-  "cloudenv.text_321": "Service Type",
-  "cloudenv.text_322": "Operation Type",
-  "cloudenv.text_323": "Execution Status",
+  "cloudenv.text_321": "Resource Type",
+  "cloudenv.Service": "Service",
+  "cloudenv.text_322": "Event name",
+  "cloudenv.text_323": "Status",
   "cloudenv.text_324": "{0}Success",
   "cloudenv.text_325": "Failed",
-  "cloudenv.text_326": "Operation Time",
+  "cloudenv.text_326": "Event Time",
   "cloudenv.text_327": "Remarks",
   "cloudenv.text_328": "This page shows logs",
   "cloudenv.text_329": "Permissions",
@@ -528,7 +529,7 @@
   "cloudenv.text_495": "Valid",
   "cloudenv.text_496": "Index",
   "cloudenv.text_497": "Delete historical billing data",
-  "cloudenv.text_498": "Cloud Account",
+  "cloudenv.text_498": "Cloud User name",
   "cloudaccount": {
     "table": {
       "action": {
