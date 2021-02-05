@@ -18,6 +18,7 @@ export default {
         },
       }),
       getTimeTableColumn({ title: this.$t('monitor.text_14') }),
+      getStatusTableColumn({ statusModule: 'alertrecord', field: 'state' }),
       {
         field: 'type',
         title: this.$t('monitor.text_97'),
@@ -75,7 +76,7 @@ export default {
           },
         },
       },
-      getStatusTableColumn({ statusModule: 'alertrecord', field: 'state' }),
+      getStatusTableColumn({ statusModule: 'alertSendState', field: 'send_state' }),
     ]
     this.extandData = {}
   },
