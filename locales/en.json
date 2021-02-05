@@ -840,6 +840,10 @@
       "ok": "Alert has been restored",
       "alerting": "Alerting"
     },
+    "alertSendState": {
+      "ok": "Sented",
+      "silent": "Quieted"
+    },
     "dnszonecache": {
       "init": "Initialize",
       "deleting": "Deleting",
@@ -2079,7 +2083,7 @@
     "blockstorage": "Block Storage",
     "cachedimage": "Image Cache",
     "cloudaccount": "Cloud Accounts",
-    "cloudevents": "Cloud Logs",
+    "cloudevents": "Cloud Events",
     "cloudprovider": "Cloud Subscription",
     "companyinfo": "Branding",
     "contact": "Recipients",
@@ -2332,7 +2336,7 @@
       "exec_result": "Result",
       "scope_range": "Scope",
       "os_arch": "CPU Architecture",
-      "operation_status": "Execution Status",
+      "operation_status": "Status",
       "id": "ID"
     },
     "action": {
@@ -4558,13 +4562,13 @@
   "common.set_secgroup_max_message": "Prompt message: Up to {0} security groups can be associated",
   "cloudevent": {
     "title": {
-      "account": "Cloud account",
+      "account": "Cloud User name",
       "manager": "Subscription",
       "brand": "Platform",
       "provider": "Platform",
-      "service": "Service Type",
+      "service": "Service",
       "resource_type": "Resource Type",
-      "action": "Operation Type"
+      "action": "Event name"
     }
   },
   "operation": {

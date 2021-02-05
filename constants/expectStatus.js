@@ -359,6 +359,11 @@ export default {
     success: ['ok'],
     danger: ['alerting'],
   },
+  alertSendState: {
+    info: [],
+    success: ['ok', 'silent'],
+    danger: [''],
+  },
   dnszonecache: {
     success: ['available'],
   },
