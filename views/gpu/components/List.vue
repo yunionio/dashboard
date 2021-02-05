@@ -11,7 +11,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getRegionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -63,9 +63,7 @@ export default {
               return `hosts.id(host_id).name.contains("${val}")`
             },
           },
-          region: {
-            label: this.$t('dictionary.region'),
-          },
+          region: getRegionFilter(),
           zone: {
             label: this.$t('dictionary.zone'),
           },
