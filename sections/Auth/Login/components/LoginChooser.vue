@@ -4,7 +4,7 @@
       <template v-for="item of dataSource">
         <div class="item d-flex align-items-center pb-2 pt-2" :key="item[0]" @click="handleSelect(item)">
           <div class="left flex-fill">
-            <div class="l1info">{{ item[1]['name'] }} - {{ item[1]['domain']['name'] }}</div>
+            <div class="l1info">{{ item[1]['name'] }} - {{ item[1]['domain']['name'] }}{{ item[1]['isSSO'] ? ' (SSO)' : '' }}</div>
             <div class="l2info text-color-help mt-1">{{ $t('common.text00118') }}：{{ $te(`authChooser.${item[1]['scope']}`) ? $t(`authChooser.${item[1]['scope']}`) : '-' }}</div>
             <div class="l2info text-color-help mt-1">{{ $t('dictionary.project') }}：{{ item[1].projectName }}</div>
           </div>
@@ -19,7 +19,7 @@
     <div class="actions flex-grow-0 flex-shrink-0 d-flex">
       <template v-if="!showDelete">
         <div class="flex-shrink-1 flex-grow-1 text-left pr-2">
-          <a-button type="link" icon="user" class="pr-0 week-link-button" size="small" @click="$router.replace({ path: '/auth/login', query: { rf: $route.query.rf } })">{{ $t('auth.outher.history.user.btn') }}</a-button>
+          <a-button type="link" icon="user" class="pr-0 week-link-button" size="small" @click="$router.replace({ path: '/auth/login', query: { rf: $route.query.rf, domain: $route.query.domain } })">{{ $t('auth.outher.history.user.btn') }}</a-button>
         </div>
         <div class="flex-shrink-1 flex-grow-1 text-right pl-2">
           <a-button type="link" icon="user-delete" class="pl-0 week-link-button" @click="showDelete = true" size="small">{{ $t('auth.remove.history.user.btn') }}</a-button>
@@ -37,7 +37,7 @@
 <script>
 import * as R from 'ramda'
 import { mapState } from 'vuex'
-import { getLoginDomain } from '@/utils/common/cookie'
+import { setSsoIdpIdInCookie } from '@/utils/auth'
 
 export default {
   name: 'LoginChooser',
@@ -54,22 +54,8 @@ export default {
     ...mapState('auth', {
       loggedUsers: state => state.loggedUsers,
     }),
-    loginDomain () {
-      if (this.$route.query.domain) {
-        return this.$route.query.domain
-      }
-      if (getLoginDomain()) {
-        return getLoginDomain()
-      }
-      return ''
-    },
     dataSource () {
-      let data = Object.entries(this.loggedUsers)
-      if (this.loginDomain) {
-        data = data.filter(v => {
-          return v[1].domain.name === this.loginDomain
-        })
-      }
+      const data = Object.entries(this.loggedUsers)
       if (data.length === 0) {
         this.$router.replace({
           path: '/auth/login',
@@ -86,28 +72,7 @@ export default {
   },
   watch: {
     loggedUsers (val) {
-      let data = Object.entries(this.loggedUsers)
-      if (this.loginDomain) {
-        data = data.filter(v => {
-          return v[1].domain.name === this.loginDomain
-        })
-      }
-      if (data.length === 0) {
-        this.$router.replace({
-          path: '/auth/login',
-          query: {
-            rf: this.$route.query.rf,
-          },
-        })
-      }
-    },
-    loginDomain (val) {
-      let data = Object.entries(this.loggedUsers)
-      if (this.loginDomain) {
-        data = data.filter(v => {
-          return v[1].domain.name === this.loginDomain
-        })
-      }
+      const data = Object.entries(this.loggedUsers)
       if (data.length === 0) {
         this.$router.replace({
           path: '/auth/login',
@@ -127,12 +92,18 @@ export default {
     },
     handleSelect (item) {
       if (this.showDelete) return
+      if (item[1] && item[1].isSSO && item[1].idpId) {
+        const { origin, search } = window.location
+        setSsoIdpIdInCookie(item[1].idpId)
+        window.location.href = `${origin}/api/v1/auth/sso/redirect/${item[1].idpId}${search || ''}`
+        return
+      }
       const username = this.getUsernameQuery ? this.getUsernameQuery(item) : item[1].name
       this.$router.replace({
         path: '/auth/login',
         query: {
           username,
-          domain: item[1].domain.name,
+          fd_domain: item[1].domain.name,
           displayname: item[1].displayname,
           ...this.$route.query,
         },

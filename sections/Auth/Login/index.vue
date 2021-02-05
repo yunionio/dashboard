@@ -10,53 +10,10 @@
       <div class="flex-fill position-relative">
         <div class="login-content-wrap h-100 w-100 overflow-hidden">
           <h4 class="text-center">{{ title }}</h4>
-          <div class="login-domain-title d-flex justify-content-center align-items-center">
-            <div v-if="hasLoginDomain" class="selected-user-wrap d-flex justify-content-center flex-wrap p-1">
-              <div class="selected-user-content" @click="cleanLoginDomain">
-                <div class="selected-user-name">{{ $t('auth.current.domain') }}: {{ loginDomain }}</div>
-                <div class="ml-2 d-flex align-items-center">
-                  <a-icon type="close" />
-                </div>
-              </div>
-            </div>
-            <!--div v-if="hasLoginDomain" class="d-flex justify-content-center flex-wrap p-1">
-              <a-tooltip :title="$t('auth.clean.current.domain')">
-                <a-button type="round" @click="cleanLoginDomain">{{ $t('auth.current.domain') }}: {{ loginDomain }}</a-button>
-              </a-tooltip>
-            </div-->
-            <div v-else class="d-flex justify-content-center flex-wrap p-1">
-              <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
-                <a-tooltip :title="$t('auth.click.set.current.domain')">
-                  <a-button icon="apartment" type="round">{{ $t('auth.set.current.domain') }}</a-button>
-                </a-tooltip>
-                <edit-form slot="content" @submit="submitLoginDomain" @cancel="showSetDomainPopover=false" />
-              </a-popover>
-            </div>
-          </div>
           <transition-page>
             <router-view />
           </transition-page>
         </div>
-      </div>
-      <!-- 第三方登录 -->
-      <div class="flex-shrink-0 flex-grow-0">
-        <template v-if="idps.length > 0">
-          <div class="fast-login-wrap">
-            <div class="fast-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />{{ $t('auth.login.fast.login.title') }}<span class="ml-2" /></div>
-            <div class="d-flex justify-content-center flex-wrap p-1">
-              <div class="fast-login-items" :key="idx" v-for="(item, idx) of idps">
-                <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2" @click="handleClickIdp(item)">
-                  <a-tooltip placement="top" :title="$t(`idpTmplTitles.${item.template || item.driver}`)">
-                    <template slot="title">
-                      <span>{{ item.tooltip }}</span>
-                    </template>
-                    <img :src="getIcon(item)" />
-                  </a-tooltip>
-                </a>
-              </div>
-            </div>
-          </div>
-        </template>
       </div>
     </div>
   </div>
@@ -65,20 +22,14 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
-import EditForm from '@/components/Edit/Form'
-import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
-import { removeQueryKeys } from '@/utils/utils'
+import { getLoginDomain } from '@/utils/common/cookie'
 
 export default {
   name: 'AccountIndex',
-  components: {
-    EditForm,
-  },
   data () {
     return {
       prevHeight: 0,
       regionsLoading: false,
-      showSetDomainPopover: false,
     }
   },
   computed: {
@@ -95,9 +46,6 @@ export default {
         return this.$t('auth.chooser')
       }
       return '-'
-    },
-    idps () {
-      return this.regions.idps || []
     },
     loginDomain () {
       if (this.$route.query.domain) {
@@ -164,13 +112,7 @@ export default {
     } catch (error) {
       this.regionsLoading = true
     }
-    // 如果query中指定了domain，那么只将当前domain的历史账号过滤出来
-    let data = Object.entries(this.loggedUsers)
-    if (this.$route.query.domain) {
-      data = data.filter(v => {
-        return v[1].domain.name === this.$route.query.domain
-      })
-    }
+    const data = Object.entries(this.loggedUsers)
     // 查看SSO登录跳转回来后的query信息，是否有error
     const { query, path } = this.$route
     const { result, error_class } = query
@@ -203,31 +145,6 @@ export default {
     }
   },
   methods: {
-    getIcon (idp) {
-      const { template, driver } = idp
-      const key = (template || driver).toLocaleLowerCase()
-      return require(`../../../assets/images/idp-icons/round/${key}.png`)
-    },
-    handleClickIdp (idpItem) {
-      if (this.loginDomain) {
-        setLoginDomain(this.loginDomain)
-      }
-      const { origin, search } = window.location
-      const { id } = idpItem
-      window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}${search || ''}`
-    },
-    cleanLoginDomain (e) {
-      setLoginDomain('')
-      const { origin, pathname, search } = window.location
-      const newsearch = removeQueryKeys(search, ['domain'])
-      window.location.href = origin + pathname + newsearch
-    },
-    submitLoginDomain (value) {
-      if (value.input) {
-        setLoginDomain(value.input)
-        window.location.reload()
-      }
-    },
     gethost (str) {
       if (str.startsWith('http://')) {
         return str.substr(7)
@@ -291,39 +208,6 @@ export default {
   overflow: hidden;
   img {
     height: 60%;
-  }
-}
-.login-domain-title {
-  color: #999;
-  > div {
-    width: 100%;
-    height: 1px;
-    margin-bottom: 50px;
-  }
-}
-.selected-user-wrap {
-  height: 82px;
-  margin-bottom: 50px;
-}
-.selected-user-content {
-  align-items: center;
-  border: 1px solid #d9d9d9;
-  color: #3c4043;
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 14px;
-  letter-spacing: .25px;
-  max-width: 100%;
-  border-radius: 16px;
-  padding: 5px 7px 5px 5px;
-  .selected-user-name {
-    direction: ltr;
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  &:hover {
-    background: rgba(60,64,67,0.039);
   }
 }
 </style>
