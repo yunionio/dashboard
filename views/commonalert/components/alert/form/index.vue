@@ -151,7 +151,7 @@ export default {
       period: '5m',
       comparator: '>=',
       alert_duration: 2,
-      silent_period: 360,
+      silent_period: '360m',
       reduce: 'avg',
       level: 'normal',
       scope: this.$store.getters.scope,

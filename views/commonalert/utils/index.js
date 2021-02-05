@@ -114,7 +114,7 @@ export function getMetircAlertUtil (row, field) {
       metric = metric_zh[metric] || metric
     }
     const reduce = (alertStrategyMaps[detail.reduce]) || ''
-    const alert_duration = row.alert_duration ? 'for ' + i18n.t('monitor.duration.label', [row.alert_duration]) : ''
+    const alert_duration = row.alert_duration ? i18n.t('monitor.list.duration.label', [row.alert_duration]) : ''
     let preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
     const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? (_.get(row, 'eval_data[0].unit') || '') : '')
     const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)

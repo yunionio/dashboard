@@ -219,6 +219,7 @@
   "monitor.overview.location": "{0} Overview",
   "monitor.commonalerts.channel.disable.tips": "Alter channel {0} can not be disabled",
   "monitor.duration.label": "{0} consecutive cycles",
+  "monitor.list.duration.label": "for {0} consecutive cycles",
   "monitor.duration.silent.hour": "{0} hours",
   "monitor.duration.silent.minute": "{0} minutes",
   "monitor.commonalerts.robot.disable.tips": "no available robot channel currently, please setup first",
