@@ -16,7 +16,13 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import {
+  getStatusFilter,
+  getBrandFilter,
+  getAccountFilter,
+  getProjectDomainFilter,
+  getRegionFilter,
+} from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
@@ -65,9 +71,7 @@ export default {
         label: this.$t('network.text_244'),
       },
       project_domains: getProjectDomainFilter(),
-      region: {
-        label: this.$t('common_282'),
-      },
+      region: getRegionFilter(),
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
