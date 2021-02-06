@@ -303,6 +303,9 @@ export default {
     'fd.eip_bgp_type' (val, oldV) {
       this.getPriceList()
     },
+    'fd.gpuEnable' (val, oldV) {
+      this.getPriceList()
+    },
   },
   created () {
     this.baywatch([
