@@ -1100,7 +1100,7 @@
   "compute.text_1129": "Only VMware supports this operation",
   "compute.text_1130": "Please select the booted machine to operate",
   "compute.text_1131": "Please select the suspended machine to operate",
-  "compute.text_1132": "Auto release",
+  "compute.text_1132": "Auto delete after",
   "compute.text_1133": "For the time being, only simultaneous operations are supported and expired release is set",
   "compute.text_1134": "{0} GPUs ({1})",
   "compute.text_1135": "{0}GB RAM",
