@@ -621,7 +621,7 @@ export default {
           }
         }
         const params = {
-          database: metricKeyItem.database || 'telegraf',
+          database: metricKeyItem.database || _.get(this.alertData, 'common_alert_metric_details[0].db', 'telegraf'),
           measurement: metricKey,
           field: mertric,
           ...scopeParams,
