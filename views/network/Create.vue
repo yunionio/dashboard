@@ -12,7 +12,6 @@
           :wrapperCol="formItemLayout.wrapperCol"
           :labelCol="formItemLayout.labelCol"
           :names="areaselectsName"
-          :cityParams="cityParams"
           :providerParams="providerParams"
           :cloudregionParams="cloudregionParams"
           :isRequired="true"
@@ -385,11 +384,8 @@ export default {
       zoneList: [],
       project_domain: '',
       vpcId: '',
-      cityParams: {
-        usable: false,
-        usable_vpc: true,
-      },
       providerParams: {
+        cloud_env: 'public',
         usable: false,
         usable_vpc: true,
       },
@@ -479,7 +475,7 @@ export default {
       if (this.cloudEnv === 'private' || this.cloudEnv === 'onpremise') {
         return ['cloudregion']
       }
-      return ['city', 'provider', 'cloudregion']
+      return ['provider', 'cloudregion']
     },
   },
   provide () {
