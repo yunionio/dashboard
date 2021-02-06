@@ -84,7 +84,12 @@
       <a-select
         @change="colorChange"
         v-decorator="decorators.color">
-        <a-select-option v-for="item in colors" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
+        <a-select-option v-for="item in colors" :key="item.key" :value="item.key">
+          <div>
+            <a-progress :show-info="false" :stroke-color="{ '60%': item.percent60, '80%': item.percent80, '100%': item.percent100}" :percent="100" />
+          </div>
+          <div class="text-color-help">{{ item.label }}</div>
+        </a-select-option>
       </a-select>
     </a-form-item>
   </div>
@@ -136,10 +141,16 @@ export default {
       colors: [
         {
           key: 'default',
+          percent60: '#52c41a',
+          percent80: '#faad14',
+          percent100: '#f5222d',
           label: this.$t('dashboard.color.scheme.default'),
         },
         {
           key: 'reverse',
+          percent60: '#f5222d',
+          percent80: '#faad14',
+          percent100: '#52c41a',
           label: this.$t('dashboard.color.scheme.reverse'),
         },
       ],
