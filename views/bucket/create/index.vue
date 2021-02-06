@@ -13,7 +13,6 @@
           :labelCol="formItemLayout.labelCol"
           :names="areaselectsName"
           :cloudregionParams="cloudregionParams"
-          :cityParams="cityParams"
           :isRequired="true"
           :cloudregionParamsMapper="cloudregionParamsMapper"
           :providerParams="providerParams"
@@ -125,11 +124,6 @@ export default {
         ],
       }
     },
-    cityParams () {
-      const params = {}
-      params.cloud_env = this.cloudEnv
-      return params
-    },
     cloudregionParams () {
       const params = {
         scope: this.scope,
@@ -161,10 +155,11 @@ export default {
       if (this.cloudEnv === 'onpremise') {
         return ['cloudregion']
       }
-      return ['city', 'provider', 'cloudregion']
+      return ['provider', 'cloudregion']
     },
     providerParams () {
       return {
+        cloud_env: this.cloudEnv,
         scope: this.scope,
         projecct_domain: this.project_domain,
       }
