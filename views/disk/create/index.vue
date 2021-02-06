@@ -300,7 +300,7 @@ export default {
       if (this.diskType === 'private' || this.diskType === 'onpremise') {
         return ['cloudregion', 'zone']
       }
-      return ['city', 'provider', 'cloudregion', 'zone']
+      return ['provider', 'cloudregion', 'zone']
     },
     cloudproviderParams () {
       const { cloudregion, domain: project_domain, zone } = this.form.fd
@@ -332,7 +332,7 @@ export default {
   },
   watch: {
     cloudEnv (val) {
-      this.$refs.areaSelects.fetchs(['city', 'provider', 'cloudregion', 'zone'])
+      this.$refs.areaSelects.fetchs(['provider', 'cloudregion', 'zone'])
       this.storageItem = {}
     },
     'form.fd.domain' (newValue, oldValue) {
