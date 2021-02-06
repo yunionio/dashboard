@@ -264,10 +264,10 @@ export default {
               const tenant = row.tenant
               const ret = [
                 <list-body-cell-wrap style="margin: 3px 0 2px 0" copy field='user' row={row} />,
-                <a-space>
+                <div>
                   <span class='text-weak' title={ this.$t('shareScope.domain') }> { domain } </span>
                   <span class='text-weak' title={ this.$t('shareScope.project') }> { tenant } </span>
-                </a-space>,
+                </div>,
               ]
               return ret
             },
