@@ -27,6 +27,10 @@ export default {
   mixins: [WindowsMixin, globalSearchMixins, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    cloudEnv: String,
+    cloudEnvOptions: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -113,6 +117,8 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: !this.cloudEnvEmpty,
+              tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
             }
           },
         },
