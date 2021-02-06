@@ -6,11 +6,9 @@
     :names="names"
     :isRequired="isRequired"
     :defaultActiveFirstOption="defaultActiveFirstOption"
-    :cityParams="cityParams"
     :zoneParams="zoneParams"
     :providerParams="providerParams"
     :cloudregionParams="cloudregionParams"
-    @cityFetchSuccess="cityFetchSuccess"
     @providerFetchSuccess="providerFetchSuccess"
     @cloudregionFetchSuccess="cloudregionFetchSuccess" />
 </template>
@@ -71,12 +69,10 @@ export default {
         }],
       }
     },
-    cityParams () {
-      return { service: this.service, cloud_env: 'public', ...this.scopeParams }
-    },
     providerParams () {
       return {
         service: this.service,
+        cloud_env: 'public',
         ...this.scopeParams,
       }
     },
@@ -135,9 +131,6 @@ export default {
         }
         return true
       })
-    },
-    cityFetchSuccess (names) {
-      this.$emit('cityFetchSuccess', names)
     },
   },
 }
