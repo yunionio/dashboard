@@ -1,9 +1,9 @@
 <template>
   <div>
     <div v-if="showUsernameInput && loginDomain" class="login-domain-title d-flex justify-content-center align-items-center">
-      <div class="selected-user-wrap d-flex justify-content-center flex-wrap p-1">
+      <div class="selected-user-wrap d-flex justify-content-center flex-wrap p-1 align-items-center">
         <div class="selected-user-name">{{ $t('auth.current.domain') }}: {{ loginDomain }}</div>
-        <div class="ml-2 d-flex align-items-center">
+        <div class="ml-2 d-flex">
           <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
             <a-tooltip :title="$t('auth.click.set.current.domain')">
               <a-button icon="form" type="link" />
