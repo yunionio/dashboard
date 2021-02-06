@@ -34,14 +34,6 @@ export default {
         apiVersion: 'v1',
         idKey: 'event_id',
         filterOptions: {
-          name: getNameFilter({ label: this.$t('cloudenv.text_320') }),
-          provider: distinctFieldFilter({ service: 'cloudevent', field: 'provider' }),
-          account: distinctFieldFilter({ service: 'cloudevent', field: 'account' }),
-          manager: distinctFieldFilter({ service: 'cloudevent', field: 'manager' }),
-          service: distinctFieldFilter({ service: 'cloudevent', field: 'service' }),
-          resource_type: distinctFieldFilter({ service: 'cloudevent', field: 'resource_type' }),
-          action: distinctFieldFilter({ service: 'cloudevent', field: 'action' }),
-          success: getSuccessFilter(),
           created_at: {
             label: this.$t('cloudenv.text_326'),
             dropdown: true,
@@ -57,6 +49,14 @@ export default {
               return `created_at.between("${val[0]}", "${val[1]}")`
             },
           },
+          name: getNameFilter({ label: this.$t('cloudenv.text_320') }),
+          provider: distinctFieldFilter({ service: 'cloudevent', field: 'provider' }),
+          account: distinctFieldFilter({ service: 'cloudevent', field: 'account' }),
+          action: distinctFieldFilter({ service: 'cloudevent', field: 'action' }),
+          service: distinctFieldFilter({ service: 'cloudevent', field: 'service' }),
+          resource_type: distinctFieldFilter({ service: 'cloudevent', field: 'resource_type' }),
+          success: getSuccessFilter(),
+          manager: distinctFieldFilter({ service: 'cloudevent', field: 'manager' }),
         },
       }),
       columns: [
