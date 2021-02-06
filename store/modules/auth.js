@@ -17,6 +17,7 @@ import {
   getHistoryUsersFromStorage,
   getLoggedUsersFromStorage,
   setLoggedUsersInStorage,
+  getSsoIdpIdFromCookie,
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
@@ -136,10 +137,8 @@ export default {
       state.historyUsers = newVal
     },
     UPDATE_LOGGED_USERS (state, payload) {
-      // 如果是cas登录则不保存信息
-      if (state.info && state.info.idp_driver === 'cas') return
       // 如果是sso登录则不保存信息
-      if (state.auth && state.auth.is_sso) return
+      // if (state.auth && state.auth.is_sso) return
       const newVal = { ...state.loggedUsers }
       if (payload.action === 'delete') {
         removeKeyIgnoreCase(newVal, payload.key)
@@ -321,6 +320,8 @@ export default {
             scope: getScopeFromCookie(),
             tenant: getTenantFromCookie(),
             name: state.info.name,
+            isSSO: state.auth.is_sso,
+            idpId: state.auth.is_sso ? getSsoIdpIdFromCookie() : null,
           },
         })
         return response.data.data

@@ -7,8 +7,8 @@
       <a-input class="w-100" v-decorator="decorators.input" :placeholder="placeholder" allowClear />
     </a-form-item>
     <div class="text-right">
-      <a-button type="primary" html-type="submit">{{$t('common.ok')}}</a-button>
-      <a-button class="ml-3" @click="cancel">{{$t('common.cancel')}}</a-button>
+      <a-button type="primary" html-type="submit">{{ okText }}</a-button>
+      <a-button class="ml-3" @click="cancel">{{ cancelText }}</a-button>
     </div>
   </a-form>
 </template>
@@ -40,6 +40,14 @@ export default {
     },
     formRules: {
       type: Array,
+    },
+    okText: {
+      type: String,
+      default: i18n.t('common.ok'),
+    },
+    cancelText: {
+      type: String,
+      default: i18n.t('common.cancel'),
     },
   },
   data () {

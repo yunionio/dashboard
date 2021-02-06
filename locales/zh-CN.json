@@ -4577,6 +4577,10 @@
       "true": "成功",
       "false": "失败"
     }
-  }
+  },
+  "common.login_domain": "登录域",
+  "common.set_login_domain": "设置",
+  "common.clear_login_domain": "清除",
+  "common.switch_login_domain": "设置登录域"
 }
 

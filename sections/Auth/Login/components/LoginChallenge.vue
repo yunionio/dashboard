@@ -1,13 +1,25 @@
 <template>
   <div>
+    <div v-if="showUsernameInput && loginDomain" class="login-domain-title d-flex justify-content-center align-items-center">
+      <div class="selected-user-wrap d-flex justify-content-center flex-wrap p-1">
+        <div class="selected-user-name">{{ $t('auth.current.domain') }}: {{ loginDomain }}</div>
+        <div class="ml-2 d-flex align-items-center">
+          <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
+            <a-tooltip :title="$t('auth.click.set.current.domain')">
+              <a-button icon="form" type="link" />
+            </a-tooltip>
+            <edit-form slot="content" :width="450" :formRules="domainInputRules" :defaultValue="loginDomain" :label="$t('common.login_domain')" @submit="submitLoginDomain" @cancel="showSetDomainPopover = false" />
+          </a-popover>
+        </div>
+      </div>
+    </div>
     <template v-if="!showUsernameInput">
       <div class="selected-user-wrap text-center mb-4">
         <div class="selected-user-content" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf } })">
           <div class="mr-2 name-icon">{{ firstNameWord }}</div>
-          <div class="selected-user-name">{{ fd.username }}</div>
+          <div class="selected-user-name">{{ fd.username }} - {{ fd.domain ? fd.domain : loginDomain }}</div>
           <div class="ml-2 d-flex align-items-center">
-            <a-icon type="close" />
-            <!--svg aria-hidden="true" fill="currentColor" focusable="false" width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="12,16.41 5.29,9.71 6.71,8.29 12,13.59 17.29,8.29 18.71,9.71" /></svg-->
+            <svg aria-hidden="true" fill="currentColor" focusable="false" width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="12,16.41 5.29,9.71 6.71,8.29 12,13.59 17.29,8.29 18.71,9.71" /></svg>
           </div>
         </div>
       </div>
@@ -32,7 +44,7 @@
         </a-input-password>
       </a-form-model-item>
       <!-- 域 -->
-      <template v-if="showDomainSelect">
+      <template v-if="showDomainSelect && regions.domains">
         <a-form-model-item prop="domain">
           <a-select v-model="fd.domain" :placeholder="placeholderOpts.domain">
             <a-select-option
@@ -75,16 +87,42 @@
       <a-form-model-item class="mb-0">
         <div class="d-flex">
           <div class="flex-shrink-1 flex-grow-1 text-left" style="margin-left: -15px;">
-            <template v-if="hasLoggedUsers && showUsernameInput">
-              <a-button type="link" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf } })" class="week-link-button">{{ $t('auth.chooser') }}</a-button>
+            <template v-if="hasLoggedUsers">
+              <a-button type="link" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf, domain: $route.query.domain } })" class="week-link-button">{{ $t('auth.chooser') }}</a-button>
             </template>
           </div>
-          <div class="flex-shrink-1 flex-grow-1 text-right" style="margin-right: -15px;">
+          <div class="flex-shrink-1 flex-grow-1 text-right" style="margin-left: -15px;margin-right: -15px;">
             <slot name="actions" />
+          </div>
+          <div class="flex-shrink-1 flex-grow-1 text-right" style="margin-right: -15px;" v-if="showDomainChooser && showUsernameInput && !loginDomain">
+            <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
+              <a-button type="link" class="week-link-button">{{ $t('common.switch_login_domain') }}</a-button>
+              <edit-form slot="content" :width="450" :formRules="domainInputRules" :defaultValue="loginDomain" :label="$t('common.login_domain')" @submit="submitLoginDomain" @cancel="showSetDomainPopover = false" />
+            </a-popover>
           </div>
         </div>
       </a-form-model-item>
     </a-form-model>
+    <!-- 第三方登录 -->
+    <div class="flex-shrink-0 flex-grow-0">
+      <template v-if="showUsernameInput && idps.length > 0">
+        <div class="fast-login-wrap">
+          <div class="fast-login-title d-flex justify-content-center align-items-center"><span class="mr-2" />{{ $t('auth.login.fast.login.title') }}<span class="ml-2" /></div>
+          <div class="d-flex justify-content-center flex-wrap p-1">
+            <div class="fast-login-items" :key="idx" v-for="(item, idx) of idps">
+              <a class="fast-login-item d-flex align-items-center justify-content-center ml-2 mr-2" @click="handleClickIdp(item)">
+                <a-tooltip placement="top" :title="$t(`idpTmplTitles.${item.template || item.driver}`)">
+                  <template slot="title">
+                    <span>{{ item.tooltip }}</span>
+                  </template>
+                  <img :src="getIcon(item)" />
+                </a-tooltip>
+              </a>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 <script>
@@ -92,9 +130,15 @@ import * as R from 'ramda'
 import { mapState } from 'vuex'
 import { Base64 } from 'js-base64'
 import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
+// import { removeQueryKeys } from '@/utils/utils'
+import EditForm from '@/components/Edit/Form'
+import { setSsoIdpIdInCookie, removeSsoIdpIdInCookie } from '@/utils/auth'
 
 export default {
   name: 'LoginChallenge',
+  components: {
+    EditForm,
+  },
   props: {
     placeholder: Object,
     formDataMapper: Function,
@@ -121,7 +165,7 @@ export default {
         username: this.$route.query.username || '',
         password: '',
         captcha: '',
-        domain: this.$route.query.domain,
+        domain: undefined,
         region: undefined,
       },
       rules: R.mergeDeepWith(R.concat, {
@@ -147,14 +191,20 @@ export default {
       captchaImg: '',
       submiting: false,
       showUsernameInput: !this.$route.query.username,
+      showSetDomainPopover: false,
+      loginDomain: '',
+      domainInputRules: [
+        { required: false, message: `${this.$t('common.placeholder')} ${this.$t('common.login_domain')}` },
+      ],
     }
   },
   computed: {
     ...mapState('auth', {
+      regions: state => state.regions,
       loggedUsers: state => state.loggedUsers,
     }),
-    regions () {
-      return this.$store.state.auth.regions
+    idps () {
+      return this.regions.idps || []
     },
     showRegionSelect () {
       return this.regions.regions.length > 1
@@ -162,26 +212,15 @@ export default {
     showCaptchaInput () {
       return this.regions.captcha === true
     },
+    showDomainChooser () {
+      return !this.regions.return_full_domains
+    },
     firstNameWord () {
       const word = (this.$route.query.displayname || this.$route.query.username || '').split('')[0]
       return word && word.toUpperCase()
     },
-    loginDomain () {
-      if (this.$route.query.domain) {
-        return this.$route.query.domain
-      }
-      if (getLoginDomain()) {
-        return getLoginDomain()
-      }
-      return ''
-    },
     hasLoggedUsers () {
-      let data = Object.entries(this.loggedUsers)
-      if (this.loginDomain) {
-        data = data.filter(v => {
-          return v[1].domain.name === this.loginDomain
-        })
-      }
+      const data = Object.entries(this.loggedUsers)
       return data.length > 0
     },
   },
@@ -194,6 +233,16 @@ export default {
       },
       immediate: true,
     },
+  },
+  created () {
+    if (this.$route.query.domain) {
+      this.loginDomain = this.$route.query.domain
+    } else if (getLoginDomain()) {
+      this.loginDomain = getLoginDomain()
+    }
+    if (this.$route.query.fd_domain) {
+      this.fd.domain = this.$route.query.fd_domain
+    }
   },
   methods: {
     // 获取验证码图片
@@ -254,9 +303,10 @@ export default {
         await this.$emit('after-login')
         await this.$store.dispatch('auth/onAfterLogin')
         // ---- save login domain ---- //
-        if (this.loginDomain) {
+        if (this.loginDomain && this.showDomainChooser) {
           setLoginDomain(this.loginDomain)
         }
+        removeSsoIdpIdInCookie()
       } catch (error) {
         // 登录失败，如果domain已存在则清除domain，主要是应对历史账号存储的domain被更改的情况。（异常情况）
         if (this.fd.domain) {
@@ -271,6 +321,33 @@ export default {
         this.submiting = false
         throw error
       }
+    },
+    getIcon (idp) {
+      const { template, driver } = idp
+      const key = (template || driver).toLocaleLowerCase()
+      return require(`../../../../assets/images/idp-icons/round/${key}.png`)
+    },
+    handleClickIdp (idpItem) {
+      if (this.loginDomain && this.showDomainChooser) {
+        setLoginDomain(this.loginDomain)
+      }
+      const { origin, search } = window.location
+      const { id } = idpItem
+      setSsoIdpIdInCookie(id)
+      window.location.href = `${origin}/api/v1/auth/sso/redirect/${id}${search || ''}`
+    },
+    submitLoginDomain (value) {
+      this.showSetDomainPopover = false
+      this.changeDomain(value.input)
+    },
+    changeDomain (domain) {
+      var params = { rf: this.$route.query.rf }
+      if (domain) {
+        params.domain = domain
+      }
+      this.loginDomain = domain
+      this.$store.dispatch('auth/getRegions', params)
+      this.$router.replace({ path: '/auth/login', query: params })
     },
   },
 }
@@ -325,5 +402,13 @@ export default {
   border-radius: 50%;
   background-color: #1890ff;
   font-size: 12px;
+}
+.login-domain-title {
+  color: #999;
+  > div {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 50px;
+  }
 }
 </style>

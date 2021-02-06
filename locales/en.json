@@ -2073,7 +2073,7 @@
   "auth.login.fast.login.title": "Sign in with",
   "auth.login.fast.login.fail": "Login failed, please log in again",
   "auth.remove.history.user.btn": "Remove Account",
-  "auth.outher.history.user.btn": "Use another account",
+  "auth.outher.history.user.btn": "Use Another Account",
   "dictionary": {
     "actions": "Audit Logs",
     "ansibleplaybook": "Task",
@@ -4577,5 +4577,9 @@
       "true": "Success",
       "false": "Failed"
     }
-  }
+  },
+  "common.login_domain": "Login Domain",
+  "common.set_login_domain": "Set",
+  "common.clear_login_domain": "Clear",
+  "common.switch_login_domain": "Set Login Domain"
 }
