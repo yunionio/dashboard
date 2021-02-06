@@ -297,6 +297,9 @@ export default {
     'fd.backupEnable' (val, oldV) {
       this.getPriceList()
     },
+    'fd.gpuEnable' (val, oldV) {
+      this.getPriceList()
+    },
   },
   created () {
     this.baywatch([
