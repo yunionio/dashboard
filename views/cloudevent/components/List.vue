@@ -16,7 +16,7 @@ import {
   getTimeTableColumn,
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
-import { getNameFilter, distinctFieldFilter, getSuccessFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, distinctFieldFilter, getSuccessFilter, getTimeRangeFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -34,21 +34,7 @@ export default {
         apiVersion: 'v1',
         idKey: 'event_id',
         filterOptions: {
-          created_at: {
-            label: this.$t('cloudenv.text_326'),
-            dropdown: true,
-            date: true,
-            filter: true,
-            formatter: (val, type) => {
-              if (type === 'before') {
-                return `created_at.le("${val}")`
-              }
-              if (type === 'after') {
-                return `created_at.ge("${val}")`
-              }
-              return `created_at.between("${val[0]}", "${val[1]}")`
-            },
-          },
+          created_at: getTimeRangeFilter({ label: this.$t('cloudenv.text_326'), field: 'created_at' }),
           name: getNameFilter({ label: this.$t('cloudenv.text_320') }),
           provider: distinctFieldFilter({ service: 'cloudevent', field: 'provider' }),
           account: distinctFieldFilter({ service: 'cloudevent', field: 'account' }),
