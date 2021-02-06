@@ -37,7 +37,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          city: i18n.t('rules.city'),
+          // city: i18n.t('rules.city'),
           provider: i18n.t('rules.provider'),
           cloudregion: i18n.t('rules.region'),
           zone: i18n.t('rules.zone'),
@@ -51,7 +51,8 @@ export default {
     names: {
       type: Array,
       default: () => {
-        return ['city', 'provider', 'cloudregion', 'zone']
+        // return ['city', 'provider', 'cloudregion', 'zone']
+        return ['provider', 'cloudregion', 'zone']
       },
     },
     decorators: {
@@ -73,9 +74,11 @@ export default {
         }
       },
     },
+    /*
     cityParams: {
       type: [Object, Function],
     },
+    */
     providerParams: {
       type: [Object, Function],
     },
@@ -96,7 +99,13 @@ export default {
     cloudregionParamsMapper: Function,
   },
   watch: {
+    /*
     cityParams (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.fetchs()
+    },
+    */
+    providerParams (val, oldVal) {
       if (R.equals(val, oldVal)) return
       this.fetchs()
     },
@@ -110,8 +119,8 @@ export default {
   },
   data () {
     return {
-      cityLoading: false,
-      cityList: [],
+      // cityLoading: false,
+      // cityList: [],
       providerLoading: false,
       providerList: [],
       cloudregionLoading: false,
@@ -273,6 +282,7 @@ export default {
         }
       }
     },
+    /*
     async fetchCity (queryParams = {}) {
       const params = {
         ...DEFAULT_PARAMS,
@@ -314,11 +324,12 @@ export default {
         </a-select>
       )
     },
+    */
     async fetchProvider (queryParams = {}) {
-      const { getFieldsValue } = this.FC
-      const { city } = getFieldsValue(this.names)
+      // const { getFieldsValue } = this.FC
+      // const { city } = getFieldsValue(this.names)
       const params = {
-        city,
+        // city,
         ...DEFAULT_PARAMS,
         ...queryParams,
       }
@@ -360,9 +371,10 @@ export default {
     },
     async fetchCloudregion (queryParams) {
       const { getFieldsValue } = this.FC
-      const { city, provider } = getFieldsValue(this.names)
+      // const { city, provider } = getFieldsValue(this.names)
+      const { provider } = getFieldsValue(this.names)
       let params = {
-        city,
+        // city,
         provider,
         capability: 'compute',
         ...DEFAULT_PARAMS,
