@@ -13,7 +13,6 @@
           :wrapperCol="formItemLayout.wrapperCol"
           :labelCol="formItemLayout.labelCol"
           :names="areaselectsName"
-          :city-params="cityParams"
           :cloudregionParams="regionParams"
           :providerParams="cloudProviderParams"
           :isRequired="true"
@@ -332,7 +331,7 @@ export default {
       if (this.cloudEnv === 'private' || this.cloudEnv === 'onpremise') {
         return ['cloudregion']
       }
-      return ['city', 'provider', 'cloudregion']
+      return ['provider', 'cloudregion']
     },
     showIpSubnet () {
       if (this.providerC === 'zstack' || this.providerC === 'openstack') return true
@@ -340,15 +339,9 @@ export default {
       if (this.cloudEnv === 'private' && this.selectedRegionItem && this.selectedRegionItem.id) return true
       return false
     },
-    cityParams () {
-      return {
-        usable: true,
-        scope: this.scope,
-        public_cloud: true,
-      }
-    },
     cloudProviderParams () {
       return {
+        scope: this.scope,
         cloudEnv: this.cloudEnv,
       }
     },
