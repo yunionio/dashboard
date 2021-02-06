@@ -120,7 +120,7 @@ export function getMetircAlertUtil (row, field) {
     const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
     strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, alert_duration, detail.comparator, threshold.text])
     if (detail.condition_type === 'nodata_query') { // 系统上报数据为空
-      strategy = i18n.t('monitor.text_108')
+      strategy = i18n.t('monitor.text_108', [alert_duration])
     }
     if (preiod) {
       preiod = preiod.replace(i18n.t('monitor.text_103'), '')
