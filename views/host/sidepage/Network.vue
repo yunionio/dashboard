@@ -58,8 +58,26 @@ export default {
             ]
           },
         }),
+        {
+          field: 'nic_type',
+          title: this.$t('compute.text_860'),
+          width: 80,
+          formatter: ({ row }) => {
+            if (row.nic_type === 'admin') {
+              return this.$t('compute.text_861')
+            } else if (row.nic_type === 'ipmi') {
+              return this.$t('compute.text_862')
+            } else {
+              return '-'
+            }
+          },
+        },
         getCopyWithContentTableColumn({ field: 'mac_addr', title: this.$t('compute.text_385'), sortable: true }),
         getCopyWithContentTableColumn({ field: 'ip_addr', title: this.$t('compute.text_386'), sortable: true }),
+        getCopyWithContentTableColumn({
+          field: 'wire',
+          title: this.$t('network.text_571'),
+        }),
         getCopyWithContentTableColumn({ field: 'driver', title: this.$t('compute.text_378') }),
         // {
         //   field: 'bw_limit',
@@ -119,6 +137,13 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    getParams () {
+      return {
+        details: true,
+      }
+    },
   },
 }
 </script>
