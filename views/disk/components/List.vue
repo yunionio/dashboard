@@ -41,6 +41,9 @@ export default {
       type: [Function, Object],
     },
     cloudEnv: String,
+    cloudEnvOptions: {
+      type: Array,
+    },
     showCreateAction: {
       type: Boolean,
       default: true,
@@ -103,6 +106,8 @@ export default {
       },
       meta: () => ({
         buttonType: 'primary',
+        validate: !this.cloudEnvEmpty,
+        tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
       }),
     }
     const groupActions = [
