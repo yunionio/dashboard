@@ -49,7 +49,7 @@ export default {
           id: this.params.data[0].id,
           action: 'merge-from',
           data: {
-            sources: this.params.data.map((item) => { return item.id }),
+            sources: this.params.data.slice(1).map((item) => { return item.id }),
             merged_network: this.mergeSubnet,
           },
         })
