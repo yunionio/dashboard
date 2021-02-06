@@ -25,7 +25,7 @@ export default {
     },
     data: {
       type: Object,
-      required: true,
+      required: false,
     },
     alertType: String,
     resType: String,
