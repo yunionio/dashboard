@@ -25,7 +25,7 @@
     </a-row>
     <a-row>
       <a-col style="padding-left: 6px; padding-right: 6px;" :span="8">
-        <overview-pie class="monitor-overview-card mb-2" :header="{ title: $t('monitor.overview_alert_sum') }" :loading="charts.alert_sum.chartLoading" :chartEvents="pieChartEvent()" :chartData="charts.alert_sum.chartData" showLegend="true" :legendData="charts.alert_sum.legendData" :pieTitle="charts.alert_sum.title" :pieSubtext="charts.alert_sum.subtitle" />
+        <overview-pie class="monitor-overview-card mb-2" :header="{ title: $t('monitor.overview_alert_sum') }" :loading="charts.alert_sum.chartLoading" :chartEvents="pieChartEvent()" :chartData="charts.alert_sum.chartData" :showLegend="true" :legendData="charts.alert_sum.legendData" :pieTitle="charts.alert_sum.title" :pieSubtext="charts.alert_sum.subtitle" />
       </a-col>
       <a-col style="padding-left: 6px; padding-right: 6px;" :span="16">
         <overview-line :header="{ title: charts.res_num.title }" class="monitor-overview-card mb-2" height="300px" :loading="charts.res_num.chartLoading" :isHistogram="true" :chartData="charts.res_num.chartData" :numerify-format="charts.res_num.numerifyFormat" splitLineShow />
@@ -472,7 +472,7 @@ export default {
         const self = this
         this.$nextTick(_ => {
           this.charts[field].rawDatas = series
-          this.charts[field].unit = self.units[measurement + '/' + field] || []
+          this.charts[field].unit = self.units[measurement + '/' + field] || {}
           this.charts[field].chartData = self.tabChartData(field, series)
           this.charts[field].chartLoading = false
         })
