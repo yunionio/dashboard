@@ -13,7 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTimeRangeFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'AlertrecordList',
@@ -72,21 +72,7 @@ export default {
               })
             },
           },
-          created_at: {
-            label: this.$t('monitor.text_14'),
-            dropdown: true,
-            date: true,
-            filter: true,
-            formatter: (val, type) => {
-              if (type === 'before') {
-                return `created_at.le("${this.utcTime(val)}")`
-              }
-              if (type === 'after') {
-                return `created_at.ge("${this.utcTime(val)}")`
-              }
-              return `created_at.between("${this.utcTime(val[0])}", "${this.utcTime(val[1])}")`
-            },
-          },
+          created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'created_at' }),
         },
       }),
       exportDataOptions: {
@@ -126,9 +112,6 @@ export default {
         resource: 'commonalerts',
         apiVersion: 'v1',
       })
-    },
-    utcTime (v) {
-      return this.$moment(v).utc().format('YYYY-MM-DD HH:mm:ss')
     },
   },
 }
