@@ -2362,6 +2362,7 @@
   },
   "common": {
     "more": "更多",
+    "sendState": "消息状态",
     "batchAction": "批量操作",
     "action": "操作",
     "ok": "确定",

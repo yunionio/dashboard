@@ -2362,6 +2362,7 @@
   },
   "common": {
     "more": "More",
+    "sendState": "Send State",
     "batchAction": "Batch Action",
     "action": "Action",
     "ok": "OK",
