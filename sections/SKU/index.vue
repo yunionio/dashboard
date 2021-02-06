@@ -322,7 +322,9 @@ export default {
     async fetchSkuList () {
       try {
         this.skuLoading = true
-        const { data: { data = [] } } = await this.skusM.list({ params: this.skuParams })
+        const params = { ...this.skuParams }
+        params.enabled = true
+        const { data: { data = [] } } = await this.skusM.list({ params: params })
         this.skuLoading = false
         if (this.skuParams && !R.isEmpty(this.skuParams)) { // 防止网络延迟导致 skuParams 已经为空了，但却赋值了
           this.skuList = data
