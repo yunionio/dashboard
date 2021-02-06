@@ -166,7 +166,7 @@ export default {
     },
     vpcLabelFormat (item) {
       if (!item.cidr_block) return item.name
-      return `${item.name}（${item.cidr_block}）`
+      return `${item.name}（${item.account ? item.account + ', ' : ''}${item.cidr_block}）`
     },
     ipChange (e, i) {
       this.networkList[i].ip = e.target.value
