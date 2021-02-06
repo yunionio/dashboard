@@ -14,7 +14,6 @@
         :wrapperCol="formItemLayout.wrapperCol"
         :labelCol="formItemLayout.labelCol"
         :names="areaselectsName"
-        :cityParams="cityParams"
         :providerParams="providerParams"
         :cloudregionParams="cloudregionParams"
         :isRequired="true"
@@ -66,7 +65,7 @@ export default {
           },
         ],
       },
-      areaselectsName: ['city', 'provider', 'cloudregion'],
+      areaselectsName: ['provider', 'cloudregion'],
       regionProvider: '',
       regionId: '',
       associateVpcIds: [],
@@ -101,17 +100,11 @@ export default {
       if (!this.regionId) return {}
       return params
     },
-    cityParams () {
-      return {
-        filter: 'provider.in(Aws, Aliyun, OneCloud)',
-        scope: this.scope,
-        public_cloud: true,
-      }
-    },
     providerParams () {
       return {
         filter: 'provider.in(Aws, Aliyun, OneCloud)',
         scope: this.scope,
+        public_cloud: true,
       }
     },
     cloudregionParams () {

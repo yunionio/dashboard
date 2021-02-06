@@ -13,7 +13,6 @@
         :wrapperCol="formItemLayout.wrapperCol"
         :labelCol="formItemLayout.labelCol"
         :names="areaselectsName"
-        :cityParams="cityParams"
         :cloudregionParams="regionParams"
         :providerParams="providerParams"
         :isRequired="true"
@@ -154,11 +153,9 @@ export default {
       project_domain: this.$store.getters.userInfo.projectDomainId,
       cloudproviderData: [],
       cloudregion: '',
-      cityParams: {
-        usable: false,
-      },
       providerParams: {
         usable: false,
+        cloud_env: 'public',
       },
     }
   },
@@ -205,12 +202,12 @@ export default {
       if (this.cloudEnv === 'private' || this.cloudEnv === 'onpremise') {
         return ['cloudregion']
       }
-      return ['city', 'provider', 'cloudregion']
+      return ['provider', 'cloudregion']
     },
   },
   watch: {
     cloudEnv () {
-      this.$refs.areaSelects.fetchs(['city', 'provider', 'cloudregion'])
+      this.$refs.areaSelects.fetchs(['provider', 'cloudregion'])
     },
   },
   provide () {
