@@ -45,15 +45,16 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        new this.$Manager('wires').performAction({
+        await new this.$Manager('wires').performAction({
           id: this.params.data[0].id,
           action: 'merge-from',
           data: {
             sources: this.params.data.slice(1).map((item) => { return item.id }),
-            merged_network: this.mergeSubnet,
+            merge_network: this.mergeSubnet,
           },
         })
         this.loading = false
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
