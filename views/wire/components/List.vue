@@ -114,6 +114,7 @@ export default {
                 name: this.$t('network.wire.merge'),
                 scope: 'domain',
                 resource: 'wires',
+                refresh: this.refresh,
               }),
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.wire'),
