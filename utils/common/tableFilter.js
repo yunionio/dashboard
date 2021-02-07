@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import moment from 'moment'
 import store from '@/store'
 import i18n from '@/locales'
 import { Manager } from '@/utils/manager'
@@ -317,5 +318,27 @@ export function getSuccessFilter (params = {}) {
       { label: i18n.t('operation.success.true'), key: true },
       { label: i18n.t('operation.success.false'), key: false },
     ],
+  }
+}
+
+function utcTime (v) {
+  return moment(v).utc().format('YYYY-MM-DD HH:mm:ss')
+}
+
+export function getTimeRangeFilter ({ label = '', field = '' }) {
+  return {
+    label: label,
+    dropdown: true,
+    date: true,
+    filter: true,
+    formatter: (val, type) => {
+      if (type === 'before') {
+        return `${field}.le("${utcTime(val)}")`
+      }
+      if (type === 'after') {
+        return `${field}.ge("${utcTime(val)}")`
+      }
+      return `${field}.between("${utcTime(val[0])}", "${utcTime(val[1])}")`
+    },
   }
 }

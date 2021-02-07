@@ -12,6 +12,7 @@
 
 <script>
 import get from 'lodash/get'
+import { getTimeRangeFilter } from '@/utils/common/tableFilter'
 import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
@@ -151,21 +152,7 @@ export default {
           { label: this.$t('operation.success.false'), key: false },
         ],
       },
-      start_time: {
-        label: this.$t('common_156'),
-        dropdown: true,
-        date: true,
-        filter: true,
-        formatter: (val, type) => {
-          if (type === 'before') {
-            return `start_time.le("${val}")`
-          }
-          if (type === 'after') {
-            return `start_time.ge("${val}")`
-          }
-          return `start_time.between("${val[0]}", "${val[1]}")`
-        },
-      },
+      start_time: getTimeRangeFilter({ label: this.$t('common_156'), field: 'start_time' }),
     }
     if (this.$store.getters.isProjectMode) delete filterOptions.tenant
     return {
@@ -277,10 +264,10 @@ export default {
               const tenant = row.tenant
               const ret = [
                 <list-body-cell-wrap style="margin: 3px 0 2px 0" copy field='user' row={row} />,
-                <a-space>
+                <div>
                   <span class='text-weak' title={ this.$t('shareScope.domain') }> { domain } </span>
                   <span class='text-weak' title={ this.$t('shareScope.project') }> { tenant } </span>
-                </a-space>,
+                </div>,
               ]
               return ret
             },

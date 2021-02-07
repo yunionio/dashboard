@@ -17,6 +17,7 @@ import {
   getHistoryUsersFromStorage,
   getLoggedUsersFromStorage,
   setLoggedUsersInStorage,
+  getSsoIdpIdFromCookie,
 } from '@/utils/auth'
 import { SCOPES_MAP } from '@/constants'
 import router from '@/router'
@@ -36,6 +37,7 @@ const initialState = {
   permission: null,
   scopeResource: null,
   capability: {},
+  stats: {},
   regions: {
     captcha: false,
     domains: [],
@@ -87,6 +89,9 @@ export default {
     SET_CAPABILITY (state, payload) {
       state.capability = payload
     },
+    SET_STATS (state, payload) {
+      state.stats = payload
+    },
     SET_PERMISSION (state, payload) {
       state.permission = payload
     },
@@ -136,10 +141,8 @@ export default {
       state.historyUsers = newVal
     },
     UPDATE_LOGGED_USERS (state, payload) {
-      // 如果是cas登录则不保存信息
-      if (state.info && state.info.idp_driver === 'cas') return
       // 如果是sso登录则不保存信息
-      if (state.auth && state.auth.is_sso) return
+      // if (state.auth && state.auth.is_sso) return
       const newVal = { ...state.loggedUsers }
       if (payload.action === 'delete') {
         removeKeyIgnoreCase(newVal, payload.key)
@@ -183,6 +186,7 @@ export default {
       state.permission = null
       state.scopeResource = null
       state.capability = {}
+      state.stats = {}
       state.canRenderDefaultLayout = false
     },
   },
@@ -321,6 +325,8 @@ export default {
             scope: getScopeFromCookie(),
             tenant: getTenantFromCookie(),
             name: state.info.name,
+            isSSO: state.auth.is_sso,
+            idpId: state.auth.is_sso ? getSsoIdpIdFromCookie() : null,
           },
         })
         return response.data.data
@@ -338,6 +344,20 @@ export default {
         const data = (response.data.data && response.data.data[0]) || {}
         await commit('SET_CAPABILITY', data)
         return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getStats ({ commit, state }) {
+      try {
+        const response = await http.get('/v1/auth/stats', {
+          params: {
+            scope: state.scope,
+          },
+        })
+        const data = response.data.data || {}
+        await commit('SET_STATS', data)
+        return response.data.data
       } catch (error) {
         throw error
       }

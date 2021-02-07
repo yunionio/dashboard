@@ -31,6 +31,18 @@ export function removeScopeInCookie () {
   return Cookies.remove('scope')
 }
 
+export function getSsoIdpIdFromCookie () {
+  return Cookies.get('sso_idp_id')
+}
+
+export function setSsoIdpIdInCookie (scope) {
+  return Cookies.set('sso_idp_id', scope)
+}
+
+export function removeSsoIdpIdInCookie () {
+  return Cookies.remove('sso_idp_id')
+}
+
 export function getTenantFromCookie () {
   return Cookies.get('tenant')
 }

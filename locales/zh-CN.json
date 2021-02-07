@@ -2860,7 +2860,7 @@
   "scope.text_343": "请填写手机号",
   "scope.text_344": "必须是企业自有域名后缀的邮箱",
   "scope.text_345": "忘记密码",
-  "scope.text_346": "免费注册",
+  "scope.text_346": "注册",
   "scope.text_347": "请输入正确格式的用户名",
   "scope.text_348": "用户注册",
   "scope.text_349": "企业域名",
@@ -2919,7 +2919,7 @@
   "scope.text_402": "九、争端条款",
   "scope.text_403": "因本协议的履行发生争议的应通过友好协商解决，协商解决不成的，任一方有权将争议提交北京仲裁委员会依据该会届时有效的仲裁规则进行仲裁。",
   "scope.text_404": "注册账号重置密码",
-  "scope.text_405": "非注册用户忘记密码，请联系公司管理员",
+  "scope.text_405": "企业子账号用户忘记密码，请联系公司管理员",
   "scope.text_406": "账号",
   "scope.text_407": "账户格式：用户名@企业域名",
   "scope.text_408": "请输入账户",
@@ -4316,11 +4316,11 @@
   "common.share": "被共享的{0}不支持该操作",
   "common.need_same_domain_resource": "请选择同一@:dictionary.domain的资源",
   "common.set_secgroup_max": "最多关联{0}个",
-  "common.workflow_priority": "优先级",
-  "common.workflow_priority_minor": "次要",
-  "common.workflow_priority_moderate": "中等",
-  "common.workflow_priority_critical": "危急",
-  "common.workflow_priority_fatal": "致命",
+  "common.workflow_priority": "问题级别",
+  "common.workflow_priority_minor": "轻微",
+  "common.workflow_priority_moderate": "一般",
+  "common.workflow_priority_critical": "严重",
+  "common.workflow_priority_fatal": "非常严重",
   "common.reason": "原因",
   "common.copy_and_login": "复制且登录",
   "common.saml_login_tips": "免密登录Azure平台需要输入你的账户信息，具体信息如下：",
@@ -4577,6 +4577,10 @@
       "true": "成功",
       "false": "失败"
     }
-  }
+  },
+  "common.login_domain": "登录域",
+  "common.set_login_domain": "设置",
+  "common.clear_login_domain": "清除",
+  "common.switch_login_domain": "设置登录域"
 }
 
