@@ -85,20 +85,29 @@
       </a-form-model-item>
       <!-- 额外操作 -->
       <a-form-model-item class="mb-0">
-        <div class="d-flex">
-          <div class="flex-shrink-1 flex-grow-1 text-left" style="margin-left: -15px;">
+        <div class="d-flex justify-content-between login-link">
+          <div class="flex-shrink-1 flex-grow-1 text-left">
             <template v-if="hasLoggedUsers">
-              <a-button type="link" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf, domain: $route.query.domain } })" class="week-link-button">{{ $t('auth.chooser') }}</a-button>
+              <a class="week-link-button" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf, domain: $route.query.domain } })">{{ $t('auth.chooser') }}</a>
             </template>
           </div>
-          <div class="flex-shrink-1 flex-grow-1 text-right" style="margin-left: -15px;margin-right: -15px;">
-            <slot name="actions" />
+          <div class="flex-shrink-1 flex-grow-1 text-right">
+            <template v-if="showDomainChooser && showUsernameInput && !loginDomain">
+              <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
+                <a class="week-link-button">{{ $t('common.switch_login_domain') }}</a>
+                <edit-form slot="content" :width="450" :formRules="domainInputRules" :defaultValue="loginDomain" :label="$t('common.login_domain')" @submit="submitLoginDomain" @cancel="showSetDomainPopover = false" />
+              </a-popover>
+            </template>
           </div>
-          <div class="flex-shrink-1 flex-grow-1 text-right" style="margin-right: -15px;" v-if="showDomainChooser && showUsernameInput && !loginDomain">
-            <a-popover v-model="showSetDomainPopover" :title="$t('auth.set.current.domain')" trigger="click">
-              <a-button type="link" class="week-link-button">{{ $t('common.switch_login_domain') }}</a-button>
-              <edit-form slot="content" :width="450" :formRules="domainInputRules" :defaultValue="loginDomain" :label="$t('common.login_domain')" @submit="submitLoginDomain" @cancel="showSetDomainPopover = false" />
-            </a-popover>
+        </div>
+      </a-form-model-item>
+      <a-form-model-item class="mb-0">
+        <div class="d-flex justify-content-between login-link">
+          <div class="flex-shrink-1 flex-grow-1 text-left">
+            <slot name="actions-left" />
+          </div>
+          <div class="flex-shrink-1 flex-grow-1 text-right">
+            <slot name="actions-right" />
           </div>
         </div>
       </a-form-model-item>
@@ -410,5 +419,8 @@ export default {
     height: 1px;
     margin-bottom: 50px;
   }
+}
+.login-link {
+  line-height: 23px;
 }
 </style>

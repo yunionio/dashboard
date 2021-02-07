@@ -37,6 +37,7 @@ const initialState = {
   permission: null,
   scopeResource: null,
   capability: {},
+  stats: {},
   regions: {
     captcha: false,
     domains: [],
@@ -87,6 +88,9 @@ export default {
     },
     SET_CAPABILITY (state, payload) {
       state.capability = payload
+    },
+    SET_STATS (state, payload) {
+      state.stats = payload
     },
     SET_PERMISSION (state, payload) {
       state.permission = payload
@@ -182,6 +186,7 @@ export default {
       state.permission = null
       state.scopeResource = null
       state.capability = {}
+      state.stats = {}
       state.canRenderDefaultLayout = false
     },
   },
@@ -339,6 +344,20 @@ export default {
         const data = (response.data.data && response.data.data[0]) || {}
         await commit('SET_CAPABILITY', data)
         return response.data
+      } catch (error) {
+        throw error
+      }
+    },
+    async getStats ({ commit, state }) {
+      try {
+        const response = await http.get('/v1/auth/stats', {
+          params: {
+            scope: state.scope,
+          },
+        })
+        const data = response.data.data || {}
+        await commit('SET_STATS', data)
+        return response.data.data
       } catch (error) {
         throw error
       }

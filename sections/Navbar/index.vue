@@ -42,7 +42,7 @@
             <!-- 域管理后台 -->
             <template v-if="domainProjects && domainProjects.length">
               <li>
-                <div>{{ $t('navbar.view.domain_manager') }}</div>
+                <div>{{ domainManagerTitle }}</div>
                 <ul class="list-unstyled">
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
@@ -263,7 +263,11 @@ export default {
         return this.$t('navbar.view.system_manager')
       }
       if (this.$store.getters['auth/isDomain']) {
-        return this.$t('navbar.view.domain_manager_1var', { domain: this.userInfo.projectDomain || '-' })
+        if (this.systemProject) {
+          return this.$t('navbar.view.domain_manager_1var', { domain: this.userInfo.projectDomain || '-' })
+        } else {
+          return this.$t('navbar.view.system_manager')
+        }
       }
       return this.userInfo.projectName || '-'
     },
@@ -355,6 +359,13 @@ export default {
         }
       }
       return false
+    },
+    domainManagerTitle () {
+      if (this.systemProject) {
+        return this.$t('navbar.view.domain_manager')
+      } else {
+        return this.$t('navbar.view.system_manager')
+      }
     },
   },
   watch: {
