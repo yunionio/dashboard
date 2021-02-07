@@ -200,7 +200,7 @@ export default {
       if (this.$store.getters.auth.stats.cloudaccounts === 0) {
         await this.$store.dispatch('auth/getStats')
         if (this.$store.getters.auth.stats.cloudaccounts > 0) {
-          this.$store.dispatch('common/deleteObject', {
+          await this.$store.dispatch('common/deleteObject', {
             name: 'topAlert',
             key: 'createCloudAccounts',
           })
