@@ -197,6 +197,15 @@ export default {
       this._addDomainProject(data)
       this._providerDiff(data)
       const ret = await this.cloudaccountsM.create({ data })
+      if (this.$store.getters.auth.stats.cloudaccounts === 0) {
+        await this.$store.dispatch('auth/getStats')
+        if (this.$store.getters.auth.stats.cloudaccounts > 0) {
+          this.$store.dispatch('common/deleteObject', {
+            name: 'topAlert',
+            key: 'createCloudAccounts',
+          })
+        }
+      }
       return ret.data
     },
     formatNetParams (values) {
