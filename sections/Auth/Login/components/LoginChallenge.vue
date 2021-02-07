@@ -17,7 +17,7 @@
       <div class="selected-user-wrap text-center mb-4">
         <div class="selected-user-content" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf } })">
           <div class="mr-2 name-icon">{{ firstNameWord }}</div>
-          <div class="selected-user-name">{{ fd.username }} - {{ fd.domain ? fd.domain : loginDomain }}</div>
+          <div class="selected-user-name">{{ displayUserName }}</div>
           <div class="ml-2 d-flex align-items-center">
             <svg aria-hidden="true" fill="currentColor" focusable="false" width="18px" height="18px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="12,16.41 5.29,9.71 6.71,8.29 12,13.59 17.29,8.29 18.71,9.71" /></svg>
           </div>
@@ -231,6 +231,15 @@ export default {
     hasLoggedUsers () {
       const data = Object.entries(this.loggedUsers)
       return data.length > 0
+    },
+    displayUserName () {
+      const user = this.fd.username
+      const domain = this.fd.domain ? this.fd.domain : this.loginDomain
+      if (user === domain) {
+        return user
+      } else {
+        return `${user} - ${domain}`
+      }
     },
   },
   watch: {
