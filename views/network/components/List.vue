@@ -32,6 +32,9 @@ export default {
       type: [Function, Object],
     },
     cloudEnv: String,
+    cloudEnvOptions: {
+      type: Array,
+    },
     showGroupActions: {
       type: Boolean,
       default: true,
@@ -171,6 +174,8 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: !this.cloudEnvEmpty,
+              tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
             }
           },
           hidden: () => this.hiddenActions.includes('create'),
