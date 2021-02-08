@@ -197,6 +197,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    checkLicense: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -388,7 +392,9 @@ export default {
     'userInfo.id' (val) {
       this.checkWorkflow(val)
       this.fetchOEM(val)
-      this.fetchLicense(val)
+      if (this.checkLicense) {
+        this.fetchLicense(val)
+      }
       this.pushApiServerUrlAlert(val)
     },
     licenseMessage: {
@@ -405,7 +411,9 @@ export default {
   created () {
     this.checkWorkflow(this.userInfo.id)
     this.fetchOEM(this.userInfo.id)
-    this.fetchLicense(this.userInfo.id)
+    if (this.checkLicense) {
+      this.fetchLicense(this.userInfo.id)
+    }
     this.pushApiServerUrlAlert(this.userInfo.id)
     this.cronjobFetchAlerts()
   },
