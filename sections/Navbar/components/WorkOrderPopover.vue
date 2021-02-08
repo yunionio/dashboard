@@ -12,7 +12,14 @@
       <template v-slot:content>
         <div class="work-order-wrap">
           <div class="work-order-header d-flex align-items-center">
-            <div class="flex-fill title">{{$t('navbar.button.work_order')}}</div>
+            <div class="flex-fill title" style="margin-right:5px;">{{$t('navbar.button.work_order')}}</div>
+            <div class="flex-fill">
+              <template v-if="companyInfo.hotline">
+                <a-tooltip :title="$t('navbar.text.hotline')">
+                <a-button type="dashed" shape="round" icon="phone" @click="copyHotline">{{ companyInfo.hotline }}</a-button>
+                </a-tooltip>
+              </template>
+            </div>
           </div>
           <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('navbar.tips.pending_work_order')}}</span></div>
           <ul class="work-list">
@@ -43,7 +50,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import workflowMixin from '@/mixins/workflow'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -60,6 +67,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'isProjectMode']),
+    ...mapState('app', {
+      companyInfo: state => state.companyInfo,
+    }),
     statistics () {
       return (this.workflowStatistics['nr-historic-process-instance'] + this.workflowStatistics['nr-process-task']) || 0
     },
@@ -102,6 +112,10 @@ export default {
     },
     applyDomainQuotaHandle () {
       this.createDialog('ApplyDomainQuotaDialog', {})
+    },
+    copyHotline () {
+      this.$copyText(this.companyInfo.hotline)
+      this.$message.success(this.$t('common.copy'))
     },
   },
 }

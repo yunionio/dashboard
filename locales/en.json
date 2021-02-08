@@ -4581,5 +4581,6 @@
   "common.login_domain": "Login Domain",
   "common.set_login_domain": "Set",
   "common.clear_login_domain": "Clear",
-  "common.switch_login_domain": "Setup Login Domain"
+  "common.switch_login_domain": "Setup Login Domain",
+  "navbar.text.hotline": "Hotline"
 }
