@@ -153,6 +153,7 @@ export default {
         if (this.alertData && this.alertData.common_alert_metric_details && this.alertData.common_alert_metric_details.length > 0) {
           const desc = this.alertData.common_alert_metric_details[0].field_description
           this.lineDescription.isUpdate = true
+          this.lineDescription.metric_res_type = this.alertData.common_alert_metric_details[0].res_type
           this.$set(this.lineDescription, 'description', desc || {})
         }
       })
