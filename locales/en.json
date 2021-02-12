@@ -1128,7 +1128,7 @@
   "compute.text_1158": "Simple scheduling strategy for resources, the machines in the group are distributed on different hosts according to the settings, so as to achieve high service availability",
   "compute.text_1159": "Resource Pool",
   "compute.text_1160": "On-premise",
-  "compute.text_1161": "Create {0} {1}",
+  "compute.text_1161": "Create {0}",
   "compute.text_1162": "Add a backup machine",
   "compute.text_1163": "Host of backup machine",
   "compute.text_1164": "Prompt message: When the host is empty, the system will automatically select the host",
