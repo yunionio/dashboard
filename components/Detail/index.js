@@ -93,6 +93,27 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
     {
       field: 'manager',
       title: i18n.t('res.cloudprovider'),
+      slots: {
+        default: ({ row }) => {
+          if (!row.manager_id) return row.manager || '-'
+          const p = hasPermission({ key: 'cloudproviders_get' })
+          let node
+          if (p) {
+            node = (
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='manager' title={ row.manager } hideField={ true }>
+                <side-page-trigger permission='cloudproviders_get' name='CloudproviderSidePage' id={row.manager_id} vm={vm}>{ row.manager }</side-page-trigger>
+              </list-body-cell-wrap>
+            )
+          } else {
+            node = (
+              <list-body-cell-wrap copy row={ data } onManager={ onManager } field='manager' title={ row.manager } />
+            )
+          }
+          return [
+            <div class='text-truncate'>{ node }</div>,
+          ]
+        },
+      },
       hidden: () => store.getters.isProjectMode,
     },
   ]
