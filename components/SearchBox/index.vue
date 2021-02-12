@@ -122,6 +122,7 @@ export default {
      * @description wrap clickoutside事件
      */
     handleWrapClickoutside () {
+      // this.$refs.completer.handleOk()
       this.focus = false
       this.showCompleter = false
     },
