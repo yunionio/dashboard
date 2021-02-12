@@ -542,6 +542,7 @@ export const PERMISSION = {
    * cloudaccounts 相关操作
    */
   cloudproviders_list: ['compute', 'cloudproviders', 'list'],
+  cloudproviders_get: ['compute', 'cloudproviders', 'get'],
   /**
    * cloudaccounts 相关操作
    */
