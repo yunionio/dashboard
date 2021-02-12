@@ -851,14 +851,16 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
-                      ret.tooltip = i18n.t('compute.text_1286')
-                      return ret
-                    }
+                    // if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                    //   ret.tooltip = i18n.t('compute.text_1286')
+                    //   return ret
+                    // }
                     const noSupportBrand = [
                       typeClouds.hypervisorMap.openstack.brand,
                       typeClouds.hypervisorMap.zstack.brand,
                       typeClouds.hypervisorMap.dstack.brand,
+                      typeClouds.hypervisorMap.ucloud.brand,
+                      typeClouds.hypervisorMap.ctyun.brand,
                     ]
                     if (noSupportBrand.includes(obj.brand)) {
                       ret.tooltip = i18n.t('compute.text_1287', [obj.brand])

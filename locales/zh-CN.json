@@ -1129,7 +1129,7 @@
   "compute.text_1158": "对资源的简单调度策略，组内的机器根据设置分布在不同的宿主机上，从而实现业务的高可用",
   "compute.text_1159": "资源池",
   "compute.text_1160": "本地IDC",
-  "compute.text_1161": "新建{0}{1}",
+  "compute.text_1161": "新建{0}",
   "compute.text_1162": "添加备份机",
   "compute.text_1163": "备份机的宿主机",
   "compute.text_1164": "提示信息：宿主机为空时，系统会自动选择宿主机",
