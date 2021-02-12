@@ -66,23 +66,8 @@ export default {
       }
     },
     headerTitle () {
-      let type
-      switch (this.type) {
-        case 'idc':
-          type = this.$t('compute.text_1160')
-          break
-        case 'private':
-          type = this.$t('compute.text_400')
-          break
-        case 'public':
-          type = this.$t('compute.text_401')
-          break
-        default:
-          type = this.$t('compute.text_1160')
-          break
-      }
       const res = this.$t('network.text_137')
-      return this.$t('compute.text_1161', [type, res])
+      return this.$t('compute.text_1161', [res])
     },
   },
   watch: {
