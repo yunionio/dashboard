@@ -88,6 +88,10 @@ export default {
   CloudaccountSidePage: {
     resource: 'cloudaccounts',
   },
+  // 云订阅
+  CloudproviderSidePage: {
+    resource: 'cloudproviders',
+  },
   // 认证源
   IDPSidePage: {
     resource: 'identity_providers',
