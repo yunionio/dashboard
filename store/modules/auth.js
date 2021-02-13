@@ -43,6 +43,7 @@ const initialState = {
     domains: [],
     idps: [],
     regions: [],
+    api_server: '',
   },
   registersStatus: true,
   // loggedUsers记录的key为username + domain，是获取用户信息之后记录的
