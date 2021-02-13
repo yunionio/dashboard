@@ -1369,5 +1369,7 @@
   "compute.image_create_server": "No OS type detected and cannot to create @:dictionary.server",
   "compute.host_convert": "No disk detected and cannot be converted to host",
   "compute.physicalmachine_add": "Before adding physical machines, make sure that you have created IP subnets of the type IPMI and IP subnets of the type physical machines need on the platform",
-  "compute.text_1382": "New Tag"
+  "compute.text_1382": "New Tag",
+  "compute.live_migrate.skip_cpu_check": "Skip CPU Check",
+  "compute.live_migrate.skip_cpu_check.explain": "Do not check CPU compatibility of Host CPUs. If checked, the live migration requires the CPU model and micro-code of the target host must be exactly the same as the source. Otherwise, skip the check and try the live-migration anyway. As a result, the server might not be able to run on the target host after live-migration."
 }
