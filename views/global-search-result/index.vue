@@ -13,7 +13,7 @@
       <page-body>
         <components
           :is="currentTabMsg.component"
-          :response-data="currentTabMsg.resData.data || {}"
+          :response-data="currentTabData || {}"
           :show-group-actions="false"
           :show-searchbox="false" />
       </page-body>
@@ -30,8 +30,8 @@ import BaremetalList from '@Compute/views/baremetal/components/List'
 import ImageList from '@Compute/views/image/components/List'
 import HostImageList from '@Compute/views/host-image/components/List'
 import DiskList from '@Compute/views/disk/components/List'
-import VmInstanceSnapshotsIndex from '@Compute/views/snapshot-instance'
-import VmDiskSnapshotsIndex from '@Compute/views/snapshot'
+import InstanceSnapshotList from '@Compute/views/snapshot-instance/components/List'
+import SnapshotList from '@Compute/views/snapshot/components/List'
 import SecgroupList from '@Compute/views/secgroup/components/List'
 import EipList from '@Network/views/eip/components/List'
 import NetworkList from '@Network/views/network/components/List'
@@ -42,6 +42,22 @@ import RedisList from '@DB/views/redis/components/List'
 import ServerRecoveryList from '@Compute/views/server-recovery/components/List'
 import DiskRecoveryList from '@Compute/views/disk-recovery/components/List'
 import ImageRecoveryList from '@Compute/views/image-recovery/components/List'
+import VPCList from '@Network/views/vpc/components/List'
+import BlockStorageList from '@Storage/views/blockstorage/components/List'
+import BucketStorageList from '@Storage/views/bucket/components/List'
+import IDPList from '@System/views/idp/components/List'
+import DomainList from '@System/views/domains/components/List'
+import ProjectList from '@System/views/projects/components/List'
+import UserList from '@System/views/user/components/List'
+import GroupList from '@System/views/group/components/List'
+import RoleList from '@System/views/role/components/List'
+import PolicyList from '@System/views/policy/components/List'
+import NatList from '@Network/views/nats/components/List'
+import DnsZoneList from '@Network/views/dns-zone/components/List'
+import LbList from '@Network/views/lb/components/List'
+import LbaclsList from '@Network/views/lbacls/components/List'
+import LbcertList from '@Network/views/lbcerts/components/List'
+import CloudaccountList from '@Cloudenv/views/cloudaccount/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
 
 export default {
@@ -52,8 +68,8 @@ export default {
     ImageList,
     HostImageList,
     DiskList,
-    VmInstanceSnapshotsIndex,
-    VmDiskSnapshotsIndex,
+    SnapshotList,
+    InstanceSnapshotList,
     SecgroupList,
     EipList,
     NetworkList,
@@ -64,6 +80,22 @@ export default {
     ServerRecoveryList,
     DiskRecoveryList,
     ImageRecoveryList,
+    VPCList,
+    BlockStorageList,
+    BucketStorageList,
+    IDPList,
+    DomainList,
+    ProjectList,
+    UserList,
+    GroupList,
+    RoleList,
+    PolicyList,
+    NatList,
+    DnsZoneList,
+    LbList,
+    LbaclsList,
+    LbcertList,
+    CloudaccountList,
   },
   data () {
     const maps = getSearchMaps()
@@ -87,6 +119,9 @@ export default {
         const listData = _.get(value, 'resData.data.data')
         return listData && listData.length
       }, this.searchMaps)
+    },
+    currentTabData () {
+      return this.searchMaps[this.currentTab].resData.data || {}
     },
   },
   watch: {
@@ -140,6 +175,7 @@ export default {
           this.clearData()
           return
         }
+        this.setCurrentTab(null)
         // 组装成数组
         const paramsList = Object.values(maps)
           .map(val => ({
