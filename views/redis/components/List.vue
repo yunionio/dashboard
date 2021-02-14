@@ -42,6 +42,9 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           status: getStatusFilter('redis'),
           brand: getBrandFilter('redis_engine_brands'),
