@@ -4,6 +4,8 @@
     :columns="columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -17,10 +19,11 @@ import {
   getDomainFilter,
   getStatusFilter,
 } from '@/utils/common/tableFilter'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'DnsZoneList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
   },
@@ -33,6 +36,9 @@ export default {
           status: Object.values(expectStatus.dnszone).flat(),
         },
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: {
             label: this.$t('network.text_21'),
             filter: true,
@@ -56,6 +62,7 @@ export default {
           },
           project_domains: getDomainFilter(),
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

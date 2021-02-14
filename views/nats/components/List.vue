@@ -4,6 +4,8 @@
     :columns="columns"
     :export-data-options="exportDataOptions"
     :group-actions="groupActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :single-actions="singleActions" />
 </template>
 
@@ -17,6 +19,7 @@ import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilt
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 const BillingType = {
   postpaid: i18n.t('network.text_533'),
@@ -25,7 +28,7 @@ const BillingType = {
 
 export default {
   name: 'NatList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -40,6 +43,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.nat).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: {
             label: this.$t('network.text_21'),
             filter: true,
@@ -72,6 +78,7 @@ export default {
           },
           project_domains: getProjectDomainFilter(),
         },
+        responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {

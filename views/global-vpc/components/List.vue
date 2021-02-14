@@ -33,6 +33,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.globalVpc).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: {
             label: this.$t('network.text_21'),
             filter: true,
