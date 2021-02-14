@@ -9,6 +9,7 @@
     :export-data-options="exportDataOptions"
     :extra-export-params="extraExportParams"
     :showSearchbox="showSearchbox"
+    :defaultSearchKey="defaultSearchKey"
     :showGroupActions="showGroupActions" />
 </template>
 
@@ -23,6 +24,7 @@ import ListMixin from '@/mixins/list'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'HostList',
@@ -54,6 +56,9 @@ export default {
       ...Object.values(EXTRA_HYPERVISORS).map(item => item.brand),
     ]
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       name: getNameFilter(),
       status: getStatusFilter('host'),
       enabled: getEnabledFilter(),
@@ -68,8 +73,14 @@ export default {
         label: 'SN',
         distinctField: {
           type: 'extra_field',
-          key: 'account',
+          key: 'sn',
         },
+      },
+      any_mac: {
+        label: 'MAC',
+      },
+      any_ip: {
+        label: 'IP',
       },
       access_ip: {
         label: 'IP',
@@ -401,6 +412,14 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'any_ip'
+      }
+      if (regexp.isMAC(search)) {
+        return 'any_mac'
+      }
     },
   },
 }

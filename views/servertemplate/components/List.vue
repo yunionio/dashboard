@@ -47,6 +47,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.servertemplate).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),

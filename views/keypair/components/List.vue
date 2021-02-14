@@ -31,6 +31,9 @@ export default {
         resource: 'keypairs',
         getParams: this.getParam,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
         },
       }),

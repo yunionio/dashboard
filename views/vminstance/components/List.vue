@@ -9,6 +9,7 @@
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
+    :defaultSearchKey="defaultSearchKey"
     :before-show-menu="beforeShowMenu" />
 </template>
 
@@ -36,6 +37,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'VmInstanceList',
@@ -994,6 +996,11 @@ export default {
       return this.$store.dispatch('scopedPolicy/get', {
         category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address'],
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'ip_addr'
+      }
     },
   },
 }

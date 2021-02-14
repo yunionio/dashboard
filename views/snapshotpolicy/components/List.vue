@@ -33,6 +33,9 @@ export default {
         steadyStatus: Object.values(expectStatus.snapshotpolicy).flat(),
         getParams: this.getParam,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           status: getStatusFilter('snapshotpolicy'),
           projects: getTenantFilter(),
