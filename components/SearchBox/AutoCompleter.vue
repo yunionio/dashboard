@@ -66,6 +66,7 @@
 <script>
 import * as R from 'ramda'
 import DateSelect from './DateSelect'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'AutoCompleter',
@@ -97,7 +98,9 @@ export default {
       type: String,
       required: true,
     },
-    defaultSearchKey: String,
+    defaultSearchKey: {
+      type: [String, Function],
+    },
     fetchDistinctField: Function,
   },
   data () {
@@ -242,14 +245,35 @@ export default {
     handleOk () {
       const selectKeyEmpty = R.isNil(this.selectKey) || R.isEmpty(this.selectKey)
       if (selectKeyEmpty) {
-        if (this.options[this.defaultSearchKey] && R.trim(this.search)) {
-          this.selectValue = [R.trim(this.search)]
-          this.selectKey = this.defaultSearchKey
-          this.search = `${this.options[this.defaultSearchKey].label}${this.keySeparator}${R.trim(this.search)}`
-        } else {
-          if (R.is(Object, this.value) && !R.isEmpty(this.value)) {
-            this.$emit('confirm', this.value)
+        if (this.search) {
+          var key = ''
+          if (!R.isNil(this.defaultSearchKey)) {
+            if (R.is(String, this.defaultSearchKey)) {
+              key = this.defaultSearchKey
+            } else if (R.is(Function, this.defaultSearchKey)) {
+              key = this.defaultSearchKey(this.search)
+            }
           }
+          if (!key) {
+            if (regexp.isUUID(this.search) && this.options.id) {
+              key = 'id'
+            } else {
+              key = 'name'
+            }
+          }
+          if (this.options[key]) {
+            this.selectValue = [this.search]
+            this.selectKey = key
+            this.search = `${this.options[key].label}${this.keySeparator}${this.search}`
+          } else {
+            console.log('key', key, 'not exist in options', this.options)
+            return
+          }
+        } else {
+          const newValue = {
+            ...this.value,
+          }
+          this.$emit('confirm', newValue)
           return
         }
       }
