@@ -31,6 +31,9 @@ export default {
         resource: 'instancegroups',
         getParams: this.getParam,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: {
             label: this.$t('table.title.name'),
             filter: true,

@@ -32,6 +32,9 @@ export default {
         resource: 'isolated_devices',
         getParams: this.getParam,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           dev_type: {
             label: this.$t('compute.text_481'),

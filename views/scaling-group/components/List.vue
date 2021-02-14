@@ -37,6 +37,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.scalinggroup).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: {
             label: this.$t('table.title.name'),
             filter: true,

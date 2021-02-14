@@ -8,6 +8,7 @@
     :group-actions="groupActions"
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
+    :defaultSearchKey="defaultSearchKey"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions" />
 </template>
@@ -23,6 +24,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'BaremetalList',
@@ -40,6 +42,9 @@ export default {
   },
   data () {
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       name: getNameFilter(),
       ips: {
         label: 'IP',
@@ -365,6 +370,11 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'ips'
+      }
     },
   },
 }

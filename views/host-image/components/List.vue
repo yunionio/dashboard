@@ -47,6 +47,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.image).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           status: getStatusFilter('image'),
           projects: getTenantFilter(),
