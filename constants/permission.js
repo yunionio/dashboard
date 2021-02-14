@@ -754,6 +754,7 @@ export const PERMISSION = {
   costalerts_delete: ['meter', 'costalerts', 'delete'],
 
   // DNS解析相关
+  dns_zones_list: ['compute', 'dns_zones', 'list'],
   dns_zones_get: ['compute', 'dns_zones', 'get'],
   dns_zones_create: ['compute', 'dns_zones', 'create'],
   dns_zones_update: ['compute', 'dns_zones', 'update'],

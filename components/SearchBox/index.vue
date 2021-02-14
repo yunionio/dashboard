@@ -69,8 +69,7 @@ export default {
       required: true,
     },
     defaultSearchKey: {
-      type: String,
-      default: 'name',
+      type: [String, Function],
     },
     placeholder: {
       type: String,
