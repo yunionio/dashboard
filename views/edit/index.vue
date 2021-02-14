@@ -111,7 +111,11 @@ export default {
     dashboardOptions (val) {
       if (!this.isCreate) {
         const item = R.find(R.propEq('id', this.$route.query.id))(val)
-        this.dashboardName = item.name
+        if (item && item.name) {
+          this.dashboardName = item.name
+        } else {
+          this.dashboardName = this.$t('dashboard.text_121')
+        }
       }
     },
   },
