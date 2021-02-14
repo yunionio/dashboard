@@ -37,6 +37,9 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.rds).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           status: getStatusFilter('rds'),
           brand: getBrandFilter('rds_engine_brands'),
