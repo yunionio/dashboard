@@ -1,10 +1,11 @@
 <template>
-  <search-box :options="options" :value="value" @input="search" :placeholder="$t('common_185')" @click.stop.prevent="handleCloseSidebar" defaultSearchKey="name" />
+  <search-box :options="options" :value="value" @input="search" :placeholder="$t('common_185')" @click.stop.prevent="handleCloseSidebar" :defaultSearchKey="defaultSearchKey" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import qs from 'qs'
+import regexp from '@/utils/regexp'
 
 const path = '/global-search-result'
 
@@ -20,6 +21,9 @@ export default {
         ip: {
           label: 'IP',
         },
+        id: {
+          label: 'ID',
+        },
       },
     }
   },
@@ -34,10 +38,10 @@ export default {
       }
     },
     search (val) {
-      if (R.equals(val, this.value)) {
+      /* if (R.equals(val, this.value)) {
         this.$bus.$emit('GlobalSearch')
         return
-      }
+      } */
       this.value = val
       if (R.isEmpty(val)) {
         this.$router.push(path)
@@ -53,6 +57,15 @@ export default {
           drawerVisible: false,
         },
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'ip'
+      } else if (regexp.isUUID(search)) {
+        return 'id'
+      } else {
+        return 'name'
+      }
     },
   },
 }
