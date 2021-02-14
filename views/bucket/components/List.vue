@@ -6,6 +6,8 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -20,10 +22,11 @@ import ListMixin from '@/mixins/list'
 import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'BucketStorageList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     cloudEnv: String,
@@ -43,6 +46,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.bucket).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           brand: getBrandFilter('object_storage_brands'),
           projects: getTenantFilter(),
@@ -66,6 +72,7 @@ export default {
           },
           project_domains: getDomainFilter(),
         },
+        responseData: this.responseData,
         hiddenColumns: ['storage_class', 'account', 'public_scope'],
       }),
       exportDataOptions: {

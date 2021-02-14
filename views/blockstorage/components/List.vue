@@ -6,6 +6,8 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -21,10 +23,11 @@ import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions
 import { hasServices } from '@/utils/auth'
 import expectStatus from '@/constants/expectStatus'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'BlockStorageList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -160,6 +163,9 @@ export default {
         getParams: this.getParams,
         steadyStatus: Object.values(expectStatus.blockstorage).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           enabled: getEnabledFilter(),
           status: getStatusFilter({ statusModule: 'blockstorage' }),
@@ -197,6 +203,7 @@ export default {
             label: this.$t('dictionary.zone'),
           },
         },
+        responseData: this.responseData,
         hiddenColumns: ['metadata', 'storage_type', 'medium_type', 'schedtag'],
       }),
       groupActions: !hasServices('hostagent') ? R.remove(0, 1, groupActions) : groupActions,
