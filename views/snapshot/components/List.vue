@@ -47,6 +47,9 @@ export default {
         getParams: this.getParam,
         steadyStatus,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           status: getStatusFilter('snapshot'),
           brand: getBrandFilter(),

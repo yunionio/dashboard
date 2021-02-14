@@ -168,6 +168,9 @@ export default {
       groupActions.unshift(createAction)
     }
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       name: getNameFilter(),
       status: getStatusFilter('disk'),
       storage: {
