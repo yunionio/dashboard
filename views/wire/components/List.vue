@@ -7,6 +7,8 @@
     :expandConfig="expandConfig"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -19,10 +21,11 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import { getNameFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'WireList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -41,6 +44,9 @@ export default {
         resource: 'wires',
         getParams: this.getParam,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           status: {
             label: this.$t('network.text_27'),
             dropdown: true,
@@ -69,6 +75,7 @@ export default {
           },
           project_domains: getProjectDomainFilter(),
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [

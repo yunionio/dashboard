@@ -8,6 +8,7 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
+    :defaultSearchKey="defaultSearchKey"
     :showGroupActions="showGroupActions" />
 </template>
 
@@ -20,6 +21,7 @@ import { getNameFilter, getStatusFilter, getBrandFilter, getAccountFilter, getTe
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'EipList',
@@ -41,6 +43,9 @@ export default {
         resource: 'eips',
         getParams: this.getParam,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           brand: getBrandFilter('brands', ['VMware']),
           ip_addr: {
@@ -201,6 +206,11 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'ip_addr'
+      }
     },
   },
 }
