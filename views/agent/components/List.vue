@@ -6,6 +6,7 @@
     :columns="columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
+    :defaultSearchKey="defaultSearchKey"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -16,6 +17,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'AgentList',
@@ -28,12 +30,18 @@ export default {
   },
   data () {
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       name: {
         label: this.$t('network.text_21'),
         filter: true,
         formatter: val => {
           return `name.contains(${val})`
         },
+      },
+      ip: {
+        label: 'IP',
       },
       cluster: {
         label: this.$t('network.text_19'),
@@ -135,6 +143,11 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'ip'
+      }
     },
   },
 }

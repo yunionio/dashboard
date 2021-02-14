@@ -6,6 +6,8 @@
     :columns="columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -22,10 +24,11 @@ import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAcc
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import { changeToArr } from '@/utils/utils'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'LbList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -41,6 +44,9 @@ export default {
   data () {
     const allBrandsFilter = getBrandFilter()
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       name: getNameFilter(),
       brand: {
         ...allBrandsFilter,
@@ -70,6 +76,7 @@ export default {
         steadyStatus: {
           status: Object.values(expectStatus.lb).flat(),
         },
+        responseData: this.responseData,
         hiddenColumns: ['metadata', 'account', 'cluster'],
       }),
       exportDataOptions: {
@@ -112,7 +119,7 @@ export default {
           }
         },
       }
-      if (this.getParams.cluster) {
+      if (this.getParam() && this.getParam().cluster) {
         createBtn = {
           label: this.$t('network.text_26'),
           permission: 'lb_loadbalancers_create',

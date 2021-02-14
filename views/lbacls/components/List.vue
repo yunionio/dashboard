@@ -4,6 +4,8 @@
     :columns="columns"
     :single-actions="singleActions"
     :group-actions="groupActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -32,6 +34,9 @@ export default {
         resource: 'loadbalanceracls',
         getParams: this.getParam,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: {
             label: this.$t('network.text_291'),
             filter: true,
