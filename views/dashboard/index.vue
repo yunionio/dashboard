@@ -65,7 +65,7 @@ export default {
     ...mapGetters(['scope']),
     // 当前选择面板是否为默认面板
     isDefault () {
-      return this.currentOption.id && this.currentOption.id.endsWith('default')
+      return this.currentOption.id && this.currentOption.id === `dashboard-${this.scope}-default`
     },
     // 选择的面板信息存储到storage的key
     optionStorageKey () {
@@ -77,13 +77,13 @@ export default {
     },
     // 所有的面板配置
     allOptions () {
-      const customOptions = this.customOptions.map((v) => {
-        if (v.id === 'dashboard-system-default') {
+      /* const customOptions = this.customOptions.map((v) => {
+        if (!v.name) {
           v.name = this.$t('dashboard.text_121')
         }
         return v
-      })
-      return R.unionWith(R.eqBy(R.prop('id')), customOptions, this.defaultOptions)
+      }) */
+      return R.unionWith(R.eqBy(R.prop('id')), this.customOptions, this.defaultOptions)
     },
   },
   beforeDestroy () {
@@ -149,9 +149,9 @@ export default {
       // 当前选择的面板id
       const id = this.currentOption.id
       // 如果是预设默认面板，直接返回配置
-      if (this.isDefault) {
-        return this.isPrivate ? defaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id]
-      }
+      // if (this.isDefault) {
+      //   return this.isPrivate ? defaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id]
+      // }
       this.loading = true
       try {
         const response = await this.pm.get({ id })
@@ -160,6 +160,17 @@ export default {
         }
         return {}
       } catch (error) {
+        if (error.isAxiosError && error.response && error.response.status === 404 && this.isDefault) {
+          // not found system default dashboard, reinit one
+          const config = this.isPrivate ? defaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id]
+          await this.pm.create({
+            data: {
+              name: id,
+              value: config,
+            },
+          })
+          return config
+        }
         throw error
       } finally {
         this.loading = false
