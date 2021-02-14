@@ -2136,7 +2136,7 @@
     "lb_backendgroup": "Load balancing backend server group",
     "lb_backend": "Load balancing backend server",
     "notice": "Announcements",
-    "bucket": "bucket",
+    "bucket": "Bucket",
     "wire": "L2 Network",
     "workflowconfig": "Configure Ticket",
     "zone": "Zone",
