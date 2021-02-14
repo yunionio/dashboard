@@ -7,6 +7,8 @@
     :single-actions="singleActions"
     :group-actions="groupActions"
     :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :defaultSearchKey="defaultSearchKey"
     :showGroupActions="showGroupActions" />
 </template>
 
@@ -25,10 +27,12 @@ import {
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import regexp from '@/utils/regexp'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'VPCList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -57,6 +61,9 @@ export default {
   },
   data () {
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       name: {
         label: this.$t('network.text_21'),
         filter: true,
@@ -83,6 +90,7 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.vpc).flat(),
         filterOptions,
+        responseData: this.responseData,
         hiddenColumns: ['metadata', 'wire_count'],
       }),
       exportDataOptions: {
@@ -268,6 +276,11 @@ export default {
         hiddenActions: this.hiddenActions,
         hiddenColumns: this.hiddenColumns,
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isPrefixStr(search)) {
+        return 'cidr_block'
+      }
     },
   },
 }

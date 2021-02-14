@@ -8,6 +8,7 @@
     :singleActions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
+    :defaultSearchKey="defaultSearchKey"
     :showGroupActions="showGroupActions" />
 </template>
 
@@ -22,6 +23,7 @@ import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'NetworkList',
@@ -62,7 +64,13 @@ export default {
       brandFilter.items.push({ key: 'OneCloud', label: 'OneCloud' })
     }
     const filterOptions = {
+      id: {
+        label: this.$t('table.title.id'),
+      },
       name: getNameFilter(),
+      ip_match: {
+        label: 'IP',
+      },
       guest_ip_start: {
         label: this.$t('network.text_607'),
         filter: true,
@@ -563,6 +571,11 @@ export default {
         hiddenActions: this.hiddenActions,
         hiddenColumns: this.hiddenColumns,
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'ip_match'
+      }
     },
   },
 }
