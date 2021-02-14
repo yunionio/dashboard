@@ -4,6 +4,8 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
 </template>
 
@@ -16,10 +18,11 @@ import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPu
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'CloudaccountList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -72,6 +75,7 @@ export default {
           share_mode: getPublicFilter(),
           project_domains: getDomainFilter(),
         },
+        responseData: this.responseData,
         hiddenColumns: ['guest_count', 'host_count', 'enable_auto_sync', 'probe_at', 'access_url'],
       }),
       exportDataOptions: {
