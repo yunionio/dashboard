@@ -5,7 +5,7 @@
         <div class="dashboard-card-header-left">{{ fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="() => visible = true" />
-          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">{{$t('dashboard.text_13')}}</router-link>
+          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">{{$t('dashboard.more')}}</router-link>
         </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center">
@@ -228,6 +228,7 @@ export default {
           resPath: 'data.suggest_cost',
         })
         this.data = data || []
+        this.data.sort(this.compareData)
       } finally {
         this.loading = false
       }
@@ -243,10 +244,19 @@ export default {
     },
     getPercent (num, den) {
       const percent = (num / den) * 100
-      if (percent < 10) {
+      if (percent && percent < 10) {
         return percent.toFixed(1)
       }
       return `${parseInt(percent)}`
+    },
+    compareData (a, b) {
+      if (a.amount > b.amount) {
+        return -1
+      } else if (a.amount < b.amount) {
+        return 1
+      } else {
+        return 0
+      }
     },
   },
 }
