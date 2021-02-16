@@ -3,6 +3,7 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
+    :defaultSearchKey="defaultSearchKey"
     :group-actions="groupActions" />
 </template>
 
@@ -10,6 +11,7 @@
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
+import regexp from '@/utils/regexp'
 
 const PROTOCOL = {
   any: 'ANY',
@@ -233,6 +235,16 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    defaultSearchKey (search) {
+      if (regexp.isPrefixStr(search)) {
+        return 'cidr'
+      }
+      if (regexp.isNumber(search)) {
+        return 'ports'
+      }
+    },
   },
 }
 </script>
