@@ -116,6 +116,7 @@ export default {
           all_usage_key: 'all.eip.floating_ip',
           name: i18n.t('dashboard.text_156'),
           usage_key: 'all.eip.floating_ip.used',
+          color: 'reverse',
         },
       },
       {
@@ -158,6 +159,7 @@ export default {
           usage_key: 'all.disks.attached.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
+          color: 'reverse',
         },
       },
       {
@@ -485,6 +487,7 @@ export default {
           usage_key: 'domain.disks.attached.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
+          color: 'reverse',
         },
       },
       {
@@ -585,6 +588,7 @@ export default {
           all_usage_key: 'domain.eip',
           name: i18n.t('dashboard.text_156'),
           usage_key: 'domain.eip.used',
+          color: 'reverse',
         },
       },
       {
@@ -814,6 +818,7 @@ export default {
           usage_key: 'disks.attached.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
+          color: 'reverse',
         },
       },
       {
@@ -1033,6 +1038,7 @@ export default {
           all_usage_key: 'eip',
           name: i18n.t('dashboard.text_156'),
           usage_key: 'eip.used',
+          color: 'reverse',
         },
       },
       {
