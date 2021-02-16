@@ -33,7 +33,12 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
     isRead () {
-      return this.isProjectMode && this.userInfo.projectId !== this.data.tenant_id
+      return !this.isPower
+    },
+    isPower (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return obj.tenant_id === this.userInfo.projectId
     },
   },
 }
