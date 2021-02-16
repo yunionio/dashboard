@@ -1,11 +1,10 @@
 <template>
   <div class="position-relative h-100 w-100 overflow-auto">
     <template v-for="(item, key) of data">
-      <div
+      <!--div
         v-if="item.layout.component === 'Quota' && !globalConfig.enable_quota_check"
-        :key="key" />
+        :key="key" /-->
       <div
-        v-else
         class="item"
         :key="key"
         :style="getItemStyles(item.layout)">
