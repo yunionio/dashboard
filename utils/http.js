@@ -55,6 +55,25 @@ const transSpecChart = (transVal) => {
   return transVal
 }
 
+const responseLog = (response) => {
+  if (process.env.NODE_ENV === 'development') {
+    const randomColor = `rgba(${Math.round(Math.random() * 255)},${Math.round(
+      Math.random() * 255,
+    )},${Math.round(Math.random() * 255)})`
+    console.log(
+      '%c┍----------------------------------------------------------------------------┑',
+      `color:${randomColor};`,
+    )
+    console.log('| 请求地址：', response.config.url)
+    console.log('| 请求参数：', response.config.data ? JSON.parse(response.config.data) : {})
+    console.log('| 返回数据：', response.data)
+    console.log(
+      '%c┕----------------------------------------------------------------------------┙',
+      `color:${randomColor};`,
+    )
+  }
+}
+
 // 统一处理重复请求，进行cancel
 const requestMap = {}
 export const getRequestKey = config => {
@@ -213,6 +232,7 @@ export const isSuccess = res => {
 // response interceptor
 http.interceptors.response.use(
   (response) => {
+    responseLog(response)
     cancelRquest(response.config.$requestKey)
     pendingCount--
     pendingCount === 0 && hiddenLoading()
