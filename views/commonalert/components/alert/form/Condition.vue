@@ -17,7 +17,7 @@
     </a-col>
     <a-col :span="3">
       <a-form-item>
-        <base-select v-decorator="decorators.comparator"  :options="comparatorOpts" minWidth="90px" :disabled="disabled" @change="onComparatorChange" />
+        <base-select v-decorator="decorators.comparator"  :options="comparatorOpts" minWidth="70px" :disabled="disabled" @change="onComparatorChange" />
       </a-form-item>
     </a-col>
     <a-col :span="5" v-show="showThreshold">
