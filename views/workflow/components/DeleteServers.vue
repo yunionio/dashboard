@@ -50,7 +50,7 @@ export default {
         },
         {
           field: 'conf',
-          title: this.$t('common_388'),
+          title: this.$t('common_428'),
           minWidth: 80,
           showOverflow: 'title',
           formatter: ({ cellVal, row }) => {
