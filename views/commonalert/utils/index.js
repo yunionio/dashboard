@@ -118,7 +118,13 @@ export function getMetircAlertUtil (row, field) {
     let preiod = ((preiodMaps[row.period] || {}).label) || row.period || ((preiodMaps[detail.period] || {}).label) || detail.period
     const unit = detail.field_description ? _.get(detail, 'field_description.unit') : (R.type(row.eval_data) === 'Array' ? (_.get(row, 'eval_data[0].unit') || '') : '')
     const threshold = R.is(String, detail.threshold) ? { text: detail.threshold } : transformUnit(detail.threshold, unit)
-    strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, alert_duration, detail.comparator, threshold.text])
+    let comparator = detail.comparator
+    let txt = threshold.text
+    if (detail.comparator === 'within_range' && detail.within_range) {
+      comparator = ''
+      txt = `[${detail.within_range[0]}${threshold.unit}, ${detail.within_range[1]}${threshold.unit}]`
+    }
+    strategy = i18n.t('monitor.text_6', [measurement, metric, reduce, alert_duration, comparator, txt])
     if (detail.condition_type === 'nodata_query') { // 系统上报数据为空
       strategy = i18n.t('monitor.text_108', [alert_duration])
     }
