@@ -196,11 +196,17 @@ export default {
         const opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
         if (opt) {
           const min = Math.max(DISK_MIN_SIZE, opt.min)
+          let max = opt.max
+          // 谷歌云共享核心磁盘最多为3072GB
+          if (hyper === HYPERVISORS_MAP.google.key && this.sku && ['e2-micro', 'e2-small', 'e2-medium', 'f1-micro', 'g1-small'].includes(this.sku.name)) {
+            max = 3072
+          }
           if (opt) {
             ret[opt.key] = {
               ...opt,
               min,
               medium,
+              max: max,
             }
           }
         }
