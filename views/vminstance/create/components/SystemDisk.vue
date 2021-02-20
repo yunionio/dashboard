@@ -178,6 +178,10 @@ export default {
           if (hyper === HYPERVISORS_MAP.ucloud.key && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(opt.key)) {
             max = this.imageMinDisk
           }
+          // 谷歌云共享核心磁盘最多为3072GB
+          if (hyper === HYPERVISORS_MAP.google.key && this.sku && ['e2-micro', 'e2-small', 'e2-medium', 'f1-micro', 'g1-small'].includes(this.sku.name)) {
+            max = 3072
+          }
           ret[opt.key] = {
             ...opt,
             medium,
