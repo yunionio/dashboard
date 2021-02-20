@@ -122,6 +122,11 @@ export default {
                   refresh: this.refresh,
                 })
               },
+              meta: () => {
+                return {
+                  validate: this.isPower(obj),
+                }
+              },
             },
             {
               label: i18n.t('compute.text_1012'),
