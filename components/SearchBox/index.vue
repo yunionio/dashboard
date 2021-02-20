@@ -43,7 +43,7 @@
       </li>
     </ul>
     <div v-if="!hidePlaceholder" class="text-weak help-tips text-truncate">{{ placeholder }}</div>
-    <a-icon type="search" class="cursor-pointer" @click.stop="search" />
+    <a-icon type="search" class="cursor-pointer" />
   </div>
 </template>
 
@@ -192,6 +192,7 @@ export default {
   width: 100%;
   height: auto;
   position: relative;
+  padding-left: 30px;
   > ul {
     white-space: nowrap;
     display: inline-block;
@@ -210,8 +211,12 @@ export default {
     font-size: 12px;
     line-height: 24px;
     top: 7px;
-    left: 12px;
+    left: 30px;
     right: 36px;
+  }
+  .cursor-pointer{
+    position: absolute;
+    left: 10px;
   }
 }
 </style>
