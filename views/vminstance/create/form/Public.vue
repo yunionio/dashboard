@@ -46,11 +46,10 @@
         :wrapperCol="formItemLayout.wrapperCol"
         :labelCol="formItemLayout.labelCol"
         ref="areaSelectRef"
-        :cityParams="cityParams"
         :providerParams="providerParams"
         :cloudregionParams="cloudregionParams"
         :zoneParams="zoneParams"
-        :defaultActiveFirstOption="['city']"
+        :defaultActiveFirstOption="['provider']"
         @providerFetchSuccess="providerFetchSuccess" />
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
         <resource :decorator="decorators.resourceType" />
@@ -220,13 +219,6 @@ export default {
       }
       return params
     },
-    cityParams () {
-      return {
-        usable: true,
-        public_cloud: true,
-        ...this.scopeParams,
-      }
-    },
     providerParams () {
       return {
         usable: true,
@@ -290,7 +282,6 @@ export default {
         usable: true,
         enabled: true,
         ...this.scopeParams,
-        city: this.form.fd.city,
       }
       if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
       if (this.form.fd.zone) params.zone_id = this.form.fd.zone
@@ -399,8 +390,7 @@ export default {
         usable: true,
         enabled: true,
       }
-      const { city, provider, cloudregion, zone } = this.form.fd
-      if (city) params.city = city
+      const { provider, cloudregion, zone } = this.form.fd
       if (provider) params.provider = provider
       if (cloudregion) params.cloudregion = cloudregion
       if (zone) params.zone = zone
@@ -469,7 +459,7 @@ export default {
     },
   },
   created () {
-    this.baywatch(['form.fd.city', 'form.fd.provider', 'form.fd.cloudregion', 'form.fd.zone'], this.fetchInstanceSpecs)
+    this.baywatch(['form.fd.provider', 'form.fd.cloudregion', 'form.fd.zone'], this.fetchInstanceSpecs)
     this.baywatch(['form.fd.sku', 'form.fd.zone'], this.withFetchCapbilites)
   },
   methods: {

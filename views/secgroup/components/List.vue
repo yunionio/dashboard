@@ -9,6 +9,7 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
+    :defaultSearchKey="defaultSearchKey"
     :showGroupActions="showGroupActions" />
 </template>
 
@@ -23,6 +24,7 @@ import { getNameFilter, getTenantFilter, getDomainFilter } from '@/utils/common/
 import globalSearchMixins from '@/mixins/globalSearch'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'SecgroupList',
@@ -300,6 +302,14 @@ export default {
           this.list.refresh()
         },
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isPrefixStr(search)) {
+        return 'ip'
+      }
+      if (regexp.isNumber(search)) {
+        return 'ports'
+      }
     },
   },
 }

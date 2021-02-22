@@ -227,8 +227,8 @@
   "compute.text_227": "Create host parameter error",
   "compute.text_228": "Name",
   "compute.text_229": "Last execution status",
-  "compute.text_230": "Start Time",
-  "compute.text_231": "End Time",
+  "compute.text_230": "Start",
+  "compute.text_231": "End",
   "compute.text_232": "Associated Host",
   "compute.text_233": "Task",
   "compute.text_234": "Re-execute",
@@ -1100,7 +1100,7 @@
   "compute.text_1129": "Only VMware supports this operation",
   "compute.text_1130": "Please select the booted machine to operate",
   "compute.text_1131": "Please select the suspended machine to operate",
-  "compute.text_1132": "Auto release",
+  "compute.text_1132": "Auto delete after",
   "compute.text_1133": "For the time being, only simultaneous operations are supported and expired release is set",
   "compute.text_1134": "{0} GPUs ({1})",
   "compute.text_1135": "{0}GB RAM",
@@ -1128,7 +1128,7 @@
   "compute.text_1158": "Simple scheduling strategy for resources, the machines in the group are distributed on different hosts according to the settings, so as to achieve high service availability",
   "compute.text_1159": "Resource Pool",
   "compute.text_1160": "On-premise",
-  "compute.text_1161": "Create {0} {1}",
+  "compute.text_1161": "Create {0}",
   "compute.text_1162": "Add a backup machine",
   "compute.text_1163": "Host of backup machine",
   "compute.text_1164": "Prompt message: When the host is empty, the system will automatically select the host",
@@ -1369,5 +1369,7 @@
   "compute.image_create_server": "No OS type detected and cannot to create @:dictionary.server",
   "compute.host_convert": "No disk detected and cannot be converted to host",
   "compute.physicalmachine_add": "Before adding physical machines, make sure that you have created IP subnets of the type IPMI and IP subnets of the type physical machines need on the platform",
-  "compute.text_1382": "New Tag"
+  "compute.text_1382": "New Tag",
+  "compute.live_migrate.skip_cpu_check": "Skip CPU Check",
+  "compute.live_migrate.skip_cpu_check.explain": "Do not check CPU compatibility of Host CPUs. If checked, the live migration requires the CPU model and micro-code of the target host must be exactly the same as the source. Otherwise, skip the check and try the live-migration anyway. As a result, the server might not be able to run on the target host after live-migration."
 }

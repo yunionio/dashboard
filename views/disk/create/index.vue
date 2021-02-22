@@ -35,7 +35,9 @@
             </a-select>
           </a-col>
           <a-col :span="5">
-            <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
+            <a-tooltip :title="tooltip" placement="top">
+              <a-input-number :min="minDiskData" :max="maxDiskData" :step="step" v-decorator="decorators.size" /> GB
+            </a-tooltip>
           </a-col>
         </a-row>
       </a-form-item>
@@ -215,6 +217,9 @@ export default {
     }
   },
   computed: {
+    tooltip () {
+      return this.$t('compute.text_137', [this.minDiskData, this.maxDiskData])
+    },
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     currentCloudregion () {
       return this.regionList[this.form.fd.cloudregion]
@@ -300,7 +305,7 @@ export default {
       if (this.diskType === 'private' || this.diskType === 'onpremise') {
         return ['cloudregion', 'zone']
       }
-      return ['city', 'provider', 'cloudregion', 'zone']
+      return ['provider', 'cloudregion', 'zone']
     },
     cloudproviderParams () {
       const { cloudregion, domain: project_domain, zone } = this.form.fd
@@ -332,7 +337,7 @@ export default {
   },
   watch: {
     cloudEnv (val) {
-      this.$refs.areaSelects.fetchs(['city', 'provider', 'cloudregion', 'zone'])
+      this.$refs.areaSelects.fetchs(['provider', 'cloudregion', 'zone'])
       this.storageItem = {}
     },
     'form.fd.domain' (newValue, oldValue) {

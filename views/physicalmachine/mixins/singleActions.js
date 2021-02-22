@@ -466,7 +466,8 @@ export default {
         hypervisor: obj.hypervisor,
         os_type: obj.os_type,
       }
-      const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
+      // const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
+      const href = `${this.$store.getters.auth.regions.api_server}/web-console/?${qs.stringify(query)}`
       window.open(href)
     },
   },

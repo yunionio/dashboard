@@ -8,6 +8,7 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
+    :defaultSearchKey="defaultSearchKey"
     :showGroupActions="showGroupActions" />
 </template>
 
@@ -22,6 +23,7 @@ import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'PhysicalmachineList',
@@ -42,6 +44,9 @@ export default {
           status: Object.values(expectStatus.host).flat(),
         },
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           status: getStatusFilter('host'),
           enabled: getEnabledFilter(),
@@ -51,6 +56,12 @@ export default {
               type: 'extra_field',
               key: 'sn',
             },
+          },
+          any_mac: {
+            label: 'MAC',
+          },
+          any_ip: {
+            label: 'IP',
           },
           access_ip: {
             label: this.$t('compute.text_503'),
@@ -435,6 +446,14 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'any_ip'
+      }
+      if (regexp.isMAC(search)) {
+        return 'any_mac'
+      }
     },
   },
 }

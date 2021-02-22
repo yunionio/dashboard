@@ -44,6 +44,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.image).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           disk_formats: {
             label: this.$t('table.title.disk_format'),

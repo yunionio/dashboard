@@ -21,6 +21,9 @@
         <a-form-item :label="$t('compute.text_494')" v-if="isSingle && firstData.status === 'ready'" :extra="$t('compute.text_1263')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" />
         </a-form-item>
+        <a-form-item :label="$t('compute.live_migrate.skip_cpu_check')" v-if="isSingle && firstData.status === 'running'" :extra="$t('compute.live_migrate.skip_cpu_check.explain')">
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.skip_cpu_check" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -64,6 +67,13 @@ export default {
           'auto_start',
           {
             initialValue: true,
+            valuePropName: 'checked',
+          },
+        ],
+        skip_cpu_check: [
+          'skip_cpu_check',
+          {
+            initialValue: false,
             valuePropName: 'checked',
           },
         ],
@@ -121,6 +131,9 @@ export default {
         action = 'migrate'
       } else {
         action = 'live-migrate'
+        if (values.skip_cpu_check) {
+          data.skip_cpu_check = true
+        }
       }
       if (values.rescue_mode) {
         action = 'migrate'

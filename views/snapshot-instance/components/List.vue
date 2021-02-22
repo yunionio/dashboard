@@ -28,7 +28,7 @@ import {
 } from '@/utils/common/tableFilter'
 
 export default {
-  name: 'SnapshotList',
+  name: 'InstanceSnapshotList',
   mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
@@ -45,6 +45,9 @@ export default {
         getParams: this.getParam,
         steadyStatus,
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           status: getStatusFilter('snapshot'),
           projects: getTenantFilter(),
