@@ -59,20 +59,20 @@ export default {
           const mapIpActions = (ipArr, type) => {
             if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error(i18n.t('compute.text_343'))
             const options = []
-            ipArr.forEach(v => {
-              const meta = () => {
-                const ret = {
-                  validate: false,
-                  tooltip: null,
-                }
-                if (obj.os_type === 'Windows') {
-                  ret.tooltip = i18n.t('compute.text_344')
-                  return ret
-                }
-                ret.validate = cloudEnabled(type, obj)
-                ret.tooltip = cloudUnabledTip(type, obj)
+            const meta = () => {
+              const ret = {
+                validate: false,
+                tooltip: null,
+              }
+              if (obj.os_type === 'Windows') {
+                ret.tooltip = i18n.t('compute.text_344')
                 return ret
               }
+              ret.validate = cloudEnabled(type, obj)
+              ret.tooltip = cloudUnabledTip(type, obj)
+              return ret
+            }
+            ipArr.forEach(v => {
               options.push({
                 label: `SSH ${v}`,
                 action: () => {
