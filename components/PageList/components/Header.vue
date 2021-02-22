@@ -92,7 +92,7 @@ export default {
     showSearchbox: Boolean,
     filterOptions: Object,
     filter: Object,
-    defaultSearchKey: String,
+    defaultSearchKey: [String, Function],
     onManager: Function,
     params: Object,
     // 导出数据配置

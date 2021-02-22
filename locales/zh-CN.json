@@ -132,8 +132,8 @@
       "tempalte_saving": "开始创建主机模板",
       "template_save_failed": "创建主机失败",
       "instance_snapshot_reset": "回滚主机",
-      "update_tags": "更新标签",
-      "update_tags_fail": "更新标签失败"
+      "update_tags": "更新标签或名称",
+      "update_tags_fail": "更新标签或名称失败"
     },
     "network": {
       "init": "初始化",
@@ -2842,7 +2842,7 @@
   "scope.text_325": "已发送({0})",
   "scope.text_326": "获取验证码",
   "scope.text_327": "合作意向",
-  "scope.text_328": "云联壹云服务用户协议",
+  "scope.user_agreement": "用户协议",
   "scope.text_329": "使用已有账号登录",
   "scope.text_330": "注册",
   "scope.text_331": "请输入用户名",
@@ -4581,6 +4581,7 @@
   "common.login_domain": "登录域",
   "common.set_login_domain": "设置",
   "common.clear_login_domain": "清除",
-  "common.switch_login_domain": "设置登录域"
+  "common.switch_login_domain": "设置登录域",
+  "navbar.text.hotline": "服务热线"
 }
 

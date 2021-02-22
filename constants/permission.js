@@ -542,6 +542,7 @@ export const PERMISSION = {
    * cloudaccounts 相关操作
    */
   cloudproviders_list: ['compute', 'cloudproviders', 'list'],
+  cloudproviders_get: ['compute', 'cloudproviders', 'get'],
   /**
    * cloudaccounts 相关操作
    */
@@ -758,6 +759,7 @@ export const PERMISSION = {
   costalerts_delete: ['meter', 'costalerts', 'delete'],
 
   // DNS解析相关
+  dns_zones_list: ['compute', 'dns_zones', 'list'],
   dns_zones_get: ['compute', 'dns_zones', 'get'],
   dns_zones_create: ['compute', 'dns_zones', 'create'],
   dns_zones_update: ['compute', 'dns_zones', 'update'],

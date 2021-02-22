@@ -121,7 +121,7 @@ export default {
       default: true,
     },
     // 不选择搜索类型情况下，默认搜索key
-    defaultSearchKey: String,
+    defaultSearchKey: [String, Function],
     // 列配置
     columns: {
       type: Array,

@@ -50,7 +50,7 @@
           </template>
         </template>
         <template v-else v-for="(item, key) of options">
-          <li v-show="!value.hasOwnProperty(key)" :key="key">
+          <li v-show="!value.hasOwnProperty(key) && isKeyClickable(item)" :key="key">
             <span @click="handleKeyClick($event, key, item)" class="text-truncate">{{ item.label }}</span>
           </li>
         </template>
@@ -66,6 +66,7 @@
 <script>
 import * as R from 'ramda'
 import DateSelect from './DateSelect'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'AutoCompleter',
@@ -97,7 +98,9 @@ export default {
       type: String,
       required: true,
     },
-    defaultSearchKey: String,
+    defaultSearchKey: {
+      type: [String, Function],
+    },
     fetchDistinctField: Function,
   },
   data () {
@@ -151,7 +154,7 @@ export default {
         this.completerWrapStyle = { width: '360px', right: '-300px' }
       }
       this.selectKey = key
-      var prefix = `${item.label}${this.keySeparator}`
+      const prefix = `${item.label}${this.keySeparator}`
       if (!this.search.startsWith(prefix) && !prefix.startsWith(this.search)) {
         this.search = prefix + this.search
       } else if (prefix.startsWith(this.search)) {
@@ -172,6 +175,22 @@ export default {
         }
       }
       this.$emit('focus-input')
+    },
+    /**
+     * @description 判断item所否可以点击，只有完成了输入之后才能点击
+     */
+    isKeyClickable (curItem) {
+      for (var key in this.options) {
+        const item = this.options[key]
+        if (this.search.startsWith(`${item.label}${this.keySeparator}`)) {
+          if (item.label === curItem.label) {
+            return true
+          } else {
+            return false
+          }
+        }
+      }
+      return true
     },
     /**
      * @description value选中事件
@@ -226,19 +245,42 @@ export default {
     handleOk () {
       const selectKeyEmpty = R.isNil(this.selectKey) || R.isEmpty(this.selectKey)
       if (selectKeyEmpty) {
-        if (this.options[this.defaultSearchKey] && R.trim(this.search)) {
-          this.selectValue = [this.search]
-          this.selectKey = this.defaultSearchKey
-          this.search = `${this.options[this.defaultSearchKey].label}${this.keySeparator}${this.search}`
-        } else {
-          if (R.is(Object, this.value) && !R.isEmpty(this.value)) {
-            this.$emit('confirm', this.value)
+        if (this.search) {
+          var key = ''
+          if (!R.isNil(this.defaultSearchKey)) {
+            if (R.is(String, this.defaultSearchKey)) {
+              key = this.defaultSearchKey
+            } else if (R.is(Function, this.defaultSearchKey)) {
+              key = this.defaultSearchKey(this.search)
+            }
           }
+          if (!key) {
+            if (regexp.isUUID(this.search) && this.options.id) {
+              key = 'id'
+            } else {
+              key = 'name'
+            }
+          }
+          if (this.options[key]) {
+            this.selectValue = [this.search]
+            this.selectKey = key
+            this.search = `${this.options[key].label}${this.keySeparator}${this.search}`
+          } else {
+            console.log('key', key, 'not exist in options', this.options)
+            return
+          }
+        } else {
+          const newValue = {
+            ...this.value,
+          }
+          this.$emit('confirm', newValue)
           return
         }
       }
       const selectValueEmpty = R.isNil(this.selectValue) || R.isEmpty(this.selectValue)
-      if (selectValueEmpty) return
+      if (selectValueEmpty) {
+        return
+      }
       let value = this.search.split(this.keySeparator)[1]
       if (this.isDate) {
         if (value.startsWith('<')) {
@@ -259,8 +301,8 @@ export default {
       }
       const newValue = {
         ...this.value,
-        [this.selectKey]: value,
       }
+      newValue[this.selectKey] = value
       this.$emit('confirm', newValue)
       this.clear()
     },

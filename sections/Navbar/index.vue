@@ -197,6 +197,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    checkLicense: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -388,7 +392,9 @@ export default {
     'userInfo.id' (val) {
       this.checkWorkflow(val)
       this.fetchOEM(val)
-      this.fetchLicense(val)
+      if (this.checkLicense) {
+        this.fetchLicense(val)
+      }
       this.pushApiServerUrlAlert(val)
     },
     licenseMessage: {
@@ -405,7 +411,9 @@ export default {
   created () {
     this.checkWorkflow(this.userInfo.id)
     this.fetchOEM(this.userInfo.id)
-    this.fetchLicense(this.userInfo.id)
+    if (this.checkLicense) {
+      this.fetchLicense(this.userInfo.id)
+    }
     this.pushApiServerUrlAlert(this.userInfo.id)
     this.cronjobFetchAlerts()
   },
@@ -510,44 +518,33 @@ export default {
     },
     async pushApiServerUrlAlert (id) {
       if (!id) return
-      let manager = new this.$Manager('services', 'v1')
       try {
-        const response = await manager.list({
-          params: {
-            type: ['common'],
-          },
-        })
-        const id = (response.data.data && response.data.data.length && response.data.data[0].id) || ''
-        if (id) {
-          const configResponse = await manager.getSpecific({
-            id,
-            spec: 'config',
-          })
-          const config = (configResponse.data.config && configResponse.data.config.default) || {}
-          const currentHost = window.location.hostname
-          const apiServer = config.api_server || ''
-          if (apiServer) {
-            if (!apiServer.includes(currentHost)) {
-              this.$store.dispatch('common/updateObject', {
-                name: 'topAlert',
-                data: {
-                  apiServer: {
-                    messageOptions: [
-                      this.$t('common_222'),
-                      ['a', { attrs: { href: apiServer } }, apiServer],
-                      this.$t('common_223'),
-                    ],
-                    interval: 1000 * 60 * 60 * 24,
-                  },
+        const params = {}
+        if (this.$store.getters.scope !== 'system') {
+          params.domain = this.$store.getters.userInfo.projectDomain
+        }
+        const regions = await this.$store.dispatch('auth/getRegions', params)
+        const currentHost = window.location.hostname
+        const apiServer = regions.api_server || ''
+        if (apiServer) {
+          if (!apiServer.includes(currentHost)) {
+            this.$store.dispatch('common/updateObject', {
+              name: 'topAlert',
+              data: {
+                apiServer: {
+                  messageOptions: [
+                    this.$t('common_222'),
+                    ['a', { attrs: { href: apiServer } }, apiServer],
+                    this.$t('common_223'),
+                  ],
+                  interval: 1000 * 60 * 60 * 24,
                 },
-              })
-            }
+              },
+            })
           }
         }
       } catch (error) {
         throw error
-      } finally {
-        manager = null
       }
     },
     pushLicenseAlert () {
