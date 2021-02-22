@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item :label="$t('cloudenv.text_502')" v-bind="formItemLayout">
+    <a-form-item :label="$t('cloudenv.text_503')" v-bind="formItemLayout">
       <a-radio-group v-decorator="decorators.scope" @change="handleScopeChange">
         <a-radio-button value="system">{{$t('cloudenv.text_504')}}</a-radio-button>
         <a-radio-button value="domain" v-if="l3PermissionEnable">{{$t('cloudenv.text_393')}}</a-radio-button>
