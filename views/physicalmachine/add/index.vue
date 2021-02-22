@@ -372,6 +372,7 @@ export default {
         ipmi_password: this.form.fd.ipmi_password,
         enable_pxe_boot: true,
         no_prepare: this.form.fd.no_prepare || false,
+        access_mac: this.form.fd.access_mac,
       }
       if (this.form.fd.project_domain && this.isAdminMode) {
         data.project_domain = this.form.fd.project_domain
