@@ -510,7 +510,7 @@ export default {
           y: 4,
         },
         params: {
-          currency: "CNY",
+          currency: 'CNY',
           name: i18n.t('dashboard.text_54'),
         },
       },
