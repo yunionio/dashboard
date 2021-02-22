@@ -59,9 +59,6 @@ export default {
           const mapIpActions = (ipInfoList) => {
             const options = []
             ipInfoList.forEach(ipInfo => {
-              if (ipInfo.vpcId !== 'default' && ipInfo.ipType !== 'eip') {
-                return
-              }
               const actionType = ipInfo.actionType
               const ipAddr = ipInfo.ipAddr
               const meta = () => {
