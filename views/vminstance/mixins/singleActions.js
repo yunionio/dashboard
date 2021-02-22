@@ -56,29 +56,34 @@ export default {
               return ret
             },
           })
-          const mapIpActions = (ipArr, type) => {
-            if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error(i18n.t('compute.text_343'))
+          const mapIpActions = (ipInfoList) => {
             const options = []
-            const meta = () => {
-              const ret = {
-                validate: false,
-                tooltip: null,
+            ipInfoList.forEach(ipInfo => {
+              if (ipInfo.vpcId !== 'default' && ipInfo.ipType !== 'eip') {
+                return
               }
-              if (obj.os_type === 'Windows') {
-                ret.tooltip = i18n.t('compute.text_344')
+              const actionType = ipInfo.actionType
+              const ipAddr = ipInfo.ipAddr
+              const meta = () => {
+                const ret = {
+                  validate: false,
+                  tooltip: null,
+                }
+                if (obj.os_type === 'Windows') {
+                  ret.tooltip = i18n.t('compute.text_344')
+                  return ret
+                }
+                ret.validate = cloudEnabled(actionType, obj)
+                ret.tooltip = cloudUnabledTip(actionType, obj)
                 return ret
               }
-              ret.validate = cloudEnabled(type, obj)
-              ret.tooltip = cloudUnabledTip(type, obj)
-              return ret
-            }
-            ipArr.forEach(v => {
+
               options.push({
-                label: `SSH ${v}`,
+                label: `SSH ${ipAddr}`,
                 action: () => {
                   this.webconsoleManager.performAction({
                     id: 'ssh',
-                    action: v,
+                    action: ipAddr,
                   }).then(({ data }) => {
                     this.openWebConsole(obj, data)
                   })
@@ -86,7 +91,7 @@ export default {
                 meta,
               })
               options.push({
-                label: i18n.t('compute.text_345', [v]),
+                label: i18n.t('compute.text_345', [ipAddr]),
                 action: () => {
                   this.createDialog('SmartFormDialog', {
                     title: i18n.t('compute.text_346'),
@@ -94,7 +99,7 @@ export default {
                     callback: async (data) => {
                       const response = await this.webconsoleManager.performAction({
                         id: 'ssh',
-                        action: v,
+                        action: ipAddr,
                         data,
                       })
                       this.openWebConsole(obj, response.data)
@@ -130,13 +135,32 @@ export default {
             })
             return options
           }
-          let eips = (obj.eip || '').split(',').filter(item => !!item)
-          let ips = (obj.nics || []).filter(item => {
-            return item.vpc_id === 'default'
-          }).map(item => item.ip_addr)
-          eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
-          ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
-          ret = ret.concat(eips).concat(ips)
+
+          const ipInfoList = []
+          if (obj.eip) {
+            obj.eip.split(',').filter(item => !!item).map(ip => {
+              ipInfoList.push({
+                actionType: 'EIP SSH',
+                ipType: 'eip',
+                ipAddr: ip,
+              })
+            })
+          }
+          if (obj.nics) {
+            obj.nics.map(nic => {
+              if (obj.provider === 'OneCloud') {
+                ipInfoList.push({
+                  actionType: 'IP SSH',
+                  ipType: 'nicIP',
+                  ipAddr: nic.ip_addr,
+                  vpcId: nic.vpcId,
+                  provider: obj.Provider,
+                })
+              }
+            })
+          }
+          const sshActions = mapIpActions(ipInfoList)
+          ret = ret.concat(sshActions)
           return ret
         },
         meta: (obj) => {
