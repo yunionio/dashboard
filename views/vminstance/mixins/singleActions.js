@@ -78,15 +78,67 @@ export default {
                 return ret
               }
 
+              const fetchWebconsoleAddr = async (port) => {
+                if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip') {
+                  return {
+                    ipAddr: ipAddr,
+                    port: port,
+                  }
+                }
+                if (ipInfo.provider === 'OneCloud') {
+                  return new this.$Manager('servers').performAction({
+                    id: obj.id,
+                    action: 'list-forward',
+                    data: {
+                      proto: 'tcp',
+                      port: port,
+                    },
+                  }).then(data => {
+                    const fwds = data.data.forwards
+                    if (fwds.length > 0) {
+                      const fwd = fwds[0]
+                      return {
+                        ipAddr: fwd.proxy_addr,
+                        port: fwd.proxy_port,
+                      }
+                    }
+                    return new this.$Manager('servers').performAction({
+                      id: obj.id,
+                      action: 'open-forward',
+                      data: {
+                        proto: 'tcp',
+                        port: port,
+                      },
+                    }).then(data => {
+                      const fwd = data.data
+                      return {
+                        ipAddr: fwd.proxy_addr,
+                        port: fwd.proxy_port,
+                      }
+                    })
+                  })
+                }
+                return Promise.reject(Error(`unexpected ${ipInfo}`))
+              }
+
+              const openWebconsole = (port) => {
+                fetchWebconsoleAddr(port).then(addr => {
+                  return this.webconsoleManager.performAction({
+                    id: 'ssh',
+                    action: addr.ipAddr,
+                    data: {
+                      port: addr.port,
+                    },
+                  })
+                }).then(({ data }) => {
+                  this.openWebConsole(obj, data)
+                })
+              }
+
               options.push({
                 label: `SSH ${ipAddr}`,
                 action: () => {
-                  this.webconsoleManager.performAction({
-                    id: 'ssh',
-                    action: ipAddr,
-                  }).then(({ data }) => {
-                    this.openWebConsole(obj, data)
-                  })
+                  openWebconsole(22)
                 },
                 meta,
               })
@@ -97,12 +149,7 @@ export default {
                     title: i18n.t('compute.text_346'),
                     data: [obj],
                     callback: async (data) => {
-                      const response = await this.webconsoleManager.performAction({
-                        id: 'ssh',
-                        action: ipAddr,
-                        data,
-                      })
-                      this.openWebConsole(obj, response.data)
+                      openWebconsole(data.port)
                     },
                     decorators: {
                       port: [
@@ -153,8 +200,8 @@ export default {
                   actionType: 'IP SSH',
                   ipType: 'nicIP',
                   ipAddr: nic.ip_addr,
-                  vpcId: nic.vpcId,
-                  provider: obj.Provider,
+                  vpcId: nic.vpc_id,
+                  provider: obj.provider,
                 })
               }
             })
