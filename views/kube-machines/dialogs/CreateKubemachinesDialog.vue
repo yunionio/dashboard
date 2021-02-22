@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('k8s.text_49')}}</div>
+    <div slot="header">{{$t('k8s.create')}}</div>
     <div slot="body">
       <a-alert :showIcon="false" banner class="mt-2">
         <template slot="message">
@@ -13,14 +13,15 @@
       <a-form
       class="mt-3"
       :form="form.fc">
-        <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout">
-          <cloudregion-zone
-            :zone-params="param.zone"
-            :cloudregion-params="param.region"
-            :decorator="decorators.regionZone" />
-        </a-form-item>
         <a-form-item :label="$t('k8s.text_152')" v-bind="formItemLayout">
-          <server-config :decorator="decorators.serverConfig" :network-params="param.network" :form="form" @vmAdd="vmAdd">
+          <server-config
+            :decorator="decorators.serverConfig"
+            :networkParams="networkParams"
+            :form="form"
+            :cloudregionId="params.data.cloudregion_id"
+            :hypervisor="hypervisor"
+            :platform="platform"
+            @vmAdd="vmAdd">
             <template v-slot:hypervisor="slotProps">
               <a-form-item :label="$t('k8s.text_150')" v-if="hypervisorsC.length" v-bind="slotProps.formItemLayout">
                 <a-radio-group v-decorator="decorators.serverConfig.hypervisor(slotProps.i)">
@@ -46,11 +47,10 @@ import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import ServerConfig from '@K8S/sections/serverConfig'
 import { KUBE_PROVIDER, hyperOpts } from '@K8S/views/cluster/constants'
-import CloudregionZone from '@/sections/CloudregionZone'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
@@ -66,7 +66,6 @@ function checkIpInSegment (i, networkData) {
 export default {
   name: 'CreateKubemachinesDialog',
   components: {
-    CloudregionZone,
     ServerConfig,
   },
   mixins: [DialogMixin, WindowsMixin],
@@ -77,17 +76,21 @@ export default {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
-            if (values.zone && values.zone.key) {
-              this.param.network = {
-                zone: values.zone.key,
-                filter: 'server_type.notin(ipmi, pxe)',
-                scope: this.scope,
-              }
-              this.fetchCapability(values.zone.key, 'zone')
-            }
-            if (values.cloudregion && values.cloudregion.key) {
-              this.fetchCapability(values.cloudregion.key, 'cloudregion')
-            }
+            /*
+             * if (values.zone && values.zone.key) {
+             *   this.param.network = {
+             *     vpc: this.data.vpc_id,
+             *     filter: 'server_type.notin(ipmi, pxe)',
+             *     scope: this.scope,
+             *   }
+             *   this.fetchCapability(values.zone.key, 'zone')
+             * }
+             */
+            /*
+             * if (values.cloudregion && values.cloudregion.key) {
+             *   this.fetchCapability(values.cloudregion.key, 'cloudregion')
+             * }
+             */
             Object.keys(values).forEach((key) => {
               this.form.fd[key] = values[key]
             })
@@ -102,26 +105,6 @@ export default {
         },
       },
       decorators: {
-        regionZone: {
-          cloudregion: [
-            'cloudregion',
-            {
-              initialValue: { key: '', label: '' },
-              rules: [
-                { required: true, message: this.$t('k8s.text_165') },
-              ],
-            },
-          ],
-          zone: [
-            'zone',
-            {
-              initialValue: { key: '', label: '' },
-              rules: [
-                { required: true, message: this.$t('k8s.text_166') },
-              ],
-            },
-          ],
-        },
         serverConfig: {
           hypervisor: i => [
             `hypervisors[${i}]`,
@@ -132,23 +115,11 @@ export default {
               ],
             },
           ],
-          vcpu_count: i => [
-            `vcpu_count[${i}]`,
+          sku: i => [
+            `sku[${i}]`,
             {
-              initialValue: 4,
               rules: [
-                { required: true, message: this.$t('k8s.text_99') },
-                { validator: this.validator('vcpu_count') },
-              ],
-            },
-          ],
-          vmem_size: i => [
-            `vmem_size[${i}]`,
-            {
-              initialValue: 4,
-              rules: [
-                { required: true, message: this.$t('k8s.text_167') },
-                { validator: this.validator('vmem_size') },
+                { validator: isRequired(true, 'id'), message: this.$t('compute.text_216') },
               ],
             },
           ],
@@ -263,6 +234,19 @@ export default {
       })
       return opts
     },
+    networkParams () {
+      return {
+        vpc: this.params.data.vpc_id,
+        filter: 'server_type.notin(ipmi, pxe)',
+        scope: this.scope,
+      }
+    },
+    hypervisor () {
+      return this.form.fd.hypervisor
+    },
+    platform () {
+      return findPlatform(this.hypervisor, 'hypervisor')
+    },
   },
   created () {
     this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
@@ -298,7 +282,7 @@ export default {
       const values = {
         machines: [],
       }
-      Object.keys(data.vcpu_count).map(key => {
+      Object.keys(data.sku).map(key => {
         const disks = [{
           index: 0,
           size: data.systemDiskSize[key] * 1024,
@@ -311,9 +295,12 @@ export default {
         }
         const machinesItem = {
           vm: {
-            vcpu_count: data.vcpu_count[key],
-            vmem_size: data.vmem_size[key] * 1024,
-            hypervisor: data.hypervisors[key],
+            /*
+             * vcpu_count: data.vcpu_count[key],
+             * vmem_size: data.vmem_size[key] * 1024,
+             */
+            instance_type: data.sku[key].name,
+            hypervisor: this.hypervisor,
             disks,
             nets: [{ network: data.network[key] }],
           },
