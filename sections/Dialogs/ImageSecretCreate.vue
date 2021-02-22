@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ params.title || $t('k8s.text_49') }}</div>
+    <div slot="header">{{ params.title || $t('k8s.create') }}</div>
     <div slot="body">
       <a-form
         v-bind="formItemLayout"

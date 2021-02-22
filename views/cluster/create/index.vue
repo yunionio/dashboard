@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('k8s.text_146')" />
-    <a-alert :showIcon="false" banner class="mt-2">
+    <a-alert :showIcon="true" type="info" banner class="mt-2">
       <template slot="message">
         <div>
           <p>{{$t('k8s.text_147')}}</p>
@@ -23,35 +23,42 @@
           version="v1"
           :params="params.domain"
           @change="domainChange"
+          is-default-select
           filterable />
         <div v-else>{{ $store.getters.userInfo.projectDomain }}</div>
       </a-form-item>
       <a-form-item
         :label="$t('k8s.text_150')"
         v-bind="formItemLayout">
-        <a-radio-group v-if="hypervisorsC.length" v-decorator="decorators.hypervisor" @change="hypervisorChange">
-          <a-radio-button v-for="item in hypervisorsC" :key="item.value" :value="item.value">
+        <a-radio-group
+          v-decorator="decorators.provider(provider)"
+          v-if="providers.length"
+          @change="providerChange">
+          <a-radio-button v-for="item in providers" :key="item.value" :value="item">
             {{ item.label }}
           </a-radio-button>
         </a-radio-group>
         <div v-else>{{ $t('common_467') }}</div>
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout">
-        <cloudregion-zone
-          :zone-params="params.zone"
-          :cloudregion-params="cloudregionParmas"
-          :decorator="decorators.regionZone" />
+      <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout" v-if="provider.brand">
+        <cloudregion-vpc
+          :cloudregion-params="cloudregionParams"
+          :vpc-params="params.vpcParams"
+          :decorator="decorators.regionVpc" />
       </a-form-item>
       <a-form-item
         :label="$t('k8s.text_41')"
         v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_152')" v-bind="formItemLayout">
+      <a-form-item :label="$t('k8s.text_152')" v-if="cloudregionId" v-bind="formItemLayout">
         <server-config
           :form="form"
+          :cloudregionId="cloudregionId"
           :decorator="decorators.serverConfig"
-          :network-params="params.network" />
+          :hypervisor="hypervisor"
+          :platform="platform"
+          :networkParams="params.network" />
       </a-form-item>
       <a-form-item :label="$t('k8s.text_153')" v-bind="formItemLayout">
         <base-select
@@ -87,14 +94,13 @@
 </template>
 
 <script>
-import * as R from 'ramda'
+/* import * as R from 'ramda' */
 import { mapGetters } from 'vuex'
-import { hyperOpts, KUBE_PROVIDER } from '../constants'
+import { KUBE_PROVIDER, K8S_HYPERVISORS_MAP } from '../constants'
 import ServerConfig from '@K8S/sections/serverConfig'
-import CloudregionZone from '@/sections/CloudregionZone'
+import CloudregionVpc from '@/sections/CloudregionVpc'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
-import { HYPERVISORS_MAP } from '@/constants'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
@@ -110,25 +116,28 @@ function checkIpInSegment (i, networkData) {
 export default {
   name: 'ClusterCreate',
   components: {
-    CloudregionZone,
+    CloudregionVpc,
     ServerConfig,
   },
   data () {
     return {
       loading: false,
+      providers: [],
+      provider: {},
+      cloudregionId: '',
+      capability: {},
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
-            if (values.zone && values.zone.key) {
+            if (values.vpc && values.vpc.key) {
               this.params.network = {
-                zone: values.zone.key,
+                vpc: values.vpc.key,
                 filter: 'server_type.notin(ipmi, pxe)',
                 scope: this.scope,
               }
-              this.fetchCapability(values.zone.key, 'zone')
             }
             if (values.cloudregion && values.cloudregion.key) {
-              this.fetchCapability(values.cloudregion.key, 'cloudregion')
+              this.cloudregionId = values.cloudregion.key
             }
             Object.keys(values).forEach((key) => {
               this.form.fd[key] = values[key]
@@ -136,11 +145,11 @@ export default {
           },
         }),
         fi: {
-          hypervisors: ['kvm'],
-          capability: {},
+          /* hypervisors: ['kvm'], */
+          /* capability: {}, */
         },
         fd: {
-          hypervisor: hyperOpts[0].value,
+          /* hypervisor: hyperOpts[0].value, */
           project_domain_id: this.$store.getters.projectDomainId,
         },
       },
@@ -153,16 +162,16 @@ export default {
             ],
           },
         ],
-        hypervisor: [
-          'hypervisor',
+        provider: defaultProvider => [
+          'provider',
           {
-            initialValue: hyperOpts[0].value,
+            initialValue: defaultProvider,
             rules: [
               { required: true, message: this.$t('k8s.text_164') },
             ],
           },
         ],
-        regionZone: {
+        regionVpc: {
           cloudregion: [
             'cloudregion',
             {
@@ -172,12 +181,12 @@ export default {
               ],
             },
           ],
-          zone: [
-            'zone',
+          vpc: [
+            'vpc',
             {
               initialValue: { key: '', label: '' },
               rules: [
-                { required: true, message: this.$t('k8s.text_166') },
+                { required: true, message: this.$t('k8s.text_165') },
               ],
             },
           ],
@@ -193,26 +202,65 @@ export default {
           },
         ],
         serverConfig: {
-          vcpu_count: i => [
-            `vcpu_count[${i}]`,
+          network: i => [
+            `network[${i}]`,
             {
-              initialValue: 4,
               rules: [
-                { required: true, message: this.$t('k8s.text_99') },
-                { validator: this.validator('vcpu_count') },
+                { required: true, message: this.$t('k8s.text_122') },
               ],
             },
           ],
-          vmem_size: i => [
-            `vmem_size[${i}]`,
+          ip: (i, networkData) => [
+            `ip[${i}]`,
             {
-              initialValue: 4,
+              validateFirst: true,
+              validateTrigger: ['blur', 'change'],
+              rules: [{
+                required: true,
+                message: this.$t('k8s.text_169'),
+              }, {
+                validator: checkIpInSegment(i, networkData),
+              }],
+            },
+          ],
+          sku: i => [
+            `sku[${i}]`,
+            {
               rules: [
-                { required: true, message: this.$t('k8s.text_167') },
-                { validator: this.validator('vmem_size') },
+                { validator: isRequired(true, 'id'), message: this.$t('compute.text_216') },
               ],
             },
           ],
+          imageOS: i => [
+            `image[${i}]`,
+            {
+              rules: [
+                { validator: isRequired(true, 'id'), message: this.$t('compute.text_214') },
+              ],
+            },
+          ],
+          /*
+           * vcpu_count: i => [
+           *   `vcpu_count[${i}]`,
+           *   {
+           *     initialValue: 4,
+           *     rules: [
+           *       { required: true, message: this.$t('k8s.text_99') },
+           *       { validator: this.validator('vcpu_count') },
+           *     ],
+           *   },
+           * ],
+           * vmem_size: i => [
+           *   `vmem_size[${i}]`,
+           *   {
+           *     initialValue: 4,
+           *     rules: [
+           *       { required: true, message: this.$t('k8s.text_167') },
+           *       { validator: this.validator('vmem_size') },
+           *     ],
+           *   },
+           * ],
+           */
           disk: i => ({
             type: [
               `systemDiskType[${i}]`,
@@ -251,27 +299,6 @@ export default {
               },
             ],
           }),
-          network: i => [
-            `network[${i}]`,
-            {
-              rules: [
-                { required: true, message: this.$t('k8s.text_122') },
-              ],
-            },
-          ],
-          ip: (i, networkData) => [
-            `ip[${i}]`,
-            {
-              validateFirst: true,
-              validateTrigger: ['blur', 'change'],
-              rules: [{
-                required: true,
-                message: this.$t('k8s.text_169'),
-              }, {
-                validator: checkIpInSegment(i, networkData),
-              }],
-            },
-          ],
           num: i => [
             `num[${i}]`,
             {
@@ -285,6 +312,9 @@ export default {
             `role[${i}]`,
             {
               initialValue: 'controlplane',
+              rules: [
+                { required: true },
+              ],
             },
           ],
         },
@@ -335,12 +365,13 @@ export default {
         },
       },
       params: {
-        zone: {
+        vpcParams: {
           usable: true,
           show_emulated: true,
           order_by: 'created_at',
           order: 'asc',
           scope: this.scope,
+          'filter.0': 'external_access_mode.in(eip,eip-distgw)',
         },
         network: {},
         k8sVersions: {
@@ -362,80 +393,124 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
-    hypervisorsC () {
-      const opts = hyperOpts.filter(item => {
-        return (this.form.fi.hypervisors || []).find(val => val === item.value.toLowerCase())
-      })
-      return opts
-    },
-    cloudregionParmas () {
-      const params = {
+    cloudregionParams () {
+      const provider = this.provider
+      /* const type = findPlatform(provider, 'hypervisor') */
+      const param = {
         usable: true,
-        cloud_env: 'onpremise',
+        usable_vpc: true,
         project_domain: this.form.fd.project_domain_id,
+        brand: provider.brand,
       }
-      return params
+      /*
+       * switch (type) {
+       *   case 'idc':
+       *     param = { cloud_env: 'onpremise' }
+       *     break
+       *   case 'public':
+       *     param = { cloud_env: 'public' }
+       *     break
+       *   case 'private':
+       *     param = { cloud_env: 'private', show_emulated: true }
+       *     break
+       *   default :
+       *     param = { is_on_premise: true }
+       * }
+       */
+      return param
     },
-  },
-  watch: {
-    hypervisorsC (val) {
-      if (val && val.length) {
-        if (val[0].value !== this.decorators.hypervisor[1].initialValue) {
-          this.form.fc.setFieldsValue({
-            [this.decorators.hypervisor[0]]: val[0].value,
-          })
-        }
-      }
+    hypervisor () {
+      return this.provider.hypervisor
+    },
+    platform () {
+      return findPlatform(this.hypervisor, 'hypervisor')
     },
   },
   created () {
     this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
-    this.form.fc.getFieldDecorator('zone', { preserve: true })
+    /* this.form.fc.getFieldDecorator('zone', { preserve: true }) */
     this.fetchK8sVersions()
   },
   methods: {
-    async fetchCapability (id, resource) {
-      const params = {
-        show_emulated: true,
-        resource_type: 'shared',
-        scope: this.scope,
-      }
-      const capabilityParams = { id, spec: 'capability', params }
-      if (!id) return
-      this.capabilityParams = capabilityParams
-      try {
-        const { data } = await new this.$Manager(`${resource}s`).getSpecific(this.capabilityParams)
-        let hypervisors = R.is(Object, data) ? (data.hypervisors || []) : []
-        if (hypervisors.includes(HYPERVISORS_MAP.kvm.key)) { // kvm 排序为第一个
-          hypervisors = [HYPERVISORS_MAP.kvm.key].concat(hypervisors).filter(val => val !== 'baremetal')
-        }
-        hypervisors = Array.from(new Set(hypervisors))
-        this.form.fi.hypervisors = hypervisors
-        this.form.fi.capability = data
-      } catch (error) {
-        throw error
+    /*
+     * async fetchCapability (id, resource) {
+     *   const params = {
+     *     show_emulated: true,
+     *     resource_type: 'shared',
+     *     scope: this.scope,
+     *   }
+     *   const capabilityParams = { id, spec: 'capability', params }
+     *   if (!id) return
+     *   this.capabilityParams = capabilityParams
+     *   try {
+     *     const { data } = await new this.$Manager(`${resource}s`).getSpecific(this.capabilityParams)
+     *     let hypervisors = R.is(Object, data) ? (data.hypervisors || []) : []
+     *     if (hypervisors.includes(HYPERVISORS_MAP.kvm.key)) { // kvm 排序为第一个
+     *       hypervisors = [HYPERVISORS_MAP.kvm.key].concat(hypervisors).filter(val => val !== 'baremetal')
+     *     }
+     *     hypervisors = Array.from(new Set(hypervisors))
+     *     this.form.fi.hypervisors = hypervisors
+     *     this.form.fi.capability = data
+     *   } catch (error) {
+     *     throw error
+     *   }
+     * },
+     */
+    domainChange (val) {
+      this.form.fd.project_domain_id = val
+      this.fetchCapability(val)
+    },
+    fetchCapability (domainId) {
+      new this.$Manager('capabilities', 'v2').list({
+        params: {
+          domain: domainId,
+          scope: this.scope,
+        },
+      }).then(({ data }) => {
+        this.capability = data.data[0]
+        this.updateProviders(this.capability)
+      })
+    },
+    updateProviders (capability) {
+      const brands = capability.brands || []
+      const providers = Object.entries(K8S_HYPERVISORS_MAP).filter(item => {
+        const itemProvider = item[1].provider
+        return brands.includes(itemProvider)
+      }).map(item => item[1])
+      this.providers = providers
+      if (this.providers.length > 0) {
+        // set default provider
+        this.provider = this.providers[0]
       }
     },
-    hypervisorChange (e) {
-      const type = findPlatform(e.target.value, 'hypervisor') || 'idc'
-      let param = {}
-      switch (type) {
-        case 'idc':
-          param = { cloud_env: 'onpremise' }
-          break
-        case 'public':
-          param = { cloud_env: 'public' }
-          break
-        case 'private':
-          param = { cloud_env: 'private', show_emulated: true }
-          break
-        default :
-          param = { is_on_premise: true }
-      }
-      this.params.region = {
-        ...this.params.region,
-        ...param,
-      }
+    providerChange (e) {
+      this.provider = e.target.value
+      this.cloudregionId = ''
+      /*
+       * const type = findPlatform(provider, 'hypervisor')
+       * let param = {
+       *   usable: true,
+       *   project_domain: this.form.fd.project_domain_id,
+       *   brand: provider.brand,
+       * }
+       * switch (type) {
+       *   case 'idc':
+       *     param = { cloud_env: 'onpremise' }
+       *     break
+       *   case 'public':
+       *     param = { cloud_env: 'public' }
+       *     break
+       *   case 'private':
+       *     param = { cloud_env: 'private', show_emulated: true }
+       *     break
+       *   default :
+       *     param = { is_on_premise: true }
+       * }
+       * this.params.cloudregion = {
+       *   ...this.params.cloudregion,
+       *   ...param,
+       * }
+       */
     },
     fetchK8sVersions () {
       new this.$Manager('kubeclusters/k8s-versions', 'v1').list({
@@ -477,26 +552,23 @@ export default {
       })
     },
     genData (data) {
-      const { hypervisor, version: k8sVersion, name, zone, cloudregion } = data
+      const { provider, version: k8sVersion, name, vpc, cloudregion, sku } = data
+      const hypervisor = provider.hypervisor
       const values = {
-        hypervisor,
         project_domain_id: data.project_domain_id,
         version: k8sVersion,
         machines: [],
         name,
         resource_type: 'guest',
-        zone: {
-          id: zone.key,
-          name: zone.name,
-          regionId: cloudregion.key,
-        },
+        cloudregion_id: cloudregion.key,
+        vpc_id: vpc.key,
       }
       if (data.image_repository_url) {
         values.image_repository = {}
         values.image_repository.url = data.image_repository_url
       }
       if (data.image_repository_insecure) values.image_repository.insecure = data.image_repository_insecure
-      Object.keys(data.vcpu_count).map(key => {
+      Object.keys(data.sku).map(key => {
         const disks = [{
           index: 0,
           size: data.systemDiskSize[key] * 1024,
@@ -509,8 +581,9 @@ export default {
         }
         const machinesItem = {
           vm: {
-            vcpu_count: data.vcpu_count[key],
-            vmem_size: data.vmem_size[key] * 1024,
+            /* vcpu_count: data.vcpu_count[key], */
+            /* vmem_size: data.vmem_size[key] * 1024, */
+            instance_type: sku[key].name,
             hypervisor,
             disks,
             nets: [{ network: data.network[key] }],
@@ -528,7 +601,7 @@ export default {
       return values
     },
     async handleConfirm () {
-      if (!this.hypervisorsC || !this.hypervisorsC.length) {
+      if (!this.providers || !this.providers.length) {
         this.$message.error(this.$t('common_468'))
         return
       }
@@ -552,9 +625,6 @@ export default {
     },
     cancel () {
       this.$router.push('/k8s-cluster')
-    },
-    domainChange (val) {
-      this.form.fd.project_domain_id = val
     },
   },
 }

@@ -73,7 +73,7 @@ export default {
       groupActions: [],
       singleActions: [
         {
-          label: this.$t('k8s.text_49'),
+          label: this.$t('k8s.create'),
           action: obj => {
             this.$router.push({
               path: '/k8s-kubecomponent/create',
