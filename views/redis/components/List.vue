@@ -27,6 +27,10 @@ export default {
   mixins: [WindowsMixin, globalSearchMixins, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    cloudEnv: String,
+    cloudEnvOptions: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -38,6 +42,9 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
+          id: {
+            label: this.$t('table.title.id'),
+          },
           name: getNameFilter(),
           status: getStatusFilter('redis'),
           brand: getBrandFilter('redis_engine_brands'),
@@ -113,6 +120,8 @@ export default {
           meta: () => {
             return {
               buttonType: 'primary',
+              validate: !this.cloudEnvEmpty,
+              tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
             }
           },
         },
