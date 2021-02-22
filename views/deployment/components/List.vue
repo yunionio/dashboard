@@ -56,7 +56,7 @@ export default {
       }),
       groupActions: [
         {
-          label: this.$t('k8s.text_49'),
+          label: this.$t('k8s.create'),
           permission: 'k8s_deployments_create',
           action: () => {
             this.$router.push({ path: '/k8s-deployment/create' })
