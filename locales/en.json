@@ -225,5 +225,18 @@
   "monitor.commonalerts.robot.disable.tips": "no available robot channel currently, please setup first",
   "monitor.commonalerts.list.silent": ", quiet period: {0}",
   "monitor.commonalerts.form.column.silent": "Quiet period",
-  "monitor.commonalerts.form.column.silent.tips": "If the alert is always in the alert state, after the alert is triggered for the first time, the second alert message will be sent after the quiet period.When the alert is restored, you will receive an alert restoration notification and cancel the alert. If the data triggers the alert again, the alert message will be sent again."
+  "monitor.commonalerts.form.column.silent.tips": "If the alarm is always in the alarm state, after the alarm is triggered for the first time, the second alarm message will be sent after the silent period.When the alarm is restored, you will receive an alarm restoration notification and cancel the alarm. If the data triggers the alarm again, the alarm message will be sent again.",
+  "refresh.auto.disable": "off",
+  "refresh.duration.seconds": "{0}s",
+  "refresh.duration.minutes": "{0}m",
+  "refresh.duration.hours": "{0}h",
+  "refresh.duration.days": "{0}d",
+  "refresh.last_sync_at": "Last refresh at {0}",
+  "timeselect.minutes": "Last {0} minutes",
+  "timeselect.hour": "Last {0} hour",
+  "timeselect.hours": "Last {0} hours",
+  "timeselect.days": "Last {0} days",
+  "timeselect.months": "Last {0} months",
+  "timeselect.year": "Last {0} year",
+  "timeselect.years": "Last {0} years"
 }

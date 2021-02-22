@@ -225,5 +225,18 @@
   "monitor.commonalerts.robot.disable.tips": "没有可用的机器人，请配置后重试",
   "monitor.commonalerts.list.silent": "，静默期: {0}",
   "monitor.commonalerts.form.column.silent": "消息静默期",
-  "monitor.commonalerts.form.column.silent.tips": "若一直处于告警状态，首次触发告警后，静默期后才会发送第二次告警信息。当告警恢复后，会收到告警恢复通知并解除告警。若数据再次触发告警，则会再次发送告警信息。"
+  "monitor.commonalerts.form.column.silent.tips": "若一直处于告警状态，首次触发告警后，静默期后才会发送第二次告警信息。当告警恢复后，会收到告警恢复通知并解除告警。若数据再次触发告警，则会再次发送告警信息。",
+  "refresh.auto.disable": "关",
+  "refresh.duration.seconds": "{0}秒",
+  "refresh.duration.minutes": "{0}分钟",
+  "refresh.duration.hours": "{0}小时",
+  "refresh.duration.days": "{0}天",
+  "refresh.last_sync_at": "上次刷新: {0}",
+  "timeselect.minutes": "近{0}分钟",
+  "timeselect.hour": "近{0}小时",
+  "timeselect.hours": "近{0}小时",
+  "timeselect.days": "近{0}天",
+  "timeselect.months": "近{0}月",
+  "timeselect.year": "近{0}年",
+  "timeselect.years": "近{0}年"
 }
