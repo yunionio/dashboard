@@ -270,7 +270,9 @@
       "renew_failed": "续费失败",
       "set_auto_renew": "设置自动续费",
       "set_auto_renew_failed": "设置自动续费失败",
-      "backing_up_failed": "实例备份失败"
+      "backing_up_failed": "实例备份失败",
+      "update_tags": "更新标签或名称",
+      "update_tags_fail": "更新标签或名称失败"
     },
     "instanceGroup": {
       "init": "正常"
@@ -426,7 +428,10 @@
       "upgrading": "升级中",
       "set_auto_renew": "设置自动续费中",
       "set_auto_renew_failed": "设置自动续费失败",
-      "backing_up_failed": "实例备份失败"
+      "backing_up_failed": "实例备份失败",
+      "update_tags": "更新标签或名称",
+      "update_tags_fail": "更新标签或名称失败"
+
     },
     "eip": {
       "ready": "可用",
@@ -691,7 +696,9 @@
       "delete_failed": "删除失败",
       "start_failed": "启动失败",
       "stop_failed": "关闭失败",
-      "unknown": "未知"
+      "unknown": "未知",
+      "update_tags": "更新标签或名称",
+      "update_tags_fail": "更新标签或名称失败"
     },
     "lbHealth": {
       "on": "已开启",
