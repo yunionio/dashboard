@@ -15,7 +15,7 @@ sync(){
     echo 
     cd $currentPath/$path 
     git fetch origin && \
-    git rebase origin/$branch && \
+    git pull origin $branch && \
     # 不显示输出
     cd - 2>&1 >/dev/null && \
     echo "\033[32m [$moduleName] rebase 完成 \033[0m"
