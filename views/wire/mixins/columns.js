@@ -42,7 +42,7 @@ export default {
               {
                 field: 'name',
                 title: i18n.t('network.text_21'),
-                width: 240,
+                width: '25%',
                 slots: {
                   default: ({ row }) => {
                     return row.name
@@ -52,7 +52,7 @@ export default {
               {
                 field: 'server_type',
                 title: i18n.t('network.text_249'),
-                width: 100,
+                width: '25%',
                 formatter: ({ cellValue }) => {
                   return this.$t('networkServerType')[cellValue] || i18n.t('network.text_507')
                 },
@@ -60,7 +60,7 @@ export default {
               {
                 field: 'guest_ip_start',
                 title: i18n.t('network.text_607'),
-                width: 160,
+                width: '25%',
                 slots: {
                   default: ({ row }) => {
                     return [
@@ -72,7 +72,7 @@ export default {
               {
                 field: 'guest_ip_end',
                 title: i18n.t('network.text_608'),
-                width: 160,
+                width: '25%',
                 slots: {
                   default: ({ row }) => {
                     return [
@@ -83,7 +83,8 @@ export default {
               },
             ]
             const data = row.wireNetworks || []
-            return [<vxe-grid size="mini" border columns={columns} data={data} />, <HostColumn hosts={ row.wireHosts || [] } />]
+            const networkTitle = i18n.t('network.wire.networks') + ': '
+            return [<HostColumn hosts={ row.wireHosts || [] } />, <span style="font-size: larger;font-weight: bold;">{networkTitle}</span>, <vxe-grid size="mini" border columns={columns} data={data} />]
           },
         },
       },

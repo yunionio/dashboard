@@ -777,5 +777,7 @@
   "network.vpc_aws_delete_alert": "删除AWS平台的VPC时将会同步删除VPC下的路由表、安全组和互联网网关",
   "network.wire.merge": "合并wire",
   "network.wire.hosts": "宿主机",
-  "network.wire.merge.subnet": "自动合并新二层网络下网段连续的子网"
+  "network.wire.networks": "网络信息",
+  "network.wire.merge.subnet": "自动合并新二层网络下网段连续的子网",
+  "network.wire.merge.tooltip": "网关和VLAN ID不一致无法合并"
 }
