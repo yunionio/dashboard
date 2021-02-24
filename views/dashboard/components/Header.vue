@@ -12,7 +12,7 @@
       </li>
     </draggable>
     <a-button @click="handleRefresh" type="link" icon="sync" class="action-btn" />
-    <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight" v-if="isPrivate">
+    <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight">
       <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block action-btn" @click="e => e.preventDefault()">
         <icon type="more" style="font-size: 18px;" />
       </a>
@@ -22,7 +22,7 @@
         <a-menu-item key="handleDownload"><a-icon type="download" />{{$t('dashboard.text_105')}}</a-menu-item>
         <a-menu-item key="handleImport"><a-icon type="file" />{{$t('dashboard.text_106')}}</a-menu-item>
         <a-menu-item key="handleCopy"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
-        <a-menu-item key="handleDelete"><a-icon type="delete" />{{$t('dashboard.text_108')}}</a-menu-item>
+        <a-menu-item key="handleDelete"><a-icon type="delete" />{{deleteText}}</a-menu-item>
       </a-menu>
     </a-dropdown>
   </div>
@@ -87,6 +87,13 @@ export default {
     // 是否只有一个标签
     isSingle () {
       return this.tabs.length === 1
+    },
+    deleteText () {
+      if (this.isDefaultOption) {
+        return this.$t('common.reset')
+      } else {
+        return this.$t('dashboard.text_108')
+      }
     },
   },
   beforeDestroy () {
