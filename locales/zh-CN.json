@@ -213,5 +213,6 @@
   "dashboard.shutdown": "关机",
   "dashboard.not_shutdown": "未关机",
   "dashboard.mounted": "已挂载",
-  "dashboard.not_mounted": "未挂载"
+  "dashboard.not_mounted": "未挂载",
+  "dashboard.net.send.top5": "网络发送流量TOP5"
 }
