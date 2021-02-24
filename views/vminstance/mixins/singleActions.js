@@ -56,10 +56,11 @@ export default {
               return ret
             },
           })
-          const mapIpActions = (ipArr, type) => {
-            if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error(i18n.t('compute.text_343'))
+          const mapIpActions = (ipInfoList) => {
             const options = []
-            ipArr.forEach(v => {
+            ipInfoList.forEach(ipInfo => {
+              const actionType = ipInfo.actionType
+              const ipAddr = ipInfo.ipAddr
               const meta = () => {
                 const ret = {
                   validate: false,
@@ -69,35 +70,83 @@ export default {
                   ret.tooltip = i18n.t('compute.text_344')
                   return ret
                 }
-                ret.validate = cloudEnabled(type, obj)
-                ret.tooltip = cloudUnabledTip(type, obj)
+                ret.validate = cloudEnabled(actionType, obj)
+                ret.tooltip = cloudUnabledTip(actionType, obj)
                 return ret
               }
-              options.push({
-                label: `SSH ${v}`,
-                action: () => {
-                  this.webconsoleManager.performAction({
-                    id: 'ssh',
-                    action: v,
-                  }).then(({ data }) => {
-                    this.openWebConsole(obj, data)
+
+              const fetchWebconsoleAddr = async (port) => {
+                if (ipInfo.vpcId === 'default' || ipInfo.ipType === 'eip') {
+                  return {
+                    ipAddr: ipAddr,
+                    port: port,
+                  }
+                }
+                if (ipInfo.provider === 'OneCloud') {
+                  return new this.$Manager('servers').performAction({
+                    id: obj.id,
+                    action: 'list-forward',
+                    data: {
+                      proto: 'tcp',
+                      port: port,
+                    },
+                  }).then(data => {
+                    const fwds = data.data.forwards
+                    if (fwds.length > 0) {
+                      const fwd = fwds[0]
+                      return {
+                        ipAddr: fwd.proxy_addr,
+                        port: fwd.proxy_port,
+                      }
+                    }
+                    return new this.$Manager('servers').performAction({
+                      id: obj.id,
+                      action: 'open-forward',
+                      data: {
+                        proto: 'tcp',
+                        port: port,
+                      },
+                    }).then(data => {
+                      const fwd = data.data
+                      return {
+                        ipAddr: fwd.proxy_addr,
+                        port: fwd.proxy_port,
+                      }
+                    })
                   })
+                }
+                return Promise.reject(Error(`unexpected ${ipInfo}`))
+              }
+
+              const openWebconsole = (port) => {
+                fetchWebconsoleAddr(port).then(addr => {
+                  return this.webconsoleManager.performAction({
+                    id: 'ssh',
+                    action: addr.ipAddr,
+                    data: {
+                      port: addr.port,
+                    },
+                  })
+                }).then(({ data }) => {
+                  this.openWebConsole(obj, data)
+                })
+              }
+
+              options.push({
+                label: `SSH ${ipAddr}`,
+                action: () => {
+                  openWebconsole(22)
                 },
                 meta,
               })
               options.push({
-                label: i18n.t('compute.text_345', [v]),
+                label: i18n.t('compute.text_345', [ipAddr]),
                 action: () => {
                   this.createDialog('SmartFormDialog', {
                     title: i18n.t('compute.text_346'),
                     data: [obj],
                     callback: async (data) => {
-                      const response = await this.webconsoleManager.performAction({
-                        id: 'ssh',
-                        action: v,
-                        data,
-                      })
-                      this.openWebConsole(obj, response.data)
+                      openWebconsole(data.port)
                     },
                     decorators: {
                       port: [
@@ -130,13 +179,32 @@ export default {
             })
             return options
           }
-          let eips = (obj.eip || '').split(',').filter(item => !!item)
-          let ips = (obj.nics || []).filter(item => {
-            return item.vpc_id === 'default'
-          }).map(item => item.ip_addr)
-          eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
-          ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
-          ret = ret.concat(eips).concat(ips)
+
+          const ipInfoList = []
+          if (obj.eip) {
+            obj.eip.split(',').filter(item => !!item).map(ip => {
+              ipInfoList.push({
+                actionType: 'EIP SSH',
+                ipType: 'eip',
+                ipAddr: ip,
+              })
+            })
+          }
+          if (obj.nics) {
+            obj.nics.map(nic => {
+              if (obj.provider === 'OneCloud') {
+                ipInfoList.push({
+                  actionType: 'IP SSH',
+                  ipType: 'nicIP',
+                  ipAddr: nic.ip_addr,
+                  vpcId: nic.vpc_id,
+                  provider: obj.provider,
+                })
+              }
+            })
+          }
+          const sshActions = mapIpActions(ipInfoList)
+          ret = ret.concat(sshActions)
           return ret
         },
         meta: (obj) => {
