@@ -148,10 +148,6 @@ export default {
     async getDashboard () {
       // 当前选择的面板id
       const id = this.currentOption.id
-      // 如果是预设默认面板，直接返回配置
-      // if (this.isDefault) {
-      //   return this.isPrivate ? defaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id]
-      // }
       this.loading = true
       try {
         const response = await this.pm.get({ id })
