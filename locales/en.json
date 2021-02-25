@@ -780,5 +780,6 @@
   "network.wire.hosts": "Hosts",
   "network.wire.networks": "Networks",
   "network.wire.merge.subnet": "automatically merge consecutive subnets under the new L2 network",
-  "network.wire.merge.tooltip": "L2 network cannot be merged if network gateway and VLAN ID are inconsistent"
+  "network.wire.merge.tooltip": "L2 network cannot be merged if network gateway and VLAN ID are inconsistent",
+  "network.text_755": "Please merge according to the real network topology on the cloud. After the merge is successful, reverse operation is not supported"
 }
