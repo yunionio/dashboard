@@ -6,6 +6,12 @@
       <dialog-table :data="params.data" :columns="columns" :expandConfig="expandConfig" />
       <a-checkbox @change="onChange">
         {{ $t('network.wire.merge.subnet') }}
+        <a-tooltip placement="top">
+          <template slot="title">
+            <span>{{ $t('network.wire.merge.tooltip')}}</span>
+          </template>
+          <a-icon type="question-circle" />
+        </a-tooltip>
       </a-checkbox>
     </div>
     <div slot="footer">
