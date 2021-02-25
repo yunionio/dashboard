@@ -78,7 +78,7 @@ export default {
                 })
               },
               meta: () => {
-                return checkSecgroup(obj)
+                return checkSecgroup(obj, 'rds')
               },
             },
             {

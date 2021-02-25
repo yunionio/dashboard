@@ -196,7 +196,7 @@ export default {
                 })
               },
               meta: () => {
-                return checkSecgroup(obj, ['Qcloud'])
+                return checkSecgroup(obj, 'redis', ['Qcloud'])
               },
             },
             setAuthMode(),
