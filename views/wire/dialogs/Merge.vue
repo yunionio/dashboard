@@ -2,6 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('network.wire.merge')}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <div slot="message">{{$t('network.text_755')}}</div>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.wire')" :count="params.data.length" :action="$t('network.wire.merge')" />
       <dialog-table :data="params.data" :columns="columns" :expandConfig="expandConfig" />
       <a-checkbox @change="onChange">
