@@ -3,7 +3,7 @@
     <div slot="header">{{$t('compute.text_664')}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message">{{$t('compute.text_665')}}<br />{{$t('compute.text_666')}}</div>
+        <div slot="message">{{$t('compute.text_665')}}</div>
       </a-alert>
       <a-form
         v-bind="formItemLayout"
