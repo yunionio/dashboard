@@ -778,5 +778,7 @@
   "network.vpc_aws_delete_alert": "Deleting an AWS VPC will also cause removal of all its route tables, security groups and internet gateways.",
   "network.wire.merge": "Merge wire",
   "network.wire.hosts": "Hosts",
-  "network.wire.merge.subnet": "automatically merge consecutive subnets under the new L2 network"
+  "network.wire.networks": "Networks",
+  "network.wire.merge.subnet": "automatically merge consecutive subnets under the new L2 network",
+  "network.wire.merge.tooltip": "L2 network cannot be merged if network gateway and VLAN ID are inconsistent"
 }
