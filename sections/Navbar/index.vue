@@ -630,6 +630,11 @@ export default {
         setInterval(() => {
           this.$store.dispatch('app/fetchAlertingrecords')
         }, 5 * 60 * 1000)
+      } else {
+        this.$store.commit('app/SET_ALERTRESOURCE', {
+          data: [],
+          total: 0,
+        })
       }
     },
   },
