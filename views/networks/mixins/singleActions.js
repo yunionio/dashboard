@@ -48,6 +48,33 @@ export default {
         },
         hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_change_ip'),
       },
+      {
+        label: i18n.t('compute.detach_network'),
+        action: (obj) => {
+          this.createDialog('VmDetachNetworkDialog', {
+            data: [obj],
+            columns: this.columns,
+            refresh: this.refresh,
+          })
+        },
+        meta: (obj) => {
+          const ret = {
+            validate: false,
+            tooltip: null,
+          }
+          if (isPrivate || isPublic || this.data.hypervisor === 'esxi') {
+            ret.tooltip = i18n.t('compute.text_391')
+            return ret
+          }
+          if (!obj.__last) {
+            ret.tooltip = i18n.t('compute.server_detach_network.only_last_one')
+            return ret
+          }
+          ret.validate = true
+          return ret
+        },
+        hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_detach_nic'),
+      },
     ]
   },
 }
