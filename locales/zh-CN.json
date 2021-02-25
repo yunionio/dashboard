@@ -779,5 +779,6 @@
   "network.wire.hosts": "宿主机",
   "network.wire.networks": "网络信息",
   "network.wire.merge.subnet": "自动合并新二层网络下网段连续的子网",
-  "network.wire.merge.tooltip": "网关和VLAN ID不一致无法合并"
+  "network.wire.merge.tooltip": "类型、网关或VLAN ID不一致无法合并",
+  "network.text_755": "请根据云上真实网络拓扑进行合并，合并成功后不支持反向操作"
 }
