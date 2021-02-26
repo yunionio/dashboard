@@ -267,11 +267,7 @@ export default {
         return this.$t('navbar.view.system_manager')
       }
       if (this.$store.getters['auth/isDomain']) {
-        if (this.systemProject) {
-          return this.$t('navbar.view.domain_manager_1var', { domain: this.userInfo.projectDomain || '-' })
-        } else {
-          return this.$t('navbar.view.system_manager')
-        }
+        return this.$t('navbar.view.domain_manager_1var', { domain: this.userInfo.projectDomain || '-' })
       }
       return this.userInfo.projectName || '-'
     },
@@ -365,11 +361,7 @@ export default {
       return false
     },
     domainManagerTitle () {
-      if (this.systemProject) {
-        return this.$t('navbar.view.domain_manager')
-      } else {
-        return this.$t('navbar.view.system_manager')
-      }
+      return this.$t('navbar.view.domain_manager')
     },
   },
   watch: {
