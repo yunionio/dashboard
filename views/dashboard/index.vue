@@ -62,7 +62,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope']),
+    ...mapGetters(['scope', 'globalConfig']),
     // 当前选择面板是否为默认面板
     isDefault () {
       return this.currentOption.id && this.currentOption.id === `dashboard-${this.scope}-default`
@@ -159,6 +159,15 @@ export default {
         if (error.isAxiosError && error.response && error.response.status === 404 && this.isDefault) {
           // not found system default dashboard, reinit one
           const config = this.isPrivate ? defaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id]
+          if (!this.globalConfig.enable_quota_check) {
+            // remove quota widgets
+            for (var i = 0; i < config.length; i++) {
+              if (config[i].layout.component === 'Quota' || config[i].layout.component === 'ProjectQuota') {
+                config.splice(i, 1)
+                i--
+              }
+            }
+          }
           await this.pm.create({
             data: {
               name: id,

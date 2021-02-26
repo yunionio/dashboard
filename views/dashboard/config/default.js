@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+
 export default {
   system: {
     options: [
@@ -510,7 +511,7 @@ export default {
           y: 4,
         },
         params: {
-          currency: 'CNY',
+          currency: i18n.t('dashboard.currency_name'),
           name: i18n.t('dashboard.text_54'),
         },
       },
