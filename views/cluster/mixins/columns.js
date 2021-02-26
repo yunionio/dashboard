@@ -21,7 +21,7 @@ export default {
         },
       }),
       {
-        title: i18n.t('k8s.text_150'),
+        title: i18n.t('k8s.platform'),
         field: 'provider',
         sortable: true,
         slots: {

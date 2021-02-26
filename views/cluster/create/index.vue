@@ -10,6 +10,14 @@
         </div>
       </template>
     </a-alert>
+    <a-alert :showIcon="true" type="error" v-if="!preCheckResp.pass">
+      <template slot="message">
+        <div>
+          {{$t('k8s.provider_image_not_prepared')}}
+          <help-link :href="docs[provider.hypervisor]">{{$t('k8s.ref_prepare_doc')}}</help-link>
+        </div>
+      </template>
+    </a-alert>
     <a-form
       class="mt-3"
       :form="form.fc">
@@ -28,7 +36,7 @@
         <div v-else>{{ $store.getters.userInfo.projectDomain }}</div>
       </a-form-item>
       <a-form-item
-        :label="$t('k8s.text_150')"
+        :label="$t('k8s.platform')"
         v-bind="formItemLayout">
         <a-radio-group
           v-decorator="decorators.provider(provider)"
@@ -40,7 +48,7 @@
         </a-radio-group>
         <div v-else>{{ $t('common_467') }}</div>
       </a-form-item>
-      <a-form-item :label="$t('k8s.text_151')" class="mb-0" v-bind="formItemLayout" v-if="provider.brand">
+      <a-form-item :label="$t('k8s.region')" class="mb-0" v-bind="formItemLayout" v-if="provider.brand">
         <cloudregion-vpc
           :cloudregion-params="cloudregionParams"
           :vpc-params="params.vpcParams"
@@ -96,7 +104,7 @@
 <script>
 /* import * as R from 'ramda' */
 import { mapGetters } from 'vuex'
-import { KUBE_PROVIDER, K8S_HYPERVISORS_MAP } from '../constants'
+import { KUBE_PROVIDER, K8S_HYPERVISORS_MAP, getClusterDocs } from '../constants'
 import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionVpc from '@/sections/CloudregionVpc'
 import { isWithinRange, isRequired } from '@/utils/validate'
@@ -126,6 +134,10 @@ export default {
       provider: {},
       cloudregionId: '',
       capability: {},
+      preCheckResp: {
+        pass: true,
+      },
+      docs: getClusterDocs(this.$store.getters.scope),
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -427,6 +439,7 @@ export default {
     },
   },
   created () {
+    this.clustersM = new this.$Manager('kubeclusters', 'v1')
     this.form.fc.getFieldDecorator('cloudregion', { preserve: true })
     /* this.form.fc.getFieldDecorator('zone', { preserve: true }) */
     this.fetchK8sVersions()
@@ -481,11 +494,13 @@ export default {
       if (this.providers.length > 0) {
         // set default provider
         this.provider = this.providers[0]
+        this.preCheckK8sProvider(this.provider)
       }
     },
     providerChange (e) {
       this.provider = e.target.value
       this.cloudregionId = ''
+      this.preCheckK8sProvider(this.provider)
       /*
        * const type = findPlatform(provider, 'hypervisor')
        * let param = {
@@ -511,6 +526,18 @@ export default {
        *   ...param,
        * }
        */
+    },
+    preCheckK8sProvider (provider) {
+      this.clustersM.performAction({
+        id: 'pre-check',
+        action: '',
+        data: {
+          provider: this.provider.hypervisor,
+          resource_type: 'guest',
+        },
+      }).then(({ data }) => {
+        this.preCheckResp = data
+      })
     },
     fetchK8sVersions () {
       new this.$Manager('kubeclusters/k8s-versions', 'v1').list({
