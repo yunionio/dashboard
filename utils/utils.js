@@ -735,8 +735,15 @@ export const mathRoundFix = (num, precision = 2, needFixZero) => {
 }
 export const language = getLanguage() === 'zh-CN' ? 'zh' : 'en'
 
+export function isCE () {
+  return !process.env.VUE_APP_IS_PRIVATE
+}
+
 export function getDocsUrl (scope) {
   let prefix = 'docs'
+  if (isCE()) {
+    return `https://docs.yunion.io/${prefix}/`
+  }
   if (scope === 'domain' || scope === 'project') {
     prefix = prefix + '/domain'
   }
