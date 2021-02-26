@@ -1,5 +1,5 @@
 import { typeClouds } from '@/utils/common/hypervisor'
-import { getDocsUrl } from '@/utils/utils'
+import { getDocsUrl, isCE } from '@/utils/utils'
 import i18n from '@/locales'
 const providerMap = typeClouds.getProviderlowcase()
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
@@ -21,6 +21,9 @@ const apsaraLogo = require('../../../../src/assets/images/providers/apsara.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
+  if (isCE()) {
+    return `${docsUrl}/howto/multicloud/cloudaccount/`
+  }
   return `${docsUrl}/user/multiplecloud/cloudaccount/cloudaccount/`
 }
 
