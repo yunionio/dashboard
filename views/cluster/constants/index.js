@@ -1,4 +1,5 @@
 import i18n from '@/locales'
+import { getDocsUrl, isCE } from '@/utils/utils'
 import { HYPERVISORS_MAP } from '@/constants'
 
 export const KUBE_PROVIDER = 'onecloud'
@@ -24,4 +25,19 @@ export const K8S_HYPERVISORS_MAP = {
   kvm: HYPERVISORS_MAP.kvm,
   aliyun: HYPERVISORS_MAP.aliyun,
   aws: HYPERVISORS_MAP.aws,
+}
+
+function getDocsClusterPath (scope) {
+  const docsUrl = getDocsUrl(scope)
+  if (isCE()) {
+    return `${docsUrl}/howto/container/pre_env/`
+  }
+  return `${docsUrl}/user/docker/cluster/k8s-cluster/`
+}
+
+export function getClusterDocs (scope) {
+  const path = getDocsClusterPath(scope)
+  return {
+    kvm: i18n.t('k8s.docs_cluster_onecloud', [path]),
+  }
 }
