@@ -23,7 +23,7 @@
             :platform="platform"
             @vmAdd="vmAdd">
             <template v-slot:hypervisor="slotProps">
-              <a-form-item :label="$t('k8s.text_150')" v-if="hypervisorsC.length" v-bind="slotProps.formItemLayout">
+              <a-form-item :label="$t('k8s.platform')" v-if="hypervisorsC.length" v-bind="slotProps.formItemLayout">
                 <a-radio-group v-decorator="decorators.serverConfig.hypervisor(slotProps.i)">
                   <a-radio-button v-for="item in hypervisorsC" :key="item.value" :value="item.value">
                     {{ item.label }}

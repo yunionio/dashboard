@@ -145,11 +145,11 @@
   "k8s.role_master": "控制节点",
   "k8s.role_node": "计算节点",
   "k8s.text_146": "新建 Kubernetes 集群",
-  "k8s.text_147": "控制节点(controlplane)：同时运行 kube-apiserver 和 etcd 的节点，支持部署 1、3或者5个",
+  "k8s.text_147": "控制节点(controlplane)：同时运行 kube-apiserver 和 etcd 的节点，支持部署 1、3 或者 5 个",
   "k8s.text_148": "计算节点(node)：运行 kubelet",
-  "k8s.text_149": "无可用平台，请从“功能选择”配置KVM、VMWare或OpenStack环境，以确保系统有可用资源创建容器集群",
-  "k8s.text_150": "平台",
-  "k8s.text_151": "区域",
+  "k8s.text_149": "如果出现 “无可用平台” 的提示，请配置相应私有云或者公有云环境，以确保系统有可用资源创建容器集群",
+  "k8s.platform": "平台",
+  "k8s.region": "区域",
   "k8s.text_152": "机器配置",
   "k8s.text_153": "版本",
   "k8s.text_154": "输入关键词搜索",
@@ -411,5 +411,8 @@
   "k8s.text_410": "隐藏IP",
   "k8s.text_411": "节点(Nodes)",
   "k8s.text_412": "指定域",
-  "k8s.text_413": "请选择@:dictionary.domain"
+  "k8s.text_413": "请选择@:dictionary.domain",
+  "k8s.docs_cluster_onecloud": "{0}#云联壹云私有云",
+  "k8s.provider_image_not_prepared": "没有找到对应平台镜像，",
+  "k8s.ref_prepare_doc": "请参考文档准备环境"
 }
