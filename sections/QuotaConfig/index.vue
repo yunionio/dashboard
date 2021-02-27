@@ -67,7 +67,7 @@
         <usage-select
           class="w-100"
           v-decorator="decorators.all_usage_key"
-          :usages="usages"
+          :usages="totalUsageOptions"
           @change="allUsageChange" />
       </a-form-item>
     </a-form-item>
@@ -76,11 +76,21 @@
         <usage-select
           class="w-100"
           v-decorator="decorators.usage_key"
-          :usages="usages"
+          :usages="partUsageOptions"
           @change="usageChange" />
       </a-form-item>
     </a-form-item>
-    <a-form-item :label="colorLabel || $t('dashboard.color.scheme')" class="mb-0">
+    <a-form-item :label="$t('dashboard.usage_metric_name')" class="mb-0" v-if="decorators.usage_label">
+      <a-form-item :wrapperCol="{ span: 24 }">
+        <a-input class="w-100" v-decorator="decorators.usage_label" />
+      </a-form-item>
+    </a-form-item>
+    <a-form-item :label="$t('dashboard.remaining_usage_metric_name')" class="mb-0" v-if="decorators.un_usage_label">
+      <a-form-item :wrapperCol="{ span: 24 }">
+        <a-input class="w-100" v-decorator="decorators.un_usage_label" />
+      </a-form-item>
+    </a-form-item>
+    <a-form-item :label="colorLabel || $t('dashboard.color.scheme')" class="mb-0" v-if="isRing">
       <a-select
         @change="colorChange"
         v-decorator="decorators.color">
@@ -102,6 +112,7 @@ import { mapGetters } from 'vuex'
 import UsageSelect from './UsageSelect'
 import { USAGE_CONFIG } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
+import { usageMap } from '@/constants/generalUsage'
 
 export default {
   name: 'QuotaConfig',
@@ -118,6 +129,10 @@ export default {
     fc: {
       type: Object,
       required: true,
+    },
+    fd: {
+      type: Object,
+      required: false,
     },
     usageLabel: {
       type: String,
@@ -138,6 +153,8 @@ export default {
       regions: [],
       regionLoading: false,
       translateUsage: this.$t('usage'),
+      totalUsageOptions: [],
+      partUsageOptions: [],
       colors: [
         {
           key: 'default',
@@ -175,6 +192,13 @@ export default {
       }
       return ret
     },
+    isRing () {
+      if (this.usageLabel) {
+        return false
+      } else {
+        return true
+      }
+    },
   },
   destroyed () {
     this.am = null
@@ -199,6 +223,12 @@ export default {
       },
       immediate: true,
     })
+    this.totalUsageOptions = this.totalUsages()
+    let key = ''
+    if (this.fd && this.fd.all_usage_key) {
+      key = this.fd.all_usage_key
+    }
+    this.partUsageOptions = this.partUsages(key)
   },
   methods: {
     filterOption (input, option) {
@@ -426,6 +456,8 @@ export default {
       this.$emit('update:account', accountId)
     },
     allUsageChange (allUsage) {
+      this.partUsageOptions = this.partUsages(allUsage)
+      this.fc.setFieldsValue({ usage_key: undefined })
       this.$emit('update:all_usage_key', allUsage)
     },
     usageChange (usage) {
@@ -436,6 +468,67 @@ export default {
     },
     regionAccountTypeChange (e) {
       this.regionAccountType = e.target.value
+    },
+    totalKeys () {
+      const keys = []
+      for (const res in usageMap) {
+        if (usageMap[res].field && usageMap[res].field.total && usageMap[res].field.total[this.scope]) {
+          keys.push(usageMap[res].field.total[this.scope])
+        }
+      }
+      return keys
+    },
+    partKeys (totalKey) {
+      const keys = []
+      for (const res in usageMap) {
+        if (usageMap[res].field) {
+          if (totalKey) {
+            if (!usageMap[res].field.total) {
+              continue
+            }
+            if (!usageMap[res].field.total[this.scope]) {
+              continue
+            }
+            if (usageMap[res].field.total[this.scope] !== totalKey) {
+              continue
+            }
+          }
+          for (const part in usageMap[res].field) {
+            if (part !== 'total') {
+              if (usageMap[res].field[part][this.scope]) {
+                keys.push(usageMap[res].field[part][this.scope])
+              }
+            }
+          }
+        }
+      }
+      return keys
+    },
+    totalUsages () {
+      if (!this.isRing) {
+        return this.usages
+      }
+      const totalKeys = this.totalKeys()
+      const ret = []
+      for (var i = 0; i < this.usages.length; i++) {
+        if (totalKeys.includes(this.usages[i].key)) {
+          ret.push(this.usages[i])
+        }
+      }
+      return ret
+    },
+    partUsages (val) {
+      if (!this.isRing) {
+        return this.usages
+      }
+      const partKeys = this.partKeys(val)
+      const ret = []
+      for (var i = 0; i < this.usages.length; i++) {
+        if (partKeys.includes(this.usages[i].key)) {
+          ret.push(this.usages[i])
+        }
+      }
+      return ret
     },
   },
 }

@@ -14,6 +14,16 @@
         :usages="usages"
         @change="usageChange" />
     </a-form-item>
+    <a-form-item :label="$t('dashboard.usage_metric_name')" class="mb-0" v-if="decorators.usage_label">
+      <a-form-item :wrapperCol="{ span: 24 }">
+        <a-input class="w-100" v-decorator="decorators.usage_label" />
+      </a-form-item>
+    </a-form-item>
+    <a-form-item :label="$t('dashboard.remaining_usage_metric_name')" class="mb-0" v-if="decorators.un_usage_label">
+      <a-form-item :wrapperCol="{ span: 24 }">
+        <a-input class="w-100" v-decorator="decorators.un_usage_label" />
+      </a-form-item>
+    </a-form-item>
   </div>
 </template>
 
@@ -34,6 +44,10 @@ export default {
     fc: {
       type: Object,
       required: true,
+    },
+    fd: {
+      type: Object,
+      required: false,
     },
     usageLabel: String,
   },

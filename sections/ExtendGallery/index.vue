@@ -46,7 +46,7 @@ export default {
         if (item.scope && !item.scope.includes(this.scope)) {
           effective = false
         }
-        if (!this.globalConfig.enable_quota_check && item.component === 'Quota') {
+        if (!this.globalConfig.enable_quota_check && (item.component === 'Quota' || item.component === 'ProjectQuota')) {
           effective = false
         }
         return effective

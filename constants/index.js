@@ -959,6 +959,42 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
   },
+  'all.img.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.system.key,
+  },
+  'domain.img.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.domain.key,
+  },
+  'img.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.project.key,
+  },
+  'all.iso.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.system.key,
+  },
+  'domain.iso.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.domain.key,
+  },
+  'iso.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.project.key,
+  },
+  'all.imgiso.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.system.key,
+  },
+  'domain.imgiso.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.domain.key,
+  },
+  'imgiso.total.size': {
+    formatter: val => sizestrWithUnit(val, 'B', 1000),
+    scope: SCOPES_MAP.project.key,
+  },
 }
 
 export const K8S_USAGE_CONFIG = {

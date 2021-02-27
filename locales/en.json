@@ -21,6 +21,8 @@
   "dashboard.text_20": "Metrics",
   "dashboard.text_21": "#Clusters",
   "dashboard.text_22": "Please select metrics",
+  "dashboard.usage_label_title": "Please input name of metrics",
+  "dashboard.un_usage_label_title": "Please input name of remaining metrics",
   "dashboard.text_23": "Current",
   "dashboard.text_24": "Type",
   "dashboard.text_25": "Servers",
@@ -96,6 +98,8 @@
   "dashboard.text_95": "You can drag any widget to dashboard",
   "dashboard.text_96": "Total metrics",
   "dashboard.text_97": "Usage metrics",
+  "dashboard.usage_metric_name": "Usage metric name",
+  "dashboard.remaining_usage_metric_name": "Remaining metric name",
   "dashboard.text_98": "Cloud region & Platform",
   "dashboard.text_99": "All",
   "dashboard.text_100": "Region & Account",
@@ -221,5 +225,6 @@
   "dashboard.leave_page_tips": "The current page data is not saved. Are you sure you want to leave?",
   "dashboard.color.scheme": "Color Schemes",
   "dashboard.color.scheme.default": "Green 0～60%; Yellow 60%～80%; Red 80%～100%",
-  "dashboard.color.scheme.reverse": "Red 0～60%; Yellow 60%～80%; Green 80%～100%"
+  "dashboard.color.scheme.reverse": "Red 0～60%; Yellow 60%～80%; Green 80%～100%",
+  "dashboard.currency_name": "USD"
 }

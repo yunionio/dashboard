@@ -40,8 +40,8 @@ export default {
   },
   methods: {
     filterOption (input, option) {
-      const desc = _.get(option, 'componentOptions.children[1].children[0].text', '')
-      return option.key.toLowerCase().indexOf(input.toLowerCase()) >= 0 || desc.includes(input)
+      const desc = _.get(option, 'componentOptions.children[0].children[0].text', '')
+      return option.key.toLowerCase().indexOf(input.toLowerCase()) >= 0 || desc.toLowerCase().indexOf(input.toLowerCase()) >= 0
     },
     handleChange (val) {
       this.$emit('change', val)
