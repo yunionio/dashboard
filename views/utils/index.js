@@ -38,32 +38,41 @@ export const isRequiredData = (data, keys) => {
   return fn[keyType] && fn[keyType]()
 }
 
-export const checkSecgroup = (val, supportProviders = ['Huawei', 'Qcloud', 'Aliyun']) => {
-  const errorMsgs = []
-  if (Array.isArray(val)) {
-    val.forEach(obj => {
-      const brand = obj.brand ? obj.brand : obj.hypervisor
-      if (!supportProviders.includes(brand)) {
-        errorMsgs.push({
-          validate: false,
-          tooltip: i18n.t('db.action_diable_tooltip', [getI18n(`cloudPrvidersMap.${brand}`, brand)]),
-        })
-      }
-    })
-  } else {
-    const brand = val.brand ? val.brand : val.hypervisor
-    if (!supportProviders.includes(brand)) {
-      errorMsgs.push({
-        validate: false,
-        tooltip: i18n.t('db.action_diable_tooltip', [getI18n(`cloudPrvidersMap.${brand}`, brand)]),
-      })
-    }
-  }
-  if (errorMsgs.length > 0) {
+function isInstanceSupportSecgroup (obj, service, supportProviders) {
+  const brand = obj.brand ? obj.brand : obj.hypervisor
+  if (!supportProviders.includes(brand)) {
     return {
       validate: false,
-      tooltip: errorMsgs[0].tooltip,
+      tooltip: i18n.t('db.action_diable_tooltip', [getI18n(`cloudPrvidersMap.${brand}`, brand)]),
     }
+  }
+
+  if (brand === 'Qcloud' && service === 'rds' && obj.category === 'basic') {
+    return {
+      validate: false,
+      tooltip: i18n.t('db.secgroup.action_diable_tooltip', [getI18n(`cloudPrvidersMap.${brand}`, brand)]),
+    }
+  }
+
+  return null
+}
+
+export const checkSecgroup = (val, service = 'rds', supportProviders = ['Huawei', 'Qcloud', 'Aliyun']) => {
+  let objs = val
+  if (!Array.isArray(val)) {
+    objs = [val]
+  }
+
+  const errorMsgs = []
+  objs.forEach(obj => {
+    const ret = isInstanceSupportSecgroup(obj, service, supportProviders)
+    if (ret) {
+      errorMsgs.push(ret)
+    }
+  })
+
+  if (errorMsgs.length > 0) {
+    return errorMsgs[0]
   }
   return {
     validate: true,

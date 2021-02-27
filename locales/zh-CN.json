@@ -376,5 +376,6 @@
   "db.text_374": "快照备份",
   "db.text_375": "该备份方式暂不支持该操作",
   "db.text_376": "请选择要恢复到类型",
-  "db.action_diable_tooltip": "{0}暂不支持该操作"
+  "db.action_diable_tooltip": "{0}暂不支持该操作",
+  "db.secgroup.action_diable_tooltip": "{0}基础版不支持该操作"
 }
