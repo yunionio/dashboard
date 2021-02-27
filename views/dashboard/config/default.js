@@ -557,9 +557,9 @@ export default {
           y: 6,
         },
         params: {
-          all_usage_key: 'domain.eip',
+          all_usage_key: 'domain.eip.floating_ip',
           name: i18n.t('dashboard.text_156'),
-          usage_key: 'domain.eip.used',
+          usage_key: 'domain.eip.floating_ip.used',
           color: 'reverse',
         },
       },
@@ -878,7 +878,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_148'),
-          usage_key: 'eip',
+          usage_key: 'eip.floating_ip',
         },
       },
       {
@@ -976,9 +976,9 @@ export default {
           y: 6,
         },
         params: {
-          all_usage_key: 'eip',
+          all_usage_key: 'eip.floating_ip',
           name: i18n.t('dashboard.text_156'),
-          usage_key: 'eip.used',
+          usage_key: 'eip.floating_ip.used',
           color: 'reverse',
         },
       },
