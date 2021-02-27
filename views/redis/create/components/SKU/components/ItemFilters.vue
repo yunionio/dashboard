@@ -224,9 +224,9 @@ export default {
         this.$nextTick(() => {
           if (this.memorys && this.redisItem && this.redisItem.capacity_mb) {
             const redisMb = this.redisItem.capacity_mb
-            const index = this.memorys.indexOf(redisMb)
+            const index = this.memorys.findIndex((m) => { return m > redisMb })
             this.FC.setFieldsValue({
-              memory_size_mb: index > -1 ? this.memorys[index + 1] : this.memorys[index],
+              memory_size_mb: this.memorys[index],
             })
           } else if (this.memorys && this.memorys.length > 0 && this.memorys.indexOf(this.getFieldValue('memory_size_mb')) === -1) {
             this.FC.setFieldsValue({
