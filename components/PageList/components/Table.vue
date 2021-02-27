@@ -133,7 +133,22 @@ export default {
       }
     },
     tableData (val, oldVal) {
-      return Object.values(this.data).sort((a, b) => a.index - b.index).map(item => item.data)
+      if (this.total <= 0 || !this.showPage) {
+        return []
+      }
+      const lastPage = Math.floor(this.total / this.finalLimit) + 1
+      const ret = []
+      const dataList = Object.values(this.data).sort((a, b) => a.index - b.index)
+      for (var i = 0; i < dataList.length; i++) {
+        if (i === 0 && this.tablePage.currentPage === 1) {
+          dataList[i].data.__first = true
+        }
+        if (i === dataList.length - 1 && this.tablePage.currentPage === lastPage) {
+          dataList[i].data.__last = true
+        }
+        ret.push(dataList[i].data)
+      }
+      return ret
     },
     tablePage () {
       if (this.total <= 0 || !this.showPage) return null
