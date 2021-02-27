@@ -70,11 +70,17 @@ export default {
       }
     },
     providerParams () {
-      return {
+      const params = {
         service: this.service,
         cloud_env: 'public',
         ...this.scopeParams,
       }
+
+      if (this.service === 'elasticcaches') {
+        params.brands = ['Huawei', 'Aliyun', 'Qcloud']
+      }
+
+      return params
     },
     zoneParams () {
       return {
