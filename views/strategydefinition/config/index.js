@@ -75,7 +75,8 @@ export const policies = {
     { label: i18n.t('cloudenv.text_559'), value: 'server_web_console' },
     { label: i18n.t('cloudenv.text_561'), value: 'server_add_network_card' },
     { label: i18n.t('cloudenv.text_546'), value: 'server_edit_bandwidth' },
-    { label: i18n.t('cloudenv.text_562'), value: 'server_change_ip' },
+    { label: i18n.t('cloudenv.server_change_ip'), value: 'server_change_ip' },
+    { label: i18n.t('cloudenv.server_detach_nic'), value: 'server_detach_nic' },
   ],
   [CATEGORY_KEYS.VMINSTANCE_CONFIGURED_CALLBACK_ADDRESS]: [
     { label: i18n.t('cloudenv.text_544'), value: 'create_callback_address' },
