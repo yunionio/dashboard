@@ -1256,7 +1256,7 @@
   "compute.text_1287": "{0}暂不支持该操作",
   "compute.text_1288": "该服务器已经挂载ISO镜像",
   "compute.text_1289": "该服务器未挂载ISO镜像",
-  "compute.text_1290": "网络安全",
+  "compute.text_1290": "网络与安全",
   "compute.text_1291": "已绑定，解绑后重试",
   "compute.text_1292": "经典网络的虚拟机不支持此操作",
   "compute.text_1293": "未绑定，无法解绑",

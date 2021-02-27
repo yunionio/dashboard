@@ -1255,7 +1255,7 @@
   "compute.text_1287": "{0} does not support this operation",
   "compute.text_1288": "This server has already mounted an ISO image",
   "compute.text_1289": "ISO image is not mounted on this server",
-  "compute.text_1290": "Network Security",
+  "compute.text_1290": "Network & Security",
   "compute.text_1291": "Bound, try again after unbinding",
   "compute.text_1292": "Servers on classic networks do not support this operation",
   "compute.text_1293": "Unbound, cannot be unbound",
