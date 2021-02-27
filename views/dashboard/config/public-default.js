@@ -204,9 +204,10 @@ export default {
           y: 7,
         },
         params: {
-          all_usage_key: 'eip',
+          all_usage_key: 'eip.floating_ip',
           name: i18n.t('dashboard.text_156'),
-          usage_key: 'eip.used',
+          usage_key: 'eip.floating_ip.used',
+          color: 'reverse',
         },
       },
       {
@@ -253,6 +254,7 @@ export default {
           usage_key: 'disks.attached.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
+          color: 'reverse',
         },
       },
       {
