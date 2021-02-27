@@ -13,8 +13,12 @@
         </a-progress>
         <div class="flex-fill ml-4">
           <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_43')}}</div>
+            <div class="flex-shrink-0 flex-grow-0">{{ useLabel }}</div>
             <div class="ml-2 flex-fill text-right">{{ this.usage }}</div>
+          </div>
+          <div class="d-flex">
+            <div class="flex-shrink-0 flex-grow-0">{{ unUseLabel }}</div>
+            <div class="ml-2 flex-fill text-right">{{ this.unUsage }}</div>
           </div>
           <div class="d-flex">
             <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_44')}}</div>
@@ -32,7 +36,7 @@
         <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <k8s-config :fc="form.fc" :decorators="decorators" />
+        <k8s-config :fc="form.fc" :fd="form.fd" :decorators="decorators" />
       </a-form>
     </base-drawer>
   </div>
@@ -58,7 +62,9 @@ export default {
     const initialNameValue = ((this.params && this.params.type === 'k8s') && this.params.name) || this.$t('dashboard.text_45')
     const initialAllUsageKeyValue = ((this.params && this.params.type === 'k8s') && this.params.all_usage_key) || 'all.cluster.node.memory.capacity'
     const initialUsageKeyValue = ((this.params && this.params.type === 'k8s') && this.params.usage_key) || 'all.cluster.node.memory.request'
-
+    const initialColorValue = ((this.params && this.params.type !== 'k8s') && this.params.color) || 'default'
+    const initialUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_label && this.params.usage_label.length > 0) ? this.params.usage_label : this.$t('dashboard.text_33')
+    const initialUnUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.un_usage_label && this.params.un_usage_label.length > 0) ? this.params.un_usage_label : this.$t('dashboard.text_34')
     return {
       data: {},
       loading: false,
@@ -68,6 +74,9 @@ export default {
           name: initialNameValue,
           all_usage_key: initialAllUsageKeyValue,
           usage_key: initialUsageKeyValue,
+          usage_label: initialUsageLabelValue,
+          un_usage_label: initialUnUsageLabelValue,
+          color: initialColorValue,
         },
       },
       decorators: {
@@ -95,6 +104,30 @@ export default {
             initialValue: initialUsageKeyValue,
             rules: [
               { required: true, message: this.$t('dashboard.text_22') },
+            ],
+          },
+        ],
+        color: [
+          'color',
+          {
+            initialValue: initialColorValue,
+          },
+        ],
+        usage_label: [
+          'usage_label',
+          {
+            initialValue: initialUsageLabelValue,
+            rules: [
+              { required: true, message: this.$t('dashboard.usage_label_title') },
+            ],
+          },
+        ],
+        un_usage_label: [
+          'un_usage_label',
+          {
+            initialValue: initialUnUsageLabelValue,
+            rules: [
+              { required: true, message: this.$t('dashboard.un_usage_label_title') },
             ],
           },
         ],
@@ -178,6 +211,18 @@ export default {
       }
       return ret
     },
+    useLabel () {
+      if (this.params) {
+        return this.params.usage_label || this.$t('dashboard.text_43')
+      }
+      return this.$t('dashboard.text_43')
+    },
+    unUseLabel () {
+      if (this.params) {
+        return this.params.un_usage_label || this.$t('dashboard.text_34')
+      }
+      return this.$t('dashboard.text_34')
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -193,9 +238,9 @@ export default {
     },
   },
   created () {
-    if (this.params && this.params.type === 'k8s') {
-      this.form.fd = this.params
-    }
+    // if (this.params && this.params.type === 'k8s') {
+    //   this.form.fd = this.params
+    // }
     // this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {

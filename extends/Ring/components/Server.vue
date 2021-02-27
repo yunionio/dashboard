@@ -50,7 +50,7 @@
         <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <quota-config :fc="form.fc" :decorators="decorators" />
+        <quota-config :fc="form.fc" :fd="form.fd" :decorators="decorators" />
       </a-form>
     </base-drawer>
   </div>
@@ -80,6 +80,8 @@ export default {
     const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'all.servers.memory'
     const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
     const initialColorValue = ((this.params && this.params.type !== 'k8s') && this.params.color) || 'default'
+    const initialUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_label && this.params.usage_label.length > 0) ? this.params.usage_label : this.$t('dashboard.text_33')
+    const initialUnUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.un_usage_label && this.params.un_usage_label.length > 0) ? this.params.un_usage_label : this.$t('dashboard.text_34')
     return {
       data: {},
       loading: false,
@@ -92,6 +94,8 @@ export default {
           region: initialRegionValue,
           all_usage_key: initialAllUsageKeyValue,
           usage_key: initialUsageKeyValue,
+          usage_label: initialUsageLabelValue,
+          un_usage_label: initialUnUsageLabelValue,
           color: initialColorValue,
         },
       },
@@ -156,7 +160,25 @@ export default {
         color: [
           'color',
           {
-            initialValue: initialRegionValue,
+            initialValue: initialColorValue,
+          },
+        ],
+        usage_label: [
+          'usage_label',
+          {
+            initialValue: initialUsageLabelValue,
+            rules: [
+              { required: true, message: this.$t('dashboard.usage_label_title') },
+            ],
+          },
+        ],
+        un_usage_label: [
+          'un_usage_label',
+          {
+            initialValue: initialUnUsageLabelValue,
+            rules: [
+              { required: true, message: this.$t('dashboard.un_usage_label_title') },
+            ],
           },
         ],
       },
@@ -305,9 +327,9 @@ export default {
     },
   },
   created () {
-    if (this.params && this.params.type !== 'k8s') {
-      this.form.fd = this.params
-    }
+    // if (this.params && this.params.type !== 'k8s') {
+    //  this.form.fd = this.params
+    // }
     // this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {

@@ -21,6 +21,8 @@
   "dashboard.text_20": "指标",
   "dashboard.text_21": "集群数量",
   "dashboard.text_22": "请选择指标",
+  "dashboard.usage_label_title": "请输入指标名称",
+  "dashboard.un_usage_label_title": "请输入剩余指标名称",
   "dashboard.text_23": "当前",
   "dashboard.text_24": "类型",
   "dashboard.text_25": "主机资源",
@@ -96,6 +98,8 @@
   "dashboard.text_95": "可将任意磁贴拖动到仪表盘",
   "dashboard.text_96": "总量指标",
   "dashboard.text_97": "使用量指标",
+  "dashboard.usage_metric_name": "指标名称",
+  "dashboard.remaining_usage_metric_name": "剩余指标名称",
   "dashboard.text_98": "云环境和平台",
   "dashboard.text_99": "全部",
   "dashboard.text_100": "区域或云账号",
@@ -221,5 +225,6 @@
   "dashboard.leave_page_tips": "当前页面数据未保存，确定要离开？",
   "dashboard.color.scheme": "配色方案",
   "dashboard.color.scheme.default": "绿色0～60%；黄色60%～80%；红色80%～100%",
-  "dashboard.color.scheme.reverse": "红色0～60%；黄色60%～80%；绿色80%～100%"
+  "dashboard.color.scheme.reverse": "红色0～60%；黄色60%～80%；绿色80%～100%",
+  "dashboard.currency_name": "CNY"
 }
