@@ -40,7 +40,7 @@ export default {
         type: 'expand',
         slots: {
           default: ({ row }) => {
-            return row.res_num + this.$t('system.text_88')
+            return row.res_num
           },
           content: ({ row }) => {
             const columns = [
