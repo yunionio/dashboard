@@ -138,8 +138,12 @@ export default {
   },
   methods: {
     showSecgroup (form) {
-      const supportSecgroupProviders = ['Huawei', 'Qcloud', 'Aliyun']
-      return supportSecgroupProviders.includes(form.getFieldValue('provider'))
+      const provider = form.getFieldValue('provider')
+      if (provider === 'Qcloud') {
+        return form.getFieldValue('category') !== 'basic'
+      }
+
+      return ['Huawei', 'Aliyun'].includes(provider)
     },
     getSecgroupMax (form) {
       const secgroupMaxMap = {
