@@ -343,7 +343,10 @@ export default {
       }
       const fd = this.form.fd
       if (fd.cloud_env) params.cloud_env = fd.cloud_env
-      if (fd.region) params.region = fd.region
+      if (fd.region) {
+        params.range_type = 'cloudregions'
+        params.range_id = fd.region
+      }
       if (fd.account) {
         params.range_type = 'cloudaccounts'
         params.range_id = fd.account
