@@ -4308,6 +4308,7 @@
   "common_731": "No Channel",
   "common.search": "Please enter search content",
   "common_732": "No more than 20 tags",
+  "common_733": "Total: {0}",
   "common.eport": "Public IP address",
   "common.system.no_quota": "Global quota shortage",
   "common.domain.no_quota": "Domain quota shortage, Please try again after adjustment",
