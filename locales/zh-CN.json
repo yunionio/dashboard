@@ -1096,6 +1096,7 @@
     "all.running_servers.isolated_devices": "运行状态的虚拟机GPU卡数量",
     "all.running_servers.memory": "运行状态的虚拟机内存容量",
     "all.servers": "虚拟机数量",
+    "all.servers.any_pool": "虚拟机数量",
     "all.servers.cpu": "虚拟机CPU数量",
     "all.servers.disk": "虚拟机磁盘容量",
     "all.servers.ha": "高可用虚拟机数量",
