@@ -92,7 +92,7 @@ export default {
                     },
                   }).then(data => {
                     const fwds = data.data.forwards
-                    if (fwds.length > 0) {
+                    if (fwds && fwds.length > 0) {
                       const fwd = fwds[0]
                       return {
                         ipAddr: fwd.proxy_addr,
