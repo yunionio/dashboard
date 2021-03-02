@@ -28,7 +28,7 @@
         <item-area
           v-if="form.fd.project"
           class="mb-0"
-        :defaultActiveFirstOption="['city']"
+        :defaultActiveFirstOption="['provider', 'cloudregion']"
         :values="form.fc.getFieldsValue()" />
         <!-- 套餐 -->
         <s-k-u ref="REF_SKU" />

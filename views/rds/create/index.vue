@@ -28,7 +28,7 @@
         v-if="form.fd.project"
         class="mb-0"
         :isRequired="true"
-        :names="['city', 'provider', 'cloudregion']" />
+        :names="['provider', 'cloudregion']" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
       <a-form-item v-if="form.fd.provider !== 'Aliyun'" :label="$t('db.text_143')">

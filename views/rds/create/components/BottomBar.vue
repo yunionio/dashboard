@@ -215,6 +215,9 @@ export default {
       let f = false
       this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
         const { sku } = values
+        if (err !== null) {
+          console.log(err)
+        }
         f = (err === null) && (sku && sku.name)
       })
       return f
