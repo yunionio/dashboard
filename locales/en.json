@@ -842,7 +842,7 @@
     },
     "alertSendState": {
       "ok": "Sent",
-      "silent": "converged"
+      "silent": "Muted"
     },
     "dnszonecache": {
       "init": "Initialize",
