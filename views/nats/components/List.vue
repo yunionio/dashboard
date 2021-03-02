@@ -16,8 +16,8 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
-import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
@@ -33,6 +33,10 @@ export default {
     id: String,
     getParams: {
       type: [Function, Object],
+    },
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
     },
   },
   data () {
@@ -93,7 +97,6 @@ export default {
           { label: this.$t('network.text_196'), key: 'manager' },
           { label: this.$t('network.text_537'), key: 'billing_type' },
           { label: this.$t('network.text_313'), key: 'created_at' },
-          { label: this.$t('network.text_232'), key: 'public_scope' },
           {
             label: this.$t('network.text_232'),
             key: 'public_scope',
@@ -106,28 +109,165 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('network.text_201'),
+          label: this.$t('network.text_26'),
+          permission: 'natgateways_create',
           action: () => {
-            this.onManager('batchPerformAction', {
-              steadyStatus: ['running', 'ready'],
-              managerArgs: {
-                action: 'syncstatus',
+            this.$router.push({
+              name: 'NatCreate',
+              query: {
+                type: this.cloudEnv,
               },
             })
           },
-          meta: () => ({
-            validate: this.list.selected.length,
-          }),
+          meta: () => {
+            return {
+              buttonType: 'primary',
+              validate: !this.cloudEnvEmpty,
+              tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
+            }
+          },
+          hidden: () => this.hiddenActions.includes('create'),
         },
-        getDomainChangeOwnerAction(this, {
-          name: this.$t('dictionary.nat'),
-          resource: 'natgateways',
-        }),
-        getSetPublicAction(this, {
-          name: this.$t('dictionary.nat'),
-          scope: 'domain',
-          resource: 'natgateways',
-        }),
+        {
+          label: this.$t('network.text_200'),
+          actions: (obj) => {
+            const selectedLength = this.list.selectedItems.length
+            const notSelectedTooltip = selectedLength <= 0 ? this.$t('network.instance.select.at.least.one') : ''
+            const isAvailable = this.list.selectedItems.every(item => item.status.toLowerCase() === 'available')
+            const notAvailableTip = !isAvailable ? i18n.t('network.not.available.tooltip') : null
+            const isPrepaid = this.list.selectedItems.every(item => item.billing_type.toLowerCase() === 'prpaid')
+            return [
+              {
+                label: this.$t('network.text_201'),
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['available'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+                meta: () => ({
+                  validate: selectedLength,
+                  tooltip: notSelectedTooltip,
+                }),
+              },
+              {
+                label: i18n.t('network.expired_release'),
+                permission: 'natgateway_perform_postpaid_expire',
+                action: () => {
+                  this.createDialog('SetDurationDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: this.$t('dictionary.nat'),
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (isPrepaid) {
+                    ret.tooltip = i18n.t('network.nat.prepaid.unsupported')
+                    return ret
+                  }
+                  if (selectedLength === 0) {
+                    ret.tooltip = notSelectedTooltip
+                    return ret
+                  }
+                  ret.validate = true
+                  return ret
+                },
+              },
+              {
+                label: i18n.t('network.renew'),
+                action: () => {
+                  this.createDialog('RenewDialog', {
+                    name: this.$t('dictionary.nat'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (!isAvailable) {
+                    ret.tooltip = notAvailableTip
+                    return ret
+                  }
+                  if (!isPrepaid) {
+                    ret.tooltip = i18n.t('network.nat.postpaid.unsupported')
+                    return ret
+                  }
+                  if (selectedLength === 0) {
+                    ret.tooltip = notSelectedTooltip
+                    return ret
+                  }
+                  return ret
+                },
+              },
+              {
+                label: i18n.t('network.auto.renew'),
+                action: () => {
+                  this.createDialog('AutoRenewDialog', {
+                    name: i18n.t('dictionary.nat'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    refresh: this.refresh,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: false,
+                    tooltip: null,
+                  }
+                  if (!isAvailable) {
+                    ret.tooltip = notAvailableTip
+                    return ret
+                  }
+                  if (!isPrepaid) {
+                    ret.tooltip = i18n.t('network.nat.postpaid.unsupported')
+                    return ret
+                  }
+                  if (selectedLength === 0) {
+                    ret.tooltip = notSelectedTooltip
+                    return ret
+                  }
+                },
+              },
+              disableDeleteAction(this, {
+                name: this.$t('dictionary.nat'),
+              }),
+              {
+                label: this.$t('network.text_131'),
+                permission: 'natgateways_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: this.$t('network.text_131'),
+                    name: this.$t('dictionary.nat'),
+                    requestData: { force: true },
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
+          },
+        },
       ],
     }
   },
