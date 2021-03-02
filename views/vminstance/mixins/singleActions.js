@@ -192,7 +192,7 @@ export default {
           }
           if (obj.nics) {
             obj.nics.map(nic => {
-              if (obj.provider === 'OneCloud') {
+              if (obj.provider === 'OneCloud' || obj.vpc_id === 'default') {
                 ipInfoList.push({
                   actionType: 'IP SSH',
                   ipType: 'nicIP',
