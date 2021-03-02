@@ -386,7 +386,7 @@
   "compute.text_388": "0 means unlimited bandwidth",
   "compute.text_389": "Modify Bandwidth",
   "compute.text_390": "Change IP",
-  "compute.text_391": "Private cloud and public cloud do not support this operation",
+  "compute.text_391": "Servers of this platform do not support the operation",
   "compute.text_394": "Mounted",
   "compute.text_395": "To be mounted",
   "compute.text_396": "Media Type",
