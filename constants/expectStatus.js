@@ -171,7 +171,7 @@ export default {
   nat: {
     info: [],
     success: ['available'],
-    danger: ['create_fail', 'failed', 'delete_failed'],
+    danger: ['create_failed', 'delete_failed', 'dissociate_eip_failed', 'associate_eip_failed', 'set_auto_renew_failed', 'renew_failed'],
   },
   idp: {
     danger: ['disconnected'],
