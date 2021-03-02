@@ -386,7 +386,7 @@
   "compute.text_388": "0代表带宽没有限制",
   "compute.text_389": "修改带宽",
   "compute.text_390": "更换IP",
-  "compute.text_391": "私有云、公有云不支持此操作",
+  "compute.text_391": "该平台主机不支持此操作",
   "compute.text_394": "已挂载",
   "compute.text_395": "未挂载",
   "compute.text_396": "介质类型",
