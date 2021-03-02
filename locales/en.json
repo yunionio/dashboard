@@ -538,7 +538,15 @@
       "deleting": "Deleting",
       "delete_failed": "Deletion failed",
       "syncing": "Syncing",
-      "sync_status": "Syncing"
+      "sync_status": "Syncing",
+      "dissociate_eip": "Dissociate EIP",
+      "associate_eip": "Associate EIP",
+      "dissociate_eip_failed": "Fail to dissociate EIP",
+      "associate_eip_failed": "Failed to associate EIP",
+      "set_auto_renew": "Set up auto renew",
+      "set_auto_renew_failed": "Set auto renew failed",
+      "renewing": "Renewing",
+      "renew_failed": "Fail to renew"
     },
     "idp": {
       "connected": "Connected",
@@ -4595,5 +4603,9 @@
   "common.set_login_domain": "Set",
   "common.clear_login_domain": "Clear",
   "common.switch_login_domain": "Setup Login Domain",
-  "navbar.text.hotline": "Hotline"
+  "navbar.text.hotline": "Hotline",
+  "common.unit.hour.with.adj": "Hour",
+  "common.unit.month.with.adj": "Month",
+  "common.unit.year": "Year",
+  "common.renew": "Renewal"
 }

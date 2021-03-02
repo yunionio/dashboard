@@ -538,12 +538,20 @@
       "allocate": "创建中",
       "deploying": "配置中",
       "unknown": "未知状态",
-      "failed": "创建失败",
+      "create_failed": "创建失败",
       "deleted": "删除",
       "deleting": "删除中",
       "delete_failed": "删除失败",
       "syncing": "同步中",
-      "sync_status": "同步中"
+      "sync_status": "同步中",
+      "dissociate_eip": "EIP解绑中",
+      "associate_eip": "EIP绑定中",
+      "dissociate_eip_failed": "解绑EIP失败",
+      "associate_eip_failed": "绑定EIP失败",
+      "set_auto_renew": "设置自动续费中",
+      "set_auto_renew_failed": "设置自动续费失败",
+      "renewing": "续费中",
+      "renew_failed": "续费失败"
     },
     "idp": {
       "connected": "已连接",
@@ -4593,6 +4601,10 @@
   "common.set_login_domain": "设置",
   "common.clear_login_domain": "清除",
   "common.switch_login_domain": "设置登录域",
-  "navbar.text.hotline": "服务热线"
+  "navbar.text.hotline": "服务热线",
+  "common.unit.hour.with.adj": "小时",
+  "common.unit.month.with.adj": "个月",
+  "common.unit.year": "年",
+  "common.renew": "续费"
 }
 
