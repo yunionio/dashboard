@@ -11,6 +11,7 @@ import Eip from '@Network/views/eip'
 import GlobalVpc from '@Network/views/global-vpc'
 // import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
+import NatCreate from '@Network/views/nats/create/index'
 // import ReservedIpList from '@Network/views/reserved-ip'
 import DNS from '@Network/views/dns'
 import VPC from '@Network/views/vpc'
@@ -224,6 +225,11 @@ export default {
               name: 'Nat',
               path: '',
               component: NatList,
+            },
+            {
+              name: 'NatCreate',
+              path: 'create',
+              component: NatCreate,
             },
           ],
         },

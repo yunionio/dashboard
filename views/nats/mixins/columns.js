@@ -1,24 +1,22 @@
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
-  getCopyWithContentTableColumn,
   getBrandTableColumn,
   getAccountTableColumn,
   getTimeTableColumn,
+  getBillingTableColumn,
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 const NatSpec = {
-  small: i18n.t('network.text_553'),
-  medium: i18n.t('network.text_554'),
-  large: i18n.t('network.text_555'),
-  'x-large': i18n.t('network.text_556'),
-}
-const BillingType = {
-  postpaid: i18n.t('network.text_533'),
-  prepaid: i18n.t('network.text_534'),
+  default: '-',
+  small: i18n.t('network.nat.spec.small'),
+  medium: i18n.t('network.nat.spec.medium'),
+  large: i18n.t('network.nat.spec.large'),
+  xlarge: i18n.t('network.nat.spec.xlarge.1'),
+  'xlarge.1': i18n.t('network.nat.spec.xlarge.1'),
 }
 
 export default {
@@ -27,6 +25,7 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        addLock: true,
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
@@ -44,16 +43,7 @@ export default {
           return NatSpec[spec] || spec
         },
       },
-      getCopyWithContentTableColumn({ field: 'vpc', title: i18n.t('network.text_535') }),
-      {
-        field: 'billing_type',
-        title: i18n.t('network.text_537'),
-        showOverflow: 'ellipsis',
-        minWidth: 100,
-        formatter: ({ cellValue }) => {
-          return BillingType[cellValue]
-        },
-      },
+      getBillingTableColumn({ vm: this }),
       getBrandTableColumn(),
       getAccountTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
