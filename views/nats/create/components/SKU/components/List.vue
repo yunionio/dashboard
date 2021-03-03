@@ -83,9 +83,42 @@ export default {
           },
         },
         { field: 'provider', title: this.$t('network.text_198') },
-        { field: 'cps', title: this.$t('network.nat.sku.cps') },
-        { field: 'conns', title: this.$t('network.nat.sku.conns') },
-        { field: 'throughput', title: this.$t('network.nat.sku.throughput') },
+        {
+          field: 'cps',
+          title: this.$t('network.nat.sku.cps'),
+          slots: {
+            default: ({ row }, h) => {
+              if (row.cps && row.cps > 0) {
+                return row.cps
+              }
+              return '-'
+            },
+          },
+        },
+        {
+          field: 'conns',
+          title: this.$t('network.nat.sku.conns'),
+          slots: {
+            default: ({ row }, h) => {
+              if (row.conns && row.conns > 0) {
+                return row.conns
+              }
+              return '-'
+            },
+          },
+        },
+        {
+          field: 'throughput',
+          title: this.$t('network.nat.sku.throughput'),
+          slots: {
+            default: ({ row }, h) => {
+              if (row.throughput && row.throughput > 0) {
+                return row.throughput + 'Gbps'
+              }
+              return '-'
+            },
+          },
+        },
         {
           field: 'rate',
           title: this.$t('network.nat.sku.price'),
@@ -100,7 +133,7 @@ export default {
                 let price = rate.hour_price
                 let unit = this.$t('network.unit.hour')
                 if (provider === 'Huawei') {
-                  price = rate.hour_price * 12
+                  price = rate.hour_price * 24
                   unit = this.$t('network.unit.day')
                 }
                 if (isPackage) {
@@ -158,7 +191,7 @@ export default {
         let { provider, region_ext_id, zone_ext_id = '', nat = 'nat', name } = sku
         if (sku.cloud_env) provider = sku.cloud_env.toLowerCase()
         // eslint-disable-next-line camelcase
-        const _arr = [provider.toLowerCase(), region_ext_id, zone_ext_id, nat, name]
+        const _arr = [provider.toLowerCase(), region_ext_id, zone_ext_id, nat, name.toLowerCase()]
         const key = _arr.join('::')
         sku.data_key = key
         params.push(key)
