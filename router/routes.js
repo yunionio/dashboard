@@ -4,6 +4,7 @@ import EmailVerify from '@/views/email-verify'
 import NoProject from '@/views/no-project'
 import NoProjectStatus from '@/views/no-project/Status'
 import Workflow from '@/views/workflow'
+import WorkflowTechnicalSupport from '@/views/workflow-technical-support'
 import Clouduser from '@/views/clouduser'
 import WorkflowSuccess from '@/views/workflow/success'
 import WorkflowError from '@/views/workflow/error'
@@ -17,6 +18,11 @@ const routes = [
     name: 'Workflow',
     path: '/workflow',
     component: Workflow,
+  },
+  {
+    name: 'WorkflowTechnicalSupport',
+    path: '/workflow-technical-support',
+    component: WorkflowTechnicalSupport,
   },
   {
     name: 'Clouduser',
