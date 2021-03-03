@@ -612,6 +612,11 @@ export default {
       window.open('/overview', '_blank')
     },
     cronjobFetchAlerts () { // 定时5分钟请求一次
+      const userInfo = this.$store.getters.userInfo
+      if ((R.isNil(userInfo.projects) || R.isEmpty(userInfo.projects)) && (R.isNil(userInfo.projectId) || R.isEmpty(userInfo.projectId))) {
+        return
+      }
+
       this.$store.dispatch('app/fetchAlertingrecords')
       setInterval(() => {
         this.$store.dispatch('app/fetchAlertingrecords')
@@ -620,7 +625,7 @@ export default {
       if (this.isAdminMode && this.$appConfig.isPrivate && this.$store._actions['app/fetchAlertresource']) {
         this.$store.dispatch('app/fetchAlertresource')
         setInterval(() => {
-          this.$store.dispatch('app/fetchAlertingrecords')
+          this.$store.dispatch('app/fetchAlertresource')
         }, 5 * 60 * 1000)
       } else {
         this.$store.commit('app/SET_ALERTRESOURCE', {
