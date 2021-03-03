@@ -110,20 +110,10 @@ export default {
     priceTips () {
       if (this.price) {
         let _day = numerify(this.price * 24, '0,0.00')
-        let _month = numerify(this.priceTotal.month_price, '0,0.00')
+        let _month = numerify(_day * 30, '0,0.00')
         if (this.isPackage) {
-          _month = _month * this.durationNum
-          _day = numerify(_month / 30, '0,0.00')
-        } else {
-          _month = _day * 30
-        }
-        const { sku = {} } = this.values
-        if (sku && sku.provider && sku.provider === 'Huawei') {
-          if (this.isPackage) {
-            _day = this.price / 30
-          } else {
-            _day = this.price
-          }
+          _day = numerify(this.price / 30, '0,0.00')
+          _month = numerify(this.price, '0,0.00')
         }
         return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
       }
@@ -140,24 +130,19 @@ export default {
   },
   methods: {
     formatToPrice (val) {
-      let ret = `${this.currency} ${numerify(val, '0,0.00')}/`
+      let unit = this.$t('network.unit.hour')
+      let price = numerify(val, '0,0.00')
+      if (this.isPackage) {
+        unit = this.$t('network.unit.month')
+      }
       const { sku = {} } = this.values
       if (sku && sku.provider && sku.provider === 'Huawei') {
-        if (this.isPackage) {
-          ret = `${this.currency} ${numerify(val, '0,0.00')}/`
-          ret += this.$t('network.unit.month')
-          return ret
+        if (!this.isPackage) {
+          unit = this.$t('network.unit.day')
+          price = numerify(price * 24, '0,0.00')
         }
-        ret = `${this.currency} ${numerify(val * 24, '0,0.00')}/`
-        ret += this.$t('network.unit.day')
-        return ret
       }
-      if (this.isPackage) {
-        ret += this.$t('network.unit.month')
-        return ret
-      }
-      ret += this.$t('network.unit.hour')
-      return ret
+      return `${this.currency} ${price}/${unit}`
     },
     async _getPrice (price_key) {
       try {
