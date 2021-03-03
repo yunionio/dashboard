@@ -1,24 +1,24 @@
-// import i18n from '@/locales'
+import i18n from '@/locales'
 
 export const statusMap = {
   OPEN: {
-    text: '已提交',
+    text: i18n.t('common.workflow.open'),
     color: '#f6a100',
   },
   PENDING: {
-    text: '待用户反馈',
+    text: i18n.t('common.workflow.pending'),
     color: '#7ed321',
   },
   IN_PROGRESS: {
-    text: '处理中',
+    text: i18n.t('common.workflow.in_progress'),
     color: '#8a94a6',
   },
   REOPEN: {
-    text: '等待处理',
+    text: i18n.t('common.workflow.reopen'),
     color: '#f6a100',
   },
   CLOSED: {
-    text: '已关闭',
+    text: i18n.t('common.workflow.closed'),
     color: '#f6a100',
   },
 }
