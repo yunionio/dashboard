@@ -109,8 +109,22 @@ export default {
     },
     priceTips () {
       if (this.price) {
-        const _day = numerify(this.price * 24, '0,0.00')
-        const _month = numerify(this.priceTotal.month_price, '0,0.00')
+        let _day = numerify(this.price * 24, '0,0.00')
+        let _month = numerify(this.priceTotal.month_price, '0,0.00')
+        if (this.isPackage) {
+          _month = _month * this.durationNum
+          _day = numerify(_month / 30, '0,0.00')
+        } else {
+          _month = _day * 30
+        }
+        const { sku = {} } = this.values
+        if (sku && sku.provider && sku.provider === 'Huawei') {
+          if (this.isPackage) {
+            _day = this.price / 30
+          } else {
+            _day = this.price
+          }
+        }
         return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
       }
       return '--'
@@ -129,8 +143,17 @@ export default {
       let ret = `${this.currency} ${numerify(val, '0,0.00')}/`
       const { sku = {} } = this.values
       if (sku && sku.provider && sku.provider === 'Huawei') {
+        if (this.isPackage) {
+          ret = `${this.currency} ${numerify(val, '0,0.00')}/`
+          ret += this.$t('network.unit.month')
+          return ret
+        }
         ret = `${this.currency} ${numerify(val * 24, '0,0.00')}/`
         ret += this.$t('network.unit.day')
+        return ret
+      }
+      if (this.isPackage) {
+        ret += this.$t('network.unit.month')
         return ret
       }
       ret += this.$t('network.unit.hour')
