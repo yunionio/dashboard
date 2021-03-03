@@ -15,6 +15,11 @@ export default {
             },
           })
         },
+        meta: (obj) => {
+          return {
+            validate: obj.state !== 'CLOSED',
+          }
+        },
       },
     ]
   },

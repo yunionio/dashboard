@@ -64,6 +64,7 @@ export default {
       return {
         ...this.getParams,
         user_id: this.userInfo.id,
+        process_definition_key_exclude: 'customer-service',
       }
     },
     handleOpenSidepage (row) {

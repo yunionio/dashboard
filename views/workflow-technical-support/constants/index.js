@@ -9,11 +9,11 @@ export const statusMap = {
     text: '待用户反馈',
     color: '#7ed321',
   },
-  'IN PROGRESS': {
+  IN_PROGRESS: {
     text: '处理中',
     color: '#8a94a6',
   },
-  'RE OPEN': {
+  REOPEN: {
     text: '等待处理',
     color: '#f6a100',
   },
