@@ -131,7 +131,13 @@ export default {
       this.createDialog('ApplyJoinProjectDialog', {})
     },
     customeServiceHandle () {
-      this.createDialog('CustomeServiceDialog', {})
+      // this.createDialog('CustomeServiceDialog', {})
+      this.$router.push({
+        path: '/workflow-technical-support',
+        query: {
+          type: 'me-process',
+        },
+      })
     },
     applyProjectQuotaHandle () {
       this.createDialog('ApplyProjectQuotaDialog', {})
