@@ -190,6 +190,9 @@ export default {
   },
   methods: {
     isPower (obj) {
+      if (!obj.domain_id && obj.data.domain_id) {
+        obj = obj.data
+      }
       if (this.isAdminMode) return true
       if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
       return obj.tenant_id === this.userInfo.projectId
