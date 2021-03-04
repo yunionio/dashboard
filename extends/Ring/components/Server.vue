@@ -327,9 +327,9 @@ export default {
     },
   },
   created () {
-    // if (this.params && this.params.type !== 'k8s') {
-    //  this.form.fd = this.params
-    // }
+    if (this.params && this.params.type !== 'k8s') {
+      this.form.fd = this.params
+    }
     // this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {
