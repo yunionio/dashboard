@@ -1,22 +1,22 @@
 <template>
   <div class="browse-wrapper">
     <page-header :title="$t('common.workflow.browse')" />
-    <h4 class="header mt-4">{{$t('common.workflow.base_info')}}</h4>
+    <h4 class="header mt-4">{{ $t('common.workflow.base_info') }}</h4>
     <vxe-grid
       class="mt-2"
       :data="dataSource"
       :columns="columns" />
     <div class="reply-wrapper mt-4">
       <template v-if="isEdit">
-        <h4 class="header mt-4">{{$t('common.workflow.records')}}</h4>
-        <div class="mb-1">{{$t('common.workflow.reply')}}</div>
+        <h4 class="header mt-4">{{ $t('common.workflow.records') }}</h4>
+        <div class="mb-1">{{ $t('common.workflow.reply') }}</div>
         <a-textarea
           v-model="reply"
           :placeholder="$t('common.workflow.reply_help')"
           :auto-size="{ minRows: 3, maxRows: 5 }" />
         <div class="d-flex flex-row-reverse mt-4">
-          <a-button type="primary" @click="handleConfirm" :loading="loading">提交</a-button>
-          <a-button class="mr-2" @click="cancel">{{$t('compute.text_908')}}</a-button>
+          <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('common.workflow.submit') }}</a-button>
+          <a-button class="mr-2" @click="cancel">{{ $t('compute.text_908') }}</a-button>
         </div>
       </template>
       <a-list

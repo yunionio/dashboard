@@ -4616,6 +4616,7 @@
   "common.workflow.records": "工单记录",
   "common.workflow.reply_records": "回复记录",
   "common.workflow.reply": "回复",
+  "common.workflow.submit": "提交",
   "common.workflow.reply_help": "请输入回复信息",
   "common.workflow.back": "返回列表"
 }

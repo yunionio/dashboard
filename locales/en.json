@@ -4618,6 +4618,7 @@
   "common.workflow.records": "Work Order Records",
   "common.workflow.reply_records": "Reply Records",
   "common.workflow.reply": "Reply",
+  "common.workflow.submit": "Submit",
   "common.workflow.reply_help": "Please enter the reply message",
   "common.workflow.back": "Back to list"
 }
