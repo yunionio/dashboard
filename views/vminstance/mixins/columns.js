@@ -145,12 +145,26 @@ export default {
         width: 50,
         slots: {
           default: ({ row }) => {
-            let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
+            if (!row.metadata) return
+            const dist = row.metadata.os_distribution || row.metadata.distro
+            const version = row.metadata.os_version || row.metadata.version
+
+            let name = ''
+            let tooltip = ''
+            if (dist) {
+              tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
+            } else if (row.metadata.os_type) {
+              tooltip = row.metadata.os_type
+            } else {
+              tooltip = i18nLocale.t('compute.text_339')
+            }
+
+            name = dist || row.metadata.os_type || ''
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
+            } else if (name.includes('Linux') || name.includes('linux')) {
+              name = 'Linux'
             }
-            const version = (row.metadata && row.metadata.os_version) ? `${row.metadata.os_version}` : ''
-            const tooltip = (version.includes(name) ? version : `${name} ${version}`) || i18nLocale.t('compute.text_339') // 去重
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
