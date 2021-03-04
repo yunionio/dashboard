@@ -1087,7 +1087,7 @@ export class GenCreateData {
       data.disks.forEach((val, i) => {
         if (i === 0) { // 系统盘
           data.disks[i] = { ...val, image_id: this.fi.imageMsg.root_image.id }
-        } else {
+        } else if (this.fi.imageMsg.data_images && i - 1 < this.fi.imageMsg.data_images.length) {
           data.disks[i] = { ...val, image_id: this.fi.imageMsg.data_images[i - 1].id }
         }
       })
