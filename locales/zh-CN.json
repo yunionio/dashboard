@@ -4610,6 +4610,13 @@
   "common.workflow.pending": "待用户反馈",
   "common.workflow.in_progress": "处理中",
   "common.workflow.reopen": "等待处理",
-  "common.workflow.closed": "已关闭"
+  "common.workflow.closed": "已关闭",
+  "common.workflow.browse": "查看",
+  "common.workflow.base_info": "工单基本信息",
+  "common.workflow.records": "工单记录",
+  "common.workflow.reply_records": "回复记录",
+  "common.workflow.reply": "回复",
+  "common.workflow.reply_help": "请输入回复信息",
+  "common.workflow.back": "返回列表"
 }
 

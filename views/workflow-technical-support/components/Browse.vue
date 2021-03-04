@@ -1,18 +1,18 @@
 <template>
   <div class="browse-wrapper">
-    <page-header title="查看" />
-    <h4 class="header mt-4">工单基本信息</h4>
+    <page-header :title="$t('common.workflow.browse')" />
+    <h4 class="header mt-4">{{$t('common.workflow.base_info')}}</h4>
     <vxe-grid
       class="mt-2"
       :data="dataSource"
       :columns="columns" />
     <div class="reply-wrapper mt-4">
       <template v-if="isEdit">
-        <h4 class="header mt-4">工单记录</h4>
-        <div class="mb-1">回复</div>
+        <h4 class="header mt-4">{{$t('common.workflow.records')}}</h4>
+        <div class="mb-1">{{$t('common.workflow.reply')}}</div>
         <a-textarea
           v-model="reply"
-          placeholder="请输入回复信息"
+          :placeholder="$t('common.workflow.reply_help')"
           :auto-size="{ minRows: 3, maxRows: 5 }" />
         <div class="d-flex flex-row-reverse mt-4">
           <a-button type="primary" @click="handleConfirm" :loading="loading">提交</a-button>
@@ -20,7 +20,7 @@
         </div>
       </template>
       <a-list
-        header="回复记录"
+        :header="$t('common.workflow.reply_records')"
         class="comment-list"
         item-layout="horizontal"
         :data-source="replyData">
@@ -39,7 +39,7 @@
     </div>
     <page-footer>
       <div slot="right">
-        <a-button type="primary" @click="cancel">返回列表</a-button>
+        <a-button type="primary" @click="cancel">{{$t('common.workflow.back')}}</a-button>
       </div>
     </page-footer>
   </div>

@@ -2,7 +2,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: '查看',
+        label: this.$t('common.workflow.browse'),
         action: (obj) => {
           this.$router.push({
             name: 'WorkflowTechnicalSupportBrowse',

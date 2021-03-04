@@ -4612,5 +4612,12 @@
   "common.workflow.pending": "Pending",
   "common.workflow.in_progress": "In Progress",
   "common.workflow.reopen": "Reopen",
-  "common.workflow.closed": "Closed"
+  "common.workflow.closed": "Closed",
+  "common.workflow.browse": "View",
+  "common.workflow.base_info": "Work order basic information",
+  "common.workflow.records": "Work Order Records",
+  "common.workflow.reply_records": "Reply Records",
+  "common.workflow.reply": "Reply",
+  "common.workflow.reply_help": "Please enter the reply message",
+  "common.workflow.back": "Back to list"
 }
