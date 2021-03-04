@@ -20,7 +20,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getDomainFilter, getRegionFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import globalSearchMixins from '@/mixins/globalSearch'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -72,6 +72,8 @@ export default {
           ports: {
             label: this.$t('compute.text_349'),
           },
+          region: getRegionFilter(),
+          brand: getBrandFilter('brands', ['VMware', 'OneCloud']),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
         },
