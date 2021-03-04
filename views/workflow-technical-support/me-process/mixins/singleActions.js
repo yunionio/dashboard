@@ -3,6 +3,18 @@ export default {
   created () {
     this.singleActions = [
       {
+        label: '查看',
+        action: (obj) => {
+          this.$router.push({
+            name: 'WorkflowTechnicalSupportBrowse',
+            query: {
+              id: obj.id,
+              type: 'me-process',
+            },
+          })
+        },
+      },
+      {
         label: i18n.t('common_356'),
         action: obj => {
           this.createDialog('WorkflowSupportEndDialog', {

@@ -25,7 +25,6 @@ export default {
     },
   },
   data () {
-    console.log(Object.keys(statusMap))
     return {
       list: this.$list.createList(this, {
         id: this.listId,

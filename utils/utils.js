@@ -881,3 +881,16 @@ export function getKeyIgnoreCase (dict, needle) {
   }
   return null
 }
+
+export const escapeHTML = str =>
+  str.replace(
+    /[&<>'"]/g,
+    tag =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;',
+      }[tag] || tag),
+  )
