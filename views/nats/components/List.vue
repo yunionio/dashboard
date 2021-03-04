@@ -15,16 +15,11 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getFilter, getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-
-const BillingType = {
-  postpaid: i18n.t('network.text_533'),
-  prepaid: i18n.t('network.text_534'),
-}
 
 export default {
   name: 'NatList',
@@ -69,17 +64,14 @@ export default {
           nat_spec: {
             label: this.$t('network.text_536'),
           },
-          billing_type: {
-            label: this.$t('network.text_537'),
-            dropdown: true,
-            multiple: true,
-            items: Object.keys(BillingType).map((k) => {
-              return {
-                label: BillingType[k],
-                key: k,
-              }
-            }),
-          },
+          billing_type: getFilter({
+            field: 'billing_type',
+            title: this.$t('network.text_192'),
+            items: [
+              { label: this.$t('network.text_256'), key: 'postpaid' },
+              { label: this.$t('network.text_257'), key: 'prepaid' },
+            ],
+          }),
           project_domains: getProjectDomainFilter(),
         },
         responseData: this.responseData,

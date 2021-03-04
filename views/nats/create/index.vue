@@ -40,7 +40,7 @@
             v-bind="formItemLayout" />
         </template>
         <template>
-          <eip-config
+          <eip-config v-if="form.getFieldValue('provider') !== 'Huawei'"
             :decorators="decorators.eip"
             :eip-params="eipParams"
             :hypervisor="hypervisor"
