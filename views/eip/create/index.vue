@@ -22,7 +22,7 @@
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="this.cloudEnv === 'onpremise'">
+        <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="this.cloudEnv === 'onpremise'" v-show="showBgpTypes">
           <a-select v-decorator="decorators.bgp_type" @change="handleBgpTypeChange">
             <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('network.text_749') : item }}</a-select-option>
           </a-select>
@@ -242,6 +242,16 @@ export default {
       ret = { ...ret, ...{ 1: '1Mbps', [this.maxBandwidth]: `${this.maxBandwidth}Mbps` } }
       return ret
     },
+    showBgpTypes () {
+      if (!this.bgpTypeOptions || this.bgpTypeOptions.length === 0) {
+        return false
+      }
+      if (this.bgpTypeOptions.length === 1 && this.bgpTypeOptions[0] === '') {
+        return false
+      }
+
+      return true
+    },
     regionParams () {
       let params = {
         cloud_env: this.cloudEnv,
@@ -357,6 +367,7 @@ export default {
         usable: true,
         limit: 0,
         scope: this.scope,
+        server_type: 'eip',
         field: 'bgp_type',
       }
     },
@@ -403,6 +414,7 @@ export default {
           usable: true,
           limit: 0,
           field: 'bgp_type',
+          server_type: 'eip',
           scope: this.$scope,
         },
       }).then(({ data }) => {
