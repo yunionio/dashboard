@@ -62,7 +62,11 @@ export default {
         {
           label: this.$t('navbar.button.work_order_support'),
           action: () => {
-            this.createDialog('CustomeServiceDialog', {})
+            this.createDialog('CustomeServiceDialog', {
+              callback: () => {
+                this.fetchData()
+              },
+            })
           },
           meta: () => {
             return {
@@ -78,7 +82,7 @@ export default {
   },
   created () {
     this.initSidePageTab('me-process-detail')
-    this.list.fetchData()
+    this.fetchData()
   },
   methods: {
     getParam () {
@@ -87,6 +91,9 @@ export default {
         user_id: this.userInfo.id,
         process_definition_key: 'customer-service',
       }
+    },
+    fetchData () {
+      this.list.fetchData()
     },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'MeProcessSidePage', {

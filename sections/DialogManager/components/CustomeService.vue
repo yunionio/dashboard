@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { is } from 'ramda'
 import { mapGetters } from 'vuex'
 import workflowMixin from '@/mixins/workflow'
 import DialogMixin from '@/mixins/dialog'
@@ -74,7 +75,11 @@ export default {
       }
       await this.createWorkflow(variables)
       this.$message.success(this.$t('common.text00083'))
-      this.$router.push('/workflow')
+      if (this.params.callback && is(Function, this.params.callback)) {
+        this.params.callback()
+      } else {
+        this.$router.push('/workflow-technical-support')
+      }
     },
     async handleConfirm () {
       this.loading = true

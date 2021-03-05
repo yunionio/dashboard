@@ -1,4 +1,6 @@
+import { CLOSE_STATUS } from '../../constants'
 import i18n from '@/locales'
+
 export default {
   created () {
     this.singleActions = [
@@ -29,7 +31,7 @@ export default {
         },
         meta: (obj) => {
           return {
-            validate: obj.state !== 'CLOSED',
+            validate: !CLOSE_STATUS.includes(obj.state),
           }
         },
       },

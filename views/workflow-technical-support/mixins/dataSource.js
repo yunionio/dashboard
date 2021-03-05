@@ -16,6 +16,15 @@ export default {
         },
       }).then(res => {
         this.dataSource = res.data.data
+        if (this.dataSource.length > 0) {
+          const curData = this.dataSource[0]
+          if (curData.start_user_id === this.userInfo.id) {
+            this.extParams = {
+              is_initial: true,
+              approved: false,
+            }
+          }
+        }
       }).catch((err) => {
         this.dataSource = []
         throw err
