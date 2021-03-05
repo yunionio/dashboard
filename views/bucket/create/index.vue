@@ -32,6 +32,10 @@
             :showSync="true"
             :select-props="{ placeholder: $t('compute.text_149') }" />
         </a-form-item>
+        <a-form-item :label="$t('compute.text_1154')" class="mb-0">
+          <tag
+            v-decorator="decorators.tag" />
+        </a-form-item>
       </a-form>
     </page-body>
     <page-footer>
@@ -46,17 +50,26 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { formItemLayout } from '@Storage/constants/index.js'
+import Tag from '@/sections/Tag'
 import AreaSelects from '@/sections/AreaSelects'
 import { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
+function validateTag (rule, value, callback) {
+  if (R.is(Object, value) && Object.keys(value).length > 20) {
+    return callback(new Error(i18n.t('compute.text_209')))
+  }
+  callback()
+}
+
 export default {
   name: 'BucketCreate',
   components: {
     AreaSelects,
     DomainProject,
+    Tag,
   },
   data () {
     const cloudEnvOptions = getCloudEnvOptions('object_storage_brands', true)
@@ -119,6 +132,14 @@ export default {
           {
             rules: [
               { required: true, message: this.$t('network.text_689') },
+            ],
+          },
+        ],
+        tag: [
+          'tag',
+          {
+            rules: [
+              { validator: validateTag },
             ],
           },
         ],
@@ -223,16 +244,21 @@ export default {
       this.loading = true
       try {
         const values = await this.validateForm()
-        const { project, domain, ...rest } = values
+        const { project, domain, tag, ...rest } = values
+        let meta = {}
+        if (tag) {
+          meta = tag
+        }
         await new this.$Manager('buckets').create({
           data: {
             ...rest,
+            __meta__: meta,
             project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
             project_id: (project && project.key) || this.userInfo.projectId,
           },
         })
         this.loading = false
-        this.$message.success(this.$t('k8s.text_184'))
+        this.$message.success(this.$t('storage.text_62'))
         this.$router.push('/bucket')
       } catch (error) {
         this.loading = false
