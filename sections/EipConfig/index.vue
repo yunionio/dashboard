@@ -8,7 +8,7 @@
           :value="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_1359')" v-if="isNew && (cloudEnv === 'idc' || cloudEnv === 'onpremise')" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_1359')" v-if="isNew && (cloudEnv === 'idc' || cloudEnv === 'onpremise')"  v-show="showBgpTypes" v-bind="formItemLayout">
       <a-select v-decorator="decorators.bgp_type">
         <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('compute.text_1352') : item }}</a-select-option>
       </a-select>
@@ -116,6 +116,16 @@ export default {
         }
       }
       return privateHyper.includes(this.hypervisor)
+    },
+    showBgpTypes () {
+      if (!this.bgpTypeOptions || this.bgpTypeOptions.length === 0) {
+        return false
+      }
+      if (this.bgpTypeOptions.length === 1 && this.bgpTypeOptions[0] === '') {
+        return false
+      }
+
+      return true
     },
     types () {
       const ret = { ...types }
@@ -225,6 +235,7 @@ export default {
           usable: true,
           limit: 0,
           field: 'bgp_type',
+          server_type: 'eip',
           scope: this.$scope,
         },
       }).then(({ data }) => {
