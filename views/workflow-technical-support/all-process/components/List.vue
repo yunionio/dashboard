@@ -7,14 +7,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { statusMap } from '../../constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { PRIORITY_OPTS } from '@/constants/workflow'
 
 export default {
-  name: 'ApprovalStartList',
+  name: 'AllProcessList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     listId: String,
@@ -26,19 +28,23 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.listId,
-        resource: 'process-tasks',
+        resource: 'historic-process-instances',
         apiVersion: 'v1',
         getParams: this.getParam,
         sortKeys: ['create_time'],
         filterOptions: {
-          process_instance_id: {
+          id: {
             label: this.$t('common_350'),
           },
-          resource_name: {
-            label: this.$t('common_151'),
-          },
-          resource_project: {
-            label: this.$t('common_310'),
+          status: {
+            label: this.$t('common.status'),
+            dropdown: true,
+            items: Object.keys(statusMap).map((v) => {
+              return {
+                label: statusMap[v]?.text || v,
+                key: v,
+              }
+            }),
           },
           priority: {
             label: this.$t('common.workflow_priority'),
@@ -55,22 +61,24 @@ export default {
       groupActions: [],
     }
   },
+  computed: {
+    ...mapGetters(['userInfo']),
+  },
   created () {
-    this.initSidePageTab('approval-start-detail')
+    this.initSidePageTab('all-process-detail')
     this.list.fetchData()
   },
   methods: {
     getParam () {
       return {
         ...this.getParams,
-        user_id: this.userInfo.id,
-        process_definition_key_exclude: 'customer-service',
+        process_definition_key: 'customer-service',
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'ApprovalStartSidePage', {
+      this.sidePageTriggerHandle(this, 'AllProcessSidePage', {
         id: row.id,
-        resource: 'process-tasks',
+        resource: 'historic-process-instances',
         apiVersion: 'v1',
         getParams: this.getParam,
       }, {

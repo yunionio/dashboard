@@ -1,12 +1,15 @@
+import WorkflowTechnicalSupportBrowse from '@/views/workflow-technical-support/browse'
 import NotFoundPage from '@/views/exception/404'
 import NoPermission from '@/views/exception/403'
 import EmailVerify from '@/views/email-verify'
 import NoProject from '@/views/no-project'
 import NoProjectStatus from '@/views/no-project/Status'
 import Workflow from '@/views/workflow'
+import WorkflowTechnicalSupport from '@/views/workflow-technical-support'
 import Clouduser from '@/views/clouduser'
 import WorkflowSuccess from '@/views/workflow/success'
 import WorkflowError from '@/views/workflow/error'
+import Layout from '@/layouts/RouterView'
 
 export const menusConfig = getModulesRouteConfig()
 
@@ -17,6 +20,23 @@ const routes = [
     name: 'Workflow',
     path: '/workflow',
     component: Workflow,
+  },
+  {
+    name: 'WorkflowTechnicalSupport',
+    path: '/workflow-technical-support',
+    component: Layout,
+    children: [
+      {
+        name: 'WorkflowTechnicalSupport',
+        path: '',
+        component: WorkflowTechnicalSupport,
+      },
+      {
+        name: 'WorkflowTechnicalSupportBrowse',
+        path: 'browse',
+        component: WorkflowTechnicalSupportBrowse,
+      },
+    ],
   },
   {
     name: 'Clouduser',

@@ -65,6 +65,7 @@ export default {
         ...this.getParams,
         user_id: this.userInfo.id,
         delete_reason: 'completed',
+        process_definition_key_exclude: 'customer-service',
       }
     },
     handleOpenSidepage (row) {

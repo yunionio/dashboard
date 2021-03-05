@@ -9,6 +9,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { statusMap } from '../../constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { PRIORITY_OPTS } from '@/constants/workflow'
@@ -34,11 +35,15 @@ export default {
           process_instance_id: {
             label: this.$t('common_350'),
           },
-          resource_name: {
-            label: this.$t('common_151'),
-          },
-          resource_project: {
-            label: this.$t('common_310'),
+          status: {
+            label: this.$t('common.status'),
+            dropdown: true,
+            items: Object.keys(statusMap).map((v) => {
+              return {
+                label: statusMap[v]?.text || v,
+                key: v,
+              }
+            }),
           },
           priority: {
             label: this.$t('common.workflow_priority'),
@@ -64,7 +69,7 @@ export default {
       return {
         ...this.getParams,
         user_id: this.userInfo.id,
-        process_definition_key_exclude: 'customer-service',
+        process_definition_key: 'customer-service',
       }
     },
     handleOpenSidepage (row) {
