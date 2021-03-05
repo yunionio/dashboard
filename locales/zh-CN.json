@@ -4608,7 +4608,7 @@
   "common.renew": "续费",
   "common.workflow.open": "已提交",
   "common.workflow.pending": "待用户反馈",
-  "common.workflow.in_progress": "处理中",
+  "common.workflow.in_process": "处理中",
   "common.workflow.reopen": "等待处理",
   "common.workflow.closed": "已关闭",
   "common.workflow.browse": "查看",

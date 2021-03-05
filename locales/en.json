@@ -4610,7 +4610,7 @@
   "common.renew": "Renewal",
   "common.workflow.open": "Open",
   "common.workflow.pending": "Pending",
-  "common.workflow.in_progress": "In Progress",
+  "common.workflow.in_process": "In Process",
   "common.workflow.reopen": "Reopen",
   "common.workflow.closed": "Closed",
   "common.workflow.browse": "View",

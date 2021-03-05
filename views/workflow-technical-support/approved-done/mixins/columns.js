@@ -2,6 +2,7 @@ import {
   getProcessDefinitionNameTableColumn,
   getPriorityTableColumn,
 } from '../../utils/columns'
+import { statusMap } from '../../constants'
 import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
@@ -41,14 +42,13 @@ export default {
         showOverflow: 'title',
         slots: {
           default: ({ row }, h) => {
-            if (row.variables.satisfied) {
+            const statusObj = statusMap[row.process_instance.state]
+            if (statusObj) {
               return [
-                <span style="color: #7ed321;">{this.$t('common.pass')}</span>,
+                <span style={{ color: statusObj.color }}>{statusObj.text}</span>,
               ]
             }
-            return [
-              <span style="color: #f6a100;">{this.$t('common.pending')}</span>,
-            ]
+            return row.process_instance.state
           },
         },
       },
