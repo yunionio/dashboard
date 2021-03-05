@@ -1375,5 +1375,6 @@
   "compute.detach_network": "Detach",
   "compute.detach_network_title": "Detach NIC",
   "compute.nic": "NIC",
-  "compute.server_detach_network.only_last_one": "Only the last NIC can be detached"
+  "compute.server_detach_network.only_last_one": "Only the last NIC can be detached",
+  "migration.project.error": "The project view does not support migration operation"
 }

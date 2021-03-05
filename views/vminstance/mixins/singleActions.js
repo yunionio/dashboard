@@ -1241,6 +1241,7 @@ export default {
                       return ret
                     }
                     if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
