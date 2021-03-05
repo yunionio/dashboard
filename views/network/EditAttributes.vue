@@ -20,6 +20,7 @@
           <a-radio-button
             v-for="item of serverTypeOpts"
             :key="item.key"
+            :disabled="item.key !== server_type"
             :value="item.key">{{ item.label }}</a-radio-button>
         </a-radio-group>
       </a-form-item>
