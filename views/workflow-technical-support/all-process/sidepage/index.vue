@@ -25,7 +25,7 @@ import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'AllProcessSidePage',
+  name: 'WorkflowSupportAllProcessSidePage',
   components: {
     AllProcessDetail,
     Actions,

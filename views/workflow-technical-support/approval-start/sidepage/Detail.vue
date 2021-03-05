@@ -31,7 +31,7 @@ import { getWorkflowType, WORKFLOW_TYPES } from '@/constants/workflow'
 import { HYPERVISORS_GROUP } from '@/constants'
 
 export default {
-  name: 'ApprovalStartDetail',
+  name: 'WorkflowSupportApprovalStartDetail',
   mixins: [serverConfMixin, ProjectQuotaMixin, DomainQuotaMixin, PriceMixin],
   props: {
     data: {

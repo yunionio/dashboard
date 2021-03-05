@@ -30,7 +30,7 @@ import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'ApprovalStartSidePage',
+  name: 'WorkflowSupportApprovalStartSidePage',
   components: {
     ApprovalStartDetail,
     Actions,
