@@ -55,10 +55,10 @@ export default {
       loading: false,
       formItemLayout: {
         wrapperCol: {
-          span: 8,
+          span: 16,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
       tailFormItemLayout: {
