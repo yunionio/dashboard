@@ -83,24 +83,14 @@ export default {
         const ids = this.params.data.map(item => item.id || (item.process_instance && item.process_instance.id))
         const values = await this.form.fc.validateFields()
         const params = {
-          variables: {
-            satisfied: true, // 审批结果：true通过，false拒绝
-            comment: values.isResove ? `${this.$t('common_358')}: ${values.remarks || this.$t('common_456')}` : `${this.$t('common_359')}: ${values.remarks || this.$t('common_457')}`, // 审批意见
-          },
+          delete_reason: values.isResove ? `${this.$t('common_358')}: ${values.remarks || this.$t('common_456')}` : `${this.$t('common_359')}: ${values.remarks || this.$t('common_457')}`, // 审批意见
         }
-        const state = this.selectedItems[0].process_instance && this.selectedItems[0].process_instance.state
-        if (state === 'CUSTOM_TODO') {
-          params.variables.user_retry = true
-        }
-        const res = await new this.$Manager('process-tasks', 'v1').batchUpdate({
+        const res = await new this.$Manager('process-instances', 'v1').batchDelete({
           ids,
-          data: params,
+          params,
         })
         const isOk = res.data.data.every(item => item.status === 200)
         if (isOk) {
-          if (this.params.vm && this.params.vm.destroySidePages) {
-            this.params.vm.destroySidePage(this.params.vm.windowId)
-          }
           if (this.params.success && R.is(Function, this.params.success)) {
             this.params.success(res)
           }

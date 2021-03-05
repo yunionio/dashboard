@@ -1,7 +1,7 @@
 <template>
   <div>
     <browse
-      :readOnly="readOnly"
+      :isEdit="isEdit"
       :type="processType"
       :columns="columns"
       :dataSource="dataSource" />
@@ -12,6 +12,7 @@
 import Browse from '../../components/Browse'
 import ColumnsMixin from '../mixins/columns'
 import DataSourceMixin from '../../mixins/dataSource'
+import { CLOSE_STATUS } from '../../constants'
 
 export default {
   name: 'WorkflowSupportMeProcessBrowseIndex',
@@ -26,8 +27,8 @@ export default {
     }
   },
   computed: {
-    readOnly () {
-      return false
+    isEdit () {
+      return !this.dataSource.every(v => CLOSE_STATUS.includes(v.state))
     },
   },
   created () {
