@@ -76,7 +76,7 @@ export default {
         data,
         resId: this.resId,
         columns: this.columns,
-        title: this.$t('compute.text_261'),
+        title: this.$t('compute.perform_delete'),
         list: this.list,
       })
     },

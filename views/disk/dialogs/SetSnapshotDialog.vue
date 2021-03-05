@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_426')}}</div>
+    <div slot="header">{{$t('compute.disk_perform_setup_snapshot_policy')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" :action="$t('compute.text_426')" />
+      <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.disk')" :action="$t('compute.disk_perform_setup_snapshot_policy')" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

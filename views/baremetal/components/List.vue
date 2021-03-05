@@ -109,7 +109,7 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           permission: 'server_create',
           action: () => {
             this.$router.push({
@@ -235,7 +235,7 @@ export default {
                 },
               },
               {
-                label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+                label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
                 permission: 'server_perform_change_owner',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
@@ -260,7 +260,7 @@ export default {
                 },
               },
               {
-                label: this.$t('compute.text_282'),
+                label: this.$t('compute.perform_sync_status'),
                 permission: 'server_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
@@ -287,7 +287,7 @@ export default {
               },
               disableDeleteAction(this),
               {
-                label: this.$t('compute.text_261'),
+                label: this.$t('compute.perform_delete'),
                 permission: 'server_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
@@ -295,7 +295,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
-                    title: this.$t('compute.text_261'),
+                    title: this.$t('compute.perform_delete'),
                   })
                 },
                 meta: () => {

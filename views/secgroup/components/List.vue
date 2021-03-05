@@ -120,11 +120,11 @@ export default {
       const _frontGroupActions = this.frontGroupActions ? this.frontGroupActions.bind(this)() || [] : []
       const createAction = {
         index: 0,
-        label: this.$t('compute.text_18'),
+        label: this.$t('compute.perform_create'),
         permission: 'secgroups_create',
         action: () => {
           this.createDialog('CreateSecgroupDialog', {
-            title: this.$t('compute.text_18'),
+            title: this.$t('compute.perform_create'),
             onManager: this.onManager,
             refresh: this.refresh,
           })
@@ -197,14 +197,14 @@ export default {
         },
         {
           index: 3,
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           permission: 'secgroups_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: this.$t('compute.text_261'),
+              title: this.$t('compute.perform_delete'),
               name: this.$t('dictionary.secgroup'),
               onManager: this.onManager,
             })

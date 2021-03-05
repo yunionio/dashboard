@@ -100,7 +100,7 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.text_282'),
+          label: this.$t('compute.perform_sync_status'),
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['running', 'ready'],
@@ -135,7 +135,7 @@ export default {
           },
         },
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           permission: 'snapshots_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
@@ -143,7 +143,7 @@ export default {
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,
-              title: this.$t('compute.text_261'),
+              title: this.$t('compute.perform_delete'),
               name: this.$t('compute.text_462'),
             })
           },

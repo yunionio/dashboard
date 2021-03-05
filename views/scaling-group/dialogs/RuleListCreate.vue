@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_18')}}</div>
+    <div slot="header">{{$t('compute.perform_create')}}</div>
     <div slot="body">
        <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_228')">

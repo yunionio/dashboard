@@ -82,11 +82,11 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           permission: 'skus_create',
           action: () => {
             this.createDialog('CreateSkuDialog', {
-              title: this.$t('compute.text_18'),
+              title: this.$t('compute.perform_create'),
               onManager: this.onManager,
             })
           },
@@ -114,7 +114,7 @@ export default {
             return [
               ...getEnabledSwitchActions(this, undefined, ['skus_update', 'skus_update']),
               {
-                label: this.$t('compute.text_261'),
+                label: this.$t('compute.perform_delete'),
                 permission: 'skus_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {

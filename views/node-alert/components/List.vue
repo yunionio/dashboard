@@ -115,7 +115,7 @@ export default {
       ],
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           action: () => {
             this.createDialog('CreateNodeAlert', {
               list: this.list,
@@ -142,7 +142,7 @@ export default {
           },
         },
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           permission: 'server_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
@@ -176,7 +176,7 @@ export default {
           },
         },
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           permission: 'server_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
