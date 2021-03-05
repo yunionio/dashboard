@@ -2514,7 +2514,7 @@
     },
     "tips": {
       "service_message": "服务消息",
-      "pending_work_order": "待处理工单"
+      "pending_work_order": "审批工单"
     }
   },
   "message": {
