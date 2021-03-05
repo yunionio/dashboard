@@ -22,19 +22,21 @@
             </div>
           </div>
           <!-- 技术支持 -->
-          <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('common.text00036')}}</span></div>
-          <ul class="work-list">
-            <i18n path="navbar.button.work_order_undone" tag="li" @click="goHistoricProcessToSupport">
-              <template #num>
-                <a>{{workflowStatistics['nr-historic-process-instance-cus'] || 0}}</a>
-              </template>
-            </i18n>
-            <i18n path="navbar.button.pending_work_order" tag="li" @click="goProcessTaskToSupport">
-              <template #num>
-                <a>{{workflowStatistics['nr-process-task-cus'] || 0}}</a>
-              </template>
-            </i18n>
-          </ul>
+          <template v-if="customerServiceEnabled">
+            <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('common.text00036')}}</span></div>
+            <ul class="work-list">
+              <i18n path="navbar.button.work_order_undone" tag="li" @click="goHistoricProcessToSupport">
+                <template #num>
+                  <a>{{workflowStatistics['nr-historic-process-instance-cus'] || 0}}</a>
+                </template>
+              </i18n>
+              <i18n path="navbar.button.pending_work_order" tag="li" @click="goProcessTaskToSupport">
+                <template #num>
+                  <a>{{workflowStatistics['nr-process-task-cus'] || 0}}</a>
+                </template>
+              </i18n>
+            </ul>
+          </template>
           <!-- 待处理工单 -->
           <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('navbar.tips.pending_work_order')}}</span></div>
           <ul class="work-list">
