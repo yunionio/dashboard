@@ -4607,5 +4607,18 @@
   "common.unit.hour.with.adj": "Hour",
   "common.unit.month.with.adj": "Month",
   "common.unit.year": "Year",
-  "common.renew": "Renewal"
+  "common.renew": "Renewal",
+  "common.workflow.open": "Open",
+  "common.workflow.pending": "Pending",
+  "common.workflow.in_process": "In Process",
+  "common.workflow.reopen": "Reopen",
+  "common.workflow.closed": "Closed",
+  "common.workflow.browse": "View",
+  "common.workflow.base_info": "Work order basic information",
+  "common.workflow.records": "Work Order Records",
+  "common.workflow.reply_records": "Reply Records",
+  "common.workflow.reply": "Reply",
+  "common.workflow.submit": "Submit",
+  "common.workflow.reply_help": "Please enter the reply message",
+  "common.workflow.back": "Back to list"
 }

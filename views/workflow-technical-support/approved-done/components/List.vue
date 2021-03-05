@@ -9,12 +9,13 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { statusMap } from '../../constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { PRIORITY_OPTS } from '@/constants/workflow'
 
 export default {
-  name: 'ApprovalStartList',
+  name: 'ApprovedDoneList',
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     listId: String,
@@ -26,7 +27,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.listId,
-        resource: 'process-tasks',
+        resource: 'historic-task-instances',
         apiVersion: 'v1',
         getParams: this.getParam,
         sortKeys: ['create_time'],
@@ -34,11 +35,15 @@ export default {
           process_instance_id: {
             label: this.$t('common_350'),
           },
-          resource_name: {
-            label: this.$t('common_151'),
-          },
-          resource_project: {
-            label: this.$t('common_310'),
+          status: {
+            label: this.$t('common.status'),
+            dropdown: true,
+            items: Object.keys(statusMap).map((v) => {
+              return {
+                label: statusMap[v]?.text || v,
+                key: v,
+              }
+            }),
           },
           priority: {
             label: this.$t('common.workflow_priority'),
@@ -56,7 +61,7 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('approval-start-detail')
+    this.initSidePageTab('approval-done-detail')
     this.list.fetchData()
   },
   methods: {
@@ -64,13 +69,14 @@ export default {
       return {
         ...this.getParams,
         user_id: this.userInfo.id,
-        process_definition_key_exclude: 'customer-service',
+        delete_reason: 'completed',
+        process_definition_key: 'customer-service',
       }
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'ApprovalStartSidePage', {
+      this.sidePageTriggerHandle(this, 'ApprovedDoneSidePage', {
         id: row.id,
-        resource: 'process-tasks',
+        resource: 'historic-task-instances',
         apiVersion: 'v1',
         getParams: this.getParam,
       }, {
