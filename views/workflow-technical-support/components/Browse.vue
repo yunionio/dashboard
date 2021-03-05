@@ -15,7 +15,7 @@
           :placeholder="$t('common.workflow.reply_help')"
           :auto-size="{ minRows: 3, maxRows: 5 }" />
         <div class="d-flex flex-row-reverse mt-4">
-          <a-button :disabled="!reply" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common.workflow.submit') }}</a-button>
+          <a-button :disabled="!getTrimVal(reply)" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common.workflow.submit') }}</a-button>
           <a-button class="mr-2" @click="cancel">{{ $t('compute.text_908') }}</a-button>
         </div>
       </template>
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { trim } from 'ramda'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { escapeHTML } from '@/utils/utils'
@@ -76,6 +77,12 @@ export default {
       type: Boolean,
       default: true,
     },
+    extParams: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
   },
   data () {
     return {
@@ -101,11 +108,12 @@ export default {
   methods: {
     handleConfirm () {
       const params = {
-        comment: escapeHTML(this.reply),
+        comment: escapeHTML(trim(this.reply)),
         is_initial: true,
         satisfied: false,
         approved: true,
         user_id: this.userInfo.id,
+        ...this.extParams,
       }
       new this.$Manager('process-instances', 'v1').update({
         id: `${this.id}/process_comment`,
@@ -117,6 +125,9 @@ export default {
     },
     getAvatar (val) {
       return val.toUpperCase().substr(0, 1) || 'M'
+    },
+    getTrimVal (val) {
+      return trim(val)
     },
     cancel () {
       this.$router.go(-1)

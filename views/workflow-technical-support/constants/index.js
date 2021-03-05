@@ -26,3 +26,5 @@ export const statusMap = {
     color: '#8a94a6',
   },
 }
+
+export const CLOSE_STATUS = ['COMPLETED', 'EXTERNALLY_TERMINATED']
