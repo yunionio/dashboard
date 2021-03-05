@@ -119,6 +119,7 @@ export default {
         zone: this.params.zone,
         scope: this.scope,
         wire: this.params.data[0].wire_id,
+        filter: 'server_type.notin(ipmi, pxe)',
       }
       if (this.params.hypervisor === HYPERVISORS_MAP.esxi.key) {
         params.vpc_id = 'default'
