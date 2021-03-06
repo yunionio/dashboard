@@ -162,7 +162,7 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           permission: 'server_create',
           action: () => {
             this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_callback_address', () => {
@@ -334,7 +334,7 @@ export default {
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                   },
                   {
-                    label: this.$t('compute.text_282'),
+                    label: this.$t('compute.perform_sync_status'),
                     action: () => {
                       this.onManager('batchPerformAction', {
                         steadyStatus: ['running', 'ready'],
@@ -453,7 +453,7 @@ export default {
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_change_config'),
                   },
                   {
-                    label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+                    label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
                     action: () => {
                       this.createDialog('ChangeOwenrDialog', {
                         data: this.list.selectedItems,
@@ -855,14 +855,14 @@ export default {
               },
               {
                 /* 删除 */
-                label: this.$t('compute.text_261'),
+                label: this.$t('compute.perform_delete'),
                 submenus: [
                   disableDeleteAction(this, {
                     name: this.$t('dictionary.server'),
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
                   }),
                   {
-                    label: this.$t('compute.text_261'),
+                    label: this.$t('compute.perform_delete'),
                     permission: 'server_delete',
                     action: () => {
                       this.$openNewWindowForMenuHook('vminstance_configured_callback_address.delete_callback_address', () => {
@@ -871,7 +871,7 @@ export default {
                           data: this.list.selectedItems,
                           columns: this.columns,
                           onManager: this.onManager,
-                          title: this.$t('compute.text_261'),
+                          title: this.$t('compute.perform_delete'),
                         })
                       })
                     },

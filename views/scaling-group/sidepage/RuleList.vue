@@ -160,13 +160,13 @@ export default {
             return [
               ...getEnabledSwitchActions(this, obj, ['scalingpolicies_perform_enable', 'scalingpolicies_perform_disable']),
               {
-                label: this.$t('compute.text_261'),
+                label: this.$t('compute.perform_delete'),
                 permission: 'scalingpolicies_delete',
                 action: (obj) => {
                   this.createDialog('DeleteResDialog', {
                     data: [obj],
                     columns: this.columns,
-                    title: this.$t('compute.text_261'),
+                    title: this.$t('compute.perform_delete'),
                     onManager: this.onManager,
                     refresh: this.refresh,
                   })
@@ -184,11 +184,11 @@ export default {
       ],
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           permission: 'scalingpolicies_create',
           action: () => {
             this.createDialog('FiexRuleListCreateDialog', {
-              title: this.$t('compute.text_18'),
+              title: this.$t('compute.perform_create'),
               resData: this.data,
               refresh: this.refresh,
               onManager: this.onManager,
@@ -223,13 +223,13 @@ export default {
                 }),
               },
               {
-                label: this.$t('compute.text_261'),
+                label: this.$t('compute.perform_delete'),
                 permission: 'scalingpolicies_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: this.$t('compute.text_261'),
+                    title: this.$t('compute.perform_delete'),
                     onManager: this.onManager,
                   })
                 },

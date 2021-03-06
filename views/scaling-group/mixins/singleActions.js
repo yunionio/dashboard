@@ -7,11 +7,11 @@ export default {
     this.singleActions = [
       ...getEnabledSwitchActions(this, undefined, ['scalinggroups_perform_enable', 'scalinggroups_perform_disable']),
       {
-        label: i18n.t('compute.text_261'),
+        label: i18n.t('compute.perform_delete'),
         permission: 'scalinggroups_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
-            title: i18n.t('compute.text_261'),
+            title: i18n.t('compute.perform_delete'),
             name: i18n.t('compute.text_95'),
             data: [obj],
             columns: this.columns,

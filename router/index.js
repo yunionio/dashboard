@@ -38,6 +38,7 @@ import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 
 import { hasSetupKey } from '@/utils/auth'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 export default {
   index: 20,
@@ -56,7 +57,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_91'),
             permission: 'servers_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.vminstance')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -82,7 +88,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_92'),
             permission: 'servers_list',
-            hidden: () => !hasSetupKey(['baremetal']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.baremetal')) {
+                return true
+              }
+              return !hasSetupKey(['baremetal'])
+            },
           },
           component: Layout,
           children: [
@@ -104,7 +115,12 @@ export default {
             label: i18n.t('compute.text_93'),
             permission: 'instancegroups_list',
             t: 'dictionary.instancegroup',
-            hidden: () => !hasSetupKey(['onestack']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.instancegroup')) {
+                return true
+              }
+              return !hasSetupKey(['onestack'])
+            },
           },
           component: Layout,
           children: [
@@ -121,7 +137,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_94'),
             permission: 'servertemplates_list',
-            hidden: () => !hasSetupKey(['onestack', 'azure']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.servertemplate')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'azure'])
+            },
           },
           component: Layout,
           children: [
@@ -150,7 +171,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_95'),
             permission: 'scalinggroups_list',
-            hidden: () => !hasSetupKey(['onestack', 'azure']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.scalinggroup')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'azure'])
+            },
           },
           component: Layout,
           children: [
@@ -180,7 +206,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_97'),
             permission: 'images_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.image')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -201,7 +232,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_98'),
             permission: 'guestimages_list',
-            hidden: () => !hasSetupKey(['onestack']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.host_image')) {
+                return true
+              }
+              return !hasSetupKey(['onestack'])
+            },
           },
           component: Layout,
           children: [
@@ -224,7 +260,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_100'),
             permission: 'disks_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.disk')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -245,7 +286,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_101'),
             permission: 'snapshots_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.disk_snapshot')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public'])
+            },
           },
           component: Layout,
           children: [
@@ -261,7 +307,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_102'),
             permission: 'instance_snapshots_list',
-            hidden: () => !hasSetupKey(['onestack']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
+                return true
+              }
+              return !hasSetupKey(['onestack'])
+            },
           },
           component: Layout,
           children: [
@@ -277,7 +328,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_103'),
             permission: 'snapshotpolicy_list',
-            hidden: () => !hasSetupKey(['onestack', 'aliyun', 'qcloud']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.snapshotpolicy')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'aliyun', 'qcloud'])
+            },
           },
           component: Layout,
           children: [
@@ -300,7 +356,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_105'),
             permission: 'secgroups_list',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.secgroup')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'public', 'private'])
+            },
           },
           component: Layout,
           children: [
@@ -316,7 +377,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_106'),
             permission: 'networks_list',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.network2')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -342,7 +408,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_107'),
             permission: 'eips_list',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.eip2')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'public', 'private'])
+            },
           },
           component: Layout,
           children: [
@@ -369,7 +440,12 @@ export default {
           path: '/keypair',
           meta: {
             label: i18n.t('compute.text_108'),
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.keypair')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'public', 'private', 'baremetal', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -393,7 +469,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_109'),
             permission: 'serverskus_list',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'baremetal', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.sku')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'baremetal', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -417,7 +498,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_111'),
             permission: 'hosts_list',
-            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.host')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+            },
             // hidden: () => {
             //   const hasBMAgent = hasServices('bmagent')
             //   const hasHostAgent = hasServices('hostagent')
@@ -441,7 +527,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_112'),
             permission: 'hosts_list',
-            hidden: () => !hasSetupKey(['baremetal']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.physicalmachine')) {
+                return true
+              }
+              return !hasSetupKey(['baremetal'])
+            },
             // hidden: () => {
             //   const hasBMAgent = hasServices('bmagent')
             //   if (!hasBMAgent) {
@@ -469,7 +560,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_113'),
             permission: 'isolated_devices_list',
-            hidden: () => !hasSetupKey(['onestack']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.gpu')) {
+                return true
+              }
+              return !hasSetupKey(['onestack'])
+            },
             // hidden: () => {
             //   const hasBMAgent = hasServices('bmagent')
             //   const hasHostAgent = hasServices('hostagent')
@@ -543,7 +639,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_91'),
             permission: 'servers_list,server_delete',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.serverrecovery')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -559,7 +660,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_100'),
             permission: 'disks_list,disks_delete',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.diskrecovery')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -576,7 +682,12 @@ export default {
           meta: {
             label: i18n.t('compute.text_96'),
             permission: 'images_list,images_delete',
-            hidden: () => !hasSetupKey(['onestack', 'public', 'private', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.imagerecovery')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'public', 'private', 'vmware'])
+            },
           },
           component: Layout,
           children: [

@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_402')}}</div>
+    <div slot="header">{{$t('compute.disk_perform_resize')}}</div>
     <div slot="body">
       <a-alert type="warning" class="mb-2">
         <template #message>
@@ -13,7 +13,7 @@
           </div>
         </template>
       </a-alert>
-      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_402')" :name="$t('dictionary.disk')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.disk_perform_resize')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

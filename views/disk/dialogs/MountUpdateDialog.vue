@@ -1,8 +1,8 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_424')}}</div>
+    <div slot="header">{{$t('compute.disk_perform_attach')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_424')" :name="$t('dictionary.disk')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.disk_perform_attach')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

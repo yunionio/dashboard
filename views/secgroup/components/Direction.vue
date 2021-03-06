@@ -167,14 +167,14 @@ export default {
           },
         },
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           permission: 'secgrouprules_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
               columns: this.columns,
-              title: this.$t('compute.text_261'),
+              title: this.$t('compute.perform_delete'),
               name: this.$t('compute.text_984'),
               onManager: this.onManager,
               refresh: this.refresh,
@@ -189,7 +189,7 @@ export default {
       ],
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           permission: 'secgrouprules_create',
           action: () => {
             this.createDialog('EditRulesDialog', {
@@ -209,14 +209,14 @@ export default {
           },
         },
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           permission: 'secgrouprules_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: this.$t('compute.text_261'),
+              title: this.$t('compute.perform_delete'),
               name: this.$t('compute.text_984'),
               onManager: this.onManager,
             })

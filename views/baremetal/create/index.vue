@@ -57,7 +57,7 @@
                     <a-icon type="close-circle" theme="twoTone" twoToneColor="#eb2f96" v-show="idx === 0 && isShowFalseIcon" />
                   </a-tooltip>
                 </template>
-                <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">{{$t('compute.text_261')}}</a>
+                <a href="javascript:;" slot="extra" @click="handleDiskItemRemove(idx)" v-show="idx === diskOptionsDate.length - 1">{{$t('compute.perform_delete')}}</a>
                 <div class="d-flex align-items-center">
                   <ve-pie :data="item.chartData" :settings="chartSettings" :events="chartFun(idx)" width="200px" height="200px" :legend-visible="false" />
                   <div class="flex-fill ml-2">
@@ -923,7 +923,7 @@ export default {
     // 添加硬盘配置
     addDisk () {
       this.createDialog('BaremetalCreateDiskDialog', {
-        title: i18n.t('compute.text_18'),
+        title: i18n.t('compute.perform_create'),
         list: this.list,
         diskData: this.diskData,
         diskOptionsDate: this.diskOptionsDate,

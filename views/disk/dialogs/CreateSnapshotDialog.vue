@@ -1,9 +1,9 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_414')}}</div>
+    <div slot="header">{{$t('compute.disk_perform_create_snapshot')}}</div>
     <div slot="body">
       <a-alert :message="errorInfo" banner v-if="errorInfo !== ''" />
-      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_414')" :name="$t('dictionary.disk')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.disk_perform_create_snapshot')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">

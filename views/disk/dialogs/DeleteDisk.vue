@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_261')}}</div>
+    <div slot="header">{{$t('compute.perform_delete')}}</div>
     <div slot="body">
       <a-alert class="mb-4" type="warning" v-if="isCeph">
         <div slot="message">{{$t('compute.text_419')}}</div>

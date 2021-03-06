@@ -58,7 +58,7 @@ export default {
       ],
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           actions: (obj) => {
             return [
               {
@@ -89,12 +89,12 @@ export default {
       ],
       singleActions: [
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           action: (obj) => {
             this.createDialog('DeleteCacheDialog', {
               data: [obj],
               columns: this.columns,
-              title: this.$t('compute.text_261'),
+              title: this.$t('compute.perform_delete'),
               onManager: this.onManager,
               imageId: this.resId,
               refresh: this.refresh,

@@ -170,7 +170,7 @@ export default {
                 },
               }),
               {
-                label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+                label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -274,7 +274,7 @@ export default {
                 },
               },
               {
-                label: this.$t('compute.text_261'),
+                label: this.$t('compute.perform_delete'),
                 permission: 'images_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {

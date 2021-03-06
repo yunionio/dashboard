@@ -310,7 +310,7 @@ export default {
                 },
               },
               {
-                label: this.$t('compute.text_282'),
+                label: this.$t('compute.perform_sync_status'),
                 action: () => {
                   this.list.batchPerformAction('syncstatus', null, this.list.steadyStatus)
                 },
@@ -395,14 +395,14 @@ export default {
                 meta: () => this.$isOwner(this.list.selectedItems),
               },
               {
-                label: this.$t('compute.text_261'),
+                label: this.$t('compute.perform_delete'),
                 permission: 'hosts_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
                     columns: this.columns,
-                    title: this.$t('compute.text_261'),
+                    title: this.$t('compute.perform_delete'),
                     onManager: this.onManager,
                   })
                 },

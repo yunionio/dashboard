@@ -183,7 +183,7 @@ export default {
   methods: {
     beforeShowMenu () {
       return this.$store.dispatch('scopedPolicy/get', {
-        category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address'],
+        category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address', 'disk_hidden_menus'],
       })
     },
   },
