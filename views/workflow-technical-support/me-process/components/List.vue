@@ -2,7 +2,6 @@
   <page-list
     :list="list"
     :columns="columns"
-    :group-actions="groupActions"
     :single-actions="singleActions" />
 </template>
 
