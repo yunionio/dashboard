@@ -1,6 +1,7 @@
 import {
   getProcessDefinitionNameTableColumn,
   getPriorityTableColumn,
+  getCommentTableColumn,
 } from '../../utils/columns'
 import { statusMap } from '../../constants'
 import {
@@ -52,6 +53,7 @@ export default {
           },
         },
       },
+      getCommentTableColumn(),
       getTimeTableColumn({ field: 'create_time', title: i18n.t('common_374') }),
       getTimeTableColumn({ field: 'end_time', title: i18n.t('common_387') }),
     ]
