@@ -17,11 +17,11 @@ export default {
         },
         {
           name: 'approval-start',
-          label: '待我处理',
+          label: i18n.t('common.workflow.approval_start'),
         },
         {
           name: 'approved-done',
-          label: '我已处理',
+          label: i18n.t('common.workflow.approval_done'),
         },
       ]
       if (this.isAdminMode) {
