@@ -4618,6 +4618,8 @@
   "common.workflow.reply": "回复",
   "common.workflow.submit": "提交",
   "common.workflow.reply_help": "请输入回复信息",
-  "common.workflow.back": "返回列表"
+  "common.workflow.back": "返回列表",
+  "common.workflow.approval_start": "待我处理",
+  "common.workflow.approval_done": "我已处理"
 }
 

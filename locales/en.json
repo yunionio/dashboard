@@ -4620,5 +4620,7 @@
   "common.workflow.reply": "Reply",
   "common.workflow.submit": "Submit",
   "common.workflow.reply_help": "Please enter the reply message",
-  "common.workflow.back": "Back to list"
+  "common.workflow.back": "Back to list",
+  "common.workflow.approval_start": "My Pending",
+  "common.workflow.approval_done": "I Resolved"
 }
