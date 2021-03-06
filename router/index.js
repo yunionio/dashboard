@@ -10,12 +10,13 @@ import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
 import Tag from '@Cloudenv/views/tag'
 import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
-import Policydefinition from '@Cloudenv/views/policydefinition'
+// import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 
 import store from '@/store'
 import i18n from '@/locales'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 export default {
   index: 90,
@@ -27,7 +28,6 @@ export default {
     {
       meta: {
         label: i18n.t('cloudenv.text_9'),
-        hidden: () => !hasSetupKey(['onestack', 'private', 'vmware']),
       },
       submenus: [
         {
@@ -35,6 +35,12 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_10'),
             permission: 'areas_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudregion')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -50,6 +56,12 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_11'),
             permission: 'zones_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.zone')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -72,7 +84,12 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_12'),
             permission: 'cloudaccounts_list',
-            hidden: () => !hasSetupKey(['private', 'vmware', 'public', 'storage']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudaccount')) {
+                return true
+              }
+              return !hasSetupKey(['private', 'vmware', 'public', 'storage'])
+            },
           },
           component: Layout,
           children: [
@@ -99,7 +116,12 @@ export default {
             label: i18n.t('cloudenv.text_491'),
             permission: 'cloudgroup_list',
             t: 'cloudenv.text_491',
-            hidden: () => store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudgroup')) {
+                return true
+              }
+              return store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google'])
+            },
           },
           component: Layout,
           children: [
@@ -115,7 +137,12 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_14'),
             permission: 'proxysettings_list',
-            hidden: () => !hasSetupKey(['private', 'vmware', 'public', 'storage']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.proxysetting')) {
+                return true
+              }
+              return !hasSetupKey(['private', 'vmware', 'public', 'storage'])
+            },
           },
           component: Layout,
           children: [
@@ -132,7 +159,12 @@ export default {
             label: i18n.t('cloudenv.text_15'),
             permission: 'cloudevents_list',
             t: 'dictionary.cloudevents',
-            hidden: () => !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudevent')) {
+                return true
+              }
+              return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud'])
+            },
           },
           component: Layout,
           children: [
@@ -154,6 +186,12 @@ export default {
           path: '/tag',
           meta: {
             label: i18n.t('cloudenv.text_16'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.tag')) {
+                return true
+              }
+              return false
+            },
           },
           component: Layout,
           children: [
@@ -212,14 +250,19 @@ export default {
     {
       meta: {
         label: i18n.t('cloudenv.text_17'),
-        hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware']),
       },
       submenus: [
         {
           path: '/schedtag',
           meta: {
             label: i18n.t('cloudenv.text_18'),
-            // permission: 'schedtags_list',
+            permission: 'schedtags_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
+                return true
+              }
+              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -235,6 +278,12 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_19'),
             permission: 'schedpolicies_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedpolicy')) {
+                return true
+              }
+              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -250,6 +299,12 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_20'),
             permission: 'dynamicschedtags_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.dynamicschedtag')) {
+                return true
+              }
+              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -262,7 +317,7 @@ export default {
         },
       ],
     },
-    {
+    /* {
       meta: {
         label: i18n.t('cloudenv.text_21'),
         hidden: true,
@@ -273,6 +328,7 @@ export default {
           meta: {
             label: i18n.t('cloudenv.text_21'),
             permission: 'policydefinitions_list',
+            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware']),
           },
           component: Layout,
           children: [
@@ -284,6 +340,6 @@ export default {
           ],
         },
       ],
-    },
+    }, */
   ],
 }
