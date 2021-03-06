@@ -7,9 +7,7 @@
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" :action="title" />
       <dialog-table :data="params.data" :columns="columns" />
-      <a-form
-        :form="form.fc"
-        hideRequiredMark>
+      <a-form :form="form.fc" layout="inline" hideRequiredMark>
         <reserve-resource :decorators="decorators" :label="$t('compute.text_561')" />
       </a-form>
     </div>
