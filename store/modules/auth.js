@@ -289,6 +289,9 @@ export default {
           key: data.username,
           value: newCurrentHistoryUserStorageValue,
         })
+        await commit('scopedPolicy/DEL_DATA', {
+          name: 'sub_hidden_menus',
+        })
         return response.data
       } catch (error) {
         throw error
@@ -301,6 +304,7 @@ export default {
         await commit('RESET_COOKIE')
         await commit('profile/REST_ID', null, { root: true })
         await commit('common/REST_BILL_CURRENCY', null, { root: true })
+        await commit('scopedPolicy/DEL_DATA', { name: 'sub_hidden_menus' }, { root: true })
         return response.data
       } catch (error) {
         throw error
