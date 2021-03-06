@@ -147,7 +147,7 @@ export default {
               },
             },
             {
-              label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+              label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
               permission: 'secgroups_create',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
@@ -182,14 +182,14 @@ export default {
               permission: 'secgroups_performAction',
             }),
             {
-              label: i18n.t('compute.text_261'),
+              label: i18n.t('compute.perform_delete'),
               permission: 'secgroups_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
                   columns: this.columns,
-                  title: i18n.t('compute.text_261'),
+                  title: i18n.t('compute.perform_delete'),
                   name: this.$t('dictionary.secgroup'),
                   onManager: this.onManager,
                 })

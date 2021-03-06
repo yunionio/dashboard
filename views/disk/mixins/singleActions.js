@@ -7,7 +7,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('compute.text_402'),
+        label: i18n.t('compute.disk_perform_resize'),
         permission: 'disks_perform_resize',
         action: obj => {
           this.createDialog('DiskCapacityUpdateDialog', {
@@ -28,13 +28,14 @@ export default {
             validate: true,
           }
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_resize'),
       },
       {
         label: i18n.t('compute.text_352'),
         actions: obj => {
           return [
             {
-              label: i18n.t('compute.text_424'),
+              label: i18n.t('compute.disk_perform_attach'),
               permission: 'disks_perform_attachdisk',
               action: () => {
                 this.createDialog('DiskMountUpdateDialog', {
@@ -68,9 +69,10 @@ export default {
                 ret.validate = true
                 return ret
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_attach'),
             },
             {
-              label: i18n.t('compute.text_439'),
+              label: i18n.t('compute.disk_perform_detach'),
               permission: 'disks_perform_detachdisk',
               action: () => {
                 this.createDialog('DiskUnMountUpdateDialog', {
@@ -120,9 +122,10 @@ export default {
                   tooltip: '',
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_detach'),
             },
             {
-              label: i18n.t('compute.text_414'),
+              label: i18n.t('compute.disk_perform_create_snapshot'),
               permission: 'disks_perform_create_snapshot',
               action: () => {
                 this.createDialog('DiskCreateSnapshotDialog', {
@@ -138,9 +141,10 @@ export default {
                   tooltip: diskCreateSnapshotConfig[provider](obj).tooltip,
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_create_snapshot'),
             },
             {
-              label: i18n.t('compute.text_426'),
+              label: i18n.t('compute.disk_perform_setup_snapshot_policy'),
               action: () => {
                 this.createDialog('DiskSetSnapshotDialog', {
                   vm: this,
@@ -222,9 +226,10 @@ export default {
                   validate: true,
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_setup_snapshot_policy'),
             },
             {
-              label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+              label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
@@ -248,9 +253,10 @@ export default {
                   tooltip: obj.guest ? i18n.t('compute.text_458', [i18n.t('dictionary.project')]) : '',
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_change_project'),
             },
             {
-              label: i18n.t('compute.text_282'),
+              label: i18n.t('compute.perform_sync_status'),
               permission: 'disks_perform_syncstatus',
               action: () => {
                 this.onManager('performAction', {
@@ -264,15 +270,16 @@ export default {
               meta: () => ({
                 validate: true,
               }),
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_syncstatus'),
             },
             {
-              label: i18n.t('compute.text_261'),
+              label: i18n.t('compute.perform_delete'),
               permission: 'disks_delete',
               action: () => {
                 this.createDialog('DiskDeleteDialog', {
                   data: [obj],
                   columns: this.columns,
-                  title: i18n.t('compute.text_261'),
+                  title: i18n.t('compute.perform_delete'),
                   onManager: this.onManager,
                   success: () => {
                     this.destroySidePage(this.windowId)
@@ -280,6 +287,7 @@ export default {
                 })
               },
               meta: () => this.$getDeleteResult(obj),
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_delete'),
             },
           ]
         },

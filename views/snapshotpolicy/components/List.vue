@@ -55,13 +55,13 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           permission: 'snapshotpolicy_create',
           action: () => {
             this.createDialog('CreateSnapshotPolicyDialog', {
               data: this.list.selectedItems,
               columns: this.columns,
-              title: this.$t('compute.text_18'),
+              title: this.$t('compute.perform_create'),
               refresh: this.refresh,
             })
           },
@@ -72,14 +72,14 @@ export default {
           },
         },
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           permission: 'snapshotpolicies_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: this.$t('compute.text_261'),
+              title: this.$t('compute.perform_delete'),
               name: this.$t('dictionary.snapshotpolicy'),
               onManager: this.onManager,
             })

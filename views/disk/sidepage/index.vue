@@ -9,7 +9,12 @@
     :loaded="loaded"
     @tab-change="handleTabChange">
     <template v-slot:actions>
-      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
+      <actions
+        :options="singleActions"
+        :row="detailData"
+        :before-show-menu="beforeShowMenu"
+        button-type="link"
+        button-size="small" />
     </template>
     <component
       :is="params.windowData.currentTab"
@@ -62,6 +67,13 @@ export default {
     },
     hiddenColumns () {
       return this.params.hiddenColumns || []
+    },
+  },
+  methods: {
+    beforeShowMenu () {
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: ['disk_hidden_menus'],
+      })
     },
   },
 }

@@ -50,13 +50,13 @@ export default {
       ],
       singleActions: [
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
               columns: this.columns,
-              title: this.$t('compute.text_261'),
+              title: this.$t('compute.perform_delete'),
               onManager: this.onManager,
             })
           },

@@ -49,10 +49,10 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           action: () => {
             this.createDialog('CreateKeyPairDialog', {
-              title: this.$t('compute.text_18'),
+              title: this.$t('compute.perform_create'),
               onManager: this.onManager,
             })
           },
@@ -61,13 +61,13 @@ export default {
           }),
         },
         {
-          label: this.$t('compute.text_261'),
+          label: this.$t('compute.perform_delete'),
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
               columns: this.columns,
-              title: this.$t('compute.text_261'),
+              title: this.$t('compute.perform_delete'),
               name: this.$t('dictionary.keypair'),
               onManager: this.onManager,
             })

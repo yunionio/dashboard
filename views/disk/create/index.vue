@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_18')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('compute.perform_create')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <a-form
       class="mt-3"
       :form="form.fc">

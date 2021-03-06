@@ -85,7 +85,7 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.text_18'),
+          label: this.$t('compute.perform_create'),
           permission: 'scalinggroups_create',
           action: () => {
             this.$router.push({
@@ -129,11 +129,11 @@ export default {
                 }),
               },
               {
-                label: this.$t('compute.text_261'),
+                label: this.$t('compute.perform_delete'),
                 permission: 'scalinggroups_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
-                    title: this.$t('compute.text_261'),
+                    title: this.$t('compute.perform_delete'),
                     name: this.$t('compute.text_95'),
                     data: this.list.selectedItems,
                     columns: this.columns,

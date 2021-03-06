@@ -25,7 +25,7 @@ export default {
           return [
             ...getEnabledSwitchActions(this, obj),
             {
-              label: i18n.t('compute.text_261'),
+              label: i18n.t('compute.perform_delete'),
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

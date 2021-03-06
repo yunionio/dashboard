@@ -1,9 +1,9 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_439')}}</div>
+    <div slot="header">{{$t('compute.disk_perform_detach')}}</div>
     <div slot="body">
       <a-alert :message="$t('compute.text_440')" banner />
-      <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_439')" :name="$t('dictionary.disk')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('compute.disk_perform_detach')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
     <div slot="footer">

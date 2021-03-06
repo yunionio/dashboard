@@ -42,7 +42,7 @@
           :remote-fn="q => ({ search: q })"
           @change="v => networkChange(v, item)"
           :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
-          <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.text_18')}}</help-link>
+          <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
           </div>
       </a-form-item>
       <template v-if="item.ipShow">

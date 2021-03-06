@@ -319,14 +319,14 @@ export default {
                   },
                 },
                 {
-                  label: this.$t('compute.text_261'),
+                  label: this.$t('compute.perform_delete'),
                   permission: 'hosts_delete',
                   action: () => {
                     this.createDialog('DeleteResDialog', {
                       vm: this,
                       data: this.list.selectedItems,
                       columns: this.columns,
-                      title: this.$t('compute.text_261'),
+                      title: this.$t('compute.perform_delete'),
                       name: this.$t('dictionary.host'),
                       onManager: this.onManager,
                     })

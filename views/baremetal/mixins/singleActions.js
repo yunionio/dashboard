@@ -265,7 +265,7 @@ export default {
                   },
                 },
                 {
-                  label: i18n.t('compute.text_282'),
+                  label: i18n.t('compute.perform_sync_status'),
                   permission: 'server_perform_syncstatus',
                   action: () => {
                     this.onManager('performAction', {
@@ -278,7 +278,7 @@ export default {
                   },
                 },
                 {
-                  label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+                  label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
                   permission: 'server_perform_change_owner',
                   action: () => {
                     this.createDialog('ChangeOwenrDialog', {
@@ -450,11 +450,11 @@ export default {
               ],
             },
             {
-              label: i18n.t('compute.text_261'),
+              label: i18n.t('compute.perform_delete'),
               submenus: [
                 disableDeleteAction(this),
                 {
-                  label: i18n.t('compute.text_261'),
+                  label: i18n.t('compute.perform_delete'),
                   permission: 'server_delete',
                   action: () => {
                     this.createDialog('DeleteResDialog', {
@@ -462,7 +462,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
-                      title: i18n.t('compute.text_261'),
+                      title: i18n.t('compute.perform_delete'),
                       success: () => {
                         this.destroySidePages()
                       },
