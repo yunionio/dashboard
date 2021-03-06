@@ -5,6 +5,7 @@ import Bucket from '@Storage/views/bucket'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 export default {
   index: 50,
@@ -18,17 +19,22 @@ export default {
      */
     {
       meta: {
-        label: '块存储',
+        label: i18n.t('dictionary.blockstorage'),
         t: 'dictionary.blockstorage',
       },
       submenus: [
         {
           path: '/blockstorage',
           meta: {
-            label: '块存储',
+            label: i18n.t('dictionary.blockstorage'),
             permission: 'storages_list',
             t: 'dictionary.blockstorage',
-            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.blockstorage')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -54,7 +60,12 @@ export default {
           meta: {
             label: i18n.t('storage.text_18'),
             permission: 'buckets_list',
-            hidden: () => !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.bucket')) {
+                return true
+              }
+              return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage'])
+            },
           },
           component: Layout,
           children: [
