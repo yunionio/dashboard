@@ -44,11 +44,18 @@ export default {
     tagManagerInstance: Object,
     tagFilter: Object,
     resource: [String, Object],
+    extTagParams: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
   },
   computed: {
     params () {
       const ret = {
         with_cloud_meta: true,
+        ...this.extTagParams,
       }
       if (R.is(String, this.resource)) {
         ret.resources = this.resource.substr(0, this.resource.length - 1)
