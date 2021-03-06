@@ -27,6 +27,7 @@
             :resource="resource"
             :tag-manager-instance="tagManagerInstance"
             :tag-filter="tagFilter"
+            :extTagParams="extTagParams"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
         </template>
       </div>
@@ -128,6 +129,12 @@ export default {
     },
     beforeShowMenuLoaded: {
       type: Boolean,
+    },
+    extTagParams: {
+      type: Object,
+      default () {
+        return {}
+      },
     },
   },
   computed: {
