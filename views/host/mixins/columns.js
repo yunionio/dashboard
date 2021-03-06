@@ -40,7 +40,16 @@ export default {
         },
         cellWrapSlots: row => {
           return {
-            append: () => row.is_baremetal ? (<a-tooltip title={i18n.t('compute.text_562')}><icon class='ml-2' type='res-host' style={{ color: '#1890ff' }} /></a-tooltip>) : null,
+            append: () => {
+              var ret = []
+              if (row.is_baremetal) {
+                ret.push(<a-tooltip title={i18n.t('compute.text_562')}><icon class='ml-2' type='res-host' style={{ color: '#1890ff' }} /></a-tooltip>)
+              }
+              if (row.reserved_resource_for_gpu) {
+                ret.push(<a-tooltip title={i18n.t('compute.text_113')}><icon class='ml-2' type='gpu' /></a-tooltip>)
+              }
+              return ret
+            },
           }
         },
       }),
