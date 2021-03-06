@@ -8,6 +8,7 @@
 <script>
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getRegionFilter, getBrandFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import {
   getStatusTableColumn,
   getBrandTableColumn,
@@ -39,6 +40,9 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          region: getRegionFilter(),
+          cloudaccount: getAccountFilter(),
+          brand: getBrandFilter('brands', ['VMware', 'OneCloud']),
         },
       }),
       columns: [
