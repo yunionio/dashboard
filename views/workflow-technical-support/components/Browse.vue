@@ -26,7 +26,7 @@
         :data-source="replyData">
         <a-list-item slot="renderItem" slot-scope="item">
           <a-comment :author="item.name">
-            <a-avatar slot="avatar" style="color: #f56a00; backgroundColor: #fde3cf">{{ getAvatar(item.name) }}</a-avatar>
+            <a-avatar slot="avatar" :class="getAvatarClass(item.id)" style="color: #fff;">{{ getAvatar(item.name) }}</a-avatar>
             <p slot="content">
               {{ item.comment }}
             </p>
@@ -126,6 +126,9 @@ export default {
     getAvatar (val) {
       return val.toUpperCase().substr(0, 1) || 'M'
     },
+    getAvatarClass (uid) {
+      return this.userInfo.id === uid ? 'avatar' : 'avatar-reply'
+    },
     getTrimVal (val) {
       return trim(val)
     },
@@ -137,6 +140,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '~ant-design-vue/dist/antd.less';
+
 .browse-wrapper{
   .header{
     font-size: 16px;
@@ -160,6 +165,12 @@ export default {
   }
   /deep/ .page-footer{
     left: 0 !important;
+  }
+  .avatar{
+    background-color: @primary-color;
+  }
+  .avatar-reply{
+    background-color: #84b1ed;
   }
 }
 </style>
