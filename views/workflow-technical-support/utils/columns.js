@@ -89,6 +89,9 @@ export const getCommentTableColumn = ({ field = 'comment', title = i18n.t('commo
         if (variables.comment) {
           return variables.comment
         }
+        if (variables.chat_list && variables.chat_list.length > 0) {
+          return variables.chat_list[0].comment
+        }
         return '-'
       },
     },
