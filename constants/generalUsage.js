@@ -56,6 +56,7 @@ export const usageMap = {
       total: {
         system: 'all.ports',
         domain: 'domain.ports',
+        project: 'ports',
       },
     },
     unit: i18n.t('common_61'),
@@ -87,7 +88,7 @@ export const usageMap = {
       },
       ready: {
         system: 'all.ready_servers',
-        domain: 'ready_servers',
+        domain: 'domain.ready_servers',
         project: 'ready_servers',
       },
       other: {
@@ -244,8 +245,8 @@ export const resourceMap = {
   },
   cpu: {
     field: {
-      domain: 'servers.any_pool.cpu',
-      project: 'servers.any_pool.cpu',
+      domain: 'domain.servers.cpu',
+      project: 'servers.cpu',
     },
     unit: i18n.t('common_60'),
   },
@@ -258,8 +259,8 @@ export const resourceMap = {
   },
   memory: {
     field: {
-      domain: 'servers.any_pool.memory',
-      project: 'servers.any_pool.memory',
+      domain: 'domain.servers.memory',
+      project: 'servers.memory',
     },
     unit: 'M',
   },
