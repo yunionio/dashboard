@@ -132,7 +132,7 @@ export default {
     },
     isServersAnypool () {
       if (!this.params) return false
-      return ['all.servers.any_pool', 'domain.servers.any_pool', 'servers.any_pool'].includes(this.params.usage_key)
+      return ['all.servers.any_pool', 'domain.servers.any_pool', 'servers.any_pool', 'all.servers', 'domain.servers', 'servers'].includes(this.params.usage_key)
     },
   },
   watch: {

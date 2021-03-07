@@ -18,7 +18,7 @@ export default {
           cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_130'),
           region: 'default',
-          usage_key: 'all.servers.any_pool',
+          usage_key: 'all.servers',
         },
       },
       {
@@ -34,7 +34,7 @@ export default {
           cloud_env: 'onpremise',
           name: i18n.t('dashboard.text_136'),
           region: 'default',
-          usage_key: 'hosts.any_pool',
+          usage_key: 'hosts',
         },
       },
       {
