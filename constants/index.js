@@ -203,10 +203,6 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_2'),
     scope: SCOPES_MAP.system.key,
   },
-  'all.servers.any_pool': {
-    unit: i18n.t('dashboard.text_2'),
-    scope: SCOPES_MAP.system.key,
-  },
   'all.servers.cpu': {
     unit: i18n.t('dashboard.text_3'),
     scope: SCOPES_MAP.system.key,
@@ -340,10 +336,6 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.system.key,
   },
   hosts: {
-    unit: i18n.t('dashboard.text_2'),
-    scope: SCOPES_MAP.system.key,
-  },
-  'hosts.any_pool': {
     unit: i18n.t('dashboard.text_2'),
     scope: SCOPES_MAP.system.key,
   },
@@ -524,10 +516,6 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.project.key,
   },
   servers: {
-    unit: i18n.t('dashboard.text_2'),
-    scope: SCOPES_MAP.project.key,
-  },
-  'servers.any_pool': {
     unit: i18n.t('dashboard.text_2'),
     scope: SCOPES_MAP.project.key,
   },
@@ -753,10 +741,6 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_2'),
     scope: SCOPES_MAP.domain.key,
   },
-  'domain.hosts.any_pool': {
-    unit: i18n.t('dashboard.text_2'),
-    scope: SCOPES_MAP.domain.key,
-  },
   'domain.hosts.cpu': {
     unit: i18n.t('dashboard.text_3'),
     scope: SCOPES_MAP.domain.key,
@@ -901,10 +885,6 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.domain.key,
   },
   'domain.servers': {
-    unit: i18n.t('dashboard.text_2'),
-    scope: SCOPES_MAP.domain.key,
-  },
-  'domain.servers.any_pool': {
     unit: i18n.t('dashboard.text_2'),
     scope: SCOPES_MAP.domain.key,
   },

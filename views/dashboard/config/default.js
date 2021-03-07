@@ -16,7 +16,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_130'),
-          usage_key: 'all.servers.any_pool',
+          usage_key: 'all.servers',
         },
       },
       {
@@ -29,7 +29,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_136'),
-          usage_key: 'hosts.any_pool',
+          usage_key: 'hosts',
         },
       },
       {
@@ -383,7 +383,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_160'),
-          usage_key: 'domain.servers.any_pool',
+          usage_key: 'domain.servers',
         },
       },
       {
@@ -788,7 +788,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_160'),
-          usage_key: 'servers.any_pool',
+          usage_key: 'servers',
         },
       },
       {

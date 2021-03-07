@@ -27,7 +27,7 @@
   "dashboard.text_24": "Type",
   "dashboard.text_25": "Servers",
   "dashboard.text_26": "Containers",
-  "dashboard.text_27": "Quota usage of each {0}{1}",
+  "dashboard.text_27": "Quota usage of each {0} - {1}",
   "dashboard.text_28": "Memory",
   "dashboard.text_29": "Storage",
   "dashboard.text_30": "Public IP",
