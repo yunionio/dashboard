@@ -144,6 +144,7 @@ import Alertresource from './components/Alertresource'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
 import { getSetupInStorage } from '@/utils/auth'
+import { uuid } from '@/utils/utils'
 
 export default {
   name: 'Navbar',
@@ -418,7 +419,7 @@ export default {
       if (!this.itsmServiceEnable) return
       if (val) {
         this.$store.dispatch('app/fetchWorkflowStatistics')
-        this.$store.dispatch('app/fetchWorkflowEnabledKeys')
+        this.$store.dispatch('app/fetchWorkflowEnabledKeys', { $t: uuid() })
       }
     },
     fetchOEM (val) {

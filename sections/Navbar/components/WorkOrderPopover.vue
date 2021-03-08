@@ -90,7 +90,19 @@ export default {
       companyInfo: state => state.companyInfo,
     }),
     statistics () {
-      return (this.workflowStatistics['nr-historic-process-instance'] + this.workflowStatistics['nr-process-task']) || 0
+      const instance_num = this.workflowStatistics['nr-historic-process-instance']
+      const task_num = this.workflowStatistics['nr-process-task']
+      const instance_cus_num = this.workflowStatistics['nr-historic-process-instance-cus']
+      const task_cus_num = this.workflowStatistics['nr-process-task-cus']
+
+      if (this.customerServiceEnabled && this.isShowWorkflow) {
+        return (instance_num + task_num + instance_cus_num + task_cus_num) || 0
+      } else if (this.customerServiceEnabled) {
+        return (instance_cus_num + task_cus_num) || 0
+      } else if (this.isShowWorkflow) {
+        return (instance_num + task_num) || 0
+      }
+      return 0
     },
     projectEnabled () {
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_JOIN_PROJECT)
