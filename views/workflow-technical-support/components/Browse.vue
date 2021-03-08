@@ -127,6 +127,11 @@ export default {
       }).then((res) => {
         this.reply = ''
         this.replyData = res.data.chat_list || []
+        if (this.dataSource && this.dataSource.length > 0) {
+          if (this.dataSource[0].process_instance) {
+            this.dataSource[0].process_instance.state = res.data.state
+          }
+        }
       })
     },
     getAvatar (val) {
