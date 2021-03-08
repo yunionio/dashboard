@@ -113,7 +113,7 @@
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 工单 -->
-    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkOrder && itsmServiceEnable" />
+    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkFlow && itsmServiceEnable" />
     <!-- 大屏监控 -->
     <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && (isAdminMode || isDomainMode)">
       <a-tooltip :title="$t('navbar.button.monitor')" placement="right">
@@ -221,6 +221,7 @@ export default {
       'permission',
       'scopeResource',
       'auth',
+      'workflow',
     ]),
     ...mapState('app', {
       computeStatus: state => state.license.status,
@@ -362,6 +363,9 @@ export default {
     },
     domainManagerTitle () {
       return this.$t('navbar.view.domain_manager')
+    },
+    showWorkFlow () {
+      return this.showWorkOrder && this.workflow.enabledKeys?.length > 0
     },
   },
   watch: {
