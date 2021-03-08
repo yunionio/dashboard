@@ -128,6 +128,9 @@ export default {
         this.reply = ''
         this.replyData = res.data.chat_list || []
         if (this.dataSource && this.dataSource.length > 0) {
+          if (this.dataSource[0].state) {
+            this.dataSource[0].state = res.data.state
+          }
           if (this.dataSource[0].process_instance) {
             this.dataSource[0].process_instance.state = res.data.state
           }
