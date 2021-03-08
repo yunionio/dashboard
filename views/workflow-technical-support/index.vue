@@ -18,6 +18,7 @@ import MeProcess from './me-process/components/List'
 import ApprovalStart from './approval-start/components/List'
 import ApprovedDone from './approved-done/components/List'
 import AllProcess from './all-process/components/List'
+import ThirdProcess from './third-process/components/List'
 
 export default {
   components: {
@@ -25,6 +26,7 @@ export default {
     ApprovalStart,
     ApprovedDone,
     AllProcess,
+    ThirdProcess,
   },
   mixins: [mixin],
   data () {

@@ -27,10 +27,6 @@ export default {
           name: 'me-partake',
           label: i18n.t('common_414'),
         },
-        {
-          name: 'third-process',
-          label: i18n.t('common_415'),
-        },
       ]
       if (this.isAdminMode) {
         tablePanels.push({
