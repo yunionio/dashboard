@@ -1,8 +1,12 @@
 <template>
-  <page-list
-    :list="list"
-    :columns="columns"
-    :single-actions="singleActions" />
+  <div>
+    <page-list
+      :list="list"
+      :columns="columns"
+      :single-actions="singleActions"
+      :group-actions="groupActions"
+      :showCheckbox="false" />
+  </div>
 </template>
 
 <script>
