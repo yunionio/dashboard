@@ -34,12 +34,11 @@ push_image() {
     docker push "$tag"
 }
 
-docker_buildx(){
+docker_buildx() {
     local tag=$1
     local file=$2
     local path=$3
-    tag=${tag}-arm64
-    docker buildx build --platform="linux/$ARCH" -t "$tag" -f "$file" "$path" --push
+    docker buildx build --platform="linux/arm64,linux/amd64" -t "$tag" -f "$file" "$path" --push
     docker pull $tag
 }
 
@@ -51,7 +50,7 @@ case $ARCH in
         build_image "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR"
         push_image "$img_name"
         ;;
-    arm64)
+    all)
         docker_buildx "$img_name" "$DOCKER_DIR/Dockerfile" "$SRC_DIR"
         ;;
 esac
