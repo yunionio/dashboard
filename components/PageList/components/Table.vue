@@ -117,7 +117,7 @@ export default {
   computed: {
     // 是否开启checkbox
     checkboxEnabled () {
-      if (this.showCheckbox === false) return false
+      // if (this.showCheckbox === false) return false
       return (
         ((this.groupActions && this.groupActions.length > 0) || this.showCheckbox) &&
         this.selectionType === 'checkbox'
