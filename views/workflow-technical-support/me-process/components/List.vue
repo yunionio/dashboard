@@ -76,12 +76,15 @@ export default {
               buttonType: 'primary',
             }
           },
+          hidden: () => {
+            return this.isAdminMode === true
+          },
         },
       ],
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'isAdminMode']),
   },
   created () {
     this.initSidePageTab('me-process-detail')
