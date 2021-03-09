@@ -16,7 +16,7 @@
             :filterable="true" />
         </a-form-item>
         <a-form-item :label="$t('network.text_539')" v-bind="formItemLayout">
-          <template #extra>{{$t('network.text_540')}}<router-link :to="{ name: 'Eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
+          <template #extra>{{$t('network.text_540')}}<router-link :to="{ path: '/eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
           </template>
           <base-select
             v-decorator="decorators.ip"
