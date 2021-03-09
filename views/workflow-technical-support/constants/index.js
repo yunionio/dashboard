@@ -1,5 +1,23 @@
 import i18n from '@/locales'
 
+export const statusSearchMap = {
+  OPEN: {
+    text: i18n.t('common.workflow.open'),
+  },
+  PENDING: {
+    text: i18n.t('common.workflow.pending'),
+  },
+  IN_PROCESS: {
+    text: i18n.t('common.workflow.in_process'),
+  },
+  REOPEN: {
+    text: i18n.t('common.workflow.reopen'),
+  },
+  CLOSED: {
+    text: i18n.t('common.workflow.closed'),
+  },
+}
+
 export const statusMap = {
   OPEN: {
     text: i18n.t('common.workflow.open'),
@@ -19,7 +37,7 @@ export const statusMap = {
   },
   COMPLETED: {
     text: i18n.t('common.workflow.closed'),
-    color: '#f6a100',
+    color: '#8a94a6',
   },
   EXTERNALLY_TERMINATED: {
     text: i18n.t('common.workflow.closed'),
