@@ -19,7 +19,7 @@ export default {
   components: {
     SkuList,
   },
-  inject: ['form', 'scopeParams'],
+  inject: ['form'],
   props: {
     decorators: {
       type: Object,
@@ -36,7 +36,7 @@ export default {
       const values = this.form.getFieldsValue(keys)
       const params = {
         ...values,
-        ...this.scopeParams,
+        scope: 'domain',
       }
       if (this.form.getFieldValue('billing_type') === 'postpaid') {
         params.postpaid_status = 'available'
