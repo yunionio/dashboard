@@ -129,10 +129,7 @@ export default {
       required: true,
     },
     // 是否显示列选择
-    showCheckbox: {
-      type: Boolean,
-      default: true,
-    },
+    showCheckbox: Boolean,
     // 导出数据配置
     exportDataOptions: Object,
     extraExportParams: {
