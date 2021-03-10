@@ -6,8 +6,8 @@
         class="mt-3"
         v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item :label="$t('network.text_205', [$t('dictionary.domain')])">
-          <domain-select v-decorator="decorators.project_domain" />
+        <a-form-item :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
+          <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
         </a-form-item>
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
@@ -35,6 +35,7 @@
             ref="REF_NETWORK"
             :label="$t('network.text_16')"
             :isDefaultFetch="false"
+            :vpcFormat="vpcFormat"
             :vpcParams="vpcParams"
             :networkParams="netParams"
             v-bind="formItemLayout" />
@@ -133,8 +134,21 @@ export default {
     })
   },
   methods: {
+    vpcFormat (vpc) {
+      const { name, manager } = vpc
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ name }>{ name }</span>
+          <span style="color: #8492a6; font-size: 13px">{ this.$t('network.manager', [manager]) }</span>
+        </div>
+      )
+    },
     fetchVpc () {
       this.$refs.REF_NETWORK.fetchVpc()
+    },
+    handleDomainChange (val) {
+      this.project_domain = val
+      this.$refs.areaSelects.fetchs(this.areaselectsName)
     },
     providerParams () {
       const params = {
@@ -143,6 +157,9 @@ export default {
         cloud_env: 'public',
         scope: this.scope,
         provider: this.$store.getters.capability.nat_brands,
+      }
+      if (!this.$store.getters.capability.nat_brands || this.$store.getters.capability.nat_brands.length === 0) {
+        params.provider = 'Other'
       }
       if (this.isAdminMode) {
         params.admin = true

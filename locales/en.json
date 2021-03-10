@@ -804,5 +804,6 @@
   "network.instance.select.at.least.one": "Please select the instance to be operated",
   "network.unit.hour": "Hour",
   "network.unit.day": "Day",
-  "network.unit.month": "Month"
+  "network.unit.month": "Month",
+  "network.manager": "Cloud provider: {0}"
 }
