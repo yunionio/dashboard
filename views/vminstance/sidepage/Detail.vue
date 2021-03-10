@@ -46,7 +46,7 @@ export default {
       baseInfo: [
         getOsArch(),
         getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
+        //getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         {
           field: 'keypair',
           title: this.$t('compute.text_33'),
