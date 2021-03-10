@@ -19,7 +19,7 @@ export default {
         onManager: this.onManager,
         slotCallback: row => {
           return (
-            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.id }</side-page-trigger>
+            <div>{ row.id }</div>
           )
         },
       }),

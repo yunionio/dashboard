@@ -8,16 +8,21 @@
       :columns="columns" />
     <div class="reply-wrapper mt-4">
       <template v-if="isEdit">
-        <h4 class="header mt-4">{{ $t('common.workflow.records') }}</h4>
-        <div class="mb-1">{{ $t('common.workflow.reply') }}</div>
-        <a-textarea
-          v-model="reply"
-          :placeholder="$t('common.workflow.reply_help')"
-          :auto-size="{ minRows: 3, maxRows: 5 }" />
-        <div class="d-flex flex-row-reverse mt-4">
-          <a-button :disabled="!getTrimVal(reply)" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common.workflow.submit') }}</a-button>
-          <a-button class="mr-2" @click="cancel">{{ $t('compute.text_908') }}</a-button>
+        <div class="d-flex justify-content-between align-items-center header-wrapper mt-4">
+          <h4 class="header">{{ $t('common.workflow.records') }}</h4>
+          <a-button size="small" @click="isShowReply = !isShowReply">{{ $t('common.workflow.reply') }}</a-button>
         </div>
+        <template v-if="isShowReply">
+          <div class="mb-1">{{ $t('common.workflow.reply') }}</div>
+          <a-textarea
+            v-model="reply"
+            :placeholder="$t('common.workflow.reply_help')"
+            :auto-size="{ minRows: 3, maxRows: 5 }" />
+          <div class="d-flex flex-row-reverse mt-4">
+            <a-button size="small" :disabled="!getTrimVal(reply)" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common.workflow.submit') }}</a-button>
+            <a-button size="small" class="mr-2" @click="cancel">{{ $t('compute.text_908') }}</a-button>
+          </div>
+        </template>
       </template>
       <a-list
         :header="$t('common.workflow.reply_records')"
@@ -39,7 +44,7 @@
     </div>
     <page-footer>
       <div slot="right">
-        <a-button type="primary" @click="cancel">{{$t('common.workflow.back')}}</a-button>
+        <a-button type="primary" @click="goBack">{{$t('common.workflow.back')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -87,6 +92,7 @@ export default {
   data () {
     return {
       reply: '',
+      isShowReply: false,
       loading: false,
       replyData: this.dataSource[0]?.variables?.chat_list || [],
     }
@@ -121,6 +127,14 @@ export default {
       }).then((res) => {
         this.reply = ''
         this.replyData = res.data.chat_list || []
+        if (this.dataSource && this.dataSource.length > 0) {
+          if (this.dataSource[0].state) {
+            this.dataSource[0].state = res.data.state
+          }
+          if (this.dataSource[0].process_instance) {
+            this.dataSource[0].process_instance.state = res.data.state
+          }
+        }
       })
     },
     getAvatar (val) {
@@ -133,6 +147,9 @@ export default {
       return trim(val)
     },
     cancel () {
+      this.isShowReply = false
+    },
+    goBack () {
       this.$router.go(-1)
     },
   },
@@ -143,12 +160,10 @@ export default {
 @import '~ant-design-vue/dist/antd.less';
 
 .browse-wrapper{
-  .header{
-    font-size: 16px;
-    font-weight: normal;
+  .header-wrapper{
+    position: relative;
     height: 40px;
     line-height: 40px;
-    position: relative;
     &::before{
       position: absolute;
       bottom: 0;
@@ -159,6 +174,12 @@ export default {
       box-shadow: inset 0 -1px 0 0 #d9d9d9;
       opacity: 0.3;
     }
+  }
+  .header{
+    font-size: 16px;
+    font-weight: normal;
+    height: 40px;
+    line-height: 40px;
   }
   .reply-wrapper{
     margin-bottom: 80px;

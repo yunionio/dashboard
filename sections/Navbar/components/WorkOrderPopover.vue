@@ -38,20 +38,22 @@
             </ul>
           </template>
           <!-- 待处理工单 -->
-          <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('navbar.tips.pending_work_order')}}</span></div>
-          <ul class="work-list">
-            <i18n path="navbar.button.work_order_undone" tag="li" @click="goHistoricProcess">
-              <template #num>
-                <a>{{workflowStatistics['nr-historic-process-instance'] || 0}}</a>
-              </template>
-            </i18n>
-            <i18n path="navbar.button.pending_work_order" tag="li" @click="goProcessTask">
-              <template #num>
-                <a>{{workflowStatistics['nr-process-task'] || 0}}</a>
-              </template>
-            </i18n>
-          </ul>
-          <template v-if="!isAdminMode && isShowWorkflow">
+          <template v-if="isShowWorkflow">
+            <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="user" /><span class="ml-2">{{$t('navbar.tips.pending_work_order')}}</span></div>
+            <ul class="work-list">
+              <i18n path="navbar.button.work_order_undone" tag="li" @click="goHistoricProcess">
+                <template #num>
+                  <a>{{workflowStatistics['nr-historic-process-instance'] || 0}}</a>
+                </template>
+              </i18n>
+              <i18n path="navbar.button.pending_work_order" tag="li" @click="goProcessTask">
+                <template #num>
+                  <a>{{workflowStatistics['nr-process-task'] || 0}}</a>
+                </template>
+              </i18n>
+            </ul>
+          </template>
+          <template v-if="!isAdminMode && (isShowWorkflow || customerServiceEnabled)">
             <div class="mt-2 text-color-help" style="font-size: 12px;"><a-icon type="plus" /><span class="ml-2">{{$t('common_204')}}</span></div>
             <ul class="work-list">
               <li @click="joinProjectHandle" v-if="isProjectMode && projectEnabled">{{$t('navbar.button.join_project')}}</li>
@@ -88,7 +90,19 @@ export default {
       companyInfo: state => state.companyInfo,
     }),
     statistics () {
-      return (this.workflowStatistics['nr-historic-process-instance'] + this.workflowStatistics['nr-process-task']) || 0
+      const instance_num = this.workflowStatistics['nr-historic-process-instance']
+      const task_num = this.workflowStatistics['nr-process-task']
+      const instance_cus_num = this.workflowStatistics['nr-historic-process-instance-cus']
+      const task_cus_num = this.workflowStatistics['nr-process-task-cus']
+
+      if (this.customerServiceEnabled && this.isShowWorkflow) {
+        return (instance_num + task_num + instance_cus_num + task_cus_num) || 0
+      } else if (this.customerServiceEnabled) {
+        return (instance_cus_num + task_cus_num) || 0
+      } else if (this.isShowWorkflow) {
+        return (instance_num + task_num) || 0
+      }
+      return 0
     },
     projectEnabled () {
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_JOIN_PROJECT)
@@ -103,7 +117,8 @@ export default {
       return this.checkWorkflowEnabled(WORKFLOW_TYPES.APPLY_DOMAIN_QUOTA)
     },
     isShowWorkflow () {
-      return this.projectEnabled || this.customerServiceEnabled || this.projectQuotaEnabled || this.domainQuotaEnabled
+      if (this.workflowEnabledKeys?.length === 0) return false
+      return this.workflowEnabledKeys.some(v => v !== WORKFLOW_TYPES.CUSTOMER_SERVICE)
     },
   },
   methods: {
@@ -133,13 +148,7 @@ export default {
       this.createDialog('ApplyJoinProjectDialog', {})
     },
     customeServiceHandle () {
-      // this.createDialog('CustomeServiceDialog', {})
-      this.$router.push({
-        path: '/workflow-technical-support',
-        query: {
-          type: 'me-process',
-        },
-      })
+      this.createDialog('CustomeServiceDialog', {})
     },
     applyProjectQuotaHandle () {
       this.createDialog('ApplyProjectQuotaDialog', {})

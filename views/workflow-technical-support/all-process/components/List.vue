@@ -10,7 +10,7 @@
 import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { statusMap } from '../../constants'
+import { statusSearchMap } from '../../constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { PRIORITY_OPTS } from '@/constants/workflow'
@@ -39,9 +39,9 @@ export default {
           status: {
             label: this.$t('common.status'),
             dropdown: true,
-            items: Object.keys(statusMap).map((v) => {
+            items: Object.keys(statusSearchMap).map((v) => {
               return {
-                label: statusMap[v]?.text || v,
+                label: statusSearchMap[v]?.text || v,
                 key: v,
               }
             }),

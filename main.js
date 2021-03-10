@@ -25,6 +25,8 @@ import './plugins'
 import './permission'
 import './filters'
 
+import { uuid } from '@/utils/utils'
+
 Vue.use(Antd)
 Vue.use(VXETable, {
   i18n: key => i18n.t(key),
@@ -49,7 +51,7 @@ const app = new Vue({
 async function start () {
   try {
     await store.dispatch('app/fetchCompayInfo')
-    await store.dispatch('app/fetchWorkflowEnabledKeys')
+    await store.dispatch('app/fetchWorkflowEnabledKeys', { $t: uuid() })
   } finally {
     app.$mount('#app')
   }

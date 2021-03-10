@@ -27,6 +27,7 @@
       :update-config="updateConfig"
       :fetch-distinct-field="fetchDistinctField"
       :before-show-menu-loaded="beforeShowMenuLoaded"
+      :extTagParams="extTagParams"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -164,6 +165,12 @@ export default {
     // 显示按钮之前要做的事情
     beforeShowMenu: {
       type: Function,
+    },
+    extTagParams: {
+      type: Object,
+      default () {
+        return {}
+      },
     },
   },
   provide: {

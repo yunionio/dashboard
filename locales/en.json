@@ -1066,6 +1066,7 @@
     "all.nics.guest": "Number of server network cards",
     "all.nics.host": "Number of host network cards",
     "all.nics.lb": "Number of Load Balancing Network Cards",
+    "all.nics.eip": "Number of IP Address used for Elastic IP",
     "all.nics.reserve": "Number of reserved IPs",
     "all.pending_delete_servers": "Number of Servers in the Trash",
     "all.pending_delete_servers.cpu": "The number of server CPUs in the trash",
@@ -1097,7 +1098,6 @@
     "all.running_servers.isolated_devices": "Number of server GPU cards in running state",
     "all.running_servers.memory": "Server memory capacity in running state",
     "all.servers": "Number of Servers",
-    "all.servers.any_pool": "Number of Servers",
     "all.servers.cpu": "Server CPU Quantity",
     "all.servers.disk": "Server Disk Capacity",
     "all.servers.ha": "Number of highly available servers",
@@ -1128,15 +1128,25 @@
     "enabled_hosts.memory": "Enable host memory capacity",
     "enabled_hosts.memory.virtual": "Enable virtual capacity of host memory",
     "hosts": "Total number of hosts",
-    "hosts.cpu": "Host CPU Total",
+    "hosts.cpu": "Host CPU Total (Excluding Reserved CPU)",
     "hosts.cpu.virtual": "Host CPU Virtual Total",
-    "hosts.memory": "Host memory capacity",
+    "hosts.cpu.total": "Host CPU Total",
+    "hosts.memory": "Host memory capacity (Excluding Reserved Memory)",
     "hosts.memory.virtual": "Host memory virtual capacity",
+    "hosts.memory.total": "Host memory capacity",
     "isolated_devices": "GPU Card Total",
     "networks": "Total IP Subnets",
-    "nics": "Number of network cards in the current project",
-    "nics.guest": "Number of server network cards in the current project",
-    "nics.lb": "The number of load balancing network cards in the current project",
+    "domain.nics": "Total Allocated IP Addresses of Current Domain",
+    "domain.nics.guest": "Number of IP Addresses Allocated to Servers of Current Domain",
+    "domain.nics.host": "Number of IP Addresses Allocated to Hosts of Current Domain",
+    "domain.nics.lb": "Number of IP Addresses Allocated to Load Balancers of Current Domain",
+    "domain.nics.eip": "Number of IP Address used for Elastic IP of Current Domain",
+    "domain.nics.reserve": "Number of reserved IPs of Current Domain",
+    "nics": "Total Allocated IP Addresses of Current Project",
+    "nics.guest": "Number of IP Addresses Allocated to Servers of Current Project",
+    "nics.lb": "Number of IP Addresses Allocated to Load Balancing Network Cards of Current Project",
+    "nics.eip": "Number of IP Address used for Elastic IP of Current Project",
+    "nics.reserve": "Number of reserved IPs of Current Project",
     "pending_delete_servers": "The number of servers in the current project trash",
     "pending_delete_servers.cpu": "The number of CPUs in the current project's trash server",
     "pending_delete_servers.disk": "Current project trash server disk capacity",
@@ -1340,14 +1350,14 @@
       "desc": "Pre-registration: used to pre-shelves the server without BMC information, configure the basic information of the server through the pre-registration function, after the server is powered on, the MAC information can be matched to register and configure BMC information, etc. The server is required DHCP relay network environment"
     },
     "scriptAdd": {
-      "label": "Hosting",
-      "desc": "Hosting: used to host the server of the existing operating system, after hosting, the physical machine and baremetal records will be generated at the same time"
+      "label": "Half-managed",
+      "desc": "Half-managed: used to register a baremetal host without impacting the running OS on the host. A record for both the baremetal host and baremetal server will be registered at the same time."
     }
   },
   "physicalmachineAddModes": {
-    "single": "Single entry",
-    "batch": "Batch Entry",
-    "file": "Template import"
+    "single": "Single Entry",
+    "batch": "Multiple Entries",
+    "file": "Batch Import"
   },
   "citys": {
     "shanghai": "Shanghai",
@@ -2516,7 +2526,7 @@
     },
     "tips": {
       "service_message": "Service message",
-      "pending_work_order": "Pending"
+      "pending_work_order": "Workflows"
     }
   },
   "message": {
@@ -3862,7 +3872,7 @@
   "common_276": "Please adjust the resolution to 1280 and above",
   "common_277": "Delete-Lock Setting",
   "common_278": "Please select the {0} to be operated",
-  "common_279": "Change",
+  "common_279": "Change ",
   "common_280": "This operation is only supported if the shared range is not shared",
   "common_281": "This operation is only supported when Level 3 permissions are enabled",
   "common_282": "Region",
@@ -4112,7 +4122,7 @@
   "common_533": "Please enter AuthUrl",
   "common_534": "Please enter TokenUrl",
   "common_535": "Please enter UserinfoUrl",
-  "common_536": "SAML Entry Method",
+  "common_536": "Input Mode",
   "common_537": "Upload SAML IDP metadata",
   "common_538": "You may drop the SAML IDP metadata XML file here or click to upload the metadata XML",
   "common_539": "Please enter EntityID",

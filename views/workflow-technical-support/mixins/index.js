@@ -23,6 +23,10 @@ export default {
           name: 'approved-done',
           label: i18n.t('common.workflow.approval_done'),
         },
+        {
+          name: 'third-process',
+          label: i18n.t('common_415'),
+        },
       ]
       if (this.isAdminMode) {
         tablePanels.push({
