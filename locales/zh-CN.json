@@ -377,5 +377,8 @@
   "db.text_375": "该备份方式暂不支持该操作",
   "db.text_376": "请选择要恢复到类型",
   "db.action_diable_tooltip": "{0}暂不支持该操作",
-  "db.secgroup.action_diable_tooltip": "{0}基础版不支持该操作"
+  "db.secgroup.action_diable_tooltip": "{0}基础版不支持该操作",
+  "db.redis.replicas_zones": "多可用区部署",
+  "db.redis.replicas": "副本{0}",
+  "db.redis.qcloud.multizone.tooltips": "启用多可用区部署的实例暂不支持该操作"
 }
