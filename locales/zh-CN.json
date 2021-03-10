@@ -803,5 +803,6 @@
   "network.instance.select.at.least.one": "请选择需要操作的实例",
   "network.unit.hour": "小时",
   "network.unit.day": "天",
-  "network.unit.month": "月"
+  "network.unit.month": "月",
+  "network.manager": "云订阅: {0}"
 }
