@@ -93,6 +93,10 @@ export default {
               validate = false
               tooltip = this.$t('db.text_312')
             }
+            if (this.data.brand === 'Qcloud' && this.data.slave_zones && this.data.slave_zones.length > 0) {
+              validate = false
+              tooltip = this.$t('db.redis.qcloud.multizone.tooltips')
+            }
             return {
               buttonType: 'primary',
               validate,
@@ -173,6 +177,13 @@ export default {
   },
   computed: {
     commonMeta () {
+      if (this.data.brand === 'Qcloud' && this.data.slave_zones && this.data.slave_zones.length > 0) {
+        return {
+          validate: false,
+          tooltip: this.$t('db.redis.qcloud.multizone.tooltips'),
+        }
+      }
+
       const isHuawei = this.data.brand === 'Huawei'
       return {
         validate: !isHuawei,
