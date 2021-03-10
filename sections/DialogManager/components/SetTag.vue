@@ -6,7 +6,7 @@
       <template v-if="params.columns">
         <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       </template>
-      <!-- 共有云标签 -->
+      <!-- 共有云标签
       <div class="tag-wrap" v-if="!isBatch">
         <a-divider orientation="left">
           <div class="font-weight-normal" style="font-size: 14px;">{{$t('common_106')}}</div>
@@ -27,7 +27,7 @@
             </template>
           </template>
         </div>
-      </div>
+      </div> -->
       <!-- 用户标签 -->
       <div class="tag-wrap">
         <a-divider orientation="left">
