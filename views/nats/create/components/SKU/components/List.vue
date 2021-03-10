@@ -225,6 +225,10 @@ export default {
     },
     async fetchSkus (params) {
       const manager = new this.$Manager('nat_skus', 'v2')
+      if (!params.cloudregion || params.cloudregion.length === 0) {
+        this.skuList = []
+        return
+      }
       try {
         this.loading = true
         const { data = [] } = await manager.list({ params })
