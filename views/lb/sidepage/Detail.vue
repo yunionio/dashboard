@@ -35,7 +35,7 @@ export default {
     return {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
+        //getExtTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
         {
           field: 'loadbalance_type',
           title: this.$t('network.text_249'),
