@@ -377,5 +377,7 @@
   "db.text_375": "This backup method does not currently support this operation",
   "db.text_376": "Please select the type to be restored",
   "db.action_diable_tooltip": "{0} does not support this operation",
-  "db.secgroup.action_diable_tooltip": "{0} basic edition instance does not support this operation"
+  "db.secgroup.action_diable_tooltip": "{0} basic edition instance does not support this operation",
+  "db.redis.replicas_zones": "Multi-Zone Deployments",
+  "db.redis.replicas": "Replicas {0}"
 }
