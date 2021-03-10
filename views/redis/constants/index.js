@@ -184,6 +184,12 @@ export const DECORATORS = {
       },
     ],
   },
+  slaveZones: [
+    'slave_zones',
+    {
+      initialValue: '',
+    },
+  ],
   cityProviderRegion: {
     city: ['city', {
       initialValue: undefined,
