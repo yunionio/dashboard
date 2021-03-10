@@ -139,7 +139,7 @@ export default {
       if (sku && sku.provider && sku.provider === 'Huawei') {
         if (!this.isPackage) {
           unit = this.$t('network.unit.day')
-          price = numerify(price * 24, '0,0.00')
+          price = numerify(val * 24, '0,0.00')
         }
       }
       return `${this.currency} ${price}/${unit}`

@@ -19,6 +19,19 @@ const NatSpec = {
   'xlarge.1': i18n.t('network.nat.spec.xlarge.1'),
 }
 
+export const getNatSpecColumn = ({ field = 'nat_spec', title = i18n.t('network.text_268') } = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }, h) => {
+        const spec = row.nat_spec && row.nat_spec.toLowerCase()
+        return NatSpec[spec] || spec
+      },
+    },
+  }
+}
+
 export default {
   created () {
     this.columns = [
@@ -33,16 +46,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'nat' }),
-      {
-        field: 'nat_spec',
-        title: i18n.t('network.text_536'),
-        showOverflow: 'ellipsis',
-        minWidth: 100,
-        formatter: ({ cellValue }) => {
-          const spec = cellValue && cellValue.toLowerCase()
-          return NatSpec[spec] || spec
-        },
-      },
+      getNatSpecColumn({}),
       getBillingTableColumn({ vm: this }),
       getBrandTableColumn(),
       getAccountTableColumn(),

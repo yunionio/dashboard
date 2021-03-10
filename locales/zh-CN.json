@@ -28,7 +28,7 @@
   "network.text_27": "状态",
   "network.text_28": "重新执行",
   "network.text_29": "提示：确认要终止执行？",
-  "network.text_30": "确定",
+  "network.text_30": "新建",
   "network.text_31": "取消",
   "network.text_32": "终止执行",
   "network.text_33": "关闭",
@@ -538,8 +538,8 @@
   "network.text_539": "公网IP地址",
   "network.text_540": "没有我想要的,可以前往",
   "network.text_541": "请选择公网IP地址",
-  "network.text_542": "云服务器",
-  "network.text_543": "请选择云服务器",
+  "network.text_542": "虚拟机",
+  "network.text_543": "请选择虚拟机",
   "network.text_544": "公网端口",
   "network.text_545": "取值范围：1~65535",
   "network.text_546": "私网端口",
@@ -803,5 +803,6 @@
   "network.instance.select.at.least.one": "请选择需要操作的实例",
   "network.unit.hour": "小时",
   "network.unit.day": "天",
-  "network.unit.month": "月"
+  "network.unit.month": "月",
+  "network.manager": "云订阅: {0}"
 }
