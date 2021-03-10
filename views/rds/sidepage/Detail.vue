@@ -58,7 +58,7 @@ export default {
     return {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'dbinstance', columns: () => this.columns, tipName: this.$t('dictionary.dbinstances') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'dbinstance', columns: () => this.columns, tipName: this.$t('dictionary.dbinstances') }),
+        //getExtTagColumn({ onManager: this.onManager, resource: 'dbinstance', columns: () => this.columns, tipName: this.$t('dictionary.dbinstances') }),
         getBrandTableColumn(),
         {
           title: this.$t('db.text_54'),
