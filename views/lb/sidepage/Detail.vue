@@ -13,7 +13,7 @@ import { LB_SPEC, CHARGE_TYPE } from '@Network/views/lb/constants'
 import { getBrandTableColumn, getCopyWithContentTableColumn, getZone1TableColumn, getSwitchTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
-  getExtTagColumn,
+  // getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
