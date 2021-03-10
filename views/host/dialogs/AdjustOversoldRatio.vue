@@ -6,12 +6,15 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 2)" />
        <a-form
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_542')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.cpu_commit_bound')" v-bind="formItemLayout">
           <a-input-number v-decorator="decorators.cpu_cmtbound" :min="0.1" :step="0.1" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_543')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.memory_commit_bound')" v-bind="formItemLayout">
           <a-input-number v-decorator="decorators.mem_cmtbound" :min="0.1" :max="1" :step="0.1" />
           <div style="font-size:12px" class="add-desc">{{$t('compute.text_544')}}</div>
+        </a-form-item>
+        <a-form-item :label="$t('compute.memory_reserve_gb')" v-bind="formItemLayout">
+          <a-input-number v-decorator="decorators.mem_reserved" :min="1" :max="32" :step="1" />
         </a-form-item>
       </a-form>
     </div>
@@ -63,13 +66,26 @@ export default {
             ],
           },
         ],
+        mem_reserved: [
+          'mem_reserved',
+          {
+            validateFirst: true,
+            initialValue: this.params.data[0].mem_reserved / 1024,
+            rules: [
+              {
+                required: true,
+                message: this.$t('compute.memory_reserve_gb.placeholder'),
+              },
+            ],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
-          span: 18,
+          span: 17,
         },
         labelCol: {
-          span: 6,
+          span: 7,
         },
       },
     }
@@ -92,6 +108,7 @@ export default {
           ...values,
           // name: this.params.data[0].name,
         }
+        values.mem_reserved = values.mem_reserved * 1024
         await this.doUpdate(values)
         this.loading = false
         this.cancelDialog()

@@ -4,9 +4,7 @@
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.gpu')" :count="params.data.length" :action="title" />
       <dialog-table :data="params.data" :columns="columns" />
-      <a-form
-        :form="form.fc"
-        hideRequiredMark>
+      <a-form :form="form.fc" layout="inline" hideRequiredMark>
         <reserve-resource :decorators="decorators" />
       </a-form>
     </div>
