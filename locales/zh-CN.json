@@ -672,6 +672,6 @@
   "cloudenv.res_vpcs": "VPC",
   "cloudenv.res_networks": "IP子网",
   "cloudenv.res_ports": "IP总量",
-  "cloudenv.disk_hidden_menus": "隐藏磁盘操作菜单",
+  "cloudenv.disk_hidden_menus": "隐藏硬盘操作菜单",
   "cloudenv.sub_hidden_menus": "隐藏主菜单"
 }
