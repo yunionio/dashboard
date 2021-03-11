@@ -145,6 +145,23 @@ export default {
           label: this.$t('network.text_200'),
           actions: () => {
             return [
+              {
+                label: this.$t('network.text_201'),
+                permission: 'lb_loadbalancers_perform_syncstatus',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: true,
+                  }
+                },
+              },
               ...getEnabledSwitchActions(this, undefined, undefined, {
                 actions: [
                   (obj) => {
