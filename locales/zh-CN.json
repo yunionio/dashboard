@@ -4637,6 +4637,7 @@
   "common.workflow.reply_help": "请输入回复信息",
   "common.workflow.back": "返回列表",
   "common.workflow.approval_start": "待我处理",
-  "common.workflow.approval_done": "我已处理"
+  "common.workflow.approval_done": "我已处理",
+  "common.workflow.end_tips": "已关闭状态的工单不支持该操作"
 }
 
