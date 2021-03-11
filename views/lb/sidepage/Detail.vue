@@ -13,7 +13,7 @@ import { LB_SPEC, CHARGE_TYPE } from '@Network/views/lb/constants'
 import { getBrandTableColumn, getCopyWithContentTableColumn, getZone1TableColumn, getSwitchTableColumn } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
-  getExtTagColumn,
+  // getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -35,7 +35,7 @@ export default {
     return {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
-        //getExtTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
+        // getExtTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
         {
           field: 'loadbalance_type',
           title: this.$t('network.text_249'),
