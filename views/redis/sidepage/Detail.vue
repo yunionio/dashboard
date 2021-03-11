@@ -50,9 +50,10 @@ export default {
           slots: {
             default: ({ row }) => {
               if (!R.isNil(row.slave_zone_infos)) {
-                return row.slave_zone_infos.map(v => {
-                  return <div>{v.name}({this.$t('db.text_165')})</div>
+                const sl = row.slave_zone_infos.map(v => {
+                  return <div>{v.name}({this.$t('db.text_164')})</div>
                 })
+                return [<div>{row.zone ? row.zone + '(' + this.$t('db.text_165') + ')' : '-'}</div>, ...sl]
               }
               return row.zone || '-'
             },
