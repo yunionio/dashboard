@@ -31,9 +31,9 @@ export default {
         },
         meta: (obj) => {
           const ret = { validate: true }
-          if (!CLOSE_STATUS.includes(obj.state)) {
+          if (CLOSE_STATUS.includes(obj.state)) {
             ret.validate = false
-            ret.tooltip = '已关闭状态的工单不支持该操作'
+            ret.tooltip = i18n.t('common.workflow.end_tips')
           }
           return ret
         },
