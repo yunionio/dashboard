@@ -31,6 +31,7 @@ import * as R from 'ramda'
 import ImageSelect from './ImageSelect'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
+import storage from '@/utils/storage'
 
 export default {
   name: 'OsSelect',
@@ -161,7 +162,8 @@ export default {
     },
     'form.fd.image.key': {
       handler () {
-        const { imageType } = this.$route.query
+        const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+        const { imageType = lastSelectedImageInfo.imageType } = this.$route.query
         if (this.isFirstLoad && imageType) {
           this.form.fc.setFieldsValue({ imageType })
           this.imageType = imageType
@@ -172,14 +174,22 @@ export default {
   },
   methods: {
     imageInput (image) {
+      console.log(image)
       this.$emit('change', image)
     },
     change (e) {
       this.isFirstLoad = false
       this.imageType = e.target.value
+      // console.log(e.target.value)
+      const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+      storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageType: e.target.value })
       this.$emit('update:imageType', e.target.value)
     },
     updateImageMsg (...ret) {
+      const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+      const image = ret[0].imageMsg
+      const os_distribution = image.properties.os_distribution.includes('Windows') ? 'Windows' : image.properties.os_distribution
+      storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageOs: os_distribution, imageId: image.id })
       this.$emit('updateImageMsg', ...ret)
     },
   },

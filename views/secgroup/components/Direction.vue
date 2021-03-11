@@ -143,6 +143,7 @@ export default {
           meta: () => {
             return {
               validate: !this.isRead,
+              tooltip: this.isRead ? i18n.t('compute.secgroup.shared') : '',
             }
           },
         },
@@ -163,6 +164,7 @@ export default {
           meta: () => {
             return {
               validate: !this.isRead,
+              tooltip: this.isRead ? i18n.t('compute.secgroup.shared') : '',
             }
           },
         },
@@ -183,6 +185,7 @@ export default {
           meta: () => {
             return {
               validate: !this.isRead,
+              tooltip: this.isRead ? i18n.t('compute.secgroup.shared') : '',
             }
           },
         },
@@ -205,6 +208,7 @@ export default {
             return {
               buttonType: 'primary',
               validate: !this.isRead,
+              tooltip: this.isRead ? i18n.t('compute.secgroup.shared') : '',
             }
           },
         },
@@ -225,6 +229,7 @@ export default {
             if (this.isRead) {
               return {
                 validate: !this.isRead,
+                tooltip: this.isRead ? i18n.t('compute.secgroup.shared') : '',
               }
             }
             return this.$getDeleteResult(this.list.selectedItems)
