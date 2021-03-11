@@ -4632,5 +4632,6 @@
   "common.workflow.reply_help": "Please enter the reply message",
   "common.workflow.back": "Back to list",
   "common.workflow.approval_start": "My Pending",
-  "common.workflow.approval_done": "I Resolved"
+  "common.workflow.approval_done": "I Resolved",
+  "common.workflow.end_tips": "The operation is not supported for tickets whose status is closed"
 }

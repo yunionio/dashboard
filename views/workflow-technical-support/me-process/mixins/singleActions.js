@@ -30,9 +30,12 @@ export default {
           })
         },
         meta: (obj) => {
-          return {
-            validate: !CLOSE_STATUS.includes(obj.state),
+          const ret = { validate: true }
+          if (!CLOSE_STATUS.includes(obj.state)) {
+            ret.validate = false
+            ret.tooltip = '已关闭状态的工单不支持该操作'
           }
+          return ret
         },
       },
     ]
