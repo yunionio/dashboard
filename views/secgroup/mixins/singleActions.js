@@ -106,8 +106,10 @@ export default {
                 })
               },
               meta: () => {
+                const isPrivate = !obj.is_public
                 return {
                   validate: this.isPower(obj),
+                  tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
                 }
               },
             },
@@ -141,8 +143,10 @@ export default {
                 })
               },
               meta: () => {
+                const isPrivate = !obj.is_public
                 return {
                   validate: this.isPower(obj),
+                  tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
                 }
               },
             },
@@ -165,7 +169,7 @@ export default {
                   const isPrivate = !obj.is_public
                   return {
                     validate: isPower && isPrivate,
-                    tooltip: isPower && !isPrivate ? i18n.t('compute.text_1378') : '',
+                    tooltip: isPower && !isPrivate ? i18n.t('compute.secgroup.shared') : '',
                   }
                 }
                 return {
@@ -195,9 +199,10 @@ export default {
                 })
               },
               meta: () => {
+                const isPrivate = !obj.is_public
                 return {
-                  validate: this.isPower(obj) && this.$getDeleteResult(obj).validate,
-                  tooltip: !this.$getDeleteResult(obj).validate ? this.$getDeleteResult(obj).tooltip : '',
+                  validate: isPrivate,
+                  tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
                 }
               },
             },
