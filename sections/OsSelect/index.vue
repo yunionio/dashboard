@@ -188,8 +188,10 @@ export default {
     updateImageMsg (...ret) {
       const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
       const image = ret[0].imageMsg
-      const os_distribution = image.properties.os_distribution.includes('Windows') ? 'Windows' : image.properties.os_distribution
-      storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageOs: os_distribution, imageId: image.id })
+      if (image.properties && image.properties.os_distribution) {
+        const os_distribution = image.properties.os_distribution.includes('Windows') ? 'Windows' : image.properties.os_distribution
+        storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageOs: os_distribution, imageId: image.id })
+      }
       this.$emit('updateImageMsg', ...ret)
     },
   },
