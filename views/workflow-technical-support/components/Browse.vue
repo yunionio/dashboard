@@ -10,7 +10,7 @@
       <template v-if="isEdit">
         <div class="d-flex justify-content-between align-items-center header-wrapper mt-4">
           <h4 class="header">{{ $t('common.workflow.records') }}</h4>
-          <a-button size="small" @click="isShowReply = !isShowReply">{{ $t('common.workflow.reply') }}</a-button>
+          <a-button size="small" type="primary" @click="isShowReply = !isShowReply">{{ $t('common.workflow.reply') }}</a-button>
         </div>
         <template v-if="isShowReply">
           <div class="mb-1">{{ $t('common.workflow.reply') }}</div>
@@ -25,7 +25,6 @@
         </template>
       </template>
       <a-list
-        :header="$t('common.workflow.reply_records')"
         class="comment-list"
         item-layout="horizontal"
         :data-source="replyData">
@@ -180,6 +179,9 @@ export default {
     font-weight: normal;
     height: 40px;
     line-height: 40px;
+  }
+  .ant-btn{
+    border-radius: 0;
   }
   .reply-wrapper{
     margin-bottom: 80px;
