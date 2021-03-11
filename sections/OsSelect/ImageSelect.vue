@@ -629,7 +629,7 @@ export default {
     fillImageOpts () {
       const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
       const { imageOs = lastSelectedImageInfo.imageOs, imageId = lastSelectedImageInfo.imageId } = this.$route.query
-      console.log(imageOs, imageId)
+
       if (imageOs) {
         const os = imageOs.replace(imageOs[0], imageOs[0].toUpperCase())
         this.form.fc.setFieldsValue({ os })
