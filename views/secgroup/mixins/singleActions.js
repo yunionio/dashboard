@@ -125,8 +125,10 @@ export default {
                 })
               },
               meta: () => {
+                const isPrivate = !obj.is_public
                 return {
                   validate: this.isPower(obj),
+                  tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
                 }
               },
             },
