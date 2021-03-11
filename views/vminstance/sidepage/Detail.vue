@@ -12,7 +12,7 @@
 import * as R from 'ramda'
 import {
   getUserTagColumn,
-  getExtTagColumn,
+  // getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import { ALL_STORAGE, SERVER_TYPE } from '@Compute/constants/index'
 import {
@@ -46,7 +46,7 @@ export default {
       baseInfo: [
         getOsArch(),
         getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
-        //getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
+        // getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         {
           field: 'keypair',
           title: this.$t('compute.text_33'),
