@@ -225,6 +225,28 @@ export default {
               label: i18n.t('compute.text_353'),
               submenus: [
                 {
+                  label: i18n.t('compute.perform_sync_status'),
+                  action: () => {
+                    this.onManager('performAction', {
+                      steadyStatus: ['running', 'ready'],
+                      id: obj.id,
+                      managerArgs: {
+                        action: 'syncstatus',
+                      },
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (commonUnabled(obj)) return ret
+                    ret.validate = true
+                    return ret
+                  },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
+                },
+                {
                   label: i18n.t('compute.text_272'),
                   permission: 'server_perform_start',
                   action: () => {
@@ -359,28 +381,6 @@ export default {
                     return ret
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
-                },
-                {
-                  label: i18n.t('compute.perform_sync_status'),
-                  action: () => {
-                    this.onManager('performAction', {
-                      steadyStatus: ['running', 'ready'],
-                      id: obj.id,
-                      managerArgs: {
-                        action: 'syncstatus',
-                      },
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (commonUnabled(obj)) return ret
-                    ret.validate = true
-                    return ret
-                  },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
                 },
               ],
             },
