@@ -43,29 +43,6 @@ export default {
           },
         },
       },
-      {
-        field: 'assignee',
-        title: i18n.t('common_399'),
-        minWidth: 120,
-        showOverflow: 'title',
-        slots: {
-          default: ({ row }) => {
-            const assignees = []
-            if (Array.isArray(row.tasks)) {
-              row.tasks.forEach((item) => {
-                if (!item.delete_reason) {
-                  assignees.push(item.assignee_name)
-                }
-              })
-            } else {
-              if (row.tasks && !row.delete_reason) {
-                assignees.push(row.tasks.assignee_name)
-              }
-            }
-            return assignees.length > 0 ? assignees.join(',') : '-'
-          },
-        },
-      },
       getCommentTableColumn(),
       getTimeTableColumn({ field: 'start_time', title: i18n.t('common_374') }),
       getTimeTableColumn({ field: 'end_time', title: i18n.t('common_387') }),
