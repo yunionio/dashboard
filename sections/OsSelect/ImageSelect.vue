@@ -154,7 +154,7 @@ export default {
     cacheimageIds () {
       return this.images.cacheimagesList.map(item => item.id)
     },
-    storageSelectImage () {
+    storageSelectImage () { // public__select_image: {os: 'Windows', image: {id: xxx, name: xxx}}
       return storage.get(`${this.cloudType}${SELECT_IMAGE_KEY_SUFFIX}`)
     },
     showCloudaccount () {
@@ -627,7 +627,9 @@ export default {
       return images || []
     },
     fillImageOpts () {
-      const { imageOs, imageId } = this.$route.query
+      const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
+      const { imageOs = lastSelectedImageInfo.imageOs, imageId = lastSelectedImageInfo.imageId } = this.$route.query
+      console.log(imageOs, imageId)
       if (imageOs) {
         const os = imageOs.replace(imageOs[0], imageOs[0].toUpperCase())
         this.form.fc.setFieldsValue({ os })
