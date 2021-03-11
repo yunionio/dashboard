@@ -13,7 +13,7 @@ import * as R from 'ramda'
 import { NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
 import {
   getUserTagColumn,
-  getExtTagColumn,
+  // getExtTagColumn,
 } from '@/utils/common/detailColumn'
 import {
   getBrandTableColumn,
@@ -41,7 +41,7 @@ export default {
     return {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'elasticcache', columns: () => this.columns, tipName: this.$t('dictionary.elasticcache') }),
-        //getExtTagColumn({ onManager: this.onManager, resource: 'elasticcache', columns: () => this.columns, tipName: this.$t('dictionary.elasticcache') }),
+        // getExtTagColumn({ onManager: this.onManager, resource: 'elasticcache', columns: () => this.columns, tipName: this.$t('dictionary.elasticcache') }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
         {
