@@ -19,6 +19,12 @@ export default {
           })
         },
         meta: (obj) => {
+          if (obj.brand.toLowerCase() === 'onecloud') {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_652'),
+            }
+          }
           return {
             validate: true,
           }

@@ -157,6 +157,12 @@ export default {
                   })
                 },
                 meta: () => {
+                  if (this.list.selectedItems.some(v => v.brand.toLowerCase() === 'onecloud')) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_628'),
+                    }
+                  }
                   return {
                     validate: true,
                   }
