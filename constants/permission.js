@@ -390,6 +390,7 @@ export const PERMISSION = {
   /**
    * 负责均衡 相关操作
    */
+  lb_loadbalancers_perform_syncstatus: ['compute', 'loadbalancers', 'perform', 'syncstatus'],
   lb_loadbalancers_create: ['compute', 'loadbalancers', 'create'],
   lb_loadbalancers_update: ['compute', 'loadbalancers', 'update'],
   lb_loadbalancers_delete: ['compute', 'loadbalancers', 'delete'],
@@ -421,6 +422,7 @@ export const PERMISSION = {
   lb_loadbalancercertificates_update: ['compute', 'loadbalancercertificates', 'update'],
   lb_loadbalancercertificates_delete: ['compute', 'loadbalancercertificates', 'delete'],
   lb_loadbalancercertificates_get: ['compute', 'loadbalancercertificates', 'get'],
+
   /**
    * 主机模板
    */
