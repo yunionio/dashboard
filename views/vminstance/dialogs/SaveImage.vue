@@ -2,6 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_1236')}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning" v-if="isPublic">
+        <div slot="message">
+          {{ $t('compute.save_image_prompt.public_cloud', [$t('common.public_cloud_customized_image')]) }}
+        </div>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1236')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
@@ -34,7 +39,8 @@
 import * as R from 'ramda'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
+import { SERVER_TYPE } from '@Compute/constants'
 
 const hypervisorMap = typeClouds.hypervisorMap
 
@@ -103,6 +109,13 @@ export default {
   computed: {
     isKvm () {
       return this.params.data[0].hypervisor === hypervisorMap.kvm.key
+    },
+    isPublic () {
+      const noSupportBrand = [
+        typeClouds.hypervisorMap.ucloud.brand,
+        typeClouds.hypervisorMap.ctyun.brand,
+      ]
+      return (findPlatform(this.params.data[0].hypervisor) === SERVER_TYPE.public && !noSupportBrand.includes(this.params.data[0].brand))
     },
     diskCount () {
       return this.params.data[0].disk_count
