@@ -4,7 +4,9 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -14,10 +16,11 @@ import { getNameFilter, getTenantFilter, getStatusFilter, getDomainFilter } from
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'SnapshotPolicyList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -42,6 +45,7 @@ export default {
           project_domains: getDomainFilter(),
         },
         hiddenColumns: ['created_at'],
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [
@@ -97,6 +101,7 @@ export default {
     getParam () {
       const ret = {
         details: true,
+        ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret

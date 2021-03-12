@@ -4,6 +4,7 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
     :show-group-actions="showGroupActions"
     :show-single-actions="showSingleActions"
     :export-data-options="exportDataOptions" />
@@ -16,10 +17,11 @@ import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter, getRegionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'ServertemplateList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -86,6 +88,7 @@ export default {
           os_arch: getOsArchFilter(),
         },
         hiddenColumns: ['os_type', 'os_arch'],
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [
