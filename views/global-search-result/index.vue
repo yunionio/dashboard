@@ -26,12 +26,14 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import qs from 'qs'
 import VmInstanceList from '@Compute/views/vminstance/components/List'
+import ServertemplateList from '@Compute/views/servertemplate/components/List'
 import BaremetalList from '@Compute/views/baremetal/components/List'
 import ImageList from '@Compute/views/image/components/List'
 import HostImageList from '@Compute/views/host-image/components/List'
 import DiskList from '@Compute/views/disk/components/List'
 import InstanceSnapshotList from '@Compute/views/snapshot-instance/components/List'
 import SnapshotList from '@Compute/views/snapshot/components/List'
+import SnapshotPolicyList from '@Compute/views/snapshotpolicy/components/List'
 import SecgroupList from '@Compute/views/secgroup/components/List'
 import EipList from '@Network/views/eip/components/List'
 import NetworkList from '@Network/views/network/components/List'
@@ -64,11 +66,13 @@ export default {
   name: 'GlobalSearchResult',
   components: {
     VmInstanceList,
+    ServertemplateList,
     BaremetalList,
     ImageList,
     HostImageList,
     DiskList,
     SnapshotList,
+    SnapshotPolicyList,
     InstanceSnapshotList,
     SecgroupList,
     EipList,
