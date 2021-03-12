@@ -3,7 +3,9 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :showSearchbox="showSearchbox"
+    :showGroupActions="showGroupActions" />
 </template>
 
 <script>
@@ -16,10 +18,11 @@ import {
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'ExternalprojectList',
-  mixins: [WindowsMixin, ListMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin],
   props: {
     getParams: {
       type: [Function, Object],
