@@ -70,6 +70,26 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {}, // 查询结果
     },
+    serverTemplates: {
+      res_name: 'servertemplates',
+      label: i18n.t('dictionary.servertemplate'),
+      id: 'serverTemplates',
+      component: 'ServertemplateList',
+      hasPermission: hasPermission({ key: 'servertemplates_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+          with_meta: true,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {}, // 查询结果
+    },
     baremetals: {
       res_name: 'servers',
       label: i18n.t('dictionary.baremetal'),
@@ -166,6 +186,26 @@ export const getSearchMaps = (searchRes = {}) => {
           ...commonSearchQuery,
           with_meta: true,
           is_instance_snapshot: false,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    snapshotPolicies: {
+      res_name: 'snapshotpolicies',
+      label: i18n.t('dictionary.snapshotpolicy'),
+      id: 'snapshotPolicies',
+      component: 'SnapshotPolicyList',
+      hasPermission: hasPermission({ key: 'snapshotpolicy_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+          with_meta: true,
         },
         name: {
           filter: `name.contains(${getFilter('name')})`,
