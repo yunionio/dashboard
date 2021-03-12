@@ -362,6 +362,7 @@ export default {
       const ret = {
         details: true,
         is_guest_image: false,
+        ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret

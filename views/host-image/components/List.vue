@@ -228,6 +228,7 @@ export default {
     getParam () {
       const ret = {
         details: true,
+        ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
