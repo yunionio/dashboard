@@ -270,6 +270,18 @@ export default {
                 label: this.$t('compute.text_353'),
                 submenus: [
                   {
+                    label: this.$t('compute.perform_sync_status'),
+                    action: () => {
+                      this.onManager('batchPerformAction', {
+                        steadyStatus: ['running', 'ready'],
+                        managerArgs: {
+                          action: 'syncstatus',
+                        },
+                      })
+                    },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
+                  },
+                  {
                     label: this.$t('compute.text_1128'), // 挂起
                     permission: 'server_perform_suspend',
                     action: () => {
@@ -332,18 +344,6 @@ export default {
                       return ret
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
-                  },
-                  {
-                    label: this.$t('compute.perform_sync_status'),
-                    action: () => {
-                      this.onManager('batchPerformAction', {
-                        steadyStatus: ['running', 'ready'],
-                        managerArgs: {
-                          action: 'syncstatus',
-                        },
-                      })
-                    },
-                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
                   },
                 ],
               },
