@@ -307,6 +307,7 @@ export default {
         const res = await new this.$Manager('notifyconfigs', 'v1').list({
           params: {
             type: 'email',
+            scope: this.$store.getters.scope,
           },
         })
         if (res.data.data.length > 0) {
