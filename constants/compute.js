@@ -8,7 +8,7 @@ export const IMAGES_TYPE_MAP = {
   host: { key: 'host', label: i18n.t('common.text00021'), tooltip: i18n.t('common.text00022') },
   snapshot: { key: 'snapshot', label: i18n.t('common.text00023'), tooltip: i18n.t('common.text00024') },
   public: { key: 'public', label: i18n.t('common.text00025'), tooltip: i18n.t('common.text00026') },
-  public_customize: { key: 'public_customize', label: i18n.t('common.text00027'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: true },
+  public_customize: { key: 'public_customize', label: i18n.t('common.public_cloud_customized_image'), tooltip: i18n.t('common.text00028'), enable_cloudaccount: true },
   private: { key: 'private', label: i18n.t('common.text00029'), tooltip: i18n.t('common.text00030'), enable_cloudaccount: true },
   vmware: { key: 'vmware', label: i18n.t('common.text00031'), tooltip: i18n.t('common.text00032'), enable_cloudaccount: true },
 }
