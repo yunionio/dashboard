@@ -80,6 +80,12 @@ export default {
     instanceType: {
       type: String,
     },
+    requireSysDiskType: {
+      type: Array,
+    },
+    requireDataDiskTypes: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -204,8 +210,10 @@ export default {
             item.currency = this.ratesMap[item.rate_key].currency
           }
         }
-        skuOptions[key].push(item)
-        skuOptions[ALL_SKU_CATEGORY_OPT.key].push(item)
+        if (this.isSkuEnabled(item)) {
+          skuOptions[key].push(item)
+          skuOptions[ALL_SKU_CATEGORY_OPT.key].push(item)
+        }
       }
       return {
         categoryOptions,
@@ -368,6 +376,23 @@ export default {
         provider = item.cloud_env.toLowerCase()
       }
       return provider
+    },
+    isSupportDiskTypes (supported, required) {
+      for (let i = 0; i < required.length; i++) {
+        if (!supported.includes(required[i])) {
+          return false
+        }
+      }
+      return true
+    },
+    isSkuEnabled (item) {
+      if (this.requireSysDiskType && item.sys_disk_type && !this.isSupportDiskTypes(item.sys_disk_type.split(','), this.requireSysDiskType)) {
+        return false
+      }
+      if (this.requireDataDiskTypes && item.data_disk_types && !this.isSupportDiskTypes(item.data_disk_types.split(','), this.requireDataDiskTypes)) {
+        return false
+      }
+      return true
     },
   },
 }
