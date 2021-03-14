@@ -28,6 +28,8 @@
               v-decorator="decorators.sku"
               :type="type"
               :sku-params="skuParam"
+              :require-sys-disk-type="requireSysDiskType"
+              :require-data-disk-types="requireDataDiskTypes"
               :instance-type="instanceType"
               :hypervisor="hypervisor" />
           </a-form-item>
@@ -599,6 +601,23 @@ export default {
       }
 
       return null
+    },
+    requireSysDiskType () {
+      if (this.sysdisk) {
+        return [this.sysdisk.type]
+      }
+      return []
+    },
+    requireDataDiskTypes () {
+      const types = []
+      if (this.form && this.form.fd && this.form.fd.datadisks) {
+        for (let i = 0; i < this.form.fd.datadisks.length; i++) {
+          if (!types.includes(this.form.fd.datadisks[i].type)) {
+            types.push(this.form.fd.datadisks[i].type)
+          }
+        }
+      }
+      return types
     },
   },
   watch: {
