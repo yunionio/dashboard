@@ -31,7 +31,7 @@ export default {
         getParams: this.getParams,
         filterOptions: {
           name: {
-            label: this.$t('cloudenv.text_95'),
+            label: this.$t('cloudenv.text_386'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
