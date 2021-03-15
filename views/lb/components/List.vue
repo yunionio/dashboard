@@ -20,7 +20,7 @@ import { validateEnabled, validateDisable } from '../utils'
 import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import { changeToArr } from '@/utils/utils'
@@ -48,6 +48,7 @@ export default {
         label: this.$t('table.title.id'),
       },
       name: getNameFilter(),
+      status: getStatusFilter('lb'),
       brand: {
         ...allBrandsFilter,
         items: allBrandsFilter.items.filter(val => surpportLb.includes(val.key.toLowerCase())),
