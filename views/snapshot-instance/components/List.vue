@@ -50,6 +50,9 @@ export default {
           },
           name: getNameFilter(),
           status: getStatusFilter('snapshot'),
+          guest_id: {
+            label: this.$t('res.server'),
+          },
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
           region: getRegionFilter(),
