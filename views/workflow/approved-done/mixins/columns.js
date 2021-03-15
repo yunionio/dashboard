@@ -2,7 +2,6 @@ import {
   getProcessDefinitionNameTableColumn,
   getResourceNameTableColumn,
   getResourceProjectTableColumn,
-  getPriorityTableColumn,
 } from '../../utils/columns'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import {
@@ -28,7 +27,6 @@ export default {
         },
       }),
       getProcessDefinitionNameTableColumn({ field: 'process_instance.process_definition_name' }),
-      getPriorityTableColumn(),
       getResourceNameTableColumn(),
       getResourceProjectTableColumn({
         field: 'variables.resource_project_name',

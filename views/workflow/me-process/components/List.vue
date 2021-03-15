@@ -13,7 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { statusMap } from '../../constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { PROCESS_TYPES_OPTS, PRIORITY_OPTS } from '@/constants/workflow'
+import { PROCESS_TYPES_OPTS } from '@/constants/workflow'
 
 export default {
   name: 'MeProcessList',
@@ -64,16 +64,6 @@ export default {
           },
           resource_project: {
             label: this.$t('common_310'),
-          },
-          priority: {
-            label: this.$t('common.workflow_priority'),
-            dropdown: true,
-            items: PRIORITY_OPTS.map(v => {
-              return {
-                label: v.value,
-                key: v.key,
-              }
-            }),
           },
         },
       }),
