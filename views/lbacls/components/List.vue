@@ -17,10 +17,11 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
   name: 'LbaclsList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
     getParams: {
@@ -47,6 +48,7 @@ export default {
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
         },
+        responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [
