@@ -119,6 +119,12 @@ export default {
     }
   },
   computed: {
+    isSupportReferer () {
+      if (this.data.provider === HYPERVISORS_MAP.qcloud.provider || this.data.provider === HYPERVISORS_MAP.aliyun.provider) {
+        return true
+      }
+      return false
+    },
     extraInfo () {
       const referer = {
         title: ({ row }, h) => {
@@ -127,14 +133,14 @@ export default {
           }, [
             <span class='ml-2'>{i18n.t('storage.text_213')}</span>,
             <a-tooltip>
-              { row.provider !== HYPERVISORS_MAP.qcloud.provider
+              { !this.isSupportReferer
                 ? (this._isOwner
                   ? (HYPERVISORS_MAP[row.provider.toLowerCase()]
                     ? <template slot="title">{i18n.t('storage.text_235', [HYPERVISORS_MAP[row.provider.toLowerCase()].label])}</template>
                     : '')
                   : this.$t('storage.text_257'))
                 : null }
-              <a-button type="link" class="ml-2" disabled={ row.provider !== HYPERVISORS_MAP.qcloud.provider && this._isOwner } onClick={() => this.handleSetReferer(row)}>{ i18n.t('common.setting') }</a-button>
+              <a-button type="link" class="ml-2" disabled={ !this.isSupportReferer && this._isOwner } onClick={() => this.handleSetReferer(row)}>{ i18n.t('common.setting') }</a-button>
             </a-tooltip>,
           ])
         },
@@ -143,44 +149,61 @@ export default {
       if (this.data.referer) {
         const others = [
           {
-            field: 'referer.allow_empty_refer',
-            title: this.$t('storage.text_208'),
+            field: 'referer.enabled',
+            title: this.$t('storage.text_214'),
             formatter: ({ row }) => {
-              return row.referer.allow_empty_refer ? this.$t('storage.text_217') : this.$t('storage.text_218')
-            },
-          },
-          {
-            field: 'referer_white_list',
-            title: this.$t('storage.text_219'),
-            slots: {
-              default: ({ row }) => {
-                return row.referer_white_list ? row.referer_white_list.map(item => {
-                  return (
-                    <list-body-cell-wrap hideField copy title={ item } message={ item }>
-                      <span>{ item }</span>
-                    </list-body-cell-wrap>
-                  )
-                }) : '-'
-              },
-            },
-          },
-          {
-            field: 'referer_black_list',
-            title: this.$t('storage.text_237'),
-            slots: {
-              default: ({ row }) => {
-                return row.referer_black_list ? row.referer_black_list.map(item => {
-                  return (
-                    <list-body-cell-wrap hideField copy title={ item } message={ item }>
-                      <span>{ item }</span>
-                    </list-body-cell-wrap>
-                  )
-                }) : '-'
-              },
+              return row.referer.enabled ? this.$t('storage.text_215') : this.$t('storage.text_216')
             },
           },
         ]
         referer.items = referer.items.concat(others)
+        if (this.data.referer.enabled) {
+          const refers = [
+            {
+              field: 'referer.allow_empty_refer',
+              title: this.$t('storage.text_208'),
+              formatter: ({ row }) => {
+                if (!row.referer.enabled) {
+                  return '-'
+                }
+                return row.referer.allow_empty_refer ? this.$t('storage.text_217') : this.$t('storage.text_218')
+              },
+            },
+            {
+              field: 'referer.referer_type',
+              title: this.$t('storage.text_86'),
+              slots: {
+                default: ({ row }) => {
+                  if (row.referer.enabled && row.referer.referer_type) {
+                    if (row.referer.referer_type === 'White-List') {
+                      return this.$t('storage.text_206')
+                    } else if (row.referer.referer_type === 'Black-List') {
+                      return this.$t('storage.black_list')
+                    }
+                    return row.referer.referer_type
+                  }
+                  return '-'
+                },
+              },
+            },
+            {
+              field: 'referer.domain_list',
+              title: this.$t('storage.text_219'),
+              slots: {
+                default: ({ row }) => {
+                  return row.referer.domain_list ? row.referer.domain_list.map(item => {
+                    return (
+                      <list-body-cell-wrap hideField copy title={ item } message={ item }>
+                        <span>{ item }</span>
+                      </list-body-cell-wrap>
+                    )
+                  }) : '-'
+                },
+              },
+            },
+          ]
+          referer.items = referer.items.concat(refers)
+        }
       }
       const ret = [
         {
@@ -373,8 +396,10 @@ export default {
     // 目前进腾讯云支持
     if (this.data.provider === HYPERVISORS_MAP.qcloud.provider) {
       this.fetchWebsite()
-      this.fetchReferer()
       this.fetchCdnDomain()
+    }
+    if (this.isSupportReferer) {
+      this.fetchReferer()
     }
   },
   methods: {
@@ -400,8 +425,6 @@ export default {
           id: this.data.id,
           spec: 'referer',
         })
-        this.$set(this.data, 'referer_white_list', data.white_list)
-        this.$set(this.data, 'referer_black_list', data.black_list)
         this.$set(this.data, 'referer', data)
       } catch (err) {
         throw err
