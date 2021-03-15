@@ -5,12 +5,19 @@
       <dialog-selected-tips :name="$t('dictionary.eip')" :count="params.data.length" :action="$t('network.text_202')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.eip.instance_type')">
+          <a-radio-group v-decorator="decorators.instance_type" @change="onAssociateTypeChanged">
+            <a-radio value="server">{{$t('network.eip.instance_type.server')}}</a-radio>
+            <a-radio value="natgateway" :disabled="isNatDisabled">{{$t('network.eip.instance_type.nat')}}</a-radio>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="resource_label">
           <base-select
             :remote="true"
             v-decorator="decorators.instance_id"
-            resource="servers"
+            :resource="resource"
             :params="instanceParams"
             :remote-fn="q => ({ search: q })"
             :select-props="{ placeholder: $t('network.text_203') }" />
@@ -38,7 +45,15 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      resource: 'servers',
+      resource_label: this.$t('dictionary.server'),
       decorators: {
+        instance_type: [
+          'instance_type',
+          {
+            initialValue: 'server',
+          },
+        ],
         instance_id: [
           'instance_id',
           {
@@ -62,19 +77,39 @@ export default {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
     instanceParams () {
       const params = {
-        usable_server_for_eip: this.params.data[0].id,
-        filter: 'status.in(ready, running)',
-        without_eip: true,
         details: true,
         with_meta: true,
         scope: this.scope,
-        eip_associable: true, // 过滤出允许挂载EIP的虚拟机
+      }
+      if (this.resource === 'servers') {
+        params.filter = 'status.in(ready, running)'
+        params.without_eip = true
+        params.eip_associable = true
+        params.usable_server_for_eip = this.params.data[0].id // 过滤出允许挂载EIP的虚拟机
+      } else if (this.resource === 'natgateways') {
+        params.filter = 'status.in("available")'
+        params.cloudregion_id = this.params.data[0].cloudregion_id
       }
       if (this.isAdminMode || this.isDomainMode) params.project_id = this.params.data[0].project_id
       return params
     },
+    isNatDisabled () {
+      if (this.params.data[0].provider === 'OneCloud' || this.params.data[0].provider === 'Huawei') {
+        return true
+      }
+      return false
+    },
   },
   methods: {
+    onAssociateTypeChanged (e) {
+      if (e.target.value === 'server') {
+        this.resource = 'servers'
+        this.resource_label = this.$t('dictionary.server')
+      } else if (e.target.value === 'natgateway') {
+        this.resource = 'natgateways'
+        this.resource_label = this.$t('dictionary.nat')
+      }
+    },
     doBind (data) {
       return this.params.onManager('performAction', {
         id: data.id,
