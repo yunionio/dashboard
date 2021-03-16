@@ -624,5 +624,7 @@
   "cloudenv.international_cloud": "公共云",
   "cloudenv.finance_cloud": "金融云",
   "cloudenv.text_571": "合约编号及密钥获取可参考",
-  "cloudenv.text_573": "全部域"
+  "cloudenv.text_573": "全部域",
+  "cloudenv.disk_hidden_menus": "隐藏硬盘操作菜单",
+  "cloudenv.sub_hidden_menus": "隐藏主菜单"
 }
