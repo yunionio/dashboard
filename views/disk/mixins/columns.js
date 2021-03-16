@@ -1,5 +1,5 @@
 import { MEDIUM_MAP } from '../../../constants'
-import { getUnusedTableColumn } from '../utils/columns'
+// import { getUnusedTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -53,7 +53,7 @@ export default {
           return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
       },
-      getUnusedTableColumn(),
+      /* getUnusedTableColumn(),
       {
         field: 'guest',
         title: this.$t('res.server'),
@@ -69,7 +69,7 @@ export default {
             ]
           },
         },
-      },
+      }, */
       getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('table.title.disk_storage') }),
       getTimeTableColumn(),
       getBrandTableColumn(),

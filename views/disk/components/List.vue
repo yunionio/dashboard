@@ -9,7 +9,8 @@
     :single-actions="singleActions"
     :export-data-options="exportDataOptions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :before-show-menu="beforeShowMenu" />
 </template>
 
 <script>
@@ -88,6 +89,7 @@ export default {
       meta: () => ({
         buttonType: 'primary',
       }),
+      hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_create'),
     }
     const groupActions = [
       {
@@ -105,6 +107,7 @@ export default {
                   },
                 })
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_syncstatus'),
             },
             {
               label: this.$t('table.action.set_tag'),
@@ -120,6 +123,7 @@ export default {
                   tipName: this.$t('compute.text_100'),
                 })
               },
+              // hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_set_tags'),
             },
             {
               label: this.$t('compute.text_261'),
@@ -133,6 +137,7 @@ export default {
                 })
               },
               meta: () => this.$getDeleteResult(this.list.selectedItems),
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_delete'),
             },
           ]
         },
@@ -259,6 +264,11 @@ export default {
         },
       }, {
         list: this.list,
+      })
+    },
+    beforeShowMenu () {
+      return this.$store.dispatch('scopedPolicy/get', {
+        category: ['disk_hidden_menus'],
       })
     },
   },
