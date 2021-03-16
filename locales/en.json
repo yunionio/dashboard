@@ -447,6 +447,7 @@
       "instance_snapshot_create_failed": "Host snapshot creation failed",
       "instance_snapshot_start_delete": "The host snapshot starts to be deleted",
       "instance_snapshot_delete_failed": "Host snapshot deletion failed",
+      "instance_snapshot_reset": "Rollback server",
       "sync_status": "Sync Status"
     },
     "snapshotpolicy": {
