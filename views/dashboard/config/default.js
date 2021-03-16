@@ -534,7 +534,7 @@ export default {
           h: 5,
           w: 5,
           x: 15,
-          y: 9,
+          y: 4,
         },
         params: {
           limit: 4,
@@ -578,13 +578,13 @@ export default {
           component: 'Ring',
           h: 3,
           w: 5,
-          x: 15,
+          x: 10,
           y: 6,
         },
         params: {
-          all_usage_key: 'eip',
+          all_usage_key: 'eip.floating_ip',
           name: i18n.t('dashboard.text_156'),
-          usage_key: 'eip.used',
+          usage_key: 'eip.floating_ip.used',
         },
       },
       {
@@ -628,7 +628,7 @@ export default {
           usage_key: 'servers.memory',
         },
       },
-      {
+      /* {
         layout: {
           component: 'NumberCard',
           h: 2,
@@ -640,7 +640,7 @@ export default {
           name: i18n.t('dashboard.text_154'),
           usage_key: 'buckets',
         },
-      },
+      }, */
       {
         layout: {
           component: 'Quota',
@@ -740,6 +740,23 @@ export default {
       },
       {
         layout: {
+          component: 'Top5',
+          h: 5,
+          w: 5,
+          x: 15,
+          y: 9,
+        },
+        params: {
+          limit: 5,
+          name: i18n.t('dashboard.net.send.top5'),
+          order: 'TOP',
+          resType: 'server',
+          time: 18000,
+          usage: 'bps_sent,vm_netio',
+        },
+      },
+      /* {
+        layout: {
           component: 'Ring',
           h: 3,
           w: 5,
@@ -751,7 +768,7 @@ export default {
           name: i18n.t('dashboard.text_152'),
           usage_key: 'nics',
         },
-      },
+      }, */
       {
         layout: {
           component: 'NumberCard',
@@ -848,7 +865,7 @@ export default {
           h: 5,
           w: 5,
           x: 15,
-          y: 9,
+          y: 4,
         },
         params: {
           limit: 4,
@@ -885,7 +902,7 @@ export default {
           usage: 'usage_active,vm_cpu',
         },
       },
-      {
+      /* {
         layout: {
           component: 'Ring',
           h: 3,
@@ -898,7 +915,7 @@ export default {
           name: i18n.t('dashboard.text_152'),
           usage_key: 'nics',
         },
-      },
+      }, */
       {
         layout: {
           component: 'NumberCard',
@@ -995,7 +1012,7 @@ export default {
           un_usage_label: i18n.t('dashboard.not_shutdown'),
         },
       },
-      {
+      /* {
         layout: {
           component: 'NumberCard',
           h: 2,
@@ -1007,7 +1024,7 @@ export default {
           name: i18n.t('dashboard.text_154'),
           usage_key: 'buckets',
         },
-      },
+      }, */
       {
         layout: {
           component: 'NumberCard',
@@ -1026,13 +1043,13 @@ export default {
           component: 'Ring',
           h: 3,
           w: 5,
-          x: 15,
+          x: 10,
           y: 6,
         },
         params: {
-          all_usage_key: 'eip',
+          all_usage_key: 'eip.floating_ip',
           name: i18n.t('dashboard.text_156'),
-          usage_key: 'eip.used',
+          usage_key: 'eip.floating_ip.used',
         },
       },
       {
@@ -1075,6 +1092,23 @@ export default {
           resType: 'server',
           time: 18000,
           usage: 'write_bps,vm_diskio',
+        },
+      },
+      {
+        layout: {
+          component: 'Top5',
+          h: 5,
+          w: 5,
+          x: 15,
+          y: 9,
+        },
+        params: {
+          limit: 5,
+          name: i18n.t('dashboard.net.send.top5'),
+          order: 'TOP',
+          resType: 'server',
+          time: 18000,
+          usage: 'bps_sent,vm_netio',
         },
       },
       {
