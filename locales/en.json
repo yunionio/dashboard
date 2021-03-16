@@ -660,5 +660,7 @@
   "cloudaccount.tooltip.already_enable_sso": "Account has already enable SSO",
   "cloudaccount.tooltip.not_support_sso": "{0} not support SSO",
   "cloudenv.text_576": "Enable SSO",
-  "table.title.sso_status": "SSO status"
+  "table.title.sso_status": "SSO status",
+  "cloudenv.disk_hidden_menus": "Hide Disk Menus",
+  "cloudenv.sub_hidden_menus": "Hide Main Menus"
 }
