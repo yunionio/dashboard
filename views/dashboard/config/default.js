@@ -394,9 +394,9 @@ export default {
           y: 6,
         },
         params: {
-          all_usage_key: 'servers',
+          all_usage_key: 'domain.servers',
           name: i18n.t('dashboard.text_151'),
-          usage_key: 'ready_servers',
+          usage_key: 'domain.ready_servers',
           usage_label: i18n.t('dashboard.shutdown'),
           un_usage_label: i18n.t('dashboard.not_shutdown'),
         },
@@ -411,7 +411,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_158'),
-          usage_key: 'bucket_bytes',
+          usage_key: 'domain.bucket_bytes',
         },
       },
       {
@@ -480,9 +480,9 @@ export default {
           y: 6,
         },
         params: {
-          all_usage_key: 'disks.count',
+          all_usage_key: 'domain.disks.count',
           name: i18n.t('dashboard.text_147'),
-          usage_key: 'disks.attached.count',
+          usage_key: 'domain.disks.detached.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
         },
@@ -497,7 +497,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_159'),
-          usage_key: 'disks',
+          usage_key: 'domain.disks',
         },
       },
       {
@@ -525,7 +525,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_150'),
-          usage_key: 'bucket_objects',
+          usage_key: 'domain.bucket_objects',
         },
       },
       {
@@ -582,9 +582,9 @@ export default {
           y: 6,
         },
         params: {
-          all_usage_key: 'eip.floating_ip',
+          all_usage_key: 'domain.eip.floating_ip',
           name: i18n.t('dashboard.text_156'),
-          usage_key: 'eip.floating_ip.used',
+          usage_key: 'domain.eip.floating_ip.used',
         },
       },
       {
@@ -597,7 +597,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_148'),
-          usage_key: 'eip',
+          usage_key: 'domain.eip',
         },
       },
       {
@@ -625,22 +625,9 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_157'),
-          usage_key: 'servers.memory',
+          usage_key: 'domain.servers.memory',
         },
       },
-      /* {
-        layout: {
-          component: 'NumberCard',
-          h: 2,
-          w: 5,
-          x: 15,
-          y: 4,
-        },
-        params: {
-          name: i18n.t('dashboard.text_154'),
-          usage_key: 'buckets',
-        },
-      }, */
       {
         layout: {
           component: 'Quota',
@@ -666,7 +653,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_149'),
-          usage_key: 'servers.cpu',
+          usage_key: 'domain.servers.cpu',
         },
       },
       {
@@ -718,7 +705,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_155'),
-          usage_key: 'nics',
+          usage_key: 'domain.nics',
         },
       },
       {
@@ -755,20 +742,6 @@ export default {
           usage: 'bps_sent,vm_netio',
         },
       },
-      /* {
-        layout: {
-          component: 'Ring',
-          h: 3,
-          w: 5,
-          x: 10,
-          y: 6,
-        },
-        params: {
-          all_usage_key: 'ports',
-          name: i18n.t('dashboard.text_152'),
-          usage_key: 'nics',
-        },
-      }, */
       {
         layout: {
           component: 'NumberCard',
@@ -779,7 +752,7 @@ export default {
         },
         params: {
           name: i18n.t('dashboard.text_153'),
-          usage_key: 'servers.isolated_devices',
+          usage_key: 'domain.servers.isolated_devices',
         },
       },
       {
