@@ -54,9 +54,7 @@ export default {
           return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
       },
-      /* getUnusedTableColumn({
-        hidden: this.hiddenColumns.includes('unused'),
-      }), */
+      /* getUnusedTableColumn(),
       {
         field: 'guest',
         title: this.$t('res.server'),
@@ -72,8 +70,15 @@ export default {
             ]
           },
         },
-        hidden: this.hiddenColumns.includes('guest'),
-      },
+      }, */
+      getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('table.title.disk_storage') }),
+      getTimeTableColumn(),
+      getBrandTableColumn(),
+      getRegionTableColumn(),
+      getBillingTypeTableColumn(),
+      getStatusTableColumn({ statusModule: 'disk' }),
+      getProjectTableColumn(),
+      getAccountTableColumn(),
       {
         field: 'medium_type',
         title: i18n.t('table.title.disk_medium_type'),

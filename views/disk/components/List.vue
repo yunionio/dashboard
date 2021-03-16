@@ -144,7 +144,7 @@ export default {
                   tipName: this.$t('compute.text_100'),
                 })
               },
-              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_set_tags'),
+              // hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_set_tags'),
             },
             {
               label: this.$t('compute.perform_delete'),
