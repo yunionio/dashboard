@@ -52,6 +52,9 @@ export default {
           },
           name: getNameFilter(),
           status: getStatusFilter('snapshot'),
+          server_id: {
+            label: this.$t('res.server'),
+          },
           brand: getBrandFilter(),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
