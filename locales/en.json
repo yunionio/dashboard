@@ -1350,5 +1350,14 @@
   "commpute.sku_sync_result": "Operation successfully started synchronization package total {0}",
   "compute.storage_gp3": "General-purpose SSD (gp3)",
   "compute.host_convert": "No disk detected and cannot be converted to host",
-  "compute.physicalmachine_add": "Before adding physical machines, make sure that you have created IP subnets of the type IPMI and IP subnets of the type physical machines need on the platform"
+  "compute.physicalmachine_add": "Before adding physical machines, make sure that you have created IP subnets of the type IPMI and IP subnets of the type physical machines need on the platform",
+  "compute.perform_create": "Create",
+  "compute.disk_perform_resize": "Resize",
+  "compute.disk_perform_attach": "Attach",
+  "compute.disk_perform_detach": "Detach",
+  "compute.disk_perform_create_snapshot": "Create Snapshots",
+  "compute.disk_perform_setup_snapshot_policy": "Setup Snapshot Policies",
+  "compute.perform_change_owner": "Change {0}",
+  "compute.perform_sync_status": "Sync Status",
+  "compute.perform_delete": "Delete"
 }
