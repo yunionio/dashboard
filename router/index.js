@@ -2,10 +2,11 @@ import Redis from '@DB/views/redis'
 import RedisCreate from '@DB/views/redis/create'
 import RDS from '@DB/views/rds'
 import RDSCreate from '@DB/views/rds/create'
-import RDSBackup from '@DB/views/rds-backup'
+// import RDSBackup from '@DB/views/rds-backup'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 export default {
   index: 6,
@@ -29,7 +30,12 @@ export default {
             label: 'RDS实例',
             permission: 'rds_dbinstances_list',
             t: 'dictionary.dbinstance',
-            hidden: () => !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.rds')) {
+                return true
+              }
+              return !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara'])
+            },
           },
           children: [
             {
@@ -47,7 +53,7 @@ export default {
             },
           ],
         },
-        {
+        /* {
           path: '/rdsbackup',
           component: Layout,
           meta: {
@@ -63,7 +69,7 @@ export default {
               component: RDSBackup,
             },
           ],
-        },
+        }, */
       ],
     },
     /**
@@ -72,7 +78,6 @@ export default {
     {
       meta: {
         label: 'Redis',
-        hidden: () => !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'apsara']),
       },
       submenus: [
         {
@@ -80,6 +85,12 @@ export default {
           meta: {
             label: i18n.t('dictionary.elasticcache'),
             permission: 'redis_elasticcaches_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.redis')) {
+                return true
+              }
+              return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'apsara'])
+            },
           },
           component: Layout,
           children: [
