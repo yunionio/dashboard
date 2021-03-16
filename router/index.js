@@ -10,6 +10,7 @@ import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 let Monitor = { meta: { hidden: true } }
 const modules = require.context('../../../containers', true, /^((?![\\/]node_modules).)*.\/router\/index.js$/)
@@ -34,7 +35,12 @@ export default {
         {
           path: '/scheduledtask',
           meta: {
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
+            },
             label: i18n.t('helm.text_8'),
             permission: 'scheduledtasks_list',
           },
@@ -65,7 +71,12 @@ export default {
           meta: {
             label: i18n.t('helm.text_3'),
             permission: 'k8s_releases_list',
-            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.vm_release')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'])
+            },
           },
           children: [
             {
@@ -86,7 +97,12 @@ export default {
           meta: {
             label: i18n.t('helm.text_4'),
             permission: 'k8s_releases_list',
-            hidden: () => !hasSetupKey(['k8s']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_release')) {
+                return true
+              }
+              return !hasSetupKey(['k8s'])
+            },
           },
           children: [
             {
@@ -106,7 +122,12 @@ export default {
           meta: {
             label: i18n.t('helm.text_5'),
             permission: 'k8s_charts_list',
-            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_chart')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -127,7 +148,12 @@ export default {
           meta: {
             label: i18n.t('helm.text_6'),
             permission: 'k8s_repos_list',
-            hidden: () => !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_repo')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'])
+            },
             invisible: () => true,
           },
           component: Layout,
