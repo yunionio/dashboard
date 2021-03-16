@@ -39,7 +39,7 @@ export default {
         steadyStatus: Object.values(expectStatus.externalproject).flat(),
         filterOptions: {
           name: {
-            label: this.$t('cloudenv.text_95'),
+            label: this.$t('cloudenv.text_386'),
             filter: true,
             formatter: val => {
               return `name.contains("${val}")`
