@@ -31,7 +31,7 @@ export default {
     scopedUsages () {
       const ret = {}
       for (const k in this.usages) {
-        if (this.usages[k].scope === this.$store.getters.scope) {
+        if (!this.usages[k].scope || this.usages[k].scope === this.$store.getters.scope) {
           ret[k] = this.usages[k]
         }
       }
