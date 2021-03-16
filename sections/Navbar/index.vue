@@ -481,6 +481,9 @@ export default {
             scope,
           },
         })
+        await this.$store.dispatch('scopedPolicy/get', {
+          category: ['sub_hidden_menus'],
+        })
         window.location.reload()
         return true
       } catch (error) {
