@@ -12,7 +12,7 @@ import GlobalVpc from '@Network/views/global-vpc'
 // import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 // import ReservedIpList from '@Network/views/reserved-ip'
-import DNS from '@Network/views/dns'
+// import DNS from '@Network/views/dns'
 import VPC from '@Network/views/vpc'
 import VPCCreate from '@Network/views/vpc/create'
 import LbList from '@Network/views/lb'
@@ -28,6 +28,7 @@ import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 export default {
   index: 4,
@@ -50,7 +51,12 @@ export default {
             label: '全局VPC',
             permission: 'network_globalvpcs_list',
             t: 'dictionary.globalvpc',
-            hidden: () => !hasSetupKey('google'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.globalvpc')) {
+                return true
+              }
+              return !hasSetupKey('google')
+            },
           },
           component: Layout,
           children: [
@@ -67,7 +73,12 @@ export default {
             label: 'VPC',
             permission: 'vpcs_list',
             t: 'dictionary.vpc',
-            hidden: () => !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.vpc')) {
+                return true
+              }
+              return !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara'])
+            },
           },
           component: Layout,
           children: [
@@ -104,7 +115,12 @@ export default {
             label: '二层网络',
             permission: 'wires_list',
             t: 'dictionary.wire',
-            hidden: () => !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.wire')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack'])
+            },
             // hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
           component: Layout,
@@ -137,7 +153,12 @@ export default {
             label: 'IP子网',
             permission: 'networks_list',
             t: 'dictionary.network',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.network')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public', 'baremetal', 'vmware'])
+            },
           },
           component: Layout,
           children: [
@@ -194,7 +215,12 @@ export default {
             label: '弹性公网IP',
             permission: 'eips_list',
             t: 'dictionary.eip',
-            hidden: () => !hasSetupKey(['onestack', 'private', 'public']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.eip')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public'])
+            },
           },
           component: Layout,
           children: [
@@ -216,7 +242,12 @@ export default {
             label: 'NAT网关',
             permission: 'natgateways_list',
             t: 'dictionary.nat',
-            hidden: () => !hasSetupKey(['aliyun', 'huawei']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.nat')) {
+                return true
+              }
+              return !hasSetupKey(['aliyun', 'huawei'])
+            },
           },
           component: Layout,
           children: [
@@ -227,7 +258,7 @@ export default {
             },
           ],
         },
-        {
+        /* {
           path: '/dns',
           meta: {
             label: '域名服务',
@@ -243,13 +274,18 @@ export default {
               component: DNS,
             },
           ],
-        },
+        }, */
         {
           path: '/dns-zone',
           meta: {
             label: i18n.t('dictionary.dns_zone'),
             permission: 'dnszone_list',
-            hidden: () => store.getters.isProjectMode || !hasSetupKey(['aws', 'qcloud', 'aliyun']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.dns_zone')) {
+                return true
+              }
+              return store.getters.isProjectMode || !hasSetupKey(['aws', 'qcloud', 'aliyun'])
+            },
           },
           component: Layout,
           children: [
@@ -282,7 +318,12 @@ export default {
           meta: {
             label: i18n.t('network.text_714'),
             permission: 'lb_loadbalancers_list',
-            hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.lb')) {
+                return true
+              }
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara'])
+            },
           },
           component: Layout,
           children: [
@@ -313,7 +354,12 @@ export default {
           meta: {
             label: i18n.t('network.text_715'),
             permission: 'lb_loadbalanceracls_list',
-            hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.lbacl')) {
+                return true
+              }
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s'])
+            },
           },
           component: Layout,
           children: [
@@ -329,7 +375,12 @@ export default {
           meta: {
             label: i18n.t('network.text_716'),
             permission: 'lb_loadbalancercertificates_list',
-            hidden: () => !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara']),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.lbcert')) {
+                return true
+              }
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara'])
+            },
           },
           component: Layout,
           children: [
@@ -357,6 +408,12 @@ export default {
           meta: {
             label: i18n.t('network.text_19'),
             permission: 'lb_loadbalancerclusters_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.cluster')) {
+                return true
+              }
+              return !hasSetupKey(['lb', 'k8s'])
+            },
           },
           component: Layout,
           children: [
@@ -372,6 +429,12 @@ export default {
           meta: {
             label: i18n.t('network.text_20'),
             permission: 'lb_loadbalanceragents_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.lbagent')) {
+                return true
+              }
+              return !hasSetupKey(['lb', 'k8s'])
+            },
           },
           component: Layout,
           children: [
