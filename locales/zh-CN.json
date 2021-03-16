@@ -202,7 +202,7 @@
   "network.text_201": "同步状态",
   "network.text_202": "绑定",
   "network.text_203": "请选择",
-  "network.text_204": "请选择要绑定的云服务器",
+  "network.text_204": "请选择要绑定的实例",
   "network.text_205": "{0}",
   "network.text_206": "新建弹性公网IP",
   "network.text_207": "本地IDC",
@@ -804,5 +804,8 @@
   "network.unit.hour": "小时",
   "network.unit.day": "天",
   "network.unit.month": "月",
-  "network.manager": "云订阅: {0}"
+  "network.manager": "云订阅: {0}",
+  "network.eip.instance_type": "类型",
+  "network.eip.instance_type.server": "虚拟机",
+  "network.eip.instance_type.nat": "NAT网关"
 }
