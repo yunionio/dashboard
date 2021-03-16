@@ -438,6 +438,7 @@
       "instance_snapshot_create_failed": "主机快照创建失败",
       "instance_snapshot_start_delete": "主机快照开始删除",
       "instance_snapshot_delete_failed": "主机快照删除失败",
+      "instance_snapshot_reset": "回滚主机",
       "sync_status": "同步状态"
     },
     "snapshotpolicy": {
