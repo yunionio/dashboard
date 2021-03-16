@@ -455,6 +455,7 @@
       "instance_snapshot_create_failed": "Server snapshot creation failed",
       "instance_snapshot_start_delete": "The server snapshot starts to be deleted",
       "instance_snapshot_delete_failed": "Server snapshot deletion failed",
+      "instance_snapshot_reset": "Rollback server",
       "sync_status": "Sync Status"
     },
     "snapshotpolicy": {
