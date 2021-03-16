@@ -28,6 +28,7 @@ export default {
             validate: true,
           }
         },
+        hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_resize'),
       },
       {
         label: i18n.t('compute.text_352'),
@@ -68,6 +69,7 @@ export default {
                 ret.validate = true
                 return ret
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_attach'),
             },
             {
               label: i18n.t('compute.text_439'),
@@ -120,6 +122,7 @@ export default {
                   tooltip: '',
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_detach'),
             },
             {
               label: i18n.t('compute.text_414'),
@@ -138,6 +141,7 @@ export default {
                   tooltip: diskCreateSnapshotConfig[provider](obj).tooltip,
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_create_snapshot'),
             },
             {
               label: i18n.t('compute.text_426'),
@@ -222,6 +226,7 @@ export default {
                   validate: true,
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_setup_snapshot_policy'),
             },
             {
               label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
@@ -248,6 +253,7 @@ export default {
                   tooltip: obj.guest ? i18n.t('compute.text_458', [i18n.t('dictionary.project')]) : '',
                 }
               },
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_change_project'),
             },
             {
               label: i18n.t('compute.text_282'),
@@ -264,6 +270,7 @@ export default {
               meta: () => ({
                 validate: true,
               }),
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_syncstatus'),
             },
             {
               label: i18n.t('compute.text_261'),
@@ -280,6 +287,7 @@ export default {
                 })
               },
               meta: () => this.$getDeleteResult(obj),
+              hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_delete'),
             },
           ]
         },
