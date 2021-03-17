@@ -118,7 +118,7 @@ export default {
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
-                  requestParams: { force: true },
+                  requestData: { force: true },
                   refresh: this.refresh,
                 })
               },

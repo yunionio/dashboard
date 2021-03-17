@@ -17,8 +17,7 @@
             resource="eips"
             :showSync="true"
             :labelFormat="eiplabelFormat"
-            :resList.sync="eipOptions"
-            :mapper="eipsMapper" />
+            :resList.sync="eipOptions" />
         </a-form-item>
         <a-form-item :label="$t('network.text_542')" v-bind="formItemLayout">
           <base-select
@@ -143,15 +142,12 @@ export default {
       serverParams: {
         scope: this.$store.getters.scope,
         vpc: this.params.data.vpc_id,
-        provider: this.params.data.provider,
+        status: ['running', 'ready'],
       },
       eipParams: {
         scope: this.$store.getters.scope,
-        'filter.0': `associate_id.in(${this.params.data.id})`,
-        'filter.1': 'associate_id.isnullorempty()',
-        filter_any: true,
-        provider: this.params.data.provider,
-        region: this.params.data.region_id,
+        usable_eip_for_associate_type: 'natgateway',
+        usable_eip_for_associate_id: this.params.data.id,
       },
       snatEips: [],
       serverOptions: [],
@@ -167,10 +163,6 @@ export default {
     },
     serverlabelFormat (val) {
       return `${val.name}(${val.ips})`
-    },
-    eipsMapper (data) {
-      data = data.filter((item) => { return !this.snatEips.includes(item.ip_addr) })
-      return data
     },
     querySnatResources () {
       const manager = new this.$Manager('natgateways')

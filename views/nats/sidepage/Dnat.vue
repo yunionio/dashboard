@@ -30,6 +30,7 @@ export default {
     },
   },
   data () {
+    const validate = (this.data.status === 'available')
     return {
       list: this.$list.createList(this, {
         id: 'DNatListForNatSidePage',
@@ -50,7 +51,7 @@ export default {
       }),
       columns: [
         getCopyWithContentTableColumn({
-          field: 'real_name',
+          field: 'name',
           title: this.$t('network.text_557'),
         }),
         getCopyWithContentTableColumn({
@@ -81,7 +82,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
-          permission: 'server_create',
+          permission: 'natdentry_create',
           action: () => {
             this.createDialog('DNatCreateDialog', {
               title: this.$t('network.text_560'),
@@ -92,6 +93,8 @@ export default {
           },
           meta: () => ({
             buttonType: 'primary',
+            validate,
+            tooltip: validate ? '' : this.$t('network.nat.status.unavailable.tooltip'),
           }),
         },
         {
