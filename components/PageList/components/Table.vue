@@ -119,7 +119,7 @@ export default {
     checkboxEnabled () {
       if (!this.showCheckbox) return this.showCheckbox
       return (
-        ((this.groupActions && this.groupActions.length > 0)) &&
+        (this.groupActions && this.groupActions.length > 0) &&
         this.selectionType === 'checkbox'
       )
     },
