@@ -45,6 +45,7 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const referer_enabled = this.params.data[0].referer?.enabled || false
+    const isDomainListRequired = (this.params.data[0].provider === 'Qcloud')
     return {
       loading: false,
       form: {
@@ -76,6 +77,9 @@ export default {
           'domain_list',
           {
             initialValue: this.params.data[0].referer?.domain_list ? this.params.data[0].referer.domain_list.join('\n') : '',
+            rules: [
+              { required: isDomainListRequired },
+            ],
           },
         ],
       },
