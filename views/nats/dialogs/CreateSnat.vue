@@ -3,28 +3,35 @@
     <div slot="header">{{params.title}}</div>
     <div slot="body">
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_21')">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_551')" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_249')">
+          <a-radio-group v-model="resource" @change="onResourceTypeChanged">
+            <a-radio value="networks">{{$t('network.snat.type.network')}}</a-radio>
+            <a-radio value="servers">{{$t('network.snat.type.server')}}</a-radio>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="resource_label">
           <base-select
-            v-decorator="decorators.network"
-            :params="networkParams"
-            :select-props="{ placeholder: $t('network.text_552') }"
-            resource="networks"
+            v-decorator="decorators.res_id"
+            :params="resParams"
+            :select-props="resouce_props"
+            :resource="resource"
+            :resList.sync="resOptions"
             :filterable="true" />
         </a-form-item>
-        <a-form-item :label="$t('network.text_539')" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_539')">
           <template #extra>{{$t('network.text_540')}}<router-link :to="{ path: '/eip' }" target="_blank">{{$t('dictionary.eip')}}</router-link>
           </template>
           <base-select
-            v-decorator="decorators.ip"
+            v-decorator="decorators.eip"
             :params="eipParams"
             :select-props="{ placeholder: $t('network.text_541') }"
             resource="eips"
             :labelFormat="labelFormat"
-            :resList.sync="eipOptions"
             :showSync="true" />
         </a-form-item>
       </a-form>
@@ -50,6 +57,9 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      resource_label: this.$t('network.snat.type.network'),
+      resource: 'networks',
+      resouce_props: { placeholder: this.$t('network.text_552') },
       decorators: {
         name: [
           'name',
@@ -62,16 +72,16 @@ export default {
             ],
           },
         ],
-        network: [
-          'network',
+        res_id: [
+          'res_id',
           {
             rules: [
               { required: true, message: this.$t('network.text_552') },
             ],
           },
         ],
-        ip: [
-          'ip',
+        eip: [
+          'eip',
           {
             rules: [
               { required: true, message: this.$t('network.text_541') },
@@ -96,23 +106,35 @@ export default {
           span: 3,
         },
       },
-      networkParams: {
+      resParams: {
         scope: this.$store.getters.scope,
         vpc: this.params.data.vpc_id,
-        provider: this.params.data.provider,
+        status: ['running', 'ready', 'available'],
       },
       eipParams: {
         scope: this.$store.getters.scope,
-        'filter.0': `associate_id.in(${this.params.data.id})`,
-        'filter.1': 'associate_id.isnullorempty()',
-        filter_any: true,
-        provider: this.params.data.provider,
-        region: this.params.data.region_id,
+        usable_eip_for_associate_type: 'natgateway',
+        usable_eip_for_associate_id: this.params.data.id,
       },
-      eipOptions: [],
+      resOptions: [],
     }
   },
   methods: {
+    onResourceTypeChanged (e) {
+      this.resource = e.target.value
+      switch (this.resource) {
+        case 'servers':
+          this.resource_label = this.$t('network.snat.type.server')
+          this.resouce_props = { placeholder: this.$t('network.text_60') }
+          this.decorators.res_id[1].rules[0].message = this.$t('network.text_60')
+          break
+        case 'networks':
+          this.resource_label = this.$t('network.snat.type.network')
+          this.resouce_props = { placeholder: this.$t('network.text_552') }
+          this.decorators.res_id[1].rules[0].message = this.$t('network.text_552')
+          break
+      }
+    },
     labelFormat (val) {
       return `${val.name}(${val.ip_addr})`
     },
@@ -127,14 +149,23 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const eipObj = R.indexBy(R.prop('id'), this.eipOptions)
         const params = {
           name: values.name,
           natgateway_id: this.params.data.id,
-          network_id: values.network,
-          ip: eipObj[values.ip].ip_addr,
-          external_ip_id: values.ip,
-          source_cidr: '',
+          eip: values.eip,
+        }
+        const resObj = R.indexBy(R.prop('id'), this.resOptions)
+        switch (this.resource) {
+          case 'networks':
+            params.network_id = values.res_id
+            break
+          case 'servers':
+            resObj[values.res_id].nics.forEach((nic) => {
+              if (nic.ip_addr && nic.vpc_id === this.params.data.vpc_id) {
+                params.source_cidr = nic.ip_addr + '/32'
+              }
+            })
+            break
         }
         await this.doCreate(params)
         this.loading = false

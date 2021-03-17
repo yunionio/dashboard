@@ -30,6 +30,7 @@ export default {
     },
   },
   data () {
+    const validate = (this.data.status === 'available')
     return {
       list: this.$list.createList(this, {
         id: 'SNatListForNatSidePage',
@@ -58,11 +59,14 @@ export default {
           title: this.$t('network.text_539'),
         },
         {
-          field: 'sn',
-          title: this.$t('network.text_565'),
+          field: 'network',
+          title: this.$t('network.snat.cidr'),
           formatter: ({ row }) => {
             if (row.network) {
               return this.$t('network.text_566', [row.network.name, row.network.guest_ip_start, row.network.guest_ip_end])
+            }
+            if (row.source_cidr) {
+              return row.source_cidr
             }
             return '-'
           },
@@ -72,7 +76,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
-          permission: 'server_create',
+          permission: 'natsentry_create',
           action: () => {
             this.createDialog('SNatCreateDialog', {
               title: this.$t('network.text_567'),
@@ -83,6 +87,8 @@ export default {
           },
           meta: () => ({
             buttonType: 'primary',
+            validate,
+            tooltip: validate ? '' : this.$t('network.nat.status.unavailable.tooltip'),
           }),
         },
         {
