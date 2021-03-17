@@ -255,7 +255,7 @@ export default {
     },
     handleTypeChange (e) {
       this.type = e.target.value
-      if (this.type === 'new') {
+      if (this.type === 'new' || this.type === 'public') {
         this.$nextTick(() => {
           if (R.has('traffic', this.chargeTypes)) {
             return this.form.fc.setFieldsValue({ eip_charge_type: 'traffic' })
