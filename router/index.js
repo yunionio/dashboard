@@ -34,6 +34,10 @@ import SnapshotPolicy from '@Compute/views/snapshotpolicy'
 // import AnsiblePlaybook from '@Compute/views/ansible-playbook'
 import ScalingGroup from '@Compute/views/scaling-group'
 import ScalingGroupCreate from '@Compute/views/scaling-group/create'
+import Schedtag from '@Cloudenv/views/schedtag'
+import Schedpolicy from '@Cloudenv/views/schedpolicy'
+import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
+
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 
@@ -628,6 +632,76 @@ export default {
     //     },
     //   ],
     // },
+    {
+      meta: {
+        label: i18n.t('cloudenv.text_17'),
+      },
+      submenus: [
+        {
+          path: '/schedtag',
+          meta: {
+            label: i18n.t('cloudenv.text_18'),
+            permission: 'schedtags_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
+                return true
+              }
+              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Schedtag',
+              path: '',
+              component: Schedtag,
+            },
+          ],
+        },
+        {
+          path: '/schedpolicy',
+          meta: {
+            label: i18n.t('cloudenv.text_19'),
+            permission: 'schedpolicies_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedpolicy')) {
+                return true
+              }
+              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Schedpolicy',
+              path: '',
+              component: Schedpolicy,
+            },
+          ],
+        },
+        {
+          path: '/dynamicschedtag',
+          meta: {
+            label: i18n.t('cloudenv.text_20'),
+            permission: 'dynamicschedtags_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.dynamicschedtag')) {
+                return true
+              }
+              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Dynamicschedtag',
+              path: '',
+              component: Dynamicschedtag,
+            },
+          ],
+        },
+      ],
+    },
     {
       meta: {
         label: i18n.t('compute.text_114'),
