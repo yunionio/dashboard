@@ -513,12 +513,12 @@ export const DISK_MOUNT_POINT_OPTIONS = [
 export const HOST_CPU_ARCHS = {
   x86: {
     key: 'x86',
-    label: 'x86',
+    label: 'x86_64',
     capabilityKey: 'x86_64',
   },
   arm: {
     key: 'arm',
-    label: 'ARM',
+    label: 'aarch64',
     capabilityKey: 'aarch64',
   },
 }
