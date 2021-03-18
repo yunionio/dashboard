@@ -2,13 +2,6 @@ import Cloudgroup from '@Cloudenv/views/cloudgroup'
 import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
-import Cloudregion from '@Cloudenv/views/cloudregion'
-import Zone from '@Cloudenv/views/zone'
-import Schedtag from '@Cloudenv/views/schedtag'
-import Schedpolicy from '@Cloudenv/views/schedpolicy'
-import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
-import Tag from '@Cloudenv/views/tag'
-import Cloudevent from '@Cloudenv/views/cloudevent'
 import Proxysetting from '@Cloudenv/views/proxysetting'
 // import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
@@ -25,55 +18,6 @@ export default {
     icon: 'onecloud',
   },
   menus: [
-    {
-      meta: {
-        label: i18n.t('cloudenv.text_9'),
-      },
-      submenus: [
-        {
-          path: '/cloudregion',
-          meta: {
-            label: i18n.t('cloudenv.text_10'),
-            permission: 'areas_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudregion')) {
-                return true
-              }
-              return !hasSetupKey(['onestack', 'private', 'vmware'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Cloudregion',
-              path: '',
-              component: Cloudregion,
-            },
-          ],
-        },
-        {
-          path: '/zone',
-          meta: {
-            label: i18n.t('cloudenv.text_11'),
-            permission: 'zones_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.zone')) {
-                return true
-              }
-              return !hasSetupKey(['onestack', 'private', 'vmware'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Zone',
-              path: '',
-              component: Zone,
-            },
-          ],
-        },
-      ],
-    },
     {
       meta: {
         label: i18n.t('cloudenv.text_12'),
@@ -153,55 +97,6 @@ export default {
             },
           ],
         },
-        {
-          path: '/cloudevent',
-          meta: {
-            label: i18n.t('cloudenv.text_15'),
-            permission: 'cloudevents_list',
-            t: 'dictionary.cloudevents',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudevent')) {
-                return true
-              }
-              return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Cloudevent',
-              path: '',
-              component: Cloudevent,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      meta: {
-        label: i18n.t('cloudenv.text_16'),
-      },
-      submenus: [
-        {
-          path: '/tag',
-          meta: {
-            label: i18n.t('cloudenv.text_16'),
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.tag')) {
-                return true
-              }
-              return false
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Tag',
-              path: '',
-              component: Tag,
-            },
-          ],
-        },
       ],
     },
     /* {
@@ -247,76 +142,6 @@ export default {
         },
       ],
     }, */
-    {
-      meta: {
-        label: i18n.t('cloudenv.text_17'),
-      },
-      submenus: [
-        {
-          path: '/schedtag',
-          meta: {
-            label: i18n.t('cloudenv.text_18'),
-            permission: 'schedtags_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
-                return true
-              }
-              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Schedtag',
-              path: '',
-              component: Schedtag,
-            },
-          ],
-        },
-        {
-          path: '/schedpolicy',
-          meta: {
-            label: i18n.t('cloudenv.text_19'),
-            permission: 'schedpolicies_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.schedpolicy')) {
-                return true
-              }
-              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Schedpolicy',
-              path: '',
-              component: Schedpolicy,
-            },
-          ],
-        },
-        {
-          path: '/dynamicschedtag',
-          meta: {
-            label: i18n.t('cloudenv.text_20'),
-            permission: 'dynamicschedtags_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.dynamicschedtag')) {
-                return true
-              }
-              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'Dynamicschedtag',
-              path: '',
-              component: Dynamicschedtag,
-            },
-          ],
-        },
-      ],
-    },
     /* {
       meta: {
         label: i18n.t('cloudenv.text_21'),
