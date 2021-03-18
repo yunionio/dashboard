@@ -37,6 +37,7 @@
             :label-format="getDiskLabel"
             :ctx="[['servers', this.params.data[0].id]]"
             :filterable="true"
+            :isDefaultSelect="true"
             :item.sync="selectDisk" />
         </a-form-item>
         <a-form-item
