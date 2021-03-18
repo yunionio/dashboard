@@ -25,6 +25,8 @@ import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
 import AgentList from '@Network/views/agent'
 import AgentForm from '@Network/views/agent/form'
 import Layout from '@/layouts/RouterView'
+import Cloudregion from '@Cloudenv/views/cloudregion'
+import Zone from '@Cloudenv/views/zone'
 
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -38,6 +40,55 @@ export default {
     icon: 'menu-network',
   },
   menus: [
+    {
+      meta: {
+        label: i18n.t('cloudenv.text_9'),
+      },
+      submenus: [
+        {
+          path: '/cloudregion',
+          meta: {
+            label: i18n.t('cloudenv.text_10'),
+            permission: 'areas_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudregion')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'vmware'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Cloudregion',
+              path: '',
+              component: Cloudregion,
+            },
+          ],
+        },
+        {
+          path: '/zone',
+          meta: {
+            label: i18n.t('cloudenv.text_11'),
+            permission: 'zones_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.zone')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'vmware'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'Zone',
+              path: '',
+              component: Zone,
+            },
+          ],
+        },
+      ],
+    },
     /**
      * 基础网络
      */
