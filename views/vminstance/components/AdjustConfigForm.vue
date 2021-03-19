@@ -414,9 +414,9 @@ export default {
       if (this.type === SERVER_TYPE.public) {
         params.public_cloud = true
         params.zone_id = this.selectedItem.zone_id
-        if (this.selectedItem.billingMethods === 'quantity') {
+        if (this.selectedItem.billing_type === 'postpaid') {
           params.postpaid_status = 'available'
-        } else if (this.selectedItem.billingMethods === 'package') {
+        } else if (this.selectedItem.billing_type === 'prepaid') {
           params.prepaid_status = 'available'
         }
       }
@@ -817,9 +817,9 @@ export default {
         delete params.zone
       }
       if (this.type === SERVER_TYPE.public) {
-        if (this.selectedItem.billingMethods === 'quantity') {
+        if (this.selectedItem.billing_type === 'postpaid') {
           params.postpaid_status = 'available'
-        } else if (this.selectedItem.billingMethods === 'package') {
+        } else if (this.selectedItem.billing_type === 'prepaid') {
           params.prepaid_status = 'available'
         }
       }
