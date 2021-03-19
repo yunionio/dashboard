@@ -414,12 +414,6 @@ export default {
                         tooltip: null,
                       }
                       if (this.isSameHyper) {
-                        const isSomePrepaid = this.list.selectedItems.some((item) => { return item.billing_type === 'prepaid' })
-                        if (isSomePrepaid) {
-                          ret.validate = false
-                          ret.tooltip = this.isAdminMode ? this.$t('compute.text_285') : this.$t('compute.text_1110')
-                          return ret
-                        }
                         const isSomeBackupHost = this.list.selectedItems.some((item) => { return item.backup_host_id })
                         if (isSomeBackupHost) {
                           ret.validate = false
