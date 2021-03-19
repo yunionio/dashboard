@@ -271,5 +271,6 @@
   "storage.aliyun_oss_cn_hzfinance": "杭州金融云外网",
   "storage.aliyun_shenzhen_finance_1": "深圳金融云内网",
   "storage.aliyun_oss_cn_szfinance": "深圳金融云外网",
-  "storage.internal_bucket": "内网区域的存储桶不支持该操作"
+  "storage.internal_bucket": "内网区域的存储桶不支持该操作",
+  "storage.bucket.referer.domain_list.tooltip": "请填写域名或IP地址"
 }
