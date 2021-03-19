@@ -78,7 +78,7 @@ export default {
           {
             initialValue: this.params.data[0].referer?.domain_list ? this.params.data[0].referer.domain_list.join('\n') : '',
             rules: [
-              { required: isDomainListRequired },
+              { required: isDomainListRequired, message: this.$t('storage.bucket.referer.domain_list.tooltip') },
             ],
           },
         ],
