@@ -29,6 +29,7 @@ import Monitor from './Monitor'
 import VminstanceList from './VminstanceList'
 import ServerRecovery from '@Compute/views/server-recovery/components/List'
 import GpuList from '@Compute/views/gpu/components/List'
+import BmcLog from '@Compute/views/physicalmachine/sidepage/BMCLog'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -47,32 +48,34 @@ export default {
     ServerRecovery,
     Actions,
     Monitor,
+    BmcLog,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
-  data () {
-    let detailTabs = [
-      { label: this.$t('compute.text_238'), key: 'host-detail' },
-      { label: this.$t('compute.text_606'), key: 'dashboard' },
-      { label: this.$t('compute.text_91'), key: 'vminstance-list' },
-      { label: this.$t('compute.text_104'), key: 'network-list' },
-      { label: this.$t('compute.text_99'), key: 'storage-list' },
-      { label: this.$t('compute.text_607'), key: 'gpu-list' },
-      { label: this.$t('compute.text_114'), key: 'server-recovery' },
-      { label: this.$t('compute.text_608'), key: 'monitor' },
-      // { label: '报警', key: 'alert' },
-      { label: this.$t('compute.text_240'), key: 'event-drawer' },
-    ]
-    if (!hasPermission({ key: 'baremetalnetworks_list' })) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'network-list'))(detailTabs), 1, detailTabs)
-    }
-    if (!hasPermission({ key: 'hoststorages_list' })) {
-      detailTabs = R.remove(R.findIndex(R.propEq('key', 'storage-list'))(detailTabs), 1, detailTabs)
-    }
-    return {
-      detailTabs,
-    }
-  },
   computed: {
+    detailTabs () {
+      let tabs = [
+        { label: this.$t('compute.text_238'), key: 'host-detail' },
+        { label: this.$t('compute.text_606'), key: 'dashboard' },
+        { label: this.$t('compute.text_91'), key: 'vminstance-list' },
+        { label: this.$t('compute.text_104'), key: 'network-list' },
+        { label: this.$t('compute.text_99'), key: 'storage-list' },
+        { label: this.$t('compute.text_607'), key: 'gpu-list' },
+        { label: this.$t('compute.text_114'), key: 'server-recovery' },
+        { label: this.$t('compute.text_608'), key: 'monitor' },
+        // { label: '报警', key: 'alert' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
+      ]
+      if (!hasPermission({ key: 'baremetalnetworks_list' })) {
+        tabs = R.remove(R.findIndex(R.propEq('key', 'network-list'))(tabs), 1, tabs)
+      }
+      if (!hasPermission({ key: 'hoststorages_list' })) {
+        tabs = R.remove(R.findIndex(R.propEq('key', 'storage-list'))(tabs), 1, tabs)
+      }
+      if (this.data && this.data.data && this.data.data.is_baremetal) {
+        tabs = R.insert(tabs.length - 1, { label: this.$t('compute.text_865'), key: 'bmc-log' }, tabs)
+      }
+      return tabs
+    },
     getParams () {
       if (this.params.windowData.currentTab === 'vminstance-list') {
         return {
@@ -92,6 +95,10 @@ export default {
         return {
           host: this.data.id,
           gpu: true,
+        }
+      } else if (this.params.windowData.currentTab === 'bmc-log') {
+        return {
+          host_id: this.data.id,
         }
       }
       return null
