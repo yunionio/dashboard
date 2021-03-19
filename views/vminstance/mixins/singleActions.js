@@ -445,10 +445,6 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (obj.billing_type === 'prepaid') {
-                      ret.tooltip = this.isAdminMode ? i18n.t('compute.text_285') : i18n.t('compute.text_1110')
-                      return ret
-                    }
                     if (obj.backup_host_id) {
                       ret.tooltip = i18n.t('compute.text_1111')
                       return ret
