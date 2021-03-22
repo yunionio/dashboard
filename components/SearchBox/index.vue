@@ -131,6 +131,12 @@ export default {
     handleSearch (values) {
       this.newValues = {}
       R.forEachObjIndexed((value, key) => {
+        if (Array.isArray(value)) {
+          value = value.filter((item) => { return item.trim().length > 0 }).map(v => { return v.trim() })
+          if (value.length === 0) {
+            return
+          }
+        }
         if (this.options[key].dropdown) {
           const config = this.options[key]
           if (config.date) {
