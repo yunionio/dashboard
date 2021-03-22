@@ -153,7 +153,6 @@ export default {
       const ret = { ...chargeTypes }
       // 腾讯云、Azure、aws、google不支持按固定带宽计费
       if ([
-        typeClouds.hypervisorMap.qcloud.key,
         typeClouds.hypervisorMap.azure.key,
         typeClouds.hypervisorMap.aws.key,
         typeClouds.hypervisorMap.google.key,
