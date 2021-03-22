@@ -2511,6 +2511,7 @@
       "domain_manager_1var": "{domain} Domain View"
     },
     "button": {
+      "expenses": "Expenses",
       "monitor": "Big Screen",
       "menu": "Menus",
       "external_links": "External links",
