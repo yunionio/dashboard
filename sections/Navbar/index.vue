@@ -234,7 +234,7 @@ export default {
     }),
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
-        const menus = this.userInfo.menus.map(item => {
+        const menus = this.userInfo.menus.filter(item => item.service === 'external-service').map(item => {
           return {
             key: item.url,
             label: item.name,

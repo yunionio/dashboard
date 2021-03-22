@@ -2516,6 +2516,7 @@
       "domain_manager_1var": "{domain} @:dictionary.domain管理后台"
     },
     "button": {
+      "expenses": "费用",
       "monitor": "监控大屏",
       "menu": "导航菜单",
       "external_links": "@:dictionary.endpoint",
