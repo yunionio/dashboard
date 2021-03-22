@@ -18,41 +18,45 @@
           <a-input v-decorator="decorators.balance_key" type="textarea" rows="4" />
         </a-form-item>
       </template>
-      <template v-else>
+      <template v-if="useBillingBucket">
         <a-divider orientation="left">{{$t('cloudenv.text_199')}}</a-divider>
-        <template v-if="!isQcloud">
-          <a-form-item :label="$t('cloudenv.text_200')">
-            <a-radio-group  v-model="billingType">
-              <a-radio-button :value="1">{{$t('cloudenv.text_201')}}</a-radio-button>
-              <a-radio-button v-if="!isHuawei" :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
-            </a-radio-group>
-          </a-form-item>
-          <a-form-item :label="$t('cloudenv.text_201')" v-if="billingType === 2" :extra="$t('cloudenv.text_203')">
-            <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
-            <template v-for="item in cloudAccounts">
-              <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
-            </template>
-            </a-select>
-          </a-form-item>
-          <a-form-item :label="$t('cloudenv.text_204')">
-            <a-input v-decorator="decorators.billing_report_bucket" />
-            <span slot="extra" v-if="bucketUrl">
-              <!-- 请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com <br /> -->{{$t('cloudenv.text_196')}}<help-link :href="bucketUrl">{{$t('cloudenv.text_205')}}</help-link>
-            </span>
-          </a-form-item>
-          <a-form-item v-if="!isHuawei" :label="$t('cloudenv.text_206')"  :extra="$t('cloudenv.text_207')">
-            <a-input v-decorator="decorators.billing_file_prefix" />
-          </a-form-item>
-          <!-- google -->
-          <template v-if="isGoogle">
-            <a-divider class="mt-5" orientation="left">{{$t('cloudenv.text_208')}}</a-divider>
-            <a-form-item :label="$t('cloudenv.text_204')" :extra="$t('cloudenv.text_209')">
-              <a-input v-decorator="decorators.usage_report_bucket" />
-            </a-form-item>
-            <a-form-item :label="$t('cloudenv.text_206')" :extra="$t('cloudenv.text_207')">
-              <a-input v-decorator="decorators.usage_file_prefix" />
-            </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_200')">
+          <a-radio-group v-model="billingType">
+            <a-radio-button :value="1">{{$t('cloudenv.text_201')}}</a-radio-button>
+            <a-radio-button v-if="!isHuawei" :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_201')" v-if="billingType === 2" :extra="$t('cloudenv.text_203')">
+          <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
+          <template v-for="item in cloudAccounts">
+            <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
           </template>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_204')">
+          <a-input v-decorator="decorators.billing_report_bucket" />
+          <span slot="extra" v-if="bucketUrl">
+            <!-- 请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com <br /> -->{{$t('cloudenv.text_196')}}<help-link :href="bucketUrl">{{$t('cloudenv.text_205')}}</help-link>
+          </span>
+        </a-form-item>
+        <a-form-item v-if="!isHuawei" :label="$t('cloudenv.text_206')" :extra="$t('cloudenv.text_207')">
+          <a-input v-decorator="decorators.billing_file_prefix" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.billing_scope')" :extra="$t('cloudenv.billing_scope.extra')" v-if="billingType === 1">
+          <a-radio-group v-decorator="decorators.billing_scope">
+            <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
+            <a-radio-button value="all" key="all" :disabled="!isAws">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <!-- google -->
+        <template v-if="isGoogle">
+          <a-divider class="mt-5" orientation="left">{{$t('cloudenv.text_208')}}</a-divider>
+          <a-form-item :label="$t('cloudenv.text_204')" :extra="$t('cloudenv.text_209')">
+            <a-input v-decorator="decorators.usage_report_bucket" />
+          </a-form-item>
+          <a-form-item :label="$t('cloudenv.text_206')" :extra="$t('cloudenv.text_207')">
+            <a-input v-decorator="decorators.usage_file_prefix" />
+          </a-form-item>
         </template>
       </template>
       <a-form-item :label="$t('cloudenv.text_210')"  :extra="$t('cloudenv.text_211')">
@@ -142,6 +146,12 @@ export default {
     isQcloud () {
       return this.provider === 'Qcloud'
     },
+    isAws () {
+      return this.provider === 'Aws'
+    },
+    useBillingBucket () {
+      return this.provider === 'Aliyun' || this.provider === 'Aws' || this.provider === 'Huawei' || this.provider === 'Google'
+    },
     brandCn () {
       const { brand } = this.cloudAccount
       return brand ? keySecretFields[brand.toLowerCase()].text : ''
@@ -220,6 +230,15 @@ export default {
         billtask: ['billtask', {
           initialValue: [this.$moment().subtract(1, 'w'), this.$moment()],
         }],
+        billing_scope: [
+          'billing_scope',
+          {
+            initialValue: options.billing_scope || 'managed',
+            rules: [
+              { required: true, message: this.$t('cloudenv.billing_scope.prompt') },
+            ],
+          },
+        ],
       }
     },
   },
