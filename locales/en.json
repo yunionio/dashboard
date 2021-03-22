@@ -875,6 +875,11 @@
       "creating": "Creating",
       "deleting": "Deleting",
       "unknown": "Unknown"
+    },
+    "nas": {
+      "available": "Available",
+      "deleting": "Deleting",
+      "unavailable": "Unavailable"
     }
   },
   "skuCategoryOptions": {
@@ -2283,7 +2288,13 @@
     "alertrecord": "History",
     "rds": "RDS",
     "security-alerts": "Security Alerts",
-    "suggestsysrule": "suggestsysrule"
+    "suggestsysrule": "suggestsysrule",
+    "nas": "NAS",
+    "filesystem": "File System",
+    "access_group": "Access Group",
+    "access_group_rule": "Access Group Rule",
+    "access_group_cache": "Access Group Cache",
+    "mount_target": "Mount Target"
   },
   "res": {
     "role": "Role",
@@ -4657,5 +4668,11 @@
   "common.workflow.back": "Back to list",
   "common.workflow.approval_start": "My Pending",
   "common.workflow.approval_done": "I Resolved",
-  "common.workflow.end_tips": "The operation is not supported for tickets whose status is closed"
+  "common.workflow.end_tips": "The operation is not supported for tickets whose status is closed",
+  "common.network.type": "Network Type",
+  "common.network.type.vpc": "VPC",
+  "common.network.type.classic": "Classic Network",
+  "common.action.edit": "Edit",
+  "common.action.create": "Create",
+  "common.action.delete": "Delete" 
 }
