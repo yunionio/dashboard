@@ -1,0 +1,364 @@
+<template>
+  <a-form :form="form" layout="inline">
+      <a-form-item>
+        <metric-select  v-decorator="decorators.metric" :options="metricOptions" @change="handleMetricChange" />
+      </a-form-item>
+      <a-form-item>
+        <time-select v-decorator="decorators.from" @change="handleFromChange" />
+      </a-form-item>
+      <a-form-item v-if="!isLineChart">
+        <top-n-select v-decorator="decorators.limit" @change="handleLimitChange" />
+      </a-form-item>
+      <a-form-item>
+        <refresh  @refresh="handleRefresh" :loading="loading" />
+      </a-form-item>
+  </a-form>
+</template>
+
+<script>
+import numerify from '../sections/chart/formatters'
+import MetricSelect from '../sections/select/metric'
+import TimeSelect from '../sections/select/timeselect'
+import TopNSelect from '../sections/select/topN'
+import refresh from '../sections/select/refresh'
+import MetricOptions from './metrics'
+import { getSignature } from '@/utils/crypto'
+
+function newChart (metircOption) {
+  const chart = {
+    metric: metircOption,
+    loading: false,
+    chartType: '',
+    chartData: {
+      columns: [],
+      rows: [],
+    },
+  }
+  return chart
+}
+
+export default {
+  name: 'filterForm',
+  components: {
+    TimeSelect,
+    TopNSelect,
+    MetricSelect,
+    refresh,
+  },
+  props: {
+    scope: {
+      type: String,
+      default: 'project',
+    },
+    dimension: {
+      type: Object,
+      default: () => ({}),
+    },
+    extraParams: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+  },
+  data () {
+    const charts = {}
+    MetricOptions.map((m) => {
+      charts[m.field] = newChart(m)
+    })
+    return {
+      metricOptions: MetricOptions,
+      loading: false,
+      form: this.$form.createForm(this),
+      decorators: {
+        metric: ['metric', { initialValue: MetricOptions[0] || {} }],
+        from: ['from', { initialValue: 7 * 24 * 60 }],
+        limit: ['limit', { initialValue: 10 }],
+      },
+      charts: charts,
+    }
+  },
+  computed: {
+    isLineChart () {
+      if (this.dimension.scope !== this.scope) {
+        return false
+      }
+      switch (this.dimension.scope) {
+        case 'system':
+          return this.dimension.id === 'system'
+        case 'domain':
+          return this.dimension.id === 'domain_id'
+        case 'project':
+          return this.dimension.id === 'tenant_id'
+        default:
+          return false
+      }
+    },
+  },
+  watch: {
+    dimension: {
+      handler (newVal) {
+        this.$nextTick(() => {
+          this.handleRefreshAll()
+        })
+      },
+      immediate: false,
+      deep: true,
+    },
+  },
+  mounted () {
+    this.handleRefreshAll()
+  },
+  methods: {
+    groupBy (metric) {
+      const ret = []
+      if (this.dimension.scope === 'system') {
+        if (this.isLineChart) { return [{ type: 'tag', params: [metric.field] }] }
+      }
+
+      ret.push({ type: 'field', params: [this.dimension.name] })
+      ret.push({ type: 'field', params: [this.dimension.id] })
+      if ((this.dimension.scope === 'system' || this.dimension.scope === 'domain') && this.dimension.name === 'tenant') {
+        ret.push({ type: 'field', params: ['project_domain'] })
+        ret.push({ type: 'field', params: ['domain_id'] })
+      }
+      if (this.dimension.scope === 'project' && this.dimension.name !== 'tenant') {
+        ret.push({ type: 'field', params: ['tenant'] })
+        ret.push({ type: 'field', params: ['tenant_id'] })
+      }
+      return ret
+    },
+    groupInput () {
+      switch (this.dimension.scope) {
+        case 'system':
+          return 'project_domain'
+        default:
+          return 'tenant'
+      }
+    },
+    intervalInput (from) {
+      // 168 points
+      const interval = Math.max(Math.round(from / 168), 1)
+      return this.isLineChart ? `${interval}m` : `${from}m`
+    },
+    changeNav (row) {
+      this.$emit('changeNav', row)
+    },
+    queryParams (metric, formValues) {
+      const query = {
+        scope: this.scope,
+      }
+      query.from = `${formValues.from}m` || '168h'
+      query.interval = this.intervalInput(formValues.from)
+      query.metric_query = [
+        {
+          model: {
+            database: 'telegraf',
+            measurement: metric.measurement,
+            select: [
+              [{ params: [metric.field], type: 'field' },
+                { type: 'mean' },
+                { type: 'abs' },
+              ],
+            ],
+            tags: [
+              {
+                key: this.groupInput(),
+                operator: '!=',
+                value: '',
+              }],
+            group_by: this.groupBy(metric),
+          },
+        },
+      ]
+      Object.assign(query, this.extraParams)
+      query.signature = getSignature(query)
+      return query
+    },
+    validateForm () {
+      return new Promise((resolve, reject) => {
+        this.form.validateFields((err, values) => {
+          if (!err) {
+            resolve(values)
+          } else {
+            reject(err)
+          }
+        })
+      })
+    },
+    getTableNameColumn () {
+      const namecolumn = {
+        edit: false,
+        field: this.dimension.name,
+        title: this.dimension.label,
+        sortable: true,
+      }
+
+      const self = this
+      if (['system', 'project_domain', 'tenant'].indexOf(this.dimension.name) >= 0) {
+        namecolumn.slots = {
+          default: ({ row }, h) => {
+            return [h('a', {
+              domProps: {
+                innerHTML: row[this.dimension.name] || '-',
+              },
+              props: {
+                value: row[this.dimension.id] || '-',
+              },
+              on: {
+                click: () => {
+                  self.changeNav(row)
+                },
+              },
+            })]
+          },
+        }
+      }
+      return namecolumn
+    },
+    toTableData () {
+      const data = { columns: [], rows: [] }
+      const namecolumn = this.getTableNameColumn()
+      data.columns.push(namecolumn)
+      const tr = {}
+      for (const k in this.charts) {
+        const chart = this.charts[k]
+        const column = chart.metric.label
+        const col = { field: column, title: column, sortable: true }
+        if (chart.metric.format) col.formatter = ({ cellValue }) => { return numerify(cellValue, chart.metric.format) }
+        data.columns.push(col)
+        chart.chartData.rows.map((row) => {
+          if (!tr[row.name]) {
+            tr[row.name] = {}
+            tr[row.name][namecolumn.field] = row.name
+            tr[row.name].tags = row.tags
+          }
+          tr[row.name][column] = row.value
+        })
+      }
+      for (const r in tr) {
+        data.rows.push(tr[r])
+      }
+      return data
+    },
+    toChartData (series) {
+      if (this.isLineChart) {
+        return this.toLineChartData(series)
+      } else {
+        return this.toHistogramChartData(series)
+      }
+    },
+    toLineChartData (series) {
+      const data = { columns: ['time'], rows: [] }
+      const tv = {}
+      series.map((s) => {
+        const column = s.tags[this.dimension.name] || this.dimension.name
+        data.columns.push(column)
+        s.points.map((p) => {
+          const t = p[1]
+          if (!tv[t]) {
+            tv[t] = { time: new Date(t).toLocaleString() }
+          }
+          tv[t][column] = p[0]
+        })
+      })
+      // 时间排序
+      const sortedKeys = Object.keys(tv).sort((a, b) => { return a - b })
+      // 展开数据
+      data.rows = sortedKeys.map((k) => {
+        return tv[k]
+      })
+      return data
+    },
+    toHistogramChartData (series) {
+      const data = { columns: ['name', 'value'], rows: [] }
+      const rows = series.map((item) => {
+        const lastPoint = item.points ? item.points[item.points.length - 1] : undefined
+        if (lastPoint) {
+          return {
+            name: item.tags[this.dimension.name],
+            id: item.tags[this.dimension.id],
+            value: lastPoint[0],
+            timestamp: lastPoint[1],
+            tags: item.tags,
+          }
+        }
+      })
+      data.rows = rows.sort((a, b) => { return a.value - b.value })
+      return data
+    },
+    async fetchChartData (field, formValues) {
+      const chart = this.charts[field]
+      try {
+        chart.loading = true
+        chart.chartData = {
+          columns: [],
+          rows: [],
+        }
+        const data = this.queryParams(chart.metric, formValues)
+        const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
+        chart.chartType = this.isLineChart ? 'OverviewLine' : 'OverviewHistogram'
+        chart.chartData = this.toChartData(series)
+        if (formValues.limit && typeof formValues.limit === 'number' && formValues.limit > 0) {
+          if (chart.chartData.rows.length > formValues.limit) {
+            chart.chartData.rows = chart.chartData.rows.slice(chart.chartData.rows.length - formValues.limit)
+          }
+        }
+        chart.loading = false
+      } catch (error) {
+        chart.loading = false
+        throw error
+      }
+    },
+    emitChart (chart) {
+      this.$emit('updateChart', chart)
+    },
+    emitTable () {
+      if (this.isLineChart || !this.charts) {
+        this.$emit('updateTable', undefined)
+      } else {
+        this.$emit('updateTable', this.toTableData())
+      }
+    },
+    handleMetricChange (metric) {
+      this.form.setFieldsValue({ metric: metric })
+      this.handleRefresh()
+    },
+    handleFromChange (from) {
+      this.form.setFieldsValue({ from: from })
+      this.handleRefreshAll()
+    },
+    handleLimitChange (limit) {
+      this.form.setFieldsValue({ limit: limit })
+      this.handleRefreshAll()
+    },
+    async handleRefresh () {
+      this.loading = true
+      try {
+        const values = await this.validateForm()
+        await this.fetchChartData(values.metric.field, values)
+        this.emitChart(this.charts[values.metric.field])
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+    async handleRefreshAll () {
+      this.loading = true
+      try {
+        const values = await this.validateForm()
+        const fields = Object.keys(this.charts)
+        for (const field of fields) {
+          await this.fetchChartData(field, values)
+        }
+        this.emitChart(this.charts[values.metric.field])
+        this.emitTable()
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+  },
+}
+</script>
