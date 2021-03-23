@@ -11,9 +11,13 @@
 import DashboardIndex from './components'
 
 export default {
-  name: 'MonitorDashboard',
+  name: 'MonitorDashboardIndex',
   components: {
     DashboardIndex,
   },
 }
 </script>
+
+<style scoped>
+
+</style>

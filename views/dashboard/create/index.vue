@@ -1,27 +1,38 @@
 <template>
-  <a-row>
-    <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
-      <monitor-forms @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
-    </a-col>
-    <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
-      <monitor-header
-        class="mb-4"
-        :timeOpts="timeOpts"
-        :time.sync="time"
-        :showTimegroup="false"
-        @refresh="fetchAllData">
-        <template v-slot:radio-button-append>
-          <custom-date :time.sync="time" :customTime.sync="customTime" />
-        </template>
-      </monitor-header>
-      <div v-for="(item, i) in seriesList" :key="i">
-        <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+  <div>
+    <page-header :title="this.panelId ? $t('monitor.dashboard.dialog.project.update') : $t('monitor.dashboard.dialog.project.create')" />
+    <page-body v-if="initFinished">
+      <a-row>
+        <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
+          <monitor-forms :panel="panel" :multiQuery="false" @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
+        </a-col>
+        <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
+          <monitor-header
+              class="mb-4"
+              :timeOpts="timeOpts"
+              :time.sync="time"
+              :showTimegroup="false"
+              @refresh="fetchAllData">
+            <template v-slot:radio-button-append>
+              <custom-date :time.sync="time" :customTime.sync="customTime" />
+            </template>
+          </monitor-header>
+          <div v-for="(item, i) in seriesList" :key="i">
+            <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+          </div>
+          <a-card v-if="!seriesList.length && loadingList[0]" class="explorer-monitor-line d-flex align-items-center justify-content-center">
+            <loader :loading="true" />
+          </a-card>
+        </a-col>
+      </a-row>
+    </page-body>
+    <page-footer>
+      <div slot="right">
+        <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm" :disabled="metricList.length === 0">{{ $t('common.save') }}</a-button>
+        <a-button @click="() => $router.back()">{{ $t('common.cancel') }}</a-button>
       </div>
-      <a-card v-if="!seriesList.length && loadingList[0]" class="explorer-monitor-line d-flex align-items-center justify-content-center">
-        <loader :loading="true" />
-      </a-card>
-    </a-col>
-  </a-row>
+    </page-footer>
+  </div>
 </template>
 
 <script>
@@ -32,12 +43,12 @@ import MonitorLine from '@Monitor/sections/MonitorLine'
 import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
 import CustomDate from '@/sections/CustomDate'
 import MonitorHeader from '@/sections/Monitor/Header'
-import { getRequestT } from '@/utils/utils'
+import { getRequestT, uuid } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { timeOpts } from '@/constants/monitor'
 
 export default {
-  name: 'ExplorerIndex',
+  name: 'MonitorDashboardChartCreate',
   components: {
     MonitorForms,
     MonitorLine,
@@ -46,6 +57,9 @@ export default {
   },
   data () {
     return {
+      initFinished: !this.$route.params.id,
+      panelId: this.$route.params.id || '',
+      panel: {},
       time: '1h',
       timeGroup: '2m',
       customTime: null,
@@ -83,7 +97,35 @@ export default {
       this.smartFetchAllData()
     },
   },
+  // created () {
+  //   if (this.panelId) {
+  //     this.fetchPanel()
+  //   }
+  // },
+  mounted () {
+    if (this.panelId) {
+      this.fetchPanel()
+    }
+  },
   methods: {
+    fetchPanel () {
+      this.loading = true
+      try {
+        const params = {
+          scope: this.scope,
+          details: true,
+        }
+        new this.$Manager('alertpanels', 'v1').get({ id: this.panelId, params }).then((res) => {
+          this.loading = false
+          this.panel = Object.assign({}, this.panel, res.data)
+          this.initFinished = true
+        })
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
     smartFetchAllData () { // 根据选择的时间范围智能的赋值时间间隔进行查询
       let diffHour = 1
       const noNumberReg = /\D+/g
@@ -167,6 +209,32 @@ export default {
         return resdata
       } catch (error) {
         throw error
+      }
+    },
+    async handleConfirm () {
+      this.loading = true
+      try {
+        const data = {
+          name: uuid(32),
+          dashboard_id: this.$route.query.dashboard,
+          metric_query: this.metricList[0],
+          interval: this.timeGroup,
+          scope: this.$store.getters.scope,
+          ...this.timeRangeParams,
+        }
+        if (!data.metric_query || !data.metric_query.length || !data.from || !data.dashboard_id) return
+        if (this.panelId) {
+          // update
+          await new this.$Manager('alertpanels', 'v1').update({ id: this.panelId, data })
+        } else {
+          await new this.$Manager('alertpanels', 'v1').create({ data })
+        }
+        this.loading = false
+        this.$router.back()
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
       }
     },
   },

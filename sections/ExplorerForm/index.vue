@@ -9,6 +9,7 @@
     </a-form>
     <div v-for="(item, i) in formList" :key="item.key" class="mb-3">
       <monitor-form
+        :panel="panel"
         :defaultPanelShow="item.show"
         :showDelete="formList.length > 1"
         :formItemLayout="formItemLayout"
@@ -18,7 +19,7 @@
         @paramsChange="val => paramsChange(val, i)"
         @remove="() => remove(i)" />
     </div>
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center" v-if="multiQuery">
       <a-button type="primary" shape="circle" icon="plus" size="small" :disabled="addDisabled"  @click="add" />
       <a-button type="link" @click="add" :disabled="addDisabled">{{ $t('monitor.monitor_add') }}</a-button>
     </div>
@@ -38,6 +39,14 @@ export default {
     timeRangeParams: {
       type: Object,
       default: () => ({}),
+    },
+    panel: {
+      type: Object,
+      default: () => ({}),
+    },
+    multiQuery: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
