@@ -29,7 +29,6 @@ export default {
       const config = {
         height: this.chartHeigth,
         width: '100%',
-        radius: ['45%', '85%'],
         legend: {
           show: this.showLegend,
           orient: 'horizontal',
@@ -40,7 +39,7 @@ export default {
           text: this.title,
           subtext: this.subtitle,
           left: 'center',
-          top: '55%',
+          top: '35%',
           textStyle: {
             color: '#999999',
             fontSize: 16,
@@ -66,7 +65,10 @@ export default {
       return config
     },
     chartSettings () {
-      const cs = {}
+      const cs = {
+        radius: [75, 100],
+        offsetY: '45%',
+      }
       if (this.chartData && this.chartData.columns && this.chartData.columns.length > 0) {
         cs.dataType = this.yAxisFormat
         cs.limitShowNum = 9
