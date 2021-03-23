@@ -1427,7 +1427,7 @@
     "Aliyun": "Aliyun",
     "Aws": "AWS",
     "Huawei": "Huawei Cloud",
-    "Qcloud": "Tencent Cloud",
+    "Qcloud": "Nanwang Cloud",
     "Azure": "Azure",
     "Ctyun": "eCloud",
     "Apsara": "Apsara"
@@ -1725,7 +1725,7 @@
     "dStack": "DStack",
     "aliyun": "Aliyun",
     "azure": "Azure",
-    "qcloud": "Tencent Cloud",
+    "qcloud": "Nanwang Cloud",
     "aws": "AWS",
     "huawei": "Huawei Cloud",
     "ucloud": "UCloud"

@@ -1427,7 +1427,7 @@
     "Aliyun": "阿里云",
     "Aws": "AWS",
     "Huawei": "华为云",
-    "Qcloud": "腾讯云",
+    "Qcloud": "南网云",
     "Azure": "微软云",
     "Ctyun": "天翼云",
     "Apsara": "飞天"
@@ -1725,7 +1725,7 @@
     "dStack": "DStack",
     "aliyun": "阿里云",
     "azure": "Azure",
-    "qcloud": "腾讯云",
+    "qcloud": "南网云",
     "aws": "AWS",
     "huawei": "华为云",
     "ucloud": "UCloud"
