@@ -11,16 +11,16 @@ export const HYPERVISORS_MAP = {
   openstack: { key: 'openstack', label: 'OpenStack', provider: 'OpenStack', brand: 'OpenStack', host_type: 'openstack', hypervisor: 'openstack', env: 'private', cloud_env: 'private' },
   dstack: { key: 'dstack', label: 'DStack', provider: 'ZStack', brand: 'DStack', host_type: 'dstack', hypervisor: 'dstack', env: 'private', cloud_env: 'private' },
   zstack: { key: 'zstack', label: 'ZStack', provider: 'ZStack', brand: 'ZStack', host_type: 'zstack', hypervisor: 'zstack', env: 'private', cloud_env: 'private' },
-  apsara: { key: 'apsara', label: i18n.t('cloudPrvidersMap.Apsara'), provider: 'Apsara', brand: 'Apsara', host_type: 'apsara', hypervisor: 'apsara', env: 'private', cloud_env: 'private' },
+  apsara: { key: 'apsara', label: i18n.t('scopeCloudPrvidersMap.Apsara'), provider: 'Apsara', brand: 'Apsara', host_type: 'apsara', hypervisor: 'apsara', env: 'private', cloud_env: 'private' },
   // Public
-  aliyun: { key: 'aliyun', label: i18n.t('cloudPrvidersMap.Aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
+  aliyun: { key: 'aliyun', label: i18n.t('scopeCloudPrvidersMap.Aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
   azure: { key: 'azure', label: 'Azure', provider: 'Azure', brand: 'Azure', host_type: 'azure', hypervisor: 'azure', env: 'public', cloud_env: 'public' },
   aws: { key: 'aws', label: 'AWS', provider: 'Aws', brand: 'Aws', host_type: 'aws', hypervisor: 'aws', env: 'public', cloud_env: 'public' },
-  qcloud: { key: 'qcloud', label: i18n.t('cloudPrvidersMap.Qcloud'), provider: 'Qcloud', brand: 'Qcloud', host_type: 'qcloud', hypervisor: 'qcloud', env: 'public', cloud_env: 'public' },
-  huawei: { key: 'huawei', label: i18n.t('cloudPrvidersMap.Huawei'), provider: 'Huawei', brand: 'Huawei', host_type: 'huawei', hypervisor: 'huawei', env: 'public', cloud_env: 'public' },
+  qcloud: { key: 'qcloud', label: i18n.t('scopeCloudPrvidersMap.Qcloud'), provider: 'Qcloud', brand: 'Qcloud', host_type: 'qcloud', hypervisor: 'qcloud', env: 'public', cloud_env: 'public' },
+  huawei: { key: 'huawei', label: i18n.t('scopeCloudPrvidersMap.Huawei'), provider: 'Huawei', brand: 'Huawei', host_type: 'huawei', hypervisor: 'huawei', env: 'public', cloud_env: 'public' },
   ucloud: { key: 'ucloud', label: 'UCloud', provider: 'Ucloud', brand: 'Ucloud', host_type: 'ucloud', hypervisor: 'ucloud', env: 'public', cloud_env: 'public' },
   google: { key: 'google', label: 'Google', provider: 'Google', brand: 'Google', host_type: 'google', hypervisor: 'google', env: 'public', cloud_env: 'public' },
-  ctyun: { key: 'ctyun', label: i18n.t('cloudPrvidersMap.Ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
+  ctyun: { key: 'ctyun', label: i18n.t('scopeCloudPrvidersMap.Ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
 }
 
 export const EXTRA_HYPERVISORS = {
