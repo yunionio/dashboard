@@ -475,7 +475,7 @@ export default {
       this.charge_type = e.target.value
     },
     hiddenBrandwidthHandle (selectedProvider) {
-      const providers = ['Azure', 'Aws', 'Qcloud', 'Google']
+      const providers = ['Azure', 'Aws', 'Google']
       if (providers.some(v => v === selectedProvider)) {
         this.form.fc.setFieldsValue({ bandwidth: 1 })
         this.showBandwidth = false

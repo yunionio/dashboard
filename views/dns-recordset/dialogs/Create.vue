@@ -464,7 +464,6 @@ export default {
     policyTypeChangeHandle (val, item) {
       item.policy_type = val
       item.policy_values = this.getPublicValues(item.provider, val)
-
       this.$nextTick(() => {
         if (item.policy_values.length > 0) {
           this.form.fc.setFieldsValue({
@@ -609,16 +608,17 @@ export default {
     providerChangeHandle (val, item) {
       item.provider = val
       item.policy_types = this.getPublicTypes(val, this.zoneType)
-
       this.$nextTick(() => {
         if (item.policy_types.length > 0) {
           this.form.fc.setFieldsValue({
             [`policy_type[${item.key}]`]: item.policy_types[0].value,
           })
+          this.policyTypeChangeHandle(item.policy_types[0].value, item)
         } else {
           this.form.fc.setFieldsValue({
             [`policy_type[${item.key}]`]: '',
           })
+          this.policyTypeChangeHandle('', item)
         }
       })
     },
