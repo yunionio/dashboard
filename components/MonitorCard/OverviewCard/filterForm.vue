@@ -256,7 +256,11 @@ export default {
         s.points.map((p) => {
           const t = p[1]
           if (!tv[t]) {
-            tv[t] = { time: new Date(t).toLocaleString() }
+            const padding = (n) => { return n > 9 ? `${n}` : '0' + n }
+            const _t = new Date(t)
+            const _h = padding(_t.getHours())
+            const _m = padding(_t.getMinutes())
+            tv[t] = { time: _t.toLocaleDateString() + ' ' + _h + ':' + _m }
           }
           tv[t][column] = p[0]
         })

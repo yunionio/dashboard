@@ -62,9 +62,9 @@ export default {
       }
     },
     chartConfig () {
-      const rows = this.chartData.rows ? this.chartData.rows.length : 0
+      const height = this.chartData.rows && this.chartData.rows.length > 0 ? this.chartData.rows.length * 45 + 100 : 200
       return {
-        height: `${rows * 45 + 100}px`,
+        height: `${height}px`,
         legend: { show: this.showLegend },
       }
     },
@@ -87,7 +87,7 @@ export default {
       if (!params) {
         return ''
       }
-      let format = params[0].seriesName + '<br />'
+      let format = ''
       for (const item of params) {
         format += item.marker + item.name + ': ' + this.valueFormatter(item.value) + '<br />'
       }
