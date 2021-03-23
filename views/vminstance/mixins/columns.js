@@ -171,11 +171,13 @@ export default {
               tooltip = version ? (version.includes(dist) ? version : `${decodeURI(dist)} ${version}`) : dist
             } else if (row.metadata.os_type) {
               tooltip = row.metadata.os_type
+            } else if (row.os_type) {
+              tooltip = row.os_type
             } else {
               tooltip = i18nLocale.t('compute.text_339')
             }
 
-            name = dist || row.metadata.os_type || ''
+            name = dist || row.metadata.os_type || row.os_type || ''
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
             } else if (name.includes('Linux') || name.includes('linux')) {
