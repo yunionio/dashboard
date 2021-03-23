@@ -226,6 +226,7 @@ export default {
         this.$message.success(this.$t('compute.text_322'))
       } catch (error) {
         this.loading = false
+        this.cancelDialog()
       }
     },
     getDiskLabel (item) {
