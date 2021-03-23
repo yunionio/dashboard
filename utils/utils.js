@@ -739,14 +739,16 @@ export function isCE () {
   return !process.env.VUE_APP_IS_PRIVATE
 }
 
-export function getDocsUrl (scope) {
+export function getDocsUrl (_) {
   let prefix = 'docs'
   if (isCE()) {
     return `https://docs.yunion.io/${prefix}/`
   }
-  if (scope === 'domain' || scope === 'project') {
-    prefix = prefix + '/domain'
-  }
+  /*
+   * if (scope === 'domain' || scope === 'project') {
+   *   prefix = prefix + '/domain'
+   * }
+   */
   return `${window.location.origin}/${prefix}/${language}/docs/`
 }
 
