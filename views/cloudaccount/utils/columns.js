@@ -15,7 +15,11 @@ export const getAccessUrlTableColumn = () => {
         let txt
         Object.keys(i18n.t('cloudAccountAccessType')).forEach(k => {
           if (row.access_url.indexOf(k) > -1) {
-            txt = i18n.t('cloudAccountAccessType')[k]
+            let _k = k
+            if (row.brand !== 'Aliyun' && k === 'InternationalCloud') {
+              _k = 'Internation'
+            }
+            txt = i18n.t('cloudAccountAccessType')[_k]
           }
         })
         return txt ||
