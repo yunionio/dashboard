@@ -133,8 +133,9 @@ export function getMetircAlertUtil (row, field) {
       strategy += `${i18n.t('monitor.text_102', [preiod])}`
     }
 
-    if (row.silent_period) {
-      let p = row.silent_period
+    const silent_period = row.silent_period || row[field].silent_period
+    if (silent_period) {
+      let p = silent_period
       if (p.endsWith('m')) {
         const pi = parseInt(p.replace('m', ''))
         if (pi && pi >= 60 && pi % 60 === 0) {
