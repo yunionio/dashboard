@@ -238,7 +238,9 @@ http.interceptors.response.use(
           }
         })
       }
-      if (error.response.data && !(error.response.data.details || String()).includes('No token in header')) {
+      if (status === 402) {
+        console.log(error)
+      } else if (error.response.data && !(error.response.data.details || String()).includes('No token in header')) {
         showHttpErrorMessage(error)
       }
     }
