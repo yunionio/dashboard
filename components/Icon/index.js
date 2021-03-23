@@ -2,7 +2,7 @@ import { Icon as AntIcon } from 'ant-design-vue'
 import { mergeProps } from 'ant-design-vue/lib/_util/props-util'
 
 const requireAll = requireContext => requireContext.keys().map(requireContext)
-const req = require.context('./assets', false, /\.svg$/)
+const req = require.context('../../../scope/assets', false, /\.svg$/)
 requireAll(req)
 
 // 暂时修改为非函数式组件
