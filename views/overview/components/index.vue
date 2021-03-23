@@ -6,11 +6,12 @@
     <a-row>
       <a-col :span="8">
         <div class="monitor-overview-chart mb-2">
-          <div class="title-wrapper float-left">
+          <div class="title-wrapper">
             <div class="title">{{ $t('monitor.overview_alert_sum') }}</div>
           </div>
           <overview-ring
             yAxisFormat="0"
+            chartHeigth="299px"
             :chartData="ringChart.chartData"
             :chartEvents="ringChartEvent()"
             :title="$t('monitor.overview_alert_sum_pie')"
@@ -24,8 +25,9 @@
             <div class="title">{{  $t('monitor.overview_alert_trend') }}</div>
           </div>
           <overview-line
-            yAxisFormat="0.00"
+            yAxisFormat="0"
             chartHeigth="299px"
+            :isHistogram="true"
             :chartData="lineChart.chartData"
             :loading="lineChart.loading"  />
         </div>
@@ -70,6 +72,13 @@ export default {
         id: this.$store.getters.userInfo.projectDomainId,
         location: this.$t('dictionary.domain'),
         title: this.$store.getters.userInfo.projectDomain,
+        scope: scope,
+      }]
+    } else if (scope === 'project') {
+      navs = [{
+        id: this.$store.getters.userInfo.projectId,
+        location: this.$t('dictionary.project'),
+        title: this.$store.getters.userInfo.projectName,
         scope: scope,
       }]
     }
@@ -213,7 +222,7 @@ export default {
         columns: [],
         rows: [],
       }
-      if (rawDatas) {
+      if (rawDatas && rawDatas[0] && rawDatas[0].points) {
         const points = rawDatas[0].points
         let series = points.map((item) => {
           return { name: item[1], value: item[0] }

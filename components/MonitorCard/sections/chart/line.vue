@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-chart chartType="ve-line"
+    <base-chart :chartType="chartType"
                 :chartData="chartData"
                 :chartConfig="chartConfig"
                 :chartSettings="chartSettings"
@@ -17,8 +17,16 @@ import numerify from './formatters'
 
 export default {
   name: 'OverviewLine',
-  props: commonChartProps(),
+  props: Object.assign({
+    isHistogram: {
+      type: String,
+      default: false,
+    },
+  }, commonChartProps()),
   computed: {
+    chartType () {
+      return this.isHistogram ? 've-histogram' : 've-line'
+    },
     chartExtend () {
       /* 当属性为对象时，如果在options中对应的属性为对象(eg: tooltip)或包含对象的数组(eg: series)
        * 对应的配置会被合并，否则将直接覆盖对应的配置
