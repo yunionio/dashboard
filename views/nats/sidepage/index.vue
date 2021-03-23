@@ -9,6 +9,9 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
+    <template v-slot:actions>
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
+    </template>
     <component
       :is="params.windowData.currentTab"
       :id="listId"
@@ -25,6 +28,7 @@
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import NatDetail from './Detail'
 import Snat from './Snat'
@@ -41,7 +45,7 @@ export default {
     Dnat,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
