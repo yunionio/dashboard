@@ -12,7 +12,7 @@
             :select-props="{ allowClear: true, placeholder: $t('compute.text_1183') }" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1184')">
-          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" :disabled="form.fi.disableAutoStart" />
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" />
         </a-form-item>
       </a-form>
     </div>
@@ -26,28 +26,16 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { typeClouds } from '@/utils/common/hypervisor'
-
-const hypervisorMap = typeClouds.hypervisorMap
 
 export default {
   name: 'VmBindKeypairDialog',
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    let autoStartInitialValue = true
-    let disableAutoStart = false
-    const firstData = this.params.data && this.params.data[0]
-    if (firstData && (firstData.status === 'running' || firstData.hypervisor === hypervisorMap.azure.key)) {
-      autoStartInitialValue = false
-      disableAutoStart = true
-    }
+    const autoStart = this.params.data.some(val => val.status === 'running')
     return {
       loading: false,
       form: {
         fc: this.$form.createForm(this),
-        fi: {
-          disableAutoStart,
-        },
       },
       decorators: {
         keypair: [
@@ -61,7 +49,7 @@ export default {
         auto_start: [
           'auto_start',
           {
-            initialValue: autoStartInitialValue,
+            initialValue: autoStart,
             valuePropName: 'checked',
           },
         ],
