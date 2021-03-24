@@ -4,7 +4,9 @@
     <div v-else>
       <vxe-toolbar>
         <template #tools>
-          <vxe-button @click="exportData" icon="vxe-icon--download" />
+          <vxe-button @click="exportData" class="icons-list" style="width: 40px;">
+            <a-icon type="download" />
+          </vxe-button>
         </template>
       </vxe-toolbar>
       <vxe-grid
@@ -53,3 +55,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.icons-list >>> .anticon {
+  font-size: 16px;
+}
+</style>
