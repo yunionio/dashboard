@@ -2429,6 +2429,7 @@
     "create": "新建",
     "delete": "删除",
     "brand": "平台",
+    "brands": "平台",
     "noPermissionView": "无权限查看",
     "email": "邮件",
     "dingtalk": "钉钉",
