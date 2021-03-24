@@ -240,7 +240,9 @@ export default {
             label: item.name,
           }
         })
-        return menus
+        if (menus.length > 0) {
+          return menus
+        }
       }
       return null
     },
