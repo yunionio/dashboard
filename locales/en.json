@@ -2424,6 +2424,7 @@
     "create": "Create",
     "delete": "Delete",
     "brand": "Platform",
+    "brands": "Platforms",
     "noPermissionView": "No permission to view",
     "email": "Email",
     "dingtalk": "Dingtalk",
