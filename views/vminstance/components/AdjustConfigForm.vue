@@ -62,7 +62,7 @@
             <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1106')">
-            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
+            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
           </a-form-item>
         </a-form>
       </div>
@@ -148,6 +148,7 @@ export default {
       callback()
     }
     const itemData = this.params.data[0]
+    const autoStart = this.params.data.some(val => val.status === 'running')
     return {
       loading: false,
       action: this.$t('compute.text_1100'),
@@ -308,7 +309,7 @@ export default {
           'autoStart',
           {
             valuePropName: 'checked',
-            initialValue: false,
+            initialValue: autoStart,
           },
         ],
       },
@@ -554,16 +555,6 @@ export default {
         diskValueArr.push(value)
       }, this.form.fd.dataDiskSizes)
       return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, 0)
-    },
-  },
-  watch: {
-    isSomeRunning: {
-      handler (val) {
-        this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ autoStart: !val })
-        })
-      },
-      immediate: true,
     },
   },
   created () {
