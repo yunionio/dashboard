@@ -80,7 +80,7 @@ export default {
   data () {
     const data = this.params.data[0]
     let os_arch = data.os_arch || HOST_CPU_ARCHS.x86.key
-    if (data.properties.os_arch) {
+    if (data.properties && data.properties.os_arch) {
       os_arch = data.properties.os_arch.includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
     }
     return {
