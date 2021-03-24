@@ -77,7 +77,7 @@ export default {
       return this.$t('compute.text_1086')
     },
     diskParams () {
-      return { limit: 20, tenant: this.params.data[0].tenant }
+      return { limit: 20, tenant: this.params.data[0].tenant_id }
     },
   },
   watch: {
