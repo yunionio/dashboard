@@ -344,7 +344,7 @@ export default {
           },
         })
       }
-      const cloudProvidersMap = this.$t('cloudPrvidersMap')
+      const cloudProvidersMap = this.$t('scopeCloudPrvidersMap')
       return (
         <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.provider}>
           {this.providerList.map(provider => {
