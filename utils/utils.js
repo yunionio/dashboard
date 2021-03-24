@@ -732,7 +732,7 @@ export function isCE () {
 }
 
 export function getDocsUrl (_) {
-  let prefix = 'docs'
+  const prefix = 'docs'
   if (isCE()) {
     return `https://docs.yunion.io/${prefix}/`
   }
