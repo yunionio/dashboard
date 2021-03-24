@@ -99,10 +99,10 @@ export default {
       this.scopeLevel > 2 && ret.push({ scope: curScope, id: 'system', name: 'system', label: this.$t('system.text_15') })
       this.scopeLevel > 1 && ret.push({ scope: curScope, id: 'domain_id', name: 'project_domain', label: this.$t('dictionary.domain') })
       this.scopeLevel > 0 && ret.push({ scope: curScope, id: 'tenant_id', name: 'tenant', label: this.$t('dictionary.project') })
-      ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: this.$t('dictionary.server') })
-      ret.push({ scope: curScope, id: 'brand', name: 'brand', label: this.$t('common.brand') })
-      ret.push({ scope: curScope, id: 'cloudregion_id', name: 'cloudregion', label: this.$t('dictionary.cloudregion') })
-      ret.push({ scope: curScope, id: 'zone_id', name: 'zone', label: this.$t('dictionary.zone') })
+      ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: this.$t('cloudenv.text_99') })
+      ret.push({ scope: curScope, id: 'brand', name: 'brand', label: this.$t('common.brands') })
+      ret.push({ scope: curScope, id: 'cloudregion_id', name: 'cloudregion', label: this.$t('cloudenv.text_10') })
+      ret.push({ scope: curScope, id: 'zone_id', name: 'zone', label: this.$t('cloudenv.text_11') })
       return ret
     },
     dimention () {

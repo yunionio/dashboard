@@ -1,16 +1,16 @@
 <template>
   <a-form :form="form" layout="inline">
-      <a-form-item>
+      <a-form-item style="margin-right: 8px;">
+        <refresh  @refresh="handleRefresh" :loading="loading" />
+      </a-form-item>
+      <a-form-item style="margin-right: 8px;">
         <metric-select  v-decorator="decorators.metric" :options="metricOptions" @change="handleMetricChange" />
       </a-form-item>
-      <a-form-item>
+      <a-form-item style="margin-right: 8px;">
         <time-select v-decorator="decorators.from" @change="handleFromChange" />
       </a-form-item>
-      <a-form-item v-if="!isLineChart">
+      <a-form-item v-if="!isLineChart" style="margin-right: 8px;">
         <top-n-select v-decorator="decorators.limit" @change="handleLimitChange" />
-      </a-form-item>
-      <a-form-item>
-        <refresh  @refresh="handleRefresh" :loading="loading" />
       </a-form-item>
   </a-form>
 </template>
@@ -216,6 +216,8 @@ export default {
       return namecolumn
     },
     toTableData () {
+      const curMetric = this.form.getFieldValue('metric')
+      const names = this.charts[curMetric.field].chartData.rows.map((row) => { return row.name })
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
@@ -227,6 +229,10 @@ export default {
         if (chart.metric.format) col.formatter = ({ cellValue }) => { return numerify(cellValue, chart.metric.format) }
         data.columns.push(col)
         chart.chartData.rows.map((row) => {
+          if (names.indexOf(row.name) < 0) {
+            return
+          }
+
           if (!tr[row.name]) {
             tr[row.name] = {}
             tr[row.name][namecolumn.field] = row.name
@@ -323,9 +329,10 @@ export default {
         this.$emit('updateTable', this.toTableData())
       }
     },
-    handleMetricChange (metric) {
+    async handleMetricChange (metric) {
       this.form.setFieldsValue({ metric: metric })
-      this.handleRefresh()
+      await this.handleRefresh()
+      this.emitTable()
     },
     handleFromChange (from) {
       this.form.setFieldsValue({ from: from })
