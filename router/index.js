@@ -256,6 +256,7 @@ export default {
           path: '/schedtag',
           meta: {
             label: i18n.t('cloudenv.text_18'),
+            // make schedtags show in domain and project views -- Qiu Jian
             // permission: 'schedtags_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
