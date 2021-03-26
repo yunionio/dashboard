@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('network.text_538')" v-bind="formItemLayout">
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
         <a-form-item :label="$t('network.text_539')" v-bind="formItemLayout">
@@ -124,10 +124,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 21,
+          span: 19,
         },
         labelCol: {
-          span: 3,
+          span: 5,
         },
       },
       tailFormItemLayout: {
