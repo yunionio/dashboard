@@ -179,9 +179,9 @@ export default {
       this.$emit('change', image)
     },
     change (e) {
+      console.log(e.target.value, 1)
       this.isFirstLoad = false
       this.imageType = e.target.value
-      // console.log(e.target.value)
       const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
       storage.set('oc_selected_image', { ...lastSelectedImageInfo, imageType: e.target.value })
       this.$emit('update:imageType', e.target.value)
