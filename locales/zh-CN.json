@@ -58,7 +58,7 @@
   "network.text_57": "b. 目标机器存在cloudroot用户且支持sudo免密登录",
   "network.text_58": "c. 目标机器允许管理员通过公钥免密登录，通过climc sshkeypair-show --admin命令获取公钥",
   "network.text_59": "请输入外部机器的IP",
-  "network.text_60": "请选择云主机",
+  "network.text_60": "请选择虚拟机",
   "network.text_61": "如果您需要再次部署，请确保节点已经从旧机器下线",
   "network.text_62": "请选择宿主机",
   "network.text_63": "Yum源地址",
