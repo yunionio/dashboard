@@ -12,7 +12,7 @@
             :select-props="{ allowClear: true, placeholder: $t('compute.text_1183') }" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_494')" v-bind="formItemLayout" :extra="$t('compute.text_1184')">
-          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" />
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.auto_start" :disabled="isSomeRunning" />
         </a-form-item>
       </a-form>
     </div>
@@ -63,6 +63,11 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    isSomeRunning () {
+      return this.params.data.some(val => val.status === 'running')
+    },
   },
   methods: {
     async handleConfirm () {
