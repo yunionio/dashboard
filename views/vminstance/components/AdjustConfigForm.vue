@@ -65,7 +65,7 @@
             <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1106')">
-            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" />
+            <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.autoStart" :disabled="isSomeRunning" />
           </a-form-item>
         </a-form>
       </div>
