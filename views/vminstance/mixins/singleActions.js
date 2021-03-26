@@ -7,6 +7,7 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
+import { PROVIDER_MAP } from '@/constants'
 
 export default {
   computed: {
@@ -741,15 +742,16 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (!this.isAdminMode && !this.isDomainMode) {
-                      return ret
-                    }
                     if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
                       ret.tooltip = i18n.t('compute.text_1118')
                       return ret
                     }
                     if (obj.billing_type !== 'prepaid') {
                       ret.tooltip = i18n.t('compute.text_1119')
+                      return ret
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = i18n.t('compute.text_613')
                       return ret
                     }
                     ret.validate = true
@@ -772,15 +774,16 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (!this.isAdminMode && !this.isDomainMode) {
-                      return ret
-                    }
                     if (findPlatform(obj.hypervisor) !== SERVER_TYPE.public) {
                       ret.tooltip = i18n.t('compute.text_1118')
                       return ret
                     }
                     if (obj.billing_type !== 'prepaid') {
                       ret.tooltip = i18n.t('compute.text_1119')
+                      return ret
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = i18n.t('compute.text_613')
                       return ret
                     }
                     ret.validate = true
@@ -949,11 +952,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -979,11 +984,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (commonUnabled(obj)) return ret
@@ -1165,9 +1172,6 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (!this.isAdminMode && !this.isDomainMode) {
-                      return ret
-                    }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                       ret.tooltip = i18n.t('compute.text_355')
                       return ret
@@ -1178,6 +1182,10 @@ export default {
                     }
                     if (obj.is_gpu) {
                       ret.tooltip = i18n.t('compute.gpu_not_support_add_host')
+                      return ret
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
                     ret.validate = true
@@ -1199,10 +1207,12 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (!obj.backup_host_id) {
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
-                    if (!this.isAdminMode && !this.isDomainMode) {
+                    if (!obj.backup_host_id) {
+                      ret.tooltip = i18n.t('compute.text_1383')
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
