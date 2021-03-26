@@ -169,10 +169,16 @@ export default {
       return params
     },
     regionParams () {
-      return {
+      const params = {
         usable: true,
         show_emulated: true,
       }
+      if (this.isAdminMode) {
+        params.admin = true
+        params.project_domain = this.project_domain
+        delete params.scope
+      }
+      return params
     },
     vpcParams () {
       const params = {
@@ -197,9 +203,7 @@ export default {
       return params
     },
     eipParams () {
-      console.log('eip params')
       const cloudregion_id = this.$refs.REF_SKU.getCloudregionId()
-      console.log(cloudregion_id)
       const params = {
         cloudregion_id: cloudregion_id,
       }
