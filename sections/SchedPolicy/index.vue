@@ -21,7 +21,7 @@
           :select-props="{ placeholder: lodash.get(schedPolicyOptionsMap, 'host.label') || ''  }" />
       </template>
       <template v-else>
-        <base-select
+        <!-- <base-select
           class="w-50"
           resource="cloudproviders"
           v-if="showCloudproviderSelect"
@@ -33,9 +33,9 @@
           :need-params="true"
           :filterable="true"
           :showSync="true"
-          :select-props="{ placeholder: lodash.get(schedPolicyOptionsMap, 'host.label') || '' }" />
+          :select-props="{ placeholder: lodash.get(schedPolicyOptionsMap, 'host.label') || '' }" /> -->
         <base-select
-          v-else
+          v-if="!showCloudproviderSelect"
           class="w-50"
           resource="hosts"
           :disabled-items="disabledHost"
@@ -160,7 +160,8 @@ export default {
       if (this.hideCloudaccountSched) {
         delete ret.host
       }
-      if (!this.showSchedCloudprovider) {
+      if (this.serverType === SERVER_TYPE.public) {
+        delete ret.host
         delete ret.cloudprovider
       }
       return ret
