@@ -54,6 +54,16 @@
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
         <resource :decorator="decorators.resourceType" />
       </a-form-item> -->
+      <a-form-item :label="$t('compute.text_15')">
+        <base-select
+          class="w-50"
+          resource="cloudproviders"
+          v-decorator="decorators.cloudprovider"
+          :params="policycloudproviderParams"
+          :isDefaultSelect="true"
+          :showSync="true"
+          :select-props="{ placeholder: $t('compute.text_149') }" />
+      </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
@@ -526,7 +536,28 @@ export default {
       if (val && !R.equals(val, oldVal)) {
         this.fetchCapability()
       }
-    }
+    },
+    cloudproviderLabel (item) {
+      let label = item.name
+      if (!this.usableCloudproviderMaps[item.id]) {
+        if (item.status !== 'connected') {
+          label += this.$t('compute.text_184')
+        } else if (item.health_status !== 'normal') {
+          label += this.$t('compute.text_185')
+        } else if (item.enabled === false) {
+          label += this.$t('compute.text_186')
+        } else {
+          label += this.$t('compute.text_187')
+        }
+      }
+      return label
+    },
+    labelFormat (item) {
+      if (this.form.fi.createType === SERVER_TYPE.public) {
+        return `${item.account} / ${item.manager} / ${item.zone}`
+      }
+      return item.name
+    },
   },
 }
 </script>
