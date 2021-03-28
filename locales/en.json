@@ -1263,7 +1263,7 @@
   "compute.text_1293": "Unbound, cannot be unbound",
   "compute.text_1294": "Public IP cannot be unbound",
   "compute.text_1295": "High Availability",
-  "compute.text_1296": "A backup machine has been added",
+  "compute.text_1296": "A backup machine has been added, this operation is not supported",
   "compute.text_1297": "Switch",
   "compute.text_1298": "The host of the backup machine is offline not allowed to switch",
   "compute.text_1299": "High-availability machines are not allowed to migrate",
@@ -1379,6 +1379,7 @@
   "compute.detach_network_title": "Detach NIC",
   "compute.nic": "NIC",
   "compute.server_detach_network.only_last_one": "Only the last NIC can be detached",
-  "migration.project.error": "The project view does not support migration operation",
-  "compute.save_image_prompt.public_cloud": "Saving image on the public clouds will create a image on the cloud. The image can be found in the list of {0} when creating public cloud servers"
+  "migration.project.error": "The project view does not support this operation",
+  "compute.save_image_prompt.public_cloud": "Saving image on the public clouds will create a image on the cloud. The image can be found in the list of {0} when creating public cloud servers",
+  "compute.text_1383": "No backup machine is added, this operation is not supported"
 }
