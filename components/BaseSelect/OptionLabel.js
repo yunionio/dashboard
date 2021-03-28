@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
 const resourceMode = {
@@ -81,6 +82,20 @@ const resourceMode = {
         <div class='d-flex'>
           <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
           <div style="color: #8492a6; font-size: 13px">{ concatText }</div>
+        </div>
+      )
+    },
+  },
+  storages: {
+    vnode: (store, h) => {
+      const text = store.getLabel()
+      const capacity = sizestr(store.data.capacity, 'M', 1024)
+      const allowedBrands = ['VMware', 'OneCloud']
+      const actual_capacity_used = allowedBrands.includes(store.data.brand) ? sizestr(store.data.actual_capacity_used, 'M', 1024) : '-'
+      return ( // block storage
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
+          <span style="color: #8492a6; font-size: 13px">{ i18n.t('storage.text_180', [capacity]) } / { i18n.t('storage.text_178', [actual_capacity_used]) }</span>
         </div>
       )
     },
