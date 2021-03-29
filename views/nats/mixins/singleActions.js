@@ -1,4 +1,4 @@
-import { getDomainChangeOwnerAction, getSetPublicAction, disableDeleteAction } from '@/utils/common/tableActions'
+import { disableDeleteAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
 export default {
@@ -95,15 +95,6 @@ export default {
                 }
               },
             },
-            getDomainChangeOwnerAction(this, {
-              name: this.$t('dictionary.nat'),
-              resource: 'natgateways',
-            }),
-            getSetPublicAction(this, {
-              name: this.$t('dictionary.nat'),
-              scope: 'domain',
-              resource: 'natgateways',
-            }),
             disableDeleteAction(this, {
               name: this.$t('dictionary.nat'),
             }),
