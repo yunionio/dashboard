@@ -463,7 +463,7 @@
   "compute.text_470": "{0} disk can perform this operation under disk storage type [{1}]",
   "compute.text_471": "{0} disk cannot perform this operation when the disk storage type is [{1}]",
   "compute.text_472": "Please select an unmounted disk",
-  "compute.text_473": "{0} This operation is not supported",
+  "compute.text_473": "{0} does not support this operation",
   "compute.text_474": "If the {0} disk is mounted, this operation can only be performed when the host status is [{1}]",
   "compute.text_475": "{0} using image as system disk does not support snapshot creation",
   "compute.text_476": "Tianyi Cloud does not currently support this operation",
