@@ -1,19 +1,19 @@
 <template>
   <div>
-    <page-header :title="$t('monitor.dashboard.title')" />
+    <page-header :title="$t('monitor.text_18')" />
     <page-body>
-      <dashboard-index />
+      <overview-index />
     </page-body>
   </div>
 </template>
 
 <script>
-import DashboardIndex from './components'
+import OverviewIndex from './components'
 
 export default {
-  name: 'MonitorDashboard',
+  name: 'MonitorOverview',
   components: {
-    DashboardIndex,
+    OverviewIndex,
   },
 }
 </script>
