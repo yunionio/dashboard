@@ -89,6 +89,15 @@ export default {
           },
         },
         {
+          field: 'zone',
+          title: this.$t('db.master_zone'),
+          slots: {
+            default: ({ row }) => {
+              return row.zone || '-'
+            },
+          },
+        },
+        {
           field: 'slave_zone',
           title: this.$t('db.slave_zone'),
           slots: {
