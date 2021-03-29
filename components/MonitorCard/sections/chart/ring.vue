@@ -31,8 +31,8 @@ export default {
         width: '100%',
         legend: {
           show: this.showLegend,
-          orient: 'horizontal',
-          bottom: '0%',
+          orient: 'vertical',
+          left: 'left',
         },
         title: {
           show: this.title && this.title.length > 0,
@@ -54,12 +54,12 @@ export default {
         tooltip: {
           show: true,
           trigger: 'item',
-          position: {
-            _custom: {
-              type: 'function',
-              display: '<span>ƒ</span> position(point, params, dom, rect, size)',
-            },
-          },
+          // position: {
+          //   _custom: {
+          //     type: 'function',
+          //     display: '<span>ƒ</span> position(point, params, dom, rect, size)',
+          //   },
+          // },
         },
       }
       return config
@@ -68,6 +68,7 @@ export default {
       const cs = {
         radius: [75, 100],
         offsetY: '45%',
+        labelLine: { length: 10, length2: 10 },
       }
       if (this.chartData && this.chartData.columns && this.chartData.columns.length > 0) {
         cs.dataType = this.yAxisFormat

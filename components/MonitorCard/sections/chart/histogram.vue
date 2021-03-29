@@ -65,6 +65,7 @@ export default {
       const height = this.chartData.rows && this.chartData.rows.length > 0 ? this.chartData.rows.length * 45 + 100 : 200
       return {
         height: `${height}px`,
+        width: '95%',
         legend: { show: this.showLegend },
       }
     },

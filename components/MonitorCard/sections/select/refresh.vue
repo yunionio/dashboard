@@ -4,7 +4,7 @@
       <template slot="title" v-show="tooltips && lastSync !== ''">
         <span>{{ $t('refresh.last_sync_at', [lastSync]) }}</span>
       </template>
-      <a-button :icon="loading ? 'loading':'sync'" @click="emitRefresh" />
+      <a-button style="width: 45px;padding-left: 15px;padding-right: 15px;" :icon="loading ? 'loading':'sync'" @click="emitRefresh" />
     </a-tooltip>
     <a-select v-if="showSelect" @change="handleChange" style="width: 90px">
       <a-select-option defaultValue="off" :dropdownMatchSelectWidth="false" v-for="d of durations" :key="d.label" :value="d.value">
