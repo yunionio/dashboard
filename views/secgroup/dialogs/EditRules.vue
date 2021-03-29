@@ -22,8 +22,25 @@
               <a-icon type="question-circle-o" />
             </a-tooltip>
           </span>
-          <a-input :disabled="IPCheckboxDisabled" v-decorator="decorators.cidr" :placeholder="$t('compute.text_996')" />
-          <a-checkbox class="right-checkbox" @change="cidrChange" :checked="isIPChecked">{{$t('compute.text_997')}}</a-checkbox>
+          <a-select
+            mode="combobox"
+            @change="fetchSecgroups"
+            option-filter-prop="children"
+            v-decorator="decorators.source"
+            v-bind="formItemLayout">
+            <a-select-opt-group>
+              <span slot="label">CIDR</span>
+              <a-select-option v-for="item in cidrOptions" :key="item.value" :value="item.value">
+              {{item.value}}
+              </a-select-option>
+            </a-select-opt-group>
+            <a-select-opt-group>
+              <span slot="label">$t('dictionary.secgroup')</span>
+              <a-select-option v-for="item in secgroupOpts" :key="item.id" :value="item.name">
+              {{item.name}}
+              </a-select-option>
+            </a-select-opt-group>
+          </a-select>
         </a-form-item>
         <a-form-item :label="$t('compute.text_980')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.protocol" @change="protocolChange" :disabled="protocolDisabled">
@@ -82,14 +99,14 @@ export default {
         type: [
           'type',
         ],
-        cidr: [
-          'cidr',
+        source: [
+          'source',
           {
             validateFirst: true,
-            initialValue: selectItem.cidr || '',
+            initialValue: selectItem.cidr || selectItem.peer_secgroup || '',
             rules: [
               { required: true, message: this.$t('compute.text_996') },
-              { validator: this.$validate('cidr') },
+              // { validator: this.$validate('cidr') },
             ],
           },
         ],
@@ -152,15 +169,24 @@ export default {
         { label: this.$t('compute.text_976'), value: 'allow' },
         { label: this.$t('compute.text_977'), value: 'deny' },
       ],
+      cidrOptions: [
+        { value: '0.0.0.0/0' },
+        { value: '10.0.0.0/8' },
+        { value: '172.16.0.0/12' },
+        { value: '192.168.0.0/16' },
+      ],
+      secgroupOpts: [
+      ],
       typeDisabled: false,
-      isIPChecked: selectItem.cidr === '0.0.0.0/0',
-      IPCheckboxDisabled: selectItem.cidr === '0.0.0.0/0',
       portsDisabled: JSON.stringify(selectItem) === '{}' ? false : !selectItem.ports,
       portsCheckboxDisabled: selectItem.protocol === 'any' || selectItem.protocol === 'icmp',
       portsChecked: JSON.stringify(selectItem) === '{}' ? false : !selectItem.ports,
       decLabel: this.params.type === 'in' ? this.$t('compute.text_979') : this.$t('compute.text_978'),
       protocolDisabled: this.params.title !== 'edit',
     }
+  },
+  created () {
+    this.fetchSecgroups('')
   },
   methods: {
     validatePorts (rule, value, callback) {
@@ -248,18 +274,23 @@ export default {
         }
       }
     },
-    cidrChange (e) {
-      this.IPCheckboxDisabled = !this.IPCheckboxDisabled
-      this.isIPChecked = !this.isIPChecked
-      if (e.target.checked) {
-        this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ cidr: '0.0.0.0/0' })
-        })
-      } else {
-        this.$nextTick(() => {
-          this.form.fc.resetFields(['cidr'])
-        })
+    async fetchSecgroups (value) {
+      const params = {
+        filter: [
+          `id.notequals("${this.params.secgroup}")`,
+        ],
+        limit: 5,
       }
+      if (this.isAdminMode) {
+        params.scope = 'system'
+      }
+      if (value.length > 0) {
+        params.filter.push(`name.contains("${value}")`)
+      }
+      await new this.$Manager('secgroups').list({ params })
+        .then(({ data: { data = [] } }) => {
+          this.secgroupOpts.splice(0, this.secgroupOpts.length, ...data)
+        })
     },
     portsChange (e) {
       this.portsChecked = !this.portsChecked
@@ -321,6 +352,15 @@ export default {
         const values = await this.form.fc.validateFields()
         if (values.ports === 'ALL') {
           values.ports = ''
+        }
+        if (values.source) {
+          const isCidr = validate(values.source, 'cidr')
+          if (!isCidr || isCidr.result === false) {
+            values.peer_secgroup_id = values.source
+          } else {
+            values.cidr = values.source
+          }
+          delete values.source
         }
         await this.saveEdit(values)
         this.loading = false
