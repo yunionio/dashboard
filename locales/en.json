@@ -2523,6 +2523,7 @@
       "about": "About",
       "work_order_undone": "My Tickets {num}",
       "pending_work_order": "Pending {num}",
+      "pending_work_order-tech": "Pending {num}",
       "join_project": "Apply to join the project",
       "work_order_support": "Request technical support",
       "work_order_apply_project_quota": "Apply for project quota",
