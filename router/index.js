@@ -5,6 +5,8 @@ import commonalertsUpdate from '@Monitor/views/commonalert/update'
 import AlertresourceIndex from '@Monitor/views/alertresource'
 import AlertrecordIndex from '@Monitor/views/alertrecord'
 import Explorer from '@Monitor/views/explorer'
+import Dashboard from '@Monitor/views/dashboard'
+import MonitorDashboardChartCreate from '@Monitor/views/dashboard/create'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -38,6 +40,38 @@ export default {
         t: 'dictionary.monitor_metrics',
       },
       submenus: [
+        {
+          name: 'Query',
+          meta: {
+            label: i18n.t('monitor.dashboard.title'),
+            permission: 'unifiedmonitors_get',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitor-dashboard')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])
+            },
+          },
+          path: '/monitor-dashboard',
+          component: Layout,
+          children: [
+            {
+              name: 'MonitorDashboard',
+              path: '',
+              component: Dashboard,
+            },
+            {
+              name: 'MonitorDashboardChartCreate',
+              path: 'create',
+              component: MonitorDashboardChartCreate,
+            },
+            {
+              name: 'MonitorDashboardChartUpdate',
+              path: ':id/update',
+              component: MonitorDashboardChartCreate,
+            },
+          ],
+        },
         {
           name: 'Query',
           meta: {

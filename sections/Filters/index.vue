@@ -69,6 +69,10 @@ export default {
       type: Object,
       validator: val => val.fc,
     },
+    initFilters: {
+      type: [],
+      default: () => ([]),
+    },
     decorators: {
       type: Object,
       required: true,
@@ -105,10 +109,12 @@ export default {
     },
   },
   data () {
+    let filters = [{ key: uuid(), tagValueOpts: [] }]
+    if (this.initFilters) {
+      filters = this.initFilters
+    }
     return {
-      filters: [
-        { key: uuid(), tagValueOpts: [] },
-      ],
+      filters: filters,
     }
   },
   computed: {

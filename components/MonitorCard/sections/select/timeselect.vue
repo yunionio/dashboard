@@ -1,9 +1,20 @@
 <template>
-  <a-select :value="selected" :dropdownMatchSelectWidth="false" @change="handleChange" style="padding: 2px;">
-    <a-select-option v-for="m of options" :key="m.label" :value="m.value">
-      {{ m.label }}
-    </a-select-option>
-  </a-select>
+  <div style="padding: 2px;">
+    <div v-if="isRadioGroup">
+      <a-radio-group class="mr-3" v-model="selected" @change="handleChange">
+        <a-radio-button v-for="m of options" :key="m.label" :value="m.value">
+          {{ m.label }}
+        </a-radio-button>
+      </a-radio-group>
+    </div>
+    <div v-else>
+      <a-select :value="selected" :dropdownMatchSelectWidth="false" @change="handleChange">
+        <a-select-option v-for="m of options" :key="m.label" :value="m.value">
+          {{ m.label }}
+        </a-select-option>
+      </a-select>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -17,21 +28,25 @@ const options = [
   { label: i18n.t('timeselect.days', [7]), value: 7 * 24 * 60 },
   { label: i18n.t('timeselect.days', [14]), value: 14 * 24 * 60 },
   { label: i18n.t('timeselect.months', [1]), value: 30 * 24 * 60 },
-  { label: i18n.t('timeselect.months', [3]), value: 90 * 24 * 60 },
-  { label: i18n.t('timeselect.months', [6]), value: 180 * 24 * 60 },
-  { label: i18n.t('timeselect.year', [1]), value: 365 * 24 * 60 },
-  { label: i18n.t('timeselect.year', [3]), value: 3 * 365 * 24 * 60 },
 ]
 
 export default {
   name: 'TimeSelect',
   props: {
+    defaultValue: {
+      type: Number,
+      default: 7 * 24 * 60,
+    },
     value: {
       type: Number, // minutes
     },
+    isRadioGroup: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
-    const selected = this.value || 7 * 24 * 60
+    const selected = this.value || this.defaultValue
     return {
       selected: selected,
       options: options,
@@ -39,12 +54,16 @@ export default {
   },
   watch: {
     value (v = '') {
-      this.selected = v || 7 * 24 * 60
+      this.selected = v || this.defaultValue
     },
   },
   methods: {
     handleChange (v) {
-      this.$emit('change', v)
+      if (this.isRadioGroup) {
+        this.$emit('change', v.target.value)
+      } else {
+        this.$emit('change', v)
+      }
     },
     parseTimeRange (v) {
       const to = new Date()

@@ -203,6 +203,7 @@
   "monitor.text_119": "监控查询",
   "monitor.text_120": "修改{0}",
   "monitor.text_121": "已改名?",
+  "monitor.dashboard.title": "监控面板",
   "monitor.overview_alert_sum": "未恢复告警",
   "monitor.overview_alert_sum_pie": "告警总数",
   "monitor.overview_alert_trend": "近30日告警趋势",
@@ -238,5 +239,13 @@
   "timeselect.days": "近{0}天",
   "timeselect.months": "近{0}月",
   "timeselect.year": "近{0}年",
-  "timeselect.years": "近{0}年"
+  "timeselect.years": "近{0}年",
+  "monitor.dashboard.dialog.create": "新建面板",
+  "monitor.dashboard.dialog.clone": "克隆面板",
+  "monitor.dashboard.dialog.delete": "删除面板",
+  "monitor.dashboard.dialog.project.title": "监控图表",
+  "monitor.dashboard.dialog.project.create": "添加图表",
+  "monitor.dashboard.dialog.project.update": "更新图表",
+  "monitor.dashboard.dialog.project.delete": "删除监控图表",
+  "monitor.dashboard.dialog.project.clone": "克隆监控图表"
 }

@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import { measurementsUnits } from '../util/util'
 import OverviewRing from '@Monitor/components/MonitorCard/sections/chart/ring'
 import OverviewLine from '@Monitor/components/MonitorCard/sections/chart/line'
 import OverviewCard from '@Monitor/components/MonitorCard/OverviewCard'
@@ -64,23 +63,14 @@ export default {
   },
   data () {
     const scope = this.$store.getters.scope
-    let navs = []
+    const u = this.$store.getters.userInfo
+    const navs = []
     if (scope === 'system') {
-      navs = [{ id: 'system', location: this.$t('cloudenv.text_457'), title: this.$t('cloudenv.text_457'), scope: scope }]
+      navs.push({ id: 'system', location: this.$t('cloudenv.text_457'), title: this.$t('cloudenv.text_457'), scope })
     } else if (scope === 'domain') {
-      navs = [{
-        id: this.$store.getters.userInfo.projectDomainId,
-        location: this.$t('dictionary.domain'),
-        title: this.$store.getters.userInfo.projectDomain,
-        scope: scope,
-      }]
+      navs.push({ id: u.projectDomainId, location: this.$t('dictionary.domain'), title: u.projectDomain, scope })
     } else if (scope === 'project') {
-      navs = [{
-        id: this.$store.getters.userInfo.projectId,
-        location: this.$t('dictionary.project'),
-        title: this.$store.getters.userInfo.projectName,
-        scope: scope,
-      }]
+      navs.push({ id: u.projectId, location: this.$t('dictionary.project'), title: u.projectName, scope })
     }
     return {
       scope: scope,
@@ -173,22 +163,6 @@ export default {
       await this.fetchPieChartData()
       // 近30日告警趋势图
       await this.fetchTabChartData()
-    },
-    fetchMeasurementsData () {
-      try {
-        const data = {
-          from: '168h',
-          scope: this.curNav.scope,
-        }
-        data.signature = getSignature(data)
-        this.units = {}
-        const self = this
-        return new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params: data }).then((res) => {
-          self.units = measurementsUnits(res)
-        })
-      } catch (error) {
-        throw error
-      }
     },
     commonParams () {
       const extendParams = {

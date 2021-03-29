@@ -23,6 +23,7 @@
           :form="form"
           ref="filtersRef"
           :decorators="decorators.filters"
+          :init-filters="initFilters"
           @remove="$nextTick(toParams)"
           :loading="metricInfoLoading"
           :metricInfo="metricInfo" />
@@ -53,7 +54,7 @@ import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
 import { metric_zh } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
-import { getRequestT } from '@/utils/utils'
+import { uuid, getRequestT } from '@/utils/utils'
 
 export default {
   name: 'ExplorerForm',
@@ -62,6 +63,10 @@ export default {
     Filters,
   },
   props: {
+    panel: {
+      type: Object,
+      default: () => ({}),
+    },
     formItemLayout: {
       type: Object,
       default: () => ({
@@ -86,6 +91,42 @@ export default {
     },
   },
   data () {
+    const initialValue = {}
+    const initFilters = []
+    if (this.panel && this.panel.common_alert_metric_details && this.panel.common_alert_metric_details.length > 0) {
+      const f = this.panel.common_alert_metric_details[0]
+      const q = _.get(this.panel, 'settings.conditions[0].query.model')
+      initialValue.res_type = f.res_type
+      initialValue.metric_key = f.measurement
+      initialValue.metric_value = f.field
+      initialValue.tags = {}
+      if (q) {
+        if (q.group_by) {
+          const _g = q.group_by.filter((g) => { return g.type === 'tag' })
+          if (_g) initialValue.group_by = _g[0] && _g[0].params && _g[0].params[0] ? _g[0].params[0] : ''
+        }
+        if (q.tags) {
+          q.tags.map((tag) => {
+            const key = uuid()
+            initialValue.tags[key] = tag
+            initFilters.push({ key: key, tagValueOpts: [] })
+          })
+        }
+        initialValue.function = ''
+        if (q.select && q.select.length > 0 && q.select[0].length > 1) {
+          const s = q.select[0]
+          const _t = s[s.length - 1].type
+          if (_t) initialValue.function = _t.toUpperCase()
+        }
+      }
+    }
+    const getkey = (index, key, defaultValue) => {
+      if (initialValue.tags && initialValue.tags[index] && initialValue.tags[index][key]) {
+        return initialValue.tags[index][key]
+      } else {
+        return defaultValue
+      }
+    }
     return {
       form: {
         fc: this.$form.createForm(this, {
@@ -97,6 +138,7 @@ export default {
         metric_res_type: [
           'metric_res_type',
           {
+            initialValue: initialValue.res_type,
             rules: [
               { required: true, message: this.$t('common.select') },
             ],
@@ -105,6 +147,7 @@ export default {
         metric_key: [
           'metric_key',
           {
+            initialValue: initialValue.metric_key,
             rules: [
               { required: true, message: this.$t('common.select') },
             ],
@@ -113,6 +156,7 @@ export default {
         metric_value: [
           'metric_value',
           {
+            initialValue: initialValue.metric_value,
             rules: [
               { required: true, message: this.$t('common.select') },
             ],
@@ -122,7 +166,7 @@ export default {
           tagCondition: i => [
             `tagConditions[${i}]`,
             {
-              initialValue: 'AND',
+              initialValue: getkey(i, 'condition', 'AND'),
               rules: [
                 { required: true, message: this.$t('common.select') },
               ],
@@ -131,6 +175,7 @@ export default {
           tagKey: i => [
             `tagKeys[${i}]`,
             {
+              initialValue: getkey(i, 'key', ''),
               rules: [
                 // { required: true, message: this.$t('common.select') },
               ],
@@ -139,7 +184,7 @@ export default {
           tagOperator: i => [
             `tagOperators[${i}]`,
             {
-              initialValue: '=',
+              initialValue: getkey(i, 'operator', '='),
               rules: [
                 { required: true, message: this.$t('common.select') },
               ],
@@ -148,6 +193,7 @@ export default {
           tagValue: i => [
             `tagValues[${i}]`,
             {
+              initialValue: getkey(i, 'value', ''),
               rules: [
                 // { required: true, message: this.$t('common.select') },
               ],
@@ -156,11 +202,18 @@ export default {
         },
         group_by: [
           'group_by',
+          {
+            initialValue: initialValue.group_by,
+          },
         ],
         function: [
           'function',
+          {
+            initialValue: initialValue.function,
+          },
         ],
       },
+      initFilters: initFilters,
       groupbyOpts: [],
       functionOpts: [],
       metricKeyOpts: [],
@@ -196,7 +249,7 @@ export default {
   },
   methods: {
     getTitle () {
-      let label = this.metricKeyItem.label || '-'
+      let label = this.metricKeyItem && this.metricKeyItem.label ? this.metricKeyItem.label : '-'
       const metricLabel = _.get(this.mertricItem, 'description.display_name')
       if (metricLabel) {
         label += `(${metric_zh[metricLabel] ? metric_zh[metricLabel] : metricLabel})`
@@ -247,12 +300,12 @@ export default {
     },
     async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
-        this.metricKeyItem = metricKeyItem
-        this.mertricItem = mertricItem
+        this.metricKeyItem = metricKeyItem || {}
+        this.mertricItem = mertricItem || {}
         this.$emit('mertricItemChange', { ...mertricItem, title: this.getTitle(), metricKeyItem })
         const params = {
           $t: getRequestT(),
-          database: metricKeyItem.database,
+          database: metricKeyItem && metricKeyItem.database ? metricKeyItem.database : 'telegraf',
           measurement: metricKey,
           field: mertric,
           scope: this.$store.getters.scope,
@@ -291,7 +344,7 @@ export default {
     toParams () {
       const fd = this.form.fc.getFieldsValue()
       const params = {
-        database: this.metricKeyItem.database,
+        database: this.metricKeyItem && this.metricKeyItem.database ? this.metricKeyItem.database : 'telegraf',
       }
       const tags = []
       if (fd.metric_key) params.measurement = fd.metric_key
@@ -334,7 +387,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../../../../src/styles/less/theme';
+@import '../../../../src/styles/less/theme';
 
 .monitor-form {
   &.hideBody ::v-deep .ant-card-body {
