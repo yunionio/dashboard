@@ -30,7 +30,7 @@
                   <a>{{workflowStatistics['nr-historic-process-instance-cus'] || 0}}</a>
                 </template>
               </i18n>
-              <i18n path="navbar.button.pending_work_order" tag="li" @click="goProcessTaskToSupport">
+              <i18n path="navbar.button.pending_work_order-tech" tag="li" @click="goProcessTaskToSupport">
                 <template #num>
                   <a>{{workflowStatistics['nr-process-task-cus'] || 0}}</a>
                 </template>
