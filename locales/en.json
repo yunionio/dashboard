@@ -970,7 +970,7 @@
   "compute.text_992": "Please select a security group",
   "compute.text_993": "Inbound",
   "compute.text_994": "Outbound",
-  "compute.text_995": "The source supports the following formats: single IP: 192.168.0.1CIDR: 192.168.1.0/24",
+  "compute.text_995": "The source supports the following formats: single IP: 192.168.0.1CIDR: 192.168.1.0/24SecurityGroup: Default",
   "compute.text_996": "Please enter the source",
   "compute.text_997": "Any IP",
   "compute.text_998": "Port ",

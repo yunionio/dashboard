@@ -39,9 +39,10 @@ export default {
               row.rules.forEach(obj => {
                 let text = ''
                 if (obj.action) text += `${obj.action}`
-                if (obj.cidr) text += `，${obj.cidr}`
-                if (obj.protocol) text += `，${obj.protocol}`
-                if (obj.ports) text += `，${obj.ports}`
+                if (obj.cidr) text += ` ${obj.cidr} (IP)`
+                if (obj.peer_secgroup) text += ` ${obj.peer_secgroup} (${i18n.t('dictionary.secgroup')})`
+                if (obj.protocol) text += ` ${obj.protocol}`
+                if (obj.ports) text += ` ${obj.ports}`
                 if (obj.direction === 'in') {
                   inList.push({
                     value: text,
