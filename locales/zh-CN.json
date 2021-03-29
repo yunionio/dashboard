@@ -180,7 +180,7 @@
   "compute.text_180": "内存(GB)",
   "compute.text_181": "价格",
   "compute.text_182": "{0} ({1} {2}核 {3}B)",
-  "compute.text_183": "添加调度标签",
+  "compute.text_183": "添加网卡",
   "compute.text_184": "(该云订阅的状态不是【已连接】)",
   "compute.text_185": "(该云订阅的健康状态不是【正常】)",
   "compute.text_186": "(该云订阅未启用)",
@@ -1379,5 +1379,6 @@
   "compute.detach_network": "卸载",
   "compute.detach_network_title": "卸载网卡",
   "compute.nic": "网卡",
-  "compute.server_detach_network.only_last_one": "只有最后一块网卡能被卸载"
+  "compute.server_detach_network.only_last_one": "只有最后一块网卡能被卸载",
+  "add_schedpolicy": "添加调度标签"
 }
