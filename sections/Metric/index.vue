@@ -195,7 +195,16 @@ export default {
       if (!val) {
         this.$emit('metricClear')
       } else {
-        this.$emit('metricChange', { metricKey: this.metric_key, mertric: val, mertricItem: this.metricValueItem, metricKeyItem: this.metricKeyItem })
+        let vItem = this.metricValueItem
+        let kItem = this.metricKeyItem
+        if (!vItem) {
+          vItem = this.metricKeyOpts.find((opt) => { return opt.key === this.metric_key })
+        }
+        if (this.metricKeyItem) {
+          kItem = this.metricOpts.find((opt) => { return opt.key === val })
+        }
+        console.log(vItem, kItem)
+        this.$emit('metricChange', { metricKey: this.metric_key, mertric: val, mertricItem: vItem, metricKeyItem: kItem })
       }
     },
     resetMetric () {

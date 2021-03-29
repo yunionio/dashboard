@@ -203,6 +203,7 @@
   "monitor.text_119": "Explorer",
   "monitor.text_120": "Modify {0}",
   "monitor.text_121": "renamed?",
+  "monitor.dashboard.title": "Dashboard",
   "monitor.overview_alert_sum": "Alerts Firing",
   "monitor.overview_alert_sum_pie": "Total Alerts",
   "monitor.overview_alert_trend": "Trend of alerts in the last 30 days",
@@ -238,5 +239,13 @@
   "timeselect.days": "Last {0} days",
   "timeselect.months": "Last {0} months",
   "timeselect.year": "Last {0} year",
-  "timeselect.years": "Last {0} years"
+  "timeselect.years": "Last {0} years",
+  "monitor.dashboard.dialog.create": "Create Dashboard",
+  "monitor.dashboard.dialog.clone": "Clone Dashboard",
+  "monitor.dashboard.dialog.delete": "Delete Dashboard",
+  "monitor.dashboard.dialog.project.title": "Monitor Chart",
+  "monitor.dashboard.dialog.project.create": "Create Chart",
+  "monitor.dashboard.dialog.project.update": "Edit Chart",
+  "monitor.dashboard.dialog.project.delete": "Delete Chart",
+  "monitor.dashboard.dialog.project.clone": "Clone Chart"
 }

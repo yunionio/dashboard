@@ -6,8 +6,8 @@
       </template>
       <a-button :icon="loading ? 'loading':'sync'" @click="emitRefresh" />
     </a-tooltip>
-    <a-select v-if="showSelect" @change="handleChange" style="width: 90px">
-      <a-select-option defaultValue="off" :dropdownMatchSelectWidth="false" v-for="d of durations" :key="d.label" :value="d.value">
+    <a-select v-if="showSelect" v-model="syncConfig.duration" @change="handleChange" style="width: 90px">
+      <a-select-option :dropdownMatchSelectWidth="false" v-for="d of durations" :key="d.label" :value="d.value">
         {{ d.label }}
       </a-select-option>
     </a-select>
@@ -20,6 +20,10 @@ import i18n from '@/locales'
 export default {
   name: 'refresh',
   props: {
+    value: {
+      type: Number,
+      default: 0,
+    },
     loading: {
       type: Boolean,
       default: false,
@@ -36,7 +40,7 @@ export default {
       type: Array,
       default: () => {
         return [
-          { label: i18n.t('refresh.auto.disable'), value: 'off' },
+          { label: i18n.t('refresh.auto.disable'), value: 0 },
           { label: i18n.t('refresh.duration.seconds', [5]), value: 5 },
           { label: i18n.t('refresh.duration.seconds', [10]), value: 10 },
           { label: i18n.t('refresh.duration.seconds', [30]), value: 30 },
@@ -52,13 +56,21 @@ export default {
     },
   },
   data () {
+    let timer
+    if (this.value > 0) {
+      timer = setInterval(this.emitRefresh, this.value * 1000)
+    }
     return {
       lastSync: '',
+      timer: timer,
       syncConfig: {
         enable: false,
-        duration: 5,
+        duration: this.value,
       },
     }
+  },
+  beforeDestroy () {
+    this.cancelAutoRefresh()
   },
   methods: {
     emitRefresh () {
@@ -69,13 +81,21 @@ export default {
       this.$emit('refresh')
     },
     handleChange (v) {
-      if (v === 'off') {
-        this.syncConfig.enable = false
-      } else {
-        this.syncConfig.enable = true
-        this.syncConfig.duration = v
-      }
+      this.syncConfig.duration = v
+      this.syncConfig.enable = v > 0
+      this.syncConfig.enable ? this.resetAutoRefresh(v) : this.cancelAutoRefresh()
       this.emitRefresh()
+    },
+    resetAutoRefresh (v) {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+      this.timer = setInterval(this.emitRefresh, v * 1000)
+    },
+    cancelAutoRefresh () {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
     },
   },
 }
