@@ -1381,5 +1381,6 @@
   "compute.nic": "网卡",
   "compute.server_detach_network.only_last_one": "只有最后一块网卡能被卸载",
   "migration.project.error": "项目视图不支持迁移操作",
-  "compute.save_image_prompt.public_cloud": "公有云保存镜像会保存在云上镜像列表，新建公有云主机时可在{0}中查看使用"
+  "compute.save_image_prompt.public_cloud": "公有云保存镜像会保存在云上镜像列表，新建公有云主机时可在{0}中查看使用",
+  "add_schedpolicy": "添加调度策略"
 }

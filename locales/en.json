@@ -1380,5 +1380,6 @@
   "compute.nic": "NIC",
   "compute.server_detach_network.only_last_one": "Only the last NIC can be detached",
   "migration.project.error": "The project view does not support migration operation",
-  "compute.save_image_prompt.public_cloud": "Saving image on the public clouds will create a image on the cloud. The image can be found in the list of {0} when creating public cloud servers"
+  "compute.save_image_prompt.public_cloud": "Saving image on the public clouds will create a image on the cloud. The image can be found in the list of {0} when creating public cloud servers",
+  "add_schedpolicy": "Add Scheduler Policy"
 }
