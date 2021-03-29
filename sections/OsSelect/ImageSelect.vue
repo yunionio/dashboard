@@ -292,6 +292,13 @@ export default {
         const list = this.imageOptions
         imageMsg = list.find(image => image.id === imageObj.key)
       }
+      if (imageMsg.properties) {
+        let os_distribution = imageMsg.properties.os_distribution || imageMsg.properties.os_type
+        os_distribution = os_distribution.includes('Windows') ? 'Windows' : os_distribution
+        storage.set('oc_selected_image', { imageType: this.form.fd.imageType, imageOs: os_distribution, imageId: imageMsg.id })
+      } else if (imageMsg.feData?.imageType) {
+        storage.set('oc_selected_image', { imageType: this.form.fd.imageType, imageOs: imageMsg.feData?.imageType, imageId: imageMsg.id })
+      }
       this.$emit('updateImageMsg', { imageMsg })
     },
     osChange (osValue, imageValue) {

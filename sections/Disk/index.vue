@@ -42,13 +42,7 @@
       <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
     </template>
     <template v-if="has('storage') && !showSchedtag">
-      <list-select v-if="showStorage"
-            v-decorator="decorator.storage"
-            :listProps="storageListSelectProps"
-            :formatter="formatterLabel"
-            :dialog-params="{ mask: true }"
-            :multiple="false" />
-      <!-- storage :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" / -->
+      <storage :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" />
       <a-button class="mt-1" type="link" @click="() => showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
@@ -63,22 +57,17 @@
 
 <script>
 import * as R from 'ramda'
-// import Storage from './components/Storage'
+import Storage from './components/Storage'
 import { HYPERVISORS_MAP } from '@/constants'
 import SchedtagPolicy from '@/sections/SchedtagPolicy'
 import DiskMountpoint from '@/sections/DiskMountpoint'
-import ListSelect from '@/sections/ListSelect'
-import { getNameFilter } from '@/utils/common/tableFilter'
-import { sizestr } from '@/utils/utils'
-import i18n from '@/locales'
 
 export default {
   name: 'Disk',
   components: {
     SchedtagPolicy,
     DiskMountpoint,
-    // Storage,
-    ListSelect,
+    Storage,
   },
   props: {
     decorator: {
@@ -153,57 +142,6 @@ export default {
       showSnapshot: false,
       showStorage: false,
       snapshotObj: {},
-      storageListSelectProps: {
-        list: this.$list.createList(this, {
-          id: this.id,
-          resource: 'storages',
-          apiVersion: 'v2',
-          getParams: () => {
-            return this.storageParams
-          },
-          filterOptions: {
-            name: getNameFilter(),
-          },
-        }),
-        columns: [
-          {
-            field: 'name',
-            title: this.$t('table.title.name'),
-            showOverflow: 'title',
-          },
-          {
-            field: 'capacity',
-            title: this.$t('storage.text_177'),
-            width: 180,
-            slots: {
-              default: ({ row }, h) => {
-                const capacity = sizestr(row.capacity, 'M', 1024)
-                const allowedBrands = ['VMware', 'OneCloud']
-                const actual_capacity_used = allowedBrands.includes(row.brand) ? sizestr(row.actual_capacity_used, 'M', 1024) : '-'
-                return [<div>
-                  <div>{this.$t('storage.text_178', [actual_capacity_used])}</div>
-                  <div>{this.$t('storage.text_180', [capacity])}</div>
-                </div>]
-              },
-            },
-          },
-          {
-            field: 'virtual_capacity',
-            title: i18n.t('storage.text_43'),
-            width: 180,
-            slots: {
-              default: ({ row }, h) => {
-                const virtual_capacity = sizestr(row.virtual_capacity, 'M', 1024)
-                const used_capacity = sizestr(row.used_capacity, 'M', 1024)
-                return [<div>
-                  <div>{this.$t('storage.text_181', [used_capacity])}</div>
-                  <div>{this.$t('storage.text_180', [virtual_capacity])}</div>
-                </div>]
-              },
-            },
-          },
-        ],
-      },
     }
   },
   computed: {
