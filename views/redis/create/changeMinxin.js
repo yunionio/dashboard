@@ -70,16 +70,22 @@ export default {
     },
     sku_change () {
       const { fd } = this.form
-      const { sku, zone } = fd
+      const { sku } = fd
+      let callback
       if (sku && (fd.cloudregion_id !== sku.cloudregion_id)) {
         this.form.fc.setFieldsValue({
           cloudregion_id: sku.cloudregion_id,
         })
+        callback = this.cloudregion_id_change
       }
-      if (sku && zone && (fd.zone_id !== sku.zone_id)) {
+      if (sku && (fd.zone_id !== sku.zone_id)) {
         this.form.fc.setFieldsValue({
           zone_id: sku.zone_id,
         })
+        callback = this.zone_id_change
+      }
+      if (callback) {
+        callback()
       }
     },
     cloudregion_id_change () {
@@ -101,7 +107,6 @@ export default {
       const changedFieldsKey = Object.keys(changedFields)
       changedFieldsKey.forEach(field => {
         // if (changedFields[field] === undefined) return false
-
         const handleChange = this[`${field}_change`]
         if (this[`${field}_change`]) {
           return handleChange()

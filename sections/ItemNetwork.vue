@@ -58,6 +58,11 @@ export default {
       const zone = this.form.getFieldValue('zone')
       if (zone) {
         params.zone = zone
+      } else {
+        const zone_id = this.form.getFieldValue('zone_id')
+        if (zone_id) {
+          params.zone = zone_id
+        }
       }
       return params
     },
