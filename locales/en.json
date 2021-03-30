@@ -180,7 +180,7 @@
   "compute.text_180": "Memory (GB)",
   "compute.text_181": "Price",
   "compute.text_182": "{0} ({1} {2}core{3}B)",
-  "compute.text_183": "Add scheduler tag",
+  "compute.text_183": "Add network card",
   "compute.text_184": "(The status of the cloud subscription is not [Connected])",
   "compute.text_185": "(The health status of the cloud subscription is not [normal])",
   "compute.text_186": "(The cloud subscription is not enabled)",
@@ -1379,5 +1379,6 @@
   "compute.detach_network": "Detach",
   "compute.detach_network_title": "Detach NIC",
   "compute.nic": "NIC",
-  "compute.server_detach_network.only_last_one": "Only the last NIC can be detached"
+  "compute.server_detach_network.only_last_one": "Only the last NIC can be detached",
+  "add_schedpolicy": "Add scheduler tag"
 }
