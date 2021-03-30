@@ -3,8 +3,9 @@
     <div slot="header">{{params.title === 'edit' ? $t('compute.text_982') : params.title === 'create' ? $t('compute.perform_create') : $t('compute.text_983')}}{{$t('compute.rule')}}</div>
     <div slot="body">
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_175')" v-bind="formItemLayout" v-if="params.title !== 'edit'">
+        <a-form-item :label="$t('compute.text_175')" v-if="params.title !== 'edit'">
           <a-select
             v-decorator="decorators.type"
             :disabled="typeDisabled"
@@ -15,7 +16,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item v-bind="formItemLayout">
+        <a-form-item :extra="$t('compute.secgroup.source.effect.desc')">
           <span slot="label">
             {{decLabel}}&nbsp;
             <a-tooltip :title="$t('compute.text_995')">
@@ -26,8 +27,8 @@
             mode="combobox"
             @change="fetchSecgroups"
             option-filter-prop="children"
-            v-decorator="decorators.source"
-            v-bind="formItemLayout">
+            :placeholder="$t('compute.secgroup.source.placeholder')"
+            v-decorator="decorators.source">
             <a-select-opt-group>
               <span slot="label">CIDR</span>
               <a-select-option v-for="item in cidrOptions" :key="item.value" :value="item.value">
@@ -35,21 +36,21 @@
               </a-select-option>
             </a-select-opt-group>
             <a-select-opt-group>
-              <span slot="label">$t('dictionary.secgroup')</span>
+              <span slot="label">{{$t('dictionary.secgroup')}}</span>
               <a-select-option v-for="item in secgroupOpts" :key="item.id" :value="item.name">
               {{item.name}}
               </a-select-option>
             </a-select-opt-group>
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_980')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_980')">
           <a-select v-decorator="decorators.protocol" @change="protocolChange" :disabled="protocolDisabled">
             <a-select-option v-for="item in protocolOptions" :key="item.value" :value="item.value">
               {{item.label}}
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item v-bind="formItemLayout">
+        <a-form-item>
           <span slot="label">{{$t('compute.text_998')}}<a-tooltip :title="$t('compute.text_999')">
               <a-icon type="question-circle-o" />
             </a-tooltip>
@@ -57,14 +58,14 @@
           <a-input :disabled="portsDisabled" v-decorator="decorators.ports" :placeholder="$t('compute.text_350')" />
           <a-checkbox class="right-checkbox" @change="portsChange" :checked="portsChecked" :disabled="portsCheckboxDisabled">{{$t('compute.text_1000')}}</a-checkbox>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_694')" v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_694')">
           <a-select v-decorator="decorators.action">
             <a-select-option v-for="item in actionOptions" :key="item.value" :value="item.value">
               {{item.label}}
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item v-bind="formItemLayout">
+        <a-form-item>
           <span slot="label">{{$t('compute.text_1001')}}<a-tooltip :title="$t('compute.text_1002')">
               <a-icon type="question-circle-o" />
             </a-tooltip>
@@ -145,7 +146,7 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 8,
+          span: 10,
         },
         labelCol: {
           span: 3,
@@ -379,7 +380,7 @@ export default {
 .right-checkbox {
   width: 100px;
   height: 40px;
-  left: 270px;
+  left: 330px;
   font-size: 12px!important;
   color: #ccc;
   position: absolute;
