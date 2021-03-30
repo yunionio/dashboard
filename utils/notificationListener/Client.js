@@ -38,6 +38,7 @@ class Client {
     this.socket.on('message', (payload) => {
       try {
         if (payload  === 'wslogout') {
+          this.socket.close()
           store.dispatch('auth/logout').then(() => {
             notification.warning({
               message: '提示',
