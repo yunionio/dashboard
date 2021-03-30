@@ -23,10 +23,10 @@ export const USAGE_CONFIG = {
   'all.disks': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'all.disks.attached': {
+  'all.disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'all.disks.detached': {
+  'all.disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'all.disks.unready': {
@@ -95,7 +95,13 @@ export const USAGE_CONFIG = {
   'all.ports': {
     unit: i18n.t('dashboard.text_1'),
   },
+  'all.ports.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
   'all.ports_exit': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'all.ports_exit.eip': {
     unit: i18n.t('dashboard.text_1'),
   },
   'all.ready_servers': {
@@ -218,10 +224,10 @@ export const USAGE_CONFIG = {
   disks: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'disks.attached': {
+  'disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'disks.detached': {
+  'disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
   'disks.unready': {
@@ -326,7 +332,13 @@ export const USAGE_CONFIG = {
   ports: {
     unit: i18n.t('dashboard.text_1'),
   },
+  'ports.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
   ports_exit: {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'ports_exit.eip': {
     unit: i18n.t('dashboard.text_1'),
   },
   ready_servers: {
@@ -440,10 +452,10 @@ export const USAGE_CONFIG = {
   'all.disks.count': {
     unit: i18n.t('dashboard.text_1'),
   },
-  'all.disks.attached.count': {
+  'all.disks.mounted.count': {
     unit: i18n.t('dashboard.text_1'),
   },
-  'all.disks.detached.count': {
+  'all.disks.unmounted.count': {
     unit: i18n.t('dashboard.text_1'),
   },
   'all.disks.unready.count': {
@@ -464,10 +476,10 @@ export const USAGE_CONFIG = {
   'disks.count': {
     unit: i18n.t('dashboard.text_1'),
   },
-  'disks.attached.count': {
+  'disks.mounted.count': {
     unit: i18n.t('dashboard.text_1'),
   },
-  'disks.detached.count': {
+  'disks.unmounted.count': {
     unit: i18n.t('dashboard.text_1'),
   },
   'disks.unready.count': {
@@ -506,19 +518,19 @@ export const USAGE_CONFIG = {
   'domain.disks': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'domain.disks.attached': {
+  'domain.disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'domain.disks.attached.count': {
+  'domain.disks.mounted.count': {
     unit: i18n.t('dashboard.text_1'),
   },
   'domain.disks.count': {
     unit: i18n.t('dashboard.text_1'),
   },
-  'domain.disks.detached': {
+  'domain.disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
   },
-  'domain.disks.detached.count': {
+  'domain.disks.unmounted.count': {
     unit: i18n.t('dashboard.text_1'),
   },
   'domain.disks.unready': {
@@ -611,7 +623,13 @@ export const USAGE_CONFIG = {
   'domain.ports': {
     unit: i18n.t('dashboard.text_1'),
   },
+  'domain.ports.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
   'domain.ports_exit': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.ports_exit.eip': {
     unit: i18n.t('dashboard.text_1'),
   },
   'domain.rds': {
@@ -715,6 +733,24 @@ export const USAGE_CONFIG = {
   },
   'domain.vpcs': {
     unit: i18n.t('dashboard.text_1'),
+  },
+  'all.servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'domain.servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'all.pending_delete_servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'domain.pending_delete_servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'pending_delete_servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
   },
 }
 
