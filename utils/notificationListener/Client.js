@@ -24,7 +24,7 @@ class Client {
       autoConnect: false,
     })
     this.socket.on('connect', () => {
-      location.reload()
+      setTimeout(function(){location.reload();}, 3000);
       console.info('connected push server')
     })
 
