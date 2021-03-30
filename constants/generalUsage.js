@@ -155,9 +155,9 @@ export const usageMap = {
   eip: {
     field: {
       used: {
-        system: 'all.eip.used',
-        domain: 'domain.eip.used',
-        project: 'eip.used',
+        system: 'all.eip.floating_ip.used',
+        domain: 'domain.eip.floating_ip.used',
+        project: 'eip.floating_ip.used',
       },
       remain: {
         system: obj => obj['all.eip.floating_ip'] - obj['all.eip.floating_ip.used'],
@@ -165,9 +165,9 @@ export const usageMap = {
         project: obj => obj['eip.floating_ip'] - obj['eip.floating_ip.used'],
       },
       total: {
-        system: 'all.eip',
-        domain: 'domain.eip',
-        project: 'eip',
+        system: 'all.eip.floating_ip',
+        domain: 'domain.eip.floating_ip',
+        project: 'eip.floating_ip',
       },
     },
     unit: i18n.t('common_61'),
