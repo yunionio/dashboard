@@ -49,6 +49,8 @@ class Client {
                 query: genReferRouteQuery(router.currentRoute),
               })
             }
+          }).catch((error) => {
+            console.log("logout error: " + error)
           })
           return
         }
