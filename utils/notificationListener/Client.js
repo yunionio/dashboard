@@ -6,7 +6,9 @@
  * @class Clinet
  */
 import io from 'socket.io-client'
-import { message } from 'ant-design-vue'
+import { message, notification } from 'ant-design-vue'
+import router from '@/router'
+import { genReferRouteQuery } from '@/utils/utils'
 
 class Client {
   constructor (store, options = {}) {
@@ -37,8 +39,19 @@ class Client {
       console.log(payload)
       try {
         const obj = JSON.parse(payload)
-        if (obj.notes.startsWith('logout')) {
-          store.dispatch('auth/logout')
+        if (obj.notes.startsWith('wslogout') || obj.notes.startsWith('logout')) {
+          store.dispatch('auth/logout').then(() => {
+            notification.warning({
+              message: '提示',
+              description: '当前用户已在其它设备登录，登录后从其它设备退出登录',
+            })
+            if (!router.currentRoute.meta.authPage) {
+              router.push({
+                path: '/auth/login',
+                query: genReferRouteQuery(router.currentRoute),
+              })
+            }
+          })
           return
         }
         if (!obj.success || !obj.action || obj.ignore_alert) {
