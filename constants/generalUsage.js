@@ -7,13 +7,13 @@ export const usageMap = {
   cpu: {
     field: {
       used: {
-        system: 'all.servers.any_pool.cpu',
-        domain: 'servers.any_pool.cpu',
-        project: 'servers.any_pool.cpu',
+        system: 'all.servers.cpu',
+        domain: 'domain.servers.cpu',
+        project: 'servers.cpu',
       },
       total: {
-        system: 'hosts.any_pool.cpu',
-        domain: 'hosts.any_pool.cpu',
+        system: 'hosts.cpu',
+        domain: 'domain.hosts.cpu',
       },
     },
     unit: i18n.t('common_60'),
@@ -21,13 +21,13 @@ export const usageMap = {
   memory: {
     field: {
       used: {
-        system: 'all.servers.any_pool.memory',
-        domain: 'servers.any_pool.memory',
-        project: 'servers.any_pool.memory',
+        system: 'all.servers.memory',
+        domain: 'domain.servers.memory',
+        project: 'servers.memory',
       },
       total: {
-        system: 'hosts.any_pool.memory',
-        domain: 'hosts.any_pool.memory',
+        system: 'hosts.memory',
+        domain: 'domain.hosts.memory',
       },
     },
     unit: 'M',
@@ -35,13 +35,13 @@ export const usageMap = {
   disk: {
     field: {
       used: {
-        system: 'all.disks.any_pool',
-        domain: 'disks',
+        system: 'all.disks',
+        domain: 'domain.disks',
         project: 'disks',
       },
       total: {
-        system: 'storages.any_pool',
-        domain: 'storages.any_pool',
+        system: 'storages',
+        domain: 'domain.storages',
       },
     },
     unit: 'M',
@@ -50,12 +50,12 @@ export const usageMap = {
     field: {
       used: {
         system: 'all.nics',
-        domain: 'nics',
+        domain: 'domain.nics',
         project: 'nics',
       },
       total: {
         system: 'all.ports',
-        domain: 'all.ports',
+        domain: 'domain.ports',
       },
     },
     unit: i18n.t('common_61'),
@@ -64,9 +64,11 @@ export const usageMap = {
     field: {
       used: {
         system: 'enabled_hosts',
+        domain: 'domain.enabled_hosts',
       },
       total: {
         system: 'hosts',
+        domain: 'domain.hosts',
       },
     },
     unit: i18n.t('common_62'),
@@ -74,31 +76,31 @@ export const usageMap = {
   server: {
     field: {
       total: {
-        system: 'all.servers.any_pool',
-        domain: 'servers.any_pool',
-        project: 'servers.any_pool',
+        system: 'all.servers',
+        domain: 'domain.servers',
+        project: 'servers',
       },
       running: {
-        system: 'all.running_servers.any_pool',
-        domain: 'running_servers.any_pool',
-        project: 'running_servers.any_pool',
+        system: 'all.running_servers',
+        domain: 'domain.running_servers',
+        project: 'running_servers',
       },
       ready: {
-        system: 'all.ready_servers.any_pool',
-        domain: 'ready_servers.any_pool',
-        project: 'ready_servers.any_pool',
+        system: 'all.ready_servers',
+        domain: 'domain.ready_servers',
+        project: 'ready_servers',
       },
       other: {
         system: obj =>
-          obj['all.servers.any_pool'] -
-          (obj['all.running_servers.any_pool'] + obj['all.ready_servers.any_pool']),
-        domain: obj => obj['servers.any_pool'] - (obj['running_servers.any_pool'] + obj['ready_servers.any_pool']),
-        project: obj => obj['servers.any_pool'] - (obj['running_servers.any_pool'] + obj.ready_servers),
+          obj['all.servers'] -
+          (obj['all.running_servers'] + obj['all.ready_servers']),
+        domain: obj => obj['domain.servers'] - (obj['domain.running_servers'] + obj['domain.ready_servers']),
+        project: obj => obj.servers - (obj.running_servers + obj.ready_servers),
       },
       delete: {
-        system: 'all.pending_delete_servers.any_pool',
-        domain: 'pending_delete_servers.any_pool',
-        project: 'pending_delete_servers.any_pool',
+        system: 'all.pending_delete_servers',
+        domain: 'domain.pending_delete_servers',
+        project: 'pending_delete_servers',
       },
     },
     unit: i18n.t('common_62'),
@@ -107,11 +109,12 @@ export const usageMap = {
     field: {
       used: {
         system: 'all.servers',
-        domain: 'servers',
+        domain: 'domain.servers',
         project: 'servers',
       },
       total: {
         system: 'baremetals',
+        domain: 'domain.baremetals',
       },
     },
     unit: i18n.t('common_62'),
@@ -119,12 +122,13 @@ export const usageMap = {
   gpu: {
     field: {
       used: {
-        system: 'all.servers.any_pool.isolated_devices',
-        domain: 'servers.any_pool.isolated_devices',
-        project: 'servers.any_pool.isolated_devices',
+        system: 'all.servers.isolated_devices',
+        domain: 'domain.servers.isolated_devices',
+        project: 'servers.isolated_devices',
       },
       total: {
-        system: 'isolated_devices.any_pool',
+        system: 'isolated_devices',
+        domain: 'domain.isolated_devices',
       },
     },
     unit: i18n.t('common_63'),
@@ -132,19 +136,19 @@ export const usageMap = {
   eip: {
     field: {
       used: {
-        system: 'all.eip.used',
-        domain: 'eip.used',
-        project: 'eip.used',
+        system: 'all.eip.floating_ip.used',
+        domain: 'domain.eip.floating_ip.used',
+        project: 'eip.floating_ip.used',
       },
       remain: {
         system: obj => obj['all.eip.floating_ip'] - obj['all.eip.floating_ip.used'],
-        domain: obj => obj['eip.floating_ip'] - obj['eip.floating_ip.used'],
+        domain: obj => obj['domain.eip.floating_ip'] - obj['domain.eip.floating_ip.used'],
         project: obj => obj['eip.floating_ip'] - obj['eip.floating_ip.used'],
       },
       total: {
-        system: 'all.eip',
-        domain: 'eip',
-        project: 'eip',
+        system: 'all.eip.floating_ip',
+        domain: 'domain.eip.floating_ip',
+        project: 'eip.floating_ip',
       },
     },
     unit: i18n.t('common_61'),
@@ -152,18 +156,18 @@ export const usageMap = {
   diskAttach: {
     field: {
       used: {
-        system: 'all.disks.any_pool.attached',
-        domain: 'disks.attached',
+        system: 'all.disks.attached',
+        domain: 'domain.disks.attached',
         project: 'disks.attached',
       },
       remain: {
-        system: 'all.disks.any_pool.detached',
-        domain: 'disks.detached',
+        system: 'all.disks.detached',
+        domain: 'domain.disks.detached',
         project: 'disks.detached',
       },
       total: {
-        system: 'all.disks.any_pool',
-        domain: 'disks',
+        system: 'all.disks',
+        domain: 'domain.disks',
         project: 'disks',
       },
     },
@@ -202,8 +206,8 @@ export const resourceMap = {
   },
   cpu: {
     field: {
-      domain: 'servers.any_pool.cpu',
-      project: 'servers.any_pool.cpu',
+      domain: 'domain.servers.cpu',
+      project: 'servers.cpu',
     },
     unit: i18n.t('common_60'),
   },
@@ -216,8 +220,8 @@ export const resourceMap = {
   },
   memory: {
     field: {
-      domain: 'servers.any_pool.memory',
-      project: 'servers.any_pool.memory',
+      domain: 'domain.servers.memory',
+      project: 'servers.memory',
     },
     unit: 'M',
   },
