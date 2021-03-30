@@ -36,10 +36,12 @@ class Client {
     })
 
     this.socket.on('message', (payload) => {
-      console.log("enter: payload" + payload)
+      console.log(payload)
       try {
         const obj = JSON.parse(payload)
-        console.log(payload, typeof(payload), payload + "")
+        console.log("Obj:::")
+        console.log(obj)
+        console.log("payload  === 'wslogout'", payload  === 'wslogout')
         if (payload  === 'wslogout') {
           console.log('wslogout ...')
           store.dispatch('auth/logout').then(() => {
