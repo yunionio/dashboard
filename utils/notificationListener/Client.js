@@ -39,8 +39,8 @@ class Client {
       console.log(payload)
       try {
         const obj = JSON.parse(payload)
-        console.log(payload, payload.includes('wslogout'))
-        if (payload.includes('wslogout')) {
+        console.log(payload, typeof(payload), payload + "")
+        if (payload  === 'wslogout') {
           console.log('wslogout ...')
           store.dispatch('auth/logout').then(() => {
             notification.warning({
@@ -55,6 +55,8 @@ class Client {
             }
           })
           return
+        } else {
+          console.log('NO ws logout ...')
         }
         if (!obj.success || !obj.action || obj.ignore_alert) {
           return
