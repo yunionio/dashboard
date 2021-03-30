@@ -39,7 +39,7 @@ class Client {
       console.log(payload)
       try {
         const obj = JSON.parse(payload)
-        if (obj.notes.startsWith('wslogout') || obj.notes.startsWith('logout')) {
+        if (payload.includes('wslogout') || payload.includes('logout')) {
           store.dispatch('auth/logout').then(() => {
             notification.warning({
               message: '提示',
