@@ -29,6 +29,7 @@
             chartHeigth="299px"
             :isHistogram="true"
             :chartData="lineChart.chartData"
+            :chartSetting="lineChart.chartSetting"
             :loading="lineChart.loading"  />
         </div>
       </a-col>
@@ -78,7 +79,10 @@ export default {
       curNav: navs[0],
       dimentionId: '',
       ringChart: { loading: true },
-      lineChart: { loading: true },
+      lineChart: {
+        loading: true,
+        chartSetting: {},
+      },
       loading: false,
     }
   },
@@ -184,6 +188,10 @@ export default {
               select: [
                 [{ params: ['res_num'], type: 'field' }, { type: 'sum' }],
               ],
+              group_by: [{
+                type: 'tag',
+                params: ['res_type'],
+              }],
             },
           },
         ],
@@ -196,22 +204,37 @@ export default {
         columns: [],
         rows: [],
       }
-      if (rawDatas && rawDatas[0] && rawDatas[0].points) {
-        const points = rawDatas[0].points
-        let series = points.map((item) => {
-          return { name: item[1], value: item[0] }
-        })
-        series = series.sort((a, b) => {
-          return a.name - b.name
-        })
-        chartData.columns = ['name', 'alerts']
+      if (rawDatas && rawDatas.length > 0) {
+        chartData.columns = ['name']
         const _temp = {}
-        for (const i in series) {
-          const d = new Date(series[i].name)
-          const rn = `${d.getMonth() + 1}/${d.getDate()}`
-          _temp[rn] = { name: rn, alerts: series[i].value }
-        }
+        rawDatas.map((item) => {
+          const points = item.points
+          if (!item.points) {
+            return
+          }
+          const columnName = this.$t(`dictionary.${item.raw_name}`)
+          chartData.columns.push(columnName)
+          let series = points.map((item) => {
+            return { name: item[1], value: item[0] }
+          })
+          series = series.sort((a, b) => {
+            return a.name - b.name
+          })
+          for (const i in series) {
+            const d = new Date(series[i].name)
+            const rn = `${d.getMonth() + 1}/${d.getDate()}`
+            if (_temp.hasOwnProperty(rn)) {
+              _temp[rn][columnName] = series[i].value
+            } else {
+              _temp[rn] = { name: rn }
+              _temp[rn][columnName] = series[i].value
+            }
+          }
+        })
 
+        // base data
+        const initData = {}
+        chartData.columns.slice(1).map((item) => { initData[item] = 0 })
         // fill data
         const rows = []
         if (Object.keys(_temp).length < 30) {
@@ -220,9 +243,9 @@ export default {
             const cur = new Date(now - i * 24 * 60 * 60 * 1000)
             const rn = `${cur.getMonth() + 1}/${cur.getDate()}`
             if (_temp.hasOwnProperty(rn)) {
-              rows.push(_temp[rn])
+              rows.push(Object.assign({}, initData, _temp[rn]))
             } else {
-              rows.push({ name: rn, alerts: 0 })
+              rows.push(Object.assign({}, { name: rn }, initData))
             }
           }
         }
@@ -245,6 +268,7 @@ export default {
         this.$nextTick(_ => {
           this.lineChart.rawDatas = series
           this.lineChart.chartData = self.tabChartData(series)
+          this.lineChart.chartSetting.stack = { alerts: this.lineChart.chartData.columns.slice(1) }
           this.lineChart.loading = false
         })
       } catch (error) {
