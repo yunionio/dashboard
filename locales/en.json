@@ -1382,5 +1382,7 @@
   "add_schedpolicy": "Add scheduler tag",
   "migration.project.error": "The project view does not support this operation",
   "compute.save_image_prompt.public_cloud": "Saving image on the public clouds will create a image on the cloud. The image can be found in the list of {0} when creating public cloud servers",
-  "compute.text_1383": "No backup machine is added, this operation is not supported"
+  "compute.text_1383": "No backup machine is added, this operation is not supported",
+  "compute.secgroup.source.placeholder": "Support manual input of IP, selection of CIDR or security group",
+  "compute.secgroup.source.effect.desc": "Source is security group currently the only aliyun tencent cloud to take effect"
 }
