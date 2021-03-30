@@ -356,6 +356,9 @@ export default {
         if (this.form.fd.imageType !== IMAGES_TYPE_MAP.vmware.key) {
           show = true
         }
+        if (!this.form.fd[this.decorators.systemDisk.storage[0]]) {
+          show = true
+        }
       }
       return show
     },
