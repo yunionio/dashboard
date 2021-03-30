@@ -311,12 +311,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = i18n.t('compute.text_355')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     return {
@@ -336,12 +337,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
-                      ret.tooltip = i18n.t('compute.text_1275')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (obj.status !== 'running') {
@@ -365,12 +367,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
-                      ret.tooltip = i18n.t('compute.text_1275')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (obj.status !== 'suspend') {
@@ -399,9 +402,10 @@ export default {
                   },
                   meta: (row) => {
                     const isOneCloud = row.brand === 'OneCloud'
+                    const provider = obj.provider
                     return {
                       validate: isOneCloud,
-                      tooltip: !isOneCloud && i18n.t('compute.text_355'),
+                      tooltip: !isOneCloud && i18n.t('compute.text_473', [PROVIDER_MAP[provider].label]),
                     }
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_update'),
@@ -589,6 +593,7 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
@@ -598,7 +603,7 @@ export default {
                       return ret
                     }
                     if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
-                      ret.tooltip = i18n.t('compute.text_1281')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     ret.validate = cloudEnabled('acttachGpu', obj)
@@ -617,12 +622,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = i18n.t('compute.text_355')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (obj.status !== 'running') {
@@ -672,12 +678,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = i18n.t('compute.text_355')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (!['running', 'ready'].includes(obj.status)) {
@@ -705,12 +712,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = i18n.t('compute.text_355')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (!['running', 'ready'].includes(obj.status)) {
@@ -1138,10 +1146,11 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = { validate: true, tooltip: null }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                       ret.validate = false
-                      ret.tooltip = i18n.t('compute.text_1125')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (!['running', 'ready'].includes(obj.status)) {
@@ -1168,12 +1177,13 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = i18n.t('compute.text_355')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     if (obj.backup_host_id) {
@@ -1203,20 +1213,21 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
-                    }
-                    if (!this.isAdminMode && !this.isDomainMode) {
-                      ret.tooltip = i18n.t('migration.project.error')
-                      return ret
                     }
                     if (!obj.backup_host_id) {
                       ret.tooltip = i18n.t('compute.text_1383')
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = i18n.t('compute.text_355')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                      return ret
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
                     ret.validate = true
@@ -1234,6 +1245,7 @@ export default {
                     })
                   },
                   meta: () => {
+                    const provider = obj.provider
                     const ret = {
                       validate: false,
                       tooltip: null,
@@ -1251,7 +1263,7 @@ export default {
                       return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = i18n.t('compute.text_355')
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
                     ret.validate = true
