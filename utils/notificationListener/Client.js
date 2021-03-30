@@ -25,6 +25,7 @@ class Client {
     })
     this.socket.on('connect', () => {
       console.info('connected push server')
+      location.reload()
     })
 
     this.socket.on('disconnect', () => {
@@ -36,13 +37,8 @@ class Client {
     })
 
     this.socket.on('message', (payload) => {
-      console.log(payload)
       try {
-        console.log("Obj:::")
-        console.log(obj)
-        console.log("payload  === 'wslogout'", payload  === 'wslogout')
         if (payload  === 'wslogout') {
-          console.log('wslogout ...')
           store.dispatch('auth/logout').then(() => {
             notification.warning({
               message: '提示',
@@ -56,8 +52,6 @@ class Client {
             }
           })
           return
-        } else {
-          console.log('NO ws logout ...')
         }
 
         const obj = JSON.parse(payload)
