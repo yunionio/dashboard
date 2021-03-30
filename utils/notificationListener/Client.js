@@ -34,8 +34,13 @@ class Client {
     })
 
     this.socket.on('message', (payload) => {
+      console.log(payload)
       try {
         const obj = JSON.parse(payload)
+        if (obj.notes.startsWith('logout')) {
+          store.dispatch('auth/logout')
+          return
+        }
         if (!obj.success || !obj.action || obj.ignore_alert) {
           return
         }
