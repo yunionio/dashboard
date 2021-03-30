@@ -39,7 +39,9 @@ class Client {
       console.log(payload)
       try {
         const obj = JSON.parse(payload)
-        if (payload.includes('wslogout') || payload.includes('logout')) {
+        console.log(payload, payload.includes('wslogout'))
+        if (payload.includes('wslogout')) {
+          console.log('wslogout ...')
           store.dispatch('auth/logout').then(() => {
             notification.warning({
               message: '提示',
