@@ -36,7 +36,7 @@ class Client {
     })
 
     this.socket.on('message', (payload) => {
-      console.log(payload)
+      console.log("enter: payload" + payload)
       try {
         const obj = JSON.parse(payload)
         console.log(payload, typeof(payload), payload + "")
@@ -73,7 +73,7 @@ class Client {
         }
         message[type](obj.action)
       } catch (error) {
-        console.log(payload)
+        console.log("error: " + payload + " error: " + error)
       }
       // const event = message.event
       // console.log(message)
