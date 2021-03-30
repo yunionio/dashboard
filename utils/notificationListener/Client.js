@@ -37,7 +37,8 @@ class Client {
 
     this.socket.on('message', (payload) => {
       try {
-        if (payload  === 'wslogout') {
+        if (payload === 'wslogout') {
+          this.socket.close()
           store.dispatch('auth/logout').then(() => {
             notification.warning({
               message: '提示',
@@ -49,6 +50,8 @@ class Client {
                 query: genReferRouteQuery(router.currentRoute),
               })
             }
+          }).catch((error) => {
+            console.log('logout error: ' + error)
           })
           return
         }
@@ -69,7 +72,7 @@ class Client {
         }
         message[type](obj.action)
       } catch (error) {
-        console.log("error: " + payload + " error: " + error)
+        console.log('error: ' + payload + ' error: ' + error)
       }
       // const event = message.event
       // console.log(message)
