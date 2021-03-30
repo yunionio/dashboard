@@ -606,7 +606,7 @@ export default {
     },
     async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {
       try {
-        this.metricKeyItem = metricKeyItem
+        this.metricKeyItem = metricKeyItem || {}
         this.conditionUnit = _.get(mertricItem, 'description.unit') || ''
         this.$emit('mertricItemChange', { ...mertricItem, title: this.getTitle(mertricItem) })
         const scopeFormValues = this.form.fc.getFieldsValue([this.decorators.scope[0], this.decorators.domain[0], this.decorators.project[0]])
@@ -621,7 +621,7 @@ export default {
           }
         }
         const params = {
-          database: metricKeyItem.database || _.get(this.alertData, 'common_alert_metric_details[0].db', 'telegraf'),
+          database: this.metricKeyItem.database || _.get(this.alertData, 'common_alert_metric_details[0].db', 'telegraf'),
           measurement: metricKey,
           field: mertric,
           ...scopeParams,
