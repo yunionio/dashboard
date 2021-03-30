@@ -25,7 +25,6 @@ class Client {
     })
     this.socket.on('connect', () => {
       console.info('connected push server')
-      location.reload()
     })
 
     this.socket.on('disconnect', () => {
