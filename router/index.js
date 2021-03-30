@@ -3,6 +3,8 @@ import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
 import Proxysetting from '@Cloudenv/views/proxysetting'
+import ServerPriceComparatorCreate from '@Cloudenv/views/server-price-comparator/create'
+import ServerPriceComparatorList from '@Cloudenv/views/server-price-comparator'
 // import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
@@ -94,6 +96,41 @@ export default {
               name: 'Proxysetting',
               path: '',
               component: Proxysetting,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: '价格比对',
+      },
+      submenus: [
+        {
+          path: '/serverPriceComparatorCreate',
+          meta: {
+            label: '虚拟机',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ServerPriceComparatorCreate',
+              path: '',
+              component: ServerPriceComparatorCreate,
+            },
+          ],
+        },
+        {
+          path: '/serverPriceComparator',
+          meta: {
+            label: '价格清单',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ServerPriceComparator',
+              path: '',
+              component: ServerPriceComparatorList,
             },
           ],
         },
