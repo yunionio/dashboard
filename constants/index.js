@@ -28,11 +28,11 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.system.key,
   },
-  'all.disks.attached': {
+  'all.disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.system.key,
   },
-  'all.disks.detached': {
+  'all.disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.system.key,
   },
@@ -123,9 +123,15 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
   },
+  'all.ports.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
   'all.ports_exit': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
+  },
+  'all.ports_exit.eip': {
+    unit: i18n.t('dashboard.text_1'),
   },
   'all.ready_servers': {
     unit: i18n.t('dashboard.text_2'),
@@ -283,11 +289,11 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.project.key,
   },
-  'disks.attached': {
+  'disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.project.key,
   },
-  'disks.detached': {
+  'disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.project.key,
   },
@@ -435,9 +441,15 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.project.key,
   },
+  'ports.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
   ports_exit: {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.project.key,
+  },
+  'ports_exit.eip': {
+    unit: i18n.t('dashboard.text_1'),
   },
   ready_servers: {
     unit: i18n.t('dashboard.text_2'),
@@ -582,11 +594,11 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
   },
-  'all.disks.attached.count': {
+  'all.disks.mounted.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
   },
-  'all.disks.detached.count': {
+  'all.disks.unmounted.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
   },
@@ -614,11 +626,11 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.project.key,
   },
-  'disks.attached.count': {
+  'disks.mounted.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.project.key,
   },
-  'disks.detached.count': {
+  'disks.unmounted.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.project.key,
   },
@@ -669,11 +681,11 @@ export const USAGE_CONFIG = {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.domain.key,
   },
-  'domain.disks.attached': {
+  'domain.disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.domain.key,
   },
-  'domain.disks.attached.count': {
+  'domain.disks.mounted.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
   },
@@ -681,11 +693,11 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
   },
-  'domain.disks.detached': {
+  'domain.disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     scope: SCOPES_MAP.domain.key,
   },
-  'domain.disks.detached.count': {
+  'domain.disks.unmounted.count': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
   },
@@ -804,9 +816,15 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
   },
+  'domain.ports.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
   'domain.ports_exit': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
+  },
+  'domain.ports_exit.eip': {
+    unit: i18n.t('dashboard.text_1'),
   },
   'domain.rds': {
     unit: i18n.t('dashboard.text_1'),
@@ -974,6 +992,24 @@ export const USAGE_CONFIG = {
   'imgiso.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
     scope: SCOPES_MAP.project.key,
+  },
+  'all.servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'domain.servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'all.pending_delete_servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'domain.pending_delete_servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
+  },
+  'pending_delete_servers.last_week': {
+    unit: i18n.t('dashboard.text_2'),
   },
 }
 
