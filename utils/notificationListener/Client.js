@@ -38,7 +38,6 @@ class Client {
     this.socket.on('message', (payload) => {
       console.log(payload)
       try {
-        const obj = JSON.parse(payload)
         console.log("Obj:::")
         console.log(obj)
         console.log("payload  === 'wslogout'", payload  === 'wslogout')
@@ -60,6 +59,8 @@ class Client {
         } else {
           console.log('NO ws logout ...')
         }
+
+        const obj = JSON.parse(payload)
         if (!obj.success || !obj.action || obj.ignore_alert) {
           return
         }
