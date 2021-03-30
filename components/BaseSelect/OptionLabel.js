@@ -113,6 +113,27 @@ const resourceMode = {
       )
     },
   },
+  alertdashboards: {
+    vnode: (vm, h) => {
+      const data = vm.data
+      let desc = ''
+      if (data.scope === 'system') {
+        desc = i18n.t('shareScope.system')
+      }
+      if (data.scope === 'domain') {
+        desc = i18n.t('cloudenv.text_505', [data.project_domain])
+      }
+      if (data.scope === 'project') {
+        desc = i18n.t('cloudenv.text_506', [data.project])
+      }
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ data.name }>{ data.name }</span>
+          <div style="color: #8492a6; font-size: 13px">{ desc }</div>
+        </div>
+      )
+    },
+  },
 }
 
 export default {
