@@ -1,6 +1,6 @@
 <template>
     <a-row>
-      <a-col :span="6">
+      <a-col :span="16">
         <refresh
           showSelect
           tooltips

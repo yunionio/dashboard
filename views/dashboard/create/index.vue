@@ -4,7 +4,7 @@
     <page-body v-if="initFinished">
       <a-row>
         <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
-          <monitor-forms :panel="panel" :multiQuery="false" @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
+          <monitor-forms :panel="panel" :queryOnly="false" :multiQuery="false" @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
         </a-col>
         <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
           <monitor-header
@@ -213,11 +213,14 @@ export default {
     },
     async handleConfirm () {
       this.loading = true
+      const mq = this.metricList[0]
+      const name = mq[0].model.name
+      delete mq[0].model.name
       try {
         const data = {
-          name: uuid(32),
+          name: name || uuid(32),
           dashboard_id: this.$route.query.dashboard,
-          metric_query: this.metricList[0],
+          metric_query: mq,
           interval: this.timeGroup,
           scope: this.$store.getters.scope,
           ...this.timeRangeParams,
