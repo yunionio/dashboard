@@ -300,8 +300,8 @@ export default {
     },
     chargeTypeOptions () {
       const arr = [
-        { label: this.$t('network.text_193'), value: 'traffic' },
         { label: this.$t('network.text_194'), value: 'bandwidth' },
+        { label: this.$t('network.text_193'), value: 'traffic' },
       ]
       if ((this.showBandwidth && this.cloudEnv === 'onpremise') || !this.showBandwidth) {
         arr.shift()
