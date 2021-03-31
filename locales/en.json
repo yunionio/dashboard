@@ -206,6 +206,7 @@
   "monitor.dashboard.title": "Dashboard",
   "monitor.overview_alert_sum": "Alerts Firing",
   "monitor.overview_alert_sum_pie": "Total Alerts",
+  "monitor.overview_alert.undefined": "Others",
   "monitor.overview_alert_trend": "Trend of alerts in the last 30 days",
   "monitor.overview_usage_active": "Average server CPU usage of the last 7 days",
   "monitor.overview_bps_recv": "Average of server Network Inbound Traffic of the last 7 days",
