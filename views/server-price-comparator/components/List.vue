@@ -14,7 +14,7 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import storage from '@/utils/storage'
-import { SERVER_PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
+import { PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
 
 export default {
   name: 'PriceVMInstanceList',
@@ -28,6 +28,25 @@ export default {
         id: this.id,
         responseData: this.responseData,
       }),
+      groupActions: [
+        {
+          label: this.$t('cloudenv.text_108'),
+          action: () => {
+            let serverPriceComparator = storage.get(PRICE_COMPARA_KEY_SUFFIX) || []
+            const selectedIds = this.list.selectedItems.map(v => v.id)
+            serverPriceComparator = serverPriceComparator.filter(v => !selectedIds.includes(v.id))
+            storage.set(PRICE_COMPARA_KEY_SUFFIX, serverPriceComparator)
+            this.refreshData()
+          },
+          meta: () => {
+            const ret = { validate: true }
+            if (this.list.selectedItems.length <= 0) {
+              ret.validate = false
+            }
+            return ret
+          },
+        },
+      ],
     }
   },
   computed: {
@@ -38,7 +57,7 @@ export default {
   },
   methods: {
     refreshData () {
-      const data = storage.get(SERVER_PRICE_COMPARA_KEY_SUFFIX) || []
+      const data = storage.get(PRICE_COMPARA_KEY_SUFFIX) || []
       this.list.responseData = { data: data.filter(v => v.uid === this.userInfo.id) }
       this.list.fetchData()
     },

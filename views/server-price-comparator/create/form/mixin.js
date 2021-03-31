@@ -2,7 +2,6 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import BottomBar from '../components/BottomBar'
-import Servertemplate from '../components/Servertemplate'
 import SystemDisk from '../components/SystemDisk'
 import Tag from '../components/Tag'
 import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, LOGIN_TYPES_MAP } from '@Compute/constants'
@@ -33,7 +32,7 @@ import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
-import { SERVER_PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
+import { PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
 import { uuid } from '@/utils/utils'
 
 const CreateServerForm = {
@@ -71,7 +70,6 @@ export default {
     Duration,
     InstanceGroups,
     Tag,
-    Servertemplate,
     NameRepeated,
     ServerAccount,
   },
@@ -358,6 +356,12 @@ export default {
         }, dataDiskSizes)
         return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, systemDiskSize)
       }
+      const getBrand = (v) => {
+        if (v === 'kvm') return 'OneCloud'
+        if (v === 'esxi') return 'VMware'
+        return v
+      }
+
       const data = {
         id: uuid(),
         uid: this.userInfo.id,
@@ -366,8 +370,8 @@ export default {
         instance_type: sku.name,
         vcpu_count: vcpu,
         vmem_size: vmem,
-        disk: getDiskSize(),
-        brand: hypervisor === 'kvm' ? 'OneCloud' : (hypervisor || provider),
+        disk: getDiskSize() * 1024,
+        brand: getBrand(hypervisor || provider),
         region: cloudregion?.label || sku.region,
         zone: zone?.label || sku.zone,
         billing_type: billType === 'package' ? 'prepaid' : 'postpaid', // "postpaid": "按量付费", "prepaid": "包年包月"
@@ -376,10 +380,10 @@ export default {
         fee: getPrice(originPrice),
       }
       this.submiting = true
-      const serverPriceComparator = storage.get(SERVER_PRICE_COMPARA_KEY_SUFFIX) || []
-      storage.set(SERVER_PRICE_COMPARA_KEY_SUFFIX, [data].concat(serverPriceComparator))
+      const serverPriceComparator = storage.get(PRICE_COMPARA_KEY_SUFFIX) || []
+      storage.set(PRICE_COMPARA_KEY_SUFFIX, [data].concat(serverPriceComparator))
       this.$message.success(i18n.t('common.success'))
-      this.$router.push('/serverPriceComparator')
+      this.$router.push('/pricecomparator')
     },
     validateForm () {
       return new Promise((resolve, reject) => {

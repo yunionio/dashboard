@@ -1,1 +1,1 @@
-export const SERVER_PRICE_COMPARA_KEY_SUFFIX = '__oc_server_'
+export const PRICE_COMPARA_KEY_SUFFIX = '__oc_price_compara_'

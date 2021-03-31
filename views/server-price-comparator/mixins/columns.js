@@ -41,7 +41,7 @@ export default {
       getRegionTableColumn(),
       {
         field: 'billing_type',
-        title: '计费模式',
+        title: i18n.t('compute.text_498'),
         minWidth: 50,
         slots: {
           default: ({ row }, h) => {
@@ -57,7 +57,7 @@ export default {
       },
       {
         field: 'count',
-        title: '购买数量',
+        title: i18n.t('cloudenv.buy_num'),
         minWidth: 50,
         slots: {
           default: ({ row }) => {
@@ -67,18 +67,18 @@ export default {
       },
       {
         field: 'duration',
-        title: '购买时长',
+        title: i18n.t('compute.text_1230'),
         minWidth: 50,
         slots: {
           default: ({ row }) => {
             const curObj = BUY_DURATIONS_OPTIONS.find(v => v.value === row.duration)
-            return curObj?.label || '1小时'
+            return curObj?.label || i18n.t('compute.text_139')
           },
         },
       },
       {
         field: 'fee',
-        title: '费用估算',
+        title: i18n.t('common_419'),
         minWidth: 50,
         slots: {
           default: ({ row }, h) => {

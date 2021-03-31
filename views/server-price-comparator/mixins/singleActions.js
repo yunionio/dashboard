@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex'
 import storage from '@/utils/storage'
-import { SERVER_PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
+import { PRICE_COMPARA_KEY_SUFFIX } from '@Cloudenv/constants'
 
 export default {
   computed: {
@@ -15,9 +15,9 @@ export default {
       {
         label: this.$t('table.action.delete'),
         action: obj => {
-          let serverPriceComparator = storage.get(SERVER_PRICE_COMPARA_KEY_SUFFIX) || []
+          let serverPriceComparator = storage.get(PRICE_COMPARA_KEY_SUFFIX) || []
           serverPriceComparator = serverPriceComparator.filter(v => v.id !== obj.id)
-          storage.set(SERVER_PRICE_COMPARA_KEY_SUFFIX, serverPriceComparator)
+          storage.set(PRICE_COMPARA_KEY_SUFFIX, serverPriceComparator)
           this.refreshData()
         },
       },

@@ -188,12 +188,12 @@ export default {
     tips () {
       const ret = [
         [
-          { label: this.$t('compute.text_175'), labelClass: 'label-w-80', value: this.vmType },
-          { label: this.$t('compute.text_295'), labelClass: 'label-w-80', value: this.config },
+          { label: this.$t('compute.text_175'), labelClass: 'label-w-50', value: this.vmType },
+          { label: this.$t('compute.text_295'), labelClass: 'label-w-50', value: this.config },
         ],
         [
-          { label: this.$t('compute.text_177'), labelClass: 'label-w-80', value: this.zone },
           { label: this.$t('compute.text_498'), labelClass: 'label-w-80', value: this.isPackage ? this.$t('billingType.prepaid') : this.$t('billingType.postpaid') },
+          { label: this.$t('cloudenv.buy_num'), labelClass: 'label-w-80', value: `${this.fd?.count}${this.$t('common_62')}` },
         ],
         [
           { label: this.$t('compute.text_177'), labelClass: 'label-w-80', value: this.fd.sku?.region },
@@ -252,7 +252,7 @@ export default {
       return '--'
     },
     confirmText () {
-      return '加入清单'
+      return this.$t('cloudenv.add_to_list')
     },
     dataDiskObj () {
       if (R.is(Object, this.fd.dataDiskTypes)) {
@@ -468,6 +468,9 @@ export default {
       }
       &.label-w-80 {
         width: 80px;
+      }
+      &.label-w-100 {
+        width: 100px;
       }
     }
     .value {

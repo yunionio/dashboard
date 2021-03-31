@@ -4,7 +4,7 @@ import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
 import Proxysetting from '@Cloudenv/views/proxysetting'
 import ServerPriceComparatorCreate from '@Cloudenv/views/server-price-comparator/create'
-import ServerPriceComparatorList from '@Cloudenv/views/server-price-comparator'
+import PriceComparatorList from '@Cloudenv/views/server-price-comparator'
 // import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
@@ -103,13 +103,16 @@ export default {
     },
     {
       meta: {
-        label: '价格比对',
+        label: i18n.t('cloudenv.price_comparison'),
+        hidden: () => {
+          return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
+        },
       },
       submenus: [
         {
-          path: '/serverPriceComparatorCreate',
+          path: '/servercomparator',
           meta: {
-            label: '虚拟机',
+            label: i18n.t('compute.text_91'),
           },
           component: Layout,
           children: [
@@ -121,16 +124,16 @@ export default {
           ],
         },
         {
-          path: '/serverPriceComparator',
+          path: '/pricecomparator',
           meta: {
-            label: '价格清单',
+            label: i18n.t('cloudenv.price_list'),
           },
           component: Layout,
           children: [
             {
-              name: 'ServerPriceComparator',
+              name: 'PriceComparatorList',
               path: '',
-              component: ServerPriceComparatorList,
+              component: PriceComparatorList,
             },
           ],
         },
