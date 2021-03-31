@@ -206,6 +206,7 @@
   "monitor.dashboard.title": "监控面板",
   "monitor.overview_alert_sum": "未恢复告警",
   "monitor.overview_alert_sum_pie": "告警总数",
+  "monitor.overview_alert.undefined": "其他",
   "monitor.overview_alert_trend": "近30日告警趋势",
   "monitor.overview_usage_active": "近7日虚拟机平均CPU使用率",
   "monitor.overview_bps_recv": "近7日虚拟机平均网络入流量",
