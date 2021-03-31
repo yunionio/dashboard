@@ -1,6 +1,5 @@
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
-import { STORAGE_TYPES } from '@Storage/constants/index.js'
 
 export default {
   created () {
@@ -24,23 +23,9 @@ export default {
           return [
             ...getEnabledSwitchActions(this),
             {
-              label: i18n.t('storage.text_66'),
-              permission: 'storages_perform_storages',
+              label: i18n.t('storage.host.manage'),
               action: row => {
-                this.createDialog('AssociatedHostDialog', {
-                  data: [row],
-                  columns: this.columns,
-                  title: i18n.t('storage.text_66'),
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                })
-              },
-              meta: row => {
-                const validate = ['rbd', 'nfs', 'gpfs'].includes(row.storage_type)
-                return {
-                  validate,
-                  tooltip: !validate && i18n.t('storage.text_67', [STORAGE_TYPES[row.storage_type] || row.storage_type]),
-                }
+                this.$refs.BaseSidePage.handleTabChange('host-list')
               },
             },
             {

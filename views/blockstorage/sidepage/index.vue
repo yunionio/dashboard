@@ -1,6 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
+    ref="BaseSidePage"
     :title="$t('storage.text_37')"
     icon="res-blockstorage"
     :res-name="detailData.name"
