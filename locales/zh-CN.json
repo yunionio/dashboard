@@ -247,5 +247,6 @@
   "monitor.dashboard.dialog.project.create": "添加图表",
   "monitor.dashboard.dialog.project.update": "更新图表",
   "monitor.dashboard.dialog.project.delete": "删除监控图表",
+  "monitor.dashboard.select.option": "归属: {0}{1}",
   "monitor.dashboard.dialog.project.clone": "克隆监控图表"
 }

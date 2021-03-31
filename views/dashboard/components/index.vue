@@ -12,8 +12,8 @@
         <a-col :span="8">
           <base-select
               filterable
+              style="min-width: 150px;"
               resource="alertdashboards"
-              optionLabelProp="label"
               v-model="dashboardId"
               :options="dashboards" />
         </a-col>

@@ -247,5 +247,6 @@
   "monitor.dashboard.dialog.project.create": "Create Chart",
   "monitor.dashboard.dialog.project.update": "Edit Chart",
   "monitor.dashboard.dialog.project.delete": "Delete Chart",
+  "monitor.dashboard.select.option": "Belong: {0} {1}",
   "monitor.dashboard.dialog.project.clone": "Clone Chart"
 }
