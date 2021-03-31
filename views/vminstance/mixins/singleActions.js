@@ -965,6 +965,10 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
+                    if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                      return ret
+                    }
                     if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
@@ -996,6 +1000,10 @@ export default {
                     const ret = {
                       validate: false,
                       tooltip: null,
+                    }
+                    if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                      return ret
                     }
                     if (findPlatform(obj.hypervisor) === SERVER_TYPE.public) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
