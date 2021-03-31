@@ -6,7 +6,7 @@
           tooltips
           :loading="loading"
           @refresh="handleRefresh" />
-        <a-button @click="createChart">
+        <a-button  style="margin-left: 8px;" @click="createChart">
           {{ $t('monitor.dashboard.dialog.project.create')}}
         </a-button>
       </a-col>

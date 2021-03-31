@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 2px;display: inline;">
+  <div style="display: inline;">
     <a-tooltip placement="top">
       <template slot="title" v-show="tooltips && lastSync !== ''">
         <span>{{ $t('refresh.last_sync_at', [lastSync]) }}</span>

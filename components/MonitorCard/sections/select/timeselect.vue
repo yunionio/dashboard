@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 2px;">
+  <div>
     <div v-if="isRadioGroup">
       <a-radio-group class="mr-3" v-model="selected" @change="handleChange">
         <a-radio-button v-for="m of options" :key="m.label" :value="m.value">
