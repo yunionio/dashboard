@@ -31,8 +31,8 @@ export const diskResizeConfig = {
       }
     }
     if (obj.disk_type === 'data') { // 数据盘
-      const validate = obj.guest_status === 'running' || obj.guest_status === 'ready' // 开机关机均可以扩容
-      const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['running', 'ready'], serverStatus, 'server')])
+      const validate = obj.guest_status === 'ready' // 关机可以扩容
+      const tooltip = validate ? '' : i18n.t('compute.text_1349', [_tran(['ready'], serverStatus, 'server')])
       return {
         validate,
         tooltip,

@@ -1317,7 +1317,7 @@
   "compute.text_1346": "Image ID",
   "compute.text_1347": "The disk snapshot that is being rolled back should not be deleted",
   "compute.text_1348": "The resources of different projects currently do not support simultaneous initiation of tickets. Please select the resources of the same project to resubmit!",
-  "compute.text_1349": "The VMware platform system disk can perform this operation only if the guest status is 【{0}】",
+  "compute.text_1349": "The VMware platform disks can perform this operation only if the guest status is 【{0}】",
   "compute.text_1350": "Select Block Storage",
   "compute.text_1351": "Please Select Block Storage",
   "compute.text_1352": "No line type",
