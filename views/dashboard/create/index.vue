@@ -29,7 +29,7 @@
     <page-footer>
       <div slot="right">
         <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm" :disabled="metricList.length === 0">{{ $t('common.save') }}</a-button>
-        <a-button @click="() => $router.back()">{{ $t('common.cancel') }}</a-button>
+        <a-button @click="goback">{{ $t('common.cancel') }}</a-button>
       </div>
     </page-footer>
   </div>
@@ -211,6 +211,9 @@ export default {
         throw error
       }
     },
+    goback () {
+      this.$router.push({ path: '/monitor-dashboard', query: { dashboard_id: this.$route.query.dashboard } })
+    },
     async handleConfirm () {
       this.loading = true
       const mq = this.metricList[0]
@@ -233,7 +236,7 @@ export default {
           await new this.$Manager('alertpanels', 'v1').create({ data })
         }
         this.loading = false
-        this.$router.back()
+        this.goback()
       } catch (error) {
         throw error
       } finally {

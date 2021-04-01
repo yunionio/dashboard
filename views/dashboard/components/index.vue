@@ -63,12 +63,13 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const dashboardId = this.$route.query.dashboard_id || ''
     return {
       scope: this.$store.getters.scope,
       loading: true,
       manager: new this.$Manager('alertdashboards', 'v1'),
       dashboards: [],
-      dashboardId: '',
+      dashboardId: dashboardId,
     }
   },
   computed: {
@@ -121,7 +122,7 @@ export default {
         }
         const { data: { data } } = await this.manager.list({ params })
         this.dashboards = data
-        if (data && data.length > 0) {
+        if (!this.dashboardId && data && data.length > 0) {
           this.dashboardId = data[0].id
         }
         this.loading = false
