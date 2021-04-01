@@ -87,6 +87,7 @@
         <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <bottom-bar
+        ref="bottomBarRef"
         :loading="submiting"
         :form="form"
         :type="type"
