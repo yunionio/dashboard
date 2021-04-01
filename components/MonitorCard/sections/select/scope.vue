@@ -1,30 +1,34 @@
 <template>
-  <a-row>
-    <a-col :span="8">
-      <a-radio-group v-model="select.scope" @change="onChange">
-        <a-radio-button v-for="o of scopeOptions" :value="o.value" :key="o.key">
-          {{ o.label }}
-        </a-radio-button>
-      </a-radio-group>
-    </a-col>
-    <a-col :span="16">
-      <a-select
-          v-model="select.id"
-          dropdownClassName="oc-select-dropdown"
-          show-search
-          v-if="showSelect"
-          @search="handleSearch"
-          @change="handleSelectChange"
-          :filterOption="false"
-          :loading="loading">
-        <template v-for="option of options">
-          <a-select-option :key="option.id" :value="option.id">
-            <span class="text-color-secondary option-prefix">{{ $t(`dictionary.${select.scope}`) }}: </span>{{ option.name }}
-          </a-select-option>
-        </template>
-      </a-select>
-    </a-col>
-  </a-row>
+  <div>
+    <a-row>
+      <a-col :span="8">
+        <a-radio-group v-model="select.scope" @change="onChange">
+          <a-radio-button v-for="o of scopeOptions" :value="o.value" :key="o.key">
+            {{ o.label }}
+          </a-radio-button>
+        </a-radio-group>
+      </a-col>
+    </a-row>
+    <a-row>
+      <a-col :span="16">
+        <a-select
+            v-model="select.id"
+            dropdownClassName="oc-select-dropdown"
+            show-search
+            v-if="showSelect"
+            @search="handleSearch"
+            @change="handleSelectChange"
+            :filterOption="false"
+            :loading="loading">
+          <template v-for="option of options">
+            <a-select-option :key="option.id" :value="option.id">
+              <span class="text-color-secondary option-prefix">{{ $t(`dictionary.${select.scope}`) }}: </span>{{ option.name }}
+            </a-select-option>
+          </template>
+        </a-select>
+      </a-col>
+    </a-row>
+  </div>
 </template>
 
 <script>

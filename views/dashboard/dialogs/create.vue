@@ -97,7 +97,7 @@ export default {
       try {
         const values = await this.validateForm()
         const data = {
-          scope: this.scope,
+          scope: values.scope.scope,
           name: values.name,
         }
         if (this.scope !== values.scope.scope && values.scope.id && values.scope.id.length > 0) {
