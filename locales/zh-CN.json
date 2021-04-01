@@ -205,6 +205,7 @@
   "monitor.text_121": "已改名?",
   "monitor.dashboard.create.chart.dashboard.tips": "请选择监控面板",
   "monitor.dashboard.title": "监控面板",
+  "monitor.dashboard.label": "面板",
   "monitor.overview_alert_sum": "未恢复告警",
   "monitor.overview_alert_sum_pie": "告警总数",
   "monitor.overview_alert_trend": "近30日告警趋势",

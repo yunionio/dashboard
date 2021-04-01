@@ -2,7 +2,7 @@
   <a-row>
     <a-col :span="8">
       <a-radio-group v-model="select.scope" @change="onChange">
-        <a-radio-button v-for="o of scopeOptions" :value="o.value" :key="o.key" :disabled="o.disabled">
+        <a-radio-button v-for="o of scopeOptions" :value="o.value" :key="o.key">
           {{ o.label }}
         </a-radio-button>
       </a-radio-group>
@@ -62,9 +62,9 @@ export default {
     },
     scopeOptions () {
       const options = []
-      options.push({ value: 'system', key: 'system', label: this.$t('shareScope.system'), disabled: this.scopeLevel < 2 })
-      options.push({ value: 'domain', key: 'domain_id', label: this.$t('shareScope.domain'), disabled: this.scopeLevel < 1 })
-      options.push({ value: 'project', key: 'project_id', label: this.$t('shareScope.project'), disabled: this.scopeLevel < 0 })
+      if (this.scopeLevel >= 2) options.push({ value: 'system', key: 'system', label: this.$t('shareScope.system') })
+      if (this.scopeLevel >= 1) options.push({ value: 'domain', key: 'domain_id', label: this.$t('shareScope.domain') })
+      if (this.scopeLevel >= 0) options.push({ value: 'project', key: 'project_id', label: this.$t('shareScope.project') })
       return options
     },
     showSelect () {

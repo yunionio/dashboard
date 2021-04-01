@@ -205,6 +205,7 @@
   "monitor.text_121": "renamed?",
   "monitor.dashboard.create.chart.dashboard.tips": "Please select the dashboard",
   "monitor.dashboard.title": "Dashboard",
+  "monitor.dashboard.label": "Dashboard",
   "monitor.overview_alert_sum": "Alerts Firing",
   "monitor.overview_alert_sum_pie": "Total Alerts",
   "monitor.overview_alert_trend": "Trend of alerts in the last 30 days",
