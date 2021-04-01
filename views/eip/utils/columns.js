@@ -9,7 +9,7 @@ export const getAssociateNameTableColumn = (vm) => {
         const type = {
           server: i18n.t('network.text_226'),
           natgateway: i18n.t('network.text_227'),
-          lb: i18n.t('network.text_137'),
+          loadbalancer: i18n.t('network.text_137'),
         }
         if (!row.associate_name) return '-'
         const text = `${row.associate_name}(${type[row.associate_type] || '-'})`
