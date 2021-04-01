@@ -6,7 +6,7 @@
       v-bind="formItemLayout"
       @submit="submit"
       hideRequiredMark>
-      <a-form-item v-if="!isServertemplate" :label="$t('compute.text_297', [$t('dictionary.project')])">
+      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-show="false">
         <domain-project
           :fc="form.fc"
           :fd="form.fd"
@@ -14,18 +14,12 @@
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_177')" class="mb-0">
+      <a-form-item :label="$t('compute.text_177')" class="mb-0" v-show="false">
         <cloudregion-zone
           :zone-params="zoneParams"
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
-      <!-- <a-form-item :label="$t('compute.text_228')">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
-        <template v-slot:extra>
-          <name-repeated res="servers" :name="form.fd.name" :default-text="$t('compute.text_893')" />
-        </template>
-      </a-form-item> -->
       <a-form-item :label="$t('compute.text_294')">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
@@ -53,18 +47,6 @@
           :type="type"
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_267')" :extra="extra">
-        <os-select
-          :type="type"
-          :uefi="uefi"
-          :form="form"
-          :hypervisor="form.fd.hypervisor"
-          :decorator="decorators.imageOS"
-          :image-params="imageParams"
-          :cacheImageParams="cacheImageParams"
-          :cloudproviderParamsExtra="cloudproviderParamsExtra"
-          @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
@@ -104,79 +86,6 @@
           :enableMointpoint="true" />
         <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
-        <server-account :form="form" :hypervisor="form.fd.hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_308')" v-if="!isIso">
-        <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="isSnapshotImageType" :decorator="decorators.loginConfig" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_104')" class="mb-0">
-        <server-network
-          :form="form"
-          :isServertemplate="isServertemplate"
-          :decorator="decorators.network"
-          :network-list-params="networkParam"
-          :schedtag-params="schedtagParams"
-          :networkVpcParams="networkVpcParams"
-          :vpcResource="vpcResource"
-          :hypervisor="form.fd.hypervisor"
-          :serverCount="form.fd.count"
-          :vpcResourceMapper="vpcResourceMapper"
-          :networkResourceMapper="networkResourceMapper" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_1154')" class="mb-0">
-        <tag
-          v-decorator="decorators.tag" />
-      </a-form-item>
-      <!-- <a-divider orientation="left" v-if="showAdvanceConfig">{{$t('compute.text_309')}}</a-divider> -->
-      <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1">
-          <eip-config
-            v-if="showEip"
-            :decorators="decorators.eip"
-            :eip-params="eipParams"
-            :hypervisor="form.fd.hypervisor"
-            :showBind="false"
-            :isServertemplate="isServertemplate"
-            :cloud-env="type"
-            :form="form"
-            :formItemLayout="formItemLayout" />
-          <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
-            <secgroup-config
-              :form="form"
-              :isSnapshotImageType="isSnapshotImageType"
-              :decorators="decorators.secgroup"
-              :secgroup-params="secgroupParams"
-              :hypervisor="form.fd.hypervisor" />
-          </a-form-item>
-          <a-form-item v-show="!isServertemplate" :label="$t('compute.text_311')" class="mb-0">
-            <sched-policy
-              :form="form"
-              :server-type="form.fi.createType"
-              :disabled-host="policyHostDisabled"
-              :policy-host-params="policyHostParams"
-              :decorators="decorators.schedPolicy"
-              :policy-schedtag-params="policySchedtagParams"
-              :showSchedCloudprovider="showSchedCloudprovider"
-              :cloudproviderParamsExtra="cloudproviderParamsExtra" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
-            <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" />
-          </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
-            <backup
-              :decorator="decorators.backup"
-              :disabled="form.fd.systemDiskType"
-              :disabled-items="backupDisableds"
-              :domain="form.fd.domain"
-              :availableHostCount="availableHostCount"
-              :hostParams="policyHostParams" />
-          </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
-            <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
-          </a-form-item>
-        </a-collapse-panel>
-      </a-collapse>
       <bottom-bar
         :loading="submiting"
         :form="form"
@@ -194,18 +103,14 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import mixin from './mixin'
-import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { HYPERVISORS_MAP } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
-import EipConfig from '@Compute/sections/EipConfig'
 import OsArch from '@/sections/OsArch'
 
 export default {
   name: 'VM_IDCCreate',
   components: {
-    SecgroupConfig,
-    EipConfig,
     OsArch,
   },
   mixins: [mixin],

@@ -6,8 +6,7 @@
       v-bind="formItemLayout"
       @submit="submit"
       hideRequiredMark>
-      <!-- <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider> -->
-      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
+      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-show="false">
         <domain-project
           :fc="form.fc"
           :fd="form.fd"
@@ -15,14 +14,6 @@
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
-      <!-- <a-form-item :label="$t('compute.text_228')">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
-        <name-repeated
-          v-slot:extra
-          res="servers"
-          :name="form.fd.name"
-          :default-text="$t('compute.text_893')" />
-      </a-form-item> -->
       <a-form-item class="mb-0" :label="$t('compute.text_498')">
         <bill :decorators="decorators.bill" :form="form" :provider-list="form.fi.providerList" :disabledBillType="disabledBillType" />
       </a-form-item>
@@ -40,9 +31,6 @@
         :zoneParams="zoneParams"
         :defaultActiveFirstOption="['provider']"
         @providerFetchSuccess="providerFetchSuccess" />
-      <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
-        <resource :decorator="decorators.resourceType" />
-      </a-form-item> -->
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
       </a-form-item>
@@ -57,17 +45,6 @@
           :sku-params="skuParam"
           :hypervisor="hypervisor"
           :hasMeterService="hasMeterService" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_267')" :extra="$t('compute.text_302')">
-        <os-select
-          :type="type"
-          :form="form"
-          :types="osSelectTypes"
-          :hypervisor="hypervisor"
-          :decorator="decorators.imageOS"
-          :cacheImageParams="cacheImageParams"
-          :cloudproviderParamsExtra="cloudproviderParamsExtra"
-          @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
@@ -92,63 +69,6 @@
           :capability-data="form.fi.capability"
           ref="dataDiskRef" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
-        <server-account :form="form" :hypervisor="hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_308')">
-        <server-password :decorator="decorators.loginConfig" :loginTypes="loginTypes" :form="form" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_104')" class="mb-0">
-        <server-network
-          :form="form"
-          :decorator="decorators.network"
-          :network-list-params="networkParam"
-          :schedtag-params="schedtagParams"
-          :networkVpcParams="networkVpcParams"
-          :vpcResource="vpcResource"
-          :serverCount="form.fd.count"
-          :networkResourceMapper="networkResourceMapper" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_1154')" class="mb-0">
-        <tag
-          v-decorator="decorators.tag" />
-      </a-form-item>
-      <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
-      <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1">
-          <eip-config
-            v-if="enableEip"
-            :decorators="decorators.eip"
-            :eip-params="eipParams"
-            :hypervisor="hypervisor"
-            :showBind="false"
-            :isServertemplate="isServertemplate"
-            :cloud-env="type"
-            :form="form"
-            :hasPublicIp="hypervisor === 'qcloud' || hypervisor === 'aliyun'"
-            :formItemLayout="formItemLayout" />
-          <a-form-item :label="$t('compute.text_105')">
-            <secgroup-config
-              :provider="hypervisor"
-              :form="form"
-              :decorators="decorators.secgroup"
-              :secgroup-params="secgroupParams"
-              :hypervisor="hypervisor" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
-            <sched-policy
-              :form="form"
-              :provider="hypervisor"
-              :server-type="form.fi.createType"
-              :disabled-host="policyHostDisabled"
-              :policy-host-params="policyHostParams"
-              :decorators="decorators.schedPolicy"
-              :hideCloudaccountSched="hideCloudaccountSched"
-              :policy-schedtag-params="policySchedtagParams"
-              :policycloudproviderParams="policycloudproviderParams" />
-          </a-form-item>
-        </a-collapse-panel>
-      </a-collapse>
       <bottom-bar
         :loading="submiting"
         :form="form"
@@ -164,13 +84,10 @@
   </div>
 </template>
 <script>
-/* eslint-disable */
 import * as R from 'ramda'
+import Bill from '../components/Bill'
 import mixin from './mixin'
-import Bill from '@Compute/sections/Bill'
 import { LOGIN_TYPES_MAP, BILL_TYPES_MAP } from '@Compute/constants'
-import EipConfig from '@Compute/sections/EipConfig'
-import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
@@ -180,8 +97,6 @@ export default {
   components: {
     Bill,
     AreaSelects,
-    EipConfig,
-    SecgroupConfig,
   },
   mixins: [mixin],
   computed: {
@@ -516,7 +431,7 @@ export default {
       if (val && !R.equals(val, oldVal)) {
         this.fetchCapability()
       }
-    }
+    },
   },
 }
 </script>

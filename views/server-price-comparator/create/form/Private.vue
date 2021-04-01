@@ -6,13 +6,7 @@
       v-bind="formItemLayout"
       @submit="submit"
       hideRequiredMark>
-      <servertemplate v-if="isServertemplate" :decorators="decorators.servertemplate">
-        <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
-          <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />
-        </a-form-item>
-      </servertemplate>
-      <!-- <a-divider orientation="left">{{$t('compute.text_300')}}</a-divider> -->
-      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])">
+      <a-form-item :label="$t('compute.text_297', [$t('dictionary.project')])" v-show="false">
         <domain-project
           :fc="form.fc"
           :fd="form.fd"
@@ -20,20 +14,12 @@
           @fetchDomainCallback="fetchDomainCallback"
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_177')" class="mb-0">
+      <a-form-item :label="$t('compute.text_177')" class="mb-0" v-show="false">
         <cloudregion-zone
           :zone-params="zoneParams"
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
-      <!-- <a-form-item :label="$t('compute.text_228')">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
-        <name-repeated
-          v-slot:extra
-          res="servers"
-          :name="form.fd.name"
-          :default-text="$t('compute.text_893')" />
-      </a-form-item> -->
       <a-form-item :label="$t('compute.text_294')">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />
       </a-form-item>
@@ -49,17 +35,6 @@
           :type="type"
           :sku-params="skuParam"
           :hypervisor="form.fd.hypervisor" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_267')" :extra="$t('compute.text_302')">
-        <os-select
-          :type="type"
-          :form="form"
-          :hypervisor="form.fd.hypervisor"
-          :decorator="decorators.imageOS"
-          :image-params="scopeParams"
-          :cacheImageParams="cacheImageParams"
-          :cloudproviderParamsExtra="cloudproviderParamsExtra"
-          @updateImageMsg="updateFi" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_49')" class="mb-0">
         <system-disk
@@ -84,46 +59,6 @@
           :capability-data="form.fi.capability"
           ref="dataDiskRef" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
-        <server-account :form="form" :hypervisor="form.fd.hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_308')">
-        <server-password :decorator="decorators.loginConfig" :login-types="loginTypes" :form="form" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_104')" class="mb-0">
-        <server-network
-          :form="form"
-          :decorator="decorators.network"
-          :network-list-params="networkParam"
-          :schedtag-params="schedtagParams"
-          :networkVpcParams="networkVpcParams"
-          :vpcResource="vpcResource"
-          :serverCount="form.fd.count"
-          :networkResourceMapper="networkResourceMapper" />
-      </a-form-item>
-      <a-form-item :label="$t('compute.text_1154')" class="mb-0">
-        <tag
-          v-decorator="decorators.tag" />
-      </a-form-item>
-      <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
-      <a-collapse :bordered="false" v-model="collapseActive">
-        <a-collapse-panel :header="$t('compute.text_309')" key="1">
-          <a-form-item :label="$t('compute.text_105')">
-            <secgroup-config
-              :decorators="decorators.secgroup"
-              :secgroup-params="secgroupParams"
-              :hypervisor="form.fd.hypervisor" />
-          </a-form-item>
-          <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
-            <sched-policy
-              :server-type="form.fi.createType"
-              :disabled-host="policyHostDisabled"
-              :policy-host-params="policyHostParams"
-              :decorators="decorators.schedPolicy"
-              :policy-schedtag-params="policySchedtagParams" />
-          </a-form-item>
-        </a-collapse-panel>
-      </a-collapse>
       <bottom-bar
         :loading="submiting"
         :form="form"
@@ -141,15 +76,12 @@
 import _ from 'lodash'
 import * as R from 'ramda'
 import mixin from './mixin'
-import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VMPrivateCreate',
-  components: {
-    SecgroupConfig,
-  },
+  components: {},
   mixins: [mixin],
   computed: {
     cloudregionParams () {
