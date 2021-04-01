@@ -361,6 +361,10 @@ export default {
         if (v === 'esxi') return 'VMware'
         return v
       }
+      const getDuration = (v) => {
+        if (billType === 'quantity') return '1h'
+        return v
+      }
 
       const data = {
         id: uuid(),
@@ -376,11 +380,12 @@ export default {
         zone: zone?.label || sku.zone,
         billing_type: billType === 'package' ? 'prepaid' : 'postpaid', // "postpaid": "按量付费", "prepaid": "包年包月"
         count,
-        duration,
+        duration: getDuration(duration),
         fee: getPrice(originPrice),
       }
       this.submiting = true
-      const serverPriceComparator = storage.get(PRICE_COMPARA_KEY_SUFFIX) || []
+      let serverPriceComparator = storage.get(PRICE_COMPARA_KEY_SUFFIX) || []
+      serverPriceComparator = serverPriceComparator.filter(v => v.uid === data.uid)
       storage.set(PRICE_COMPARA_KEY_SUFFIX, [data].concat(serverPriceComparator))
       this.$message.success(i18n.t('common.success'))
       this.$router.push('/pricecomparator')
