@@ -21,7 +21,7 @@ export default {
             } else {
               let time = this.$moment(row.last_sync)
               if (row.enable_auto_sync) {
-                time = this.$moment(row.last_auto_sync)
+                time = this.$moment(row.last_auto_sync_at)
               }
               if (time) {
                 return time.fromNow()
@@ -29,6 +29,24 @@ export default {
                 return '-'
               }
             }
+          },
+        },
+      },
+      {
+        field: 'last_sync_end_at',
+        title: i18n.t('cloudenv.last.sync.end.at'),
+        slots: {
+          default: ({ row }) => {
+            if (row.sync_status !== 'idle') { // 表示正在同步中
+              return [
+                <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
+              ]
+            }
+            const time = this.$moment(row.last_sync_end_at)
+            if (time) {
+              return time.fromNow()
+            }
+            return '-'
           },
         },
       },

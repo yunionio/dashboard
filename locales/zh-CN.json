@@ -682,5 +682,6 @@
   "cloudenv.price_comparison": "价格比对",
   "cloudenv.price_list": "价格清单",
   "cloudenv.buy_num": "购买数量",
-  "cloudenv.add_to_list": "加入清单"
+  "cloudenv.add_to_list": "加入清单",
+  "cloudenv.last.sync.end.at": "结束时间"
 }
