@@ -60,6 +60,7 @@
           ref="dataDiskRef" />
       </a-form-item>
       <bottom-bar
+        ref="bottomBarRef"
         :loading="submiting"
         :form="form"
         :type="type"

@@ -70,6 +70,7 @@
           ref="dataDiskRef" />
       </a-form-item>
       <bottom-bar
+        ref="bottomBarRef"
         :loading="submiting"
         :form="form"
         :errors.sync="errors"
@@ -78,8 +79,7 @@
         :dataDiskSizes="dataDiskSizes"
         :isOpenWorkflow="isOpenWorkflow"
         :isServertemplate="isServertemplate"
-        :hasMeterService="hasMeterService"
-        @getOriginPrice="getOriginPrice" />
+        :hasMeterService="hasMeterService" />
     </a-form>
   </div>
 </template>

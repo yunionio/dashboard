@@ -103,7 +103,7 @@ export default {
           cpuDisabled: false,
           memDisabled: false,
         },
-        fd: { ...initFd, os: '', originPrice: 0 },
+        fd: { ...initFd, os: '' },
       },
       decorators: {
         ...decorators,
@@ -333,8 +333,6 @@ export default {
     doAddToList (genCreateData) {
       const {
         sku,
-        vcpu,
-        vmem,
         count,
         duration,
         zone,
@@ -342,19 +340,9 @@ export default {
         provider,
         cloudregion,
         billType,
-        originPrice,
-        systemDiskSize = 0,
-        dataDiskSizes,
       } = this.form.fd
       const getPrice = (originPrice) => {
         return `${sku.currency === 'USD' ? '$' : '¥'}${parseFloat(originPrice).toFixed(2)}`
-      }
-      const getDiskSize = () => {
-        const diskValueArr = []
-        R.forEachObjIndexed(value => {
-          diskValueArr.push(value)
-        }, dataDiskSizes)
-        return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, systemDiskSize)
       }
       const getBrand = (v) => {
         if (v === 'kvm') return 'OneCloud'
@@ -365,16 +353,16 @@ export default {
         if (billType === 'quantity') return '1h'
         return v
       }
-
+      const { dataDisk, dataDiskLabel, systemDisk, config, originPrice } = this.$refs.bottomBarRef
       const data = {
         id: uuid(),
         uid: this.userInfo.id,
         // 资源类型, 配置, 系统盘, 数据盘, 平台, 区域, 计费模式, 购买数量, 购买时长, 费用估算
         type: 'server',
         instance_type: sku.name,
-        vcpu_count: vcpu,
-        vmem_size: vmem,
-        disk: getDiskSize() * 1024,
+        config,
+        dataDisk: `${dataDisk}GB ${dataDiskLabel}`,
+        systemDisk,
         brand: getBrand(hypervisor || provider),
         region: cloudregion?.label || sku.region,
         zone: zone?.label || sku.zone,
@@ -491,9 +479,6 @@ export default {
           project: { key: project },
         })
       }
-    },
-    getOriginPrice (val) {
-      this.form.fd.originPrice = val
     },
   },
 }
