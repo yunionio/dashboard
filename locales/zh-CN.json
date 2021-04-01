@@ -250,5 +250,7 @@
   "monitor.dashboard.dialog.project.update": "更新图表",
   "monitor.dashboard.dialog.project.delete": "删除监控图表",
   "monitor.dashboard.select.option": "归属: {0}{1}",
+  "monitor.chart.toolbar.line": "切换为折线图",
+  "monitor.chart.toolbar.bar": "切换为柱状图",
   "monitor.dashboard.dialog.project.clone": "克隆监控图表"
 }

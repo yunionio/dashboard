@@ -250,5 +250,7 @@
   "monitor.dashboard.dialog.project.update": "Edit Chart",
   "monitor.dashboard.dialog.project.delete": "Delete Chart",
   "monitor.dashboard.select.option": "Belong: {0} {1}",
+  "monitor.chart.toolbar.line": "switch to line chart",
+  "monitor.chart.toolbar.bar": "switch to bar chart",
   "monitor.dashboard.dialog.project.clone": "Clone Chart"
 }

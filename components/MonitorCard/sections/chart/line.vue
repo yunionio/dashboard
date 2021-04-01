@@ -49,7 +49,12 @@ export default {
         legend: { show: this.showLegend },
         toolbox: {
           show: true,
-          feature: { magicType: { type: ['line', 'bar'] } },
+          feature: {
+            magicType: {
+              type: ['line', 'bar'],
+              title: { line: this.$t('monitor.chart.toolbar.line'), bar: this.$t('monitor.chart.toolbar.bar') },
+            },
+          },
         },
       }
     },
