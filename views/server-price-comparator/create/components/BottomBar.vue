@@ -27,8 +27,7 @@
             <div class="ml-2 prices">
               <div class="hour d-flex">
                 <template v-if="price">
-                  <m-animated-number :value="price" :formatValue="formatToPrice" />
-                  <discount-price class="ml-2 mini-text" :discount="priceData.discount" :origin="originPrice" />
+                  <m-animated-number :value="originPrice" :formatValue="formatToPrice" />
                 </template>
                 <template v-else>---</template>
               </div>
@@ -58,16 +57,14 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { SERVER_TYPE, BILL_TYPES_MAP, EIP_TYPES_MAP } from '@Compute/constants'
-import { sizestrWithUnit } from '@/utils/utils'
+import { sizestrWithUnit, sizestr } from '@/utils/utils'
 import { HYPERVISORS_MAP, PROVIDER_MAP } from '@/constants'
 import SideErrors from '@/sections/SideErrors'
-import DiscountPrice from '@/sections/DiscountPrice'
 
 export default {
   name: 'BottomBar',
   components: {
     SideErrors,
-    DiscountPrice,
   },
   props: {
     loading: {
@@ -162,25 +159,15 @@ export default {
       return diskValueArr.reduce((prevDisk, diskValue) => prevDisk + diskValue, 0)
     },
     config () {
-      const ret = []
-      const { gpu, gpuCount, vcpu, vmem } = this.fd
-      if (this.fd.gpuEnable) {
-        ret.push(this.$t('compute.text_1134', [gpuCount, gpu]))
+      if (this.fd?.sku?.id) {
+        return this.$t('compute.text_182', [
+          this.fd.sku.name,
+          this.fd.sku.instance_type_category_i18n,
+          this.fd.sku.cpu_core_count,
+          sizestr(this.fd.sku.memory_size_mb, 'M', 1024),
+        ])
       }
-      if (this.isPublic) {
-        if (!R.isNil(this.fd.spec) && !R.isEmpty(this.fd.spec)) {
-          ret.push(this.$t('compute.text_292', [this.fd.spec.vcpu_count]))
-          ret.push(this.$t('compute.text_1135', [this.fd.spec.vmem_size]))
-        }
-      } else {
-        ret.push(this.$t('compute.text_292', [vcpu]))
-        ret.push(this.$t('compute.text_293', [sizestrWithUnit(vmem, 'M', 1024)]))
-      }
-      let diskStr = ''
-      if (this.fd.systemDiskSize) diskStr = `${this.$t('compute.text_49')}:${this.fd.systemDiskSize}GB ${_.get(this.fd, 'systemDiskType.label')}`
-      if (this.dataDisk) diskStr += `,${this.$t('compute.text_50')}:${this.dataDisk}GB ${this.dataDiskLabel}`
-      ret.push(diskStr)
-      return ret.join('、')
+      return null
     },
     image () {
       return _.get(this.fd, 'image.label') || ''
@@ -188,16 +175,16 @@ export default {
     tips () {
       const ret = [
         [
-          { label: this.$t('compute.text_175'), labelClass: 'label-w-50', value: this.vmType },
-          { label: this.$t('compute.text_295'), labelClass: 'label-w-50', value: this.config },
+          { label: this.$t('compute.text_175'), labelClass: 'label-w-120', value: this.vmType },
+          { label: this.$t('compute.text_295'), labelClass: 'label-w-120', value: this.config },
         ],
         [
-          { label: this.$t('compute.text_498'), labelClass: 'label-w-80', value: this.isPackage ? this.$t('billingType.prepaid') : this.$t('billingType.postpaid') },
-          { label: this.$t('cloudenv.buy_num'), labelClass: 'label-w-80', value: `${this.fd?.count}${this.$t('common_62')}` },
+          { label: this.$t('compute.text_498'), labelClass: 'label-w-120', value: this.isPackage ? this.$t('billingType.prepaid') : this.$t('billingType.postpaid') },
+          { label: this.$t('cloudenv.buy_num'), labelClass: 'label-w-120', value: `${this.fd?.count}${this.$t('common_62')}` },
         ],
         [
-          { label: this.$t('compute.text_177'), labelClass: 'label-w-80', value: this.fd.sku?.region },
-          { label: this.$t('compute.text_267'), labelClass: 'label-w-80', value: this.image },
+          { label: this.$t('compute.text_177'), labelClass: 'label-w-120', value: this.fd.sku?.region },
+          { label: this.$t('compute.text_49'), labelClass: 'label-w-120', value: this.systemDisk },
         ],
       ]
       return ret
@@ -238,13 +225,13 @@ export default {
       return '¥'
     },
     priceTips () {
-      if (this.price) {
+      if (this.originPrice) {
         if (this.isPackage && this.durationNum) {
-          const _day = (this.price / 30 / this.durationNum).toFixed(2)
+          const _day = (this.originPrice / 30 / this.durationNum).toFixed(2)
           const _hour = (parseFloat(_day) / 24).toFixed(2)
           return this.$t('compute.text_1137', [this.currency, _day, this.currency, _hour])
         } else {
-          const _day = (this.price * 24).toFixed(2)
+          const _day = (this.originPrice * 24).toFixed(2)
           const _month = (parseFloat(_day) * 30).toFixed(2)
           return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
         }
@@ -297,11 +284,17 @@ export default {
       }
       return null
     },
+    systemDisk () {
+      if (this.fd?.systemDiskSize) {
+        return `${this.fd.systemDiskSize}GB ${_.get(this.fd, 'systemDiskType.label')}`
+      }
+      return '--'
+    },
   },
   watch: {
     priceTips: {
       handler (val) {
-        let ret = `${this.currency} ${this.price && this.price.toFixed(2)}`
+        let ret = `${this.currency} ${this.originPrice && this.originPrice.toFixed(2)}`
         ret += !this.isPackage ? this.$t('compute.text_296') : ''
         this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
       },
@@ -420,7 +413,6 @@ export default {
           params.spec = `${systemDiskSize}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`
         }
         const dataDiskSpec = []
-        // if (this.dataDiskSizes && this.dataDiskSizes.length && !this.dataDiskType) return
         R.forEach((value) => {
           if (isUcloudAzure) {
             dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${this.dataDiskType}`)
@@ -457,6 +449,7 @@ export default {
 
 <style lang="less" scoped>
 @import "../../../../../../src/styles/less/theme";
+
 .create-server-result-wrap {
   position: relative;
   font-size: 12px;
@@ -469,8 +462,8 @@ export default {
       &.label-w-80 {
         width: 80px;
       }
-      &.label-w-100 {
-        width: 100px;
+      &.label-w-120 {
+        width: 120px;
       }
     }
     .value {
