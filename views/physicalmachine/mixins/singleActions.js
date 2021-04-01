@@ -1,5 +1,6 @@
 import { Base64 } from 'js-base64'
 import qs from 'qs'
+import { canIpmiProbe } from '../utils/status'
 import expectStatus from '@/constants/expectStatus'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
@@ -272,7 +273,20 @@ export default {
               },
             },
             {
-              label: i18n.t('compute.text_825'),
+              label: i18n.t('compute.host_ipmi_probe'),
+              action: () => {
+                this.onManager('performAction', {
+                  id: obj.id,
+                  steadyStatus: Object.values(expectStatus.host).flat(),
+                  managerArgs: {
+                    action: 'ipmi-probe',
+                  },
+                })
+              },
+              meta: () => ({ validate: canIpmiProbe(obj) }),
+            },
+            {
+              label: i18n.t('compute.host_prepare'),
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
