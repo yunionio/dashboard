@@ -1385,5 +1385,5 @@
   "compute.save_image_prompt.public_cloud": "公有云保存镜像会保存在云上镜像列表，新建公有云主机时可在{0}中查看使用",
   "compute.text_1383": "未添加备份机，不支持该操作",
   "compute.secgroup.source.placeholder": "支持手动输入IP、选择CIDR或安全组",
-  "compute.secgroup.source.effect.desc": "来源是安全组目前只有阿里腾讯云生效"
+  "compute.secgroup.source.effect.desc": "安全组类型暂只有阿里云和腾讯云生效"
 }
