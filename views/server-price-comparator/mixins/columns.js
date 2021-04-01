@@ -3,7 +3,6 @@ import {
   getRegionTableColumn,
   getBrandTableColumn,
 } from '@/utils/common/tableColumn'
-import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 import { BUY_DURATIONS_OPTIONS } from '@Compute/constants'
 
@@ -21,19 +20,36 @@ export default {
         },
       },
       {
-        field: 'instance_type',
+        field: 'config',
         title: i18n.t('table.title.flavor'),
         showOverflow: 'ellipsis',
         minWidth: 120,
-        sortable: true,
         slots: {
           default: ({ row }) => {
-            const ret = []
-            if (row.instance_type) {
-              ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
-            }
-            const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-            return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
+            return row.config || '-'
+          },
+        },
+      },
+      {
+        field: 'systemDisk',
+        title: i18n.t('compute.text_49'),
+        showOverflow: 'ellipsis',
+        minWidth: 120,
+        slots: {
+          default: ({ row }) => {
+            return row.systemDisk || '-'
+          },
+        },
+      },
+      {
+        field: 'dataDisk',
+        title: i18n.t('compute.text_50'),
+        showOverflow: 'ellipsis',
+        minWidth: 120,
+        slots: {
+          default: ({ row }) => {
+            if (parseInt(row.dataDisk) === 0) return '-'
+            return row.dataDisk
           },
         },
       },
