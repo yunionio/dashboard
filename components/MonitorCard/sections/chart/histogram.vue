@@ -46,6 +46,7 @@ export default {
           boundaryGap: [0, 0.01],
           splitLine: { show: false },
           axisLabel: { show: false },
+          max: function (value) { return value.max * 1.08 }, // 设置X轴的最大刻度,避免 顶部标签被遮挡
         },
         yAxis: {
           nameGap: 30,
