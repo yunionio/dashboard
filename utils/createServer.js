@@ -731,6 +731,10 @@ export class GenCreateData {
           diskObj.schedtags[0].strategy = this.fd.dataDiskPolicys[key]
         }
       }
+      if (this.fd.systemDiskStorage) {
+        // if system disk specifies storage, the data disks should do the same
+        diskObj.storage_id = this.fd.systemDiskStorage
+      }
       dataDisk.push(diskObj)
     }, this.fd.dataDiskSizes)
     const disks = { data: dataDisk, system: systemDisk }
