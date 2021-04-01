@@ -94,10 +94,10 @@ export default {
       return params
     },
     isNatDisabled () {
-      if (this.params.data[0].provider === 'OneCloud' || this.params.data[0].provider === 'Huawei') {
-        return true
+      if (this.params.data[0].provider === 'Aliyun') {
+        return false
       }
-      return false
+      return true
     },
   },
   methods: {
