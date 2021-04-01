@@ -11,6 +11,7 @@
 
 <script>
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
@@ -128,6 +129,7 @@ export default {
             const isAvailable = this.list.selectedItems.every(item => item.status.toLowerCase() === 'available')
             const notAvailableTip = !isAvailable ? i18n.t('network.not.available.tooltip') : null
             const isPrepaid = this.list.selectedItems.every(item => item.billing_type.toLowerCase() === 'prpaid')
+            const isOwner = this.list.selectedItems.every(item => this.isOwner(item))
             return [
               {
                 label: this.$t('network.text_201'),
@@ -139,10 +141,18 @@ export default {
                     },
                   })
                 },
-                meta: () => ({
-                  validate: selectedLength,
-                  tooltip: notSelectedTooltip,
-                }),
+                meta: () => {
+                  if (!isOwner) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('network.text_627'),
+                    }
+                  }
+                  return {
+                    validate: selectedLength,
+                    tooltip: notSelectedTooltip,
+                  }
+                },
               },
               {
                 label: i18n.t('network.expired_release'),
@@ -160,6 +170,12 @@ export default {
                   const ret = {
                     validate: false,
                     tooltip: null,
+                  }
+                  if (!isOwner) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('network.text_627'),
+                    }
                   }
                   if (isPrepaid) {
                     ret.tooltip = i18n.t('network.nat.prepaid.unsupported')
@@ -188,6 +204,12 @@ export default {
                   const ret = {
                     validate: false,
                     tooltip: null,
+                  }
+                  if (!isOwner) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('network.text_627'),
+                    }
                   }
                   if (!isAvailable) {
                     ret.tooltip = notAvailableTip
@@ -220,6 +242,12 @@ export default {
                     validate: false,
                     tooltip: null,
                   }
+                  if (!isOwner) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('network.text_627'),
+                    }
+                  }
                   if (!isAvailable) {
                     ret.tooltip = notAvailableTip
                     return ret
@@ -236,6 +264,14 @@ export default {
               },
               disableDeleteAction(this, {
                 name: this.$t('dictionary.nat'),
+                hidden: () => {
+                  if (!isOwner) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('network.text_627'),
+                    }
+                  }
+                },
               }),
               {
                 label: this.$t('network.text_131'),
@@ -252,6 +288,12 @@ export default {
                   })
                 },
                 meta: () => {
+                  if (!isOwner) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('network.text_627'),
+                    }
+                  }
                   return {
                     validate: this.list.allowDelete(),
                   }
@@ -263,11 +305,19 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+  },
   created () {
     this.initSidePageTab('nat-detail')
     this.list.fetchData()
   },
   methods: {
+    isOwner (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return false
+    },
     getParam () {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),

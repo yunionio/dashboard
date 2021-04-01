@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
@@ -6,6 +7,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_201'),
+        // permission: 'natgateways_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['available'],
@@ -15,9 +17,17 @@ export default {
             },
           })
         },
-        meta: () => ({
-          validate: true,
-        }),
+        meta: (obj) => {
+          if (!this.isOwner(obj)) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_627'),
+            }
+          }
+          return {
+            validate: true,
+          }
+        },
       },
       {
         label: i18n.t('network.text_129'),
@@ -48,6 +58,12 @@ export default {
                   ret.tooltip = i18n.t('network.nat.prepaid.unsupported')
                   return ret
                 }
+                if (!this.isOwner(obj)) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_627'),
+                  }
+                }
                 return ret
               },
             },
@@ -72,6 +88,12 @@ export default {
                   ret.tooltip = i18n.t('network.nat.postpaid.unsupported')
                   return ret
                 }
+                if (!this.isOwner(obj)) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_627'),
+                  }
+                }
                 return ret
               },
             },
@@ -89,6 +111,12 @@ export default {
               meta: () => {
                 const isPrepaid = obj.billing_type === 'prepaid'
                 const validate = (isAvailable && isPrepaid)
+                if (!this.isOwner(obj)) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_627'),
+                  }
+                }
                 return {
                   validate: validate,
                   tooltip: notAvailableTip || (!isPrepaid ? i18n.t('network.nat.postpaid.unsupported') : null),
@@ -97,6 +125,14 @@ export default {
             },
             disableDeleteAction(this, {
               name: this.$t('dictionary.nat'),
+              hidden: () => {
+                if (!this.isOwner(obj)) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_627'),
+                  }
+                }
+              },
             }),
             {
               label: i18n.t('network.text_131'),
@@ -113,11 +149,29 @@ export default {
                   refresh: this.refresh,
                 })
               },
-              meta: () => this.$getDeleteResult(obj),
+              meta: () => {
+                if (!this.isOwner(obj)) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('network.text_627'),
+                  }
+                }
+                return this.$getDeleteResult(obj)
+              },
             },
           ]
         },
       },
     ]
+  },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+  },
+  methods: {
+    isOwner (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return false
+    },
   },
 }
