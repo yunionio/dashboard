@@ -56,7 +56,6 @@
       </a-form-item> -->
       <a-form-item :label="$t('compute.text_15')">
         <base-select
-          class="w-50"
           resource="cloudproviders"
           v-decorator="decorators.cloudprovider"
           :params="policycloudproviderParams"
