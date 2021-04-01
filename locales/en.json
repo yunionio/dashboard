@@ -682,5 +682,6 @@
   "cloudenv.price_comparison": "Price comparison",
   "cloudenv.price_list": "Price List",
   "cloudenv.buy_num": "Purchase quantity",
-  "cloudenv.add_to_list": "Add To List"
+  "cloudenv.add_to_list": "Add To List",
+  "cloudenv.last.sync.end.at": "End Time"
 }
