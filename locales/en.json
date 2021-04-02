@@ -1318,7 +1318,7 @@
   "compute.text_1346": "Image ID",
   "compute.text_1347": "The disk snapshot that is being rolled back should not be deleted",
   "compute.text_1348": "The resources of different projects currently do not support simultaneous initiation of tickets. Please select the resources of the same project to resubmit!",
-  "compute.text_1349": "The VMware platform system disk can perform this operation only if the guest status is 【{0}】",
+  "compute.text_1349": "The VMware platform disks can perform this operation only if the guest status is 【{0}】",
   "compute.text_1350": "Select Block Storage",
   "compute.text_1351": "Please Select Block Storage",
   "compute.text_1352": "No line type",
@@ -1385,5 +1385,5 @@
   "compute.save_image_prompt.public_cloud": "Saving image on the public clouds will create a image on the cloud. The image can be found in the list of {0} when creating public cloud servers",
   "compute.text_1383": "No backup machine is added, this operation is not supported",
   "compute.secgroup.source.placeholder": "Support manual input of IP, selection of CIDR or security group",
-  "compute.secgroup.source.effect.desc": "Source is security group currently the only aliyun tencent cloud to take effect"
+  "compute.secgroup.source.effect.desc": "Source is security group currently the only aliyun and tencent cloud to take effect"
 }
