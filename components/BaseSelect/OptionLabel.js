@@ -119,13 +119,13 @@ const resourceMode = {
       const data = vm.data
       let desc = ''
       if (data.scope === 'system') {
-        desc = i18n.t('shareScope.system')
+        desc = i18n.t('monitor.dashboard.select.option', [i18n.t('shareScope.system')])
       }
       if (data.scope === 'domain') {
-        desc = i18n.t('cloudenv.text_505', [data.project_domain])
+        desc = i18n.t('monitor.dashboard.select.option', [data.project_domain, i18n.t('cloudenv.text_393')])
       }
       if (data.scope === 'project') {
-        desc = i18n.t('cloudenv.text_506', [data.project])
+        desc = i18n.t('monitor.dashboard.select.option', [data.project, i18n.t('cloudenv.text_254')])
       }
       return (
         <div class='d-flex'>
