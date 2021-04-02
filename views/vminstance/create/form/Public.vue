@@ -49,7 +49,7 @@
         :providerParams="providerParams"
         :cloudregionParams="cloudregionParams"
         :zoneParams="zoneParams"
-        :defaultActiveFirstOption="['provider']"
+        :defaultActiveFirstOption="['provider', 'cloudregion']"
         @providerFetchSuccess="providerFetchSuccess" />
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
         <resource :decorator="decorators.resourceType" />
@@ -164,8 +164,7 @@
               :policy-host-params="policyHostParams"
               :decorators="decorators.schedPolicy"
               :hideCloudaccountSched="hideCloudaccountSched"
-              :policy-schedtag-params="policySchedtagParams"
-              :policycloudproviderParams="policycloudproviderParams" />
+              :policy-schedtag-params="policySchedtagParams" />
           </a-form-item>
         </a-collapse-panel>
       </a-collapse>
@@ -254,7 +253,9 @@ export default {
       }
     },
     cacheImageParams () {
-      const params = {}
+      const params = {
+        manager_id: this.form.fd.cloudprovider
+      }
       if (R.is(Object, this.form.fd.sku)) {
         if (this.cloudregionZoneParams.cloudregion) {
           params.cloudregion_id = this.cloudregionZoneParams.cloudregion
@@ -290,6 +291,7 @@ export default {
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
+        manager: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
       if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
@@ -430,7 +432,7 @@ export default {
     policycloudproviderParams () {
       const params = {
         limit: 0,
-        cloudregion: this.cloudregionZoneParams.cloudregion,
+        cloudregion: this.form.fd.cloudregion,
         ...this.scopeParams,
       }
       if (this.form.fd.zone) {
