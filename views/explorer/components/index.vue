@@ -15,7 +15,11 @@
         </template>
       </monitor-header>
       <div v-for="(item, i) in seriesList" :key="i">
-        <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+        <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr">
+          <template #extra>
+            <a-button class="mr-3" type="primary" @click="handleSave(metricList[i])">{{ $t('common.save') }}</a-button>
+          </template>
+        </monitor-line>
       </div>
       <a-card v-if="!seriesList.length && loadingList[0]" class="explorer-monitor-line d-flex align-items-center justify-content-center">
         <loader :loading="true" />
@@ -27,6 +31,8 @@
 <script>
 import get from 'lodash/get'
 import echarts from 'echarts'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import MonitorForms from '@Monitor/sections/ExplorerForm'
 import MonitorLine from '@Monitor/sections/MonitorLine'
 import { MONITOR_MAX_POINTERS } from '@Monitor/constants'
@@ -44,6 +50,7 @@ export default {
     MonitorHeader,
     CustomDate,
   },
+  mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       time: '1h',
@@ -168,6 +175,13 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    handleSave (mq) {
+      this.createDialog('CreateMonitorDashboardChart', {
+        metric_query: mq,
+        timeGroup: this.timeGroup,
+        timeRangeParams: this.timeRangeParams,
+      })
     },
   },
 }

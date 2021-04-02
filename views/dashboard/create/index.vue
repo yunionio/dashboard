@@ -4,7 +4,7 @@
     <page-body v-if="initFinished">
       <a-row>
         <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
-          <monitor-forms :panel="panel" :multiQuery="false" @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
+          <monitor-forms :panel="panel" :queryOnly="false" :multiQuery="false" @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
         </a-col>
         <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
           <monitor-header
@@ -29,7 +29,7 @@
     <page-footer>
       <div slot="right">
         <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm" :disabled="metricList.length === 0">{{ $t('common.save') }}</a-button>
-        <a-button @click="() => $router.back()">{{ $t('common.cancel') }}</a-button>
+        <a-button @click="goback">{{ $t('common.cancel') }}</a-button>
       </div>
     </page-footer>
   </div>
@@ -211,13 +211,19 @@ export default {
         throw error
       }
     },
+    goback () {
+      this.$router.push({ path: '/monitor-dashboard', query: { dashboard_id: this.$route.query.dashboard } })
+    },
     async handleConfirm () {
       this.loading = true
+      const mq = this.metricList[0]
+      const name = mq[0].model.name
+      delete mq[0].model.name
       try {
         const data = {
-          name: uuid(32),
+          name: name || uuid(32),
           dashboard_id: this.$route.query.dashboard,
-          metric_query: this.metricList[0],
+          metric_query: mq,
           interval: this.timeGroup,
           scope: this.$store.getters.scope,
           ...this.timeRangeParams,
@@ -230,7 +236,7 @@ export default {
           await new this.$Manager('alertpanels', 'v1').create({ data })
         }
         this.loading = false
-        this.$router.back()
+        this.goback()
       } catch (error) {
         throw error
       } finally {

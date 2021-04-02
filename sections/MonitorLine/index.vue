@@ -1,5 +1,8 @@
 <template>
   <a-card :title="title" size="small" class="explorer-monitor-line">
+    <div slot="extra">
+      <slot name="extra" />
+    </div>
     <loader v-if="loading" :loading="true" />
     <template v-else>
       <div class="d-flex">
