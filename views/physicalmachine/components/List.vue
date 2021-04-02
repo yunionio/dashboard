@@ -16,6 +16,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
+import { canIpmiProbe } from '../utils/status'
 import { getNameFilter, getStatusFilter, getEnabledFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -343,7 +344,31 @@ export default {
                 resource: 'hosts',
               }),
               {
-                label: this.$t('compute.text_825'),
+                label: this.$t('compute.host_ipmi_probe'),
+                action: () => {
+                  this.list.batchPerformAction('ipmi-probe', null, this.list.steadyStatus)
+                },
+                meta: () => {
+                  if (this.list.selectedItems.length <= 0) {
+                    return {
+                      validate: false,
+                    }
+                  }
+                  for (let i = 0; i < this.list.selectedItems.length; i++) {
+                    const obj = this.list.selectedItems[i]
+                    if (!canIpmiProbe(obj)) {
+                      return {
+                        validate: false,
+                      }
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
+              },
+              {
+                label: this.$t('compute.host_prepare'),
                 action: () => {
                   this.list.batchPerformAction('prepare', null, this.list.steadyStatus)
                 },
