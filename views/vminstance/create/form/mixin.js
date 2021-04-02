@@ -223,6 +223,7 @@ export default {
         // usable: true,
         limit: 0,
         // show_emulated: true,
+        manager_id: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
       if (this.isZStack) {
