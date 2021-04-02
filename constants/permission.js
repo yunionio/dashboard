@@ -107,6 +107,10 @@ export const PERMISSION = {
   lb_loadbalancerclusters_list: ['compute', 'loadbalancerclusters', 'list'],
   // 负载均衡节点
   lb_loadbalanceragents_list: ['compute', 'loadbalanceragents', 'list'],
+  // ssh 代理节点
+  sshproxy_node_list: ['compute', 'proxy_endpoints', 'list'],
+  // ssh 代理节点
+  sshproxy_service_list: ['compute', 'proxy_agents', 'list'],
   // 区域
   areas_list: ['compute', 'cloudregions', 'list'],
   // 区域

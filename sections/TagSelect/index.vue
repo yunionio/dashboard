@@ -26,10 +26,13 @@
           </li>
         </ul>
         <ul class="tag-list" v-if="showUserTags">
-          <li class="tag-tip">{{$t('common_261')}}</li>
+          <li class="tag-tip">
+            <div class="flex-fill" style="font-size: 12px;">{{$t('common_261')}}</div>
+            <div class="val-search" style="width: 145px;"><input style="width: 145px;" :placeholder="$t('common_264')" @input="handleSearchTag" @compositionstart="composingTag = true" @compositionend="composingTag = false" /></div>
+          </li>
           <li
             class="tag-item"
-            v-for="item of userTags"
+            v-for="item of filtedUserTags"
             :key="item.key"
             :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key)}"
             @mouseenter="handleKeyMouseenter('userTags', item.key, $event)"
@@ -124,6 +127,7 @@ export default {
       visible: false,
       loading: false,
       userTags: [],
+      filtedUserTags: [],
       extTags: [],
       valueWrapTop: 0,
       valueWrapBottom: 0,
@@ -133,6 +137,7 @@ export default {
       search: '',
       withoutUserMetaKey: 'without_user_meta',
       composing: false, // 中文输入法时的正在输入
+      composingTag: false,
     }
   },
   computed: {
@@ -200,6 +205,7 @@ export default {
   created () {
     this.manager = this.managerInstance || new this.$Manager('metadatas')
     this.debounceHandleSearchInput = debounce(this.handleSearchInput, 500)
+    this.debounceHandleSearchTagInput = debounce(this.handleSearchTagInput, 500)
   },
   methods: {
     handleVisibleChange (visible) {
@@ -253,6 +259,7 @@ export default {
       }
       const sortByKeyCaseInsensitive = R.sortBy(R.compose(R.toLower, R.prop('key')))
       this.userTags = sortByKeyCaseInsensitive(userRet)
+      this.filtedUserTags = this.userTags
       this.extTags = sortByKeyCaseInsensitive(extRet)
     },
     getTagTitle,
@@ -264,6 +271,20 @@ export default {
       const val = e.target.value
       this.$nextTick(() => {
         this.debounceHandleSearchInput(val)
+      })
+    },
+    handleSearchTagInput (val) {
+      if (this.composing) return
+      if (val) {
+        this.filtedUserTags = this.userTags.filter((tag) => { return tag.key.indexOf(val) >= 0 })
+      } else {
+        this.filtedUserTags = this.userTags
+      }
+    },
+    handleSearchTag (e) {
+      const val = e.target.value
+      this.$nextTick(() => {
+        this.debounceHandleSearchTagInput(val)
       })
     },
     handleKeyMouseenter (type, key, evt) {
