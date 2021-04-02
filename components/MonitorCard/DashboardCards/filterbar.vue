@@ -1,12 +1,12 @@
 <template>
     <a-row>
-      <a-col :span="6">
+      <a-col :span="16">
         <refresh
           showSelect
           tooltips
           :loading="loading"
           @refresh="handleRefresh" />
-        <a-button @click="createChart">
+        <a-button  style="margin-left: 8px;" @click="createChart">
           {{ $t('monitor.dashboard.dialog.project.create')}}
         </a-button>
       </a-col>

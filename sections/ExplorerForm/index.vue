@@ -10,6 +10,7 @@
     <div v-for="(item, i) in formList" :key="item.key" class="mb-3">
       <monitor-form
         :panel="panel"
+        :query-only="queryOnly"
         :defaultPanelShow="item.show"
         :showDelete="formList.length > 1"
         :formItemLayout="formItemLayout"
@@ -43,6 +44,10 @@ export default {
     panel: {
       type: Object,
       default: () => ({}),
+    },
+    queryOnly: {
+      type: Boolean,
+      default: true,
     },
     multiQuery: {
       type: Boolean,

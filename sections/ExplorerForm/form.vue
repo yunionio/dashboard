@@ -8,6 +8,10 @@
       v-show="panelShow"
       v-bind="formItemLayout"
       :form="form.fc">
+      <a-form-item :label="$t('common.name')" v-if="!queryOnly">
+        <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
+<!--        <name-repeated v-slot:extra res="alertpanels" :name="form.fd.name" />-->
+      </a-form-item>
       <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
         <metric
           :form="form"
@@ -67,6 +71,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    queryOnly: {
+      type: Boolean,
+      default: true,
+    },
     formItemLayout: {
       type: Object,
       default: () => ({
@@ -96,6 +104,7 @@ export default {
     if (this.panel && this.panel.common_alert_metric_details && this.panel.common_alert_metric_details.length > 0) {
       const f = this.panel.common_alert_metric_details[0]
       const q = _.get(this.panel, 'settings.conditions[0].query.model')
+      initialValue.name = this.panel.name || ''
       initialValue.res_type = f.res_type
       initialValue.metric_key = f.measurement
       initialValue.metric_value = f.field
@@ -127,6 +136,99 @@ export default {
         return defaultValue
       }
     }
+
+    const decorators = {
+      metric_res_type: [
+        'metric_res_type',
+        {
+          initialValue: initialValue.res_type,
+          rules: [
+            { required: true, message: this.$t('common.select') },
+          ],
+        },
+      ],
+      metric_key: [
+        'metric_key',
+        {
+          initialValue: initialValue.metric_key,
+          rules: [
+            { required: true, message: this.$t('common.select') },
+          ],
+        },
+      ],
+      metric_value: [
+        'metric_value',
+        {
+          initialValue: initialValue.metric_value,
+          rules: [
+            { required: true, message: this.$t('common.select') },
+          ],
+        },
+      ],
+      filters: {
+        tagCondition: i => [
+          `tagConditions[${i}]`,
+          {
+            initialValue: getkey(i, 'condition', 'AND'),
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
+        tagKey: i => [
+          `tagKeys[${i}]`,
+          {
+            initialValue: getkey(i, 'key', ''),
+            rules: [
+              // { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
+        tagOperator: i => [
+          `tagOperators[${i}]`,
+          {
+            initialValue: getkey(i, 'operator', '='),
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
+        tagValue: i => [
+          `tagValues[${i}]`,
+          {
+            initialValue: getkey(i, 'value', ''),
+            rules: [
+              // { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
+      },
+      group_by: [
+        'group_by',
+        {
+          initialValue: initialValue.group_by,
+        },
+      ],
+      function: [
+        'function',
+        {
+          initialValue: initialValue.function,
+        },
+      ],
+    }
+
+    if (!this.queryOnly) {
+      decorators.name = [
+        'name',
+        {
+          initialValue: initialValue.name || '',
+          rules: [
+            { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
+          ],
+        },
+      ]
+    }
+
     return {
       form: {
         fc: this.$form.createForm(this, {
@@ -134,85 +236,7 @@ export default {
         }),
         fd: {},
       },
-      decorators: {
-        metric_res_type: [
-          'metric_res_type',
-          {
-            initialValue: initialValue.res_type,
-            rules: [
-              { required: true, message: this.$t('common.select') },
-            ],
-          },
-        ],
-        metric_key: [
-          'metric_key',
-          {
-            initialValue: initialValue.metric_key,
-            rules: [
-              { required: true, message: this.$t('common.select') },
-            ],
-          },
-        ],
-        metric_value: [
-          'metric_value',
-          {
-            initialValue: initialValue.metric_value,
-            rules: [
-              { required: true, message: this.$t('common.select') },
-            ],
-          },
-        ],
-        filters: {
-          tagCondition: i => [
-            `tagConditions[${i}]`,
-            {
-              initialValue: getkey(i, 'condition', 'AND'),
-              rules: [
-                { required: true, message: this.$t('common.select') },
-              ],
-            },
-          ],
-          tagKey: i => [
-            `tagKeys[${i}]`,
-            {
-              initialValue: getkey(i, 'key', ''),
-              rules: [
-                // { required: true, message: this.$t('common.select') },
-              ],
-            },
-          ],
-          tagOperator: i => [
-            `tagOperators[${i}]`,
-            {
-              initialValue: getkey(i, 'operator', '='),
-              rules: [
-                { required: true, message: this.$t('common.select') },
-              ],
-            },
-          ],
-          tagValue: i => [
-            `tagValues[${i}]`,
-            {
-              initialValue: getkey(i, 'value', ''),
-              rules: [
-                // { required: true, message: this.$t('common.select') },
-              ],
-            },
-          ],
-        },
-        group_by: [
-          'group_by',
-          {
-            initialValue: initialValue.group_by,
-          },
-        ],
-        function: [
-          'function',
-          {
-            initialValue: initialValue.function,
-          },
-        ],
-      },
+      decorators: decorators,
       initFilters: initFilters,
       groupbyOpts: [],
       functionOpts: [],
@@ -347,6 +371,12 @@ export default {
         database: this.metricKeyItem && this.metricKeyItem.database ? this.metricKeyItem.database : 'telegraf',
       }
       const tags = []
+      if (!this.queryOnly) {
+        let formErr
+        this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => { if (err) { formErr = err } })
+        if (formErr) return
+        params.name = fd.name
+      }
       if (fd.metric_key) params.measurement = fd.metric_key
       if (fd.metric_value) params.select = [[{ type: 'field', params: [fd.metric_value] }]]
       if (R.is(Object, fd.tagValues)) {

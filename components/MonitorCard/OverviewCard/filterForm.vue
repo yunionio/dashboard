@@ -4,6 +4,9 @@
         <refresh  @refresh="handleRefresh" :loading="loading" />
       </a-form-item>
       <a-form-item style="margin-right: 8px;">
+        {{ $t('dictionary.server') }}
+      </a-form-item>
+      <a-form-item style="margin-right: 8px;">
         <metric-select  v-decorator="decorators.metric" :options="metricOptions" @change="handleMetricChange" />
       </a-form-item>
       <a-form-item style="margin-right: 8px;">

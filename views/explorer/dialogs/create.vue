@@ -1,13 +1,18 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('monitor.dashboard.dialog.create')}}</div>
+    <div slot="header">{{$t('monitor.dashboard.dialog.project.create')}}</div>
     <div slot="body">
       <a-form :form="form" v-bind="formLayout">
-        <a-form-item :label="$t('bill.text_219')">
-          <scope-select v-decorator="decorators.scope" />
-        </a-form-item>
         <a-form-item :label="$t('compute.text_228')">
           <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')"  />
+        </a-form-item>
+        <a-form-item :label="$t('monitor.dashboard.title')">
+          <base-select
+              filterable
+              v-decorator="decorators.dashboard_id"
+              :loading="loading"
+              resource="alertdashboards"
+              :options="dashboards" />
         </a-form-item>
       </a-form>
     </div>
@@ -21,26 +26,23 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import ScopeSelect from '@Monitor/components/MonitorCard/sections/select/scope'
 
 export default {
-  name: 'CreateMonitorDashboard',
-  components: {
-    ScopeSelect,
-  },
+  name: 'CreateMonitorDashboardChart',
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
       scope: this.$store.getters.scope,
       form: this.$form.createForm(this),
+      manager: new this.$Manager('alertdashboards', 'v1'),
+      dashboards: [],
       decorators: {
-        scope: [
-          'scope',
+        dashboard_id: [
+          'dashboard_id',
           {
-            initialValue: { id: '', scope: this.$store.getters.scope },
             rules: [
-              { validator: this.validateScope },
+              { required: true, message: this.$t('monitor.dashboard.create.chart.dashboard.tips') },
             ],
           },
         ],
@@ -68,17 +70,24 @@ export default {
       },
     }
   },
+  created () {
+    this.fetchDashboards()
+  },
   methods: {
-    validateScope (rule, value, callback) {
-      if (this.scope === value.scope) {
-        callback()
-      } else {
-        if (value.id) {
-          callback()
-        } else {
-          const msg = this.$t('common.placeholder')
-          callback(msg)
+    async fetchDashboards () {
+      this.loading = true
+      this.dashboards = []
+      try {
+        const params = {
+          scope: this.scope,
         }
+        const { data: { data } } = await this.manager.list({ params })
+        this.dashboards = data
+        this.loading = false
+      } catch (error) {
+        throw error
+      } finally {
+        this.loading = false
       }
     },
     validateForm () {
@@ -97,17 +106,17 @@ export default {
       try {
         const values = await this.validateForm()
         const data = {
-          scope: values.scope.scope,
+          dashboard_id: values.dashboard_id,
           name: values.name,
+          metric_query: this.params.metric_query,
+          interval: this.params.timeGroup,
+          scope: this.$store.getters.scope,
+          ...this.params.timeRangeParams,
         }
-        if (this.scope !== values.scope.scope && values.scope.id && values.scope.id.length > 0) {
-          data[`${values.scope.scope}_id`] = values.scope.id
-        }
-        await new this.$Manager('alertdashboards', 'v1').create({ data })
+        if (!data.metric_query || !data.metric_query.length || !data.from || !data.dashboard_id) return
+        await new this.$Manager('alertpanels', 'v1').create({ data })
         this.loading = false
-        if (this.params.refresh && typeof this.params.refresh === 'function') {
-          this.params.refresh()
-        }
+        this.$message.success(this.$t('cloudenv.text_381'))
         this.cancelDialog()
       } catch (error) {
         this.loading = false
@@ -117,7 +126,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>

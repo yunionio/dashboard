@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!loading">
     <div v-if="isEmpty">
       <a-empty style="padding-top: 200px;">
         <a-button type="primary" @click="handleCreateDashboard">
@@ -9,20 +9,25 @@
     </div>
     <div v-else>
       <a-row :gutter="8">
-        <a-col :span="8">
-          <base-select
-              filterable
-              resource="alertdashboards"
-              optionLabelProp="label"
-              v-model="dashboardId"
-              :options="dashboards" />
+        <a-col :span="10">
+          <a-row>
+            <a-col :span="2" style="padding-top: 6px;padding-bottom: 6px;">{{ $t('monitor.dashboard.label') + ':' }}</a-col>
+            <a-col :span="22">
+              <base-select
+                  filterable
+                  style="min-width: 150px;"
+                  resource="alertdashboards"
+                  v-model="dashboardId"
+                  :options="dashboards" />
+            </a-col>
+          </a-row>
         </a-col>
         <a-col :span="4">
           <a-button type="primary" @click="handleCreateDashboard">
             {{ $t('monitor.dashboard.dialog.create') }}
           </a-button>
         </a-col>
-        <a-col :span="11" />
+        <a-col :span="9" />
         <a-col :span="1">
           <a-dropdown style="float: right" :trigger="['click']" placement="bottomRight">
             <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block action-btn" @click="e => e.preventDefault()">
@@ -58,12 +63,13 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const dashboardId = this.$route.query.dashboard_id || ''
     return {
       scope: this.$store.getters.scope,
       loading: true,
       manager: new this.$Manager('alertdashboards', 'v1'),
       dashboards: [],
-      dashboardId: '',
+      dashboardId: dashboardId,
     }
   },
   computed: {
@@ -116,7 +122,7 @@ export default {
         }
         const { data: { data } } = await this.manager.list({ params })
         this.dashboards = data
-        if (data && data.length > 0) {
+        if (!this.dashboardId && data && data.length > 0) {
           this.dashboardId = data[0].id
         }
         this.loading = false

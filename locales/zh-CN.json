@@ -203,7 +203,9 @@
   "monitor.text_119": "监控查询",
   "monitor.text_120": "修改{0}",
   "monitor.text_121": "已改名?",
+  "monitor.dashboard.create.chart.dashboard.tips": "请选择监控面板",
   "monitor.dashboard.title": "监控面板",
+  "monitor.dashboard.label": "面板",
   "monitor.overview_alert_sum": "未恢复告警",
   "monitor.overview_alert_sum_pie": "告警总数",
   "monitor.overview_alert.undefined": "其他",
@@ -248,5 +250,8 @@
   "monitor.dashboard.dialog.project.create": "添加图表",
   "monitor.dashboard.dialog.project.update": "更新图表",
   "monitor.dashboard.dialog.project.delete": "删除监控图表",
+  "monitor.dashboard.select.option": "归属: {0}{1}",
+  "monitor.chart.toolbar.line": "切换为折线图",
+  "monitor.chart.toolbar.bar": "切换为柱状图",
   "monitor.dashboard.dialog.project.clone": "克隆监控图表"
 }
