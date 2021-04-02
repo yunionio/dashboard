@@ -63,13 +63,12 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const dashboardId = this.$route.query.dashboard_id || ''
     return {
       scope: this.$store.getters.scope,
       loading: true,
       manager: new this.$Manager('alertdashboards', 'v1'),
       dashboards: [],
-      dashboardId: dashboardId,
+      dashboardId: '',
     }
   },
   computed: {
@@ -78,7 +77,7 @@ export default {
     },
   },
   created () {
-    this.fetchDashboards()
+    this.fetchDashboards((data) => { this.dashboardId = data[0].id })
   },
   methods: {
     handleCreateDashboard () {
@@ -113,7 +112,7 @@ export default {
         },
       })
     },
-    async fetchDashboards () {
+    async fetchDashboards (callback) {
       this.loading = true
       this.dashboards = []
       try {
@@ -122,8 +121,8 @@ export default {
         }
         const { data: { data } } = await this.manager.list({ params })
         this.dashboards = data
-        if (!this.dashboardId && data && data.length > 0) {
-          this.dashboardId = data[0].id
+        if (callback && typeof callback === 'function') {
+          callback(data)
         }
         this.loading = false
       } catch (error) {

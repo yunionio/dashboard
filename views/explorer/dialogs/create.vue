@@ -51,7 +51,6 @@ export default {
           {
             rules: [
               { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
-              { validator: this.$validate('resourceName') },
             ],
           },
         ],
