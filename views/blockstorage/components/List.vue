@@ -231,13 +231,14 @@ export default {
           { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
-      handleOpenSidepage (row) {
+      handleOpenSidepage (row, tab) {
         this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
           id: row.id,
           resource: 'storages',
           getParams: this.getParams,
         }, {
           list: this.list,
+          tab,
         })
       },
     }

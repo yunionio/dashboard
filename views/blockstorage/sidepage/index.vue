@@ -182,6 +182,8 @@ export default {
       }
     },
   },
-
+  created () {
+    if (this.params.tab) this.handleTabChange(this.params.tab)
+  },
 }
 </script>
