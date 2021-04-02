@@ -25,6 +25,8 @@ export const PERMISSION = {
   instance_snapshots_list: ['compute', 'instance_snapshots', 'list'],
   // 安全组
   secgroups_list: ['compute', 'secgroups', 'list'],
+  // 安全组缓存
+  secgroupcaches_list: ['compute', 'secgroupcaches', 'list'],
   // 弹性公网IP
   eips_list: ['compute', 'eips', 'list'],
   // 弹性网卡
@@ -248,6 +250,13 @@ export const PERMISSION = {
   secgroups_update: ['compute', 'secgroups', 'update'],
   secgroups_delete: ['compute', 'secgroups', 'delete'],
   secgroups_get: ['compute', 'secgroups', 'get'],
+  /**
+   * secgroupcache 相关操作
+   */
+  secgroupcache_create: ['compute', 'secgroupcaches', 'create'],
+  secgroupcache_update: ['compute', 'secgroupcaches', 'update'],
+  secgroupcache_delete: ['compute', 'secgroupcaches', 'delete'],
+  secgroupcache_get: ['compute', 'secgroupcaches', 'get'],
   /**
    * secgroups 相关操作
    */

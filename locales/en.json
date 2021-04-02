@@ -2193,6 +2193,7 @@
     "schedpolicie": "Scheduling Policy",
     "schedtag": "Scheduler Tag",
     "secgroup": "Security Group",
+    "secgroupcache": "Security Group Cache",
     "secgrouprule": "Security Group Rule",
     "server": "Server",
     "serverip": "Server IP",
