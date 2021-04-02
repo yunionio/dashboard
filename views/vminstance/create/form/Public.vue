@@ -432,14 +432,12 @@ export default {
     policycloudproviderParams () {
       const params = {
         limit: 0,
+        brand: this.form.fd.provider,
         cloudregion: this.form.fd.cloudregion,
         ...this.scopeParams,
       }
       if (this.form.fd.zone) {
         params.zone = this.form.fd.zone
-      }
-      if (this.form.fi.networkVpcObj && this.form.fi.networkVpcObj.manager_id) {
-        params.search = this.form.fi.networkVpcObj.manager_id
       }
       return params
     },
