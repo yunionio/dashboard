@@ -40,6 +40,7 @@ export default {
             const { metric } = obj.constants
             const { data: { data = [] } } = await alertManager.list({
               params: {
+                scope: this.$store.getters.scope,
                 type: 'guest',
                 node_id: this.data.id,
                 metric,
