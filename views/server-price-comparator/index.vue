@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('cloudenv.price_list')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
       <price-vm-instance-list
         :id="listId"
