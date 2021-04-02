@@ -2198,6 +2198,7 @@
     "schedpolicie": "调度策略",
     "schedtag": "调度标签",
     "secgroup": "安全组",
+    "secgroupcache": "安全组缓存",
     "secgrouprule": "安全组规则",
     "server": "虚拟机",
     "serverip": "虚拟机IP",
