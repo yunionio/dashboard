@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { validate } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -186,6 +187,9 @@ export default {
       protocolDisabled: this.params.title !== 'edit',
     }
   },
+  computed: {
+    ...mapGetters(['scope']),
+  },
   created () {
     this.fetchSecgroups('')
   },
@@ -280,10 +284,8 @@ export default {
         filter: [
           `id.notequals("${this.params.secgroup}")`,
         ],
-        limit: 5,
-      }
-      if (this.isAdminMode) {
-        params.scope = 'system'
+        scope: this.scope,
+        limit: 10,
       }
       if (value.length > 0) {
         params.filter.push(`name.contains("${value}")`)
