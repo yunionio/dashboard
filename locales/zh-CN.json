@@ -1319,7 +1319,7 @@
   "compute.text_1346": "镜像ID",
   "compute.text_1347": "回滚中的硬盘快照应不能被删除",
   "compute.text_1348": "不同项目的资源暂不支持同时发起工单，请选择同一项目的资源重新提交！",
-  "compute.text_1349": "VMware平台系统盘仅在主机状态为【{0}】下可以进行该操作",
+  "compute.text_1349": "VMware平台磁盘仅在主机状态为【{0}】下可以进行该操作",
   "compute.text_1350": "指定块存储",
   "compute.text_1351": "请选择块存储",
   "compute.text_1352": "无线路类型",
@@ -1386,5 +1386,5 @@
   "compute.save_image_prompt.public_cloud": "公有云保存镜像会保存在云上镜像列表，新建公有云主机时可在{0}中查看使用",
   "compute.text_1383": "未添加备份机，不支持该操作",
   "compute.secgroup.source.placeholder": "支持手动输入IP、选择CIDR或安全组",
-  "compute.secgroup.source.effect.desc": "来源是安全组目前只有阿里腾讯云生效"
+  "compute.secgroup.source.effect.desc": "安全组类型暂只有阿里云和腾讯云生效"
 }
