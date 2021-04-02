@@ -109,20 +109,19 @@ export default {
             {
               label: this.$t('storage.text_66'),
               permission: 'storages_perform_storages',
-              action: row => {
+              action: () => {
                 this.createDialog('AssociatedHostDialog', {
                   data: [me.detailData],
                   columns: this.columns,
                   title: this.$t('storage.text_66'),
-                  list: this.list,
                   onManager: this.onManager,
                   refresh: this.refresh,
                 })
               },
-              meta: row => {
+              meta: () => {
                 return {
                   validate: me.isBlockStorage,
-                  tooltip: !me.isBlockStorage && this.$t('storage.text_67', [STORAGE_TYPES[row.storage_type] || row.storage_type]),
+                  tooltip: !me.isBlockStorage && this.$t('storage.text_67', [STORAGE_TYPES[me.detailData.storage_type] || me.detailData.storage_type]),
                 }
               },
             },
