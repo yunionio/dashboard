@@ -83,6 +83,45 @@ export const USAGE_CONFIG = {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.system.key,
   },
+  'all.nics.guest.pending_delete': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'all.nics.netif': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'all.nics.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'all.nics.db': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics.guest': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics.host': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics.lb': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics.reserve': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics.guest.pending_delete': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics.netif': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'domain.nics.db': {
+    unit: i18n.t('dashboard.text_1'),
+  },
   'all.pending_delete_servers': {
     unit: i18n.t('dashboard.text_2'),
     scope: SCOPES_MAP.system.key,
@@ -400,6 +439,18 @@ export const USAGE_CONFIG = {
   'domain.nics.lb': {
     unit: i18n.t('dashboard.text_1'),
     scope: SCOPES_MAP.domain.key,
+  },
+  'nics.reserve': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'nics.guest.pending_delete': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'nics.eip': {
+    unit: i18n.t('dashboard.text_1'),
+  },
+  'nics.db': {
+    unit: i18n.t('dashboard.text_1'),
   },
   pending_delete_servers: {
     unit: i18n.t('dashboard.text_2'),
