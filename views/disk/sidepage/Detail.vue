@@ -75,10 +75,15 @@ export default {
           slots: {
             default: ({ row }, h) => {
               if (!row.guest || row.guests.length <= 0) return '-'
+              const guests = row.guests.map((guest, index) => {
+                return <side-page-trigger permission="server_get" name="VmInstanceSidePage" id={guest.id} vm={this}>
+                  {guest.name}
+                  <status status={ guest.status } statusModule='server'/>
+                </side-page-trigger>
+              })
               return [
                 <div>
-                  <side-page-trigger permission="server_get" name="VmInstanceSidePage" id={row.guests[0].id} vm={this}>{row.guest}</side-page-trigger>
-                  {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : '-'}
+                  { guests }
                 </div>,
               ]
             },

@@ -53,7 +53,7 @@ export default {
           return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
       },
-      /* getUnusedTableColumn(),
+      /* getUnusedTableColumn(), */
       {
         field: 'guest',
         title: this.$t('res.server'),
@@ -61,15 +61,21 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
+            if (!row.guest || row.guests.length <= 0) return '-'
+            const guests = row.guests.map((guest, index) => {
+              return <side-page-trigger permission="server_get" name="VmInstanceSidePage" id={guest.id} vm={this} tab="vm-instance-detail">
+                {guest.name}
+                <status status={ guest.status } statusModule='server'/>
+              </side-page-trigger>
+            })
             return [
-              <div class='text-truncate'>
-                {row.guest ? <list-body-cell-wrap copy field='guest' row={row} /> : '-'}
-                {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : ''}
+              <div>
+                { guests }
               </div>,
             ]
           },
         },
-      }, */
+      },
       getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('table.title.disk_storage') }),
       getTimeTableColumn(),
       getBrandTableColumn(),
