@@ -1070,7 +1070,7 @@
     "all.nics.reserve": "Number of reserved IPs",
     "all.nics.guest.pending_delete": "Number of IPs for servers in recycle-bin",
     "all.nics.netif": "Number of IPs for network interfaces",
-    "all.nics.eip'": "Number of Allocated EIPs",
+    "all.nics.eip": "Number of Allocated EIPs",
     "all.nics.db": "Number of IPs for RDS instances",
     "domain.nics": "Total Allocated IPs in current domain",
     "domain.nics.guest": "Number of IPs for servers in current domain",
