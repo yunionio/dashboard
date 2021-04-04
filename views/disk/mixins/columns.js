@@ -31,7 +31,7 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'disk' }),
+      // getStatusTableColumn({ statusModule: 'disk' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'disk', columns: () => this.columns }),
       {
         field: 'disk_size',
