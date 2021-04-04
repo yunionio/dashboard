@@ -1051,7 +1051,7 @@
     "all.nics.reserve": "预留IP数量",
     "all.nics.guest.pending_delete": "回收站内虚拟机分配IP数量",
     "all.nics.netif": "虚拟网卡分配IP数量",
-    "all.nics.eip'": "已分配EIP数量",
+    "all.nics.eip": "已分配EIP数量",
     "all.nics.db": "RDS实例分配IP数量",
     "domain.nics": "当前域已分配IP总量",
     "domain.nics.guest": "当前域虚拟机分配IP数量",
