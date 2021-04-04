@@ -76,6 +76,9 @@ export default {
   HostSidePage: {
     resource: 'hosts',
   },
+  BlockStorageSidePage: {
+    resource: 'storages',
+  },
   // 区域
   CloudregionSidePage: {
     resource: 'cloudregions',
