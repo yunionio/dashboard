@@ -270,6 +270,7 @@ export default {
       return ret
     },
     handleOpenSidepage (row) {
+      this.initSidePageTab('disk-detail')
       this.sidePageTriggerHandle(this, 'DiskSidePage', {
         id: row.id,
         resource: 'disks',
