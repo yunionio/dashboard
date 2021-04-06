@@ -112,6 +112,7 @@
       "start_instance_snapshot": "开始创建主机快照",
       "probing": "探测中",
       "probe_fail": "探测失败",
+      "start_probe": "开始探测",
       "instance_snapshot_failed": "创建主机快照失败",
       "start_snapshot_reset": "开始回滚主机快照",
       "snapshot_reset_failed": "主机快照回滚失败",
@@ -175,6 +176,7 @@
       "prepare": "准备中",
       "probing": "正在检测IPMI配置",
       "probe_fail": "检测IPMI配置失败",
+      "start_probe": "开始检测IPMI配置",
       "prepare_fail": "同步配置失败",
       "converting": "转换中"
     },
