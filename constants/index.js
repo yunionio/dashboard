@@ -168,10 +168,10 @@ export const SCHED_POLICY_OPTIONS_MAP = {
     },
     key: 'host',
   },
-  cloudprovider: {
-    label: i18n.t('compute.text_15'),
-    key: 'cloudprovider',
-  },
+  // cloudprovider: {
+  //   label: i18n.t('compute.text_15'),
+  //   key: 'cloudprovider',
+  // },
   schedtag: {
     label: i18n.t('compute.text_3'),
     key: 'schedtag',
