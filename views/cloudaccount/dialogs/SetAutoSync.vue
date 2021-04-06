@@ -95,6 +95,9 @@ export default {
         steadyStatus: this.params.steadyStatus,
         managerArgs: {
           action,
+          data: {
+            sync_interval_seconds: data.sync_interval_seconds * 60,
+          },
         },
       })
     },
