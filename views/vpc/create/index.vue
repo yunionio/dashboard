@@ -153,10 +153,6 @@ export default {
       project_domain: this.$store.getters.userInfo.projectDomainId,
       cloudproviderData: [],
       cloudregion: '',
-      providerParams: {
-        usable: false,
-        cloud_env: 'public',
-      },
     }
   },
   computed: {
@@ -177,6 +173,16 @@ export default {
       }
       return params
     },
+    providerParams () {
+      const ret = {
+        usable: false,
+        cloud_env: this.cloudEnv,
+      }
+      if (this.isAdminMode) {
+        ret.project_domain = this.project_domain
+      }
+      return ret
+    },
     regionParams () {
       const res = {
         cloud_env: this.cloudEnv,
@@ -195,6 +201,9 @@ export default {
         }
       } else if (this.cloudEnv === 'public') {
         res.usable = false
+        if (this.isAdminMode) {
+          res.project_domain = this.project_domain
+        }
       }
       return res
     },
@@ -251,6 +260,7 @@ export default {
     },
     handleDomainChange (val) {
       this.project_domain = val
+      this.$refs.areaSelects.fetch(this.areaselectsName())
     },
     async handleConfirm () {
       this.loading = true
