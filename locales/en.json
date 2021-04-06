@@ -112,6 +112,7 @@
       "start_instance_snapshot": "Start creating server snapshot",
       "probing": "Probing",
       "probe_fail": "Probe failed",
+      "start_probe": "Start probing IPMI configuration",
       "instance_snapshot_failed": "Failed to create server snapshot",
       "start_snapshot_reset": "Start to roll back the server snapshot",
       "snapshot_reset_failed": "Server snapshot rollback failed",
@@ -175,6 +176,7 @@
       "prepare": "Preparing",
       "probing": "Detecting IPMI configuration",
       "probe_fail": "Failed to detect IPMI configuration",
+      "start_probe": "Start probing IPMI configuration",
       "prepare_fail": "Sync configuration failed",
       "converting": "Converting"
     },
