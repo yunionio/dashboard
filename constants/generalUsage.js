@@ -175,14 +175,14 @@ export const usageMap = {
   diskCountAttach: {
     field: {
       used: {
-        system: 'all.disks.attached.count',
-        domain: 'domain.disks.attached.count',
-        project: 'disks.attached.count',
+        system: 'all.disks.mounted.count',
+        domain: 'domain.disks.mounted.count',
+        project: 'disks.mounted.count',
       },
       remain: {
-        system: 'all.disks.detached.count',
-        domain: 'domain.disks.detached.count',
-        project: 'disks.detached.count',
+        system: 'all.disks.unmounted.count',
+        domain: 'domain.disks.unmounted.count',
+        project: 'disks.unmounted.count',
       },
       total: {
         system: 'all.disks.count',
@@ -195,14 +195,14 @@ export const usageMap = {
   diskAttach: {
     field: {
       used: {
-        system: 'all.disks.attached',
-        domain: 'domain.disks.attached',
-        project: 'disks.attached',
+        system: 'all.disks.mounted',
+        domain: 'domain.disks.mounted',
+        project: 'disks.mounted',
       },
       remain: {
-        system: 'all.disks.detached',
-        domain: 'domain.disks.detached',
-        project: 'disks.detached',
+        system: 'all.disks.unmounted',
+        domain: 'domain.disks.unmounted',
+        project: 'disks.unmounted',
       },
       total: {
         system: 'all.disks',
