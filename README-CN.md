@@ -96,3 +96,9 @@ yarn checkout <分支名>
 ```sh
 yarn sync <分支名>
 ```
+
+### 制作 docker 镜像
+
+```bash
+REGISTRY=registry.cn-beijing.aliyuncs.com/yunionio TAG=your-tag ./scripts/docker-push.sh
+```
