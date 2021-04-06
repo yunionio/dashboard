@@ -101,3 +101,9 @@ yarn checkout <branch>
 ```sh
 yarn sync <branch>
 ```
+
+### Make docker image
+
+```bash
+REGISTRY=registry.cn-beijing.aliyuncs.com/yunionio TAG=your-tag ./scripts/docker-push.sh
+```
