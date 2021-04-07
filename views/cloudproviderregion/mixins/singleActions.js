@@ -43,6 +43,12 @@ export default {
         },
         meta: obj => {
           const isIdle = obj.sync_status === 'idle'
+          if (obj.enable_auto_sync) {
+            return {
+              validate: false,
+              tooltip: i18n.t('cloudenv.text_313'),
+            }
+          }
           return {
             validate: isIdle,
             tooltip: !isIdle && i18n.t('cloudenv.text_368', [this.$t('status.cloudaccountSyncStatus')[obj.sync_status]]),
