@@ -200,13 +200,7 @@ export default {
                   onManager: this.onManager,
                 })
               },
-              meta: () => {
-                const isPrivate = !obj.is_public
-                return {
-                  validate: isPrivate,
-                  tooltip: !isPrivate ? i18n.t('compute.secgroup.shared') : '',
-                }
-              },
+              meta: () => this.$getDeleteResult(obj),
             },
           ]
         },
