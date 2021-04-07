@@ -967,11 +967,11 @@ export default {
                       tooltip: null,
                     }
                     if (commonUnabled(obj)) return ret
-                    if (obj.eip_mode === 'public_ip') {
+                    if (obj.eip_mode === 'public_ip' && obj.hypervisor !== 'aws') {
                       ret.tooltip = i18n.t('compute.public_ip_tooltip')
                       return ret
                     }
-                    if (obj.eip) {
+                    if (obj.eip_mode !== 'public_ip' && obj.eip) {
                       ret.tooltip = i18n.t('compute.text_1291')
                       return ret
                     }
