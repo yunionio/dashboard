@@ -877,10 +877,10 @@ export class GenCreateData {
       ret.value = this.fd.prefer_manager
     }
     // 调度策略选择为 云账号
-    if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.cloudprovider.key) {
-      ret.key = 'prefer_manager'
-      ret.value = this.fd.cloudprovider
-    }
+    // if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.cloudprovider.key) {
+    //   ret.key = 'prefer_manager'
+    //   ret.value = this.fd.cloudprovider
+    // }
     // 调度策略选择为 调度标签
     if (this.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.schedtag.key) {
       ret.key = 'schedtags'
