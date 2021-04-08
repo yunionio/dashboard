@@ -42,7 +42,7 @@
       <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
     </template>
     <template v-if="has('storage') && !showSchedtag">
-      <storage :decorators="decorator" :storageParams="storageParams" v-if="showStorage" />
+      <storage :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" />
       <a-button class="mt-1" type="link" @click="() => showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
