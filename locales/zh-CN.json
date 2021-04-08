@@ -882,6 +882,11 @@
       "creating": "创建中",
       "deleting": "删除中",
       "unknown": "未知"
+    },
+    "nas": {
+      "available": "可用",
+      "deleting": "删除中",
+      "unavailable": "不可用"
     }
   },
   "skuCategoryOptions": {
@@ -2290,7 +2295,13 @@
     "alertrecord": "告警历史",
     "rds": "RDS",
     "security-alerts": "安全告警",
-    "suggestsysrule": "规则配置"
+    "suggestsysrule": "规则配置",
+    "nas": "文件存储",
+    "filesystem": "文件系统",
+    "access_group": "权限组",
+    "access_group_rule": "规则",
+    "access_group_cache": "权限组缓存",
+    "mount_target": "挂载点"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -4664,6 +4675,12 @@
   "common.workflow.back": "返回列表",
   "common.workflow.approval_start": "待我处理",
   "common.workflow.approval_done": "我已处理",
-  "common.workflow.end_tips": "已关闭状态的工单不支持该操作"
+  "common.workflow.end_tips": "已关闭状态的工单不支持该操作",
+  "common.network.type": "网络类型",
+  "common.network.type.vpc": "专有网络",
+  "common.network.type.classic": "经典网络",
+  "common.action.edit": "编辑",
+  "common.action.create": "新建",
+  "common.action.delete": "删除" 
 }
 
