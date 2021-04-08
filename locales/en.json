@@ -1086,7 +1086,7 @@
     "domain.nics.reserve": "Number of reserved IPs in current domain",
     "domain.nics.guest.pending_delete": "Number of IPs for servers in recycle-bin in current domain",
     "domain.nics.netif": "Number of IPs for network interfaces in current domain",
-    "domain.nics.eip'": "Number of Allocated EIPs in current domain",
+    "domain.nics.eip": "Number of Allocated EIPs in current domain",
     "domain.nics.db": "Number of IPs for RDS instances in current domain",
     "all.pending_delete_servers": "Number of Servers in the Trash",
     "all.pending_delete_servers.cpu": "The number of server CPUs in the trash",
