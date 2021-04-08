@@ -5,11 +5,11 @@
       <a-form-item label="Ceph Mon Host" v-if="!edit">
         <a-input :placeholder="$t('storage.text_19')" v-decorator="decorators.rbd_mon_host" />
       </a-form-item>
-      <a-form-item label="Ceph Key">
-        <a-input :placeholder="$t('storage.text_20')" v-decorator="decorators.rbd_key" />
-      </a-form-item>
       <a-form-item label="Ceph Pool" v-if="!edit">
           <a-input :placeholder="$t('storage.text_21')" v-decorator="decorators.rbd_pool" />
+      </a-form-item>
+      <a-form-item label="Ceph Key">
+        <a-input :placeholder="$t('storage.text_20')" v-decorator="decorators.rbd_key" />
       </a-form-item>
     </template>
     <template v-if="storage_type === 'nfs'">
@@ -85,13 +85,9 @@ export default {
         rbd_key: [
           'rbd_key',
           {
-            validateFirst: true,
             rules: [
-              { required: true, message: this.$t('storage.text_27'), trigger: 'blur' },
-              { validator: commonCheckValid('Rbd Key') },
             ],
           },
-
         ],
         rbd_pool: [
           'rbd_pool',
