@@ -26,9 +26,9 @@
           </li>
         </ul>
         <ul class="tag-list" v-if="showUserTags">
-          <li class="tag-tip">
-            <div class="flex-fill" style="font-size: 12px;">{{$t('common_261')}}</div>
-            <div class="val-search" style="width: 145px;"><input style="width: 145px;" :placeholder="$t('common_264')" @input="handleSearchTag" @compositionstart="composingTag = true" @compositionend="composingTag = false" /></div>
+          <li class="tag-tip d-flex align-items-center">
+            <div style="font-size: 12px; width: 70px;">{{$t('common_261')}}</div>
+            <div class="val-search" style="width: 130px;"><input class="w-100" :placeholder="$t('common_264')" @input="handleSearchTag" @compositionstart="composingTag = true" @compositionend="composingTag = false" /></div>
           </li>
           <li
             class="tag-item"
@@ -367,7 +367,7 @@ export default {
 
 <style lang="less" scoped>
 .tag-wrap {
-  width: 180px;
+  width: 200px;
   max-height: 400px;
   overflow: hidden;
   overflow-y: auto;
@@ -417,5 +417,10 @@ export default {
   top: 0;
   width: 240px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.val-search {
+  input {
+    outline: none;
+  }
 }
 </style>
