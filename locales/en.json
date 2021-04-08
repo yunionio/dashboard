@@ -14,7 +14,7 @@
   "compute.text_12": "7 blocks",
   "compute.text_13": "8 blocks",
   "compute.text_14": "Specify Host",
-  "compute.text_15": "Specify Cloud Subscription",
+  "compute.text_15": "Cloud Subscription",
   "compute.text_16": "Specify Baremetal Host",
   "compute.text_17": "Not Required",
   "compute.perform_create": "Create",
