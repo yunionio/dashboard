@@ -141,6 +141,7 @@ export const USAGE_CONFIG = {
   },
   'all.ports.eip': {
     unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.system.key,
   },
   'all.ports_exit': {
     unit: i18n.t('dashboard.text_1'),
@@ -148,6 +149,7 @@ export const USAGE_CONFIG = {
   },
   'all.ports_exit.eip': {
     unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.system.key,
   },
   'all.ready_servers': {
     unit: i18n.t('dashboard.text_2'),
@@ -499,6 +501,7 @@ export const USAGE_CONFIG = {
   },
   'ports.eip': {
     unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.project.key,
   },
   ports_exit: {
     unit: i18n.t('dashboard.text_1'),
@@ -506,6 +509,7 @@ export const USAGE_CONFIG = {
   },
   'ports_exit.eip': {
     unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.project.key,
   },
   ready_servers: {
     unit: i18n.t('dashboard.text_2'),
@@ -874,6 +878,7 @@ export const USAGE_CONFIG = {
   },
   'domain.ports.eip': {
     unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.domain.key,
   },
   'domain.ports_exit': {
     unit: i18n.t('dashboard.text_1'),
@@ -881,6 +886,7 @@ export const USAGE_CONFIG = {
   },
   'domain.ports_exit.eip': {
     unit: i18n.t('dashboard.text_1'),
+    scope: SCOPES_MAP.domain.key,
   },
   'domain.rds': {
     unit: i18n.t('dashboard.text_1'),
@@ -1051,21 +1057,27 @@ export const USAGE_CONFIG = {
   },
   'all.servers.last_week': {
     unit: i18n.t('dashboard.text_2'),
+    scope: SCOPES_MAP.system.key,
   },
   'domain.servers.last_week': {
     unit: i18n.t('dashboard.text_2'),
+    scope: SCOPES_MAP.domain.key,
   },
   'servers.last_week': {
     unit: i18n.t('dashboard.text_2'),
+    scope: SCOPES_MAP.project.key,
   },
   'all.pending_delete_servers.last_week': {
     unit: i18n.t('dashboard.text_2'),
+    scope: SCOPES_MAP.system.key,
   },
   'domain.pending_delete_servers.last_week': {
     unit: i18n.t('dashboard.text_2'),
+    scope: SCOPES_MAP.domain.key,
   },
   'pending_delete_servers.last_week': {
     unit: i18n.t('dashboard.text_2'),
+    scope: SCOPES_MAP.project.key,
   },
 }
 
