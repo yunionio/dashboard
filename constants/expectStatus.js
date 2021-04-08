@@ -378,4 +378,14 @@ export default {
     success: ['available'],
     info: ['unavailable', 'unknown'],
   },
+  nas: {
+    success: ['available'],
+    info: ['unavailable', 'unknown'],
+  },
+  accessGroup: {
+    success: ['available'],
+  },
+  mountTarget: {
+    success: ['available'],
+  },
 }
