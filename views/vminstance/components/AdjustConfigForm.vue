@@ -604,7 +604,7 @@ export default {
       return null
     },
     requireSysDiskType () {
-      if (this.sysdisk) {
+      if (this.sysdisk && this.sysdisk.type) {
         return [this.sysdisk.type]
       }
       return []
@@ -613,7 +613,7 @@ export default {
       const types = []
       if (this.form && this.form.fd && this.form.fd.datadisks) {
         for (let i = 0; i < this.form.fd.datadisks.length; i++) {
-          if (!types.includes(this.form.fd.datadisks[i].type)) {
+          if (this.form.fd.datadisks[i].type && !types.includes(this.form.fd.datadisks[i].type)) {
             types.push(this.form.fd.datadisks[i].type)
           }
         }
