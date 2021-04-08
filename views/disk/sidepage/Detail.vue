@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { MEDIUM_MAP } from '../../../constants'
+import { MEDIUM_MAP, SERVER_TYPE } from '../../../constants'
 import { getUnusedTableColumn } from '../utils/columns'
 import {
   getUserTagColumn,
@@ -17,6 +17,7 @@ import {
 } from '@/utils/common/detailColumn'
 import { sizestr } from '@/utils/utils'
 import { getBrandTableColumn, getBillingTypeTableColumn } from '@/utils/common/tableColumn'
+import { findPlatform } from '@/utils/common/hypervisor'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -75,14 +76,38 @@ export default {
           slots: {
             default: ({ row }, h) => {
               if (!row.guest || row.guests.length <= 0) return '-'
+              const guests = row.guests.map((guest, index) => {
+                return <side-page-trigger permission="server_get" name="VmInstanceSidePage" id={guest.id} vm={this}>
+                  {guest.name}
+                  <status status={ guest.status } statusModule='server'/>
+                </side-page-trigger>
+              })
               return [
                 <div>
-                  <side-page-trigger permission="server_get" name="VmInstanceSidePage" id={row.guests[0].id} vm={this}>{row.guest}</side-page-trigger>
-                  {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : '-'}
+                  { guests }
                 </div>,
               ]
             },
           },
+        },
+        {
+          field: 'storage',
+          title: this.$t('compute.text_99'),
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }, h) => {
+              if (findPlatform(row.provider, 'provider') === SERVER_TYPE.public) {
+                return '-'
+              }
+              const text = row.storage || '-'
+              return [
+                <list-body-cell-wrap copy hideField={true} field='storage' row={row} message={text}>
+                  <side-page-trigger permission='storages_get' name='BlockStorageSidePage' id={row.storage_id} vm={this}>{row.storage}</side-page-trigger>
+                </list-body-cell-wrap>,
+              ]
+            },
+          },
+          hidden: () => this.$store.getters.isProjectMode,
         },
         {
           field: 'snapshotpolicies',

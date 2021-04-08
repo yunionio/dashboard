@@ -31,8 +31,19 @@ export default {
         {
           field: 'storage',
           title: this.$t('compute.text_228'),
+          sortable: true,
           showOverflow: 'ellipsis',
           minWidth: 120,
+          slots: {
+            default: ({ row }, h) => {
+              const ret = [
+                <list-body-cell-wrap copy row={row} hideField={ true }>
+                  <side-page-trigger onTrigger={ () => this.handleOpenStorageDetail(row.storage_id) }>{ row.storage }</side-page-trigger>
+                </list-body-cell-wrap>,
+              ]
+              return ret
+            },
+          },
         },
         {
           field: 'capacity',
@@ -93,6 +104,15 @@ export default {
   },
   created () {
     this.list.fetchData()
+  },
+  methods: {
+    handleOpenStorageDetail (id) {
+      this.initSidePageTab('detail')
+      this.sidePageTriggerHandle(this, 'BlockStorageSidePage', {
+        id,
+        resource: 'storages',
+      })
+    },
   },
 }
 </script>

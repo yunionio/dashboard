@@ -193,13 +193,13 @@ export default {
     skuParam () {
       return {
         limit: 0,
-        public_cloud: false,
+        private_cloud: true,
         postpaid_status: 'available',
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        provider: 'OneCloud',
+        cloudregion_id: this.cloudregionZoneParams.cloudregion,
         ...this.scopeParams,
       }
     },
