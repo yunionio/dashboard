@@ -63,12 +63,13 @@ export default {
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    const dashboardId = this.$route.query.dashboard_id || ''
     return {
       scope: this.$store.getters.scope,
       loading: true,
       manager: new this.$Manager('alertdashboards', 'v1'),
       dashboards: [],
-      dashboardId: '',
+      dashboardId: dashboardId,
     }
   },
   computed: {
@@ -77,12 +78,12 @@ export default {
     },
   },
   created () {
-    this.fetchDashboards((data) => { this.dashboardId = data[0].id })
+    this.dashboardId ? this.fetchDashboards() : this.switchDashboard()
   },
   methods: {
     handleCreateDashboard () {
       this.createDialog('CreateMonitorDashboard', {
-        refresh: this.fetchDashboards,
+        refresh: this.switchDashboard,
       })
     },
     handleActionClick ({ key }) {
@@ -91,7 +92,7 @@ export default {
     handleDelete () {
       this.createDialog('DeleteMonitorDashboard', {
         data: this.dashboards.filter((item) => { return item.id === this.dashboardId }),
-        refresh: this.fetchDashboards,
+        refresh: this.switchDashboard,
         columns: [getNameDescriptionTableColumn(), getProjectDomainTableColumn(), getProjectTableColumn()],
       })
     },
@@ -111,6 +112,9 @@ export default {
           dashboard: this.dashboardId,
         },
       })
+    },
+    switchDashboard () {
+      this.fetchDashboards((data) => { this.dashboardId = data[0].id })
     },
     async fetchDashboards (callback) {
       this.loading = true
