@@ -1,7 +1,10 @@
+import FileSystemCreate from '@Storage/views/file-system/create/index'
 import BucketSetStaticWebsit from '@Storage/views/bucket/components/SetStaticWebsit'
 import BucketCreate from '@Storage/views/bucket/create'
 import BlockStorage from '@Storage/views/blockstorage'
 import Bucket from '@Storage/views/bucket'
+import FileSystem from '@Storage/views/file-system'
+import AccessGroup from '@Storage/views/access-group'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -83,6 +86,63 @@ export default {
               name: 'BucketSetStaticWebsit',
               path: 'setstaticwebsit',
               component: BucketSetStaticWebsit,
+            },
+          ],
+        },
+      ],
+    },
+    /**
+     * 文件存储
+     */
+    {
+      meta: {
+        label: i18n.t('storage.nas'),
+      },
+      submenus: [
+        {
+          path: '/nas',
+          meta: {
+            label: i18n.t('dictionary.filesystem'),
+            permission: 'file_systems_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.filesystem')) {
+                return true
+              }
+              return !hasSetupKey(['aliyun', 'huawei'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'FileSystem',
+              path: '',
+              component: FileSystem,
+            },
+            {
+              name: 'FileSystemCreate',
+              path: 'create',
+              component: FileSystemCreate,
+            },
+          ],
+        },
+        {
+          path: '/access-group',
+          meta: {
+            label: i18n.t('dictionary.access_group'),
+            permission: 'access_groups_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.access_group')) {
+                return true
+              }
+              return !hasSetupKey(['aliyun', 'huawei'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AccessGroup',
+              path: '',
+              component: AccessGroup,
             },
           ],
         },
