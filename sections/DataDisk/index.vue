@@ -276,6 +276,11 @@ export default {
         }
       }
     },
+    defaultType () {
+      if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
+        this.dataDisks = []
+      }
+    },
   },
   methods: {
     getDisabled (item, itemName) {
