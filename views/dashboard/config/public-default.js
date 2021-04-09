@@ -251,7 +251,7 @@ export default {
         params: {
           all_usage_key: 'disks.count',
           name: i18n.t('dashboard.text_147'),
-          usage_key: 'disks.attached.count',
+          usage_key: 'disks.mounted.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
           color: 'reverse',
