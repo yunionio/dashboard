@@ -181,17 +181,6 @@ export default {
     brand () {
       return R.is(Object, this.brandData) ? this.brandData.key : this.brandData
     },
-    usages () {
-      const ret = []
-      for (const key in USAGE_CONFIG) {
-        ret.push({
-          key,
-          scope: USAGE_CONFIG[key].scope,
-          label: this.translateUsage[key] ? this.translateUsage[key] : key,
-        })
-      }
-      return ret
-    },
     isRing () {
       if (this.usageLabel) {
         return false
@@ -205,6 +194,9 @@ export default {
     this.rm = null
   },
   mounted () {
+    this.fc.setFieldsValue({
+      regionAccountType: this.regionAccountType,
+    })
     this.am = new this.$Manager('cloudaccounts')
     this.rm = new this.$Manager('cloudregions')
     this.fetchCloudEnvs()
@@ -353,7 +345,7 @@ export default {
         if (this.brand) params.brand = this.brand
         const response = await this.rm.list({ params })
         const data = response.data.data
-        this.regions = data.map(val => ({ ...val, key: val.id, label: val._i18n ? val._i18n.name : val.name })) || []
+        this.regions = data.map(val => ({ ...val, key: val.id, label: val._i18n && val._i18n.name ? val._i18n.name : val.name })) || []
         let defaultData
         const initialValue = _.get(this.decorators, 'region[1].initialValue')
         if (initialValue) {
@@ -422,6 +414,7 @@ export default {
           account: undefined,
         })
       }
+      this.updateUsages()
     },
     brandChange (brand) {
       const brandId = R.is(Object, brand) ? brand.key : brand
@@ -504,28 +497,55 @@ export default {
       }
       return keys
     },
+    updateUsages () {
+      this.totalUsageOptions = this.totalUsages()
+      let key = ''
+      if (this.fd && this.fd.all_usage_key) {
+        key = this.fd.all_usage_key
+      }
+      this.partUsageOptions = this.partUsages(key)
+    },
+    usages () {
+      const ret = []
+      for (const key in USAGE_CONFIG) {
+        if (USAGE_CONFIG[key].scope && USAGE_CONFIG[key].scope !== this.$store.getters.scope) {
+          continue
+        }
+        if (USAGE_CONFIG[key].clouds && USAGE_CONFIG[key].clouds.length > 0 && this.cloudEnv && !USAGE_CONFIG[key].clouds.includes(this.cloudEnv)) {
+          continue
+        }
+        ret.push({
+          key,
+          scope: USAGE_CONFIG[key].scope,
+          label: this.translateUsage[key] ? this.translateUsage[key] : key,
+        })
+      }
+      return ret
+    },
     totalUsages () {
+      const usages = this.usages()
       if (!this.isRing) {
-        return this.usages
+        return usages
       }
       const totalKeys = this.totalKeys()
       const ret = []
-      for (var i = 0; i < this.usages.length; i++) {
-        if (totalKeys.includes(this.usages[i].key)) {
-          ret.push(this.usages[i])
+      for (var i = 0; i < usages.length; i++) {
+        if (totalKeys.includes(usages[i].key)) {
+          ret.push(usages[i])
         }
       }
       return ret
     },
     partUsages (val) {
+      const usages = this.usages()
       if (!this.isRing) {
-        return this.usages
+        return usages
       }
       const partKeys = this.partKeys(val)
       const ret = []
-      for (var i = 0; i < this.usages.length; i++) {
-        if (partKeys.includes(this.usages[i].key)) {
-          ret.push(this.usages[i])
+      for (var i = 0; i < usages.length; i++) {
+        if (partKeys.includes(usages[i].key)) {
+          ret.push(usages[i])
         }
       }
       return ret
