@@ -95,6 +95,7 @@ module.exports = {
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
     svgRule.include.add(resolve('./src/components/Icon'))
+    svgRule.include.add(resolve('./scope/assets'))
     svgRule
       .test(/\.svg$/)
       .use('svg-sprite-loader')
@@ -104,6 +105,7 @@ module.exports = {
       })
     const imagesRule = config.module.rule('images')
     imagesRule.exclude.add(resolve('./src/components/Icon'))
+    imagesRule.exclude.add(resolve('./scope/assets'))
     config.module.rule('images').test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
     config.plugin('define').tap((definitions) => {
       definitions[0]['process.env'].VUE_APP_BUILDINFO = JSON.stringify(getBuildInfo())

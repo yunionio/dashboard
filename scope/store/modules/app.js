@@ -1,4 +1,4 @@
-const logo = require('@scope/assets/images/onecloud.svg')
+const logo = require('@scope/images/onecloud.svg')
 
 export default {
   state: {
