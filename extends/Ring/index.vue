@@ -24,6 +24,7 @@
 <script>
 import Server from './components/Server'
 import K8s from './components/K8s'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   name: 'Ring',
@@ -39,12 +40,16 @@ export default {
     params: Object,
   },
   data () {
+    const typeOps = []
+    if (hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])) {
+      typeOps.push({ key: 'server', label: this.$t('dashboard.text_25') })
+    }
+    if (hasSetupKey(['k8s'])) {
+      typeOps.push({ key: 'k8s', label: this.$t('dashboard.text_26') })
+    }
     return {
       type: (this.params && this.params.type) || 'server',
-      typeOpts: [
-        { key: 'server', label: this.$t('dashboard.text_25') },
-        { key: 'k8s', label: this.$t('dashboard.text_26') },
-      ],
+      typeOpts: typeOps,
       formItemLayout: {
         wrapperCol: {
           span: 18,
