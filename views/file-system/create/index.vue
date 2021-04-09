@@ -169,6 +169,15 @@ export default {
       tailFormItemLayout: this.tailFormItemLayout,
     }
   },
+  watch: {
+    capacity: {
+      handler (val) {
+        this.form.fc.setFieldsValue({
+          capacity: val,
+        })
+      },
+    },
+  },
   created () {
     this.form.fc.getFieldDecorator('cloudregion_id', { preserve: true })
     this.form.fc.getFieldDecorator('capacity', { preserve: true })
