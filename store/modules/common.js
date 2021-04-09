@@ -22,6 +22,7 @@ export default {
       sku: {},
     },
     globalConfig: {},
+    openCloudShell: false,
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -49,6 +50,9 @@ export default {
     },
     SET_GLOBAL_CONFIG (state, payload) {
       state.globalConfig = payload
+    },
+    SET_OPEN_CLOUDSHELL (state, payload) {
+      state.openCloudShell = payload
     },
   },
   actions: {
