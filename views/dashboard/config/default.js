@@ -123,7 +123,7 @@ export default {
         params: {
           all_usage_key: 'all.disks.count',
           name: i18n.t('dashboard.text_147'),
-          usage_key: 'all.disks.attached.count',
+          usage_key: 'all.disks.mounted.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
           color: 'reverse',
@@ -542,7 +542,7 @@ export default {
         params: {
           all_usage_key: 'domain.disks.count',
           name: i18n.t('dashboard.text_147'),
-          usage_key: 'domain.disks.attached.count',
+          usage_key: 'domain.disks.mounted.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
           color: 'reverse',
@@ -947,7 +947,7 @@ export default {
         params: {
           all_usage_key: 'disks.count',
           name: i18n.t('dashboard.text_147'),
-          usage_key: 'disks.attached.count',
+          usage_key: 'disks.mounted.count',
           usage_label: i18n.t('dashboard.mounted'),
           un_usage_label: i18n.t('dashboard.not_mounted'),
           color: 'reverse',
