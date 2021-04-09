@@ -13,6 +13,7 @@
       :is="params.windowData.currentTab"
       :id="listId"
       :res-id="detailData.id"
+      :res-type="resType"
       :data="detailData"
       :getParams="getParams"
       :on-manager="onManager"
@@ -56,6 +57,14 @@ export default {
     getParams () {
       return {
         id: this.data.id,
+      }
+    },
+    resType () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'access_group'
+        default:
+          return ''
       }
     },
     listId () {
