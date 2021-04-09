@@ -2298,10 +2298,10 @@
     "suggestsysrule": "规则配置",
     "nas": "文件存储",
     "filesystem": "文件系统",
-    "access_group": "权限组",
-    "access_group_rule": "规则",
-    "access_group_cache": "权限组缓存",
-    "mount_target": "挂载点"
+    "access_group": "NAS权限组",
+    "access_group_rule": "NAS权限组规则",
+    "access_group_cache": "NAS权限组缓存",
+    "mount_target": "NAS挂载点"
   },
   "res": {
     "role": "@:dictionary.role",
