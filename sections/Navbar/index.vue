@@ -123,6 +123,8 @@
       </a-tooltip>
     </div>
     <slot name="behindNavbar" />
+    <!-- cloudsheel -->
+    <cloud-shell class="navbar-item-icon primary-color-hover" />
     <!-- 更多 -->
     <more-popover class="navbar-item-icon primary-color-hover" />
     <!-- 用户 -->
@@ -141,6 +143,7 @@ import WorkOrderPopover from './components/WorkOrderPopover'
 import MorePopover from './components/MorePopover'
 import GlobalSearch from './components/GlobalSearch'
 import Alertresource from './components/Alertresource'
+import CloudShell from './components/CloudShell'
 import UserProjectSelect from '@/sections/UserProjectSelect'
 import WindowsMixin from '@/mixins/windows'
 import { getSetupInStorage } from '@/utils/auth'
@@ -155,6 +158,7 @@ export default {
     MorePopover,
     GlobalSearch,
     Alertresource,
+    CloudShell,
   },
   mixins: [WindowsMixin],
   props: {

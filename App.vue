@@ -7,6 +7,7 @@
       <dialog-manager />
       <side-page-manager />
       <window-resize-listener />
+      <oc-term />
     </div>
   </a-config-provider>
 </template>
@@ -131,3 +132,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+#app {
+  position: relative;
+}
+</style>
