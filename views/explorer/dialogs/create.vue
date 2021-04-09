@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('monitor.dashboard.dialog.project.create')}}</div>
+    <div slot="header">{{$t('common.save')}}</div>
     <div slot="body">
       <a-form :form="form" v-bind="formLayout">
         <a-form-item :label="$t('compute.text_228')">
