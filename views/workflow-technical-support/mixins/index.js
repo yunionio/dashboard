@@ -10,7 +10,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode']),
+    ...mapGetters(['isAdminMode', 'isDomainMode']),
     tabPanels () {
       const tablePanels = [
         {
@@ -32,7 +32,7 @@ export default {
           label: i18n.t('common_415'),
         })
       }
-      if (this.isAdminMode) {
+      if (this.isAdminMode || this.isDomainMode) {
         tablePanels.push({
           name: 'all-process',
           label: i18n.t('common.all_process'),

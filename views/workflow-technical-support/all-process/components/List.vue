@@ -62,7 +62,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(['userInfo', 'isDomainMode']),
   },
   created () {
     this.initSidePageTab('all-process-detail')
@@ -70,10 +70,18 @@ export default {
   },
   methods: {
     getParam () {
-      return {
+      const domainParams = {
+        user_id: this.userInfo.id,
+        role_name: 'domainadmin',
+      }
+      let params = {
         ...this.getParams,
         process_definition_key: 'customer-service',
       }
+      if (this.isDomainMode) {
+        params = { ...domainParams, ...params }
+      }
+      return params
     },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'AllProcessSidePage', {
