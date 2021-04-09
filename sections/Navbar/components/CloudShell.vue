@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     toggle () {
-      console.log('toggle')``
+      this.$store.commit('common/SET_OPEN_CLOUDSHELL', !this.openCloudShell)
     },
   },
 }

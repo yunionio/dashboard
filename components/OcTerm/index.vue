@@ -1,17 +1,24 @@
 <template>
-  <div class="oc-term-box">
+  <div class="oc-term-box" v-show="openCloudShell">
     <div class="oc-term-content">
-      <iframe src="http://www.baidu.com" width="100%" height="100%" style="margin-top: 10px; border: none;" />
+      <iframe src="/vminstance" width="100%" height="100%" style="margin-top: 10px; border: none;" />
     </div>
-    <div class="oc-term-resize" title="收缩底边栏"><div class="mask">一</div></div>
+    <div class="oc-term-resize" title="term resize"><div class="mask">一</div></div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'OcTerm',
   data () {
     return {}
+  },
+  computed: {
+    ...mapState('common', {
+      openCloudShell: state => state.openCloudShell,
+    }),
   },
   mounted () {
     this.initDrag()
@@ -26,7 +33,6 @@ export default {
         var startY = e.clientY
         mask.style.height = '300px'
         mask.style.background = 'transparent'
-        console.log('bottom.offsetHeight: ' + bottom.offsetHeight)
         resize.bottom = bottom.offsetHeight
 
         function moveHandle (e) {
@@ -66,7 +72,7 @@ export default {
   bottom: 0;
   height: 200px;
   width: 100%;
-  z-index: 10;
+  z-index: 999;
 }
 .oc-term-content {
   position: absolute;
@@ -82,7 +88,6 @@ export default {
   width: 100%;
   color: #fff;
   background-color: #eaeaea;
-  border-radius: 5px;
   cursor: row-resize;
   &:hover {
     color: #eaeaea;
