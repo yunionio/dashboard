@@ -58,7 +58,7 @@
             </div>
           </li>
         </ul> -->
-        <ul :style="valueWrapStyle" v-if="showValue" class="tag-list values-wrap" ref="value-wrap">
+        <ul :style="valueWrapStyle" v-if="search || showValue" class="tag-list values-wrap" ref="value-wrap">
           <li class="d-flex align-items-center tag-tip">
             <div class="flex-fill" style="font-size: 12px;">{{$t('common_263')}}</div>
             <div class="val-search"><input style="width: 145px;" :value="search" :placeholder="$t('common_264')" @input="handleSearch" @compositionstart="composing = true" @compositionend="composing = false" /></div>
