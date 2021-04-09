@@ -4353,7 +4353,7 @@
   "common.pending": "待处理",
   "common_729": "暂无架构平台可选择，请检查@:brand的宿主机是否可用",
   "common.select.rows.limit": "请选择至少{0}列数据",
-  "common.all_process": "所有工单",
+  "common.all_process": "所有",
   "personal_user_tab": {
     "cloud": "账号登录用户",
     "saml": "免密登录用户"
