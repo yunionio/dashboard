@@ -1,7 +1,7 @@
 <template>
   <div class="oc-term-box" v-show="openCloudShell">
     <div class="oc-term-content">
-      <iframe src="/vminstance" width="100%" height="100%" style="margin-top: 10px; border: none;" />
+      <iframe width="100%" height="100%" style="margin-top: 10px; border: none;" />
     </div>
     <div class="oc-term-resize" title="term resize"><div class="mask">一</div></div>
   </div>
