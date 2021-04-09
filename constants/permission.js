@@ -813,6 +813,30 @@ export const PERMISSION = {
   hoststorages_list: ['compute', 'hoststorages', 'list'],
   // 宿主机二层网络
   hostwires_list: ['compute', 'hostwires', 'list'],
+
+  // NAS权限组
+  access_groups_list: ['compute', 'access_groups', 'list'],
+  access_groups_create: ['compute', 'access_groups', 'create'],
+  access_groups_delete: ['compute', 'access_groups', 'delete'],
+
+  // NAS权限组缓存
+  access_group_caches_list: ['compute', 'access_group_caches', 'list'],
+  access_group_caches_delete: ['compute', 'access_group_caches', 'delete'],
+
+  // NAS权限组规则
+  access_group_rules_list: ['compute', 'access_group_rules', 'list'],
+  access_group_rules_create: ['compute', 'access_group_rules', 'create'],
+  access_group_rules_delete: ['compute', 'access_group_rules', 'delete'],
+
+  // 文件系统
+  file_systems_list: ['compute', 'file_systems', 'list'],
+  file_systems_create: ['compute', 'file_systems', 'create'],
+  file_systems_delete: ['compute', 'file_systems', 'delete'],
+
+  // 挂载点
+  mount_targets_list: ['compute', 'mount_targets', 'list'],
+  mount_targets_create: ['compute', 'mount_targets', 'create'],
+  mount_targets_delete: ['compute', 'mount_targets', 'delete'],
 }
 
 // 已声明权限的资源
