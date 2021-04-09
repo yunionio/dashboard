@@ -88,7 +88,7 @@ export default {
         user_access_type: [
           'user_access_type',
           {
-            initialValue: selectItem.user_access_type || 'all_squash',
+            initialValue: selectItem.user_access_type || 'no_root_squash',
             rules: [
               { required: true },
             ],
