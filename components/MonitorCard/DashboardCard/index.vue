@@ -3,7 +3,7 @@
     <template #header>
       <div>
         <a-row type="flex">
-          <a-col :span="23">{{ chart.metric.label }}</a-col>
+          <a-col :span="23">{{ panel.panel_name || chart.metric.label }}</a-col>
           <a-col>
             <a-dropdown style="float: right" :trigger="['click']" placement="bottomRight">
               <a class="ant-dropdown-link font-weight-bold h-100 d-block action-btn" @click="e => e.preventDefault()">

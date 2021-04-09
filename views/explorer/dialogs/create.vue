@@ -4,7 +4,8 @@
     <div slot="body">
       <a-form :form="form" v-bind="formLayout">
         <a-form-item :label="$t('compute.text_228')">
-          <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')"  />
+          <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')"  @change="handleNameChange" />
+          <name-repeated v-slot:extra res="alertpanels" :name="name" version="v1" />
         </a-form-item>
         <a-form-item :label="$t('monitor.dashboard.title')">
           <base-select
@@ -24,18 +25,25 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import NameRepeated from '@/sections/NameRepeated'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'CreateMonitorDashboardChart',
+  components: {
+    NameRepeated,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
+    this.handleNameChange = _.debounce(this._handleNameChange, 500)
     return {
       loading: false,
       scope: this.$store.getters.scope,
       form: this.$form.createForm(this),
       manager: new this.$Manager('alertdashboards', 'v1'),
+      name: '',
       dashboards: [],
       decorators: {
         dashboard_id: [
@@ -99,6 +107,9 @@ export default {
           }
         })
       })
+    },
+    _handleNameChange (e) {
+      this.name = e.target.value
     },
     async handleConfirm () {
       this.loading = true
