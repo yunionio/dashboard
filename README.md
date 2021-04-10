@@ -26,25 +26,12 @@ npm install -g yarn
 Fork the following repository, then clone dashboard main repository and install dependencies
 
 - [dashboard](https://github.com/yunionio/dashboard)
-- [dashboard-common](https://github.com/yunionio/dashboard-common)
-- [dashboard-module-compute](https://github.com/yunionio/dashboard-module-compute)
-- [dashboard-module-network](https://github.com/yunionio/dashboard-module-network)
-- [dashboard-module-cloudenv](https://github.com/yunionio/dashboard-module-cloudenv)
-- [dashboard-module-dashboard](https://github.com/yunionio/dashboard-module-dashboard)
-- [dashboard-module-monitor](https://github.com/yunionio/dashboard-module-monitor)
-- [dashboard-module-storage](https://github.com/yunionio/dashboard-module-storage)
-- [dashboard-module-k8s](https://github.com/yunionio/dashboard-module-k8s)
-- [dashboard-module-helm](https://github.com/yunionio/dashboard-module-helm)
-- [dashboard-module-db](https://github.com/yunionio/dashboard-module-db)
 
 ```sh
 git clone https://github.com/<owner>/dashboard.git
 cd dashboard
 yarn
-yarn setup:dev
 ```
-
-Enter the prefix of the repository address as prompted, such as: https://github.com/yunionio
 
 Note: If you are in China Mainland, execute the following command before running the command above for faster installation.
 
@@ -86,20 +73,6 @@ Now, you can open http://localhost:8080 to view
 
 ```sh
 yarn build
-```
-
-## Other commands
-
-### Switch all modules to the specified version
-
-```sh
-yarn checkout <branch>
-```
-
-### Update all modules
-
-```sh
-yarn sync <branch>
 ```
 
 ### Make docker image
