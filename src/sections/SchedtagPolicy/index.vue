@@ -1,0 +1,71 @@
+<template>
+  <div class="d-flex">
+    <a-form-item
+      :wrapperCol="{ span: 24 }"
+      class="mb-0 mr-1 w-50">
+      <base-select
+        class="w-100"
+        v-decorator="decorators.schedtag"
+        resource="schedtags"
+        :need-params="true"
+        :item.sync="schedtagItem"
+        :params="schedtagParams"
+        @change="schedtagChange"
+        :select-props="{ allowClear: true, placeholder: $t('common_255') }" />
+    </a-form-item>
+    <a-form-item class="mb-0 w-50" :wrapperCol="{ span: 24 }">
+      <base-select
+        class="w-100"
+        v-decorator="decorators.policy"
+        :options="policyOpts"
+        :select-props="{ allowClear: true, placeholder: $t('common_256') }" />
+    </a-form-item>
+  </div>
+</template>
+
+<script>
+import { SCHEDTAG_POLICY_OPTIONS } from '@/constants'
+
+export default {
+  name: 'SchedtagPolicy',
+  props: {
+    decorators: {
+      type: Object,
+      required: true,
+      validator: val => val.schedtag && val.policy,
+    },
+    schedtagParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    form: {
+      type: Object,
+      validator: val => !val || val.fc, // 不传 或者 传就有fc
+    },
+  },
+  data () {
+    return {
+      policyOpts: SCHEDTAG_POLICY_OPTIONS,
+      schedtagItem: {},
+    }
+  },
+  methods: {
+    schedtagChange (val) {
+      this.$nextTick(() => {
+        if (this.form && this.form.fc) {
+          let defaultStrategy = this.schedtagItem.default_strategy
+          if (defaultStrategy) {
+            if (!this.policyOpts.find(val => val.key === defaultStrategy)) {
+              defaultStrategy = undefined
+            }
+          }
+          this.form.fc.getFieldDecorator(this.decorators.policy[0], this.decorators.policy[1])
+          this.form.fc.setFieldsValue({
+            [this.decorators.policy[0]]: defaultStrategy,
+          })
+        }
+      })
+    },
+  },
+}
+</script>
