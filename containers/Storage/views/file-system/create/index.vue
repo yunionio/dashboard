@@ -1,0 +1,285 @@
+<template>
+  <div>
+    <page-header :title="$t('storage.filesystem.create')" />
+    <page-body>
+      <a-form
+        class="mt-3"
+        v-bind="formItemLayout"
+        :form="form.fc">
+        <a-form-item :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
+          <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
+        </a-form-item>
+        <a-form-item :label="$t('storage.text_40')">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
+        </a-form-item>
+        <!-- 计费方式 -->
+        <clearing-radios v-bind="formItemLayout" :auto_renew="false" />
+        <a-form-item :label="$t('network.expired_release')" v-if="form.fd.billing_type !== 'prepaid'">
+          <duration :decorators="decorators.duration" :form="form" />
+        </a-form-item>
+        <area-selects
+          class="mb-0"
+          ref="areaSelects"
+          :wrapperCol="formItemLayout.wrapperCol"
+          :labelCol="formItemLayout.labelCol"
+          :names="areaselectsName"
+          :providerParams="providerParams"
+          :cloudregionParams="regionParams"
+          :isRequired="true"
+          @change="handleRegionChange" />
+        <!-- 套餐 -->
+        <file-system-sku
+        @update:options="skuChanged"
+        ref="REF_SKU" />
+        <a-form-item :label="$t('storage.capacity')" v-bind="formItemLayout" v-if="skuOptions.step > 0">
+          <a-col :span="12">
+            <a-slider v-model="capacity" v-bind="skuOptions" />
+          </a-col>
+          <a-col :span="5">
+            <a-input-number v-model="capacity" v-bind="skuOptions" :formatter="value => `${value}GB`" />
+          </a-col>
+        </a-form-item>
+        <template>
+          <network-selects
+            ref="REF_NETWORK"
+            :label="$t('network.text_16')"
+            :isDefaultFetch="false"
+            :vpcFormat="vpcFormat"
+            :vpcParams="vpcParams"
+            :networkParams="netParams"
+            v-bind="formItemLayout" />
+        </template>
+      </a-form>
+      <bottom-bar :values="form.fc.getFieldsValue()" />
+    </page-body>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import FileSystemSku from './components/SKU'
+import BottomBar from './components/BottomBar'
+import DomainSelect from '@/sections/DomainSelect'
+import Duration from '@Compute/sections/Duration'
+import NetworkSelects from '@/sections/NetworkSelects'
+import validateForm from '@/utils/validate'
+import AreaSelects from '@/sections/AreaSelects'
+import { getInitialValue } from '@/utils/common/ant'
+
+export default {
+  name: 'FileSystemCreate',
+  components: {
+    DomainSelect,
+    Duration,
+    AreaSelects,
+    FileSystemSku,
+    NetworkSelects,
+    BottomBar,
+  },
+  data () {
+    const decorators = {
+      project_domain: [
+        'project_domain',
+        {
+          initialValue: this.$store.getters.userInfo.projectDomainId,
+        },
+      ],
+      name: [
+        'name',
+        {
+          validateFirst: true,
+          rules: [
+            { required: true, message: this.$t('network.text_218') },
+            { validator: validateForm('serverName') },
+          ],
+        },
+      ],
+      duration: {
+        durationStandard: [
+          'durationStandard',
+          {
+            initialValue: 'none',
+          },
+        ],
+        duration: [
+          'duration',
+          {
+            initialValue: '1h',
+          },
+        ],
+      },
+      billing_type: [
+        'billing_type',
+        {
+          initialValue: 'postpaid',
+        },
+      ],
+    }
+    return {
+      loading: false,
+      decorators,
+      skuOptions: {},
+      capacity: 0,
+      formItemLayout: {
+        wrapperCol: {
+          md: { span: 17 },
+          xl: { span: 19 },
+          xxl: { span: 21 },
+        },
+        labelCol: {
+          md: { span: 7 },
+          xl: { span: 5 },
+          xxl: { span: 3 },
+        },
+      },
+      tailFormItemLayout: {
+        wrapperCol: {
+          lg: { span: 18, offset: 6 },
+          xl: { span: 20, offset: 4 },
+          xxl: { span: 21, offset: 3 },
+        },
+      },
+    }
+  },
+  computed: {
+    form () {
+      const fc = this.$form.createForm(this, {
+        onValuesChange: this.handleValuesChange,
+      })
+      const fd = getInitialValue(this.decorators)
+      const { getFieldValue, getFieldsValue, setFieldsValue } = fc
+      return {
+        fc,
+        fd,
+        getFieldValue,
+        getFieldsValue,
+        setFieldsValue,
+      }
+    },
+    ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    areaselectsName () {
+      return ['provider', 'cloudregion']
+    },
+  },
+  provide () {
+    return {
+      form: this.form,
+      scopeParams: this.scopeParams,
+      formItemLayout: this.formItemLayout,
+      tailFormItemLayout: this.tailFormItemLayout,
+    }
+  },
+  watch: {
+    capacity: {
+      handler (val) {
+        this.form.fc.setFieldsValue({
+          capacity: val,
+        })
+      },
+    },
+  },
+  created () {
+    this.form.fc.getFieldDecorator('cloudregion_id', { preserve: true })
+    this.form.fc.getFieldDecorator('capacity', { preserve: true })
+  },
+  methods: {
+    skuChanged (options) {
+      this.skuOptions = options
+      this.form.fc.setFieldsValue({
+        capacity: this.skuOptions.min,
+      })
+      this.capacity = this.skuOptions.min
+      this.fetchVpc()
+    },
+    billing_type_change () {
+      this.$refs.REF_SKU.fetchSkus()
+    },
+    vpcFormat (vpc) {
+      const { name, manager } = vpc
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ name }>{ name }</span>
+          <span style="color: #8492a6; font-size: 13px">{ this.$t('network.manager', [manager]) }</span>
+        </div>
+      )
+    },
+    fetchVpc () {
+      this.$refs.REF_NETWORK.fetchVpc()
+    },
+    handleDomainChange (val) {
+      this.$refs.areaSelects.fetchs(this.areaselectsName)
+    },
+    handleRegionChange (val) {
+      if (val.cloudregion) {
+        this.form.fc.setFieldsValue({
+          cloudregion_id: val.cloudregion.id,
+        })
+        this.$refs.REF_SKU.fetchSkus()
+      }
+    },
+    providerParams () {
+      const params = {
+        limit: 0,
+        enabled: 1,
+        cloud_env: 'public',
+        scope: this.scope,
+        provider: this.$store.getters.capability.nas_brands,
+      }
+      if (!this.$store.getters.capability.nas_brands || this.$store.getters.capability.nas_brands.length === 0) {
+        params.provider = 'Other'
+      }
+      if (this.isAdminMode) {
+        params.admin = true
+        params.project_domain = this.form.fc.getFieldValue('project_domain')
+        delete params.scope
+      }
+      return params
+    },
+    regionParams () {
+      const params = {
+        usable: true,
+        show_emulated: true,
+      }
+      if (this.isAdminMode) {
+        params.admin = true
+        params.project_domain = this.form.fc.getFieldValue('project_domain')
+        delete params.scope
+      }
+      return params
+    },
+    vpcParams () {
+      const params = {
+        cloudregion_id: this.form.fc.getFieldValue('cloudregion'),
+        scope: this.scope,
+      }
+      if (this.isAdminMode) {
+        params.project_domain = this.form.fc.getFieldValue('project_domain')
+      }
+      return params
+    },
+    netParams () {
+      const params = {
+        zones: this.skuOptions.zone_ids || [],
+        scope: this.scope,
+      }
+      return params
+    },
+    async handleValuesChange (fc, changedFields) {
+      this.form.fd = {
+        ...this.form.fd,
+        ...changedFields,
+      }
+      await this.$nextTick()
+      const changedFieldsKey = Object.keys(changedFields)
+      changedFieldsKey.forEach(field => {
+        // if (changedFields[field] === undefined) return false
+
+        const handleChange = this[`${field}_change`]
+        if (this[`${field}_change`]) {
+          return handleChange()
+        }
+      })
+    },
+  },
+}
+</script>
