@@ -24,19 +24,11 @@ npm install -g yarn
 Fork以下仓库，然后克隆主仓库并安装依赖
 
 - [dashboard](https://github.com/yunionio/dashboard)
-- [dashboard-common](https://github.com/yunionio/dashboard-common)
-- [dashboard-module-compute](https://github.com/yunionio/dashboard-module-compute)
-- [dashboard-module-network](https://github.com/yunionio/dashboard-module-network)
-- [dashboard-module-cloudenv](https://github.com/yunionio/dashboard-module-cloudenv)
-- [dashboard-module-dashboard](https://github.com/yunionio/dashboard-module-dashboard)
-- [dashboard-module-monitor](https://github.com/yunionio/dashboard-module-monitor)
-- [dashboard-module-storage](https://github.com/yunionio/dashboard-module-storage)
 
 ```sh
 git clone https://github.com/<owner>/dashboard.git
 cd dashboard
 yarn
-yarn setup:dev
 ```
 
 根据提示输入仓库的地址前缀, 如: https://github.com/yunionio
@@ -81,20 +73,6 @@ yarn serve
 
 ```sh
 yarn build
-```
-
-## 其他命令
-
-### 切换所有模块到指定版本
-
-```sh
-yarn checkout <分支名>
-```
-
-### 更新所有模块
-
-```sh
-yarn sync <分支名>
 ```
 
 ### 制作 docker 镜像
