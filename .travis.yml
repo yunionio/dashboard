@@ -1,0 +1,12 @@
+language: node_js
+before_install:
+  - git checkout master
+cache:
+  - yarn
+node_js:
+  - "10"
+install:
+  - yarn
+script:
+  - ./scripts/setup.sh
+  - yarn build
