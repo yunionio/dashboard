@@ -1,0 +1,278 @@
+@import 'theme';
+
+// colors
+.primary-color {
+  color: @primary-color;
+}
+.link-color {
+  color: @link-color;
+}
+.success-color {
+  color: @success-color;
+}
+.warning-color {
+  color: @warning-color;
+}
+.error-color {
+  color: @error-color;
+}
+.font-size-base {
+  color: @font-size-base;
+}
+.heading-color {
+  color: @heading-color;
+}
+.text-color {
+  color: @text-color;
+}
+.text-color-secondary  {
+  color: @text-color-secondary;
+}
+.disabled-color  {
+  color: @disabled-color;
+}
+.box-shadow-base {
+  color: @box-shadow-base;
+}
+.text-color-help {
+  color: @text-color-secondary;
+}
+.primary-color-hover {
+  &:hover {
+    color: @primary-color !important;
+  }
+}
+
+// vxe table
+.vxe-table .vxe-cell--checkbox:not(.is--disabled):hover .vxe-checkbox--icon:before {
+  border-color: @primary-color !important;
+}
+
+.vxe-table .is--checked.vxe-cell--checkbox .vxe-checkbox--icon:before {
+  border-color: @primary-color !important;
+  background-color: @primary-7 !important;
+}
+
+.vxe-pager .vxe-pager--jump .vxe-pager--goto:focus {
+  border: 1px solid @primary-color !important;
+}
+
+.vxe-input:not(.is--disabled).is--active .vxe-input--inner {
+  border: 1px solid @primary-color !important;
+}
+
+.vxe-pager .vxe-pager--next-btn:not(.is--disabled):hover, .vxe-pager .vxe-pager--jump-next:not(.is--disabled):hover {
+  color: @primary-color !important;
+}
+.vxe-select-option.is--checked {
+  color: @primary-color !important;
+}
+
+.vxe-table .is--indeterminate.vxe-cell--checkbox {
+  color: @primary-color !important;
+}
+
+.vxe-table .is--indeterminate.vxe-cell--checkbox .vxe-checkbox--icon:before {
+  color: @primary-color !important;
+  background-color: @primary-color !important;
+  border-color: @primary-color !important;
+}
+
+.vxe-table .is--checked.vxe-cell--radio .vxe-radio--checked-icon:before {
+  background-color: @primary-color !important;
+  border-color: @primary-color !important;
+}
+
+.vxe-table .vxe-cell--radio:not(.is--disabled):hover .vxe-radio--icon:before {
+  border-color: @primary-color !important;
+}
+
+// background
+.primary-color-bg {
+  background-color: @primary-color !important;
+}
+
+// border
+.primary-color-border {
+  border-color: @primary-color !important;
+}
+
+.text-weak {
+  color: @disabled-color;
+}
+
+.ant-collapse {
+  border: 0;
+  .ant-collapse-item {
+    border: 0;
+    .ant-collapse-header {
+      color: @primary-color;
+    }
+  }
+}
+
+.ant-btn[disabled]:hover, .ant-btn[disabled]:focus {
+  color: rgba(0, 0, 0, 0.25) !important;
+  border-color: #d9d9d9 !important;
+}
+
+.ant-btn.ant-btn-link:hover, .ant-btn.ant-btn-link:focus {
+  border-color: transparent !important;
+}
+
+.ant-radio-button-wrapper-disabled:hover {
+  color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.ant-calendar-ok-btn {
+  &.ant-calendar-ok-btn-disabled {
+    background-color: #f5f5f5 !important;
+    border-color: #d9d9d9 !important;
+  }
+}
+
+// global
+body {
+  width: 100% !important;
+}
+
+#app, .app-container {
+  height: 100%;
+}
+
+.oc-icon {
+  display: inline-block;
+  font-style: normal;
+  vertical-align: -0.125em;
+  text-align: center;
+  text-transform: none;
+  line-height: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  svg {
+    display: inline-block;
+  }
+}
+
+.error-notification {
+  .ant-notification-notice-description {
+    word-wrap: break-word;
+    word-break: normal;
+  }
+  .ant-notification-notice-description {
+    max-height: 500px;
+    overflow-y: scroll;
+  }
+}
+
+.mini-text {
+  font-size: 12px;
+}
+
+.small-text {
+  font-size: 14px;
+}
+
+// 多行溢出隐藏，这里是3行之后溢出隐藏
+.mutiline-text-truncate {
+  overflow: hidden;
+  /*将对象作为弹性伸缩盒子模型显示*/
+  display: -webkit-box;
+  /*设置子元素排列方式*/
+  -webkit-box-orient: vertical;
+  /*设置显示的行数，多出的部分会显示为...*/
+  -webkit-line-clamp: 3;
+}
+
+// 兼容 safari 浏览器
+.create-server-result-wrap {
+  height: 74px;
+}
+
+// chart 自定义 tooltip 样式
+.chart-tooltip-wrapper {
+  background: rgba(250,252,254,0.81);
+  padding: 8px;
+  border: 1px solid #C8E2F7;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.08);
+  border-radius: 4px 4px 0px 0px 0px 4px 4px;
+  border-radius: 4px;
+}
+
+.bill-kind-tabs-title {
+  font-size: 20px;
+  color: #000;
+  height: 50px;
+  line-height: 70px;
+}
+
+.bill-kind-tabs-subtitle {
+  font-size: 12px;
+  color: #ccc;
+  font-weight: 500;
+}
+
+// 组合 input 和 select，详见 /k8s-deployment/create 的服务表单项
+.oc-addonBefore {
+  &:hover, &:active, &:visited, &:focus, &:focus-within {
+    border-right: 0;
+    border-color: #d9d9d9;
+  }
+  &.ant-input {
+    border-color: #d9d9d9 !important;
+  }
+}
+.week-link-button {
+  color: rgb(155, 158, 160) !important;
+  &:hover {
+    color: rgb(155, 158, 160) !important;
+  }
+}
+.opacity-0 {
+  opacity: 0;
+}
+.oc-pointer {
+  cursor: pointer;
+}
+
+.custom-date-time.ant-popover .ant-popover-message-title {
+  padding-left: 0;
+}
+
+// reset ant-form 中的codemirror行高
+.ant-form .CodeMirror {
+  line-height: 1.5;
+}
+
+.CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
+  font-family: consolas !important;
+}
+
+.oc-select-dropdown {
+  .option-prefix {
+    display: none;
+  }
+}
+
+.ant-select-selection-selected-value {
+  .oc-selected-display-none {
+    display: none;
+  }
+}
+
+.lh-1 {
+  line-height: 1;
+}
+
+/* Hide Arrows From Input Number */
+// Chrome, Safari, Edge, Opera
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
