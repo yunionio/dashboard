@@ -1,0 +1,26 @@
+{
+  "scopeCloudPrvidersMap": {
+    "Aliyun": "阿里云",
+    "Aws": "AWS",
+    "Huawei": "华为云",
+    "Qcloud": "腾讯云",
+    "Azure": "微软云",
+    "Ctyun": "天翼云",
+    "Apsara": "飞天"
+  },
+  "scopeProviders": {
+    "esxi": "VMware",
+    "kvm": "@:brand",
+    "vmware": "VMware",
+    "onecloud": "@:brand",
+    "openstack": "OpenStack",
+    "zstack": "ZStack",
+    "dStack": "DStack",
+    "aliyun": "阿里云",
+    "azure": "Azure",
+    "qcloud": "腾讯云",
+    "aws": "AWS",
+    "huawei": "华为云",
+    "ucloud": "UCloud"
+  }
+}
