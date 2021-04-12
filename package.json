@@ -9,9 +9,6 @@
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
     "test:unit:dev": "vue-cli-service test:unit --watchAll",
-    "setup:dev": "sh ./scripts/setup.dev.sh",
-    "checkout": "chmod +x ./scripts/checkout.sh && sh ./scripts/checkout.sh $@",
-    "sync": "chmod +x ./scripts/sync-modules.sh && sh ./scripts/sync-modules.sh $@",
     "i18n:generate": "node ./src/tools/i18n-generator generate"
   },
   "dependencies": {
