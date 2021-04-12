@@ -1327,8 +1327,8 @@
     "domain.imgiso.total.size": "当前域的虚拟机镜像和ISO的总大小",
     "imgiso.total.size": "当前项目的虚拟机镜像和ISO的总大小",
     "all.pending_delete_servers.last_week": "过去1周删除虚拟机数量",
-    "domain.pending_delete_servers.last_week": "当前域过去1周新增虚拟机数量",
-    "pending_delete_servers.last_week": "当前项目过去1周新增虚拟机数量",
+    "domain.pending_delete_servers.last_week": "当前域过去1周删除虚拟机数量",
+    "pending_delete_servers.last_week": "当前项目过去1周删除虚拟机数量",
     "all.servers.last_week": "过去1周新增虚拟机数量",
     "domain.servers.last_week": "当前域过去1周新增虚拟机数量",
     "servers.last_week": "当前项目过去1周新增虚拟机数量"
