@@ -22,7 +22,7 @@
     </a-col>
     <a-col :span="5" v-show="showThreshold">
       <a-form-item>
-        <a-input v-decorator="decorators.threshold" :disabled="disabled" @blur="blur" :suffix="unit" />
+        <threshold-input v-decorator="decorators.threshold" :unit="unit" :disabled="disabled"  @change="thresholdChange" />
       </a-form-item>
     </a-col>
   </a-row>
@@ -30,10 +30,14 @@
 
 <script>
 import * as R from 'ramda'
+import thresholdInput from './thresholdInput'
 import { preiodMaps } from '@Monitor/constants'
 
 export default {
   name: 'AlertCondition',
+  components: {
+    thresholdInput,
+  },
   props: {
     decorators: {
       type: Object,
@@ -49,11 +53,17 @@ export default {
       default: '',
     },
   },
+  inject: ['form'],
   data () {
     let showThreshold = true
     if (this.decorators.comparator[1].initialValue === 'nodata') {
       showThreshold = false
     }
+    let threshold
+    if (this.decorators.threshold.initialValue) {
+      threshold = this.decorators.threshold.initialValue
+    }
+
     return {
       preiodOpts: Object.values(preiodMaps),
       durationOpts: [
@@ -77,12 +87,13 @@ export default {
         { key: '==', label: '==' },
         { key: 'nodata', label: 'No Data' },
       ],
+      threshold: { value: threshold, base: 1 },
       showThreshold: showThreshold,
     }
   },
   methods: {
-    blur (e) {
-      this.$emit('thresholdChange', e.target.value)
+    thresholdChange (v) {
+      this.$emit('thresholdChange', v)
     },
     onComparatorChange (e) {
       if (e === 'nodata') {
