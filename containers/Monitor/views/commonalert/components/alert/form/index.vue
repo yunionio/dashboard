@@ -127,6 +127,11 @@ export default {
     Condition,
     NotifyTypes,
   },
+  provide: function () {
+    return {
+      form: this.form,
+    }
+  },
   props: {
     formItemLayout: {
       type: Object,
