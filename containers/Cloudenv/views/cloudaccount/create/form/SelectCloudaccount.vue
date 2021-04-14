@@ -73,6 +73,7 @@ export default {
         if (item === 'private' && this.globalSettingSetupKeys.indexOf('vmware') > -1) return true
         return this.globalSettingSetupKeys.indexOf(item) > -1
       }
+      console.log(this.globalSettingSetupKeys, item.provider.toLowerCase(), this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1)
       return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1
     },
     selectProvider (item) {
