@@ -5,6 +5,10 @@ export default {
     info: ['ready', 'deallocated', 'unknown', 'suspend', 'converted'],
     // danger: [new RegExp('fail')] // 这条会在 base组件 中默认存在
   },
+  serversshable: {
+    success: ['available'],
+    danger: ['unavailable', 'detect_failed'],
+  },
   network: {
     info: ['unknown', 'unavailable'],
     success: ['available'],
@@ -392,5 +396,9 @@ export default {
     success: ['available'],
     info: ['unavailable', 'unknown'],
     danger: ['delete_failed', 'create_failed'],
+  },
+  sshProxyEndpoints: {
+    success: ['available'],
+    info: ['unavailable', 'unknown'],
   },
 }

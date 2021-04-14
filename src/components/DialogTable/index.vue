@@ -11,6 +11,7 @@
       :max-height="280"
       :scroll-y="{gt: 5}"
       resizable
+      v-on="vxeGridEvents"
       v-bind="{ ...vxeGridProps }" />
   </div>
 </template>
@@ -41,6 +42,10 @@ export default {
       type: Object,
     },
     vxeGridProps: { // vex-grid 的属性
+      type: Object,
+      required: false,
+    },
+    vxeGridEvents: { // vex-grid 的事件
       type: Object,
       required: false,
     },
