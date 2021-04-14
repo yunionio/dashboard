@@ -178,6 +178,7 @@
   "cloudenv.text_136": "{0}#create-xsky-account",
   "cloudenv.text_137": "{0}#create-google-account",
   "cloudenv.text_138": "{0}#create-ctyun-cloud-account",
+  "cloudenv.create_ecloud": "{0}#create-ecloud-account",
   "cloudenv.text_139": "Global Zone",
   "cloudenv.text_140": "China Region",
   "cloudenv.text_141": "United States Administrative District",

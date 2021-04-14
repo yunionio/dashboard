@@ -32,6 +32,7 @@ export default {
     GoogleCreate: Google,
     CtyunCreate: AwsHuawei,
     ApsaraCreate: Apsara,
+    EcloudCreate: AliyunUcloud,
   },
   props: {
     currentItem: {
