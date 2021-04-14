@@ -1,7 +1,7 @@
 <template>
   <div class="cloudaccount pt-2">
     <a-alert type="info" show-icon class="mt-2">
-      <template slot="message">{{$t('cloudenv.text_223')}}<icon type="navbar-more" style="font-size: 15px;" />{{$t('cloudenv.text_224')}}</template>
+      <template slot="message">c{{$t('cloudenv.text_223')}}<icon type="navbar-more" style="font-size: 15px;" />{{$t('cloudenv.text_224')}}</template>
     </a-alert>
     <template v-for="(cloudaccounts, env) of types">
       <div class="env-item-wrap my-5" v-if="isShowItem(env)" :key="env">
@@ -73,7 +73,7 @@ export default {
         if (item === 'private' && this.globalSettingSetupKeys.indexOf('vmware') > -1) return true
         return this.globalSettingSetupKeys.indexOf(item) > -1
       }
-      console.log(this.globalSettingSetupKeys, item.provider.toLowerCase(), this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1)
+      // console.log(this.globalSettingSetupKeys, item.provider.toLowerCase(), this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1)
       return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1
     },
     selectProvider (item) {
