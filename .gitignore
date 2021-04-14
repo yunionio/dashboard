@@ -23,6 +23,3 @@ pnpm-debug.log*
 # local dev server config files
 dev.server.config.js
 
-# modules
-src
-containers
