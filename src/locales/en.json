@@ -627,6 +627,13 @@
       "unknown": "Unknown",
       "invalid": "Invalid"
     },
+    "serversshable": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "ansible_deploying": "Deploying",
+      "detect_failed": "Detect Failed",
+      "detecting": "Detecting"
+    },
     "kubecluster": {
       "init": "To be deployed",
       "deploying": "Deploying",
@@ -4700,5 +4707,5 @@
   "common.network.type.classic": "Classic Network",
   "common.action.edit": "Edit",
   "common.action.create": "Create",
-  "common.action.delete": "Delete" 
+  "common.action.delete": "Delete"
 }

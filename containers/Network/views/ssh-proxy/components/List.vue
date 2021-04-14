@@ -1,0 +1,100 @@
+<template>
+  <page-list
+      :list="list"
+      :columns="columns"
+      :single-actions="singleActions"
+      :group-actions="groupActions"
+      :export-data-options="exportDataOptions" />
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import { getDomainFilter } from '@/utils/common/tableFilter'
+import ListMixin from '@/mixins/list'
+import WindowsMixin from '@/mixins/windows'
+
+export default {
+  name: 'SshProxyList',
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  props: {
+    id: String,
+    hiddenActions: {
+      type: Array,
+      default: () => ([]),
+    },
+  },
+  data () {
+    return {
+      list: this.$list.createList(this, {
+        id: this.id,
+        resource: 'proxy_endpoints',
+        getParams: this.getParam,
+        filterOptions: {
+          name: {
+            label: this.$t('network.text_21'),
+            filter: true,
+            formatter: val => {
+              return `name.contains(${val})`
+            },
+          },
+          ip_addr: {
+            label: 'IP',
+            filter: true,
+            formatter: val => {
+              return `intranet_ip_addr.contains(${val})`
+            },
+          },
+          project_domains: getDomainFilter('project_domain'),
+        },
+      }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: this.$t('network.text_21'), key: 'name' },
+        ],
+      },
+      groupActions: [
+        {
+          label: this.$t('network.text_26'),
+          permission: 'sshproxy_endpoint_create',
+          action: () => {
+            this.$router.push({
+              path: '/ssh-proxy/create',
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+              validate: !this.cloudEnvEmpty,
+              tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
+            }
+          },
+          hidden: () => this.hiddenActions.includes('create'),
+        }],
+    }
+  },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
+  },
+  created () {
+    this.initSidePageTab('SshProxy-detail')
+    this.list.fetchData()
+  },
+  methods: {
+    getParam () {
+      return {}
+    },
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SshProxySidePage', {
+        id: row.id,
+        resource: 'proxy_endpoints',
+        getParams: this.getParam,
+      }, {
+        list: this.list,
+      })
+    },
+  },
+}
+</script>

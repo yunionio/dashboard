@@ -96,6 +96,10 @@ export default {
       type: Function,
       required: false,
     },
+    allowClear: {
+      type: Boolean,
+      default: true,
+    },
     cloudregionParamsMapper: Function,
   },
   watch: {
@@ -357,7 +361,7 @@ export default {
       }
       const cloudProvidersMap = this.$t('scopeCloudPrvidersMap')
       return (
-        <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.provider}>
+        <a-select allowClear={this.allowClear} dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.providerLoading} placeholder={this.placeholders.provider}>
           {this.providerList.map(provider => {
             const { name } = provider
             let showName = cloudProvidersMap[name] || name
@@ -431,7 +435,7 @@ export default {
         }, _callback)
       }
       return (
-        <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder={this.placeholders.cloudregion}>
+        <a-select allowClear={this.allowClear} dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.cloudregionLoading} placeholder={this.placeholders.cloudregion}>
           {this.cloudregionList.map(cloudregion => {
             const { id } = cloudregion
             const name = this._$t(cloudregion)
@@ -508,7 +512,7 @@ export default {
         }, _callback)
       }
       return (
-        <a-select allowClear dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder={this.placeholders.zone}>
+        <a-select allowClear={this.allowClear} dropdownClassName='oc-select-dropdown' showSearch filterOption={this.filterOption} onChange={_handleChange} loading={this.regionLoading} placeholder={this.placeholders.zone}>
           {this.zoneList.map(zone => {
             const { id } = zone
             const name = this._$t(zone)

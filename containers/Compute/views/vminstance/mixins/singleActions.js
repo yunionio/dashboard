@@ -906,6 +906,54 @@ export default {
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unbind_key'),
                 },
+                /* 设置免密登录 */
+                {
+                  label: i18n.t('compute.vminstance.actions.setup_ssh_authentication'),
+                  permission: 'server_perform_deploy',
+                  action: () => {
+                    this.createDialog('SetupSSHDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: true,
+                      tooltip: null,
+                    }
+                    if (!commonEnabled(obj, ['running'])) {
+                      ret.validate = false
+                      ret.tooltip = i18n.t('db.text_156')
+                      return ret
+                    }
+                    return ret
+                  },
+                },
+                /* 探测免密登录 */
+                {
+                  label: i18n.t('compute.vminstance.actions.detect_ssh_authentication'),
+                  permission: 'server_perform_deploy',
+                  action: () => {
+                    this.createDialog('DetectSSHDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: true,
+                      tooltip: null,
+                    }
+                    if (!commonEnabled(obj, ['running'])) {
+                      ret.validate = false
+                      ret.tooltip = i18n.t('db.text_156')
+                      return ret
+                    }
+                    return ret
+                  },
+                },
               ],
             },
             {
