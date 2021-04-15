@@ -1,0 +1,16 @@
+# See the OWNERS docs at https://go.k8s.io/owners
+reviewers:
+  - Zexi
+  - ioito
+  - swordqiu
+  - Easy-MJ
+  - tb365
+  - yousong
+  - zhaoxiangchun
+  - zhasm
+approvers:
+  - Easy-MJ
+  - tb365
+  - swordqiu
+  - yousong
+  - Zexi
