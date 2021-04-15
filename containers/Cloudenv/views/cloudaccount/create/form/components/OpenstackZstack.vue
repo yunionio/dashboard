@@ -53,7 +53,7 @@ export default {
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
     return {
-      docs: getCloudaccountDocs(this.$scope.getters.scope),
+      docs: getCloudaccountDocs(this.$store.getters.scope),
       decorators: this.getDecorators(keySecretField),
     }
   },
