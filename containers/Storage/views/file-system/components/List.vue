@@ -53,7 +53,7 @@ export default {
           },
           status: getStatusFilter('nas'),
           cloudaccount: getAccountFilter(),
-          brand: getBrandFilter('storage_manage_brands'),
+          brand: getBrandFilter('nas_brands'),
           billing_type: getFilter({
             field: 'billing_type',
             title: this.$t('storage.billing_type'),

@@ -161,7 +161,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        const values = this.form.fc.getFieldsValue()
+        const values = await this.form.fc.validateFields()
         const params = {
           billing_type: values.billing_type,
           name: values.name,
