@@ -39,6 +39,11 @@
             <a-input-number v-model="capacity" v-bind="skuOptions" :formatter="value => `${value}GB`" />
           </a-col>
         </a-form-item>
+        <a-form-item :label="$t('dictionary.zone')">
+          <a-radio-group v-decorator="decorators.zone_id" @change="zoneChanged">
+            <a-radio-button :key="item.id" :value="item.id" v-for="item of zones">{{item.name}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
         <template>
           <network-selects
             ref="REF_NETWORK"
@@ -94,6 +99,15 @@ export default {
           ],
         },
       ],
+      zone_id: [
+        'zone_id',
+        {
+          validateFirst: true,
+          rules: [
+            { required: true },
+          ],
+        },
+      ],
       duration: {
         durationStandard: [
           'durationStandard',
@@ -120,6 +134,7 @@ export default {
       decorators,
       skuOptions: {},
       capacity: 0,
+      zones: [],
       formItemLayout: {
         wrapperCol: {
           md: { span: 17 },
@@ -189,7 +204,14 @@ export default {
         capacity: this.skuOptions.min,
       })
       this.capacity = this.skuOptions.min
+      this.fetchZones()
       this.fetchVpc()
+    },
+    zoneChanged (e) {
+      this.form.fc.setFieldsValue({
+        zone_id: e.target.value,
+      })
+      this.fetchNetwork()
     },
     billing_type_change () {
       this.$refs.REF_SKU.fetchSkus()
@@ -203,8 +225,30 @@ export default {
         </div>
       )
     },
+    async fetchZones () {
+      const manager = new this.$Manager('zones', 'v2')
+      const params = {
+        cloudregion_id: this.form.fc.getFieldValue('cloudregion'),
+        scope: this.scope,
+      }
+      if (this.skuOptions.zone_ids && this.skuOptions.zone_ids.length > 0) {
+        params.filter = `id.in(${this.skuOptions.zone_ids.join(',')})`
+      }
+      const { data = [] } = await manager.list({ params })
+      this.zones = data.data || []
+      if (this.zones.length > 0) {
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({
+            zone_id: this.zones[0].id,
+          })
+        })
+      }
+    },
     fetchVpc () {
       this.$refs.REF_NETWORK.fetchVpc()
+    },
+    fetchNetwork () {
+      this.$refs.REF_NETWORK.fetchNetwork()
     },
     handleDomainChange (val) {
       this.$refs.areaSelects.fetchs(this.areaselectsName)
@@ -215,6 +259,7 @@ export default {
           cloudregion_id: val.cloudregion.id,
         })
         this.$refs.REF_SKU.fetchSkus()
+        this.fetchVpc()
       }
     },
     providerParams () {
@@ -259,7 +304,7 @@ export default {
     },
     netParams () {
       const params = {
-        zones: this.skuOptions.zone_ids || [],
+        zone_id: this.form.fd.zone_id,
         scope: this.scope,
       }
       return params

@@ -313,6 +313,8 @@
   "storage.filesystem.storage.type.advance": "高级型",
   "storage.filesystem.storage.type.performance": "性能型",
   "storage.filesystem.storage.type.capacity": "容量型",
+  "storage.filesystem.storage.type.standard.enhanced": "标准型增强版",
+  "storage.filesystem.storage.type.performance.enhanced": "性能型增强版",
   "storage.mount.target.max.count": "最多支持{0}个挂载点",
   "storage.capacity": "容量"
 }

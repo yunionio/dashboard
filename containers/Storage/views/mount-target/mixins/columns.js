@@ -27,6 +27,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'vpc', title: i18n.t('dictionary.vpc') }),
       getCopyWithContentTableColumn({ field: 'network', title: i18n.t('dictionary.network') }),
       getCopyWithContentTableColumn({ field: 'domain_name', title: i18n.t('storage.mount.target.domain.name') }),
+      getCopyWithContentTableColumn({ field: 'access_group', title: i18n.t('dictionary.access_group') }),
       getStatusTableColumn({ statusModule: 'mountTarget' }),
     ]
   },

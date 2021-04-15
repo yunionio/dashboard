@@ -886,7 +886,31 @@
     "nas": {
       "available": "可用",
       "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "extending": "扩容中",
+      "unknown": "未知",
+      "sync_status": "同步状态",
       "unavailable": "不可用"
+    },
+    "mountTarget": {
+      "available": "可用",
+      "unavailable": "不可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "unknown": "未知"
+    },
+    "accessGroup": {
+      "available": "可用",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "creating": "创建中",
+      "sync_rules": "同步规则",
+      "sync_rules_failed": "同步规则失败",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {

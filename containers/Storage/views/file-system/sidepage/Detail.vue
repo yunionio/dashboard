@@ -10,7 +10,7 @@
 
 <script>
 
-import { getFileSystemTypeColumn } from '../mixins/columns'
+import ColumnsMixin, { getFileSystemTypeColumn, getFileSystemStorageTypeColumn } from '../mixins/columns'
 import {
   getPublicScopeTableColumn,
   getBrandTableColumn,
@@ -21,7 +21,7 @@ import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'FileSystemDetail',
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, ColumnsMixin],
   props: {
     data: {
       type: Object,
@@ -44,6 +44,7 @@ export default {
           title: this.$t('storage.text_80'),
           items: [
             getFileSystemTypeColumn(),
+            getFileSystemStorageTypeColumn(),
             {
               field: 'protocol',
               title: this.$t('storage.filesystem.protocol'),
