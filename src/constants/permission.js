@@ -176,7 +176,7 @@ export const PERMISSION = {
   // 策略权限
   policies_list: ['identity', 'policies', 'list'],
   // 操作日志
-  log_list: ['log', 'log', 'list'],
+  log_list: ['log', 'actions', 'list'],
   // 消息中心
   notifications_list: ['notify', 'notifications', 'list'],
   // 企业信息
