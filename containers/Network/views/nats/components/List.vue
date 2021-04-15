@@ -55,7 +55,7 @@ export default {
           },
           status: getStatusFilter('nat'),
           cloudaccount: getAccountFilter(),
-          brand: getBrandFilter('network_manage_brands'),
+          brand: getBrandFilter('nat_brands'),
           vpc: {
             label: this.$t('network.text_535'),
           },
