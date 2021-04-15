@@ -119,7 +119,7 @@ export default {
         cloudregion_id: this.params.data.cloudregion_id,
       }
       if (this.isAdminMode) {
-        params.project_domain = this.domain_id
+        params.project_domain = this.params.data.domain_id
         delete params.scope
       }
       return params
