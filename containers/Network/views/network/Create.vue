@@ -411,11 +411,13 @@ export default {
     },
     vpcParams () {
       const params = {
-        // show_emulated: true,
         limit: 0,
         usable_vpc: true,
         scope: this.scope,
         cloudregion_id: this.regionId,
+      }
+      if (this.cloudEnv === 'private') {
+        params.show_emulated = true
       }
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
