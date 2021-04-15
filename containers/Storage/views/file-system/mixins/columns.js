@@ -53,6 +53,10 @@ export const getFileSystemStorageTypeColumn = ({
           return i18n.t('storage.filesystem.storage.type.performance')
         case 'capacity':
           return i18n.t('storage.filesystem.storage.type.capacity')
+        case 'standard.enhanced':
+          return i18n.t('storage.filesystem.storage.type.standard.enhanced')
+        case 'performance.enhanced':
+          return i18n.t('storage.filesystem.storage.type.performance.enhanced')
         default:
           return row.storage_type
       }

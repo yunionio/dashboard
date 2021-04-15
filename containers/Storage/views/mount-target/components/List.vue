@@ -46,7 +46,7 @@ export default {
           id: {
             label: this.$t('table.title.id'),
           },
-          status: getStatusFilter('nas'),
+          status: getStatusFilter('mountTarget'),
         },
         responseData: this.responseData,
         hiddenColumns: ['name', 'created_at'],
