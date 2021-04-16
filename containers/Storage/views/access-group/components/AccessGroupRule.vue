@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { getRwAccessTypeColumn, getUserAccessTypeColumn } from '../mixins/columns'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
@@ -39,20 +40,8 @@ export default {
           minWidth: 30,
           showOverflow: 'ellipsis',
         },
-        {
-          field: 'rw_access_type',
-          title: this.$t('storage.access.group.rule.rw.access_type'),
-          formatter: ({ cellValue, row }) => {
-            return row.rw_access_type
-          },
-        },
-        {
-          field: 'user_access_type',
-          title: this.$t('storage.access.group.rule.user.access_type'),
-          formatter: ({ cellValue, row }) => {
-            return row.user_access_type
-          },
-        },
+        getRwAccessTypeColumn(),
+        getUserAccessTypeColumn(),
         {
           field: 'priority',
           title: this.$t('storage.access.group.rule.priority'),

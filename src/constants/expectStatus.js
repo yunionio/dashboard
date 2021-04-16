@@ -381,11 +381,16 @@ export default {
   nas: {
     success: ['available'],
     info: ['unavailable', 'unknown'],
+    danger: ['delete_failed', 'create_failed'],
   },
   accessGroup: {
     success: ['available'],
+    info: ['unknown'],
+    danger: ['delete_failed', 'sync_rules_failed'],
   },
   mountTarget: {
     success: ['available'],
+    info: ['unavailable', 'unknown'],
+    danger: ['delete_failed', 'create_failed'],
   },
 }
