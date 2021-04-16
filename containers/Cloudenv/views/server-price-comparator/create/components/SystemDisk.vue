@@ -13,6 +13,7 @@
       :schedtagParams="getSchedtagParams()"
       :size-disabled="sizeDisabled || disabled"
       :storage-status-map="storageStatusMap"
+      :simplify="true"
       @showStorageChange="showStorageChange"
       @diskTypeChange="setDiskMedium" />
   </div>

@@ -57,6 +57,7 @@
           :sku="form.fd.sku"
           :defaultType="form.fd.systemDiskType"
           :capability-data="form.fi.capability"
+          :simplify="true"
           ref="dataDiskRef" />
       </a-form-item>
       <bottom-bar

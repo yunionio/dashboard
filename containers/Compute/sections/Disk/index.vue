@@ -28,7 +28,7 @@
           :item.sync="snapshotObj"
           :select-props="{ placeholder: $t('compute.text_124') }" />
       </a-form-item>
-      <a-button class="mt-1" type="link" @click="() => showSnapshot = !showSnapshot">{{ showSnapshot ? $t('compute.text_135') : $t('compute.text_133') }}</a-button>
+      <a-button class="mt-1" type="link" v-show="!simplify" @click="() => showSnapshot = !showSnapshot">{{ showSnapshot ? $t('compute.text_135') : $t('compute.text_133') }}</a-button>
     </template>
     <template v-if="!showSnapshot && has('mount-point') && !disabled">
       <disk-mountpoint
@@ -39,7 +39,7 @@
     </template>
     <template v-if="has('schedtag') && !showStorage">
       <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
-      <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
+      <a-button v-if="!disabled" v-show="!simplify" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
     </template>
     <template v-if="has('storage') && !showSchedtag">
       <storage :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" />
@@ -99,6 +99,10 @@ export default {
       default: '',
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    simplify: {
       type: Boolean,
       default: false,
     },

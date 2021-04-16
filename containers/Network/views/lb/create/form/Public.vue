@@ -153,6 +153,9 @@ export default {
         } else {
           delete values.domain
         }
+        if (values.charge_type === 'bandwidth') {
+          values.egress_mbps = values.bandwidth
+        }
         if (this.isAws) {
           values.loadbalancer_spec = values.instance_type
           delete values.instance_type
