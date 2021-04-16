@@ -879,7 +879,31 @@
     "nas": {
       "available": "Available",
       "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
+      "creating": "Creating",
+      "create_failed": "Create failed",
+      "extending": "Extending",
+      "unknown": "Unknown",
+      "sync_status": "Syncing",
       "unavailable": "Unavailable"
+    },
+    "mountTarget": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "creating": "Creating",
+      "create_failed": "Create failed",
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
+      "unknown": "Unknown"
+    },
+    "accessGroup": {
+      "available": "Available",
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
+      "creating": "Creating",
+      "sync_rules": "Sync rules",
+      "sync_rules_failed": "Sync rules failed",
+      "unknown": "Unknown"
     }
   },
   "skuCategoryOptions": {

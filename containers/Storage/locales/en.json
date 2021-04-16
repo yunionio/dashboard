@@ -313,6 +313,8 @@
   "storage.filesystem.storage.type.advance": "Advance",
   "storage.filesystem.storage.type.performance": "Performance",
   "storage.filesystem.storage.type.capacity": "Capacity",
+  "storage.filesystem.storage.type.standard.enhanced": "StandardEnhanced",
+  "storage.filesystem.storage.type.performance.enhanced": "PerformanceEnhanced",
   "storage.mount.target.max.count": "The number of Mount targets has reached the upper limit of {0} and cannot be added for the time being",
   "storage.capacity": "Capacity"
 }

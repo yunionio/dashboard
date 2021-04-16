@@ -166,6 +166,7 @@ export default {
           billing_type: values.billing_type,
           name: values.name,
           network_id: values.network,
+          zone_id: values.zone_id,
           project_domain: values.project_domain,
         }
         if (values.sku) {

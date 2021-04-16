@@ -2,13 +2,20 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('dictionary.access_group')"
-    icon="res-nas"
+    icon="res-access-group"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
+    <template v-slot:actions>
+      <actions
+        :options="singleActions"
+        :row="detailData"
+        button-type="link"
+        button-size="small" />
+    </template>
     <component
       :is="params.windowData.currentTab"
       :id="listId"
@@ -26,6 +33,7 @@
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import AccessGroupDetail from './Detail'
 import AccessGroupRule from './Rule'
@@ -42,7 +50,7 @@ export default {
     AccessGroupCache,
     Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
