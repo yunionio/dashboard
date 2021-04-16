@@ -67,6 +67,7 @@
           :sku="form.fd.sku"
           :defaultType="form.fd.systemDiskType"
           :capability-data="form.fi.capability"
+          :simplify="true"
           ref="dataDiskRef" />
       </a-form-item>
       <bottom-bar
@@ -395,7 +396,7 @@ export default {
     async fetchCapability () {
       const params = {
         show_emulated: true,
-        ...this.scopeParams,
+        scope: 'system',
         resource_type: this.form.fc.getFieldValue('resourceType'),
       }
       let id = this.cloudregionZoneParams.cloudregion
