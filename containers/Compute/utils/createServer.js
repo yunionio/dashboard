@@ -690,7 +690,7 @@ export class GenCreateData {
 
   _genDisksArr () {
     const sysDiskType = this.fd.systemDiskType.key
-    const dataDiskType = this._getDataDiskType(this.fd.dataDiskTypes)
+    let dataDiskType = this._getDataDiskType(this.fd.dataDiskTypes)
     const systemDisk = {
       type: sysDiskType,
       size: this.fd.systemDiskSize,
@@ -705,6 +705,10 @@ export class GenCreateData {
     }
     if (this.fd.systemDiskStorage) {
       systemDisk.storage_id = this.fd.systemDiskStorage
+    }
+    // #7356 新建vmware主机，数据盘没有传磁盘类型字段
+    if (this.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+      dataDiskType = dataDiskType ? dataDiskType : sysDiskType
     }
     const dataDisk = []
     R.forEachObjIndexed((value, key) => {
