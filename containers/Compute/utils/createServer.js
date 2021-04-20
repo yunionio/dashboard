@@ -708,7 +708,7 @@ export class GenCreateData {
     }
     // #7356 新建vmware主机，数据盘没有传磁盘类型字段
     if (this.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
-      dataDiskType = dataDiskType ? dataDiskType : sysDiskType
+      dataDiskType = dataDiskType || sysDiskType
     }
     const dataDisk = []
     R.forEachObjIndexed((value, key) => {
