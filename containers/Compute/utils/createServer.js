@@ -692,7 +692,7 @@ export class GenCreateData {
 
   _genDisksArr () {
     const sysDiskType = this.fd.systemDiskType.key
-    const dataDiskType = this._getDataDiskType(this.fd.dataDiskTypes)
+    let dataDiskType = this._getDataDiskType(this.fd.dataDiskTypes)
     const systemDisk = {
       type: sysDiskType,
       size: this.fd.systemDiskSize,
