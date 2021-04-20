@@ -708,6 +708,10 @@ export class GenCreateData {
     if (this.fd.systemDiskStorage) {
       systemDisk.storage_id = this.fd.systemDiskStorage
     }
+    // #7356 新建vmware主机，数据盘没有传磁盘类型字段
+    if (this.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+      dataDiskType = dataDiskType || sysDiskType
+    }
     const dataDisk = []
     R.forEachObjIndexed((value, key) => {
       const diskObj = {
