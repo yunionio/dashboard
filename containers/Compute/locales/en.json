@@ -1134,7 +1134,7 @@
   "compute.text_1161": "Create {0}",
   "compute.text_1162": "Add a backup machine",
   "compute.text_1163": "Host of backup machine",
-  "compute.text_1164": "Prompt message: When the host is empty, the system will automatically select the host",
+  "compute.text_1164": "Prompt message: When the host is empty, the system will automatically select the host. The host migration condition: the target host is in normal state, belongs to the same L2 network, and the host belongs to the same domain",
   "compute.text_1165": "Please select a backup machine",
   "compute.text_1166": "Save host template",
   "compute.text_1167": "You can associate or unbind multiple GPU cards when the switch is turned on, and unbind all GPU cards when turned off",
