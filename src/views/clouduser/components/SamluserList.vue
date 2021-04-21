@@ -79,6 +79,11 @@ export default {
             },
           },
         },
+        {
+          field: 'cloudaccount',
+          title: this.$t('common_295'),
+          showOverflow: 'title',
+        },
       ],
     }
   },
