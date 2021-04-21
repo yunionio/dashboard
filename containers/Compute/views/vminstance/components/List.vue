@@ -115,6 +115,15 @@ export default {
       region: getRegionFilter(),
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
+      vmem_size: {
+        label: this.$t('table.title.memory_mb'),
+      },
+      vcpu_count: {
+        label: 'CPU',
+      },
+      disk: {
+        label: this.$t('table.title.disk_mb'),
+      },
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
@@ -133,7 +142,7 @@ export default {
         filter,
         filterOptions,
         responseData: this.responseData,
-        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch'],
+        hiddenColumns: ['is_gpu', 'metadata', 'instance_type', 'os_type', 'vpc', 'host', 'account', 'created_at', 'macs', 'os_arch', 'vcpu_count', 'vmem_size', 'disk'],
       }),
       exportDataOptions: {
         items: [
@@ -142,9 +151,6 @@ export default {
           { label: this.$t('table.title.name'), key: 'name' },
           { label: 'IP', key: 'ips' },
           { label: 'EIP', key: 'eip' },
-          { label: 'CPU', key: 'vcpu_count' },
-          { label: this.$t('table.title.memory_mb'), key: 'vmem_size' },
-          { label: this.$t('table.title.disk_mb'), key: 'disk' },
           { label: this.$t('table.title.type'), key: 'instance_type' },
           { label: this.$t('table.title.os'), key: 'os_distribution' },
           { label: this.$t('common.status'), key: 'status' },
@@ -158,6 +164,9 @@ export default {
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
           { label: 'MAC', key: 'macs' },
           { label: this.$t('table.title.os_arch'), key: 'os_arch' },
+          { label: 'CPU', key: 'vcpu_count' },
+          { label: this.$t('table.title.memory_mb'), key: 'vmem_size' },
+          { label: this.$t('table.title.disk_mb'), key: 'disk' },
         ],
       },
       groupActions: [

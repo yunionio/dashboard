@@ -146,12 +146,13 @@ export default {
         sortable: true,
         slots: {
           default: ({ row }) => {
-            const ret = []
+            // const ret = []
             if (row.instance_type) {
-              ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
+              return [<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>]
             }
-            const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-            return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
+            // const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
+            // return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
+            return []
           },
         },
       },
@@ -186,6 +187,50 @@ export default {
             return [
               <SystemIcon tooltip={ tooltip } name={ name } />,
             ]
+          },
+        },
+      },
+      {
+        field: 'vcpu_count',
+        title: 'CPU',
+        sortable: true,
+        minWidth: 80,
+        slots: {
+          default: ({ row }) => {
+            if (row.vcpu_count) {
+              return [<list-body-cell-wrap row={{ row }} hide-field field="vcpu_count">{ row.vcpu_count }</list-body-cell-wrap>]
+            }
+            return []
+          },
+        },
+      },
+      {
+        field: 'vmem_size',
+        title: i18nLocale.t('table.title.memory_mb'),
+        sortable: true,
+        minWidth: 80,
+        slots: {
+          default: ({ row }) => {
+            if (row.vmem_size) {
+              const config = sizestr(row.vmem_size, 'M', 1024)
+              return [<list-body-cell-wrap row={{ row }} hide-field field="vmem_size">{ config }</list-body-cell-wrap>]
+            }
+            return []
+          },
+        },
+      },
+      {
+        field: 'disk',
+        title: i18nLocale.t('table.title.disk_mb'),
+        sortable: true,
+        minWidth: 80,
+        slots: {
+          default: ({ row }) => {
+            if (row.disk) {
+              const config = row.disk ? sizestr(row.disk, 'M', 1024) : ''
+              return [<list-body-cell-wrap row={{ row }} hide-field field="disk">{ config }</list-body-cell-wrap>]
+            }
+            return []
           },
         },
       },
