@@ -315,7 +315,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot')) {
                 return true
               }
-              return !hasSetupKey(['onestack'])
+              return !hasSetupKey(['onestack', 'vmware'])
             },
           },
           component: Layout,
