@@ -2433,7 +2433,9 @@
       "scope_range": "应用范围",
       "os_arch": "CPU架构",
       "operation_status": "状态",
-      "id": "ID"
+      "id": "ID",
+      "vmem_size": "内存",
+      "disk": "磁盘"
     },
     "action": {
       "save": "保存",

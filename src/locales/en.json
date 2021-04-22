@@ -2426,7 +2426,9 @@
       "scope_range": "Scope",
       "os_arch": "CPU Architecture",
       "operation_status": "Status",
-      "id": "ID"
+      "id": "ID",
+      "vmem_size": "Memory",
+      "disk": "Disk"
     },
     "action": {
       "save": "Save",
