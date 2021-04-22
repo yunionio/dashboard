@@ -206,7 +206,7 @@ export default {
       },
       {
         field: 'vmem_size',
-        title: i18nLocale.t('table.title.memory_mb'),
+        title: i18nLocale.t('table.title.vmem_size'),
         sortable: true,
         minWidth: 80,
         slots: {
@@ -221,7 +221,7 @@ export default {
       },
       {
         field: 'disk',
-        title: i18nLocale.t('table.title.disk_mb'),
+        title: i18nLocale.t('table.title.disk'),
         sortable: true,
         minWidth: 80,
         slots: {
