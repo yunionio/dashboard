@@ -116,13 +116,13 @@ export default {
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
       vmem_size: {
-        label: this.$t('table.title.memory_mb'),
+        label: this.$t('table.title.vmem_size'),
       },
       vcpu_count: {
         label: 'CPU',
       },
       disk: {
-        label: this.$t('table.title.disk_mb'),
+        label: this.$t('table.title.disk'),
       },
     }
     this.hiddenFilterOptions.forEach(key => {
