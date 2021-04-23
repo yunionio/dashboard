@@ -22,6 +22,10 @@ import LbListenerCreate from '@Network/views/loadbalancerlistener/create'
 import LbaclsList from '@Network/views/lbacls'
 import LbcertsList from '@Network/views/lbcerts'
 import LoadbalancerclusterList from '@Network/views/loadbalancercluster'
+import SshProxyList from '@Network/views/ssh-proxy'
+import SshProxyCreate from '@Network/views/ssh-proxy/form'
+import SshAgentList from '@Network/views/ssh-agent'
+// import LoadbalancerclusterList from '@Network/views/ssh-service'
 import AgentList from '@Network/views/agent'
 import AgentForm from '@Network/views/agent/form'
 import Layout from '@/layouts/RouterView'
@@ -251,6 +255,51 @@ export default {
         //     },
         //   ],
         // },
+      ],
+    },
+    /**
+     * SSH代理
+     */
+    {
+      meta: {
+        label: i18n.t('network.ssh-proxy.title'),
+      },
+      submenus: [
+        {
+          path: '/ssh-agent',
+          meta: {
+            label: i18n.t('network.ssh-proxy.proxyservice'),
+            permission: 'sshproxy_service_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'SshAgentList',
+              path: '',
+              component: SshAgentList,
+            },
+          ],
+        },
+        {
+          path: '/ssh-proxy',
+          meta: {
+            label: i18n.t('network.ssh-proxy.endpoints'),
+            permission: 'sshproxy_node_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'SshProxyList',
+              path: '',
+              component: SshProxyList,
+            },
+            {
+              name: 'SshProxyCreate',
+              path: 'create',
+              component: SshProxyCreate,
+            },
+          ],
+        },
       ],
     },
     /**
