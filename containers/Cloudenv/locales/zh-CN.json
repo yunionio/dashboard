@@ -626,5 +626,9 @@
   "cloudenv.text_571": "合约编号及密钥获取可参考",
   "cloudenv.text_573": "全部域",
   "cloudenv.disk_hidden_menus": "隐藏硬盘操作菜单",
-  "cloudenv.sub_hidden_menus": "隐藏主菜单"
+  "cloudenv.sub_hidden_menus": "隐藏主菜单",
+  "cloudaccount.tooltip.already_enable_sso": "云账号已开启免密认证",
+  "cloudaccount.tooltip.not_support_sso": "{0} 不支持免密认证",
+  "cloudenv.text_576": "开启免密登录",
+  "table.title.sso_status": "免密认证"
 }

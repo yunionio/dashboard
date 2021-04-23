@@ -626,5 +626,8 @@
   "cloudenv.text_571": "Contract number and key can be obtained by reference",
   "cloudenv.text_573": "All Domains",
   "cloudenv.disk_hidden_menus": "Hide Disk Menus",
-  "cloudenv.sub_hidden_menus": "Hide Main Menus"
+  "cloudaccount.tooltip.already_enable_sso": "Account has already enable SSO",
+  "cloudaccount.tooltip.not_support_sso": "{0} not support SSO",
+  "cloudenv.text_576": "Enable SSO",
+  "table.title.sso_status": "SSO status"
 }
