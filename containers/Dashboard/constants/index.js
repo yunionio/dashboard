@@ -1,4 +1,4 @@
-import { sizestrWithUnit } from '@/utils/utils'
+import { sizestrWithUnit, getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
 import { SCOPES_MAP, CLOUD_ENVS } from '@/constants'
 
@@ -1552,4 +1552,9 @@ export const PROJECT_QUOTA_CONFIG = {
       unit: i18n.t('dashboard.text_1'),
     },
   },
+}
+
+export function getMetricDocs (scope) {
+  const docsUrl = `${getDocsUrl(scope)}user/dashboard/`
+  return docsUrl + i18n.t('dashboard.text_184')
 }

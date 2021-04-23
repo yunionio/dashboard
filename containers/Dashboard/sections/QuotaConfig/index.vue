@@ -69,6 +69,13 @@
           v-decorator="decorators.all_usage_key"
           :usages="totalUsageOptions"
           @change="allUsageChange" />
+        <div slot="extra">
+          <i18n path="metricConfig.create_form.all_usage_extra">
+            <template #link>
+              <help-link :href="metricDoc">{{$t('metricConfig.create_form.all_usage_link')}}</help-link>
+            </template>
+          </i18n>
+        </div>
       </a-form-item>
     </a-form-item>
     <a-form-item :label="usageLabel || $t('dashboard.text_97')" class="mb-0" v-if="decorators.usage_key">
@@ -78,6 +85,13 @@
           v-decorator="decorators.usage_key"
           :usages="partUsageOptions"
           @change="usageChange" />
+        <div slot="extra">
+          <i18n :path="usageLabel?'metricConfig.create_form.metric_extra':'metricConfig.create_form.usage_extra'">
+            <template #link>
+              <help-link :href="metricDoc">{{$t('metricConfig.create_form.usage_link')}}</help-link>
+            </template>
+          </i18n>
+        </div>
       </a-form-item>
     </a-form-item>
     <a-form-item :label="$t('dashboard.usage_metric_name')" class="mb-0" v-if="decorators.usage_label">
@@ -110,7 +124,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import UsageSelect from './UsageSelect'
-import { USAGE_CONFIG } from '@Dashboard/constants'
+import { USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { usageMap } from '@/constants/generalUsage'
 
@@ -171,6 +185,7 @@ export default {
           label: this.$t('dashboard.color.scheme.reverse'),
         },
       ],
+      metricDoc: getMetricDocs(this.$store.getters.scope),
     }
   },
   computed: {
