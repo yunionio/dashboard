@@ -638,7 +638,11 @@ export default {
         this.defaultSelect(os)
         if (image) {
           image = { key: image.id, label: image.name }
-          this.form.fc.setFieldsValue({ image })
+          if (this.imageOptions.length === 0) {
+            this.form.fc.setFieldsValue({ image: initData })
+          } else {
+            this.form.fc.setFieldsValue({ image })
+          }
           this.imageChange(image)
         }
       } else {
