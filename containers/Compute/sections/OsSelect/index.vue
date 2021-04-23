@@ -187,7 +187,7 @@ export default {
       const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
       const image = ret[0].imageMsg
 
-      if (image.properties) {
+      if (image?.properties) {
         let os_distribution = image.properties.os_distribution
         const os_type = image.properties.os_type
         if (os_distribution) {
