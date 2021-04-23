@@ -506,6 +506,8 @@ export default {
         if (osVal.toLowerCase().includes('linux')) {
           if (osVal.toLowerCase().includes('amazon linux')) {
             osVal = 'Amazon Linux'
+          } else if (osVal.includes('RedHat Enterprise Linux')) {
+            osVal = 'RHEL'
           } else {
             osVal = 'Linux'
           }
