@@ -5,7 +5,7 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1127')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.text_111')" :extra="$t('compute.text_1164')">
+        <a-form-item :label="$t('compute.text_111')" :extra="$t('compute.text_1384')">
           <base-select
             v-decorator="decorators.host"
             resource="hosts"

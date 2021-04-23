@@ -1385,6 +1385,7 @@
   "migration.project.error": "项目视图不支持该操作",
   "compute.save_image_prompt.public_cloud": "公有云保存镜像会保存在云上镜像列表，新建公有云主机时可在{0}中查看使用",
   "compute.text_1383": "未添加备份机，不支持该操作",
+  "compute.text_1384": "提示信息：宿主机为空时，系统会自动选择宿主机，迁移宿主机需属于同一个二层网络且目标宿主机状态正常",
   "compute.secgroup.source.placeholder": "支持手动输入IP、选择CIDR或安全组",
   "compute.secgroup.source.effect.desc": "安全组类型暂只有阿里云和腾讯云生效"
 }
