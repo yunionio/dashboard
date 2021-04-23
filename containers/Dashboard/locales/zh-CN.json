@@ -184,6 +184,7 @@
   "dashboard.text_181": "总量",
   "dashboard.text_182": "系统预留",
   "dashboard.text_183": "GPU卡预留",
+  "dashboard.text_184": "#指标",
   "dashboard.cpu_quota": "CPU配额使用情况",
   "dashboard.memory_quota": "内存配额使用情况",
   "dashboard.storage_quota": "存储配额使用情况",
@@ -226,5 +227,14 @@
   "dashboard.color.scheme": "配色方案",
   "dashboard.color.scheme.default": "绿色0～60%；黄色60%～80%；红色80%～100%",
   "dashboard.color.scheme.reverse": "红色0～60%；黄色60%～80%；绿色80%～100%",
-  "dashboard.currency_name": "CNY"
+  "dashboard.currency_name": "CNY",
+  "metricConfig": {
+    "create_form": {
+      "metric_extra": "指标说明详见 {link}",
+      "all_usage_extra": "总量指标说明详见 {link}",
+      "all_usage_link": "说明文档",
+      "usage_extra": "使用量指标说明详见 {link}",
+      "usage_link": "说明文档"
+    }
+  }
 }

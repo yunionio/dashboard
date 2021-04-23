@@ -39,6 +39,13 @@
               <a-select-option :value="key" :key="key">{{ item.desc }}</a-select-option>
             </template>
           </a-select>
+          <div slot="extra">
+            <i18n path="metricConfig.create_form.metric_extra">
+              <template #link>
+                <help-link :href="metricDoc">{{$t('metricConfig.create_form.usage_link')}}</help-link>
+              </template>
+            </i18n>
+          </div>
         </a-form-model-item>
       </a-form-model>
     </base-drawer>
@@ -52,6 +59,7 @@ import { mapGetters } from 'vuex'
 import { load } from '@Dashboard/utils/cache'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { getRequestT, sizestr, sizestrWithUnit } from '@/utils/utils'
+import { getMetricDocs } from '@Dashboard/constants'
 
 export default {
   name: 'Quota',
@@ -142,6 +150,7 @@ export default {
       },
       currentPage: 1,
       pageSize: 8,
+      metricDoc: getMetricDocs(this.$store.getters.scope),
     }
   },
   computed: {
