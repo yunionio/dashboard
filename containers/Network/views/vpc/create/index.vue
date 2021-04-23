@@ -1,52 +1,54 @@
 <template>
   <div>
     <page-header :title="$t('network.text_723')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <a-form
-      class="mt-3"
-      :form="form.fc">
-      <a-form-item v-bind="formItemLayout" :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
-        <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
-      </a-form-item>
-      <area-selects
-        class="mb-0"
-        ref="areaSelects"
-        :wrapperCol="formItemLayout.wrapperCol"
-        :labelCol="formItemLayout.labelCol"
-        :names="areaselectsName"
-        :cloudregionParams="regionParams"
-        :providerParams="providerParams"
-        :isRequired="true"
-        :cloudregionMapper="cloudregionMapper"
-        @change="handleRegionChange" />
-      <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('network.text_684')" />
-      </a-form-item>
-      <a-form-item v-if="!isGoogle || cloudEnv !== 'public'" :label="$t('network.text_244')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
-        <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
-        <a-select v-decorator="decorators.cidr_block" v-else>
-          <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
-          <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
-          <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('network.external_access_mode_label')" v-if="cloudEnv === 'public'" v-bind="formItemLayout">
-        <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
-        <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
-      </a-form-item>
-      <template v-if="cloudEnv !== 'onpremise'">
-        <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
-          <base-select
-            class="w-50"
-            v-decorator="decorators.cloudprovider"
-            resource="cloudproviders"
-            :params="cloudproviderParams"
-            :isDefaultSelect="true"
-            :showSync="true"
-            :select-props="{ placeholder: $t('compute.text_149') }"
-            :resList.sync="cloudproviderData" />
+    <page-body>
+      <a-form
+        class="mt-3"
+        :form="form.fc">
+        <a-form-item v-bind="formItemLayout" :label="$t('network.text_205', [$t('dictionary.domain')])" v-if="$store.getters.isAdminMode">
+          <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
         </a-form-item>
-      </template>
-    </a-form>
+        <area-selects
+          class="mb-0"
+          ref="areaSelects"
+          :wrapperCol="formItemLayout.wrapperCol"
+          :labelCol="formItemLayout.labelCol"
+          :names="areaselectsName"
+          :cloudregionParams="regionParams"
+          :providerParams="providerParams"
+          :isRequired="true"
+          :cloudregionMapper="cloudregionMapper"
+          @change="handleRegionChange" />
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('network.text_684')" />
+        </a-form-item>
+        <a-form-item v-if="!isGoogle || cloudEnv !== 'public'" :label="$t('network.text_244')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
+          <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
+          <a-select v-decorator="decorators.cidr_block" v-else>
+            <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
+            <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
+            <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('network.external_access_mode_label')" v-if="cloudEnv === 'public'" v-bind="formItemLayout">
+          <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
+          <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
+        </a-form-item>
+        <template v-if="cloudEnv !== 'onpremise'">
+          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
+            <base-select
+              class="w-50"
+              v-decorator="decorators.cloudprovider"
+              resource="cloudproviders"
+              :params="cloudproviderParams"
+              :isDefaultSelect="true"
+              :showSync="true"
+              :select-props="{ placeholder: $t('compute.text_149') }"
+              :resList.sync="cloudproviderData" />
+          </a-form-item>
+        </template>
+      </a-form>
+    </page-body>
     <page-footer>
       <div slot="right">
         <a-button class="float-right" type="primary" @click="handleConfirm" :loading="loading">{{ $t('common_258') }}</a-button>
