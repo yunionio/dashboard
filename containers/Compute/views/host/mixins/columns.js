@@ -130,6 +130,7 @@ export default {
         field: 'nonsystem_guests',
         title: '#VM',
         width: 60,
+        sortable: true,
         formatter ({ cellValue }) {
           return cellValue || '0'
         },
