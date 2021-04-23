@@ -6,6 +6,13 @@
         v-decorator="decorators.all_usage_key"
         :usages="usages"
         @change="allUsageChange" />
+      <div slot="extra">
+        <i18n path="metricConfig.create_form.all_usage_extra">
+          <template #link>
+            <help-link :href="metricDoc">{{$t('metricConfig.create_form.all_usage_link')}}</help-link>
+          </template>
+        </i18n>
+      </div>
     </a-form-item>
     <a-form-item :label="usageLabel || $t('dashboard.text_97')" v-if="decorators.usage_key">
       <usage-select
@@ -13,6 +20,13 @@
         v-decorator="decorators.usage_key"
         :usages="usages"
         @change="usageChange" />
+      <div slot="extra">
+        <i18n :path="usageLabel?'metricConfig.create_form.metric_extra':'metricsConfig.create_form.usage_extra'">
+          <template #link>
+            <help-link :href="metricDoc">{{$t('metricConfig.create_form.usage_link')}}</help-link>
+          </template>
+        </i18n>
+      </div>
     </a-form-item>
     <a-form-item :label="$t('dashboard.usage_metric_name')" class="mb-0" v-if="decorators.usage_label">
       <a-form-item :wrapperCol="{ span: 24 }">
@@ -28,7 +42,8 @@
 </template>
 
 <script>
-import { K8S_USAGE_CONFIG } from '@Dashboard/constants'
+import { mapGetters } from 'vuex'
+import { K8S_USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
 import UsageSelect from '@Dashboard/sections/QuotaConfig/UsageSelect'
 
 export default {
@@ -54,9 +69,11 @@ export default {
   data () {
     return {
       translateUsage: this.$t('k8s_usage'),
+      metricDoc: getMetricDocs(this.$store.getters.scope),
     }
   },
   computed: {
+    ...mapGetters(['scope']),
     usages () {
       const ret = []
       for (const key in K8S_USAGE_CONFIG) {

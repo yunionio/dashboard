@@ -184,6 +184,7 @@
   "dashboard.text_181": "Total",
   "dashboard.text_182": "System reserved",
   "dashboard.text_183": "GPU reserved",
+  "dashboard.text_184": "#metrics",
   "dashboard.cpu_quota": "CPU Usage",
   "dashboard.memory_quota": "Memory Usage",
   "dashboard.storage_quota": "Storage Usage",
@@ -226,5 +227,14 @@
   "dashboard.color.scheme": "Color Schemes",
   "dashboard.color.scheme.default": "Green 0～60%; Yellow 60%～80%; Red 80%～100%",
   "dashboard.color.scheme.reverse": "Red 0～60%; Yellow 60%～80%; Green 80%～100%",
-  "dashboard.currency_name": "USD"
+  "dashboard.currency_name": "USD",
+  "metricConfig": {
+    "create_form": {
+      "metric_extra": "Metric usage {link}",
+      "all_usage_extra": "Metric usage {link}",
+      "all_usage_link": "Documentation",
+      "usage_extra": "Metric usage {link}",
+      "usage_link": "Documentation"
+    }
+  }
 }
