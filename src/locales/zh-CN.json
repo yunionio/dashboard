@@ -632,6 +632,13 @@
       "unknown": "未知",
       "invalid": "无效"
     },
+    "serversshable": {
+      "available": "可免密登录",
+      "unavailable": "不可免密登录",
+      "ansible_deploying": "部署中",
+      "detect_failed": "检测出错",
+      "detecting": "检测中"
+    },
     "kubecluster": {
       "init": "待部署",
       "deploying": "部署中",
@@ -4707,6 +4714,6 @@
   "common.network.type.classic": "经典网络",
   "common.action.edit": "编辑",
   "common.action.create": "新建",
-  "common.action.delete": "删除" 
+  "common.action.delete": "删除"
 }
 

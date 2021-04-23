@@ -1,15 +1,21 @@
 <template>
-  <monitor
-    :time.sync="time"
-    :timeGroup.sync="timeGroup"
-    :monitorList="monitorList"
-    :singleActions="singleActions"
-    :loading="loading"
-    @refresh="fetchData" />
+  <div>
+    <a-alert class="mb-2" :type="alertType" v-if="visible">
+        <install-agent-form slot="message" :data="data" :serverColumns="serverColumns" @onInstall="handleInstallResult" />
+    </a-alert>
+    <monitor
+      :time.sync="time"
+      :timeGroup.sync="timeGroup"
+      :monitorList="monitorList"
+      :singleActions="singleActions"
+      :loading="loading"
+      @refresh="fetchData" />
+  </div>
 </template>
 
 <script>
 import _ from 'lodash'
+import InstallAgentForm from '../components/InstallAgentForm'
 import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR } from '@Compute/views/vminstance/constants'
 import { metricItems } from '@Compute/views/node-alert/constants'
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
@@ -22,6 +28,7 @@ export default {
   name: 'VminstanceMonitorSidepage',
   components: {
     Monitor,
+    InstallAgentForm,
   },
   mixins: [WindowsMixin],
   props: {
@@ -29,8 +36,13 @@ export default {
       type: Object,
       required: true,
     },
+    serverColumns: {
+      type: Array,
+      required: true,
+    },
   },
   data () {
+    const visible = this.data.status === 'running' && (!this.data.metadata || this.data.metadata['sys:monitor_agent'] !== true)
     return {
       singleActions: [
         {
@@ -69,9 +81,22 @@ export default {
               })
             }
           },
+          meta: (obj) => {
+            const ret = {
+              validate: true,
+              tooltip: '',
+            }
+            if (_.get(obj, 'constants.fromItem', '').startsWith('agent_') && visible) {
+              ret.validate = false
+              ret.tooltip = this.$t('compute.vminstance.monitor.setup_alert.required_agent.tips')
+            }
+            return ret
+          },
         },
       ],
       loading: false,
+      visible: visible,
+      alertType: 'warning',
       time: '1h',
       timeGroup: '1m',
       monitorList: [],
@@ -110,6 +135,14 @@ export default {
     this.baywatch(['time', 'timeGroup', 'data.id'], this.fetchDataDebounce)
   },
   methods: {
+    handleInstallResult (ret) {
+      if (ret && ret.status === 'succeed') {
+        this.alertType = 'success'
+        this.$nextTick(() => {
+          setTimeout(() => { this.visible = false }, 3000)
+        })
+      }
+    },
     async fetchData () {
       this.loading = true
       const resList = []

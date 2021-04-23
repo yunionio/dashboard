@@ -1,6 +1,17 @@
 import { metricItems } from '@Compute/views/node-alert/constants'
 import i18n from '@/locales'
 
+const DISK_USED_PERCENT = {
+  name: 'disk',
+  label: i18n.t('compute.text_533'),
+  seleteItem: 'used_percent',
+  as: i18n.t('compute.text_533'),
+  fromItem: 'agent_disk',
+  unit: '%',
+  transfer: 1,
+  metric: metricItems.used_percent.key,
+}
+
 // OneCloud 虚拟机监控数据
 export const ONECLOUD_MONITOR = [
   {
@@ -11,6 +22,15 @@ export const ONECLOUD_MONITOR = [
     unit: '%',
     transfer: 1,
     metric: metricItems['vm_cpu.usage_active'].key, // 报警指标
+  },
+  {
+    name: 'mem',
+    label: i18n.t('compute.text_518'),
+    seleteItem: 'used_percent',
+    fromItem: 'agent_mem',
+    unit: '%',
+    transfer: 1,
+    metric: metricItems['vm_mem.used_percent'].key,
   },
   {
     name: 'netio',
@@ -30,6 +50,7 @@ export const ONECLOUD_MONITOR = [
     transfer: 1024,
     metric: metricItems['vm_netio.bps_sent'].key,
   },
+  DISK_USED_PERCENT,
   {
     name: 'diskio',
     label: i18n.t('compute.text_526'),
@@ -65,7 +86,7 @@ export const VMWARE_MONITOR = [
     name: 'mem',
     label: i18n.t('compute.text_518'),
     seleteItem: 'used_percent',
-    fromItem: 'vm_mem',
+    fromItem: 'agent_mem',
     unit: '%',
     transfer: 1,
     metric: metricItems['vm_mem.used_percent'].key,
@@ -88,6 +109,7 @@ export const VMWARE_MONITOR = [
     transfer: 1024,
     metric: metricItems['vm_netio.bps_sent'].key,
   },
+  DISK_USED_PERCENT,
   {
     name: 'diskio',
     label: i18n.t('compute.text_526'),
@@ -120,6 +142,15 @@ export const OTHER_MONITOR = [
     metric: metricItems['vm_cpu.usage_active'].key,
   },
   {
+    name: 'mem',
+    label: i18n.t('compute.text_518'),
+    seleteItem: 'used_percent',
+    fromItem: 'agent_mem',
+    unit: '%',
+    transfer: 1,
+    metric: metricItems['vm_mem.used_percent'].key,
+  },
+  {
     name: 'netio',
     label: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
@@ -137,6 +168,7 @@ export const OTHER_MONITOR = [
     transfer: 1024,
     metric: metricItems['vm_netio.bps_sent'].key,
   },
+  DISK_USED_PERCENT,
   {
     name: 'diskio',
     label: i18n.t('compute.text_526'),

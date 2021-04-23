@@ -213,14 +213,14 @@ export function getProjectFilter () {
   }
 }
 
-export function getDomainFilter () {
+export function getDomainFilter (domain_key = 'domain') {
   return {
     label: i18n.t('table.title.domain'),
     dropdown: true,
     multiple: true,
     distinctField: {
       type: 'extra_field',
-      key: 'domain',
+      key: domain_key,
     },
     hidden: () => store.getters.isProjectMode,
   }

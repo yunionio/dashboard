@@ -109,6 +109,11 @@ export const PERMISSION = {
   lb_loadbalanceragents_list: ['compute', 'loadbalanceragents', 'list'],
   // ssh 代理节点
   sshproxy_node_list: ['compute', 'proxy_endpoints', 'list'],
+  sshproxy_endpoint_delete: ['compute', 'proxy_endpoints', 'delete'],
+  sshproxy_endpoint_update: ['compute', 'proxy_endpoints', 'update'],
+  sshproxy_endpoint_create: ['compute', 'proxy_endpoints', 'create'],
+  sshproxy_match_link: ['compute', 'proxy_matches', 'create'],
+  sshproxy_match_unlink: ['compute', 'proxy_matches', 'delete'],
   // ssh 代理节点
   sshproxy_service_list: ['compute', 'proxy_agents', 'list'],
   // 区域

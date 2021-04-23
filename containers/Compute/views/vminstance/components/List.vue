@@ -16,7 +16,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { cloudEnabled, cloudUnabledTip } from '../utils'
+import { cloudEnabled, cloudUnabledTip, commonEnabled } from '../utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { SERVER_TYPE } from '@Compute/constants'
@@ -717,6 +717,71 @@ export default {
                       }
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_deploy'),
+                  },
+                  /* 设置免密登录 */
+                  {
+                    label: this.$t('compute.vminstance.actions.setup_ssh_authentication'),
+                    permission: 'server_perform_deploy',
+                    action: () => {
+                      this.createDialog('SetupSSHDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+
+                      if (this.list.selectedItems) {
+                        const project = this.list.selectedItems[0].project || ''
+                        const isSame = this.list.selectedItems.every((item) => {
+                          return item.project === project
+                        })
+                        if (!isSame) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.vminstance.setup_ssh_authentication.group_action.project')
+                          return ret
+                        }
+                      }
+
+                      for (const obj of this.list.selectedItems) {
+                        if (!commonEnabled(obj, ['running'])) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('db.text_156')
+                          return ret
+                        }
+                      }
+                      return ret
+                    },
+                  },
+                  /* 探测免密登录 */
+                  {
+                    label: this.$t('compute.vminstance.actions.detect_ssh_authentication'),
+                    permission: 'server_perform_deploy',
+                    action: () => {
+                      this.createDialog('DetectSSHDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      for (const obj of this.list.selectedItems) {
+                        if (!commonEnabled(obj, ['running'])) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('db.text_156')
+                          return ret
+                        }
+                      }
+                      return ret
+                    },
                   },
                 ],
               },
