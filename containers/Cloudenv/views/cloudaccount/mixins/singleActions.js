@@ -155,6 +155,30 @@ export default {
                 }
               },
             },
+            {
+              label: i18n.t('cloudenv.text_576'),
+              permission: 'cloudaccounts_update',
+              action: () => {
+                this.onManager('update', {
+                  id: obj.id,
+                  managerArgs: {
+                    data: {
+                      saml_auth: true,
+                    },
+                  },
+                })
+              },
+              meta: () => {
+                let tooltip
+                if (obj.saml_auth) tooltip = this.$t('cloudaccount.tooltip.already_enable_sso')
+                const isSupportSAMLAuth = ['Aws', 'Aliyun', 'Huawei', 'Qcloud'].includes(obj.brand)
+                if (!isSupportSAMLAuth) tooltip = this.$t('cloudaccount.tooltip.not_support_sso', [obj.brand])
+                return {
+                  validate: !obj.saml_auth && ownerDomain && isSupportSAMLAuth,
+                  tooltip,
+                }
+              },
+            },
             ...getEnabledSwitchActions(this, obj, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
               metas: [
                 () => {
