@@ -93,6 +93,35 @@ import Clickoutside from '@/directives/clickoutside'
 import { getTagTitle } from '@/utils/common/tag'
 import i18n from '@/locales'
 
+const filterHandler = function (val, search) {
+  if (val.includes(':')) {
+    val = val.split(':')[1]
+  }
+  if (search.indexOf('!') === 0) {
+    // 不包含n
+    return !val.includes(search.substring(1))
+  } else if (search.includes('*')) {
+    if (search.indexOf('*') === search.length - 1) {
+      // 以n开头
+      return val.startsWith(search.substring(0, search.length - 1))
+    } else if (search.indexOf('*') === 0) {
+      if (search.lastIndexOf('*') === search.length - 1) {
+        // 包含n
+        return val.includes(search.substring(1, search.length - 1))
+      }
+      // 以n结尾
+      return val.endsWith(search.substring(1))
+    } else {
+      const idx = search.indexOf('*')
+      // 以n开头，以m结尾
+      return val.startsWith(search.substring(0, idx)) && val.endsWith(search.substring(idx + 1))
+    }
+  } else {
+    // 包含n
+    return val.includes(search)
+  }
+}
+
 export default {
   name: 'TagSelect',
   directives: {
@@ -182,7 +211,8 @@ export default {
       if (!this.search) {
         ret = obj.value
       } else {
-        ret = obj.value.filter(val => val.includes(this.search))
+        // ret = obj.value.filter(val => val.includes(this.search))
+        ret = obj.value.filter(val => filterHandler(val, this.search))
       }
       return ret
     },
@@ -276,7 +306,8 @@ export default {
     handleSearchTagInput (val) {
       if (this.composing) return
       if (val) {
-        this.filtedUserTags = this.userTags.filter((tag) => { return tag.key.indexOf(val) >= 0 })
+        // this.filtedUserTags = this.userTags.filter((tag) => { return tag.key.indexOf(val) >= 0 })
+        this.filtedUserTags = this.userTags.filter((tag) => { return filterHandler(tag.key, val) })
       } else {
         this.filtedUserTags = this.userTags
       }
