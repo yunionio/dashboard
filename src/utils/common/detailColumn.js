@@ -59,9 +59,10 @@ export const getUserTagColumn = ({
   columns,
   tipName,
   ignorePrefix,
+  showEdit = true,
 } = {}) => {
   return getTagColumn({
-    showEdit: true,
+    showEdit,
     type: 'user',
     field: field,
     title: title,
