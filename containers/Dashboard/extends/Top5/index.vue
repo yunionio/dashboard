@@ -55,6 +55,13 @@
               <a-select-option :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
             </template>
           </a-select>
+          <div slot="extra">
+            <i18n path="metricConfig.create_form.metric_extra">
+              <template #link>
+                <help-link :href="metricDoc">{{$t('metricConfig.create_form.usage_link')}}</help-link>
+              </template>
+            </i18n>
+          </div>
         </a-form-item>
         <a-form-item label="TOP/Bottom">
           <a-select v-decorator="decorators.order">
@@ -88,6 +95,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
+import { getMetricDocs } from '@Dashboard/constants'
 
 export default {
   name: 'Top5',
@@ -239,6 +247,7 @@ export default {
           span: 6,
         },
       },
+      metricDoc: getMetricDocs(this.$store.getters.scope),
     }
   },
   computed: {
