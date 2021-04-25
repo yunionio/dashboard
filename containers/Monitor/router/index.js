@@ -46,7 +46,7 @@ export default {
             label: i18n.t('monitor.dashboard.title'),
             permission: 'unifiedmonitors_get',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitor-dashboard')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitor_dashboard')) {
                 return true
               }
               return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])
