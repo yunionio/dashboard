@@ -812,6 +812,8 @@
   "network.snat.type.server": "虚拟机",
   "network.ssh-proxy.title": "SSH代理服务",
   "network.ssh-proxy.endpoints": "SSH代理节点",
+  "network.ssh-proxy.endpoints.create": "新建SSH代理节点",
+  "network.ssh-proxy.endpoints.update": "更新SSH代理节点",
   "network.ssh-proxy.match": "代理Match",
   "network.ssh-proxy.proxyservice": "SSH代理服务",
   "network.ssh-proxy.intranet_ip_addr": "内网地址",
