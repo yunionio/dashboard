@@ -10,7 +10,6 @@
       :form="form.fc">
       <a-form-item :label="$t('common.name')" v-if="!queryOnly">
         <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
-        <name-repeated v-slot:extra res="alertpanels" :name="form.fd.name" version="v1" />
       </a-form-item>
       <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
         <metric
@@ -54,7 +53,6 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import NameRepeated from '@/sections/NameRepeated'
 import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
 import { metric_zh } from '@Monitor/constants'
@@ -66,7 +64,6 @@ export default {
   components: {
     Metric,
     Filters,
-    NameRepeated,
   },
   props: {
     panel: {
