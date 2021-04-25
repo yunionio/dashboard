@@ -1,10 +1,13 @@
 <template>
-  <page-list
+  <div>
+    <a-alert :message="alertMessage" class="mb-2" type="info" />
+    <page-list
       :list="list"
       :columns="columns"
       :single-actions="singleActions"
       :group-actions="groupActions"
       :export-data-options="exportDataOptions" />
+  </div>
 </template>
 
 <script>
@@ -26,6 +29,7 @@ export default {
   },
   data () {
     return {
+      alertMessage: this.$t('network.ssh-proxy.endpoints.list.tips'),
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'proxy_endpoints',
