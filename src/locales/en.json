@@ -2046,7 +2046,8 @@
     "SNAPSHOT_UNUSED": "Unused Snapshot",
     "OSS_SEC_ACL": "Public Read&Write OSS",
     "CLOUDACCOUNT_AMOUNT_DAILY": "Abnormal Daily Cost Of CloudAccount",
-    "CLOUDACCOUNT_AMOUNT_MONTH": "Abnormal Monthly Cost Of CloudAccount"
+    "CLOUDACCOUNT_AMOUNT_MONTH": "Abnormal Monthly Cost Of CloudAccount",
+    "TIMING_SERVER": "Server with periodic usage patterns"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "Release Unused EIP",
@@ -2065,7 +2066,8 @@
     "SNAPSHOT_UNUSED": "Release Unused Snapshot",
     "OSS_SEC_ACL": "Adjust object storage ACL",
     "CLOUDACCOUNT_AMOUNT_DAILY": "Check CloudAccount Cost of yesterday",
-    "CLOUDACCOUNT_AMOUNT_MONTH": "Check CloudAccount Cost of this month"
+    "CLOUDACCOUNT_AMOUNT_MONTH": "Check CloudAccount Cost of this month",
+    "TIMING_SERVER": "Server with periodic usage patterns"
   },
   "idpDrivers": {
     "LDAP": [
