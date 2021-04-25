@@ -146,13 +146,12 @@ export default {
         sortable: true,
         slots: {
           default: ({ row }) => {
-            // const ret = []
+            const ret = []
             if (row.instance_type) {
-              return [<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>]
+              ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
             }
-            // const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
-            // return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
-            return []
+            const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
+            return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
           },
         },
       },
