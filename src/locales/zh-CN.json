@@ -2053,7 +2053,8 @@
     "SNAPSHOT_UNUSED": "未使用的快照",
     "OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件",
     "CLOUDACCOUNT_AMOUNT_DAILY": "云账号天消费异常",
-    "CLOUDACCOUNT_AMOUNT_MONTH": "云账号月消费异常"
+    "CLOUDACCOUNT_AMOUNT_MONTH": "云账号月消费异常",
+    "TIMING_SERVER": "具有周期性使用规律的主机"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "释放未使用的弹性公网IP",
@@ -2072,7 +2073,8 @@
     "SNAPSHOT_UNUSED": "释放未使用的快照",
     "OSS_SEC_ACL": "调整存储桶权限",
     "CLOUDACCOUNT_AMOUNT_DAILY": "检查云账号昨日消费",
-    "CLOUDACCOUNT_AMOUNT_MONTH": "检查云账号本月消费"
+    "CLOUDACCOUNT_AMOUNT_MONTH": "检查云账号本月消费",
+    "TIMING_SERVER": "具有周期性使用规律的主机"
   },
   "idpDrivers": {
     "LDAP": [
