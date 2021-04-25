@@ -40,6 +40,7 @@
           :params="{ ...networkParamsC, $t: item.key }"
           :mapper="networkResourceMapper"
           :remote-fn="q => ({ search: q })"
+          :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
           @change="v => networkChange(v, item)"
           :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
           <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.text_18')}}</help-link>
@@ -226,6 +227,13 @@ export default {
           }
         }
       })
+    },
+    beforeDefaultSelectCallBack (data = []) {
+      const cur = data[0]
+      if (cur) {
+        return cur.ports > cur.ports_used
+      }
+      return false
     },
   },
 }
