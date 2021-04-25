@@ -72,6 +72,25 @@ export default {
             }
           },
           hidden: () => this.hiddenActions.includes('create'),
+        },
+        {
+          label: this.$t('network.text_131'),
+          permission: 'proxy_endpoints_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('network.text_131'),
+              name: this.$t('network.ssh-proxy.endpoints'),
+              onManager: this.onManager,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.allowDelete(),
+            }
+          },
         }],
     }
   },
