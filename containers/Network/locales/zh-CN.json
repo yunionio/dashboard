@@ -813,6 +813,8 @@
   "network.ssh-proxy.title": "SSH代理服务",
   "network.ssh-proxy.endpoints": "SSH代理节点",
   "network.ssh-proxy.endpoints.create": "新建SSH代理节点",
+  "network.ssh-proxy.endpoints.create.vminstance.tips": "虚拟机具体配置请参考",
+  "network.ssh-proxy.endpoints.create.vminstance.tips.link": "虚拟机配置要求",
   "network.ssh-proxy.endpoints.update": "更新SSH代理节点",
   "network.ssh-proxy.match": "代理Match",
   "network.ssh-proxy.proxyservice": "SSH代理服务",

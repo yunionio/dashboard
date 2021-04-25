@@ -68,6 +68,7 @@
               <search-box :options="options" v-model="searchValue" @input="search" />
               <detect-ssh-table :params="params" :key="table1Key" :showRadioSelect="true" @radio-change="handleRadioChange" :maxColumns="3" :remote="false" style="padding-top: 15px;" />
               <a-input v-decorator="decorators.server_id" v-show="false" />
+              <div>{{$t('compute.text_196')}}<help-link href="/vminstance">{{$t('compute.perform_create')}}</help-link>,{{$t('network.ssh-proxy.endpoints.create.vminstance.tips')}}<help-link :href="vmConfigurationLink">{{$t('network.ssh-proxy.endpoints.create.vminstance.tips.link')}}</help-link></div>
             </div>
           </a-form-item>
         </a-form>
@@ -234,6 +235,15 @@ export default {
   computed: {
     isSetpOne () {
       return this.step.currentStep === 0
+    },
+    vmConfigurationLink () {
+      // en/docs/user/network/ssh/sshproxy/#server-configuration-requirements
+      const lang = this.$store.getters.setting.language
+      if (lang === 'zh-CN') {
+        return '/zh/docs/user/network/ssh/sshproxy/#虚拟机配置要求'
+      } else {
+        return '/en/docs/user/network/ssh/sshproxy/#server-configuration-requirements'
+      }
     },
   },
   methods: {

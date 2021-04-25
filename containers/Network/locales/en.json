@@ -814,6 +814,8 @@
   "network.ssh-proxy.title": "SSH Proxy",
   "network.ssh-proxy.endpoints": "Proxy Endpoint",
   "network.ssh-proxy.endpoints.create": "Create SSH Proxy Endpoint",
+  "network.ssh-proxy.endpoints.create.vminstance.tips": "Please refer to the specific configuration of the virtual machine",
+  "network.ssh-proxy.endpoints.create.vminstance.tips.link": "Server Configuration Requirements",
   "network.ssh-proxy.endpoints.update": "Update SSH Proxy Endpoint",
   "network.ssh-proxy.match": "Proxy Match",
   "network.ssh-proxy.proxyservice": "Proxy Agent",
