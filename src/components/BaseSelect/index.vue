@@ -155,6 +155,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    beforeDefaultSelectCallBack: { // 默认选项之前走的回调函数
+      type: Function,
+      required: false,
+    },
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
@@ -454,6 +458,9 @@ export default {
       }
     },
     defaultSelect (list) {
+      if (this.beforeDefaultSelectCallBack) {
+        if (!this.beforeDefaultSelectCallBack(list)) return
+      }
       let isErrorOrEmpty = !this.value
       let value = this.value
       if (R.is(String, this.value)) {
