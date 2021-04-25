@@ -11,7 +11,6 @@
 import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getDomainFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
@@ -46,7 +45,6 @@ export default {
               return `intranet_ip_addr.contains(${val})`
             },
           },
-          project_domains: getDomainFilter('project_domain'),
         },
       }),
       exportDataOptions: {
