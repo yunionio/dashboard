@@ -32,7 +32,8 @@ export default {
         title: i18n.t('network.ssh-proxy-match.vpc_ip_subnet'),
         slots: {
           default: ({ row }) => {
-            return row[row.match_scope] || row.match_value
+            const m = this.list.extraData[row.match_scope]
+            return m && m[row.match_value] ? m[row.match_value] : row.match_value
           },
         },
       },

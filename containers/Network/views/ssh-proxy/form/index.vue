@@ -377,6 +377,7 @@ export default {
             this.alertMessage = this.$t('network.ssh-proxy.endpoint.create.step2.tips_failed')
           } else {
             this.alertType = 'success'
+            this.showSetupForm = false
             this.alertMessage = this.$t('network.ssh-proxy.endpoint.create.step2.tips_success')
           }
           this.sshableStatus = newStatus
