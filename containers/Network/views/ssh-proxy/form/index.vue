@@ -149,7 +149,7 @@ export default {
     return {
       loading: false,
       detecting: false,
-      title: this.$t('compute.vminstance.actions.setup_ssh_authentication'),
+      title: this.$t('network.ssh-proxy.endpoints.create'),
       networkTitle: JSON.stringify(`${this.$t('network.text_565')}: `),
       name: '',
       step: {

@@ -813,6 +813,8 @@
   "network.snat.type.server": "Server",
   "network.ssh-proxy.title": "SSH Proxy",
   "network.ssh-proxy.endpoints": "Proxy Endpoint",
+  "network.ssh-proxy.endpoints.create": "Create SSH Proxy Endpoint",
+  "network.ssh-proxy.endpoints.update": "Update SSH Proxy Endpoint",
   "network.ssh-proxy.match": "Proxy Match",
   "network.ssh-proxy.proxyservice": "Proxy Agent",
   "network.ssh-proxy.intranet_ip_addr": "Intranet IP",
