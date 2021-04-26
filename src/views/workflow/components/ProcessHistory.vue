@@ -43,7 +43,7 @@ export default {
         minWidth: 40,
         showOverflow: 'title',
       },
-      /* {
+      {
         field: 'task_approved',
         title: this.$t('common_364'),
         minWidth: 40,
@@ -57,7 +57,7 @@ export default {
             }
           },
         },
-      }, */
+      },
       {
         field: 'comment',
         title: this.$t('common_157'),
@@ -72,7 +72,7 @@ export default {
     ]
   },
   methods: {
-    getApproveHandle (msg, row) {
+    getApproveHandle (row, msg) {
       const statusObj = approveStatusMap[`${row.activity_id}`]
       const approved = row.task.local_variables.approved
       const pdk = this.processInstanceInfo.process_definition_key
