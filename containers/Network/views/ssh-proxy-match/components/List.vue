@@ -46,7 +46,12 @@ export default {
             const vpcIdMap = {}
             if (vpcIds.length > 0) {
               try {
-                const { data: { data = [] } } = await new this.$Manager('vpcs').list({ params: { 'filter.0': `id.in(${vpcIds.join(',')})` } })
+                const { data: { data = [] } } = await new this.$Manager('vpcs').list({
+                  params: {
+                    'filter.0': `id.in(${vpcIds.join(',')})`,
+                    scope: this.$store.getters.scope,
+                  },
+                })
                 data.map((row) => { vpcIdMap[row.id] = row.name })
               } catch (e) {
                 throw e
@@ -59,7 +64,12 @@ export default {
             const networkIdMap = {}
             if (networkIds.length > 0) {
               try {
-                const { data: { data = [] } } = await new this.$Manager('networks').list({ params: { 'filter.0': `id.in(${networkIds.join(',')})` } })
+                const { data: { data = [] } } = await new this.$Manager('networks').list({
+                  params: {
+                    'filter.0': `id.in(${networkIds.join(',')})`,
+                    scope: this.$store.getters.scope,
+                  },
+                })
                 data.map((row) => { networkIdMap[row.id] = row.name })
               } catch (e) {
                 throw e
