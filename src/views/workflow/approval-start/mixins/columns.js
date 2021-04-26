@@ -62,8 +62,8 @@ export default {
         minWidth: 80,
         showOverflow: 'title',
         formatter: ({ cellVal, row }) => {
-          const tasks = row.process_instance.tasks
-          const step = tasks[tasks.length - 1]
+          const tasks = row.process_instance.tasks || []
+          const step = tasks[0]
           if (step) {
             return step.name
           }
