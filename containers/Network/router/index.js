@@ -263,6 +263,7 @@ export default {
     {
       meta: {
         label: i18n.t('network.ssh-proxy.title'),
+        hidden: () => store.getters.isProjectMode,
       },
       submenus: [
         {
@@ -270,6 +271,7 @@ export default {
           meta: {
             label: i18n.t('network.ssh-proxy.proxyservice'),
             permission: 'sshproxy_service_list',
+            hidden: () => store.getters.isDomainMode,
           },
           component: Layout,
           children: [

@@ -1,17 +1,19 @@
 <template>
-  <page-list
+  <div>
+    <a-alert :message="alertMessage" class="mb-2" type="info" />
+    <page-list
       :list="list"
       :columns="columns"
       :single-actions="singleActions"
       :group-actions="groupActions"
       :export-data-options="exportDataOptions" />
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getDomainFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 
@@ -27,6 +29,7 @@ export default {
   },
   data () {
     return {
+      alertMessage: this.$t('network.ssh-proxy.endpoints.list.tips'),
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'proxy_endpoints',
@@ -46,7 +49,6 @@ export default {
               return `intranet_ip_addr.contains(${val})`
             },
           },
-          project_domains: getDomainFilter('project_domain'),
         },
       }),
       exportDataOptions: {
@@ -72,6 +74,25 @@ export default {
             }
           },
           hidden: () => this.hiddenActions.includes('create'),
+        },
+        {
+          label: this.$t('network.text_131'),
+          permission: 'proxy_endpoints_delete',
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('network.text_131'),
+              name: this.$t('network.ssh-proxy.endpoints'),
+              onManager: this.onManager,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.allowDelete(),
+            }
+          },
         }],
     }
   },
