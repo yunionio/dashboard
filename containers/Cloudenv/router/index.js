@@ -3,8 +3,8 @@ import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
 import CloudaccountUpdateBill from '@Cloudenv/views/cloudaccount/create/BillFileIndex'
 import Proxysetting from '@Cloudenv/views/proxysetting'
-import ServerPriceComparatorCreate from '@Cloudenv/views/server-price-comparator/create'
-import PriceComparatorList from '@Cloudenv/views/server-price-comparator'
+// import ServerPriceComparatorCreate from '@Cloudenv/views/server-price-comparator/create'
+// import PriceComparatorList from '@Cloudenv/views/server-price-comparator'
 // import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
@@ -101,44 +101,44 @@ export default {
         },
       ],
     },
-    {
-      meta: {
-        label: i18n.t('cloudenv.price_comparison'),
-        hidden: () => {
-          return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
-        },
-      },
-      submenus: [
-        {
-          path: '/servercomparator',
-          meta: {
-            label: i18n.t('compute.text_91'),
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'ServerPriceComparatorCreate',
-              path: '',
-              component: ServerPriceComparatorCreate,
-            },
-          ],
-        },
-        {
-          path: '/pricecomparator',
-          meta: {
-            label: i18n.t('cloudenv.price_list'),
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'PriceComparatorList',
-              path: '',
-              component: PriceComparatorList,
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   meta: {
+    //     label: i18n.t('cloudenv.price_comparison'),
+    //     hidden: () => {
+    //       return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
+    //     },
+    //   },
+    //   submenus: [
+    //     {
+    //       path: '/servercomparator',
+    //       meta: {
+    //         label: i18n.t('compute.text_91'),
+    //       },
+    //       component: Layout,
+    //       children: [
+    //         {
+    //           name: 'ServerPriceComparatorCreate',
+    //           path: '',
+    //           component: ServerPriceComparatorCreate,
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       path: '/pricecomparator',
+    //       meta: {
+    //         label: i18n.t('cloudenv.price_list'),
+    //       },
+    //       component: Layout,
+    //       children: [
+    //         {
+    //           name: 'PriceComparatorList',
+    //           path: '',
+    //           component: PriceComparatorList,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     /* {
       meta: {
         label: i18n.t('cloudenv.text_499'),
