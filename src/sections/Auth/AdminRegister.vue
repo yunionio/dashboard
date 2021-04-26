@@ -63,7 +63,15 @@ export default {
       rules: {
         account_name: [
           { required: true, message: this.$t('auth.register.account_name.validate') },
-          { validator: this.$validate('domainAccount') },
+          {
+            validator: (rule, value, _callback) => {
+              if (value && value === 'sysadmin') {
+                _callback(this.$t('auth.register.account_name.preserved'))
+              } else {
+                this.$validate('domainAccount')(rule, value, _callback)
+              }
+            },
+          },
         ],
         account_password: [
           { required: true, message: this.$t('auth.register.account_password.validate') },
