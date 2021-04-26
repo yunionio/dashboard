@@ -3,7 +3,6 @@
     <scope-radio :decorators="decorators" @change="scopeChange" :form="form" :disabled="disabled" :label="label" />
     <a-form-item :label="$t('common.name')">
       <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" :disabled="disabled" />
-      <name-repeated v-slot:extra res="commonalerts" :name="form.fd.name" />
     </a-form-item>
     <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
       <metric
@@ -112,7 +111,6 @@ import Condition from './Condition'
 import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
 import ScopeRadio from '@/sections/ScopeRadio'
-import NameRepeated from '@/sections/NameRepeated'
 import { levelMaps, metric_zh } from '@Monitor/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import NotifyTypes from '@/sections/NotifyTypes'
@@ -121,7 +119,6 @@ export default {
   name: 'CommonalertForm',
   components: {
     ScopeRadio,
-    NameRepeated,
     Metric,
     Filters,
     Condition,
