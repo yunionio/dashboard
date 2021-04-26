@@ -177,6 +177,7 @@ export default {
   },
   methods: {
     change (e) {
+      this.form.fd.networkType = e.target.value
       switch (e.target.value) {
         case NETWORK_OPTIONS_MAP.default.key:
           this.networkComponent = ''
