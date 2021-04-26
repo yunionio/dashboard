@@ -3,18 +3,18 @@
     <a-select-option v-for="item in imageOptions" :key="item.id" :value="item.id">
       <div>
         <a-row>
-          <a-col :span="18">
-            {{ item.name }}
-          </a-col>
-          <a-col :span="6" align="right">
-            <div class="oc-selected-display-none text-color-secondary" style="text-align: right;">
-              {{ imgLabels(item) }}
-            </div>
+          <a-col :span="24">
+            <div>{{ item.name }}</div>
           </a-col>
         </a-row>
         <a-row>
-          <a-col :span="24">
+          <a-col :span="16">
             <div class="oc-selected-display-none text-color-secondary" v-if="showExternalId && item.external_id">{{ $t('compute.text_1346') }}: {{ item.external_id }}</div>
+          </a-col>
+          <a-col :span="8" align="right">
+            <div class="oc-selected-display-none text-color-secondary" style="text-align: right;">
+              {{ imgLabels(item) }}
+            </div>
           </a-col>
         </a-row>
       </div>
