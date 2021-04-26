@@ -698,3 +698,19 @@ export const getOsArch = ({
     },
   }
 }
+
+export const getInstanceSnapshotsTableColumn = ({
+  field = 'instance_snapshots',
+  title = i18n.t('dictionary.instance_snapshot'),
+  sortable = true,
+} = {}) => {
+  return {
+    field,
+    title,
+    sortable,
+    formatter: ({ row }) => {
+      const extResource = _.get(row, 'ext_resource') || {}
+      return _.get(extResource, field) || '-'
+    },
+  }
+}
