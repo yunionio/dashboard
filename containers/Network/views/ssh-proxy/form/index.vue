@@ -5,9 +5,10 @@
       <steps class="my-3" v-model="step" />
       <div class="step1" v-show="isSetpOne">
         <a-form :form="endpointForm" ref="endpointFormRef" v-bind="formItemLayout">
-          <a-form-item :label="$t('dictionary.domain')" key="domain">
+          <a-form-item :label="$t('dictionary.domain')" key="domain" v-show="showDomainSelect">
             <base-select
               v-model="filters.project_domain"
+              v-if="showDomainSelect"
               :isDefaultSelect="true"
               resource="domains"
               :params="renderOrders.project_domain.params"
@@ -114,11 +115,13 @@ export default {
   mixins: [ListMixin],
   data () {
     let domain = ''
+    let showDomainSelect = true
     const serverlist = this.$list.createList(this, { id: 'ssh-endpoint-create-form', resource: 'servers' })
     if (this.$store.getters.scope === 'system') {
       domain = 'default'
     } else {
-      domain = this.$store.getters.userInfo.project_domain || ''
+      showDomainSelect = false
+      domain = this.$store.getters.userInfo.projectDomain || ''
     }
     const columns = [
       getNameDescriptionTableColumn({
@@ -206,6 +209,7 @@ export default {
         data: [],
         columns: columns,
       },
+      showDomainSelect: showDomainSelect,
       filters: {
         project_domain: domain,
         vpc: '',
@@ -240,11 +244,16 @@ export default {
       // en/docs/user/network/ssh/sshproxy/#server-configuration-requirements
       const lang = this.$store.getters.setting.language
       if (lang === 'zh-CN') {
-        return '/zh/docs/user/network/ssh/sshproxy/#虚拟机配置要求'
+        return '/docs/zh/docs/user/network/ssh/sshproxy/#虚拟机配置要求'
       } else {
-        return '/en/docs/user/network/ssh/sshproxy/#server-configuration-requirements'
+        return '/docs/en/docs/user/network/ssh/sshproxy/#server-configuration-requirements'
       }
     },
+  },
+  created () {
+    if (!this.showDomainSelect) {
+      this.handleDomainChange(this.filters.project_domain)
+    }
   },
   methods: {
     _params (base, key, value) {
