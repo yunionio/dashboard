@@ -211,6 +211,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import EipConfig from '@Compute/sections/EipConfig'
 import OsArch from '@/sections/OsArch'
+import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 
 export default {
   name: 'VM_IDCCreate',
@@ -391,7 +392,10 @@ export default {
       }
     },
     showEip () {
-      const { vpcs } = this.form.fd
+      const { vpcs, networkType } = this.form.fd
+      if (networkType === NETWORK_OPTIONS_MAP.default.key) {
+        return false
+      }
       if (R.is(Object, vpcs)) {
         const vpcList = Object.values(vpcs)
         if (vpcList.length && !~vpcList.indexOf('default')) {
