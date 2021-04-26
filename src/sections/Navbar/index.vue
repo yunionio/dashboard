@@ -348,12 +348,19 @@ export default {
       }
       return false
     },
+    globalSettingSetupKeys () {
+      const { globalSetting } = this.$store.state
+      if (globalSetting && globalSetting.value) {
+        return globalSetting.value.setupKeys || []
+      }
+      return []
+    },
   },
   watch: {
     userInfo: {
       handler (val, oldVal = {}) {
         if (val.id !== oldVal.id) {
-          if (getSetupInStorage() && val.roles && val.roles.includes('admin')) {
+          if (getSetupInStorage() && this.globalSettingSetupKeys.length === 0 && val.roles && val.roles.includes('admin')) {
             this.$router.push('/guide')
             return
           }
