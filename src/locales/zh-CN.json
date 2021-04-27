@@ -2074,7 +2074,7 @@
     "OSS_SEC_ACL": "调整存储桶权限",
     "CLOUDACCOUNT_AMOUNT_DAILY": "检查云账号昨日消费",
     "CLOUDACCOUNT_AMOUNT_MONTH": "检查云账号本月消费",
-    "TIMING_SERVER": "具有周期性使用规律的主机"
+    "TIMING_SERVER": "-"
   },
   "idpDrivers": {
     "LDAP": [
