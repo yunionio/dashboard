@@ -97,6 +97,7 @@ export default {
     },
     toMore () {
       this.$router.push('/notification')
+      this.visible = false
     },
   },
 }
