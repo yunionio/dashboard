@@ -36,7 +36,7 @@
             <a-slider v-model="capacity" v-bind="skuOptions" />
           </a-col>
           <a-col :span="5">
-            <a-input-number v-model="capacity" v-bind="skuOptions" :formatter="value => `${value}GB`" />
+            <a-input-number v-model="capacity" v-bind="skuOptions" /> GB
           </a-col>
         </a-form-item>
         <a-form-item :label="$t('dictionary.zone')">
