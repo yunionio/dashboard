@@ -11,7 +11,7 @@
     <page-footer>
       <div slot="right">
         <a-button class="mr-3" type="primary" @click="handleConfirm" :loading="loading">{{$t('cloudenv.text_169')}}</a-button>
-        <test-button class="mr-3" :post="testPost" />
+        <test-button class="mr-3" :post="testPost" :isSuccessAlert="false" />
         <a-button @click="cancel">{{$t('cloudenv.text_170')}}</a-button>
       </div>
     </page-footer>
