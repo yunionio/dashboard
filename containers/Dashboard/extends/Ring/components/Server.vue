@@ -76,8 +76,8 @@ export default {
     const initialCloudEnvValue = ((this.params && this.params.type !== 'k8s') && this.params.cloud_env) || ''
     const initialBrandValue = ((this.params && this.params.type !== 'k8s') && this.params.brand) || ''
     const initialRegionValue = ((this.params && this.params.type !== 'k8s') && this.params.region) || ''
-    const initialAllUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.all_usage_key) || 'hosts.memory'
-    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || 'all.servers.memory'
+    const initialAllUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.all_usage_key) || ''
+    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || ''
     const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
     const initialColorValue = ((this.params && this.params.type !== 'k8s') && this.params.color) || 'default'
     const initialUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_label && this.params.usage_label.length > 0) ? this.params.usage_label : this.$t('dashboard.text_33')
