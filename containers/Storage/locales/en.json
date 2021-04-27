@@ -285,7 +285,7 @@
   "storage.filesystem.not.available.tooltip": "FileSystem status is not available",
   "storage.other.infomation": "Other Info",
   "storage.access.group.rule.source": "Authorized Address",
-  "storage.access.group.rule.source.tooltip": "Instance VPC IP，Allow single ip or cidr, etc：10.10.1.123、192.168.3.0/24",
+  "storage.access.group.rule.source.tooltip": "Instance VPC IP，Allow single ip or cidr, etc：10.10.1.123、192.168.3.0/24, Classic only supports a single network type IP",
   "storage.access.group.rule.rw.access_type": "Read And Write Permissions",
   "storage.access.group.rule.rw.access_type.rw": "Read and write",
   "storage.access.group.rule.rw.access_type.r": "Read",
