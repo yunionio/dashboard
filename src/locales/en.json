@@ -2067,7 +2067,7 @@
     "OSS_SEC_ACL": "Adjust object storage ACL",
     "CLOUDACCOUNT_AMOUNT_DAILY": "Check CloudAccount Cost of yesterday",
     "CLOUDACCOUNT_AMOUNT_MONTH": "Check CloudAccount Cost of this month",
-    "TIMING_SERVER": "Server with periodic usage patterns"
+    "TIMING_SERVER": "-"
   },
   "idpDrivers": {
     "LDAP": [
