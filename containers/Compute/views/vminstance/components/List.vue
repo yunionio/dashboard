@@ -115,15 +115,15 @@ export default {
       region: getRegionFilter(),
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
-      vmem_size: {
-        label: this.$t('table.title.vmem_size'),
-      },
+      // vmem_size: {
+      //   label: this.$t('table.title.vmem_size'),
+      // },
       vcpu_count: {
         label: 'CPU',
       },
-      disk: {
-        label: this.$t('table.title.disk'),
-      },
+      // disk: {
+      //   label: this.$t('table.title.disk'),
+      // },
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
