@@ -4,7 +4,7 @@
     <div slot="body">
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('scope.text_200')">
-          {{ mobile }}
+          {{ imobile }}
         </a-form-item>
       </a-form>
     </div>
@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       loading: false,
-      mobile: this.params.data.mobile,
+      international_mobile: this.params.data.international_mobile,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -57,6 +57,13 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo']),
+    imobile () {
+      if (this.international_mobile.area_code) {
+        return `+${this.international_mobile.area_code} ${this.international_mobile.mobile}`
+      } else {
+        return this.international_mobile.mobile
+      }
+    },
   },
   created () {
     this.manager = new this.$Manager('receivers', 'v1')
