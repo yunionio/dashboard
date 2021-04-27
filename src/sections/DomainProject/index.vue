@@ -269,6 +269,7 @@ export default {
       if (domainId) {
         this.fetchProjects(domainId)
         this.fc.setFieldsValue({
+          domain: { key: domainId },
           project: undefined,
         })
       } else {

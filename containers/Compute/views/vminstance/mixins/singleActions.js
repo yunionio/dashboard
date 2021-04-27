@@ -922,6 +922,12 @@ export default {
                       validate: true,
                       tooltip: null,
                     }
+                    const isLinux = obj.os_type && obj.os_type.toLowerCase() === 'linux'
+                    if (!isLinux) {
+                      ret.validate = false
+                      ret.tooltip = this.$t('compute.text_362')
+                      return ret
+                    }
                     if (!commonEnabled(obj, ['running'])) {
                       ret.validate = false
                       ret.tooltip = i18n.t('db.text_156')

@@ -522,7 +522,7 @@ export default {
       const domain = this.$route.query.domain_id
       if (!R.isNil(domain) && !R.isEmpty(domain)) {
         this.form.fc.setFieldsValue({
-          domain,
+          domain: { key: domain },
         })
       }
     },
