@@ -285,7 +285,7 @@
   "storage.filesystem.not.available.tooltip": "仅可用的文件系统支持此操作",
   "storage.other.infomation": "其他信息",
   "storage.access.group.rule.source": "授权地址",
-  "storage.access.group.rule.source.tooltip": "虚拟机VPC IP，允许单个IP或网段，如：10.10.1.123或192.168.3.0/24",
+  "storage.access.group.rule.source.tooltip": "虚拟机VPC IP，允许单个IP或网段，如：10.10.1.123或192.168.3.0/24, 经典网络类型暂只支持单个IP",
   "storage.access.group.rule.rw.access_type": "读写权限",
   "storage.access.group.rule.rw.access_type.rw": "读写",
   "storage.access.group.rule.rw.access_type.r": "只读",
