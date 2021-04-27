@@ -2048,6 +2048,7 @@
   "auth.register.submit": "Register",
   "auth.register.account_name.placeholder": "Administrator Account",
   "auth.register.account_name.validate": "Please enter the administrator account",
+  "auth.register.account_name.preserved": "This account has been reserved for system administration, please choose another name",
   "auth.register.account_password.placeholder": "Please enter your password",
   "auth.register.confirm_account_password.placeholder": "Please confirm the administrator password again",
   "auth.register.account_password.validate": "Please enter the administrator password",

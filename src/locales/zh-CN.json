@@ -2048,6 +2048,7 @@
   "auth.register.submit": "注册",
   "auth.register.account_name.placeholder": "管理员账号",
   "auth.register.account_name.validate": "请输入管理员账号",
+  "auth.register.account_name.preserved": "该管理员账号被系统预留，请使用其他账号名",
   "auth.register.account_password.placeholder": "请输入密码",
   "auth.register.confirm_account_password.placeholder": "请再次确认管理员密码",
   "auth.register.account_password.validate": "请输入管理员密码",
