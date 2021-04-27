@@ -349,10 +349,26 @@ export default {
       values.cloudaccount_id = this.id
       delete values.sync_info
       delete values.billtask
-      await new this.$Manager('bucket_options', 'v1').performClassAction({
+      const res = await new this.$Manager('bucket_options', 'v1').performClassAction({
         action: 'verify',
         data: values,
       })
+      if (!res || !res.data || !res.data.status) return false
+      if (res.data.status === 'success') {
+        this.$notification.success({
+          message: this.$t('common_270'),
+          description: this.$t('common_271'),
+        })
+      } else if (res.data.msg && res.data.msg === 'bucket file not found') {
+        this.$notification.warning({
+          message: this.$t('cloudenv.text_577'),
+          description: (
+            <div>
+              {this.$t('cloudenv.text_578')}<br/>{this.$t('cloudenv.text_579')}
+            </div>
+          ),
+        })
+      } else return false
     },
   },
 }

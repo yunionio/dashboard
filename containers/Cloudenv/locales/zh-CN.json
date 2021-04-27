@@ -684,5 +684,8 @@
   "cloudenv.price_list": "价格清单",
   "cloudenv.buy_num": "购买数量",
   "cloudenv.add_to_list": "加入清单",
-  "cloudenv.last.sync.end.at": "结束时间"
+  "cloudenv.last.sync.end.at": "结束时间",
+  "cloudenv.text_577": "存储桶中找不到相关文件",
+  "cloudenv.text_578": "如存储桶URL填写正确，则可能是账单数据还未同步到存储桶中，该提示不影响账单文件的更新，可直接关闭该弹窗。",
+  "cloudenv.text_579": "如存储桶URL填写错误，请重新填写。"
 }
