@@ -198,10 +198,10 @@ export default {
         let vItem = this.metricValueItem
         let kItem = this.metricKeyItem
         if (!vItem) {
-          vItem = this.metricKeyOpts.find((opt) => { return opt.key === this.metric_key })
+          vItem = this.metricOpts.find((opt) => { return opt.key === val })
         }
         if (this.metricKeyItem) {
-          kItem = this.metricOpts.find((opt) => { return opt.key === val })
+          kItem = this.metricKeyOpts.find((opt) => { return opt.key === this.metric_key })
         }
         console.log(vItem, kItem)
         this.$emit('metricChange', { metricKey: this.metric_key, mertric: val, mertricItem: vItem, metricKeyItem: kItem })
