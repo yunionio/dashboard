@@ -21,8 +21,8 @@
             :filterOption="false"
             :loading="loading">
           <template v-for="option of options">
-            <a-select-option :key="option.id" :value="option.id">
-              <span class="text-color-secondary option-prefix">{{ $t(`dictionary.${select.scope}`) }}: </span>{{ option.name }}
+            <a-select-option :key="option.id" :value="option.id" :label="option.label">
+              <scope-option :scope="select.scope" :option="option" />
             </a-select-option>
           </template>
         </a-select>
@@ -34,8 +34,34 @@
 <script>
 import _ from 'lodash'
 
+export const ScopeOption = {
+  name: 'ScopeSelectOption',
+  props: {
+    scope: {
+      type: String,
+      required: true,
+    },
+    option: {
+      type: Object,
+      required: true,
+    },
+  },
+  render (createElement, context) {
+    if (this.scope === 'system') {
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }</div>
+    } else if (this.scope === 'domain') {
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }</div>
+    } else {
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }<span className="ml-4 text-color-secondary"> {'(' + this.$t('monitor.text_107') + ' : '}</span>{ this.option.data.project_domain + ')'}</div>
+    }
+  },
+}
+
 export default {
   name: 'ScopeSelect',
+  components: {
+    ScopeOption,
+  },
   props: {
     value: {
       type: Object,
@@ -96,7 +122,7 @@ export default {
     async _fetchOptions (params) {
       if (this.showSelect && this.manager) {
         const { data: { data } } = await this.manager.list({ params: params })
-        return data.map((item) => { return { id: item.id, name: item.name } })
+        return data.map((item) => { return { id: item.id, name: item.name, label: item.name, data: item } })
       }
       return []
     },
