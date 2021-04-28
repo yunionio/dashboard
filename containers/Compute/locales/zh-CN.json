@@ -1395,7 +1395,7 @@
   "compute.vminstance.setup_ssh_authentication.keypair.tips": "请输入密钥",
   "compute.vminstance.setup_ssh_authentication.step2": "等待执行结果",
   "compute.vminstance.setup_ssh_authentication.group_action.project": "请选择相同项目的主机进行操作",
-  "compute.vminstance.monitor.setup_alert.required_agent.tips": "未安装Agent",
+  "compute.vminstance.monitor.setup_alert.required_agent.tips": "暂不支持该操作",
   "compute.vminstance.monitor.install_agent.tips": "未安装Agent，部分图表无法查看",
   "compute.vminstance.monitor.install_agent.tips_failed": "安转失败，可尝试重新安装",
   "compute.vminstance.monitor.install_agent": "安装Agent",
