@@ -90,6 +90,7 @@ export default {
             },
             {
               label: i18n.t('network.text_201'),
+              permission: 'eips_perform_syncstatus',
               action: () => {
                 this.onManager('performAction', {
                   steadyStatus: ['running', 'ready'],

@@ -29,6 +29,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_663'),
+        permission: 'server_create',
         action: obj => {
           this.createDialog('ImageCreateServerDialog', {
             data: [obj],
