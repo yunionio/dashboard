@@ -42,7 +42,7 @@ export default {
     },
   },
   data () {
-    const visible = this.data.status === 'running' && (!this.data.metadata || this.data.metadata['sys:monitor_agent'] !== true)
+    const visible = this.data.status === 'running' && (!this.data.metadata || this.data.metadata['sys:monitor_agent'] !== 'true')
     return {
       singleActions: [
         {
