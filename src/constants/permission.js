@@ -223,6 +223,7 @@ export const PERMISSION = {
   server_perform_revoke_secgroup: ['compute', 'servers', 'perform', 'revoke-secgroup'],
   server_perform_cancel_delete: ['compute', 'servers', 'perform', 'cancel-delete'],
   server_perform_cancel_expire: ['compute', 'servers', 'perform', 'cancel-expire'],
+  server_perform_dissociate_eip: ['compute', 'servers', 'perform', 'dissociate-eip'],
   /**
    * images 相关操作
    */
@@ -592,6 +593,7 @@ export const PERMISSION = {
   eips_delete: ['compute', 'eips', 'delete'],
   eips_get: ['compute', 'eips', 'get'],
   eips_create: ['compute', 'eips', 'create'],
+  eips_perform_syncstatus: ['compute', 'eips', 'perform', 'syncstatus'],
   /**
    * meter 相关操作
    */
@@ -620,6 +622,10 @@ export const PERMISSION = {
    */
   instancegroups_list: ['compute', 'instancegroups', 'list'],
   instancegroups_create: ['compute', 'instancegroups', 'create'],
+  instancegroups_delete: ['compute', 'instancegroups', 'delete'],
+  instancegroups_perform_bind_guests: ['compute', 'instancegroups', 'perform', 'bind-guests'],
+  instancegroups_perform_enable: ['compute', 'instancegroups', 'perform', 'enable'],
+  instancegroups_perform_disable: ['compute', 'instancegroups', 'perform', 'disable'],
   /**
    * 数据库-RDS
    */
