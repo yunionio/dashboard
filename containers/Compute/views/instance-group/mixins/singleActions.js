@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+        permission: 'instancegroups_perform_bind_guests',
         action: (obj) => {
           this.createDialog('InstanceGroupBindServerDialog', {
             columns: this.columns,
@@ -23,9 +24,10 @@ export default {
         label: i18n.t('compute.text_352'),
         actions: obj => {
           return [
-            ...getEnabledSwitchActions(this, obj),
+            ...getEnabledSwitchActions(this, obj, ['instancegroups_perform_enable', 'instancegroups_perform_disable']),
             {
               label: i18n.t('compute.perform_delete'),
+              permission: 'instancegroups_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
