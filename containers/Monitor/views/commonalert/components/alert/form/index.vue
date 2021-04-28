@@ -107,6 +107,7 @@
 <script>
 import * as R from 'ramda'
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
 import Condition from './Condition'
 import Metric from '@Monitor/sections/Metric'
 import Filters from '@Monitor/sections/Filters'
@@ -400,7 +401,6 @@ export default {
       conditionUnit: '',
       metricKeyItem: {},
       contactParams: {
-        scope: this.$store.getters.scope,
         with_meta: true,
         limit: 0,
         enabled: true,
@@ -431,6 +431,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isDomainMode', 'scope']),
     disabled () {
       return this.$route.query.alertType === 'system'
     },
@@ -515,6 +516,7 @@ export default {
     }
     this.formScopeParams = params
     this.scopeChange(params)
+    this.initContactParams(this.contactParams)
   },
   mounted () {
     if (R.is(Object, this.alertData)) {
@@ -695,6 +697,14 @@ export default {
         label += `(${metric_zh[metricLabel] ? metric_zh[metricLabel] : metricLabel})`
       }
       return label
+    },
+    initContactParams (contactParams) {
+      if (this.isDomainMode) {
+        contactParams.scope = 'system'
+        contactParams.project_domain_filter = true
+      } else {
+        contactParams.scope = this.scope
+      }
     },
   },
 }
