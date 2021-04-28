@@ -114,6 +114,7 @@ export default {
         { field: 'region', title: this.$t('compute.text_177') },
         { field: 'name', title: this.$t('compute.text_178') },
         { field: 'cpu_core_count', title: this.$t('compute.text_179') },
+        { field: 'cpu_arch', title: this.$t('compute.cpu_arch'), slots: { default: ({ row }) => { return row.cpu_arch ? this.$t(`compute.cpu_arch.${row.cpu_arch}`) : '-' } } },
         { field: 'memory_size_mb_compute', title: this.$t('compute.text_180') },
       ]
       const providerColumn = {
