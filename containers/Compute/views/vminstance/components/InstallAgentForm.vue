@@ -6,10 +6,16 @@
           {{ install_failed_reason }}
         </template>
         {{ installTips }}
+        <help-link href="/docs/en/docs/user/network/ssh/sshproxy" v-if="showPEHelpLink">PE</help-link>
       </a-tooltip>
-      <a-button class="ml-2" type="link" @click="handleInstallAgent" v-show="showInstallButton">
-        {{ $t('compute.vminstance.monitor.install_agent') }}
-      </a-button>
+      <a-tooltip>
+        <template slot="title" v-if="disableTips">
+          {{ disableTips }}
+        </template>
+        <a-button class="ml-2" type="link" @click="handleInstallAgent" :disabled="disable" v-show="showInstallButton">
+          {{ $t('compute.vminstance.monitor.install_agent') }}
+        </a-button>
+      </a-tooltip>
     </div>
     <div v-show="installing">
       {{ $t('compute.vminstance.monitor.install_agent.installing') }}
@@ -41,10 +47,16 @@ export default {
     } else {
       agent_install_status = 'installed'
     }
+    const disable = this.data.os_type && this.data.os_type === 'Windows'
+    let disableTips = ''
+    if (disable) disableTips = this.$t('compute.text_1285')
     return {
+      disable: disable,
+      disableTips: disableTips,
       /* install, installed, installing, install_failed */
       agent_install_status: agent_install_status,
       install_failed_reason: '',
+      install_failed_code: '',
     }
   },
   computed: {
@@ -59,12 +71,24 @@ export default {
         case 'installed':
           return this.$t('compute.vminstance.monitor.install_agent.installed')
         case 'install_failed':
-          return this.$t('compute.vminstance.monitor.install_agent.tips_failed')
+          switch (this.install_failed_code) {
+            case 'Others':
+              return this.$t('compute.vminstance.monitor.install_agent.tips_failed')
+            case 'NoReachInfluxdb':
+              return this.$t('compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb')
+            case 'ServerNotSshable':
+              return this.$t('compute.vminstance.monitor.install_agent.tips_failed.server_not_sshable')
+            default:
+              return this.$t('compute.vminstance.monitor.install_agent.tips_failed')
+          }
         case 'install':
           return this.$t('compute.vminstance.monitor.install_agent.tips')
         default:
           return ''
       }
+    },
+    showPEHelpLink () {
+      return this.agent_install_status === 'install_failed' && this.install_failed_code === 'ServerNotSshable'
     },
   },
   methods: {
@@ -89,6 +113,7 @@ export default {
             if (data[0].status === 'succeed' || data[0].status === 'failed') {
               this.agent_install_status = data[0].status === 'succeed' ? 'installed' : 'install_failed'
               this.install_failed_reason = data.reason
+              this.install_failed_code = data.fail_code || ''
               this.$emit('onInstall', data[0])
               break
             }
