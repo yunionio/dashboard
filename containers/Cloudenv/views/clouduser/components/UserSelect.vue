@@ -76,7 +76,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'userInfo', 'scope']),
+    ...mapGetters(['isAdminMode', 'userInfo', 'scope', 'isDomainMode']),
   },
   watch: {
     domain (val, oldVal) {
@@ -369,8 +369,13 @@ export default {
     // 获取可用的user list
     async fetchUsers (query) {
       const params = {
-        scope: this.scope,
         project: this.project,
+      }
+      if (this.isDomainMode) {
+        params.scope = 'system'
+        params.project_domain_filter = true
+      } else {
+        params.scope = this.scope
       }
       if (query) {
         params.filter = `name.contains(${query})`
