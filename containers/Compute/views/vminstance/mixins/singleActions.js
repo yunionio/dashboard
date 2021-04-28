@@ -156,7 +156,34 @@ export default {
             {
               label: i18n.t('compute.text_353'),
               submenus: [
+                // 同步状态
                 {
+<<<<<<< HEAD
+=======
+                  label: i18n.t('compute.perform_sync_status'),
+                  permission: 'server_perform_syncstatus',
+                  action: () => {
+                    this.onManager('performAction', {
+                      steadyStatus: ['running', 'ready'],
+                      id: obj.id,
+                      managerArgs: {
+                        action: 'syncstatus',
+                      },
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (commonUnabled(obj)) return ret
+                    ret.validate = true
+                    return ret
+                  },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_syncstatus'),
+                },
+                {
+>>>>>>> feat(compute, network): add action permission
                   label: i18n.t('compute.text_272'),
                   permission: 'server_perform_start',
                   action: () => {
@@ -485,8 +512,10 @@ export default {
                 //     return ret
                 //   },
                 // },
+                // 创建相同配置
                 {
                   label: i18n.t('compute.text_359'),
+                  permission: 'server_create',
                   action: () => {
                     this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_same_configuration_callback_address', () => {
                       this.createDialog('VmCloneDialog', {
@@ -995,8 +1024,10 @@ export default {
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_bind_elastic_public_ip'),
                 },
+                // 解绑弹性公网IP
                 {
                   label: i18n.t('compute.text_1264'),
+                  permission: 'server_perform_dissociate_eip',
                   action: () => {
                     this.createDialog('VmUnbindEipDialog', {
                       data: [obj],
@@ -1190,6 +1221,7 @@ export default {
               submenus: [
                 disableDeleteAction(this, {
                   name: this.$t('dictionary.server'),
+                  permission: 'server_update',
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
                 }),
                 {
