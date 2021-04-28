@@ -243,7 +243,7 @@ export default {
       return this.$t('compute.text_396')
     },
     param () {
-      const project_domain = { project_domain: this.form.fd.domain || this.userInfo.domain.id }
+      const project_domain = { project_domain: this.form.fd.domain || this.userInfo.projectDomainId || this.userInfo.domain.id }
       if (this.diskType === 'private') {
         return {
           zone: {
