@@ -680,7 +680,7 @@
   "cloudenv.billing_scope.managed": "Accounts Managed by Platform",
   "cloudenv.billing_scope.all": "All Accounts",
   "cloudenv.billing_scope.prompt": "Please specify scope of bill analysis",
-  "cloudenv.price_comparison": "Price comparison",
+  "cloudenv.price_comparison": "Price Comparison",
   "cloudenv.price_list": "Price List",
   "cloudenv.buy_num": "Purchase quantity",
   "cloudenv.add_to_list": "Add To List",
