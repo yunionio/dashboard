@@ -48,6 +48,7 @@ export const getSearchMaps = (searchRes = {}) => {
   const maps = {
     servers: {
       res_name: 'servers',
+      menu_key: 'vminstance',
       label: i18n.t('dictionary.server'),
       id: 'servers',
       component: 'VmInstanceList',
@@ -71,6 +72,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {}, // 查询结果
     },
     baremetals: {
+      menu_key: 'baremetal',
       res_name: 'servers',
       label: i18n.t('dictionary.baremetal'),
       id: 'baremetals',
@@ -95,6 +97,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     images: {
+      menu_key: 'image',
       res_name: 'images',
       label: i18n.t('dictionary.image'),
       id: 'images',
@@ -115,6 +118,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     guestimages: {
+      menu_key: 'image',
       res_name: 'guestimages',
       label: i18n.t('dictionary.guestimage'),
       id: 'guestimages',
@@ -135,6 +139,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     disks: {
+      menu_key: 'disk',
       res_name: 'disks',
       label: i18n.t('dictionary.disk'),
       id: 'disks',
@@ -156,6 +161,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     diskSnapshots: {
+      menu_key: 'disk_snapshot',
       res_name: 'snapshots',
       label: i18n.t('dictionary.disk_snapshots'),
       id: 'diskSnapshots',
@@ -177,6 +183,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     instanceSnapshots: {
+      menu_key: 'instance_snapshot',
       res_name: 'instance_snapshots',
       label: i18n.t('common.text00023'),
       id: 'instanceSnapshots',
@@ -196,6 +203,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     secgroups: {
+      menu_key: 'secgroup',
       res_name: 'secgroups',
       label: i18n.t('dictionary.secgroup'),
       id: 'secgroups',
@@ -215,6 +223,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     eips: {
+      menu_key: 'eip2',
       res_name: 'eips',
       label: i18n.t('dictionary.eip'),
       id: 'eips',
@@ -256,6 +265,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     networks: {
+      menu_key: 'network2',
       res_name: 'networks',
       label: i18n.t('dictionary.network'),
       id: 'networks',
@@ -278,6 +288,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     hosts: {
+      menu_key: 'host',
       res_name: 'hosts',
       label: i18n.t('dictionary.host'),
       id: 'hosts',
@@ -302,6 +313,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     physicalmachines: {
+      menu_key: 'physicalmachine',
       res_name: 'hosts',
       label: i18n.t('dictionary.physicalmachine'),
       id: 'physicalmachines',
@@ -328,6 +340,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     rds: {
+      menu_key: 'rds',
       res_name: 'dbinstances',
       label: 'RDS',
       id: 'rds',
@@ -350,6 +363,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     redis: {
+      menu_key: 'redis',
       res_name: 'elasticcaches',
       label: 'Redis',
       id: 'redis',
@@ -372,6 +386,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     deleteServers: {
+      menu_key: 'serverrecovery',
       res_name: 'servers',
       label: i18n.t('dictionary.delete_servers'),
       id: 'deleteServers',
@@ -397,6 +412,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     deleteDisks: {
+      menu_key: 'diskrecovery',
       res_name: 'disks',
       label: i18n.t('dictionary.delete_disks'),
       id: 'deleteDisks',
@@ -418,6 +434,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     deleteImages: {
+      menu_key: 'imagerecovery',
       res_name: 'images',
       label: i18n.t('dictionary.delete_images'),
       id: 'deleteImages',
@@ -439,6 +456,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     vpcs: {
+      menu_key: 'vpc',
       res_name: 'vpcs',
       label: i18n.t('dictionary.vpc'),
       id: 'vpcs',
@@ -462,6 +480,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     wires: {
+      menu_key: 'wire',
       res_name: 'wires',
       label: i18n.t('dictionary.wire'),
       id: 'wires',
@@ -481,6 +500,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     natgateways: {
+      menu_key: 'nat',
       res_name: 'natgateways',
       label: i18n.t('dictionary.nat'),
       id: 'natgateways',
@@ -500,6 +520,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     dns_zones: {
+      menu_key: 'dns_zone',
       res_name: 'dns_zones',
       label: i18n.t('dictionary.dns_zone'),
       id: 'dns_zones',
@@ -519,6 +540,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     loadbalancers: {
+      menu_key: 'lb',
       res_name: 'loadbalancers',
       label: i18n.t('dictionary.loadbalancer'),
       id: 'loadbalancers',
@@ -538,6 +560,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     loadbalanceracls: {
+      menu_key: 'lbacl',
       res_name: 'loadbalanceracls',
       label: i18n.t('dictionary.loadbalanceracl'),
       id: 'loadbalanceracls',
@@ -557,6 +580,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     loadbalancercertificates: {
+      menu_key: 'lbcert',
       res_name: 'loadbalancercertificates',
       label: i18n.t('dictionary.loadbalancercertificate'),
       id: 'loadbalancercertificates',
@@ -576,6 +600,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     storages: {
+      menu_key: 'blockstorage',
       res_name: 'storages',
       label: i18n.t('dictionary.storage'),
       id: 'storages',
@@ -595,6 +620,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     buckets: {
+      menu_key: 'bucket',
       res_name: 'buckets',
       label: i18n.t('dictionary.bucket'),
       id: 'buckets',
@@ -614,6 +640,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     idps: {
+      menu_key: 'idp',
       res_name: 'identity_providers',
       label: i18n.t('dictionary.identity_provider'),
       id: 'identity_providers',
@@ -633,6 +660,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     domains: {
+      menu_key: 'domain',
       res_name: 'domains',
       label: i18n.t('dictionary.domain'),
       id: 'domains',
@@ -652,6 +680,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     projects: {
+      menu_key: 'project',
       res_name: 'projects',
       label: i18n.t('dictionary.project'),
       id: 'projects',
@@ -671,6 +700,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     users: {
+      menu_key: 'systemuser',
       res_name: 'users',
       label: i18n.t('dictionary.user'),
       id: 'users',
@@ -690,6 +720,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     groups: {
+      menu_key: 'group',
       res_name: 'groups',
       label: i18n.t('dictionary.group'),
       id: 'groups',
@@ -709,6 +740,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     roles: {
+      menu_key: 'role',
       res_name: 'roles',
       label: i18n.t('dictionary.role'),
       id: 'roles',
@@ -728,6 +760,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     policies: {
+      menu_key: 'policy',
       res_name: 'policies',
       label: i18n.t('res.policies'),
       id: 'policies',
@@ -747,6 +780,7 @@ export const getSearchMaps = (searchRes = {}) => {
       resData: {},
     },
     cloudaccounts: {
+      menu_key: 'cloudaccount',
       res_name: 'cloudaccounts',
       label: i18n.t('dictionary.cloudaccount'),
       id: 'cloudaccounts',
