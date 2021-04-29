@@ -73,13 +73,13 @@ export default {
         case 'install_failed':
           switch (this.install_failed_code) {
             case 'Others':
-              return this.$t('compute.vminstance.monitor.install_agent.tips_failed')
+              return this.$t('compute.vminstance.monitor.install_agent.tips_failed.others')
             case 'NoReachInfluxdb':
               return this.$t('compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb')
             case 'ServerNotSshable':
               return this.$t('compute.vminstance.monitor.install_agent.tips_failed.server_not_sshable')
             default:
-              return this.$t('compute.vminstance.monitor.install_agent.tips_failed')
+              return this.$t('compute.vminstance.monitor.install_agent.tips_failed.others')
           }
         case 'install':
           return this.$t('compute.vminstance.monitor.install_agent.tips')
