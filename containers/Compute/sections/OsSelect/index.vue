@@ -17,6 +17,7 @@
       :imageParams="imageParams"
       :cacheImageParams="cacheImageParams"
       :osType="osType"
+      :osArch="osArch"
       :cloudproviderParamsExtra="cloudproviderParamsExtra"
       :cloudaccountId="cloudaccountId"
       :imageCloudproviderDisabled="imageCloudproviderDisabled"
@@ -66,6 +67,9 @@ export default {
       default: () => [],
     },
     osType: {
+      type: String,
+    },
+    osArch: {
       type: String,
     },
     uefi: {
