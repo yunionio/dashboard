@@ -86,9 +86,9 @@ export default {
               validate: true,
               tooltip: '',
             }
-            if (_.get(obj, 'constants.fromItem', '').startsWith('agent_') && visible) {
+            if (_.get(obj, 'constants.fromItem', '').startsWith('agent_')) {
               ret.validate = false
-              ret.tooltip = this.$t('compute.vminstance.monitor.setup_alert.required_agent.tips')
+              ret.tooltip = this.$t('compute.text_1287', [''])
             }
             return ret
           },
