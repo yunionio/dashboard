@@ -25,6 +25,13 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import qs from 'qs'
+import IDPList from '@System/views/idp/components/List'
+import DomainList from '@System/views/domains/components/List'
+import ProjectList from '@System/views/projects/components/List'
+import UserList from '@System/views/user/components/List'
+import GroupList from '@System/views/group/components/List'
+import RoleList from '@System/views/role/components/List'
+import PolicyList from '@System/views/policy/components/List'
 import VmInstanceList from '@Compute/views/vminstance/components/List'
 import ServertemplateList from '@Compute/views/servertemplate/components/List'
 import BaremetalList from '@Compute/views/baremetal/components/List'
@@ -47,13 +54,6 @@ import ImageRecoveryList from '@Compute/views/image-recovery/components/List'
 import VPCList from '@Network/views/vpc/components/List'
 import BlockStorageList from '@Storage/views/blockstorage/components/List'
 import BucketStorageList from '@Storage/views/bucket/components/List'
-import IDPList from '@System/views/idp/components/List'
-import DomainList from '@System/views/domains/components/List'
-import ProjectList from '@System/views/projects/components/List'
-import UserList from '@System/views/user/components/List'
-import GroupList from '@System/views/group/components/List'
-import RoleList from '@System/views/role/components/List'
-import PolicyList from '@System/views/policy/components/List'
 import NatList from '@Network/views/nats/components/List'
 import DnsZoneList from '@Network/views/dns-zone/components/List'
 import LbList from '@Network/views/lb/components/List'
@@ -181,11 +181,13 @@ export default {
         }
         this.setCurrentTab(null)
         // 组装成数组
-        const paramsList = Object.values(maps)
-          .map(val => ({
-            ...val,
-            params: val.params,
-          }))
+        const paramsList = Object.values(maps).filter(val => {
+          // 绕过无权限和隐藏的页面
+          return val.hasPermission && !this.$isScopedPolicyMenuHidden(`sub_hidden_menus.${val.menu_key}`)
+        }).map(val => ({
+          ...val,
+          params: val.params,
+        }))
         const data = { data: paramsList }
         this.loading = true
         const { data: { data: resData } } = await new this.$Manager('multi-search', 'v1').create({ data })
