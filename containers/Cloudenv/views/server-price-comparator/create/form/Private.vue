@@ -202,7 +202,7 @@ export default {
         id = this.cloudregionZoneParams.zone
         resource = 'zones'
       }
-      const capabilityParams = { id, spec: 'disk-capability', params }
+      const capabilityParams = { id, spec: 'capability', params }
       if (!id) return
       if (R.equals(this.capabilityParams, capabilityParams)) return // 和已有的参数一样则不发请求
       this.capabilityParams = capabilityParams
