@@ -85,6 +85,8 @@
           :types="osSelectTypes"
           :hypervisor="hypervisor"
           :decorator="decorators.imageOS"
+          :os-arch="osArch"
+          :imageParams="imageParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
@@ -191,6 +193,7 @@ import EipConfig from '@Compute/sections/EipConfig'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
 
 export default {
@@ -206,6 +209,16 @@ export default {
     // 是否为包年包月
     isPackage () {
       return this.form.fd.billType === BILL_TYPES_MAP.package.key
+    },
+    isArm () {
+      return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.arm.capabilityKey
+    },
+    osArch () {
+      if (this.form.fd.sku && this.form.fd.sku.cpu_arch) {
+        return this.form.fd.sku.cpu_arch
+      } else {
+        return ''
+      }
     },
     showAreaSelect () {
       if (this.$store.getters.isAdminMode && this.$store.getters.l3PermissionEnable) {
@@ -251,6 +264,14 @@ export default {
         order: 'asc',
         ...this.scopeParams,
       }
+    },
+    imageParams () {
+      const params = {}
+      if (R.is(Object, this.form.fd.sku)) {
+        params.os_arch = HOST_CPU_ARCHS.x86.key
+        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+      }
+      return params
     },
     cacheImageParams () {
       const params = {

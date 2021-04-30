@@ -82,6 +82,9 @@ export default {
     osType: {
       type: String,
     },
+    osArch: {
+      type: String,
+    },
     uefi: {
       type: Boolean,
     },
@@ -257,6 +260,10 @@ export default {
         this.images.cacheimagesList = []
         this.getImagesInfo()
       }
+    },
+    osArch (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.getImagesInfo()
     },
   },
   created () {
@@ -473,6 +480,15 @@ export default {
       // 其他类型再进行过滤一次
       if (this.isPublicImage || this.isPrivateImage || this.isVMware) {
         images = this.images.cacheimagesList
+        if (this.osArch) {
+          images = images.filter((image) => {
+            const arch = _.get(image, 'info.properties.os_arch', '')
+            if (arch === this.osArch || arch.indexOf(this.osArch) >= 0) {
+              return true
+            }
+            return false
+          })
+        }
       } else {
         if (this.imageType !== IMAGES_TYPE_MAP.snapshot.key) {
           images = images.filter(item => {
