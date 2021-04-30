@@ -370,7 +370,7 @@ export default {
     async fetchUsers (query) {
       const params = {
         project: this.project,
-        scope: this.$scope,
+        scope: this.scope,
       }
       if (this.isDomainMode) {
         params.project_domain_filter = true
