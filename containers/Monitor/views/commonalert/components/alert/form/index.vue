@@ -699,11 +699,9 @@ export default {
       return label
     },
     initContactParams (contactParams) {
+      contactParams.scope = this.scope
       if (this.isDomainMode) {
-        contactParams.scope = 'system'
         contactParams.project_domain_filter = true
-      } else {
-        contactParams.scope = this.scope
       }
     },
   },
