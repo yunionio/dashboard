@@ -46,7 +46,7 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item :label="$t('monitor.recipient')" style="white-space: nowrap;">
-      <template #extra style="width: 1200px;">
+      <template #extra style="width: 1200px;" v-if="scope !== 'project'">
         <i18n tag="div" path="monitor_text00001">
           <help-link slot="new" href="/contact">{{$t('monitor.text_15')}}</help-link>
         </i18n>
