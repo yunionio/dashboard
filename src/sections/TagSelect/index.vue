@@ -398,7 +398,7 @@ export default {
 
 <style lang="less" scoped>
 .tag-wrap {
-  width: 200px;
+  min-width: 200px;
   max-height: 400px;
   overflow: hidden;
   overflow-y: auto;
