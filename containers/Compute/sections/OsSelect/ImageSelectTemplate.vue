@@ -85,9 +85,9 @@ export default {
     imgLabels (img) {
       const size = sizestr(img.size, 'B', 1024)
       const props = img.properties || img.info ? img.info.properties : undefined
-      const arch = props && props.os_arch ? img.properties.os_arch : 'x86_64'
+      const arch = props && props.os_arch && props.os_arch === 'aarch64' ? this.$t('compute.cpu_arch.aarch64') : props.os_arch || 'x86_64'
       const bios = props && props.uefi_support ? 'UEFI' : 'BIOS'
-      const part = props && props.partition_type ? img.properties.partition_type.toUpperCase() : 'MBR'
+      const part = props && props.partition_type ? props.partition_type.toUpperCase() : 'MBR'
       return `${size}|${arch}|${part}|${bios}`
     },
   },
