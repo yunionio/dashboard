@@ -272,7 +272,12 @@ export default {
   },
   methods: {
     getTitle () {
-      let label = this.metricKeyItem && this.metricKeyItem.label ? this.metricKeyItem.label : '-'
+      let padding = ' '
+      if (this.$store.getters.setting.language === 'zh-CN') {
+        padding = ''
+      }
+      let label = this.metricKeyItem && this.metricKeyItem.metric_res_type ? this.$t(`dictionary.${this.metricKeyItem.metric_res_type}`) + padding : ''
+      label += this.metricKeyItem && this.metricKeyItem.label ? this.metricKeyItem.label : '-'
       const metricLabel = _.get(this.mertricItem, 'description.display_name')
       if (metricLabel) {
         label += `(${metric_zh[metricLabel] ? metric_zh[metricLabel] : metricLabel})`
