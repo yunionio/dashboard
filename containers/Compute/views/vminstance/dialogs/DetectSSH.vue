@@ -56,7 +56,21 @@ export const DetectSshTable = {
       props: {
         data: this.rows,
         columns: this.columns,
-        vxeGridProps: { 'radio-config': { showHeaderOverflow: false, resizable: false, highlight: true, trigger: 'row', checkMethod: ({ row }) => { return row.status === 'running' } } },
+        vxeGridProps: {
+          'radio-config': {
+            showHeaderOverflow: false,
+            resizable: false,
+            highlight: true,
+            trigger: 'row',
+            checkMethod: ({ row }) => { return row.status === 'running' },
+          },
+          'tooltip-config': {
+            enabled: this.showRadioSelect,
+            contentMethod: ({ type, column, row, items, _columnIndex }) => {
+              return row.status !== 'running' ? this.$t('compute.text_1282') : ''
+            },
+          },
+        },
         vxeGridEvents: vxeGridEvents,
       },
       key: this.updated,

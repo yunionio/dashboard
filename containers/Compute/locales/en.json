@@ -1399,6 +1399,7 @@
   "compute.vminstance.setup_ssh_authentication.group_action.project": "Please select servers with same project",
   "compute.vminstance.setup_ssh_authentication.create.username.tips": "Please use the root user or a user with sudo secret-free privileges",
   "compute.vminstance.monitor.setup_alert.required_agent.tips": "This operation is not currently supported",
+  "compute.ssh_proxy_table.status.tips": "Please select a server in running state",
   "compute.vminstance.monitor.install_agent.tips": "Agent is not installed, some charts cannot be viewed",
   "compute.vminstance.monitor.install_agent.tips_failed.others": "Agent installation is failed, try reinstall",
   "compute.vminstance.monitor.install_agent.tips_failed.no_reach_influxdb": "Agent installation is failed,No PE available, what is {0}",
