@@ -163,9 +163,9 @@ export default {
         const aUsage = get(a, `usage.${this.fd.field}`)
         const bUsage = get(b, `usage.${this.fd.field}`)
         if (aUsage === bUsage) {
-          return get(a, this.fd.field) - get(b, this.fd.field)
+          return get(b, this.fd.field) - get(a, this.fd.field)
         }
-        return aUsage - bUsage
+        return bUsage - aUsage
       }, this.data)
       if (this.isDomainMode) {
         data = data.filter(item => item.tenant)
@@ -292,6 +292,7 @@ export default {
               color: '#999',
             },
           },
+          inverse: true,
           axisLabel: {
             margin: 10,
             textStyle: {
