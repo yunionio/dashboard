@@ -148,6 +148,7 @@ export default {
           id: 'total',
           params: {
             price_keys: [price_key],
+            scope: this.$store.getters.scope,
           },
         })
         this.priceTotal = data
