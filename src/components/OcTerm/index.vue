@@ -79,6 +79,7 @@ export default {
       const params = {
         system: true,
         scope: 'system',
+        name: 'system-default',
       }
       const clusters = await this.cluster_manager.list({
         params,
