@@ -146,7 +146,11 @@ export default {
         let region = ''
         let zone = ''
         const { type, backend } = this.getType(this.currentStorage.value)
-        const cloudregionExternalArr = this.currentCloudregion.external_id.split('/')
+        let external_id = this.currentCloudregion.external_id
+        if (!external_id) {
+          external_id = '/'
+        }
+        const cloudregionExternalArr = external_id.split('/')
         if (this.currentCloudregion.cloud_env === 'public') {
           if (!this.currentCloudzone) return
           key = type
@@ -206,9 +210,9 @@ export default {
       }
     },
     getType (curVal) {
-      const curIndex = curVal.lastIndexOf('-')
+      const curIndex = curVal.lastIndexOf('__')
       const type = curVal.substring(0, curIndex)
-      const backend = curVal.substr(curIndex + 1)
+      const backend = curVal.substr(curIndex + 2)
       return { type, backend }
     },
   },
