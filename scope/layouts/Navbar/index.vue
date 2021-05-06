@@ -31,6 +31,7 @@
         </a-menu>
       </a-dropdown>
     </div>
+    <cloud-shell class="navbar-item-icon primary-color-hover" />
     <div class="navbar-item">
       <a-dropdown :trigger="['click']">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
@@ -58,9 +59,13 @@ import get from 'lodash/get'
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { setLanguage } from '@/utils/common/cookie'
+import CloudShell from '@/sections/Navbar/components/CloudShell'
 
 export default {
   name: 'Navbar',
+  components: {
+    CloudShell,
+  },
   computed: {
     ...mapGetters(['userInfo', 'scope', 'logo', 'permission', 'scopeResource', 'setting']),
     products () {
@@ -202,6 +207,12 @@ export default {
 .navbar-item {
   height: 100%;
   border-left: 1px solid #f5f5f5;
+}
+.navbar-item-icon {
+  width: 40px;
+  height: 40px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .navbar-item-trigger {
   height: 100%;

@@ -1,8 +1,6 @@
 <template>
   <div class="oc-term-box" v-show="openCloudShell">
-    <div class="oc-term-content">
-      <iframe width="100%" height="100%" style="margin-top: 10px; border: none;" />
-    </div>
+    <xterm :connectParams="connectParams" class="oc-term-content" />
     <div class="oc-term-resize" title="term resize"><div class="mask">一</div></div>
   </div>
 </template>
@@ -13,12 +11,27 @@ import { mapState } from 'vuex'
 export default {
   name: 'OcTerm',
   data () {
-    return {}
+    return {
+      connectParams: '',
+    }
   },
   computed: {
     ...mapState('common', {
       openCloudShell: state => state.openCloudShell,
     }),
+  },
+  watch: {
+    openCloudShell (val, old) {
+      if (val) {
+        this.fetchData()
+      } else {
+        this.connectParams = ''
+      }
+    },
+  },
+  created () {
+    this.cluster_manager = new this.$Manager('kubeclusters', 'v1')
+    this.pod_manager = new this.$Manager('pods', 'v1')
   },
   mounted () {
     this.initDrag()
@@ -61,6 +74,61 @@ export default {
         resize.setCapture && resize.setCapture() // 该函数在属于当前线程的指定窗口里设置鼠标捕获
         return false
       }
+    },
+    async fetchData () {
+      const params = {
+        system: true,
+        scope: 'system',
+      }
+      const clusters = await this.cluster_manager.list({
+        params,
+      })
+      console.log(clusters)
+      var clusterId = ''
+      if (clusters.data.data && clusters.data.data.length > 0) {
+        clusterId = clusters.data.data[0].id
+      }
+      if (!clusterId) {
+        return
+      }
+      const pods = await this.pod_manager.list({
+        params: {
+          cluster: clusterId,
+          namespace: 'onecloud',
+          search: 'climc',
+        },
+      })
+      console.log(pods)
+      var podId = ''
+      var podName = ''
+      if (pods.data.data && pods.data.data.length > 0) {
+        podId = pods.data.data[0].id
+        podName = pods.data.data[0].name
+      }
+      if (!podId) {
+        return
+      }
+      if (!podName) {
+        return
+      }
+      this.fetchUrl(clusterId, podId, podName)
+    },
+    async fetchUrl (clusterId, podId, podName) {
+      const params = {
+        cluster: clusterId,
+        namespace: 'onecloud',
+        container: 'climc',
+        name: podName,
+      }
+      const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
+        methodname: 'DoK8sShellConnect',
+        objId: podName,
+        params,
+      })
+      console.log(data)
+      this.$nextTick(() => {
+        this.connectParams = data.connect_params
+      })
     },
   },
 }
