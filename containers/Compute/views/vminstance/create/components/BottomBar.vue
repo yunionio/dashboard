@@ -370,6 +370,7 @@ export default {
       let skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
       const brand = PROVIDER_MAP[skuProvider].brand
       const params = {
+        scope: this.$store.getters.scope,
         quantity: this.fd.count,
         brand,
       }
