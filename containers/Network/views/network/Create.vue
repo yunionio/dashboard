@@ -440,7 +440,6 @@ export default {
         delete params.is_on_premise
       } else if (this.cloudEnv === 'public') {
         params.is_public = true
-        params.usable = false
         delete params.is_private
         delete params.is_on_premise
       } else {
