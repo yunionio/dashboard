@@ -280,6 +280,7 @@ export default {
                 submenus: [
                   {
                     label: this.$t('compute.perform_sync_status'),
+                    permission: 'server_perform_syncstatus',
                     action: () => {
                       this.onManager('batchPerformAction', {
                         steadyStatus: ['running', 'ready'],
