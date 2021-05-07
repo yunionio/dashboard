@@ -431,7 +431,7 @@ export default {
         scope: this.scope,
         limit: 0,
         is_on_premise: true,
-        usable_vpc: true,
+        // usable_vpc: true,
         show_emulated: true,
       }
       if (this.cloudEnv === 'private') {
