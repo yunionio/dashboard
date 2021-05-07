@@ -381,7 +381,6 @@ export default {
         // city,
         provider,
         capability: 'compute',
-        ...DEFAULT_PARAMS,
         ...queryParams,
       }
       if (queryParams.is_on_premise || (params.cloud_env && params.cloud_env === 'onpremise')) {
