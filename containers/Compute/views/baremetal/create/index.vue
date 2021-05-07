@@ -1207,8 +1207,8 @@ export default {
         nets,
         prefer_host: this.isInstallOperationSystem ? this.$route.query.id : values.schedPolicyHost,
         description: values.description,
-        prefer_region: values.cloudregion ? values.cloudregion.key : this.$route.query.zone_id,
-        prefer_zone: values.zone ? values.zone.key : this.$route.query.region_id,
+        prefer_region: values.cloudregion ? values.cloudregion.key : this.$route.query.region_id,
+        prefer_zone: values.zone ? values.zone.key : this.$route.query.zone_id,
       }
       if (values.loginPassword) params.password = values.loginPassword
       if (values.loginKeypair) params.keypair = values.loginKeypair.key
