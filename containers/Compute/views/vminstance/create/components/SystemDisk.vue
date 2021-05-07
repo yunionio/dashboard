@@ -276,8 +276,9 @@ export default {
       })
       this.setDiskMedium(diskMsg)
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
+        const initSize = this.defaultSize && this.defaultSize > this.imageMinDisk ? this.defaultSize : this.imageMinDisk
         this.form.fc.setFieldsValue({
-          [this.decorator.size[0]]: this.defaultSize || +diskMsg.sysMin,
+          [this.decorator.size[0]]: initSize || +diskMsg.sysMin,
         })
       })
     },
