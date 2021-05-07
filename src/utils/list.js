@@ -443,7 +443,7 @@ class CreateList {
    * @param {String} property 排序的key
    * @param {String} order 排序方式
    */
-  doSort (property, order) {
+  doSort (property, order, column = {}) {
     this.sortParams = null
     if (!order) {
       this.refresh()
@@ -458,6 +458,13 @@ class CreateList {
       params = {
         order_by: property,
         order,
+      }
+      const { sortBy } = column
+      if (sortBy) {
+        params = {
+          ...params,
+          [sortBy]: order,
+        }
       }
     }
     this.sortParams = params
