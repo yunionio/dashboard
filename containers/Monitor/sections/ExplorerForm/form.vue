@@ -96,6 +96,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    extraParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     const initialValue = {}
@@ -316,7 +320,7 @@ export default {
     async getMeasurement () {
       try {
         this.metricLoading = true
-        const params = { scope: this.$store.getters.scope, ...this.timeRangeParams }
+        const params = { scope: this.$store.getters.scope, ...this.timeRangeParams, ...this.extraParams }
         const { data: { res_type_measurements, res_types } } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'measurements', params })
         this.res_type_measurements = res_type_measurements
         this.res_types = res_types
@@ -338,6 +342,7 @@ export default {
           field: mertric,
           scope: this.$store.getters.scope,
           ...this.timeRangeParams,
+          ...this.extraParams,
         }
         this.metricInfoLoading = true
         const { data } = await new this.$Manager('unifiedmonitors', 'v1').get({ id: 'metric-measurement', params })

@@ -15,6 +15,7 @@
         :showDelete="formList.length > 1"
         :formItemLayout="formItemLayout"
         :timeRangeParams="timeRangeParams"
+        :extraParams="extraParams"
         @mertricItemChange="val => mertricItemChange(val, i)"
         @resetChart="() => resetChart(i)"
         @paramsChange="val => paramsChange(val, i)"
@@ -38,6 +39,10 @@ export default {
   },
   props: {
     timeRangeParams: {
+      type: Object,
+      default: () => ({}),
+    },
+    extraParams: {
       type: Object,
       default: () => ({}),
     },
