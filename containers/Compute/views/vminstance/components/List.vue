@@ -359,6 +359,7 @@ export default {
                 submenus: [
                   {
                     label: this.$t('compute.text_247'),
+                    permission: 'server_update',
                     action: () => {
                       this.createDialog('VmUpdateDialog', {
                         data: this.list.selectedItems,
@@ -460,6 +461,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+                    permission: 'server_perform_change_owner',
                     action: () => {
                       this.createDialog('ChangeOwenrDialog', {
                         data: this.list.selectedItems,
@@ -491,6 +493,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_283'),
+                    permission: 'server_perform_set_user_metadata',
                     action: () => {
                       this.createDialog('SetTagDialog', {
                         data: this.list.selectedItems,
@@ -545,6 +548,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_1112'),
+                    permission: 'attach-isolated-device,server_perform_detach_isolated_device,server_perform_set_isolated_device',
                     action: () => {
                       this.createDialog('VmAttachGpuDialog', {
                         data: this.list.selectedItems,
@@ -594,6 +598,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_1208'),
+                    permission: 'server_perform_snapshot_and_clone',
                     action: () => {
                       this.$openNewWindowForMenuHook('vminstance_configured_callback_address.host_clone_callback_address', () => {
                         this.createDialog('VmCloneDeepDialog', {
@@ -632,6 +637,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_1117'),
+                    permission: 'server_perform_renew',
                     action: () => {
                       this.createDialog('VmResourceFeeDialog', {
                         data: this.list.selectedItems,
@@ -660,6 +666,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_1120'),
+                    permission: 'server_perform_aet_auto_renew',
                     action: () => {
                       this.createDialog('VmResourceRenewFeeDialog', {
                         data: this.list.selectedItems,
@@ -749,6 +756,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_1121'),
+                    permission: 'server_perform_publicip_to_eip',
                     action: () => {
                       this.createDialog('VmPublicIpToEipDialog', {
                         data: this.list.selectedItems,
@@ -781,6 +789,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_1124'),
+                    permission: 'server_perform_modify_src_check',
                     action: () => {
                       this.createDialog('VmSourceTargetCheckDialog', {
                         data: this.list.selectedItems,
@@ -815,6 +824,7 @@ export default {
                 submenus: [
                   {
                     label: this.$t('compute.text_1127'),
+                    permission: 'server_perform_migrate,server_perform_live_migrate',
                     action: () => {
                       this.createDialog('VmTransferDialog', {
                         data: this.list.selectedItems,
@@ -863,10 +873,11 @@ export default {
                 /* 删除 */
                 label: this.$t('compute.text_261'),
                 submenus: [
-                  disableDeleteAction(this, {
+                  disableDeleteAction(Object.assign(this, {
                     name: this.$t('dictionary.server'),
+                    permission: 'server_update',
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
-                  }),
+                  })),
                   {
                     label: this.$t('compute.text_261'),
                     permission: 'server_delete',
