@@ -21,7 +21,8 @@ export default {
       cloudEnvOptions: [
         { key: 'local_compute', label: this.$t('cloudenv.text_470') },
         { key: 'local_image', label: this.$t('cloudenv.text_471') },
-        { key: 'cloud', label: this.$t('cloudenv.text_472') },
+        { key: 'local_identity', label: this.$t('cloudenv.tab_identity') },
+        // { key: 'cloud', label: this.$t('cloudenv.text_472') },
       ],
     }
   },
