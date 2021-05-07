@@ -41,6 +41,7 @@
 import * as R from 'ramda'
 import { filterUserTag, getTagColor, getTagTitle } from '@/utils/common/tag'
 import WindowsMixin from '@/mixins/windows'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'TagTableColumn',
@@ -106,8 +107,14 @@ export default {
     params () {
       return { resources: this.resource }
     },
+    isPermission () {
+      return hasPermission({ key: `${this.resource}_perform_set_user_metadata` })
+    },
     validate () {
-      return this.$isOwner(this.row)
+      if (this.isPermission) {
+        return this.$isOwner(this.row)
+      }
+      return { validate: false, tooltip: this.$t('common_716') }
     },
   },
   methods: {
