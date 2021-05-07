@@ -2167,6 +2167,7 @@
   "auth.remove.history.user.btn": "Remove Account",
   "auth.outher.history.user.btn": "Use Another Account",
   "dictionary": {
+    "agent": "Server (Agent)",
     "actions": "Audit Logs",
     "ansibleplaybook": "Task",
     "ansibletemplate": "Template",
