@@ -322,6 +322,7 @@ export default {
               submenus: [
                 {
                   label: i18n.t('compute.text_247'),
+                  permission: 'server_update',
                   action: () => {
                     this.createDialog('VmUpdateDialog', {
                       data: [obj],
@@ -399,6 +400,7 @@ export default {
                 },
                 {
                   label: this.$t('compute.text_279', [this.$t('dictionary.project')]),
+                  permission: 'server_perform_change_owner',
                   action: () => {
                     this.createDialog('ChangeOwenrDialog', {
                       data: [obj],
@@ -425,7 +427,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1276'),
-                  permission: 'guestdisks_list',
+                  permission: 'snapshots_create',
                   action: () => {
                     this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_snapshot_callback_address', () => {
                       this.createDialog('VmSnapshotCreateDialog', {
@@ -519,6 +521,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1112'),
+                  permission: 'attach-isolated-device,server_perform_detach_isolated_device,server_perform_set_isolated_device',
                   action: () => {
                     this.createDialog('VmAttachGpuDialog', {
                       data: [obj],
@@ -547,6 +550,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1249'),
+                  permission: 'server_perform_io_throttle',
                   action: () => {
                     this.createDialog('VmSetSpeedDialog', {
                       data: [obj],
@@ -599,6 +603,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1208'),
+                  permission: 'server_perform_snapshot_and_clone',
                   action: () => {
                     this.$openNewWindowForMenuHook('vminstance_configured_callback_address.host_clone_callback_address', () => {
                       this.createDialog('VmCloneDeepDialog', {
@@ -633,6 +638,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1181', [i18n.t('dictionary.instancegroup')]),
+                  permission: 'server_perform_bind_groups,server_perform_unbind_groups',
                   action: () => {
                     this.createDialog('VmBindInstanceGroupDialog', {
                       data: [obj],
@@ -666,6 +672,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1117'),
+                  permission: 'server_perform_renew',
                   action: () => {
                     this.$openNewWindowForMenuHook('vminstance_configured_callback_address.renew_callback_address', () => {
                       this.createDialog('VmResourceFeeDialog', {
@@ -698,6 +705,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1120'),
+                  permission: 'server_perform_aet_auto_renew',
                   action: () => {
                     this.createDialog('VmResourceRenewFeeDialog', {
                       data: [obj],
@@ -962,6 +970,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1179'),
+                  permission: 'server_perform_create_eip',
                   action: () => {
                     this.createDialog('VmBindEipDialog', {
                       data: [obj],
@@ -1032,6 +1041,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1121'),
+                  permission: 'server_perform_publicip_to_eip',
                   action: () => {
                     this.createDialog('VmPublicIpToEipDialog', {
                       data: [obj],
@@ -1061,6 +1071,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1124'),
+                  permission: 'server_perform_modify_src_check',
                   action: () => {
                     this.createDialog('VmSourceTargetCheckDialog', {
                       data: [obj],
@@ -1092,6 +1103,7 @@ export default {
               submenus: [
                 {
                   label: i18n.t('compute.text_1162'),
+                  permission: 'server_perform_create_backup',
                   action: () => {
                     this.createDialog('VmAddBackupDialog', {
                       data: [obj],
@@ -1126,6 +1138,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1209'),
+                  permission: 'server_perform_delete_backup',
                   action: () => {
                     this.createDialog('VmDeleteBackupDialog', {
                       data: [obj],
@@ -1155,6 +1168,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1127'),
+                  permission: 'server_perform_migrate,server_perform_live_migrate',
                   action: () => {
                     this.createDialog('VmTransferDialog', {
                       data: [obj],
@@ -1193,11 +1207,11 @@ export default {
             {
               label: i18n.t('compute.text_261'),
               submenus: [
-                disableDeleteAction(this, {
+                disableDeleteAction(Object.assign(this, {
                   name: this.$t('dictionary.server'),
                   permission: 'server_update',
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
-                }),
+                })),
                 {
                   label: i18n.t('compute.text_261'),
                   permission: 'server_delete',
