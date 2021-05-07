@@ -190,7 +190,10 @@ export default {
         title = this.description.title || ''
         if (this.description.metric_res_type && this.description.metric_res_type === 'host') {
           if (this.$te(`dictionary.${this.description.metric_res_type}`)) {
-            title = `${this.$t(`dictionary.${this.description.metric_res_type}`)}${title}`
+            const hostPrefix = this.$t(`dictionary.${this.description.metric_res_type}`)
+            if (!title.startsWith(hostPrefix)) {
+              title = hostPrefix + title
+            }
           }
         }
       }
