@@ -10,9 +10,9 @@
       </template>
     </template>
     <template v-else>
-      <template v-if="!showEdit">-</template>
+      <template v-if="!validate.validate">-</template>
     </template>
-    <template v-if="showEdit">
+    <template v-if="validate.validate">
       <span
         class="tag edit text-truncate d-inline-block"
         key="edit-tag-btn"
@@ -25,6 +25,7 @@
 import * as R from 'ramda'
 import { filterUserTag, filterExtTag, getTagColor, getTagTitle } from '@/utils/common/tag'
 import WindowsMixin from '@/mixins/windows'
+import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'TagDetailColumn',
@@ -99,8 +100,14 @@ export default {
     params () {
       return { resources: this.resource }
     },
+    isPermission () {
+      return hasPermission({ key: `${this.resource}_perform_set_user_metadata` })
+    },
     validate () {
-      return this.$isOwner(this.row)
+      if (this.isPermission && this.showEdit) {
+        return this.$isOwner(this.row)
+      }
+      return { validate: false, tooltip: this.$t('common_716') }
     },
   },
   methods: {
