@@ -294,8 +294,8 @@ export default {
       if (this.loading) return
       this.list.changePageSize(pageSize)
     },
-    doSort (property, order) {
-      this.list.doSort(property, order)
+    doSort (property, order, column) {
+      this.list.doSort(property, order, column)
     },
     changeSelected (selection) {
       this.list.changeSelected(selection)
