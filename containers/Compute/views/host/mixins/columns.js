@@ -128,6 +128,7 @@ export default {
       },
       {
         field: 'nonsystem_guests',
+        sortBy: 'order_by_server_count',
         title: '#VM',
         width: 60,
         sortable: true,

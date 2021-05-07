@@ -409,9 +409,9 @@ export default {
         this.$emit('change-page-size', pageSize)
       }
     },
-    handleSortChange ({ property, order }) {
+    handleSortChange ({ column, property, order }) {
       this.$emit('clear-selected')
-      this.$emit('do-sort', property, order)
+      this.$emit('do-sort', property, order, column)
     },
     handleCheckboxChange ({ selection }) {
       this.$emit('change-selected', selection)
