@@ -341,6 +341,7 @@ export default {
                   },
                   {
                     label: this.$t('compute.text_282'),
+                    permission: 'server_perform_syncstatus',
                     action: () => {
                       this.onManager('batchPerformAction', {
                         steadyStatus: ['running', 'ready'],
