@@ -135,8 +135,9 @@ export default {
           service: 'image',
           with_user_meta: true,
         }
-      } else if (this.cloudEnv === 'cloud') {
+      } else if (this.cloudEnv === 'local_identity') {
         params = {
+          service: 'identity',
           with_cloud_meta: true,
         }
       }
