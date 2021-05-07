@@ -687,5 +687,6 @@
   "cloudenv.last.sync.end.at": "End Time",
   "cloudenv.text_577": "bucket file not found",
   "cloudenv.text_578": "If the bucket URL is correct, this warning may be caused by billing files not sync to bucket，you can close this prompt instantly, the billing data can be updated normally if the billing files found in bucket.",
-  "cloudenv.text_579": "If the bucket URL is incorrect, please change the bucket URL then try it again."
+  "cloudenv.text_579": "If the bucket URL is incorrect, please change the bucket URL then try it again.",
+  "cloudenv.tab_identity": "IAM Resources"
 }
