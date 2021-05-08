@@ -18,10 +18,15 @@ export default {
       type: String,
       required: true,
     },
+    height: {
+      type: Number,
+      default: 600,
+    },
   },
   data () {
     return {
       socket: null,
+      term: null,
     }
   },
   watch: {
@@ -35,6 +40,13 @@ export default {
         }
       },
       immediate: true,
+    },
+    height (val, oval) {
+      if (val) {
+        const terminalDom = document.getElementById('xterm')
+        terminalDom.style.minHeight = val + 'px'
+        this.term.fit()
+      }
     },
   },
   beforeDestroy () {
@@ -68,30 +80,30 @@ export default {
           access_token: param.access_token,
         },
       })
-      const term = new Terminal({
+      this.term = new Terminal({
         cols: 80,
         rows: 24,
         ScrollBar: true,
       })
       const terminalDom = this._createDom()
-      term.open(terminalDom)
-      term.focus()
+      this.term.open(terminalDom)
+      this.term.focus()
       // term.fit()
-      term.on('resize', size => {
+      this.term.on('resize', size => {
         this.socket.emit('resize', [size.cols, size.rows])
       })
-      term.on('data', data => this.socket.emit('input', data))
-      term.on('keypress', (val, e) => {
+      this.term.on('data', data => this.socket.emit('input', data))
+      this.term.on('keypress', (val, e) => {
         e.preventDefault()
       })
       this.socket.on('output', arrayBuffer => {
-        term.write(arrayBuffer)
+        this.term.write(arrayBuffer)
       })
       this.socket.on('disconnection', this._socketClose())
       window.addEventListener('resize', () => {
-        term.fit()
+        this.term.fit()
       })
-      term.fit()
+      this.term.fit()
     },
     _socketClose () {
       return () => {
