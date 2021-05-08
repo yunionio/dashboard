@@ -1,7 +1,10 @@
 <template>
   <div class="oc-term-box" v-show="openCloudShell">
     <xterm :connectParams="connectParams" class="oc-term-content" />
-    <div class="oc-term-resize" title="term resize"><div class="mask">一</div></div>
+    <div class="oc-term-resize" title="term resize">
+      <div class="mask">一</div>
+      <a-icon class="oc-term-close" type="close" @click="closeCloudShell" />
+    </div>
   </div>
 </template>
 
@@ -29,6 +32,11 @@ export default {
           this.connectParams = ''
         }
       })
+    },
+    $route (to, from) {
+      if (to.path === '/auth/login/chooser') {
+        this.$store.commit('common/SET_OPEN_CLOUDSHELL', false)
+      }
     },
   },
   created () {
@@ -68,7 +76,7 @@ export default {
 
         document.onmousemove = moveHandle
         resize.onmouseup = document.onmouseup = function (evt) {
-          mask.style.height = '8px'
+          mask.style.height = '20px'
           document.onmousemove = null
           document.onmouseup = null
           resize.releaseCapture && resize.releaseCapture() // 当你不在需要继续获得鼠标消息就要应该调用ReleaseCapture()释放掉
@@ -133,6 +141,9 @@ export default {
         this.connectParams = data.connect_params
       })
     },
+    closeCloudShell () {
+      this.$store.commit('common/SET_OPEN_CLOUDSHELL', false)
+    },
   },
 }
 </script>
@@ -155,11 +166,10 @@ export default {
 .oc-term-resize {
   position: absolute;
   bottom: 200px;
-  height: 8px;
+  height: 20px;
   width: 100%;
   color: #fff;
   background-color: #eaeaea;
-  cursor: row-resize;
   &:hover {
     color: #eaeaea;
     .mask {
@@ -168,12 +178,22 @@ export default {
   }
   .mask {
     position: absolute;
-    width: 100%;
+    width: 98%;
     left: 0;
-    top: -7px;
+    top: 0;
     z-index: 999;
     color: red;
     text-align: center;
+    cursor: row-resize;
   }
+}
+.oc-term-close {
+  position: absolute;
+  right: 2px;
+  top: 4px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  z-index: 99;
+  cursor: pointer;
 }
 </style>
