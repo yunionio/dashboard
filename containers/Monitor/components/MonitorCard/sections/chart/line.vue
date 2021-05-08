@@ -39,6 +39,9 @@ export default {
             shadowStyle: { color: 'rgb(77, 161, 255)', opacity: 0.1 },
           },
         },
+        dataZoom: {
+          type: 'inside', /* 数据缩放 **/
+        },
       }
     },
     chartConfig () {
@@ -50,6 +53,9 @@ export default {
         toolbox: {
           show: true,
           feature: {
+            dataZoom: {
+              show: true,
+            },
             magicType: {
               type: ['line', 'bar'],
               title: { line: this.$t('monitor.chart.toolbar.line'), bar: this.$t('monitor.chart.toolbar.bar') },
