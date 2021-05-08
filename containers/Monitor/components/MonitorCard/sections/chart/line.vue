@@ -32,6 +32,10 @@ export default {
        * 对应的配置会被合并，否则将直接覆盖对应的配置
        * **/
       return {
+        series (v) {
+          /* smooth数据平滑， connectNulls 是否连接空数据 **/
+          return v ? v.map(i => { i.smooth = true; i.connectNulls = true; return i }) : []
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row>
-      <a-col :span="8">
+      <a-col :span="16">
         <a-radio-group v-model="select.scope" @change="onChange">
           <a-radio-button v-for="o of scopeOptions" :value="o.value" :key="o.key">
             {{ o.label }}
