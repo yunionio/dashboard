@@ -66,7 +66,7 @@ export default {
       const newTerminalDom = document.createElement('div')
       newTerminalDom.setAttribute('id', 'xterm')
       wrapper.appendChild(newTerminalDom)
-      newTerminalDom.style.minHeight = 600 + 'px'
+      newTerminalDom.style.minHeight = this.height + 'px'
       return newTerminalDom
     },
     initTerminal () {
