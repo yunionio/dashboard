@@ -370,7 +370,7 @@ export default {
     {
       meta: {
         label: i18n.t('network.ssh-proxy.title'),
-        hidden: () => (store.getters.isProjectMode || !hasSetupKey('private', 'vmware', 'public', 'onestack')),
+        hidden: () => (store.getters.isProjectMode || !hasSetupKey(['private', 'vmware', 'public', 'onestack'])),
       },
       submenus: [
         {
@@ -382,7 +382,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_proxy')) {
                 return true
               }
-              return !hasSetupKey('private', 'vmware', 'public', 'onestack')
+              return !hasSetupKey(['private', 'vmware', 'public', 'onestack'])
             },
           },
           component: Layout,
@@ -405,10 +405,10 @@ export default {
             label: i18n.t('network.ssh-proxy.proxyservice'),
             permission: 'sshproxy_service_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_proxy')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh-agent')) {
                 return true
               }
-              return store.getters.isDomainMode || !hasSetupKey('private', 'vmware', 'public', 'onestack')
+              return store.getters.isDomainMode || !hasSetupKey(['private', 'vmware', 'public', 'onestack'])
             },
           },
           component: Layout,
