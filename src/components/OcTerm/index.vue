@@ -1,6 +1,6 @@
 <template>
   <div class="oc-term-box" v-show="openCloudShell">
-    <xterm :connectParams="connectParams" class="oc-term-content" />
+    <xterm :connectParams="connectParams" :height="height" class="oc-term-content" />
     <div class="oc-term-resize" title="term resize">
       <div class="mask">一</div>
       <a-icon class="oc-term-close" type="close" @click="closeCloudShell" />
@@ -16,6 +16,7 @@ export default {
   data () {
     return {
       connectParams: '',
+      height: 300,
     }
   },
   computed: {
@@ -51,6 +52,7 @@ export default {
       var resize = document.getElementsByClassName('oc-term-resize')[0]
       var mask = document.getElementsByClassName('mask')[0]
       var bottom = document.getElementsByClassName('oc-term-content')[0]
+      var that = this
 
       resize.onmousedown = function (e) {
         var startY = e.clientY
@@ -64,7 +66,7 @@ export default {
           var moveLen = resize.bottom + (startY - endY)
 
           if (moveLen > clientHeight) {
-            moveLen = clientHeight
+            moveLen = clientHeight - 20
           }
           if (moveLen < 10) {
             moveLen = 0
@@ -72,6 +74,7 @@ export default {
 
           resize.style.bottom = moveLen + 'px'
           bottom.style.height = moveLen + 'px'
+          that.height = moveLen
         }
 
         document.onmousemove = moveHandle
