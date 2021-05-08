@@ -10,9 +10,9 @@
     <div v-else>
       <a-row :gutter="8">
         <a-col :span="10">
-          <a-row>
-            <a-col :span="2" style="padding-top: 6px;padding-bottom: 6px;">{{ $t('monitor.dashboard.label') + ':' }}</a-col>
-            <a-col :span="22">
+          <a-row type="flex" :gutter="8" justify="start">
+            <a-col style="padding-top: 6px;padding-bottom: 6px;">{{ $t('monitor.dashboard.label') + ':' }}</a-col>
+            <a-col flex="auto">
               <base-select
                   filterable
                   style="min-width: 150px;"
