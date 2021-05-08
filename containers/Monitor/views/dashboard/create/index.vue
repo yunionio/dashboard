@@ -4,9 +4,22 @@
     <page-body v-if="initFinished">
       <a-row>
         <a-col :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }"  :xxl="{ span: 11 }" class="mb-5">
-          <monitor-forms :panel="panel" :queryOnly="false" :multiQuery="false" @refresh="refresh" @remove="remove" @resetChart="resetChart" :timeRangeParams="timeRangeParams" @mertricItemChange="mertricItemChange" />
+          <monitor-forms
+            :panel="panel"
+            :queryOnly="false"
+            :multiQuery="false"
+            :timeRangeParams="timeRangeParams"
+            :extraParams="extraParams"
+            @refresh="refresh"
+            @remove="remove"
+            @resetChart="resetChart"
+            @mertricItemChange="mertricItemChange" />
         </a-col>
-        <a-col class="line mb-5" :md="{ span: 24 }" :lg="{ span: 22 }" :xl="{ span: 16 }" :xxl="{ span: 12, offset: 1 }">
+        <a-col class="line mb-5"
+               :md="{ span: 24 }"
+               :lg="{ span: 22 }"
+               :xl="{ span: 16 }"
+               :xxl="{ span: 12, offset: 1 }">
           <monitor-header
               class="mb-4"
               :timeOpts="timeOpts"
@@ -18,9 +31,17 @@
             </template>
           </monitor-header>
           <div v-for="(item, i) in seriesList" :key="i">
-            <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" />
+            <monitor-line
+              class="mb-3"
+              :loading="loadingList[i]"
+              :description="seriesDescription[i]"
+              :metricInfo="metricList[i][0]"
+              :series="item"
+              :timeFormatStr="timeFormatStr"
+              @chartInstance="setChartInstance" />
           </div>
-          <a-card v-if="!seriesList.length && loadingList[0]" class="explorer-monitor-line d-flex align-items-center justify-content-center">
+          <a-card v-if="!seriesList.length && loadingList[0]"
+                  class="explorer-monitor-line d-flex align-items-center justify-content-center">
             <loader :loading="true" />
           </a-card>
         </a-col>
@@ -28,7 +49,12 @@
     </page-body>
     <page-footer>
       <div slot="right">
-        <a-button class="mr-3" type="primary" :loading="loading" @click="handleConfirm" :disabled="metricList.length === 0">{{ $t('common.save') }}</a-button>
+        <a-button class="mr-3" type="primary"
+                  :loading="loading"
+                  :disabled="metricList.length === 0"
+                  @click="handleConfirm">
+          {{ $t('common.save') }}
+        </a-button>
         <a-button @click="goback">{{ $t('common.cancel') }}</a-button>
       </div>
     </page-footer>
@@ -56,6 +82,17 @@ export default {
     CustomDate,
   },
   data () {
+    const extraParams = {}
+    if (this.$route.query.scope) {
+      extraParams.scope = this.$route.query.scope
+    }
+    if (this.$route.query.domain_id) {
+      extraParams.domain_id = this.$route.query.domain_id
+    }
+    if (this.$route.query.project_id) {
+      extraParams.project_id = this.$route.query.project_id
+    }
+
     return {
       initFinished: !this.$route.params.id,
       panelId: this.$route.params.id || '',
@@ -69,6 +106,7 @@ export default {
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
       seriesDescription: [],
+      extraParams: extraParams,
       get,
     }
   },
@@ -202,6 +240,7 @@ export default {
           interval: this.timeGroup,
           scope: this.$store.getters.scope,
           ...this.timeRangeParams,
+          ...this.extraParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
         data.signature = getSignature(data)

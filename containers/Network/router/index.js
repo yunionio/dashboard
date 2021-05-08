@@ -258,53 +258,6 @@ export default {
       ],
     },
     /**
-     * SSH代理
-     */
-    {
-      meta: {
-        label: i18n.t('network.ssh-proxy.title'),
-        hidden: () => store.getters.isProjectMode,
-      },
-      submenus: [
-        {
-          path: '/ssh-agent',
-          meta: {
-            label: i18n.t('network.ssh-proxy.proxyservice'),
-            permission: 'sshproxy_service_list',
-            hidden: () => store.getters.isDomainMode,
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'SshAgentList',
-              path: '',
-              component: SshAgentList,
-            },
-          ],
-        },
-        {
-          path: '/ssh-proxy',
-          meta: {
-            label: i18n.t('network.ssh-proxy.endpoints'),
-            permission: 'sshproxy_node_list',
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'SshProxyList',
-              path: '',
-              component: SshProxyList,
-            },
-            {
-              name: 'SshProxyCreate',
-              path: 'create',
-              component: SshProxyCreate,
-            },
-          ],
-        },
-      ],
-    },
-    /**
      * 网络服务
      */
     {
@@ -406,6 +359,53 @@ export default {
               name: 'DnsZoneCreate',
               path: 'create',
               component: DnsZoneCreate,
+            },
+          ],
+        },
+      ],
+    },
+    /**
+     * SSH代理
+     */
+    {
+      meta: {
+        label: i18n.t('network.ssh-proxy.title'),
+        hidden: () => store.getters.isProjectMode,
+      },
+      submenus: [
+        {
+          path: '/ssh-proxy',
+          meta: {
+            label: i18n.t('network.ssh-proxy.endpoints'),
+            permission: 'sshproxy_node_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'SshProxyList',
+              path: '',
+              component: SshProxyList,
+            },
+            {
+              name: 'SshProxyCreate',
+              path: 'create',
+              component: SshProxyCreate,
+            },
+          ],
+        },
+        {
+          path: '/ssh-agent',
+          meta: {
+            label: i18n.t('network.ssh-proxy.proxyservice'),
+            permission: 'sshproxy_service_list',
+            hidden: () => store.getters.isDomainMode,
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'SshAgentList',
+              path: '',
+              component: SshAgentList,
             },
           ],
         },
