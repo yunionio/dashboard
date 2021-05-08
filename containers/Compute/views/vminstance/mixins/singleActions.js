@@ -921,7 +921,7 @@ export default {
                 /* 设置免密登录 */
                 {
                   label: i18n.t('compute.vminstance.actions.setup_ssh_authentication'),
-                  permission: 'server_perform_deploy',
+                  permission: 'server_perform_setup_ssh_proxy',
                   action: () => {
                     this.createDialog('SetupSSHDialog', {
                       data: [obj],
@@ -947,11 +947,12 @@ export default {
                     }
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_setup_ssh_proxy'),
                 },
                 /* 探测免密登录 */
                 {
                   label: i18n.t('compute.vminstance.actions.detect_ssh_authentication'),
-                  permission: 'server_perform_deploy',
+                  permission: 'server_perform_detect_ssh_proxy',
                   action: () => {
                     this.createDialog('DetectSSHDialog', {
                       data: [obj],
@@ -971,6 +972,7 @@ export default {
                     }
                     return ret
                   },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_detect_ssh_proxy'),
                 },
               ],
             },
