@@ -26,8 +26,13 @@ export default {
   },
   watch: {
     connectParams: {
-      handler () {
-        this.initTerminal()
+      handler (val, oval) {
+        if (val) {
+          this.initTerminal()
+        } else {
+          this.socket.close()
+          this._resetDom()
+        }
       },
       immediate: true,
     },
@@ -36,10 +41,16 @@ export default {
     this._socketClose()()
   },
   methods: {
-    _createDom () {
+    _resetDom () {
       const wrapper = this.$refs.xtermWrapper
       const terminalDom = document.getElementById('xterm')
-      wrapper.removeChild(terminalDom)
+      if (terminalDom) {
+        wrapper.removeChild(terminalDom)
+      }
+    },
+    _createDom () {
+      this._resetDom()
+      const wrapper = this.$refs.xtermWrapper
       const newTerminalDom = document.createElement('div')
       newTerminalDom.setAttribute('id', 'xterm')
       wrapper.appendChild(newTerminalDom)
