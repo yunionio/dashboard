@@ -53,9 +53,6 @@ export default {
         toolbox: {
           show: true,
           feature: {
-            dataZoom: {
-              show: true,
-            },
             magicType: {
               type: ['line', 'bar'],
               title: { line: this.$t('monitor.chart.toolbar.line'), bar: this.$t('monitor.chart.toolbar.bar') },
