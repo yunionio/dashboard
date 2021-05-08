@@ -105,7 +105,7 @@ export default {
             label: i18n.t('dictionary.filesystem'),
             permission: 'file_systems_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.filesystem')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.nas')) {
                 return true
               }
               return !hasSetupKey(['aliyun', 'huawei'])
