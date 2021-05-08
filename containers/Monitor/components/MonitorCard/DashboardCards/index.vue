@@ -36,6 +36,10 @@ export default {
       type: Function,
       required: true,
     },
+    extraParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -51,9 +55,6 @@ export default {
   computed: {
     panels () {
       return this.dashboard.alert_panel_details ? this.dashboard.alert_panel_details : []
-    },
-    extraParams () {
-      return { scope: this.dashboard.scope ? this.dashboard.scope : this.scope }
     },
   },
   watch: {

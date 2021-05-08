@@ -6,7 +6,7 @@
           {{ install_failed_reason }}
         </template>
         {{ installTips }}
-        <help-link href="/docs/en/docs/user/network/ssh/sshproxy" v-if="showPEHelpLink">PE</help-link>
+        <help-link href="/docs/en/docs/user/network/ssh/sshproxy/" v-if="showPEHelpLink">PE</help-link>
       </a-tooltip>
       <a-tooltip>
         <template slot="title" v-if="disableTips">

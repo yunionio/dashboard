@@ -44,7 +44,7 @@
         <a-divider />
       </a-row>
       <a-row v-if="dashboardId">
-        <dashboard-cards :id="dashboardId" :create-chart="createChart"  :edit-chart="editChart" />
+        <dashboard-cards :id="dashboardId" :extraParams="extraParams" :create-chart="createChart"  :edit-chart="editChart" />
       </a-row>
     </div>
   </div>
@@ -76,6 +76,26 @@ export default {
     isEmpty () {
       return !this.dashboards || this.dashboards.length === 0
     },
+    dashboard () {
+      if (this.dashboardId) {
+        const ds = this.dashboards.filter((item) => { return item.id === this.dashboardId })
+        if (ds.length > 0) {
+          return ds[0]
+        }
+      }
+      return {}
+    },
+    extraParams () {
+      const scope = this.dashboard.scope || this.scope
+      const params = { scope: scope }
+      if (this.dashboard.domain_id) {
+        params.domain_id = this.dashboard.domain_id
+      }
+      if (this.dashboard.tenant_id) {
+        params.project_id = this.dashboard.tenant_id
+      }
+      return params
+    },
   },
   created () {
     this.dashboardId ? this.fetchDashboards() : this.switchDashboard()
@@ -101,6 +121,7 @@ export default {
         path: '/monitor-dashboard/create',
         query: {
           dashboard: this.dashboardId,
+          ...this.extraParams,
         },
       })
     },
@@ -110,6 +131,7 @@ export default {
         path: `/monitor-dashboard/${id}/update`,
         query: {
           dashboard: this.dashboardId,
+          ...this.extraParams,
         },
       })
     },
