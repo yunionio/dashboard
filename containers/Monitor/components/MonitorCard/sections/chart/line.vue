@@ -39,6 +39,9 @@ export default {
             shadowStyle: { color: 'rgb(77, 161, 255)', opacity: 0.1 },
           },
         },
+        dataZoom: {
+          type: 'inside', /* 数据缩放 **/
+        },
       }
     },
     chartConfig () {

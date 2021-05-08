@@ -244,6 +244,8 @@ export const PERMISSION = {
   server_perform_set_isolated_device: ['compute', 'servers', 'perform', 'set-isolated-device'],
   server_perform_renew: ['compute', 'servers', 'perform', 'renew'],
   server_perform_aet_auto_renew: ['compute', 'servers', 'perform', 'set-auto-renew'],
+  server_perform_setup_ssh_proxy: ['compute', 'servers', 'perform', 'make-sshable'],
+  server_perform_detect_ssh_proxy: ['compute', 'servers', 'get', 'sshable'],
   /**
    * images 相关操作
    */
