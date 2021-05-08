@@ -646,7 +646,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
                 return true
               }
-              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private'])
             },
           },
           component: Layout,
@@ -667,7 +667,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.schedpolicy')) {
                 return true
               }
-              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private'])
             },
           },
           component: Layout,
@@ -688,7 +688,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.dynamicschedtag')) {
                 return true
               }
-              return false // !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'vmware', 'public', 'private'])
             },
           },
           component: Layout,
