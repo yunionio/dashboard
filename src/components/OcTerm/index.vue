@@ -22,11 +22,13 @@ export default {
   },
   watch: {
     openCloudShell (val, old) {
-      if (val) {
-        this.fetchData()
-      } else {
-        this.connectParams = ''
-      }
+      this.$nextTick(() => {
+        if (val) {
+          this.fetchData()
+        } else {
+          this.connectParams = ''
+        }
+      })
     },
   },
   created () {
