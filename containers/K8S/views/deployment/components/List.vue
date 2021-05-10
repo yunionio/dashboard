@@ -108,8 +108,12 @@ export default {
       ],
     }
   },
+  created () {
+    this.list.fetchData()
+  },
   methods: {
     handleOpenSidepage (row) {
+      console.log('是否执行', 'yes')
       this.sidePageTriggerHandle(this, 'K8SDeploymentSidePage', {
         id: row.id,
         resource: 'deployments',

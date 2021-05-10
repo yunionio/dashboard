@@ -117,6 +117,9 @@ export default {
       ],
     }
   },
+  created () {
+    this.list.fetchData()
+  },
   methods: {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'K8SRbacclusterrolebindingSidePage', {
