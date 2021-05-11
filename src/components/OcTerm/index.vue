@@ -10,6 +10,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'OcTerm',
@@ -79,7 +80,7 @@ export default {
           that.height = moveLen
         }
 
-        document.onmousemove = moveHandle
+        document.onmousemove = debounce(moveHandle, 300)
         resize.onmouseup = document.onmouseup = function (evt) {
           mask.style.height = '20px'
           document.onmousemove = null
