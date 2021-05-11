@@ -1408,5 +1408,13 @@
   "compute.vminstance.monitor.install_agent.installing": "Agent Installing, This process may take a long time and can be checked later",
   "compute.vminstance.monitor.install_agent.installed": "Agent Install Success",
   "compute.secgroup.source.placeholder": "Support manual input of IP, selection of CIDR or security group",
-  "compute.secgroup.source.effect.desc": "Source is security group currently the only aliyun and tencent cloud to take effect"
+  "compute.secgroup.source.effect.desc": "Source is security group currently the only aliyun and tencent cloud to take effect",
+  "compute.text_1385": "Delete the mounted data disk at the same time",
+  "compute.text_1386": "Delete the EIP at the same time",
+  "compute.disable_delete_snapshot_by_brand_tooltip": "When deleting a host on a {0} platform virtual machine, the snapshot must be deleted at the same time",
+  "compute.disable_delete_snapshot_by_brand_on_disk_tooltip": "When deleting a data disk on a {0} platform virtual machine, the snapshot must be deleted at the same time",
+  "compute.disable_delete_snapshot_by_disk_tooltip": "Snapshots must be deleted when the {0} disk is deleted",
+  "compute.disable_delete_eip_by_brand_tooltip": "When the {0} platform virtual machine deletes the host, it does not support deleting the EIP at the same time",
+  "compute.disable_delete_disk_by_brand_tooltip": "When deleting a host on a {0} platform virtual machine, the data disk must be deleted at the same time"
+
 }
