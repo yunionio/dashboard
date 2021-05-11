@@ -1409,5 +1409,12 @@
   "compute.vminstance.monitor.install_agent.installing": "Agent插件安装中,该过程可能时间较长，可稍后查看",
   "compute.vminstance.monitor.install_agent.installed": "Agent安装成功",
   "compute.secgroup.source.placeholder": "支持手动输入IP、选择CIDR或安全组",
-  "compute.secgroup.source.effect.desc": "安全组类型暂只有阿里云和腾讯云生效"
+  "compute.secgroup.source.effect.desc": "安全组类型暂只有阿里云和腾讯云生效",
+  "compute.text_1385": "同时删除后挂载的数据盘",
+  "compute.text_1386": "同时删除EIP",
+  "compute.disable_delete_snapshot_by_brand_tooltip": "{0}平台虚拟机删除主机时必须同时删除快照",
+  "compute.disable_delete_snapshot_by_brand_on_disk_tooltip": "{0}平台虚拟机删除硬盘时必须同时删除快照",
+  "compute.disable_delete_snapshot_by_disk_tooltip": "{0}数据盘删除时必须同时删除快照",
+  "compute.disable_delete_eip_by_brand_tooltip": "{0}平台虚拟机删除主机时暂不支持同时删除EIP",
+  "compute.disable_delete_disk_by_brand_tooltip": "{0}平台虚拟机删除主机时必须同时删除数据盘"
 }
