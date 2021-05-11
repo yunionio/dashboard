@@ -35,7 +35,7 @@ export default {
         if (val) {
           this.initTerminal()
         } else {
-          this.socket.close()
+          this.socket && this.socket.close()
           this._resetDom()
         }
       },
@@ -45,7 +45,7 @@ export default {
       if (val) {
         const terminalDom = document.getElementById('xterm')
         terminalDom.style.minHeight = val + 'px'
-        this.term.fit()
+        this.term && this.term.fit()
       }
     },
   },
@@ -56,7 +56,7 @@ export default {
     _resetDom () {
       const wrapper = this.$refs.xtermWrapper
       const terminalDom = document.getElementById('xterm')
-      if (terminalDom) {
+      if (terminalDom && wrapper) {
         wrapper.removeChild(terminalDom)
       }
     },
@@ -108,7 +108,7 @@ export default {
     _socketClose () {
       return () => {
         console.log('Connection lose!!!')
-        this.socket.close()
+        this.socket && this.socket.close()
       }
     },
   },
