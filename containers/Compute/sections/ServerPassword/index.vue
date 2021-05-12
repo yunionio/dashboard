@@ -101,9 +101,11 @@ export default {
     isSnapshotImageType (val) {
       if (val) {
         this.disabled = true
+        const v = LOGIN_TYPES_MAP.image.key
         this.form.fc.setFieldsValue({
-          [this.decorators.loginType[0]]: LOGIN_TYPES_MAP.image.key,
+          [this.decorators.loginType[0]]: v,
         })
+        this.vmLoginType = v
       } else {
         this.disabled = false
       }
