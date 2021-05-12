@@ -146,20 +146,20 @@ export default {
         let region = ''
         let zone = ''
         const { type, backend } = this.getType(this.currentStorage.value)
-        const cloudregionExternalArr = this.currentCloudregion.external_id.split('/')
-        if (this.currentCloudregion.cloud_env === 'public') {
-          if (!this.currentCloudzone) return
-          key = type
-          region = cloudregionExternalArr[1]
-          zone = this.currentCloudzone.external_id.split('/')[2]
-        } else {
-          key = `${backend}.${type}`
-        }
-        this.key = key
         let pv = this.currentCloudregion.provider.toLowerCase()
         if (this.currentCloudregion.external_id && this.currentCloudregion.external_id.includes('/')) {
+          const cloudregionExternalArr = this.currentCloudregion.external_id.split('/')
+          if (this.currentCloudregion.cloud_env === 'public') {
+            if (!this.currentCloudzone) return
+            key = type
+            region = cloudregionExternalArr[1]
+            zone = this.currentCloudzone.external_id.split('/')[2]
+          } else {
+            key = `${backend}.${type}`
+          }
           pv = cloudregionExternalArr[0].toLowerCase()
         }
+        this.key = key
         const price_keys = `${pv}::${region}::${zone}::disk::${key}::${this.size}GB`
         const { data } = await new this.$Manager('price_infos', 'v1').get({
           id: 'total',
