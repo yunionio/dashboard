@@ -119,6 +119,14 @@ export default {
           wire: {
             label: this.$t('network.text_571'),
           },
+          vlan_id: {
+            label: 'VLAN',
+            dropdown: true,
+            distinctField: {
+              type: 'field',
+              key: 'vlan_id',
+            },
+          },
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope'],
