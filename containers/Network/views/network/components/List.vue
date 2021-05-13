@@ -138,6 +138,14 @@ export default {
       wire: {
         label: this.$t('network.text_571'),
       },
+      vlan_id: {
+        label: 'VLAN',
+        dropdown: true,
+        distinctField: {
+          type: 'field',
+          key: 'vlan_id',
+        },
+      },
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
