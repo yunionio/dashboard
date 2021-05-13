@@ -128,7 +128,7 @@ export default {
         const loginTypeInitailValue = this.decorator.loginType[1].initialValue
         const keys = Object.keys(this.loginTypeMap)
         let vmLoginType = loginTypeInitailValue
-        if (!keys.includes(loginTypeInitailValue)) { // 如果表单中的初始值不在 loginTypeMap 中
+        if (!keys.includes(loginTypeInitailValue) || this.isSnapshotImageType) { // 如果表单中的初始值不在 loginTypeMap 中, 主机快照只支持保留镜像设置
           if (keys.includes(LOGIN_TYPES_MAP.image.key)) { // 如果maps中有"保留镜像设置"，则设置
             vmLoginType = LOGIN_TYPES_MAP.image.key
           } else { // 否则设置第一项
