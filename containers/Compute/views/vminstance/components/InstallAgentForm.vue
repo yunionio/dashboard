@@ -112,8 +112,8 @@ export default {
           if (data) {
             if (data[0].status === 'succeed' || data[0].status === 'failed') {
               this.agent_install_status = data[0].status === 'succeed' ? 'installed' : 'install_failed'
-              this.install_failed_reason = data.reason
-              this.install_failed_code = data.fail_code || ''
+              this.install_failed_reason = data[0].reason
+              this.install_failed_code = data[0].fail_code || ''
               this.$emit('onInstall', data[0])
               break
             }
