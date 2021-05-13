@@ -399,7 +399,7 @@ export default {
       this.disabledOpts()
     },
     async loadOpts (query) {
-      if (this.options) return // 指定数据源是外传options,这里不请求
+      if (this.options?.length > 0) return // 指定数据源是外传options,这里不请求
       if (!R.isNil(query) && this.filterable) return // 如果开启本地搜索，远程搜索将取消
       const { manager, params } = this.genParams(query)
       this.loadMoreOffset = 0
