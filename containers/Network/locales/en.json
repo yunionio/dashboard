@@ -743,6 +743,8 @@
   "network.eip.text_725": "Range is 1～{0}Mbps",
   "network.text_725": "Start: {0}",
   "network.text_726": "Stop: {0}",
+  "network.ports": "Usage (Total)",
+  "network.ports_used": "Usage (Used)",
   "network.text_727": "Total: {0}",
   "network.text_728": "Used: {0}",
   "network.text_729": "No scheulder tags",
