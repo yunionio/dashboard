@@ -20,7 +20,7 @@
     </template>
     <overview-line style="padding-top: 10px;" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="loading" />
     <template #footer>
-      <overview-table :table-data="table" />
+      <overview-table :table-data="table" :loading="tableLoading" />
     </template>
   </overview-card-layout>
 </template>
@@ -65,6 +65,7 @@ export default {
   data () {
     return {
       chart: {},
+      tableLoading: false,
     }
   },
   computed: {
