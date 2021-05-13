@@ -21,7 +21,8 @@
           :remote-fn="q => ({ search: q })"
           @change="v => vpcChange(v, i)"
           :disabled="vpcObj && !!vpcObj.id"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" />
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }"
+          :options="vpcResList" />
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
       <a-form-item
@@ -124,6 +125,9 @@ export default {
     ipsDisable: {
       type: Boolean,
       default: false,
+    },
+    vpcResList: {
+      type: Array,
     },
   },
   data () {
