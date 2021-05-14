@@ -1381,5 +1381,8 @@
   "compute.detach_network_title": "Detach NIC",
   "compute.nic": "NIC",
   "compute.server_detach_network.only_last_one": "Only the last NIC can be detached",
-  "add_schedpolicy": "Add scheduler tag"
+  "add_schedpolicy": "Add scheduler tag",
+  "compute.sku.setup.sell.status": "Setup Sell Status",
+  "compute.sku.prepaid_status": "Prepaid Status",
+  "compute.sku.postpaid_status": "Postpaid Status"
 }

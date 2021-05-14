@@ -310,7 +310,9 @@
       "delete_failed": "Deletion failed",
       "unknown": "Unknown",
       "ready": "Normal",
-      "init": "Initialize"
+      "init": "Initialize",
+      "available": "Available",
+      "soldout": "Soldout"
     },
     "disk": {
       "init": "Initializing",
