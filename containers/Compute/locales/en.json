@@ -1359,5 +1359,8 @@
   "compute.disk_perform_setup_snapshot_policy": "Setup Snapshot Policies",
   "compute.perform_change_owner": "Change {0}",
   "compute.perform_sync_status": "Sync Status",
-  "compute.perform_delete": "Delete"
+  "compute.perform_delete": "Delete",
+  "compute.sku.setup.sell.status": "Setup Sell Status",
+  "compute.sku.prepaid_status": "Prepaid Status",
+  "compute.sku.postpaid_status": "Postpaid Status"
 }
