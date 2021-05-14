@@ -1359,5 +1359,8 @@
   "compute.disk_perform_setup_snapshot_policy": "设置快照策略",
   "compute.perform_change_owner": "更改{0}",
   "compute.perform_sync_status": "同步状态",
-  "compute.perform_delete": "删除"
+  "compute.perform_delete": "删除",
+  "compute.sku.setup.sell.status": "设置销售状态",
+  "compute.sku.prepaid_status": "预付费状态",
+  "compute.sku.postpaid_status": "后付费状态"
 }

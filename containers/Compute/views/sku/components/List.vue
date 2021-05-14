@@ -82,6 +82,22 @@ export default {
       },
       groupActions: [
         {
+          label: this.$t('compute.sku.setup.sell.status'),
+          action: () => {
+            this.createDialog('ServerSkuUpdateDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: this.list.selectedItems.length > 0,
+            }
+            return ret
+          },
+        },
+        {
           label: this.$t('compute.text_18'),
           permission: 'skus_create',
           action: () => {

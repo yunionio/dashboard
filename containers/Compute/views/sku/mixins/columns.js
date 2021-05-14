@@ -1,4 +1,4 @@
-import { chargeTypeColumn } from '../utils'
+// import { chargeTypeColumn } from '../utils'
 import {
   getEnabledTableColumn,
   getNameDescriptionTableColumn,
@@ -23,6 +23,8 @@ export default {
             )
           },
         }),
+        getStatusTableColumn({ title: i18n.t('compute.sku.prepaid_status'), field: 'prepaid_status', statusModule: 'sku' }),
+        getStatusTableColumn({ title: i18n.t('compute.sku.postpaid_status'), field: 'postpaid_status', statusModule: 'sku' }),
         {
           field: 'cpu_core_count',
           title: i18n.t('compute.text_1051'),
@@ -39,7 +41,6 @@ export default {
             return sizestr(cellValue, 'M', 1024)
           },
         },
-        getStatusTableColumn({ statusModule: 'sku' }),
         {
           field: 'total_guest_count',
           title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
@@ -58,7 +59,7 @@ export default {
       if (this.cloudEnv === 'public') {
         columns.push(
           getRegionTableColumn(),
-          chargeTypeColumn(),
+          // chargeTypeColumn(),
         )
       }
       return columns
