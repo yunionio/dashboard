@@ -1381,5 +1381,8 @@
   "compute.detach_network_title": "卸载网卡",
   "compute.nic": "网卡",
   "compute.server_detach_network.only_last_one": "只有最后一块网卡能被卸载",
-  "add_schedpolicy": "添加调度标签"
+  "add_schedpolicy": "添加调度标签",
+  "compute.sku.setup.sell.status": "设置销售状态",
+  "compute.sku.prepaid_status": "预付费状态",
+  "compute.sku.postpaid_status": "后付费状态"
 }
