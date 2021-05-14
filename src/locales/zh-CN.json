@@ -319,7 +319,9 @@
       "delete_failed": "删除失败",
       "unknown": "未知",
       "ready": "正常",
-      "init": "初始化"
+      "init": "初始化",
+      "available": "可用",
+      "soldout": "售罄"
     },
     "disk": {
       "init": "初始化中",

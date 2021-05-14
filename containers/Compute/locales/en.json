@@ -1408,5 +1408,8 @@
   "compute.vminstance.monitor.install_agent.installing": "Agent Installing, This process may take a long time and can be checked later",
   "compute.vminstance.monitor.install_agent.installed": "Agent Install Success",
   "compute.secgroup.source.placeholder": "Support manual input of IP, selection of CIDR or security group",
-  "compute.secgroup.source.effect.desc": "Source is security group currently the only aliyun and tencent cloud to take effect"
+  "compute.secgroup.source.effect.desc": "Source is security group currently the only aliyun and tencent cloud to take effect",
+  "compute.sku.setup.sell.status": "Setup Sell Status",
+  "compute.sku.prepaid_status": "Prepaid Status",
+  "compute.sku.postpaid_status": "Postpaid Status"
 }
