@@ -39,7 +39,7 @@
         </div>
         <a-menu slot="overlay" @click="userMenuClick">
           <a-sub-menu key="language">
-            <span slot="title"><a-icon type="global" /><span>{{$t('common_630')}}</span></span>
+            <span slot="title"><a-icon class="mr-2 ml-2" type="global" /><span>{{$t('common_630')}}</span></span>
             <a-menu-item key="3" @click="settingLanguageCH">
               <span class="mr-2" style="cursor: pointer">简体中文</span><a-icon v-show="language === 'zh-CN'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
             </a-menu-item>
@@ -47,7 +47,9 @@
               <span class="mr-2" style="cursor: pointer">English</span><a-icon v-show="language === 'en'" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
             </a-menu-item>
           </a-sub-menu>
-          <a-menu-item key="logout">{{ $t('scope.text_6') }}</a-menu-item>
+          <a-menu-item key="toClouduser"><a-icon class="mr-2 ml-2" type="cloud-upload" />{{ $t('scope.cloudid') }}</a-menu-item>
+          <a-menu-item key="handleUpdatePassword"><a-icon class="mr-2 ml-2" type="usergroup-delete" />{{ $t('scope.text_5') }}</a-menu-item>
+          <a-menu-item key="logout"><a-icon class="mr-2 ml-2" type="logout" />{{ $t('scope.text_6') }}</a-menu-item>
         </a-menu>
       </a-dropdown>
     </div>
@@ -60,12 +62,14 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { setLanguage } from '@/utils/common/cookie'
 import CloudShell from '@/sections/Navbar/components/CloudShell'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'Navbar',
   components: {
     CloudShell,
   },
+  mixins: [WindowsMixin],
   computed: {
     ...mapGetters(['userInfo', 'scope', 'logo', 'permission', 'scopeResource', 'setting']),
     products () {
@@ -118,6 +122,10 @@ export default {
         } catch (error) {
           throw error
         }
+      } else if (item.key === 'handleUpdatePassword') {
+        this.createDialog('UpdateUserPasswordDialog')
+      } else if (item.key === 'toClouduser') {
+        this.$router.push('/clouduser')
       }
     },
     projectChange (item) {
