@@ -253,5 +253,6 @@
   "monitor.dashboard.select.option": "Belong: {0} {1}",
   "monitor.chart.toolbar.line": "switch to line chart",
   "monitor.chart.toolbar.bar": "switch to bar chart",
-  "monitor.dashboard.dialog.project.clone": "Clone Chart"
+  "monitor.dashboard.dialog.project.clone": "Clone Chart",
+  "monitor.view_system": "System"
 }
