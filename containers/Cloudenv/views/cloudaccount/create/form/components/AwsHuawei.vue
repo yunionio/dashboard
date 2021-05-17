@@ -22,7 +22,7 @@
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
-      <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')">
+      <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-show="!isNotSupportSaml">
         <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.saml_auth" />
         <div slot="extra">
           <i18n path="cloudaccount.create_form.saml_user_extra">
@@ -44,6 +44,7 @@ import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import { getCloudaccountDocs, keySecretFields, ACCESS_URL, getSamlUserDocs } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
+import { PROVIDER_MAP } from '@/constants'
 
 export default {
   name: 'AwsHuawei',
@@ -63,6 +64,12 @@ export default {
       decorators: this.getDecorators(keySecretField),
       environments,
     }
+  },
+  computed: {
+    isNotSupportSaml () {
+      const providers = [PROVIDER_MAP.Ctyun.key]
+      return providers.includes(this.provider)
+    },
   },
   deactivated () {
     this.form.fc.resetFields()
