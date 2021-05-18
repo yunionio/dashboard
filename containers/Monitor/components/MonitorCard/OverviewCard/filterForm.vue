@@ -229,7 +229,7 @@ export default {
       for (const k in this.charts) {
         const chart = this.charts[k]
         const column = chart.metric.label
-        const col = { field: column, title: column, sortable: true }
+        const col = { field: column, title: column, sortable: true, sortType: 'number', sortBy: column }
         if (chart.metric.format) col.formatter = ({ cellValue }) => { return numerify(cellValue, chart.metric.format) }
         data.columns.push(col)
         chart.chartData.rows.map((row) => {
