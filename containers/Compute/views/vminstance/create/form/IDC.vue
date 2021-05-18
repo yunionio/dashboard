@@ -499,9 +499,7 @@ export default {
                 key: sysDisk.backend,
                 label: STORAGE_TYPES[HYPERVISORS_MAP.kvm.key][sysDisk.backend].label,
               },
-              systemDiskSize: {
-                key: sysDisk.size / 1024,
-              },
+              systemDiskSize: sysDisk.size / 1024,
             }
             if (val && R.is(Object, val.server_config)) {
               if (val.server_config.vcpu_count) {
