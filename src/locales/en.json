@@ -192,7 +192,8 @@
       "unknown": "Unknown",
       "pending_delete": "Pending Delete",
       "converting": "Converting format",
-      "deactivated": "Deleting"
+      "deactivated": "Deleting",
+      "save_fail": "Save failed"
     },
     "imageCache": {
       "ready": "Normal",
