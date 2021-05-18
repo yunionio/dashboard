@@ -278,7 +278,7 @@ export default {
           this.fetchHostImages(params)
           break
         case IMAGES_TYPE_MAP.snapshot.key: // 主机快照
-          params = { ...this.imageParams, status: 'ready' }
+          params = { ...this.imageParams, status: 'ready', provider: this.cloudproviderParamsExtra?.provider }
           this.fetchSnapshotImages(params)
           break
         default: // image list
