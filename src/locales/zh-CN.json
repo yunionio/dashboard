@@ -192,7 +192,8 @@
       "unknown": "未知",
       "pending_delete": "待删除",
       "converting": "格式转换中",
-      "deactivated": "正在删除"
+      "deactivated": "正在删除",
+      "save_fail": "保存失败"
     },
     "imageCache": {
       "ready": "正常",
