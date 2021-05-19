@@ -87,7 +87,9 @@ export default {
       return data
     },
     tags () {
-      let ret = this.data.arr.map(item => {
+      let ret = this.data.arr.filter((item) => {
+        return item.key.startsWith('user:')
+      }).map(item => {
         const rgb = getTagColor(item.key, item.value, 'rgb')
         const strRgb = rgb.join(',')
         return {
@@ -97,7 +99,7 @@ export default {
           ...item,
         }
       })
-      // 根据title去重，ext和user相同的value只显示一个
+      // 根据title去重，相同的value只显示一个
       ret = R.uniqBy(item => item.title, ret)
       return ret
     },
