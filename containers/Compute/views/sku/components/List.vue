@@ -83,22 +83,6 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.sku.setup.sell.status'),
-          action: () => {
-            this.createDialog('ServerSkuUpdateDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-            })
-          },
-          meta: () => {
-            const ret = {
-              validate: this.list.selectedItems.length > 0,
-            }
-            return ret
-          },
-        },
-        {
           label: this.$t('compute.perform_create'),
           permission: 'skus_create',
           action: () => {
@@ -130,6 +114,22 @@ export default {
           actions: () => {
             return [
               ...getEnabledSwitchActions(this, undefined, ['skus_update', 'skus_update']),
+              {
+                label: this.$t('compute.sku.setup.sell.status'),
+                action: () => {
+                  this.createDialog('ServerSkuUpdateDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: this.list.selectedItems.length > 0,
+                  }
+                  return ret
+                },
+              },
               {
                 label: this.$t('compute.perform_delete'),
                 permission: 'skus_delete',
