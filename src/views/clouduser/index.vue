@@ -1,5 +1,6 @@
 <template>
   <div>
+    <page-header :title="$t('scope.cloudid')" />
     <template v-if="!loaded">
       <p class="text-center"><a-spin /></p>
     </template>

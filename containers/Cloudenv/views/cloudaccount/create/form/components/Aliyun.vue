@@ -1,10 +1,10 @@
 <template>
   <div>
-    <a-form :form="form.fc" v-bind="formLayout">
+    <a-form :form="form.fc" v-if="decorators" v-bind="formLayout">
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.environment')">
+      <a-form-item :label="$t('cloudenv.environment')" v-if="isAliyun">
         <base-select
           :options="environments"
           v-decorator="decorators.environment"
@@ -22,7 +22,7 @@
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
-      <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-show="!isNotSupportSaml">
+      <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-if="provider==='Aliyun'">
         <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.saml_auth" />
         <div slot="extra">
           <i18n path="cloudaccount.create_form.saml_user_extra">
@@ -32,7 +32,7 @@
           </i18n>
         </div>
       </a-form-item>
-      <auto-sync :fc="form.fc" :form-layout="formLayout" />
+      <auto-sync :fc="form.fc" />
     </a-form>
   </div>
 </template>
@@ -44,10 +44,9 @@ import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import { getCloudaccountDocs, keySecretFields, ACCESS_URL, getSamlUserDocs } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
-import { PROVIDER_MAP } from '@/constants'
 
 export default {
-  name: 'AwsHuawei',
+  name: 'AliyunCreate',
   components: {
     AutoSync,
     DomainProject,
@@ -56,7 +55,6 @@ export default {
   mixins: [createMixin],
   data () {
     const keySecretField = keySecretFields[this.provider.toLowerCase()]
-    console.log(ACCESS_URL, keySecretFields, this.provider)
     const environments = Object.entries(ACCESS_URL[this.provider.toLowerCase()]).map(keyValueArr => ({ key: keyValueArr[0], label: keyValueArr[1] }))
     return {
       docs: getCloudaccountDocs(this.$store.getters.scope),
@@ -64,15 +62,6 @@ export default {
       decorators: this.getDecorators(keySecretField),
       environments,
     }
-  },
-  computed: {
-    isNotSupportSaml () {
-      const providers = [PROVIDER_MAP.Ctyun.key]
-      return providers.includes(this.provider)
-    },
-  },
-  deactivated () {
-    this.form.fc.resetFields()
   },
   methods: {
     getDecorators (initKeySecretFields) {

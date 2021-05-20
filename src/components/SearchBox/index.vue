@@ -133,7 +133,10 @@ export default {
       this.newValues = {}
       R.forEachObjIndexed((value, key) => {
         if (Array.isArray(value)) {
-          value = value.filter((item) => { return item.trim().length > 0 }).map(v => { return v.trim() })
+          const whiteList = ['created_at']
+          if (!whiteList.includes(key)) {
+            value = value.filter((item) => { return item?.trim().length > 0 }).map(v => { return v?.trim() })
+          }
           if (value.length === 0) {
             return
           }

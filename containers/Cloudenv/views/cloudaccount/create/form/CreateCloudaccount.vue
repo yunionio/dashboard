@@ -3,10 +3,11 @@
 </template>
 
 <script>
-import AliyunUcloud from './components/AliyunUcloud'
+import Aliyun from './components/Aliyun'
 import AwsHuawei from './components/AwsHuawei'
 import Azure from './components/Azure'
 import Qcloud from './components/Qcloud'
+import Ucloud from './components/Ucloud'
 import VMware from './components/VMware'
 import OpenstackZstack from './components/OpenstackZstack'
 import S3CephXsky from './components/S3CephXsky'
@@ -16,8 +17,8 @@ import Apsara from './components/Apsara'
 export default {
   name: 'CreateCloudaccount',
   components: {
-    AliyunCreate: AliyunUcloud,
-    UcloudCreate: AliyunUcloud,
+    AliyunCreate: Aliyun,
+    UcloudCreate: Ucloud,
     AwsCreate: AwsHuawei,
     HuaweiCreate: AwsHuawei,
     AzureCreate: Azure,
@@ -32,7 +33,7 @@ export default {
     GoogleCreate: Google,
     CtyunCreate: AwsHuawei,
     ApsaraCreate: Apsara,
-    EcloudCreate: AliyunUcloud,
+    EcloudCreate: Aliyun,
   },
   props: {
     currentItem: {

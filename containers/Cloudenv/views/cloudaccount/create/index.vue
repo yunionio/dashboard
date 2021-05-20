@@ -337,6 +337,10 @@ export default {
         // if (this.brand === 'vmware') {
         //   return await this.vmwareForm(values)
         // }
+        if (values.ucloud_project_id && values.access_key_id) {
+          values.access_key_id = values.access_key_id + '::' + values.ucloud_project_id
+          delete values.ucloud_project_id
+        }
         this.newAccountInfo = await this.doCreateCloudaccount(values)
         if (this.isBill) {
           this.currentComponent = 'billConfig'
@@ -381,6 +385,10 @@ export default {
     async handleTest () {
       const createForm = this.$refs.stepRef.$refs.createForm
       const formData = await createForm.validateForm()
+      if (formData.ucloud_project_id && formData.access_key_id) {
+        formData.access_key_id = formData.access_key_id + '::' + formData.ucloud_project_id
+        delete formData.ucloud_project_id
+      }
       const data = {
         ...formData,
         enabled: true,
