@@ -44,6 +44,9 @@
         <!-- <a-form-item :label="$t('cloudenv.text_242')" v-if="isAzure">
           <a-textarea v-decorator="decorators.balanceKey" rows="4" />
         </a-form-item> -->
+        <a-form-item label="project_id" v-if="isUcloud">
+          <a-input v-decorator="decorators.ucloud_project_id" :placeholder="$t('cloudenv.text_247')" />
+        </a-form-item>
         <a-form-item :label="$t('cloudenv.text_254')" v-if="isOpenStack">
           <a-input v-decorator="decorators.project_name" :placeholder="$t('cloudenv.text_255')" />
         </a-form-item>
@@ -105,6 +108,14 @@ export default {
             ],
           },
         ],
+        ucloud_project_id: [
+          'ucloud_project_id',
+          {
+            rules: [
+              { required: false },
+            ],
+          },
+        ],
         directory_id: [
           'directory_id',
           {
@@ -158,6 +169,9 @@ export default {
     },
     isOpenStack () {
       return this.provider === HYPERVISORS_MAP.openstack.key
+    },
+    isUcloud () {
+      return this.provider === HYPERVISORS_MAP.ucloud.key
     },
     isGoogle () {
       return this.provider === HYPERVISORS_MAP.google.key
@@ -219,6 +233,10 @@ export default {
       try {
         const values = await this.validateForm()
         const params = values
+        if (params.ucloud_project_id && params.access_key_id) {
+          params.access_key_id = params.access_key_id + '::' + params.ucloud_project_id
+          delete params.ucloud_project_id
+        }
         await this.params.onManager('performAction', {
           id: this.params.data[0].id,
           managerArgs: {
