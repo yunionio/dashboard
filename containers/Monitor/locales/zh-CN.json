@@ -200,6 +200,9 @@
   "monitor.text_116": "宿主机下线",
   "monitor.text_117": "每秒发送字节数",
   "monitor.text_118": "请求数量",
+  "monitor.storage_usage": "块存储使用情况",
+  "monitor.free_storage": "块存储可用空间大小",
+  "monitor.storage_utilization_rate": "块存储使用率",
   "monitor.text_119": "监控查询",
   "monitor.text_120": "修改{0}",
   "monitor.text_121": "已改名?",
@@ -253,5 +256,6 @@
   "monitor.dashboard.select.option": "归属: {0}{1}",
   "monitor.chart.toolbar.line": "切换为折线图",
   "monitor.chart.toolbar.bar": "切换为柱状图",
-  "monitor.dashboard.dialog.project.clone": "克隆监控图表"
+  "monitor.dashboard.dialog.project.clone": "克隆监控图表",
+  "monitor.view_system": "系统"
 }

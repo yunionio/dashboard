@@ -8,9 +8,6 @@
       v-show="panelShow"
       v-bind="formItemLayout"
       :form="form.fc">
-      <a-form-item :label="$t('common.name')" v-if="!queryOnly">
-        <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
-      </a-form-item>
       <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
         <metric
           :form="form"
@@ -45,6 +42,9 @@
           :options="functionOpts"
           class="w-100"
           :select-props="{ placeholder: $t('monitor.text_115'), allowClear: true }" />
+      </a-form-item>
+      <a-form-item :label="$t('common.name')" v-if="!queryOnly">
+        <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" />
       </a-form-item>
     </a-form>
   </a-card>
@@ -107,7 +107,7 @@ export default {
     if (this.panel && this.panel.common_alert_metric_details && this.panel.common_alert_metric_details.length > 0) {
       const f = this.panel.common_alert_metric_details[0]
       const q = _.get(this.panel, 'settings.conditions[0].query.model')
-      initialValue.name = this.panel.name || ''
+      initialValue.name = this.panel.name || this.panel.panel_name || ''
       initialValue.res_type = f.res_type
       initialValue.metric_key = f.measurement
       initialValue.metric_value = f.field
@@ -233,6 +233,7 @@ export default {
     }
 
     return {
+      prevName: initialValue.name,
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: this.onValuesChange,
@@ -334,7 +335,12 @@ export default {
       try {
         this.metricKeyItem = metricKeyItem || {}
         this.mertricItem = mertricItem || {}
-        this.$emit('mertricItemChange', { ...mertricItem, title: this.getTitle(), metricKeyItem })
+        const title = this.getTitle()
+        if (this.prevName === '' || this.form.fd.name === this.prevName) {
+          this.form.fc.setFieldsValue({ name: title })
+          this.prevName = title
+        }
+        this.$emit('mertricItemChange', { ...mertricItem, title: title, metricKeyItem })
         const params = {
           $t: getRequestT(),
           database: metricKeyItem && metricKeyItem.database ? metricKeyItem.database : 'telegraf',

@@ -90,7 +90,7 @@ export default {
     dimentions () {
       const curScope = this.curNav.scope
       const ret = []
-      this.scopeLevel > 2 && ret.push({ scope: curScope, id: 'system', name: 'system', label: this.$t('system.text_15') })
+      this.scopeLevel > 2 && ret.push({ scope: curScope, id: 'system', name: 'system', label: this.$t('monitor.view_system') })
       this.scopeLevel > 1 && ret.push({ scope: curScope, id: 'domain_id', name: 'project_domain', label: this.$t('dictionary.domain') })
       this.scopeLevel > 0 && ret.push({ scope: curScope, id: 'tenant_id', name: 'tenant', label: this.$t('dictionary.project') })
       ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: this.$t('cloudenv.text_99') })

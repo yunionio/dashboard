@@ -40,6 +40,18 @@ export default {
             return [
               ...getEnabledSwitchActions(this, obj, 'skus_update', 'skus_update'),
               {
+                label: i18n.t('compute.sku.setup.sell.status'),
+                permission: 'skus_update',
+                action: () => {
+                  this.createDialog('ServerSkuUpdateDialog', {
+                    vm: this,
+                    data: [obj],
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+              },
+              {
                 label: i18n.t('compute.perform_delete'),
                 permission: 'skus_delete',
                 action: () => {
