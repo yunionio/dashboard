@@ -608,6 +608,15 @@ export const PERMISSION = {
   proxysettings_create: ['compute', 'proxysettings', 'create'],
   proxysettings_update: ['compute', 'proxysettings', 'update'],
   proxysettings_delete: ['compute', 'proxysettings', 'delete'],
+
+  /**
+   * projectmappings 同步策略
+   */
+  projectmappings_create: ['compute', 'projectmappings', 'create'],
+  projectmappings_update: ['compute', 'projectmappings', 'update'],
+  projectmappings_delete: ['compute', 'projectmappings', 'delete'],
+  projectmappings_perform_enable: ['compute', 'projectmappings', 'perform', 'enable'],
+  projectmappings_perform_disable: ['compute', 'projectmappings', 'perform', 'disable'],
   /**
    * eips 相关操作
    */
