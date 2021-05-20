@@ -165,7 +165,7 @@ export default {
           value: '',
         },
         username: {
-          label: this.$t('compute.text_163'),
+          label: this.$t('compute.text_user'),
           value: '',
         },
         password: {

@@ -911,6 +911,11 @@
       "sync_rules": "Sync rules",
       "sync_rules_failed": "Sync rules failed",
       "unknown": "Unknown"
+    },
+    "projectMapping": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "creating": "Creating"
     }
   },
   "skuCategoryOptions": {
