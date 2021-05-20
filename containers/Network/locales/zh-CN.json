@@ -836,5 +836,7 @@
   "network.ssh-proxy-match.link": "关联",
   "network.ssh-proxy-match.unlink": "取消关联",
   "network.ssh-proxy-match.link.create": "关联网络",
+  "network.lbcert.is_complete.true": "可用",
+  "network.lbcert.is_complete.false": "部分可用",
   "network.snat.cidr": "网段"
 }

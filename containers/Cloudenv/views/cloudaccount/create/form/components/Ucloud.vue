@@ -20,6 +20,9 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
+      <a-form-item label="project_id">
+        <a-input v-decorator="decorators.ucloud_project_id" :placeholder="$t('cloudenv.text_247')" />
+      </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-if="provider==='Aliyun'">
@@ -46,7 +49,7 @@ import { getCloudaccountDocs, keySecretFields, ACCESS_URL, getSamlUserDocs } fro
 import { isRequired } from '@/utils/validate'
 
 export default {
-  name: 'AliyunUcloud',
+  name: 'UcloudCreate',
   components: {
     AutoSync,
     DomainProject,
@@ -98,6 +101,14 @@ export default {
           {
             rules: [
               { required: true, message: keySecretField.placeholder.s },
+            ],
+          },
+        ],
+        ucloud_project_id: [
+          'ucloud_project_id',
+          {
+            rules: [
+              { required: false },
             ],
           },
         ],

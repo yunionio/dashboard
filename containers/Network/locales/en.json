@@ -837,5 +837,7 @@
   "network.ssh-proxy-match.link": "Link",
   "network.ssh-proxy-match.unlink": "Unlink",
   "network.ssh-proxy-match.link.create": "Associate Network",
+  "network.lbcert.is_complete.true": "Available",
+  "network.lbcert.is_complete.false": "Partially Available",
   "network.snat.cidr": "Cidr Block"
 }
