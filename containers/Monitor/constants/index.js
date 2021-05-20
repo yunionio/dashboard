@@ -335,6 +335,9 @@ export const metric_zh = {
   'Guest network traffic': i18n.t('monitor_metric_98'),
   'memory usage': i18n.t('monitor_metric_85'),
   'request count': i18n.t('monitor.text_118'),
+  'Storage usage': i18n.t('monitor.storage_usage'),
+  'Free storage': i18n.t('monitor.free_storage'),
+  'Storage utilization rate': i18n.t('monitor.storage_utilization_rate'),
 }
 
 export const filterKeyMap = {
