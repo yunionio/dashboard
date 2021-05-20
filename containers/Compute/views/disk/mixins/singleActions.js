@@ -1,6 +1,6 @@
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import i18n from '@/locales'
-import { BRAND_MAP } from '@/constants'
+import { BRAND_MAP, PROVIDER_MAP } from '@/constants'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
@@ -261,9 +261,18 @@ export default {
                   },
                 })
               },
-              meta: () => ({
-                validate: true,
-              }),
+              meta: () => {
+                var ret = {
+                  validate: true,
+                  tooltip: '',
+                }
+                if (obj.provider === PROVIDER_MAP.VMware.key) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
+                  return ret
+                }
+                return ret
+              },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_syncstatus'),
             },
             {
