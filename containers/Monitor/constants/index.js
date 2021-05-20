@@ -386,6 +386,12 @@ export const metric_zh = {
   'The number of threads used by the process': i18n.t('monitor_metric_94'),
   'inodes_free/inodes_total': i18n.t('monitor_metric_96'),
   'free/total': i18n.t('monitor_metric_97'),
+  'Guest network traffic': i18n.t('monitor_metric_98'),
+  'memory usage': i18n.t('monitor_metric_85'),
+  'request count': i18n.t('monitor.text_118'),
+  'Storage usage': i18n.t('monitor.storage_usage'),
+  'Free storage': i18n.t('monitor.free_storage'),
+  'Storage utilization rate': i18n.t('monitor.storage_utilization_rate'),
 }
 
 export const filterKeyMap = {
