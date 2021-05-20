@@ -401,4 +401,7 @@ export default {
     success: ['available'],
     info: ['unavailable', 'unknown'],
   },
+  projectMapping: {
+    success: ['available'],
+  },
 }
