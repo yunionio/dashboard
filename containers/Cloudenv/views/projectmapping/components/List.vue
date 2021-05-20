@@ -33,7 +33,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
-          status: getStatusFilter(),
+          status: getStatusFilter({ statusModule: 'projectMapping' }),
         },
       }),
       exportDataOptions: {
