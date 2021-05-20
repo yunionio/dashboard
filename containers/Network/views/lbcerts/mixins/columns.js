@@ -19,18 +19,32 @@ export default {
         },
       }),
       {
+        field: 'is_complete',
+        title: i18n.t('network.text_27'),
+        width: 90,
+        slots: {
+          default: ({ row }) => {
+            if (row.is_complete === false) {
+              return [<div slot="label">
+                <span class="mr-1"> {i18n.t('network.lbcert.is_complete.false')} </span>
+                <a-tooltip title={i18n.t('network.text_753')}>
+                  <a-icon type="question-circle-o" />
+                </a-tooltip>
+              </div>]
+            } else {
+              return [<div slot="label"><span class="mr-1"> {i18n.t('network.lbcert.is_complete.true')} </span></div>]
+            }
+          },
+        },
+      },
+      {
         field: 'common_name',
         title: i18n.t('network.text_318'),
         width: 150,
         slots: {
           default: ({ row }) => {
             if (row.common_name) return row.common_name
-            return [<div slot="label">
-              <span class="mr-1"> - </span>
-              <a-tooltip title={i18n.t('network.text_753')}>
-                <a-icon type="question-circle-o" />
-              </a-tooltip>
-            </div>]
+            return [<div slot="label"><span class="mr-1"> - </span></div>]
           },
         },
       },
