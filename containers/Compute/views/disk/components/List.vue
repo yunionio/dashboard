@@ -24,6 +24,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
+import { PROVIDER_MAP } from '@/constants'
 
 export default {
   name: 'DiskList',
@@ -106,6 +107,19 @@ export default {
                     action: 'syncstatus',
                   },
                 })
+              },
+              meta: () => {
+                var ret = {
+                  validate: true,
+                  tooltip: '',
+                }
+                const isSomeVMware = this.list.selectedItems.some(v => v.provider === PROVIDER_MAP.VMware.key)
+                if (isSomeVMware) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('compute.text_450')
+                  return ret
+                }
+                return ret
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_syncstatus'),
             },
