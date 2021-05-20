@@ -83,6 +83,7 @@ export default {
         }
       } else if (this.params.windowData.currentTab === 'storage-list') {
         return {
+          host_id: this.data.id,
           details: true,
           with_meta: true,
           limit: 20,
@@ -109,6 +110,8 @@ export default {
           return 'EventListForHostSidePage'
         case 'vminstance-list':
           return 'VminstanceListForHostSidePage'
+        case 'storage-list':
+          return 'StorageListForHostSidePage'
         case 'gpu-list':
           return 'GpuListForHostSidePage'
         case 'server-recovery':
