@@ -47,9 +47,10 @@ export default {
           label: this.$t('cloudenv.text_104'),
           permission: 'projectmappings_create',
           action: () => {
-            this.createDialog('ResourceOwnerManageCreateDialog', {
-              onManager: this.onManager,
-              refresh: this.refresh,
+            this.createDialog('ProjectMappingCreateDialog', {
+              success: () => {
+                this.list.fetchData()
+              },
             })
           },
           meta: () => {

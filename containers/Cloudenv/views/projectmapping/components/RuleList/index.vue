@@ -41,7 +41,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
 export default {
-  name: 'ResourceOwnerManageList',
+  name: 'ProjectMappingList',
   components: {
     Actions,
   },

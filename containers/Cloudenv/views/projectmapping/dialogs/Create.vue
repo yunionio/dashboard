@@ -116,7 +116,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 let id = 0
 export default {
-  name: 'ResourceOwnerManageCreateDialog',
+  name: 'ProjectMappingCreateDialog',
   components: {
     DomainSelect,
     Tag,
