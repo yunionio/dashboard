@@ -1,12 +1,11 @@
 import {
   getNameDescriptionTableColumn,
-  // getCopyWithContentTableColumn,
   getProjectDomainTableColumn,
-  // getPublicScopeTableColumn,
   getStatusTableColumn,
   getEnabledTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { getTagColor, getTagTitle } from '@/utils/common/tag'
 
 export default {
   created () {
@@ -39,89 +38,55 @@ export default {
         minWidth: 100,
       }),
       getEnabledTableColumn(),
-      // {
-      //   field: 'amount_table',
-      //   title: i18n.t('bill.text_128'),
-      //   type: 'expand',
-      //   slots: {
-      //     default: ({ row }) => {
-      //       return this.currencySign + ' ' + numerify(row.amount, '0,0.000000')
-      //     },
-      //     content: ({ row }) => {
-      //       const columns = [
-      //         {
-      //           field: 'usage_type',
-      //           title: i18n.t('bill.text_73'),
-      //           formatter: ({ row }) => {
-      //             if (this.$te(`bill_resource_type.${row.usage_type}`)) {
-      //               return this.$t(`bill_resource_type.${row.usage_type}`)
-      //             }
-      //             return row.usage_type
-      //           },
-      //         },
-      //         {
-      //           field: 'spec',
-      //           title: i18n.t('bill.text_121'),
-      //         },
-      //         {
-      //           field: 'usage',
-      //           title: i18n.t('bill.text_131'),
-      //           // align: 'right',
-      //           formatter: ({ row }) => {
-      //             let unit = row.usage_unit ? row.usage_unit.replace(/\//g, '*') : ''
-      //             unit = unit.startsWith('*') ? unit.substring(1) : unit
-      //             const usage = mathRoundFix(row.usage, PRECISION) // 保留6位小数，不够也不需要补0
-      //             return `${usage} ${unit}`
-      //           },
-      //         },
-      //         {
-      //           field: 'rate',
-      //           title: i18n.t('bill.text_37'),
-      //           // align: 'right',
-      //           // headerAlign: 'right',
-      //           formatter: ({ row }) => {
-      //             const currency = this.currencySign === '￥' ? this.$t('bill.text_29') : this.$t('bill.text_31')
-      //             return `${mathRoundFix(row.rate, PRECISION, true)} ${currency}${row.price_unit}`
-      //           },
-      //         },
-      //         {
-      //           field: 'gross_amount',
-      //           title: i18n.t('bill.text_123'),
-      //           // align: 'right',
-      //           // headerAlign: 'right',
-      //           formatter: ({ row }) => {
-      //             return `${this.currencySign}${mathRoundFix(row.gross_amount, PRECISION, true)}`
-      //           },
-      //         },
-      //         {
-      //           field: 'discount_amount',
-      //           title: i18n.t('bill.text_124'),
-      //           // align: 'right',
-      //           // headerAlign: 'right',
-      //           formatter: ({ row }) => {
-      //             return `${this.currencySign}${mathRoundFix(row.discount_amount, PRECISION, true)}`
-      //           },
-      //         },
-      //         {
-      //           field: 'amount',
-      //           title: i18n.t('bill.text_125'),
-      //           // align: 'right',
-      //           // headerAlign: 'right',
-      //           formatter: ({ row }) => {
-      //             return `${this.currencySign}${mathRoundFix(row.amount, PRECISION, true)}`
-      //           },
-      //         },
-      //       ]
-      //       return <vxe-grid size="mini" border columns={columns} data={row.content} />
-      //     },
-      //   },
-      // },
       {
-        title: i18n.t('cloudenv.text_582'),
         field: 'rules',
+        title: i18n.t('cloudenv.text_582'),
+        type: 'expand',
         slots: {
           default: ({ row }) => {
-            return [<div>{ row.rules ? row.rules.length : '-' }</div>]
+            return row.rules ? row.rules.length : '-'
+          },
+          content: ({ row }) => {
+            const columns = [
+              {
+                field: 'condition',
+                title: i18n.t('cloudenv.text_22'),
+                formatter: ({ row }) => {
+                  return row.condition === 'or' ? i18n.t('cloudenv.text_587') : i18n.t('cloudenv.text_588')
+                },
+              },
+              {
+                field: 'tags',
+                title: i18n.t('cloudenv.text_16'),
+                slots: {
+                  default: ({ row }) => {
+                    if (!row.tags) return '-'
+                    return [<div>{
+                      row.tags.map(item => {
+                        const rgb = getTagColor(item.key, item.value, 'rgb')
+                        const strRgb = rgb.join(',')
+                        const text = getTagTitle(item.key, item.value)
+                        return (<span
+                          class="tag mb-1 text-truncate d-inline-block"
+                          title={getTagTitle(item.key, item.value)}
+                          key={`${item.key}${item.value}`}
+                          style={{ backgroundColor: `rgba(${strRgb},.1)`, boxSizing: 'border-box', color: `rgb(${strRgb})`, border: `solid 1px rgb(${strRgb})`, padding: '0 5px', marginRight: '10px' }}>
+                          { text }
+                        </span>)
+                      })
+                    }</div>]
+                  },
+                },
+              },
+              {
+                field: 'project_name',
+                title: i18n.t('cloudenv.text_584'),
+                formatter: ({ row }) => {
+                  return row.project_name ? row.project_name : '-'
+                },
+              },
+            ]
+            return <vxe-grid size="mini" border columns={columns} data={row.rules ? row.rules : []} />
           },
         },
       },

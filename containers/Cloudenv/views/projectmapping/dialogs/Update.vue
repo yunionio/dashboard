@@ -39,7 +39,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'ResourceOwnerUpdateDialog',
+  name: 'ProjectMappingUpdateDialog',
   components: {
   },
   mixins: [DialogMixin, WindowsMixin],
@@ -123,7 +123,7 @@ export default {
           }
         }
         // 新绑定
-        if (values.accounts) {
+        if (values.accounts && values.accounts.length) {
           await new this.$Manager('cloudaccounts').batchPerformAction({
             ids: values.accounts,
             action: 'project-mapping',

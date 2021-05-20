@@ -37,7 +37,7 @@ export default {
               label: i18n.t('cloudenv.text_593'),
               permission: 'projectmappings_update',
               action: () => {
-                this.createDialog('ResourceOwnerUpdateDialog', {
+                this.createDialog('ProjectMappingUpdateDialog', {
                   data: [obj],
                   columns: this.columns,
                   success: (res) => {

@@ -14,7 +14,7 @@ import {
 } from '@/utils/common/tableColumn'
 
 export default {
-  name: 'ResourceOwnerManageDetail',
+  name: 'ProjectMappingDetail',
   props: {
     data: {
       type: Object,
