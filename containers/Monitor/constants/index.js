@@ -420,6 +420,7 @@ export const filterKeyMap = {
   zone: i18n.t('common.zone'),
   vm_name: i18n.t('dictionary.server'),
   vm_ip: i18n.t('dictionary.serverip'),
+  storage_name: i18n.t('storage.text_37'),
   oss_name: i18n.t('scope.text_77'),
   oss_ip: i18n.t('common_721'),
   elb_name: i18n.t('scope.text_105'),
