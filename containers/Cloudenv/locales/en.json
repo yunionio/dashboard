@@ -708,5 +708,7 @@
   "cloudenv.text_595": "Please unbind the cloud account first",
   "cloudenv.text_596": "Can't Delete",
   "cloudenv.text_597": "No one else supports this operation",
+  "cloudenv.month_expense": "Monthly Expense",
+  "cloudenv.year_expense": "Annual Expense",
   "cloudenv.text_598": "Modify Resource Mapping"
 }
