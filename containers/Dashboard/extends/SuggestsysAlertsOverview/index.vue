@@ -53,6 +53,7 @@ import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 import { getCurrency } from '@/utils/common/cookie'
 import { CURRENCYS } from '@/constants'
+import { currencyUnitMap } from '@/constants/currency'
 
 export default {
   name: 'SuggestsysAlertsOverview',
@@ -99,7 +100,7 @@ export default {
       return this.data.suggest_cost && this.data.suggest_cost[0] && this.data.suggest_cost[0].amount
     },
     currencySign () {
-      return this.fd.currency === 'USD' ? '$' : '¥'
+      return currencyUnitMap[this.fd.currency]?.sign || '¥'
     },
     forcastAmountFormat () {
       if (!this.forcastAmount) {

@@ -42,6 +42,7 @@ import { getRequestT } from '@/utils/utils'
 import { chartColors, CURRENCYS } from '@/constants'
 import { numerify } from '@/filters'
 import { getCurrency } from '@/utils/common/cookie'
+import { currencyUnitMap } from '@/constants/currency'
 
 export default {
   name: 'SuggestsysAlertsDetail',
@@ -86,7 +87,7 @@ export default {
       return arr[0] || {}
     },
     currencySign () {
-      return this.fd.currency === 'USD' ? '$' : '¥'
+      return currencyUnitMap[this.fd.currency]?.sign || '¥'
     },
     outherData () {
       return this.data.filter(item => item.cost_type !== 'all').map(item => {
