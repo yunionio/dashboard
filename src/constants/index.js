@@ -163,5 +163,6 @@ export const channelMaps = {
 export const CURRENCYS = [
   { key: 'CNY', value: i18n.t('common.currency_cny') },
   { key: 'USD', value: i18n.t('common.currency_usd') },
+  { key: 'BRL', value: i18n.t('common.currency_brl') },
 ]
 export const CURRENCYS_MAP = arrayToObj(CURRENCYS, 'key')

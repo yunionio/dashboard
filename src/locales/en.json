@@ -4433,6 +4433,7 @@
   "common.saml_login_accout": "Account",
   "common.currency_cny": "CNY",
   "common.currency_usd": "USD",
+  "common.currency_brl": "BRL",
   "auth.clean.scope.domain": "Platform Login",
   "auth.current.domain": "Login Domain",
   "auth.set.current.domain": "Set Login Domain",
