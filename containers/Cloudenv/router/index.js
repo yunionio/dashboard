@@ -106,10 +106,10 @@ export default {
             label: i18n.t('cloudenv.text_580'),
             permission: 'proxysettings_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.proxysetting')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.projectmapping')) {
                 return true
               }
-              return !hasSetupKey(['private', 'vmware', 'public', 'storage'])
+              return !hasSetupKey(['public'])
             },
           },
           component: Layout,
