@@ -8,8 +8,6 @@
 <script>
 import i18n from '@/locales'
 import {
-// getCopyWithContentTableColumn,
-// getPublicScopeTableColumn,
   getEnabledTableColumn,
 } from '@/utils/common/tableColumn'
 
