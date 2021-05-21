@@ -167,6 +167,10 @@ export const tableColumnMaps = {
     title: i18n.t('common.name'),
     field: 'rds_name',
   },
+  storage_name: {
+    title: i18n.t('common.name'),
+    field: 'storage_name',
+  },
   vm_ip: {
     title: 'IP',
     field: 'vm_ip',
