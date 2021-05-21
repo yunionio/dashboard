@@ -921,6 +921,17 @@
       "sync_rules": "同步规则",
       "sync_rules_failed": "同步规则失败",
       "unknown": "未知"
+    },
+    "projectMapping": {
+      "available": "正常",
+      "unavailable": "不可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "updating": "更新中",
+      "update_failed": "更新失败",
+      "unknown": "未知状态"
     }
   },
   "skuCategoryOptions": {
