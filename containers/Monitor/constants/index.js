@@ -222,6 +222,22 @@ export const tableColumnMaps = {
     title: i18n.t('common.name'),
     field: 'vm_name',
   },
+  oss_name: {
+    title: i18n.t('common.name'),
+    field: 'oss_name',
+  },
+  redis_name: {
+    title: i18n.t('common.name'),
+    field: 'redis_name',
+  },
+  rds_name: {
+    title: i18n.t('common.name'),
+    field: 'rds_name',
+  },
+  storage_name: {
+    title: i18n.t('common.name'),
+    field: 'storage_name',
+  },
   vm_ip: {
     title: 'IP',
     field: 'vm_ip',
