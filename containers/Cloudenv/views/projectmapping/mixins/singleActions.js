@@ -15,6 +15,7 @@ export default {
             id: row.id,
             resource: 'project_mappings',
           }, { tab: 'rule-list' })
+          this.initSidePageTab('rule-list')
         },
         meta: (row) => {
           if (!row.can_update) {
