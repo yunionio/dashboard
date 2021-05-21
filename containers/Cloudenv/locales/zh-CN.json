@@ -708,5 +708,7 @@
   "cloudenv.text_595": "请先解绑云账号",
   "cloudenv.text_596": "不可删除",
   "cloudenv.text_597": "他人不支持此操作",
+  "cloudenv.month_expense": "月度费用",
+  "cloudenv.year_expense": "年度费用",
   "cloudenv.text_598": "修改资源映射"
 }
