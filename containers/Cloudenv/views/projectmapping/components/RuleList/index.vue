@@ -109,11 +109,12 @@ export default {
           },
         },
         {
-          label: '排序',
+          label: this.$t('cloudenv.text_601'),
           permission: 'projectmappings_update',
           group: true,
           action: () => {
             this.canSort = true
+            this.gridOptions.data = [...this.initData]
           },
           meta: () => {
             return {
@@ -122,19 +123,35 @@ export default {
           },
         },
       ],
-      groupSaveAction: {
-        label: '保存排序结果',
-        permission: 'projectmappings_update',
-        group: true,
-        action: () => {
-          this.updateProjectMappingRules()
+      groupSaveActions: [
+        {
+          label: this.$t('cloudenv.text_599'),
+          permission: 'projectmappings_update',
+          group: true,
+          action: () => {
+            this.updateProjectMappingRules()
+          },
+          meta: () => {
+            return {
+              validate: this.canSort && (this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId),
+            }
+          },
         },
-        meta: () => {
-          return {
-            validate: this.canSort && (this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId),
-          }
+        {
+          label: this.$t('cloudenv.text_600'),
+          permission: 'projectmappings_update',
+          group: true,
+          action: () => {
+            this.canSort = false
+            this.gridOptions.data = this.initData
+          },
+          meta: () => {
+            return {
+              validate: this.canSort && (this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId),
+            }
+          },
         },
-      },
+      ],
       canSort: false,
       checkedRecords: [],
     }
@@ -153,14 +170,14 @@ export default {
       if (!this.canSort) {
         return [...this.groupNormalActions]
       } else {
-        return [...this.groupNormalActions, this.groupSaveAction]
+        return [...this.groupNormalActions, ...this.groupSaveActions]
       }
     },
   },
   watch: {
     data: {
       handler: function () {
-        this.gridOptions.data = this.initData
+        this.gridOptions.data = [...this.initData]
       },
       deep: true,
       immediate: true,
@@ -179,6 +196,7 @@ export default {
             const options = { children: 'children' }
             const targetTrElem = item
             const wrapperElem = targetTrElem.parentNode
+            console.log('wrapperElem', wrapperElem)
             const prevTrElem = targetTrElem.previousElementSibling
             const tableTreeData = this.gridOptions.data
             const selfRow = xTable.getRowNode(targetTrElem).item
