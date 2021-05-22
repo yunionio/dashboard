@@ -6,7 +6,7 @@
         v-bind="formLayout"
         :form="form.fc">
         <!-- 域 -->
-        <a-form-item :label="$t('cloudenv.text_410', [$t('dictionary.domain')])" v-bind="formLayout">
+        <a-form-item :label="$t('dictionary.domain')" v-bind="formLayout">
           <domain-select v-if="isAdminMode && l3PermissionEnable" v-decorator="decorators.project_domain_id" :params="domainParams" @change="handleDomainChange" />
           <template v-else> {{userInfo.domain.name}} </template>
         </a-form-item>
@@ -17,62 +17,67 @@
         <!-- 规则 -->
         <a-form-item :label="$t('cloudenv.text_582')">
           <div v-for="(item,index) in form.fc.getFieldValue('rules')" :key="item.id" :value="item.id" :style="index!==0?{borderTop:'solid 1px #ccc', paddingTop: '10px'}:{}">
-            <!-- 匹配条件 -->
-            <a-form-item :label="$t('cloudenv.text_22')" v-bind="formLayout">
-              <a-select default-value="or" v-decorator="[
-                `matchs[${item}]`,
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: $t('cloudenv.text_284', [$t('cloudenv.text_22')]),
-                    },
-                  ],
-                }
-              ]">
-                <a-select-option v-for="item in resourceAndTagOptions" :value="item.value" :key="item.value">
-                  {{item.name}}
-                </a-select-option>
-              </a-select>
-              <div slot="extra" class="d-flex">
-                {{$t('cloudenv.text_585')}}
+            <a-card>
+              <!-- 匹配条件 -->
+              <a-form-item :label="$t('cloudenv.text_22')" v-bind="formLayout">
+                <a-select default-value="or" v-decorator="[
+                  `matchs[${item}]`,
+                  {
+                    rules: [
+                      {
+                        required: true,
+                        message: $t('cloudenv.text_284', [$t('cloudenv.text_22')]),
+                      },
+                    ],
+                  }
+                ]">
+                  <a-select-option v-for="item in resourceAndTagOptions" :value="item.value" :key="item.value">
+                    {{item.name}}
+                  </a-select-option>
+                </a-select>
+                <div slot="extra" class="d-flex">
+                  {{$t('cloudenv.text_585')}}
+                </div>
+              </a-form-item>
+              <!-- 标签 -->
+              <a-form-item :label="$t('cloudenv.text_16')" v-bind="formLayout">
+                <tag v-decorator="[
+                  `tags[${item}]`,
+                  {
+                    rules: [
+                      {
+                        required: true,
+                        message: $t('cloudenv.text_284', [$t('cloudenv.text_16')]),
+                      },
+                    ],
+                  }
+                ]" />
+              </a-form-item>
+              <!-- 资源映射 -->
+              <a-form-item :label="$t('cloudenv.text_584')" v-bind="formLayout">
+                <a-select v-decorator="[
+                  `maps[${item}]`,
+                  {
+                    rules: [
+                      {
+                        required: true,
+                        message: $t('cloudenv.text_284', [$t('cloudenv.text_584')]),
+                      },
+                    ],
+                  }
+                ]">
+                  <a-select-option v-for="item in projectOptions" :key="item.id" :value="item.id">
+                    {{item.name}}
+                  </a-select-option>
+                </a-select>
+                <div slot="extra" class="d-flex">
+                  {{$t('cloudenv.text_592')}}
+                </div>
+              </a-form-item>
+              <div class="d-flex justify-content-center">
+                <a-button type="danger" @click="addRule">{{$t('cloudenv.text_108')}}</a-button>
               </div>
-            </a-form-item>
-            <!-- 标签 -->
-            <a-form-item :label="$t('cloudenv.text_16')" v-bind="formLayout">
-              <tag v-decorator="[
-                `tags[${item}]`,
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: $t('cloudenv.text_284', [$t('cloudenv.text_16')]),
-                    },
-                  ],
-                }
-              ]" />
-            </a-form-item>
-            <!-- 资源映射 -->
-            <a-form-item :label="$t('cloudenv.text_584')" v-bind="formLayout">
-              <a-select v-decorator="[
-                `maps[${item}]`,
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: $t('cloudenv.text_284', [$t('cloudenv.text_584')]),
-                    },
-                  ],
-                }
-              ]">
-                <a-select-option v-for="item in projectOptions" :key="item.id" :value="item.id">
-                  {{item.name}}
-                </a-select-option>
-              </a-select>
-              <div slot="extra" class="d-flex">
-                {{$t('cloudenv.text_592')}}
-              </div>
-            </a-form-item>
+            </a-card>
           </div>
           <!-- 添加 -->
           <div class="d-flex align-items-center">
@@ -160,10 +165,10 @@ export default {
       },
       formLayout: {
         wrapperCol: {
-          span: 21,
+          span: 20,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
       offsetFormLayout: {

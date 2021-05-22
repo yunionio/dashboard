@@ -44,7 +44,7 @@ export default {
           slots: {
             default: ({ row }, h) => {
               return [
-                <span class="text-color-secondary">{ row.project_name || '-'}</span>]
+                <span class="text-color-secondary">{ row.project || '-'}</span>]
             },
           },
         },

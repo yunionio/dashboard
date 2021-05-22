@@ -693,7 +693,7 @@
   "cloudenv.text_581": "This function can assign resources to specified projects based on the tags bound to the resources and according to the rule settings",
   "cloudenv.text_582": "Rules",
   "cloudenv.text_583": "New Resource Mapping",
-  "cloudenv.text_584": "Resource Mapping",
+  "cloudenv.text_584": "Project",
   "cloudenv.text_585": "The number of rule matches when the resource is associated with a tag",
   "cloudenv.text_586": "Add Rule",
   "cloudenv.text_587": "When matching at least one of the following:",
@@ -708,5 +708,8 @@
   "cloudenv.text_595": "Please unbind the cloud account first",
   "cloudenv.text_596": "Can't Delete",
   "cloudenv.text_597": "No one else supports this operation",
-  "cloudenv.text_598": "Modify Resource Mapping"
+  "cloudenv.text_598": "Modify Resource Mapping",
+  "cloudenv.text_599": "Save",
+  "cloudenv.text_600": "Cancle",
+  "cloudenv.text_601": "Sort"
 }
