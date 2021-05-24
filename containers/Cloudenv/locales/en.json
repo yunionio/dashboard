@@ -713,5 +713,6 @@
   "cloudenv.text_598": "Modify Resource Mapping",
   "cloudenv.text_599": "Save",
   "cloudenv.text_600": "Cancle",
-  "cloudenv.text_601": "Sort"
+  "cloudenv.text_601": "Sort",
+  "cloudenv.text_602": "Please select no more than 20 tags"
 }
