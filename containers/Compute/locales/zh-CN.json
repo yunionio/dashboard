@@ -1384,5 +1384,6 @@
   "add_schedpolicy": "添加调度标签",
   "compute.sku.setup.sell.status": "设置销售状态",
   "compute.sku.prepaid_status": "预付费状态",
-  "compute.sku.postpaid_status": "后付费状态"
+  "compute.sku.postpaid_status": "后付费状态",
+  "compute.transfer_host": "暂无满足条件的宿主机，请检查宿主机或修改条件后重试！"
 }

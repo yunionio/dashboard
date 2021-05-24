@@ -1384,5 +1384,6 @@
   "add_schedpolicy": "Add scheduler tag",
   "compute.sku.setup.sell.status": "Setup Sell Status",
   "compute.sku.prepaid_status": "Prepaid Status",
-  "compute.sku.postpaid_status": "Postpaid Status"
+  "compute.sku.postpaid_status": "Postpaid Status",
+  "compute.transfer_host": "There is no host that meets the condition, please check the host or modify the condition and try again!"
 }
