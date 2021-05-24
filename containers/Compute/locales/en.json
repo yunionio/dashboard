@@ -1419,5 +1419,6 @@
   "compute.disable_delete_disk_by_brand_tooltip": "When deleting a host on a {0} platform virtual machine, the data disk must be deleted at the same time",
   "compute.sku.setup.sell.status": "Setup Sell Status",
   "compute.sku.prepaid_status": "Prepaid Status",
-  "compute.sku.postpaid_status": "Postpaid Status"
+  "compute.sku.postpaid_status": "Postpaid Status",
+  "compute.transfer_host": "There is no host that meets the condition, please check the host or modify the condition and try again!"
 }
