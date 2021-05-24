@@ -196,10 +196,6 @@ export default {
       immediate: true,
     },
   },
-  created () {
-    // this.fetchs()
-    console.log('传入值', this.params.data)
-  },
   mounted () {
     this.form.fc.getFieldDecorator('rules', { initialValue: [], preserve: true })
     this.form.fc.setFieldsValue({
@@ -282,7 +278,6 @@ export default {
         const values = await this.form.fc.validateFields()
         // 获取参数
         const params = this.getUpdateParams(values)
-        console.log('参数', params)
         const updateResult = await this.doUpdate(params)
         this.cancelDialog()
         this.params.success && this.params.success(updateResult)
@@ -303,7 +298,6 @@ export default {
           }
         }
       })
-      console.log('传入data', this.params.data[0])
       const ret = []
       if (this.params.rules) {
         this.params.rules.map((item, index) => {

@@ -94,7 +94,6 @@ export default {
   },
   methods: {
     commonMeta (row = {}) {
-      console.log('row', row)
       // 不可删
       if (!row.can_delete) {
         return {
