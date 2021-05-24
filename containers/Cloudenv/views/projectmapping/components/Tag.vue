@@ -85,10 +85,8 @@ export default {
       }
     },
     tags () {
-      console.log('checked', this.checked)
       const ret = []
       R.forEachObjIndexed((value, key) => {
-        console.log(value)
         if (value.length > 0) {
           for (let i = 0, len = value.length; i < len; i++) {
             ret.push(this.genTag(key, value[i]))
@@ -97,7 +95,6 @@ export default {
           ret.push(this.genTag(key, null))
         }
       }, this.checked)
-      console.log('tags', ret)
       return ret
     },
   },

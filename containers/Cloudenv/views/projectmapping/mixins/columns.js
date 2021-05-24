@@ -49,19 +49,12 @@ export default {
           content: ({ row }) => {
             const columns = [
               {
-                field: 'condition',
-                title: i18n.t('cloudenv.text_22'),
-                formatter: ({ row }) => {
-                  return row.condition === 'or' ? i18n.t('cloudenv.text_587') : i18n.t('cloudenv.text_588')
-                },
-              },
-              {
                 field: 'tags',
-                title: i18n.t('cloudenv.text_16'),
+                title: i18n.t('cloudenv.text_582'),
                 slots: {
                   default: ({ row }) => {
                     if (!row.tags) return '-'
-                    return [<div>{
+                    return [<div>{row.condition === 'or' ? i18n.t('cloudenv.text_587') : i18n.t('cloudenv.text_588')}</div>, <div>{
                       row.tags.map(item => {
                         const rgb = getTagColor(item.key, item.value, 'rgb')
                         const strRgb = rgb.join(',')
@@ -82,7 +75,7 @@ export default {
                 field: 'project_name',
                 title: i18n.t('cloudenv.text_584'),
                 formatter: ({ row }) => {
-                  return row.project_name ? row.project_name : '-'
+                  return row.project ? row.project : '-'
                 },
               },
             ]

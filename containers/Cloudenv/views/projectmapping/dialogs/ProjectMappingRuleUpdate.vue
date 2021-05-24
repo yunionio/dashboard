@@ -37,7 +37,8 @@
                 rules: [
                   {
                     required: true,
-                    message: $t('cloudenv.text_284', [$t('cloudenv.text_16')]),
+                    message: $t('cloudenv.text_602'),
+                    validator: tagsLengthValidate,
                   },
                 ],
               }
@@ -195,10 +196,6 @@ export default {
       immediate: true,
     },
   },
-  created () {
-    // this.fetchs()
-    console.log('传入值', this.params.data)
-  },
   mounted () {
     this.form.fc.getFieldDecorator('rules', { initialValue: [], preserve: true })
     this.form.fc.setFieldsValue({
@@ -281,7 +278,6 @@ export default {
         const values = await this.form.fc.validateFields()
         // 获取参数
         const params = this.getUpdateParams(values)
-        console.log('参数', params)
         const updateResult = await this.doUpdate(params)
         this.cancelDialog()
         this.params.success && this.params.success(updateResult)
@@ -302,7 +298,6 @@ export default {
           }
         }
       })
-      console.log('传入data', this.params.data[0])
       const ret = []
       if (this.params.rules) {
         this.params.rules.map((item, index) => {
@@ -332,14 +327,15 @@ export default {
       })
       return result
     },
-    // addRule () {
-    //   const { form } = this
-    //   const keys = form.fc.getFieldValue('rules')
-    //   const nextKeys = keys.concat(id++)
-    //   form.fc.setFieldsValue({
-    //     rules: nextKeys,
-    //   })
-    // },
+    tagsLengthValidate (rule, value, callback) {
+      const keys = Object.keys(value)
+      if (keys.length > 20) {
+        // eslint-disable-next-line
+        callback(false)
+      } else {
+        callback()
+      }
+    },
   },
 }
 </script>
