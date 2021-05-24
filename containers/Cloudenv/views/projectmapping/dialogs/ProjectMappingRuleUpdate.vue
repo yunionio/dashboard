@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Tag from '../components/Tag'
 import DialogMixin from '@/mixins/dialog'
@@ -322,7 +323,7 @@ export default {
       keys.map(key => {
         result.push({
           key: key,
-          value: tag[key],
+          value: (R.is(Array, tag[key]) && tag[key][0]) ? tag[key][0] : tag[key],
         })
       })
       return result
