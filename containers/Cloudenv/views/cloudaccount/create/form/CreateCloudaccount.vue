@@ -34,6 +34,7 @@ export default {
     CtyunCreate: AwsHuawei,
     ApsaraCreate: Apsara,
     EcloudCreate: Aliyun,
+    JDcloudCreate: Aliyun,
   },
   props: {
     currentItem: {

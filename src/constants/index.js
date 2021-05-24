@@ -23,6 +23,7 @@ export const HYPERVISORS_MAP = {
   google: { key: 'google', label: 'Google', provider: 'Google', brand: 'Google', host_type: 'google', hypervisor: 'google', env: 'public', cloud_env: 'public' },
   ctyun: { key: 'ctyun', label: i18n.t('scopeCloudPrvidersMap.Ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
   ecloud: { key: 'ecloud', label: 'Ecloud', provider: 'Ecloud', brand: 'Ecloud', host_type: 'ecloud', hypervisor: 'ecloud', env: 'public', cloud_env: 'public' },
+  jdcloud: { key: 'jdcloud', label: i18n.t('scopeCloudPrvidersMap.JDcloud'), provider: 'JDcloud', brand: 'JDcloud', host_type: 'jdcloud', hypervisor: 'jdcloud', env: 'public', cloud_env: 'public' },
 }
 
 export const CLOUD_ENVS = {
@@ -75,6 +76,7 @@ export const HYPERVISORS_GROUP = {
     huawei: HYPERVISORS_MAP.huawei,
     ucloud: HYPERVISORS_MAP.ucloud,
     google: HYPERVISORS_MAP.google,
+    jdcloud: HYPERVISORS_MAP.jdcloud,
   },
 }
 

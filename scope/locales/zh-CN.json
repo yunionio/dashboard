@@ -6,6 +6,7 @@
     "Qcloud": "腾讯云",
     "Azure": "微软云",
     "Ctyun": "天翼云",
+    "JDcloud": "京东云",
     "Apsara": "飞天"
   },
   "scopeProviders": {
@@ -21,6 +22,7 @@
     "qcloud": "腾讯云",
     "aws": "AWS",
     "huawei": "华为云",
+    "jdcloud": "京东云",
     "ucloud": "UCloud"
   }
 }
