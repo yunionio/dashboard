@@ -254,9 +254,9 @@ export default {
         const values = await this.form.fc.validateFields()
         // 获取参数
         const params = this.getUpdateParams(values)
-        const updateResult = await this.doUpdate(params)
+        await this.doUpdate(params)
         this.cancelDialog()
-        this.params.success && this.params.success(updateResult)
+        this.$bus.$emit('ProjectMappingRuleUpdate')
         this.$message.success(this.$t('common.success'))
       } catch (error) {
         throw error

@@ -8,14 +8,14 @@
     :loaded="loaded"
     :tabs="detailTabs"
     @tab-change="handleTabChange">
-    <!-- <template v-slot:actions>
+    <template v-slot:actions>
       <actions
         :options="singleActions"
         :row="detailData"
         :before-show-menu="beforeShowMenu"
         button-type="link"
         button-size="small" />
-    </template> -->
+    </template>
     <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :on-manager="onManager" :getParams="getParams" @tab-change="handleTabChange" />
   </base-side-page>
 </template>

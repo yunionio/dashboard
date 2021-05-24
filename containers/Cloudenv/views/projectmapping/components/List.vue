@@ -124,6 +124,9 @@ export default {
     })
   },
   methods: {
+    refresh () {
+      this.list.fetchData()
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'ProjectMappingSidePage', {
         id: row.id,

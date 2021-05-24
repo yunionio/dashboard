@@ -133,7 +133,7 @@ export default {
 
         this.loading = false
         this.cancelDialog()
-        this.params.success && this.params.success()
+        this.$bus.$emit('ProjectMappingRuleUpdate')
         this.$message.success(this.$t('common.success'))
       } catch (error) {
         this.loading = false
