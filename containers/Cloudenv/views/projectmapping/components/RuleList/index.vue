@@ -8,13 +8,6 @@
           button-type="default"
           @clear-selected="() => $emit('clear-selected')" />
           <div style="margin-left:auto" />
-          <!-- <div class="ml-4 d-flex flex-shrink-0 justify-content-end">
-            <template>
-              <a-tooltip :title="$t('common.text00011')">
-                <a-button class="ml-2" icon="setting" style="width: 40px;" @click="handleCustomList" />
-              </a-tooltip>
-            </template>
-          </div> -->
       </div>
       <vxe-grid
         v-bind="gridOptions"
@@ -196,7 +189,6 @@ export default {
             const options = { children: 'children' }
             const targetTrElem = item
             const wrapperElem = targetTrElem.parentNode
-            console.log('wrapperElem', wrapperElem)
             const prevTrElem = targetTrElem.previousElementSibling
             const tableTreeData = this.gridOptions.data
             const selfRow = xTable.getRowNode(targetTrElem).item
@@ -274,11 +266,7 @@ export default {
       }
       this.createDialog('CustomListDialog', {
         title: this.$t('common.text00011'),
-        // config: this.config,
-        // update: this.updateConfig,
-        // showTagColumns: this.showTagColumns,
         customs: grid.getTableColumn().collectColumn,
-        // resource: this.resource,
         hidenColumns,
       })
     },

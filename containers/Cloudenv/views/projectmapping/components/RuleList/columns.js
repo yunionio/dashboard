@@ -24,6 +24,9 @@ const getResourceRuleTableColumn = ({
         })
         return [<div>{ row.condition === 'and' ? i18n.t('cloudenv.text_588') : i18n.t('cloudenv.text_587') }</div>, <div>{ ...tags }</div>]
       },
+      header: ({ column }, h) => {
+        return [<span>{title}</span>]
+      },
     },
   }
 }
@@ -82,18 +85,18 @@ export default {
         },
       ],
       dragColumn: {
-        width: 60,
+        width: 1,
         slots: {
           default: () => {
             return [
-              <span class="drag-btn">
+              <span v-show={this.canSort} class="drag-btn">
                 <i class="vxe-icon--menu"></i>
               </span>,
             ]
           },
           header: () => {
             return [
-              <vxe-tooltip v-model={this.showHelpTip2} content={i18n.t('cloudenv.text_591')} enterable>
+              <vxe-tooltip v-show={this.canSort} v-model={this.showHelpTip2} content={i18n.t('cloudenv.text_591')} enterable>
                 <i class="vxe-icon--question" onClick={ () => { this.showHelpTip2 = !this.showHelpTip2 } }></i>
               </vxe-tooltip>,
             ]
@@ -153,10 +156,11 @@ export default {
   computed: {
     columns: function () {
       if (this.canSort) {
-        return [this.checkColumn, this.dragColumn, ...this.normalColmns]
+        this.dragColumn.width = 60
       } else {
-        return [this.checkColumn, ...this.normalColmns]
+        this.dragColumn.width = 1
       }
+      return [this.checkColumn, this.dragColumn, ...this.normalColmns]
     },
   },
 }

@@ -307,8 +307,6 @@ export default {
       }
     },
     getCreateParams ({ project_domain_id, name, rules, tags, matchs, maps }) {
-      console.log('matchs', matchs)
-      console.log('maps', maps)
       const result = {
         project_domain_id,
         name,

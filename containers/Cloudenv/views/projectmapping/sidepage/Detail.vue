@@ -56,8 +56,5 @@ export default {
   },
   computed: {
   },
-  created () {
-    console.log(this.$props)
-  },
 }
 </script>
