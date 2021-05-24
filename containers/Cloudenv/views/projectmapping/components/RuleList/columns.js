@@ -19,7 +19,7 @@ const getResourceRuleTableColumn = ({
             title={getTagTitle(item.key, item.value)}
             key={`${item.key}${item.value}`}
             style={{ backgroundColor: `rgba(${strRgb},.1)`, boxSizing: 'border-box', color: `rgb(${strRgb})`, border: `solid 1px rgb(${strRgb})`, padding: '0 5px', marginRight: '10px' }}>
-            { getTagTitle(item.key, item.value) }
+            { getTagTitle('user:' + item.key, item.value) }
           </span>)
         })
         return [<div>{ row.condition === 'and' ? i18n.t('cloudenv.text_588') : i18n.t('cloudenv.text_587') }</div>, <div>{ ...tags }</div>]

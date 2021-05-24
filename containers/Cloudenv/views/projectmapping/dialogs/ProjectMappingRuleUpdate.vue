@@ -177,10 +177,11 @@ export default {
       if (this.params.data[0].tags) {
         const tags = {}
         this.params.data[0].tags.map(item => {
-          if (!tags[item.key]) {
-            tags[item.key] = []
+          const key = 'user:' + item.key
+          if (!tags[key]) {
+            tags[key] = []
           }
-          tags[item.key].push(item.value)
+          tags[key].push(item.value)
         })
         return tags
       }
@@ -322,7 +323,7 @@ export default {
       const keys = Object.keys(tag)
       keys.map(key => {
         result.push({
-          key: key,
+          key: R.replace(/(ext:|user:)/, '', key),
           value: (R.is(Array, tag[key]) && tag[key][0]) ? tag[key][0] : tag[key],
         })
       })
