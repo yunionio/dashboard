@@ -8,7 +8,15 @@
     :loaded="loaded"
     :tabs="detailTabs"
     @tab-change="handleTabChange">
-    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :on-manager="onManager" :getParams="getParams" />
+    <!-- <template v-slot:actions>
+      <actions
+        :options="singleActions"
+        :row="detailData"
+        :before-show-menu="beforeShowMenu"
+        button-type="link"
+        button-size="small" />
+    </template> -->
+    <component :is="params.windowData.currentTab" :res-id="data.id" :id="listId" :data="detailData" :on-manager="onManager" :getParams="getParams" @tab-change="handleTabChange" />
   </base-side-page>
 </template>
 
@@ -49,7 +57,7 @@ export default {
         case 'event-drawer':
           return 'EventListForProjectMappingSidePage'
         case 'rule-list':
-          return 'ProjectMappingListForProjectMappingSidePage'
+          return 'ProjectMappingRuleListForProjectMappingSidePage'
         default:
           return ''
       }

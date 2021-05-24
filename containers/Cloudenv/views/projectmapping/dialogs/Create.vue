@@ -16,11 +16,11 @@
         </a-form-item>
         <!-- 规则 -->
         <a-form-item :label="$t('cloudenv.text_582')">
-          <div v-for="(item,index) in form.fc.getFieldValue('rules')" :key="item.id" :value="item.id" :style="index!==0?{borderTop:'solid 1px #ccc', paddingTop: '10px'}:{}">
-            <a-card v-if="item !== -1">
+          <div v-for="(item,index) in form.fc.getFieldValue('rules')" :key="item" :value="item" class="d-flex align-items-center">
+            <a-card v-if="item !== -1" class="mb-3" style="flex: 1 1 auto">
               <!-- 匹配条件 -->
               <a-form-item :label="$t('cloudenv.text_22')" v-bind="formLayout">
-                <a-select default-value="or" v-decorator="[
+                <a-select v-decorator="[
                   `matchs[${item}]`,
                   {
                     rules: [
@@ -75,10 +75,8 @@
                   {{$t('cloudenv.text_592')}}
                 </div>
               </a-form-item>
-              <div class="d-flex justify-content-center">
-                <a-button type="danger" @click="deleteRule(item,index)">{{$t('cloudenv.text_108')}}</a-button>
-              </div>
             </a-card>
+            <a-button v-if="item !== -1" style="flex: 0 0 24px;margin-left: 20px" shape="circle" icon="minus" size="small" @click="deleteRule(item,index)" />
           </div>
           <!-- 添加 -->
           <div class="d-flex align-items-center">
@@ -115,6 +113,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Tag from '../components/Tag'
 import DomainSelect from '@/sections/DomainSelect'
@@ -330,7 +329,7 @@ export default {
       const keys = Object.keys(tag)
       keys.map(key => {
         result.push({
-          key: key,
+          key: R.replace(/(ext:|user:)/, '', key),
           value: tag[key],
         })
       })
@@ -340,8 +339,11 @@ export default {
       const { form } = this
       const keys = form.fc.getFieldValue('rules')
       const nextKeys = keys.concat(id++)
+      // const matchs = form.fc.getFieldValue('matchs') || []
+      // const nextMatchs = matchs.concat('or')
       form.fc.setFieldsValue({
         rules: nextKeys,
+        // matchs: nextMatchs,
       })
     },
     deleteRule (item, idx) {
