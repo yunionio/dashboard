@@ -97,7 +97,6 @@ export default {
           ret.push(this.genTag(key, null))
         }
       }, this.checked)
-      console.log('tags', ret)
       return ret
     },
   },
