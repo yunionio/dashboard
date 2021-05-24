@@ -37,7 +37,8 @@
                 rules: [
                   {
                     required: true,
-                    message: $t('cloudenv.text_284', [$t('cloudenv.text_16')]),
+                    message: $t('cloudenv.text_602'),
+                    validator: tagsLengthValidate,
                   },
                 ],
               }
@@ -332,14 +333,15 @@ export default {
       })
       return result
     },
-    // addRule () {
-    //   const { form } = this
-    //   const keys = form.fc.getFieldValue('rules')
-    //   const nextKeys = keys.concat(id++)
-    //   form.fc.setFieldsValue({
-    //     rules: nextKeys,
-    //   })
-    // },
+    tagsLengthValidate (rule, value, callback) {
+      const keys = Object.keys(value)
+      if (keys.length > 20) {
+        // eslint-disable-next-line
+        callback(false)
+      } else {
+        callback()
+      }
+    },
   },
 }
 </script>

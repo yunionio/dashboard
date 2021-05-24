@@ -17,7 +17,7 @@
         <!-- 规则 -->
         <a-form-item :label="$t('cloudenv.text_582')">
           <div v-for="(item,index) in form.fc.getFieldValue('rules')" :key="item.id" :value="item.id" :style="index!==0?{borderTop:'solid 1px #ccc', paddingTop: '10px'}:{}">
-            <a-card>
+            <a-card v-if="item !== -1">
               <!-- 匹配条件 -->
               <a-form-item :label="$t('cloudenv.text_22')" v-bind="formLayout">
                 <a-select default-value="or" v-decorator="[
@@ -47,7 +47,8 @@
                     rules: [
                       {
                         required: true,
-                        message: $t('cloudenv.text_284', [$t('cloudenv.text_16')]),
+                        message: $t('cloudenv.text_602'),
+                        validator: tagsLengthValidate
                       },
                     ],
                   }
@@ -75,7 +76,7 @@
                 </div>
               </a-form-item>
               <div class="d-flex justify-content-center">
-                <a-button type="danger" @click="addRule">{{$t('cloudenv.text_108')}}</a-button>
+                <a-button type="danger" @click="deleteRule(item,index)">{{$t('cloudenv.text_108')}}</a-button>
               </div>
             </a-card>
           </div>
@@ -306,19 +307,23 @@ export default {
       }
     },
     getCreateParams ({ project_domain_id, name, rules, tags, matchs, maps }) {
+      console.log('matchs', matchs)
+      console.log('maps', maps)
       const result = {
         project_domain_id,
         name,
         rules: [],
       }
-      result.rules = rules.map(item => {
-        if (tags[item] && matchs[item] && maps[item]) {
+      result.rules = rules.map((item, index) => {
+        if (item !== -1 && tags[item] && matchs[item] && maps[item]) {
           return {
             condition: matchs[item],
             project_id: maps[item],
             tags: this.getTagValue(tags[item]),
           }
         }
+      }).filter(item => {
+        return !!item
       })
       return result
     },
@@ -340,6 +345,28 @@ export default {
       form.fc.setFieldsValue({
         rules: nextKeys,
       })
+    },
+    deleteRule (item, idx) {
+      const { form } = this
+      const rules = form.fc.getFieldValue('rules')
+      const nextRules = rules.map(rule => {
+        if (rule === item) {
+          return -1
+        }
+        return rule
+      })
+      form.fc.setFieldsValue({
+        rules: nextRules,
+      })
+    },
+    tagsLengthValidate (rule, value, callback) {
+      const keys = Object.keys(value)
+      if (keys.length > 20) {
+        // eslint-disable-next-line
+        callback(false)
+      } else {
+        callback()
+      }
     },
   },
 }

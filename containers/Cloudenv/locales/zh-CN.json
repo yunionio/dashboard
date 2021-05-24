@@ -711,5 +711,6 @@
   "cloudenv.text_598": "修改资源映射",
   "cloudenv.text_599": "保存",
   "cloudenv.text_600": "取消",
-  "cloudenv.text_601": "排序"
+  "cloudenv.text_601": "排序",
+  "cloudenv.text_602": "请选择不多于20个标签"
 }
