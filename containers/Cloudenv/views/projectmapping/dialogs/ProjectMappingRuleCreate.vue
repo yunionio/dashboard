@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Tag from '../components/Tag'
 import DialogMixin from '@/mixins/dialog'
@@ -253,9 +254,9 @@ export default {
         const values = await this.form.fc.validateFields()
         // 获取参数
         const params = this.getUpdateParams(values)
-        const updateResult = await this.doUpdate(params)
+        await this.doUpdate(params)
         this.cancelDialog()
-        this.params.success && this.params.success(updateResult)
+        this.$bus.$emit('ProjectMappingRuleUpdate')
         this.$message.success(this.$t('common.success'))
       } catch (error) {
         throw error
@@ -285,7 +286,7 @@ export default {
       const keys = Object.keys(tag)
       keys.map(key => {
         result.push({
-          key: key,
+          key: R.replace(/(ext:|user:)/, '', key),
           value: tag[key],
         })
       })
