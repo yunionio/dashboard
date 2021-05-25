@@ -87,19 +87,19 @@
         <!-- 应用账号 -->
         <a-form-item :label="$t('cloudenv.text_589')">
           <a-select v-decorator="decorators.accounts" dropdownClassName="oc-select-dropdown" :showSearch="true" mode="multiple" option-filter-prop="children" :placeholder="$t('cloudenv.text_284', [$t('cloudenv.text_589')])" allowClear>
-            <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id">
-              <div>
+            <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id" :disabled="!!item.project_mapping">
+              <a-tooltip :title="!!item.project_mapping?$t('cloudenv.text_603'):''" placement="topLeft" arrow-point-at-center>
                 <a-row>
-                  <a-col :span="16">
-                    <div>{{ item.name }}</div>
-                  </a-col>
-                  <a-col :span="8" align="right">
-                    <div class="text-color-secondary option-show" style="text-align: right;display:none">
-                      {{ item.brand }}
-                    </div>
-                  </a-col>
+                <a-col :span="16">
+                  <div>{{ item.name }}</div>
+                </a-col>
+                <a-col :span="8" align="right">
+                  <div class="text-color-secondary option-show" style="text-align: right;display:none">
+                    {{ item.brand }}
+                  </div>
+                </a-col>
                 </a-row>
-              </div>
+              </a-tooltip>
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -240,6 +240,7 @@ export default {
             id: item.id,
             name: item.name,
             brand: this.$t('dashboard.text_98') + ': ' + item.brand,
+            project_mapping: item.project_mapping || false,
           }
         })
       } catch (err) {

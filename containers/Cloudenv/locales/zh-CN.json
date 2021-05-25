@@ -714,5 +714,6 @@
   "cloudenv.text_599": "保存",
   "cloudenv.text_600": "取消",
   "cloudenv.text_601": "排序",
-  "cloudenv.text_602": "请选择不多于20个标签"
+  "cloudenv.text_602": "请选择不多于20个标签",
+  "cloudenv.text_603": "该云账号已关联策略，请手动取消关联后再试"
 }
