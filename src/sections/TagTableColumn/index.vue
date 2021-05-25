@@ -4,7 +4,7 @@
     overlay-class-name="tag-table-column-wrap">
     <template slot="title">
       <div class="d-flex align-items-center">
-        <div class="flex-fill">{{$t('common_267')}}</div>
+        <div class="flex-fill">{{customTitle ? customTitle : $t('common_267')}}</div>
         <template v-if="validate.validate">
           <a-button type="link" class="font-weight-normal p-0" @click="handleEdit" v-if="!inBaseDialog && !!onManager">{{$t('common_105')}}</a-button>
         </template>
@@ -69,6 +69,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    customTitle: String,
   },
   inject: {
     // 是否处于BaseDialog中
