@@ -5,11 +5,14 @@
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1162')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
-        <a-form-item :label="$t('compute.text_1163')"  :extra="$t('compute.text_1164')">
+        <a-form-item
+          :label="$t('compute.text_1163')"
+          :validate-status="hostValidateStatus"
+          :help="hostValidateMsg">
           <base-select
             class="w-100"
             v-decorator="decorators.prefer_host_id"
-            resource="hosts"
+            :options="hostsOptions"
             :params="selectParams"
             :disabled-items="disabledItems"
             :select-props="{ placeholder: $t('compute.text_314') }" />
@@ -17,7 +20,7 @@
       </a-form>
     </div>
     <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
+      <a-button type="primary" @click="handleConfirm" :loading="loading" :disabled="handleConfirmDisabled">{{ $t('dialog.ok') }}</a-button>
       <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
     </div>
   </base-dialog>
@@ -40,6 +43,8 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      forcastData: null,
+      hosts: [],
       decorators: {
         prefer_host_id: [
           'prefer_host_id',
@@ -87,6 +92,39 @@ export default {
     disabledItems () {
       return [this.firstData.host_id]
     },
+    hostsOptions () {
+      const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
+      if (this.forcastData?.can_create === false) {
+        return []
+      }
+      return this.hosts.filter(v => {
+        return !hostIds.includes(v.id) && v.id !== this.firstData.host_id
+      }).map(v => {
+        return {
+          key: v.id,
+          label: v.name,
+        }
+      })
+    },
+    hostValidateStatus () {
+      if (this.forcastData && this.hostsOptions?.length === 0) {
+        return 'error'
+      }
+      return 'success'
+    },
+    hostValidateMsg () {
+      if (this.forcastData && this.hostsOptions?.length === 0) {
+        return this.$t('compute.transfer_host')
+      }
+      return this.$t('compute.text_1164')
+    },
+    handleConfirmDisabled () {
+      return this.forcastData && this.hostsOptions?.length === 0
+    },
+  },
+  created () {
+    this.queryForcastData()
+    this.queryHosts()
   },
   methods: {
     async handleConfirm () {
@@ -106,6 +144,39 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    doForecast (live_migrate = true, skip_cpu_check = false, prefer_host_id) {
+      const manager = new this.$Manager('servers')
+      const params = {
+        live_migrate,
+        skip_cpu_check,
+      }
+      if (prefer_host_id) {
+        params.prefer_host_id = prefer_host_id
+      }
+      return manager.performAction({
+        id: this.params.data[0].id,
+        action: 'migrate-forecast',
+        data: params,
+      })
+    },
+    queryForcastData (skip_cpu_check, prefer_host_id) {
+      const live_migrate = this.firstData.status === 'running'
+      this.doForecast(live_migrate, skip_cpu_check, prefer_host_id).then((res) => {
+        this.forcastData = res.data
+      }).catch((err) => {
+        console.log(err)
+        throw err
+      })
+    },
+    queryHosts () {
+      const hostsManager = new this.$Manager('hosts')
+      hostsManager.list({ params: this.selectParams }).then((res) => {
+        this.hosts = res.data.data || []
+      }).catch((err) => {
+        console.log(err)
+        throw err
+      })
     },
   },
 }
