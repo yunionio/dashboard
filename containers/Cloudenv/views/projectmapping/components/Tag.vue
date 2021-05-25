@@ -2,7 +2,7 @@
   <div>
     <div class="tag-list">
       <template v-for="item of tags">
-        <span
+        <!-- <span
           class="tag mb-1 d-inline-block"
           :title="item.title"
           :key="`${item.key}${item.value}`"
@@ -11,7 +11,39 @@
             <span class="flex-fill text-truncate">{{ item.title }}</span>
             <a-icon v-if="showRemove(item)" class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click="removeTag(item)" />
           </div>
-        </span>
+        </span> -->
+        <a-popover trigger="click" v-model="checkedInfo[item.key].visible" :key="`${item.key}${item.value}`" destroyTooltipOnHide @visibleChange="visible => handleTagVisibleChange(item, visible)">
+                <template #content>
+                  <div class="tag-update-wrap">
+                    <div class="mb-1">{{ $t('common_112') }}</div>
+                    <div>
+                      <div><a-input size="small" v-model="checkedInfo[item.key].title" /></div>
+                      <template v-if="checkedInfo[item.key].titleErrorMessage">
+                        <div class="error-color mt-1">{{ checkedInfo[item.key].titleErrorMessage }}</div>
+                      </template>
+                    </div>
+                    <div class="mt-2 mb-1">{{ $t('common_113') }}</div>
+                    <div><a-input size="small" v-model="checkedInfo[item.key].value" /></div>
+                    <a-row :gutter="8" class="mt-2">
+                      <a-col :span="12">
+                        <a-button size="small" block @click="updateTag(item)">{{ $t('common.ok') }}</a-button>
+                      </a-col>
+                      <a-col :span="12">
+                        <a-button size="small" block @click="() => handleTagPopoverCancel(item)">{{ $t('common.cancel') }}</a-button>
+                      </a-col>
+                    </a-row>
+                  </div>
+                </template>
+                <span
+                  class="tag mb-1 d-inline-block"
+                  :title="item.title"
+                  :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
+                  <div class="d-flex align-items-center">
+                    <span class="flex-fill text-truncate">{{ item.title }}</span>
+                    <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click.stop="removeTag(item)" />
+                  </div>
+                </span>
+              </a-popover>
       </template>
     </div>
     <a-form-item :extra="$t('cloudenv.text_594')" class="mt-2">
@@ -57,8 +89,10 @@ export default {
     },
   },
   data () {
+    const checkedInfo = {}
+    this.checkedIndex = 0
     return {
-      checked: this.defaultChecked || {},
+      checked: {},
       showForm: false,
       tagForm: {
         fc: this.$form.createForm(this),
@@ -76,6 +110,7 @@ export default {
           'value',
         ],
       },
+      checkedInfo,
     }
   },
   computed: {
@@ -85,16 +120,19 @@ export default {
       }
     },
     tags () {
-      const ret = []
-      R.forEachObjIndexed((value, key) => {
-        if (value.length > 0) {
-          for (let i = 0, len = value.length; i < len; i++) {
-            ret.push(this.genTag(key, value[i]))
+      let ret = []
+      try {
+        R.forEachObjIndexed((value, key) => {
+          if (value.length > 0) {
+            for (let i = 0, len = value.length; i < len; i++) {
+              ret.push(this.genTag({ key, value: value[i], index: this.checkedInfo[key].index }))
+            }
+          } else {
+            ret.push(this.genTag({ key, value: null, index: this.checkedInfo[key].index }))
           }
-        } else {
-          ret.push(this.genTag(key, null))
-        }
-      }, this.checked)
+        }, this.checked)
+        ret = R.sort((a, b) => a.index - b.index, ret)
+      } catch (err) {}
       return ret
     },
   },
@@ -109,44 +147,112 @@ export default {
       }
       this.$emit('change', ret)
     },
-    defaultChecked (val) {
-      this.checked = Object.assign({}, this.checked, this.defaultChecked || {})
+    defaultChecked: {
+      handler: function (val) {
+        this.checked = Object.assign({}, this.checked, this.defaultChecked || {})
+      },
+      immediate: true,
+    },
+    checked: {
+      handler: function (val) {
+        const checkedInfo = { ...this.checkedInfo }
+        R.forEachObjIndexed((value, key) => {
+          if (!key.startsWith('ext:')) {
+            if (checkedInfo[key]) {
+              checkedInfo[key] = {
+                visible: false,
+                title: getTagTitle(key),
+                value: value[0],
+                titleErrorMessage: '',
+                index: checkedInfo[key].index,
+              }
+            } else {
+              const newIndex = this.getMaxIdx(checkedInfo)
+              checkedInfo[key] = {
+                visible: false,
+                title: getTagTitle(key),
+                value: value[0],
+                titleErrorMessage: '',
+                index: newIndex,
+              }
+            }
+          }
+        }, val)
+        R.forEachObjIndexed((value, key) => {
+          if (!val[key]) {
+            delete checkedInfo[key]
+          }
+        }, checkedInfo)
+        this.checkedInfo = checkedInfo
+      },
+      immediate: true,
     },
   },
   methods: {
+    getMaxIdx (checkedInfo) {
+      let maxIdx = 0
+      R.forEachObjIndexed((value, key) => {
+        if (value.index && value.index > maxIdx) {
+          maxIdx = value.index
+        }
+      }, checkedInfo)
+      return ++maxIdx
+    },
     async addTag () {
       try {
         const values = await this.tagForm.fc.validateFields()
         const key = `user:${values.key}`
         const newValue = { ...this.checked }
+        const newCheckedInfo = { ...this.checkedInfo }
         if (newValue[key]) {
           if (values.value) {
             if (!newValue[key].includes(values.value)) {
               newValue[key] = [values.value]
+              newCheckedInfo[key] = {
+                visible: false,
+                title: getTagTitle(key),
+                value: values.value,
+                titleErrorMessage: '',
+                index: ++this.checkedIndex,
+              }
             }
           }
         } else {
           if (values.value) {
             newValue[key] = [values.value]
+            newCheckedInfo[key] = {
+              visible: false,
+              title: getTagTitle(key),
+              value: values.value,
+              titleErrorMessage: '',
+              index: ++this.checkedIndex,
+            }
           } else {
             newValue[key] = []
+            newCheckedInfo[key] = {
+              visible: false,
+              title: getTagTitle(key),
+              value: '',
+              titleErrorMessage: '',
+              index: ++this.checkedIndex,
+            }
           }
         }
         this.checked = newValue
+        this.checkedInfo = newCheckedInfo
         this.tagForm.fc.resetFields()
       } catch (error) {
         throw error
       }
     },
-    genTag (key, value) {
-      const rgb = getTagColor(key, value, 'rgb')
+    genTag (item) {
+      const rgb = getTagColor(item.key, item.value, 'rgb')
       const strRgb = rgb.join(',')
       return {
-        title: getTagTitle(key, value),
+        title: getTagTitle(item.key, item.value),
         color: `rgb(${strRgb})`,
         backgroundColor: `rgba(${strRgb},.1)`,
-        key,
-        value,
+        ...item,
       }
     },
     removeTag (item) {
@@ -159,6 +265,48 @@ export default {
       //   return false
       // }
       return true
+    },
+    handleTagVisibleChange (item, visible) {
+      if (!visible) {
+        const newCheckedInfo = { ...this.checkedInfo }
+        newCheckedInfo[item.key] = {
+          visible: false,
+          title: getTagTitle(item.key),
+          value: item.value,
+          titleErrorMessage: '',
+          index: item.index,
+        }
+        this.checkedInfo = newCheckedInfo
+      }
+    },
+    handleTagPopoverCancel (item) {
+      this.checkedInfo[item.key].visible = false
+      this.handleTagVisibleChange(item, false)
+    },
+    updateTag (item) {
+      const info = this.checkedInfo[item.key]
+      const title = R.trim(info.title)
+      const index = info.index
+      if (R.isEmpty(title)) {
+        info.titleErrorMessage = this.$t('common_116')
+        return
+      }
+      const value = R.trim(info.value || '')
+      const newKey = `user:${title}`
+      const newCheckedInfo = { ...this.checkedInfo }
+      delete newCheckedInfo[item.key]
+      newCheckedInfo[newKey] = {
+        visible: false,
+        title: getTagTitle(newKey),
+        value,
+        titleErrorMessage: '',
+        index,
+      }
+      this.checkedInfo = newCheckedInfo
+      const newCheckedValues = { ...this.checked }
+      delete newCheckedValues[item.key]
+      newCheckedValues[newKey] = [value]
+      this.checked = newCheckedValues
     },
   },
 }
