@@ -345,9 +345,13 @@ export default {
         return `${sku.currency === 'USD' ? '$' : '¥'}${parseFloat(originPrice).toFixed(2)}`
       }
       const getBrand = (v) => {
-        if (v === 'kvm') return 'OneCloud'
-        if (v === 'esxi') return 'VMware'
-        return v
+        const vs = {
+          kvm: 'OneCloud',
+          esxi: 'VMware',
+          zstack: 'ZStack',
+          openstack: 'OpenStack',
+        }
+        return vs[v.toLowerCase()] || v
       }
       const getDuration = (v) => {
         if (billType === 'quantity') return '1h'

@@ -7,6 +7,7 @@ import i18n from '@/locales'
 import { BUY_DURATIONS_OPTIONS } from '@Compute/constants'
 
 const parseDuration = (s) => {
+  const w = /(\d)+(W)/
   const m = /(\d)+(M)/
   const y = /(\d)+(Y)/
   let duration = 1
@@ -14,6 +15,8 @@ const parseDuration = (s) => {
     duration = parseInt(m.exec(s)[1])
   } else if (y.exec(s)) {
     duration = parseInt(y.exec(s)[1]) * 12
+  } else if (w.exec(s)) {
+    duration = parseInt(w.exec(s)[1]) * 7 / 30
   }
   return duration
 }
@@ -107,7 +110,7 @@ export default {
         slots: {
           default: ({ row }) => {
             const curObj = BUY_DURATIONS_OPTIONS.find(v => v.value === row.duration)
-            return curObj?.label || i18n.t('compute.text_139')
+            return curObj?.label || row.duration === '1W' ? i18n.t('compute.text_24') : i18n.t('compute.text_139')
           },
         },
       },
