@@ -49,12 +49,18 @@ export default {
           field: 'common_name',
           title: this.$t('network.text_318'),
           width: 70,
+          formatter: ({ cellValue, row, column }) => {
+            return this.$attrs.data.common_name || '-'
+          },
         },
         getTimeTableColumn(),
         {
           field: 'subject_alternative_names',
           title: this.$t('network.text_320'),
           width: 100,
+          formatter: ({ cellValue, row, column }) => {
+            return this.$attrs.data.subject_alternative_names || '-'
+          },
         },
         getBrandTableColumn(),
         getRegionTableColumn(),
