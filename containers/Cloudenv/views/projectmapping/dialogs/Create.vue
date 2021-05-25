@@ -23,6 +23,7 @@
                 <a-select v-decorator="[
                   `matchs[${item}]`,
                   {
+                    initialValue: 'or',
                     rules: [
                       {
                         required: true,
@@ -340,11 +341,11 @@ export default {
       const { form } = this
       const keys = form.fc.getFieldValue('rules')
       const nextKeys = keys.concat(id++)
-      // const matchs = form.fc.getFieldValue('matchs') || []
-      // const nextMatchs = matchs.concat('or')
+      // const matchs = form.fc.getFieldValue('maps') || []
+      // const nextMatchs = matchs.concat(this.projectOptions.length ? this.projectOptions[0].id : '')
       form.fc.setFieldsValue({
         rules: nextKeys,
-        // matchs: nextMatchs,
+        // maps: nextMatchs,
       })
     },
     deleteRule (item, idx) {
