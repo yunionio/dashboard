@@ -58,7 +58,7 @@ export default {
                       row.tags.map(item => {
                         const rgb = getTagColor(item.key, item.value, 'rgb')
                         const strRgb = rgb.join(',')
-                        const text = getTagTitle(item.key, item.value)
+                        const text = getTagTitle('user:' + item.key, item.value)
                         return (<span
                           class="tag mb-1 text-truncate d-inline-block"
                           title={getTagTitle(item.key, item.value)}

@@ -16,13 +16,14 @@
         </a-form-item>
         <!-- 规则 -->
         <a-form-item :label="$t('cloudenv.text_582')">
-          <div v-for="(item,index) in form.fc.getFieldValue('rules')" :key="item.id" :value="item.id" :style="index!==0?{borderTop:'solid 1px #ccc', paddingTop: '10px'}:{}">
-            <a-card v-if="item !== -1">
+          <div v-for="(item,index) in form.fc.getFieldValue('rules')" :key="item" :value="item" class="d-flex align-items-center">
+            <a-card v-if="item !== -1" class="mb-3" style="flex: 1 1 auto">
               <!-- 匹配条件 -->
               <a-form-item :label="$t('cloudenv.text_22')" v-bind="formLayout">
-                <a-select default-value="or" v-decorator="[
+                <a-select v-decorator="[
                   `matchs[${item}]`,
                   {
+                    initialValue: 'or',
                     rules: [
                       {
                         required: true,
@@ -75,10 +76,8 @@
                   {{$t('cloudenv.text_592')}}
                 </div>
               </a-form-item>
-              <div class="d-flex justify-content-center">
-                <a-button type="danger" @click="deleteRule(item,index)">{{$t('cloudenv.text_108')}}</a-button>
-              </div>
             </a-card>
+            <a-button v-if="item !== -1" style="flex: 0 0 24px;margin-left: 20px" shape="circle" icon="minus" size="small" @click="deleteRule(item,index)" />
           </div>
           <!-- 添加 -->
           <div class="d-flex align-items-center">
@@ -89,19 +88,19 @@
         <!-- 应用账号 -->
         <a-form-item :label="$t('cloudenv.text_589')">
           <a-select v-decorator="decorators.accounts" dropdownClassName="oc-select-dropdown" :showSearch="true" mode="multiple" option-filter-prop="children" :placeholder="$t('cloudenv.text_284', [$t('cloudenv.text_589')])" allowClear>
-            <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id">
-              <div>
+            <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id" :disabled="!!item.project_mapping">
+              <a-tooltip :title="!!item.project_mapping?$t('cloudenv.text_603'):''" placement="topLeft" arrow-point-at-center>
                 <a-row>
-                  <a-col :span="16">
-                    <div>{{ item.name }}</div>
-                  </a-col>
-                  <a-col :span="8" align="right">
-                    <div class="text-color-secondary option-show" style="text-align: right;display:none">
-                      {{ item.brand }}
-                    </div>
-                  </a-col>
+                <a-col :span="16">
+                  <div>{{ item.name }}</div>
+                </a-col>
+                <a-col :span="8" align="right">
+                  <div class="text-color-secondary option-show" style="text-align: right;display:none">
+                    {{ item.brand }}
+                  </div>
+                </a-col>
                 </a-row>
-              </div>
+              </a-tooltip>
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -115,6 +114,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Tag from '../components/Tag'
 import DomainSelect from '@/sections/DomainSelect'
@@ -241,6 +241,7 @@ export default {
             id: item.id,
             name: item.name,
             brand: this.$t('dashboard.text_98') + ': ' + item.brand,
+            project_mapping: item.project_mapping || false,
           }
         })
       } catch (err) {
@@ -330,7 +331,7 @@ export default {
       const keys = Object.keys(tag)
       keys.map(key => {
         result.push({
-          key: key,
+          key: R.replace(/(ext:|user:)/, '', key),
           value: tag[key],
         })
       })
@@ -340,8 +341,11 @@ export default {
       const { form } = this
       const keys = form.fc.getFieldValue('rules')
       const nextKeys = keys.concat(id++)
+      // const matchs = form.fc.getFieldValue('maps') || []
+      // const nextMatchs = matchs.concat(this.projectOptions.length ? this.projectOptions[0].id : '')
       form.fc.setFieldsValue({
         rules: nextKeys,
+        // maps: nextMatchs,
       })
     },
     deleteRule (item, idx) {
