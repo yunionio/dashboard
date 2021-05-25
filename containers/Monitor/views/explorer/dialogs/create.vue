@@ -52,6 +52,7 @@ export default {
         name: [
           'name',
           {
+            initialValue: this.params.name || '',
             rules: [
               { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
             ],

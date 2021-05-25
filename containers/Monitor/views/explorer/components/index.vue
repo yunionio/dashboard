@@ -17,7 +17,7 @@
       <div v-for="(item, i) in seriesList" :key="i">
         <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr">
           <template #extra>
-            <a-button class="mr-3" type="link" @click="handleSave(metricList[i])">{{ $t('common.save') }}</a-button>
+            <a-button class="mr-3" type="link" @click="handleSave(metricList[i], seriesDescription[i])">{{ $t('common.save') }}</a-button>
           </template>
         </monitor-line>
       </div>
@@ -176,8 +176,9 @@ export default {
         throw error
       }
     },
-    handleSave (mq) {
+    handleSave (mq, desc) {
       this.createDialog('CreateMonitorDashboardChart', {
+        name: desc.title,
         metric_query: mq,
         timeGroup: this.timeGroup,
         timeRangeParams: this.timeRangeParams,
