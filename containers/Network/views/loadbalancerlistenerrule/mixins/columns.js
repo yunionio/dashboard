@@ -25,9 +25,14 @@ export default {
             )
           },
         }),
-        getStatusTableColumn({ minWidth: 100, statusModule: 'lb' }),
+        getStatusTableColumn({ minWidth: 50, statusModule: 'lb' }),
         getStatusTableColumn({ minWidth: 100, statusModule: 'lbRedirect', field: 'redirect', title: i18n.t('network.text_368') }),
         getProjectDomainTableColumn(),
+        {
+          field: 'domain',
+          title: i18n.t('network.text_156'),
+          minWidth: 100,
+        },
         {
           field: 'path',
           title: 'URL',
@@ -36,7 +41,7 @@ export default {
         {
           field: 'backend_group',
           title: i18n.t('network.text_139'),
-          minWidth: 200,
+          minWidth: 150,
           slots: {
             default: ({ row }) => {
               return [

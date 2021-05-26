@@ -50,6 +50,10 @@ export default {
             },
             getProjectDomainTableColumn(),
             {
+              field: 'domain',
+              title: this.$t('network.text_156'),
+            },
+            {
               field: 'path',
               title: this.$t('network.text_524'),
             },
