@@ -75,6 +75,12 @@ export default {
             })
           },
           meta: () => {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
             return {
               buttonType: 'primary',
             }
@@ -91,7 +97,7 @@ export default {
             const ret = {
               validate: true,
             }
-            if (!(this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId)) {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
               ret.validate = false
               ret.tooltip = this.$t('cloudenv.text_597')
             }
@@ -110,8 +116,14 @@ export default {
             this.gridOptions.data = [...this.initData]
           },
           meta: () => {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
             return {
-              validate: this.gridOptions.data.length > 1 && !this.canSort && (this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId),
+              validate: this.gridOptions.data.length > 1 && !this.canSort,
             }
           },
         },
@@ -125,8 +137,14 @@ export default {
             this.updateProjectMappingRules()
           },
           meta: () => {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
             return {
-              validate: this.canSort && (this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId),
+              validate: this.canSort,
             }
           },
         },
@@ -139,8 +157,14 @@ export default {
             this.gridOptions.data = this.initData
           },
           meta: () => {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
             return {
-              validate: this.canSort && (this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId),
+              validate: this.canSort,
             }
           },
         },
@@ -178,6 +202,7 @@ export default {
   },
   created () {
     this.treeDrop()
+    console.log('params', this.data)
   },
   methods: {
     treeDrop () {
