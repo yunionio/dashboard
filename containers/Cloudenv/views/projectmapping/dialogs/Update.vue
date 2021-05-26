@@ -37,6 +37,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'ProjectMappingUpdateDialog',
@@ -167,14 +168,19 @@ export default {
         }
         const { data } = await this.$d.list({ params })
         const cloudAccounts = data.data || []
-        this.accountOptions = cloudAccounts.map(item => {
-          return {
-            id: item.id,
-            name: item.name,
-            brand: this.$t('dashboard.text_98') + ': ' + item.brand,
-            project_mapping: item.project_mapping || false,
+        const accountOptions = []
+        cloudAccounts.map(item => {
+          const isPublic = findPlatform(item.brand.toLowerCase()) === 'public'
+          if (isPublic) {
+            accountOptions.push({
+              id: item.id,
+              name: item.name,
+              brand: this.$t('dashboard.text_98') + ': ' + item.brand,
+              project_mapping: item.project_mapping || false,
+            })
           }
         })
+        this.accountOptions = accountOptions
       } catch (err) {
         throw err
       } finally {
