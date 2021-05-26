@@ -37,7 +37,7 @@
                 {{$t('compute.text_1385')}}
               </a-checkbox>
             </a-tooltip>
-            <help-tooltip name="cloudaccountAutoCreateProject" />
+            <help-tooltip name="deleteDiskAtTheSameTime" />
           </a-form-item>
           <!-- EIP -->
           <a-form-item class="mb-0">
@@ -97,7 +97,7 @@ const deleteSnapshotLimit = {
 const deleteDiskLimit = {
   OneCloud: {
     mustDeleteOnLocalDisk: true,
-    tip: i18n.t('compute.disable_delete_disk_by_brand_tooltip', [i18n.t('providers.onecloud')]),
+    tip: i18n.t('compute.disable_delete_disk_by_disk_tooltip'),
   },
   VMware: {
     mustDeleteOnBrand: true,
