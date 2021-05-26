@@ -71,6 +71,7 @@ export default {
     return {
       metricOptions: MetricOptions,
       loading: false,
+      loadingCtx: { lastLoadAt: new Date(), lastIndex: 0, canceledDelay: true },
       form: this.$form.createForm(this),
       decorators: {
         metric: ['metric', { initialValue: MetricOptions[0] || {} }],
@@ -228,7 +229,7 @@ export default {
       for (const k in this.charts) {
         const chart = this.charts[k]
         const column = chart.metric.label
-        const col = { field: column, title: column, sortable: true }
+        const col = { field: column, title: column, sortable: true, sortType: 'number', sortBy: (row) => { const v = row && row[column] ? row[column] : 0; return v } }
         if (chart.metric.format) col.formatter = ({ cellValue }) => { return numerify(cellValue, chart.metric.format) }
         data.columns.push(col)
         chart.chartData.rows.map((row) => {
@@ -332,6 +333,25 @@ export default {
         this.$emit('updateTable', this.toTableData())
       }
     },
+    setLoading (v) {
+      this.loading = v
+      this.$emit('showTable', !this.isLineChart)
+      this.$emit('dataLoading', v)
+    },
+    startLoading () {
+      this.loadingCtx.lastIndex += 1
+      this.loadingCtx.canceledDelay = true
+      this.loadingCtx.lastLoadAt = new Date()
+      const index = this.loadingCtx.lastIndex
+      this.setLoading(true)
+      return {
+        stop: () => {
+          if (this.loadingCtx.lastIndex === index) {
+            this.setLoading(false)
+          }
+        },
+      }
+    },
     async handleMetricChange (metric) {
       this.form.setFieldsValue({ metric: metric })
       await this.handleRefresh()
@@ -346,7 +366,7 @@ export default {
       this.handleRefreshAll()
     },
     async handleRefresh () {
-      this.loading = true
+      const loading = this.startLoading()
       try {
         const values = await this.validateForm()
         await this.fetchChartData(values.metric.field, values)
@@ -354,11 +374,11 @@ export default {
       } catch (error) {
         throw error
       } finally {
-        this.loading = false
+        loading.stop()
       }
     },
     async handleRefreshAll () {
-      this.loading = true
+      const loading = this.startLoading()
       try {
         const values = await this.validateForm()
         const fields = Object.keys(this.charts)
@@ -370,7 +390,7 @@ export default {
       } catch (error) {
         throw error
       } finally {
-        this.loading = false
+        loading.stop()
       }
     },
   },

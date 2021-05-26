@@ -199,7 +199,8 @@
       "unknown": "未知",
       "pending_delete": "待删除",
       "converting": "格式转换中",
-      "deactivated": "正在删除"
+      "deactivated": "正在删除",
+      "save_fail": "保存失败"
     },
     "imageCache": {
       "ready": "正常",
@@ -319,7 +320,9 @@
       "delete_failed": "删除失败",
       "unknown": "未知",
       "ready": "正常",
-      "init": "初始化"
+      "init": "初始化",
+      "available": "可用",
+      "soldout": "售罄"
     },
     "disk": {
       "init": "初始化中",
@@ -918,6 +921,17 @@
       "sync_rules": "同步规则",
       "sync_rules_failed": "同步规则失败",
       "unknown": "未知"
+    },
+    "projectMapping": {
+      "available": "正常",
+      "unavailable": "不可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "updating": "更新中",
+      "update_failed": "更新失败",
+      "unknown": "未知状态"
     }
   },
   "skuCategoryOptions": {
@@ -4437,6 +4451,7 @@
   "common.saml_login_accout": "账户",
   "common.currency_cny": "人民币",
   "common.currency_usd": "美元",
+  "common.currency_brl": "巴西雷亚尔",
   "auth.clean.scope.domain": "平台登录",
   "auth.current.domain": "当前登录域",
   "auth.set.current.domain": "指定登录域",

@@ -4,7 +4,7 @@
     show-tag-filter
     :list="list"
     :columns="columns"
-    :group-actions="groupActions"
+    :group-actions="hidenGroupActions ? [] : groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
@@ -33,6 +33,10 @@ export default {
     getParams: {
       type: [Object, Function],
       default: () => ({}),
+    },
+    hidenGroupActions: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {

@@ -199,7 +199,8 @@
       "unknown": "Unknown",
       "pending_delete": "Pending Delete",
       "converting": "Converting format",
-      "deactivated": "Deleting"
+      "deactivated": "Deleting",
+      "save_fail": "Save failed"
     },
     "imageCache": {
       "ready": "Normal",
@@ -317,7 +318,9 @@
       "delete_failed": "Deletion failed",
       "unknown": "Unknown",
       "ready": "Normal",
-      "init": "Initialize"
+      "init": "Initialize",
+      "available": "Available",
+      "soldout": "Soldout"
     },
     "disk": {
       "init": "Initializing",
@@ -911,6 +914,11 @@
       "sync_rules": "Sync rules",
       "sync_rules_failed": "Sync rules failed",
       "unknown": "Unknown"
+    },
+    "projectMapping": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "creating": "Creating"
     }
   },
   "skuCategoryOptions": {
@@ -4430,6 +4438,7 @@
   "common.saml_login_accout": "Account",
   "common.currency_cny": "CNY",
   "common.currency_usd": "USD",
+  "common.currency_brl": "BRL",
   "auth.clean.scope.domain": "Platform Login",
   "auth.current.domain": "Login Domain",
   "auth.set.current.domain": "Set Login Domain",

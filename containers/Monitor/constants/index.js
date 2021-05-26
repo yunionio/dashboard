@@ -167,6 +167,10 @@ export const tableColumnMaps = {
     title: i18n.t('common.name'),
     field: 'rds_name',
   },
+  storage_name: {
+    title: i18n.t('common.name'),
+    field: 'storage_name',
+  },
   vm_ip: {
     title: 'IP',
     field: 'vm_ip',
@@ -335,6 +339,9 @@ export const metric_zh = {
   'Guest network traffic': i18n.t('monitor_metric_98'),
   'memory usage': i18n.t('monitor_metric_85'),
   'request count': i18n.t('monitor.text_118'),
+  'Storage usage': i18n.t('monitor.storage_usage'),
+  'Free storage': i18n.t('monitor.free_storage'),
+  'Storage utilization rate': i18n.t('monitor.storage_utilization_rate'),
 }
 
 export const filterKeyMap = {
@@ -347,6 +354,7 @@ export const filterKeyMap = {
   zone: i18n.t('common.zone'),
   vm_name: i18n.t('dictionary.server'),
   vm_ip: i18n.t('dictionary.serverip'),
+  storage_name: i18n.t('storage.text_37'),
   oss_name: i18n.t('scope.text_77'),
   oss_ip: i18n.t('common_721'),
   elb_name: i18n.t('scope.text_105'),

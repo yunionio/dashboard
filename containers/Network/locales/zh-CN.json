@@ -742,6 +742,8 @@
   "network.eip.text_725": "范围在 1～{0}Mbps",
   "network.text_725": "起：{0}",
   "network.text_726": "止：{0}",
+  "network.ports": "使用情况(总计)",
+  "network.ports_used": "使用情况(使用)",
   "network.text_727": "总计：{0}",
   "network.text_728": "使用：{0}",
   "network.text_729": "无调度标签",
@@ -834,5 +836,7 @@
   "network.ssh-proxy-match.link": "关联",
   "network.ssh-proxy-match.unlink": "取消关联",
   "network.ssh-proxy-match.link.create": "关联网络",
+  "network.lbcert.is_complete.true": "可用",
+  "network.lbcert.is_complete.false": "部分可用",
   "network.snat.cidr": "网段"
 }

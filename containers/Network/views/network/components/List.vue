@@ -134,6 +134,14 @@ export default {
       wire: {
         label: this.$t('network.text_571'),
       },
+      vlan_id: {
+        label: 'VLAN',
+        dropdown: true,
+        distinctField: {
+          type: 'field',
+          key: 'vlan_id',
+        },
+      },
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
@@ -156,7 +164,8 @@ export default {
           { label: this.$t('network.text_608'), key: 'guest_ip_end' },
           { label: this.$t('network.text_249'), key: 'server_type' },
           { label: this.$t('network.text_27'), key: 'status' },
-          { label: this.$t('network.text_622'), key: 'ports' },
+          { label: this.$t('network.ports'), key: 'ports' },
+          { label: this.$t('network.ports_used'), key: 'ports_used' },
           { label: this.$t('network.text_198'), key: 'brand' },
           { label: this.$t('network.text_571'), key: 'wire' },
           { label: 'VLAN', key: 'vlan_id' },

@@ -6,14 +6,16 @@
             @updateTable="handleUpdateTable"
             @updateChart="handleUpdateChart"
             @changeNav="handleChangeNav"
+            @dataLoading="handleOnDataLoading"
+            @showTable="handleShowTable"
             :dimension="dimension"
             :scope="scope"
             :extraParams="extraParams" />
       </div>
     </template>
-     <component v-if="chart.chartType" :is="chart.chartType" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="chart.loading" />
+     <component v-if="chart.chartType" :is="chart.chartType" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="chart.loading || tableLoading" />
     <template #footer>
-      <overview-table :table-data="table" />
+      <overview-table :table-data="table" :loading="tableLoading" v-if="showTable" />
     </template>
   </overview-card-layout>
 </template>
@@ -53,8 +55,10 @@ export default {
   },
   data () {
     return {
-      chart: {},
+      chart: { loading: true },
       table: {},
+      showTable: false,
+      tableLoading: false,
     }
   },
   watch: {
@@ -67,6 +71,12 @@ export default {
     },
   },
   methods: {
+    handleShowTable (v) {
+      this.showTable = v
+    },
+    handleOnDataLoading (v) {
+      this.tableLoading = v
+    },
     handleUpdateTable (v) {
       this.table = v
     },

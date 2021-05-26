@@ -85,9 +85,9 @@ export default {
     info: ['unknown', 'unavailable'],
   },
   sku: {
-    success: ['ready'],
+    success: ['ready', 'available'],
     danger: ['create_failed', 'delete_failed'],
-    info: ['unknown'],
+    info: ['unknown', 'soldout'],
   },
   disk: {
     success: ['ready', 'post_migrate'],
@@ -400,5 +400,8 @@ export default {
   sshProxyEndpoints: {
     success: ['available'],
     info: ['unavailable', 'unknown'],
+  },
+  projectMapping: {
+    success: ['available'],
   },
 }

@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import Sortable from 'sortablejs'
+import XEUtils from 'xe-utils'
 import * as R from 'ramda'
 import _ from 'lodash'
 import Actions from '../Actions'
@@ -259,6 +261,7 @@ export default {
   },
   mounted () {
     this.initFloatingScrollListener()
+    this.treeDrop()
   },
   methods: {
     // 初始化tbody监听器，发生变化更新虚拟滚动条，以保证宽度是正确的
@@ -441,6 +444,48 @@ export default {
       storage.set(this.storageKey, newConfig)
       this.storageConfig = newConfig
     },
+    treeDrop () {
+      this.$nextTick(() => {
+        const xTable = this.$refs.grid
+        this.sortable2 = Sortable.create(xTable.$el.querySelector('.body--wrapper>.vxe-table--body tbody'), {
+          handle: '.drag-btn',
+          onEnd: ({ item, oldIndex }) => {
+            const options = { children: 'children' }
+            const targetTrElem = item
+            const wrapperElem = targetTrElem.parentNode
+            const prevTrElem = targetTrElem.previousElementSibling
+            const tableTreeData = this.tableData
+            const selfRow = xTable.getRowNode(targetTrElem).item
+            const selfNode = XEUtils.findTree(tableTreeData, row => row === selfRow, options)
+            if (prevTrElem) {
+              // 移动到节点
+              const prevRow = xTable.getRowNode(prevTrElem).item
+              const prevNode = XEUtils.findTree(tableTreeData, row => row === prevRow, options)
+              if (XEUtils.findTree(selfRow[options.children], row => prevRow === row, options)) {
+                // 错误的移动
+                const oldTrElem = wrapperElem.children[oldIndex]
+                wrapperElem.insertBefore(targetTrElem, oldTrElem)
+                return this.$XModal.message({ content: '不允许自己给自己拖动！', status: 'error' })
+              }
+              const currRow = selfNode.items.splice(selfNode.index, 1)[0]
+              if (xTable.isTreeExpandByRow(prevRow)) {
+                // 移动到当前的子节点
+                prevRow[options.children].splice(0, 0, currRow)
+              } else {
+                // 移动到相邻节点
+                prevNode.items.splice(prevNode.index + (selfNode.index < prevNode.index ? 0 : 1), 0, currRow)
+              }
+            } else {
+              // 移动到第一行
+              const currRow = selfNode.items.splice(selfNode.index, 1)[0]
+              tableTreeData.unshift(currRow)
+            }
+            // 如果变动了树层级，需要刷新数据
+            this.tableData = [...tableTreeData]
+          },
+        })
+      })
+    },
   },
 }
 </script>
@@ -456,5 +501,13 @@ export default {
       height: auto !important;
     }
   }
+}
+.sortable-tree-demo .drag-btn {
+  cursor: move;
+  font-size: 12px;
+}
+.sortable-tree-demo .vxe-body--row.sortable-ghost,
+.sortable-tree-demo .vxe-body--row.sortable-chosen {
+  background-color: #dfecfb;
 }
 </style>

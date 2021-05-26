@@ -1,3 +1,4 @@
+import ProjectMapping from '@Cloudenv/views/projectmapping'
 import Cloudgroup from '@Cloudenv/views/cloudgroup'
 import Cloudaccount from '@Cloudenv/views/cloudaccount'
 import CloudaccountCreate from '@Cloudenv/views/cloudaccount/create'
@@ -96,6 +97,27 @@ export default {
               name: 'Proxysetting',
               path: '',
               component: Proxysetting,
+            },
+          ],
+        },
+        {
+          path: '/projectmapping',
+          meta: {
+            label: i18n.t('cloudenv.text_580'),
+            permission: 'proxysettings_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.projectmapping')) {
+                return true
+              }
+              return !hasSetupKey(['public'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'ProjectMapping',
+              path: '',
+              component: ProjectMapping,
             },
           ],
         },

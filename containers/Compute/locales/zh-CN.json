@@ -161,6 +161,7 @@
   "compute.text_161": "密码：",
   "compute.text_162": "确定",
   "compute.text_163": "用户名",
+  "compute.text_user": "用户名：",
   "compute.text_164": "密码：",
   "compute.text_165": "暂无",
   "compute.text_166": "获取密码失败",
@@ -1417,5 +1418,9 @@
   "compute.disable_delete_snapshot_by_disk_tooltip": "{0}数据盘删除时必须同时删除快照",
   "compute.disable_delete_eip_by_brand_tooltip": "{0}平台虚拟机删除主机时暂不支持同时删除EIP",
   "compute.disable_delete_disk_by_brand_tooltip": "{0}平台虚拟机删除主机时必须同时删除数据盘",
-  "compute.disable_delete_disk_by_disk_tooltip": "本地硬盘删除主机时必须同时删除数据盘"
+  "compute.disable_delete_disk_by_disk_tooltip": "本地硬盘删除主机时必须同时删除数据盘",
+  "compute.sku.setup.sell.status": "设置销售状态",
+  "compute.sku.prepaid_status": "预付费状态",
+  "compute.sku.postpaid_status": "后付费状态",
+  "compute.transfer_host": "暂无满足条件的宿主机，请检查宿主机或修改条件后重试！"
 }

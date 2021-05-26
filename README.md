@@ -2,9 +2,9 @@
 
 [![Build Status](https://www.travis-ci.org/yunionio/dashboard.svg?branch=master)](https://www.travis-ci.org/yunionio/dashboard)
 
-Yunion Dashboard is the web-based UI for [OneCloud](https://github.com/yunionio/onecloud)
+[English](./README.md) | [简体中文](./README-CN.md)
 
-#### [README in Chinese](./README-CN.md)
+Yunion Dashboard is the web-based UI for [YunionCloud](https://github.com/yunionio/yunioncloud).
 
 ## Developer Guide
 

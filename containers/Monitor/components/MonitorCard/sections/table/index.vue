@@ -1,15 +1,14 @@
 <template>
-  <div class="table">
-    <div v-if="!showTable" />
-    <div v-else>
-      <vxe-toolbar>
-        <template #tools>
-          <vxe-button @click="exportData" class="icons-list" style="width: 40px;">
-            <a-icon type="download" />
-          </vxe-button>
-        </template>
-      </vxe-toolbar>
-      <vxe-grid
+  <a-skeleton active :loading="loading">
+    <div class="table" v-show="showTable">
+        <vxe-toolbar>
+          <template #tools>
+            <vxe-button @click="exportData" class="icons-list" style="width: 40px;">
+              <a-icon type="download" />
+            </vxe-button>
+          </template>
+        </vxe-toolbar>
+        <vxe-grid
           class="mt-4"
           size="mini"
           border
@@ -17,21 +16,25 @@
           :columns="tableData.columns"
           max-height="400"
           :data="tableData.rows" />
-      <div class="vxe-grid--pager-wrapper">
-        <div class="vxe-pager size--mini">
-          <div class="vxe-pager--wrapper">
-            <span class="vxe-pager--total">{{ total }}</span>
+        <div class="vxe-grid--pager-wrapper">
+          <div class="vxe-pager size--mini">
+            <div class="vxe-pager--wrapper">
+              <span class="vxe-pager--total">{{ total }}</span>
+            </div>
           </div>
         </div>
-      </div>
     </div>
-  </div>
+  </a-skeleton>
 </template>
 
 <script>
 export default {
   name: 'OverviewTable',
   props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     tableData: {
       type: Object,
       default: () => ({}),
