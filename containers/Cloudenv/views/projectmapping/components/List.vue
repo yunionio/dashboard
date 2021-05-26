@@ -109,8 +109,8 @@ export default {
           },
           meta: () => {
             return {
-              // validate: this.list.selectedItems && this.list.selectedItems.length > 0,
-              validate: true,
+              validate: this.list.selectedItems && this.list.selectedItems.length > 0,
+              // validate: true,
             }
           },
         },
@@ -137,6 +137,7 @@ export default {
         list: this.list,
         hiddenActions: this.hiddenActions,
       })
+      this.initSidePageTab('')
     },
     checkEnable (list) {
       const ret = {
