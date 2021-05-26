@@ -1,6 +1,7 @@
 <template>
   <div>
     <template v-if="tags && tags.length > 0">
+      <div v-if="customTitle">{{customTitle}}</div>
       <template v-for="item of tags">
         <span
           class="tag text-truncate d-inline-block"
@@ -56,6 +57,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    customTitle: String,
   },
   inject: {
     // 是否处于BaseDialog中
