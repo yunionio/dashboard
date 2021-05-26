@@ -62,22 +62,19 @@ export default {
         {
           label: this.$t('common.batchAction'),
           actions: () => {
-            const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
             return [
               ...getEnabledSwitchActions(this, undefined, ['projectmappings_perform_enable', 'projectmappings_perform_disable'], {
                 metas: [
                   () => {
                     const isEnable = !!this.list.selectedItems.find(item => item.enabled)
-                    // const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
                     return {
-                      validate: this.list.selectedItems.length && ownerDomain && !isEnable,
+                      validate: this.list.selectedItems.length && !isEnable,
                     }
                   },
                   () => {
-                    // const isEnable = !!this.list.selectedItems.find(item => item.enabled)
                     const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
                     return {
-                      validate: this.list.selectedItems.length && ownerDomain && !isDisable,
+                      validate: this.list.selectedItems.length && !isDisable,
                     }
                   },
                 ],
@@ -101,16 +98,22 @@ export default {
                     return deleteResult
                   }
                   return {
-                    validate: ownerDomain,
+                    validate: true,
                   }
                 },
               },
             ]
           },
           meta: () => {
+            const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
+            if (!ownerDomain) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
             return {
               validate: this.list.selectedItems && this.list.selectedItems.length > 0,
-              // validate: true,
             }
           },
         },
