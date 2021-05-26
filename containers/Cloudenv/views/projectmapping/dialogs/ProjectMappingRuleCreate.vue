@@ -11,6 +11,7 @@
             <a-select default-value="or" v-decorator="[
               `matchs[${item}]`,
               {
+                nitialValue: 'or',
                 rules: [
                   {
                     required: true,
