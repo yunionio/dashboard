@@ -11,7 +11,7 @@
         </a-form-item>
         <template v-if="isShowAutoDelete">
           <!-- 快照 -->
-          <a-form-item v-if="deleteSnapshotLimit.show" class="mb-0">
+          <a-form-item class="mb-0">
             <a-tooltip>
               <template v-if="deleteSnapshotLimit.mustDelete" slot="title">
                 {{deleteSnapshotLimit.tip}}
@@ -25,7 +25,7 @@
             </a-tooltip>
           </a-form-item>
           <!-- 数据盘 -->
-          <a-form-item v-if="deleteDiskLimit.show" class="mb-0">
+          <a-form-item class="mb-0">
             <a-tooltip>
               <template v-if="deleteDiskLimit.mustDelete" slot="title">
                 {{deleteDiskLimit.tip}}
@@ -37,10 +37,10 @@
                 {{$t('compute.text_1385')}}
               </a-checkbox>
             </a-tooltip>
-            <help-tooltip name="cloudaccountAutoCreateProject" />
+            <help-tooltip name="deleteDiskAtTheSameTime" />
           </a-form-item>
           <!-- EIP -->
-          <a-form-item v-if="deleteEipLimit.show" class="mb-0">
+          <a-form-item class="mb-0">
             <a-tooltip>
               <template v-if="deleteEipLimit.mustDelete || !deleteEipLimit.support" slot="title">
                 {{deleteEipLimit.tip}}
@@ -55,6 +55,7 @@
           </a-form-item>
         </template>
       </a-form>
+      <dialog-table v-if="form.fd.autoDelete" :data="snapshot.list" :columns="snapshot.columns" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ confirmText }}</a-button>
@@ -71,7 +72,6 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
 import { findPlatform } from '@/utils/common/hypervisor'
-// import { BRAND_MAP } from '@/constants'
 
 const canDeleteBrandList = ['OneCloud', 'VMware', 'OpenStack', 'ZStack', 'DStack', 'Aliyun', 'Huawei', 'Qcloud', 'Aws', 'Azure', 'Google']
 const deleteEipLimit = {
@@ -94,18 +94,16 @@ const deleteSnapshotLimit = {
     tip: i18n.t('compute.disable_delete_snapshot_by_brand_tooltip', [i18n.t('providers.vmware')]),
   },
 }
-
 const deleteDiskLimit = {
   OneCloud: {
     mustDeleteOnLocalDisk: true,
-    tip: i18n.t('compute.disable_delete_disk_by_brand_tooltip', [i18n.t('providers.onecloud')]),
+    tip: i18n.t('compute.disable_delete_disk_by_disk_tooltip'),
   },
   VMware: {
     mustDeleteOnBrand: true,
     tip: i18n.t('compute.disable_delete_disk_by_brand_tooltip', [i18n.t('providers.vmware')]),
   },
 }
-
 export default {
   name: 'DeleteVmDialog',
   mixins: [DialogMixin, WindowsMixin, WorkflowMixin],
@@ -115,14 +113,11 @@ export default {
       loading: false,
       disableDelete: isVmware,
       snapshotList: [],
-      diskList: [],
+      // diskList: [],
       form: {
         fc: this.$form.createForm(this),
         fd: {
           autoDelete: false,
-          deleteEip: false,
-          deleteSnapshot: false,
-          deleteDisk: false,
         },
       },
       decorators: {
@@ -137,24 +132,6 @@ export default {
           'reason',
           {
             initialValue: '',
-          },
-        ],
-        deleteSnapshot: [
-          'deleteSnapshot',
-          {
-            valuePropName: 'checked',
-          },
-        ],
-        deleteEip: [
-          'deleteEip',
-          {
-            valuePropName: 'checked',
-          },
-        ],
-        deleteDisk: [
-          'deleteDisk',
-          {
-            valuePropName: 'checked',
           },
         ],
       },
@@ -176,63 +153,69 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo']),
-    brand () {
-      const brand = this.params.data[0].brand
-      return brand
-    },
     type () {
-      return findPlatform(this.brand)
+      const brand = this.params.data[0].brand
+      return findPlatform(brand)
     },
     isShowAutoDelete () {
-      return canDeleteBrandList.indexOf(this.brand) !== -1
+      const isSomeCanDelete = this.params.data.some((item) => {
+        return canDeleteBrandList.indexOf(item.brand) !== -1
+      })
+      return isSomeCanDelete
     },
+    // isCeph () {
+    //   const isSomeCeph = this.diskList.some((item) => {
+    //     return item === 'rbd'
+    //   })
+    //   console.log('isCeph', this.diskList, isSomeCeph)
+    //   return isSomeCeph
+    // },
+    // isLocal () {
+    //   const isSomeLocal = this.diskList.some((item) => {
+    //     return item === 'local'
+    //   })
+    //   return isSomeLocal
+    // },
     deleteEipLimit () {
       const result = {
-        show: true,
         support: true,
         mustDelete: false,
         tip: '',
       }
-      console.log(this.params)
-      if (!this.params.data[0].eip) {
-        result.show = false
-      }
-      if (deleteEipLimit[this.brand] && deleteEipLimit[this.brand].support === false) {
-        result.support = false
-        result.tip = deleteEipLimit[this.brand].tip
-      }
+      this.params.data.map((item) => {
+        if (deleteEipLimit[item.brand] && deleteEipLimit[item.brand].support === false) {
+          result.support = false
+          result.tip = deleteEipLimit[item.brand].tip
+        }
+      })
       return result
     },
     deleteSnapshotLimit () {
       const result = {
-        show: true,
         support: true,
         mustDelete: false,
         tip: '',
       }
-      if (!(this.snapshotList && this.snapshotList.length)) {
-        result.show = false
-      }
-      if ((deleteSnapshotLimit[this.brand] && deleteSnapshotLimit[this.brand].mustDeleteOnBrand) || (deleteSnapshotLimit[this.brand] && deleteSnapshotLimit[this.brand].mustDeleteOnCeph && this.diskList.indexOf('rbd') >= 0)) {
-        result.mustDelete = true
-        result.tip = deleteSnapshotLimit[this.brand].tip
-      }
+      this.params.data.map((item) => {
+        if ((deleteSnapshotLimit[item.brand] && deleteSnapshotLimit[item.brand].mustDeleteOnBrand) || (deleteSnapshotLimit[item.brand] && deleteSnapshotLimit[item.brand].mustDeleteOnCeph && this.checkDiskType(item, 'rbd'))) {
+          result.mustDelete = true
+          result.tip = deleteSnapshotLimit[item.brand].tip
+        }
+      })
       return result
     },
     deleteDiskLimit () {
       const result = {
-        show: true,
         support: true,
         mustDelete: false,
         tip: '',
       }
-      if (this.params.data[0].disk_count <= 1) {
-        result.show = false
-      }
-      if ((deleteDiskLimit[this.brand] && deleteDiskLimit[this.brand].mustDeleteOn) || (deleteDiskLimit[this.brand] && deleteDiskLimit[this.brand].mustDeleteOnLocalDisk && this.diskList.indexOf('local') >= 0)) {
-        result.mustDelete = true
-        result.tip = deleteDiskLimit[this.brand].tip
-      }
+      this.params.data.map((item) => {
+        if ((deleteDiskLimit[item.brand] && deleteDiskLimit[item.brand].mustDeleteOnBrand) || (deleteDiskLimit[item.brand] && deleteDiskLimit[item.brand].mustDeleteOnLocalDisk && this.checkDiskType(item, 'local'))) {
+          result.mustDelete = true
+          result.tip = deleteDiskLimit[item.brand].tip
+        }
+      })
       return result
     },
     isOpenWorkflow () {
@@ -241,13 +224,20 @@ export default {
     confirmText () {
       return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('dialog.ok')
     },
+    disableToolTip () {
+      if (this.disableDelete) {
+        return this.$t('compute.disable_delete_snapshot_tooltip')
+      }
+      return ''
+    },
   },
   created () {
-    if (this.isShowAutoDelete) {
-      const ids = this.params.data.map((item) => { return item.id })
-      this.fetchSnapshotsByVmId(ids.join(','))
-      this.fetchDisksByVmId(ids.join(','))
-    }
+    console.log('入参', this.params.data)
+    // if (this.isShowAutoDelete) {
+    //   const ids = this.params.data.map((item) => { return item.id })
+    // this.fetchSnapshotsByVmId(ids.join(','))
+    // this.fetchDisksByVmId(ids.join(','))
+    // }
   },
   methods: {
     async handleConfirm () {
@@ -291,21 +281,14 @@ export default {
         await this.params.ok()
       } else {
         const ids = this.params.data.map(item => item.id)
+        const values = await this.form.fc.validateFields()
         let params = {}
         params = {
           ...params,
           ...this.params.requestParams,
         }
         if (this.isShowAutoDelete) {
-          if (this.form.fd.deleteSnapshot || (this.deleteSnapshotLimit.support && this.deleteSnapshotLimit.mustDelete)) {
-            params.delete_snapshots = true
-          }
-          if (this.form.fd.deleteEip || (this.deleteEipLimit.support && this.deleteEipLimit.mustDelete)) {
-            params.delete_eips = true
-          }
-          if (this.form.fd.deleteDisk || (this.deleteDiskLimit.support && this.deleteDiskLimit.mustDelete)) {
-            params.delete_disks = true
-          }
+          params.delete_snapshots = values.autoDelete
         }
         const response = await this.params.onManager('batchDelete', {
           id: ids,
@@ -337,20 +320,7 @@ export default {
         const instanceSnapshotPromise = this.fetchInstanceSnapshotData(id)
         const instanceSnapshotRes = await instanceSnapshotPromise
         const instanceSnapshots = instanceSnapshotRes.data.data
-        this.snapshotList = [...snapshots, ...instanceSnapshots]
-      } catch (e) {
-        throw e
-      }
-    },
-    async fetchDisksByVmId (id) {
-      try {
-        const diskPromise = this.fetchDiskData(id)
-        const diskRes = await diskPromise
-        let disks = diskRes.data.data || []
-        disks = disks.map((item) => {
-          return item.storage_type
-        })
-        this.diskList = disks
+        this.snapshot.list = [...snapshots, ...instanceSnapshots]
       } catch (e) {
         throw e
       }
@@ -367,7 +337,8 @@ export default {
     fetchDiskData (id) {
       const diskManager = new this.$Manager('disks')
       const params = {
-        server_id: id,
+        filter: `server_id.in(${id})`,
+        // server_id: id,
       }
       if (this.isAdminMode) { params.admin = true }
       return diskManager.list({ params })
@@ -388,6 +359,12 @@ export default {
     deleteSnapshotChange (val) {
       const { checked } = val.target
       this.form.fd.deleteSnapshot = checked
+    },
+    checkDiskType ({ disks_info = [] }, type) {
+      const isSomeType = disks_info.some(item => {
+        return type === item.storage_type
+      })
+      return isSomeType
     },
   },
 }
