@@ -126,7 +126,7 @@ export default {
           const ret = {
             validate: true,
           }
-          if (!(this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId)) {
+          if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
             ret.validate = false
             ret.tooltip = this.$t('cloudenv.text_597')
           }
@@ -144,7 +144,7 @@ export default {
           const ret = {
             validate: true,
           }
-          if (!(this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId)) {
+          if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
             ret.validate = false
             ret.tooltip = this.$t('cloudenv.text_597')
           }
