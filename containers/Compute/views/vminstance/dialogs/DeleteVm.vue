@@ -263,14 +263,20 @@ export default {
         await this.params.ok()
       } else {
         const ids = this.params.data.map(item => item.id)
-        const values = await this.form.fc.validateFields()
+        await this.form.fc.validateFields()
         let params = {}
         params = {
           ...params,
           ...this.params.requestParams,
         }
-        if (this.isShowAutoDelete) {
-          params.delete_snapshots = values.autoDelete
+        if (this.form.fd.deleteSnapshot || (this.deleteSnapshotLimit.support && this.deleteSnapshotLimit.mustDelete)) {
+          params.delete_snapshots = true
+        }
+        if (this.form.fd.deleteDisk || (this.deleteDiskLimit.support && this.deleteDiskLimit.mustDelete)) {
+          params.delete_disks = true
+        }
+        if (this.form.fd.deleteEip || (this.deleteEipLimit.support && this.deleteEipLimit.mustDelete)) {
+          params.delete_eip = true
         }
         const response = await this.params.onManager('batchDelete', {
           id: ids,
