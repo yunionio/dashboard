@@ -1361,6 +1361,7 @@
   "compute.perform_sync_status": "同步状态",
   "compute.perform_delete": "删除",
   "compute.sku.setup.sell.status": "设置销售状态",
-  "compute.sku.prepaid_status": "预付费状态",
-  "compute.sku.postpaid_status": "后付费状态"
+  "compute.sku.prepaid_status": "包年包月",
+  "compute.sku.postpaid_status": "按量付费",
+  "compute.transfer_host": "暂无满足条件的宿主机，请检查宿主机或修改条件后重试！"
 }
