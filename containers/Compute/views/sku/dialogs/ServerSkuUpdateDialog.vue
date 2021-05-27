@@ -60,6 +60,16 @@ export default {
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
     },
   },
+  created () {
+    try {
+      const { data = [] } = this.params
+      if (data.length === 1) {
+        const { prepaid_status, postpaid_status } = data[0]
+        this.postpaid = postpaid_status
+        this.prepaid = prepaid_status
+      }
+    } catch (err) {}
+  },
   methods: {
     async doUpdate () {
       const ids = this.params.data.map(item => item.id)
