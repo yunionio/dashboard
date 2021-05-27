@@ -118,6 +118,9 @@ export default {
         fc: this.$form.createForm(this),
         fd: {
           autoDelete: false,
+          deleteEip: false,
+          deleteSnapshot: false,
+          deleteDisk: false,
         },
       },
       decorators: {
@@ -163,19 +166,6 @@ export default {
       })
       return isSomeCanDelete
     },
-    // isCeph () {
-    //   const isSomeCeph = this.diskList.some((item) => {
-    //     return item === 'rbd'
-    //   })
-    //   console.log('isCeph', this.diskList, isSomeCeph)
-    //   return isSomeCeph
-    // },
-    // isLocal () {
-    //   const isSomeLocal = this.diskList.some((item) => {
-    //     return item === 'local'
-    //   })
-    //   return isSomeLocal
-    // },
     deleteEipLimit () {
       const result = {
         support: true,
@@ -230,14 +220,6 @@ export default {
       }
       return ''
     },
-  },
-  created () {
-    console.log('入参', this.params.data)
-    // if (this.isShowAutoDelete) {
-    //   const ids = this.params.data.map((item) => { return item.id })
-    // this.fetchSnapshotsByVmId(ids.join(','))
-    // this.fetchDisksByVmId(ids.join(','))
-    // }
   },
   methods: {
     async handleConfirm () {
