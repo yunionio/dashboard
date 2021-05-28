@@ -22,7 +22,7 @@ export const HYPERVISORS_MAP = {
   ucloud: { key: 'ucloud', label: 'UCloud', provider: 'Ucloud', brand: 'Ucloud', host_type: 'ucloud', hypervisor: 'ucloud', env: 'public', cloud_env: 'public' },
   google: { key: 'google', label: 'Google', provider: 'Google', brand: 'Google', host_type: 'google', hypervisor: 'google', env: 'public', cloud_env: 'public' },
   ctyun: { key: 'ctyun', label: i18n.t('scopeCloudPrvidersMap.Ctyun'), provider: 'Ctyun', brand: 'Ctyun', host_type: 'ctyun', hypervisor: 'ctyun', env: 'public', cloud_env: 'public' },
-  ecloud: { key: 'ecloud', label: 'Ecloud', provider: 'Ecloud', brand: 'Ecloud', host_type: 'ecloud', hypervisor: 'ecloud', env: 'public', cloud_env: 'public' },
+  ecloud: { key: 'ecloud', label: i18n.t('scopeCloudPrvidersMap.Ecloud'), provider: 'Ecloud', brand: 'Ecloud', host_type: 'ecloud', hypervisor: 'ecloud', env: 'public', cloud_env: 'public' },
 }
 
 export const CLOUD_ENVS = {
