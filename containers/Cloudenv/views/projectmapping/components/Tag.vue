@@ -2,72 +2,63 @@
   <div>
     <div class="tag-list">
       <template v-for="item of tags">
-        <!-- <span
-          class="tag mb-1 d-inline-block"
-          :title="item.title"
-          :key="`${item.key}${item.value}`"
-          :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
-          <div class="d-flex align-items-center">
-            <span class="flex-fill text-truncate">{{ item.title }}</span>
-            <a-icon v-if="showRemove(item)" class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click="removeTag(item)" />
-          </div>
-        </span> -->
         <a-popover trigger="click" v-model="checkedInfo[item.key].visible" :key="`${item.key}${item.value}`" destroyTooltipOnHide @visibleChange="visible => handleTagVisibleChange(item, visible)">
-                <template #content>
-                  <div class="tag-update-wrap">
-                    <div class="mb-1">{{ $t('common_112') }}</div>
-                    <div>
-                      <div><a-input size="small" v-model="checkedInfo[item.key].title" /></div>
-                      <template v-if="checkedInfo[item.key].titleErrorMessage">
-                        <div class="error-color mt-1">{{ checkedInfo[item.key].titleErrorMessage }}</div>
-                      </template>
-                    </div>
-                    <div class="mt-2 mb-1">{{ $t('common_113') }}</div>
-                    <div><a-input size="small" v-model="checkedInfo[item.key].value" /></div>
-                    <a-row :gutter="8" class="mt-2">
-                      <a-col :span="12">
-                        <a-button size="small" block @click="updateTag(item)">{{ $t('common.ok') }}</a-button>
-                      </a-col>
-                      <a-col :span="12">
-                        <a-button size="small" block @click="() => handleTagPopoverCancel(item)">{{ $t('common.cancel') }}</a-button>
-                      </a-col>
-                    </a-row>
-                  </div>
+          <template #content>
+            <div class="tag-update-wrap">
+              <div class="mb-1">{{ $t('common_112') }}</div>
+              <div>
+                <div><a-input size="small" v-model="checkedInfo[item.key].title" /></div>
+                <template v-if="checkedInfo[item.key].titleErrorMessage">
+                  <div class="error-color mt-1">{{ checkedInfo[item.key].titleErrorMessage }}</div>
                 </template>
-                <span
-                  class="tag mb-1 d-inline-block"
-                  :title="item.title"
-                  :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
-                  <div class="d-flex align-items-center">
-                    <span class="flex-fill text-truncate">{{ item.title }}</span>
-                    <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click.stop="removeTag(item)" />
-                  </div>
-                </span>
-              </a-popover>
+              </div>
+              <div class="mt-2 mb-1">{{ $t('common_113') }}</div>
+              <div><a-input size="small" v-model="checkedInfo[item.key].value" /></div>
+              <a-row :gutter="8" class="mt-2">
+                <a-col :span="12">
+                  <a-button size="small" block @click="updateTag(item)">{{ $t('common.ok') }}</a-button>
+                </a-col>
+                <a-col :span="12">
+                  <a-button size="small" block @click="() => handleTagPopoverCancel(item)">{{ $t('common.cancel') }}</a-button>
+                </a-col>
+              </a-row>
+            </div>
+          </template>
+          <span
+            class="tag mb-1 d-inline-block"
+            :title="item.title"
+            :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
+            <div class="d-flex align-items-center">
+              <span class="flex-fill text-truncate">{{ item.title }}</span>
+              <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click.stop="removeTag(item)" />
+            </div>
+          </span>
+        </a-popover>
       </template>
     </div>
     <a-form-item :extra="$t('cloudenv.text_594')" class="mt-2">
-      <div class="d-flex">
+      <div>
         <div style="line-height: 40px;">
           <tag-select global v-model="checked" :params="params" :button-text="$t('compute.text_1147')" />
-          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_1382')}}</a-button>
         </div>
-        <a-form
-          class="ml-2"
-          layout="inline"
-          :form="tagForm.fc"
-          v-if="showForm">
-          <a-form-item>
-            <a-input v-decorator="decorators.key" :placeholder="$t('compute.text_1148')" />
-          </a-form-item>
-          <a-form-item>
-            <a-input v-decorator="decorators.value" :placeholder="$t('compute.text_1149')" />
-          </a-form-item>
-          <a-form-item>
-            <a-button @click="addTag">{{$t('compute.text_822')}}</a-button>
-            <a-button @click="() => showForm = false" class="ml-2">{{$t('compute.text_135')}}</a-button>
-          </a-form-item>
-        </a-form>
+        <div style="line-height: 40px">
+          <a-button class="mr-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_1382')}}</a-button>
+          <a-form
+            layout="inline"
+            :form="tagForm.fc"
+            v-if="showForm">
+            <a-form-item>
+              <a-input v-decorator="decorators.key" :placeholder="$t('compute.text_1148')" style="width:130px" />
+            </a-form-item>
+            <a-form-item>
+              <a-input v-decorator="decorators.value" :placeholder="$t('compute.text_1149')" style="width:130px" />
+            </a-form-item>
+            <a-form-item>
+              <a-button @click="addTag">{{$t('compute.text_822')}}</a-button>
+              <a-button @click="() => showForm = false" class="ml-2">{{$t('compute.text_135')}}</a-button>
+            </a-form-item>
+          </a-form>
+        </div>
       </div>
     </a-form-item>
   </div>
@@ -137,7 +128,7 @@ export default {
     },
   },
   watch: {
-    tags (val) {
+    tags (val, oldVal) {
       let ret
       if (val && val.length > 0) {
         ret = {}
@@ -145,7 +136,9 @@ export default {
           ret[val[i].key] = val[i].value || ''
         }
       }
-      this.$emit('change', ret)
+      if ((val && val.length > 0) || (oldVal && oldVal.length > 0)) {
+        this.$emit('change', ret)
+      }
     },
     defaultChecked: {
       handler: function (val) {
