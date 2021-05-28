@@ -83,7 +83,7 @@ export default {
         label: 'IP',
       },
       access_ip: {
-        label: 'IP',
+        label: this.$t('compute.host_access_ip'),
         filter: true,
         formatter: val => {
           return `access_ip.contains("${val}")`
