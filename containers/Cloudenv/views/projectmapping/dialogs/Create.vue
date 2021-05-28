@@ -368,12 +368,17 @@ export default {
       })
     },
     tagsLengthValidate (rule, value, callback) {
-      const keys = Object.keys(value)
-      if (keys.length > 20) {
+      if (value) {
+        const keys = Object.keys(value)
+        if (keys.length > 20) {
         // eslint-disable-next-line
         callback(false)
+        } else {
+          callback()
+        }
       } else {
-        callback()
+        // eslint-disable-next-line
+        callback(false)
       }
     },
   },
