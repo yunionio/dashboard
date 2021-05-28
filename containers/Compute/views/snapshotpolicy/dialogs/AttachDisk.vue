@@ -5,19 +5,15 @@
       <a-alert class="mb-2" type="warning" :message="message" />
       <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_1084')" :name="$t('dictionary.snapshotpolicy')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <loader loading v-if="!(bindedDisksLoaded && disksInitLoaded)" />
-      <a-form :form="form.fc" hideRequiredMark v-show="bindedDisksLoaded && disksInitLoaded">
-        <a-form-item :label="$t('compute.text_376')" v-bind="formItemLayout" v-if="bindedDisksLoaded">
-          <base-select
-            class="w-100"
-            filterable
-            remote
+      <loader loading v-if="!bindedDisksLoaded" />
+      <a-form :form="form.fc" hideRequiredMark v-else>
+        <a-form-item :label="$t('compute.text_376')" v-bind="formItemLayout">
+          <list-select
+            v-if="form.fc.getFieldValue('disks')"
             v-decorator="decorators.disks"
-            resource="disks"
-            :mapper="mapperDisks"
-            :params="diskParams"
-            :init-loaded.sync="disksInitLoaded"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_1085'), mode: 'multiple' }" />
+            :list-props="diskProps"
+            :multiple="true"
+            :formatter="v => v.name" />
         </a-form-item>
       </a-form>
     </div>
@@ -31,13 +27,18 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import DiskPropsMixin from '../mixins/diskProps'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
+import ListSelect from '@/sections/ListSelect'
 
 export default {
   name: 'AttachDiskDialog',
-  mixins: [DialogMixin, WindowsMixin],
+  components: {
+    ListSelect,
+  },
+  mixins: [DialogMixin, WindowsMixin, DiskPropsMixin],
   data () {
     return {
       loading: false,
