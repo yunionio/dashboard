@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('scope.cloudid')" />
+    <page-header :title="$t('scope.cloudid')" :tabs="tabs" :current-tab.sync="currentTab" />
     <template v-if="!loaded">
       <p class="text-center"><a-spin /></p>
     </template>
@@ -9,7 +9,6 @@
         <p class="text-center">{{ $t('common.notData') }}</p>
       </template>
       <template v-else>
-        <page-header :title="$t('scope.cloudid')" :tabs="tabs" :current-tab.sync="currentTab" />
         <page-body>
           <component :is="currentTab" />
         </page-body>
