@@ -1125,6 +1125,7 @@
   "compute.text_1147": "Existing Tags",
   "compute.text_1148": "Tag Key",
   "compute.text_1149": "Tag Value",
+  "compute.text_1150": "Please input the tag value",
   "compute.text_1151": "Depending on the selected region, the available types of platforms vary. GPU cloud servers and cloud hard drives are currently only supported by @:brand.",
   "compute.text_1152": "Configure GPU",
   "compute.text_1153": "Currently GPU cloud server is only supported by @:brand.",
