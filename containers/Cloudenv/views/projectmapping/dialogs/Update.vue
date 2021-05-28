@@ -9,19 +9,19 @@
         <!-- 应用账号 -->
         <a-form-item :label="$t('cloudenv.text_589')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.accounts" dropdownClassName="oc-select-dropdown" :showSearch="true" mode="multiple" option-filter-prop="children" :placeholder="$t('cloudenv.text_284', [$t('cloudenv.text_589')])" allowClear>
-            <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id">
-              <div>
+            <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id" :disabled="disabledFilter(item.project_mapping, item.id)">
+              <a-tooltip :title="disabledFilter(item.project_mapping, item.id)?$t('cloudenv.text_603'):''" placement="topLeft" arrow-point-at-center>
                 <a-row>
-                  <a-col :span="16">
-                    <div>{{ item.name }}</div>
-                  </a-col>
-                  <a-col :span="8" align="right">
-                    <div class="text-color-secondary option-show" style="text-align: right;display:none">
-                      {{ item.brand }}
-                    </div>
-                  </a-col>
+                <a-col :span="16">
+                  <div>{{ item.name }}</div>
+                </a-col>
+                <a-col :span="8" align="right">
+                  <div class="text-color-secondary option-show" style="text-align: right;display:none">
+                    {{ item.brand }}
+                  </div>
+                </a-col>
                 </a-row>
-              </div>
+              </a-tooltip>
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -37,6 +37,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { findPlatform } from '@/utils/common/hypervisor'
 
 export default {
   name: 'ProjectMappingUpdateDialog',
@@ -46,9 +47,16 @@ export default {
   data () {
     const initProjectDomainId = this.params.data[0].omain_id || 'default'
     let initAccountsValue = []
+    let initAccountsOptions = []
     if (this.params.data[0].accounts) {
       initAccountsValue = this.params.data[0].accounts.map(item => {
         return item.id
+      })
+      initAccountsOptions = this.params.data[0].accounts.map(item => {
+        return {
+          id: item.id,
+          name: item.name,
+        }
       })
     }
     return {
@@ -67,7 +75,7 @@ export default {
           },
         ],
       },
-      accountOptions: [],
+      accountOptions: initAccountsOptions,
       formItemLayout: {
         wrapperCol: {
           span: 20,
@@ -133,7 +141,7 @@ export default {
 
         this.loading = false
         this.cancelDialog()
-        this.params.success && this.params.success()
+        this.$bus.$emit('ProjectMappingRuleUpdate')
         this.$message.success(this.$t('common.success'))
       } catch (error) {
         this.loading = false
@@ -160,16 +168,33 @@ export default {
         }
         const { data } = await this.$d.list({ params })
         const cloudAccounts = data.data || []
-        this.accountOptions = cloudAccounts.map(item => {
-          return {
-            id: item.id,
-            name: item.name,
-            brand: this.$t('dashboard.text_98') + ': ' + item.brand,
+        const accountOptions = []
+        cloudAccounts.map(item => {
+          const isPublic = findPlatform(item.brand.toLowerCase()) === 'public'
+          if (isPublic) {
+            accountOptions.push({
+              id: item.id,
+              name: item.name,
+              brand: this.$t('dashboard.text_98') + ': ' + item.brand,
+              project_mapping: item.project_mapping || false,
+            })
           }
         })
+        this.accountOptions = accountOptions
       } catch (err) {
         throw err
       } finally {
+      }
+    },
+    disabledFilter (isBind, accountId) {
+      if (!isBind) {
+        return false
+      } else {
+        const { accounts = [] } = this.params.data[0]
+        const isBindToThis = accounts.some((item) => {
+          return item.id === accountId
+        })
+        return !isBindToThis
       }
     },
   },

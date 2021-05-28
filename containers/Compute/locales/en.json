@@ -1125,6 +1125,7 @@
   "compute.text_1147": "Existing Tags",
   "compute.text_1148": "Tag Key",
   "compute.text_1149": "Tag Value",
+  "compute.text_1150": "Please input the tag value",
   "compute.text_1151": "Depending on the selected region, the available types of platforms vary. GPU cloud servers and cloud hard drives are currently only supported by @:brand.",
   "compute.text_1152": "Configure GPU",
   "compute.text_1153": "Currently GPU cloud server is only supported by @:brand.",
@@ -1417,7 +1418,10 @@
   "compute.disable_delete_snapshot_by_disk_tooltip": "Snapshots must be deleted when the {0} disk is deleted",
   "compute.disable_delete_eip_by_brand_tooltip": "When the {0} platform virtual machine deletes the host, it does not support deleting the EIP at the same time",
   "compute.disable_delete_disk_by_brand_tooltip": "When deleting a host on a {0} platform virtual machine, the data disk must be deleted at the same time",
+  "compute.disable_delete_disk_by_disk_tooltip": "When deleting the host from the local hard disk, the data disk must be deleted at the same time",
   "compute.sku.setup.sell.status": "Setup Sell Status",
-  "compute.sku.prepaid_status": "Prepaid Status",
-  "compute.sku.postpaid_status": "Postpaid Status"
+  "compute.sku.prepaid_status": "Subscription",
+  "compute.sku.postpaid_status": "Postpaid",
+  "compute.transfer_host": "There is no host that meets the condition, please check the host or modify the condition and try again!",
+  "compute.host_access_ip": "Host Access IP"
 }

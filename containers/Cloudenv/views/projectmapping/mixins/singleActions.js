@@ -9,7 +9,6 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('cloudenv.text_590'),
-        // permission: 'proxysettings_update',
         action: (row) => {
           this.sidePageTriggerHandle(this, 'ProjectMappingSidePage', {
             id: row.id,
@@ -18,20 +17,19 @@ export default {
           this.initSidePageTab('rule-list')
         },
         meta: (row) => {
-          if (!row.can_update) {
-            return {
-              validate: false,
-            }
+          const ret = {
+            validate: !!row.can_update,
           }
-          return {
-            validate: this.isAdminMode || row.domain_id === this.userInfo.projectDomainId,
+          if (!(this.isAdminMode || row.domain_id === this.userInfo.projectDomainId)) {
+            ret.validate = false
+            ret.tooltip = this.$t('cloudenv.text_597')
           }
+          return ret
         },
       },
       {
         label: i18n.t('cloudenv.text_311'),
         actions: obj => {
-          const ownerDomain = this.isAdminMode || obj.domain_id === this.userInfo.projectDomainId
           return [
             // 修改
             {
@@ -47,28 +45,26 @@ export default {
                 })
               },
               meta: () => {
-                if (!obj.can_update) {
-                  return {
-                    validate: false,
-                  }
+                const ret = {
+                  validate: !!obj.can_update,
                 }
-                return {
-                  validate: ownerDomain,
-                }
+                return ret
               },
             },
             // 启用禁用
             ...getEnabledSwitchActions(this, obj, ['projectmappings_perform_enable', 'projectmappings_perform_disable'], {
               metas: [
                 () => {
-                  return {
-                    validate: !obj.enabled && ownerDomain,
+                  const ret = {
+                    validate: !obj.enabled,
                   }
+                  return ret
                 },
                 () => {
-                  return {
-                    validate: obj.enabled && ownerDomain,
+                  const ret = {
+                    validate: obj.enabled,
                   }
+                  return ret
                 },
               ],
             }),
@@ -85,41 +81,31 @@ export default {
                   onManager: this.onManager,
                 })
               },
-              meta: this.commonMeta,
+              meta: (row) => {
+                const ret = {
+                  validate: true,
+                }
+                if (!row.can_delete) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('cloudenv.text_596')
+                }
+                return ret
+              },
             },
           ]
         },
+        meta: (row) => {
+          const ownerDomain = this.isAdminMode || row.domain_id === this.userInfo.projectDomainId
+          const ret = {
+            validate: true,
+          }
+          if (!ownerDomain) {
+            ret.validate = false
+            ret.tooltip = this.$t('cloudenv.text_597')
+          }
+          return ret
+        },
       },
     ]
-  },
-  methods: {
-    commonMeta (row = {}) {
-      console.log('row', row)
-      // 不可删
-      if (!row.can_delete) {
-        return {
-          validate: false,
-          tooltip: i18n.t('cloudenv.text_596'),
-        }
-      }
-      // 启用状态不可删
-      // if (row.enabled) {
-      //   return {
-      //     validate: false,
-      //     tooltip: i18n.t('cloudenv.text_595'),
-      //   }
-      // }
-      // 域管理且非本域成员不可删
-      const { isDomainMode, userInfo } = this.$store.getters
-      if (isDomainMode && (userInfo.projectDomainId !== row.domain_id)) {
-        return {
-          validate: false,
-          tooltip: i18n.t('cloudenv.text_597'),
-        }
-      }
-      return {
-        validate: true,
-      }
-    },
   },
 }

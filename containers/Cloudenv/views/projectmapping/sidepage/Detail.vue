@@ -34,7 +34,8 @@ export default {
           filed: 'rules',
           slots: {
             default: ({ row }) => {
-              return [<div>{ row.rules ? row.rules.length : '-' }</div>]
+              if (!row.rules) return '-'
+              return <a onClick={ () => this.$emit('tab-change', 'rule-list') }>{row.rules.length}</a>
             },
           },
         },
@@ -55,9 +56,6 @@ export default {
     }
   },
   computed: {
-  },
-  created () {
-    console.log(this.$props)
   },
 }
 </script>

@@ -11,6 +11,7 @@
             <a-select default-value="or" v-decorator="[
               `matchs[${item}]`,
               {
+                nitialValue: 'or',
                 rules: [
                   {
                     required: true,
@@ -35,7 +36,8 @@
                 rules: [
                   {
                     required: true,
-                    message: $t('cloudenv.text_284', [$t('cloudenv.text_16')]),
+                    message: $t('cloudenv.text_602'),
+                    validator: tagsLengthValidate,
                   },
                 ],
               }
@@ -73,6 +75,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Tag from '../components/Tag'
 import DialogMixin from '@/mixins/dialog'
@@ -252,9 +255,9 @@ export default {
         const values = await this.form.fc.validateFields()
         // 获取参数
         const params = this.getUpdateParams(values)
-        const updateResult = await this.doUpdate(params)
+        await this.doUpdate(params)
         this.cancelDialog()
-        this.params.success && this.params.success(updateResult)
+        this.$bus.$emit('ProjectMappingRuleUpdate')
         this.$message.success(this.$t('common.success'))
       } catch (error) {
         throw error
@@ -284,20 +287,26 @@ export default {
       const keys = Object.keys(tag)
       keys.map(key => {
         result.push({
-          key: key,
+          key: R.replace(/(ext:|user:)/, '', key),
           value: tag[key],
         })
       })
       return result
     },
-    // addRule () {
-    //   const { form } = this
-    //   const keys = form.fc.getFieldValue('rules')
-    //   const nextKeys = keys.concat(id++)
-    //   form.fc.setFieldsValue({
-    //     rules: nextKeys,
-    //   })
-    // },
+    tagsLengthValidate (rule, value, callback) {
+      if (value) {
+        const keys = Object.keys(value)
+        if (keys.length > 20) {
+        // eslint-disable-next-line
+        callback(false)
+        } else {
+          callback()
+        }
+      } else {
+        // eslint-disable-next-line
+        callback(false)
+      }
+    },
   },
 }
 </script>

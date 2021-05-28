@@ -8,13 +8,6 @@
           button-type="default"
           @clear-selected="() => $emit('clear-selected')" />
           <div style="margin-left:auto" />
-          <!-- <div class="ml-4 d-flex flex-shrink-0 justify-content-end">
-            <template>
-              <a-tooltip :title="$t('common.text00011')">
-                <a-button class="ml-2" icon="setting" style="width: 40px;" @click="handleCustomList" />
-              </a-tooltip>
-            </template>
-          </div> -->
       </div>
       <vxe-grid
         v-bind="gridOptions"
@@ -82,6 +75,12 @@ export default {
             })
           },
           meta: () => {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
             return {
               buttonType: 'primary',
             }
@@ -98,7 +97,7 @@ export default {
             const ret = {
               validate: true,
             }
-            if (!(this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId)) {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
               ret.validate = false
               ret.tooltip = this.$t('cloudenv.text_597')
             }
@@ -109,32 +108,67 @@ export default {
           },
         },
         {
-          label: '排序',
+          label: this.$t('cloudenv.text_601'),
           permission: 'projectmappings_update',
           group: true,
           action: () => {
             this.canSort = true
+            this.gridOptions.data = [...this.initData]
           },
           meta: () => {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
             return {
-              validate: this.gridOptions.data.length > 1 && !this.canSort && (this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId),
+              validate: this.gridOptions.data.length > 1 && !this.canSort,
             }
           },
         },
       ],
-      groupSaveAction: {
-        label: '保存排序结果',
-        permission: 'projectmappings_update',
-        group: true,
-        action: () => {
-          this.updateProjectMappingRules()
+      groupSaveActions: [
+        {
+          label: this.$t('cloudenv.text_599'),
+          permission: 'projectmappings_update',
+          group: true,
+          action: () => {
+            this.updateProjectMappingRules()
+          },
+          meta: () => {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
+            return {
+              validate: this.canSort,
+            }
+          },
         },
-        meta: () => {
-          return {
-            validate: this.canSort && (this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId),
-          }
+        {
+          label: this.$t('cloudenv.text_600'),
+          permission: 'projectmappings_update',
+          group: true,
+          action: () => {
+            this.canSort = false
+            this.gridOptions.data = this.initData
+          },
+          meta: () => {
+            if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
+              return {
+                validate: false,
+                tooltip: this.$t('cloudenv.text_597'),
+              }
+            }
+            return {
+              validate: this.canSort,
+            }
+          },
         },
-      },
+      ],
       canSort: false,
       checkedRecords: [],
     }
@@ -153,14 +187,14 @@ export default {
       if (!this.canSort) {
         return [...this.groupNormalActions]
       } else {
-        return [...this.groupNormalActions, this.groupSaveAction]
+        return [...this.groupNormalActions, ...this.groupSaveActions]
       }
     },
   },
   watch: {
     data: {
       handler: function () {
-        this.gridOptions.data = this.initData
+        this.gridOptions.data = [...this.initData]
       },
       deep: true,
       immediate: true,
@@ -168,6 +202,7 @@ export default {
   },
   created () {
     this.treeDrop()
+    console.log('params', this.data)
   },
   methods: {
     treeDrop () {
@@ -256,11 +291,7 @@ export default {
       }
       this.createDialog('CustomListDialog', {
         title: this.$t('common.text00011'),
-        // config: this.config,
-        // update: this.updateConfig,
-        // showTagColumns: this.showTagColumns,
         customs: grid.getTableColumn().collectColumn,
-        // resource: this.resource,
         hidenColumns,
       })
     },

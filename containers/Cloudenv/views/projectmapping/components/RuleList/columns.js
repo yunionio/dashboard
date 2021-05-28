@@ -19,10 +19,13 @@ const getResourceRuleTableColumn = ({
             title={getTagTitle(item.key, item.value)}
             key={`${item.key}${item.value}`}
             style={{ backgroundColor: `rgba(${strRgb},.1)`, boxSizing: 'border-box', color: `rgb(${strRgb})`, border: `solid 1px rgb(${strRgb})`, padding: '0 5px', marginRight: '10px' }}>
-            { getTagTitle(item.key, item.value) }
+            { getTagTitle('user:' + item.key, item.value) }
           </span>)
         })
         return [<div>{ row.condition === 'and' ? i18n.t('cloudenv.text_588') : i18n.t('cloudenv.text_587') }</div>, <div>{ ...tags }</div>]
+      },
+      header: ({ column }, h) => {
+        return [<span>{title}</span>]
       },
     },
   }
@@ -44,7 +47,7 @@ export default {
           slots: {
             default: ({ row }, h) => {
               return [
-                <span class="text-color-secondary">{ row.project_name || '-'}</span>]
+                <span class="text-color-secondary">{ row.project || '-'}</span>]
             },
           },
         },
@@ -82,18 +85,18 @@ export default {
         },
       ],
       dragColumn: {
-        width: 60,
+        width: 1,
         slots: {
           default: () => {
             return [
-              <span class="drag-btn">
+              <span v-show={this.canSort} class="drag-btn">
                 <i class="vxe-icon--menu"></i>
               </span>,
             ]
           },
           header: () => {
             return [
-              <vxe-tooltip v-model={this.showHelpTip2} content={i18n.t('cloudenv.text_591')} enterable>
+              <vxe-tooltip v-show={this.canSort} v-model={this.showHelpTip2} content={i18n.t('cloudenv.text_591')} enterable>
                 <i class="vxe-icon--question" onClick={ () => { this.showHelpTip2 = !this.showHelpTip2 } }></i>
               </vxe-tooltip>,
             ]
@@ -123,7 +126,7 @@ export default {
           const ret = {
             validate: true,
           }
-          if (!(this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId)) {
+          if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
             ret.validate = false
             ret.tooltip = this.$t('cloudenv.text_597')
           }
@@ -141,7 +144,7 @@ export default {
           const ret = {
             validate: true,
           }
-          if (!(this.isAdminMode || this.params.projectDomainId === this.userInfo.projectDomainId)) {
+          if (!(this.isAdminMode || this.data.domain_id === this.userInfo.projectDomainId)) {
             ret.validate = false
             ret.tooltip = this.$t('cloudenv.text_597')
           }
@@ -153,10 +156,11 @@ export default {
   computed: {
     columns: function () {
       if (this.canSort) {
-        return [this.checkColumn, this.dragColumn, ...this.normalColmns]
+        this.dragColumn.width = 60
       } else {
-        return [this.checkColumn, ...this.normalColmns]
+        this.dragColumn.width = 1
       }
+      return [this.checkColumn, this.dragColumn, ...this.normalColmns]
     },
   },
 }
