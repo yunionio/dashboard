@@ -152,7 +152,7 @@ export default {
       if (this.forcastData && this.hostsOptions?.length === 0) {
         return this.$t('compute.transfer_host')
       }
-      return this.$t('compute.text_1384')
+      return this.$t('compute.text_1164')
     },
     handleConfirmDisabled () {
       return this.forcastData && this.hostsOptions?.length === 0
