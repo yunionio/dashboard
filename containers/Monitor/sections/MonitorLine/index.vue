@@ -73,6 +73,8 @@ export default {
       default: () => ({
         legend: {
           show: false,
+          selectedMode: 'multiple',
+          selected: {},
         },
       }),
     },
@@ -281,33 +283,53 @@ export default {
       }
     },
     _cancelHighlight () {
+      const selected = {}
+      const option = {
+        data: this.lineChartOptionsC.series.map(s => { selected[s.name] = true; return s.name }),
+        selectedMode: 'multiple',
+        show: false,
+        selected: selected,
+      }
       this.chartInstance.setOption({
-        series: {
-          name: this.seriesOldClickName,
-          lineStyle: {
-            type: 'solid',
-            width: 2,
-            shadowBlur: 0,
-            shadowOffsetX: 0,
-            shadowOffsetY: 0,
-          },
-        },
+        legend: option,
       })
+      // this.chartInstance.setOption({
+      //   series: {
+      //     name: this.seriesOldClickName,
+      //     lineStyle: {
+      //       type: 'solid',
+      //       width: 2,
+      //       shadowBlur: 0,
+      //       shadowOffsetX: 0,
+      //       shadowOffsetY: 0,
+      //     },
+      //   },
+      // })
     },
     _setHighlight (seriesName) {
       if (seriesName) {
+        const selected = {}
+        const option = {
+          data: this.lineChartOptionsC.series.map(s => { selected[s.name] = s.name === seriesName; return s.name }),
+          selectedMode: 'multiple',
+          selected: selected,
+          show: false,
+        }
         this.chartInstance.setOption({
-          series: {
-            name: seriesName,
-            lineStyle: {
-              width: 4,
-              shadowBlur: 4,
-              opacity: 1,
-              shadowOffsetX: 4,
-              shadowOffsetY: 4,
-            },
-          },
+          legend: option,
         })
+        // this.chartInstance.setOption({
+        //   series: {
+        //     name: seriesName,
+        //     lineStyle: {
+        //       width: 4,
+        //       shadowBlur: 4,
+        //       opacity: 1,
+        //       shadowOffsetX: 4,
+        //       shadowOffsetY: 4,
+        //     },
+        //   },
+        // })
       }
     },
     getMonitorLine () {

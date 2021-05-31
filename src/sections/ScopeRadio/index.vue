@@ -23,7 +23,6 @@
       <base-select
         resource="projects"
         v-decorator="decorators.project"
-        :labelFormat="projectsLabelFormat"
         :params="projectParams"
         :item.sync="project"
         filterable

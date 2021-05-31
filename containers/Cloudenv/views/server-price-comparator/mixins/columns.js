@@ -110,7 +110,7 @@ export default {
         slots: {
           default: ({ row }) => {
             const curObj = BUY_DURATIONS_OPTIONS.find(v => v.value === row.duration)
-            return curObj?.label || row.duration === '1W' ? i18n.t('compute.text_24') : i18n.t('compute.text_139')
+            return curObj?.label || (row.duration === '1W' ? i18n.t('compute.text_24') : i18n.t('compute.text_139'))
           },
         },
       },
