@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -135,6 +136,17 @@ const resourceMode = {
       )
     },
   },
+  projects: {
+    vnode: (vm, h) => {
+      const project = vm.data
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ project.name }>{ project.name }</span>
+          {(vm.isAdminMode && vm.l3PermissionEnable) ? <span style="color: #8492a6; font-size: 13px">{i18n.t('common_257')}{i18n.t('dictionary.domain')}: {project.project_domain}</span> : null}
+        </div>
+      )
+    },
+  },
 }
 
 export default {
@@ -160,6 +172,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(['scope', 'isAdminMode', 'isDomainMode', 'l3PermissionEnable', 'isProjectMode']),
     text () {
       return this._$t(this.data, this.nameKey)
     },
