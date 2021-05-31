@@ -19,6 +19,7 @@ const googleLogo = require('../../../../src/assets/images/providers/gcp.svg')
 const ctyunLogo = require('../../../../src/assets/images/providers/tianyi.svg')
 const apsaraLogo = require('../../../../src/assets/images/providers/apsara.svg')
 const ecloudLogo = require('../../../../src/assets/images/providers/ecloud.svg')
+const jdcloudLogo = require('../../../../src/assets/images/providers/jdcloud.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -83,6 +84,12 @@ export const CLOUDACCOUNT_TYPES = {
       logo: ecloudLogo,
       component: 'EcloudCreate',
       provider: providerMap.ecloud.key,
+    },
+    jdcloud: {
+      name: providerMap.jdcloud.label,
+      logo: jdcloudLogo,
+      component: 'JDcloudCreate',
+      provider: providerMap.jdcloud.key,
     },
   },
   private: {
@@ -166,6 +173,7 @@ export function getCloudaccountDocs (scope) {
     ctyun: i18n.t('cloudenv.text_138', [docs_path]),
     apsara: i18n.t('cloudenv.create_apsara_cloud_account', [docs_path]),
     ecloud: i18n.t('cloudenv.create_ecloud', [docs_path]),
+    jdcloud: i18n.t('cloudenv.create_jdcloud', [docs_path]),
   }
 }
 
@@ -194,6 +202,7 @@ export const ACCESS_URL = {
   },
   ucloud: {},
   ecloud: {},
+  jdcloud: {},
 }
 
 export const keySecretFields = {
@@ -409,6 +418,19 @@ export const keySecretFields = {
     k: 'access_key_id',
     s: 'access_key_secret',
     text: 'Ecloud',
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  jdcloud: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: 'JDcloud',
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),
