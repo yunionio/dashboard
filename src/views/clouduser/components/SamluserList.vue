@@ -43,14 +43,6 @@ export default {
       },
       singleActions: [
         {
-          label: this.$t('common_326'),
-          action: (obj) => {
-            this.createDialog('CloudpoliciesListForClouduserForUserDialog', {
-              data: [obj],
-            })
-          },
-        },
-        {
           label: this.$t('table.action.smal_login'),
           action: (obj) => {
             if (isAzure(obj.provider)) {
@@ -60,6 +52,14 @@ export default {
             } else {
               this.samlLogin(obj)
             }
+          },
+        },
+        {
+          label: this.$t('common_326'),
+          action: (obj) => {
+            this.createDialog('CloudpoliciesListForClouduserForUserDialog', {
+              data: [obj],
+            })
           },
         },
       ],
