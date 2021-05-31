@@ -6,7 +6,11 @@
     :vpcFormat="vpcFormat"
     :vpcParams="getVpcParams"
     :networkParams="getNetworkParams"
-    v-bind="formItemLayout" />
+    v-bind="formItemLayout">
+    <template v-slot:helplink>
+      {{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
+    </template>
+  </network-selects>
 </template>
 
 <script>
