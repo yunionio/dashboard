@@ -408,7 +408,7 @@ export const keySecretFields = {
   ecloud: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: 'Ecloud',
+    text: i18n.t('scopeCloudPrvidersMap.Ecloud'),
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),
