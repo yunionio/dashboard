@@ -136,6 +136,7 @@ const actionEableMap = {
       google: false,
       apsara: ['running'],
       jdcloud: ['running'],
+      ecloud: ['running'],
     },
   },
   'EIP SSH': {
@@ -157,6 +158,7 @@ const actionEableMap = {
       google: ['running'],
       apsara: ['running'],
       jdcloud: ['running'],
+      ecloud: ['running'],
     },
   },
   'IP SSH': {
@@ -178,6 +180,7 @@ const actionEableMap = {
       google: false,
       apsara: false,
       jdcloud: false,
+      ecloud: false,
     },
   },
   createSnapshot: {
