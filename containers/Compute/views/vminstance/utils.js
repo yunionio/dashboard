@@ -135,6 +135,7 @@ const actionEableMap = {
       ctyun: false,
       google: false,
       apsara: ['running'],
+      ecloud: ['running'],
     },
   },
   'EIP SSH': {
@@ -155,6 +156,7 @@ const actionEableMap = {
       ctyun: ['running'],
       google: ['running'],
       apsara: ['running'],
+      ecloud: ['running'],
     },
   },
   'IP SSH': {
@@ -175,6 +177,7 @@ const actionEableMap = {
       ctyun: false,
       google: false,
       apsara: false,
+      ecloud: false,
     },
   },
   createSnapshot: {
