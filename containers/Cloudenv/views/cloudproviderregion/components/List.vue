@@ -37,11 +37,14 @@ export default {
         idKey: 'cloudregion_id',
         filterOptions: {
           cloudregion: {
-            label: this.$t('cloudenv.text_95'),
+            label: this.$t('cloudenv.text_10'),
+            dropdown: true,
+            multiple: true,
+            items: [],
             filter: true,
             jointFilter: true,
             formatter: val => {
-              return `cloudregions.id(cloudregion_id).name.contains('${val}')`
+              return `cloudregions.id(cloudregion_id).id.in(${val.join(',')})`
             },
           },
         },
@@ -73,8 +76,39 @@ export default {
       ],
     }
   },
+  watch: {
+    cloudproviderId (Val, oldVal) {
+      if (oldVal !== Val && Val) {
+        this.fetchRegionList()
+      }
+    },
+  },
   created () {
+    this.fetchRegionList()
     this.list.fetchData()
+  },
+  methods: {
+    fetchRegionList () {
+      const params = {
+        manager: this.cloudproviderId,
+        scope: this.$store.getters.scope,
+      }
+      const self = this
+      try {
+        const m = new this.$Manager('cloudregions')
+        m.list({ params }).then((ret) => {
+          self.list.filterOptions.cloudregion.items = ret.data.data.map((item) => {
+            return {
+              label: item._i18n ? item._i18n.name : item.name,
+              key: item.id,
+            }
+          })
+        })
+      } catch (e) {
+        this.regionItems = []
+        throw e
+      }
+    },
   },
 }
 </script>

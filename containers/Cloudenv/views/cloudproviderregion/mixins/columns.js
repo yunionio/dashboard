@@ -6,7 +6,7 @@ export default {
     this.columns = [
       {
         field: 'cloudregion',
-        title: i18n.t('cloudenv.text_95'),
+        title: i18n.t('cloudenv.text_10'),
       },
       getEnabledTableColumn({ title: i18n.t('cloudenv.text_366') }),
       {
