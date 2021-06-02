@@ -80,12 +80,12 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
   }
 }
 
-export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.title.brand'), hidden = false, minWidth = 70 } = {}) => {
+export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.title.brand'), hidden = false, minWidth = 70, sortable = true } = {}) => {
   return {
     field,
     title,
     minWidth,
-    sortable: true,
+    sortable,
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)
