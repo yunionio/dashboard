@@ -239,6 +239,58 @@ export function hasBrandsByEnv (envs) {
   }
 }
 
+const GlobalSetupKeys = class {
+  get setupKeys () {
+    const { globalSetting = {} } = store.state
+    if (!globalSetting || !globalSetting.value || !globalSetting.value.setupKeys || globalSetting.value.setupKeys.length === 0) {
+      return []
+    }
+
+    const { setupKeys } = globalSetting.value
+    return setupKeys
+  }
+
+  hasSetupKey (envs) {
+    const _envs = R.type(envs) === 'String' ? [envs] : envs
+    if (!_envs.length || !this.setupKeys) return true
+    let f = false
+    for (let i = 0; i < _envs.length; i++) {
+      const env = _envs[i]
+      if (this.setupKeys.indexOf(env) > -1) {
+        f = true
+        break
+      }
+    }
+    return f
+  }
+
+  every (callback) {
+    if (!this.setupKeys) return false
+    return this.setupKeys.every(callback)
+  }
+
+  hasAll (envs) {
+    const _envs = R.type(envs) === 'String' ? [envs] : envs
+    return _envs && this.setupKeys && _envs.every((env) => { return setupKeys.indexOf(env) > -1 })
+  }
+
+  hasAny (envs) {
+    return this.hasSetupKey(envs)
+  }
+
+  hasNoneOf (envs) {
+    return !this.hasAny(envs)
+  }
+
+  isSubSet (envs) {
+    const _envs = R.type(envs) === 'String' ? [envs] : envs
+    return _envs && this.setupKeys && this.setupKeys.every((env) => { return _envs.indexOf(env) > -1 })
+  }
+}
+
+const setupKeys = new GlobalSetupKeys()
+export { setupKeys }
+
 export function hasSetupKey (envs) {
   const { globalSetting = {} } = store.state
   if (!globalSetting || !globalSetting.value || !globalSetting.value.setupKeys || globalSetting.value.setupKeys.length === 0) return true
