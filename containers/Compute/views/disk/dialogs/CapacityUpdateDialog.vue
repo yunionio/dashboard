@@ -82,6 +82,14 @@ export default {
         data,
       })
     },
+    // 对于已经挂载了虚拟机的磁盘扩容
+    doCreate2 (data) {
+      return new this.$Manager('servers').performAction({
+        id: this.params.data[0].guests[0].id,
+        action: 'resize-disk',
+        data,
+      })
+    },
     async handleConfirm () {
       this.loading = true
       try {
@@ -91,7 +99,15 @@ export default {
           size: values.size * 1024,
         }
         this.loading = true
-        await this.doCreate(values)
+        if (this.params.data[0].guest_count && this.params.data[0].guest_count >= 1) {
+          await this.doCreate2({
+            disk: this.params.data[0].id,
+            size: values.size,
+          })
+        } else {
+          await this.doCreate(values)
+        }
+
         this.loading = false
         this.params.refresh()
         this.cancelDialog()
