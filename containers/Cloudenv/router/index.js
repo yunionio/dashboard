@@ -8,7 +8,7 @@ import Proxysetting from '@Cloudenv/views/proxysetting'
 // import PriceComparatorList from '@Cloudenv/views/server-price-comparator'
 // import Policydefinition from '@Cloudenv/views/policydefinition'
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey } from '@/utils/auth'
+import { hasSetupKey, setupKeys } from '@/utils/auth'
 
 import store from '@/store'
 import i18n from '@/locales'
@@ -109,7 +109,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.projectmapping')) {
                 return true
               }
-              return !hasSetupKey(['public'])
+              return !hasSetupKey('public') || setupKeys.isSubSet(['public', 'jdcloud', 'ecloud'])
             },
           },
           component: Layout,

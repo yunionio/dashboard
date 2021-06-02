@@ -262,7 +262,7 @@ export default {
       }
     },
     RenderNetwork () {
-      const { networkLoading, filterOption, disabled } = this
+      const { networkLoading, filterOption, disabled, fetchNetwork } = this
       const _handleChange = (networkId) => {
         const data = this.getSelectedValue('network', networkId)
         this.$emit('networkChange', data)
@@ -283,9 +283,12 @@ export default {
         </a-select-option>
       })
       return (
-        <a-select disabled={disabled} showSearch placeholder={i18n.t('common_227')} onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
-          {options}
-        </a-select>
+        <div>
+          <a-select style={{ width: 'calc(100% - 22px)' }} disabled={disabled} showSearch placeholder={i18n.t('common_227')} onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
+            {options}
+          </a-select>
+          <a-icon type="sync" class="ml-2 primary-color" spin={networkLoading} onClick={fetchNetwork} />
+        </div>
       )
     },
   },
