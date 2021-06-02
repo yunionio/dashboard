@@ -236,5 +236,9 @@
       "usage_extra": "使用量指标说明详见 {link}",
       "usage_link": "说明文档"
     }
-  }
+  },
+  "dashboard.overview_alert_sum": "未恢复告警：{0}",
+  "dashboard.resource_type_consumption_percent": "本月资源消费类型占比",
+  "dashboard.brand_consumption_percent": "本月平台消费占比",
+  "dashboard.total_fee": "总费用"
 }

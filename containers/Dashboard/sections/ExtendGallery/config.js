@@ -90,6 +90,24 @@ const options = [
     scope: ['project'],
     component: 'ProjectQuota',
   },
+  {
+    label: i18n.t('monitor.overview_alert_sum'),
+    desc: '',
+    icon: 'dashboard-usage',
+    h: 5,
+    w: 5,
+    // scope: ['project'],
+    component: 'UnrecoveredAlarm',
+  },
+  {
+    label: '本月消费占比',
+    desc: '本月某个资源的消费占比',
+    icon: 'dashboard-usage',
+    h: 5,
+    w: 5,
+    // scope: ['project'],ConsumptionPercent
+    component: 'ConsumptionPercent',
+  },
 ]
 
 export default options
