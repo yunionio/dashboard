@@ -2,7 +2,7 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
         </div>
@@ -20,13 +20,11 @@
         </template>
       </div>
     </div>
-    <base-drawer class="ring-drawer-wrapper" @update:visible="updateVisible" :visible="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
-      <slot />
+    <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
       <a-form
         hideRequiredMark
         :form="form.fc"
         v-bind="formItemLayout">
-        <!-- 名称 -->
         <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
@@ -37,37 +35,51 @@
 </template>
 
 <script>
-// import * as R from 'ramda'
-import mixin from './mixin'
+// import i18n from 'vue-i18n'
+import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import { numerify } from '@/filters'
 import { chartColors } from '@/constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
+import { resolveValueChangeField } from '@/utils/common/ant'
 import ConsumptionConfig from '@Dashboard/sections/ConsumptionConfig'
 import { getCurrency } from '@/utils/common/cookie'
 import { currencyUnitMap } from '@/constants/currency'
 
 export default {
-  name: 'DoughnutResourceType',
+  name: 'ConsumptionTrend',
   components: {
     BaseDrawer,
     ConsumptionConfig,
   },
-  mixins: [mixin],
+  props: {
+    options: {
+      type: Object,
+      required: true,
+    },
+    params: Object,
+  },
   data () {
-    const initialNameValue = ((this.params && this.params.type !== 'Brand') && this.params.name) || this.$t('dashboard.resource_type_consumption_percent')
+    const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.consmption_trend')
     const initialCloudEnvValue = ((this.params && this.params.type !== 'Brand') && this.params.cloud_env) || ''
     const initialBrandValue = ((this.params && this.params.type !== 'Brand') && this.params.brand) || ''
     const initCurrencyValue = (this.params && this.params.currency) || getCurrency()
     return {
-      data: {},
+      data: [],
+      visible: false,
       loading: false,
+      seriesData: [],
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            const newField = resolveValueChangeField(values)
+            R.forEachObjIndexed((item, key) => {
+              this.$set(this.form.fd, key, item)
+            }, newField)
+          },
+        }),
         fd: {
           name: initialNameValue,
-          cloud_env: initialCloudEnvValue,
-          brand: initialBrandValue,
-          currency: initCurrencyValue,
         },
       },
       decorators: {
@@ -105,54 +117,45 @@ export default {
           },
         ],
       },
+      formItemLayout: {
+        wrapperCol: {
+          span: 18,
+        },
+        labelCol: {
+          span: 6,
+        },
+      },
       chartOptions: {
-        title: [
-          {
-            text: this.$t('dashboard.total_fee'),
-            subtext: '',
-            textStyle: {
-              fontSize: 12,
-              color: '#ccc',
-            },
-            subtextStyle: {
-              fontSize: 18,
-              color: 'rgb(100, 100, 100)',
-            },
-            top: '30%',
-            left: 'center',
-          },
-        ],
-
         tooltip: {
+          show: true,
           trigger: 'item',
         },
-        legend: {
-          bottom: '3%',
-          left: 'center',
+        grid: {
+          left: 50,
+          bottom: 30,
+          top: 30,
+          right: 20,
+          width: 'auto',
         },
-        color: chartColors,
+        xAxis: {
+          type: 'category',
+          data: [],
+        },
+        yAxis: {
+          type: 'value',
+        },
         series: [
           {
-            type: 'pie',
-            radius: ['50%', '65%'],
-            center: ['50%', '40%'],
-            label: {
-              normal: {
-                show: false,
-              },
-            },
-            labelLine: {
-              normal: {
-                show: false,
-              },
-            },
+            type: 'bar',
             data: [],
           },
         ],
+        color: chartColors,
       },
     }
   },
   computed: {
+    ...mapGetters(['scope', 'capability', 'isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
     newCurrencys () {
       return this.CURRENCYS.filter(v => {
         return this.currencyOpts.find(obj => obj.item_id === v.key)
@@ -179,10 +182,8 @@ export default {
     },
   },
   created () {
-    if (this.params && this.params.type !== 'Brand') {
-      this.form.fd = this.params
-    }
-    this.$emit('update', this.options.i, this.form.fd)
+    const values = { ...this.form.fd }
+    this.$emit('update', this.options.i, values)
     this.fetchData()
   },
   methods: {
@@ -191,7 +192,7 @@ export default {
     },
     getDate () {
       const end = this.$moment()
-      const start = this.$moment().startOf('month')
+      const start = this.$moment().subtract(30, 'days')
       return {
         start_date: start.format('YYYY-MM-DD') + 'TZ',
         end_date: end.format('YYYY-MM-DD') + 'TZ',
@@ -204,7 +205,7 @@ export default {
       this.loading = true
       try {
         const params = {
-          query_type: 'res_type_stat',
+          query_type: 'expense_trend',
           admin: this.$store.getters.isAdminMode,
           scope: this.$store.getters.scope,
           ...this.getDate(),
@@ -221,55 +222,37 @@ export default {
         if (this.form.fd.account) {
           params.account = this.form.fd.account
         }
+
         const { data = {} } = await new this.$Manager('bill_analysises', 'v1').list({ params })
         const { data: series = [] } = data
-        let total = 0
-        const chartData = []
+        const yData = []
+        const xData = []
         if (series.length > 0) {
           series.map(item => {
-            total += item.res_fee
-            chartData.push({ name: this.getResName(item.item_name), value: item.res_fee })
+            yData.push(numerify(item.stat_value, '0.00'))
+            xData.push(this.$moment(item.date_info).format('MM-DD'))
           })
         }
-        this.chartOptions.series[0].data = chartData
-        this.chartOptions.title[0].subtext = `${this.currencySign}${numerify(total, '0,0.00')}`
+        this.chartOptions.xAxis.data = xData
+        this.chartOptions.series[0].data = yData
       } finally {
         this.loading = false
       }
     },
     handleEdit () {
-      this.updateVisible(true)
-    },
-    updateVisible (val) {
-      this.$emit('update:visible', val)
+      this.visible = true
     },
     async handleSubmit () {
       try {
         const values = await this.form.fc.validateFields()
         this.form.fd = values
-        this.$emit('update', this.options.i, { type: 'Resource', ...values })
-        this.updateVisible(false)
+        const updateValues = { ...values }
+        this.$emit('update', this.options.i, updateValues)
+        this.visible = false
       } catch (error) {
         throw error
       }
     },
-    getResName (name) {
-      if (this.$te(`bill_resource_type.${name}`)) {
-        return this.$t(`bill_resource_type.${name}`)
-      }
-      return name
-    },
   },
 }
 </script>
-
-<style lang="less" scoped>
-.percent-tips {
-  font-size: 18px;
-}
-.ring-drawer-wrapper {
-  &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
-    animation: none;
-  }
-}
-</style>

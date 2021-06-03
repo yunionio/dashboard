@@ -240,5 +240,7 @@
   "dashboard.overview_alert_sum": "未恢复告警：{0}",
   "dashboard.resource_type_consumption_percent": "本月资源消费类型占比",
   "dashboard.brand_consumption_percent": "本月平台消费占比",
-  "dashboard.total_fee": "总费用"
+  "dashboard.total_fee": "总费用",
+  "dashboard.consmption_trend": "近30天消费趋势",
+  "dashboard.alerts_trend": "近30天告警趋势"
 }

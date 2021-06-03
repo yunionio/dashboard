@@ -105,8 +105,26 @@ const options = [
     icon: 'dashboard-usage',
     h: 5,
     w: 5,
-    // scope: ['project'],ConsumptionPercent
+    // scope: ['project'],
     component: 'ConsumptionPercent',
+  },
+  {
+    label: i18n.t('dashboard.consmption_trend'),
+    desc: '',
+    icon: 'dashboard-usage',
+    h: 5,
+    w: 5,
+    // scope: ['project'],
+    component: 'ConsumptionTrend',
+  },
+  {
+    label: i18n.t('dashboard.alerts_trend'),
+    desc: '',
+    icon: 'dashboard-usage',
+    h: 5,
+    w: 5,
+    // scope: ['project'],
+    component: 'AlertsTrend',
   },
 ]
 
