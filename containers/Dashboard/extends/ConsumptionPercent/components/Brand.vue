@@ -37,13 +37,12 @@
 </template>
 
 <script>
-// import * as R from 'ramda'
+import { mapState } from 'vuex'
 import mixin from './mixin'
 import { numerify } from '@/filters'
 import { chartColors, PROVIDER_MAP } from '@/constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import ConsumptionConfig from '@Dashboard/sections/ConsumptionConfig'
-import { getCurrency } from '@/utils/common/cookie'
 import { currencyUnitMap } from '@/constants/currency'
 
 export default {
@@ -55,9 +54,7 @@ export default {
   mixins: [mixin],
   data () {
     const initialNameValue = ((this.params && this.params.type !== 'Resource') && this.params.name) || this.$t('dashboard.brand_consumption_percent')
-    // const initialCloudEnvValue = ((this.params && this.params.type !== 'Brand') && this.params.cloud_env) || ''
-    // const initialBrandValue = ((this.params && this.params.type !== 'Brand') && this.params.brand) || ''
-    const initCurrencyValue = (this.params && this.params.currency) || getCurrency()
+    const initCurrencyValue = (this.params && this.params.currency) || this.currency
     return {
       data: {},
       loading: false,
@@ -133,6 +130,10 @@ export default {
     }
   },
   computed: {
+    ...mapState('common', {
+      currency: state => state.bill.currency,
+      currencyOpts: state => state.bill.currencyOpts,
+    }),
     newCurrencys () {
       return this.CURRENCYS.filter(v => {
         return this.currencyOpts.find(obj => obj.item_id === v.key)
@@ -140,6 +141,14 @@ export default {
     },
     currencySign () {
       return currencyUnitMap[this.form.fd.currency]?.sign || '¥'
+    },
+    currencyParams () {
+      if (this.form.fd.currency) {
+        return {
+          filter: [`currency.equals("${this.form.fd.currency}")`],
+        }
+      }
+      return {}
     },
   },
   watch: {
@@ -150,9 +159,6 @@ export default {
         config = {
           ...config,
           initialValue: val[key],
-        }
-        if (key === 'currency' && !config.initialValue) {
-          config.initialValue = (this.params && this.params.currency) || getCurrency()
         }
         this.decorators[key][1] = config
       }
@@ -175,8 +181,6 @@ export default {
       return {
         start_date: start.format('YYYY-MM-DD') + 'TZ',
         end_date: end.format('YYYY-MM-DD') + 'TZ',
-        // start_date: '2021-05-01TZ',
-        // end_date: '2021-05-31TZ',
         data_type: 'day',
       }
     },
@@ -188,9 +192,7 @@ export default {
           admin: this.$store.getters.isAdminMode,
           scope: this.$store.getters.scope,
           ...this.getDate(),
-        }
-        if (this.form.fd.currency) {
-          params.currency = this.form.fd.currency
+          ...this.currencyParams,
         }
         const { data = {} } = await new this.$Manager('bill_analysises', 'v1').list({ params })
         const { data: series = [] } = data

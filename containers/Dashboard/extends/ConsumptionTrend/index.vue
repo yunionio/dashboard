@@ -35,16 +35,15 @@
 </template>
 
 <script>
-// import i18n from 'vue-i18n'
 import * as R from 'ramda'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { numerify } from '@/filters'
 import { chartColors } from '@/constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import ConsumptionConfig from '@Dashboard/sections/ConsumptionConfig'
-import { getCurrency } from '@/utils/common/cookie'
 import { currencyUnitMap } from '@/constants/currency'
+import { uuid } from '@/utils/utils'
 
 export default {
   name: 'ConsumptionTrend',
@@ -61,9 +60,10 @@ export default {
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.consmption_trend')
-    const initialCloudEnvValue = ((this.params && this.params.type !== 'Brand') && this.params.cloud_env) || ''
-    const initialBrandValue = ((this.params && this.params.type !== 'Brand') && this.params.brand) || ''
-    const initCurrencyValue = (this.params && this.params.currency) || getCurrency()
+    const initialCloudEnvValue = (this.params && this.params.cloud_env) || ''
+    const initialBrandValue = (this.params && this.params.brand) || ''
+    const initCurrencyValue = (this.params && this.params.currency) || this.currency
+    const initAccountValue = (this.params && this.params.account) || ''
     return {
       data: [],
       visible: false,
@@ -80,6 +80,10 @@ export default {
         }),
         fd: {
           name: initialNameValue,
+          cloud_env: initialCloudEnvValue,
+          brand: initialBrandValue,
+          currency: initCurrencyValue,
+          account: initAccountValue,
         },
       },
       decorators: {
@@ -107,7 +111,7 @@ export default {
         account: [
           'account',
           {
-            initialValue: this.params && this.params.account,
+            initialValue: initAccountValue,
           },
         ],
         currency: [
@@ -156,13 +160,19 @@ export default {
   },
   computed: {
     ...mapGetters(['scope', 'capability', 'isAdminMode', 'isDomainMode', 'isProjectMode', 'userInfo']),
-    newCurrencys () {
-      return this.CURRENCYS.filter(v => {
-        return this.currencyOpts.find(obj => obj.item_id === v.key)
-      })
-    },
+    ...mapState('common', {
+      currency: state => state.bill.currency,
+    }),
     currencySign () {
       return currencyUnitMap[this.form.fd.currency]?.sign || '¥'
+    },
+    currencyParams () {
+      if (this.form.fd.currency) {
+        return {
+          filter: [`currency.equals("${this.form.fd.currency}")`],
+        }
+      }
+      return {}
     },
   },
   watch: {
@@ -173,9 +183,6 @@ export default {
         config = {
           ...config,
           initialValue: val[key],
-        }
-        if (key === 'currency' && !config.initialValue) {
-          config.initialValue = (this.params && this.params.currency) || getCurrency()
         }
         this.decorators[key][1] = config
       }
@@ -190,37 +197,46 @@ export default {
     refresh () {
       return this.fetchData()
     },
+    cloudEnv (val) {
+      switch (val) {
+        case 'onpremise':
+          return { is_on_premise: true }
+        case 'private':
+          return { private_cloud: true }
+        case 'public':
+          return { public_cloud: true }
+        default:
+          return {}
+      }
+    },
     getDate () {
       const end = this.$moment()
       const start = this.$moment().subtract(30, 'days')
       return {
         start_date: start.format('YYYY-MM-DD') + 'TZ',
         end_date: end.format('YYYY-MM-DD') + 'TZ',
-        // start_date: '2021-05-01TZ',
-        // end_date: '2021-05-31TZ',
         data_type: 'day',
       }
     },
     async fetchData () {
       this.loading = true
       try {
+        const envParams = this.cloudEnv(this.form.fd.cloud_env || '')
         const params = {
+          $t: uuid(),
           query_type: 'expense_trend',
           admin: this.$store.getters.isAdminMode,
           scope: this.$store.getters.scope,
           ...this.getDate(),
-        }
-        if (this.form.fd.currency) {
-          params.currency = this.form.fd.currency
+          ...envParams,
+          ...this.currencyParams,
         }
         if (this.form.fd.brand) {
           params.brand = this.form.fd.brand
         }
-        if (this.form.fd.cloud_env) {
-          params.cloud_env = this.form.fd.cloud_env
-        }
         if (this.form.fd.account) {
-          params.account = this.form.fd.account
+          params.range_type = 'cloudaccounts'
+          params.range_id = this.form.fd.account
         }
 
         const { data = {} } = await new this.$Manager('bill_analysises', 'v1').list({ params })
