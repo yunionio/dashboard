@@ -5,6 +5,7 @@
         <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
+          <router-link v-if="!edit" to="/billoverview" class="ml-2">{{$t('dashboard.more')}}</router-link>
         </div>
       </div>
       <div class="dashboard-card-body flex-column justify-content-center">
@@ -39,6 +40,7 @@
 <script>
 import { mapState } from 'vuex'
 import mixin from './mixin'
+import { uuid } from '@/utils/utils'
 import { numerify } from '@/filters'
 import { chartColors, PROVIDER_MAP } from '@/constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
@@ -52,6 +54,10 @@ export default {
     ConsumptionConfig,
   },
   mixins: [mixin],
+  props: {
+    params: Object,
+    edit: Boolean,
+  },
   data () {
     const initialNameValue = ((this.params && this.params.type !== 'Resource') && this.params.name) || this.$t('dashboard.brand_consumption_percent')
     const initCurrencyValue = (this.params && this.params.currency) || this.currency
@@ -188,6 +194,7 @@ export default {
       this.loading = true
       try {
         const params = {
+          $t: uuid(),
           query_type: 'platform_brand_expense',
           admin: this.$store.getters.isAdminMode,
           scope: this.$store.getters.scope,

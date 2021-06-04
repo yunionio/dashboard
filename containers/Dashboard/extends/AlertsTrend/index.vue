@@ -5,6 +5,7 @@
         <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
+          <router-link v-if="!edit" to="/monitoroverview" class="ml-2">{{$t('dashboard.more')}}</router-link>
         </div>
       </div>
       <div class="dashboard-card-body flex-column justify-content-center">
@@ -56,6 +57,7 @@ export default {
       required: true,
     },
     params: Object,
+    edit: Boolean,
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.alerts_trend')

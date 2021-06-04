@@ -237,5 +237,16 @@
       "usage_link": "Documentation"
     }
   },
-  "dashboard.overview_alert_sum": "Alerts Firing：{0}"
+  "dashboard.overview_alert_sum": "Alerts Firing：{0}",
+  "dashboard.resource_type_consumption_percent": "Proportion of resource consumption type this month",
+  "dashboard.brand_consumption_percent": "Proportion of platform consumption this month",
+  "dashboard.total_fee": "Total Fee",
+  "dashboard.consmption_trend": "Consumption trends in the past 30 days",
+  "dashboard.alerts_trend": "Alarm trend in the last 30 days",
+  "dashboard.cloud_account_health": "Cloud account health status",
+  "dashboard.effective_account_health": "Number of valid cloud accounts",
+  "dashboard.uneffective_account_health": "Number of invalid cloud accounts",
+  "dashboard.consumption_percent": "Proportion of consumption this month",
+  "dashboard.consumption_percent_info": "Show the consumption proportion of each resource and platform this month",
+  "dashboard.each": ""
 }

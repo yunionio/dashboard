@@ -245,7 +245,8 @@
   "dashboard.alerts_trend": "近30天告警趋势",
   "dashboard.cloud_account_health": "云账号健康状态",
   "dashboard.effective_account_health": "有效的云账号数量",
-  "dashboard.uneffective_account_health": "无效的云账号数量"
-
-
+  "dashboard.uneffective_account_health": "无效的云账号数量",
+  "dashboard.consumption_percent": "本月消费占比",
+  "dashboard.consumption_percent_info": "显示本月各资源和平台的消费占比",
+  "dashboard.each": "个"
 }

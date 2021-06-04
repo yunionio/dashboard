@@ -5,6 +5,7 @@
         <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
+          <router-link v-if="!edit" to="/billoverview" class="ml-2">{{$t('dashboard.more')}}</router-link>
         </div>
       </div>
       <div class="dashboard-card-body flex-column justify-content-center">
@@ -52,6 +53,10 @@ export default {
     ConsumptionConfig,
   },
   mixins: [mixin],
+  props: {
+    params: Object,
+    edit: Boolean,
+  },
   data () {
     const initialNameValue = ((this.params && this.params.type !== 'Brand') && this.params.name) || this.$t('dashboard.resource_type_consumption_percent')
     const initialCloudEnvValue = ((this.params && this.params.type !== 'Brand') && this.params.cloud_env) || ''
@@ -117,7 +122,7 @@ export default {
               fontSize: 18,
               color: 'rgb(100, 100, 100)',
             },
-            top: '30%',
+            top: '38%',
             left: 'center',
           },
         ],
@@ -125,16 +130,12 @@ export default {
         tooltip: {
           trigger: 'item',
         },
-        legend: {
-          bottom: '3%',
-          left: 'center',
-        },
         color: chartColors,
         series: [
           {
             type: 'pie',
             radius: ['50%', '65%'],
-            center: ['50%', '40%'],
+            center: ['50%', '50%'],
             label: {
               normal: {
                 show: false,
@@ -243,8 +244,10 @@ export default {
         const chartData = []
         if (series.length > 0) {
           series.map(item => {
-            total += item.res_fee
-            chartData.push({ name: this.getResName(item.item_name), value: item.res_fee })
+            if (item.res_fee !== 0) {
+              total += item.res_fee
+              chartData.push({ name: this.getResName(item.item_name), value: item.res_fee })
+            }
           })
         }
         this.chartOptions.series[0].data = chartData

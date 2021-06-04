@@ -5,6 +5,7 @@
         <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
+          <!-- <router-link v-if="!edit" to="/notice" class="ml-2">{{$t('dashboard.more')}}</router-link> -->
         </div>
       </div>
       <div class="dashboard-card-body flex-column justify-content-center">
@@ -13,11 +14,11 @@
             <div class="dashboard-fco-wrap">
               <div class="account-health-row p-2">
                 <div class="account-health-title mt-2">{{$t('dashboard.effective_account_health')}}</div>
-                <div class="account-health-value green-color mt-2">{{avaliableNum}}个</div>
+                <div class="account-health-value green-color mt-2">{{avaliableNum}}{{$t('dashboard.each')}}</div>
               </div>
               <div class="account-health-row p-2">
                 <div class="account-health-title">{{$t('dashboard.uneffective_account_health')}}</div>
-                <div class="account-health-value red-color mt-2">{{unavaliableNum}}个</div>
+                <div class="account-health-value red-color mt-2">{{unavaliableNum}}{{$t('dashboard.each')}}</div>
               </div>
             </div>
           </div>
@@ -58,6 +59,7 @@ export default {
       required: true,
     },
     params: Object,
+    edit: Boolean,
   },
   data () {
     const initialNameValue = (this.params && this.params.name) || this.$t('dashboard.cloud_account_health')

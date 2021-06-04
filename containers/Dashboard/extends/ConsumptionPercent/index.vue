@@ -6,7 +6,8 @@
     :formItemLayout="formItemLayout"
     :options="options"
     @update="update"
-    :params="params">
+    :params="params"
+    :edit="edit">
     <a-row class="mb-4">
       <a-col :span="formItemLayout.labelCol.span" class="ant-form-item-label">
         <label>{{$t('dashboard.text_24')}}</label>
@@ -38,6 +39,7 @@ export default {
       required: true,
     },
     params: Object,
+    edit: Boolean,
   },
   data () {
     const typeOps = []
