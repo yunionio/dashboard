@@ -294,7 +294,6 @@ export default {
   },
   render () {
     const { getFieldDecorator } = this.FC
-    const showHelpLink = !!this.$slots.helplink
     const RenderCols = this.types.map(name => {
       const sn = this.firstName(name)
       const decorator = this.decorators && this.decorators[name]
@@ -314,8 +313,11 @@ export default {
         const Render = this[`Render${sn}`]()
         return (
           <a-col span={this.colSpan}>
-            <a-form-item wrapperCol={{ span: 24 }} style={ showHelpLink ? { 'margin-bottom': '0px' } : {} }>
+            <a-form-item wrapperCol={{ span: 24 }}>
               {getFieldDecorator(name, _options)(Render)}
+              <div slot="extra" key={name}>
+                { name === 'network' ? this.$slots.helplink : null }
+              </div>
             </a-form-item>
           </a-col>
         )
@@ -324,13 +326,8 @@ export default {
     })
     return (
       <a-form-item required={this.isRequired} labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
-        <a-row gutter={[8, 1]}>
+        <a-row gutter={8}>
           {RenderCols}
-        </a-row>
-        <a-row gutter={[8, 1]} v-if={showHelpLink} >
-          <a-col>
-            { this.$slots.helplink }
-          </a-col>
         </a-row>
       </a-form-item>
     )
