@@ -126,6 +126,15 @@ const options = [
     // scope: ['project'],
     component: 'AlertsTrend',
   },
+  {
+    label: i18n.t('dashboard.cloud_account_health'),
+    desc: '',
+    icon: 'dashboard-usage',
+    h: 5,
+    w: 5,
+    // scope: ['project'],
+    component: 'AccountHealth',
+  },
 ]
 
 export default options
