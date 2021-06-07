@@ -1,5 +1,5 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
+  <base-dialog :width="1000" @cancel="cancelDialog">
     <div slot="header">{{$t('cloudenv.text_583')}}</div>
     <div slot="body">
       <a-form
@@ -120,7 +120,9 @@ import Tag from '../components/Tag'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
+const brandMap = typeClouds.getBrand()
+
 let id = 0
 export default {
   name: 'ProjectMappingCreateDialog',
@@ -244,7 +246,7 @@ export default {
             accountOptions.push({
               id: item.id,
               name: item.name,
-              brand: this.$t('dashboard.text_98') + ': ' + item.brand,
+              brand: this.$t('cloudenv.text_102') + ': ' + brandMap[item.brand].label,
               project_mapping: item.project_mapping || false,
             })
           }

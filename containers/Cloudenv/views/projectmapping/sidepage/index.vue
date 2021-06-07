@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('cloudenv.text_21')"
+    :title="$t('cloudenv.text_580')"
     icon="res-proxysetting"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
