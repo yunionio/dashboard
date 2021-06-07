@@ -53,5 +53,12 @@ export default {
     disable_user_on_import: 'Enable means that the user status is enabled, then the users brought in this time can use the system, if disabled, you can reset it in the user list after the import is successful',
     defaultServerNetwork: 'The server will be assigned an IP address from the IP subnet that belongs to the automatically assigned address pool',
     deleteDiskAtTheSameTime: 'If it is not checked, only the system disk will be deleted. After checking, the mounted data disk will be deleted together with the system disk.',
+    shutdownStopCharging: `After shutting down, please pay attention to the following information：<br />
+                          * After shutting down, the CPU and memory will be released, and the billing of the CPU and memory will be stopped. The associated hard disk, mirroring, and public network bandwidth (if billing is required) will still be billed<br />
+                          * After shutting down, the CPU and memory of the instance will no longer be reserved, so it may fail when the instance is started again. At this point, you can try to start again, or start again at a different time<br />
+                          * After the shutdown, the common public IP will be released and cannot be retrieved. It is recommended that you first convert to a flexible public IP before performing the shutdown operation<br />
+                          * After shutdown, the elastic public IP will be reserved and will not be released, and no fee will be charged during shutdown<br />
+                          * During shutdown, many instances of operations (such as adjusting the configuration, reinstalling the system, etc.) may not be supported. If you need to operate, please perform it after booting.<br />
+                          * Some instances that do not support shutdown without charging will continue to be charged normally after shutdown`,
   },
 }
