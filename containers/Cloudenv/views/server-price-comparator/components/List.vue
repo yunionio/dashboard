@@ -2,6 +2,7 @@
   <page-list
     :list="list"
     :columns="columns"
+    :showSync="false"
     :group-actions="groupActions"
     :single-actions="singleActions" />
 </template>
