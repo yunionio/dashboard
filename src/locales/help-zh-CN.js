@@ -53,5 +53,6 @@ export default {
     disable_user_on_import: '启用表示用户状态为启用，则本次带入用户均可使用本系统, 禁用反之，你可以在导入成功后在用户列表重新设置',
     defaultServerNetwork: '将从启用自动调度的IP子网中为虚拟机分配IP地址',
     deleteDiskAtTheSameTime: '未勾选则只删除系统盘，勾选后后挂载的数据盘将和系统盘一起被删除',
+    billNegativeNumberReson: '账单中出现负数是因为产生了退款，如包年包月机器提前释放退款、使用优惠券后退款、以及账号享受的其他优惠的退款。',
   },
 }

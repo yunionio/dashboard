@@ -53,5 +53,6 @@ export default {
     disable_user_on_import: 'Enable means that the user status is enabled, then the users brought in this time can use the system, if disabled, you can reset it in the user list after the import is successful',
     defaultServerNetwork: 'The server will be assigned an IP address from the IP subnet that belongs to the automatically assigned address pool',
     deleteDiskAtTheSameTime: 'If it is not checked, only the system disk will be deleted. After checking, the mounted data disk will be deleted together with the system disk.',
+    billNegativeNumberReson: 'Negative numbers in the bill are due to refunds arising, such as early release refunds for annual and monthly machines, refunds following the use of coupons, and refunds for other benefits enjoyed by the account.',
   },
 }
