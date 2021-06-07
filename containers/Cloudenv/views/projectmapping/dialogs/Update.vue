@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_247')}}</div>
+    <div slot="header">{{$t('cloudenv.text_202')}}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('cloudenv.text_580')" :count="params.data.length" :action="$t('cloudenv.text_593')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
@@ -37,7 +37,8 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
+const brandMap = typeClouds.getBrand()
 
 export default {
   name: 'ProjectMappingUpdateDialog',
@@ -175,7 +176,7 @@ export default {
             accountOptions.push({
               id: item.id,
               name: item.name,
-              brand: this.$t('dashboard.text_98') + ': ' + item.brand,
+              brand: this.$t('cloudenv.text_102') + ': ' + brandMap[item.brand].label,
               project_mapping: item.project_mapping || false,
             })
           }

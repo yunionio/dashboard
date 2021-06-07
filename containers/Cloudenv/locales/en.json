@@ -692,7 +692,7 @@
   "cloudenv.text_580": "Sync Policy",
   "cloudenv.text_581": "This function can assign resources to specified projects based on the tags bound to the resources and according to the rule settings",
   "cloudenv.text_582": "Rules",
-  "cloudenv.text_583": "New Resource Mapping",
+  "cloudenv.text_583": "New Sync Policy",
   "cloudenv.text_584": "Project",
   "cloudenv.text_585": "Cloud resource association tag matching conditions",
   "cloudenv.text_586": "Add Rule",
@@ -708,12 +708,13 @@
   "cloudenv.text_595": "Please unbind the cloud account first",
   "cloudenv.text_596": "This operation is forbidden for associated cloud accounts, please unbind and try again",
   "cloudenv.text_597": "Shared resources do not currently support this operation",
-  "cloudenv.text_598": "Modify Resource Mapping",
+  "cloudenv.text_598": "Modify Rule",
   "cloudenv.text_599": "Save",
   "cloudenv.text_600": "Cancle",
   "cloudenv.text_601": "Sort",
   "cloudenv.text_602": "Please select no more than 20 tags",
   "cloudenv.month_expense": "Monthly Expense",
   "cloudenv.year_expense": "Annual Expense",
-  "cloudenv.text_603": "The cloud account has been associated with a policy, please manually unlink it and try again"
+  "cloudenv.text_603": "The cloud account has been associated with a policy, please manually unlink it and try again",
+  "cloudenv.text_604": "New Rule"
 }

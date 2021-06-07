@@ -1,6 +1,14 @@
 <template>
     <div>
       <div class="d-flex flex-fill mb-2">
+        <!-- 刷新 -->
+        <a-button
+          class="flex-shrink-0"
+          :disabled="loading"
+          @click="handleRefresh">
+          <a-icon v-if="loading" type="sync" spin />
+          <a-icon v-else type="sync" />
+        </a-button>
         <actions
           :group="true"
           class="flex-shrink-0"
@@ -275,6 +283,7 @@ export default {
       await this.doUpdate({ rules: params })
       this.$bus.$emit('ProjectMappingRuleUpdate')
       this.canSort = false
+      this.checkedRecords = []
     },
     checkboxChangeEvent ({ records }) {
       this.checkedRecords = records
@@ -295,6 +304,15 @@ export default {
         hidenColumns,
       })
     },
+    handleRefresh () {
+      this.$bus.$emit('ProjectMappingRuleUpdate')
+    },
   },
 }
 </script>
+<style lang="less">
+.sortable-tree-demo .drag-btn {
+  cursor: move;
+  font-size: 12px;
+}
+</style>
