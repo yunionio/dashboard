@@ -10,11 +10,7 @@ export default {
       {
         label: i18n.t('cloudenv.text_590'),
         action: (row) => {
-          this.sidePageTriggerHandle(this, 'ProjectMappingSidePage', {
-            id: row.id,
-            resource: 'project_mappings',
-          }, { tab: 'rule-list' })
-          this.initSidePageTab('rule-list')
+          this.openSidePageRuleList(row)
         },
         meta: (row) => {
           const ret = {
@@ -33,7 +29,7 @@ export default {
           return [
             // 修改
             {
-              label: i18n.t('cloudenv.text_593'),
+              label: i18n.t('cloudenv.text_202'),
               permission: 'projectmappings_update',
               action: () => {
                 this.createDialog('ProjectMappingUpdateDialog', {

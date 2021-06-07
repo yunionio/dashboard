@@ -142,6 +142,18 @@ export default {
       })
       this.initSidePageTab('')
     },
+    openSidePageRuleList (row) {
+      this.sidePageTriggerHandle(this, 'ProjectMappingSidePage', {
+        id: row.id,
+        resource: 'project_mappings',
+        getParams: this.getParams,
+        refresh: this.refresh,
+      }, {
+        list: this.list,
+        hiddenActions: this.hiddenActions,
+      })
+      this.initSidePageTab('rule-list')
+    },
     checkEnable (list) {
       const ret = {
         validate: true,

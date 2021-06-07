@@ -37,16 +37,16 @@
       </template>
     </div>
     <a-form-item :extra="$t('cloudenv.text_594')" class="mt-2">
-      <div>
+      <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select global v-model="checked" :params="params" :button-text="$t('compute.text_1147')" />
+          <tag-select global v-model="checked" :params="params" :button-text="$t('compute.text_1147')" :defaultChecked="defaultChecked" />
+          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_1382')}}</a-button>
         </div>
-        <div style="line-height: 40px">
-          <a-button class="mr-2" v-if="!showForm" @click="() => showForm = true">{{$t('compute.text_1382')}}</a-button>
-          <a-form
+        <a-form
             layout="inline"
             :form="tagForm.fc"
-            v-if="showForm">
+            v-if="showForm"
+            class="ml-2">
             <a-form-item>
               <a-input v-decorator="decorators.key" :placeholder="$t('compute.text_1148')" style="width:130px" />
             </a-form-item>
@@ -58,7 +58,6 @@
               <a-button @click="() => showForm = false" class="ml-2">{{$t('compute.text_135')}}</a-button>
             </a-form-item>
           </a-form>
-        </div>
       </div>
     </a-form-item>
   </div>
