@@ -49,6 +49,10 @@ export default {
         if (!this.globalConfig.enable_quota_check && (item.component === 'Quota' || item.component === 'ProjectQuota')) {
           effective = false
         }
+        // 开源版本过滤
+        if (process.env.VUE_APP_PLATFORM === 'cmp_public' && ['ConsumptionPercent', 'ConsumptionTrend', 'SuggestsysAlertsOverview', 'SuggestsysAlertsDetail'].includes(item.component)) {
+          effective = false
+        }
         return effective
       })
       return ret

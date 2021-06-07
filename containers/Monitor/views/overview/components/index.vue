@@ -271,6 +271,7 @@ export default {
           this.lineChart.chartSetting.stack = { alerts: this.lineChart.chartData.columns.slice(1) }
           this.lineChart.loading = false
         })
+        console.log(this.lineChart)
       } catch (error) {
         this.lineChart.loading = false
         throw error

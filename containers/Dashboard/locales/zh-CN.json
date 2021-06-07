@@ -236,5 +236,17 @@
       "usage_extra": "使用量指标说明详见 {link}",
       "usage_link": "说明文档"
     }
-  }
+  },
+  "dashboard.overview_alert_sum": "未恢复告警：{0}",
+  "dashboard.resource_type_consumption_percent": "本月资源消费类型占比",
+  "dashboard.brand_consumption_percent": "本月平台消费占比",
+  "dashboard.total_fee": "总费用",
+  "dashboard.consmption_trend": "近30天消费趋势",
+  "dashboard.alerts_trend": "近30天告警趋势",
+  "dashboard.cloud_account_health": "云账号健康状态",
+  "dashboard.effective_account_health": "有效的云账号数量",
+  "dashboard.uneffective_account_health": "无效的云账号数量",
+  "dashboard.consumption_percent": "本月消费占比",
+  "dashboard.consumption_percent_info": "显示本月各资源和平台的消费占比",
+  "dashboard.each": "个"
 }

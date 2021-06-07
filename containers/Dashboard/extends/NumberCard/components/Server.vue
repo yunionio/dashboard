@@ -6,7 +6,11 @@
           <a-icon class="ml-2" type="loading" v-if="loading" />
           <a-tooltip v-if="isServersAnypool"><template slot="title">{{ $t('dashboard.server_tips') }}</template><a-icon type="question-circle" /></a-tooltip>
         </div>
-        <div class="dashboard-card-header-right"><span v-if="showDebuggerInfo">{{ `${$t('dashboard.text_20')}: ${form.fd.usage_key}` }}</span><slot name="actions" :handle-edit="handleEdit" /></div>
+        <div class="dashboard-card-header-right">
+          <span v-if="showDebuggerInfo">{{ `${$t('dashboard.text_20')}: ${form.fd.usage_key}` }}</span>
+          <slot name="actions" :handle-edit="handleEdit" />
+          <a class="ml-2" v-if="!eidt && canShowEdit" @click="goPage">{{$t('dashboard.more')}}</a>
+        </div>
       </div>
       <div class="dashboard-card-body align-items-center">
         <div class="number-card-number mr-2">{{ this.usage.usage }}</div>
@@ -43,6 +47,10 @@ export default {
     QuotaConfig,
   },
   mixins: [mixin],
+  props: {
+    parmas: Object,
+    edit: Boolean,
+  },
   data () {
     const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || `${this.$t('dashboard.text_23')}${this.$t('dictionary.project')}${this.$t('dictionary.server')}`
     const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || ''
@@ -134,6 +142,10 @@ export default {
       if (!this.params) return false
       return ['all.servers.any_pool', 'domain.servers.any_pool', 'servers.any_pool', 'all.servers', 'domain.servers', 'servers'].includes(this.params.usage_key)
     },
+    canShowEdit () {
+      if (!this.params) return false
+      return ['all.servers', 'servers', 'domain.servers', 'barementals', 'hosts'].includes(this.params.usage_key)
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -210,6 +222,16 @@ export default {
         this.updateVisible(false)
       } catch (error) {
         throw error
+      }
+    },
+    goPage () {
+      if (!this.params) return
+      if (['all.servers', 'servers', 'domain.servers'].includes(this.params.usage_key)) {
+        this.$router.push('/vminstance')
+      } else if (['barementals'].includes(this.params.usage_key)) {
+        this.$router.push('/physicalmachine')
+      } else if (['hosts'].includes(this.params.usage_key)) {
+        this.$router.push('/host')
       }
     },
   },

@@ -2,13 +2,12 @@
   <component
     ref="usage"
     :is="type"
-    :type="type"
     :visible.sync="visible"
     :formItemLayout="formItemLayout"
     :options="options"
     @update="update"
     :params="params"
-    :eidt="edit">
+    :edit="edit">
     <a-row class="mb-4">
       <a-col :span="formItemLayout.labelCol.span" class="ant-form-item-label">
         <label>{{$t('dashboard.text_24')}}</label>
@@ -24,15 +23,15 @@
 </template>
 
 <script>
-import Server from './components/Server'
-import K8s from './components/K8s'
-import { hasSetupKey } from '@/utils/auth'
+import Resource from './components/Resource'
+import Brand from './components/Brand'
+// import { hasSetupKey } from '@/utils/auth'
 
 export default {
-  name: 'NumberCard',
+  name: 'ConsumptionPercent',
   components: {
-    Server,
-    K8s,
+    Resource,
+    Brand,
   },
   props: {
     options: {
@@ -44,16 +43,11 @@ export default {
   },
   data () {
     const typeOps = []
-    if (hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])) {
-      typeOps.push({ key: 'server', label: this.$t('dashboard.text_25') })
-    }
-    if (hasSetupKey(['k8s'])) {
-      typeOps.push({ key: 'k8s', label: this.$t('dashboard.text_26') })
-    }
+    typeOps.push({ key: 'Resource', label: this.$t('dashboard.resource_type_consumption_percent') })
+    typeOps.push({ key: 'Brand', label: this.$t('dashboard.brand_consumption_percent') })
     return {
-      type: (this.params && this.params.type) || 'server',
+      type: (this.params && this.params.type) || 'Resource',
       typeOpts: typeOps,
-      visible: false,
       formItemLayout: {
         wrapperCol: {
           span: 18,
@@ -62,12 +56,13 @@ export default {
           span: 6,
         },
       },
+      visible: false,
     }
   },
   watch: {
     visible (v) {
       if (!v) { // 当关闭抽屉的时候重置type
-        this.type = (this.params && this.params.type) || 'server'
+        this.type = (this.params && this.params.type) || 'Resource'
       }
     },
   },
@@ -75,11 +70,11 @@ export default {
     typeChange () {
       this.visible = true
     },
-    update (...ret) {
-      this.$emit('update', ...ret)
-    },
     refresh () {
       return this.$refs.usage.refresh()
+    },
+    update (...ret) {
+      this.$emit('update', ...ret)
     },
   },
 }
