@@ -4,6 +4,7 @@
       <div class="d-flex flex-fill">
         <!-- 刷新 -->
         <a-button
+          v-if="showSync"
           class="flex-shrink-0"
           :disabled="loading"
           @click="handleRefresh">
@@ -17,6 +18,7 @@
             class="flex-shrink-0"
             :options="groupActions"
             button-type="default"
+            :show-sync="showSync"
             @clear-selected="() => $emit('clear-selected')" />
         </template>
         <!-- 批量后面追加内容 slot -->
@@ -76,6 +78,11 @@ export default {
     id: String,
     // 是否加载中
     loading: Boolean,
+    // 是否显示刷新按钮
+    showSync: {
+      type: Boolean,
+      default: true,
+    },
     // 是否显示批量操作区域
     showGroupActions: {
       type: Boolean,

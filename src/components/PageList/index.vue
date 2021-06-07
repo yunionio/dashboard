@@ -2,6 +2,7 @@
   <div>
     <page-list-header
       :id="id"
+      :show-sync="showSync"
       :show-group-actions="showGroupActions"
       :loading="loading"
       :group-actions="groupActions"
@@ -96,6 +97,11 @@ export default {
     list: {
       type: Object,
       required: true,
+    },
+    // 是否展示刷新按钮
+    showSync: {
+      type: Boolean,
+      default: true,
     },
     // 是否显示批量操作区域
     showGroupActions: {
