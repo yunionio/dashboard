@@ -1,6 +1,6 @@
 <template>
   <div v-if="beforeShowMenuLoaded">
-    <template v-for="item of options">
+    <template v-for="(item,index) of options">
       <!-- 一组操作，下拉形式展示 -->
       <template v-if="item.actions">
         <dropmenus
@@ -25,7 +25,7 @@
           :button-type="buttonType"
           :button-size="buttonSize"
           :button-block="buttonBlock"
-          :class="{ 'ml-2': group }"
+          :class="{ 'ml-2': group && ((index === 0 && showSync) || index !== 0) }"
           :button-style="buttonStyle"
           @clear-selected="clearSelected" />
       </template>
@@ -70,6 +70,10 @@ export default {
     },
     beforeShowMenu: {
       type: Function,
+    },
+    // 按钮组前是否还有刷新按钮
+    showSync: {
+      type: Boolean,
     },
   },
   data () {
