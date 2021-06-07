@@ -692,7 +692,7 @@
   "cloudenv.text_580": "同步策略",
   "cloudenv.text_581": "该功能可以基于资源绑定的标签，根据规则设置将资源分配给指定项目",
   "cloudenv.text_582": "规则",
-  "cloudenv.text_583": "新建资源映射",
+  "cloudenv.text_583": "新建同步策略",
   "cloudenv.text_584": "资源映射",
   "cloudenv.text_585": "云上资源关联标签匹配条件",
   "cloudenv.text_586": "添加规则",
@@ -708,12 +708,13 @@
   "cloudenv.text_595": "请先解绑云账号",
   "cloudenv.text_596": "有关联云账号禁止该操作，请解绑后重试",
   "cloudenv.text_597": "共享资源暂不支持此操作",
-  "cloudenv.text_598": "修改资源映射",
+  "cloudenv.text_598": "修改规则",
   "cloudenv.text_599": "保存",
   "cloudenv.text_600": "取消",
   "cloudenv.text_601": "排序",
   "cloudenv.text_602": "请选择不多于20个标签",
   "cloudenv.month_expense": "月度费用",
   "cloudenv.year_expense": "年度费用",
-  "cloudenv.text_603": "该云账号已关联策略，请手动取消关联后再试"
+  "cloudenv.text_603": "该云账号已关联策略，请手动取消关联后再试",
+  "cloudenv.text_604": "新建规则"
 }

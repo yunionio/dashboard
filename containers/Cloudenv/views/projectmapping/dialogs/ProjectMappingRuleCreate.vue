@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('cloudenv.text_583')}}</div>
+    <div slot="header">{{$t('cloudenv.text_604')}}</div>
     <div slot="body">
       <a-form
         v-bind="formLayout"
