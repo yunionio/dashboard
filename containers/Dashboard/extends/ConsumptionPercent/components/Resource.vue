@@ -191,7 +191,6 @@ export default {
     if (this.params && this.params.type !== 'Brand') {
       this.form.fd = this.params
     }
-    this.$emit('update', this.options.i, this.form.fd)
     this.fetchData()
   },
   methods: {

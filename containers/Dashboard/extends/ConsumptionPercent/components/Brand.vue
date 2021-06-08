@@ -101,7 +101,7 @@ export default {
               fontSize: 18,
               color: 'rgb(100, 100, 100)',
             },
-            top: '30%',
+            top: '38%',
             left: 'center',
           },
         ],
@@ -109,16 +109,12 @@ export default {
         tooltip: {
           trigger: 'item',
         },
-        legend: {
-          bottom: '3%',
-          left: 'center',
-        },
         color: chartColors,
         series: [
           {
             type: 'pie',
             radius: ['50%', '65%'],
-            center: ['50%', '40%'],
+            center: ['50%', '50%'],
             label: {
               normal: {
                 show: false,
@@ -171,10 +167,6 @@ export default {
     },
   },
   created () {
-    if (this.params && this.params.type !== 'Resource') {
-      this.form.fd = this.params
-    }
-    this.$emit('update', this.options.i, this.form.fd)
     this.fetchData()
   },
   methods: {
