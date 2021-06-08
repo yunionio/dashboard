@@ -113,7 +113,7 @@ export default {
         getParams: this.getParam,
         filterOptions,
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch'],
+        hiddenColumns: ['metadata', 'id', 'server_id', 'sn', 'manufacture', 'model', 'schedtag', 'nonsystem_guests', 'public_scope', 'project_domain', 'region', 'os_arch'],
       }),
       exportDataOptions: {
         items: [
@@ -131,6 +131,8 @@ export default {
           { label: this.$t('compute.text_518'), key: 'mem_commit_rate' },
           { label: this.$t('compute.text_99'), key: 'storage_size' },
           { label: this.$t('compute.storage_commit_rate'), key: 'storage_commit_rate' },
+          { label: this.$t('compute.sys_info'), key: 'sys_info' },
+          // { label: this.$t('compute.text_580'), key: 'model' },
           { label: 'SN', key: 'sn' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: this.$t('compute.text_177'), key: 'region' },

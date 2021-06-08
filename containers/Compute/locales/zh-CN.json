@@ -1423,5 +1423,7 @@
   "compute.disable_delete_snapshot_by_disk_tooltip": "{0}数据盘删除时必须同时删除快照",
   "compute.disable_delete_eip_by_brand_tooltip": "{0}平台虚拟机删除主机时暂不支持同时删除EIP",
   "compute.disable_delete_disk_by_brand_tooltip": "{0}平台虚拟机删除主机时必须同时删除数据盘",
-  "compute.disable_delete_disk_by_disk_tooltip": "本地硬盘删除主机时必须同时删除数据盘"
+  "compute.disable_delete_disk_by_disk_tooltip": "本地硬盘删除主机时必须同时删除数据盘",
+  "compute.shutdown_stop_paying": "关机不收费",
+  "compute.sys_info": "系统信息"
 }
