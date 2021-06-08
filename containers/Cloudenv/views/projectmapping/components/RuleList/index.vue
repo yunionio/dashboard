@@ -14,8 +14,8 @@
           class="flex-shrink-0"
           :options="groupActions"
           button-type="default"
+          :showSync="true"
           @clear-selected="() => $emit('clear-selected')" />
-          <div style="margin-left:auto" />
       </div>
       <vxe-grid
         v-bind="gridOptions"
