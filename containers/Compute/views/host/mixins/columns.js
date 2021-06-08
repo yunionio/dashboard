@@ -174,6 +174,43 @@ export default {
         },
       },
       {
+        field: 'manufacture',
+        title: i18n.t('compute.text_847'),
+        width: 70,
+        slots: {
+          default: ({ row }) => {
+            if (row.sys_info && row.sys_info.oem_name) {
+              const icons = {
+                dell: { height: '25px' },
+                hp: { height: '25px' },
+                hpe: { height: '30px' },
+                inspur: { height: '50px' },
+                lenovo: { height: '10px' },
+                supermicro: { height: '30px' },
+                huawei: { height: '30px' },
+              }
+              const arr = Object.keys(icons)
+              if (!arr.includes(row.sys_info.oem_name)) {
+                return row.sys_info.oem_name
+              }
+              const imgSrc = require(`../../physicalmachine/assets/${row.sys_info.oem_name}.svg`)
+              return [
+                <a-tooltip title={ row.sys_info.oem_name }>
+                  <img src={ imgSrc } style={ icons[row.sys_info.oem_name] } />
+                </a-tooltip>,
+              ]
+            }
+          },
+        },
+      },
+      {
+        field: 'model',
+        title: this.$t('compute.text_580'),
+        formatter: ({ cellValue, row }) => {
+          return ((row.sys_info || {}).model) || '-'
+        },
+      },
+      {
         field: 'sn',
         title: 'SN',
         width: 100,
