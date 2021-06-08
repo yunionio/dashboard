@@ -160,6 +160,13 @@ export default {
           },
         },
       },
+      {
+        field: 'model',
+        title: this.$t('compute.text_580'),
+        formatter: ({ cellValue, row }) => {
+          return ((row.sys_info || {}).model) || '-'
+        },
+      },
       getCopyWithContentTableColumn({
         field: 'server',
         title: i18n.t('compute.text_602'),
