@@ -1424,5 +1424,6 @@
   "compute.sku.postpaid_status": "按量付费",
   "compute.transfer_host": "暂无满足条件的宿主机（宿主机需属于同一个二层网络且状态正常)，请检查宿主机或修改上述条件后重试！",
   "compute.host_access_ip": "宿主机访问IP",
-  "compute.shutdown_stop_paying": "关机不收费"
+  "compute.shutdown_stop_paying": "关机不收费",
+  "compute.sys_info": "系统信息"
 }

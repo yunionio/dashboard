@@ -105,6 +105,8 @@ export default {
           { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('compute.text_503'), key: 'access_ip' },
           { label: this.$t('compute.text_504'), key: 'ipmi_ip' },
+          { label: this.$t('compute.sys_info'), key: 'sys_info' },
+          // { label: this.$t('compute.text_580'), key: 'model' },
           { label: 'SN', key: 'sn' },
           { label: this.$t('compute.text_602'), key: 'server' },
           { label: this.$t('compute.text_820'), key: 'is_maintenance' },
