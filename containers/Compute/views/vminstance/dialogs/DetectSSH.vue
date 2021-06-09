@@ -111,7 +111,11 @@ export const DetectSshTable = {
             let text = ''
             row.details.map((detail) => {
               try {
-                text += JSON.stringify(detail, null, 4)
+                if (typeof detail === 'string') {
+                  text += detail
+                } else {
+                  text += JSON.stringify(detail, null, 4)
+                }
               } catch (e) {
                 text += detail
               }
