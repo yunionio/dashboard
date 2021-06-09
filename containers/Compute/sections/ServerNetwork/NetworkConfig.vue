@@ -5,7 +5,7 @@
       <a-form-item
         :wrapperCol="{ span: 24 }"
         class="mb-0 mr-1">
-        <base-select
+        <!-- <base-select
           v-if="i === 0"
           class="w-100"
           style="width: 200px;"
@@ -21,14 +21,27 @@
           :remote-fn="q => ({ search: q })"
           @change="v => vpcChange(v, i)"
           :disabled="vpcObj && !!vpcObj.id"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" />
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_194') }" /> -->
+        <oc-select
+          v-if="i === 0"
+          v-decorator="decorator.vpcs(item.key)"
+          show-status
+          status-desc="绿点表示该VPC下有可供使用的网络资源"
+          :resource="vpcResource"
+          :formatter="vpcFormatter"
+          :params="vpcParams"
+          :mapper="vpcResourceMapper"
+          :sort="(arr) => arr.sort((a, b) => a.network_count > b.network_count ? -1 : 1)"
+          :placeholder="$t('compute.text_194')"
+          @selectChange="(curObjArr) => vpcSelectChange(curObjArr, item)"
+          @fetchSuccess="(data) => fetchVpcSuccessHandle(data, item)" />
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
       <a-form-item
         :wrapperCol="{ span: 24 }"
         style="flex: 1;"
         class="mb-0 mr-1 network-item">
-        <base-select
+        <!-- <base-select
           class="w-100"
           v-decorator="decorator.networks(item.key)"
           resource="networks"
@@ -42,7 +55,19 @@
           :remote-fn="q => ({ search: q })"
           :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
           @change="v => networkChange(v, item)"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" /> -->
+        <oc-select
+          v-decorator="decorator.networks(item.key)"
+          :data="networkOpts"
+          width="100%"
+          show-status
+          status-desc="绿点表示该网络地址段下有可供使用的IP资源"
+          layout="between"
+          :loading="networkLoading"
+          :formatter="networkFormatter"
+          :sort="(arr) => arr.sort((a, b) => (a.ports - a.ports_used) > (b.ports - b.ports_used) ? -1 : 1)"
+          @selectChange="(curObjArr) => networkSelectChange(curObjArr, item)"
+          @fetchSuccess="(data) => fetchNetworkSuccessHandle(data, item)" />
           <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
           </div>
       </a-form-item>
@@ -130,6 +155,8 @@ export default {
     return {
       networkList: [],
       ipsDisabled: this.ipsDisable,
+      networkLoading: false,
+      networkOpts: [],
     }
   },
   computed: {
@@ -137,10 +164,10 @@ export default {
       return this.limit - this.networkList.length
     },
     networkParamsC () {
-      if (!this.networkList[0].vpc.id) return {}
+      if (!this.networkList[0]?.vpc?.id) return {}
       return {
         limit: 20,
-        vpc: this.networkList[0].vpc.id,
+        vpc: this.networkList[0].vpc?.id,
         ...this.networkParams,
       }
     },
@@ -169,6 +196,18 @@ export default {
     vpcLabelFormat (item) {
       if (!item.cidr_block) return item.name
       return `${item.name}（${item.account ? item.account + ', ' : ''}${item.cidr_block}）`
+    },
+    vpcFormatter (v) {
+      return { key: v.id, label: this.vpcLabelFormat(v), disabled: v.network_count === 0, ...v }
+    },
+    networkFormatter (v) {
+      return {
+        key: v.id,
+        label: `${v.name}(${v.guest_ip_start} - ${v.guest_ip_end}, vlan=${v.vlan_id})`,
+        rightLabel: `${this.$t('common.text00001')}: ${v.ports - v.ports_used}`,
+        disabled: v.ports <= v.ports_used,
+        ...v,
+      }
     },
     ipChange (e, i) {
       this.networkList[i].ip = e.target.value
@@ -218,6 +257,18 @@ export default {
         })
       })
     },
+    networkSelectChange (curObjArr, item) {
+      item.network = curObjArr[0]
+      this.$nextTick(() => {
+        const fieldKey = `networkExits[${item.key}]`
+        this.form.fc.getFieldDecorator(fieldKey, {
+          preserve: true,
+        })
+        this.form.fc.setFieldsValue({
+          [fieldKey]: item.network?.exit,
+        })
+      })
+    },
     vpcChange (v, i) {
       this.$nextTick(() => {
         if (this.form.fi) {
@@ -228,12 +279,53 @@ export default {
         }
       })
     },
+    vpcSelectChange (curObjArr, item) {
+      item.vpc = curObjArr[0]
+      this.$nextTick(() => {
+        if (this.form.fi) {
+          const networkVpcObj = curObjArr[0]
+          if (R.is(Object, networkVpcObj)) {
+            this.$set(this.form.fi, 'networkVpcObj', networkVpcObj)
+          }
+        }
+      })
+      this.fetchNetworkOpts(this.networkParamsC, item)
+    },
     beforeDefaultSelectCallBack (data = []) {
       const cur = data[0]
       if (cur) {
         return cur.ports > cur.ports_used
       }
       return false
+    },
+    fetchVpcSuccessHandle (data, item) {
+      item.vpc = data[0]
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue({ [`vpcs[${item.key}]`]: data?.[0]?.key })
+      })
+      this.fetchNetworkOpts(this.networkParamsC, item)
+    },
+    fetchNetworkSuccessHandle (data, item) {
+      item.network = data[0]
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue({ [`networks[${item.key}]`]: data?.[0]?.key })
+      })
+    },
+    fetchNetworkOpts (params, item) {
+      this.networkLoading = true
+      this.networkOpts = []
+      new this.$Manager('networks').list({ params }).then((res) => {
+        this.networkOpts = res.data.data || []
+        this.$nextTick(() => {
+          this.form.fc.setFieldsValue({ [`networks[${item.key}]`]: this.networkOpts?.[0]?.id })
+        })
+        item.network = this.networkOpts[0]
+        this.networkLoading = false
+      }).catch((err) => {
+        this.networkLoading = false
+        console.log(err)
+        throw err
+      })
     },
   },
 }
