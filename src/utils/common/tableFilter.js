@@ -45,7 +45,7 @@ export function getNameFilter ({ field = 'name', label = i18n.t('table.title.nam
     label,
     filter: true,
     formatter: val => {
-      return `${field}.contains(${val})`
+      return `${field}.contains('${val}')`
     },
   }
 }
