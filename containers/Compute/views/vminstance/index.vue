@@ -10,7 +10,8 @@
         :id="listId"
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
-        :filterParams="filterParams" />
+        :filterParams="filterParams"
+        @updateCloudEnvOptions="updateCloudEnvOptions" />
     </page-body>
   </div>
 </template>
@@ -29,10 +30,14 @@ export default {
   data () {
     return {
       listId: 'VMInstanceList',
-      cloudEnvOptions: getCloudEnvOptions('compute_engine_brands'),
       cloudEnv: '',
       filterParams: {},
     }
+  },
+  computed: {
+    cloudEnvOptions: () => {
+      return getCloudEnvOptions('compute_engine_brands')
+    },
   },
   methods: {
     getStatusCheckArr (statusCheckArr, statusArr, isFirstLoad) {
