@@ -155,7 +155,29 @@ export default {
       const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
       return _frontGroupActions.concat(
         [
-          ...getEnabledSwitchActions(this, undefined, [], {
+          ...getEnabledSwitchActions(this, undefined, undefined, {
+            actions: [
+              async (obj) => {
+                const ids = this.list.selectedItems.map(item => item.id)
+                await this.onManager('batchPerformAction', {
+                  id: ids,
+                  managerArgs: {
+                    action: 'enable',
+                  },
+                })
+                this.$store.dispatch('auth/getCapabilities')
+              },
+              async (obj) => {
+                const ids = this.list.selectedItems.map(item => item.id)
+                await this.onManager('batchPerformAction', {
+                  id: ids,
+                  managerArgs: {
+                    action: 'disable',
+                  },
+                })
+                this.$store.dispatch('auth/getCapabilities')
+              },
+            ],
             metas: [
               () => {
                 const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
@@ -329,6 +351,9 @@ export default {
                       title: this.$t('compute.perform_delete'),
                       name: this.$t('dictionary.host'),
                       onManager: this.onManager,
+                      success: () => {
+                        this.$store.dispatch('auth/getCapabilities')
+                      },
                     })
                   },
                   meta: () => {
@@ -394,6 +419,9 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    refresh () {
+      console.log('refresh')
+    },
     extraExportParams ({ currentExportType }) {
       if (currentExportType === 'all') return { baremetal: false }
       return {}

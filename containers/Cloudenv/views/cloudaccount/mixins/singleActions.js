@@ -219,6 +219,28 @@ export default {
               },
             },
             ...getEnabledSwitchActions(this, obj, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
+              actions: [
+                async (obj) => {
+                  const ids = this.list.selectedItems.map(item => item.id)
+                  await this.onManager('batchPerformAction', {
+                    id: ids,
+                    managerArgs: {
+                      action: 'enable',
+                    },
+                  })
+                  this.$store.dispatch('auth/getCapabilities')
+                },
+                async (obj) => {
+                  const ids = this.list.selectedItems.map(item => item.id)
+                  await this.onManager('batchPerformAction', {
+                    id: ids,
+                    managerArgs: {
+                      action: 'disable',
+                    },
+                  })
+                  this.$store.dispatch('auth/getCapabilities')
+                },
+              ],
               metas: [
                 () => {
                   return {
@@ -266,6 +288,7 @@ export default {
                       }
                     }
                     this.deleteBill = true
+                    this.$store.dispatch('auth/getCapabilities')
                   },
                   cancel: () => {
                     this.deleteBill = true
