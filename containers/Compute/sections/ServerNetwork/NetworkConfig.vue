@@ -26,7 +26,7 @@
           v-if="i === 0"
           v-decorator="decorator.vpcs(item.key)"
           show-status
-          status-desc="绿点表示该VPC下有可供使用的网络资源"
+          :status-desc="$t('compute.vpc_status_desc')"
           :resource="vpcResource"
           :formatter="vpcFormatter"
           :params="vpcParams"
@@ -61,7 +61,7 @@
           :data="networkOpts"
           width="100%"
           show-status
-          status-desc="绿点表示该网络地址段下有可供使用的IP资源"
+          :status-desc="$t('compute.network_status_desc')"
           layout="between"
           :loading="networkLoading"
           :formatter="networkFormatter"

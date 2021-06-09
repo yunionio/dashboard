@@ -1425,5 +1425,7 @@
   "compute.transfer_host": "There is no host that meets the conditions (the host must belong to the same Layer 2 network and be in normal state), please check the host or modify the above conditions and try again!",
   "compute.host_access_ip": "Host Access IP",
   "compute.shutdown_stop_paying": "No charge for shutdown",
-  "compute.sys_info": "System Info"
+  "compute.sys_info": "System Info",
+  "compute.vpc_status_desc": "The green dot indicates that there are available IP subnets under the VPC",
+  "compute.network_status_desc": "The green dot indicates that there are available IP resources under the network address segment"
 }
