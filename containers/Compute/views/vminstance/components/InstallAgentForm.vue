@@ -88,7 +88,7 @@ export default {
       }
     },
     showPEHelpLink () {
-      return this.agent_install_status === 'install_failed' && this.install_failed_code === 'ServerNotSshable'
+      return this.agent_install_status === 'install_failed' && this.install_failed_code === 'NoReachInfluxdb'
     },
   },
   methods: {
