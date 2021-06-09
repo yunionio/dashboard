@@ -152,6 +152,28 @@ export default {
                 meta: () => this.syncPolicy(this.list.selectedItems), // 和【全量同步】同逻辑
               },
               ...getEnabledSwitchActions(this, undefined, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
+                actions: [
+                  async (obj) => {
+                    const ids = this.list.selectedItems.map(item => item.id)
+                    await this.onManager('batchPerformAction', {
+                      id: ids,
+                      managerArgs: {
+                        action: 'enable',
+                      },
+                    })
+                    this.$store.dispatch('auth/getCapabilities')
+                  },
+                  async (obj) => {
+                    const ids = this.list.selectedItems.map(item => item.id)
+                    await this.onManager('batchPerformAction', {
+                      id: ids,
+                      managerArgs: {
+                        action: 'disable',
+                      },
+                    })
+                    this.$store.dispatch('auth/getCapabilities')
+                  },
+                ],
                 metas: [
                   () => {
                     const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
@@ -208,6 +230,7 @@ export default {
                         }
                       }
                       this.batchDeleteBill = true
+                      this.$store.dispatch('auth/getCapabilities')
                     },
                     cancel: () => {
                       this.batchDeleteBill = true
