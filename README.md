@@ -1,10 +1,10 @@
-# Yunion Dashboard
+# Cloudpods Dashboard
 
 [![Build Status](https://www.travis-ci.org/yunionio/dashboard.svg?branch=master)](https://www.travis-ci.org/yunionio/dashboard)
 
 [English](./README.md) | [简体中文](./README-CN.md)
 
-Yunion Dashboard is the web-based UI for [YunionCloud](https://github.com/yunionio/yunioncloud).
+Cloudpods Dashboard is the web-based UI for [Cloudpods](https://github.com/yunionio/cloudpods).
 
 ## Developer Guide
 
@@ -33,7 +33,7 @@ cd dashboard
 yarn
 ```
 
-Note: If you are in China Mainland, execute the following command before running the command above for faster installation.
+Note: If you are in Mainland China, execute the following command before running the command above for faster installation.
 
 ```sh
 yarn config set registry https://registry.npm.taobao.org
