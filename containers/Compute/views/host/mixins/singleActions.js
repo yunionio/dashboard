@@ -111,7 +111,29 @@ export default {
           actions: (obj) => {
             const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
             return [
-              ...getEnabledSwitchActions(this, obj, [], {
+              ...getEnabledSwitchActions(this, undefined, undefined, {
+                actions: [
+                  async (obj) => {
+                    const ids = this.list.selectedItems.map(item => item.id)
+                    await this.onManager('batchPerformAction', {
+                      id: ids,
+                      managerArgs: {
+                        action: 'enable',
+                      },
+                    })
+                    this.$store.dispatch('auth/getCapabilities')
+                  },
+                  async (obj) => {
+                    const ids = this.list.selectedItems.map(item => item.id)
+                    await this.onManager('batchPerformAction', {
+                      id: ids,
+                      managerArgs: {
+                        action: 'disable',
+                      },
+                    })
+                    this.$store.dispatch('auth/getCapabilities')
+                  },
+                ],
                 metas: [
                   () => ({
                     validate: !obj.enabled && ownerDomain,
@@ -331,6 +353,9 @@ export default {
                     title: i18n.t('compute.text_261'),
                     name: this.$t('dictionary.host'),
                     onManager: this.onManager,
+                    success: () => {
+                      this.$store.dispatch('auth/getCapabilities')
+                    },
                   })
                 },
                 meta: () => {
