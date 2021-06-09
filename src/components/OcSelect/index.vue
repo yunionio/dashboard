@@ -1,21 +1,22 @@
 <template>
-  <div class="oc-select">
+  <div class="oc-select w-100">
     <a-select
       ref="ocSelectRef"
       dropdownClassName="oc-select-dropdown-wrapper"
-      :style="{ borderLeft: label ? '' : 'none', width }"
-      :value="value"
+      :style="{ width }"
+      :value="dataVal"
       v-bind="$attrs"
       v-on="$listeners"
       show-search
+      :loading="c_loading"
       :size="size"
       :allowClear="true"
       :filter-option="false"
-      :not-found-content="loading ? $t('common.loding') : $t('common.notData')"
+      :not-found-content="c_loading ? $t('common.loding') : $t('common.notData')"
       :option-label-prop="layout === 'between' ? 'label' : 'children'"
       @search="handleSearch"
       @change="changeHanlde">
-      <a-spin v-if="loading" slot="notFoundContent" size="small" />
+      <a-spin v-if="c_loading" slot="notFoundContent" size="small" />
       <a-select-option v-if="showStatus && statusDesc && (resOpts && resOpts.length > 0)" :key="-1" :value="-1" :disabled="true">
         <a-badge status="success" class="text-left text-wrap" :text="statusDesc" />
       </a-select-option>
@@ -42,7 +43,7 @@
       </template>
       <slot v-else name="optTpl" :resOpts="resOpts" />
     </a-select>
-    <a-icon v-if="showSync" type="sync" class="ml-2 primary-color" :spin="loading" @click="refresh" />
+    <a-icon v-if="showSync" type="sync" class="ml-2 primary-color" :spin="c_loading" @click="refresh" />
   </div>
 </template>
 
@@ -51,7 +52,7 @@ import debounce from 'lodash/debounce'
 import { Manager } from '@/utils/manager'
 
 export default {
-  name: 'OcSelelct',
+  name: 'OcSelect',
   props: {
     label: {
       type: String,
@@ -107,15 +108,28 @@ export default {
     searchParams: { // 支持搜索参数自定义的处理函数，返回值类型为Object
       type: Function,
     },
+    mapper: { // 请求数据后进行数据处理
+      type: Function,
+      required: false,
+    },
+    sort: { // 请求数据后进行排序处理
+      type: Function,
+      required: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     this.fetchResourceData = debounce(this.fetchResourceData, 300)
     return {
-      loading: false,
+      c_loading: this.loading,
       resOpts: [],
       metadata: {
         resOpts: [],
       },
+      dataVal: this.value,
     }
   },
   watch: {
@@ -129,33 +143,54 @@ export default {
     },
     data: {
       handler (newVal) {
+        let resArr = newVal
         if (this.formatter) {
-          this.resOpts = newVal.map(v => this.formatter(v))
-        } else {
-          this.resOpts = newVal
+          resArr = resArr.map(v => this.formatter(v))
         }
+        if (this.sort) {
+          resArr = this.sort(resArr)
+        }
+        this.resOpts = resArr
         this.metadata.resOpts = [...this.resOpts]
       },
       deep: true,
       immediate: true,
     },
+    value: {
+      handler (v) {
+        this.dataVal = v
+      },
+    },
+    loading: {
+      handler (v) {
+        this.c_loading = v
+      },
+    },
   },
   methods: {
     fetchResourceData (res, queryParams) {
       const resManager = new Manager(this.resource, this.apiVersion)
-      this.loading = true
+      this.c_loading = true
       this.metadata.resOpts = []
       this.resOpts = []
+      if (this.cascade && !this.cascadeDataLoaded) return
       resManager.list({ params: { ...this.params, ...queryParams } }).then((res) => {
-        this.loading = false
+        this.c_loading = false
         let resArr = res.data.data || []
         if (this.formatter) {
           resArr = resArr.map(v => this.formatter(v))
         }
+        if (this.mapper) {
+          resArr = this.mapper(resArr)
+        }
+        if (this.sort) {
+          resArr = this.sort(resArr)
+        }
+        this.$emit('fetchSuccess', resArr)
         this.metadata.resOpts = resArr
         this.resOpts = resArr
       }).catch((err) => {
-        this.loading = false
+        this.c_loading = false
         console.log(err)
         throw err
       })
@@ -174,7 +209,7 @@ export default {
     },
     queryResOpts (value) {
       if (!this.resource) {
-        const resOpts = this.data
+        const resOpts = this.metadata.resOpts
         this.resOpts = resOpts.filter(item => {
           const label = item.label || item.rightLabel
           return label.includes(value)
