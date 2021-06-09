@@ -1,8 +1,8 @@
-# Yunion Dashboard
+# Cloudpods Dashboard
 
 [![Build Status](https://www.travis-ci.org/yunionio/dashboard.svg?branch=master)](https://www.travis-ci.org/yunionio/dashboard)
 
-Yunion Dashboard 是[YunionCloud](https://github.com/yunionio/yunioncloud)的Web控制台
+Cloudpods Dashboard 是[Cloudpods](https://github.com/yunionio/cloudpods)的Web控制台
 
 ## 开发指南
 
