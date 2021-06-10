@@ -179,6 +179,7 @@
   "cloudenv.text_137": "{0}#create-google-account",
   "cloudenv.text_138": "{0}#create-ecloud-account",
   "cloudenv.create_ecloud": "{0}#create-mcloud-account",
+  "cloudenv.create_jdcloud": "{0}#create-jd-cloud-account",
   "cloudenv.text_139": "Global Zone",
   "cloudenv.text_140": "China Region",
   "cloudenv.text_141": "United States Administrative District",
