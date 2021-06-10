@@ -25,6 +25,10 @@ export default {
         width: 150,
         type: 'expand',
         slots: {
+          default: ({ row }) => {
+            const arr = row.acl_entries || []
+            return i18n.t('common_701', [arr.length])
+          },
           content: ({ row }, h) => {
             const arr = []
             if (row.acl_entries && row.acl_entries.length > 0) {

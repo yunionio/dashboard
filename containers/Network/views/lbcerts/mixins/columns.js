@@ -25,14 +25,14 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.is_complete === false) {
-              return [<div slot="label">
+              return [<div slot="label" style="color: red">
                 <span class="mr-1"> {i18n.t('network.lbcert.is_complete.false')} </span>
                 <a-tooltip title={i18n.t('network.text_753')}>
                   <a-icon type="question-circle-o" />
                 </a-tooltip>
               </div>]
             } else {
-              return [<div slot="label"><span class="mr-1"> {i18n.t('network.lbcert.is_complete.true')} </span></div>]
+              return [<div slot="label" style="color: green"><span class="mr-1"> {i18n.t('network.lbcert.is_complete.true')} </span></div>]
             }
           },
         },
@@ -51,6 +51,7 @@ export default {
       {
         field: 'not_after',
         title: i18n.t('network.text_319'),
+        sortable: true,
         width: 150,
         slots: {
           default: ({ row }) => {

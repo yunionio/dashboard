@@ -49,6 +49,9 @@ export default {
       },
       name: getNameFilter(),
       status: getStatusFilter('lb'),
+      address: {
+        label: this.$t('network.text_248'),
+      },
       brand: {
         ...allBrandsFilter,
         items: allBrandsFilter.items.filter(val => surpportLb.includes(val.key.toLowerCase())),
