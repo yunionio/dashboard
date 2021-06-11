@@ -2414,7 +2414,7 @@
       "create_time": "创建时间",
       "update_time": "更新时间",
       "_action": "操作",
-      "external_id": "外部ID",
+      "external_id": "云上ID",
       "memory_mb": "内存（MB）",
       "disk_mb": "磁盘（MB）",
       "user_tag": "用户标签",

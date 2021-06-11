@@ -42,6 +42,9 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
           id: {
             label: this.$t('table.title.id'),
           },
@@ -94,6 +97,7 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
+          { label: this.$t('table.title.external_id'), key: 'external_id' },
           { label: this.$t('db.text_60'), key: 'name' },
           { label: this.$t('db.text_119'), key: 'local_category' },
           { label: this.$t('db.text_109'), key: 'instance_type' },

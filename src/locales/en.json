@@ -2401,7 +2401,7 @@
       "create_time": "Created At",
       "update_time": "Updated At",
       "_action": "Operations",
-      "external_id": "External ID",
+      "external_id": "Cloud ID",
       "memory_mb": "Memory(MB)",
       "disk_mb": "Disk(MB)",
       "user_tag": "User Tag",

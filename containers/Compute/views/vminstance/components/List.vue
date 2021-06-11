@@ -69,6 +69,9 @@ export default {
       filter.id = [this.$route.query.id]
     }
     const filterOptions = {
+      external_id: {
+        label: this.$t('table.title.external_id'),
+      },
       id: {
         label: this.$t('table.title.id'),
       },
