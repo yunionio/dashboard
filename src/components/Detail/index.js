@@ -142,6 +142,19 @@ const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
 const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, onManager }) => {
   return [
     {
+      field: 'external_id',
+      title: i18n.t('table.title.external_id'),
+      slots: {
+        default: ({ row }) => {
+          return [
+            <div class='text-truncate'>
+              <list-body-cell-wrap copy row={ data } field='external_id' title={ row.external_id } />
+            </div>,
+          ]
+        },
+      },
+    },
+    {
       field: idKey,
       title: 'ID',
       slots: {
@@ -365,7 +378,7 @@ export default {
         return this.renderItem(h, item)
       })
       if (type === 'base-info' && this.showName) {
-        children = R.insert(1, this.renderName(h), children)
+        children = R.insert(2, this.renderName(h), children)
         if (this.showDesc) {
           children.push(this.renderDesc(h))
         }
