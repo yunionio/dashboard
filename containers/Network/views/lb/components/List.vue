@@ -44,6 +44,9 @@ export default {
   data () {
     const allBrandsFilter = getBrandFilter()
     const filterOptions = {
+      external_id: {
+        label: this.$t('table.title.external_id'),
+      },
       id: {
         label: this.$t('table.title.id'),
       },
@@ -83,6 +86,7 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
+          { label: this.$t('table.title.external_id'), key: 'external_id' },
           { label: this.$t('network.text_21'), key: 'name' },
           { label: this.$t('network.text_248'), key: 'address' },
           { label: 'VPC', key: 'vpc', hidden: this.$store.getters.isProjectMode },

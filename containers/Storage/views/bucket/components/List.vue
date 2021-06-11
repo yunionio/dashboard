@@ -46,6 +46,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.bucket).flat(),
         filterOptions: {
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
           id: {
             label: this.$t('table.title.id'),
           },
@@ -78,6 +81,7 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
+          { label: this.$t('table.title.external_id'), key: 'external_id' },
           { label: this.$t('storage.text_40'), key: 'name' },
           { label: this.$t('storage.text_41'), key: 'status' },
           { label: this.$t('storage.text_38'), key: 'storage_class' },
