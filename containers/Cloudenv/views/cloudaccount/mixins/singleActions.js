@@ -221,9 +221,8 @@ export default {
             ...getEnabledSwitchActions(this, obj, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
               actions: [
                 async (obj) => {
-                  const ids = this.list.selectedItems.map(item => item.id)
                   await this.onManager('batchPerformAction', {
-                    id: ids,
+                    id: [obj.id],
                     managerArgs: {
                       action: 'enable',
                     },
@@ -231,9 +230,8 @@ export default {
                   this.$store.dispatch('auth/getCapabilities')
                 },
                 async (obj) => {
-                  const ids = this.list.selectedItems.map(item => item.id)
                   await this.onManager('batchPerformAction', {
-                    id: ids,
+                    id: [obj.id],
                     managerArgs: {
                       action: 'disable',
                     },
