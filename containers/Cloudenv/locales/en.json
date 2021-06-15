@@ -678,6 +678,7 @@
   "cloudenv.sub_hidden_menus": "Hide Main Menus",
   "cloudenv.billing_scope": "Scope of Bill Analysis",
   "cloudenv.billing_scope.extra": "Accounts Managed by Platform: Only billing records for the master account and the sub-accounts imported and managed by this platform will be analyzed, other billing records will be omited. All Accounts: all billing records will be analyzed. For the account that was not managed by this platform. the billing information will be displayed as a subscription of the master account with a name ending with its original account ID.",
+  "cloudenv.billing_scope.extra_note": "Note: Selecting “Accounts Managed by Platform” may result in a discrepancy in billing data, so please choose carefully!",
   "cloudenv.billing_scope.managed": "Accounts Managed by Platform",
   "cloudenv.billing_scope.all": "All Accounts",
   "cloudenv.billing_scope.prompt": "Please specify scope of bill analysis",
