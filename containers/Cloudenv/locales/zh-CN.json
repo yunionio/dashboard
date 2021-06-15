@@ -677,6 +677,7 @@
   "cloudenv.sub_hidden_menus": "隐藏主菜单",
   "cloudenv.billing_scope": "账单分析范围",
   "cloudenv.billing_scope.extra": "本平台纳管账号的账单：只采集该主账号以及本平台同步的该主账号下的所有子账号的账单，如果账单文件中有其他账单将被舍弃。所有账号的账单：将采集账单文件中的所有账单，其中无法在本平台找到对应云账号的账单条目的，其云订阅将显示为“本云账号名称-该账单条目关联云账号的数字ID”",
+  "cloudenv.billing_scope.extra_note": "注：选择“本平台纳管账号”将有可能导致账单数据对不上，请谨慎选择！",
   "cloudenv.billing_scope.managed": "本平台纳管账号",
   "cloudenv.billing_scope.all": "所有账号",
   "cloudenv.billing_scope.prompt": "请设置账单分析范围",
