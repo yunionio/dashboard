@@ -243,7 +243,7 @@ export default {
         billing_scope: [
           'billing_scope',
           {
-            initialValue: options.billing_scope || 'managed',
+            initialValue: options.billing_scope || 'all',
             rules: [
               { required: true, message: this.$t('cloudenv.billing_scope.prompt') },
             ],
