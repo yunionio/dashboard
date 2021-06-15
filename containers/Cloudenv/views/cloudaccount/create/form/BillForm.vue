@@ -17,6 +17,16 @@
         <a-form-item :label="$t('cloudenv.text_198')">
           <a-input v-decorator="decorators.balance_key" type="textarea" rows="4" />
         </a-form-item>
+        <a-form-item :label="$t('cloudenv.billing_scope')">
+          <a-radio-group v-decorator="decorators.billing_scope">
+            <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
+            <a-radio-button value="all" key="all">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+          </a-radio-group>
+          <div slot="extra">
+            <div>{{$t('cloudenv.billing_scope.extra')}}</div>
+            <div>{{$t('cloudenv.billing_scope.extra_note')}}</div>
+          </div>
+        </a-form-item>
       </template>
       <template v-if="useBillingBucket">
         <a-divider orientation="left">{{$t('cloudenv.text_199')}}</a-divider>
@@ -233,7 +243,7 @@ export default {
         billing_scope: [
           'billing_scope',
           {
-            initialValue: options.billing_scope || 'managed',
+            initialValue: options.billing_scope || 'all',
             rules: [
               { required: true, message: this.$t('cloudenv.billing_scope.prompt') },
             ],
