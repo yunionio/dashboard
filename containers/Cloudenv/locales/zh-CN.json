@@ -718,5 +718,8 @@
   "cloudenv.month_expense": "月度费用",
   "cloudenv.year_expense": "年度费用",
   "cloudenv.text_603": "该云账号已关联策略，请手动取消关联后再试",
-  "cloudenv.text_604": "新建规则"
+  "cloudenv.text_604": "新建规则",
+  "cloudenv.project_mapping_account": "云账号",
+  "cloudenv.project_mapping_cloudprovider": "云订阅",
+  "cloudenv.project_mapping_use_cloudprovider": "应用订阅"
 }
