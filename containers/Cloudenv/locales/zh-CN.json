@@ -717,5 +717,8 @@
   "cloudenv.text_601": "排序",
   "cloudenv.text_602": "请选择不多于20个标签",
   "cloudenv.text_603": "该云账号已关联策略，请手动取消关联后再试",
-  "cloudenv.text_604": "新建规则"
+  "cloudenv.text_604": "新建规则",
+  "cloudenv.project_mapping_account": "云账号",
+  "cloudenv.project_mapping_cloudprovider": "云订阅",
+  "cloudenv.project_mapping_use_cloudprovider": "应用订阅"
 }
