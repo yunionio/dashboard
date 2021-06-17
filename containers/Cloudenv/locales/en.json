@@ -717,5 +717,8 @@
   "cloudenv.text_601": "Sort",
   "cloudenv.text_602": "Please select no more than 20 tags",
   "cloudenv.text_603": "The cloud account has been associated with a policy, please manually unlink it and try again",
-  "cloudenv.text_604": "New Rule"
+  "cloudenv.text_604": "New Rule",
+  "cloudenv.project_mapping_account": "Cloud Account",
+  "cloudenv.project_mapping_cloudprovider": "Cloud Subscription",
+  "cloudenv.project_mapping_use_cloudprovider": "Application Subscription"
 }

@@ -85,25 +85,8 @@
             <a-button type="link" @click="addRule">{{$t('cloudenv.text_586')}}</a-button>
           </div>
         </a-form-item>
-        <!-- 应用账号 -->
-        <a-form-item :label="$t('cloudenv.text_589')">
-          <a-select v-decorator="decorators.accounts" dropdownClassName="oc-select-dropdown" :showSearch="true" mode="multiple" option-filter-prop="children" :placeholder="$t('cloudenv.text_284', [$t('cloudenv.text_589')])" allowClear>
-            <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id" :disabled="!!item.project_mapping">
-              <a-tooltip :title="!!item.project_mapping?$t('cloudenv.text_603'):''" placement="topLeft" arrow-point-at-center>
-                <a-row>
-                <a-col :span="16">
-                  <div>{{ item.name }}</div>
-                </a-col>
-                <a-col :span="8" align="right">
-                  <div class="text-color-secondary option-show" style="text-align: right;display:none">
-                    {{ item.brand }}
-                  </div>
-                </a-col>
-                </a-row>
-              </a-tooltip>
-            </a-select-option>
-          </a-select>
-        </a-form-item>
+        <!-- 应用范围 -->
+        <application-scope :decorators="decorators" :form="form" :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()' }" />
       </a-form>
     </div>
     <div slot="footer">
@@ -117,6 +100,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import Tag from '../components/Tag'
+import ApplicationScope from '../components/ApplicationScope'
 import DomainSelect from '@/sections/DomainSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -129,6 +113,7 @@ export default {
   components: {
     DomainSelect,
     Tag,
+    ApplicationScope,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -136,7 +121,16 @@ export default {
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
+        fd: {
+          applicationScope: 1,
+        },
       },
       decorators: {
         name: [
@@ -158,11 +152,25 @@ export default {
             ],
           },
         ],
+        applicationScope: [
+          'applicationScope',
+          {
+            initialValue: 1,
+          },
+        ],
         accounts: [
           'accounts',
           {
             rules: [
               { required: false, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.text_589')]) },
+            ],
+          },
+        ],
+        cloudproviders: [
+          'cloudproviders',
+          {
+            rules: [
+              { required: false, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.project_mapping_use_cloudprovider')]) },
             ],
           },
         ],
@@ -209,7 +217,7 @@ export default {
     projectDomainId: {
       handler: function (val) {
         if (val) {
-          this.fetchCloudAccount()
+          // this.fetchCloudAccount()
           this.fetchProject()
         }
       },
@@ -287,10 +295,18 @@ export default {
     doCreate (data) {
       return new this.$Manager('project_mappings').create({ data: data })
     },
-    doBind ({ accountIds, project_mapping_id }) {
+    doBindByAccount ({ accountIds, project_mapping_id }) {
       const manager = new this.$Manager('cloudaccounts')
       return manager.batchPerformAction({
         ids: accountIds,
+        action: 'project-mapping',
+        data: { project_mapping_id },
+      })
+    },
+    doBindByCloudProvider ({ cloudproviderIds, project_mapping_id }) {
+      const manager = new this.$Manager('cloudproviders')
+      return manager.batchPerformAction({
+        ids: cloudproviderIds,
         action: 'project-mapping',
         data: { project_mapping_id },
       })
@@ -299,12 +315,15 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        const { applicationScope } = this.form.fd
         // 获取参数
         const params = this.getCreateParams(values)
         const createResult = await this.doCreate(params)
         const { id } = createResult.data
-        if (values.accounts) {
-          await this.doBind({ accountIds: values.accounts, project_mapping_id: id })
+        if (applicationScope === 1 && values.accounts?.length > 0) {
+          await this.doBindByAccount({ accountIds: values.accounts, project_mapping_id: id })
+        } else if (applicationScope === 2 && values.cloudproviders?.length > 0) {
+          await this.doBindByCloudProvider({ cloudproviderIds: values.cloudproviders, project_mapping_id: id })
         }
         this.cancelDialog()
         this.params.success && this.params.success()

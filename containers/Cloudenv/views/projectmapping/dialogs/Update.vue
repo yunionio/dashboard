@@ -5,9 +5,10 @@
       <dialog-selected-tips :name="$t('cloudenv.text_580')" :count="params.data.length" :action="$t('cloudenv.text_593')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
+        v-bind="formItemLayout"
         :form="form.fc">
         <!-- 应用账号 -->
-        <a-form-item :label="$t('cloudenv.text_589')" v-bind="formItemLayout">
+        <!-- <a-form-item :label="$t('cloudenv.text_589')" v-bind="formItemLayout">
           <a-select v-decorator="decorators.accounts" dropdownClassName="oc-select-dropdown" :showSearch="true" mode="multiple" option-filter-prop="children" :placeholder="$t('cloudenv.text_284', [$t('cloudenv.text_589')])" allowClear>
             <a-select-option v-for="item in accountOptions" :key="item.id" :value="item.id" :disabled="disabledFilter(item.project_mapping, item.id)">
               <a-tooltip :title="disabledFilter(item.project_mapping, item.id)?$t('cloudenv.text_603'):''" placement="topLeft" arrow-point-at-center>
@@ -24,7 +25,9 @@
               </a-tooltip>
             </a-select-option>
           </a-select>
-        </a-form-item>
+        </a-form-item> -->
+        <!-- 应用范围 -->
+        <application-scope :decorators="decorators" :form="form" :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()' }" />
       </a-form>
     </div>
     <div slot="footer">
@@ -35,6 +38,7 @@
 </template>
 
 <script>
+import ApplicationScope from '../components/ApplicationScope'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
@@ -43,11 +47,13 @@ const brandMap = typeClouds.getBrand()
 export default {
   name: 'ProjectMappingUpdateDialog',
   components: {
+    ApplicationScope,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const initProjectDomainId = this.params.data[0].omain_id || 'default'
+    const initProjectDomainId = this.params.data[0].domain_id || 'default'
     let initAccountsValue = []
+    let initCloudprovidersValue = []
     let initAccountsOptions = []
     if (this.params.data[0].accounts) {
       initAccountsValue = this.params.data[0].accounts.map(item => {
@@ -60,18 +66,47 @@ export default {
         }
       })
     }
+    if (this.params.data[0].cloudproviders) {
+      initCloudprovidersValue = this.params.data[0].cloudproviders.map(item => {
+        return item.id
+      })
+    }
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.form.fd[key] = values[key]
+            })
+          },
+        }),
+        fd: {
+          applicationScope: 1,
+        },
       },
       decorators: {
+        applicationScope: [
+          'applicationScope',
+          {
+            initialValue: 1,
+          },
+        ],
         accounts: [
           'accounts',
           {
             initialValue: initAccountsValue,
             rules: [
-              { required: false, message: '请选择应用账号' },
+              { required: false, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.text_589')]) },
+            ],
+          },
+        ],
+        cloudproviders: [
+          'cloudproviders',
+          {
+            initialValue: initCloudprovidersValue,
+            rules: [
+              { required: false, message: this.$t('cloudenv.text_284', [this.$t('cloudenv.project_mapping_use_cloudprovider')]) },
             ],
           },
         ],
@@ -92,7 +127,7 @@ export default {
     projectDomainId: {
       handler: function (val) {
         if (val) {
-          this.fetchCloudAccount()
+          // this.fetchCloudAccount()
         }
       },
       immediate: true,
@@ -102,44 +137,103 @@ export default {
     this.initFormValues(this.params.data[0])
   },
   methods: {
+    async doUnBindAllAccounts (accounts) {
+      await new this.$Manager('cloudaccounts').batchPerformAction({
+        ids: accounts,
+        action: 'project-mapping',
+        data: {},
+      })
+    },
+    async doUnBindAllCloudProviders (cloudproviders) {
+      await new this.$Manager('cloudproviders').batchPerformAction({
+        ids: cloudproviders,
+        action: 'project-mapping',
+        data: {},
+      })
+    },
+    async doBindAccounts (values) {
+      const { accounts } = this.params.data[0] // 原先绑定的
+      if (accounts) {
+        const deleteAccounts = []
+        accounts.map(item => {
+          let isHas = false
+          if (values.accounts) {
+            values.accounts.map(item2 => {
+              if (item2 === item.id) {
+                isHas = true
+              }
+            })
+          }
+          if (!isHas) {
+            deleteAccounts.push(item.id)
+          }
+        })
+        if (deleteAccounts.length) {
+          // 解绑
+          await new this.$Manager('cloudaccounts').batchPerformAction({
+            ids: deleteAccounts,
+            action: 'project-mapping',
+            data: { },
+          })
+        }
+      }
+      // 新绑定
+      if (values.accounts && values.accounts.length) {
+        await new this.$Manager('cloudaccounts').batchPerformAction({
+          ids: values.accounts,
+          action: 'project-mapping',
+          data: { project_mapping_id: this.params.data[0].id },
+        })
+      }
+    },
+    async doBindCloudproviders (values) {
+      const { cloudproviders } = this.params.data[0] // 原先绑定的
+      if (cloudproviders) {
+        const deleteCloudproviders = []
+        cloudproviders.map(item => {
+          let isHas = false
+          if (values.cloudproviders) {
+            values.cloudproviders.map(item2 => {
+              if (item2 === item.id) {
+                isHas = true
+              }
+            })
+          }
+          if (!isHas) {
+            deleteCloudproviders.push(item.id)
+          }
+        })
+        if (deleteCloudproviders.length) {
+          // 解绑
+          await new this.$Manager('cloudproviders').batchPerformAction({
+            ids: deleteCloudproviders,
+            action: 'project-mapping',
+            data: { },
+          })
+        }
+      }
+      // 新绑定
+      if (values.cloudproviders && values.cloudproviders.length) {
+        await new this.$Manager('cloudproviders').batchPerformAction({
+          ids: values.cloudproviders,
+          action: 'project-mapping',
+          data: { project_mapping_id: this.params.data[0].id },
+        })
+      }
+    },
     async handleConfirm () {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const { accounts } = this.params.data[0] // 原先绑定的
-        if (accounts) {
-          const deleteAccounts = []
-          accounts.map(item => {
-            let isHas = false
-            if (values.accounts) {
-              values.accounts.map(item2 => {
-                if (item2 === item.id) {
-                  isHas = true
-                }
-              })
-            }
-            if (!isHas) {
-              deleteAccounts.push(item.id)
-            }
-          })
-          if (deleteAccounts.length) {
-            // 解绑
-            await new this.$Manager('cloudaccounts').batchPerformAction({
-              ids: deleteAccounts,
-              action: 'project-mapping',
-              data: { },
-            })
-          }
+        const { applicationScope } = this.form.fd
+        const { accounts, cloudproviders } = this.params.data[0]
+        if (applicationScope === 1) {
+          await this.doBindAccounts(values)
+          cloudproviders && await this.doUnBindAllCloudProviders(cloudproviders.map(v => v.id))
+        } else if (applicationScope === 2) {
+          await this.doBindCloudproviders(values)
+          accounts && await this.doUnBindAllAccounts(accounts.map(v => v.id))
         }
-        // 新绑定
-        if (values.accounts && values.accounts.length) {
-          await new this.$Manager('cloudaccounts').batchPerformAction({
-            ids: values.accounts,
-            action: 'project-mapping',
-            data: { project_mapping_id: this.params.data[0].id },
-          })
-        }
-
         this.loading = false
         this.cancelDialog()
         this.$bus.$emit('ProjectMappingRuleUpdate')
