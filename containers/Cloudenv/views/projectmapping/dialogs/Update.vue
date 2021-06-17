@@ -27,7 +27,7 @@
           </a-select>
         </a-form-item> -->
         <!-- 应用范围 -->
-        <application-scope :decorators="decorators" :form="form" />
+        <application-scope :decorators="decorators" :form="form" :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()' }" />
       </a-form>
     </div>
     <div slot="footer">
@@ -45,13 +45,13 @@ import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 const brandMap = typeClouds.getBrand()
 
 export default {
-  name: 'UpdateDialog',
+  name: 'ProjectMappingUpdateDialog',
   components: {
     ApplicationScope,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
-    const initProjectDomainId = this.params.data[0].omain_id || 'default'
+    const initProjectDomainId = this.params.data[0].domain_id || 'default'
     let initAccountsValue = []
     let initCloudprovidersValue = []
     let initAccountsOptions = []
@@ -127,7 +127,7 @@ export default {
     projectDomainId: {
       handler: function (val) {
         if (val) {
-          this.fetchCloudAccount()
+          // this.fetchCloudAccount()
         }
       },
       immediate: true,
@@ -137,6 +137,20 @@ export default {
     this.initFormValues(this.params.data[0])
   },
   methods: {
+    async doUnBindAllAccounts (accounts) {
+      await new this.$Manager('cloudaccounts').batchPerformAction({
+        ids: accounts,
+        action: 'project-mapping',
+        data: {},
+      })
+    },
+    async doUnBindAllCloudProviders (cloudproviders) {
+      await new this.$Manager('cloudproviders').batchPerformAction({
+        ids: cloudproviders,
+        action: 'project-mapping',
+        data: {},
+      })
+    },
     async doBindAccounts (values) {
       const { accounts } = this.params.data[0] // 原先绑定的
       if (accounts) {
@@ -212,10 +226,13 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const { applicationScope } = this.form.fd
+        const { accounts, cloudproviders } = this.params.data[0]
         if (applicationScope === 1) {
           await this.doBindAccounts(values)
+          cloudproviders && await this.doUnBindAllCloudProviders(cloudproviders.map(v => v.id))
         } else if (applicationScope === 2) {
           await this.doBindCloudproviders(values)
+          accounts && await this.doUnBindAllAccounts(accounts.map(v => v.id))
         }
         this.loading = false
         this.cancelDialog()

@@ -5,11 +5,12 @@
       show-overflow="title"
       highlight-hover-row
       :row-id="idKey"
-      :data="data"
+      :data="cData"
       :expandConfig="expandConfig"
       :columns="tableColumns"
       :max-height="280"
       :scroll-y="{gt: 5}"
+      :loading="cLoading"
       resizable
       v-on="vxeGridEvents"
       v-bind="{ ...vxeGridProps }" />
@@ -17,6 +18,8 @@
 </template>
 
 <script>
+import { Manager } from '@/utils/manager'
+
 export default {
   name: 'DialogTable',
   props: {
@@ -49,6 +52,25 @@ export default {
       type: Object,
       required: false,
     },
+    resource: {
+      type: String,
+    },
+    apiVersion: {
+      type: String,
+      default: 'v2',
+    },
+    params: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
+  },
+  data () {
+    return {
+      cData: this.data,
+      cLoading: false,
+    }
   },
   computed: {
     tableColumns () {
@@ -88,6 +110,35 @@ export default {
             this.$refs.grid.scrollToRow(this.$refs.grid.getRowById(firstErrorId))
           }
         }
+      })
+    },
+    data: {
+      handler (v) {
+        if (v) {
+          this.cData = v
+        }
+      },
+    },
+    resource: {
+      handler (v) {
+        if (v) {
+          this.fetchResourceData(v)
+        }
+      },
+      immediate: true,
+    },
+  },
+  methods: {
+    fetchResourceData (res, queryParams) {
+      const resManager = new Manager(this.resource, this.apiVersion)
+      this.cLoading = true
+      resManager.list({ params: { ...this.params } }).then((res) => {
+        this.cLoading = false
+        this.cData = res.data.data || []
+      }).catch((err) => {
+        this.cLoading = false
+        console.log(err)
+        throw err
       })
     },
   },

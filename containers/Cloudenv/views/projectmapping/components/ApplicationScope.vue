@@ -42,6 +42,9 @@ export default {
     form: {
       type: Object,
     },
+    params: {
+      type: Object,
+    },
   },
   data () {
     return {
@@ -53,6 +56,14 @@ export default {
         label: this.$t('cloudenv.project_mapping_cloudprovider'),
       }],
     }
+  },
+  methods: {
+    applicationScopeChangeHandle () {
+      this.form.fc.setFieldsValue({
+        accounts: [],
+        cloudproviders: [],
+      })
+    },
   },
 }
 </script>

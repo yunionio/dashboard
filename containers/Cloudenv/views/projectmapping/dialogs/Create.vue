@@ -86,7 +86,7 @@
           </div>
         </a-form-item>
         <!-- 应用范围 -->
-        <application-scope :decorators="decorators" :form="form" />
+        <application-scope :decorators="decorators" :form="form" :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()' }" />
       </a-form>
     </div>
     <div slot="footer">
