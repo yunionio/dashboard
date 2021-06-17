@@ -1,3 +1,4 @@
+import { getAccessUrlTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
@@ -10,11 +11,14 @@ import {
 
 export default {
   data () {
-    return {
-      accountsProps: {
+    return {}
+  },
+  computed: {
+    accountsProps () {
+      return {
         list: this.$list.createList(this, {
           resource: 'cloudaccounts',
-          getParams: {},
+          getParams: this.params,
           filterOptions: {
             name: getNameFilter(),
             brand: getBrandFilter(),
@@ -30,31 +34,7 @@ export default {
               )
             },
           }),
-          {
-            field: 'access_url',
-            title: this.$t('cloudenv.text_96'),
-            minWidth: 100,
-            showOverflow: 'ellipsis',
-            slots: {
-              default: ({ row }, h) => {
-                if (!row.access_url) return '-'
-                let txt
-                Object.keys(this.$t('cloudAccountAccessType')).forEach(k => {
-                  if (row.access_url.indexOf(k) > -1) {
-                    let _k = k
-                    if (row.brand !== 'Aliyun' && k === 'InternationalCloud') {
-                      _k = 'Internation'
-                    }
-                    txt = this.$t('cloudAccountAccessType')[_k]
-                  }
-                })
-                return txt ||
-                [
-                  <a class="link-color" target="_blank" href={ row.access_url }>{ row.access_url }</a>,
-                ]
-              },
-            },
-          },
+          getAccessUrlTableColumn(),
           getBrandTableColumn(),
           getProjectDomainTableColumn(),
           {
@@ -77,7 +57,7 @@ export default {
             },
           },
         ],
-      },
-    }
+      }
+    },
   },
 }

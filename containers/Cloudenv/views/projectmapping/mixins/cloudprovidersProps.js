@@ -1,3 +1,4 @@
+import { getAccountTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
@@ -10,11 +11,14 @@ import {
 
 export default {
   data () {
-    return {
-      cloudprovidersProps: {
+    return {}
+  },
+  computed: {
+    cloudprovidersProps () {
+      return {
         list: this.$list.createList(this, {
           resource: 'cloudproviders',
-          getParams: {},
+          getParams: this.params,
           filterOptions: {
             name: getNameFilter(),
             brand: getBrandFilter(),
@@ -30,23 +34,7 @@ export default {
               )
             },
           }),
-          {
-            field: 'account',
-            title: this.$t('cloudenv.text_353'),
-            showOverflow: 'ellipsis',
-            minWidth: 160,
-            slots: {
-              default: ({ row }) => {
-                const subscribeIds = (row.account && row.account.split('/')) || []
-                const text = subscribeIds.length > 1 ? subscribeIds[1] : subscribeIds[0]
-                return [
-                  <list-body-cell-wrap message={text} copy hideField={true}>
-                    <span>{text}</span>
-                  </list-body-cell-wrap>,
-                ]
-              },
-            },
-          },
+          getAccountTableColumn(),
           getBrandTableColumn(),
           getCopyWithContentTableColumn({
             field: 'cloudaccount',
@@ -62,7 +50,7 @@ export default {
             minWidth: 140,
           }),
         ],
-      },
-    }
+      }
+    },
   },
 }

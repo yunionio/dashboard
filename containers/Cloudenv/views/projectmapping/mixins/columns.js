@@ -1,3 +1,4 @@
+import { getColumns, getResource } from '../utils'
 import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
@@ -84,16 +85,33 @@ export default {
         },
       },
       {
-        title: i18n.t('cloudenv.text_589'),
+        title: this.$t('cloudenv.text_503'),
         field: 'account',
         slots: {
           default: ({ row }) => {
-            if (row.accounts) {
-              return row.accounts.map(item => {
-                return <div class="text-color-secondary">{item.name}</div>
-              })
-            }
-            return '-'
+            const data = row.accounts || row.cloudproviders
+            if (!data) return '-'
+            const header = row.accounts.length > 0 ? this.$t('cloudenv.text_589') : this.$t('cloudenv.project_mapping_use_cloudprovider')
+            const resIds = data.map(v => v.id)
+            const columns = getColumns(row)
+            const resource = getResource(row)
+            return [
+              <a onClick={() => {
+                this.createDialog('CommonDialog', {
+                  hiddenCancel: true,
+                  header,
+                  body: () => {
+                    return (
+                      <dialog-table
+                        vxeGridProps={{ showOverflow: 'title' }}
+                        resource={ resource }
+                        params={{ filter: `id.in(${resIds.join(',')})` }}
+                        columns={ columns } />
+                    )
+                  },
+                })
+              }}>{ data.length }</a>,
+            ]
           },
         },
       },
