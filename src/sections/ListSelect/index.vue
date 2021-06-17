@@ -85,6 +85,10 @@ export default {
     details (newVal, oldVal) {
       if (!R.equals(newVal, oldVal)) this.$emit('update:items', newVal)
     },
+    value (newVal, oldVal) {
+      this.selected = R.isEmpty(this.value) || R.isNil(this.value) ? [] : R.is(String, this.value) ? [this.value] : this.value
+      this.getDetails()
+    },
   },
   created () {
     this.listProps.list.disableStorageLimit = true
