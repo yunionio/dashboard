@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import storage from '@/utils/storage'
-import { getCurrency, setCookieVal } from '@/utils/common/cookie'
+import { getCurrency, setCookieVal, getExchangeRateAvailable } from '@/utils/common/cookie'
 import { Manager } from '@/utils/manager'
 
 export default {
@@ -10,6 +10,7 @@ export default {
     bill: {
       currency: getCurrency() || '',
       currencyOpts: [],
+      exchangeRateAvailable: getExchangeRateAvailable() || true,
     },
     k8s: {
       cluster: undefined,
@@ -37,7 +38,24 @@ export default {
       state.bill.currency = payload
     },
     SET_BILL_CURRENCYOPTS (state, payload) {
-      state.bill.currencyOpts = payload
+      if (!state.bill.exchangeRateAvailable) {
+        state.bill.currencyOpts = payload
+      } else {
+        // 添加以汇率为单位的某个账单
+        state.bill.currencyOpts = payload.concat(payload.map(item => {
+          return {
+            item_id: '_' + item.item_id,
+            item_name: '_' + item.item_name,
+          }
+        }))
+      }
+    },
+    SET_BILL_EXCHANGE_RATE_AVAILABLE (state, payload) {
+      setCookieVal('exchangeRateAvailable', payload)
+      state.bill.exchangeRateAvailable = payload
+      // 更新账单选择类型
+      const optsList = state.bill.currencyOpts.filter(item => item.item_id === -1)
+      this.commit('SET_BILL_CURRENCYOPTS', optsList)
     },
     SET_K8S_CLUSTER (state, payload) {
       state.k8s.cluster = payload
@@ -69,9 +87,19 @@ export default {
           ...payload,
         }
         const { data: { data = [] } } = await new Manager('bill_conditions', 'v1').list({ params })
+        commit('SET_BILL_EXCHANGE_RATE_AVAILABLE', data && data[0] ? data[0].exchange_rate_available || false : true)
         commit('SET_BILL_CURRENCYOPTS', data)
         if (data && data.length > 0) {
-          const isExsit = data.find(v => v.item_id === state.bill.currency)
+          const currencyList = data
+          if (data[0].exchange_rate_available) {
+            data.map(item => {
+              currencyList.push({
+                item_id: '_' + item.item_id,
+                item_name: '_' + item.item_name,
+              })
+            })
+          }
+          const isExsit = currencyList.find(v => v.item_id === state.bill.currency)
           commit('SET_BILL_CURRENCY', isExsit ? state.bill.currency : data[0].item_id)
         }
       } catch (error) {
