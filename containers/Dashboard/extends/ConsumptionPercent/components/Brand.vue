@@ -108,6 +108,16 @@ export default {
 
         tooltip: {
           trigger: 'item',
+          confine: true,
+          position: (point, params, dom, rect, size) => {
+            const series = `<div style="color: #616161;">${params.marker} <span>${params.name}</span>:  <span>${this.currencySign}${params.value}</span></div>`
+            const wrapper = `<div class="chart-tooltip-wrapper">
+                              <div class="lines-wrapper">${series}</div>
+                            </div>`
+            dom.style.border = 'none'
+            dom.style.backgroundColor = 'transparent'
+            dom.innerHTML = wrapper
+          },
         },
         color: chartColors,
         series: [
