@@ -27,7 +27,10 @@
           </a-select>
         </a-form-item> -->
         <!-- 应用范围 -->
-        <application-scope :decorators="decorators" :form="form" :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()' }" />
+        <application-scope
+          :decorators="decorators"
+          :form="form"
+          :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()', brand: ['Aws', 'Azure', 'Aliyun', 'Qcloud', 'Huawei', 'Google'] }"  />
       </a-form>
     </div>
     <div slot="footer">
@@ -54,22 +57,25 @@ export default {
     const initProjectDomainId = this.params.data[0].domain_id || 'default'
     let initAccountsValue = []
     let initCloudprovidersValue = []
-    let initAccountsOptions = []
+    let applicationScope = 1
+    // let initAccountsOptions = []
     if (this.params.data[0].accounts) {
       initAccountsValue = this.params.data[0].accounts.map(item => {
         return item.id
       })
-      initAccountsOptions = this.params.data[0].accounts.map(item => {
-        return {
-          id: item.id,
-          name: item.name,
-        }
-      })
+      applicationScope = 1
+      // initAccountsOptions = this.params.data[0].accounts.map(item => {
+      //   return {
+      //     id: item.id,
+      //     name: item.name,
+      //   }
+      // })
     }
-    if (this.params.data[0].cloudproviders) {
-      initCloudprovidersValue = this.params.data[0].cloudproviders.map(item => {
+    if (this.params.data[0].managers) {
+      initCloudprovidersValue = this.params.data[0].managers.map(item => {
         return item.id
       })
+      applicationScope = 2
     }
     return {
       loading: false,
@@ -82,14 +88,14 @@ export default {
           },
         }),
         fd: {
-          applicationScope: 1,
+          applicationScope: applicationScope,
         },
       },
       decorators: {
         applicationScope: [
           'applicationScope',
           {
-            initialValue: 1,
+            initialValue: applicationScope,
           },
         ],
         accounts: [
@@ -111,7 +117,7 @@ export default {
           },
         ],
       },
-      accountOptions: initAccountsOptions,
+      // accountOptions: initAccountsOptions,
       formItemLayout: {
         wrapperCol: {
           span: 20,

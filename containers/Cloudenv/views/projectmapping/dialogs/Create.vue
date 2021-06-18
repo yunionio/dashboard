@@ -67,7 +67,10 @@
                       },
                     ],
                   }
-                ]">
+                ]"
+                show-search
+                option-filter-prop="children"
+                :filter-option="filterOption">
                   <a-select-option v-for="item in projectOptions" :key="item.id" :value="item.id">
                     {{item.name}}
                   </a-select-option>
@@ -86,7 +89,10 @@
           </div>
         </a-form-item>
         <!-- 应用范围 -->
-        <application-scope :decorators="decorators" :form="form" :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()' }" />
+        <application-scope
+          :decorators="decorators"
+          :form="form"
+          :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()', brand: ['Aws', 'Azure', 'Aliyun', 'Qcloud', 'Huawei', 'Google'] }" />
       </a-form>
     </div>
     <div slot="footer">
@@ -401,6 +407,11 @@ export default {
         // eslint-disable-next-line
         callback(false)
       }
+    },
+    filterOption (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
   },
 }
