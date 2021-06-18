@@ -209,6 +209,7 @@
   "monitor.dashboard.create.chart.dashboard.tips": "请选择监控面板",
   "monitor.dashboard.title": "监控面板",
   "monitor.dashboard.label": "面板",
+  "monitor.dashboard.overview.title": "资源概览",
   "monitor.overview_alert_sum": "未恢复告警",
   "monitor.overview_alert_sum_pie": "告警总数",
   "monitor.overview_alert.undefined": "其他",

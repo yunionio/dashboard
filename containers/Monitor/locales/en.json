@@ -209,6 +209,7 @@
   "monitor.dashboard.create.chart.dashboard.tips": "Please select the dashboard",
   "monitor.dashboard.title": "Dashboard",
   "monitor.dashboard.label": "Dashboard",
+  "monitor.dashboard.overview.title": "Resource Overview",
   "monitor.overview_alert_sum": "Alerts Firing",
   "monitor.overview_alert_sum_pie": "Total Alerts",
   "monitor.overview_alert.undefined": "Others",
