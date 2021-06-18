@@ -191,6 +191,8 @@ export default {
     if (this.params && this.params.type !== 'Brand') {
       this.form.fd = this.params
     }
+    const values = { ...this.form.fd }
+    this.$emit('update', this.options.i, { type: 'Resource', ...values })
     this.fetchData()
   },
   methods: {

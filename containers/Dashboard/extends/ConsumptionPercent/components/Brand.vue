@@ -167,6 +167,8 @@ export default {
     },
   },
   created () {
+    const values = { ...this.form.fd }
+    this.$emit('update', this.options.i, { type: 'Brand', ...values })
     this.fetchData()
   },
   methods: {
