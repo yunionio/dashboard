@@ -242,7 +242,7 @@
   "cloudenv.text_199": "账单文件/Billing export",
   "cloudenv.text_200": "云账号类型",
   "cloudenv.text_201": "主账号",
-  "cloudenv.text_202": "关联账号",
+  "cloudenv.text_202": "修改",
   "cloudenv.text_203": "一般来说，账单文件的存储桶等信息是主账号设置的，我们需要使用主账号的访问信息去获取这些账单文件进行分析",
   "cloudenv.text_204": "存储桶URL",
   "cloudenv.text_205": "如何获取账单存储桶URL",
