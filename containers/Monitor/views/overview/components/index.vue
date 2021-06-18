@@ -4,6 +4,17 @@
       <overview-nav :items="navs" @change="changeNav" />
     </a-row>
     <a-row>
+      <div class="monitor-overview-chart mb-2">
+        <div class="title-wrapper">
+          <div class="title">
+            {{ $t('monitor.dashboard.overview.title') }}
+            <help-tooltip name="monitorDashboardOverviewTips" />
+          </div>
+        </div>
+        <summary-cards :scope="curNav.scope" :scopeId="curNav.id" style="padding-top: 1em;" />
+      </div>
+    </a-row>
+    <a-row>
       <a-col :span="8">
         <div class="monitor-overview-chart mb-2">
           <div class="title-wrapper">
@@ -48,6 +59,7 @@
 </template>
 
 <script>
+import SummaryCards from './SummaryCards'
 import OverviewRing from '@Monitor/components/MonitorCard/sections/chart/ring'
 import OverviewLine from '@Monitor/components/MonitorCard/sections/chart/line'
 import OverviewCard from '@Monitor/components/MonitorCard/OverviewCard'
@@ -57,6 +69,7 @@ import { getSignature } from '@/utils/crypto'
 export default {
   name: 'OverviewIndex',
   components: {
+    SummaryCards,
     OverviewRing,
     OverviewLine,
     OverviewCard,

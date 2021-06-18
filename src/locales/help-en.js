@@ -49,6 +49,7 @@ export default {
     useCasRole: `
       <div>When synchronizing users to items in the system, the role with the same name in CAS is preferred, and the default role is used if there is no corresponding role in the system. </div>
     `,
+    monitorDashboardOverviewTips: 'Resource overview statistics have cycles, and statistics results will be delayed',
     ipSupplement: 'Please ensure that the IP submitted this time is consistent with the actual IP, and cannot be modified once the submission is successful',
     disable_user_on_import: 'Enable means that the user status is enabled, then the users brought in this time can use the system, if disabled, you can reset it in the user list after the import is successful',
     defaultServerNetwork: 'The server will be assigned an IP address from the IP subnet that belongs to the automatically assigned address pool',
