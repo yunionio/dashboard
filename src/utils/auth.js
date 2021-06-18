@@ -250,6 +250,16 @@ const GlobalSetupKeys = class {
     return setupKeys
   }
 
+  get setupKeysVersion () {
+    const { globalSetting = {} } = store.state
+    if (!globalSetting || !globalSetting.value || !globalSetting.value.setupKeysVersion) {
+      return ''
+    }
+
+    const { setupKeysVersion } = globalSetting.value
+    return setupKeysVersion
+  }
+
   hasSetupKey (envs) {
     const _envs = R.type(envs) === 'String' ? [envs] : envs
     if (!_envs.length || !this.setupKeys) return true
@@ -285,6 +295,15 @@ const GlobalSetupKeys = class {
   isSubSet (envs) {
     const _envs = R.type(envs) === 'String' ? [envs] : envs
     return _envs && this.setupKeys && this.setupKeys.every((env) => { return _envs.indexOf(env) > -1 })
+  }
+
+  hasVersionedSetupKey (versionedEnvs, defaultResult = true) {
+    const envs = versionedEnvs[this.setupKeysVersion] || versionedEnvs.default
+    if (envs) {
+      return this.hasSetupKey(envs)
+    } else {
+      return defaultResult
+    }
   }
 }
 

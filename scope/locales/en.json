@@ -7,7 +7,8 @@
     "Azure": "Azure",
     "Ctyun": "eCloud",
     "JDcloud": "JD Cloud",
-    "Apsara": "Apsara"
+    "Apsara": "Apsara",
+    "Ecloud": "mCloud"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -23,6 +24,7 @@
     "aws": "AWS",
     "huawei": "Huawei Cloud",
     "jdcloud": "JD Cloud",
-    "ucloud": "UCloud"
+    "ucloud": "UCloud",
+    "ecloud": "mCloud"
   }
 }
