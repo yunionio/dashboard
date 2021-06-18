@@ -89,9 +89,9 @@ export default {
         field: 'account',
         slots: {
           default: ({ row }) => {
-            const data = row.accounts || row.cloudproviders
+            const data = row.accounts || row.managers
             if (!data) return '-'
-            const header = row.accounts.length > 0 ? this.$t('cloudenv.text_589') : this.$t('cloudenv.project_mapping_use_cloudprovider')
+            const header = row.accounts?.length > 0 ? this.$t('cloudenv.text_589') : this.$t('cloudenv.project_mapping_use_cloudprovider')
             const resIds = data.map(v => v.id)
             const columns = getColumns(row)
             const resource = getResource(row)

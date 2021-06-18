@@ -120,10 +120,10 @@ export default {
       // accountOptions: initAccountsOptions,
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 19,
         },
         labelCol: {
-          span: 4,
+          span: 5,
         },
       },
       projectDomainId: initProjectDomainId,
@@ -193,10 +193,10 @@ export default {
       }
     },
     async doBindCloudproviders (values) {
-      const { cloudproviders } = this.params.data[0] // 原先绑定的
-      if (cloudproviders) {
+      const { managers } = this.params.data[0] // 原先绑定的
+      if (managers) {
         const deleteCloudproviders = []
-        cloudproviders.map(item => {
+        managers.map(item => {
           let isHas = false
           if (values.cloudproviders) {
             values.cloudproviders.map(item2 => {
@@ -232,10 +232,10 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const { applicationScope } = this.form.fd
-        const { accounts, cloudproviders } = this.params.data[0]
+        const { accounts, managers } = this.params.data[0]
         if (applicationScope === 1) {
           await this.doBindAccounts(values)
-          cloudproviders && await this.doUnBindAllCloudProviders(cloudproviders.map(v => v.id))
+          managers && await this.doUnBindAllCloudProviders(managers.map(v => v.id))
         } else if (applicationScope === 2) {
           await this.doBindCloudproviders(values)
           accounts && await this.doUnBindAllAccounts(accounts.map(v => v.id))
