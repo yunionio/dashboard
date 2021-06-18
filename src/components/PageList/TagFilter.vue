@@ -1,7 +1,6 @@
 <template>
   <div class="d-flex tag-filter-wrap ml-2 flex-fill">
     <tag-select
-      multiple
       filter-without-user-meta
       :params="params"
       :value="tagFilter"
