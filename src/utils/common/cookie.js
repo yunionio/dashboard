@@ -53,3 +53,8 @@ export function getCurrency () {
   const currency = getQueryVariable('currency') || Cookies.get('currency') || 'CNY'
   return currency
 }
+
+export function getExchangeRateAvailable () {
+  const exchangeRateAvailable = getQueryVariable('exchangeRateAvailable') || Cookies.get('exchangeRateAvailable') || true
+  return exchangeRateAvailable
+}
