@@ -286,6 +286,19 @@ const GlobalSetupKeys = class {
     const _envs = R.type(envs) === 'String' ? [envs] : envs
     return _envs && this.setupKeys && this.setupKeys.every((env) => { return _envs.indexOf(env) > -1 })
   }
+
+  isEmpty () {
+    return !!this.setupKeys.length
+  }
+
+  hasVersionedSetupKey (versionedEnvs, defaultResult = true) {
+    const envs = versionedEnvs[this.setupKeysVersion] || versionedEnvs.default
+    if (envs) {
+      return this.hasSetupKey(envs)
+    } else {
+      return defaultResult
+    }
+  }
 }
 
 const setupKeys = new GlobalSetupKeys()
