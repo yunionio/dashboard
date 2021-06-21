@@ -1,5 +1,11 @@
 {
   "status": {
+    "monitorresources": {
+      "init": "未设置告警",
+      "alerting": "发生告警",
+      "attach": "正常",
+      "unknown": "未知"
+    },
     "enabled": {
       "true": "启用",
       "false": "禁用",

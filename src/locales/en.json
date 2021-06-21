@@ -1,5 +1,11 @@
 {
   "status": {
+    "monitorresources": {
+      "init": "No alarm is set",
+      "alerting": "Alerting",
+      "attach": "Normal",
+      "unknown": "Unknown"
+    },
     "enabled": {
       "true": "Enabled",
       "false": "Disabled",
