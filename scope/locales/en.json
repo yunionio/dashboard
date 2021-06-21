@@ -6,8 +6,8 @@
     "Qcloud": "Tencent Cloud",
     "Azure": "Azure",
     "Ctyun": "eCloud",
-    "JDcloud": "JD Cloud",
-    "Apsara": "Apsara"
+    "Apsara": "Apsara",
+    "Ecloud": "mCloud"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -22,7 +22,6 @@
     "qcloud": "Tencent Cloud",
     "aws": "AWS",
     "huawei": "Huawei Cloud",
-    "jdcloud": "JD Cloud",
     "ucloud": "UCloud"
   }
 }
