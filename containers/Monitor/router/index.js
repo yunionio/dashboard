@@ -8,7 +8,7 @@ import Explorer from '@Monitor/views/explorer'
 import Dashboard from '@Monitor/views/dashboard'
 import MonitorDashboardChartCreate from '@Monitor/views/dashboard/create'
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey } from '@/utils/auth'
+import { setupKeys } from '@/utils/auth'
 import i18n from '@/locales'
 import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
@@ -29,7 +29,7 @@ export default {
           if (isScopedPolicyMenuHidden('sub_hidden_menus.monitoroverview')) {
             return true
           }
-          return false
+          return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, true)
         },
       },
       component: Overview,
@@ -49,7 +49,11 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.monitor_dashboard')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])
+
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'],
+              })
             },
           },
           path: '/monitor-dashboard',
@@ -81,7 +85,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.explorer')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'],
+              })
             },
           },
           path: '/explorer',
@@ -105,7 +112,11 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.commonalerts')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])
+
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'],
+              })
             },
           },
           component: Layout,
@@ -136,7 +147,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.alertrecord')) {
                 return true
               }
-              return false
+
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+              })
             },
           },
           component: Layout,
@@ -158,7 +172,8 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.alertresource')) {
                 return true
               }
-              return !store.getters.isAdminMode && process.env.VUE_APP_IS_PRIVATE
+
+              return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, !(!store.getters.isAdminMode && process.env.VUE_APP_IS_PRIVATE))
             },
           },
           component: Layout,

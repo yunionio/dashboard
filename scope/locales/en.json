@@ -6,6 +6,7 @@
     "Qcloud": "Tencent Cloud",
     "Azure": "Azure",
     "Ctyun": "eCloud",
+    "JDcloud": "JD Cloud",
     "Apsara": "Apsara",
     "Ecloud": "mCloud"
   },
@@ -22,6 +23,8 @@
     "qcloud": "Tencent Cloud",
     "aws": "AWS",
     "huawei": "Huawei Cloud",
-    "ucloud": "UCloud"
+    "jdcloud": "JD Cloud",
+    "ucloud": "UCloud",
+    "ecloud": "mCloud"
   }
 }
