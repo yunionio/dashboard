@@ -7,7 +7,8 @@
     "Azure": "微软云",
     "Ctyun": "天翼云",
     "JDcloud": "京东云",
-    "Apsara": "飞天"
+    "Apsara": "飞天",
+    "Ecloud": "移动云"
   },
   "scopeProviders": {
     "esxi": "VMware",
