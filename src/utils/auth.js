@@ -297,6 +297,10 @@ const GlobalSetupKeys = class {
     return _envs && this.setupKeys && this.setupKeys.every((env) => { return _envs.indexOf(env) > -1 })
   }
 
+  isEmpty () {
+    return !!this.setupKeys.length
+  }
+
   hasVersionedSetupKey (versionedEnvs, defaultResult = true) {
     const envs = versionedEnvs[this.setupKeysVersion] || versionedEnvs.default
     if (envs) {
