@@ -298,7 +298,7 @@ const GlobalSetupKeys = class {
   }
 
   isEmpty () {
-    return !!this.setupKeys.length
+    return !this.setupKeys.length
   }
 
   hasVersionedSetupKey (versionedEnvs, defaultResult = true) {
