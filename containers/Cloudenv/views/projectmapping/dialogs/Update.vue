@@ -27,7 +27,10 @@
           </a-select>
         </a-form-item> -->
         <!-- 应用范围 -->
-        <application-scope :decorators="decorators" :form="form" :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()' }" />
+        <application-scope
+          :decorators="decorators"
+          :form="form"
+          :params="{ project_domains: projectDomainId, filter: 'project_mapping_id.isnullorempty()', brand: ['Aws', 'Azure', 'Aliyun', 'Qcloud', 'Huawei', 'Google'] }"  />
       </a-form>
     </div>
     <div slot="footer">
@@ -54,22 +57,25 @@ export default {
     const initProjectDomainId = this.params.data[0].domain_id || 'default'
     let initAccountsValue = []
     let initCloudprovidersValue = []
-    let initAccountsOptions = []
+    let applicationScope = 1
+    // let initAccountsOptions = []
     if (this.params.data[0].accounts) {
       initAccountsValue = this.params.data[0].accounts.map(item => {
         return item.id
       })
-      initAccountsOptions = this.params.data[0].accounts.map(item => {
-        return {
-          id: item.id,
-          name: item.name,
-        }
-      })
+      applicationScope = 1
+      // initAccountsOptions = this.params.data[0].accounts.map(item => {
+      //   return {
+      //     id: item.id,
+      //     name: item.name,
+      //   }
+      // })
     }
-    if (this.params.data[0].cloudproviders) {
-      initCloudprovidersValue = this.params.data[0].cloudproviders.map(item => {
+    if (this.params.data[0].managers) {
+      initCloudprovidersValue = this.params.data[0].managers.map(item => {
         return item.id
       })
+      applicationScope = 2
     }
     return {
       loading: false,
@@ -82,14 +88,14 @@ export default {
           },
         }),
         fd: {
-          applicationScope: 1,
+          applicationScope: applicationScope,
         },
       },
       decorators: {
         applicationScope: [
           'applicationScope',
           {
-            initialValue: 1,
+            initialValue: applicationScope,
           },
         ],
         accounts: [
@@ -111,13 +117,13 @@ export default {
           },
         ],
       },
-      accountOptions: initAccountsOptions,
+      // accountOptions: initAccountsOptions,
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 19,
         },
         labelCol: {
-          span: 4,
+          span: 5,
         },
       },
       projectDomainId: initProjectDomainId,
@@ -187,10 +193,10 @@ export default {
       }
     },
     async doBindCloudproviders (values) {
-      const { cloudproviders } = this.params.data[0] // 原先绑定的
-      if (cloudproviders) {
+      const { managers } = this.params.data[0] // 原先绑定的
+      if (managers) {
         const deleteCloudproviders = []
-        cloudproviders.map(item => {
+        managers.map(item => {
           let isHas = false
           if (values.cloudproviders) {
             values.cloudproviders.map(item2 => {
@@ -226,10 +232,10 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const { applicationScope } = this.form.fd
-        const { accounts, cloudproviders } = this.params.data[0]
+        const { accounts, managers } = this.params.data[0]
         if (applicationScope === 1) {
           await this.doBindAccounts(values)
-          cloudproviders && await this.doUnBindAllCloudProviders(cloudproviders.map(v => v.id))
+          managers && await this.doUnBindAllCloudProviders(managers.map(v => v.id))
         } else if (applicationScope === 2) {
           await this.doBindCloudproviders(values)
           accounts && await this.doUnBindAllAccounts(accounts.map(v => v.id))

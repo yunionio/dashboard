@@ -9,7 +9,7 @@ export const getResource = (row) => {
   if (row.accounts?.length > 0) {
     return 'cloudaccounts'
   }
-  if (row.cloudproviders?.length > 0) {
+  if (row.managers?.length > 0) {
     return 'cloudproviders'
   }
   return ''
@@ -31,7 +31,7 @@ export const getColumns = (row) => {
       getBrandTableColumn(),
     ]
   }
-  if (row.cloudproviders?.length > 0) {
+  if (row.managers?.length > 0) {
     return [
       getCopyWithContentTableColumn({
         field: 'id',

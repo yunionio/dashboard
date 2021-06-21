@@ -7,6 +7,7 @@ import {
 import {
   getNameFilter,
   getBrandFilter,
+  getAccountFilter,
 } from '@/utils/common/tableFilter'
 
 export default {
@@ -22,6 +23,7 @@ export default {
           filterOptions: {
             name: getNameFilter(),
             brand: getBrandFilter(),
+            cloudaccount: getAccountFilter(),
           },
         }),
         columns: [
