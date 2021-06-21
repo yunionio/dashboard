@@ -128,7 +128,18 @@ export default {
         ],
 
         tooltip: {
+          show: true,
           trigger: 'item',
+          confine: true,
+          position: (point, params, dom, rect, size) => {
+            const series = `<div style="color: #616161;">${params.marker} <span>${params.name}</span>:  <span>${this.currencySign}${params.value}</span></div>`
+            const wrapper = `<div class="chart-tooltip-wrapper">
+                              <div class="lines-wrapper">${series}</div>
+                            </div>`
+            dom.style.border = 'none'
+            dom.style.backgroundColor = 'transparent'
+            dom.innerHTML = wrapper
+          },
         },
         color: chartColors,
         series: [
@@ -191,6 +202,8 @@ export default {
     if (this.params && this.params.type !== 'Brand') {
       this.form.fd = this.params
     }
+    const values = { ...this.form.fd }
+    this.$emit('update', this.options.i, { type: 'Resource', ...values })
     this.fetchData()
   },
   methods: {
