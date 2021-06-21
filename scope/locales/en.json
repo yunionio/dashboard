@@ -6,7 +6,8 @@
     "Qcloud": "Tencent Cloud",
     "Azure": "Azure",
     "Ctyun": "eCloud",
-    "Apsara": "Apsara"
+    "Apsara": "Apsara",
+    "Ecloud": "mCloud"
   },
   "scopeProviders": {
     "esxi": "VMware",
