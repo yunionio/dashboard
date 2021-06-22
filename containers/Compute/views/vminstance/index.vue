@@ -2,10 +2,7 @@
   <div>
     <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <!-- <server-error-status-tab
-        resource="servers"
-        status="server"
-        @getStatusCheckArr="getStatusCheckArr" /> -->
+      <res-status-tab />
       <vm-instance-list
         :id="listId"
         :cloud-env="cloudEnv"
@@ -18,14 +15,14 @@
 
 <script>
 import VmInstanceList from './components/List'
-// import ServerErrorStatusTab from '@Compute/sections/ServerErrorStatusTab'
+import ResStatusTab from '@/sections/ResStatusTab'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
   name: 'VmInstanceIndex',
   components: {
     VmInstanceList,
-    // ServerErrorStatusTab,
+    ResStatusTab,
   },
   data () {
     return {
@@ -41,6 +38,7 @@ export default {
   },
   methods: {
     getStatusCheckArr (statusCheckArr, statusArr, isFirstLoad) {
+      console.log(statusCheckArr, statusArr, isFirstLoad)
       if (statusCheckArr && statusCheckArr.length > 0) {
         this.filterParams = {
           statusCheckArr: statusCheckArr,
