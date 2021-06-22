@@ -716,3 +716,18 @@ export const getInstanceSnapshotsTableColumn = ({
     },
   }
 }
+
+export const getServerMonitorAgentInstallStatus = ({
+  field = 'metadata',
+  title = i18n.t('compute.monitor.agent.install_status'),
+} = {}) => {
+  return {
+    field,
+    title,
+    formatter: ({ row }) => {
+      const status = _.get(row, ['metadata', 'sys:monitor_agent'])
+      if (status) return i18n.t('compute.monitor.agent.install_status.installed')
+      return i18n.t('compute.monitor.agent.install_status.uninstall')
+    },
+  }
+}

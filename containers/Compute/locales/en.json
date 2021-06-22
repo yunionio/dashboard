@@ -1427,5 +1427,8 @@
   "compute.shutdown_stop_paying": "No charge for shutdown",
   "compute.sys_info": "System Info",
   "compute.vpc_status_desc": "The green dot indicates that there are available IP subnets under the VPC",
+  "compute.monitor.agent.install_status": "Agent install status",
+  "compute.monitor.agent.install_status.installed": "Installed",
+  "compute.monitor.agent.install_status.uninstall": "Uninstall",
   "compute.network_status_desc": "The green dot indicates that there are available IP resources under the network address segment"
 }
