@@ -5,7 +5,7 @@
       <div>{{ card.title }}</div>
       <div style="font-weight: bold; font-size: 24px;">{{ card.total }}</div>
     </a-col>
-    <a-col :span="10">
+    <a-col :span="11">
       <div v-for="(v, k) in card.items" :key="k" class="col" style="padding-top: 8px;">
         <status :status="k" statusModule="monitorresources" style="display: inline-grid;" />
         <span>{{ ': '+ (card.items[k] || 0) }}</span>
