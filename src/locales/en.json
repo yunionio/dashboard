@@ -4731,7 +4731,7 @@
   "license.validator.is_account": "Please select at least one cloud platform",
   "license.provider.onestack": "KVM",
   "license.provider.aliyun": "@:scopeProviders.aliyun",
-  "license.provider.aws": "@:scopeProviders.aliyun",
+  "license.provider.aws": "@:scopeProviders.aws",
   "license.provider.azure": "@:scopeProviders.azure",
   "license.provider.ctyun": "@:scopeCloudPrvidersMap.Ctyun",
   "license.provider.google": "@:common_690",

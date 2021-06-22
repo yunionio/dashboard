@@ -142,12 +142,10 @@ const LicenseItems = [
   {
     key: 'monitor',
     meta: meta('monitor', '', false),
-    validators: [validators.hasCloudAccount],
   },
   {
     key: 'bill',
     meta: meta('bill', '', false),
-    validators: [validators.hasCloudAccount],
   },
   {
     key: 'auth',
