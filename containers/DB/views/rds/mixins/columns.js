@@ -29,7 +29,7 @@ export default {
         width: 100,
         slots: {
           default: ({ row }) => {
-            return DBINSTANCE_CATEGORY[row.category]
+            return DBINSTANCE_CATEGORY[row.category] || row.category || '-'
           },
         },
       },

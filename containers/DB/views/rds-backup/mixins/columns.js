@@ -31,7 +31,7 @@ export default {
         width: 100,
         slots: {
           default: ({ row }) => {
-            return BACKUP_TYPE[row.backup_mode]
+            return BACKUP_TYPE[row.backup_mode] || row.backup_mode || '-'
           },
         },
       },
@@ -51,7 +51,7 @@ export default {
         width: 100,
         slots: {
           default: ({ row }) => {
-            return `${row.engine || ''} ${row.engine_version || ''}`
+            return row.db_names || '-'
           },
         },
       },
@@ -66,7 +66,7 @@ export default {
               Physical: i18n.t('db.text_373'),
               Snapshot: i18n.t('db.text_374'),
             }
-            return map[row.backup_method]
+            return map[row.backup_method] || row.backup_method || '-'
           },
         },
       },

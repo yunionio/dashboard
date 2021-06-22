@@ -137,10 +137,6 @@ export default {
               title: this.$t('db.text_168'),
             },
             {
-              field: 'iops',
-              title: this.$t('db.text_169'),
-            },
-            {
               field: 'category',
               title: this.$t('db.text_119'),
               slots: {
