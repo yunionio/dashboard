@@ -1427,5 +1427,8 @@
   "compute.shutdown_stop_paying": "关机不收费",
   "compute.sys_info": "系统信息",
   "compute.vpc_status_desc": "绿点表示该VPC下有可供使用的网络资源",
+  "compute.monitor.agent.install_status": "Agent安装状态",
+  "compute.monitor.agent.install_status.installed": "已安装",
+  "compute.monitor.agent.install_status.uninstall": "未安装",
   "compute.network_status_desc": "绿点表示该网络地址段下有可供使用的IP资源"
 }

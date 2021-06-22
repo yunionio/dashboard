@@ -22,6 +22,7 @@ import {
   getBillingTypeTableColumn,
   getOsArch,
   getIpsTableColumn,
+  getServerMonitorAgentInstallStatus,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
@@ -47,6 +48,7 @@ export default {
         getOsArch(),
         getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         // getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
+        getServerMonitorAgentInstallStatus(),
         {
           field: 'keypair',
           title: this.$t('compute.text_33'),
