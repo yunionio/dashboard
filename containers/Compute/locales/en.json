@@ -1425,5 +1425,10 @@
   "compute.disable_delete_disk_by_brand_tooltip": "When deleting a host on a {0} platform virtual machine, the data disk must be deleted at the same time",
   "compute.disable_delete_disk_by_disk_tooltip": "When deleting the host from the local hard disk, the data disk must be deleted at the same time",
   "compute.shutdown_stop_paying": "No charge for shutdown",
-  "compute.sys_info": "System Info"
+  "compute.sys_info": "System Info",
+  "compute.vpc_status_desc": "The green dot indicates that there are available IP subnets under the VPC",
+  "compute.monitor.agent.install_status": "Agent install status",
+  "compute.monitor.agent.install_status.installed": "Installed",
+  "compute.monitor.agent.install_status.uninstall": "Uninstall",
+  "compute.network_status_desc": "The green dot indicates that there are available IP resources under the network address segment"
 }
