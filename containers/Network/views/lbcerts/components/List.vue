@@ -143,3 +143,28 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="less">
+@import '~@/styles/less/theme';
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  position: relative;
+  display: inline-flex;
+}
+
+.success {
+  background-color: @success-color;
+}
+.danger {
+  background-color: @error-color;
+}
+.info {
+  background-color: @normal-color;
+}
+.warning {
+  background-color: @warning-color;
+}
+</style>
