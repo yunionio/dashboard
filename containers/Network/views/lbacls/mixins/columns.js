@@ -27,7 +27,7 @@ export default {
         slots: {
           default: ({ row }) => {
             const arr = row.acl_entries || []
-            return i18n.t('common_701', [arr.length])
+            return i18n.t('common_323', [arr.length])
           },
           content: ({ row }, h) => {
             const arr = []
