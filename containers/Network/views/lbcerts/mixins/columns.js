@@ -52,6 +52,7 @@ export default {
       {
         field: 'not_after',
         title: i18n.t('network.text_319'),
+        sortable: true,
         width: 150,
         slots: {
           default: ({ row }) => {
