@@ -8,7 +8,7 @@ import Repo from '@Helm/views/repo'
 import Scheduledtask from '@Cloudenv/views/scheduledtask'
 import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
 import Layout from '@/layouts/RouterView'
-import { hasSetupKey } from '@/utils/auth'
+import { setupKeys } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
@@ -39,7 +39,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'public', 'vmware'])
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'private', 'public', 'vmware'],
+              })
             },
             label: i18n.t('helm.text_8'),
             permission: 'scheduledtasks_list',
@@ -75,7 +78,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vm_release')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'])
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'],
+              })
             },
             // invisible: () => true,
           },
@@ -102,7 +108,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_release')) {
                 return true
               }
-              return !hasSetupKey(['k8s'])
+              return !setupKeys.hasAllVersionedSetupKey({
+                '3.0': ['monitor', 'k8s'],
+                default: ['k8s'],
+              })
             },
             // invisible: () => true,
           },
@@ -128,7 +137,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_chart')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'])
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'],
+              })
             },
             // invisible: () => true,
           },
@@ -155,7 +167,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_repo')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'])
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware'],
+              })
             },
             // invisible: () => true,
           },

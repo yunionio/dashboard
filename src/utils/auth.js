@@ -281,7 +281,7 @@ const GlobalSetupKeys = class {
 
   hasAll (envs) {
     const _envs = R.type(envs) === 'String' ? [envs] : envs
-    return _envs && this.setupKeys && _envs.every((env) => { return setupKeys.indexOf(env) > -1 })
+    return _envs && this.setupKeys && _envs.every((env) => { return this.setupKeys.indexOf(env) > -1 })
   }
 
   hasAny (envs) {
@@ -305,6 +305,15 @@ const GlobalSetupKeys = class {
     const envs = versionedEnvs[this.setupKeysVersion] || versionedEnvs.default
     if (envs) {
       return this.hasSetupKey(envs)
+    } else {
+      return defaultResult
+    }
+  }
+
+  hasAllVersionedSetupKey (versionedEnvs, defaultResult = true) {
+    const envs = versionedEnvs[this.setupKeysVersion] || versionedEnvs.default
+    if (envs) {
+      return this.hasAll(envs)
     } else {
       return defaultResult
     }
