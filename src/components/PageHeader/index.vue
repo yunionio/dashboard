@@ -1,26 +1,28 @@
 <template>
   <div class="page-header" :class="title ? ['d-flex', 'align-items-center'] : []">
-    <slot name="title" />
-    <h3 v-if="title">{{ title }}</h3>
-    <div class="mini-title mb-2" v-if="miniTitle">
-      {{ miniTitle }}
-    </div>
-    <template v-if="tabs">
-      <div class="ml-4 position-relative h-100">
-        <a-tabs
-          :defaultActiveKey="currentTab"
-          class="page-header-tabs"
-          :animated="false"
-          :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }"
-          size="large"
-          @change="handleTabChange">
-          <template v-for="item of tabs">
-            <a-tab-pane :tab="item.label" :key="item.key" />
-          </template>
-        </a-tabs>
+    <template>
+      <slot name="title" />
+      <h3 v-if="title">{{ title }}</h3>
+      <div class="mini-title mb-2" v-if="miniTitle">
+        {{ miniTitle }}
       </div>
+      <template v-if="tabs">
+        <div class="ml-4 position-relative h-100">
+          <a-tabs
+            :defaultActiveKey="currentTab"
+            class="page-header-tabs"
+            :animated="false"
+            :tab-bar-style="{ padding: '0 30px', marginBottom: 0 }"
+            size="large"
+            @change="handleTabChange">
+            <template v-for="item of tabs">
+              <a-tab-pane :tab="item.label" :key="item.key" />
+            </template>
+          </a-tabs>
+        </div>
+      </template>
     </template>
-
+    <slot name="res-status-tab" />
   </div>
 </template>
 
@@ -51,7 +53,7 @@ export default {
 .page-header {
   height: 60px;
   position: relative;
-  > h3 {
+  h3 {
     font-size: 20px;
     color: #1a2736;
     margin: 0;
