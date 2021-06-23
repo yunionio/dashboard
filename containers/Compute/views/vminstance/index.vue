@@ -1,8 +1,13 @@
 <template>
   <div>
-    <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
+    <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
+      <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
+        <res-status-tab
+          :status-opts="statusOpts"
+          @click="statusClickHandle" />
+      </div>
+    </page-header>
     <page-body>
-      <res-status-tab />
       <vm-instance-list
         :id="listId"
         :cloud-env="cloudEnv"
@@ -29,6 +34,10 @@ export default {
       listId: 'VMInstanceList',
       cloudEnv: '',
       filterParams: {},
+      statusOpts: [],
+      statusArr: [],
+      errorFilterStatus: [],
+      otherFilterStatus: [],
     }
   },
   computed: {
@@ -36,9 +45,15 @@ export default {
       return getCloudEnvOptions('compute_engine_brands')
     },
   },
+  created () {
+    this.serverStaticsManager = new this.$Manager('servers/statistics')
+    this.fetchServersStatistics()
+  },
+  beforeDestroy () {
+    this.serverStaticsManager = null
+  },
   methods: {
     getStatusCheckArr (statusCheckArr, statusArr, isFirstLoad) {
-      console.log(statusCheckArr, statusArr, isFirstLoad)
       if (statusCheckArr && statusCheckArr.length > 0) {
         this.filterParams = {
           statusCheckArr: statusCheckArr,
@@ -51,6 +66,69 @@ export default {
           isFirstLoad: isFirstLoad,
         }
       }
+    },
+    statusClickHandle (obj) {
+      let statusCheckArr = []
+      if (obj.num > 0) {
+        switch (obj.type) {
+          case 'total':
+            statusCheckArr = []
+            break
+          case 'error':
+            statusCheckArr = [...this.errorFilterStatus]
+            break
+          case 'other':
+            statusCheckArr = [...this.otherFilterStatus]
+            break
+          default:
+            statusCheckArr = [obj.type]
+        }
+        this.filterParams = {
+          statusCheckArr,
+          statusArr: this.statusArr,
+        }
+      }
+    },
+    fetchServersStatistics () {
+      this.errorFilterStatus = []
+      this.otherFilterStatus = []
+      this.serverStaticsManager.list({
+        params: {
+          scope: this.$store.getters.scope,
+        },
+      }).then(res => {
+        const { ready, running } = res.data
+
+        // 统计
+        let total = 0
+        let error = 0
+        let other = 0
+        for (const k in res.data) {
+          total += res.data[k].total_count
+          if (new RegExp('fail').test(k)) {
+            this.errorFilterStatus.push(k)
+            error += res.data[k].total_count
+          } else {
+            if (!['running', 'ready'].includes(k)) {
+              this.otherFilterStatus.push(k)
+              other += res.data[k].total_count
+            }
+          }
+        }
+
+        const statusOpts = [
+          { title: '总数', type: 'total', num: total },
+          { title: '运行中', type: 'running', num: running.total_count },
+          { title: '关机', type: 'ready', num: ready.total_count },
+          { title: '操作失败', type: 'error', num: error },
+          { title: '其它', type: 'other', num: other },
+        ]
+        this.statusOpts = statusOpts
+        this.statusArr = Object.keys(res.data)
+      }).catch(err => {
+        console.log(err)
+        this.statusOpts = []
+      })
     },
   },
 }

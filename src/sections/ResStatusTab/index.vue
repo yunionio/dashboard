@@ -1,23 +1,31 @@
 <template>
   <div class="d-flex flex-row-reverse mb-3 res-status-tab">
     <ul class="res-status-list d-flex">
-      <li><i class="running" /><span>运行中</span><span>3</span></li>
-      <li><i class="stopping" /><span>关机</span><span>3</span></li>
-      <li><i class="other" /><span>操作失败</span><span>3</span></li>
-      <li><i class="recycle" /><span>其它</span><span>3</span></li>
+      <li v-for="(obj, idx) in statusOpts" :key="idx" @click="statusClickHandle(obj)">
+        <i :class="obj.type" /><span class="title">{{ obj.title }}</span><span class="num">{{ obj.num }}</span>
+      </li>
     </ul>
-    <div class="d-flex res-total">
-      <div class="circle">
-        <div class="inner-circle" />
-      </div>
-      <div class="d-flex flex-column"><span>总数</span><span>3</span></div>
-    </div>
   </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+
 export default {
   name: 'ResStatusTab',
+  props: {
+    statusOpts: {
+      type: Array,
+      default () {
+        return []
+      },
+    },
+  },
+  methods: {
+    statusClickHandle: debounce(function (obj) {
+      this.$emit('click', obj)
+    }, 500),
+  },
 }
 </script>
 
@@ -54,26 +62,39 @@ export default {
       position: relative;
       display: flex;
       flex-direction: column;
-      padding: 0 16px;
+      width: 74px;
+      cursor: pointer;
       i {
         position: absolute;
         display: block;
         width: 3px;
         height: 26px;
-        left: 4px;
+        left: -12px;
         top: 8px;
+        &.total {
+          background-color: #409eff;
+        }
         &.running {
           background-color: #52c41a;
         }
-        &.stopping {
+        &.ready {
           background-color: #d9d9d9;
         }
-        &.other {
+        &.error {
           background-color: #f5222d;
         }
-        &.recycle {
-          background-color: #d9d9d9;
+        &.other {
+          background-color: rgb(150, 152, 155);
         }
+      }
+      .title {
+        font-size: 12px;
+        color: #707275;
+      }
+      .num {
+        line-height: 22px;
+        color: #181A1D;
+        font-weight: 500;
       }
     }
   }
