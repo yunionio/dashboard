@@ -117,11 +117,11 @@ export default {
         }
 
         const statusOpts = [
-          { title: '总数', type: 'total', num: total },
-          { title: '运行中', type: 'running', num: running.total_count },
-          { title: '关机', type: 'ready', num: ready.total_count },
-          { title: '操作失败', type: 'error', num: error },
-          { title: '其它', type: 'other', num: other },
+          { title: this.$t('compute.text_576'), type: 'total', num: total },
+          { title: this.$t('compute.text_574'), type: 'running', num: running.total_count },
+          { title: this.$t('compute.text_273'), type: 'ready', num: ready.total_count },
+          { title: this.$t('common_623', [this.$t('scope.text_61')]), type: 'error', num: error },
+          { title: this.$t('compute.text_674'), type: 'other', num: other },
         ]
         this.statusOpts = statusOpts
         this.statusArr = Object.keys(res.data)
