@@ -13,7 +13,8 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        @updateCloudEnvOptions="updateCloudEnvOptions" />
+        @updateCloudEnvOptions="updateCloudEnvOptions"
+        @refresh="refreshHandle" />
     </page-body>
   </div>
 </template>
@@ -46,7 +47,7 @@ export default {
     },
   },
   created () {
-    this.serverStaticsManager = new this.$Manager('servers/statistics')
+    this.serverStaticsManager = new this.$Manager('servers/statistics2')
     this.fetchServersStatistics()
   },
   beforeDestroy () {
@@ -126,9 +127,12 @@ export default {
         this.statusOpts = statusOpts
         this.statusArr = Object.keys(res.data)
       }).catch(err => {
-        console.log(err)
+        console.error(err)
         this.statusOpts = []
       })
+    },
+    refreshHandle () {
+      this.fetchServersStatistics()
     },
   },
 }
