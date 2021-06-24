@@ -98,7 +98,7 @@ export default {
           scope: this.$store.getters.scope,
         },
       }).then(res => {
-        const { ready, running } = res.data
+        const { ready = {}, running = {} } = res.data
 
         // 统计
         let total = 0
@@ -119,8 +119,8 @@ export default {
 
         const statusOpts = [
           { title: this.$t('compute.text_576'), type: 'total', num: total },
-          { title: this.$t('compute.text_574'), type: 'running', num: running.total_count },
-          { title: this.$t('compute.text_273'), type: 'ready', num: ready.total_count },
+          { title: this.$t('compute.text_574'), type: 'running', num: running?.total_count || 0 },
+          { title: this.$t('compute.text_273'), type: 'ready', num: ready?.total_count || 0 },
           { title: this.$t('common_623', [this.$t('scope.text_61')]), type: 'error', num: error },
           { title: this.$t('compute.text_674'), type: 'other', num: other },
         ]
