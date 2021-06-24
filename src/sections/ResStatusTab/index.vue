@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-row-reverse mb-3 res-status-tab">
     <ul class="res-status-list d-flex">
-      <li v-for="(obj, idx) in statusOpts" :key="idx" @click="statusClickHandle(obj)">
-        <i :class="obj.type" /><span class="title">{{ obj.title }}</span><span class="num">{{ obj.num }}</span>
+      <li v-for="(obj, idx) in statusOpts" :key="idx" @click="statusClickHandle(obj)" :style="{'padding-right': obj.type === 'error' ? '20px' : 0}">
+        <i :class="obj.type" /><span :title="obj.title" class="title">{{ obj.title }}</span><span class="num">{{ obj.num }}</span>
       </li>
     </ul>
   </div>
@@ -34,27 +34,6 @@ export default {
   height: 46px;
   .res-total {
     margin-right: -16px;
-
-    .circle {
-      position: relative;
-      right: 4px;
-      width: 40px;
-      height: 40px;
-      background-color: #9eeb47;
-      border-radius: 50%;
-    }
-    .inner-circle {
-      position: absolute;
-      margin: auto;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 20px;
-      height: 20px;
-      background-color: #fff;
-      border-radius: 50%;
-    }
   }
   .res-status-list {
     list-style: none;
@@ -62,7 +41,7 @@ export default {
       position: relative;
       display: flex;
       flex-direction: column;
-      width: 74px;
+      min-width: 74px;
       cursor: pointer;
       i {
         position: absolute;

@@ -1092,6 +1092,7 @@ export default {
       }
     },
     handleListRefresh () {
+      this.$emit('refresh')
       this.list.refresh()
       // 新建按钮无法点击时，刷新云资源情况
       this.cloudEnvEmpty && this.$store.dispatch('auth/getCapabilities')
