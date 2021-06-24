@@ -34,7 +34,7 @@ export default {
         id: this.id,
         resource: 'dbinstanceaccounts',
         getParams: this.params,
-        steadyStatus: Object.values(expectStatus.redisAccount).flat(),
+        steadyStatus: Object.values(expectStatus.rdsAccount).flat(),
         filterOptions: {
           name: getNameFilter(),
           status: getStatusFilter('rdsAccount'),

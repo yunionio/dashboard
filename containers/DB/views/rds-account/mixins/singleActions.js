@@ -83,11 +83,13 @@ export default {
         label: this.$t('db.text_42'),
         permission: 'rds_dbinstanceaccounts_delete',
         action: (obj) => {
-          this.createDialog('RedisWhiteListDeleteDialog', {
+          this.createDialog('DeleteResDialog', {
+            title: this.$t('db.text_42'),
+            name: this.$t('db.text_188'),
             data: [obj],
+            onManager: this.onManager,
             columns: this.columns,
-            title: this.$t('db.text_206'),
-            list: this.list,
+            refresh: this.refresh,
           })
         },
         meta: (obj) => {
