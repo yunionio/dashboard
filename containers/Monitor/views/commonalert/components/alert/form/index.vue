@@ -651,7 +651,7 @@ export default {
     toParams (needEmit = true) {
       const fd = this.form.fc.getFieldsValue()
       const params = {
-        database: this.metricKeyItem.database || 'telegraf',
+        database: this.metricKeyItem.database || _.get(this.alertData, 'common_alert_metric_details[0].db', 'telegraf'),
       }
       const tags = []
       if (fd.metric_key) params.measurement = fd.metric_key
