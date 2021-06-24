@@ -173,8 +173,10 @@ export default {
       }
     },
     toHistory: function (e) {
-      const rn = this.ringChart.chartData.rows[e.dataIndex].raw_name
-      this.$router.push({ path: '/alertrecord', query: { res_type: rn } })
+      const matchs = this.ringChart.chartData.rows.filter(row => { return row.name === e.name && row.count === e.value })
+      if (matchs.length > 0) {
+        this.$router.push({ path: '/alertrecord', query: { res_type: matchs[0].raw_name } })
+      }
     },
     async fetchAllCharts () {
       await this.fetchPieChartData()
