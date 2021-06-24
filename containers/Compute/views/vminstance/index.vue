@@ -47,7 +47,7 @@ export default {
     },
   },
   created () {
-    this.serverStaticsManager = new this.$Manager('servers/statistics2')
+    this.serverStaticsManager = new this.$Manager('servers/statistics')
     this.fetchServersStatistics()
   },
   beforeDestroy () {
