@@ -12,6 +12,78 @@ const DISK_USED_PERCENT = {
   metric: metricItems.used_percent.key,
 }
 
+const MEM_USED_PERCENT = {
+  name: 'mem',
+  label: i18n.t('compute.text_518'),
+  seleteItem: 'used_percent',
+  fromItem: 'agent_mem',
+  unit: '%',
+  transfer: 1,
+  metric: metricItems['vm_mem.used_percent'].key,
+}
+
+const CPU_USED_PERCENT = {
+  name: 'cpu',
+  label: i18n.t('compute.text_523'),
+  seleteItem: 'usage_active',
+  fromItem: 'agent_cpu',
+  unit: '%',
+  transfer: 1,
+  metric: metricItems['vm_cpu.usage_active'].key,
+}
+
+const DISK_IO_READ_RATES = {
+  name: 'mem',
+  label: i18n.t('compute.text_526'),
+  seleteItem: 'read_bps',
+  fromItem: 'agent_diskio',
+  unit: 'bps',
+  transfer: 1024,
+  metric: metricItems['vm_diskio.read_bps'].key,
+}
+
+const DISK_IO_WRITE_RATES = {
+  name: 'mem',
+  label: i18n.t('compute.text_526'),
+  seleteItem: 'write_bps',
+  fromItem: 'agent_diskio',
+  unit: 'bps',
+  transfer: 1024,
+  metric: metricItems['vm_diskio.write_bps'].key,
+}
+
+const NET_SEND_BYTES = {
+  name: 'net',
+  label: i18n.t('compute.text_524'),
+  seleteItem: 'bytes_sent',
+  selectFunction: 'derivative',
+  fromItem: 'agent_net',
+  unit: 'bps',
+  transfer: 1024,
+  metric: metricItems['vm_mem.used_percent'].key,
+}
+
+const NET_RECV_BYTES = {
+  name: 'net',
+  label: i18n.t('compute.text_525'),
+  seleteItem: 'bytes_recv',
+  selectFunction: 'derivative',
+  fromItem: 'agent_net',
+  unit: 'bps',
+  transfer: 1024,
+  metric: metricItems['vm_mem.used_percent'].key,
+}
+
+export const AGENT_MONITOR = [
+  CPU_USED_PERCENT,
+  MEM_USED_PERCENT,
+  DISK_USED_PERCENT,
+  DISK_IO_READ_RATES,
+  DISK_IO_WRITE_RATES,
+  NET_SEND_BYTES,
+  NET_RECV_BYTES,
+]
+
 // OneCloud 虚拟机监控数据
 export const ONECLOUD_MONITOR = [
   {
@@ -22,15 +94,6 @@ export const ONECLOUD_MONITOR = [
     unit: '%',
     transfer: 1,
     metric: metricItems['vm_cpu.usage_active'].key, // 报警指标
-  },
-  {
-    name: 'mem',
-    label: i18n.t('compute.text_518'),
-    seleteItem: 'used_percent',
-    fromItem: 'agent_mem',
-    unit: '%',
-    transfer: 1,
-    metric: metricItems['vm_mem.used_percent'].key,
   },
   {
     name: 'netio',
@@ -50,7 +113,6 @@ export const ONECLOUD_MONITOR = [
     transfer: 1024,
     metric: metricItems['vm_netio.bps_sent'].key,
   },
-  DISK_USED_PERCENT,
   {
     name: 'diskio',
     label: i18n.t('compute.text_526'),
@@ -83,15 +145,6 @@ export const VMWARE_MONITOR = [
     metric: metricItems['vm_cpu.usage_active'].key,
   },
   {
-    name: 'mem',
-    label: i18n.t('compute.text_518'),
-    seleteItem: 'used_percent',
-    fromItem: 'agent_mem',
-    unit: '%',
-    transfer: 1,
-    metric: metricItems['vm_mem.used_percent'].key,
-  },
-  {
     name: 'netio',
     label: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
@@ -109,7 +162,6 @@ export const VMWARE_MONITOR = [
     transfer: 1024,
     metric: metricItems['vm_netio.bps_sent'].key,
   },
-  DISK_USED_PERCENT,
   {
     name: 'diskio',
     label: i18n.t('compute.text_526'),
@@ -142,15 +194,6 @@ export const OTHER_MONITOR = [
     metric: metricItems['vm_cpu.usage_active'].key,
   },
   {
-    name: 'mem',
-    label: i18n.t('compute.text_518'),
-    seleteItem: 'used_percent',
-    fromItem: 'agent_mem',
-    unit: '%',
-    transfer: 1,
-    metric: metricItems['vm_mem.used_percent'].key,
-  },
-  {
     name: 'netio',
     label: i18n.t('compute.text_524'),
     seleteItem: 'bps_recv',
@@ -168,7 +211,6 @@ export const OTHER_MONITOR = [
     transfer: 1024,
     metric: metricItems['vm_netio.bps_sent'].key,
   },
-  DISK_USED_PERCENT,
   {
     name: 'diskio',
     label: i18n.t('compute.text_526'),
