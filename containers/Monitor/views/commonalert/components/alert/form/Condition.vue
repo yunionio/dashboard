@@ -2,12 +2,12 @@
   <a-row>
     <a-col :span="6">
       <a-form-item>
-        <base-select v-decorator="decorators.period" :options="preiodOpts" :disabled="disabled" minWidth="90px" />
+        <base-select v-decorator="decorators.period" :options="preiodOpts" minWidth="90px" />
       </a-form-item>
     </a-col>
     <a-col :span="6">
       <a-form-item>
-        <base-select v-decorator="decorators.alert_duration" :options="durationOpts" :disabled="disabled" minWidth="120px" />
+        <base-select v-decorator="decorators.alert_duration" :options="durationOpts" minWidth="120px" />
       </a-form-item>
     </a-col>
     <a-col :span="4">

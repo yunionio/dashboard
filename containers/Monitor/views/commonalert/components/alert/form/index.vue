@@ -32,7 +32,7 @@
     </a-form-item>
     <a-form-item :label="$t('monitor.commonalerts.form.column.silent')" class="mb-0">
       <a-form-item class="mr-1">
-        <base-select v-decorator="decorators.silent_period" :options="silentOpts" :disabled="disabled" style="display: inline-flex;" />
+        <base-select v-decorator="decorators.silent_period" :options="silentOpts" style="display: inline-flex;" />
         <a-tooltip style="padding-left: 5px;" placement="top"><a-icon type="question-circle" />
         <template slot="title">
           <span>{{ $t('monitor.commonalerts.form.column.silent.tips') }}</span>
@@ -41,7 +41,7 @@
       </a-form-item>
     </a-form-item>
     <a-form-item :label="$t('monitor.level')">
-      <a-radio-group v-decorator="decorators.level" :disabled="disabled">
+      <a-radio-group v-decorator="decorators.level">
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
