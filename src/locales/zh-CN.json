@@ -3479,7 +3479,7 @@
   "common.text00012": "标签",
   "common.text00013": "无本地标签资源",
   "common.text00014": "选择资源属性进行过滤",
-  "common.text00015": "添加筛选项",
+  "common.text00015": "默认为名称搜索，自动匹配IP或ID筛选项",
   "common.text00016": "@:brand平台提供的公共镜像，可以适配所有平台使用",
   "common.text00017": "自定义镜像",
   "common.text00018": "用户在@:brand平台上传的自定义镜像",
