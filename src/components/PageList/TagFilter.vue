@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex tag-filter-wrap ml-2 flex-fill">
     <tag-select
+      multiple
       filter-without-user-meta
       :params="params"
       :value="tagFilter"
@@ -67,8 +68,14 @@ export default {
       const ret = []
       R.forEachObjIndexed((value, key) => {
         if (value && value.length > 0) {
-          for (let i = 0, len = value.length; i < len; i++) {
-            ret.push(this.genTag(key, value[i]))
+          if (value.length > 1) {
+            const vals = []
+            for (let i = 0, len = value.length; i < len; i++) {
+              vals.push(value[i])
+            }
+            ret.push(this.genTag(key, vals.join(' or ')))
+          } else {
+            ret.push(this.genTag(key, value[0]))
           }
         } else {
           ret.push(this.genTag(key))
@@ -94,12 +101,7 @@ export default {
     },
     removeTag (item) {
       const newValue = { ...this.tagFilter }
-      if (newValue[item.key].length > 1) {
-        const index = R.indexOf(item.value, newValue[item.key])
-        newValue[item.key].splice(index, 1)
-      } else {
-        delete newValue[item.key]
-      }
+      delete newValue[item.key]
       this.handleTagFilterChange(newValue)
     },
   },
