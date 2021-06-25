@@ -35,7 +35,7 @@ const CPU_USED_PERCENT = {
 const DISK_IO_READ_RATES = {
   name: 'mem',
   label: i18n.t('compute.text_526'),
-  seleteItem: 'read_bps',
+  seleteItem: 'read_bytes',
   selectFunction: 'derivative',
   fromItem: 'agent_diskio',
   unit: 'bps',
@@ -46,7 +46,7 @@ const DISK_IO_READ_RATES = {
 const DISK_IO_WRITE_RATES = {
   name: 'mem',
   label: i18n.t('compute.text_526'),
-  seleteItem: 'write_bps',
+  seleteItem: 'write_bytes',
   selectFunction: 'derivative',
   fromItem: 'agent_diskio',
   unit: 'bps',
