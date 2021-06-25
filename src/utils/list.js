@@ -855,11 +855,15 @@ class CreateList {
         ret[`tags.${index}.key`] = []
         let len = 1
         if (value && value.length) len = value.length
-        for (let i = 0; i < len; i++) {
-          ret[`tags.${index}.key`].push(key)
+        if (len > 0) {
+          for (let i = 0; i < len; i++) {
+            ret[`tags.${index}.key`] = key
+            ret[`tags.${index}.value`] = value[i]
+            index++
+          }
+        } else {
+          ret[`tags.${index}.value`] = ''
         }
-        ret[`tags.${index}.value`] = value
-        index++
       }
     }, this.tagFilter)
     return ret
