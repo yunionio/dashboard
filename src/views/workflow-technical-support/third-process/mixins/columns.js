@@ -1,7 +1,4 @@
 import {
-  getCommentTableColumn,
-} from '../../utils/columns'
-import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
@@ -48,7 +45,18 @@ export default {
           },
         },
       },
-      getCommentTableColumn(),
+      {
+        field: 'comment',
+        title: this.$t('common_438'),
+        minWidth: 80,
+        showOverflow: 'title',
+        slots: {
+          default: ({ row }, h) => {
+            const veriables = JSON.parse(row.variables || '{}')
+            return veriables.comment || '-'
+          },
+        },
+      },
       {
         field: 'status',
         title: i18n.t('common_372'),
