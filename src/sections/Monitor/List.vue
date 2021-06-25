@@ -1,6 +1,6 @@
 <template>
   <div class="monitor-list d-flex flex-wrap">
-    <a-card v-for="item in listData" :key="item.title" style="width: 700px;" class="position-relative m-3">
+    <a-card v-for="item in listData" :key="item.title+item.constants ? item.constants.fromItem : ''" style="width: 700px;" class="position-relative m-3">
       <a-divider>{{ item.title }}</a-divider>
       <actions class="actions position-absolute" :options="singleActions" :row="item" button-type="link" button-size="small" />
       <!-- <monitor-list-line :chartData="item.chartData" :lineConfig="getConfig(item)" :loading="loading" /> -->

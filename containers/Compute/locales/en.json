@@ -1430,5 +1430,7 @@
   "compute.monitor.agent.install_status": "Agent install status",
   "compute.monitor.agent.install_status.installed": "Installed",
   "compute.monitor.agent.install_status.uninstall": "Uninstall",
+  "compute.monitor.basic": "Basic Monitor",
+  "compute.monitor.agent": "Agent Monitor",
   "compute.network_status_desc": "The green dot indicates that there are available IP resources under the network address segment"
 }
