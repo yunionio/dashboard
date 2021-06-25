@@ -1,22 +1,43 @@
 <template>
   <div>
-    <a-alert class="mb-2" :type="alertType" v-if="visible">
-        <install-agent-form slot="message" :data="data" :serverColumns="serverColumns" @onInstall="handleInstallResult" />
-    </a-alert>
-    <monitor
-      :time.sync="time"
-      :timeGroup.sync="timeGroup"
-      :monitorList="monitorList"
-      :singleActions="singleActions"
-      :loading="loading"
-      @refresh="fetchData" />
+    <a-tabs default-active-key="basic" @change="handleTabChange">
+      <a-tab-pane key="basic" :tab="$t('compute.monitor.basic')">
+        <monitor
+          :time.sync="time"
+          :timeGroup.sync="timeGroup"
+          :monitorList="monitorList"
+          :singleActions="singleActions"
+          :loading="loading"
+          key="monitor-basic"
+          v-if="tab === 'basic'"
+          @refresh="fetchData" />
+      </a-tab-pane>
+      <a-tab-pane key="agent" :tab="$t('compute.monitor.agent')">
+        <div v-if="visible">
+          <a-alert class="mb-2" :type="alertType" v-if="visible">
+            <install-agent-form slot="message" :data="data" :serverColumns="serverColumns" @onInstall="handleInstallResult" />
+          </a-alert>
+        </div>
+        <div v-else>
+          <monitor
+            :time.sync="time"
+            :timeGroup.sync="timeGroup"
+            :monitorList="monitorList"
+            :singleActions="singleActions"
+            :loading="loading"
+            key="monitor-agent"
+            v-if="tab === 'agent'"
+            @refresh="fetchData" />
+        </div>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
 import InstallAgentForm from '../components/InstallAgentForm'
-import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR } from '@Compute/views/vminstance/constants'
+import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR, AGENT_MONITOR } from '@Compute/views/vminstance/constants'
 import { metricItems } from '@Compute/views/node-alert/constants'
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
@@ -95,6 +116,7 @@ export default {
         },
       ],
       loading: false,
+      tab: 'basic',
       visible: visible,
       alertType: 'warning',
       time: '1h',
@@ -107,6 +129,9 @@ export default {
       return this.data.hypervisor
     },
     monitorConstants () {
+      if (this.tab === 'agent') {
+        return AGENT_MONITOR
+      }
       if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
         return VMWARE_MONITOR
       } else if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
@@ -135,6 +160,15 @@ export default {
     this.baywatch(['time', 'timeGroup', 'data.id'], this.fetchDataDebounce)
   },
   methods: {
+    handleTabChange (tab) {
+      this.tab = tab
+      this.monitorList = []
+      this.$nextTick(() => {
+        if (this.tab === 'basic' || (!this.visible && this.tab === 'agent')) {
+          this.fetchDataDebounce()
+        }
+      })
+    },
     handleInstallResult (ret) {
       if (ret && ret.status === 'succeed') {
         this.alertType = 'success'
@@ -204,7 +238,7 @@ export default {
                     params: [val.seleteItem],
                   },
                   { // 对应 mean(val.seleteItem)
-                    type: 'mean',
+                    type: val.selectFunction || 'mean',
                     params: [],
                   },
                   { // 确保后端返回columns有 val.label 的别名
@@ -225,8 +259,10 @@ export default {
         ],
         scope: this.$store.getters.scope,
         from: this.time,
-        interval: this.timeGroup,
         unit: true,
+      }
+      if (val.selectFunction !== 'derivative') {
+        data.interval = this.timeGroup
       }
       data.signature = getSignature(data)
       return data
