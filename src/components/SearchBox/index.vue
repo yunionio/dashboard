@@ -135,7 +135,13 @@ export default {
         if (Array.isArray(value)) {
           const whiteList = ['created_at']
           if (!whiteList.includes(key)) {
-            value = value.filter((item) => { return item?.trim().length > 0 }).map(v => { return v?.trim() })
+            value = value.filter((item) => {
+              if (R.is(Boolean, item)) return true
+              return item?.trim().length > 0
+            }).map(v => {
+              if (R.is(Boolean, v)) return v
+              return v?.trim()
+            })
           }
           if (value.length === 0) {
             return
