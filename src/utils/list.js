@@ -190,6 +190,8 @@ class CreateList {
     extraDataFecther = {},
     // 重新生成list的params
     genParamsCb = null,
+    // fetchData完成后的回调
+    fetchDataCb = null,
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -252,6 +254,7 @@ class CreateList {
     this.extraDataFecther = extraDataFecther
     this.extraData = {}
     this.genParamsCb = genParamsCb
+    this.fetchDataCb = fetchDataCb
   }
 
   // 重写selectedItems getter和setter
@@ -388,6 +391,9 @@ class CreateList {
             console.error(`get ${key} data error: ${error}`)
           })
         }
+      }
+      if (R.is(Function, this.fetchDataCb)) {
+        this.fetchDataCb()
       }
       return response.data
     } catch (error) {
