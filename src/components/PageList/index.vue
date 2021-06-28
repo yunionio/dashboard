@@ -305,6 +305,7 @@ export default {
     },
     changeSelected (selection) {
       this.list.changeSelected(selection)
+      this.$emit('change-selected', selection)
     },
     // 清除list中的选择项
     clearSelected () {
