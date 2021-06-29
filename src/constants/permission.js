@@ -644,6 +644,14 @@ export const PERMISSION = {
   bill_budgets_create: ['meter', 'budgets', 'create'],
   bill_budgets_delete: ['meter', 'budgets', 'delete'],
   bill_budgets_perform: ['meter', 'budgets', 'perform'],
+
+  /**
+   * billsdimensions 维度管理
+   */
+  billsdimensions_list: ['compute', 'billsdimensions', 'list'],
+  billsdimensions_update: ['compute', 'billsdimensions', 'list'],
+  billsdimensions_delete: ['compute', 'billsdimensions', 'delete'],
+  billsdimensions_perform: ['compute', 'billsdimensions', 'perform'],
   /**
    * cloudwatcher 相关操作
    */
