@@ -1,11 +1,12 @@
-const logo = require('@scope/images/onecloud.svg')
+const logo = require('@scope/images/cloudpod_logo.svg')
+const loginLogo = require('@scope/images/cloudpod_login_logo.svg')
 
 export default {
   state: {
     companyInfo: {
-      copyright: 'Made with ❤ Yunion',
+      copyright: 'Made with ❤ Cloudpods',
       logo,
-      loginLogo: logo,
+      loginLogo,
       name: 'OneCloud',
     },
     workflow: {
