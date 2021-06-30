@@ -262,7 +262,7 @@ export default {
     },
     handleDomainChange (val) {
       this.project_domain = val
-      this.$refs.areaSelects.fetch(this.areaselectsName())
+      this.$refs.areaSelects.fetchs(this.areaselectsName)
     },
     async handleConfirm () {
       this.loading = true
