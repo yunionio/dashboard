@@ -384,11 +384,6 @@ export default {
       zoneList: [],
       project_domain: '',
       vpcId: '',
-      providerParams: {
-        cloud_env: 'public',
-        usable: false,
-        usable_vpc: true,
-      },
     }
   },
   computed: {
@@ -478,6 +473,14 @@ export default {
         return ['cloudregion']
       }
       return ['provider', 'cloudregion']
+    },
+    providerParams () {
+      return {
+        cloud_env: 'public',
+        usable: false,
+        usable_vpc: true,
+        project_domain: this.form.fd.domain?.key,
+      }
     },
   },
   provide () {
