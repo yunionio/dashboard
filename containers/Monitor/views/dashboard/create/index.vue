@@ -150,8 +150,8 @@ export default {
       this.loading = true
       try {
         const params = {
-          scope: this.scope,
           details: true,
+          ...this.extraParams,
         }
         new this.$Manager('alertpanels', 'v1').get({ id: this.panelId, params }).then((res) => {
           this.loading = false
