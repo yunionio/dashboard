@@ -1,6 +1,6 @@
 import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -96,11 +96,7 @@ export default {
       },
       getBillingTableColumn({ vm: this }),
       getBrandTableColumn(),
-      {
-        field: 'account',
-        minWidth: 100,
-        title: i18n.t('db.text_67'),
-      },
+      getAccountTableColumn(),
       getProjectTableColumn(),
       {
         field: 'region',

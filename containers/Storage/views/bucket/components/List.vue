@@ -19,7 +19,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter, getDomainFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -74,6 +74,7 @@ export default {
             label: this.$t('dictionary.region'),
           },
           project_domains: getDomainFilter(),
+          manager: getCloudProviderFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['storage_class', 'account', 'public_scope'],

@@ -421,7 +421,7 @@ export const getAccountTableColumn = ({
         const ret = []
         ret.push(
           <list-body-cell-wrap hide-field copy field={field} row={row}>
-            <span style={{ color: '#0A1F44' }}>{ val }</span>
+            <span style={{ color: '#0A1F44' }}>{ val || '-' }</span>
           </list-body-cell-wrap>,
         )
         if (row.manager) {
