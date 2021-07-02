@@ -16,7 +16,7 @@ import { ENGINE_ARCH } from '../constants/index.js'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getStatusFilter, getTenantFilter, getFilter, getDomainFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getTenantFilter, getFilter, getDomainFilter, getBrandFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -90,6 +90,7 @@ export default {
           region: {
             label: this.$t('db.text_40'),
           },
+          manager: getCloudProviderFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'instance_type', 'account'],
