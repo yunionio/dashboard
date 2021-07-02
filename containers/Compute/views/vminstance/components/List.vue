@@ -33,6 +33,7 @@ import {
   getVpcFilter,
   getOsArchFilter,
   getRegionFilter,
+  getCloudProviderFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -125,6 +126,7 @@ export default {
       vcpu_count: {
         label: 'CPU',
       },
+      manager: getCloudProviderFilter(),
       // disk: {
       //   label: this.$t('table.title.disk'),
       // },

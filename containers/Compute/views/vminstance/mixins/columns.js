@@ -12,6 +12,7 @@ import {
   getBillingTableColumn,
   getTimeTableColumn,
   getOsArch,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
@@ -259,11 +260,12 @@ export default {
       }),
       getBillingTableColumn({ vm: this, hiddenSetBtn: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire') }),
       getBrandTableColumn(),
-      getCopyWithContentTableColumn({
-        field: 'account',
-        title: i18nLocale.t('res.cloudaccount'),
-        hidden: () => this.$store.getters.isProjectMode,
-      }),
+      // getCopyWithContentTableColumn({
+      //   field: 'account',
+      //   title: i18nLocale.t('res.cloudaccount'),
+      //   hidden: () => this.$store.getters.isProjectMode,
+      // }),
+      getAccountTableColumn(),
       {
         field: 'host',
         title: i18nLocale.t('res.host'),
