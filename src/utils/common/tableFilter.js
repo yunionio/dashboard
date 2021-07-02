@@ -117,6 +117,19 @@ export function getAccountFilter () {
   }
 }
 
+export function getCloudProviderFilter () {
+  return {
+    label: i18n.t('compute.text_653'),
+    dropdown: true,
+    multiple: false,
+    distinctField: {
+      type: 'extra_field',
+      key: 'manager',
+    },
+    hidden: () => store.getters.isProjectMode,
+  }
+}
+
 export function getIpFilter () {
   return {
     label: 'IP',

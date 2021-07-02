@@ -20,7 +20,7 @@ import { validateEnabled, validateDisable } from '../utils'
 import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import { changeToArr } from '@/utils/utils'
@@ -68,6 +68,7 @@ export default {
       zone: {
         label: this.$t('compute.text_270'),
       },
+      manager: getCloudProviderFilter(),
     }
     const { path } = this.$route
     if (path.includes('/cluster')) {
