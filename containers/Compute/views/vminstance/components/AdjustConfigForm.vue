@@ -663,7 +663,7 @@ export default {
         }
         if (this.data[i].disks_info) {
           this.data[i].disks_info.forEach((item) => {
-            if (item.index !== 0) { // 数据盘
+            if (item.disk_type !== 'sys') { // 数据盘
               datadisks.push({ value: item.size / 1024, type: item.storage_type })
             } else { // 系统盘
               sysdisks.push({ value: item.size / 1024, type: item.storage_type })
