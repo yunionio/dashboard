@@ -44,7 +44,7 @@ const DISK_IO_READ_RATES = {
 
 const DISK_IO_WRITE_RATES = {
   name: 'mem',
-  label: i18n.t('compute.text_526'),
+  label: i18n.t('compute.text_527'),
   seleteItem: 'write_bps',
   fromItem: 'agent_diskio',
   unit: 'bps',
