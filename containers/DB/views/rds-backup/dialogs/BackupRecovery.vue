@@ -184,6 +184,7 @@ export default {
             data,
           })
         }
+        this.$bus.$emit('RdsRefresh')
         this.cancelDialog()
       } finally {
         this.loading = false

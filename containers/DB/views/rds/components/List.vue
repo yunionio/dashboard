@@ -296,6 +296,12 @@ export default {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
     this.list.fetchData()
     this.initSidePageTab('detail')
+    this.$bus.$on('RdsRefresh', () => {
+      this.refresh()
+    })
+  },
+  beforeDestroy () {
+    this.$bus.$off('RdsRefresh')
   },
   methods: {
     handleOpenSidepage (row) {
@@ -309,6 +315,9 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    refresh () {
+      this.list.refresh()
     },
   },
 }
