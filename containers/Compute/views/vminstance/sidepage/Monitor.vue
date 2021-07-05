@@ -18,7 +18,7 @@
             <install-agent-form slot="message" :data="data" :serverColumns="serverColumns" @onInstall="handleInstallResult" />
           </a-alert>
         </div>
-        <div v-else>
+        <div>
           <monitor
             :time.sync="time"
             :timeGroup.sync="timeGroup"
@@ -164,7 +164,7 @@ export default {
       this.tab = tab
       this.monitorList = []
       this.$nextTick(() => {
-        if (this.tab === 'basic' || (!this.visible && this.tab === 'agent')) {
+        if (this.tab === 'basic' || this.tab === 'agent') {
           this.fetchDataDebounce()
         }
       })
