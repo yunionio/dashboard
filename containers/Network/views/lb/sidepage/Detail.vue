@@ -38,7 +38,7 @@ export default {
         // getExtTagColumn({ onManager: this.onManager, resource: 'loadbalancer', columns: () => this.columns }),
         {
           field: 'loadbalance_type',
-          title: this.$t('network.text_249'),
+          title: this.$t('network.text_268'),
           formatter: ({ row }) => {
             let { provider } = row
             if (provider) {
@@ -60,14 +60,17 @@ export default {
           },
         },
         getBrandTableColumn(),
-        {
-          field: 'charge_type',
-          title: this.$t('network.text_192'),
-          formatter: ({ row }) => {
-            if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
-            return '-'
+        getCopyWithContentTableColumn({
+          field: 'region',
+          title: this.$t('network.text_199'),
+          hideField: true,
+          slotCallback: row => {
+            if (!row.region) return '-'
+            return [
+              <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.region_id} vm={this}>{ row.region }</side-page-trigger>,
+            ]
           },
-        },
+        }),
         {
           field: 'zone',
           title: this.$t('network.text_199'),
@@ -97,21 +100,30 @@ export default {
               title: this.$t('network.text_248'),
               slots: {
                 default: ({ row }) => {
-                  let text = row.address || '-'
-                  let weakTip = ''
+                  const ret = []
                   if (row.eip) {
-                    text = row.eip
+                    let weakTip = ''
                     if (row.eip_mode === 'elastic_ip') {
                       weakTip = this.$t('network.text_304')
                     } else if (row.eip_mode === 'public_ip') {
                       weakTip = this.$t('network.text_305')
-                    } else {
-                      weakTip = ''
                     }
-                  } else {
-                    weakTip = row.address_type === 'intranet' ? this.$t('network.text_306') : this.$t('network.text_307')
+                    ret.push(<div>
+                      <span>{row.eip}</span>
+                      <span className="text-color-secondary">{weakTip}</span>
+                      <copy message={row.eip}/>
+                    </div>)
                   }
-                  return [<div><span>{ text }</span><span class="text-color-secondary">{ weakTip }</span><copy message={ text } /></div>]
+
+                  if (ret.length > 0 || row.address_type === 'intranet') {
+                    ret.push(<div>
+                      <span>{row.address || '-'}</span>
+                      <span className="text-color-secondary">{row.address_type === 'intranet' ? this.$t('network.text_306') : this.$t('network.text_307')}</span>
+                      <copy message={row.address || '-'}/>
+                    </div>)
+                  }
+
+                  return ret
                 },
               },
             },
@@ -127,6 +139,14 @@ export default {
               },
               hidden: this.$store.getters.isProjectMode,
             }),
+            {
+              field: 'charge_type',
+              title: this.$t('network.text_192_0'),
+              formatter: ({ row }) => {
+                if (row.charge_type) return CHARGE_TYPE[row.charge_type] || row.charge_type
+                return '-'
+              },
+            },
           ],
         },
         {

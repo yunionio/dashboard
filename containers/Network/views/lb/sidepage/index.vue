@@ -31,6 +31,7 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import LbDetail from './Detail'
+import LbProperties from './Properties'
 import LoadbalancerlistenersList from '@Network/views/loadbalancerlistener/components/List'
 import LoadbalancerbackendgroupsList from '@Network/views/loadbalancerbackendgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
@@ -44,16 +45,19 @@ export default {
     Actions,
     LoadbalancerbackendgroupsList,
     LoadbalancerlistenersList,
+    LbProperties,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
+    const tabs = [
+      { label: this.$t('network.text_67'), key: 'lb-detail' },
+      { label: this.$t('network.text_138'), key: 'loadbalancerlisteners-list' },
+      { label: this.$t('network.text_139'), key: 'loadbalancerbackendgroups-list' },
+      { label: this.$t('network.text_150'), key: 'event-drawer' },
+    ]
+
     return {
-      detailTabs: [
-        { label: this.$t('network.text_67'), key: 'lb-detail' },
-        { label: this.$t('network.text_138'), key: 'loadbalancerlisteners-list' },
-        { label: this.$t('network.text_139'), key: 'loadbalancerbackendgroups-list' },
-        { label: this.$t('network.text_150'), key: 'event-drawer' },
-      ],
+      detailTabs: tabs,
     }
   },
   computed: {
@@ -74,6 +78,16 @@ export default {
           return 'EventListForLbSidePage'
         default:
           return ''
+      }
+    },
+  },
+  watch: {
+    detailData () {
+      if (this.detailData && this.detailData.metadata && this.detailData.metadata['sys:properties']) {
+        const tabs = this.detailTabs.filter(item => { return item.key !== 'lb-properties' && item.key !== 'event-drawer' })
+        this.detailTabs = [...tabs, { label: this.$t('network.lb.properties.details'), key: 'lb-properties' }, { label: this.$t('network.text_150'), key: 'event-drawer' }]
+      } else {
+        this.detailTabs = this.detailTabs.filter(item => { return item.key !== 'lb-properties' })
       }
     },
   },

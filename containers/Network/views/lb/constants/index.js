@@ -4,8 +4,8 @@ export const surpportLb = ['onecloud', 'aliyun', 'qcloud', 'huawei', 'aws', 'ope
 export const CHARGE_TYPE = {
   postpaid: i18n.t('network.text_256'),
   prepaid: i18n.t('network.text_257'),
-  bandwidth: i18n.t('network.text_258'),
-  traffic: i18n.t('network.text_259'),
+  bandwidth: i18n.t('network.text_194'),
+  traffic: i18n.t('network.text_193'),
 }
 
 export const LB_SPEC = {

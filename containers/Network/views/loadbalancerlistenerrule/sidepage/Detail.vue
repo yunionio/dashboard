@@ -77,7 +77,8 @@ export default {
               title: this.$t('network.text_370'),
               formatter: ({ row }) => {
                 if (row.redirect !== 'raw') return '-'
-                return [row.redirect_scheme, row.redirect_host, row.redirect_path].filter(item => !!item).join('、')
+                const ret = [row.redirect_scheme, row.redirect_host].filter(item => !!item).join('://')
+                return [ret, row.redirect_path].filter(item => !!item).join('')
               },
             },
             getCopyWithContentTableColumn({
