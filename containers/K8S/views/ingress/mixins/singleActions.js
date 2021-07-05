@@ -6,7 +6,7 @@ export default {
         label: i18n.t('k8s.text_215'),
         permission: 'k8s_ingresses_update',
         action: async obj => {
-          const manager = new this.$Manager('ingress', 'v1')
+          const manager = new this.$Manager('ingresses', 'v1')
           async function fetchData () {
             const { cluster, namespace } = obj
             const { data } = await manager.getSpecific({ id: obj.id, spec: 'rawdata', params: { cluster, namespace } })
