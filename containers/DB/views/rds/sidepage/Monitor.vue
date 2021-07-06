@@ -12,7 +12,6 @@
       <a-alert
         :message="$t('db.text_183')"
         class="mb-2"
-        :description="$t('db.text_184')"
         type="warning" />
     </template>
   </div>
@@ -57,7 +56,7 @@ export default {
     },
     hadMonitor () {
       const brand = this.data.brand.toLowerCase()
-      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key, HYPERVISORS_MAP.qcloud.key]
+      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key, HYPERVISORS_MAP.qcloud.key, HYPERVISORS_MAP.jdcloud.key]
       return surportBrand.includes(brand)
     },
     monitorConstants () {
