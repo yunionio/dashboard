@@ -157,7 +157,8 @@ export default {
               title: this.$t('network.text_370'),
               formatter: ({ row }) => {
                 if (row.redirect !== 'raw') return '-'
-                return [row.redirect_scheme, row.redirect_host, row.redirect_path].filter(item => !!item).join('、')
+                const ret = [row.redirect_scheme, row.redirect_host].filter(item => !!item).join('://')
+                return [ret, row.redirect_path].filter(item => !!item).join('/')
               },
             },
             {
@@ -165,7 +166,7 @@ export default {
               title: this.$t('network.text_435'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.provider.toLowerCase() !== 'onecloud') return '-'
+                if (!row.backend_connect_timeout && row.provider.toLowerCase() !== 'onecloud') return '-'
                 return row.backend_connect_timeout + this.$t('network.text_76')
               },
             },

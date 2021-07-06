@@ -61,7 +61,7 @@ export default {
       },
       {
         field: 'loadbalancer_spec',
-        title: i18n.t('network.text_249'),
+        title: i18n.t('network.text_268'),
         minWidth: 100,
         formatter: ({ row }) => {
           let { provider } = row

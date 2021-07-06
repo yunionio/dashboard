@@ -361,6 +361,7 @@ export default {
           status: Object.values(expectStatus.lb).flat(),
         },
       }, {
+        row: row,
         list: this.list,
       })
     },

@@ -191,6 +191,7 @@
   "network.text_190": "禁用",
   "network.text_191": "地址",
   "network.text_192": "计费方式",
+  "network.text_192_0": "网络计费方式",
   "network.text_193": "按流量计费",
   "network.text_194": "按带宽计费",
   "network.text_195": "带宽",
@@ -838,5 +839,6 @@
   "network.ssh-proxy-match.link.create": "关联网络",
   "network.lbcert.is_complete.true": "可用",
   "network.lbcert.is_complete.false": "部分可用",
+  "network.lb.properties.details": "配置详情",
   "network.snat.cidr": "网段"
 }

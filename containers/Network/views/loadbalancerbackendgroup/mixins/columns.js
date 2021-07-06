@@ -30,6 +30,9 @@ export default {
         type: 'expand',
         width: 100,
         slots: {
+          default: ({ row }) => {
+            return i18n.t('compute.text_619', [row.lb_listener_count || 0])
+          },
           content: ({ row }, h) => {
             if (row.listeners && row.listeners.length > 0) {
               return row.listeners.map(item => {
