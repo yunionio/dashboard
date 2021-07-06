@@ -20,6 +20,7 @@
             v-decorator="decorators.selector"
             :resource="form.fd.selectorType"
             version="v1"
+            idKey="name"
             :need-params="true"
             :isDefaultSelect="true"
             :params="resParams"
