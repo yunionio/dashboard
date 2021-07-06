@@ -1,5 +1,5 @@
 import i18n from '@/locales'
-export const DBINSTANCE_CATEGORY_KEYS = ['replica', 'basic', 'single', 'high_availability', 'ha', 'finance', 'gr', 'always_on', 'FIRST_GEN', 'SECOND_GEN']
+export const DBINSTANCE_CATEGORY_KEYS = ['replica', 'basic', 'single', 'high_availability', 'ha', 'finance', 'gr', 'always_on', 'FIRST_GEN', 'SECOND_GEN', 'cluster', 'standalone']
 export const DBINSTANCE_CATEGORY = {
   basic: i18n.t('db.text_76'),
   high_availability: i18n.t('db.text_77'),
@@ -14,9 +14,11 @@ export const DBINSTANCE_CATEGORY = {
   FIRST_GEN: i18n.t('db.text_81'),
   Regional: i18n.t('common_469'),
   Zonal: i18n.t('common_470'),
+  cluster: i18n.t('db.category.cluster'),
+  standalone: i18n.t('db.category.standalone'),
 }
 
-export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd', 'cloud_essd2', 'cloud_essd3', 'PD_SSD', 'PD_HDD', 'HIGH', 'ULTRAHIGH', 'ULTRAHIGHPRO', 'COMMON']
+export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd', 'cloud_essd2', 'cloud_essd3', 'PD_SSD', 'PD_HDD', 'HIGH', 'ULTRAHIGH', 'ULTRAHIGHPRO', 'COMMON', 'LOCAL_SSD', 'LOCAL_NVME', 'EBS_SSD']
 export const DBINSTANCE_STORAGE_TYPE = {
   local_ssd: i18n.t('db.text_82'),
   cloud_essd: i18n.t('db.text_83'),
@@ -32,6 +34,9 @@ export const DBINSTANCE_STORAGE_TYPE = {
   COMMON: 'COMMON',
   cloud_essd2: i18n.t('db.text_91'),
   cloud_essd3: i18n.t('db.text_92'),
+  LOCAL_SSD: i18n.t('db.LOCAL_SSD'),
+  LOCAL_NVME: i18n.t('db.LOCAL_NVME'),
+  EBS_SSD: i18n.t('db.EBS_SSD'),
 }
 
 export const ACCOUNT_PRIVILEGES = {
