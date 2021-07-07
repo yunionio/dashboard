@@ -355,3 +355,23 @@ export function getTimeRangeFilter ({ label = '', field = '' }) {
     },
   }
 }
+
+export function getResourceTypeFilter ({ label = i18n.t('bill.text_73'), field = 'resource_type', multiple = true, distinctType = 'field' } = {}) {
+  return {
+    label,
+    dropdown: true,
+    multiple,
+    distinctField: {
+      type: distinctType,
+      key: field,
+    },
+    mapper: (data) => {
+      return data.map(item => {
+        return {
+          key: item.key,
+          label: i18n.te(`bill_resource_type.${item.key}`) ? i18n.t(`bill_resource_type.${item.key}`) : item.key,
+        }
+      })
+    },
+  }
+}
