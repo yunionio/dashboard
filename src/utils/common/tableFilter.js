@@ -355,3 +355,44 @@ export function getTimeRangeFilter ({ label = '', field = '' }) {
     },
   }
 }
+
+export function getResourceTypeFilter ({ label = i18n.t('bill.text_73'), field = 'resource_type', multiple = true, distinctType = 'field' } = {}) {
+  return {
+    label,
+    dropdown: true,
+    multiple,
+    distinctField: {
+      type: distinctType,
+      key: field,
+    },
+    mapper: (data) => {
+      return data.map(item => {
+        return {
+          key: item.key,
+          label: i18n.te(`bill_resource_type.${item.key}`) ? i18n.t(`bill_resource_type.${item.key}`) : item.key,
+        }
+      })
+    },
+  }
+}
+
+export function getWafRuleActionFilter () {
+  return {
+    label: i18n.t('network.waf.action'),
+    dropdown: true,
+    multiple: true,
+    items: [
+      { label: i18n.t('network.waf.rule_action_allow'), key: 'allow' },
+      { label: i18n.t('network.waf.rule_action_block'), key: 'block' },
+      { label: i18n.t('network.waf.rule_action_log'), key: 'log' },
+      { label: i18n.t('network.waf.rule_action_count'), key: 'count' },
+      { label: i18n.t('network.waf.rule_action_alert'), key: 'alert' },
+      { label: i18n.t('network.waf.rule_action_detection'), key: 'detection' },
+      { label: i18n.t('network.waf.rule_action_prevention'), key: 'prevention' },
+    ],
+    filter: true,
+    formatter: val => {
+      return `action.in(${val.join(',')})`
+    },
+  }
+}
