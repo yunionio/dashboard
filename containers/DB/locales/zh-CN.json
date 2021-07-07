@@ -82,6 +82,7 @@
   "db.text_81": "第一代",
   "db.category.cluster": "主备",
   "db.category.standalone": "单机",
+  "db.category.disaster": "灾备",
   "db.text_82": "本地SSD盘",
   "db.text_83": "ESSD云盘",
   "db.text_84": "SSD云盘",
