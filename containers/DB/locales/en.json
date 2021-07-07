@@ -82,6 +82,7 @@
   "db.text_81": "First Generation",
   "db.category.cluster": "Cluster",
   "db.category.standalone": "Standalone",
+  "db.category.disaster": "Disaster",
   "db.text_82": "Local SSD Disk",
   "db.text_83": "ESSD Cloud Disk",
   "db.text_84": "SSD Cloud Disk",

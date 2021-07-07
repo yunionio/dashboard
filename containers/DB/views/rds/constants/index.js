@@ -1,5 +1,5 @@
 import i18n from '@/locales'
-export const DBINSTANCE_CATEGORY_KEYS = ['replica', 'basic', 'single', 'high_availability', 'ha', 'finance', 'gr', 'always_on', 'FIRST_GEN', 'SECOND_GEN', 'cluster', 'standalone']
+export const DBINSTANCE_CATEGORY_KEYS = ['replica', 'basic', 'single', 'high_availability', 'ha', 'finance', 'gr', 'always_on', 'FIRST_GEN', 'SECOND_GEN', 'cluster', 'standalone', 'disaster']
 export const DBINSTANCE_CATEGORY = {
   basic: i18n.t('db.text_76'),
   high_availability: i18n.t('db.text_77'),
@@ -16,6 +16,7 @@ export const DBINSTANCE_CATEGORY = {
   Zonal: i18n.t('common_470'),
   cluster: i18n.t('db.category.cluster'),
   standalone: i18n.t('db.category.standalone'),
+  disaster: i18n.t('db.category.disaster'),
 }
 
 export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd', 'cloud_essd2', 'cloud_essd3', 'PD_SSD', 'PD_HDD', 'HIGH', 'ULTRAHIGH', 'ULTRAHIGHPRO', 'COMMON', 'LOCAL_SSD', 'LOCAL_NVME', 'EBS_SSD']
