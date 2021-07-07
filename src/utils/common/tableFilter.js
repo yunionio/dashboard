@@ -375,24 +375,3 @@ export function getResourceTypeFilter ({ label = i18n.t('bill.text_73'), field =
     },
   }
 }
-
-export function getWafRuleActionFilter () {
-  return {
-    label: i18n.t('network.waf.action'),
-    dropdown: true,
-    multiple: true,
-    items: [
-      { label: i18n.t('network.waf.rule_action_allow'), key: 'allow' },
-      { label: i18n.t('network.waf.rule_action_block'), key: 'block' },
-      { label: i18n.t('network.waf.rule_action_log'), key: 'log' },
-      { label: i18n.t('network.waf.rule_action_count'), key: 'count' },
-      { label: i18n.t('network.waf.rule_action_alert'), key: 'alert' },
-      { label: i18n.t('network.waf.rule_action_detection'), key: 'detection' },
-      { label: i18n.t('network.waf.rule_action_prevention'), key: 'prevention' },
-    ],
-    filter: true,
-    formatter: val => {
-      return `action.in(${val.join(',')})`
-    },
-  }
-}
