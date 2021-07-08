@@ -112,9 +112,7 @@ export default {
               title: this.$t('network.text_381'),
               formatter: ({ row }) => {
                 if (this.isRedirect) return '-'
-                if (row.sticky_session_type === 'insert') return this.$t('network.text_384')
-                else if (row.sticky_session_type === 'server') return this.$t('network.text_385')
-                else return '-'
+                return row.sticky_session_cookie || '-'
               },
             },
             {

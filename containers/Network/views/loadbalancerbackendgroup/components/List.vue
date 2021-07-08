@@ -33,19 +33,10 @@ export default {
     },
   },
   data () {
-    return {
-      list: this.$list.createList(this, {
-        id: 'LoadbalancerBackendgroupList',
-        resource: 'loadbalancerbackendgroups',
-        getParams: this.getParam,
-        filterOptions: {
-          name: getNameFilter(),
-        },
-        steadyStatus: {
-          status: Object.values(expectStatus.lb).flat(),
-        },
-      }),
-      groupActions: [
+    let groupActions = []
+    const provider = R.path(['provider'], this.data)
+    if (provider && provider.toLowerCase() !== 'azure') {
+      groupActions = [
         {
           label: this.$t('network.text_26'),
           permission: 'lb_loadbalancerbackendgroups_create',
@@ -78,7 +69,22 @@ export default {
           },
           meta: () => this.$getDeleteResult(this.list.selectedItems),
         },
-      ],
+      ]
+    }
+
+    return {
+      list: this.$list.createList(this, {
+        id: 'LoadbalancerBackendgroupList',
+        resource: 'loadbalancerbackendgroups',
+        getParams: this.getParam,
+        filterOptions: {
+          name: getNameFilter(),
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.lb).flat(),
+        },
+      }),
+      groupActions: groupActions,
     }
   },
   created () {

@@ -1,4 +1,6 @@
 import i18n from '@/locales'
+import { PROVIDER_MAP } from '@/constants'
+
 export default {
   created () {
     this.singleActions = this.isListenerSidepage ? [] : [
@@ -14,19 +16,22 @@ export default {
         },
         meta: obj => {
           const { provider } = obj
-          if (provider.toLowerCase() === 'huawei') {
+          if (obj.provider.toLowerCase() === 'azure') {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+            }
+          } else if (provider.toLowerCase() === 'huawei') {
             return {
               validate: false,
               tooltip: i18n.t('network.text_354'),
             }
-          }
-          if (provider.toLowerCase() === 'aws') {
+          } else if (provider.toLowerCase() === 'aws') {
             return {
               validate: false,
               tooltip: i18n.t('common_464'),
             }
-          }
-          if (provider.toLowerCase() === 'openstack') {
+          } else if (provider.toLowerCase() === 'openstack') {
             return {
               validate: false,
               tooltip: i18n.t('common_609'),
@@ -55,6 +60,12 @@ export default {
               tooltip: i18n.t('common_464'),
             }
           }
+          if (obj.provider.toLowerCase() === 'azure') {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+            }
+          }
           return {
             validate: true,
           }
@@ -73,7 +84,15 @@ export default {
             onManager: this.onManager,
           })
         },
-        meta: obj => this.$getDeleteResult(obj),
+        meta: obj => {
+          if (obj.provider.toLowerCase() === 'azure') {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+            }
+          }
+          return this.$getDeleteResult(obj)
+        },
       },
     ]
   },

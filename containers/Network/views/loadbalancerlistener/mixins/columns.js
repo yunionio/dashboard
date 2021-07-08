@@ -70,6 +70,18 @@ export default {
         getProjectTableColumn(),
       ]
       if (this.data.provider && this.data.provider.toUpperCase() !== 'onecloud') arr.splice(7, 1)
+      if (this.data.provider && this.data.provider.toLowerCase() === 'azure') {
+        arr.splice(3, 0, {
+          field: 'metadata',
+          title: i18n.t('network.text_248'),
+          minWidth: 200,
+          slots: {
+            default: ({ row }) => {
+              return row.metadata && row.metadata['ext:FrontendIP'] ? row.metadata['ext:FrontendIP'] : '-'
+            },
+          },
+        })
+      }
       return arr
     },
   },

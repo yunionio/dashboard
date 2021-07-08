@@ -31,6 +31,12 @@ export default {
                   tooltip: i18n.t('network.text_367'),
                 }
               }
+              if (row.provider.toLowerCase() === 'azure') {
+                return {
+                  validate: false,
+                  tooltip: i18n.t('network.text_309', [PROVIDER_MAP[row.provider].label]),
+                }
+              }
               return {
                 validate: true,
               }
@@ -61,6 +67,12 @@ export default {
                 tooltip = i18n.t('network.text_473')
               }
             }
+            if (obj.provider.toLowerCase() === 'azure') {
+              return {
+                validate: false,
+                tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+              }
+            }
             return {
               validate,
               tooltip,
@@ -80,7 +92,15 @@ export default {
               onManager: this.onManager,
             })
           },
-          meta: obj => this.$getDeleteResult(obj),
+          meta: obj => {
+            if (obj.provider.toLowerCase() === 'azure') {
+              return {
+                validate: false,
+                tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+              }
+            }
+            return this.$getDeleteResult(obj)
+          },
         },
         {
           label: i18n.t('network.text_129'),
@@ -182,6 +202,14 @@ export default {
               },
             },
           ],
+          meta: (obj) => {
+            if (obj.provider.toLowerCase() === 'azure') {
+              return {
+                validate: false,
+                tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+              }
+            }
+          },
         },
       ]
     },
