@@ -474,7 +474,10 @@ export default {
     contactArrOpts () {
       const ect = this.form.fc.getFieldValue('enabled_contact_types')
       if (ect) {
-        const newContactTypes = this.contactArrOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value)
+        let newContactTypes = this.contactArrOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value)
+        if (newContactTypes.length === 0) {
+          newContactTypes = ['webconsole']
+        }
         this.form.fc.setFieldsValue({ enabled_contact_types: newContactTypes })
       }
     },
