@@ -442,7 +442,6 @@
       "backing_up_failed": "实例备份失败",
       "update_tags": "更新标签或名称",
       "update_tags_fail": "更新标签或名称失败"
-
     },
     "eip": {
       "ready": "可用",
@@ -2111,6 +2110,7 @@
     ],
     "OIDC": [
       "oidc",
+      "google_oidc",
       "github_oidc",
       "azure_oidc"
     ],
@@ -2128,6 +2128,7 @@
     "oidc": "通用OIDC",
     "github_oidc": "Github",
     "azure_oidc": "Azure AD OAuth2",
+    "google_oidc": "Google",
     "saml": "通用SAML",
     "azure_ad_saml": "Azure AD SAML 2.0",
     "cas": "通用CAS",
@@ -4694,15 +4695,15 @@
   "common.no_platform_available": "暂无可用的云资源，请到【主机-宿主机】添加/启用宿主机或到【多云管理-云账号】添加/启用云账号，新添加的云账号和宿主机待状态更新后点击刷新按钮可获得最新的云资源",
   "common.set_secgroup_max_message": "提示信息：安全组最多可关联{0}个",
   "cloudevent": {
-     "title": {
-       "account": "云上用户名",
-       "manager": "订阅",
-       "brand": "平台",
-       "provider": "平台",
-       "service": "服务名称",
-       "resource_type": "资源类型",
-       "action": "事件名称"
-      }
+    "title": {
+      "account": "云上用户名",
+      "manager": "订阅",
+      "brand": "平台",
+      "provider": "平台",
+      "service": "服务名称",
+      "resource_type": "资源类型",
+      "action": "事件名称"
+    }
   },
   "operation": {
     "success": {
@@ -4779,4 +4780,3 @@
   "license.group.container": "@:scope.text_78",
   "license.group.default": ""
 }
-
