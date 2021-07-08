@@ -4,7 +4,7 @@
         <refresh  @refresh="handleRefresh" :loading="loading" />
       </a-form-item>
       <a-form-item style="margin-right: 8px;">
-        {{ $t('dictionary.server') }}
+        <basic-select  v-model="res" :options="resOptions" @change="handleResChange" />
       </a-form-item>
       <a-form-item style="margin-right: 8px;">
         <metric-select  v-decorator="decorators.metric" :options="metricOptions" @change="handleMetricChange" />
@@ -15,11 +15,15 @@
       <a-form-item v-if="!isLineChart" style="margin-right: 8px;">
         <top-n-select v-decorator="decorators.limit" @change="handleLimitChange" />
       </a-form-item>
+      <a-form-item style="margin-right: 8px;" :label="$t('monitor.overview.aggregate')">
+        <basic-select v-model="dimentionId" :options="dimentions" />
+      </a-form-item>
   </a-form>
 </template>
 
 <script>
 import numerify from '../sections/chart/formatters'
+import BasicSelect from '../sections/select/basic'
 import MetricSelect from '../sections/select/metric'
 import TimeSelect from '../sections/select/timeselect'
 import TopNSelect from '../sections/select/topN'
@@ -43,6 +47,7 @@ function newChart (metircOption) {
 export default {
   name: 'filterForm',
   components: {
+    BasicSelect,
     TimeSelect,
     TopNSelect,
     MetricSelect,
@@ -53,10 +58,6 @@ export default {
       type: String,
       default: 'project',
     },
-    dimension: {
-      type: Object,
-      default: () => ({}),
-    },
     extraParams: {
       type: Object,
       required: false,
@@ -64,49 +65,103 @@ export default {
     },
   },
   data () {
-    const charts = {}
-    MetricOptions.map((m) => {
-      charts[m.field] = newChart(m)
-    })
     return {
-      metricOptions: MetricOptions,
+      curScope: this.scope,
+      dimentionId: 'vm_id',
+      res: 'server',
       loading: false,
       loadingCtx: { lastLoadAt: new Date(), lastIndex: 0, canceledDelay: true },
       form: this.$form.createForm(this),
       decorators: {
-        metric: ['metric', { initialValue: MetricOptions[0] || {} }],
+        metric: ['metric', { initialValue: MetricOptions.server[0] || {} }],
         from: ['from', { initialValue: 7 * 24 * 60 }],
         limit: ['limit', { initialValue: 10 }],
       },
-      charts: charts,
     }
   },
   computed: {
+    resOptions () {
+      if (this.curScope === 'project') {
+        return [{ label: this.$t('dictionary.server'), id: 'server' }]
+      } else {
+        return [{ label: this.$t('dictionary.server'), id: 'server' }, { label: this.$t('dictionary.host'), id: 'host' }]
+      }
+    },
+    dimentions () {
+      const curScope = this.curScope
+      const scopeLevel = Math.max(['project', 'domain', 'system'].indexOf(this.curScope) + 1, 0)
+      const ret = []
+      if (this.res === 'server') {
+        ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: '-' })
+      } else {
+        ret.push({ scope: curScope, id: 'host_id', name: 'host', label: '-' })
+      }
+      scopeLevel > 2 && ret.push({
+        scope: curScope,
+        id: 'system',
+        name: 'system',
+        label: this.$t('monitor.view_system'),
+      })
+      scopeLevel > 1 && ret.push({
+        scope: curScope,
+        id: 'domain_id',
+        name: 'project_domain',
+        label: this.$t('dictionary.domain'),
+      })
+      scopeLevel > 0 && ret.push({
+        scope: curScope,
+        id: 'tenant_id',
+        name: 'tenant',
+        label: this.$t('dictionary.project'),
+      })
+      ret.push({ scope: curScope, id: 'brand', name: 'brand', label: this.$t('common.brands') })
+      ret.push({ scope: curScope, id: 'cloudregion_id', name: 'cloudregion', label: this.$t('cloudenv.text_10') })
+      ret.push({ scope: curScope, id: 'zone_id', name: 'zone', label: this.$t('cloudenv.text_11') })
+      return ret
+    },
+    metricOptions () {
+      return MetricOptions[this.res]
+    },
+    charts () {
+      const charts = {}
+      MetricOptions[this.res].map((m) => {
+        charts[m.field] = newChart(m)
+      })
+      return charts
+    },
     isLineChart () {
-      if (this.dimension.scope !== this.scope) {
+      const dimension = this.dimentions.filter((d) => { return d.id === this.dimentionId })[0]
+      if (dimension.scope !== this.scope) {
         return false
       }
-      switch (this.dimension.scope) {
+      switch (dimension.scope) {
         case 'system':
-          return this.dimension.id === 'system'
+          return dimension.id === 'system'
         case 'domain':
-          return this.dimension.id === 'domain_id'
+          return dimension.id === 'domain_id'
         case 'project':
-          return this.dimension.id === 'tenant_id'
+          return dimension.id === 'tenant_id'
         default:
           return false
       }
     },
+    dimension () {
+      return this.dimentions.filter((d) => { return d.id === this.dimentionId })[0]
+    },
   },
   watch: {
-    dimension: {
-      handler (newVal) {
-        this.$nextTick(() => {
-          this.handleRefreshAll()
-        })
-      },
-      immediate: false,
-      deep: true,
+    scope (val, oldval) {
+      this.curScope = val
+    },
+    dimentionId (val, oldval) {
+      if (val !== oldval) {
+        this.handleRefreshAll()
+      }
+    },
+    res (val, oldval) {
+      if (val !== oldval) {
+        this.dimentionId = val === 'server' ? 'vm_id' : 'host_id'
+      }
     },
   },
   mounted () {
@@ -364,6 +419,12 @@ export default {
     handleLimitChange (limit) {
       this.form.setFieldsValue({ limit: limit })
       this.handleRefreshAll()
+    },
+    handleResChange (res) {
+      this.res = res
+      this.$nextTick(() => {
+        this.handleRefreshAll()
+      })
     },
     async handleRefresh () {
       const loading = this.startLoading()
