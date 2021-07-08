@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-icon type="sync" spin v-if="loading" />
-    <a-row v-else type="flex" justify="center" align="middle">
+    <a-row v-else type="flex" style="margin-left: 128px;">
       <a-col v-for="card in cards" :key="card.title" :span="8" style="width: 400px">
         <overview-summary-card :card="card" />
       </a-col>
@@ -37,6 +37,10 @@ export default {
         const items = Object.assign({ alerting: 0, attach: 0, init: 0 }, this.data[k])
         const total = items.total || 0
         delete items.total
+        // 项目视图不需要展示宿主机信息
+        if (this.scope === 'project' && k === 'host') {
+          continue
+        }
         cards.push({
           title: this.$t(`dictionary.${k}`),
           icon: k === 'guest' ? 'res-vminstance' : 'res-host',
