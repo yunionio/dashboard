@@ -225,6 +225,7 @@
   "monitor.overview_tab_read_bps": "磁盘读速率",
   "monitor.overview_tab_write_bps": "磁盘写速率",
   "monitor.overview.location": "{0}总览",
+  "monitor.overview.aggregate": "聚合",
   "monitor.commonalerts.channel.disable.tips": "{0}通知渠道不支持取消",
   "monitor.duration.label": "连续{0}个周期",
   "monitor.list.duration.label": "连续{0}个周期",

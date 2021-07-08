@@ -46,14 +46,7 @@
       </a-col>
     </a-row>
     <a-row>
-      <a-col style="padding-left: 6px; padding-right: 6px; padding-bottom: 6px" :span="24">
-        <a-radio-group v-model="dimentionId">
-          <a-radio-button :value="item.id" v-for="item in dimentions" :key="item.label">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-col>
-    </a-row>
-    <a-row>
-      <overview-card :scope="curNav.scope" :dimension="dimention" :extraParams="extraParams" @changeNav="updateNavs" />
+      <overview-card :scope="curNav.scope" :extraParams="extraParams" @changeNav="updateNavs" />
     </a-row>
   </div>
 </template>
@@ -90,7 +83,6 @@ export default {
       scope: scope,
       navs: navs,
       curNav: navs[0],
-      dimentionId: '',
       ringChart: { loading: true },
       lineChart: {
         loading: true,
@@ -100,24 +92,6 @@ export default {
     }
   },
   computed: {
-    dimentions () {
-      const curScope = this.curNav.scope
-      const ret = []
-      this.scopeLevel > 2 && ret.push({ scope: curScope, id: 'system', name: 'system', label: this.$t('monitor.view_system') })
-      this.scopeLevel > 1 && ret.push({ scope: curScope, id: 'domain_id', name: 'project_domain', label: this.$t('dictionary.domain') })
-      this.scopeLevel > 0 && ret.push({ scope: curScope, id: 'tenant_id', name: 'tenant', label: this.$t('dictionary.project') })
-      ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: this.$t('cloudenv.text_99') })
-      ret.push({ scope: curScope, id: 'brand', name: 'brand', label: this.$t('common.brands') })
-      ret.push({ scope: curScope, id: 'cloudregion_id', name: 'cloudregion', label: this.$t('cloudenv.text_10') })
-      ret.push({ scope: curScope, id: 'zone_id', name: 'zone', label: this.$t('cloudenv.text_11') })
-      return ret
-    },
-    dimention () {
-      let cid = this.dimentionId
-      if (!cid || cid === '') cid = this.dimentions[0].id
-      const ret = this.dimentions.filter((d) => { return d.id === cid })
-      return ret.length > 0 ? ret[0] : {}
-    },
     scopeLevel () {
       return Math.max(['project', 'domain', 'system'].indexOf(this.curNav.scope) + 1, 0)
     },
@@ -136,7 +110,6 @@ export default {
     },
   },
   created () {
-    this.dimentionId = this.dimentions[0].id
     this.fetchAllCharts()
   },
   methods: {
@@ -162,7 +135,6 @@ export default {
     },
     changeNav: function (e) {
       this.curNav = e
-      this.$nextTick(() => { this.dimentionId = this.dimentions[0].id })
     },
     ringChartEvent: function () {
       const self = this

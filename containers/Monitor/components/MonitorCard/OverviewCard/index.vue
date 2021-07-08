@@ -8,7 +8,6 @@
             @changeNav="handleChangeNav"
             @dataLoading="handleOnDataLoading"
             @showTable="handleShowTable"
-            :dimension="dimension"
             :scope="scope"
             :extraParams="extraParams" />
       </div>
@@ -43,10 +42,6 @@ export default {
       type: String,
       required: true,
     },
-    dimension: {
-      type: Object,
-      default: () => ({}),
-    },
     extraParams: {
       type: Object,
       required: false,
@@ -60,15 +55,6 @@ export default {
       showTable: false,
       tableLoading: false,
     }
-  },
-  watch: {
-    dimension: {
-      handler (newVal) {
-        this.$forceUpdate()
-      },
-      immediate: true,
-      deep: true,
-    },
   },
   methods: {
     handleShowTable (v) {

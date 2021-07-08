@@ -33,6 +33,7 @@ export default {
   methods: {
     handleChange (v) {
       this.selected = v
+      this.$emit('changeSelect', v)
       this.$emit('change', this.options[v])
     },
   },
