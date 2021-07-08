@@ -2098,6 +2098,7 @@
     ],
     "OIDC": [
       "oidc",
+      "google_oidc",
       "github_oidc",
       "azure_oidc"
     ],
@@ -2115,6 +2116,7 @@
     "oidc": "OIDC",
     "github_oidc": "Github",
     "azure_oidc": "Azure AD OAuth2",
+    "google_oidc": "Google",
     "saml": "SAML",
     "azure_ad_saml": "Azure AD SAML 2.0",
     "cas": "CAS",
