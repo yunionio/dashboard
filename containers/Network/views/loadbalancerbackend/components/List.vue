@@ -55,6 +55,8 @@ export default {
       if (this.isListenerSidepage) { // 监听抽屉里面不能直接新建后端服务器
         return []
       }
+      const provider = R.path(['provider'], this.lbData)
+      if (provider && provider.toLowerCase() === 'azure') return []
       return [
         {
           label: this.$t('network.text_26'),

@@ -48,6 +48,8 @@ export default {
   },
   computed: {
     groupActions () {
+      const provider = R.path(['provider'], this.data)
+      if (provider && provider.toLowerCase() !== 'azure') return []
       if (this.$route.name === 'LbaclList') { return [] }
       if (this.$route.name === 'LbcertList') {
         return [

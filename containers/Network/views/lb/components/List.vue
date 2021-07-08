@@ -23,6 +23,7 @@ import WindowsMixin from '@/mixins/windows'
 import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
+import { PROVIDER_MAP } from '@/constants'
 import { changeToArr } from '@/utils/utils'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
@@ -293,6 +294,11 @@ export default {
             }
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
+
+            const hasAzure = this.list.selectedItems.filter((item) => {
+              return item.provider && item.provider.toLowerCase() === 'azure'
+            })
+            if (hasAzure.length > 0) return { validate: false, tooltip: this.$t('network.text_309', [PROVIDER_MAP[hasAzure[0].provider].label]) }
             ret = this.$isValidateResourceLock(this.list.selectedItems)
             return ret
           },
