@@ -8,6 +8,7 @@ import NetworkCreate from '@Network/views/network/Create'
 import EditAttributes from '@Network/views/network/EditAttributes'
 import BatchEditAttributes from '@Network/views/network/BatchEditAttributes'
 import Eip from '@Network/views/eip'
+import Waf from '@Network/views/waf'
 import GlobalVpc from '@Network/views/global-vpc'
 // import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
@@ -359,6 +360,38 @@ export default {
               name: 'DnsZoneCreate',
               path: 'create',
               component: DnsZoneCreate,
+            },
+          ],
+        },
+      ],
+    },
+    /**
+     * 网络安全
+     */
+    {
+      meta: {
+        label: i18n.t('network.text_756'),
+      },
+      submenus: [
+        {
+          path: '/waf',
+          meta: {
+            label: i18n.t('dictionary.waf'),
+            permission: 'wafs_list',
+            t: 'dictionary.waf',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'WafList',
+              path: '',
+              component: Waf,
             },
           ],
         },

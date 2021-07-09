@@ -840,5 +840,97 @@
   "network.lbcert.is_complete.true": "可用",
   "network.lbcert.is_complete.false": "部分可用",
   "network.lb.properties.details": "配置详情",
-  "network.snat.cidr": "网段"
+  "network.snat.cidr": "网段",
+  "network.text_756": "网络安全",
+  "network.text_757": "管理规则",
+  "network.text_758": "管理资源",
+  "network.waf.rule": "规则",
+  "network.waf.resource": "关联资源",
+  "network.waf.type": "WAF类型",
+  "network.waf.resource_id": "资源ID",
+  "network.waf.resource_name": "资源名称/ID",
+  "network.waf.action": "处理动作",
+  "network.waf.action_default": "默认策略动作",
+  "network.waf.rule_action_Allow": "允许",
+  "network.waf.rule_action_Block": "阻塞",
+  "network.waf.rule_action_Log": "日志",
+  "network.waf.rule_action_Count": "计数",
+  "network.waf.rule_action_Alert": "告警",
+  "network.waf.rule_action_Detection": "检测",
+  "network.waf.rule_action_Prevention": "预防",
+  "network.waf.rule_view": "查看自定义规则",
+  "network.waf.rule_view_action": "查看",
+  "network.waf.rule_name": "规则名称",
+  "network.waf.rule_name_placeholder": "请输入规则名称",
+  "network.waf.rule_priority_placeholder": "请输入优先级",
+  "network.waf.rule_match_validator": "请选择匹配策略",
+  "network.waf.rule_action_validator": "请选择处理动作",
+  "network.waf.rule_ip_placeholder": "请输入IP",
+  "network.waf.rule_match": "匹配策略",
+  "network.waf.rule_condition": "条件",
+  "network.waf.rule_compute": "运算",
+  "network.waf.rule_ip": "IP",
+  "network.waf.manager": "云订阅",
+  "network.waf.rule_add": "添加条件",
+  "network.waf.match_all": "全部匹配以下条件时（AND）",
+  "network.waf.match_any": "匹配以下至少一个条件时（OR）",
+  "network.waf.match_not": "匹配以下条件取反操作（NOT）",
+  "network_waf_statement": {
+    "label": {
+      "match_field": "匹配变量",
+      "operator": "操作器",
+      "transformations": "转换",
+      "match_field_values": "匹配值",
+      "negation": "取反",
+      "ip": "IP",
+      "contains": "运算"
+    },
+    "type": {
+      "ByteMatch": "内容",
+      "GeoMatch": "地址",
+      "IPSet": "IP",
+      "LabelMatch": "标签",
+      "ManagedRuleGroup": "管理规则组",
+      "Rate": "速率",
+      "RegexSet": "正则",
+      "RuleGroup": "规则组",
+      "Size": "大小",
+      "SqliMatch": "Sqli",
+      "XssMatch": "Xss"
+    },
+    "operator": {
+      "Exactly": "精确匹配",
+      "StartsWith": "开头为",
+      "EndsWith": "结尾为",
+      "Contains": "包含",
+      "ContainsWord": "包含关键字",
+      "Regex": "正则表达式"
+    },
+    "transformation": {
+      "CompressWithSpace": "压缩空白",
+      "HtmlEntityDecode": "HTML 实体解码",
+      "Lowercase": "小写",
+      "CmdLine": "命令行",
+      "UrlDecode": "URL 解码",
+      "Trim": "去除空格",
+      "UrlEncode": "URL 编码",
+      "RemoveNulls": "删除空值"
+    },
+    "negation": {
+      "true": "是",
+      "false": "否"
+    },
+    "contains": {
+      "in": "包含",
+      "notin": "不包含"
+    },
+    "size": {
+      "EQ": "等于",
+      "NE": "不等于",
+      "LE": "小于等于",
+      "LT": "小于",
+      "GE": "大于等于",
+      "GT": "大于"
+    }
+  }
 }

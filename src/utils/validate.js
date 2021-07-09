@@ -235,6 +235,10 @@ export const REGEXP = {
     },
     message: i18n.t('common_732'),
   },
+  nonNegativeInt: {
+    regexp: /^[0-9]+?$/,
+    message: i18n.t('validator.nonNegativeInt'),
+  },
 }
 
 /**
