@@ -29,7 +29,7 @@ export default {
   name: 'PhysicalmachineDetail',
   mixins: [WindowsMixin],
   props: {
-    data: {
+    hostInfo: {
       type: Object,
       required: true,
     },
@@ -81,30 +81,46 @@ export default {
       ],
       hostColumns: [
         {
-          field: 'ip_addr',
-          title: 'IP',
-          width: 100,
-        },
-        {
           field: 'mac',
           title: this.$t('compute.text_385'),
           showOverflow: 'ellipsis',
-          minWidth: 100,
+          width: 200,
           formatter: ({ cellValue, row }) => {
             return cellValue || '-'
           },
         },
         {
-          field: 'masklen',
-          title: this.$t('compute.text_583'),
+          field: 'nic_type',
+          width: 100,
+          title: this.$t('compute.text_175'),
         },
         {
-          field: 'nic_type',
-          title: this.$t('compute.text_175'),
+          field: 'ip_addr',
+          title: 'IP',
+          width: 160,
+          formatter: ({ cellValue, row }) => {
+            if (row.ip_addr) {
+              return row.ip_addr + '/' + row.masklen
+            } else {
+              return '-'
+            }
+          },
+        },
+        {
+          field: 'net',
+          title: this.$t('compute.text_106'),
+        },
+        {
+          field: 'wire',
+          title: this.$t('compute.text_844'),
         },
         {
           field: 'rate',
           title: this.$t('compute.text_584'),
+        },
+        {
+          field: 'link_up',
+          title: this.$t('compute.netif_linkup_status'),
         },
       ],
       baseInfo: [
@@ -324,8 +340,35 @@ export default {
           field: 'nic_info',
           slots: {
             default: ({ row }, h) => {
+              if (!row || !row.nic_info) {
+                return []
+              }
+              const nics = row.nic_info.filter(
+                (o) => {
+                  return o.nic_type !== 'ipmi'
+                },
+              )
               return [
-                <vxe-grid class="mb-2" data={ row.nic_info } columns={ this.hostColumns } />,
+                <vxe-grid class="mb-2" data={ nics } columns={ this.hostColumns } />,
+              ]
+            },
+          },
+        },
+        {
+          title: 'BMC' + this.$t('compute.text_600'),
+          field: 'nic_info',
+          slots: {
+            default: ({ row }, h) => {
+              if (!row || !row.nic_info) {
+                return []
+              }
+              const nics = row.nic_info.filter(
+                (o) => {
+                  return o.nic_type === 'ipmi'
+                },
+              )
+              return [
+                <vxe-grid class="mb-2" data={ nics } columns={ this.hostColumns } />,
               ]
             },
           },
@@ -339,7 +382,7 @@ export default {
   methods: {
     updateDetailData () {
       const hostManager = new this.$Manager('hosts')
-      hostManager.get({ id: this.data.id })
+      hostManager.get({ id: this.hostInfo.id })
         .then((res) => {
           this.itemData = res.data
         })

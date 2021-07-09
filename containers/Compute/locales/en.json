@@ -830,6 +830,7 @@
   "compute.text_842": "Please add a custom disk configuration",
   "compute.text_843": "Set up L2 network",
   "compute.text_844": "L2 network",
+  "compute.netif_linkup_status": "Plugged",
   "compute.text_845": "Select a L2 Network",
   "compute.text_846": "Half-managed baremetal host cannot be converted to a host for virtual servers",
   "compute.text_847": "Brand",
