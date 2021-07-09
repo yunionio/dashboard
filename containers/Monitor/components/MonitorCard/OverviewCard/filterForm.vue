@@ -15,8 +15,8 @@
       <a-form-item v-if="!isLineChart" style="margin-right: 8px;">
         <top-n-select v-decorator="decorators.limit" @change="handleLimitChange" />
       </a-form-item>
-      <a-form-item style="margin-right: 8px;" :label="$t('monitor.overview.aggregate')">
-        <basic-select v-model="dimentionId" :options="dimentions" />
+      <a-form-item style="margin-right: 8px;" class="ml-2" :label="$t('monitor.overview.aggregate')">
+        <basic-select v-model="dimentionId" :options="dimentions"  style="min-width: 90px" />
       </a-form-item>
   </a-form>
 </template>
@@ -92,9 +92,9 @@ export default {
       const scopeLevel = Math.max(['project', 'domain', 'system'].indexOf(this.curScope) + 1, 0)
       const ret = []
       if (this.res === 'server') {
-        ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: '-' })
+        ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: this.$t('cloudenv.text_99') })
       } else {
-        ret.push({ scope: curScope, id: 'host_id', name: 'host', label: '-' })
+        ret.push({ scope: curScope, id: 'host_id', name: 'host', label: this.$t('cloudenv.text_101') })
       }
       scopeLevel > 2 && ret.push({
         scope: curScope,
@@ -108,7 +108,7 @@ export default {
         name: 'project_domain',
         label: this.$t('dictionary.domain'),
       })
-      scopeLevel > 0 && ret.push({
+      scopeLevel > 0 && this.res === 'server' && ret.push({
         scope: curScope,
         id: 'tenant_id',
         name: 'tenant',
