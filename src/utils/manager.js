@@ -77,8 +77,8 @@ export class Manager {
     return Vue.http.patch(`${this.contextPath(ctx)}${this.resource}`, data, { params: { id: ids } })
   }
 
-  delete ({ id, ctx = [] } = {}) {
-    return Vue.http.delete(`${this.contextPath(ctx)}${this.resource}/${id}`)
+  delete ({ id, ctx = [], params = {} } = {}) {
+    return Vue.http.delete(`${this.contextPath(ctx)}${this.resource}/${id}`, { params: params })
   }
 
   batchDelete ({ ids, ctx = [], data, params = {} } = {}) {

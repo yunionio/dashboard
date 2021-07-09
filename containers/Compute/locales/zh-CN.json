@@ -830,6 +830,7 @@
   "compute.text_842": "请新增自定义磁盘配置",
   "compute.text_843": "设置二层网络",
   "compute.text_844": "二层网络",
+  "compute.netif_linkup_status": "是否插线",
   "compute.text_845": "选择二层网络",
   "compute.text_846": "托管的物理机，不可转化为宿主机",
   "compute.text_847": "品牌",

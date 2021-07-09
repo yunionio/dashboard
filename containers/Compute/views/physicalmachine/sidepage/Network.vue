@@ -1,8 +1,14 @@
 <template>
-    <vxe-grid resizable class="mb-2" :data="data.nic_info" :columns="columns" />
+  <div>
+    <h5>{{ $t('compute.text_600') }}</h5>
+    <vxe-grid resizable class="mb-2" :data="nicInfo" :columns="columns" />
+    <h5>BMC{{ this.$t('compute.text_600') }}</h5>
+    <vxe-grid resizable class="mb-2" :data="ipmiList" :columns="columns" />
+  </div>
 </template>
 
 <script>
+import _ from 'lodash'
 import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -11,7 +17,7 @@ export default {
   mixins: [WindowsMixin],
   props: {
     resId: String,
-    data: {
+    hostInfo: {
       type: Object,
       required: true,
     },
@@ -25,6 +31,7 @@ export default {
         getParams: this.getParams,
       }),
       columns: [
+        /*
         {
           field: 'index',
           title: this.$t('compute.text_375'),
@@ -32,11 +39,12 @@ export default {
             return row.index
           },
         },
-        getCopyWithContentTableColumn({ field: 'mac', title: this.$t('compute.text_385') }),
+        */
+        getCopyWithContentTableColumn({ field: 'mac', width: 200, title: this.$t('compute.text_385') }),
         {
           field: 'nic_type',
           title: this.$t('compute.text_860'),
-          width: 80,
+          width: 100,
           formatter: ({ row }) => {
             if (row.nic_type === 'admin') {
               return this.$t('compute.text_861')
@@ -47,9 +55,21 @@ export default {
             }
           },
         },
-        getCopyWithContentTableColumn({ field: 'ip_addr', title: this.$t('compute.text_386') }),
+        {
+          field: 'ip_addr',
+          title: this.$t('compute.text_386'),
+          width: 160,
+          formatter: ({ row }) => {
+            if (row.ip_addr) {
+              return row.ip_addr + '/' + row.masklen
+            } else {
+              return '-'
+            }
+          },
+        },
         getCopyWithContentTableColumn({ field: 'net', title: this.$t('compute.text_106') }),
         getCopyWithContentTableColumn({ field: 'wire', title: this.$t('compute.text_844') }),
+        getCopyWithContentTableColumn({ field: 'link_up', title: this.$t('compute.netif_linkup_status') }),
         {
           field: 'action',
           title: this.$t('compute.text_863'),
@@ -66,17 +86,40 @@ export default {
       ],
     }
   },
+  computed: {
+    nicList () {
+      return this.hostInfo.nic_info.filter((o) => {
+        return o.nic_type !== 'ipmi'
+      })
+    },
+    ipmiList () {
+      return this.hostInfo.nic_info.filter((o) => {
+        return o.nic_type === 'ipmi'
+      })
+    },
+    nicInfo () {
+      return _.sortBy(this.nicList, [
+        (o) => {
+          return o.mac
+        },
+      ])
+    },
+  },
   methods: {
     setWire (obj) {
       obj = {
         ...obj,
-        hostId: this.data.id,
+        hostId: this.hostInfo.id,
       }
       this.createDialog('HostSetWireDialog', {
         data: [obj],
         columns: this.columns,
         list: this.list,
+        saveHostInfo: this.saveHostInfo,
       })
+    },
+    saveHostInfo (v) {
+      this.hostInfo = v
     },
   },
 }
