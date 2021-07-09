@@ -1,5 +1,5 @@
 <template>
-  <a-select :value="selected" :dropdownMatchSelectWidth="false" @change="handleChange">
+  <a-select :value="selected" @change="handleChange">
     <a-select-option v-for="o of options" :key="o.label" :value="o.id">
       {{ o.label }}
     </a-select-option>

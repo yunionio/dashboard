@@ -225,7 +225,7 @@
   "monitor.overview_tab_read_bps": "Disk Read Rate",
   "monitor.overview_tab_write_bps": "Disk Write Rate",
   "monitor.overview.location": "{0} Overview",
-  "monitor.overview.aggregate": "Aggregate",
+  "monitor.overview.aggregate": "Group By",
   "monitor.commonalerts.channel.disable.tips": "Alter channel {0} can not be disabled",
   "monitor.duration.label": "{0} consecutive cycles",
   "monitor.list.duration.label": "for {0} consecutive cycles",
