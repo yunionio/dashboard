@@ -597,6 +597,12 @@
       "is_expire": "已过期",
       "unknown": "未知"
     },
+    "exchange_rate": {
+      "available": "已生效",
+      "unavailable": "未生效",
+      "expired": "已过期",
+      "unknown": "未知"
+    },
     "scalinggroup": {
       "init": "初始化",
       "ready": "正常",
