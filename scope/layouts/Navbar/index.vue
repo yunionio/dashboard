@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-wrap d-flex align-items-center" @click.stop.prevent="handleCloseSidebar">
     <template v-if="authInfoLoaded">
-      <a-tooltip title="导航菜单" placement="right">
+      <a-tooltip :title="$t('button.menu')" placement="right">
         <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
           <icon type="menu" style="font-size: 24px;" />
         </div>
@@ -111,6 +111,18 @@ export default {
     },
     language () {
       return this.setting.language
+    },
+  },
+  watch: {
+    userInfo: {
+      handler (val, oldVal = {}) {
+        if (val.id !== oldVal.id) {
+          if ((R.isNil(val.projects) || R.isEmpty(val.projects)) && (R.isNil(val.projectId) || R.isEmpty(val.projectId))) {
+            this.$router.push('/no-project')
+          }
+        }
+      },
+      immediate: true,
     },
   },
   methods: {
