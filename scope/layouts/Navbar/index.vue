@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-wrap d-flex align-items-center" @click.stop.prevent="handleCloseSidebar">
     <template v-if="authInfoLoaded">
-      <a-tooltip :title="$t('button.menu')" placement="right">
+      <a-tooltip :title="$t('navbar.button.menu')" placement="right">
         <div class="d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
           <icon type="menu" style="font-size: 24px;" />
         </div>
