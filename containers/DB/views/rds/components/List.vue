@@ -10,12 +10,11 @@
     :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
  </template>
-
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getFilter, getTenantFilter, getDomainFilter, getStatusFilter, getBrandFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getFilter, getTenantFilter, getDomainFilter, getStatusFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -50,7 +49,8 @@ export default {
           name: getNameFilter(),
           status: getStatusFilter('rds'),
           brand: getBrandFilter('rds_engine_brands'),
-          // account: getAccountFilter(),
+          account: getAccountFilter(),
+          manager: getCloudProviderFilter(),
           projects: getTenantFilter(),
           billing_type: getFilter({
             field: 'billing_type',
@@ -81,7 +81,6 @@ export default {
             label: this.$t('db.text_40'),
           },
           project_domains: getDomainFilter(),
-          manager: getCloudProviderFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['metadata', 'vcpu_count', 'account'],
