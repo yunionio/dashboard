@@ -592,6 +592,12 @@
       "is_expire": "Expired",
       "unknown": "Unknown"
     },
+    "exchange_rate": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "expired": "Expired",
+      "unknown": "Unknown"
+    },
     "scalinggroup": {
       "init": "Initialize",
       "ready": "Normal",
