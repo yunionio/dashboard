@@ -57,6 +57,7 @@ export default {
           projects: getTenantFilter(),
           status: getStatusFilter({ statusModule: 'bucket' }),
           cloudaccount: getAccountFilter(),
+          manager: getCloudProviderFilter(),
           // region: {
           //   label: '区域',
           // },
@@ -74,7 +75,6 @@ export default {
             label: this.$t('dictionary.region'),
           },
           project_domains: getDomainFilter(),
-          manager: getCloudProviderFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['storage_class', 'account', 'public_scope'],

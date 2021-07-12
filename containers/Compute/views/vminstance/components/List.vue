@@ -107,6 +107,7 @@ export default {
         ],
       },
       cloudaccount: getAccountFilter(),
+      manager: getCloudProviderFilter(),
       host: getHostFilter(),
       server_type: {
         label: this.$t('table.title.type'),
@@ -126,7 +127,6 @@ export default {
       vcpu_count: {
         label: 'CPU',
       },
-      manager: getCloudProviderFilter(),
       // disk: {
       //   label: this.$t('table.title.disk'),
       // },
