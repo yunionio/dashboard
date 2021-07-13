@@ -62,13 +62,13 @@ export default {
       projects: getTenantFilter(),
       project_domains: getDomainFilter(),
       cloudaccount: getAccountFilter(),
+      manager: getCloudProviderFilter(),
       region: {
         label: this.$t('dashboard.text_101'),
       },
       zone: {
         label: this.$t('compute.text_270'),
       },
-      manager: getCloudProviderFilter(),
     }
     const { path } = this.$route
     if (path.includes('/cluster')) {
