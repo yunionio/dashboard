@@ -2,7 +2,7 @@
   <div>
     <a-icon type="sync" spin v-if="loading" />
     <a-row v-else type="flex" style="margin-left: 128px;">
-      <a-col v-for="card in cards" :key="card.title" :span="8" style="width: 400px">
+      <a-col v-for="card in cards" :key="card.title" :span="8" style="width: 400px" class="mt-4">
         <overview-summary-card :card="card" />
       </a-col>
     </a-row>
