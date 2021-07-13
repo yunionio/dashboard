@@ -190,7 +190,6 @@ export default {
       if (this.res === 'host') {
         return 'project_domain'
       }
-      debugger
       switch (this.dimension.scope) {
         case 'system':
           return 'project_domain'
