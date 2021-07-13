@@ -92,7 +92,18 @@ export default {
     },
   },
   methods: {
-    handleInstallAgent (e) {
+    async handleInstallAgent (e) {
+      // if hypervisor is kvm. directly install agent
+      if (this.data.hypervisor === 'kvm') {
+        const data = {
+          auto_choose_proxy_endpoint: true,
+          server_id: this.data.id,
+        }
+        const ret = await new this.$Manager('scripts').performAction({ id: 'monitor agent', action: 'apply', data: data })
+        await this.handleInstallTask(ret.data.script_apply_id)
+        return
+      }
+
       this.createDialog('InstallAgentDialog', {
         data: [this.data],
         columns: this.serverColumns,
