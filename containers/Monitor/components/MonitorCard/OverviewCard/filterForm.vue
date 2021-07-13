@@ -187,10 +187,12 @@ export default {
       return ret
     },
     groupInput () {
+      if (this.res === 'host') {
+        return 'project_domain'
+      }
+      debugger
       switch (this.dimension.scope) {
         case 'system':
-          return 'project_domain'
-        case this.res === 'host':
           return 'project_domain'
         default:
           return 'tenant'
