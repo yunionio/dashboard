@@ -23,10 +23,30 @@ export default {
       const commonSeries = {
         barWidth: '12px',
         barMaxWidth: '24px',
-        barCategoryGap: '60%',
+        barCategoryGap: '80%',
         label: {
           show: true,
-          normal: { position: 'right', show: true, color: '#939EAB', formatter: this.dataFormatter }, // 顶部数值标签显示
+          normal: {
+            position: 'insideTopLeft',
+            offset: [15, 0],
+            distance: -15,
+            show: true,
+            color: '#939EAB',
+            formatter: this.labelFormatter,
+            rich: {
+              left: {
+                color: '#000000',
+                align: 'left',
+              },
+              right: {
+                color: '#4DA1FF',
+                width: 45,
+                verticalAlign: 'top',
+                padding: [0, 10, 0, 10],
+                align: 'left',
+              },
+            },
+          }, // 顶部数值标签显示
           emphasis: { color: '#4DA1FF' },
         },
       }
@@ -53,10 +73,11 @@ export default {
           splitLine: { show: false },
           axisLabel: {
             formatter: (value, index) => {
-              if (typeof value === 'string' && value.length > 12) {
-                return `${value.slice(0, 6)}...${value.slice(value.length - 6)}`
-              }
-              return value
+              return ''
+              // if (typeof value === 'string' && value.length > 12) {
+              //   return `${value.slice(0, 6)}...${value.slice(value.length - 6)}`
+              // }
+              // return value
             },
           },
         },
@@ -81,6 +102,9 @@ export default {
   methods: {
     valueFormatter (value) {
       return numerify(value, this.yAxisFormat)
+    },
+    labelFormatter (params) {
+      return `{left|${params.name}}{right|${this.valueFormatter(params.value)}}`
     },
     dataFormatter (params) {
       return this.valueFormatter(params.value)
