@@ -872,6 +872,7 @@
   "network.waf.rule_ip": "IP",
   "network.waf.manager": "云订阅",
   "network.waf.rule_add": "添加条件",
+  "network.waf.match_null": "无",
   "network.waf.match_all": "全部匹配以下条件时（AND）",
   "network.waf.match_any": "匹配以下至少一个条件时（OR）",
   "network.waf.match_not": "匹配以下条件取反操作（NOT）",
@@ -883,7 +884,11 @@
       "match_field_values": "匹配值",
       "negation": "取反",
       "ip": "IP",
-      "contains": "运算"
+      "contains": "运算",
+      "managed_rule_group_name": "规则组名称",
+      "compute": "运算",
+      "size": "大小",
+      "limit": "限制"
     },
     "type": {
       "ByteMatch": "内容",
@@ -918,7 +923,13 @@
     },
     "negation": {
       "true": "是",
-      "false": "否"
+      "false": "否",
+      "in": "包含",
+      "notin": "不包含",
+      "match": "匹配",
+      "notmatch": "不匹配",
+      "eq": "等于",
+      "noteq": "不等于"
     },
     "contains": {
       "in": "包含",

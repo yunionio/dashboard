@@ -8,8 +8,8 @@
     <transformations :valueList="statement.transformations" />
     <!-- 匹配值 -->
     <match-field-values :valueList="statement.match_field_values" />
-    <!-- 取反 -->
-    <negation :value="statement.negation" />
+    <!-- 运算 只有Azure平台有-->
+    <negation v-if="isNegationShow" :value="!statement.negation" :wafBrand="wafBrand" />
   </div>
 </template>
 
@@ -34,6 +34,7 @@ export default {
   mixins: [WindowsMixin, WafMixin],
   props: {
     statement: Object,
+    wafBrand: String,
   },
   data () {
     return {
@@ -46,6 +47,11 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    isNegationShow () {
+      return this.wafBrand && this.wafBrand === 'Azure'
+    },
   },
 }
 </script>

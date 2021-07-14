@@ -9,13 +9,17 @@
       </a-select>
     </a-form-item>
     <!-- 字符串类型 -->
-    <byte-match
-    v-if="type === 'ByteMatch'"
-    :statement="data" />
+    <byte-match v-if="type === 'ByteMatch'" :statement="data" :wafBrand="wafBrand" />
     <!-- ip类型 -->
-    <ip-set v-if="type === 'IPSet'" :statement="data" />
+    <ip-set v-if="type === 'IPSet'" :statement="data" :wafBrand="wafBrand" />
     <!-- 大小类型 -->
-    <size v-if="type === 'Size'" :type="type" :statement="data" />
+    <size v-if="type === 'Size'" :type="type" :statement="data" :wafBrand="wafBrand" />
+    <!-- 管理规则组 -->
+    <managed-rule-group v-if="type === 'ManagedRuleGroup'" :type="type" :statement="data" :wafBrand="wafBrand" />
+    <!-- 地址 -->
+    <geo-match v-if="type === 'GeoMatch'" :type="type" :statement="data" :wafBrand="wafBrand" />
+    <!-- 正则 -->
+    <regex-set :type="type" :statement="data" :wafBrand="wafBrand" />
   </a-card>
 </template>
 
@@ -24,6 +28,9 @@ import WafMixin from '../mixins/waf'
 import ByteMatch from './statementList/ByteMatch'
 import IpSet from './statementList/IPSet'
 import Size from './statementList/Size'
+import ManagedRuleGroup from './statementList/ManagedRuleGroup'
+import GeoMatch from './statementList/GeoMatch'
+import RegexSet from './statementList/RegexSet'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -32,12 +39,16 @@ export default {
     ByteMatch,
     IpSet,
     Size,
+    ManagedRuleGroup,
+    GeoMatch,
+    RegexSet,
   },
   mixins: [WindowsMixin, WafMixin],
   props: {
     data: Object,
     // 条件类型
     type: String,
+    wafBrand: String,
   },
   data () {
     const initData = this.data || {}

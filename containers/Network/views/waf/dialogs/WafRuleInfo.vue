@@ -30,7 +30,7 @@
             v-bind="index === 0 ? formLayout : formLayoutWithOutLabel"
             :label="index === 0 ? $t('network.waf.rule_condition') : ''">
             <div class="d-flex align-items-center">
-              <waf-rule-statement :data="statement" :type="statement.type" />
+              <waf-rule-statement :data="statement" :type="statement.type" :wafBrand="ruleInfoData.brand" />
               <!-- <a-button v-if="canDialogEdit" style="flex: 0 0 24px;margin-left: 20px" shape="circle" icon="minus" size="small" @click="deleteRule(item,index)" /> -->
             </div>
           </a-form-model-item>
@@ -111,49 +111,12 @@ export default {
         action: '',
         statements: [],
       },
+      ruleInfoData: {},
       rules: {
         name: { required: true, message: this.$t('cloudenv.text_190') },
         priority: { required: true, validator: this.$validate('nonNegativeInt') },
-        statement_conditon: { required: true, message: this.$t('network.waf.rule_match_validator') },
+        statement_conditon: { message: this.$t('network.waf.rule_match_validator') },
         action: { required: true, message: this.$t('network.waf.rule_action_validator') },
-      },
-      decorators: {
-        name: [
-          'name',
-          {
-            validateFirst: true,
-            rules: [
-              { required: true, message: this.$t('cloudenv.text_190') },
-              { validator: this.$validate('resourceName') },
-            ],
-          },
-        ],
-        priority: [
-          'priority',
-          {
-            rules: [
-              { required: true, validator: this.$validate('nonNegativeInt') },
-            ],
-          },
-        ],
-        statement_conditon: [
-          'statement_conditon',
-          {
-            rules: [{ required: true, message: this.$t('network.waf.rule_match_validator') }],
-          },
-        ],
-        action: [
-          'action',
-          {
-            rules: [{ required: true, message: this.$t('network.waf.rule_action_validator') }],
-          },
-        ],
-        statements: [
-          'statements',
-          {
-            rules: [{ required: true }],
-          },
-        ],
       },
       formLayout: {
         wrapperCol: {
@@ -174,6 +137,11 @@ export default {
         filter: 'enabled.equals(1)',
       },
       statementConditionOptions: [
+        {
+          id: 1,
+          name: this.$t('network.waf.match_null'),
+          value: '',
+        },
         {
           id: 1,
           name: this.$t('network.waf.match_any'),
@@ -254,10 +222,12 @@ export default {
           //   action: ruleInfo.action?.action ?? '',
           // })
           this.ruleInfoForm.name = ruleInfo.name || ''
-          this.ruleInfoForm.priority = ruleInfo.priority || ''
+          this.ruleInfoForm.priority = ruleInfo.priority || 0
           this.ruleInfoForm.statement_conditon = ruleInfo.statement_conditon || ''
           this.ruleInfoForm.action = ruleInfo.action?.action ?? ''
           this.ruleInfoForm.statements = ruleInfo.statements || []
+          // TODO-glb 是否每条数据都有brand来区分是哪个平台的waf规则
+          this.ruleInfoData = Object.assign({}, { brand: 'Azure' }, ruleInfo)
         } catch (err) { throw err }
       }
     },

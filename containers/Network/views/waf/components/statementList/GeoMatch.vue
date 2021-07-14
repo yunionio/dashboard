@@ -1,41 +1,30 @@
 <template>
   <div>
-    <!-- 匹配变量 -->
-    <match-field :value="statement.match_field" />
-    <!-- 操作器 -->
-    <operator :value="statement.operator" :type="type" />
-    <!-- 转换 -->
-    <transformations :valueList="statement.transformations" />
-    <!-- 匹配值 -->
-    <match-field-values :valueList="statement.match_field_values" />
-    <!-- 取反 -->
-    <negation v-if="isNegationShow" :value="!statement.negation" />
+    <!-- 地址 -->
+    <match-field-values :valueList="statement.match_field_values" :type="type" addType="select" :selectOptions="geoSelectOpts" />
+    <!-- 运算 是否等于 -->
+    <negation v-if="isNegationShow" :value="!statement.negation" :type="type" :wafBrand="wafBrand" :selectOptions="negationSelectOptions" />
   </div>
 </template>
 
 <script>
 import WafMixin from '../../mixins/waf'
-import MatchField from '../statementComponents/MatchField'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
-import Operator from '../statementComponents/Operator'
-import Transformations from '../statementComponents/Transformations'
 import Negation from '../statementComponents/Negation'
+import { LocationList } from '@/constants/waf'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'Size',
+  name: 'GeoMatch',
   components: {
-    MatchField,
-    Operator,
-    Transformations,
     MatchFieldValues,
     Negation,
   },
   mixins: [WindowsMixin, WafMixin],
   props: {
     type: String,
-    statement: Object,
     wafBrand: String,
+    statement: Object,
   },
   data () {
     return {
@@ -47,11 +36,18 @@ export default {
           span: 4,
         },
       },
+      geoSelectOpts: LocationList,
     }
   },
   computed: {
     isNegationShow () {
       return this.wafBrand && this.wafBrand === 'Azure'
+    },
+    negationSelectOptions () {
+      return [
+        { label: this.$t('network_waf_statement.negation.eq'), value: true },
+        { label: this.$t('network_waf_statement.negation.noteq'), value: false },
+      ]
     },
   },
 }

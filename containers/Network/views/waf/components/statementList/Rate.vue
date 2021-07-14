@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- 速率限制 -->
+    <limit :value="statement.limit" />
     <!-- 匹配变量 -->
     <match-field :value="statement.match_field" />
     <!-- 操作器 -->
@@ -9,7 +11,7 @@
     <!-- 匹配值 -->
     <match-field-values :valueList="statement.match_field_values" />
     <!-- 取反 -->
-    <negation v-if="isNegationShow" :value="!statement.negation" />
+    <!-- <negation v-if="isNegationShow" :value="!statement.negation" /> -->
   </div>
 </template>
 
@@ -19,17 +21,17 @@ import MatchField from '../statementComponents/MatchField'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
 import Operator from '../statementComponents/Operator'
 import Transformations from '../statementComponents/Transformations'
-import Negation from '../statementComponents/Negation'
+// import Negation from '../statementComponents/Negation'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'Size',
+  name: 'Rate',
   components: {
     MatchField,
     Operator,
     Transformations,
     MatchFieldValues,
-    Negation,
+    // Negation,
   },
   mixins: [WindowsMixin, WafMixin],
   props: {
@@ -50,9 +52,9 @@ export default {
     }
   },
   computed: {
-    isNegationShow () {
-      return this.wafBrand && this.wafBrand === 'Azure'
-    },
+    // isNegationShow () {
+    //   return this.wafBrand && this.wafBrand === 'Azure'
+    // },
   },
 }
 </script>

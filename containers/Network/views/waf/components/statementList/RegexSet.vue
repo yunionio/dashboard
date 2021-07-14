@@ -1,23 +1,23 @@
 <template>
   <div>
     <!-- 匹配值 -->
-    <match-field-values :label="$t('network_waf_statement.label.ip')" :valueList="match_field_values" />
+    <match-field-values :label="$t('network_waf_statement.label.regex')" :valueList="match_field_values" />
     <!-- 运算 是否包含 -->
-    <negation v-if="isNegationShow" :value="!statement.negation" :selectOptions="negationSelectOptions" />
+    <!-- <negation v-if="isNegationShow" :value="!statement.negation" :selectOptions="negationSelectOptions" /> -->
   </div>
 </template>
 
 <script>
 import WafMixin from '../../mixins/waf'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
-import Negation from '../statementComponents/Negation'
+// import Negation from '../statementComponents/Negation'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'IPSet',
+  name: 'RegexSet',
   components: {
     MatchFieldValues,
-    Negation,
+    // Negation,
   },
   mixins: [WindowsMixin, WafMixin],
   props: {
@@ -53,22 +53,22 @@ export default {
   },
   methods: {
     initData () {
-      const { match_field_values, ip_set_id } = this.statement
+      const { match_field_values, regex_set_id } = this.statement
       if (match_field_values) {
         // 匹配值
         this.match_field_values = match_field_values
-      } else if (ip_set_id) {
+      } else if (regex_set_id) {
         // TODO-glb 请求匹配值
         // this.match_field_values = [match_field_key]
-        this.getIpList(ip_set_id)
+        this.getRegexList(regex_set_id)
       } else {
         this.match_field_values = ['']
       }
     },
-    async getIpList (id) {
-      const ipData = await new this.$manager('waf_ip_sets', 'v2').get({ id })
-      console.log('ip 数据', ipData)
-      const { addresses: match_field_values = [''] } = ipData.waf_ip_set
+    async getRegexList (id) {
+      const regexData = await new this.$manager('waf_regex_sets', 'v2').get({ id })
+      console.log('regex 数据', regexData)
+      const { regex_patterns: match_field_values = [''] } = regexData.waf_regex_set
       this.match_field_values = match_field_values
     },
   },

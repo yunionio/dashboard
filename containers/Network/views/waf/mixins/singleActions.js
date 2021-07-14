@@ -20,6 +20,12 @@ export default {
         },
       },
       {
+        label: i18n.t('network.text_201'),
+        action: (row) => {
+          this.syncWafStatus(row)
+        },
+      },
+      {
         label: i18n.t('cloudenv.text_108'),
         permission: 'billsdimensions_delete',
         action: (row) => {

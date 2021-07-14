@@ -143,6 +143,10 @@ export default {
       })
       this.initSidePageTab('resource-manage')
     },
+    async syncWafStatus (row) {
+      await new this.$Manager('waf_instances', 'v2').performAction({ id: row.id, action: 'syncstatus', data: {} })
+      this.list.fetchData()
+    },
   },
 }
 </script>

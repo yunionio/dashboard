@@ -40,7 +40,7 @@ export default {
   },
   data () {
     return {
-      matchFieldValues: this.valueList,
+      matchFieldValues: this.valueList || [''],
       formLayout: {
         wrapperCol: {
           span: 20,
