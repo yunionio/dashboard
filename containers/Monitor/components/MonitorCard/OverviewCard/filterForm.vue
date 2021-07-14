@@ -132,6 +132,9 @@ export default {
       return ret
     },
     groupInput () {
+      if (this.res === 'host') {
+        return 'project_domain'
+      }
       switch (this.dimension.scope) {
         case 'system':
           return 'project_domain'
