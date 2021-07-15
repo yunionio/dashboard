@@ -34,7 +34,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.rds')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara'])
+              return !hasSetupKey(['aliyun', 'huawei', 'google', 'aws', 'qcloud', 'apsara', 'azure'])
             },
           },
           children: [
@@ -89,7 +89,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.redis')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'apsara'])
+              return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'apsara'])
             },
           },
           component: Layout,
