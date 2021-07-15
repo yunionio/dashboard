@@ -5,7 +5,9 @@
         <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
-          <router-link v-if="!edit" to="/log" class="ml-2">{{$t('dashboard.more')}}</router-link>
+          <router-link v-if="!edit" to="/log" class="ml-2">
+            <icon type="arrow-right" style="font-size:18px" />
+          </router-link>
         </div>
       </div>
       <div class="dashboard-card-body flex-column justify-content-center">
