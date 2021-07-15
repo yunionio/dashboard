@@ -5,7 +5,9 @@
         <div class="dashboard-card-header-left">{{ fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="() => visible = true" />
-          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">{{$t('dashboard.more')}}</router-link>
+          <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">
+            <icon type="arrow-right" style="font-size:18px" />
+          </router-link>
         </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center">
