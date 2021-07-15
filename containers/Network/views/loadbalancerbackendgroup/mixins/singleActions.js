@@ -1,4 +1,6 @@
 import i18n from '@/locales'
+import { PROVIDER_MAP } from '@/constants'
+
 export default {
   created () {
     this.singleActions = [
@@ -16,6 +18,13 @@ export default {
           })
         },
         meta: (obj) => {
+          if (obj.provider.toLowerCase() === 'azure') {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+            }
+          }
+
           if (!obj.can_delete) {
             return {
               validate: false,

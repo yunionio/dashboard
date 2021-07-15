@@ -302,7 +302,7 @@ export const getSwitchTableColumn = ({ field, title, change }) => {
     title,
     slots: {
       default: ({ row }, h) => {
-        let checked = row[field]
+        let checked = _.get(row, field)
         if (R.is(String, checked)) {
           if (checked === 'true') checked = true
           if (checked === 'false') checked = false

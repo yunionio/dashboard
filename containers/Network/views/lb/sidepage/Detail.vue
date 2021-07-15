@@ -115,11 +115,11 @@ export default {
                     </div>)
                   }
 
-                  if (ret.length > 0 || row.address_type === 'intranet') {
+                  if (ret.length === 0 || (ret.length > 0 && row.address_type === 'intranet' && !!row.address)) {
                     ret.push(<div>
                       <span>{row.address || '-'}</span>
                       <span className="text-color-secondary">{row.address_type === 'intranet' ? this.$t('network.text_306') : this.$t('network.text_307')}</span>
-                      <copy message={row.address || '-'}/>
+                      <copy message={row.address}/>
                     </div>)
                   }
 
@@ -135,6 +135,18 @@ export default {
                 if (!row.vpc) return '-'
                 return [
                   <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+                ]
+              },
+              hidden: this.$store.getters.isProjectMode,
+            }),
+            getCopyWithContentTableColumn({
+              field: 'network',
+              title: this.$t('network.text_565'),
+              hideField: true,
+              slotCallback: row => {
+                if (!row.network) return '-'
+                return [
+                  <side-page-trigger permission='networks_get' name='NetworkSidePage' id={row.network_id} vm={this}>{ row.network }</side-page-trigger>,
                 ]
               },
               hidden: this.$store.getters.isProjectMode,

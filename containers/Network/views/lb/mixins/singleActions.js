@@ -1,5 +1,6 @@
 import { validateEnabled, validateDisable } from '../utils'
 import expectStatus from '@/constants/expectStatus'
+import { PROVIDER_MAP } from '@/constants'
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 
@@ -126,6 +127,12 @@ export default {
           let ret = {
             validate: true,
             tooltip: null,
+          }
+          if (obj.provider.toLowerCase() === 'azure') {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
+            }
           }
           ret = this.$isValidateResourceLock(obj)
           return ret

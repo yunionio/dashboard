@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('cloudenv.text_580')"
-    icon="res-proxysetting"
+    icon="projectmapping"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :loaded="loaded"

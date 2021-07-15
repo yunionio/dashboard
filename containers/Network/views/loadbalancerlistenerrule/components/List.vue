@@ -32,19 +32,10 @@ export default {
     },
   },
   data () {
-    return {
-      list: this.$list.createList(this, {
-        id: 'LoadbalancerListenerRuleList',
-        resource: 'loadbalancerlistenerrules',
-        getParams: this.getParam,
-        filterOptions: {
-          name: getNameFilter(),
-        },
-        steadyStatus: {
-          status: Object.values(expectStatus.lb).flat(),
-        },
-      }),
-      groupActions: [
+    let groupActions = []
+    const provider = R.path(['provider'], this.lbData)
+    if (provider && provider.toLowerCase() !== 'azure') {
+      groupActions = [
         {
           label: this.$t('network.text_26'),
           permission: 'lb_loadbalancerlistenerrules_create',
@@ -63,7 +54,22 @@ export default {
             }
           },
         },
-      ],
+      ]
+    }
+
+    return {
+      list: this.$list.createList(this, {
+        id: 'LoadbalancerListenerRuleList',
+        resource: 'loadbalancerlistenerrules',
+        getParams: this.getParam,
+        filterOptions: {
+          name: getNameFilter(),
+        },
+        steadyStatus: {
+          status: Object.values(expectStatus.lb).flat(),
+        },
+      }),
+      groupActions: groupActions,
     }
   },
   created () {

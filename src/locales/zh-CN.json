@@ -442,7 +442,6 @@
       "backing_up_failed": "实例备份失败",
       "update_tags": "更新标签或名称",
       "update_tags_fail": "更新标签或名称失败"
-
     },
     "eip": {
       "ready": "可用",
@@ -595,6 +594,12 @@
       "is_effective": "已生效",
       "is_not_effective": "未生效",
       "is_expire": "已过期",
+      "unknown": "未知"
+    },
+    "exchange_rate": {
+      "available": "已生效",
+      "unavailable": "未生效",
+      "expired": "已过期",
       "unknown": "未知"
     },
     "scalinggroup": {
@@ -2086,10 +2091,10 @@
     "SCALING_SERVER": "替换为使用弹性伸缩组的虚拟机",
     "TIMING_OPEN_SERVER": "使用定时任务为虚拟机设置定时开关机",
     "EXPIRE_SERVER_SKU": "升级虚拟机的套餐类型",
-    "SCALE_DOWN": "释放未使用的虚拟机",
-    "RDS_UNREASONABLE": "释放未使用的rds",
+    "SCALE_DOWN": "降配或释放未使用的虚拟机",
+    "RDS_UNREASONABLE": "降配或释放未使用的rds",
     "OSS_UNREASONABLE": "释放空闲的对象存储",
-    "REDIS_UNREASONABLE": "释放未使用的redis",
+    "REDIS_UNREASONABLE": "降配或释放未使用的redis",
     "SECGROUPRULEINSERVER_ALLIN": "调整安全组规则",
     "SNAPSHOT_UNUSED": "释放未使用的快照",
     "OSS_SEC_ACL": "调整存储桶权限",
@@ -2112,6 +2117,7 @@
     ],
     "OIDC": [
       "oidc",
+      "google_oidc",
       "github_oidc",
       "azure_oidc"
     ],
@@ -2129,6 +2135,7 @@
     "oidc": "通用OIDC",
     "github_oidc": "Github",
     "azure_oidc": "Azure AD OAuth2",
+    "google_oidc": "Google",
     "saml": "通用SAML",
     "azure_ad_saml": "Azure AD SAML 2.0",
     "cas": "通用CAS",
@@ -4696,15 +4703,15 @@
   "common.no_platform_available": "暂无可用的云资源，请到【主机-宿主机】添加/启用宿主机或到【多云管理-云账号】添加/启用云账号，新添加的云账号和宿主机待状态更新后点击刷新按钮可获得最新的云资源",
   "common.set_secgroup_max_message": "提示信息：安全组最多可关联{0}个",
   "cloudevent": {
-     "title": {
-       "account": "云上用户名",
-       "manager": "订阅",
-       "brand": "平台",
-       "provider": "平台",
-       "service": "服务名称",
-       "resource_type": "资源类型",
-       "action": "事件名称"
-      }
+    "title": {
+      "account": "云上用户名",
+      "manager": "订阅",
+      "brand": "平台",
+      "provider": "平台",
+      "service": "服务名称",
+      "resource_type": "资源类型",
+      "action": "事件名称"
+    }
   },
   "operation": {
     "success": {
@@ -4781,4 +4788,3 @@
   "license.group.container": "@:scope.text_78",
   "license.group.default": ""
 }
-

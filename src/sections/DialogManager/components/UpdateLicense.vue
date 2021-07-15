@@ -174,6 +174,7 @@ export default {
         await manager.create({
           data: fd,
         })
+        await this.$store.dispatch('app/fetchLicense')
         this.goGuide()
         this.cancelDialog()
         this.$message.success(this.$t('common_134'))

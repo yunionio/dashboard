@@ -196,6 +196,10 @@ export default {
     success: ['is_effective'],
     info: ['is_expire', 'is_not_effective', 'unknown'],
   },
+  exchange_rate: {
+    success: ['available'],
+    info: ['expired', 'unavailable', 'unknown'],
+  },
   scalinggroup: {
     success: ['ready'],
     danger: ['delete_failed', 'deleted'],

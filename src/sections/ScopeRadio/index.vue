@@ -71,6 +71,12 @@ export default {
       type: String,
       default: i18n.t('common.text00105'),
     },
+    hiddenScope: {
+      type: Array,
+      default () {
+        return []
+      },
+    },
   },
   data () {
     return {
@@ -109,7 +115,7 @@ export default {
       if (this.isAdminMode) {
         ret.splice(0, 0, { label: this.$t('dictionary.infos'), key: 'system' })
       }
-      return ret
+      return ret.filter(v => !this.hiddenScope.includes(v.key))
     },
   },
   created () {

@@ -16,7 +16,7 @@
       :is="params.windowData.currentTab"
       :id="listId"
       :res-id="data.id"
-      :data="detailData"
+      :hostInfo="detailData"
       :on-manager="onManager"
       :getParams="getParams"
       :columns="columns"

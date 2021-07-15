@@ -592,6 +592,12 @@
       "is_expire": "Expired",
       "unknown": "Unknown"
     },
+    "exchange_rate": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "expired": "Expired",
+      "unknown": "Unknown"
+    },
     "scalinggroup": {
       "init": "Initialize",
       "ready": "Normal",
@@ -2068,15 +2074,15 @@
     "EIP_UNUSED": "Release Unused EIP",
     "DISK_UNUSED": "Release Unused Disk",
     "LB_UNUSED": "Release Unused LB",
-    "SCALE_DOWN": "Release Unused Server",
+    "SCALE_DOWN": "Downgrade Or Release Unused Server",
     "SCALING_SERVER": "Replace server with auto-scaling group",
     "DOWN_SIZE": "Down-size server configuration",
     "UP_SIZE": "Up-size server configuration",
     "TIMING_OPEN_SERVER": "Start and stop server with Cron Jobs",
     "EXPIRE_SERVER_SKU": "Upgrade server instance type",
-    "RDS_UNREASONABLE": "Release Underutilized RDS",
+    "RDS_UNREASONABLE": "Downgrade Or Release Underutilized RDS",
     "OSS_UNREASONABLE": "Release Underutilized OSS",
-    "REDIS_UNREASONABLE": "Release Underutilized Redis",
+    "REDIS_UNREASONABLE": "Downgrade Or Release Underutilized Redis",
     "SECGROUPRULEINSERVER_ALLIN": "Adjust secgroup rules",
     "SNAPSHOT_UNUSED": "Release Unused Snapshot",
     "OSS_SEC_ACL": "Adjust object storage ACL",
@@ -2099,6 +2105,7 @@
     ],
     "OIDC": [
       "oidc",
+      "google_oidc",
       "github_oidc",
       "azure_oidc"
     ],
@@ -2116,6 +2123,7 @@
     "oidc": "OIDC",
     "github_oidc": "Github",
     "azure_oidc": "Azure AD OAuth2",
+    "google_oidc": "Google",
     "saml": "SAML",
     "azure_ad_saml": "Azure AD SAML 2.0",
     "cas": "CAS",

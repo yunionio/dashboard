@@ -65,7 +65,7 @@ const responseLog = (response) => {
       `color:${randomColor};`,
     )
     console.log('| 请求地址：', response.config.url)
-    console.log('| 请求参数：', response.config.data ? JSON.parse(response.config.data) : {})
+    console.log('| 请求参数：', typeof response.config.data === 'string' ? JSON.parse(response.config.data) : {})
     console.log('| 返回数据：', response.data)
     console.log(
       '%c┕----------------------------------------------------------------------------┙',
@@ -261,7 +261,8 @@ http.interceptors.response.use(
           }
         })
       }
-      if (status === 402 && error.response.data.details === '无有效license') {
+      // 忽略证书错误
+      if (status === 402 && (error.response.data.details === 'no license found' || error.response.data.details === '无有效license')) {
         console.log(error)
       } else if (error.response.data && !(error.response.data.details || String()).includes('No token in header')) {
         showHttpErrorMessage(error)
