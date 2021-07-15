@@ -11,6 +11,7 @@ export default {
       currency: getCurrency() || '',
       currencyOpts: [],
       exchangeRateAvailable: getExchangeRateAvailable() || true,
+      globalConfig: {},
     },
     k8s: {
       cluster: undefined,
@@ -69,6 +70,9 @@ export default {
     SET_GLOBAL_CONFIG (state, payload) {
       state.globalConfig = payload
     },
+    SET_GLOBAL_BILL_CONFIG (state, payload) {
+      state.bill.globalConfig = payload
+    },
     SET_OPEN_CLOUDSHELL (state, payload) {
       state.openCloudShell = payload
     },
@@ -111,10 +115,10 @@ export default {
       try {
         const response = await manager.list({
           params: {
-            type: ['common'],
+            type: ['common', 'meter'],
           },
         })
-        const id = (response.data.data && response.data.data.length && response.data.data[0].id) || ''
+        const id = response?.data?.data[0]?.id || ''
         if (id) {
           const configResponse = await manager.getSpecific({
             id,
@@ -122,6 +126,15 @@ export default {
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('SET_GLOBAL_CONFIG', config)
+        }
+        const mneterId = response?.data?.data[0]?.id || ''
+        if (id) {
+          const configResponse = await manager.getSpecific({
+            id: mneterId,
+            spec: 'config',
+          })
+          const config = (configResponse.data.config && configResponse.data.config.default) || {}
+          commit('SET_GLOBAL_BILL_CONFIG', config)
         }
       } catch (error) {
         throw error
