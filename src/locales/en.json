@@ -931,6 +931,15 @@
       "available": "Available",
       "unavailable": "Unavailable",
       "creating": "Creating"
+    },
+    "kafka": {
+      "available": "Available",
+      "creating": "Creating",
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
+      "sync_status": "Sync status",
+      "unavailable": "Unavailable",
+      "unknown": "Unknown"
     }
   },
   "skuCategoryOptions": {
@@ -2354,7 +2363,9 @@
     "access_group": "Access Group",
     "access_group_rule": "Access Group Rule",
     "access_group_cache": "Access Group Cache",
-    "mount_target": "Mount Target"
+    "mount_target": "Mount Target",
+    "message_quequ": "Message Queue",
+    "kafka": "Kafka"
   },
   "res": {
     "role": "Role",

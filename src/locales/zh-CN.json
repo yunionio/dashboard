@@ -943,6 +943,15 @@
       "updating": "更新中",
       "update_failed": "更新失败",
       "unknown": "未知状态"
+    },
+    "kafka": {
+      "available": "正常",
+      "creating": "创建中",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "sync_status": "同步状态",
+      "unavailable": "不可用",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
@@ -2366,7 +2375,9 @@
     "access_group": "NAS权限组",
     "access_group_rule": "NAS权限组规则",
     "access_group_cache": "NAS权限组缓存",
-    "mount_target": "NAS挂载点"
+    "mount_target": "NAS挂载点",
+    "message_queue": "消息队列",
+    "kafka": "Kafka"
   },
   "res": {
     "role": "@:dictionary.role",

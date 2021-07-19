@@ -1,0 +1,20 @@
+{
+  "middleware": "中间件",
+  "middleware.kafka": "Kafka",
+  "middleware.syncstatus": "同步状态",
+  "middleware.more": "更多",
+  "middleware.extra": "其他信息",
+  "middleware.delete": "删除",
+  "middleware.operations": "操作日志",
+  "middleware.properties": "详情",
+  "middleware.version": "版本",
+  "middleware.storage": "存储",
+  "middleware.cloud_efficiency": "高效云盘",
+  "middleware.cloud_ssd": "SSD",
+  "middleware.size_gb": "{0} GB",
+  "middleware.bandwidth": "带宽",
+  "middleware.bandwidth_mb": "{0} Mb",
+  "middleware.endpoint": "连接端点",
+  "middleware.msg_retention_minute": "消息保留时长",
+  "middleware.minutes": "{0} 分钟"
+}

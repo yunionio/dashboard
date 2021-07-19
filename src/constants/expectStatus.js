@@ -413,4 +413,9 @@ export default {
   projectMapping: {
     success: ['available'],
   },
+  kafka: {
+    success: ['available'],
+    info: ['unknown', 'unavailable'],
+    danger: ['delete_failed'],
+  },
 }

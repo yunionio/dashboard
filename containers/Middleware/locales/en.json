@@ -1,0 +1,20 @@
+{
+  "middleware": "Middleware",
+  "middleware.kafka": "Kafka",
+  "middleware.syncstatus": "Sync status",
+  "middleware.more": "More",
+  "middleware.extra": "Other Information",
+  "middleware.delete": "Delete",
+  "middleware.operations": "Operations",
+  "middleware.properties": "Properties",
+  "middleware.version": "Version",
+  "middleware.storage": "Storage",
+  "middleware.cloud_efficiency": "Cloud Efficiency",
+  "middleware.cloud_ssd": "SSD",
+  "middleware.size_gb": "{0} GB",
+  "middleware.bandwidth": "Bandwidth",
+  "middleware.bandwidth_mb": "{0} Mb",
+  "middleware.endpoint": "Endpoint",
+  "middleware.msg_retention_minute": "Msg Retention",
+  "middleware.minutes": "{0} Minutes"
+}
