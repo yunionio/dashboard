@@ -1,6 +1,7 @@
 <template>
   <a-modal
     wrap-class-name="base-dialog-wrap"
+    v-dialogDrag
     :visible="true"
     :destroy-on-close="true"
     :keyboard="false"
