@@ -35,6 +35,8 @@ export default {
                 force: true,
               },
             },
+          }).then(res => {
+            this.$message.success(this.$t('cloudenv.text_381'))
           })
         },
         meta: (obj) => this.syncPolicy(obj),
