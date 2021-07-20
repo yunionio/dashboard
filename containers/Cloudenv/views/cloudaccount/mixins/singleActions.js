@@ -95,6 +95,7 @@ export default {
                   validate: this.$appConfig.isPrivate && ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud'].indexOf(obj.brand) > -1 && ownerDomain,
                 }
               },
+              hidden: !this.$appConfig.isPrivate,
             },
             {
               label: i18n.t('cloudenv.text_107'),
