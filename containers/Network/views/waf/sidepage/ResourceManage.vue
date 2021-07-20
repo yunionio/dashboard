@@ -26,6 +26,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        // idKey: 'id',
         resource: this.fetchResource,
         getParams: { details: true },
         filterOptions: {
@@ -37,7 +38,7 @@ export default {
             },
           },
           type: {
-            label: this.$t('network.waf.type'),
+            label: this.$t('network.waf.resource_type'),
             dropdown: true,
             multiple: true,
             distinctField: {
@@ -54,7 +55,7 @@ export default {
         },
         {
           field: 'type',
-          title: this.$t('network.waf.type'),
+          title: this.$t('network.waf.resource_type'),
         },
         {
           field: 'port',

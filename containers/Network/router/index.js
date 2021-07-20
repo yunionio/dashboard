@@ -383,7 +383,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'public'])
+              return (store.getters.isDomainMode || store.getters.isAdminMode) && !hasSetupKey(['aws', 'azure', 'aliyun'])
             },
           },
           component: Layout,

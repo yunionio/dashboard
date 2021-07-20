@@ -73,6 +73,28 @@ export default {
           value: 'Detection',
         },
       ],
+      statementConditionOptions: [
+        {
+          id: 1,
+          label: this.$t('network.waf.match_null'),
+          value: '',
+        },
+        {
+          id: 1,
+          label: this.$t('network.waf.match_any'),
+          value: 'Or',
+        },
+        {
+          id: 2,
+          label: this.$t('network.waf.match_all'),
+          value: 'And',
+        },
+        {
+          id: 3,
+          label: this.$t('network.waf.match_not'),
+          value: 'Not',
+        },
+      ],
     }
   },
   created () {

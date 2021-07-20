@@ -20,7 +20,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'WafInstancesDeleteDialog',
+  name: 'DeleteWafInstancesDialog',
   components: {
     DialogContent: {
       props: {

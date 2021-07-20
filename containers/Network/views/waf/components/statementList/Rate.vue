@@ -1,41 +1,33 @@
 <template>
   <div>
     <!-- 速率限制 -->
-    <limit :value="statement.limit" />
-    <!-- 匹配变量 -->
-    <match-field :value="statement.match_field" />
-    <!-- 操作器 -->
-    <operator :value="statement.operator" :type="type" />
-    <!-- 转换 -->
-    <transformations :valueList="statement.transformations" />
+    <limit :value="statement.limit" :isEdit="isEdit" />
+    <forward-ip-header v-if="isForwardIpHeaderShow" :value="statement.forwarded_ip_header" :isEdit="isEdit" />
     <!-- 匹配值 -->
-    <match-field-values :valueList="statement.match_field_values" />
-    <!-- 取反 -->
-    <!-- <negation v-if="isNegationShow" :value="!statement.negation" /> -->
+    <match-field-values :valueList="statement.match_field_values" :isEdit="isEdit" />
+    <!-- 运算 -->
+    <negation :value="!statement.negation" :isEdit="isEdit" />
   </div>
 </template>
 
 <script>
 import WafMixin from '../../mixins/waf'
-import MatchField from '../statementComponents/MatchField'
+import ForwardIpHeader from '../statementComponents/ForwardIpHeader'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
-import Operator from '../statementComponents/Operator'
-import Transformations from '../statementComponents/Transformations'
-// import Negation from '../statementComponents/Negation'
+import Negation from '../statementComponents/Negation'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'Rate',
   components: {
-    MatchField,
-    Operator,
-    Transformations,
     MatchFieldValues,
-    // Negation,
+    Negation,
+    ForwardIpHeader,
   },
   mixins: [WindowsMixin, WafMixin],
   props: {
     type: String,
+    isEdit: Boolean,
     statement: Object,
     wafBrand: String,
   },
@@ -52,9 +44,9 @@ export default {
     }
   },
   computed: {
-    // isNegationShow () {
-    //   return this.wafBrand && this.wafBrand === 'Azure'
-    // },
+    isForwardIpHeaderShow () {
+      return this.statement.hasOwnProperty('forwarded_ip_header')
+    },
   },
 }
 </script>

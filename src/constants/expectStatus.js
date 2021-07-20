@@ -413,4 +413,9 @@ export default {
   projectMapping: {
     success: ['available'],
   },
+  waf: {
+    success: ['available'],
+    info: ['unavailable', 'unknown'],
+    danger: ['delete_failed', 'create_failed'],
+  },
 }

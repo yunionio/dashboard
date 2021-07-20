@@ -2,58 +2,60 @@
   <a-card class="mb-3" style="flex: 1 1 auto">
     <!-- 类型 -->
     <a-form-item :label="$t('network.text_249')" v-bind="formLayout">
-      <a-select v-model="data.type">
+      <a-select v-if="isEdit" v-model="data.type">
         <a-select-option v-for="item in wafRuleTypeOptions" :value="item.value" :key="item.value">
           {{item.label}}
         </a-select-option>
       </a-select>
+      <box-show v-else :value="ruleTypeValue" />
     </a-form-item>
-    <!-- 字符串类型 -->
-    <byte-match v-if="type === 'ByteMatch'" :statement="data" :wafBrand="wafBrand" />
-    <!-- ip类型 -->
-    <ip-set v-if="type === 'IPSet'" :statement="data" :wafBrand="wafBrand" />
-    <!-- 大小类型 -->
-    <size v-if="type === 'Size'" :type="type" :statement="data" :wafBrand="wafBrand" />
-    <!-- 管理规则组 -->
-    <managed-rule-group v-if="type === 'ManagedRuleGroup'" :type="type" :statement="data" :wafBrand="wafBrand" />
-    <!-- 地址 -->
-    <geo-match v-if="type === 'GeoMatch'" :type="type" :statement="data" :wafBrand="wafBrand" />
-    <!-- 正则 -->
-    <regex-set :type="type" :statement="data" :wafBrand="wafBrand" />
+    <!-- 条件 -->
+    <component :is="type" :statement="data" :wafBrand="wafBrand" :isEdit="isEdit" />
   </a-card>
 </template>
 
 <script>
 import WafMixin from '../mixins/waf'
+import BoxShow from './statementComponents/BoxShow'
 import ByteMatch from './statementList/ByteMatch'
 import IpSet from './statementList/IPSet'
 import Size from './statementList/Size'
 import ManagedRuleGroup from './statementList/ManagedRuleGroup'
 import GeoMatch from './statementList/GeoMatch'
 import RegexSet from './statementList/RegexSet'
+import Rate from './statementList/Rate'
+import RuleGroup from './statementList/RuleGroup'
+import SqliMatch from './statementList/SqliMatch'
+import XssMatch from './statementList/XssMatch'
+import LabelMatch from './statementList/LabelMatch'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'WafList',
   components: {
+    BoxShow,
     ByteMatch,
     IpSet,
     Size,
     ManagedRuleGroup,
     GeoMatch,
     RegexSet,
+    Rate,
+    RuleGroup,
+    SqliMatch,
+    XssMatch,
+    LabelMatch,
   },
   mixins: [WindowsMixin, WafMixin],
   props: {
     data: Object,
     // 条件类型
     type: String,
+    isEdit: Boolean,
+    // waf的平台
     wafBrand: String,
   },
   data () {
-    const initData = this.data || {}
-    const { type = ' ' } = initData
-    const index = this.index
     return {
       formLayout: {
         wrapperCol: {
@@ -64,31 +66,17 @@ export default {
         },
       },
       wafRuleTypeOptions: [],
-      decorators: {
-        // 类型
-        type: [
-          `statements[${index}].type`,
-          {
-            initialValue: type,
-            rules: [{ required: true }],
-          },
-        ],
-        // 运算
-        compute: [
-          'compute',
-          {
-            rules: [{ required: true }],
-          },
-        ],
-        // ip
-        ip: [
-          'ip',
-          {
-            rules: [{ required: true }],
-          },
-        ],
-      },
     }
+  },
+  computed: {
+    ruleTypeValue () {
+      const ruleType = this.wafRuleTypeOptions.filter(item => item.value === this.data.type)
+      if (ruleType && ruleType.length) {
+        return ruleType[0].label
+      } else {
+        return this.data.type || ''
+      }
+    },
   },
   watch: {
     wafRuleTypeMap: {

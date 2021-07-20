@@ -847,6 +847,7 @@
   "network.waf.rule": "规则",
   "network.waf.resource": "关联资源",
   "network.waf.type": "WAF类型",
+  "network.waf.resource_type": "资源类型",
   "network.waf.resource_id": "资源ID",
   "network.waf.resource_name": "资源名称/ID",
   "network.waf.action": "处理动作",
@@ -876,6 +877,7 @@
   "network.waf.match_all": "全部匹配以下条件时（AND）",
   "network.waf.match_any": "匹配以下至少一个条件时（OR）",
   "network.waf.match_not": "匹配以下条件取反操作（NOT）",
+  "network.waf.null": "无",
   "network_waf_statement": {
     "label": {
       "match_field": "匹配变量",
@@ -886,9 +888,14 @@
       "ip": "IP",
       "contains": "运算",
       "managed_rule_group_name": "规则组名称",
+      "rule_group_name": "规则组名称",
       "compute": "运算",
       "size": "大小",
-      "limit": "限制"
+      "limit": "限制",
+      "regex": "正则",
+      "match_field_key": "匹配字段",
+      "header_name": "头部名称",
+      "forward_ip_header": "转发IP头部"
     },
     "type": {
       "ByteMatch": "内容",
@@ -942,6 +949,13 @@
       "LT": "小于",
       "GE": "大于等于",
       "GT": "大于"
+    },
+    "match_field_key": {
+      "Header": "头部名称",
+      "PostArgs": "发布参数选择器",
+      "Cookie": "Cookie名称"
     }
-  }
+  },
+  "network.waf": "WAF策略",
+  "network.waf.delete": "删除WAF策略"
 }

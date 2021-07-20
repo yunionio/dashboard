@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('dictionary.waf')"
-    icon="res-proxysetting"
+    icon="waf"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
     :loaded="loaded"

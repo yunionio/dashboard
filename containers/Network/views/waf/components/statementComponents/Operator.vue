@@ -1,25 +1,31 @@
 <template>
   <div>
     <a-form-item :label="$t('network_waf_statement.label.operator')" v-bind="formLayout">
-      <a-select v-model="value">
+      <a-select v-if="isEdit" v-model="value">
         <a-select-option v-for="item in operatorOptions" :value="item.value" :key="item.value">
           {{item.label}}
         </a-select-option>
       </a-select>
+      <box-show v-else :value="showValue" />
     </a-form-item>
   </div>
 </template>
 
 <script>
 import WafMixin from '../../mixins/waf'
+import BoxShow from './BoxShow'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'OperatorStatement',
+  components: {
+    BoxShow,
+  },
   mixins: [WindowsMixin, WafMixin],
   props: {
     type: String,
     value: String,
+    isEdit: Boolean,
   },
   data () {
     return {
@@ -54,6 +60,14 @@ export default {
         { label: this.$t('network_waf_statement.operator.ContainsWord'), value: 'ContainsWord' },
         { label: this.$t('network_waf_statement.operator.Regex'), value: 'Regex' },
       ]
+    },
+    showValue () {
+      const operator = this.operatorOptions.filter(item => item.value === this.value)
+      if (operator && operator.length) {
+        return operator[0].label
+      } else {
+        return this.value
+      }
     },
   },
   watch: {

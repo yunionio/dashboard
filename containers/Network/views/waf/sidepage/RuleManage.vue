@@ -2,13 +2,15 @@
   <page-list
     :list="list"
     :columns="columns"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    @refresh="refreshRule" />
 </template>
 
 <script>
 import _ from 'lodash'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'WafRulesForWafInstancesSidePage',
@@ -23,10 +25,39 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        key: 'id',
-        resource: () => this.fetchData(),
-        getParams: {},
-        responseData: this.responseData,
+        apiVersion: 'v2',
+        resource: 'waf_rules',
+        getParams: { details: true, waf_instance_id: this.data.id },
+        filterOptions: {
+          name: getNameFilter(),
+          action: {
+            label: this.$t('network.waf.action'),
+            dropdown: true,
+            multiple: true,
+            items: [
+              { label: this.$t('network.waf.rule_action_Allow'), key: 'Allow' },
+              { label: this.$t('network.waf.rule_action_Block'), key: 'Block' },
+              { label: this.$t('network.waf.rule_action_Log'), key: 'Log' },
+              { label: this.$t('network.waf.rule_action_Count'), key: 'Count' },
+              { label: this.$t('network.waf.rule_action_Alert'), key: 'Alert' },
+              { label: this.$t('network.waf.rule_action_Detection'), key: 'Detection' },
+              { label: this.$t('network.waf.rule_action_Prevention'), key: 'Prevention' },
+              // { label: this.$t('network.waf.null'), key: '' },
+            ],
+            filter: true,
+            mapper: (data) => {
+              return data.map(item => {
+                return {
+                  key: item.key,
+                  label: item.key,
+                }
+              })
+            },
+            formatter: val => {
+              return `action.contains(${val})`
+            },
+          },
+        },
       }),
       columns: [
         {
@@ -41,7 +72,7 @@ export default {
           field: 'action',
           title: this.$t('network.waf.action'),
           formatter: ({ row }) => {
-            const action = _.get(row, ['action', 'action']) || _.get(this.data, 'default_action.action')
+            const action = _.get(row, ['action', 'action'])
             if (action) return this.$t(`network.waf.rule_action_${action}`)
             return '-'
           },
@@ -55,37 +86,10 @@ export default {
             this.createDialog('WafRuleInfoDialog', {
               title: this.$t('network.waf.rule_view'),
               data: [row],
+              isEdit: true,
               resData: this.data,
               columns: this.columns,
-              refresh: this.refresh,
-              onManager: this.onManager,
-              success: (labels) => {
-                // this.fetchData(labels)
-                // this.list.fetchData()
-              },
             })
-          },
-        },
-      ],
-      groupActions: [
-        {
-          label: this.$t('cloudenv.text_454'),
-          permission: 'scheduledtasks_perform_set_label',
-          action: () => {
-            this.createDialog('ScheduledtaskEditDialog', {
-              data: [this.data],
-              columns: this.columns,
-              onManager: this.onManager,
-              success: (labels) => {
-                this.fetchData(labels)
-                this.list.fetchData()
-              },
-            })
-          },
-          meta: () => {
-            return {
-              buttonType: 'primary',
-            }
           },
         },
       ],
@@ -93,22 +97,6 @@ export default {
   },
   created () {
     this.list.fetchData()
-    console.log(this.id)
-    // this.$bus.$on('RelatedResourceTagListSidePageRefresh', labels => {
-    //   this.fetchData(labels)
-    //   this.list.fetchData()
-    // }, this)
-  },
-  methods: {
-    fetchData (rules) {
-      const response = { data: {} }
-      const data = (rules || this.data.rules || []).map((k) => {
-        return k
-      })
-      response.data.data = data
-      this.list.responseData = { data }
-      return response
-    },
   },
 }
 </script>

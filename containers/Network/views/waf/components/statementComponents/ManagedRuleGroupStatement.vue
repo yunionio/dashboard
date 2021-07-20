@@ -2,7 +2,8 @@
   <div>
     <!-- 管理规则组名称 -->
     <a-form-item :label="$t('network_waf_statement.label.managed_rule_group_name')" v-bind="formLayout">
-      <a-input :value="value" />
+      <a-input v-if="isEdit" :value="value" />
+      <box-show v-else :value="value" />
     </a-form-item>
     <!-- 管理规则组子项 -->
   </div>
@@ -10,14 +11,20 @@
 
 <script>
 import WafMixin from '../../mixins/waf'
+import BoxShow from './BoxShow'
+// import { uuid } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'ManagedRuleGroupStatement',
+  components: {
+    BoxShow,
+  },
   mixins: [WindowsMixin, WafMixin],
   props: {
     type: String,
     value: String,
+    isEdit: Boolean,
     ruleGroupId: String,
   },
   data () {
@@ -37,7 +44,7 @@ export default {
   watch: {
   },
   created () {
-    this.initData()
+    // this.initData()
   },
   methods: {
     initData () {
@@ -47,9 +54,12 @@ export default {
     },
     async getRuleGroup () {
       try {
-        // TODO-glb 获取管理规则组中的子项
-        // const ruleGroup = await new this.$Manager('waf_rule_groups', 'v2').get({ id: this.ruleGroupId })
+        // 获取管理规则组中的子项
+        // const ruleGroup = await new this.$Manager('waf_rules', 'v2').list({ params: { $t: uuid(), filter: `waf_rule_group_id.in(${[this.ruleGroupId]})` } })
         // console.log('规则组', ruleGroup)
+        // const { id } = ruleGroup
+        // if (!id) return
+        // const rules = await new this.$Manager('')
       } catch (err) { throw err }
     },
   },

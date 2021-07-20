@@ -1,12 +1,13 @@
 <template>
   <div>
-    <a-form-item :label="$t('network_waf_statement.label.transformations')" v-bind="formLayout">
+    <a-form-item v-if="transformations && transformations.length" :label="$t('network_waf_statement.label.transformations')" v-bind="formLayout">
       <template v-for="(transformation, index) in transformations">
-        <a-select v-model="transformations[index]" :key="index">
+        <a-select v-if="isEdit" v-model="transformations[index]" :key="index">
           <a-select-option v-for="item in transformationOptions" :value="item.value" :key="item.value">
             {{item.label}}
           </a-select-option>
         </a-select>
+        <box-show v-else :value="getShowValue(index)" :key="index" />
       </template>
     </a-form-item>
   </div>
@@ -14,13 +15,18 @@
 
 <script>
 import WafMixin from '../../mixins/waf'
+import BoxShow from './BoxShow'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'TransformationsStatement',
+  components: {
+    BoxShow,
+  },
   mixins: [WindowsMixin, WafMixin],
   props: {
     type: String,
+    isEdit: Boolean,
     valueList: {
       type: Array,
       default: () => [],
@@ -60,7 +66,14 @@ export default {
 
   },
   methods: {
-
+    getShowValue (index) {
+      const transformations = this.transformationOptions.filter(item => item.value === this.valueList[index])
+      if (transformations && transformations.length) {
+        return transformations[0].label
+      } else {
+        return this.valueList[index] || this.$t('network.waf.match_null')
+      }
+    },
   },
 }
 </script>

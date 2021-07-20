@@ -943,6 +943,20 @@
       "updating": "更新中",
       "update_failed": "更新失败",
       "unknown": "未知状态"
+    },
+    "waf": {
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "available": "可用",
+      "unavailable": "不可用",
+      "start_sync": "开始同步",
+      "syncing": "正在同步",
+      "sync_status": "同步中",
+      "unknown": "未知",
+      "start_delete": "开始删除",
+      "deleting": "正在删除",
+      "delete_failed": "删除失败",
+      "deleted": "已删除"
     }
   },
   "skuCategoryOptions": {

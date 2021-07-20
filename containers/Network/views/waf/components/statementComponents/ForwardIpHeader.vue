@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- 大小 -->
-    <a-form-item :label="$t('network_waf_statement.label.size')" v-bind="formLayout">
+    <!--  -->
+    <a-form-item :label="$t('network_waf_statement.label.forward_ip_header')" v-bind="formLayout">
       <a-input v-if="isEdit" :value="value" />
       <box-show v-else :value="value" />
     </a-form-item>

@@ -931,6 +931,20 @@
       "available": "Available",
       "unavailable": "Unavailable",
       "creating": "Creating"
+    },
+    "waf": {
+      "creating": "Creating",
+      "create_failed": "Create failed",
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "start_sync": "Start sync",
+      "syncing": "Syncing",
+      "sync_status": "Sync status",
+      "unknown": "Unknown",
+      "start_delete": "Start delete",
+      "deleting": "Deleting",
+      "delete_failed": "Delete failed",
+      "deleted": "Deleted"
     }
   },
   "skuCategoryOptions": {
