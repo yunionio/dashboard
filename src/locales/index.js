@@ -2,12 +2,12 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import vxeTableCN from 'vxe-table/lib/locale/lang/zh-CN'
 import vxeTableEN from 'vxe-table/lib/locale/lang/en-US'
+import { getLanguage } from '@/utils/common/cookie'
+import setting from '@/config/setting'
 import en from './en'
 import zhCN from './zh-CN'
 import helpEN from './help-en'
 import helpZhCN from './help-zh-CN'
-import { getLanguage } from '@/utils/common/cookie'
-import setting from '@/config/setting'
 
 Vue.use(VueI18n)
 

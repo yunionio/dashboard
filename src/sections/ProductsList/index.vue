@@ -19,9 +19,9 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
-import ProductsListSub from './Sub'
 import { menusConfig } from '@/router/routes'
 import { hasPermission } from '@/utils/auth'
+import ProductsListSub from './Sub'
 
 export default {
   name: 'ProductsList',

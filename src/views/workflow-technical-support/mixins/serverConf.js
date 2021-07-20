@@ -1,8 +1,8 @@
-import { getServerConf } from '../utils'
 import { ALL_STORAGE } from '@Compute/constants'
 import { HYPERVISORS_MAP } from '@/constants'
 import BrandIcon from '@/sections/BrandIcon'
 import i18n from '@/locales'
+import { getServerConf } from '../utils'
 
 export default {
   methods: {

@@ -13,6 +13,8 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/yaml/yaml.js'
 
+import { uuid } from '@/utils/utils'
+
 import store from './store'
 import router from './router'
 import i18n from './locales'
@@ -24,8 +26,6 @@ import './directives'
 import './plugins'
 import './permission'
 import './filters'
-
-import { uuid } from '@/utils/utils'
 
 Vue.use(Antd)
 Vue.use(VXETable, {

@@ -8,13 +8,13 @@
 
 <script>
 // import * as R from 'ramda'
-import SamlMixin from '../mixin'
 import { getBrandTableColumn } from '@/utils/common/tableColumn'
 // import { getBrandTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { getNameFilter, getBrandFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { HYPERVISORS_MAP } from '@/constants'
+import SamlMixin from '../mixin'
 
 export default {
   name: 'SamluserListForUser',

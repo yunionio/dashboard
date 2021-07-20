@@ -9,10 +9,10 @@
 <script>
 import * as R from 'ramda'
 import { mapState } from 'vuex'
-import mixin from '../mixin'
 import { STORAGE_TYPES } from '@/constants/compute'
 import { getRequestT, findAndUnshift } from '@/utils/utils'
 import { findPlatform } from '@/utils/common/hypervisor'
+import mixin from '../mixin'
 
 export default {
   name: 'JStorageBackendList',

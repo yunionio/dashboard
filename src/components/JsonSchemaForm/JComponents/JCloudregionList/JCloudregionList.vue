@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import mixin from '../mixin'
 import { HYPERVISORS_MAP } from '@/constants'
+import mixin from '../mixin'
 
 export default {
   name: 'JCloudregionList',

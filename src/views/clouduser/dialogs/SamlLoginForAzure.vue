@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import SamlMixin from '../mixin'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import SamlMixin from '../mixin'
 
 export default {
   name: 'SamlLoginForAzureDialog',
