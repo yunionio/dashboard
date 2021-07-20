@@ -1,5 +1,5 @@
-import { CLOSE_STATUS } from '../../constants'
 import i18n from '@/locales'
+import { CLOSE_STATUS } from '../../constants'
 
 export default {
   created () {

@@ -1,6 +1,6 @@
 import * as R from 'ramda'
-import { getServerConf } from '../utils'
 import i18n from '@/locales'
+import { getServerConf } from '../utils'
 
 export default {
   methods: {

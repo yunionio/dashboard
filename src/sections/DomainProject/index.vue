@@ -38,9 +38,9 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import { Manager } from '@/utils/manager'
 import Domain from './components/Domain'
 import Project from './components/Project'
-import { Manager } from '@/utils/manager'
 
 export default {
   name: 'DomainProject',

@@ -1,6 +1,6 @@
-import { diff } from '../utils'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import { diff } from '../utils'
 
 export default {
   methods: {

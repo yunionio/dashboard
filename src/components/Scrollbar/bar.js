@@ -1,5 +1,5 @@
-import { renderThumbStyle, BAR_MAP } from './utils'
 import { on, off } from '@/utils/dom'
+import { renderThumbStyle, BAR_MAP } from './utils'
 
 export default {
   name: 'Bar',

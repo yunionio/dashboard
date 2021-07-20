@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import Loading from './mask.vue'
 import { addClass, removeClass, getStyle } from '@/utils/dom'
 import afterLeave from '@/utils/after-leave'
+import Loading from './mask.vue'
 
 const Mask = Vue.extend(Loading)
 

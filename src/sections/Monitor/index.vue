@@ -17,9 +17,9 @@
 
 <script>
 import _ from 'lodash'
+import { numerify } from '@/filters'
 import MonitorHeader from './Header'
 import MonitorList from './List'
-import { numerify } from '@/filters'
 
 export default {
   name: 'Monitor',

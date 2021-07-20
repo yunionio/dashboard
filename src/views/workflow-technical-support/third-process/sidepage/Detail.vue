@@ -12,12 +12,12 @@
 
 <script>
 import {
-  getCommentTableColumn,
-} from '../../utils/columns'
-import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { getWorkflowType } from '@/constants/workflow'
+import {
+  getCommentTableColumn,
+} from '../../utils/columns'
 
 export default {
   name: 'ThirdProcessDetail',

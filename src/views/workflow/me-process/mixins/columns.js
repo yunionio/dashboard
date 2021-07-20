@@ -1,15 +1,15 @@
 import {
-  getProcessDefinitionNameTableColumn,
-  getResourceNameTableColumn,
-  getResourceProjectTableColumn,
-} from '../../utils/columns'
-import { statusMap, auditStatusMap } from '../../utils'
-import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import i18n from '@/locales'
+import { statusMap, auditStatusMap } from '../../utils'
+import {
+  getProcessDefinitionNameTableColumn,
+  getResourceNameTableColumn,
+  getResourceProjectTableColumn,
+} from '../../utils/columns'
 
 export default {
   created () {

@@ -1,4 +1,3 @@
-import { KAFKA_STORAGE } from '../constants/index.js'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
@@ -11,6 +10,7 @@ import {
 } from '@/utils/common/tableColumn'
 
 import i18n from '@/locales'
+import { KAFKA_STORAGE } from '../constants/index.js'
 
 export default {
   created () {

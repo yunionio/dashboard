@@ -48,10 +48,10 @@
 <script>
 import * as R from 'ramda'
 import { mapState } from 'vuex'
-import SubMap from './SubMap'
 import { menusConfig } from '@/router/routes'
 import { hasPermission } from '@/utils/auth'
 import storage from '@/utils/storage'
+import SubMap from './SubMap'
 
 export default {
   name: 'OneCloudMap',

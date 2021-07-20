@@ -1,6 +1,6 @@
 import './index.scss'
-import Form from './Form.vue'
 import i18n from '@/locales'
+import Form from './Form.vue'
 
 export default {
   name: 'Edit',
