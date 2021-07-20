@@ -184,6 +184,8 @@ export const PERMISSION = {
   log_list: ['log', 'actions', 'list'],
   // 消息中心
   notifications_list: ['notify', 'notifications', 'list'],
+  // 消息订阅
+  topics_list: ['notify', 'topics', 'list'],
   // 企业信息
   infos_list: ['yunionagent', 'infos', 'list'],
   // 邮件短信
@@ -889,6 +891,15 @@ export const PERMISSION = {
   mount_targets_list: ['compute', 'mount_targets', 'list'],
   mount_targets_create: ['compute', 'mount_targets', 'create'],
   mount_targets_delete: ['compute', 'mount_targets', 'delete'],
+
+  // 消息订阅接收人
+  topics_disable: ['notify', 'topics', 'perform', 'disable'],
+  topics_enable: ['notify', 'topics', 'perform', 'enable'],
+  subscribers_update: ['notify', 'subscribers', 'update'],
+  subscribers_create: ['notify', 'subscribers', 'get'],
+  subscribers_delete: ['notify', 'subscribers', 'delete'],
+  subscribers_disable: ['notify', 'subscribers', 'perform', 'disable'],
+  subscribers_enable: ['notify', 'subscribers', 'perform', 'enable'],
 }
 
 // 已声明权限的资源

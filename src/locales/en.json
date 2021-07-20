@@ -945,6 +945,15 @@
       "deleting": "Deleting",
       "delete_failed": "Delete failed",
       "deleted": "Deleted"
+    },
+    "kafka": {
+      "available": "Available",
+      "creating": "Creating",
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
+      "sync_status": "Sync status",
+      "unavailable": "Unavailable",
+      "unknown": "Unknown"
     }
   },
   "skuCategoryOptions": {
@@ -2204,6 +2213,7 @@
   "auth.remove.history.user.btn": "Remove Account",
   "auth.outher.history.user.btn": "Use Another Account",
   "dictionary": {
+    "jenkins": "Jenkins",
     "agent": "Server (Agent)",
     "actions": "Audit Logs",
     "ansibleplaybook": "Task",
@@ -2266,6 +2276,7 @@
     "networkinterface": "Elastic Network Card",
     "notification": "Messages",
     "notify": "Notification Service",
+    "notify-topic": "Notification Topic",
     "parameter": "Configuration",
     "physicalmachine": "Physical Machine",
     "policy": "Policies",
@@ -2285,6 +2296,8 @@
     "server": "Server",
     "serverip": "Server IP",
     "disktype": "Disk Type",
+    "scheduledtask": "Cron Job",
+    "scalingpolicy": "Scaling Policy",
     "serverrecovery": "Host",
     "servertemplate": "Server Template",
     "service": "Service",
@@ -2367,7 +2380,9 @@
     "access_group_rule": "Access Group Rule",
     "access_group_cache": "Access Group Cache",
     "mount_target": "Mount Target",
-    "waf": "WAF Strategy"
+    "waf": "WAF Strategy",
+    "message_quequ": "Message Queue",
+    "kafka": "Kafka"
   },
   "res": {
     "role": "Role",

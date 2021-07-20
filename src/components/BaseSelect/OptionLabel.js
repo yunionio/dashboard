@@ -147,6 +147,17 @@ const resourceMode = {
       )
     },
   },
+  roles: {
+    vnode: (vm, h) => {
+      const role = vm.data
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ role.name }>{ role.name }</span>
+          {(vm.isAdminMode && vm.l3PermissionEnable) ? <span style="color: #8492a6; font-size: 13px">{i18n.t('common_257')}{i18n.t('dictionary.domain')}: {role.project_domain}</span> : null}
+        </div>
+      )
+    },
+  },
 }
 
 export default {

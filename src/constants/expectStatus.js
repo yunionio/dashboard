@@ -418,4 +418,9 @@ export default {
     info: ['unavailable', 'unknown'],
     danger: ['delete_failed', 'create_failed'],
   },
+  kafka: {
+    success: ['available'],
+    info: ['unknown', 'unavailable'],
+    danger: ['delete_failed'],
+  },
 }
