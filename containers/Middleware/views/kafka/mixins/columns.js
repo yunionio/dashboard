@@ -73,6 +73,9 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.msg_retention_minute && row.msg_retention_minute !== 0) {
+              if (row.msg_retention_minute / 60 > 0) {
+                return i18n.t('middleware.hours', [row.msg_retention_minute / 60])
+              }
               return i18n.t('middleware.minutes', [row.msg_retention_minute])
             }
             return '-'
