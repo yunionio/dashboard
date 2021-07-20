@@ -86,7 +86,7 @@ export default {
             this.createDialog('WafRuleInfoDialog', {
               title: this.$t('network.waf.rule_view'),
               data: [row],
-              isEdit: true,
+              isEdit: false,
               resData: this.data,
               columns: this.columns,
             })

@@ -52,6 +52,11 @@ export default {
         {
           field: 'id',
           title: this.$t('network.waf.resource_id'),
+          slots: {
+            default: ({ row }) => {
+              return [<list-body-cell-wrap copy row={row} field={'id'} />]
+            },
+          },
         },
         {
           field: 'type',
@@ -60,6 +65,9 @@ export default {
         {
           field: 'port',
           title: this.$t('network.text_165'),
+          formatter: ({ row }) => {
+            return row.port || '-'
+          },
         },
       ],
     }

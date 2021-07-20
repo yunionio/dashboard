@@ -900,6 +900,10 @@ export const PERMISSION = {
   subscribers_delete: ['notify', 'subscribers', 'delete'],
   subscribers_disable: ['notify', 'subscribers', 'perform', 'disable'],
   subscribers_enable: ['notify', 'subscribers', 'perform', 'enable'],
+
+  // waf策略
+  waf_instances_syncstatus: ['compute', 'waf_instances', 'perform', 'syncstatus'],
+  waf_instances_delete: ['compute', 'waf_instances', 'delete'],
 }
 
 // 已声明权限的资源

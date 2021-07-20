@@ -9,6 +9,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_201'),
+        permission: 'waf_instances_syncstatus',
         action: (row) => {
           this.onManager('performAction', {
             steadyStatus: ['available', 'unavailable'],
@@ -16,6 +17,8 @@ export default {
             managerArgs: {
               action: 'syncstatus',
             },
+          }).then(res => {
+            this.$message.success(this.$t('cloudenv.text_381'))
           })
         },
       },
