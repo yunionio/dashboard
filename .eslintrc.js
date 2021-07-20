@@ -16,7 +16,7 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     camelcase: process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'import/order': ['warn', {
-      groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+      groups: ['builtin', 'external', ['internal', 'sibling', 'parent'], 'index'],
     }],
     'vue/html-closing-bracket-newline': ['error', {
       multiline: 'never',
