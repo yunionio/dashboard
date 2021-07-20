@@ -11,14 +11,14 @@
 
 <script>
 import * as R from 'ramda'
-import ListMixin from '@/mixins/list'
-import expectStatus from '@/constants/expectStatus'
-import { getStatusFilter } from '@/utils/common/tableFilter'
-import { disableDeleteAction } from '@/utils/common/tableActions'
-import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import SingleActionsMixin from '../mixins/singleActions'
+import expectStatus from '@/constants/expectStatus'
+import WindowsMixin from '@/mixins/windows'
+import { getStatusFilter, getNameFilter, getTenantFilter, getCloudProviderFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { disableDeleteAction } from '@/utils/common/tableActions'
+import ListMixin from '@/mixins/list'
 import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'KafkaList',
@@ -47,16 +47,54 @@ export default {
           id: {
             label: this.$t('table.title.id'),
           },
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
+          name: getNameFilter(),
           status: getStatusFilter('kafka'),
+          account: getAccountFilter(),
+          manager: getCloudProviderFilter(),
+          projects: getTenantFilter(),
+          region: {
+            label: this.$t('middleware.cloudregion'),
+          },
         },
         responseData: this.responseData,
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
+          { label: this.$t('table.title.external_id'), key: 'external_id' },
+          { label: this.$t('middleware.name'), key: 'name' },
+          { label: this.$t('middleware.version'), key: 'version' },
+          { label: this.$t('middleware.storage'), key: 'storage_type' },
+          { label: this.$t('middleware.disk_size_gb'), key: 'disk_size_gb' },
+          { label: this.$t('middleware.bandwidth'), key: 'bandwidth_mb' },
+          { label: this.$t('middleware.endpoint'), key: 'endpoint' },
+          { label: this.$t('middleware.msg_retention_minute'), key: 'retention_minute' },
+          { label: this.$t('dictionary.project'), key: 'tenant' },
+          { label: this.$t('middleware.status'), key: 'status' },
+          { label: this.$t('middleware.cloudaccount'), key: 'account' },
+          { label: this.$t('middleware.billing_type'), key: 'billing_type' },
+          { label: this.$t('middleware.provider'), key: 'provider' },
+          { label: this.$t('middleware.cloudregion'), key: 'region' },
         ],
       },
       groupActions: [
+        {
+          label: this.$t('middleware.syncstatus'),
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['available', 'unknown'],
+              managerArgs: {
+                action: 'syncstatus',
+              },
+            })
+          },
+          meta: () => ({
+            validate: this.list.selected.length,
+          }),
+        },
         {
           label: this.$t('common.batchAction'),
           actions: (obj) => {

@@ -2390,7 +2390,7 @@
     "access_group_cache": "Access Group Cache",
     "mount_target": "Mount Target",
     "waf": "WAF Strategy",
-    "message_quequ": "Message Queue",
+    "message_queue": "Message Queue",
     "kafka": "Kafka",
     "data_analysis": "Data Analysis",
     "elasticsearch": "Elasticsearch"
