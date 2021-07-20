@@ -1,8 +1,8 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import { isExtTag } from './tag'
 import i18n from '@/locales'
 import TagDetailColumn from '@/sections/TagDetailColumn'
+import { isExtTag } from './tag'
 
 const getTagColumn = ({
   showEdit = false,

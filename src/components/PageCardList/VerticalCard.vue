@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import CardMixin from './card'
 import Actions from '@/components/PageList/Actions'
+import CardMixin from './card'
 
 export default {
   name: 'VerticalCard',

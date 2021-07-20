@@ -5,8 +5,8 @@
 
 <script>
 import * as R from 'ramda'
-import config from './config/index.js'
 import { hasPermission } from '@/utils/auth'
+import config from './config/index.js'
 
 export default {
   name: 'SidePageTrigger',

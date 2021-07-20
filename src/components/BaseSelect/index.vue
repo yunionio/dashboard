@@ -31,10 +31,10 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import debounce from 'lodash/debounce'
-import OptionLabel from './OptionLabel'
 import { Manager } from '@/utils/manager'
 import { arrayToObj } from '@/utils/utils'
 import i18n from '@/locales'
+import OptionLabel from './OptionLabel'
 
 const del$t = value => {
   if (!R.is(Object, value)) return {}

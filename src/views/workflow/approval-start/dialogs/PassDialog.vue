@@ -43,14 +43,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { WORKFLOW_TYPES } from '@/constants/workflow'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import {
   getProcessDefinitionNameTableColumn,
   getResourceNameTableColumn,
   getInitiatorTableColumn,
 } from '../../utils/columns'
-import { WORKFLOW_TYPES } from '@/constants/workflow'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 const R = require('ramda')
 
 export default {

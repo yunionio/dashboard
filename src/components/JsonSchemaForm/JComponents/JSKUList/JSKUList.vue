@@ -15,10 +15,10 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import mixin from '../mixin'
 import { getRequestT } from '@/utils/utils'
 import { HYPERVISORS_MAP } from '@/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
+import mixin from '../mixin'
 
 export default {
   name: 'JSKUList',
