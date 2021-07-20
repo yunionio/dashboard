@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import { approveStatusMap } from '../utils'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+import { approveStatusMap } from '../utils'
 const R = require('ramda')
 
 export default {

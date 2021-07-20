@@ -58,8 +58,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import UpdateUserInfo from './Update'
 import { hasServices } from '@/utils/auth'
+import UpdateUserInfo from './Update'
 
 export default {
   name: 'Contact',

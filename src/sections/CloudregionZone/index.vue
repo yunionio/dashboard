@@ -18,9 +18,9 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { Manager } from '@/utils/manager'
 import Cloudregion from './components/Cloudregion'
 import Zone from './components/Zone'
-import { Manager } from '@/utils/manager'
 
 export default {
   name: 'RegionZoneSelect',

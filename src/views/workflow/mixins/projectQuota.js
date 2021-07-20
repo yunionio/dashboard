@@ -1,6 +1,6 @@
-import { getIncrementFlag } from '../utils'
 import { getRequestT } from '@/utils/utils'
 import i18n from '@/locales'
+import { getIncrementFlag } from '../utils'
 
 export default {
   methods: {

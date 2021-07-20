@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import { CHANGE_TYPES } from '../utils'
 import { sizestr } from '@/utils/utils'
+import { CHANGE_TYPES } from '../utils'
 
 export default {
   name: 'ServerConfigList',

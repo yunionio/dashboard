@@ -24,11 +24,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import SidebarDrawer from '../Sidebar/Drawer'
-import L2Menu from '../Sidebar/Menu'
 import Navbar from '@scope/layouts/Navbar'
 import TopAlert from '@/sections/TopAlert'
 import { menusConfig } from '@/router/routes'
+import L2Menu from '../Sidebar/Menu'
+import SidebarDrawer from '../Sidebar/Drawer'
 
 export default {
   name: 'DefaultLayout',
