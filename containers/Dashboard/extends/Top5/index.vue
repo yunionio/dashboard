@@ -5,6 +5,9 @@
         <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
+          <a class="ml-2" v-if="!edit" @click="goPage">
+            <icon type="arrow-right" style="font-size:18px" />
+          </a>
         </div>
       </div>
       <div class="dashboard-card-body flex-column justify-content-center">
@@ -88,7 +91,6 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import get from 'lodash/get'
-import { usageConfig } from './constants'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { resolveValueChangeField } from '@/utils/common/ant'
@@ -96,6 +98,7 @@ import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { getMetricDocs } from '@Dashboard/constants'
+import { usageConfig } from './constants'
 
 export default {
   name: 'Top5',
@@ -108,6 +111,7 @@ export default {
       required: true,
     },
     params: Object,
+    edit: Boolean,
   },
   data () {
     const serverUsageOptions = [
@@ -617,6 +621,9 @@ export default {
         }
       }
       return null
+    },
+    goPage () {
+      this.$router.push('./monitoroverview')
     },
   },
 }
