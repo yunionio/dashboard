@@ -954,6 +954,15 @@
       "sync_status": "Sync status",
       "unavailable": "Unavailable",
       "unknown": "Unknown"
+    },
+    "elasticSearch": {
+      "available": "Available",
+      "creating": "Creating",
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed",
+      "sync_status": "Sync status",
+      "unavailable": "Unavailable",
+      "unknown": "Unknown"
     }
   },
   "skuCategoryOptions": {
@@ -2382,7 +2391,9 @@
     "mount_target": "Mount Target",
     "waf": "WAF Strategy",
     "message_quequ": "Message Queue",
-    "kafka": "Kafka"
+    "kafka": "Kafka",
+    "data_analysis": "Data Analysis",
+    "elasticsearch": "Elasticsearch"
   },
   "res": {
     "role": "Role",
