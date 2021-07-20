@@ -418,4 +418,9 @@ export default {
     info: ['unknown', 'unavailable'],
     danger: ['delete_failed'],
   },
+  elasticSearch: {
+    success: ['available'],
+    info: ['unknown', 'unavailable'],
+    danger: ['delete_failed'],
+  },
 }

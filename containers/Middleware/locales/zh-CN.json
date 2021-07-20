@@ -1,6 +1,7 @@
 {
   "middleware": "中间件",
   "middleware.kafka": "Kafka",
+  "middleware.elasticsearch": "Elasticsearch",
   "middleware.syncstatus": "同步状态",
   "middleware.more": "更多",
   "middleware.extra": "其他信息",
@@ -11,10 +12,19 @@
   "middleware.storage": "存储",
   "middleware.cloud_efficiency": "高效云盘",
   "middleware.cloud_ssd": "SSD",
+  "middleware.cloud_essd": "ESSD云盘",
   "middleware.size_gb": "{0} GB",
   "middleware.bandwidth": "带宽",
   "middleware.bandwidth_mb": "{0} Mb",
   "middleware.endpoint": "连接端点",
   "middleware.msg_retention_minute": "消息保留时长",
-  "middleware.minutes": "{0} 分钟"
+  "middleware.minutes": "{0} 分钟",
+  "middleware.category": "类型",
+  "middleware.config": "配置",
+  "middleware.config_size": "{0}核{1}G",
+  "middleware.categoary.oss": "开源版",
+  "middleware.categoary.basic": "基础版",
+  "middleware.categoary.platinum": "白金版",
+  "middleware.categoary.x-pack": "商业版",
+  "middleware.categoary.advanced": "增强版"
 }
