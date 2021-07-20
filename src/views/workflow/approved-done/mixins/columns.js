@@ -1,14 +1,14 @@
-import {
-  getProcessDefinitionNameTableColumn,
-  getResourceNameTableColumn,
-  getResourceProjectTableColumn,
-} from '../../utils/columns'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import {
+  getProcessDefinitionNameTableColumn,
+  getResourceNameTableColumn,
+  getResourceProjectTableColumn,
+} from '../../utils/columns'
 const R = require('ramda')
 
 export default {

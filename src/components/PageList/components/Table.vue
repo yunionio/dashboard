@@ -36,10 +36,10 @@ import Sortable from 'sortablejs'
 import XEUtils from 'xe-utils'
 import * as R from 'ramda'
 import _ from 'lodash'
-import Actions from '../Actions'
 import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
 import { getTagTitle } from '@/utils/common/tag'
 import storage from '@/utils/storage'
+import Actions from '../Actions'
 
 export default {
   name: 'PageListTable',

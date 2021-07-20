@@ -8,12 +8,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
-import { statusSearchMap } from '../../constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { PRIORITY_OPTS } from '@/constants/workflow'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import { statusSearchMap } from '../../constants'
 
 export default {
   name: 'AllProcessList',

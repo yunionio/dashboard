@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import { IMAGE_MSG, CUSTOME_IMG } from './constants'
 import i18n from '@/locales'
+import { IMAGE_MSG, CUSTOME_IMG } from './constants'
 
 const sprites = require('./assets/sprites.png')
 const unknow = require('./assets/unkonw.png')

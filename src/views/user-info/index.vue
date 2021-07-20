@@ -77,10 +77,10 @@
 <script>
 import { mapGetters } from 'vuex'
 // import ContactStatus from './components/ContactStatus'
-import Contact from './components/Contact'
-import IdpCard from './components/IdpCard'
 import { SHOW_SYSTEM_RESOURCE, contactMap } from '@/constants'
 import WindowsMixin from '@/mixins/windows'
+import Contact from './components/Contact'
+import IdpCard from './components/IdpCard'
 
 export default {
   name: 'User',

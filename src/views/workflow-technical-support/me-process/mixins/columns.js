@@ -1,14 +1,14 @@
 import {
+  getCopyWithContentTableColumn,
+  getTimeTableColumn,
+} from '@/utils/common/tableColumn'
+import i18n from '@/locales'
+import {
   getProcessDefinitionNameTableColumn,
   getPriorityTableColumn,
   getCommentTableColumn,
 } from '../../utils/columns'
 import { statusMap } from '../../constants'
-import {
-  getCopyWithContentTableColumn,
-  getTimeTableColumn,
-} from '@/utils/common/tableColumn'
-import i18n from '@/locales'
 
 export default {
   created () {

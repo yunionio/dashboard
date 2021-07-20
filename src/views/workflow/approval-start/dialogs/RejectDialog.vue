@@ -20,14 +20,14 @@
 </template>
 
 <script>
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import {
   getProcessDefinitionNameTableColumn,
   getResourceNameTableColumn,
   getInitiatorTableColumn,
   getCommentTableColumn,
 } from '../../utils/columns'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 const R = require('ramda')
 
 export default {
