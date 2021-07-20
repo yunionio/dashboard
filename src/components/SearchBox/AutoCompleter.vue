@@ -65,8 +65,8 @@
 
 <script>
 import * as R from 'ramda'
-import DateSelect from './DateSelect'
 import regexp from '@/utils/regexp'
+import DateSelect from './DateSelect'
 
 export default {
   name: 'AutoCompleter',

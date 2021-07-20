@@ -1,12 +1,12 @@
 import {
-  getCommentTableColumn,
-} from '../../utils/columns'
-import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { getWorkflowType } from '@/constants/workflow'
 import i18n from '@/locales'
+import {
+  getCommentTableColumn,
+} from '../../utils/columns'
 
 export default {
   created () {

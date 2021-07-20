@@ -135,15 +135,15 @@ import get from 'lodash/get'
 import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { mapGetters, mapState } from 'vuex'
+import UserProjectSelect from '@/sections/UserProjectSelect'
+import WindowsMixin from '@/mixins/windows'
+import { getSetupInStorage } from '@/utils/auth'
 import NotifyPopover from './components/NotifyPopover'
 // import SettingPopover from './components/SettingPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
 import MorePopover from './components/MorePopover'
 import GlobalSearch from './components/GlobalSearch'
 import Alertresource from './components/Alertresource'
-import UserProjectSelect from '@/sections/UserProjectSelect'
-import WindowsMixin from '@/mixins/windows'
-import { getSetupInStorage } from '@/utils/auth'
 
 export default {
   name: 'Navbar',

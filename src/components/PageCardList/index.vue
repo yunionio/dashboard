@@ -29,10 +29,10 @@
 
 <script>
 import * as R from 'ramda'
-import CardList from './CardList'
-import Loader from './Loader'
 import Actions from '@/components/PageList/Actions'
 import RefreshButton from '@/components/PageList/RefreshButton'
+import CardList from './CardList'
+import Loader from './Loader'
 
 export default {
   name: 'PageCardList',
