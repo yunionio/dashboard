@@ -2200,6 +2200,7 @@
   "auth.remove.history.user.btn": "移除账号",
   "auth.outher.history.user.btn": "使用其他账号",
   "dictionary": {
+    "jenkins": "Jenkins",
     "agent": "虚拟机(Agent)",
     "actions": "操作日志",
     "ansibleplaybook": "任务",
