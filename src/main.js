@@ -12,6 +12,8 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/material.css'
 import 'codemirror/mode/yaml/yaml.js'
 
+import '@/utils/polyfill'
+
 import store from './store'
 import router from './router'
 import i18n from './locales'
