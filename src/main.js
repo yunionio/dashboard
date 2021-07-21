@@ -14,6 +14,7 @@ import 'codemirror/theme/material.css'
 import 'codemirror/mode/yaml/yaml.js'
 
 import { uuid } from '@/utils/utils'
+import '@/utils/polyfill'
 
 import store from './store'
 import router from './router'
