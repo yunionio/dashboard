@@ -43,12 +43,12 @@ export default {
         state.bill.currencyOpts = payload
       } else {
         // 添加以汇率为单位的某个账单
-        state.bill.currencyOpts = payload.concat(payload.map(item => {
+        state.bill.currencyOpts = payload.map(item => {
           return {
             item_id: '_' + item.item_id,
             item_name: '_' + item.item_name,
           }
-        }))
+        })
       }
     },
     SET_BILL_EXCHANGE_RATE_AVAILABLE (state, payload) {
