@@ -48,7 +48,7 @@ export default {
         { label: 'QueryString', value: 'Query' },
         { label: 'RequestMethod', value: 'Method' },
         { label: 'RequestHeaders', value: 'Header' },
-        { label: 'RequestUri', value: 'UriPath' },
+        { label: 'URI path', value: 'UriPath' },
         { label: 'PostArgs', value: 'PostArgs' },
         { label: 'RequestCookies', value: 'Cookie' },
         { label: 'RemoteAddr', value: 'RemoteAddr' },

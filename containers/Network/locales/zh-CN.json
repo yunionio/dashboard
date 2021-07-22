@@ -844,6 +844,8 @@
   "network.text_756": "网络安全",
   "network.text_757": "管理规则",
   "network.text_758": "管理资源",
+  "network.waf.id": "ID",
+  "network.waf.cloudId": "云上ID",
   "network.waf.rule": "规则",
   "network.waf.resource": "关联资源",
   "network.waf.type": "WAF类型",
@@ -876,7 +878,7 @@
   "network.waf.match_null": "无",
   "network.waf.match_all": "全部匹配以下条件时（AND）",
   "network.waf.match_any": "匹配以下至少一个条件时（OR）",
-  "network.waf.match_not": "匹配以下条件取反操作（NOT）",
+  "network.waf.match_not": "不匹配以下条件（NOT）",
   "network.waf.null": "无",
   "network_waf_statement": {
     "label": {
@@ -898,8 +900,8 @@
       "forward_ip_header": "转发IP头部"
     },
     "type": {
-      "ByteMatch": "内容",
-      "GeoMatch": "地址",
+      "ByteMatch": "字符串",
+      "GeoMatch": "位置",
       "IPSet": "IP",
       "LabelMatch": "标签",
       "ManagedRuleGroup": "管理规则组",
@@ -907,7 +909,7 @@
       "RegexSet": "正则",
       "RuleGroup": "规则组",
       "Size": "大小",
-      "SqliMatch": "Sqli",
+      "SqliMatch": "Sql",
       "XssMatch": "Xss"
     },
     "operator": {
@@ -931,16 +933,12 @@
     "negation": {
       "true": "是",
       "false": "否",
-      "in": "包含",
-      "notin": "不包含",
+      "in": "包括",
+      "notin": "不包括",
       "match": "匹配",
       "notmatch": "不匹配",
       "eq": "等于",
       "noteq": "不等于"
-    },
-    "contains": {
-      "in": "包含",
-      "notin": "不包含"
     },
     "size": {
       "EQ": "等于",
@@ -955,6 +953,16 @@
       "PostArgs": "发布参数选择器",
       "Cookie": "Cookie名称"
     }
+  },
+  "network_waf_resource_type": {
+    "cname": "cname",
+    "segment_ipv4": "IPV4地址段",
+    "segment_ipv6": "IPV6地址段",
+    "app_gateway": "应用程序网关",
+    "http_listener": "HTTP侦听器",
+    "APPLICATION_LOAD_BALANCER": "负载均衡",
+    "API_GATEWAY": "API网关",
+    "APPSYNC": "应用程序同步"
   },
   "network.waf": "WAF策略",
   "network.waf.delete": "删除WAF策略"

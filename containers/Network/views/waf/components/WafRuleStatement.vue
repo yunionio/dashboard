@@ -10,7 +10,7 @@
       <box-show v-else :value="ruleTypeValue" />
     </a-form-item>
     <!-- 条件 -->
-    <component :is="type" :statement="data" :wafBrand="wafBrand" :isEdit="isEdit" />
+    <component :is="type" :type="type" :statement="data" :wafBrand="wafBrand" :isEdit="isEdit" />
   </a-card>
 </template>
 
@@ -18,7 +18,7 @@
 import WafMixin from '../mixins/waf'
 import BoxShow from './statementComponents/BoxShow'
 import ByteMatch from './statementList/ByteMatch'
-import IpSet from './statementList/IPSet'
+import IPSet from './statementList/IPSet'
 import Size from './statementList/Size'
 import ManagedRuleGroup from './statementList/ManagedRuleGroup'
 import GeoMatch from './statementList/GeoMatch'
@@ -35,7 +35,7 @@ export default {
   components: {
     BoxShow,
     ByteMatch,
-    IpSet,
+    IPSet,
     Size,
     ManagedRuleGroup,
     GeoMatch,

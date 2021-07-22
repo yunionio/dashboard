@@ -62,7 +62,7 @@ export default {
       ]
     },
     showValue () {
-      const operator = this.operatorOptions.filter(item => item.value === this.value)
+      const operator = this.operatorOptions.filter(item => item.value.toLowerCase() === (this.value || '').toLowerCase())
       if (operator && operator.length) {
         return operator[0].label
       } else {

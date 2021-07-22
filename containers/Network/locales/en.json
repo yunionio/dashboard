@@ -845,6 +845,8 @@
   "network.text_756": "Network Security",
   "network.text_757": "Manage rules",
   "network.text_758": "Manage resources",
+  "network.waf.id": "ID",
+  "network.waf.cloudId": "Cloud ID",
   "network.waf.rule": "Rules",
   "network.waf.resource": "Associated resources",
   "network.waf.type": "WAF type",
@@ -877,7 +879,7 @@
   "network.waf.match_null": "null",
   "network.waf.match_all": "When all match（AND）",
   "network.waf.match_any": "When at least one of the following conditions is matched（OR）",
-  "network.waf.match_not": "Match the negate operation with（NOT）",
+  "network.waf.match_not": "Does not match the following conditions（NOT）",
   "network.waf.null": "null",
   "network_waf_statement": {
     "label": {
@@ -932,16 +934,12 @@
     "negation": {
       "true": "True",
       "false": "False",
-      "in": "In",
-      "notin": "Not in",
+      "in": "Include",
+      "notin": "Exclude",
       "match": "Match",
       "notmatch": "Not match",
       "eq": "Equals",
       "noteq": "Not equals"
-    },
-    "contains": {
-      "in": "IN",
-      "notin": "Not in"
     },
     "size": {
       "EQ": "Equals",
@@ -956,6 +954,16 @@
       "PostArgs": "PostArgs",
       "Cookie": "Cookie"
     }
+  },
+  "network_waf_resource_type": {
+    "cname": "cname",
+    "segment_ipv4": "segment_ipv4",
+    "segment_ipv6": "segment_ipv6",
+    "app_gateway": "app_gateway",
+    "http_listener": "http_listener",
+    "APPLICATION_LOAD_BALANCER": "APPLICATION_LOAD_BALANCER",
+    "API_GATEWAY": "API_GATEWAY",
+    "APPSYNC": "APPSYNC"
   },
   "network.waf": "WAF strategy",
   "network.waf.delete": "Delete WAF strategy"

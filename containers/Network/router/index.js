@@ -376,9 +376,9 @@ export default {
         {
           path: '/waf',
           meta: {
-            label: i18n.t('dictionary.waf'),
+            label: i18n.t('dictionary.waf_instance'),
             permission: 'wafs_list',
-            t: 'dictionary.waf',
+            t: 'dictionary.waf_instance',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) {
                 return true

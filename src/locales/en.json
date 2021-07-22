@@ -2380,7 +2380,7 @@
     "access_group_rule": "Access Group Rule",
     "access_group_cache": "Access Group Cache",
     "mount_target": "Mount Target",
-    "waf": "WAF Strategy",
+    "waf_instance": "WAF Strategy",
     "message_quequ": "Message Queue",
     "kafka": "Kafka"
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('dictionary.waf')" />
+    <page-header :title="$t('dictionary.waf_instance')" />
     <page-body>
       <waf-list :id="listId" />
     </page-body>
