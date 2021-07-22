@@ -122,11 +122,13 @@
         </div>
       </a-tooltip>
     </div>
-    <slot name="behindNavbar" />
     <!-- cloudsheel -->
     <cloud-shell class="navbar-item-icon primary-color-hover" />
+    <slot name="behindNavbar" />
     <!-- 更多 -->
-    <more-popover class="navbar-item-icon primary-color-hover" />
+    <slot name="morePopover">
+      <more-popover class="navbar-item-icon primary-color-hover" />
+    </slot>
     <!-- 用户 -->
     <slot name="userPopover" />
   </div>
