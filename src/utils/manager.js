@@ -219,4 +219,12 @@ export class Manager {
     const url = this._csrfURL({ id, words })
     return Vue.http.post(url, params)
   }
+
+  jointUpdate ({ joints, data } = {}) {
+    let url = '/' + this.apiVersion
+    joints.map(item => {
+      url += `/${item.resource}/${item.id}`
+    })
+    return Vue.http.put(url, data)
+  }
 }

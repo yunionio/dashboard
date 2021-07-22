@@ -1,9 +1,13 @@
+import { mapGetters } from 'vuex'
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import i18n from '@/locales'
 import { BRAND_MAP, PROVIDER_MAP } from '@/constants'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
+  computed: {
+    ...mapGetters(['isAdminMode']),
+  },
   created () {
     this.singleActions = [
       {
@@ -297,6 +301,15 @@ export default {
               },
               meta: () => this.$getDeleteResult(obj),
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_delete'),
+            },
+            {
+              label: i18n.t('compute.driver.update'),
+              action: () => {
+                this.createDialog('DiskDriverUpdateDialog', {
+                  data: [obj],
+                })
+              },
+              hidden: () => !this.isAdminMode,
             },
           ]
         },
