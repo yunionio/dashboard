@@ -1433,5 +1433,12 @@
   "compute.monitor.agent.install_status.uninstall": "Uninstall",
   "compute.monitor.basic": "Basic Monitor",
   "compute.monitor.agent": "Agent Monitor",
-  "compute.network_status_desc": "The green dot indicates that there are available IP resources under the network address segment"
+  "compute.network_status_desc": "The green dot indicates that there are available IP resources under the network address segment",
+  "compute.disk_name": "Disk name",
+  "compute.cache_mode": "Cache mode",
+  "compute.disk.change_driver": "Modify disk driver",
+  "compute.driver.update": "Modify driver",
+  "compute.driver.select_tip": "Please select a disk driver",
+  "compute.disk.cache_mode.select_tip": "Please select cache mode",
+  "compute.driver_exchange_tip": "Tip: after modifying the disk driver, you need to restart the virtual machine to take effect"
 }
