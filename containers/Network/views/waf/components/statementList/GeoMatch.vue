@@ -53,8 +53,8 @@ export default {
     },
     negationSelectOptions () {
       return [
-        { label: this.$t('network_waf_statement.negation.eq'), value: true },
-        { label: this.$t('network_waf_statement.negation.noteq'), value: false },
+        { label: this.$t('network_waf_statement.negation.in'), value: true },
+        { label: this.$t('network_waf_statement.negation.notin'), value: false },
       ]
     },
   },

@@ -31,7 +31,7 @@ export default {
         getParams: { details: true },
         filterOptions: {
           id: {
-            label: this.$t('network.waf.resource_name'),
+            label: this.$t('network.waf.resource_id'),
             filter: true,
             formatter: val => {
               return `id.in(${val})`
@@ -52,6 +52,7 @@ export default {
         {
           field: 'id',
           title: this.$t('network.waf.resource_id'),
+          resizable: true,
           slots: {
             default: ({ row }) => {
               return [<list-body-cell-wrap copy row={row} field={'id'} />]
@@ -61,10 +62,16 @@ export default {
         {
           field: 'type',
           title: this.$t('network.waf.resource_type'),
+          resizable: true,
+          formatter: ({ row }) => {
+            const { type = '-' } = row
+            return this.$te(`network_waf_resource_type.${type}`) ? this.$t(`network_waf_resource_type.${type}`) : type
+          },
         },
         {
           field: 'port',
           title: this.$t('network.text_165'),
+          resizable: true,
           formatter: ({ row }) => {
             return row.port || '-'
           },

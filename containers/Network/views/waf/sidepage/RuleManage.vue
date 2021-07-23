@@ -63,14 +63,18 @@ export default {
         {
           field: 'name',
           title: this.$t('network.text_21'),
+          resizable: true,
         },
         {
           field: 'priority',
+          sortable: true,
           title: this.$t('network.text_81'),
+          resizable: true,
         },
         {
           field: 'action',
           title: this.$t('network.waf.action'),
+          resizable: true,
           formatter: ({ row }) => {
             const action = _.get(row, ['action', 'action'])
             if (action) return this.$t(`network.waf.rule_action_${action}`)

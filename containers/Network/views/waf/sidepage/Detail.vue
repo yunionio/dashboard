@@ -2,12 +2,14 @@
   <detail
     :data="data"
     :onManager="onManager"
-    :base-info="baseInfo" />
+    :base-info="baseInfo"
+    status-module="waf" />
 </template>
 
 <script>
 import _ from 'lodash'
 import i18n from '@/locales'
+import WindowsMixin from '@/mixins/windows'
 import {
   getBrandTableColumn,
   getRegionTableColumn,
@@ -15,7 +17,7 @@ import {
 
 export default {
   name: 'WafInstanceDetail',
-  mixins: [],
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -50,7 +52,7 @@ export default {
           slots: {
             default: ({ row }) => {
               return <list-body-cell-wrap hide-field copy field={'account'} row={row}>
-                <span style={{ color: '#0A1F44' }}>{ row.account || '-' }</span>
+                <side-page-trigger permission='cloudaccounts_get' name='CloudaccountSidePage' id={row.account_id} vm={this}>{ row.account }</side-page-trigger>
               </list-body-cell-wrap>
             },
           },
@@ -61,7 +63,7 @@ export default {
           slots: {
             default: ({ row }) => {
               return <list-body-cell-wrap hide-field copy field={'manager'} row={row}>
-                <span style={{ color: '#0A1F44' }}>{ row.manager || '-' }</span>
+                <side-page-trigger permission='cloudproviders_get' name='CloudproviderSidePage' id={row.manager_id} vm={this}>{ row.account }</side-page-trigger>
               </list-body-cell-wrap>
             },
           },

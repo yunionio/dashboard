@@ -1,8 +1,6 @@
 <template>
   <div>
-    <loading-block v-if="loading" />
     <page-list
-      v-else
       :list="list"
       :columns="columns"
       :group-actions="groupActions"
@@ -15,7 +13,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getBrandFilter, getAccountFilter, getDomainFilter, getRegionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getAccountFilter, getDomainFilter, getRegionFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -27,13 +25,18 @@ export default {
   },
   data () {
     return {
-      loading: false,
       list: this.$list.createList(this, {
         id: this.id,
         apiVersion: 'v2',
         resource: 'waf_instances',
         getParams: { details: true },
         filterOptions: {
+          id: {
+            label: this.$t('network.waf.id'),
+          },
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
           name: getNameFilter(),
           type: {
             label: this.$t('network.waf.type'),
@@ -46,6 +49,7 @@ export default {
           },
           brand: getBrandFilter(),
           account: getAccountFilter(),
+          manager: getCloudProviderFilter(),
           domain: getDomainFilter(),
           region: getRegionFilter(),
         },
@@ -107,17 +111,6 @@ export default {
         list: this.list,
       })
       this.initSidePageTab(tab)
-    },
-    async syncWafStatus (row) {
-      this.loading = true
-      try {
-        await new this.$Manager('waf_instances', 'v2').performAction({ id: row.id, action: 'syncstatus', data: {} })
-        this.list.fetchData()
-      } catch (err) {
-        throw err
-      } finally {
-        this.loading = false
-      }
     },
   },
 }

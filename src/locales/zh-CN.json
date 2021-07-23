@@ -2401,7 +2401,7 @@
     "access_group_rule": "NAS权限组规则",
     "access_group_cache": "NAS权限组缓存",
     "mount_target": "NAS挂载点",
-    "waf": "WAF策略",
+    "waf_instance": "WAF策略",
     "message_queue": "消息队列",
     "kafka": "Kafka",
     "data_analysis": "数据分析",

@@ -1,7 +1,7 @@
 <template>
   <base-side-page
     @cancel="cancelSidePage"
-    :title="$t('dictionary.waf')"
+    :title="$t('dictionary.waf_instance')"
     icon="waf"
     :res-name="detailData.name"
     :current-tab="params.windowData.currentTab"
