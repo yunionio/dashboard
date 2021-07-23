@@ -3,7 +3,7 @@
     <!-- 匹配变量 -->
     <match-field :value="statement.match_field" :isEdit="isEdit" />
     <!-- 匹配字段 -->
-    <match-field-key v-if="isMatchFieldKeyShow" :value="statement.match_field_key" :matchField="statement.match_field" :isEdit="isEdit" />
+    <match-field-key v-if="hasField(statement, 'match_field_key')" :value="statement.match_field_key" :matchField="statement.match_field" :isEdit="isEdit" />
     <!-- 操作器 -->
     <operator :value="statement.operator" :isEdit="isEdit" />
     <!-- 转换 -->
@@ -56,9 +56,6 @@ export default {
   computed: {
     isNegationShow () {
       return this.wafBrand && this.wafBrand === 'Azure'
-    },
-    isMatchFieldKeyShow () {
-      return this.statement.hasOwnProperty('match_field_key')
     },
     match_field_values () {
       const { match_field_values, search_string } = this.statement

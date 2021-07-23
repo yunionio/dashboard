@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 匹配字段 -->
-    <match-field-key v-if="isMatchFieldKeyShow" :value="statement.match_field_key" :matchField="statement.match_field" :isEdit="isEdit" />
+    <match-field-key v-if="hasField(statement, 'match_field_key')" :value="statement.match_field_key" :matchField="statement.match_field" :isEdit="isEdit" />
     <!-- 地址 -->
     <match-field-values :valueList="statement.match_field_values" :type="type" addType="select" :selectOptions="geoSelectOpts" :isEdit="isEdit" />
     <!-- 运算 是否等于 -->
@@ -47,9 +47,6 @@ export default {
   computed: {
     isNegationShow () {
       return this.wafBrand && this.wafBrand === 'Azure'
-    },
-    isMatchFieldKeyShow () {
-      return this.statement.hasOwnProperty('match_field_key')
     },
     negationSelectOptions () {
       return [

@@ -852,7 +852,7 @@
   "network.waf.type": "WAF type",
   "network.waf.resource_type": "Resource type",
   "network.waf.resource_id": "Resource ID",
-  "network.waf.resource_name": "Resource Name/ID",
+  "network.waf.resource_name": "Resource Name",
   "network.waf.action": "Action",
   "network.waf.action_default": "Default action",
   "network.waf.rule_action_Allow": "Allow",
