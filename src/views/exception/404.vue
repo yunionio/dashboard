@@ -2,7 +2,7 @@
   <a-result status="404" title="404" :subTitle="$t('common_343')">
     <template v-slot:extra>
       <a-button type="primary">
-        <router-link to="/">{{`${$t('common_342')}(${num}s)`}}</router-link>
+        <router-link to="/">{{`${$t('common_342')}${num ? '(' + num+'s)' : '' }`}}</router-link>
       </a-button>
     </template>
   </a-result>
@@ -19,13 +19,14 @@ export default {
   created () {
     this.timer = setInterval(() => {
       --this.num
-      if (this.num <= 1) {
+      if (this.num <= 0) {
+        this.num = 0
         this.$router.push('/')
       }
     }, 1000)
   },
   beforeDestroy () {
-    clearTimeout(this.timer)
+    clearInterval(this.timer)
   },
 }
 </script>
