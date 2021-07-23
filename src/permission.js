@@ -4,9 +4,9 @@
  * date: 2018/08/07
  */
 import * as R from 'ramda'
+import { hasPermission } from '@/utils/auth'
 import router from './router'
 import store from './store'
-import { hasPermission } from '@/utils/auth'
 
 // 获取scope beforeEach
 const scopePermission = require.context('../scope', false, /.\/permission.js/)

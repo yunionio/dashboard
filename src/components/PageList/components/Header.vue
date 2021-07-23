@@ -63,9 +63,9 @@
 
 <script>
 import * as R from 'ramda'
+import WindowsMixin from '@/mixins/windows'
 import Actions from '../Actions'
 import TagFilter from '../TagFilter'
-import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'PageListHeader',

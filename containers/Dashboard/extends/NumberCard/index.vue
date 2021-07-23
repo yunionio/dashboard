@@ -8,7 +8,7 @@
     :options="options"
     @update="update"
     :params="params"
-    :eidt="edit">
+    :edit="edit">
     <a-row class="mb-4">
       <a-col :span="formItemLayout.labelCol.span" class="ant-form-item-label">
         <label>{{$t('dashboard.text_24')}}</label>
@@ -24,9 +24,9 @@
 </template>
 
 <script>
+import { hasSetupKey } from '@/utils/auth'
 import Server from './components/Server'
 import K8s from './components/K8s'
-import { hasSetupKey } from '@/utils/auth'
 
 export default {
   name: 'NumberCard',

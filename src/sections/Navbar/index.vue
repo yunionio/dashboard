@@ -122,11 +122,13 @@
         </div>
       </a-tooltip>
     </div>
-    <slot name="behindNavbar" />
     <!-- cloudsheel -->
     <cloud-shell class="navbar-item-icon primary-color-hover" />
+    <slot name="behindNavbar" />
     <!-- 更多 -->
-    <more-popover class="navbar-item-icon primary-color-hover" />
+    <slot name="morePopover">
+      <more-popover class="navbar-item-icon primary-color-hover" />
+    </slot>
     <!-- 用户 -->
     <slot name="userPopover" />
   </div>
@@ -137,6 +139,10 @@ import get from 'lodash/get'
 import * as R from 'ramda'
 import Cookies from 'js-cookie'
 import { mapGetters, mapState } from 'vuex'
+import UserProjectSelect from '@/sections/UserProjectSelect'
+import WindowsMixin from '@/mixins/windows'
+import { getSetupInStorage } from '@/utils/auth'
+import { uuid } from '@/utils/utils'
 import NotifyPopover from './components/NotifyPopover'
 // import SettingPopover from './components/SettingPopover'
 import WorkOrderPopover from './components/WorkOrderPopover'
@@ -144,10 +150,6 @@ import MorePopover from './components/MorePopover'
 import GlobalSearch from './components/GlobalSearch'
 import Alertresource from './components/Alertresource'
 import CloudShell from './components/CloudShell'
-import UserProjectSelect from '@/sections/UserProjectSelect'
-import WindowsMixin from '@/mixins/windows'
-import { getSetupInStorage } from '@/utils/auth'
-import { uuid } from '@/utils/utils'
 
 export default {
   name: 'Navbar',

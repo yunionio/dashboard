@@ -262,7 +262,7 @@ export default {
       }
     },
     RenderNetwork () {
-      const { networkLoading, filterOption, disabled, fetchNetwork } = this
+      const { networkLoading, filterOption, disabled } = this
       const _handleChange = (networkId) => {
         const data = this.getSelectedValue('network', networkId)
         this.$emit('networkChange', data)
@@ -282,14 +282,9 @@ export default {
           }
         </a-select-option>
       })
-      return (
-        <div>
-          <a-select style={{ width: 'calc(100% - 22px)' }} disabled={disabled} showSearch placeholder={i18n.t('common_227')} onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
-            {options}
-          </a-select>
-          <a-icon type="sync" class="ml-2 primary-color" spin={networkLoading} onClick={fetchNetwork} />
-        </div>
-      )
+      return <a-select style={{ width: 'calc(100% - 22px)' }} disabled={disabled} showSearch placeholder={i18n.t('common_227')} onChange={_handleChange} loading={networkLoading} filterOption={filterOption} >
+        {options}
+      </a-select>
     },
   },
   render () {
@@ -312,7 +307,7 @@ export default {
       if (this[`Render${sn}`]) {
         const Render = this[`Render${sn}`]()
         return (
-          <a-col span={this.colSpan}>
+          <a-col span={name === 'network' ? this.colSpan - 1 : this.colSpan}>
             <a-form-item wrapperCol={{ span: 24 }}>
               {getFieldDecorator(name, _options)(Render)}
               <div slot="extra" key={name}>
@@ -328,6 +323,7 @@ export default {
       <a-form-item required={this.isRequired} labelCol={this.labelCol} wrapperCol={this.wrapperCol} label={this.label}>
         <a-row gutter={8}>
           {RenderCols}
+          <a-col span={1}><a-icon type="sync" class="ml-2 primary-color" spin={this.networkLoading} onClick={this.fetchNetwork} /></a-col>
         </a-row>
       </a-form-item>
     )

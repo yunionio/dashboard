@@ -966,6 +966,15 @@
       "sync_status": "同步状态",
       "unavailable": "不可用",
       "unknown": "未知"
+    },
+    "elasticSearch": {
+      "available": "正常",
+      "creating": "创建中",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "sync_status": "同步状态",
+      "unavailable": "不可用",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
@@ -2394,7 +2403,9 @@
     "mount_target": "NAS挂载点",
     "waf_instance": "WAF策略",
     "message_queue": "消息队列",
-    "kafka": "Kafka"
+    "kafka": "Kafka",
+    "data_analysis": "数据分析",
+    "elasticsearch": "Elasticsearch"
   },
   "res": {
     "role": "@:dictionary.role",

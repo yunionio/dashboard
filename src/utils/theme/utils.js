@@ -1,6 +1,6 @@
 // import { message } from 'ant-design-vue'
-import themeColor from './colors.js'
 import i18n from '@/locales'
+import themeColor from './colors.js'
 
 // let lessNodesAppended
 const colorList = [
