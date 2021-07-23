@@ -2,31 +2,18 @@
   <a-result status="404" title="404" :subTitle="$t('common_343')">
     <template v-slot:extra>
       <a-button type="primary">
-        <router-link to="/">{{`${$t('common_342')}${num ? '(' + num+'s)' : '' }`}}</router-link>
+        <auto-router-link :text="$t('common_342')" />
       </a-button>
     </template>
   </a-result>
 </template>
 <script>
+import AutoRouterLink from './components/AutoRouterLink'
+
 export default {
   name: '403',
-  data () {
-    return {
-      timer: null,
-      num: 3,
-    }
-  },
-  created () {
-    this.timer = setInterval(() => {
-      --this.num
-      if (this.num <= 0) {
-        this.num = 0
-        this.$router.push('/')
-      }
-    }, 1000)
-  },
-  beforeDestroy () {
-    clearInterval(this.timer)
+  components: {
+    AutoRouterLink,
   },
 }
 </script>
