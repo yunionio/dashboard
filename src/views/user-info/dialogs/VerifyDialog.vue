@@ -13,13 +13,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import DialogMixin from '@/mixins/dialog'
+import WindowsMixin from '@/mixins/windows'
 import dingtalk from './Dingtalk'
 import email from './Email'
 import feishu from './Feishu'
 import mobile from './Mobile'
 import workwx from './Workwx'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'VerifyUserInfoDialog',

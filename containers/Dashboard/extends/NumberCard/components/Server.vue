@@ -9,7 +9,9 @@
         <div class="dashboard-card-header-right">
           <span v-if="showDebuggerInfo">{{ `${$t('dashboard.text_20')}: ${form.fd.usage_key}` }}</span>
           <slot name="actions" :handle-edit="handleEdit" />
-          <a class="ml-2" v-if="!eidt && canShowEdit" @click="goPage">{{$t('dashboard.more')}}</a>
+          <a class="ml-2" v-if="!edit && canShowEdit" @click="goPage">
+            <icon type="arrow-right" style="font-size:18px" />
+          </a>
         </div>
       </div>
       <div class="dashboard-card-body align-items-center">
@@ -33,12 +35,12 @@
 </template>
 
 <script>
-import mixin from './mixin'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
+import mixin from './mixin'
 
 export default {
   name: 'NumberCardServer',
@@ -144,7 +146,7 @@ export default {
     },
     canShowEdit () {
       if (!this.params) return false
-      return ['all.servers', 'servers', 'domain.servers', 'barementals', 'hosts'].includes(this.params.usage_key)
+      return ['all.servers', 'servers', 'domain.servers', 'baremetals', 'hosts', 'all.buckets'].includes(this.params.usage_key)
     },
   },
   watch: {
@@ -228,10 +230,12 @@ export default {
       if (!this.params) return
       if (['all.servers', 'servers', 'domain.servers'].includes(this.params.usage_key)) {
         this.$router.push('/vminstance')
-      } else if (['barementals'].includes(this.params.usage_key)) {
+      } else if (['baremetals'].includes(this.params.usage_key)) {
         this.$router.push('/physicalmachine')
       } else if (['hosts'].includes(this.params.usage_key)) {
         this.$router.push('/host')
+      } else if (['all.buckets'].includes(this.params.usage_key)) {
+        this.$router.push('./bucket')
       }
     },
   },
