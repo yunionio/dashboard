@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 匹配字段 -->
-    <match-field-key v-if="isMatchFieldKeyShow" :value="statement.match_field_key" :matchField="statement.match_field" :isEdit="isEdit" />
+    <match-field-key v-if="hasField(statement, 'match_field_key')" :value="statement.match_field_key" :matchField="statement.match_field" :isEdit="isEdit" />
     <!-- 匹配值 -->
     <match-field-values :valueList="match_field_values" :isEdit="isEdit" />
     <!-- 运算 -->
@@ -42,9 +42,6 @@ export default {
     }
   },
   computed: {
-    isMatchFieldKeyShow () {
-      return this.statement.hasOwnProperty('match_field_key')
-    },
     match_field_values () {
       const { match_field_values, search_string } = this.statement
       if (match_field_values) { // azure

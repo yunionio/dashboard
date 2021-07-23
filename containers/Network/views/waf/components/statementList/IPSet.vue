@@ -1,8 +1,10 @@
 <template>
   <div>
-    <forward-ip-header v-if="isForwardIpHeaderShow" :value="statement.forwarded_ip_header" :isEdit="isEdit" />
+    <!-- 匹配变量 -->
+    <match-field v-if="hasField(statement, 'match_field')" :value="statement.match_field" :isEdit="isEdit" />
+    <forward-ip-header v-if="hasField(statement, 'forwarded_ip_header')" :value="statement.forwarded_ip_header" :isEdit="isEdit" />
     <!-- 匹配字段 -->
-    <match-field-key v-if="isMatchFieldKeyShow" :value="statement.match_field_key" :matchField="statement.match_field" :isEdit="isEdit" />
+    <match-field-key v-if="hasField(statement, 'match_field_key')" :value="statement.match_field_key" :matchField="statement.match_field" :isEdit="isEdit" />
     <!-- 匹配值 -->
     <match-field-values :label="$t('network_waf_statement.label.ip')" :valueList="match_field_values" :isEdit="isEdit" />
     <!-- 运算 是否包含 -->
@@ -12,6 +14,7 @@
 
 <script>
 import WafMixin from '../../mixins/waf'
+import MatchField from '../statementComponents/MatchField'
 import MatchFieldValues from '../statementComponents/MatchFieldValues'
 import MatchFieldKey from '../statementComponents/MatchFieldKey'
 import Negation from '../statementComponents/Negation'
@@ -21,6 +24,7 @@ import WindowsMixin from '@/mixins/windows'
 export default {
   name: 'IPSet',
   components: {
+    MatchField,
     MatchFieldValues,
     Negation,
     MatchFieldKey,
@@ -49,17 +53,11 @@ export default {
     isNegationShow () {
       return this.wafBrand && this.wafBrand === 'Azure'
     },
-    isMatchFieldKeyShow () {
-      return this.statement.hasOwnProperty('match_field_key')
-    },
     negationSelectOptions () {
       return [
         { label: this.$t('network_waf_statement.negation.in'), value: true },
         { label: this.$t('network_waf_statement.negation.notin'), value: false },
       ]
-    },
-    isForwardIpHeaderShow () {
-      return this.statement.hasOwnProperty('forwarded_ip_header')
     },
   },
   created () {
@@ -68,7 +66,6 @@ export default {
   methods: {
     initData () {
       const { match_field_values, ip_set_id } = this.statement
-      console.log('ip_set_id', ip_set_id)
       if (match_field_values) {
         // 匹配值
         this.match_field_values = match_field_values

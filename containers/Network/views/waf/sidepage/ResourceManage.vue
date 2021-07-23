@@ -10,6 +10,7 @@
 import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getNameFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'WafResourcesForWafInstancesSidePage',
@@ -30,13 +31,7 @@ export default {
         resource: this.fetchResource,
         getParams: { details: true },
         filterOptions: {
-          id: {
-            label: this.$t('network.waf.resource_id'),
-            filter: true,
-            formatter: val => {
-              return `id.in(${val})`
-            },
-          },
+          name: getNameFilter(),
           type: {
             label: this.$t('network.waf.resource_type'),
             dropdown: true,
@@ -50,12 +45,12 @@ export default {
       }),
       columns: [
         {
-          field: 'id',
-          title: this.$t('network.waf.resource_id'),
+          field: 'name',
+          title: this.$t('network.waf.resource_name'),
           resizable: true,
           slots: {
             default: ({ row }) => {
-              return [<list-body-cell-wrap copy row={row} field={'id'} />]
+              return [<list-body-cell-wrap copy row={row} field={'name'} />]
             },
           },
         },

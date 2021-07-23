@@ -2,7 +2,7 @@
   <div>
     <!-- 速率限制 -->
     <limit :value="statement.limit" :isEdit="isEdit" />
-    <forward-ip-header v-if="isForwardIpHeaderShow" :value="statement.forwarded_ip_header" :isEdit="isEdit" />
+    <forward-ip-header v-if="hasField(statement, 'forwarded_ip_header')" :value="statement.forwarded_ip_header" :isEdit="isEdit" />
     <!-- 匹配值 -->
     <match-field-values :valueList="statement.match_field_values" :isEdit="isEdit" />
     <!-- 运算 -->
@@ -42,11 +42,6 @@ export default {
         },
       },
     }
-  },
-  computed: {
-    isForwardIpHeaderShow () {
-      return this.statement.hasOwnProperty('forwarded_ip_header')
-    },
   },
 }
 </script>

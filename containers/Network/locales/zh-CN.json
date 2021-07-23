@@ -851,7 +851,7 @@
   "network.waf.type": "WAF类型",
   "network.waf.resource_type": "资源类型",
   "network.waf.resource_id": "资源ID",
-  "network.waf.resource_name": "资源名称/ID",
+  "network.waf.resource_name": "资源名称",
   "network.waf.action": "处理动作",
   "network.waf.action_default": "默认策略动作",
   "network.waf.rule_action_Allow": "允许",

@@ -99,4 +99,9 @@ export default {
   },
   created () {
   },
+  methods: {
+    hasField (data, field) {
+      return data.hasOwnProperty(field)
+    },
+  },
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 匹配变量 -->
-    <match-field v-if="isMatchFieldShow" :value="statement.match_field" :isEdit="isEdit" />
+    <match-field v-if="hasField(statement, 'match_field')" :value="statement.match_field" :isEdit="isEdit" />
     <!-- 匹配值 -->
     <match-field-values :label="$t('network_waf_statement.label.regex')" :valueList="match_field_values" :isEdit="isEdit" />
     <!-- 运算 是否包含 -->
@@ -43,9 +43,6 @@ export default {
     }
   },
   computed: {
-    isMatchFieldShow () {
-      return this.statement.hasOwnProperty('match_field')
-    },
     negationSelectOptions () {
       return [
         { label: this.$t('network_waf_statement.negation.in'), value: true },

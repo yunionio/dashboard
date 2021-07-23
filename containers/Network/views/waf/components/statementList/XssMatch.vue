@@ -3,7 +3,7 @@
     <!-- 匹配变量 -->
     <match-field :value="statement.match_field" :isEdit="isEdit" />
     <!-- 匹配字段 -->
-    <match-field-key v-if="isMatchFieldKeyShow" :value="statement.match_field_key" :isEdit="isEdit" />
+    <match-field-key v-if="hasField(statement, 'match_field_key')" :value="statement.match_field_key" :isEdit="isEdit" />
     <!-- 操作器 -->
     <!-- <operator :value="statement.operator" /> -->
     <!-- 转换 -->
@@ -59,9 +59,6 @@ export default {
         return [search_string]
       }
       return ['']
-    },
-    isMatchFieldKeyShow () {
-      return this.statement.hasOwnProperty('match_field_key')
     },
   },
 }
