@@ -156,6 +156,10 @@ export default {
               meta: () => {
                 let tooltip
                 let validate = obj.can_delete
+                if (obj.brand !== 'Azure') {
+                  tooltip = i18n.t('cloudenv.text_333')
+                  validate = false
+                }
                 if (!ownerDomain(obj)) {
                   tooltip = i18n.t('cloudenv.text_358')
                   validate = false

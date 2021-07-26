@@ -122,6 +122,42 @@ export default {
             }
           },
         },
+        {
+          label: this.$t('cloudenv.text_108'),
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('cloudenv.text_108'),
+              onManager: this.onManager,
+              name: this.$t('cloudenv.text_318'),
+              alert: this.$t('cloudenv.cloudprovider.delete_tip'),
+            })
+          },
+          meta: () => {
+            let tooltip
+            let validate = this.list.selectedItems.length && ownerDomain(this.list)
+            if (this.data.brand !== 'Azure') {
+              tooltip = this.$t('cloudenv.text_333')
+              validate = false
+            }
+            const isEnabled = this.list.selectedItems.some(val => val.enabled)
+            const isSyncing = this.list.selectedItems.some(val => val.sync_status === 'syncing')
+            if (isEnabled) {
+              tooltip = this.$t('network.text_310')
+              validate = false
+            }
+            if (isSyncing) {
+              tooltip = this.$t('cloudenv.cloudprovider.sync_delete')
+              validate = false
+            }
+            return {
+              tooltip,
+              validate,
+            }
+          },
+        },
       ],
     }
   },
