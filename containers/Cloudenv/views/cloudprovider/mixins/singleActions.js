@@ -140,6 +140,44 @@ export default {
                 }
               },
             },
+            {
+              label: i18n.t('cloudenv.text_108'),
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: i18n.t('cloudenv.text_108'),
+                  onManager: this.onManager,
+                  name: this.$t('cloudenv.text_318'),
+                  alert: i18n.t('cloudenv.cloudprovider.delete_tip'),
+                })
+              },
+              meta: () => {
+                let tooltip
+                let validate = obj.can_delete
+                if (obj.brand !== 'Azure') {
+                  tooltip = i18n.t('cloudenv.text_333')
+                  validate = false
+                }
+                if (!ownerDomain(obj)) {
+                  tooltip = i18n.t('cloudenv.text_358')
+                  validate = false
+                }
+                if (obj.enabled) {
+                  tooltip = i18n.t('network.text_310')
+                  validate = false
+                }
+                if (obj.sync_status === 'syncing') {
+                  tooltip = i18n.t('cloudenv.cloudprovider.sync_delete')
+                  validate = false
+                }
+                return {
+                  tooltip,
+                  validate,
+                }
+              },
+            },
           ]
         },
       },
