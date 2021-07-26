@@ -13,8 +13,6 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -24,6 +22,8 @@ import { hasServices } from '@/utils/auth'
 import expectStatus from '@/constants/expectStatus'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'BlockStorageList',
@@ -154,7 +154,7 @@ export default {
     const brandFilter = getBrandFilter()
     const notSupportBrand = [
       ...Object.values(HYPERVISORS_MAP).filter(item => item.cloud_env === 'public').map(item => item.brand),
-      ...Object.values(EXTRA_HYPERVISORS).map(item => item.brand),
+      ...Object.values(EXTRA_HYPERVISORS).filter(v => v.key !== 's3').map(item => item.brand),
     ]
     return {
       list: this.$list.createList(this, {
