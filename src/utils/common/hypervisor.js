@@ -51,7 +51,6 @@ export class TypeClouds {
   }
 
   getProviderlowcase () {
-    console.log('map', this.commonGet(this.brandlowcaseMap))
     return this.commonGet(this.brandlowcaseMap)
   }
 
