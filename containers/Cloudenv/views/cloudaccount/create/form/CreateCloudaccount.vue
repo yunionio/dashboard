@@ -13,6 +13,7 @@ import OpenstackZstack from './components/OpenstackZstack'
 import S3CephXsky from './components/S3CephXsky'
 import Google from './components/Google'
 import Apsara from './components/Apsara'
+import Cloudpods from './components/Cloudpods'
 
 export default {
   name: 'CreateCloudaccount',
@@ -35,6 +36,7 @@ export default {
     ApsaraCreate: Apsara,
     EcloudCreate: Aliyun,
     JDcloudCreate: Aliyun,
+    CloudpodsCreate: Cloudpods,
   },
   props: {
     currentItem: {
