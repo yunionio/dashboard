@@ -720,5 +720,7 @@
   "cloudenv.text_604": "New Rule",
   "cloudenv.project_mapping_account": "Cloud Account",
   "cloudenv.project_mapping_cloudprovider": "Cloud Subscription",
-  "cloudenv.project_mapping_use_cloudprovider": "Cloud Subscription"
+  "cloudenv.project_mapping_use_cloudprovider": "Cloud Subscription",
+  "cloudenv.cloudprovider.delete_tip": "This operation only deletes local records and has no impact on the cloud. If the cloud is not deleted, it will be restored at the next synchronization.",
+  "cloudenv.cloudprovider.sync_delete": "This operation is not supported in synchronization"
 }
