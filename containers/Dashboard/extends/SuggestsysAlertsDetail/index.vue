@@ -23,10 +23,10 @@
         <a-form-model-item :label="$t('dashboard.text_6')" prop="name">
           <a-input v-model="fd.name" />
         </a-form-model-item>
-        <a-form-model-item :label="$t('dashboard.currency')" prop="currency">
+        <a-form-model-item :label="$t('scope.text_453')" prop="currency">
           <a-select v-model="fd.currency">
-            <a-select-option v-for="obj in newCurrencys" :key="obj.key" :value="obj.key">
-              {{ obj.value }}
+            <a-select-option v-for="obj in newCurrencys" :key="obj.item_id" :value="obj.item_id">
+              {{ obj.item_name }}
             </a-select-option>
           </a-select>
         </a-form-model-item>
@@ -90,6 +90,22 @@ export default {
     },
     currencySign () {
       return currencyUnitMap[this.fd.currency]?.sign || '¥'
+    },
+    currencyParams () {
+      const { currency } = this.fd
+      if (currency) {
+        const params = {
+          exchanged_currency: currency.replace('_', ''),
+          filter: [`currency.equals("${currency}")`],
+        }
+        if (currency.indexOf('_') !== -1) {
+          params.filter = ''
+        } else {
+          params.exchanged_currency = ''
+        }
+        return params
+      }
+      return {}
     },
     outherData () {
       return this.data.filter(item => item.cost_type !== 'all').map(item => {
@@ -189,8 +205,13 @@ export default {
       }
     },
     newCurrencys () {
-      return this.CURRENCYS.filter(v => {
-        return this.currencyOpts.find(obj => obj.item_id === v.key)
+      return this.currencyOpts.map(val => {
+        const localItem = currencyUnitMap[val.item_id]
+        const text = localItem ? localItem.label : val.item_name
+        return {
+          ...val,
+          item_name: val.item_id.indexOf('_') === -1 ? this.$t('bill.text_39', [text]) : this.$t('bill.text_287', [val.item_name.replace('_', '')]),
+        }
       })
     },
   },
@@ -224,7 +245,7 @@ export default {
               $t: getRequestT(),
               details: true,
               scope: this.scope,
-              currency: this.fd.currency,
+              ...this.currencyParams,
             },
           },
           useManager: false,

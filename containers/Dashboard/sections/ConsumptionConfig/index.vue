@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- 币种 -->
-    <a-form-model-item :label="$t('dashboard.currency')" prop="currency">
+    <a-form-model-item :label="$t('scope.text_453')" prop="currency">
       <a-select v-decorator="decorators.currency">
-        <a-select-option v-for="obj in newCurrencys" :key="obj.key" :value="obj.key">
-          {{ obj.value }}
+        <a-select-option v-for="obj in newCurrencys" :key="obj.item_id" :value="obj.item_id">
+          {{ obj.item_name }}
         </a-select-option>
       </a-select>
     </a-form-model-item>
@@ -62,6 +62,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { mapGetters, mapState } from 'vuex'
 import { CURRENCYS } from '@/constants'
+import { currencyUnitMap } from '@/constants/currency'
 import { typeClouds } from '@/utils/common/hypervisor'
 
 export default {
@@ -106,8 +107,13 @@ export default {
       return R.is(Object, this.brandData) ? this.brandData.key : this.brandData
     },
     newCurrencys () {
-      return this.CURRENCYS.filter(v => {
-        return this.currencyOpts.find(obj => obj.item_id === v.key)
+      return this.currencyOpts.map(val => {
+        const localItem = currencyUnitMap[val.item_id]
+        const text = localItem ? localItem.label : val.item_name
+        return {
+          ...val,
+          item_name: val.item_id.indexOf('_') === -1 ? this.$t('bill.text_39', [text]) : this.$t('bill.text_287', [val.item_name.replace('_', '')]),
+        }
       })
     },
   },
