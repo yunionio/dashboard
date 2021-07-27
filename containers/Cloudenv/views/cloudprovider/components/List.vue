@@ -12,6 +12,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   name: 'CloudproviderList',
@@ -66,96 +67,113 @@ export default {
           },
         },
         {
-          label: this.$t('cloudenv.text_334'),
-          action: () => {
-            this.list.batchPerformAction('enable', null).then(() => {
-              this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
-            })
-          },
-          meta: () => {
-            const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
-            return {
-              validate: this.list.selectedItems.length && ownerDomain(this.list) && isDisable,
-            }
-          },
-        },
-        {
-          label: this.$t('cloudenv.text_335'),
-          action: () => {
-            this.list.batchPerformAction('disable', null).then(() => {
-              this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
-            })
-          },
-          meta: () => {
-            const isEnable = !!this.list.selectedItems.find(item => item.enabled)
-            return {
-              validate: this.list.selectedItems.length && ownerDomain(this.list) && isEnable,
-            }
-          },
-        },
-        {
-          label: this.$t('cloudenv.text_294', [this.$t('dictionary.project')]),
-          action: () => {
-            if (isAccountDomain(this.data)) {
-              this.createDialog('ChangeProjectDialog', {
-                name: this.$t('dictionary.cloudprovider'),
-                data: this.list.selectedItems,
-                columns: this.columns,
-                onManager: this.onManager,
-                alertMessage: this.$t('cloudenv.text_336', [this.$t('dictionary.project'), this.$t('dictionary.domain'), this.$t('dictionary.domain')]),
-              })
-            } else {
-              this.createDialog('ChangeOwenrDialog', {
-                name: this.$t('dictionary.cloudprovider'),
-                data: this.list.selectedItems,
-                columns: this.columns,
-                onManager: this.onManager,
-                action: 'change-project',
-                resource: 'cloudproviders',
-                alertMessage: this.$t('cloudenv.text_336', [this.$t('dictionary.project'), this.$t('dictionary.domain'), this.$t('dictionary.domain')]),
-              })
-            }
-          },
-          meta: () => {
-            return {
-              validate: this.list.selectedItems.length && this.list.selectedItems.every(val => val.enabled) && ownerDomain(this.list),
-            }
-          },
-        },
-        {
-          label: this.$t('cloudenv.text_108'),
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: this.$t('cloudenv.text_108'),
-              onManager: this.onManager,
-              name: this.$t('cloudenv.text_318'),
-              alert: this.$t('cloudenv.cloudprovider.delete_tip'),
-            })
-          },
-          meta: () => {
-            let tooltip
-            let validate = this.list.selectedItems.length && ownerDomain(this.list)
-            if (this.data.brand !== 'Azure') {
-              tooltip = this.$t('cloudenv.text_333')
-              validate = false
-            }
-            const isEnabled = this.list.selectedItems.some(val => val.enabled)
-            const isSyncing = this.list.selectedItems.some(val => val.sync_status === 'syncing')
-            if (isEnabled) {
-              tooltip = this.$t('network.text_310')
-              validate = false
-            }
-            if (isSyncing) {
-              tooltip = this.$t('cloudenv.cloudprovider.sync_delete')
-              validate = false
-            }
-            return {
-              tooltip,
-              validate,
-            }
+          label: this.$t('common.batchAction'),
+          actions: obj => {
+            return [
+              ...getEnabledSwitchActions(this, undefined, undefined, {
+                actions: [
+                  async (obj) => {
+                    const ids = this.list.selectedItems.map(item => item.id)
+                    await this.onManager('batchPerformAction', {
+                      id: ids,
+                      managerArgs: {
+                        action: 'enable',
+                      },
+                    })
+                    // this.$store.dispatch('auth/getCapabilities')
+                  },
+                  async (obj) => {
+                    const ids = this.list.selectedItems.map(item => item.id)
+                    await this.onManager('batchPerformAction', {
+                      id: ids,
+                      managerArgs: {
+                        action: 'disable',
+                      },
+                    })
+                    // this.$store.dispatch('auth/getCapabilities')
+                  },
+                ],
+                metas: [
+                  () => {
+                    const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
+                    return {
+                      validate: this.list.selectedItems.length && ownerDomain && isDisable,
+                    }
+                  },
+                  () => {
+                    const isEnable = !!this.list.selectedItems.find(item => item.enabled)
+                    return {
+                      validate: this.list.selectedItems.length && ownerDomain && isEnable,
+                    }
+                  },
+                ],
+              }),
+              {
+                label: this.$t('cloudenv.text_294', [this.$t('dictionary.project')]),
+                action: () => {
+                  if (isAccountDomain(this.data)) {
+                    this.createDialog('ChangeProjectDialog', {
+                      name: this.$t('dictionary.cloudprovider'),
+                      data: this.list.selectedItems,
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      alertMessage: this.$t('cloudenv.text_336', [this.$t('dictionary.project'), this.$t('dictionary.domain'), this.$t('dictionary.domain')]),
+                    })
+                  } else {
+                    this.createDialog('ChangeOwenrDialog', {
+                      name: this.$t('dictionary.cloudprovider'),
+                      data: this.list.selectedItems,
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      action: 'change-project',
+                      resource: 'cloudproviders',
+                      alertMessage: this.$t('cloudenv.text_336', [this.$t('dictionary.project'), this.$t('dictionary.domain'), this.$t('dictionary.domain')]),
+                    })
+                  }
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.selectedItems.length && this.list.selectedItems.every(val => val.enabled) && ownerDomain(this.list),
+                  }
+                },
+              },
+              {
+                label: this.$t('cloudenv.text_108'),
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: this.$t('cloudenv.text_108'),
+                    onManager: this.onManager,
+                    name: this.$t('cloudenv.text_318'),
+                    alert: this.$t('cloudenv.cloudprovider.delete_tip'),
+                  })
+                },
+                meta: () => {
+                  let tooltip
+                  let validate = this.list.selectedItems.length && ownerDomain(this.list)
+                  if (this.data.brand !== 'Azure') {
+                    tooltip = this.$t('cloudenv.text_333')
+                    validate = false
+                  }
+                  const isEnabled = this.list.selectedItems.some(val => val.enabled)
+                  const isSyncing = this.list.selectedItems.some(val => val.sync_status === 'syncing')
+                  if (isEnabled) {
+                    tooltip = this.$t('network.text_310')
+                    validate = false
+                  }
+                  if (isSyncing) {
+                    tooltip = this.$t('cloudenv.cloudprovider.sync_delete')
+                    validate = false
+                  }
+                  return {
+                    tooltip,
+                    validate,
+                  }
+                },
+              },
+            ]
           },
         },
       ],
