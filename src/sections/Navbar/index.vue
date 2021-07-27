@@ -29,14 +29,29 @@
         <template slot="content">
           <ul class="list-unstyled view-list-wrap" style="max-height: 60vh; overflow-y: auto;">
             <!-- 管理后台 -->
-            <template v-if="systemProject">
-              <li class="item-link" @click="() => projectChange(systemProject.id, 'system')">
+            <template v-if="systemProjects && systemProjects.length">
+              <li v-if="systemProjects.length === 1" class="item-link" @click="() => projectChange(systemProjects[0].id, 'system')">
                 <div class="d-flex h-100 align-items-center">
                   <div class="flex-fill text-truncate">{{ $t('navbar.view.system_manager') }}</div>
                   <div style="width: 20px;" class="ml-1">
-                    <a-icon v-show="scope === 'system' && systemProject.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                    <a-icon v-show="scope === 'system' && systemProjects[0].id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                   </div>
                 </div>
+              </li>
+              <li v-else>
+                <div>{{ $t('navbar.view.system_manager') }}</div>
+                <ul class="list-unstyled">
+                  <template v-for="item of systemProjects">
+                    <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'system')">
+                      <div class="d-flex h-100 align-items-center">
+                        <div class="flex-fill text-truncate">{{ item.name }}({{ item.domain }})</div>
+                        <div style="width: 20px;" class="ml-1">
+                          <a-icon v-show="scope === 'system' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                        </div>
+                      </div>
+                    </li>
+                  </template>
+                </ul>
               </li>
             </template>
             <!-- 域管理后台 -->
@@ -47,7 +62,8 @@
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
                       <div class="d-flex h-100 align-items-center">
-                        <div class="flex-fill text-truncate">{{ item.domain }}</div>
+                        <div class="flex-fill text-truncate" v-if="isSingleProject(domainProjects, item.domain_id)">{{ item.domain }}</div>
+                        <div class="flex-fill text-truncate" v-else>{{ item.domain }}({{ item.name }})</div>
                         <div style="width: 20px;" class="ml-1">
                           <a-icon v-show="scope === 'domain' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
                         </div>
@@ -266,16 +282,16 @@ export default {
       }, this.projects)
       return ret
     },
-    systemProject () {
-      return R.find(R.propEq('system_capable', true))(this.projects)
+    systemProjects () {
+      return this.projects.filter(v => v.system_capable === true)
     },
     viewLabel () {
       if (this.reLogging) return '-'
       if (this.$store.getters['auth/isAdmin']) {
-        return this.$t('navbar.view.system_manager')
+        return this.$t('navbar.view.system_manager') + '-' + this.userInfo.projectName
       }
       if (this.$store.getters['auth/isDomain']) {
-        return this.$t('navbar.view.domain_manager_1var', { domain: this.userInfo.projectDomain || '-' })
+        return this.$t('navbar.view.domain_manager_1var', { domain: this.userInfo.projectDomain || '-' }) + '-' + this.userInfo.projectName
       }
       return this.userInfo.projectName || '-'
     },
@@ -654,6 +670,10 @@ export default {
           total: 0,
         })
       }
+    },
+    isSingleProject (projects, domain_id) {
+      const num = projects.filter(v => v.domain_id === domain_id)?.length
+      return num === 1
     },
   },
 }
