@@ -4812,6 +4812,7 @@
   "license.provider.dstack": "@:scopeProviders.dStack",
   "license.provider.zstack": "@:scopeProviders.zstack",
   "license.provider.apsara": "@:cloudPrvidersMap.Apsara",
+  "license.provider.cloudpods": "@:scopeProviders.cloudpods",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",
