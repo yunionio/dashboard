@@ -118,17 +118,18 @@ export default {
             type: ['common', 'meter'],
           },
         })
-        const id = response?.data?.data[0]?.id || ''
-        if (id) {
+        const resData = response?.data?.data
+        const commonId = resData.find(v => v.type === 'common')?.id || ''
+        if (commonId) {
           const configResponse = await manager.getSpecific({
-            id,
+            id: commonId,
             spec: 'config',
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('SET_GLOBAL_CONFIG', config)
         }
-        const mneterId = response?.data?.data[0]?.id || ''
-        if (id) {
+        const mneterId = resData.find(v => v.type === 'meter')?.id || ''
+        if (mneterId) {
           const configResponse = await manager.getSpecific({
             id: mneterId,
             spec: 'config',
