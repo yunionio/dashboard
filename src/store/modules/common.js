@@ -94,7 +94,7 @@ export default {
         commit('SET_BILL_EXCHANGE_RATE_AVAILABLE', data && data[0] ? data[0].exchange_rate_available || false : true)
         commit('SET_BILL_CURRENCYOPTS', data)
         if (data && data.length > 0) {
-          const currencyList = data
+          let currencyList = []
           if (data[0].exchange_rate_available) {
             data.map(item => {
               currencyList.push({
@@ -102,9 +102,11 @@ export default {
                 item_name: '_' + item.item_name,
               })
             })
+          } else {
+            currencyList = data
           }
           const isExsit = currencyList.find(v => v.item_id === state.bill.currency)
-          commit('SET_BILL_CURRENCY', isExsit ? state.bill.currency : data[0].item_id)
+          commit('SET_BILL_CURRENCY', isExsit ? state.bill.currency : currencyList[0].item_id)
         }
       } catch (error) {
         throw error
@@ -118,17 +120,18 @@ export default {
             type: ['common', 'meter'],
           },
         })
-        const id = response?.data?.data[0]?.id || ''
-        if (id) {
+        const resData = response?.data?.data
+        const commonId = resData.find(v => v.type === 'common')?.id || ''
+        if (commonId) {
           const configResponse = await manager.getSpecific({
-            id,
+            id: commonId,
             spec: 'config',
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('SET_GLOBAL_CONFIG', config)
         }
-        const mneterId = response?.data?.data[0]?.id || ''
-        if (id) {
+        const mneterId = resData.find(v => v.type === 'meter')?.id || ''
+        if (mneterId) {
           const configResponse = await manager.getSpecific({
             id: mneterId,
             spec: 'config',
