@@ -26,10 +26,10 @@
               :key="item.key">
               <span>
                 <a-checkbox
-                  class="w-100 text-truncate"
+                  class="w-100"
                   :checked="selectValue && selectValue.includes(item.key)"
                   :value="item.key"
-                  @change="handleValueChange">{{ item.label }}</a-checkbox>
+                  @change="handleValueChange"><span class="text-wrap text-break" :title="item.label">{{ item.label }}</span></a-checkbox>
               </span>
             </li>
           </template>
@@ -415,10 +415,9 @@ export default {
   padding: 0;
   > li {
     > span {
-      line-height: 30px;
-      height: 30px;
+      // height: 30px;
       display: block;
-      padding: 0 10px;
+      padding: 6px 10px;
       cursor: pointer;
       &.empty {
         cursor: default;
