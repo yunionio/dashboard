@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { changeToArr } from '@/utils/utils'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
 
@@ -108,38 +109,38 @@ export default {
         label: i18n.t('cloudenv.text_311'),
         actions: obj => {
           return [
-            {
-              label: i18n.t('cloudenv.text_334'),
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'enable',
-                  },
-                })
-              },
-              meta: () => {
-                return {
-                  validate: !obj.enabled && ownerDomain(obj),
-                }
-              },
-            },
-            {
-              label: i18n.t('cloudenv.text_335'),
-              action: () => {
-                this.onManager('performAction', {
-                  id: obj.id,
-                  managerArgs: {
-                    action: 'disable',
-                  },
-                })
-              },
-              meta: () => {
-                return {
-                  validate: obj.enabled && ownerDomain(obj),
-                }
-              },
-            },
+            ...getEnabledSwitchActions(this, obj, [], {
+              actions: [
+                async (obj) => {
+                  await this.onManager('batchPerformAction', {
+                    id: [obj.id],
+                    managerArgs: {
+                      action: 'enable',
+                    },
+                  })
+                },
+                async (obj) => {
+                  await this.onManager('batchPerformAction', {
+                    id: [obj.id],
+                    managerArgs: {
+                      action: 'disable',
+                    },
+                  })
+                },
+              ],
+              metas: [
+                () => {
+                  return {
+                    validate: !obj.enabled && ownerDomain(obj),
+                  }
+                },
+                () => {
+                  return {
+                    validate: obj.enabled && ownerDomain(obj),
+                  }
+                },
+              ],
+            }),
             {
               label: i18n.t('cloudenv.text_108'),
               action: () => {
