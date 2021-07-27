@@ -181,10 +181,18 @@ export default {
       return currencyUnitMap[this.form.fd.currency]?.sign || '¥'
     },
     currencyParams () {
-      if (this.form.fd.currency) {
-        return {
-          filter: [`currency.equals("${this.form.fd.currency}")`],
+      const { currency } = this.form.fd
+      if (currency) {
+        const params = {
+          exchanged_currency: currency.replace('_', ''),
+          filter: [`currency.equals("${currency}")`],
         }
+        if (currency.indexOf('_') !== -1) {
+          params.filter = ''
+        } else {
+          params.exchanged_currency = ''
+        }
+        return params
       }
       return {}
     },
