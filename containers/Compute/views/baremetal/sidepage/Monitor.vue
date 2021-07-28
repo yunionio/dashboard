@@ -1,16 +1,24 @@
 <template>
-  <monitor
-    :time.sync="time"
-    :timeGroup.sync="timeGroup"
-    :monitorList="monitorList"
-    :singleActions="singleActions"
-    :loading="loading"
-    @refresh="fetchData" />
+  <div>
+    <div v-if="visible">
+      <a-alert class="mb-2" :type="alertType" v-if="visible">
+        <install-agent-form slot="message" :data="data" :serverColumns="[]" @onInstall="handleInstallResult" />
+      </a-alert>
+    </div>
+    <monitor
+      :time.sync="time"
+      :timeGroup.sync="timeGroup"
+      :monitorList="monitorList"
+      :singleActions="singleActions"
+      :loading="loading"
+      @refresh="fetchData" />
+  </div>
 </template>
 
 <script>
 import _ from 'lodash'
-import { ONECLOUD_MONITOR, VMWARE_MONITOR, OTHER_MONITOR } from '@Compute/views/vminstance/constants'
+import InstallAgentForm from '../../vminstance/components/InstallAgentForm'
+import { ONECLOUD_MONITOR, VMWARE_MONITOR, AGENT_MONITOR } from '@Compute/views/vminstance/constants'
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import { HYPERVISORS_MAP } from '@/constants'
@@ -21,6 +29,7 @@ export default {
   name: 'BaremetalMonitorSidepage',
   components: {
     Monitor,
+    InstallAgentForm,
   },
   mixins: [WindowsMixin],
   props: {
@@ -30,6 +39,7 @@ export default {
     },
   },
   data () {
+    const visible = this.data.status === 'running' && (!this.data.metadata || this.data.metadata['sys:monitor_agent'] !== 'true')
     return {
       singleActions: [
         {
@@ -63,8 +73,20 @@ export default {
               })
             }
           },
+          meta: (obj) => {
+            const ret = {
+              validate: true,
+              tooltip: '',
+            }
+            if (_.get(obj, 'constants.fromItem', '').startsWith('agent_')) {
+              ret.validate = false
+              ret.tooltip = this.$t('compute.text_1287', [''])
+            }
+            return ret
+          },
         },
       ],
+      visible: visible,
       loading: false,
       time: '1h',
       timeGroup: '5m',
@@ -81,7 +103,7 @@ export default {
       } else if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         return ONECLOUD_MONITOR
       } else {
-        return OTHER_MONITOR
+        return AGENT_MONITOR
       }
     },
     serverId () {
@@ -94,6 +116,16 @@ export default {
     this.baywatch(['time', 'timeGroup', 'data.id'], this.fetchDataDebounce)
   },
   methods: {
+    handleInstallResult (ret) {
+      if (ret && ret.status === 'succeed') {
+        this.alertType = 'success'
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.visible = false
+          }, 3000)
+        })
+      }
+    },
     async fetchData () {
       this.loading = true
       const resList = []
