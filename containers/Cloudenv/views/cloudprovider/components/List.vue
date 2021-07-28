@@ -80,7 +80,7 @@ export default {
                         action: 'enable',
                       },
                     })
-                    // this.$store.dispatch('auth/getCapabilities')
+                    this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
                   },
                   async (obj) => {
                     const ids = this.list.selectedItems.map(item => item.id)
@@ -90,7 +90,7 @@ export default {
                         action: 'disable',
                       },
                     })
-                    // this.$store.dispatch('auth/getCapabilities')
+                    this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
                   },
                 ],
                 metas: [
@@ -152,19 +152,23 @@ export default {
                 },
                 meta: () => {
                   let tooltip
-                  let validate = this.list.selectedItems.length && ownerDomain(this.list)
-                  if (this.data.brand !== 'Azure') {
-                    tooltip = this.$t('cloudenv.text_333')
-                    validate = false
-                  }
+                  let validate
                   const isEnabled = this.list.selectedItems.some(val => val.enabled)
                   const isSyncing = this.list.selectedItems.some(val => val.sync_status === 'syncing')
+                  if (isSyncing) {
+                    tooltip = this.$t('cloudenv.cloudprovider.sync_delete')
+                    validate = false
+                  }
                   if (isEnabled) {
                     tooltip = this.$t('network.text_310')
                     validate = false
                   }
-                  if (isSyncing) {
-                    tooltip = this.$t('cloudenv.cloudprovider.sync_delete')
+                  if (this.data.brand !== 'Azure') {
+                    tooltip = this.$t('cloudenv.text_333')
+                    validate = false
+                  }
+                  if (!this.list.selectedItems.length || !ownerDomain(this.list)) {
+                    tooltip = ''
                     validate = false
                   }
                   return {
@@ -174,6 +178,11 @@ export default {
                 },
               },
             ]
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length,
+            }
           },
         },
       ],
