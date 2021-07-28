@@ -723,5 +723,6 @@
   "cloudenv.project_mapping_cloudprovider": "云订阅",
   "cloudenv.project_mapping_use_cloudprovider": "应用订阅",
   "cloudenv.cloudprovider.delete_tip": "本次操作仅删除本地记录，对云上没有影响。若云上没有删除，在下次同步时会恢复。",
-  "cloudenv.cloudprovider.sync_delete": "同步中不支持此操作"
+  "cloudenv.cloudprovider.sync_delete": "同步中不支持此操作",
+  "cloudenv.text_605": "{0}平台不支持此操作"
 }

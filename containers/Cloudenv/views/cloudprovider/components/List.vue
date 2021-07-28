@@ -80,7 +80,7 @@ export default {
                         action: 'enable',
                       },
                     })
-                    // this.$store.dispatch('auth/getCapabilities')
+                    this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
                   },
                   async (obj) => {
                     const ids = this.list.selectedItems.map(item => item.id)
@@ -90,7 +90,7 @@ export default {
                         action: 'disable',
                       },
                     })
-                    // this.$store.dispatch('auth/getCapabilities')
+                    this.$bus.$emit('CloudAccountListSingleRefresh', [this.data.id])
                   },
                 ],
                 metas: [

@@ -2,9 +2,11 @@ import { mapGetters } from 'vuex'
 import { changeToArr } from '@/utils/utils'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
+import { typeClouds } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
 const steadyStatus = Object.values(expectStatus.cloudaccount).flat()
+const brandMap = typeClouds.getBrand()
 
 export default {
   computed: {
@@ -157,20 +159,22 @@ export default {
               meta: () => {
                 let tooltip
                 let validate = obj.can_delete
-                if (obj.brand !== 'Azure') {
-                  tooltip = i18n.t('cloudenv.text_333')
-                  validate = false
-                }
-                if (!ownerDomain(obj)) {
-                  tooltip = i18n.t('cloudenv.text_358')
+                if (obj.sync_status === 'syncing') {
+                  tooltip = i18n.t('cloudenv.cloudprovider.sync_delete')
                   validate = false
                 }
                 if (obj.enabled) {
                   tooltip = i18n.t('network.text_310')
                   validate = false
                 }
-                if (obj.sync_status === 'syncing') {
-                  tooltip = i18n.t('cloudenv.cloudprovider.sync_delete')
+                if (!ownerDomain(obj)) {
+                  tooltip = i18n.t('cloudenv.text_358')
+                  validate = false
+                }
+                if (obj.brand !== 'Azure') {
+                  const opt = brandMap[obj.brand]
+                  const brand = (opt && opt.label) || obj.brand
+                  tooltip = i18n.t('cloudenv.text_605', [brand])
                   validate = false
                 }
                 return {
