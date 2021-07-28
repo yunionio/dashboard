@@ -1,23 +1,43 @@
 <template>
-  <div class="oc-term-box" v-show="openCloudShell">
-    <xterm :connectParams="connectParams" :height="height" class="oc-term-content" />
-    <div class="oc-term-resize" title="term resize">
+  <div class="oc-term-box" id="oc-term-box" v-if="openCloudShell">
+    <div class="oc-term-resize" title="term resize" v-dragging>
       <div class="mask">一</div>
       <a-icon class="oc-term-close" type="close" @click="closeCloudShell" />
+    </div>
+    <div class="oc-term-content">
+      <xterm :connectParams="connectParams" class="w-100 h-100" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import debounce from 'lodash/debounce'
 
 export default {
   name: 'OcTerm',
+  directives: {
+    dragging (el) {
+      const current = el
+      const targetDiv = document.getElementById('oc-term-box')
+      current.onmousedown = function (e) {
+        document.onmousemove = function (e) {
+          let th = document.body.clientHeight - e.clientY
+          if (th < 100) {
+            th = 100
+          }
+          targetDiv.style.height = th + 'px'
+        }
+        document.onmouseup = function (e) {
+          document.onmousemove = null
+          document.onmouseup = null
+        }
+        return false
+      }
+    },
+  },
   data () {
     return {
       connectParams: '',
-      height: 300,
     }
   },
   computed: {
@@ -41,56 +61,7 @@ export default {
       }
     },
   },
-  created () {
-    this.cluster_manager = new this.$Manager('kubeclusters', 'v1')
-    this.pod_manager = new this.$Manager('pods', 'v1')
-  },
-  mounted () {
-    this.initDrag()
-  },
   methods: {
-    initDrag () {
-      var resize = document.getElementsByClassName('oc-term-resize')[0]
-      var mask = document.getElementsByClassName('mask')[0]
-      var bottom = document.getElementsByClassName('oc-term-content')[0]
-      var that = this
-
-      bottom.style.height = resize.bottom + 'px'
-      that.height = resize.bottom
-
-      resize.onmousedown = function (e) {
-        var startY = e.clientY
-        mask.style.height = '300px'
-        mask.style.background = 'transparent'
-        resize.bottom = bottom.offsetHeight
-
-        function moveHandle (e) {
-          var endY = e.clientY
-          var clientHeight = document.documentElement.clientHeight || document.body.clientHeight
-          var moveLen = resize.bottom + (startY - endY)
-          if (moveLen > clientHeight) {
-            moveLen = clientHeight - 20
-          }
-          if (moveLen < 10) {
-            moveLen = 0
-          }
-
-          resize.style.bottom = moveLen + 'px'
-          bottom.style.height = moveLen + 'px'
-          that.height = moveLen
-        }
-
-        document.onmousemove = debounce(moveHandle, 300)
-        resize.onmouseup = document.onmouseup = function (evt) {
-          mask.style.height = '20px'
-          document.onmousemove = null
-          document.onmouseup = null
-          resize.releaseCapture && resize.releaseCapture() // 当你不在需要继续获得鼠标消息就要应该调用ReleaseCapture()释放掉
-        }
-        resize.setCapture && resize.setCapture() // 该函数在属于当前线程的指定窗口里设置鼠标捕获
-        return false
-      }
-    },
     async fetchData () {
       const { data } = await new this.$Manager('webconsole', 'v1').objectRpc({
         methodname: 'DoCloudShell',
@@ -111,23 +82,18 @@ export default {
   position: fixed;
   bottom: 0;
   height: 200px;
-  width: 100%;
+  left: 0;
+  right: 0;
   z-index: 999;
-}
-.oc-term-content {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 200px;
-  background: #fff;
 }
 .oc-term-resize {
   position: absolute;
-  bottom: 200px;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 20px;
-  width: 100%;
-  color: #fff;
   background-color: #eaeaea;
+  color: #fff;
   &:hover {
     color: #eaeaea;
     .mask {
@@ -153,5 +119,21 @@ export default {
   color: rgba(0, 0, 0, 0.45);
   z-index: 99;
   cursor: pointer;
+}
+.oc-term-content {
+  position: absolute;
+  top: 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000;
+  padding-bottom: 20px;
+  ::v-deep {
+    #xterm {
+      height: 100% !important;
+      min-height: auto !important;
+    }
+  }
+
 }
 </style>
