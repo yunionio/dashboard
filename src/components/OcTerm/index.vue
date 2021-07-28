@@ -1,11 +1,11 @@
 <template>
   <div class="oc-term-box" id="oc-term-box" v-if="openCloudShell">
-    <div class="oc-term-resize" title="term resize" v-dragging>
+    <div class="oc-term-resize" title="term resize" v-dragging="handleResize">
       <div class="mask">一</div>
       <a-icon class="oc-term-close" type="close" @click="closeCloudShell" />
     </div>
     <div class="oc-term-content">
-      <xterm :connectParams="connectParams" class="w-100 h-100" />
+      <xterm ref="xterm" :connectParams="connectParams" class="w-100 h-100" />
     </div>
   </div>
 </template>
@@ -16,18 +16,19 @@ import { mapState } from 'vuex'
 export default {
   name: 'OcTerm',
   directives: {
-    dragging (el) {
+    dragging (el, binding) {
       const current = el
       const targetDiv = document.getElementById('oc-term-box')
-      current.onmousedown = function (e) {
-        document.onmousemove = function (e) {
+      current.onmousedown = (e) => {
+        document.onmousemove = (e) => {
           let th = document.body.clientHeight - e.clientY
           if (th < 100) {
             th = 100
           }
           targetDiv.style.height = th + 'px'
+          binding.value()
         }
-        document.onmouseup = function (e) {
+        document.onmouseup = (e) => {
           document.onmousemove = null
           document.onmouseup = null
         }
@@ -72,6 +73,9 @@ export default {
     },
     closeCloudShell () {
       this.$store.commit('common/SET_OPEN_CLOUDSHELL', false)
+    },
+    handleResize () {
+      this.$refs.xterm.term.fit()
     },
   },
 }
@@ -133,7 +137,9 @@ export default {
       height: 100% !important;
       min-height: auto !important;
     }
+    .xterm-viewport {
+      height: 100% !important;
+    }
   }
-
 }
 </style>
