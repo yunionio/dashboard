@@ -62,7 +62,7 @@
                   <template v-for="item of domainProjects">
                     <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
                       <div class="d-flex h-100 align-items-center">
-                        <div class="flex-fill text-truncate" v-if="isSingleProject(domainProjects, item.domain_id)">{{ item.domain }}</div>
+                        <div class="flex-fill text-truncate" v-if="isSingleProject(domainProjects, item)">{{ item.domain }}</div>
                         <div class="flex-fill text-truncate" v-else>{{ item.domain }}({{ item.name }})</div>
                         <div style="width: 20px;" class="ml-1">
                           <a-icon v-show="scope === 'domain' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
@@ -272,15 +272,11 @@ export default {
       }, this.userInfo.projects)
     },
     domainProjects () {
-      const domainIds = []
-      const ret = []
-      R.forEach(item => {
-        if (item.domain_capable && !domainIds.includes(item.domain_id)) {
-          domainIds.push(item.domain_id)
-          ret.push(item)
-        }
-      }, this.projects)
-      return ret
+      const ret = this.projects.filter(v => v.domain_capable === true)
+      return R.uniqWith((a, b) => {
+        return this.isSingleProject(ret, a) && this.isSingleProject(ret, b) &&
+          a.domain_id === b.domain_id && R.equals(a.domain_policies, b.domain_policies)
+      })(ret)
     },
     systemProjects () {
       return this.projects.filter(v => v.system_capable === true)
@@ -671,8 +667,19 @@ export default {
         })
       }
     },
-    isSingleProject (projects, domain_id) {
-      const num = projects.filter(v => v.domain_id === domain_id)?.length
+    isSingleProject (projects, item) {
+      const sameDomainProjects = projects.filter(v => v.domain_id === item.domain_id)
+      const num = sameDomainProjects?.length
+
+      if (num > 1) {
+        const isAll = sameDomainProjects.every(v => {
+          return R.equals(v.domain_policies, item.domain_policies)
+        })
+
+        if (isAll) {
+          return true
+        }
+      }
       return num === 1
     },
   },
