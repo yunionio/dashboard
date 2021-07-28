@@ -13,7 +13,7 @@
       <page-body>
         <components
           :is="currentTabMsg.component"
-          :response-data="currentTabData || {}"
+          :get-params="currentTabParams"
           :show-group-actions="false"
           :show-searchbox="false" />
       </page-body>
@@ -126,6 +126,9 @@ export default {
     },
     currentTabData () {
       return this.searchMaps[this.currentTab].resData.data || {}
+    },
+    currentTabParams () {
+      return this.searchMaps[this.currentTab].params
     },
   },
   watch: {
