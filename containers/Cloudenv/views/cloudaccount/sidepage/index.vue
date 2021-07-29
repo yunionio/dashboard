@@ -102,6 +102,7 @@ export default {
       } else if (this.params.windowData.currentTab === 'cloudgroup-list') {
         return {
           provider: this.data.data && this.data.data.provider,
+          domain_id: this.data.data && this.data.data.domain_id,
         }
       } else if (this.params.windowData.currentTab === 'externalproject-list') {
         return () => {
