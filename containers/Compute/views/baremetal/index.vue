@@ -41,17 +41,17 @@ export default {
     this.fetchResStatistics()
   },
   beforeDestroy () {
-    this.serverStaticsManager = null
+    this.resStaticsManager = null
   },
   methods: {
     fetchResStatistics () {
       this.errorFilterStatus = []
       this.otherFilterStatus = []
-      console.log(1)
+
       this.resStaticsManager.list({
         params: {
           scope: this.$store.getters.scope,
-          hypervisor: 'baremetal',
+          baremetal: true,
         },
       }).then(res => {
         const { ready = {}, running = {} } = res.data
