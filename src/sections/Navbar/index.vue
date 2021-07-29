@@ -139,7 +139,7 @@
       </a-tooltip>
     </div>
     <!-- cloudsheel -->
-    <cloud-shell class="navbar-item-icon primary-color-hover" />
+    <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
     <slot name="behindNavbar" />
     <!-- 更多 -->
     <slot name="morePopover">
