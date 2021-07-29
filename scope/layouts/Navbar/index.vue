@@ -31,7 +31,7 @@
         </a-menu>
       </a-dropdown>
     </div>
-    <cloud-shell class="navbar-item-icon primary-color-hover" />
+    <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
     <div class="navbar-item">
       <a-dropdown :trigger="['click']">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
@@ -71,7 +71,7 @@ export default {
   },
   mixins: [WindowsMixin],
   computed: {
-    ...mapGetters(['userInfo', 'scope', 'logo', 'permission', 'scopeResource', 'setting']),
+    ...mapGetters(['isAdminMode', 'userInfo', 'scope', 'logo', 'permission', 'scopeResource', 'setting']),
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
         const menus = this.userInfo.menus.map(item => {
