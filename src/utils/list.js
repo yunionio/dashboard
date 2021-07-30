@@ -793,14 +793,21 @@ class CreateList {
    */
   async fetchDistinctField (item) {
     try {
+      let params = {
+        scope: this.templateContext.$store.getters.scope,
+        [item.distinctField.type]: item.distinctField.key,
+        ...(R.is(Function, item.distinctField.getParams) ? item.distinctField.getParams() : item.distinctField.getParams),
+        ...this.getOptionParams(),
+      }
+      params = {
+        ...params,
+        ...this.genFilterParams(params),
+      }
       const response = await this.onManager('get', {
         managerArgs: {
           id: 'distinct-field',
           params: {
-            // ...this.params,
-            scope: this.templateContext.$store.getters.scope,
-            [item.distinctField.type]: item.distinctField.key,
-            ...(R.is(Function, item.distinctField.getParams) ? item.distinctField.getParams() : item.distinctField.getParams),
+            ...params,
           },
         },
       })
