@@ -34,7 +34,7 @@
           <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
           <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
         </a-form-item>
-        <template v-if="cloudEnv !== 'onpremise'">
+        <template v-if="cloudEnv === 'public'">
           <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
             <base-select
               class="w-50"
@@ -42,6 +42,7 @@
               resource="cloudproviders"
               :params="cloudproviderParams"
               :isDefaultSelect="true"
+              :needParams="true"
               :showSync="true"
               :select-props="{ placeholder: $t('compute.text_149') }"
               :resList.sync="cloudproviderData" />
@@ -160,6 +161,9 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     cloudproviderParams () {
+      if (this.cloudregion.length === 0) {
+        return {}
+      }
       const params = {
         limit: 0,
         enabled: 1,
@@ -188,21 +192,20 @@ export default {
     regionParams () {
       const res = {
         cloud_env: this.cloudEnv,
+        usable: false,
+        status: 'inservice',
       }
       if (this.cloudEnv === 'idc') {
         if (this.isAdminMode) {
           return {
-            usable: true,
             show_emulated: true,
             project_domain: this.project_domain,
           }
         }
         return {
-          usable: true,
           show_emulated: true,
         }
       } else if (this.cloudEnv === 'public') {
-        res.usable = false
         if (this.isAdminMode) {
           res.project_domain = this.project_domain
         }
@@ -218,6 +221,7 @@ export default {
   },
   watch: {
     cloudEnv () {
+      this.cloudregion = ''
       this.$refs.areaSelects.fetchs(['provider', 'cloudregion'])
     },
   },
@@ -236,7 +240,7 @@ export default {
     },
     cloudregionMapper (data) {
       if (this.cloudEnv === 'private') {
-        return data.filter(item => item.provider === 'OpenStack')
+        return data.filter(item => item.provider !== 'ZStack')
       }
       return data
     },
