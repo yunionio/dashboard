@@ -1442,5 +1442,8 @@
   "compute.disk.cache_mode.select_tip": "请选择缓存模式",
   "compute.driver_exchange_tip": "提示：修改了磁盘驱动后，需要重启虚拟机才能生效",
   "compute.webapp": "应用程序服务",
-  "compute.webapp.web": "Web应用"
+  "compute.webapp.web": "Web应用",
+  "compute.webapp.tech.stack": "技术栈",
+  "compute.webapp.type": "应用类型",
+  "compute.webapp.kind": "种类"
 }

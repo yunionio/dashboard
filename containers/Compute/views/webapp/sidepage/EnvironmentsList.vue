@@ -6,9 +6,12 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
+import ListMixin from '@/mixins/list'
 
 export default {
   name: 'EnvironmentsListForWebAppSidepage',
+  mixins: [WindowsMixin, ListMixin],
   props: {
     resId: String,
     data: {
@@ -19,18 +22,18 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
-        resource: 'appenvironments',
+        resource: 'webappenvironments',
         getParams: {
           app_id: this.data.id,
         },
       }),
       columns: [
         {
-          field: 'appenvironments',
+          field: 'name',
           title: '环境',
           minWidth: 100,
           formatter: ({ row }) => {
-            return row.appenvironments
+            return row.name
           },
         },
         {

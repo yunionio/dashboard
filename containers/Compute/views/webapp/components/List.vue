@@ -34,14 +34,17 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'appps',
+        resource: 'webapps',
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
           brand: getBrandFilter('compute_engine_brands'),
           status: getStatusFilter('webapp'),
           tech_stack: {
-            label: '技术栈',
+            label: this.$t('compute.webapp.tech.stack'),
+            formatter: val => {
+              return `${val}`
+            },
           },
           projects: getTenantFilter(),
           cloudaccount: getAccountFilter(),
@@ -67,7 +70,7 @@ export default {
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'WebAppSidePage', {
         id: row.id,
-        resource: 'apps',
+        resource: 'webapps',
         getParams: this.getParam,
       }, {
         list: this.list,

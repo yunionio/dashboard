@@ -1,10 +1,13 @@
+import i18n from '@/locales'
+import { WEBAPP_TYPE } from '../constants'
+
 export const getTypeTableColumn = () => {
   return {
     field: 'type',
-    title: '应用类型',
+    title: i18n.t('compute.webapp.type'),
     minWidth: 100,
     formatter: ({ row }) => {
-      return row.type
+      return WEBAPP_TYPE[row.type]?.label
     },
   }
 }
@@ -12,7 +15,7 @@ export const getTypeTableColumn = () => {
 export const getKindTableColumn = () => {
   return {
     field: 'kind',
-    title: '种类',
+    title: i18n.t('compute.webapp.kind'),
     minWidth: 100,
     formatter: ({ row }) => {
       return row.kind
@@ -23,7 +26,7 @@ export const getKindTableColumn = () => {
 export const getTechStackTableColumn = () => {
   return {
     field: 'tech_stack',
-    title: '技术栈',
+    title: i18n.t('compute.webapp.tech.stack'),
     minWidth: 100,
     formatter: ({ row }) => {
       return row.tech_stack

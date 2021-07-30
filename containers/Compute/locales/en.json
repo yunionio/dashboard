@@ -1441,6 +1441,9 @@
   "compute.driver.select_tip": "Please select a disk driver",
   "compute.disk.cache_mode.select_tip": "Please select cache mode",
   "compute.driver_exchange_tip": "Tip: after modifying the disk driver, you need to restart the virtual machine to take effect",
-  "compute.webapp": "webapp",
-  "compute.webapp.web": "web"
+  "compute.webapp": "Webapp",
+  "compute.webapp.web": "Web",
+  "compute.webapp.tech.stack": "Stack",
+  "compute.webapp.type": "Type",
+  "compute.webapp.kind": "Kind"
 }

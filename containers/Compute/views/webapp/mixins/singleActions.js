@@ -5,7 +5,7 @@ export default {
         label: this.$t('common.text00043'),
         action: (obj) => {
           this.onManager('performAction', {
-            steadyStatus: ['running', 'ready'],
+            steadyStatus: ['ready'],
             id: obj.id,
             managerArgs: {
               action: 'syncstatus',
