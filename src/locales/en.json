@@ -2418,7 +2418,7 @@
       "memory_mb": "Memory(MB)",
       "disk_mb": "Disk(MB)",
       "user_tag": "User Tag",
-      "ext_tag": "External Tag",
+      "ext_tag": "External Tags",
       "flavor": "Configuration",
       "enable_status": "Enable Status",
       "strategy": "Strategy",
