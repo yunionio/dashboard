@@ -47,7 +47,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'detail' },
-        { label: '环境', key: 'environments-list' },
+        { label: this.$t('compute.webapp.env'), key: 'environments-list' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }

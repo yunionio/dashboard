@@ -1445,5 +1445,8 @@
   "compute.webapp.web": "Web",
   "compute.webapp.tech.stack": "Stack",
   "compute.webapp.type": "Type",
-  "compute.webapp.kind": "Kind"
+  "compute.webapp.kind": "Kind",
+  "compute.webapp.env": "Environments",
+  "compute.webapp.instance_type": "Instance Type",
+  "compute.webapp.instance_number": "Instance Number"
 }

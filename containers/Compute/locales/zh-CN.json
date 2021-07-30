@@ -1445,5 +1445,8 @@
   "compute.webapp.web": "Web应用",
   "compute.webapp.tech.stack": "技术栈",
   "compute.webapp.type": "应用类型",
-  "compute.webapp.kind": "种类"
+  "compute.webapp.kind": "种类",
+  "compute.webapp.env": "环境",
+  "compute.webapp.instance_type": "套餐",
+  "compute.webapp.instance_number": "实例数量"
 }

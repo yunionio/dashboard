@@ -30,7 +30,7 @@ export default {
       columns: [
         {
           field: 'name',
-          title: '环境',
+          title: this.$t('compute.webapp.env'),
           minWidth: 100,
           formatter: ({ row }) => {
             return row.name
@@ -38,7 +38,7 @@ export default {
         },
         {
           field: 'instance_type',
-          title: '套餐',
+          title: this.$t('compute.webapp.instance_type'),
           minWidth: 100,
           formatter: ({ row }) => {
             return row.instance_type
@@ -46,7 +46,7 @@ export default {
         },
         {
           field: 'instance_number',
-          title: '实例数量',
+          title: this.$t('compute.webapp.instance_number'),
           minWidth: 100,
           formatter: ({ row }) => {
             return row.instance_number
@@ -62,7 +62,7 @@ export default {
               data: [obj],
               columns: this.columns,
               title: this.$t('common.action.delete'),
-              name: '环境',
+              name: this.$t('compute.webapp.env'),
               onManager: this.onManager,
             })
           },
