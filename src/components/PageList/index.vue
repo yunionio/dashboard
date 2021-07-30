@@ -29,6 +29,7 @@
       :fetch-distinct-field="fetchDistinctField"
       :before-show-menu-loaded="beforeShowMenuLoaded"
       :extTagParams="extTagParams"
+      :show-ext-tags="showExtTags"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -180,6 +181,10 @@ export default {
       default () {
         return {}
       },
+    },
+    showExtTags: {
+      type: Boolean,
+      default: false,
     },
   },
   provide: {
