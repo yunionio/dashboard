@@ -963,6 +963,9 @@
       "sync_status": "Sync status",
       "unavailable": "Unavailable",
       "unknown": "Unknown"
+    },
+    "webapp": {
+      "ready": "Ready"
     }
   },
   "skuCategoryOptions": {

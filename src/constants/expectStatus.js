@@ -428,4 +428,7 @@ export default {
     info: ['unknown', 'unavailable'],
     danger: ['delete_failed'],
   },
+  webapp: {
+    success: ['ready'],
+  },
 }
