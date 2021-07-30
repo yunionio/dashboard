@@ -975,6 +975,9 @@
       "sync_status": "同步状态",
       "unavailable": "不可用",
       "unknown": "未知"
+    },
+    "webapp": {
+      "ready": "正常"
     }
   },
   "skuCategoryOptions": {

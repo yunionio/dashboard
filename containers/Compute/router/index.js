@@ -1,6 +1,7 @@
 import DiskCreate from '@Compute/views/disk/create/index'
 import VMInstance from '@Compute/views/vminstance'
 import Baremetal from '@Compute/views/baremetal'
+import WebApp from '@Compute/views/webapp'
 import BaremetalCreate from '@Compute/views/baremetal/create/index'
 import Image from '@Compute/views/image'
 import ImageImport from '@Compute/views/image/image-import/index'
@@ -195,6 +196,20 @@ export default {
               path: 'create',
               meta: {},
               component: ScalingGroupCreate,
+            },
+          ],
+        },
+        {
+          path: '/webapp',
+          meta: {
+            label: i18n.t('compute.webapp'),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'WebApp',
+              path: '',
+              component: WebApp,
             },
           ],
         },
