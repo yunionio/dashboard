@@ -6,6 +6,7 @@
       :params="params"
       :value="tagFilter"
       :managerInstance="tagManagerInstance"
+      :show-ext-tags="showExtTags"
       @change="handleTagFilterChange">
       <template v-slot:trigger>
         <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />{{$t('common.text00012')}}</a-button>
@@ -50,6 +51,7 @@ export default {
         return {}
       },
     },
+    showExtTags: Boolean,
   },
   computed: {
     params () {

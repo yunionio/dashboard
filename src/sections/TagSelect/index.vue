@@ -43,7 +43,7 @@
             </div>
           </li>
         </ul>
-        <!-- <ul class="tag-list" v-if="showExtTags">
+        <ul class="tag-list" v-if="showExtTags && extTags.length > 0">
           <li class="tag-tip">{{$t('common_262')}}</li>
           <li
             class="tag-item"
@@ -57,7 +57,7 @@
               <a-icon class="check-icon" type="check" />
             </div>
           </li>
-        </ul> -->
+        </ul>
         <ul :style="valueWrapStyle" v-if="search || showValue" class="tag-list values-wrap" ref="value-wrap">
           <li class="d-flex align-items-center tag-tip">
             <div class="flex-fill" style="font-size: 12px;">{{$t('common_263')}}</div>
@@ -150,6 +150,7 @@ export default {
     defaultChecked: {
       type: Object,
     },
+    showExtTags: Boolean,
   },
   data () {
     return {
@@ -199,9 +200,6 @@ export default {
     },
     showUserTags () {
       return this.userTags.length > 0
-    },
-    showExtTags () {
-      return this.extTags.length > 0
     },
     currentValue () {
       if (!this.mouseenterType || !this.mouseenterKey) return []
