@@ -47,7 +47,7 @@
           <li class="tag-tip">{{$t('common_262')}}</li>
           <li
             class="tag-item"
-            v-for="item of extTags"
+            v-for="item of filtedExtTags"
             :key="item.key"
             :class="{checked: checkedKeys.includes(item.key), disabled: getTagDisabled(item.key)}"
             @mouseenter="handleKeyMouseenter('extTags', item.key, $event)"
@@ -158,6 +158,7 @@ export default {
       loading: false,
       userTags: [],
       filtedUserTags: [],
+      filtedExtTags: [],
       extTags: [],
       valueWrapTop: 0,
       valueWrapBottom: 0,
@@ -289,6 +290,7 @@ export default {
       this.userTags = sortByKeyCaseInsensitive(userRet)
       this.filtedUserTags = this.userTags
       this.extTags = sortByKeyCaseInsensitive(extRet)
+      this.filtedExtTags = this.extTags
     },
     getTagTitle,
     handleSearchInput (val) {
@@ -306,8 +308,10 @@ export default {
       if (val) {
         // this.filtedUserTags = this.userTags.filter((tag) => { return tag.key.indexOf(val) >= 0 })
         this.filtedUserTags = this.userTags.filter((tag) => { return filterHandler(tag.key, val) })
+        this.filtedExtTags = this.extTags.filter((tag) => { return filterHandler(tag.key, val) })
       } else {
         this.filtedUserTags = this.userTags
+        this.filtedExtTags = this.extTags
       }
     },
     handleSearchTag (e) {
