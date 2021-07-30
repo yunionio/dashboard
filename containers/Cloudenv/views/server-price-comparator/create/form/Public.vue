@@ -129,7 +129,7 @@ export default {
       return {
         usable: true,
         public_cloud: true,
-        ...this.scopeParams,
+        scope: this.$store.getters.scope,
       }
     },
     cloudregionParams () {
