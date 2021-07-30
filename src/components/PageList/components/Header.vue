@@ -30,6 +30,7 @@
             :tag-manager-instance="tagManagerInstance"
             :tag-filter="tagFilter"
             :extTagParams="extTagParams"
+            :show-ext-tags="showExtTags"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
         </template>
       </div>
@@ -142,6 +143,9 @@ export default {
       default () {
         return {}
       },
+    },
+    showExtTags: {
+      type: Boolean,
     },
   },
   computed: {
