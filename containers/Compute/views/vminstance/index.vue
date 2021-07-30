@@ -96,6 +96,7 @@ export default {
       this.serverStaticsManager.list({
         params: {
           scope: this.$store.getters.scope,
+          filter: 'hypervisor.notin(baremetal,container)',
         },
       }).then(res => {
         const { ready = {}, running = {} } = res.data
