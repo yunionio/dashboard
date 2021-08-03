@@ -52,7 +52,22 @@ export default {
           region: getRegionFilter(),
         },
       }),
-      groupActions: [],
+      groupActions: [
+        {
+          label: this.$t('common.text00043'),
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['ready'],
+              managerArgs: {
+                action: 'syncstatus',
+              },
+            })
+          },
+          meta: () => ({
+            validate: this.list.selected.length,
+          }),
+        },
+      ],
     }
   },
   created () {
