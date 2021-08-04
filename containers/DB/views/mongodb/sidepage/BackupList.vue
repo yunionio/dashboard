@@ -6,11 +6,11 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
+// import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'MongodbBackupList',
@@ -28,12 +28,11 @@ export default {
       list: this.$list.createList(this, {
         id: 'MongodbBackupListForMongoDBSidePage',
         resource: this.fetchData,
-        // apiVersion: 'v1',
         getParams: this.params,
-        steadyStatus: Object.values(expectStatus.redisBackup).flat(),
+        steadyStatus: Object.values(expectStatus.mongodbBackup).flat(),
         filterOptions: {
-          name: getNameFilter(),
-          status: getStatusFilter('redisBackup'),
+          // name: getNameFilter(),
+          // status: getStatusFilter('mongodbBackup'),
           backup_mode: {
             label: this.$t('db.text_36'),
             dropdown: true,
@@ -60,16 +59,6 @@ export default {
           },
         },
         {
-          field: 'engine',
-          title: this.$t('db.text_112'),
-          width: 100,
-          slots: {
-            default: ({ row }) => {
-              return `${row.engine} ${row.engine_version}`
-            },
-          },
-        },
-        {
           field: 'backup_size_mb',
           title: this.$t('db.text_38'),
           width: 100,
@@ -79,8 +68,7 @@ export default {
             },
           },
         },
-        getBrandTableColumn(),
-        getStatusTableColumn({ statusModule: 'redisBackup' }),
+        getStatusTableColumn({ statusModule: 'mongodbBackup' }),
         {
           title: this.$t('db.text_39'),
           minWidth: 150,
@@ -96,7 +84,6 @@ export default {
             },
           },
         },
-        getRegionTableColumn(),
       ],
     }
   },

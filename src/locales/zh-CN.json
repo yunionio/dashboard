@@ -989,6 +989,11 @@
       "rebooting": "重启中",
       "unknown": "未知",
       "sync_status": "同步状态"
+    },
+    "mongodbBackup": {
+      "available": "正常",
+      "unavailable": "不可用",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {

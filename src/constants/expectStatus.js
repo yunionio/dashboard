@@ -436,4 +436,8 @@ export default {
     info: ['unknown'],
     danger: ['delete_failed'],
   },
+  mongodbBackup: {
+    success: ['available'],
+    info: ['unknown', 'unavailable'],
+  },
 }

@@ -966,6 +966,22 @@
     },
     "webapp": {
       "ready": "Ready"
+    },
+    "mongodb": {
+      "running": "Running",
+      "creating": "Creating",
+      "deploy": "Deploy",
+      "change_config": "Change Config",
+      "deleting": "Deleting",
+      "delete_failed": "Delete Failed",
+      "rebooting": "Rebotting",
+      "unknown": "Unknown",
+      "sync_status": "Sync Status"
+    },
+    "mongodbBackup": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "unknown": "Unknown"
     }
   },
   "skuCategoryOptions": {

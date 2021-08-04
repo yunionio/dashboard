@@ -121,12 +121,12 @@ export default {
           path: '/mongodb',
           meta: {
             label: i18n.t('dictionary.mongodb'),
-            // permission: 'redis_elasticcaches_list',
+            permission: 'mongodb_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.redis')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.mongodb')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'apsara'])
+              return false
             },
           },
           component: Layout,
