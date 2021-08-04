@@ -11,7 +11,10 @@
             :cloudaccount-id="params.cloudaccount.id"
             :user.sync="form.fi.user"
             :project.sync="form.fi.project"
-            :cloudprovider-id="form.fi.cloudprovider.id" />
+            :cloudprovider-id="form.fi.cloudprovider.id"
+            :defaultDomainId="params.defaultDomainId"
+            :defaultProjectId="params.defaultProjectId"
+            :defaultUserId="params.userId" />
         </a-form-item>
         <a-form-item :label="$t('dictionary.cloudusergroup')" :extra="$t('samluser.create_cloudgroup_extra')">
           <list-select
@@ -45,6 +48,12 @@ export default {
     ListSelect,
   },
   mixins: [DialogMixin, WindowsMixin],
+  props: {
+    params: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data () {
     return {
       loading: false,

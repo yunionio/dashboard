@@ -10,6 +10,7 @@
 <script>
 import get from 'lodash/get'
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
@@ -52,6 +53,9 @@ export default {
             this.createDialog('SamluserCreateDialog', {
               onManager: this.onManager,
               cloudaccount: this.cloudaccount,
+              defaultDomainId: this.userInfo.projectDomainId,
+              defaultProjectId: this.userInfo.projectId,
+              userId: this.userInfo.id,
             })
           },
           meta: () => {
@@ -78,6 +82,9 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+  },
   watch: {
     cloudEnv (val) {
       this.$nextTick(() => {
@@ -88,6 +95,7 @@ export default {
   created () {
     this.initSidePageTab('samluser-detail')
     this.list.fetchData()
+    console.log('xxxxxxxxxx', this.userInfo)
   },
   methods: {
     getParam () {
