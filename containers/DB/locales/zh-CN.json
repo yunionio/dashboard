@@ -390,7 +390,6 @@
   "db.redis.replicas": "副本{0}",
   "db.redis.qcloud.multizone.tooltips": "启用多可用区部署的实例暂不支持该操作",
   "db.text_377": "引擎版本",
-  "db.text_378": "配置类型",
   "db.text_379": "分片集群",
   "db.text_380": "副本集",
   "db.text_381": "无服务器",
