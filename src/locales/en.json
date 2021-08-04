@@ -965,7 +965,8 @@
       "unknown": "Unknown"
     },
     "webapp": {
-      "ready": "Ready"
+      "ready": "Ready",
+      "sync_status": "Syncing"
     },
     "mongodb": {
       "running": "Running",

@@ -977,7 +977,8 @@
       "unknown": "未知"
     },
     "webapp": {
-      "ready": "正常"
+      "ready": "正常",
+      "sync_status": "同步中"
     },
     "mongodb": {
       "running": "运行中",
