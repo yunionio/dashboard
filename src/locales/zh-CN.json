@@ -978,6 +978,17 @@
     },
     "webapp": {
       "ready": "正常"
+    },
+    "mongodb": {
+      "running": "运行中",
+      "creating": "创建中",
+      "deploy": "部署",
+      "change_config": "调整配置",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "rebooting": "重启中",
+      "unknown": "未知",
+      "sync_status": "同步状态"
     }
   },
   "skuCategoryOptions": {
@@ -2408,7 +2419,8 @@
     "message_queue": "消息队列",
     "kafka": "Kafka",
     "data_analysis": "数据分析",
-    "elasticsearch": "Elasticsearch"
+    "elasticsearch": "Elasticsearch",
+    "mongodb": "MongoDB实例"
   },
   "res": {
     "role": "@:dictionary.role",

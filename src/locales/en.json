@@ -2396,7 +2396,8 @@
     "message_queue": "Message Queue",
     "kafka": "Kafka",
     "data_analysis": "Data Analysis",
-    "elasticsearch": "Elasticsearch"
+    "elasticsearch": "Elasticsearch",
+    "mongodb": "MongoDB Instance"
   },
   "res": {
     "role": "Role",

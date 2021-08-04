@@ -712,6 +712,15 @@ export const PERMISSION = {
   redis_elasticcacheacls_list: ['compute', 'elasticcacheacls', 'list'],
   redis_elasticcacheacls_delete: ['compute', 'elasticcacheacls', 'delete'],
   redis_elasticcacheacls_create: ['compute', 'elasticcacheacls', 'create'],
+
+  /**
+   * mongodb
+   */
+  mongodb_list: ['compute', 'mongodb', 'list'],
+  mongodb_delete: ['compute', 'mongodb', 'delete'],
+  mongodb_perform_delete: ['compute', 'mongodb', 'perform', 'delete'],
+  mongodb_perform_syncstatus: ['compute', 'mongodb', 'perform', 'syncstatus'],
+
   /**
    * 预留IP
    */

@@ -7,6 +7,7 @@ import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+import MongoDB from '@DB/views/mongodb'
 
 export default {
   index: 60,
@@ -103,6 +104,37 @@ export default {
               name: 'RedisCreate',
               path: 'create',
               component: RedisCreate,
+            },
+          ],
+        },
+      ],
+    },
+    /**
+     * MongoDB
+     */
+    {
+      meta: {
+        label: i18n.t('dictionary.mongodb'),
+      },
+      submenus: [
+        {
+          path: '/mongodb',
+          meta: {
+            label: i18n.t('dictionary.mongodb'),
+            // permission: 'redis_elasticcaches_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.redis')) {
+                return true
+              }
+              return !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'apsara'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'MongoDB',
+              path: '',
+              component: MongoDB,
             },
           ],
         },
