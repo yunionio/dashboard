@@ -121,11 +121,11 @@ export default {
         ],
         owner_id: [
           'owner_id',
-          // {
-          //   rules: [
-          //     { required: true, message: this.$t('common.select') },
-          //   ],
-          // },
+          {
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
         ],
         cloudprovider_id: [
           'cloudprovider_id',

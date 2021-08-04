@@ -83,7 +83,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+    ...mapGetters(['userInfo']),
   },
   watch: {
     cloudEnv (val) {
@@ -95,7 +95,6 @@ export default {
   created () {
     this.initSidePageTab('samluser-detail')
     this.list.fetchData()
-    console.log('xxxxxxxxxx', this.userInfo)
   },
   methods: {
     getParam () {
