@@ -431,4 +431,13 @@ export default {
   webapp: {
     success: ['ready'],
   },
+  mongodb: {
+    success: ['running'],
+    info: ['unknown'],
+    danger: ['delete_failed'],
+  },
+  mongodbBackup: {
+    success: ['available'],
+    info: ['unknown', 'unavailable'],
+  },
 }

@@ -388,5 +388,10 @@
   "db.secgroup.action_diable_tooltip": "{0} basic edition instance does not support this operation",
   "db.redis.replicas_zones": "Multi-Zone Deployments",
   "db.redis.replicas": "Replicas {0}",
-  "db.redis.qcloud.multizone.tooltips": "Qcloud not support this operation"
+  "db.redis.qcloud.multizone.tooltips": "Qcloud not support this operation",
+  "db.text_377": "Engine Version",
+  "db.text_379": "Sharding",
+  "db.text_380": "Replicate",
+  "db.text_381": "Serverless",
+  "db.text_382": "{0} nodes"
 }

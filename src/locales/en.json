@@ -967,6 +967,22 @@
     "webapp": {
       "ready": "Ready",
       "sync_status": "Syncing"
+    },
+    "mongodb": {
+      "running": "Running",
+      "creating": "Creating",
+      "deploy": "Deploy",
+      "change_config": "Change Config",
+      "deleting": "Deleting",
+      "delete_failed": "Delete Failed",
+      "rebooting": "Rebotting",
+      "unknown": "Unknown",
+      "sync_status": "Sync Status"
+    },
+    "mongodbBackup": {
+      "available": "Available",
+      "unavailable": "Unavailable",
+      "unknown": "Unknown"
     }
   },
   "skuCategoryOptions": {
@@ -2397,7 +2413,8 @@
     "message_queue": "Message Queue",
     "kafka": "Kafka",
     "data_analysis": "Data Analysis",
-    "elasticsearch": "Elasticsearch"
+    "elasticsearch": "Elasticsearch",
+    "mongodb": "MongoDB Instance"
   },
   "res": {
     "role": "Role",
