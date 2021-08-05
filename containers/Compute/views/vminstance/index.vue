@@ -21,7 +21,6 @@
 
 <script>
 import VmInstanceList from './components/List'
-import ResStatusTab from '@/sections/ResStatusTab'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
 
@@ -29,7 +28,6 @@ export default {
   name: 'VmInstanceIndex',
   components: {
     VmInstanceList,
-    ResStatusTab,
   },
   mixins: [ResStatisticsMixin],
   data () {
