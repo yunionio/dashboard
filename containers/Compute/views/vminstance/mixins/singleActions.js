@@ -1346,7 +1346,7 @@ export default {
                       ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
-                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key && obj.hypervisor !== typeClouds.hypervisorMap.openstack.key) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
