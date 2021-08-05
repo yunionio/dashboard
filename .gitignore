@@ -22,4 +22,5 @@ pnpm-debug.log*
 
 # local dev server config files
 dev.server.config.js
+test.server.config.js
 
