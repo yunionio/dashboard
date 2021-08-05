@@ -10,6 +10,10 @@
 
 <script>
 
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
 import ColumnsMixin, { getFileSystemTypeColumn, getFileSystemStorageTypeColumn } from '../mixins/columns'
 import {
   getPublicScopeTableColumn,
@@ -35,6 +39,8 @@ export default {
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'file_system', columns: () => this.columns, tipName: this.$t('dictionary.filesystem') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'file_system', columns: () => this.columns, tipName: this.$t('dictionary.filesystem') }),
         getPublicScopeTableColumn({ vm: this, resource: 'file_systems' }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
