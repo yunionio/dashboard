@@ -19,14 +19,12 @@
 
 <script>
 import HostList from './components/List'
-import ResStatusTab from '@/sections/ResStatusTab'
 import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
 
 export default {
   name: 'HostIndex',
   components: {
     HostList,
-    ResStatusTab,
   },
   mixins: [ResStatisticsMixin],
   data () {

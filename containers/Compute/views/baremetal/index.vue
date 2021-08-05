@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import ResStatusTab from '@/sections/ResStatusTab'
 import BaremetalList from './components/List'
 import ResStatisticsMixin from '@/mixins/resStatisticsMixin'
 
@@ -26,7 +25,6 @@ export default {
   name: 'BaremetalIndex',
   components: {
     BaremetalList,
-    ResStatusTab,
   },
   mixins: [ResStatisticsMixin],
   data () {
