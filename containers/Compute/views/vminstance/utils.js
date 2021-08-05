@@ -211,7 +211,7 @@ const actionEableMap = {
       vmware: false,
       baremetal: false,
       huawei: false,
-      openstack: false,
+      openstack: true,
       zstack: false,
       dstack: false,
       ucloud: false,
