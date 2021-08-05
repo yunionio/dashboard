@@ -16,6 +16,7 @@
 <script>
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -28,7 +29,7 @@ import regexp from '@/utils/regexp'
 
 export default {
   name: 'HostList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
     getParams: {

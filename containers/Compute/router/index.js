@@ -203,6 +203,12 @@ export default {
           path: '/webapp',
           meta: {
             label: i18n.t('compute.webapp'),
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.webapp')) {
+                return true
+              }
+              return !hasSetupKey(['azure'])
+            },
           },
           component: Layout,
           children: [

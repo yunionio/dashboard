@@ -22,6 +22,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { SERVER_TYPE } from '@Compute/constants'
 import ListMixin from '@/mixins/list'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import {
   getNameFilter,
   getBrandFilter,
@@ -44,7 +45,7 @@ import regexp from '@/utils/regexp'
 
 export default {
   name: 'VmInstanceList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
     getParams: {
@@ -54,10 +55,6 @@ export default {
     cloudEnv: String,
     cloudEnvOptions: {
       type: Array,
-    },
-    filterParams: {
-      type: Object,
-      default: () => ({}),
     },
     hiddenFilterOptions: {
       type: Array,
@@ -1010,40 +1007,6 @@ export default {
       this.$nextTick(() => {
         this.list.fetchData(0)
       })
-    },
-    filterParams: {
-      handler: function (val) {
-        if (!val.isFirstLoad) {
-          const filterStatus = this.list.filter.status || []
-          val.statusCheckArr.forEach((item) => {
-            if (!filterStatus.includes(item)) {
-              filterStatus.push(item)
-            }
-          })
-          if (val.statusCheckArr && val.statusCheckArr.length > 0) {
-            this.list.changeFilter({ ...this.list.filter, status: val.statusCheckArr })
-            this.list.filterOptions.status.items = []
-            const statusArrTem = this.list.filterOptions.status.items || []
-            val.statusArr.forEach((item) => {
-              const isExist = statusArrTem.some((obj) => { return obj.key === item })
-              if (!isExist) {
-                statusArrTem.push({
-                  key: item,
-                  label: this.$t(`status.server.${item}`),
-                })
-              }
-            })
-            this.list.filterOptions.status.items = statusArrTem
-          } else {
-            delete this.list.filter.status
-            this.list.changeFilter({ ...this.list.filter })
-          }
-        }
-      },
-      deep: true,
-    },
-    'list.filter' (val) {
-      this.$bus.$emit('ServerFilterChange', val)
     },
   },
   created () {
