@@ -131,6 +131,14 @@ const options = [
     w: 10,
     component: 'BillHistoryLine',
   },
+  {
+    label: i18n.t('dashboard.userinfo'),
+    desc: '',
+    icon: 'res-user2',
+    h: 4,
+    w: 5,
+    component: 'UserInfo',
+  },
 ]
 
 export default options

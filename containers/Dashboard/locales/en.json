@@ -248,5 +248,11 @@
   "dashboard.uneffective_account_health": "Number of invalid cloud accounts",
   "dashboard.consumption_percent": "Proportion of consumption this month",
   "dashboard.consumption_percent_info": "Show the consumption proportion of each resource and platform this month",
-  "dashboard.each": ""
+  "dashboard.each": "",
+  "dashboard.userinfo": "UserInfo",
+  "dashboard.text_185": "Welcome，",
+  "dashboard.text_186": "Current role：",
+  "dashboard.text_187": "current project：",
+  "dashboard.text_188": "System time：",
+  "dashboard.text_189": "Last login："
 }

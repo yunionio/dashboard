@@ -248,5 +248,11 @@
   "dashboard.uneffective_account_health": "无效的云账号数量",
   "dashboard.consumption_percent": "本月消费占比",
   "dashboard.consumption_percent_info": "显示本月各资源和平台的消费占比",
-  "dashboard.each": "个"
+  "dashboard.each": "个",
+  "dashboard.userinfo": "个人信息",
+  "dashboard.text_185": "欢迎，",
+  "dashboard.text_186": "当前角色：",
+  "dashboard.text_187": "当前项目：",
+  "dashboard.text_188": "平台时间：",
+  "dashboard.text_189": "最后登录："
 }
