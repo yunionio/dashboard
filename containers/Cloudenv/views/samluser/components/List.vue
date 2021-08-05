@@ -10,6 +10,7 @@
 <script>
 import get from 'lodash/get'
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
@@ -52,6 +53,9 @@ export default {
             this.createDialog('SamluserCreateDialog', {
               onManager: this.onManager,
               cloudaccount: this.cloudaccount,
+              defaultDomainId: this.userInfo.projectDomainId,
+              defaultProjectId: this.userInfo.projectId,
+              userId: this.userInfo.id,
             })
           },
           meta: () => {
@@ -77,6 +81,9 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    ...mapGetters(['userInfo']),
   },
   watch: {
     cloudEnv (val) {

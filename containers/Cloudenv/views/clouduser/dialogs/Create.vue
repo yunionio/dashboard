@@ -38,7 +38,10 @@
             :cloudaccount-id="params.cloudaccount.id"
             :user.sync="form.fi.user"
             :project.sync="form.fi.project"
-            :cloudprovider-id="form.fi.cloudprovider.id" />
+            :cloudprovider-id="form.fi.cloudprovider.id"
+            :defaultDomainId="params.defaultDomainId"
+            :defaultProjectId="params.defaultProjectId"
+            :defaultUserId="params.userId" />
         </a-form-item>
         <a-form-item :label="$t('system.text_146')" class="mb-0" :extra="isEnableMail ? '' : $t('system.is_config_mail_tips')">
           <a-input v-decorator="decorators.email" :disabled="!isEnableMail" :placeholder="$t('system.email_placeholder')" />
@@ -72,6 +75,12 @@ export default {
     ListSelect,
   },
   mixins: [DialogMixin, WindowsMixin],
+  props: {
+    params: {
+      type: Object,
+      defualt: () => {},
+    },
+  },
   data () {
     return {
       loading: false,
@@ -112,11 +121,11 @@ export default {
         ],
         owner_id: [
           'owner_id',
-          // {
-          //   rules: [
-          //     { required: true, message: this.$t('common.select') },
-          //   ],
-          // },
+          {
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
         ],
         cloudprovider_id: [
           'cloudprovider_id',

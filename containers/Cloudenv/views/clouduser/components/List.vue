@@ -10,6 +10,7 @@
 <script>
 import get from 'lodash/get'
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
@@ -62,6 +63,9 @@ export default {
             this.createDialog('ClouduserCreateDialog', {
               onManager: this.onManager,
               cloudaccount: this.cloudaccount,
+              defaultDomainId: this.userInfo.projectDomainId,
+              defaultProjectId: this.userInfo.projectId,
+              userId: this.userInfo.id,
             })
           },
           meta: () => {
@@ -100,6 +104,9 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    ...mapGetters(['userInfo']),
   },
   created () {
     this.initSidePageTab('clouduser-detail')
