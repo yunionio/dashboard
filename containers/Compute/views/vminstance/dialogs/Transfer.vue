@@ -114,9 +114,13 @@ export default {
       return this.params.data.length === 1
     },
     hostsParams () {
+      let hostType = 'hypervisor'
+      if (this.firstData.hypervisor !== 'kvm') {
+        hostType = this.firstData.hypervisor
+      }
       const ret = {
         scope: this.scope,
-        host_type: 'hypervisor',
+        host_type: hostType,
         limit: 20,
         enabled: 1,
         host_status: 'online',
