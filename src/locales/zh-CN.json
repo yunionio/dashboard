@@ -234,8 +234,8 @@
       "queuing": "准备同步"
     },
     "redis": {
-      "RUNNING": "正常",
-      "running": "正常",
+      "RUNNING": "运行中",
+      "running": "运行中",
       "restarting": "重启中",
       "restart_failed": "重启失败",
       "deploying": "创建中",
