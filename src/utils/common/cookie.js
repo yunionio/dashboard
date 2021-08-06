@@ -58,3 +58,8 @@ export function getExchangeRateAvailable () {
   const exchangeRateAvailable = getQueryVariable('exchangeRateAvailable') || Cookies.get('exchangeRateAvailable') || true
   return exchangeRateAvailable
 }
+
+export function getCostConversionOrigin () {
+  const costConversionOrigin = getQueryVariable('costConversionOrigin') || Cookies.get('costConversionOrigin') || true
+  return costConversionOrigin
+}
