@@ -54,10 +54,12 @@ export default {
       }
       if (state.bill.costConversionOrigin) {
         payload.map(item => {
-          currencyOpts.push({
-            item_id: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_id,
-            item_name: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_name,
-          })
+          if (item.item_id.indexOf('BRL') === -1) {
+            currencyOpts.push({
+              item_id: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_id,
+              item_name: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_name,
+            })
+          }
         })
       }
       state.bill.currencyOpts = currencyOpts
@@ -126,10 +128,12 @@ export default {
           }
           if (data[0].cost_conversion_origin) {
             data.map(item => {
-              currencyList.push({
-                item_id: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_id,
-                item_name: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_name,
-              })
+              if (item.item_id.indexOf('BRL') === -1) {
+                currencyList.push({
+                  item_id: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_id,
+                  item_name: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_name,
+                })
+              }
             })
           }
           const isExsit = currencyList.find(v => v.item_id === state.bill.currency)
