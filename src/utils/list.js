@@ -336,9 +336,9 @@ class CreateList {
     this.clearSelected()
   }
 
-  async fetchData (offset, limit) {
+  async fetchData (offset, limit, showDetails) {
     this.loading = true
-    this.params = this.genParams(offset, limit)
+    this.params = this.genParams(offset, limit, showDetails)
     try {
       // 如果有id并且没有获取过列表配置则获取列表配置
       if (this.id) {
@@ -394,6 +394,11 @@ class CreateList {
       }
       if (R.is(Function, this.fetchDataCb)) {
         this.fetchDataCb()
+      }
+      if (!showDetails && this.total > 0) {
+        setTimeout(() => {
+          this.fetchData(offset, limit, true)
+        }, 1)
       }
       return response.data
     } catch (error) {
@@ -495,11 +500,16 @@ class CreateList {
    * @returns {Object}
    * @memberof CreateList
    */
-  genParams (offset, limit) {
+  genParams (offset, limit, showDetails) {
     let params = {
       scope: this.templateContext.$store.getters.scope,
       show_fail_reason: true,
       ...this.getOptionParams(),
+    }
+    if (showDetails) {
+      params.details = true
+    } else {
+      params.details = false
     }
     if (limit) {
       params.limit = limit
