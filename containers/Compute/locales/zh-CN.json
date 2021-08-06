@@ -1433,5 +1433,21 @@
   "compute.monitor.agent.install_status.uninstall": "未安装",
   "compute.monitor.basic": "基础监控",
   "compute.monitor.agent": "Agent监控",
-  "compute.network_status_desc": "绿点表示该网络地址段下有可供使用的IP资源"
+  "compute.monitor.agent.temperature": "温度监控",
+  "compute.network_status_desc": "绿点表示该网络地址段下有可供使用的IP资源",
+  "compute.disk_name": "磁盘名称",
+  "compute.cache_mode": "缓存模式",
+  "compute.disk.change_driver": "修改磁盘驱动",
+  "compute.driver.update": "修改驱动",
+  "compute.driver.select_tip": "请选择磁盘驱动",
+  "compute.disk.cache_mode.select_tip": "请选择缓存模式",
+  "compute.driver_exchange_tip": "提示：修改了磁盘驱动后，需要重启虚拟机才能生效",
+  "compute.webapp": "应用程序服务",
+  "compute.webapp.web": "Web应用",
+  "compute.webapp.tech.stack": "技术栈",
+  "compute.webapp.type": "应用类型",
+  "compute.webapp.kind": "种类",
+  "compute.webapp.env": "环境",
+  "compute.webapp.instance_type": "套餐",
+  "compute.webapp.instance_number": "实例数量"
 }
