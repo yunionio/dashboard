@@ -97,7 +97,7 @@ export default {
       const us = this.userInfo
       const ret = [
         { label: this.$t('dashboard.text_186'), value: us.roles.join(',') },
-        { label: this.$t('dashboard.text_187'), value: us.projectName },
+        { label: this.$t('dashboard.text_187'), value: `${us.projectName} (${us.projectDomain})` },
         { label: this.$t('dashboard.text_189'), value: this.$moment(us.last_active_at).format('') },
       ]
       return ret
