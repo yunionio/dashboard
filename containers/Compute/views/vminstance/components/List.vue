@@ -936,7 +936,7 @@ export default {
                         ret.validate = false
                         return ret
                       }
-                      if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm')) {
+                      if (this.list.selectedItems.some(item => item.hypervisor !== 'kvm' && item.hypervisor !== 'openstack')) {
                         ret.validate = false
                         return ret
                       }
