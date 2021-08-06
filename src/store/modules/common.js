@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import storage from '@/utils/storage'
-import { getCurrency, setCookieVal, getExchangeRateAvailable } from '@/utils/common/cookie'
+import { getCurrency, setCookieVal, getExchangeRateAvailable, getCostConversionOrigin } from '@/utils/common/cookie'
 import { Manager } from '@/utils/manager'
 
 export default {
@@ -11,6 +11,7 @@ export default {
       currency: getCurrency() || '',
       currencyOpts: [],
       exchangeRateAvailable: getExchangeRateAvailable() || true,
+      costConversionOrigin: getCostConversionOrigin() || true,
       globalConfig: {},
     },
     k8s: {
@@ -39,22 +40,39 @@ export default {
       state.bill.currency = payload
     },
     SET_BILL_CURRENCYOPTS (state, payload) {
+      let currencyOpts = []
       if (!state.bill.exchangeRateAvailable) {
-        state.bill.currencyOpts = payload
+        currencyOpts = payload
       } else {
         // 添加以汇率为单位的某个账单
-        state.bill.currencyOpts = payload.map(item => {
+        currencyOpts = payload.map(item => {
           return {
             item_id: '_' + item.item_id,
             item_name: '_' + item.item_name,
           }
         })
       }
+      if (state.bill.costConversionOrigin) {
+        payload.map(item => {
+          currencyOpts.push({
+            item_id: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_id,
+            item_name: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_name,
+          })
+        })
+      }
+      state.bill.currencyOpts = currencyOpts
     },
     SET_BILL_EXCHANGE_RATE_AVAILABLE (state, payload) {
       setCookieVal('exchangeRateAvailable', payload)
       state.bill.exchangeRateAvailable = payload
       // 更新账单选择类型
+      const optsList = state.bill.currencyOpts.filter(item => item.item_id === -1)
+      this.commit('SET_BILL_CURRENCYOPTS', optsList)
+    },
+    SET_BILL_COST_CONVERSION_ORIGIN (state, payload) {
+      setCookieVal('costConversionOrigin', payload)
+      state.bill.costConversionOrigin = payload
+      // 账单选择类型
       const optsList = state.bill.currencyOpts.filter(item => item.item_id === -1)
       this.commit('SET_BILL_CURRENCYOPTS', optsList)
     },
@@ -92,6 +110,7 @@ export default {
         }
         const { data: { data = [] } } = await new Manager('bill_conditions', 'v1').list({ params })
         commit('SET_BILL_EXCHANGE_RATE_AVAILABLE', data && data[0] ? data[0].exchange_rate_available || false : true)
+        commit('SET_BILL_COST_CONVERSION_ORIGIN', data && data[0] ? data[0].cost_conversion_origin || false : true)
         commit('SET_BILL_CURRENCYOPTS', data)
         if (data && data.length > 0) {
           let currencyList = []
@@ -104,6 +123,14 @@ export default {
             })
           } else {
             currencyList = data
+          }
+          if (data[0].cost_conversion_origin) {
+            data.map(item => {
+              currencyList.push({
+                item_id: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_id,
+                item_name: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_name,
+              })
+            })
           }
           const isExsit = currencyList.find(v => v.item_id === state.bill.currency)
           commit('SET_BILL_CURRENCY', isExsit ? state.bill.currency : currencyList[0].item_id)
