@@ -75,10 +75,10 @@ export default {
       historyUsers: state => state.historyUsers,
     }),
     secret () {
-      return _.get(this.historyUsers, `${this.$store.getters['auth/currentHistoryUserKey']}.secret`)
+      return _.get(this.historyUsers, [this.$store.getters['auth/currentHistoryUserKey'], 'secret'])
     },
     secretImg () {
-      return `data:image/png;base64,${_.get(this.historyUsers, `${this.$store.getters['auth/currentHistoryUserKey']}.secret`)}`
+      return `data:image/png;base64,${_.get(this.historyUsers, [this.$store.getters['auth/currentHistoryUserKey'], 'secret'])}`
     },
   },
   watch: {
