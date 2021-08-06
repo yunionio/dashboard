@@ -56,7 +56,7 @@
               <a-collapse-panel v-if="chartDetail.yaml !== ''" :header="$t('helm.text_33')" key="desc">
                 <div v-html="compiledMarkdown" />
               </a-collapse-panel>
-              <a-collapse-panel :header="$t('helm.text_34')" key="yaml">
+              <a-collapse-panel :header="$t('helm.text_34')" key="yaml" v-if="false">
                 <template-preview :previewFiles="previewFiles" />
               </a-collapse-panel>
             </a-collapse>
