@@ -65,7 +65,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('cloudenv.text_268') },
-              // { validator: this.$validate(['url', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
+              { validator: this.$validate(['domain', 'IPv4'], true, 'some'), trigger: ['blur', 'change'], message: '请输入域名或者ip' },
             ],
           },
         ],
