@@ -320,9 +320,13 @@ export default {
         usable: true,
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
+        host_type: 'hypervisor',
       }
-      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fd[this.decorators.systemDisk.storage[0]]) {
-        params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        params.host_type = 'esxi'
+        if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
+          params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+        }
       }
       return params
     },
