@@ -247,8 +247,8 @@
       "queuing": "Ready to synchronize"
     },
     "redis": {
-      "RUNNING": "Normal",
-      "running": "Normal",
+      "RUNNING": "Running",
+      "running": "Running",
       "restarting": "Restarting",
       "restart_failed": "Restart failed",
       "deploying": "Creating",
