@@ -182,7 +182,7 @@ export default {
       const { currency } = this.form.fd
       if (currency) {
         const params = {
-          exchanged_currency: currency.replace('_', ''),
+          exchanged_currency: currency.replace('_', '').replace('*', ''),
           filter: [`currency.equals("${currency}")`],
         }
         if (currency.indexOf('_') !== -1) {
@@ -190,6 +190,7 @@ export default {
         } else {
           params.exchanged_currency = ''
         }
+        params.disable_cost_conversion = currency.indexOf('*') !== -1
         return params
       }
       return {}

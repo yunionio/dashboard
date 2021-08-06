@@ -108,7 +108,7 @@ export default {
       const { currency } = this.fd
       if (currency) {
         const params = {
-          exchanged_currency: currency.replace('_', ''),
+          exchanged_currency: currency.replace('_', '').replace('*', ''),
           filter: [`currency.equals("${currency}")`],
         }
         if (currency.indexOf('_') !== -1) {
@@ -116,6 +116,7 @@ export default {
         } else {
           params.exchanged_currency = ''
         }
+        params.disable_cost_conversion = currency.indexOf('*') !== -1
         return params
       }
       return {}
@@ -211,10 +212,17 @@ export default {
       return this.currencyOpts.map(val => {
         const localItem = currencyUnitMap[val.item_id]
         const text = localItem ? localItem.label : val.item_name
-        return {
-          ...val,
-          item_name: val.item_id.indexOf('_') === -1 ? this.$t('bill.text_39', [text]) : this.$t('bill.text_287', [val.item_name.replace('_', '')]),
+        const currencyItem = { ...val }
+        if (val.item_id.indexOf('*_') !== -1) {
+          currencyItem.item_name = this.$t('bill.show_origin_2', [val.item_name.replace('*_', '')])
+        } else if (val.item_id.indexOf('_') !== -1) {
+          currencyItem.item_name = this.$t('bill.text_287', [val.item_name.replace('_', '')])
+        } else if (val.item_id.indexOf('*') !== -1) {
+          currencyItem.item_name = this.$t('bill.show_origin_1', [val.item_name.replace('*', '')])
+        } else {
+          currencyItem.item_name = this.$t('bill.text_39', [text])
         }
+        return currencyItem
       })
     },
   },
