@@ -1,5 +1,6 @@
 import {
   getNameDescriptionTableColumn,
+  getTagTableColumn,
   getStatusTableColumn,
   getBrandTableColumn,
   getAccountTableColumn,
@@ -93,6 +94,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'file_system', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'nas' }),
       getFileSystemTypeColumn(),
       getFileSystemStorageTypeColumn(),
