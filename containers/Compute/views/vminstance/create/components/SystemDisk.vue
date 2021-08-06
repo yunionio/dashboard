@@ -228,23 +228,23 @@ export default {
       if (this.ignoreStorageStatus || !this.form.fd.systemDiskType || !this.form.fd.systemDiskType.key) return statusMap
       if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic) {
         const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor] || {}
-        const storageTypes = Object.keys(storageTypes3)
-        for (const item of storageTypes) {
-          const key = Array.isArray(item.split('/')) ? item.split('/')[0] : ''
-          const storages = storageTypes3[item] || {}
-          const isAllEmpty = storages.capacity === 0
-          if (key === this.currentTypeObj.key && isAllEmpty) {
-            // 没有设置容量：XXX存储的容量没有设置，无法创建虚拟机，请到存储--块存储进行设置，如无法查看请联系管理员设置
-            statusMap = { type: 'error', tooltip: this.$t('compute.text_1142', [key]), isError: true }
-            break
+        const storages = []
+        for (const prop in storageTypes3) {
+          if (prop.startsWith(this.currentTypeObj.key)) {
+            storages.push(storageTypes3[prop])
           }
-          if (key === this.currentTypeObj.key && storages.capacity) {
-            // 选择磁盘容量不足：XXX存储的容量不足，无法创建虚拟机，请到存储--块存储进行查看，如无法查看请联系管理员查看
-            if (storages.free_capacity === 0 || storages.free_capacity / 1024 < this.form.fd.systemDiskSize) {
-              statusMap = { type: 'error', tooltip: this.$t('compute.text_1143', [key]), isError: true }
-              break
-            }
-          }
+        }
+        const isAllEmpty = storages.every(v => v.capacity === 0)
+        if (isAllEmpty) {
+          // 没有设置容量：XXX存储的容量没有设置，无法创建虚拟机，请到存储--块存储进行设置，如无法查看请联系管理员设置
+          statusMap = { type: 'error', tooltip: this.$t('compute.text_1142', [this.currentTypeObj.key]), isError: true }
+          return
+        }
+        const isNotEnough = storages.every(v => v.free_capacity === 0 || v.free_capacity / 1024 < this.form.fd.systemDiskSize)
+        if (isNotEnough) {
+          // 选择磁盘容量不足：XXX存储的容量不足，无法创建虚拟机，请到存储--块存储进行查看，如无法查看请联系管理员查看
+          statusMap = { type: 'error', tooltip: this.$t('compute.text_1143', [this.currentTypeObj.key]), isError: true }
+          return
         }
       }
       this.$bus.$emit('VMCreateDisabled', statusMap.isError)
