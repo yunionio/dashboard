@@ -8,6 +8,7 @@
     "Ctyun": "天翼云",
     "JDcloud": "京东云",
     "Apsara": "飞天",
+    "HuaweiCloudStack": "华为云Stack",
     "Ecloud": "移动云"
   },
   "scopeProviders": {
@@ -23,6 +24,7 @@
     "qcloud": "腾讯云",
     "aws": "AWS",
     "huawei": "华为云",
-    "ucloud": "UCloud"
+    "ucloud": "UCloud",
+    "HuaweiCloudStack": "华为云Stack"
   }
 }

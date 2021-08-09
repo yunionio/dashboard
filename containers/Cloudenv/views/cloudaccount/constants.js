@@ -19,6 +19,7 @@ const googleLogo = require('../../../../src/assets/images/providers/gcp.svg')
 const ctyunLogo = require('../../../../src/assets/images/providers/tianyi.svg')
 const apsaraLogo = require('../../../../src/assets/images/providers/apsara.svg')
 const ecloudLogo = require('../../../../src/assets/images/providers/ecloud.svg')
+const huaweicloudstackLogo = require('../../../../src/assets/images/providers/huaweicloudstack.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -116,6 +117,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'ApsaraCreate',
       provider: providerMap.apsara.key,
     },
+    huaweicloudstack: {
+      name: providerMap.huaweicloudstack.label,
+      logo: huaweicloudstackLogo,
+      component: 'HuaweiCloudStackCreate',
+      provider: providerMap.huaweicloudstack.key,
+    },
   },
   storage: {
     s3: {
@@ -166,6 +173,7 @@ export function getCloudaccountDocs (scope) {
     ctyun: i18n.t('cloudenv.text_138', [docs_path]),
     apsara: i18n.t('cloudenv.create_apsara_cloud_account', [docs_path]),
     ecloud: i18n.t('cloudenv.create_ecloud', [docs_path]),
+    huaweicloudstack: i18n.t('cloudenv.create_huaweicloudstack', [docs_path]),
   }
 }
 
@@ -396,6 +404,19 @@ export const keySecretFields = {
     k: 'access_key_id',
     s: 'access_key_secret',
     text: i18n.t('cloudPrvidersMap.Apsara'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  huaweicloudstack: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: i18n.t('cloudPrvidersMap.HuaweiCloudStack'),
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),
