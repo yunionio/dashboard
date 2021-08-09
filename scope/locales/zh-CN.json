@@ -8,7 +8,9 @@
     "Ctyun": "天翼云",
     "JDcloud": "京东云",
     "Apsara": "飞天",
-    "Ecloud": "移动云"
+    "HuaweiCloudStack": "华为云Stack",
+    "Ecloud": "移动云",
+    "Cloudpods": "Cloudpods"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -23,6 +25,10 @@
     "qcloud": "腾讯云",
     "aws": "AWS",
     "huawei": "华为云",
-    "ucloud": "UCloud"
+    "jdcloud": "京东云",
+    "ucloud": "UCloud",
+    "ecloud": "移动云",
+    "HuaweiCloudStack": "华为云Stack",
+    "cloudpods": "Cloudpods"
   }
 }

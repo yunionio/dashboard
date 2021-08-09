@@ -7,6 +7,7 @@
     "Azure": "Azure",
     "Ctyun": "eCloud",
     "Apsara": "Apsara",
+    "HuaweiCloudStack": "Huawei Cloud Stack",
     "Ecloud": "mCloud"
   },
   "scopeProviders": {
@@ -22,6 +23,9 @@
     "qcloud": "Tencent Cloud",
     "aws": "AWS",
     "huawei": "Huawei Cloud",
-    "ucloud": "UCloud"
+    "jdcloud": "JD Cloud",
+    "ucloud": "UCloud",
+    "HuaweiCloudStack": "Huawei Cloud Stack",
+    "ecloud": "mCloud"
   }
 }
