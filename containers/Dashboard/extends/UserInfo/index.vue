@@ -14,7 +14,7 @@
         <div class="flex-fill position-relative d-flex flex-column" style="justify-content: space-around">
           <div class="selected-user-content">
             <div class="mr-2 name-icon">{{ firstNameWord }}</div>
-            <div class="selected-user-name">{{$t('dashboard.text_185')}}{{ userInfo.displayname }}</div>
+            <div class="selected-user-name">{{$t('dashboard.text_185')}}{{ userInfo.displayname || userInfo.name }}</div>
           </div>
           <!-- <div v-for="(item, index) in userTableData" :key="index" class="user-info-text">{{item.label}}{{item.value}}</div> -->
           <div v-for="(item, index) in userTableData" :key="index">
@@ -90,7 +90,7 @@ export default {
   computed: {
     ...mapGetters(['scope', 'userInfo']),
     firstNameWord () {
-      const word = this.userInfo.displayname.split('')[0]
+      const word = (this.userInfo.displayname || this.userInfo.name || '').split('')[0]
       return word && word.toUpperCase()
     },
     userTableData () {
