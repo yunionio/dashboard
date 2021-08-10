@@ -15,7 +15,7 @@
 <script>
 import AreaSelects from '@/sections/AreaSelects'
 const PROVIDERS = {
-  postpaid: ['Aliyun', 'Huawei', 'Google', 'Qcloud'],
+  postpaid: ['Aliyun', 'Huawei', 'Google', 'Qcloud', 'HuaweiCloudStack'],
   prepaid: ['Aliyun', 'Huawei', 'Qcloud'],
 }
 export default {
@@ -72,7 +72,7 @@ export default {
     providerParams () {
       const params = {
         service: this.service,
-        cloud_env: 'public',
+        // cloud_env: 'public',
         ...this.scopeParams,
       }
 
