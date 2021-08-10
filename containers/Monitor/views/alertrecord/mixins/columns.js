@@ -4,7 +4,7 @@ import { BRAND_MAP } from '@/constants'
 
 export default {
   created () {
-    this.columns = [
+    let columns = [
       getNameDescriptionTableColumn({
         edit: false,
         title: this.$t('monitor.text_99'),
@@ -62,7 +62,7 @@ export default {
                   let brand = row.tags.brand
                   if (!brand) return '-'
                   if (brand === 'kvm') brand = 'OneCloud'
-                  return BRAND_MAP[brand].label || brand
+                  return (BRAND_MAP[brand] && BRAND_MAP[brand].label) || brand
                 },
               },
               {
@@ -82,6 +82,12 @@ export default {
         formatter: ({ row }) => this.$t(`status.alertSendState.${row.send_state}`),
       },
     ]
+    if (this.hiddenColumns.length) {
+      columns = columns.filter(item => {
+        return !this.hiddenColumns.some(item2 => item2 === item.field)
+      })
+    }
+    this.columns = columns
     this.extandData = {}
   },
 }

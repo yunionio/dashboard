@@ -72,9 +72,16 @@ export default {
       return tabs
     },
     getParams () {
-      return {
+      const param = {
         alert_id: this.data.id,
       }
+      const { getParams = {} } = this.data
+      const { used_by } = getParams
+      if (used_by) {
+        // 其他模块使用告警记录时，添加此参数进行区分
+        param.used_by = used_by
+      }
+      return param
     },
   },
 }
