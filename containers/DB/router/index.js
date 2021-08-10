@@ -114,7 +114,7 @@ export default {
      */
     {
       meta: {
-        label: i18n.t('dictionary.mongodb'),
+        label: 'MongoDB',
       },
       submenus: [
         {
