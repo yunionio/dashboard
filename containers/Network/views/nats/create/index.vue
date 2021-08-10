@@ -154,7 +154,7 @@ export default {
       const params = {
         limit: 0,
         enabled: 1,
-        cloud_env: 'public',
+        // cloud_env: 'public',
         scope: this.scope,
         provider: this.$store.getters.capability.nat_brands,
       }
