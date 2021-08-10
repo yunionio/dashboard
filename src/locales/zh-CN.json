@@ -1612,6 +1612,7 @@
     "Qcloud": "腾讯云",
     "Azure": "微软云",
     "Ctyun": "天翼云",
+    "HuaweiCloudStack": "华为云Stack",
     "Apsara": "飞天"
   },
   "shareScope": {
@@ -4834,6 +4835,7 @@
   "license.provider.zstack": "@:scopeProviders.zstack",
   "license.provider.apsara": "@:cloudPrvidersMap.Apsara",
   "license.provider.cloudpods": "@:scopeProviders.cloudpods",
+  "license.provider.huaweicloudstack": "@:cloudPrvidersMap.HuaweiCloudStack",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",
