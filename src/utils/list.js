@@ -338,7 +338,6 @@ class CreateList {
 
   async fetchData (offset, limit, showDetails) {
     this.loading = true
-    const { details } = this.getOptionParams()
     this.params = this.genParams(offset, limit, showDetails)
     try {
       // 如果有id并且没有获取过列表配置则获取列表配置
@@ -396,7 +395,7 @@ class CreateList {
       if (R.is(Function, this.fetchDataCb)) {
         this.fetchDataCb()
       }
-      if (!showDetails && details && this.total > 0) {
+      if (!showDetails && this.total > 0) {
         setTimeout(() => {
           this.fetchData(offset, limit, true)
         }, 1)
