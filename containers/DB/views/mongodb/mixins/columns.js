@@ -31,7 +31,7 @@ export default {
             if (row.instance_type) {
               ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
             }
-            const config = row.vcpu_count + 'C' + (row.vmem_size_mb ? sizestr(row.vmem_size_mb, 'M', 1024) : '')
+            const config = row.vcpu_count + 'C' + sizestr(row.vmem_size_mb || 0, 'M', 1024) + sizestr(row.disk_size_mb || 0, 'M', 1024)
             return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
           },
         },
@@ -40,10 +40,13 @@ export default {
         field: 'ip_addr',
         title: i18n.t('db.text_152'),
         minWidth: 200,
-        showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
-            return row.ip_addr || '-'
+            if (!row.ip_addr) return '-'
+            const ret = row.ip_addr.split(';').map(ip => {
+              return <list-body-cell-wrap hide-field copy row={{ ip: `${ip}:${row.port}` }} field="ip">{`${ip}:${row.port}`}</list-body-cell-wrap>
+            })
+            return ret
           },
         },
       },

@@ -68,14 +68,6 @@ export default {
                 },
               },
             },
-            // {
-            //   title: this.$t('db.text_378'),
-            //   slots: {
-            //     default: ({ row }) => {
-            //       return '-'
-            //     },
-            //   },
-            // },
             {
               title: this.$t('db.text_119'),
               slots: {
@@ -94,11 +86,11 @@ export default {
               },
             },
             {
-              field: 'capacity_mb',
+              field: 'vmem_size_mb',
               title: this.$t('db.text_132'),
               slots: {
                 default: ({ row }) => {
-                  return sizestr(row.capacity_mb, 'M', 1024)
+                  return sizestr(row.vmem_size_mb, 'M', 1024)
                 },
               },
             },
@@ -118,6 +110,15 @@ export default {
             {
               field: 'ip_addr',
               title: this.$t('db.text_152'),
+              slots: {
+                default: ({ row }) => {
+                  if (!row.ip_addr) return '-'
+                  const ret = row.ip_addr.split(';').map(ip => {
+                    return <list-body-cell-wrap hide-field copy row={{ ip: `${ip}:${row.port}` }} field="ip">{`${ip}:${row.port}`}</list-body-cell-wrap>
+                  })
+                  return ret
+                },
+              },
             },
             {
               field: 'vpc',
@@ -145,21 +146,6 @@ export default {
                   return row.auth_mode === 'on' ? this.$t('db.text_324') : this.$t('db.text_325')
                 },
               },
-            },
-            {
-              field: 'secgroups',
-              title: this.$t('compute.text_105'),
-              slots: {
-                default: ({ row }) => {
-                  if (!row.secgroups) return '-'
-                  return row.secgroups.map((item) => {
-                    return <list-body-cell-wrap copy hideField={true} field='name' row={item} message={item.name}>
-                      <side-page-trigger permission='secgroups_get' name='SecGroupSidePage' id={item.id} vm={this}>{ item.name }</side-page-trigger>
-                    </list-body-cell-wrap>
-                  })
-                },
-              },
-              hidden: () => this.data.brand !== 'Qcloud',
             },
           ],
         },
