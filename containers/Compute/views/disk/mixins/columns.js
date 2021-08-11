@@ -84,7 +84,7 @@ export default {
       getBillingTypeTableColumn(),
       getStatusTableColumn({ statusModule: 'disk' }),
       getProjectTableColumn(),
-      getAccountTableColumn(),
+      getAccountTableColumn({ vm: this }),
       {
         field: 'medium_type',
         title: i18n.t('table.title.disk_medium_type'),

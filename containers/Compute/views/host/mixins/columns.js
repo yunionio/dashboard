@@ -234,7 +234,7 @@ export default {
         },
       },
       getBrandTableColumn(),
-      getAccountTableColumn(),
+      getAccountTableColumn({ vm: this }),
       getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),

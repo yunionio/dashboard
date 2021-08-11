@@ -68,7 +68,7 @@ export default {
         },
       },
       getBrandTableColumn(),
-      getAccountTableColumn(),
+      getAccountTableColumn({ vm: this }),
       getTimeTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),
