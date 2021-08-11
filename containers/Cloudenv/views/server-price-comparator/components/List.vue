@@ -31,6 +31,19 @@ export default {
       }),
       groupActions: [
         {
+          label: this.$t('bill.text_193'),
+          action: (row) => {
+            this.$router.push({
+              path: '/pricecomparator/create',
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+        },
+        {
           label: this.$t('cloudenv.text_108'),
           action: () => {
             let serverPriceComparator = storage.get(PRICE_COMPARA_KEY_SUFFIX) || []
