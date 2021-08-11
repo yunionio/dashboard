@@ -26,6 +26,7 @@ export default {
         apiVersion: 'v1',
         getParams: {
           user: this.$store.getters.userInfo.id,
+          scope: 'user',
         },
         filterOptions: {
           name: getNameFilter(),

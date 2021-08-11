@@ -61,7 +61,7 @@ export default {
         const response = await manager.list({
           params: {
             user: this.$store.getters.userInfo.id,
-            scope: this.$store.getters.scope,
+            scope: 'user',
             limit: 1,
           },
         })
@@ -77,7 +77,7 @@ export default {
         const response = await manager.list({
           params: {
             user: this.$store.getters.userInfo.id,
-            scope: this.$store.getters.scope,
+            scope: 'user',
             limit: 1,
           },
         })
