@@ -47,6 +47,7 @@ import DiskListForVmInstanceSidepage from './DiskList'
 import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
 // import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
 // import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
+import EipListForVmInstanceSidepage from './EipList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -66,6 +67,7 @@ export default {
     VmInstanceMonitorSidepage,
     VmInstanceAlertSidepage,
     VmSnapshotSidepage,
+    EipListForVmInstanceSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -74,6 +76,7 @@ export default {
       { label: this.$t('compute.text_105'), key: 'secgroup-list' },
       // { label: '宿主机', key: 'host-list' },
       { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
+      { label: this.$t('compute.text_107'), key: 'eip-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_462'), key: 'vm-snapshot-sidepage' },
       // { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
@@ -90,6 +93,9 @@ export default {
     }
     if (!hasPermission({ key: 'guestdisks_list' })) {
       detailTabs = R.remove(R.findIndex(R.propEq('key', 'disk-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
+    }
+    if (!hasPermission({ key: 'eip_list' })) {
+      detailTabs = R.remove(R.findIndex(R.propEq('key', 'eip-list-for-vm-instance-sidepage'))(detailTabs), 1, detailTabs)
     }
     return {
       detailTabs,
@@ -119,6 +125,13 @@ export default {
       if (snapshotsTabs.includes(this.params.windowData.currentTab)) {
         return {
           server_id: this.detailData.id,
+        }
+      }
+      if (this.params.windowData.currentTab === 'eip-list-for-vm-instance-sidepage') {
+        return {
+          associate_id: this.detailData.id,
+          detail: true,
+          // show_emulated: true,
         }
       }
       return null
@@ -175,6 +188,8 @@ export default {
           return 'AlertLiskForVminstanceSidepage'
         case 'event-drawer':
           return 'EventListForVminstanceSidepage'
+        case 'eip-list-for-vm-instance-sidepage':
+          return 'EipListForVmInstanceSidepage'
         default:
           return ''
       }
