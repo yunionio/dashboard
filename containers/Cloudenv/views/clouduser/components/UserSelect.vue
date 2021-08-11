@@ -133,8 +133,12 @@ export default {
     this.pm = new this.$Manager('projects', 'v1')
     this.cpm = new this.$Manager('cloudproviders')
     await this.getAccount()
-    if (this.isAdminMode && this.defaultDomainId) {
-      await this.getDefaultDomain()
+    if (this.defaultDomainId) {
+      if (this.isAdminMode) {
+        await this.getDefaultDomain()
+      } else {
+        this.defaultDomain.id = this.defaultDomainId
+      }
     }
     if (this.defaultProjectId) {
       await this.getDefaultProject()
@@ -200,7 +204,8 @@ export default {
         const response = await this.um.get({
           id: this.defaultUserId,
           params: {
-            scope: this.$store.getters.scope,
+            scope: 'system',
+            project_id: this.defaultProjectId,
           },
         })
         this.defaultUser = response.data || {}
@@ -369,8 +374,8 @@ export default {
     // 获取可用的user list
     async fetchUsers (query) {
       const params = {
-        project: this.project,
-        scope: this.scope,
+        project_id: this.project,
+        scope: 'system',
       }
       if (this.isDomainMode) {
         params.project_domain_filter = true
