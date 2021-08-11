@@ -200,18 +200,7 @@ export default {
       }
     },
     async getDefaultUser () {
-      try {
-        const response = await this.um.get({
-          id: this.defaultUserId,
-          params: {
-            scope: 'system',
-            project_id: this.defaultProjectId,
-          },
-        })
-        this.defaultUser = response.data || {}
-      } catch (error) {
-        throw error
-      }
+      this.defaultUser.id = this.defaultUserId
     },
     async getConditionDomains (query) {
       if (!this.isAdminMode) {
@@ -374,24 +363,32 @@ export default {
     // 获取可用的user list
     async fetchUsers (query) {
       const params = {
-        project_id: this.project,
-        scope: 'system',
-      }
-      if (this.isDomainMode) {
-        params.project_domain_filter = true
+        scope: this.$store.getters.scope,
+        show_fail_reason: true,
+        effective: true,
+        resource: 'project',
+        group_by: 'user',
+        limit: 30,
       }
       if (query) {
-        params.filter = `name.contains(${query})`
+        params['users.0'] = query
       }
       try {
-        const response = await this.um.list({
+        const response = await new this.$Manager('role_assignments', 'v1').objectRpc({
+          methodname: 'GetProjectRole',
+          objId: this.defaultProject.id,
           params,
         })
         const data = response.data.data || []
         this.users = data
-        if (!R.isEmpty(this.defaultUser) && R.find(R.propEq('id', this.defaultUser.id))(this.users)) {
+        if (R.find(R.propEq('id', this.defaultUser.id))(this.users)) {
           this.user = this.defaultUser.id
-          this.userObj = { ...this.defaultUser }
+          this.users.map(item => {
+            if (item.id === this.defaultUser.id) {
+              this.userObj = item
+              this.defaultUser.name = item.name
+            }
+          })
         } else if (this.users.length > 0) {
           this.user = this.users[0].id
           this.userObj = this.users[0]
