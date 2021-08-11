@@ -46,7 +46,7 @@ export default {
         getTimeTableColumn({ field: 'updated_at', title: this.$t('compute.text_691') }),
         getBrandTableColumn(),
         getRegionTableColumn(),
-        getAccountTableColumn(),
+        getAccountTableColumn({ vm: this }),
       ],
       singleActions: [
         {

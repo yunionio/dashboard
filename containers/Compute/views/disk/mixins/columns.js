@@ -62,6 +62,7 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
+            if (this.isPreLoad && !row.guest) return [<data-loading />]
             if (!row.guest || row.guests.length <= 0) return '-'
             const guests = row.guests.map((guest, index) => {
               return <side-page-trigger permission="server_get" name="VmInstanceSidePage" id={guest.id} vm={this} tab="vm-instance-detail">
@@ -84,7 +85,7 @@ export default {
       getBillingTypeTableColumn(),
       getStatusTableColumn({ statusModule: 'disk' }),
       getProjectTableColumn(),
-      getAccountTableColumn(),
+      getAccountTableColumn({ vm: this }),
       {
         field: 'medium_type',
         title: i18n.t('table.title.disk_medium_type'),

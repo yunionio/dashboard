@@ -22,7 +22,7 @@ export default {
         showOverflow: 'ellipsis',
         width: 120,
         slotCallback: row => {
-          if (!row.guest_template) return '-'
+          if (!row.guest_template) return [<data-loading />]
           return row.guest_template
         },
       }),
@@ -31,6 +31,12 @@ export default {
         title: i18n.t('compute.text_874'),
         minWidth: 100,
         sortable: true,
+        slots: {
+          default: ({ row }) => {
+            if (row.instance_number === undefined) return [<data-loading />]
+            return row.instance_number
+          },
+        },
       },
       {
         field: 'desire_instance_number',

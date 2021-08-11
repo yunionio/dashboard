@@ -192,6 +192,8 @@ class CreateList {
     genParamsCb = null,
     // fetchData完成后的回调
     fetchDataCb = null,
+    // 标识是否是预加载数据
+    isPreLoad = true,
   }) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
@@ -255,6 +257,7 @@ class CreateList {
     this.extraData = {}
     this.genParamsCb = genParamsCb
     this.fetchDataCb = fetchDataCb
+    this.isPreLoad = isPreLoad
   }
 
   // 重写selectedItems getter和setter
@@ -339,6 +342,7 @@ class CreateList {
   async fetchData (offset, limit, showDetails) {
     this.loading = true
     this.params = this.genParams(offset, limit, showDetails)
+    if (!showDetails) this.isPreLoad = true
     try {
       // 如果有id并且没有获取过列表配置则获取列表配置
       if (this.id) {
@@ -399,6 +403,9 @@ class CreateList {
         setTimeout(() => {
           this.fetchData(offset, limit, true)
         }, 1)
+      }
+      if (showDetails) {
+        this.isPreLoad = false
       }
       return response.data
     } catch (error) {

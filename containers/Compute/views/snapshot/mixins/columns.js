@@ -49,6 +49,11 @@ export default {
       getCopyWithContentTableColumn({
         field: 'disk_name',
         title: i18n.t('res.disk'),
+        hideField: true,
+        slotCallback: (row) => {
+          if (this.isPreLoad && !row.disk_name) return [<data-loading />]
+          return row.disk_name
+        },
       }),
       getStorageTypeTableColumn(),
       {
@@ -58,6 +63,7 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
+            if (this.isPreLoad && !row.guest) return [<data-loading />]
             return [
               <div class='text-truncate'>
                 {row.guest ? <list-body-cell-wrap copy field='guest' row={row} /> : '-'}
@@ -68,7 +74,7 @@ export default {
         },
       },
       getBrandTableColumn(),
-      getAccountTableColumn(),
+      getAccountTableColumn({ vm: this }),
       getTimeTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),

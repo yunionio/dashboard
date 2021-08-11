@@ -26,6 +26,7 @@ export default {
         minWidth: 120,
         slots: {
           default: ({ row }) => {
+            if (row.binding_disk_count === undefined) return [<data-loading />]
             if (row.binding_disk_count <= 0) return row.binding_disk_count
             return [
               <side-page-trigger name='SnapshotPolicySidePage' id={row.id} tab='snapshot-policy-disk' vm={this}>{row.binding_disk_count}</side-page-trigger>,
@@ -40,6 +41,7 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
+            if (row.repeat_weekdays_display === undefined) return [<data-loading />]
             let text = ''
             if (row.repeat_weekdays_display && row.repeat_weekdays_display.length) {
               text += i18n.t('compute.text_1098') + row.repeat_weekdays_display.map(item => weekOptions[item - 1]).join('、')

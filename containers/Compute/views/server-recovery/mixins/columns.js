@@ -33,6 +33,7 @@ export default {
         width: 60,
         slots: {
           default: ({ row }) => {
+            if (this.isPreLoad && !row.metadata) return [<data-loading />]
             let name = (row.metadata && row.metadata.os_distribution) ? row.metadata.os_distribution : row.os_type || ''
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
@@ -51,6 +52,7 @@ export default {
         title: i18n.t('compute.text_111'),
         hideField: true,
         slotCallback: row => {
+          if (this.isPreLoad && !row.host) return [<data-loading />]
           if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
             return '-'
           }

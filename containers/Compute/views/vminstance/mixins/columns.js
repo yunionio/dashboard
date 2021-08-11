@@ -134,7 +134,7 @@ export default {
                 return <list-body-cell-wrap copy row={{ mac }} hide-field field="mac">{ mac }</list-body-cell-wrap>
               })
             }
-            return []
+            return [<data-loading />]
           },
         },
       },
@@ -230,7 +230,7 @@ export default {
               const config = row.disk ? sizestr(row.disk, 'M', 1024) : ''
               return [<list-body-cell-wrap row={{ row }} hide-field field="disk">{ config }</list-body-cell-wrap>]
             }
-            return []
+            return [<data-loading />]
           },
         },
       },
@@ -249,14 +249,22 @@ export default {
         title: i18nLocale.t('res.secgroup'),
         minWidth: 80,
         showOverflow: 'ellipsis',
-        formatter: ({ cellValue = [] }) => {
-          return cellValue.map(item => item.name).join(',')
+        slots: {
+          default: ({ row }) => {
+            if (!row.secgroups) return [<data-loading />]
+            return row.secgroups.map(item => item.name).join(',')
+          },
         },
       },
       getCopyWithContentTableColumn({
         field: 'vpc',
         title: 'VPC',
+        hideField: true,
         hidden: () => this.$store.getters.isProjectMode,
+        slotCallback: (row) => {
+          if (!row.vpc) return [<data-loading />]
+          return row.vpc
+        },
       }),
       getBillingTableColumn({ vm: this, hiddenSetBtn: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_cancel_expire') }),
       getBrandTableColumn(),
@@ -265,7 +273,7 @@ export default {
       //   title: i18nLocale.t('res.cloudaccount'),
       //   hidden: () => this.$store.getters.isProjectMode,
       // }),
-      getAccountTableColumn(),
+      getAccountTableColumn({ vm: this }),
       {
         field: 'host',
         title: i18nLocale.t('res.host'),
@@ -274,6 +282,7 @@ export default {
         minWidth: 100,
         slots: {
           default: ({ row }) => {
+            if (!row.host) return [<data-loading />]
             if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
               return '-'
             }

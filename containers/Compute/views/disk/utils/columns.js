@@ -6,6 +6,7 @@ export const getUnusedTableColumn = ({ hidden } = {}) => {
     width: 70,
     slots: {
       default: ({ row }, h) => {
+        if (!row.guest_count) return [<data-loading />]
         return row.guest_count >= 1 ? [<span class="success-color">{ i18n.t('compute.text_464') }</span>] : [<span class="warning-color">{ i18n.t('compute.text_281') }</span>]
       },
     },

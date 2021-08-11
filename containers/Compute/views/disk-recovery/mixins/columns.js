@@ -35,8 +35,24 @@ export default {
             return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
           },
         },
-        getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('compute.text_99') }),
-        getCopyWithContentTableColumn({ field: 'guest', title: this.$t('dictionary.server') }),
+        getCopyWithContentTableColumn({
+          field: 'storage',
+          title: i18n.t('compute.text_99'),
+          hideField: true,
+          slotCallback: (row) => {
+            if (!row.storage) return [<data-loading />]
+            return row.storage
+          },
+        }),
+        getCopyWithContentTableColumn({
+          field: 'guest',
+          title: this.$t('dictionary.server'),
+          hideField: true,
+          slotCallback: (row) => {
+            if (this.isPreLoad && !row.guest) return [<data-loading />]
+            return row.guest
+          },
+        }),
         getBrandTableColumn(),
         getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
         getProjectTableColumn(),

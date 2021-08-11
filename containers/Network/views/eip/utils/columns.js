@@ -1,11 +1,12 @@
 import i18n from '@/locales'
-export const getAssociateNameTableColumn = (vm) => {
+export const getAssociateNameTableColumn = (vm = {}) => {
   return {
     field: 'associate_name',
     title: i18n.t('network.text_197'),
     minWidth: 120,
     slots: {
       default: ({ row }, h) => {
+        if (vm.isPreLoad && !row.associate_name) return [<data-loading />]
         const type = {
           server: i18n.t('network.text_226'),
           natgateway: i18n.t('network.text_227'),

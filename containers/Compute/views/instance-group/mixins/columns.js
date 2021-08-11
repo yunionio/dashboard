@@ -42,6 +42,7 @@ export default {
         minWidth: 120,
         slots: {
           default: ({ row }) => {
+            if (this.isPreLoad && row.guest_count === undefined) return [<data-loading />]
             return [<side-page-trigger vm={this} name='InstanceGroupSidePage' id={row.id} list={this.list} tab='v-m-instance-list-for-instance-group'>{ row.guest_count }</side-page-trigger>]
           },
         },

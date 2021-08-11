@@ -34,7 +34,7 @@ export default {
       getKindTableColumn(),
       getTechStackTableColumn(),
       getBrandTableColumn(),
-      getAccountTableColumn(),
+      getAccountTableColumn({ vm: this }),
       getRegionTableColumn(),
       getProjectTableColumn(),
     ]

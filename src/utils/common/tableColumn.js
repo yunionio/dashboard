@@ -21,6 +21,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.pr
       default: ({ row }, h) => {
         const ret = []
         const project = row[field]
+        if (!project) return [<data-loading />]
         if (R.is(Array, project)) {
           for (let i = 0, len = project.length; i < len; i++) {
             const row = project[i]
@@ -53,6 +54,7 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)
+        if (!val) return [<data-loading />]
         const ret = []
         ret.push(
           <list-body-cell-wrap hide-field copy field={field} row={row}>
@@ -89,7 +91,7 @@ export const getBrandTableColumn = ({ field = 'brand', title = i18n.t('table.tit
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)
-        if (!val) return '-'
+        if (!val) return [<data-loading />]
         return [
           <BrandIcon name={ val } />,
         ]
@@ -237,6 +239,7 @@ export const getCopyWithContentTableColumn = ({
   slotCallback,
   hidden,
   minWidth = 100,
+  vm = {},
 } = {}) => {
   return {
     field,
@@ -246,6 +249,7 @@ export const getCopyWithContentTableColumn = ({
     minWidth,
     slots: {
       default: ({ row }, h) => {
+        if (vm.isPreLoad && !row[field]) return [<data-loading />]
         const text = (message && R.type(message) === 'Function') ? message(row) : (message || (row[field] && row[field].toString()) || '-')
         return [
           <list-body-cell-wrap copy field={field} row={row} hideField={hideField} message={text}>
@@ -276,6 +280,8 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
                 },
               }),
             ]
+          } else {
+            return [<data-loading />]
           }
         }
         let ret = []
@@ -402,6 +408,7 @@ export const getAccountTableColumn = ({
   field = 'account',
   title = i18n.t('res.cloudaccount'),
   hidden,
+  vm = {},
 } = {}) => {
   return {
     field,
@@ -418,6 +425,7 @@ export const getAccountTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)
+        if (vm.isPreLoad && !val) return [<data-loading />]
         const ret = []
         ret.push(
           <list-body-cell-wrap hide-field copy field={field} row={row}>
