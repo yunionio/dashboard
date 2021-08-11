@@ -3,7 +3,7 @@
     <div slot="header">{{ $t('cloudenv.clouduser_list_a2') }}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('dictionary.clouduser')" :count="params.data.length" :action="$t('cloudenv.clouduser_list_a2')" />
-      <dialog-table class="mb-2" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table class="mb-2" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc"
         v-bind="formItemLayout">
@@ -16,10 +16,9 @@
               v-decorator="decorators.user_id"
               :project.sync="form.fi.project"
               :cloudaccount-id="params.cloudaccount.id"
-              :default-domain-id="defaultDomain"
-              :default-domain-name="defaultDomainName"
-              :default-user-id="defaultUser"
-              :default-project-id="defaultProject"
+              :default-domain-id="userInfo.projectDomainId"
+              :default-user-id="userInfo.id"
+              :default-project-id="userInfo.projectId"
               :cloudprovider-id="params.data[0].cloudprovider_id" />
           </template>
         </a-form-item>
@@ -33,6 +32,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import UserSelect from '../components/UserSelect'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -47,9 +47,6 @@ export default {
     return {
       loading: false,
       userLoading: false,
-      defaultDomain: '',
-      defaultUser: '',
-      defaultDomainName: '',
       form: {
         fc: this.$form.createForm(this),
         fi: {
@@ -76,28 +73,22 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters(['userInfo']),
+    columns () {
+      const columns = this.params.columns.filter(item => {
+        return ['name', 'status', 'owner_name'].indexOf(item.field) !== -1
+      })
+      return columns
+    },
+  },
   destroyed () {
     this.um = null
   },
   created () {
     this.um = new this.$Manager('users', 'v1')
-    if (this.params.data[0].owner_id) {
-      this.getOwnerInfo()
-    }
   },
   methods: {
-    async getOwnerInfo () {
-      this.userLoading = true
-      try {
-        const { data } = await this.um.get({ id: this.params.data[0].owner_id })
-        this.defaultDomain = data.domain_id
-        this.defaultUser = data.id
-        this.defaultProject = data.tenant_id
-        this.defaultDomainName = data.project_domain
-      } finally {
-        this.userLoading = false
-      }
-    },
     async handleConfirm () {
       this.loading = true
       try {
