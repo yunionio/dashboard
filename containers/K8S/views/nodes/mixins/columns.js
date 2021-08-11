@@ -54,7 +54,10 @@ export default {
         title: i18n.t('k8s.text_282'),
         minWidth: 70,
         formatter: ({ row }) => {
-          return (row.allocatedResources.cpuRequests / 1000) + ' / ' + (row.allocatedResources.cpuCapacity / 1000)
+          if (row.allocatedResources) {
+            return (row.allocatedResources.cpuRequests / 1000) + ' / ' + (row.allocatedResources.cpuCapacity / 1000)
+          }
+          return '-'
         },
       },
       {
@@ -62,7 +65,10 @@ export default {
         title: i18n.t('k8s.text_101'),
         minWidth: 70,
         formatter: ({ row }) => {
-          return sizestr(row.allocatedResources.memoryRequests, 'B', 1024) + ' / ' + sizestr(row.allocatedResources.memoryCapacity, 'B', 1024)
+          if (row.allocatedResources) {
+            return sizestr(row.allocatedResources.memoryRequests, 'B', 1024) + ' / ' + sizestr(row.allocatedResources.memoryCapacity, 'B', 1024)
+          }
+          return '-'
         },
       },
       {
@@ -70,7 +76,10 @@ export default {
         title: i18n.t('k8s.text_9'),
         minWidth: 70,
         formatter: ({ row }) => {
-          return row.allocatedResources.allocatedPods + ' / ' + row.allocatedResources.podCapacity
+          if (row.allocatedResources) {
+            return row.allocatedResources.allocatedPods + ' / ' + row.allocatedResources.podCapacity
+          }
+          return '-'
         },
       },
       {

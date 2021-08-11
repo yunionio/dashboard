@@ -20,7 +20,7 @@ export default {
           })
         },
         meta: (obj) => {
-          if (obj.brand.toLowerCase() === 'onecloud') {
+          if (obj.brand && obj.brand.toLowerCase() === 'onecloud') {
             return {
               validate: false,
               tooltip: i18n.t('network.text_652'),
@@ -128,7 +128,7 @@ export default {
             validate: true,
             tooltip: null,
           }
-          if (obj.provider.toLowerCase() === 'azure') {
+          if (obj.provider && obj.provider.toLowerCase() === 'azure') {
             return {
               validate: false,
               tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
