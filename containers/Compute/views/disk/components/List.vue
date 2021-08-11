@@ -249,7 +249,7 @@ export default {
           guest_status: [...Object.values(expectStatus.server).flat(), '', undefined],
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'disk_format', 'storage', 'medium_type', 'created_at'],
+        hiddenColumns: this.hiddenColumns, // ['metadata', 'disk_format', 'storage', 'medium_type', 'created_at'],
       }),
       exportDataOptions: {
         items: [
