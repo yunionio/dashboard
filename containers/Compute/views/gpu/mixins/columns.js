@@ -56,6 +56,7 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
+            if (this.isPreLoad && !row.guest) return [<data-loading />]
             return [
               <div class='text-truncate'>
                 <list-body-cell-wrap copy={true} row={row} onManager={this.onManager} hideField={ true }>
@@ -71,7 +72,10 @@ export default {
         field: 'host',
         title: i18n.t('compute.text_484'),
         hideField: true,
-        slotCallback: row => row.host || row.host_id,
+        slotCallback: row => {
+          if (this.isPreLoad && !(row.host && row.host_id)) return [<data-loading />]
+          return row.host || row.host_id
+        },
       }),
       getReserveResourceColumn(),
       getRegionTableColumn(),

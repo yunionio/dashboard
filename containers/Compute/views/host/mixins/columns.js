@@ -143,11 +143,11 @@ export default {
         minWidth: 100,
         showOverflow: 'title',
         sortable: true,
-        formatter: ({ cellValue, row }) => {
-          if (cellValue) {
-            return '' + cellValue + '/' + percentstr(row.cpu_commit_rate)
-          }
-          return 'N/A'
+        slots: {
+          default: ({ row }) => {
+            if (this.isPreLoad && !row.cpu_commit_rate) return [<data-loading />]
+            return row.cpu_count ? `${row.cpu_count}/${percentstr(row.cpu_commit_rate)}` : 'N/A'
+          },
         },
       },
       {
@@ -155,22 +155,22 @@ export default {
         title: i18n.t('compute.text_564'),
         minWidth: 100,
         sortable: true,
-        formatter: ({ cellValue, row }) => {
-          if (cellValue) {
-            return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.mem_commit_rate)
-          }
-          return 'N/A'
+        slots: {
+          default: ({ row }) => {
+            if (this.isPreLoad && !row.mem_commit_rate) return [<data-loading />]
+            return row.mem_size ? `${sizestr(row.mem_size, 'M', 1024)}/${percentstr(row.mem_commit_rate)}` : 'N/A'
+          },
         },
       },
       {
         field: 'storage',
         title: i18n.t('compute.text_565'),
         minWidth: 80,
-        formatter: ({ cellValue, row }) => {
-          if (cellValue) {
-            return sizestr(cellValue, 'M', 1024) + '/' + percentstr(row.storage_commit_rate)
-          }
-          return 'N/A'
+        slots: {
+          default: ({ row }) => {
+            if (this.isPreLoad && !row.storage) return [<data-loading />]
+            return row.mem_size ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
+          },
         },
       },
       {

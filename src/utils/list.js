@@ -340,9 +340,9 @@ class CreateList {
   }
 
   async fetchData (offset, limit, showDetails) {
-    console.time('aa')
     this.loading = true
     this.params = this.genParams(offset, limit, showDetails)
+    if (!showDetails) this.isPreLoad = true
     try {
       // 如果有id并且没有获取过列表配置则获取列表配置
       if (this.id) {
@@ -407,7 +407,6 @@ class CreateList {
       if (showDetails) {
         this.isPreLoad = false
       }
-      console.timeEnd('aa')
       return response.data
     } catch (error) {
       throw error

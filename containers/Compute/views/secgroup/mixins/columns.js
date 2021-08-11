@@ -29,6 +29,7 @@ export default {
         type: 'expand',
         slots: {
           default: ({ row }) => {
+            if (this.isPreLoad && !row.rules) return [<data-loading />]
             const len = (row.rules && row.rules.length) || 0
             return i18n.t('compute.text_619', [len])
           },
@@ -102,6 +103,7 @@ export default {
         width: 80,
         slots: {
           default: ({ row }, h) => {
+            if (row.guest_cnt === undefined) return [<data-loading />]
             return [
               <span class={{ 'link-color oc-pointer': true }} onClick={ () => this.openAssociateVirtualMachineDialog(row) }>{ row.guest_cnt }</span>,
             ]

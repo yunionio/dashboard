@@ -88,45 +88,48 @@ export default {
         title: i18n.t('compute.text_178'),
         width: 120,
         showOverflow: 'ellipsis',
-        formatter: ({ row }) => {
-          if (!row.spec) return '-'
-          const g = function (sz, prefix) {
-            if (!prefix || prefix.length === 0) {
-              prefix = ''
-            }
-            if (sz && sz > 0) {
-              return `${prefix}${sizestr(sz, 'M', 1024)}`
-            } else {
-              return ''
-            }
-          }
-          const spec = row.spec
-          let cpu = ''
-          if (spec.cpu && spec.cpu > 0) {
-            cpu = `${spec.cpu}C`
-          }
-          const mem = g(spec.mem)
-          let ssd = ''
-          let hdd = ''
-          if (spec.disk) {
-            if (spec.disk.SSD) {
-              ssd = 'SSD'
-              for (const key in spec.disk.SSD) {
-                ssd += `${g(spec.disk.SSD[key])}x${spec.disk.SSD[key]}`
+        slots: {
+          default: ({ row }) => {
+            if (this.isPreLoad && !row.spec) return [<data-loading />]
+            if (!row.spec) return '-'
+            const g = function (sz, prefix) {
+              if (!prefix || prefix.length === 0) {
+                prefix = ''
+              }
+              if (sz && sz > 0) {
+                return `${prefix}${sizestr(sz, 'M', 1024)}`
+              } else {
+                return ''
               }
             }
-            if (spec.disk.HDD) {
-              hdd = 'HDD'
-              for (const key in spec.disk.HDD) {
-                hdd += `${g(key)}x${spec.disk.HDD[key]}`
+            const spec = row.spec
+            let cpu = ''
+            if (spec.cpu && spec.cpu > 0) {
+              cpu = `${spec.cpu}C`
+            }
+            const mem = g(spec.mem)
+            let ssd = ''
+            let hdd = ''
+            if (spec.disk) {
+              if (spec.disk.SSD) {
+                ssd = 'SSD'
+                for (const key in spec.disk.SSD) {
+                  ssd += `${g(spec.disk.SSD[key])}x${spec.disk.SSD[key]}`
+                }
+              }
+              if (spec.disk.HDD) {
+                hdd = 'HDD'
+                for (const key in spec.disk.HDD) {
+                  hdd += `${g(key)}x${spec.disk.HDD[key]}`
+                }
               }
             }
-          }
-          let driver = ''
-          if (spec && spec.driver && spec.driver !== 'Linux') {
-            driver = 'RAID'
-          }
-          return `${cpu}${mem}${hdd}${ssd}${driver}`
+            let driver = ''
+            if (spec && spec.driver && spec.driver !== 'Linux') {
+              driver = 'RAID'
+            }
+            return `${cpu}${mem}${hdd}${ssd}${driver}`
+          },
         },
       },
       getMaintenanceTableColumn(),

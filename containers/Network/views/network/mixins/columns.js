@@ -79,6 +79,7 @@ export default {
         minWidth: 100,
         slots: {
           default: ({ row }) => {
+            if (this.isPreLoad && !row.ports) return [<data-loading />]
             return [
               <div class='text-truncate'>{ this.$t('network.text_727', [row.ports])}</div>,
               <div class='text-truncate'>{ this.$t('network.text_728', [row.ports_used])}</div>,

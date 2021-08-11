@@ -60,6 +60,7 @@ export default {
         minWidth: 120,
         slots: {
           default: ({ row }) => {
+            if (this.isPreLoad && !row.account) return [<data-loading />]
             const ret = []
             ret.push(
               <list-body-cell-wrap hide-field copy field='account' row={row}>
@@ -78,7 +79,7 @@ export default {
         },
         hidden: this.$store.getters.isProjectMode,
       },
-      getAssociateNameTableColumn(),
+      getAssociateNameTableColumn(this),
       getProjectTableColumn(),
       getRegionTableColumn(),
     ]

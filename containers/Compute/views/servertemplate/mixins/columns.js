@@ -40,6 +40,7 @@ export default {
         sortable: true,
         slots: {
           default: ({ row }) => {
+            if (!row.config_info) return [<data-loading />]
             const { sku, disks } = row.config_info
             const diskSize = disks.map(item => item.size_mb).reduce((a, b) => {
               return a + b
@@ -76,8 +77,14 @@ export default {
         title: i18n.t('res.image'),
         showOverflow: 'ellipsis',
         minWidth: 190,
+        slots: {
+          default: ({ row }) => {
+            if (!row.config_info) return [<data-loading />]
+            return row.config_info.image
+          },
+        },
       },
-      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC' }),
+      getCopyWithContentTableColumn({ field: 'vpc', title: 'VPC', vm: this }),
       getBillingTypeTableColumn(),
       getBrandTableColumn(),
       getProjectTableColumn(),

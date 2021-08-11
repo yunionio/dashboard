@@ -26,6 +26,7 @@ export default {
         type: 'expand',
         slots: {
           default: ({ row }) => {
+            if (this.isPreLoad && !row.data_images) return [<data-loading />]
             const arr = [...(row.data_images || [])]
             arr.push(row.root_image.name)
             return i18n.t('compute.text_619', [arr.length])
@@ -38,7 +39,7 @@ export default {
               ))
             }
             list.push(
-              <a-tag class='mb-2'>{ row.root_image.name }</a-tag>,
+              <a-tag class='mb-2'>{ row.root_image?.name }</a-tag>,
             )
             return list
           },
@@ -48,8 +49,11 @@ export default {
         field: 'disk_format',
         title: i18n.t('table.title.disk_format'),
         width: 100,
-        formatter: ({ cellValue }) => {
-          return cellValue && cellValue.toUpperCase()
+        slots: {
+          default: ({ row }) => {
+            if (!row.disk_format) return [<data-loading />]
+            return row.disk_format.toUpperCase()
+          },
         },
       },
       getOsArch(),

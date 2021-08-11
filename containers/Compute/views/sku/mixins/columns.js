@@ -47,6 +47,7 @@ export default {
           width: 120,
           slots: {
             default: ({ row }) => {
+              if (row.total_guest_count === undefined) return [<data-loading />]
               if (row.total_guest_count <= 0) return row.total_guest_count
               const options = { cloudEnv: this.cloudEnv }
               return [<side-page-trigger name='SkuSidePage' id={row.id} tab='vminstance-list' vm={this} options={ options }>{ row.total_guest_count }</side-page-trigger>]

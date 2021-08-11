@@ -31,6 +31,7 @@ export default {
         type: 'expand',
         slots: {
           default: ({ row }) => {
+            if (this.isPreLoad && !row.snapshots) return [<data-loading />]
             const len = (row.snapshots && row.snapshots.length) || 0
             return i18n.t('compute.text_619', [len])
           },
@@ -47,8 +48,11 @@ export default {
         field: 'size',
         title: i18n.t('table.title.snapshot_size'),
         width: 70,
-        formatter: ({ row }) => {
-          return sizestr(row.size, 'M', 1024)
+        slots: {
+          default: ({ row }) => {
+            if (this.isPreLoad && !row.size) return [<data-loading />]
+            return sizestr(row.size, 'M', 1024)
+          },
         },
       },
       {
@@ -58,6 +62,7 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }, h) => {
+            if (this.isPreLoad && !row.guest) return [<data-loading />]
             return [
               <div class='text-truncate'>
                 {row.guest ? <list-body-cell-wrap copy field='guest' row={row} /> : '-'}

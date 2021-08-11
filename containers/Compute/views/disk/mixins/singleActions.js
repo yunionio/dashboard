@@ -21,7 +21,7 @@ export default {
           })
         },
         meta: obj => {
-          const provider = obj.provider.toLowerCase()
+          const provider = obj.provider?.toLowerCase()
           if (diskResizeConfig[provider]) {
             return {
               validate: diskResizeConfig[provider](obj).validate,
