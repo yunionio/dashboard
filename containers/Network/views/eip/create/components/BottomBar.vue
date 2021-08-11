@@ -53,6 +53,10 @@ export default {
     bgpType: {
       required: true,
     },
+    isHuaweiCloudStack: {
+      required: false,
+      default: false,
+    },
   },
   data () {
     return {
@@ -154,7 +158,7 @@ export default {
         values.domain = values.domain?.key
         values.tenant = values.project.key
         Reflect.deleteProperty(values, 'project')
-        if (this.cloudEnv === 'private') {
+        if (this.cloudEnv === 'private' && !this.isHuaweiCloudStack) {
           delete values.charge_type
           values.bandwidth = 0
           if (values.ip_addr) {

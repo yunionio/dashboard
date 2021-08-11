@@ -35,6 +35,28 @@
         </a-col>
       </a-row>
     </a-form-item>
+    <a-form-item :label="$t('network.text_16')" v-if="isHuaweiCloudStack">
+      <a-radio-group v-decorator="decorators.address_type">
+        <a-radio-button value="internet">{{$t('network.text_270')}}</a-radio-button>
+        <a-radio-button value="intranet">{{$t('network.text_271')}}</a-radio-button>
+      </a-radio-group>
+    </a-form-item>
+    <a-form-item :label="$t('network.text_273')" v-if="isHuaweiCloudStack">
+      <a-radio-group v-decorator="decorators.ip">
+        <a-radio-button value="ipv4">IPv4</a-radio-button>
+      </a-radio-group>
+    </a-form-item>
+    <a-form-item :label="$t('network.text_221')" v-if="isHuaweiCloudStack && form.fd.address_type === 'internet'">
+      <base-select
+        v-decorator="decorators.eip"
+        resource="eips"
+        need-params
+        :params="eipParams"
+        :showSync="true"
+        :select-props="{ placeholder: $t('network.text_278') }" />
+      <div slot="extra">{{$t('system.text_439')}}<help-link href="/eip">{{$t('system.text_440')}}</help-link>
+      </div>
+    </a-form-item>
     <a-form-item :label="$t('table.title.tag')">
       <tag v-decorator="decorators.__meta__" />
     </a-form-item>
@@ -42,8 +64,10 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import lbCreate from './mixin'
 import CloudregionZone from '@/sections/CloudregionZone'
+import { HYPERVISORS_MAP } from '../../../../../../src/constants'
 
 export default {
   name: 'LbOnecloudCreate',
@@ -62,6 +86,27 @@ export default {
       hadVpc: false,
     }
   },
+  computed: {
+    eipParams () {
+      let params = {}
+      if (this.form.fd.cloudregion && !R.isEmpty(this.scopeParams)) {
+        params = { ...this.scopeParams, usable: true, region: this.form.fd.cloudregion }
+        if (this.isAdminMode || this.isDomainMode) {
+          params.project = this.form.fd.project
+        }
+      }
+      if (!R.isEmpty(this.vpcObj) && this.vpcObj.manager_id) {
+        params.manager_id = this.vpcObj.manager_id
+      }
+      return params
+    },
+    isHuaweiCloudStack () {
+      if (this.zoneObj) {
+        return this.zoneObj.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+      }
+      return false
+    },
+  },
   methods: {
     async submit () {
       const { manager_id } = this.vpcObj
@@ -73,6 +118,15 @@ export default {
           project: values.project,
           network: values.network,
           __meta__: values.__meta__,
+        }
+
+        if (this.isHuaweiCloudStack) {
+          data.zone = values.zone.key
+          data.cloudregion = values.cloudregion.key
+          data.address_type = values.address_type
+          data.ip = values.ip
+          data.vpc = values.vpc
+          if (values.eip) data.eip = values.eip
         }
         if (this.isAdminMode) {
           data.domain = values.domain
