@@ -73,6 +73,7 @@ import lodash from 'lodash'
 import PolicySchedtag from './PolicySchedtag'
 import { SERVER_TYPE, SCHED_POLICY_OPTIONS_MAP } from '@Compute/constants'
 import { arrayToObj, uuid } from '@/utils/utils'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'SchedPolicy',
@@ -186,7 +187,7 @@ export default {
           return true
         }
       }
-      return false
+      return this.provider === HYPERVISORS_MAP.huaweicloudstack.provider
     },
     disabledCloudproviders () {
       return this.allCloudproviders.filter(val => !this.usableCloudproviderMaps[val.id]).map(val => val.id)

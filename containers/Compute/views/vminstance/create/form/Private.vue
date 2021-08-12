@@ -62,6 +62,7 @@
           :form="form"
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
+          :os-arch="osArch"
           :image-params="scopeParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
@@ -122,6 +123,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_311')" v-show="!isServertemplate" class="mb-0">
             <sched-policy
+              :provider="cloudprovider"
               :server-type="form.fi.createType"
               :disabled-host="policyHostDisabled"
               :policy-host-params="policyHostParams"
@@ -149,6 +151,7 @@ import mixin from './mixin'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
+import { HOST_CPU_ARCHS } from '@/constants/compute'
 
 export default {
   name: 'VMPrivateCreate',
@@ -157,6 +160,16 @@ export default {
   },
   mixins: [mixin],
   computed: {
+    isArm () {
+      return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.arm.capabilityKey
+    },
+    osArch () {
+      if (this.form.fd.sku && this.form.fd.sku.cpu_arch) {
+        return this.form.fd.sku.cpu_arch
+      } else {
+        return ''
+      }
+    },
     cloudregionParams () {
       return {
         cloud_env: 'private',
@@ -180,6 +193,8 @@ export default {
         if (this.cloudregionZoneParams.cloudregion) {
           params.cloudregion_id = this.cloudregionZoneParams.cloudregion
         }
+        params.os_arch = HOST_CPU_ARCHS.x86.key
+        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       }
       if (!params.cloudregion_id) return {}
       return params
@@ -244,6 +259,12 @@ export default {
           'provider.1': _.get(HYPERVISORS_MAP, `[${this.form.fd.hypervisor}].provider`),
         }
       }
+    },
+    cloudprovider () {
+      if (this.form.fd.hypervisor && this.form.fd.hypervisor) {
+        return HYPERVISORS_MAP[this.form.fd.hypervisor].provider
+      }
+      return ''
     },
     cloudproviderParamsExtra () {
       const params = {

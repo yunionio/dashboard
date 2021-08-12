@@ -41,7 +41,7 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-collapse :bordered="false" v-if="cloudEnv === 'public'">
+      <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHuaweiCloudStack">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout">
             <base-select
@@ -71,6 +71,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import * as CommonConstants from '../../../constants'
+import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import BottomBar from './components/BottomBar'
 import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
@@ -226,6 +227,12 @@ export default {
     },
     currentCloudzone () {
       return this.zoneList[this.form.fd.zone]
+    },
+    isHuaweiCloudStack () {
+      if (this.currentCloudregion) {
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+      }
+      return false
     },
     provider () { // 向外提供的，通过 refs 获取
       if (this.currentCloudregion && this.currentCloudregion.provider) {
