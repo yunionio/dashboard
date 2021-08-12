@@ -18,6 +18,7 @@
           :providerParams="providerParams"
           :isRequired="true"
           :cloudregionMapper="cloudregionMapper"
+          :region.sync="regionList"
           @change="handleRegionChange" />
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_684')" />
@@ -34,8 +35,8 @@
           <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
           <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
         </a-form-item>
-        <template v-if="cloudEnv === 'public'">
-          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public'">
+        <template v-if="cloudEnv === 'public' || isHuaweiCloudStack">
+          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public' || isHuaweiCloudStack">
             <base-select
               class="w-50"
               v-decorator="decorators.cloudprovider"
@@ -61,6 +62,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
+import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainSelect from '@/sections/DomainSelect'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
@@ -156,6 +158,7 @@ export default {
       project_domain: this.$store.getters.userInfo.projectDomainId,
       cloudproviderData: [],
       cloudregion: '',
+      regionList: {},
     }
   },
   computed: {
@@ -217,6 +220,15 @@ export default {
         return ['cloudregion']
       }
       return ['provider', 'cloudregion']
+    },
+    currentCloudregion () {
+      return this.regionList[this.cloudregion]
+    },
+    isHuaweiCloudStack () {
+      if (this.currentCloudregion) {
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+      }
+      return false
     },
   },
   watch: {

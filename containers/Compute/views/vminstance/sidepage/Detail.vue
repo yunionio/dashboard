@@ -26,7 +26,7 @@ import {
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
-import { BRAND_MAP } from '@/constants'
+import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'VmInstanceDetail',
@@ -149,7 +149,7 @@ export default {
               minWidth: 100,
               slots: {
                 default: ({ row }) => {
-                  if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public) {
+                  if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public || row.hypervisor === HYPERVISORS_MAP.huaweicloudstack.hypervisor) {
                     return '-'
                   }
                   const text = row.host || '-'
