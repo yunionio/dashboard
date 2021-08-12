@@ -27,6 +27,12 @@ export default {
         field: 'linked_guest_count',
         title: this.$t('compute.text_699', [this.$t('dictionary.server')]),
         width: 120,
+        slots: {
+          default: ({ row }, h) => {
+            if (this.isPreLoad && row.linked_guest_count === undefined) return [<data-loading />]
+            return `${row.linked_guest_count}`
+          },
+        },
       },
     ]
   },

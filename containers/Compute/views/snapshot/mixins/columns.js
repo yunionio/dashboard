@@ -55,7 +55,7 @@ export default {
           return row.disk_name
         },
       }),
-      getStorageTypeTableColumn(),
+      getStorageTypeTableColumn({ vm: this }),
       {
         field: 'guest',
         title: i18n.t('res.server'),
@@ -77,7 +77,7 @@ export default {
       getAccountTableColumn({ vm: this }),
       getTimeTableColumn(),
       getProjectTableColumn(),
-      getRegionTableColumn(),
+      getRegionTableColumn({ vm: this }),
     ]
   },
 }

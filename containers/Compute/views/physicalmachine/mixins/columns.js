@@ -188,8 +188,8 @@ export default {
       },
       getCopyWithContentTableColumn({ field: 'sn', title: 'SN' }),
       getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
-      getProjectDomainTableColumn(),
-      getRegionTableColumn(),
+      getProjectDomainTableColumn({ vm: this }),
+      getRegionTableColumn({ vm: this }),
     ]
   },
 }

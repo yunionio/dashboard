@@ -45,7 +45,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.pr
   }
 }
 
-export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.region'), showOverflow = 'ellipsis', hidden } = {}) => {
+export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.region'), showOverflow = 'ellipsis', hidden, vm = {} } = {}) => {
   return {
     field,
     title,
@@ -54,7 +54,7 @@ export const getRegionTableColumn = ({ field = 'region', title = i18n.t('res.reg
     slots: {
       default: ({ row }, h) => {
         const val = _.get(row, field)
-        if (!val) return [<data-loading />]
+        if (vm.isPreLoad && !val) return [<data-loading />]
         const ret = []
         ret.push(
           <list-body-cell-wrap hide-field copy field={field} row={row}>
@@ -391,15 +391,19 @@ export const getTimeTableColumn = ({
   title = i18n.t('table.title.create_time'),
   sortable = false,
   fromNow = false,
+  vm = {},
 } = {}) => {
   return {
     field,
     title,
     width: 160,
     sortable,
-    formatter: ({ cellValue }) => {
-      if (fromNow) return cellValue ? moment(cellValue).fromNow() : '-'
-      return cellValue ? moment(cellValue).format() : '-'
+    slots: {
+      default: ({ row }, h) => {
+        if (vm.isPreLoad && !row[field]) return [<data-loading />]
+        if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
+        return row[field] ? moment(row[field]).format() : '-'
+      },
     },
   }
 }
@@ -580,12 +584,14 @@ export const getProjectDomainTableColumn = ({
   field = 'project_domain',
   title = i18n.t('table.title.owner_domain'),
   sortable = true,
+  vm = {},
 } = {}) => {
   return getCopyWithContentTableColumn({
     title,
     field,
     sortable,
     hidden: !(store.getters.isAdminMode || store.getters.isDomainMode),
+    vm,
   })
 }
 

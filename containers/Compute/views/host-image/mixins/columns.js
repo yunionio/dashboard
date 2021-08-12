@@ -63,7 +63,7 @@ export default {
         width: 60,
         slots: {
           default: ({ row }) => {
-            if (!row.properties) return
+            if (this.isPreLoad && !row.properties) return [<data-loading />]
             let name = row.properties.os_distribution ? decodeURI(row.properties.os_distribution) : row.properties.os_type || ''
             if (name.includes('Windows') || name.includes('windows')) {
               name = 'Windows'
@@ -79,8 +79,11 @@ export default {
         field: 'size',
         title: i18n.t('table.title.image_size'),
         minWidth: 100,
-        formatter: ({ cellValue }) => {
-          return sizestr(cellValue, 'B', 1024)
+        slots: {
+          default: ({ row }) => {
+            if (this.isPreLoad && row.size === undefined) return [<data-loading />]
+            return sizestr(row.size, 'B', 1024)
+          },
         },
       },
       {
