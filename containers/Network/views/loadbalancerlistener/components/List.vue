@@ -49,7 +49,7 @@ export default {
   computed: {
     groupActions () {
       const provider = R.path(['provider'], this.data)
-      if (provider && provider.toLowerCase() !== 'azure') return []
+      if (provider && provider.toLowerCase() === 'azure') return []
       if (this.$route.name === 'LbaclList') { return [] }
       if (this.$route.name === 'LbcertList') {
         return [
@@ -142,6 +142,7 @@ export default {
     getParam () {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        details: true,
       }
       return ret
     },

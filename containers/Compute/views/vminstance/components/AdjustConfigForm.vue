@@ -408,8 +408,13 @@ export default {
         params.provider = HYPERVISORS_MAP.kvm.provider
       }
       if (this.type === SERVER_TYPE.private) {
-        params['provider.0'] = HYPERVISORS_MAP.kvm.provider
-        params['provider.1'] = HYPERVISORS_MAP.openstack.provider
+        if (this.selectedItem && this.selectedItem.provider === HYPERVISORS_MAP.huaweicloudstack.provider) {
+          params.provider = HYPERVISORS_MAP.huaweicloudstack.provider
+          params.cloudregion_id = this.selectedItem.cloudregion_id
+        } else {
+          params['provider.0'] = HYPERVISORS_MAP.kvm.provider
+          params['provider.1'] = HYPERVISORS_MAP.openstack.provider
+        }
         params.postpaid_status = 'available'
       }
       if (this.type === SERVER_TYPE.public) {
@@ -804,7 +809,12 @@ export default {
         provider: this.selectedItem.provider === HYPERVISORS_MAP.esxi.provider ? HYPERVISORS_MAP.kvm.provider : this.selectedItem.provider,
       }
       if (this.type === SERVER_TYPE.private) {
-        params.provider = HYPERVISORS_MAP.kvm.provider
+        if (this.selectedItem && this.selectedItem.provider === HYPERVISORS_MAP.huaweicloudstack.provider) {
+          params.cloudregion_id = this.selectedItem.cloudregion_id
+        } else {
+          params.provider = HYPERVISORS_MAP.kvm.provider
+        }
+
         delete params.zone
       }
       if (this.type === SERVER_TYPE.public) {
