@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div v-if="visible">
-      <a-alert class="mb-2" :type="alertType" v-if="visible">
-        <install-agent-form slot="message" :data="data" :serverColumns="[]" @onInstall="handleInstallResult" />
-      </a-alert>
-    </div>
+    <install-agent-form-visible :data="data" :serverColumns="[]" />
     <!-- monitor tabs -->
     <div>
       <a-tabs default-active-key="agent-basic" @change="handleTabChange">
@@ -24,9 +20,9 @@
 </template>
 
 <script>
-import InstallAgentForm from '../../vminstance/components/InstallAgentForm'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import AgentTemperatureMonitor from '@Compute/sections/monitor/AgentTemperatureMonitor.vue'
+import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -34,7 +30,7 @@ export default {
   components: {
     AgentMonitor,
     AgentTemperatureMonitor,
-    InstallAgentForm,
+    InstallAgentFormVisible,
   },
   mixins: [WindowsMixin],
   props: {
@@ -43,13 +39,6 @@ export default {
       required: true,
     },
   },
-  data () {
-    const visible = this.data.status === 'running' && (!this.data.metadata || this.data.metadata['sys:monitor_agent'] !== 'true')
-    return {
-      visible: visible,
-      monitorList: [],
-    }
-  },
   computed: {
     serverId () {
       return this.data.id
@@ -57,16 +46,6 @@ export default {
   },
   methods: {
     handleTabChange (tab) {
-    },
-    handleInstallResult (ret) {
-      if (ret && ret.status === 'succeed') {
-        this.alertType = 'success'
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.visible = false
-          }, 3000)
-        })
-      }
     },
   },
 }
