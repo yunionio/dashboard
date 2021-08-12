@@ -24,7 +24,7 @@ export default {
               tooltip: i18n.t('network.text_627'),
             }
           }
-          if (obj.brand.toLowerCase() === 'onecloud') {
+          if (obj.brand && obj.brand.toLowerCase() === 'onecloud') {
             return {
               validate: false,
               tooltip: i18n.t('network.text_652'),
