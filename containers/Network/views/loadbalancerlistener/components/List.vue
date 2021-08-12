@@ -140,6 +140,7 @@ export default {
     getParam () {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+        details: true,
       }
       return ret
     },

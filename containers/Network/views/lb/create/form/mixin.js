@@ -256,8 +256,11 @@ export default {
         cloud_env: this.type,
         ...this.scopeParams,
       }
-      if (this.type === 'private') params.provider = 'OpenStack'
-      else delete params.provider
+      if (this.type === 'private') {
+        params['filter.0'] = 'provider.in(OpenStack,HuaweiCloudStack)'
+      } else {
+        delete params.provider
+      }
       return params
     },
     cloudproviderParams () {

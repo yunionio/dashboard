@@ -38,7 +38,7 @@
             :vpcResourceMapper="vpcResourceMapper"
             :showIpConfig="cloudEnv !== 'public'" />
         </template>
-        <template v-if="cloudEnv !== 'private'">
+        <template v-if="cloudEnv !== 'private' || isHuaweiCloudStack">
           <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout">
             <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
               <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
@@ -62,7 +62,7 @@
             </div>
           </a-form-item>
         </template>
-        <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout" v-if="cloudEnv === 'public'" key="manager">
+        <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout" v-if="cloudEnv === 'public' || isHuaweiCloudStack" key="manager">
           <base-select
             :remote="true"
             v-decorator="decorators.manager"
@@ -78,6 +78,7 @@
       </a-form>
     </page-body>
     <bottom-bar
+      :isHuaweiCloudStack="isHuaweiCloudStack"
       :current-cloudregion="selectedRegionItem"
       :size="bandwidth"
       :bgp-type="bgp_type" />
@@ -93,6 +94,7 @@ import AreaSelects from '@/sections/AreaSelects'
 import DomainProject from '@/sections/DomainProject'
 import { isRequired } from '@/utils/validate'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
+import { HYPERVISORS_MAP } from '../../../../../src/constants'
 
 export default {
   name: 'EipCreate',
@@ -221,13 +223,6 @@ export default {
       charge_type: cloudEnv === 'onpremise' ? 'bandwidth' : 'traffic',
       providerC: '',
       domain_id: 'default',
-      providerParams: {
-        enabled: 1,
-        details: true,
-        public_cloud: true,
-        scope: this.$store.getters.scope,
-        usable: true,
-      },
       regionList: {},
       bandwidth: cloudEnv !== 'private' ? 30 : 0,
       bgpTypeOptions: [],
@@ -240,6 +235,21 @@ export default {
       let ret = { [this.maxBandwidth / 2]: `${this.maxBandwidth / 2}Mbps` }
       ret = { ...ret, ...{ 1: '1Mbps', [this.maxBandwidth]: `${this.maxBandwidth}Mbps` } }
       return ret
+    },
+    isHuaweiCloudStack () {
+      if (this.selectedRegionItem) {
+        return this.selectedRegionItem.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+      }
+      return false
+    },
+    providerParams () {
+      return {
+        enabled: 1,
+        details: true,
+        public_cloud: !this.isHuaweiCloudStack,
+        scope: this.$store.getters.scope,
+        usable: true,
+      }
     },
     showBgpTypes () {
       if (!this.bgpTypeOptions || this.bgpTypeOptions.length === 0) {
@@ -344,6 +354,7 @@ export default {
       return ['provider', 'cloudregion']
     },
     showIpSubnet () {
+      if (this.selectedRegionItem.provider === HYPERVISORS_MAP.huaweicloudstack.provider) return false
       if (this.providerC === 'zstack' || this.providerC === 'openstack') return true
       if (this.cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id) return true
       if (this.cloudEnv === 'private' && this.selectedRegionItem && this.selectedRegionItem.id) return true
@@ -385,7 +396,7 @@ export default {
       this.$nextTick(() => {
         this.form.fc.getFieldDecorator('charge_type', { initialValue: newValue === 'onpremise' ? 'bandwidth' : 'traffic' })
       })
-      this.bandwidth = newValue === 'private' ? 0 : 30
+      this.bandwidth = newValue === 'private' && !this.isHuaweiCloudStack ? 0 : 30
     },
   },
   provide () {

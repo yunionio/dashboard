@@ -13,6 +13,7 @@ export const schedulerProviderMaps = {
   aliyun: [schedulerMaps.rr, schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch, schedulerMaps.tch, schedulerMaps.qch],
   qcloud: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   huawei: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
+  huaweicloudstack: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aws_network: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   aws_application: [schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
   openstack: [schedulerMaps.rr, schedulerMaps.wrr, schedulerMaps.wlc, schedulerMaps.sch],
@@ -30,6 +31,7 @@ export const healthCheckTypeProviderMaps = {
   aliyun: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http],
   qcloud: [healthCheckTypeMaps.http],
   huawei: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
+  huaweicloudstack: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
   aws_network: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.https],
   aws_application: [healthCheckTypeMaps.http, healthCheckTypeMaps.https],
   openstack: [healthCheckTypeMaps.tcp, healthCheckTypeMaps.http, healthCheckTypeMaps.udp],
@@ -52,6 +54,7 @@ export const healthCheckHttpCode = (() => {
     aliyun: onecloud,
     qcloud: onecloud,
     huawei: onecloud,
+    huaweicloudstack: onecloud,
     aws_network: onecloud,
     aws_application: [
       { key: 'http_2xx', label: 'http_2xx' },

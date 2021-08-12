@@ -154,11 +154,24 @@ export default {
       return params
     },
     instanceSpecParmas () {
-      return {
-        usable: true,
-        enabled: true,
-        'provider.0': HYPERVISORS_MAP.kvm.provider,
-        'provider.1': _.get(HYPERVISORS_MAP, `[${this.form.fd.hypervisor}].provider`),
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.huaweicloudstack.hypervisor) {
+        const params = {
+          usable: true,
+          enabled: true,
+          provider: HYPERVISORS_MAP.huaweicloudstack.provider,
+        }
+
+        if (this.cloudregionZoneParams.cloudregion) {
+          params.cloudregion_id = this.cloudregionZoneParams.cloudregion
+        }
+        return params
+      } else {
+        return {
+          usable: true,
+          enabled: true,
+          'provider.0': HYPERVISORS_MAP.kvm.provider,
+          'provider.1': _.get(HYPERVISORS_MAP, `[${this.form.fd.hypervisor}].provider`),
+        }
       }
     },
     cloudproviderParamsExtra () {
