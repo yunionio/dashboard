@@ -96,7 +96,7 @@ export default {
               vals.push(groupVal)
             }
           })
-          return vals.join('.')
+          return vals.join(' ')
         }
 
         val.series.forEach(item => {

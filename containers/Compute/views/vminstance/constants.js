@@ -84,6 +84,7 @@ const NET_RECV_BPS = {
   fromItem: 'agent_net',
   groupBy: ['interface'],
   unit: 'bps',
+  transfer: 1024,
 }
 
 const NET_SENT_BPS = {
@@ -93,6 +94,7 @@ const NET_SENT_BPS = {
   fromItem: 'agent_net',
   groupBy: ['interface'],
   unit: 'bps',
+  transfer: 1024,
 }
 
 const COND_AND = 'AND'
@@ -120,7 +122,7 @@ export const AGENT_MONITOR = [
 
 const TEMPERATURE_CPU_INPUT = {
   name: 'temp_input',
-  label: 'CPU 温度',
+  label: i18n.t('compute.monitor.temperature.cpu'),
   seleteItem: 'temp_input',
   fromItem: 'agent_sensors',
   // groupBy: ['chip', 'feature'],
@@ -135,7 +137,7 @@ const TEMPERATURE_CPU_INPUT = {
 
 const TEMPERATURE_DISK_INPUT = {
   name: 'temp_c',
-  label: '磁盘温度',
+  label: i18n.t('compute.monitor.temperature.disk'),
   seleteItem: 'temp_c',
   fromItem: 'agent_smart_device',
   groupBy: ['device', 'device_type'],
@@ -149,7 +151,7 @@ const TEMPERATURE_DISK_INPUT = {
 
 const TEMPERATURE_PCI_INPUT = {
   name: 'temp_input',
-  label: 'PCI 接口温度',
+  label: i18n.t('compute.monitor.temperature.pci'),
   seleteItem: 'temp_input',
   fromItem: 'agent_sensors',
   // groupBy: ['chip', 'feature'],
@@ -165,7 +167,7 @@ const TEMPERATURE_PCI_INPUT = {
 
 const TEMPERATURE_VIRTUAL_INPUT = {
   name: 'temp_input',
-  label: '其它设备温度',
+  label: i18n.t('compute.monitor.temperature.other_device'),
   seleteItem: 'temp_input',
   fromItem: 'agent_sensors',
   // groupBy: ['chip', 'feature'],
