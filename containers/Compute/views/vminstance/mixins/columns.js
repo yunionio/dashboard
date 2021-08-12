@@ -129,12 +129,13 @@ export default {
         title: 'MAC',
         slots: {
           default: ({ row }) => {
+            if (this.isPreLoad && !row.macs) return [<data-loading />]
             if (row.macs) {
               return row.macs.split(',').map(mac => {
                 return <list-body-cell-wrap copy row={{ mac }} hide-field field="mac">{ mac }</list-body-cell-wrap>
               })
             }
-            return [<data-loading />]
+            return []
           },
         },
       },
