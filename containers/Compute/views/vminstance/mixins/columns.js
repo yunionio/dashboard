@@ -251,8 +251,8 @@ export default {
         showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
-            if (!row.secgroups) return [<data-loading />]
-            return row.secgroups.map(item => item.name).join(',')
+            if (this.isPreLoad && !row.secgroups) return [<data-loading />]
+            return row.secgroups?.map(item => item.name).join(',')
           },
         },
       },
@@ -262,7 +262,7 @@ export default {
         hideField: true,
         hidden: () => this.$store.getters.isProjectMode,
         slotCallback: (row) => {
-          if (!row.vpc) return [<data-loading />]
+          if (this.isPreLoad && !row.vpc) return [<data-loading />]
           return row.vpc
         },
       }),

@@ -23,13 +23,16 @@ export const getResourceTypeTableColumn = () => {
   }
 }
 
-export const getResourceCountTableColumn = () => {
+export const getResourceCountTableColumn = ({ vm = {} } = {}) => {
   return {
     field: 'resource_count',
     title: i18n.t('cloudenv.text_417'),
     width: 80,
-    formatter: ({ row }) => {
-      return row.resource_count || '0'
+    slots: {
+      default: ({ row }, h) => {
+        if (vm.isPreLoad && !row.resource_count) return [<data-loading />]
+        return `${row.resource_count || 0}`
+      },
     },
   }
 }

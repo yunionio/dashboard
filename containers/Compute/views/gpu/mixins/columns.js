@@ -78,7 +78,7 @@ export default {
         },
       }),
       getReserveResourceColumn(),
-      getRegionTableColumn(),
+      getRegionTableColumn({ vm: this }),
     ]
   },
 }

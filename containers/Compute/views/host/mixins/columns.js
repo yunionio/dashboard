@@ -132,8 +132,11 @@ export default {
         title: '#VM',
         width: 60,
         sortable: true,
-        formatter ({ cellValue }) {
-          return cellValue || '0'
+        slots: {
+          default: ({ row }, h) => {
+            if (this.isPreLoad && row.nonsystem_guests === undefined) return [<data-loading />]
+            return `${row.nonsystem_guests}`
+          },
         },
       },
       getOsArch({ field: 'cpu_architecture' }),
@@ -236,8 +239,8 @@ export default {
       getBrandTableColumn(),
       getAccountTableColumn({ vm: this }),
       getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
-      getProjectDomainTableColumn(),
-      getRegionTableColumn(),
+      getProjectDomainTableColumn({ vm: this }),
+      getRegionTableColumn({ vm: this }),
     ]
   },
 }

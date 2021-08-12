@@ -1,5 +1,5 @@
 import { MEDIUM_MAP } from '../../../constants'
-// import { getUnusedTableColumn } from '../utils/columns'
+import { getUnusedTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -54,7 +54,7 @@ export default {
           return cellValue === 'sys' ? i18n.t('compute.text_49') : i18n.t('compute.text_50')
         },
       },
-      // getUnusedTableColumn(),
+      getUnusedTableColumn({ vm: this }),
       {
         field: 'guest',
         title: this.$t('res.server'),
@@ -78,10 +78,18 @@ export default {
           },
         },
       },
-      getCopyWithContentTableColumn({ field: 'storage', title: i18n.t('table.title.disk_storage') }),
+      getCopyWithContentTableColumn({
+        field: 'storage',
+        title: i18n.t('table.title.disk_storage'),
+        hideField: true,
+        slotCallback: (row) => {
+          if (this.isPreLoad && !row.storage) return [<data-loading />]
+          return row.storage
+        },
+      }),
       getTimeTableColumn(),
       getBrandTableColumn(),
-      getRegionTableColumn(),
+      getRegionTableColumn({ vm: this }),
       getBillingTypeTableColumn(),
       getStatusTableColumn({ statusModule: 'disk' }),
       getProjectTableColumn(),
@@ -90,8 +98,11 @@ export default {
         field: 'medium_type',
         title: i18n.t('table.title.disk_medium_type'),
         width: 70,
-        formatter: ({ cellValue }) => {
-          return MEDIUM_MAP[cellValue]
+        slots: {
+          default: ({ row }) => {
+            if (this.isPreLoad && !row.medium_type) return [<data-loading />]
+            return MEDIUM_MAP[row.medium_type]
+          },
         },
         hidden: this.hiddenColumns.includes('medium_type'),
       },

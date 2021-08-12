@@ -131,6 +131,7 @@ export default {
       }),
       getRegionTableColumn({
         hidden: () => this.hiddenColumns.includes('region'),
+        vm: this,
       }),
     ]
   },

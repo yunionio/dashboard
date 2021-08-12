@@ -26,6 +26,11 @@ export default {
       getCopyWithContentTableColumn({
         field: 'schedtag',
         title: i18n.t('cloudenv.text_18'),
+        hideField: true,
+        slotCallback: (row) => {
+          if (this.isPreLoad && !row.schedtag) return [<data-loading />]
+          return row.schedtag
+        },
       }),
       getCopyWithContentTableColumn({
         field: 'condition',

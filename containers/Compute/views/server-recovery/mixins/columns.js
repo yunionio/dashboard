@@ -59,7 +59,7 @@ export default {
           return row.host
         },
       }),
-      getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480') }),
+      getTimeTableColumn({ field: 'auto_delete_at', title: i18n.t('compute.text_480'), vm: this }),
     ]
   },
 }

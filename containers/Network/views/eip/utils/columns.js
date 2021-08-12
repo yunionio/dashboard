@@ -1,5 +1,5 @@
 import i18n from '@/locales'
-export const getAssociateNameTableColumn = (vm = {}) => {
+export const getAssociateNameTableColumn = ({ vm = {} } = {}) => {
   return {
     field: 'associate_name',
     title: i18n.t('network.text_197'),

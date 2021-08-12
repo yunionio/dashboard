@@ -79,9 +79,9 @@ export default {
         },
         hidden: this.$store.getters.isProjectMode,
       },
-      getAssociateNameTableColumn(this),
+      getAssociateNameTableColumn({ vm: this }),
       getProjectTableColumn(),
-      getRegionTableColumn(),
+      getRegionTableColumn({ vm: this }),
     ]
   },
 }
