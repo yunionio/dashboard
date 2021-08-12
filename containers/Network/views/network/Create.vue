@@ -136,6 +136,7 @@ import { typeClouds, getCloudEnvOptions } from '@/utils/common/hypervisor'
 import DomainProject from '@/sections/DomainProject'
 import AreaSelects from '@/sections/AreaSelects'
 import i18n from '@/locales'
+import { HYPERVISORS_MAP } from '@/constants'
 
 const { networkSegment } = REGEXP
 const masks = {
@@ -584,7 +585,7 @@ export default {
       }
     },
     vpcLabelFormat (item) {
-      if (this.cloudEnv === 'public') {
+      if (this.cloudEnv === 'public' || this.regionProvider === HYPERVISORS_MAP.huaweicloudstack.provider) {
         if (item.manager) {
           if (item.cidr_block) {
             return (<div>{ item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">{ this.$t('common.cloudprovider_1var', [item.manager]) }</span></div>)

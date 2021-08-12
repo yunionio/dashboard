@@ -300,6 +300,36 @@ export const STORAGE_TYPES = {
       sort: 1,
     },
   },
+  [HYPERVISORS_MAP.huaweicloudstack.key]: {
+    SSD: {
+      label: i18n.t('common.storage.ssd'),
+      key: 'SSD',
+      min: 10,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 3,
+    },
+    SAS: {
+      label: i18n.t('common.storage.sas'),
+      key: 'SAS',
+      min: 10,
+      max: 32768,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 2,
+    },
+    SATA: {
+      label: i18n.t('common.storage.sata'),
+      key: 'SATA',
+      min: 10,
+      max: 32768,
+      default: true,
+      sysMin: 20,
+      sysMax: 1024,
+      sort: 1,
+    },
+  },
   [HYPERVISORS_MAP.openstack.key]: {
     iscsi: {
       label: 'iscsi',
