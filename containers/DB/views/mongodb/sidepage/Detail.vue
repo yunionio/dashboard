@@ -138,15 +138,6 @@ export default {
                 },
               },
             },
-            {
-              field: 'auth_mode',
-              title: this.$t('db.text_323'),
-              slots: {
-                default: ({ row }) => {
-                  return row.auth_mode === 'on' ? this.$t('db.text_324') : this.$t('db.text_325')
-                },
-              },
-            },
           ],
         },
         {
