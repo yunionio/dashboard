@@ -72,7 +72,15 @@ export default {
               title: this.$t('db.text_119'),
               slots: {
                 default: ({ row }) => {
-                  return categoryMap[row.category] ? (categoryMap[row.category] + `(${this.$t('db.text_382', [row.replication_num || 0])})`) : '-'
+                  const { category } = row
+                  if (categoryMap[category]) {
+                    if (category === 'sharding') { // 分片
+                      return (categoryMap[row.category] + `(${this.$t('db.text_383', [row.replication_num || 0])})`)
+                    } else if (category === 'replicate') { // 集群
+                      return (categoryMap[row.category] + `(${this.$t('db.text_382', [row.replication_num || 0])})`)
+                    }
+                  }
+                  return '-'
                 },
               },
             },
