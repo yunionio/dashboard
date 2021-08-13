@@ -270,7 +270,6 @@ export default {
       }
       if (!params.cloudregion_id) return {}
       if (this.form.fd.imageType === 'vmware') params.image_type = 'system'
-      if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       return params
     },
     showSku () {
