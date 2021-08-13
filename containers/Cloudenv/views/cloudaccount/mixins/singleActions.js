@@ -203,7 +203,7 @@ export default {
               meta: () => {
                 let tooltip
                 if (obj.saml_auth) tooltip = this.$t('cloudaccount.tooltip.already_enable_sso')
-                const isSupportSAMLAuth = ['Aws', 'Aliyun', 'Huawei', 'Qcloud', 'Azure'].includes(obj.brand)
+                const isSupportSAMLAuth = ['Aws', 'Aliyun', 'Huawei', 'Qcloud', 'Azure', 'HuaweiCloudStack'].includes(obj.brand)
                 if (!isSupportSAMLAuth) tooltip = this.$t('cloudaccount.tooltip.not_support_sso', [obj.brand])
                 if (obj.brand === 'Azure' && obj.access_url !== 'AzurePublicCloud') {
                   let txt
