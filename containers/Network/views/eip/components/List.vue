@@ -35,8 +35,95 @@ export default {
     cloudEnvOptions: {
       type: Array,
     },
+    showCreateAction: {
+      type: Boolean,
+      default: true,
+    },
+    hiddenColumns: {
+      type: Array,
+      default: () => ([]),
+    },
   },
   data () {
+    const createAction = {
+      label: this.$t('network.text_26'),
+      permission: 'eips_create',
+      action: () => {
+        this.$router.push({
+          path: `${this.$route.path}/create`,
+          query: {
+            type: this.cloudEnv,
+          },
+        })
+      },
+      meta: () => ({
+        buttonType: 'primary',
+        validate: !this.cloudEnvEmpty,
+        tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
+      }),
+    }
+    const groupActions = [
+      {
+        label: this.$t('network.text_200'),
+        actions: () => {
+          return [
+            {
+              label: this.$t('network.text_201'),
+              action: () => {
+                this.onManager('batchPerformAction', {
+                  steadyStatus: ['running', 'ready'],
+                  managerArgs: {
+                    action: 'syncstatus',
+                  },
+                })
+              },
+            },
+            {
+              label: this.$t('table.action.set_tag'),
+              action: () => {
+                this.createDialog('SetTagDialog', {
+                  data: this.list.selectedItems,
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  mode: 'add',
+                  params: {
+                    resources: 'eip',
+                  },
+                  tipName: this.$t('dictionary.eip'),
+                })
+              },
+            },
+            {
+              label: this.$t('network.text_131'),
+              permission: 'eips_delete',
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  data: this.list.selectedItems,
+                  columns: this.columns,
+                  title: this.$t('network.text_131'),
+                  name: this.$t('dictionary.eip'),
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => {
+                return {
+                  validate: this.list.allowDelete(),
+                }
+              },
+            },
+          ]
+        },
+        meta: () => {
+          return {
+            validate: this.list.selected.length,
+          }
+        },
+      },
+    ]
+    if (this.showCreateAction) {
+      groupActions.unshift(createAction)
+    }
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -78,7 +165,7 @@ export default {
         },
         steadyStatus: Object.values(expectStatus.eip).flat(),
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'account'],
+        hiddenColumns: this.hiddenColumns, // ['metadata', 'account'],
       }),
       exportDataOptions: {
         items: [
@@ -96,82 +183,7 @@ export default {
           { label: this.$t('common_715'), key: 'user_tags' },
         ],
       },
-      groupActions: [
-        {
-          label: this.$t('network.text_26'),
-          permission: 'eips_create',
-          action: () => {
-            this.$router.push({
-              path: `${this.$route.path}/create`,
-              query: {
-                type: this.cloudEnv,
-              },
-            })
-          },
-          meta: () => ({
-            buttonType: 'primary',
-            validate: !this.cloudEnvEmpty,
-            tooltip: this.cloudEnvEmpty ? this.$t('common.no_platform_available') : '',
-          }),
-        },
-        {
-          label: this.$t('network.text_200'),
-          actions: () => {
-            return [
-              {
-                label: this.$t('network.text_201'),
-                action: () => {
-                  this.onManager('batchPerformAction', {
-                    steadyStatus: ['running', 'ready'],
-                    managerArgs: {
-                      action: 'syncstatus',
-                    },
-                  })
-                },
-              },
-              {
-                label: this.$t('table.action.set_tag'),
-                action: () => {
-                  this.createDialog('SetTagDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    mode: 'add',
-                    params: {
-                      resources: 'eip',
-                    },
-                    tipName: this.$t('dictionary.eip'),
-                  })
-                },
-              },
-              {
-                label: this.$t('network.text_131'),
-                permission: 'eips_delete',
-                action: () => {
-                  this.createDialog('DeleteResDialog', {
-                    vm: this,
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: this.$t('network.text_131'),
-                    name: this.$t('dictionary.eip'),
-                    onManager: this.onManager,
-                  })
-                },
-                meta: () => {
-                  return {
-                    validate: this.list.allowDelete(),
-                  }
-                },
-              },
-            ]
-          },
-          meta: () => {
-            return {
-              validate: this.list.selected.length,
-            }
-          },
-        },
-      ],
+      groupActions: groupActions,
     }
   },
   computed: {
@@ -205,6 +217,7 @@ export default {
         steadyStatus: Object.values(expectStatus.eip).flat(),
       }, {
         list: this.list,
+        hiddenColumns: this.hiddenColumns,
       })
     },
     defaultSearchKey (search) {
