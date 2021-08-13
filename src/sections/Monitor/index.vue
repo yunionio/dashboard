@@ -87,34 +87,64 @@ export default {
       return this.monitorList.map(val => {
         const columns = (val.series && val.series.length) ? val.series[0].columns : []
         const rows = []
+
+        const getGroupByKey = (tags, groupBy) => {
+          const vals = []
+          groupBy.forEach((key) => {
+            const groupVal = tags[key]
+            if (groupVal) {
+              vals.push(groupVal)
+            }
+          })
+          return vals.join(' ')
+        }
+
         val.series.forEach(item => {
-          item.points.forEach(row => {
-            const rowsItem = {} // eg: { time: '2019-09-01', cpu_usage: 0.7 }
+          const tags = item.tags
+
+          let groupByKey = ''
+          if (val.constants.groupBy && val.constants.groupBy.length !== 0) {
+            groupByKey = getGroupByKey(tags, val.constants.groupBy)
+          }
+
+          const row = {
+            name: '',
+            xData: [],
+            yData: [],
+          }
+          item.points.forEach(point => {
             columns.forEach((column, i) => {
               if (column === 'time') {
-                const momentObj = this.$moment(row[i])
-                const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : row[0]
-                rowsItem.time = time
+                const momentObj = this.$moment(point[i])
+                const time = momentObj._isAMomentObject ? momentObj.format(this.timeFormatStr) : point[0]
+                row.xData.push(time)
               } else {
                 const format = val.constants.format || '0.00' // 默认是保留小数点后两位
-                rowsItem[column] = numerify(row[i], format)
+                if (groupByKey.length !== 0) {
+                  row.name = groupByKey
+                } else {
+                  row.name = column
+                }
+                row.yData.push(numerify(point[i], format))
               }
             })
-            rows.push(rowsItem)
           })
+          rows.push(row)
         })
+
         const unit = _.get(val.series, '[0].unit') || val.constants.unit || ''
-        const columns1 = columns[0] === 'time' ? columns : columns.reverse() // 确保time是第一列
         return {
           title: val.title,
           constants: val.constants,
           lineConfig: val.lineConfig,
+          noData: columns.length === 0,
           unit,
-          chartData: { // 组成 ve-line 的数据
-            columns: columns1, // eg: ['time', 'cpu_usage']
-            rows, // [{ time: '2019-09-01', cpu_usage: 0.7 }]
+          chartData: {
+            rows,
           },
         }
+      }).filter(val => {
+        return !(val.constants.noDataHide && val.noData)
       })
     },
   },

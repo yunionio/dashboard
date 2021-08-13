@@ -1,35 +1,36 @@
 <template>
   <div>
-    <div v-if="visible">
-      <a-alert class="mb-2" :type="alertType" v-if="visible">
-        <install-agent-form slot="message" :data="data" :serverColumns="[]" @onInstall="handleInstallResult" />
-      </a-alert>
+    <install-agent-form-visible :data="data" :serverColumns="[]" />
+    <!-- monitor tabs -->
+    <div>
+      <a-tabs default-active-key="agent-basic" @change="handleTabChange">
+        <a-tab-pane key="agent-basic" :tab="$t('compute.monitor.agent')">
+          <agent-monitor
+            :data="data"
+            v-if="true" />
+        </a-tab-pane>
+        <a-tab-pane key="agent-temperature" :tab="$t('compute.monitor.agent.temperature')">
+          <agent-temperature-monitor
+            :data="data"
+            v-if="true" />
+        </a-tab-pane>
+      </a-tabs>
     </div>
-    <monitor
-      :time.sync="time"
-      :timeGroup.sync="timeGroup"
-      :monitorList="monitorList"
-      :singleActions="singleActions"
-      :loading="loading"
-      @refresh="fetchData" />
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
-import InstallAgentForm from '../../vminstance/components/InstallAgentForm'
-import { ONECLOUD_MONITOR, VMWARE_MONITOR, AGENT_MONITOR } from '@Compute/views/vminstance/constants'
-import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
-import Monitor from '@/sections/Monitor'
-import { HYPERVISORS_MAP } from '@/constants'
+import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
+import AgentTemperatureMonitor from '@Compute/sections/monitor/AgentTemperatureMonitor.vue'
+import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
 import WindowsMixin from '@/mixins/windows'
-import { getSignature } from '@/utils/crypto'
 
 export default {
   name: 'BaremetalMonitorSidepage',
   components: {
-    Monitor,
-    InstallAgentForm,
+    AgentMonitor,
+    AgentTemperatureMonitor,
+    InstallAgentFormVisible,
   },
   mixins: [WindowsMixin],
   props: {
@@ -38,181 +39,13 @@ export default {
       required: true,
     },
   },
-  data () {
-    const visible = this.data.status === 'running' && (!this.data.metadata || this.data.metadata['sys:monitor_agent'] !== 'true')
-    return {
-      singleActions: [
-        {
-          label: this.$t('compute.text_382'),
-          action: async obj => {
-            const alertManager = new this.$Manager('nodealerts', 'v1')
-            const { metric } = obj.constants
-            const { data: { data = [] } } = await alertManager.list({
-              params: {
-                type: 'guest',
-                node_id: this.data.id,
-                metric,
-              },
-            })
-            if (data && data.length) {
-              if (data.length === 1) {
-                this.createDialog('UpdateNodeAlert', {
-                  data,
-                  alertType: 'guest',
-                  alertManager,
-                })
-              } else {
-                throw Error(this.$t('compute.text_383'))
-              }
-            } else { // 新建报警
-              this.createDialog('CreateNodeAlert', {
-                alertType: 'guest',
-                nodeId: this.data.id,
-                metric,
-                alertManager,
-              })
-            }
-          },
-          meta: (obj) => {
-            const ret = {
-              validate: true,
-              tooltip: '',
-            }
-            if (_.get(obj, 'constants.fromItem', '').startsWith('agent_')) {
-              ret.validate = false
-              ret.tooltip = this.$t('compute.text_1287', [''])
-            }
-            return ret
-          },
-        },
-      ],
-      visible: visible,
-      loading: false,
-      time: '1h',
-      timeGroup: '5m',
-      monitorList: [],
-    }
-  },
   computed: {
-    hypervisor () {
-      return this.data.hypervisor
-    },
-    monitorConstants () {
-      if (this.hypervisor === HYPERVISORS_MAP.esxi.key) {
-        return VMWARE_MONITOR
-      } else if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
-        return ONECLOUD_MONITOR
-      } else {
-        return AGENT_MONITOR
-      }
-    },
     serverId () {
       return this.data.id
     },
   },
-  created () {
-    this.fetchData()
-    this.fetchDataDebounce = _.debounce(this.fetchData, 500)
-    this.baywatch(['time', 'timeGroup', 'data.id'], this.fetchDataDebounce)
-  },
   methods: {
-    handleInstallResult (ret) {
-      if (ret && ret.status === 'succeed') {
-        this.alertType = 'success'
-        this.$nextTick(() => {
-          setTimeout(() => {
-            this.visible = false
-          }, 3000)
-        })
-      }
-    },
-    async fetchData () {
-      this.loading = true
-      const resList = []
-      for (let idx = 0; idx < this.monitorConstants.length; idx++) {
-        const val = this.monitorConstants[idx]
-        try {
-          const { data } = await new this.$Manager('unifiedmonitors', 'v1')
-            .performAction({
-              id: 'query',
-              action: '',
-              data: this.genQueryData(val),
-              params: { $t: getRequestT() },
-            })
-          resList.push({ title: val.label, constants: val, series: data.series })
-          if (idx === this.monitorConstants.length - 1) {
-            this.loading = false
-            this.getMonitorList(resList)
-          }
-        } catch (error) {
-          this.loading = false
-          throw error
-        }
-      }
-    },
-    baywatch (props, watcher) {
-      const iterator = function (prop) {
-        this.$watch(prop, watcher)
-      }
-      props.forEach(iterator, this)
-    },
-    getMonitorList (resList) {
-      this.monitorList = resList.map(result => {
-        const { unit, transfer } = result.constants
-        const isSizestrUnit = UNITS.includes(unit)
-        let series = result.series
-        if (!series) series = []
-        if (isSizestrUnit || unit === 'bps') {
-          series = series.map(serie => {
-            return autoComputeUnit(serie, unit, transfer)
-          })
-        }
-        return {
-          title: result.title,
-          series,
-          constants: result.constants,
-        }
-      })
-    },
-    genQueryData (val) {
-      const data = {
-        metric_query: [
-          {
-            model: {
-              measurement: val.fromItem,
-              select: [
-                [
-                  {
-                    type: 'field',
-                    params: [val.seleteItem],
-                  },
-                  { // 对应 mean(val.seleteItem)
-                    type: 'mean',
-                    params: [],
-                  },
-                  { // 确保后端返回columns有 val.label 的别名
-                    type: 'alias',
-                    params: [val.label],
-                  },
-                ],
-              ],
-              tags: [
-                {
-                  key: 'vm_id',
-                  value: this.serverId,
-                  operator: '=',
-                },
-              ],
-            },
-          },
-        ],
-        scope: this.$store.getters.scope,
-        from: this.time,
-        interval: this.timeGroup,
-        unit: true,
-      }
-      data.signature = getSignature(data)
-      return data
+    handleTabChange (tab) {
     },
   },
 }
