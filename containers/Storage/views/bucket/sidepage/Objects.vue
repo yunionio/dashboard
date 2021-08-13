@@ -283,7 +283,7 @@ export default {
           label: this.$t('storage.text_165'),
           action: (row) => {
             objectsModel.getUrl(row, this.data.name, this.accessUrl).then((url) => {
-              url && window.open(url)
+              url && window.open(url, '__blank')
             })
           },
           meta: row => {
