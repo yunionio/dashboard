@@ -27,6 +27,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: 'MongodbBackupListForMongoDBSidePage',
+        idKey: 'name',
         resource: this.fetchData,
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.mongodbBackup).flat(),
