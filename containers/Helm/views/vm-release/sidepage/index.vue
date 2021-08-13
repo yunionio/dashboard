@@ -104,8 +104,8 @@ export default {
           virtualmachine: 'Running',
           k8s_ansibleplaybook: 'Finished',
         }
-        const virtualmachineList = this.detailData.resources.virtualmachine
-        const ansibleplaybookList = this.detailData.resources.k8s_ansibleplaybook
+        const virtualmachineList = this.detailData.resources.virtualmachine || []
+        const ansibleplaybookList = this.detailData.resources.k8s_ansibleplaybook || []
         const isStable1 = virtualmachineList.every(val => val.status === stableStatusMap.virtualmachine)
         const isStable2 = ansibleplaybookList.every(val => val.status === stableStatusMap.k8s_ansibleplaybook)
         if (!isStable1 || !isStable2) {
