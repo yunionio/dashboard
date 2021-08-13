@@ -6,6 +6,7 @@ const DISK_USED_PERCENT = {
   label: i18n.t('compute.text_533'),
   seleteItem: 'used_percent',
   as: i18n.t('compute.text_533'),
+  groupBy: ['device', 'path', 'fstype'],
   fromItem: 'agent_disk',
   unit: '%',
   transfer: 1,
@@ -37,6 +38,7 @@ const DISK_IO_READ_RATES = {
   label: i18n.t('compute.text_526'),
   seleteItem: 'read_bps',
   fromItem: 'agent_diskio',
+  groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
   metric: metricItems['vm_diskio.read_bps'].key,
@@ -47,31 +49,65 @@ const DISK_IO_WRITE_RATES = {
   label: i18n.t('compute.text_527'),
   seleteItem: 'write_bps',
   fromItem: 'agent_diskio',
+  groupBy: ['name'],
   unit: 'bps',
   transfer: 1024,
   metric: metricItems['vm_diskio.write_bps'].key,
 }
 
-const NET_SEND_BYTES = {
+// const NET_SEND_BYTES = {
+//   name: 'net',
+//   label: i18n.t('compute.text_524'),
+//   seleteItem: 'bytes_sent',
+//   selectFunction: 'derivative',
+//   fromItem: 'agent_net',
+//   unit: 'bps',
+//   transfer: 1024,
+//   metric: metricItems['vm_mem.used_percent'].key,
+// }
+//
+// const NET_RECV_BYTES = {
+//   name: 'net',
+//   label: i18n.t('compute.text_525'),
+//   seleteItem: 'bytes_recv',
+//   selectFunction: 'derivative',
+//   fromItem: 'agent_net',
+//   unit: 'bps',
+//   transfer: 1024,
+//   metric: metricItems['vm_mem.used_percent'].key,
+// }
+
+const NET_RECV_BPS = {
   name: 'net',
   label: i18n.t('compute.text_524'),
-  seleteItem: 'bytes_sent',
-  selectFunction: 'derivative',
+  seleteItem: 'bps_recv',
   fromItem: 'agent_net',
+  groupBy: ['interface'],
   unit: 'bps',
   transfer: 1024,
-  metric: metricItems['vm_mem.used_percent'].key,
 }
 
-const NET_RECV_BYTES = {
+const NET_SENT_BPS = {
   name: 'net',
   label: i18n.t('compute.text_525'),
-  seleteItem: 'bytes_recv',
-  selectFunction: 'derivative',
+  seleteItem: 'bps_sent',
   fromItem: 'agent_net',
+  groupBy: ['interface'],
   unit: 'bps',
   transfer: 1024,
-  metric: metricItems['vm_mem.used_percent'].key,
+}
+
+const COND_AND = 'AND'
+// const COND_OR = 'OR'
+// const COND_NULL = ''
+
+function newWhereField (key, operator, val, cond) {
+  return {
+    key: key,
+    operator: operator,
+    value: val,
+    condition: cond,
+  }
 }
 
 export const AGENT_MONITOR = [
@@ -80,8 +116,76 @@ export const AGENT_MONITOR = [
   DISK_USED_PERCENT,
   DISK_IO_READ_RATES,
   DISK_IO_WRITE_RATES,
-  NET_SEND_BYTES,
-  NET_RECV_BYTES,
+  NET_RECV_BPS,
+  NET_SENT_BPS,
+]
+
+const TEMPERATURE_CPU_INPUT = {
+  name: 'temp_input',
+  label: i18n.t('compute.monitor.temperature.cpu'),
+  seleteItem: 'temp_input',
+  fromItem: 'agent_sensors',
+  // groupBy: ['chip', 'feature'],
+  groupBy: ['chip'],
+  where: [
+    newWhereField('chip', '=~', '/^coretemp-isa-/', COND_AND),
+  ],
+  unit: '℃',
+  transfer: 1,
+  metric: 'temp',
+}
+
+const TEMPERATURE_DISK_INPUT = {
+  name: 'temp_c',
+  label: i18n.t('compute.monitor.temperature.disk'),
+  seleteItem: 'temp_c',
+  fromItem: 'agent_smart_device',
+  groupBy: ['device', 'device_type'],
+  where: [
+    newWhereField('temp_c', '>', '0', COND_AND),
+  ],
+  unit: '℃',
+  transfer: 1,
+  metric: 'temp',
+}
+
+const TEMPERATURE_PCI_INPUT = {
+  name: 'temp_input',
+  label: i18n.t('compute.monitor.temperature.pci'),
+  seleteItem: 'temp_input',
+  fromItem: 'agent_sensors',
+  // groupBy: ['chip', 'feature'],
+  groupBy: ['chip'],
+  where: [
+    newWhereField('chip', '=~', '/.+-pci-.+/', COND_AND),
+  ],
+  unit: '℃',
+  transfer: 1,
+  metric: 'temp',
+  noDataHide: true,
+}
+
+const TEMPERATURE_VIRTUAL_INPUT = {
+  name: 'temp_input',
+  label: i18n.t('compute.monitor.temperature.other_device'),
+  seleteItem: 'temp_input',
+  fromItem: 'agent_sensors',
+  // groupBy: ['chip', 'feature'],
+  groupBy: ['chip'],
+  where: [
+    newWhereField('chip', '=~', '/.+-virtual-.+/', COND_AND),
+  ],
+  unit: '℃',
+  transfer: 1,
+  metric: 'temp',
+  noDataHide: true,
+}
+
+export const AGENT_TEMPERATURE_MONITOR = [
+  TEMPERATURE_CPU_INPUT,
+  TEMPERATURE_DISK_INPUT,
+  TEMPERATURE_PCI_INPUT,
+  TEMPERATURE_VIRTUAL_INPUT,
 ]
 
 // OneCloud 虚拟机监控数据
