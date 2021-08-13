@@ -49,7 +49,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.monitor_dashboard')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'])
             },
           },
           path: '/monitor-dashboard',
@@ -81,7 +81,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.explorer')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'])
             },
           },
           path: '/explorer',
@@ -105,7 +105,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.commonalerts')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'])
             },
           },
           component: Layout,

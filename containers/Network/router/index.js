@@ -133,7 +133,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vpc')) {
                 return true
               }
-              return !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara'])
+              return !hasSetupKey(['openstack', 'onestack', 'zstack', 'dstack', 'public', 'baremetal', 'apsara', 'huaweicloudstack'])
             },
           },
           component: Layout,
@@ -302,7 +302,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.nat')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'huawei'])
+              return !hasSetupKey(['aliyun', 'huawei', 'huaweicloudstack'])
             },
           },
           component: Layout,
@@ -441,7 +441,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lb')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'huaweicloudstack'])
             },
           },
           component: Layout,
@@ -477,7 +477,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbacl')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'huaweicloudstack'])
             },
           },
           component: Layout,
@@ -498,7 +498,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbcert')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'huaweicloudstack'])
             },
           },
           component: Layout,
