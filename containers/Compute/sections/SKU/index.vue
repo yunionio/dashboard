@@ -86,6 +86,10 @@ export default {
     requireDataDiskTypes: {
       type: Array,
     },
+    skuFilter: {
+      type: Function,
+      default: (items) => { return items },
+    },
   },
   data () {
     return {
@@ -333,8 +337,11 @@ export default {
         this.skuLoading = true
         const params = { ...this.skuParams }
         params.enabled = true
-        const { data: { data = [] } } = await this.skusM.list({ params: params })
+        let { data: { data = [] } } = await this.skusM.list({ params: params })
         this.skuLoading = false
+        if (typeof this.skuFilter === 'function') {
+          data = this.skuFilter(data)
+        }
         if (this.skuParams && !R.isEmpty(this.skuParams)) { // 防止网络延迟导致 skuParams 已经为空了，但却赋值了
           this.skuList = data
           if (this.skuList && this.skuList.length) {

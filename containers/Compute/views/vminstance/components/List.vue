@@ -406,6 +406,13 @@ export default {
                         ret.tooltip = cloudUnabledTip('rebuildRoot', this.list.selectedItems)
                         return ret
                       }
+
+                      // same cpu arch
+                      if (!this.isSameArch) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.vminstance.actions.adjust_config.cpu_arch.tips')
+                        return ret
+                      }
                       ret.validate = false
                       ret.tooltip = this.$t('compute.text_278')
                       return ret
@@ -455,6 +462,12 @@ export default {
                         //     ret.tooltip = '谷歌云Windows虚拟机仅支持关机下操作，Linux虚拟机支持开机和关机下操作'
                         //   }
                         // }
+                        // same cpu arch
+                        if (!this.isSameArch) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.vminstance.actions.adjust_config.cpu_arch.tips')
+                          return ret
+                        }
                         return ret
                       }
                       ret.validate = false
@@ -1001,6 +1014,14 @@ export default {
         const arr = this.list.selectedItems.map(v => v.hypervisor)
         const noRepeatArr = Array.from(new Set(arr))
         return noRepeatArr.length === 1
+      }
+      return true
+    },
+    isSameArch () {
+      if (this.list.selectedItems[0] && this.list.selectedItems[0].hypervisor.toLowerCase() === 'huaweicloudstack') {
+        const instancetype = this.list.selectedItems[0].instance_type || ''
+        const isArm = instancetype.startsWith('k')
+        return this.list.selectedItems.every(item => item.instance_type && item.instance_type.startsWith('k') === isArm)
       }
       return true
     },

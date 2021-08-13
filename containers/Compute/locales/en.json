@@ -1391,6 +1391,7 @@
   "compute.save_image_prompt.public_cloud": "Saving image on the public clouds will create a image on the cloud. The image can be found in the list of {0} when creating public cloud servers",
   "compute.text_1383": "No backup machine is added, this operation is not supported",
   "compute.text_1384": "Prompt message: When the host is empty, the system will automatically select the host. The migration host must belong to the same Layer 2 network and the target host must be in normal state",
+  "compute.vminstance.actions.adjust_config.cpu_arch.tips": "Please select servers with same cpu arch",
   "compute.vminstance.actions.setup_ssh_authentication": "Setup SSH Authentication",
   "compute.vminstance.actions.detect_ssh_authentication": "Detect SSH Authentication",
   "compute.vminstance.detect_ssh_authentication.status": "SSH Authentication Status",
