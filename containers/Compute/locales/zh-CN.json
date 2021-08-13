@@ -1391,6 +1391,7 @@
   "compute.save_image_prompt.public_cloud": "公有云保存镜像会保存在云上镜像列表，新建公有云主机时可在{0}中查看使用",
   "compute.text_1383": "未添加备份机，不支持该操作",
   "compute.text_1384": "提示信息：宿主机为空时，系统会自动选择宿主机，迁移宿主机需属于同一个二层网络且目标宿主机状态正常",
+  "compute.vminstance.actions.adjust_config.cpu_arch.tips": "请选择相同CPU架构的机型",
   "compute.vminstance.actions.setup_ssh_authentication": "设置免密登录",
   "compute.vminstance.actions.detect_ssh_authentication": "探测免密登录",
   "compute.vminstance.detect_ssh_authentication.status": "免密登录状态",

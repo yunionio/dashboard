@@ -24,6 +24,7 @@
             :image-params="image"
             :ignoreOptions="ignoreImageOptions"
             :osType="osType"
+            :os-arch="osArch"
             :cache-image-params="cacheImageParams"
             :decorator="decorators.imageOS"
             :sys-disk-size="sysDiskSize"
@@ -60,7 +61,7 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
 import { Manager } from '@/utils/manager'
-import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, HOST_CPU_ARCHS } from '@/constants/compute'
 import { isRequired, passwordValidator } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
 
@@ -83,11 +84,6 @@ export default {
       form: {
         fc: this.$form.createForm(this),
         fd: {},
-      },
-      image: {
-        limit: 0,
-        details: true,
-        status: 'active',
       },
       ignoreImageOptions: [
         IMAGES_TYPE_MAP.iso.key,
@@ -134,6 +130,25 @@ export default {
     },
     hypervisor () {
       return this.params.data[0].hypervisor
+    },
+    osArch () {
+      const t = this.params.data[0].instance_type || ''
+      if (t.startsWith('k')) {
+        return HOST_CPU_ARCHS.arm.capabilityKey
+      }
+      return ''
+    },
+    image () {
+      const params = {
+        limit: 0,
+        details: true,
+        status: 'active',
+        os_arch: HOST_CPU_ARCHS.x86.key,
+      }
+      if (this.osArch === HOST_CPU_ARCHS.arm.capabilityKey) {
+        params.os_arch = HOST_CPU_ARCHS.arm.key
+      }
+      return params
     },
     isZStack () {
       return this.hypervisor === HYPERVISORS_MAP.zstack.key
