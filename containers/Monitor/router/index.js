@@ -52,7 +52,7 @@ export default {
 
               return !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'],
               })
             },
           },
@@ -87,7 +87,7 @@ export default {
               }
               return !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'],
               })
             },
           },
@@ -115,7 +115,7 @@ export default {
 
               return !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
-                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'],
               })
             },
           },
