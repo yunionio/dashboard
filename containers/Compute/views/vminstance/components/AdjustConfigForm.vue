@@ -28,6 +28,7 @@
               v-decorator="decorators.sku"
               :type="type"
               :sku-params="skuParam"
+              :sku-filter="skuFilter"
               :require-sys-disk-type="requireSysDiskType"
               :require-data-disk-types="requireDataDiskTypes"
               :instance-type="instanceType"
@@ -643,6 +644,16 @@ export default {
     })
   },
   methods: {
+    skuFilter (items) {
+      if (!items) return []
+      const os_arch = R.path(['metadata', 'sys:os_arch'], this.selectedItem)
+      return items.filter(item => {
+        if (os_arch && os_arch === 'aarch64') {
+          return item.cpu_arch === 'aarch64'
+        }
+        return true
+      })
+    },
     async loadData (data) {
       this.data = data
       if (this.data.length > 0) {

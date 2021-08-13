@@ -63,7 +63,7 @@
           :hypervisor="form.fd.hypervisor"
           :decorator="decorators.imageOS"
           :os-arch="osArch"
-          :image-params="scopeParams"
+          :image-params="imageParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
           @updateImageMsg="updateFi" />
@@ -187,14 +187,25 @@ export default {
         ...this.scopeParams,
       }
     },
-    cacheImageParams () {
-      const params = {}
+    imageParams () {
+      const params = {
+        ...this.scopeParams,
+      }
       if (R.is(Object, this.form.fd.sku)) {
         if (this.cloudregionZoneParams.cloudregion) {
           params.cloudregion_id = this.cloudregionZoneParams.cloudregion
         }
         params.os_arch = HOST_CPU_ARCHS.x86.key
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+      }
+      return params
+    },
+    cacheImageParams () {
+      const params = {}
+      if (R.is(Object, this.form.fd.sku)) {
+        if (this.cloudregionZoneParams.cloudregion) {
+          params.cloudregion_id = this.cloudregionZoneParams.cloudregion
+        }
       }
       if (!params.cloudregion_id) return {}
       return params
