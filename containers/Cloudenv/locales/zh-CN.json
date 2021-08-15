@@ -669,6 +669,8 @@
   "cloudenv.cloudaccount.huaweicloudstack.ces": "监控服务 端点",
   "cloudenv.cloudaccount.huaweicloudstack.eps": "企业项目 端点",
   "cloudenv.cloudaccount.huaweicloudstack.sfs_turbo": "文件系统(SFS Turbo) 端点",
+  "cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns": "子网默认DNS",
+  "cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns.tips": "至多指定2个DNS服务器, 请使用英文','隔开.例如： 10.125.0.26,10.125.0.27",
   "cloudenv.cloudaccount.huaweicloudstack.endpoint_domain.tips": "以地址iam.cn-north-1.cloudpods.com为例. 其中`iam`指统一身份认证服务,`cn-north-1`指端点区域,`cloudpods.com`即端点(Endpoint)域名",
   "cloudenv.text_572": "合约编号及密钥获取可参考",
   "cloudenv.text_573": "全部域",

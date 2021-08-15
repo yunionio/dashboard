@@ -65,6 +65,12 @@
       <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.sfs_turbo')">
         <a-input v-decorator="decorators.sfs_turbo" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.sfs_turbo')])" />
       </a-form-item>
+      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns')">
+        <a-input v-decorator="decorators.default_subnet_dns" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns')])" />
+        <div slot="extra">
+          {{$t('cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns.tips')}}
+        </div>
+      </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" />
@@ -230,6 +236,9 @@ export default {
         ],
         sfs_turbo: [
           'sfs_turbo',
+        ],
+        default_subnet_dns: [
+          'default_subnet_dns',
         ],
       }
       return decorators
