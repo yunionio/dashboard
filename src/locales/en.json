@@ -2415,7 +2415,11 @@
     "kafka": "Kafka",
     "data_analysis": "Data Analysis",
     "elasticsearch": "Elasticsearch",
-    "mongodb": "MongoDB Instance"
+    "mongodb": "MongoDB Instance",
+    "ext_jenkins":"Jenkins",
+    "ext_mysql":"MySQL",
+    "ext_redis":"Redis",
+    "ext_rabbitmq":"RabbitMQ"
   },
   "res": {
     "role": "Role",
