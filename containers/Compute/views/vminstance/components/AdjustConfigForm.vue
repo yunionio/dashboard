@@ -646,13 +646,14 @@ export default {
   methods: {
     skuFilter (items) {
       if (!items) return []
-      const os_arch = R.path(['metadata', 'sys:os_arch'], this.selectedItem)
+      let os_arch = R.path(['metadata', 'sys:os_arch'], this.selectedItem)
       return items.filter(item => {
         if (os_arch) {
+          os_arch = os_arch.toLowerCase()
           if (os_arch === 'aarch64') {
             return item.cpu_arch === 'aarch64'
-          } else if (os_arch.contains('x86')) {
-            return item.cpu_arch && item.cpu_arch.contains('x86')
+          } else if (os_arch.indexOf('x86') >= 0) {
+            return item.cpu_arch && item.cpu_arch.indexOf('x86') >= 0
           }
         }
         return true
