@@ -668,6 +668,8 @@
   "cloudenv.cloudaccount.huaweicloudstack.ces": "CES Endpoint",
   "cloudenv.cloudaccount.huaweicloudstack.eps": "EPS Endpoint",
   "cloudenv.cloudaccount.huaweicloudstack.sfs_turbo": "SFS Turbo Endpoint",
+  "cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns": "Default DNS for Subnet",
+  "cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns.tips": "Specify at most 2 DNS servers, please use comma to separate. E.g. 10.125.0.26,10.125.0.27",
   "cloudenv.cloudaccount.huaweicloudstack.endpoint_domain.tips": "eg. Endpoint Address: iam.cn-north-1.cloudpods.com. There are three parts. 'iam' is service name, 'cn-north-1' is region id, and 'cloudpods.com' is endpoint domain.",
   "cloudenv.text_572": "For getting the azure contract number and key",
   "cloudenv.text_573": "All Domains",
