@@ -40,7 +40,7 @@ export default {
             multiple: true,
             items: [
               { label: this.$t('db.text_316'), key: 'manual' },
-              { label: this.$t('db.text_317'), key: 'automated' },
+              { label: this.$t('db.text_317'), key: 'auto' },
             ],
           },
         },
@@ -50,7 +50,7 @@ export default {
           onManager: this.onManager,
         }),
         {
-          field: 'backup_mode',
+          field: 'backup_type',
           title: this.$t('db.text_36'),
           width: 100,
           slots: {
@@ -60,12 +60,12 @@ export default {
           },
         },
         {
-          field: 'backup_size_mb',
+          field: 'backup_size_kb',
           title: this.$t('db.text_38'),
           width: 100,
           slots: {
             default: ({ row }) => {
-              return sizestr(row.backup_size_mb, 'M', 1024)
+              return sizestr(row.backup_size_kb, 'K', 1024)
             },
           },
         },
