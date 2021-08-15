@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import get from 'lodash/get'
 import {
   getCopyWithContentTableColumn,
   getTimeTableColumn,
@@ -77,6 +78,15 @@ export default {
         getCopyWithContentTableColumn({
           title: this.$t('cloudenv.text_320'),
           field: 'name',
+          hideField: true,
+          slotCallback: (row) => {
+            const resource_name = get(row, 'request.resource_name')
+            return resource_name || row.name
+          },
+          message: (row) => {
+            const resource_name = get(row, 'request.resource_name')
+            return resource_name || row.name
+          },
         }),
         {
           title: this.$t('cloudenv.text_323'),
