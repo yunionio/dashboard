@@ -17,6 +17,7 @@
       :on-manager="onManager"
       :params="getParams"
       :getParams="getParams"
+      :res-id="data.id"
       :id="listId"
       :columns="columns" />
   </base-side-page>
