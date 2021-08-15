@@ -67,7 +67,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudgroup')) {
                 return true
               }
-              return store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google'])
+              return store.getters.isProjectMode || !hasSetupKey(['aliyun', 'huawei', 'qcloud', 'aws', 'azure', 'google', 'huaweicloudstack'])
             },
           },
           component: Layout,
