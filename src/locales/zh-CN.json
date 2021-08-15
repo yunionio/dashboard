@@ -2364,7 +2364,12 @@
     "access_group": "NAS权限组",
     "access_group_rule": "NAS权限组规则",
     "access_group_cache": "NAS权限组缓存",
-    "mount_target": "NAS挂载点"
+    "mount_target": "NAS挂载点",
+    "mongodb": "MongoDB Instance",
+    "ext_jenkins":"Jenkins",
+    "ext_mysql":"MySQL",
+    "ext_redis":"Redis",
+    "ext_rabbitmq":"RabbitMQ"
   },
   "res": {
     "role": "@:dictionary.role",

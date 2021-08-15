@@ -2351,7 +2351,12 @@
     "access_group": "Access Group",
     "access_group_rule": "Access Group Rule",
     "access_group_cache": "Access Group Cache",
-    "mount_target": "Mount Target"
+    "mount_target": "Mount Target",
+    "mongodb": "MongoDB Instance",
+    "ext_jenkins":"Jenkins",
+    "ext_mysql":"MySQL",
+    "ext_redis":"Redis",
+    "ext_rabbitmq":"RabbitMQ"
   },
   "res": {
     "role": "Role",
