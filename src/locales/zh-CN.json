@@ -2427,7 +2427,11 @@
     "kafka": "Kafka",
     "data_analysis": "数据分析",
     "elasticsearch": "Elasticsearch",
-    "mongodb": "MongoDB实例"
+    "mongodb": "MongoDB实例",
+    "ext_jenkins":"Jenkins",
+    "ext_mysql":"MySQL",
+    "ext_redis":"Redis",
+    "ext_rabbitmq":"RabbitMQ"
   },
   "res": {
     "role": "@:dictionary.role",
