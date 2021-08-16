@@ -13,12 +13,13 @@
           <div class="flex-fill position-relative">
             <div class="dashboard-fco-wrap">
               <template v-for="item of data">
-                <div :key="item.id" class="pt-2 pb-2 d-flex align-items-center" style="border-bottom: 1px solid #eee;">
+                <div :key="item.id" class="pt-2 pb-2 d-flex align-items-top" style="border-bottom: 1px solid #eee;">
                   <div class="flex-fill mini-text">
                     <div>{{ $te(`dictionary.${item.obj_type}`) ? $t(`dictionary.${item.obj_type}`) : item.obj_type }} - {{ item.action }}</div>
                     <div class="text-color-help mt-1">{{ item.user }} · {{ $moment(item.ops_time).fromNow() }}</div>
                   </div>
-                  <a-tag :color="item.success ? '#52c41a' : '#f5222d'"> {{ item.success ? $t('dashboard.text_14') : $t('dashboard.text_15') }} </a-tag>
+                  <!-- <a-tag :color="item.success ? '#52c41a' : '#f5222d'"> {{ item.success ? $t('dashboard.text_14') : $t('dashboard.text_15') }} </a-tag> -->
+                  <div class="mini-text mr-1" :style="{color:item.success?'#606266':'#9C9C9C'}">{{item.success ? $t('dashboard.text_14') : $t('dashboard.text_15')}}</div>
                 </div>
               </template>
             </div>

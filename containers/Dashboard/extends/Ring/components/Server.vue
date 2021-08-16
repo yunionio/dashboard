@@ -12,31 +12,36 @@
           <template v-slot:format><span class="percent-tips" :style="{ color: percentColor }">{{ percentTips }}</span></template>
         </a-progress>
         <div class="flex-fill ml-4">
-          <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{ useLabel }}</div>
-            <div class="ml-2 flex-fill text-right">{{ this.usage }}</div>
+          <div class="d-flex bottomborder-box align-items-end">
+            <div>{{ useLabel }}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{usage.usage}}</div>
+            <div>{{usage.unit}}</div>
           </div>
-          <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">
-              {{unUseLabel}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><a-icon type="question-circle" /></a-tooltip>
-            </div>
-            <div class="ml-2 flex-fill text-right">{{ this.displayUnUsage }}</div>
+
+          <div class="d-flex bottomborder-box align-items-end">
+            <div>{{ unUseLabel }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><a-icon type="question-circle" /></a-tooltip></div>
+            <div class="flex-number mr-1 ml-1 text-right">{{displayUnUsage.usage}}</div>
+            <div>{{displayUnUsage.unit}}</div>
           </div>
-          <div class="d-flex" v-if="showReserved">
+
+          <div class="d-flex bottomborder-box align-items-end" v-if="showReserved">
             <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_182')}}</div>
-            <div class="ml-2 flex-fill text-right">{{ this.reserved }}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{reserved.usage}}</div>
+            <div>{{reserved.unit}}</div>
           </div>
-          <div class="d-flex" v-if="showGpuReserved">
+
+          <div class="d-flex bottomborder-box align-items-end" v-if="showGpuReserved">
             <div class="flex-shrink-0 flex-grow-0">
               {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><a-icon type="question-circle" /></a-tooltip>
             </div>
-            <div class="ml-2 flex-fill text-right">{{ this.gpuReserved }}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{gpuReserved.usage}}</div>
+            <div>{{gpuReserved.unit}}</div>
           </div>
-          <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">
-              {{$t('dashboard.text_181')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><a-icon type="question-circle" /></a-tooltip>
-            </div>
-            <div class="ml-2 flex-fill text-right">{{ this.allUsage }}</div>
+
+          <div class="d-flex bottomborder-box align-items-end">
+            <div>{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><a-icon type="question-circle" /></a-tooltip></div>
+            <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
+            <div>{{allUsage.unit}}</div>
           </div>
         </div>
       </div>
@@ -206,9 +211,12 @@ export default {
         ret = this.allUsageConfig.formatter(ret)
       }
       if (this.allUsageConfig && this.allUsageConfig.unit) {
-        ret = `${ret}${this.allUsageConfig.unit}`
+        ret = `${ret} ${this.allUsageConfig.unit}`
       }
-      return ret
+      return {
+        usage: ret.toString().split(' ')[0],
+        unit: ret.toString().split(' ')[1] || '',
+      }
     },
     usage () {
       let ret = this.usageNumber
@@ -216,9 +224,12 @@ export default {
         ret = this.usageConfig.formatter(ret)
       }
       if (this.usageConfig && this.usageConfig.unit) {
-        ret = `${ret}${this.usageConfig.unit}`
+        ret = `${ret} ${this.usageConfig.unit}`
       }
-      return ret
+      return {
+        usage: ret.toString().split(' ')[0],
+        unit: ret.toString().split(' ')[1] || '',
+      }
     },
     unUsage () {
       const ret = this.allUsageNumber - this.usageNumber
@@ -236,9 +247,12 @@ export default {
         (this.allUsageConfig && this.allUsageConfig.unit) &&
         (this.usageConfig && this.usageConfig.unit)
       ) {
-        ret = `${ret}${this.usageConfig.unit}`
+        ret = `${ret} ${this.usageConfig.unit}`
       }
-      return ret
+      return {
+        usage: ret.toString().split(' ')[0],
+        unit: ret.toString().split(' ')[1] || this.usage.unit,
+      }
     },
     percent () {
       if (this.usageNumber === 0 || this.allUsageNumber === 0) return 0
@@ -284,17 +298,28 @@ export default {
       return isMemory || isCpu || isStorage
     },
     reserved () {
-      return this.showReserved && sizestrWithUnit(this.data['hosts.memory.reserved'], 'M', 1024)
-    },
-    gpuReserved () {
-      if (this.form.fd.all_usage_key === 'hosts.memory.total') {
-        return sizestrWithUnit(this.data['hosts.memory.reserved.isolated'], 'M', 1024)
-      } else if (this.form.fd.all_usage_key === 'hosts.cpu.total') {
-        return `${this.data['hosts.cpu.reserved.isolated'] || 0}${this.usageConfig.unit}`
-      } if (this.form.fd.all_usage_key === 'storages') {
-        return sizestrWithUnit(this.data['hosts.storage.reserved.isolated'], 'M', 1024)
+      if (this.showReserved) {
+        const reserved = sizestrWithUnit(this.data['hosts.memory.reserved'], 'M', 1024)
+        return {
+          usage: reserved.toString().split(' ')[0],
+          unit: reserved.toString().split(' ')[1],
+        }
       }
       return '-'
+    },
+    gpuReserved () {
+      let gpuReserved = ''
+      if (this.form.fd.all_usage_key === 'hosts.memory.total') {
+        gpuReserved = sizestrWithUnit(this.data['hosts.memory.reserved.isolated'], 'M', 1024)
+      } else if (this.form.fd.all_usage_key === 'hosts.cpu.total') {
+        gpuReserved = `${this.data['hosts.cpu.reserved.isolated'] || 0} ${this.usageConfig.unit}`
+      } if (this.form.fd.all_usage_key === 'storages') {
+        gpuReserved = sizestrWithUnit(this.data['hosts.storage.reserved.isolated'], 'M', 1024)
+      }
+      return gpuReserved && {
+        usage: gpuReserved.toString().split(' ')[0],
+        unit: gpuReserved.toString().split(' ')[1],
+      }
     },
     showTips () {
       const keyTips = ['hosts.memory.total', 'hosts.cpu.total', 'storages']
@@ -394,6 +419,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.flex-number{
+  font-size: 18px;
+  line-height: 20px;
+  flex: 1 1 auto;
+}
 .percent-tips {
   font-size: 18px;
 }
@@ -401,5 +431,10 @@ export default {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
     animation: none;
   }
+}
+.bottomborder-box{
+  border-bottom: 1px dotted #E4E4E4;
+  margin: 10px 0;
+  padding: 5px 0;
 }
 </style>

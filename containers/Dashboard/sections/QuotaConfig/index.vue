@@ -312,8 +312,11 @@ export default {
       let brands = this.capability.brands
       brands = R.concat(brands, this.capability.disabled_brands)
       brands = R.uniq(brands)
+      console.log('brands', brands)
       for (let i = 0, len = brands.length; i < len; i++) {
+        console.log('brand', brands[i])
         const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]].cloud_env))(cloudEnvs)
+        console.log('data', data)
         if (!data) {
           cloudEnvs.push({ key: typeClouds.brandMap[brands[i]].cloud_env, label: this.$t(`cloud_env.${typeClouds.brandMap[brands[i]].cloud_env}`) })
         }

@@ -1,0 +1,40 @@
+@gray_text_1: #606266;
+.dashboard-card-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  padding: 15px;
+}
+
+.dashboard-card-header {
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 0;
+  align-items: center;
+  margin-bottom: 10px;
+  color: @gray_text_1;
+}
+
+.dashboard-card-header .dashboard-card-header-left {
+  flex: 1;
+}
+
+.dashboard-card-header .dashboard-card-header-right {
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.dashboard-card-body {
+  flex: 1;
+  display: flex;
+}
+
+.dashboard-fco-wrap {
+  height: 100%;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  position: absolute;
+}
