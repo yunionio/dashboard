@@ -31,19 +31,22 @@ export default {
         resource: this.fetchData,
         getParams: this.params,
         steadyStatus: Object.values(expectStatus.mongodbBackup).flat(),
-        filterOptions: {
-          // name: getNameFilter(),
-          // status: getStatusFilter('mongodbBackup'),
-          backup_mode: {
-            label: this.$t('db.text_36'),
-            dropdown: true,
-            multiple: true,
-            items: [
-              { label: this.$t('db.text_316'), key: 'manual' },
-              { label: this.$t('db.text_317'), key: 'auto' },
-            ],
-          },
-        },
+        // filterOptions: {
+        // name: getNameFilter(),
+        // status: getStatusFilter('mongodbBackup'),
+        // backup_type: {
+        //   label: this.$t('db.text_36'),
+        //   dropdown: true,
+        //   filter: true,
+        //   items: [
+        //     { label: this.$t('db.text_316'), key: 'manual' },
+        //     { label: this.$t('db.text_317'), key: 'auto' },
+        //   ],
+        //   formatter: val => {
+        //     return `backup_type.equals(${val})`
+        //   },
+        // },
+        // },
       }),
       columns: [
         getNameDescriptionTableColumn({
@@ -55,7 +58,7 @@ export default {
           width: 100,
           slots: {
             default: ({ row }) => {
-              return row.backup_mode === 'manual' ? this.$t('db.text_316') : this.$t('db.text_317')
+              return row.backup_type === 'manual' ? this.$t('db.text_316') : this.$t('db.text_317')
             },
           },
         },
@@ -71,6 +74,7 @@ export default {
         },
         getStatusTableColumn({ statusModule: 'mongodbBackup' }),
         {
+          field: 'start_time',
           title: this.$t('db.text_39'),
           minWidth: 150,
           slots: {
