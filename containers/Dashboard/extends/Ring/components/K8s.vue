@@ -12,17 +12,20 @@
           <template v-slot:format><span class="percent-tips" :style="{ color: percentColor }">{{ percentTips }}</span></template>
         </a-progress>
         <div class="flex-fill ml-4">
-          <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{ useLabel }}</div>
-            <div class="ml-2 flex-fill text-right">{{ this.usage }}</div>
+          <div class="d-flex bottomborder-box align-items-end">
+            <div>{{ useLabel }}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{usage.usage}}</div>
+            <div>{{ usage.unit }}</div>
           </div>
-          <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{ unUseLabel }}</div>
-            <div class="ml-2 flex-fill text-right">{{ this.unUsage }}</div>
+          <div class="d-flex bottomborder-box align-items-end">
+            <div>{{ unUseLabel }}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{displayUnUsage.usage}}</div>
+            <div>{{displayUnUsage.unit}}</div>
           </div>
-          <div class="d-flex">
-            <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_44')}}</div>
-            <div class="ml-2 flex-fill text-right">{{ this.allUsage }}</div>
+          <div class="d-flex bottomborder-box align-items-end">
+            <div>{{ $t('dashboard.text_44') }}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
+            <div>{{allUsage.unit}}</div>
           </div>
         </div>
       </div>
@@ -153,9 +156,12 @@ export default {
         ret = this.allUsageConfig.formatter(ret)
       }
       if (this.allUsageConfig && this.allUsageConfig.unit) {
-        ret = `${ret}${this.allUsageConfig.unit}`
+        ret = `${ret} ${this.allUsageConfig.unit}`
       }
-      return ret
+      return {
+        usage: ret.toString().split(' ')[0],
+        unit: ret.toString().split(' ')[1] || '',
+      }
     },
     usage () {
       let ret = this.usageNumber
@@ -163,9 +169,12 @@ export default {
         ret = this.usageConfig.formatter(ret)
       }
       if (this.usageConfig && this.usageConfig.unit) {
-        ret = `${ret}${this.usageConfig.unit}`
+        ret = `${ret} ${this.usageConfig.unit}`
       }
-      return ret
+      return {
+        usage: ret.toString().split(' ')[0],
+        unit: ret.toString().split(' ')[1] || '',
+      }
     },
     unUsage () {
       const ret = this.allUsageNumber - this.usageNumber
@@ -183,9 +192,12 @@ export default {
         (this.allUsageConfig && this.allUsageConfig.unit) &&
         (this.usageConfig && this.usageConfig.unit)
       ) {
-        ret = `${ret}${this.usageConfig.unit}`
+        ret = `${ret} ${this.usageConfig.unit}`
       }
-      return ret
+      return {
+        usage: ret.toString().split(' ')[0],
+        unit: ret.toString().split(' ')[1] || this.usage.unit,
+      }
     },
     percent () {
       if (this.usageNumber === 0 || this.allUsageNumber === 0) return 0
@@ -294,6 +306,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.flex-number{
+  font-size: 18px;
+  line-height: 20px;
+  flex: 1 1 auto;
+}
 .percent-tips {
   font-size: 18px;
 }
@@ -301,5 +318,10 @@ export default {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
     animation: none;
   }
+}
+.bottomborder-box{
+  border-bottom: 1px dotted #E4E4E4;
+  margin: 10px 0;
+  padding: 5px 0;
 }
 </style>

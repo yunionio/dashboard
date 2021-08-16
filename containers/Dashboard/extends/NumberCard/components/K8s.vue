@@ -5,9 +5,11 @@
         <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right"><slot name="actions" :handle-edit="handleEdit" /></div>
       </div>
-      <div class="dashboard-card-body align-items-center">
-        <div class="number-card-number mr-2">{{ this.usage.usage }}</div>
-        <div class="number-card-unit">{{ this.usage.unit }}</div>
+      <div class="dashboard-card-body d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-baseline">
+          <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
+          <div class="number-card-unit">{{ this.usage.unit }}</div>
+        </div>
       </div>
     </div>
     <base-drawer class="drawer-wrapper" @update:visible="updateVisible" :visible="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit" @cancel="cancel">
@@ -173,9 +175,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.number-card-number, .number-card-unit {
-  font-size: 36px;
-  color: #1890ff;
+.number-card-number {
+  font-size: 50px;
 }
 .drawer-wrapper {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
