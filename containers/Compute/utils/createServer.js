@@ -663,6 +663,9 @@ export class GenCreateData {
     if (type === 'sys' && this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
       ret.driver = 'ide'
     }
+    if (item.medium) {
+      ret.medium = item.medium
+    }
     if (item.schedtags) {
       ret.schedtags = item.schedtags
     }
@@ -677,6 +680,9 @@ export class GenCreateData {
     }
     if (item.storage_id) {
       ret.storage_id = item.storage_id
+    }
+    if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key && ret.backend.indexOf('local') !== -1) {
+      ret.backend = ret.backend.split('-')[0]
     }
     return ret
   }
@@ -696,6 +702,10 @@ export class GenCreateData {
     const systemDisk = {
       type: sysDiskType,
       size: this.fd.systemDiskSize,
+    }
+    // 磁盘介质
+    if (this.fi.systemDiskMedium) {
+      systemDisk.medium = this.fi.systemDiskMedium
     }
     if (this.fd.systemDiskSchedtag) {
       systemDisk.schedtags = [
@@ -738,6 +748,9 @@ export class GenCreateData {
       if (this.fd.systemDiskStorage) {
         // if system disk specifies storage, the data disks should do the same
         diskObj.storage_id = this.fd.systemDiskStorage
+      }
+      if (this.fi.dataDiskMedium) {
+        diskObj.medium = this.fi.dataDiskMedium
       }
       dataDisk.push(diskObj)
     }, this.fd.dataDiskSizes)

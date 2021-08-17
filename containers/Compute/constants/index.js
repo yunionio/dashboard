@@ -403,6 +403,7 @@ export const RESOURCE_TYPES_MAP = {
 export const MEDIUM_MAP = {
   rotate: i18n.t('compute.text_47'),
   ssd: i18n.t('compute.text_48'),
+  hybrid: i18n.t('compute.text_578'),
 }
 
 export const DISK_TYPES = {

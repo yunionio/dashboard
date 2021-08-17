@@ -676,14 +676,21 @@ export default {
       if (this.form.fd.sysdisks && this.form.fd.sysdisks.length === 1) {
         this.sysdisk = this.form.fd.sysdisks[0]
         const storageItem = STORAGE_TYPES[this.selectedItem.hypervisor]
+        // 针对kvm-local盘特殊处理
+        let diskKey = this.sysdisk.type
+        const { disk_type, medium_type } = this.selectedItem.disks_info[0] || {}
+        if (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor && diskKey === 'local' && disk_type === 'sys' && medium_type) {
+          diskKey = `${diskKey}-${medium_type}`
+        }
         this.form.fd.defaultType = {
-          [this.decorators.systemDisk.type[0]]: { key: this.sysdisk.type, label: R.is(Object, storageItem) ? (_.get(storageItem, '[sysdisk.type].key') || this.sysdisk.type) : this.sysdisk.type },
+          [this.decorators.systemDisk.type[0]]: { key: diskKey, label: R.is(Object, storageItem) ? (_.get(storageItem, '[diskKey].key') || diskKey) : diskKey },
         }
       }
+      const { medium_type: dataDiskMedium } = this.selectedItem.disks_info[1] || {}
       this.$nextTick(() => {
         setTimeout(() => {
           this.form.fd.datadisks.forEach((v, i) => {
-            this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, sizeDisabled: true, ...v })
+            this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, sizeDisabled: true, medium: dataDiskMedium, ...v })
           })
           this.diskLoaded = true
         }, 1000)
@@ -887,10 +894,20 @@ export default {
         }
         if (values.dataDiskTypes) {
           if (values.dataDiskTypes[key]) {
-            diskObj.backend = values.dataDiskTypes[key].key
+            // 针对kvm-local盘特殊处理
+            let diskKey = values.dataDiskTypes[key].key
+            if (diskKey.indexOf('local') !== -1 && this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor) {
+              diskKey = diskKey.split('-')[0]
+            }
+            diskObj.backend = diskKey
           } else {
             if (_.get(dataDisks, '[0].diskType.key')) {
-              diskObj.backend = _.get(dataDisks, '[0].diskType.key') // 默认添加的盘和第一块保持一致
+              // 针对kvm-local盘特殊处理
+              let diskKey = _.get(dataDisks, '[0].diskType.key') // 默认添加的盘和第一块保持一致
+              if (diskKey.indexOf('local') !== -1 && this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor) {
+                diskKey = diskKey.split('-')[0]
+              }
+              diskObj.backend = diskKey
             }
           }
         }
@@ -910,6 +927,11 @@ export default {
           if (values.dataDiskPolicys && values.dataDiskPolicys[key]) {
             diskObj.schedtags[0].strategy = values.dataDiskPolicys[key]
           }
+        }
+        // 磁盘介质
+        const { key: dataDiskKey = '' } = values.dataDiskTypes[key]
+        if (dataDiskKey.split('-')[1]) {
+          diskObj.medium = dataDiskKey.split('-')[1]
         }
         dataDisk.push(diskObj)
       }, values.dataDiskSizes)

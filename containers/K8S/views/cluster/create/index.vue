@@ -104,6 +104,7 @@
 <script>
 /* import * as R from 'ramda' */
 import { mapGetters } from 'vuex'
+import { HYPERVISORS_MAP } from '@/constants'
 import { KUBE_PROVIDER, K8S_HYPERVISORS_MAP, getClusterDocs } from '../constants'
 import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionVpc from '@/sections/CloudregionVpc'
@@ -605,6 +606,10 @@ export default {
           if (data.systemDiskSchedtag[key] && data.systemDiskPolicy[key]) {
             disks[0].schedtags = [{ id: data.systemDiskSchedtag[key], strategy: data.systemDiskPolicy[key] }]
           }
+        }
+        if (hypervisor === HYPERVISORS_MAP.kvm.key && disks[0].backend.indexOf('local') !== -1) {
+          disks[0].medium = disks[0].backend.split('-')[1]
+          disks[0].backend = disks[0].backend.split('-')[0]
         }
         const machinesItem = {
           vm: {

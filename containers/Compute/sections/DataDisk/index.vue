@@ -198,7 +198,10 @@ export default {
         const typeItemArr = currentTypes[i].split('/')
         const type = typeItemArr[0]
         const medium = typeItemArr[1]
-        const opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
+        let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
+        if (hyper === HYPERVISORS_MAP.kvm.key && type === 'local' && this.isSomeLocal(currentTypes)) {
+          opt = hypervisorDisks[`${type}-${medium}`] // kvm 区分多种介质的硬盘
+        }
         if (opt) {
           const min = Math.max(DISK_MIN_SIZE, opt.min)
           let max = opt.max
@@ -331,9 +334,13 @@ export default {
         }
       })
     },
-    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, ...ret } = {}) {
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, ...ret } = {}) {
       const key = uuid()
-      const typeObj = this.typesMap[diskType]
+      let newDiskType = diskType
+      if (this.getHypervisor() === HYPERVISORS_MAP.kvm.key && diskType === 'local' && medium) {
+        newDiskType = `${diskType}-${medium}`
+      }
+      const typeObj = this.typesMap[newDiskType]
       let dataDiskTypes = {
         key: _.get(this.dataDisks, '[0].diskType.key'),
         label: _.get(this.dataDisks, '[0].diskType.label'),
@@ -474,6 +481,10 @@ export default {
         return this.$te(`common.storage.${diskTypeLabel}`) ? this.$t(`common.storage.${diskTypeLabel}`) : diskTypeLabel
       }
       return i === 0 ? '' : this.$te(`common.storage.${diskTypeLabel}`) ? this.$t(`common.storage.${diskTypeLabel}`) : diskTypeLabel
+    },
+    isSomeLocal (types) {
+      const localTypes = types.filter(item => item.indexOf('local') !== -1)
+      return localTypes.length > 1
     },
   },
 }
