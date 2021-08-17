@@ -3,7 +3,8 @@
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
-    :single-actions="singleActions" />
+    :single-actions="singleActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -42,8 +43,9 @@ export default {
           status: getStatusFilter('webapp'),
           tech_stack: {
             label: this.$t('compute.webapp.tech.stack'),
+            filter: true,
             formatter: val => {
-              return `${val}`
+              return `tech_stack.contains("${val}")`
             },
           },
           projects: getTenantFilter(),
@@ -52,6 +54,20 @@ export default {
           region: getRegionFilter(),
         },
       }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: this.$t('compute.text_228'), key: 'name' },
+          { label: this.$t('compute.text_268'), key: 'status' },
+          { label: this.$t('compute.webapp.type'), key: 'type' },
+          { label: this.$t('compute.webapp.kind'), key: 'kind' },
+          { label: this.$t('compute.webapp.tech.stack'), key: 'tech_stack' },
+          { label: this.$t('table.title.brand'), key: 'provider' },
+          { label: this.$t('res.cloudaccount'), key: 'manager' },
+          { label: this.$t('res.region'), key: 'region' },
+          { label: this.$t('res.project'), key: 'tenant' },
+        ],
+      },
       groupActions: [
         {
           label: this.$t('common.text00043'),

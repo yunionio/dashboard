@@ -3,7 +3,8 @@
     :onManager="onManager"
     :data="data"
     :base-info="baseInfo"
-    status-module="webapp" />
+    status-module="webapp"
+    resource="webapps" />
 </template>
 
 <script>
