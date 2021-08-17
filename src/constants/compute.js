@@ -222,6 +222,36 @@ export const STORAGE_TYPES = {
       sysMax: 500,
       unCreateCloud: true, // 不支持创建云硬盘
     },
+    'local-ssd': {
+      label: i18n.t('common.storage.local-ssd'),
+      key: 'local-ssd',
+      min: 1,
+      max: 3 * 1024,
+      default: true,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'local-rotate': {
+      label: i18n.t('common.storage.local-rotate'),
+      key: 'local-rotate',
+      min: 1,
+      max: 3 * 1024,
+      default: true,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+    'local-hybrid': {
+      label: i18n.t('common.storage.local-hybrid'),
+      key: 'local-hybrid',
+      min: 1,
+      max: 3 * 1024,
+      default: true,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
     rbd: {
       label: 'Ceph RBD',
       key: 'rbd',

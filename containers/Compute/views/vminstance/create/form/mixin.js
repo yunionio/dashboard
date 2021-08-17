@@ -329,6 +329,7 @@ export default {
               .then((data) => {
                 this.createServer(data)
               })
+            this.submiting = false
           }
         })
         .catch(error => {

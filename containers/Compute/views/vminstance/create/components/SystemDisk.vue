@@ -171,7 +171,10 @@ export default {
         const typeItemArr = currentTypes[i].split('/')
         const type = typeItemArr[0]
         const medium = typeItemArr[1]
-        const opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
+        let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
+        if (hyper === HYPERVISORS_MAP.kvm.key && type === 'local' && this.isSomeLocal(currentTypes)) {
+          opt = hypervisorDisks[`${type}-${medium}`] // kvm 区分多种介质的硬盘
+        }
         if (opt && !opt.sysUnusable) {
           // 新建ucloud云服务器时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
           let max = opt.sysMax
@@ -345,6 +348,10 @@ export default {
       if (this.form.fi) {
         this.$set(this.form.fi, 'systemDiskMedium', _.get(this.typesMap, `[${v.key}].medium`))
       }
+    },
+    isSomeLocal (types) {
+      const localTypes = types.filter(item => item.indexOf('local') !== -1)
+      return localTypes.length > 1
     },
   },
 }
