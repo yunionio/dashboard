@@ -1,4 +1,5 @@
 import {
+  getNameDescriptionTableColumn,
   getStatusTableColumn,
   getBrandTableColumn,
   getAccountTableColumn,
@@ -14,21 +15,15 @@ import {
 export default {
   created () {
     this.columns = [
-      {
-        title: this.$t('system.text_101'),
-        field: 'name',
-        showOverflow: 'ellipsis',
-        minWidth: 100,
-        slots: {
-          default: ({ row }) => {
-            return [
-              <list-body-cell-wrap copy row={row} field='name' hideField>
-                <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
-              </list-body-cell-wrap>,
-            ]
-          },
+      getNameDescriptionTableColumn({
+        onManager: this.onManager,
+        hideField: true,
+        slotCallback: row => {
+          return (
+            <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+          )
         },
-      },
+      }),
       getStatusTableColumn({ statusModule: 'webapp' }),
       getTypeTableColumn(),
       getKindTableColumn(),

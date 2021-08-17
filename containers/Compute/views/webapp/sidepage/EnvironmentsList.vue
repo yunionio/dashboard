@@ -3,12 +3,15 @@
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
-    :group-actions="groupActions" />
+    :group-actions="groupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'EnvironmentsListForWebAppSidepage',
@@ -23,20 +26,34 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: 'WebAppEnvironmentList',
         resource: 'webappenvironments',
         getParams: {
           app_id: this.data.id,
         },
-      }),
-      columns: [
-        {
-          field: 'name',
-          title: this.$t('compute.webapp.env'),
-          minWidth: 100,
-          formatter: ({ row }) => {
-            return row.name
-          },
+        filterOptions: {
+          name: getNameFilter(),
         },
+      }),
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: this.$t('compute.webapp.env'), key: 'name' },
+          { label: this.$t('compute.webapp.instance_type'), key: 'instance_type' },
+          { label: this.$t('compute.webapp.instance_number'), key: 'instance_number' },
+        ],
+      },
+      columns: [
+        getNameDescriptionTableColumn({
+          onManager: this.onManager,
+          hideField: true,
+          title: this.$t('compute.webapp.env'),
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         {
           field: 'instance_type',
           title: this.$t('compute.webapp.instance_type'),
