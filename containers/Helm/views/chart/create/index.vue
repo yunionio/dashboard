@@ -271,8 +271,7 @@ export default {
   created () {
     this.chartsM = new this.$Manager('charts', 'v1')
     this.releaseM = new this.$Manager('releases', 'v1')
-    this.getChart()
-    this.getChartVersion()
+    this.fetchChartData()
   },
   methods: {
     async getCapability () {
@@ -331,12 +330,13 @@ export default {
         throw error
       }
     },
-    async getChart () {
+    async getChart (version) {
       const { repo, name } = this.$route.query
       const { data } = await this.chartsM.get({
         id: name,
         params: {
-          repo,
+          version: version,
+          repo: repo,
         },
       })
       if (data) {
@@ -357,6 +357,10 @@ export default {
           this.isJsonSchema = true
         }
       }
+    },
+    async fetchChartData () {
+      const version = await this.getChartVersion()
+      this.getChart(version)
     },
     async getChartVersion () {
       this.versionLoading = true
@@ -382,6 +386,7 @@ export default {
       this.form.fc.setFieldsValue({
         [this.decorators.version[0]]: this.versions[0].key,
       })
+      return data[0].version
     },
     async doCreate (values, valuesJson) {
       const data = {
