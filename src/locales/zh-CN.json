@@ -913,7 +913,9 @@
       "extending": "扩容中",
       "unknown": "未知",
       "sync_status": "同步状态",
-      "unavailable": "不可用"
+      "unavailable": "不可用",
+      "update_tags": "更新标签或名称",
+      "update_tags_fail": "更新标签或名称失败"
     },
     "mountTarget": {
       "available": "可用",
@@ -978,7 +980,8 @@
     },
     "webapp": {
       "ready": "正常",
-      "sync_status": "同步中"
+      "sync_status": "同步中",
+      "unknown": "未知"
     },
     "mongodb": {
       "running": "运行中",
