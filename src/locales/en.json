@@ -907,7 +907,9 @@
       "extending": "Extending",
       "unknown": "Unknown",
       "sync_status": "Syncing",
-      "unavailable": "Unavailable"
+      "unavailable": "Unavailable",
+      "update_tags": "Update tag",
+      "update_tags_fail": "Failed to update tag"
     },
     "mountTarget": {
       "available": "Available",
@@ -966,7 +968,8 @@
     },
     "webapp": {
       "ready": "Ready",
-      "sync_status": "Syncing"
+      "sync_status": "Syncing",
+      "unknown": "Unknown"
     },
     "mongodb": {
       "running": "Running",

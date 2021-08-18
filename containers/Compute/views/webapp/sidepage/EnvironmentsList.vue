@@ -71,48 +71,8 @@ export default {
           },
         },
       ],
-      singleActions: [
-        {
-          label: this.$t('common.action.delete'),
-          action: (obj) => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: [obj],
-              columns: this.columns,
-              title: this.$t('common.action.delete'),
-              name: this.$t('compute.webapp.env'),
-              onManager: this.onManager,
-            })
-          },
-          meta: (obj) => this.$getDeleteResult(obj),
-        },
-      ],
-      groupActions: [
-        {
-          label: this.$t('common.action.delete'),
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-              title: this.$t('common.action.delete'),
-              name: this.$t('compute.webapp.env'),
-            })
-          },
-          meta: () => {
-            const ret = {
-              validate: this.list.selected.length,
-              tooltip: null,
-            }
-            if (this.list.selectedItems.some(item => !item.can_delete)) {
-              ret.validate = false
-              return ret
-            }
-            return ret
-          },
-        },
-      ],
+      singleActions: [],
+      groupActions: [],
     }
   },
   created () {
