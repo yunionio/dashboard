@@ -29,7 +29,7 @@ export default {
           return [
             // 修改
             {
-              label: i18n.t('cloudenv.text_202'),
+              label: i18n.t('cloudenv.text_554'),
               permission: 'projectmappings_update',
               action: () => {
                 this.createDialog('ProjectMappingUpdateDialog', {
