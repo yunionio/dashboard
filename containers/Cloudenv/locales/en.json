@@ -244,7 +244,7 @@
   "cloudenv.text_199": "Billing export",
   "cloudenv.text_200": "Cloud Account Type",
   "cloudenv.text_201": "Master Account",
-  "cloudenv.text_202": "Modify",
+  "cloudenv.text_202": "Associated Account",
   "cloudenv.text_203": "Generally speaking, the information such as the bucket of the bill file is set by the main account, and we need to use the access information of the main account to obtain these bill files for analysis",
   "cloudenv.text_204": "Bucket URL",
   "cloudenv.text_205": "How to get the billing bucket URL",
