@@ -30,7 +30,15 @@
       <div class="vxe-grid--pager-wrapper">
         <div class="vxe-pager size--mini">
           <div class="vxe-pager--wrapper">
-            <span class="vxe-pager--total">{{ total }}</span>
+            <span class="vxe-pager--total" v-if="!pager">{{ total }}</span>
+            <vxe-pager
+              v-else
+              size="mini"
+              @page-change="pageChange"
+              :page-sizes="[10,15,20,30]"
+              :current-page.sync="curPager.page"
+              :page-size.sync="curPager.limit"
+              :total="curPager.total" />
           </div>
         </div>
       </div>
@@ -63,6 +71,10 @@ export default {
     series: {
       type: Array,
       required: true,
+    },
+    pager: {
+      type: Object,
+      required: false,
     },
     timeFormatStr: {
       type: String,
@@ -107,6 +119,7 @@ export default {
       yMax: 0,
       alertHandlerShow: false,
       topStyleRange: [220, 20],
+      curPager: Object.assign({}, this.pager || { seriesIndex: 0, total: 0, limit: 10, page: 0 }),
     }
   },
   computed: {
@@ -242,6 +255,9 @@ export default {
     this.colorHash = null
   },
   methods: {
+    pageChange ({ type, currentPage, pageSize, $event }) {
+      this.$emit('pageChange', { seriesIndex: this.curPager.seriesIndex, total: this.curPager.total, limit: pageSize, page: currentPage })
+    },
     cellClick ({ row, rowIndex }) {
       this.tableSetHighlight({ row, rowIndex })
     },
