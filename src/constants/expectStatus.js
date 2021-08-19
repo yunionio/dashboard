@@ -430,6 +430,7 @@ export default {
   },
   webapp: {
     success: ['ready'],
+    info: ['unknown'],
   },
   mongodb: {
     success: ['running'],
