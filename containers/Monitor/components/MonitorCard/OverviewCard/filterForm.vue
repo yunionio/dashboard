@@ -151,7 +151,10 @@ export default {
   },
   watch: {
     scope (val, oldval) {
-      this.curScope = val
+      if (val !== oldval) {
+        this.curScope = val
+        this.handleRefreshAll()
+      }
     },
     dimentionId (val, oldval) {
       if (val !== oldval) {
