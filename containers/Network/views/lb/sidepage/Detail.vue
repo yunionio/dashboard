@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { LB_SPEC, CHARGE_TYPE } from '@Network/views/lb/constants'
 import { getBrandTableColumn, getCopyWithContentTableColumn, getZone1TableColumn, getSwitchTableColumn } from '@/utils/common/tableColumn'
 import {
@@ -94,6 +95,22 @@ export default {
         {
           title: this.$t('network.text_308'),
           items: [
+            {
+              field: 'capacity',
+              title: this.$t('network.lb.instance_number'),
+              formatter: ({ row }) => {
+                const c = R.path(['metadata', 'sys:capacity'], row)
+                const max = R.path(['metadata', 'sys:max_capacity'], row)
+                const min = R.path(['metadata', 'sys:min_capacity'], row)
+                if (c) {
+                  if (max && min && max !== '0') {
+                    return `${c} (min: ${min}, max: ${max})`
+                  }
+                  return c
+                }
+                return '-'
+              },
+            },
             getZone1TableColumn(),
             {
               field: 'address',
