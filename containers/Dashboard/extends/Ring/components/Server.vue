@@ -12,25 +12,25 @@
           <template v-slot:format><span class="percent-tips" :style="{ color: percentColor }">{{ percentTips }}</span></template>
         </a-progress>
         <div class="flex-fill ml-4">
-          <div class="d-flex bottomborder-box align-items-end">
+          <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div>{{ useLabel }}</div>
             <div class="flex-number mr-2 ml-1 text-right">{{usage.usage}}</div>
             <div>{{usage.unit}}</div>
           </div>
 
-          <div class="d-flex bottomborder-box align-items-end">
+          <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div>{{ unUseLabel }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><a-icon type="question-circle" /></a-tooltip></div>
             <div class="flex-number mr-1 ml-1 text-right">{{displayUnUsage.usage}}</div>
             <div>{{displayUnUsage.unit}}</div>
           </div>
 
-          <div class="d-flex bottomborder-box align-items-end" v-if="showReserved">
+          <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showReserved">
             <div class="flex-shrink-0 flex-grow-0">{{$t('dashboard.text_182')}}</div>
             <div class="flex-number mr-2 ml-1 text-right">{{reserved.usage}}</div>
             <div>{{reserved.unit}}</div>
           </div>
 
-          <div class="d-flex bottomborder-box align-items-end" v-if="showGpuReserved">
+          <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showGpuReserved">
             <div class="flex-shrink-0 flex-grow-0">
               {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><a-icon type="question-circle" /></a-tooltip>
             </div>
@@ -38,7 +38,7 @@
             <div>{{gpuReserved.unit}}</div>
           </div>
 
-          <div class="d-flex bottomborder-box align-items-end">
+          <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div>{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><a-icon type="question-circle" /></a-tooltip></div>
             <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
             <div>{{allUsage.unit}}</div>
@@ -190,6 +190,16 @@ export default {
     }
   },
   computed: {
+    itemStyle () {
+      const ret = {}
+      if (this.showReserved || this.showGpuReserved) {
+        ret.margin = '0'
+      }
+      if (this.showGpuReserved && this.showReserved) {
+        ret.padding = '3px 0'
+      }
+      return ret
+    },
     allUsageNumber () {
       return (this.data && this.data[this.form.fd.all_usage_key]) || 0
     },
