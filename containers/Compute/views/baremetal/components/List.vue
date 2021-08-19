@@ -273,6 +273,31 @@ export default {
                 },
               },
               {
+                label: this.$t('compute.vminstance.monitor.install_agent'),
+                permission: 'server_perform_install_agent',
+                action: () => {
+                  this.createDialog('InstallAgentDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  let ret = {
+                    validate: true,
+                    tooltip: null,
+                  }
+                  ret.validate = this.list.selectedItems.length > 0
+                  if (!ret.validate) return ret
+                  ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
+                    ret.validate = this.list.selectedItems.every(item => ['running'].includes(item.status))
+                    return ret
+                  })
+                  return ret
+                },
+                hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_detect_ssh_proxy'),
+              },
+              {
                 label: this.$t('table.action.set_tag'),
                 action: () => {
                   this.createDialog('SetTagDialog', {
