@@ -965,6 +965,7 @@
     "API_GATEWAY": "API_GATEWAY",
     "APPSYNC": "APPSYNC"
   },
+  "network.lb.instance_number": "Instance Number",
   "network.waf": "WAF strategy",
   "network.waf.delete": "Delete WAF strategy"
 }

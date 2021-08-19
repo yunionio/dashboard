@@ -964,6 +964,7 @@
     "API_GATEWAY": "API网关",
     "APPSYNC": "应用程序同步"
   },
+  "network.lb.instance_number": "实例数量",
   "network.waf": "WAF策略",
   "network.waf.delete": "删除WAF策略"
 }
