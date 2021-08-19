@@ -15,7 +15,7 @@
         </template>
       </monitor-header>
       <div v-for="(item, i) in seriesList" :key="i">
-        <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr">
+        <monitor-line :loading="loadingList[i]" :description="seriesDescription[i]" :metricInfo="metricList[i][0]" class="mb-3" @chartInstance="setChartInstance" :series="item" :timeFormatStr="timeFormatStr" :pager="seriesListPager[i]" @pageChange="pageChange">
           <template #extra>
             <a-button class="mr-3" type="link" @click="handleSave(metricList[i], seriesDescription[i])">{{ $t('common.save') }}</a-button>
           </template>
@@ -59,6 +59,7 @@ export default {
       timeOpts,
       metricList: [],
       seriesList: [],
+      seriesListPager: [],
       chartInstanceList: [], // e-chart 实例
       loadingList: [],
       seriesDescription: [],
@@ -135,24 +136,24 @@ export default {
       for (let i = 0; i < this.metricList.length; i++) {
         const metric_query = this.metricList[i]
         this.loadingList.push(true)
-        jobs.push(this.fetchData(metric_query))
+        jobs.push(this.fetchData(metric_query, 10, 0))
       }
       try {
         const res = await Promise.all(jobs)
         this.seriesList = res.map(val => get(val, 'series') || [])
+        this.seriesListPager = res.map((val, index) => ({ seriesIndex: index, total: get(val, 'series_total') || 0, page: 1, limit: 10 }))
         this.loadingList = this.loadingList.map(v => false)
       } catch (error) {
         this.loadingList = this.loadingList.map(v => false)
         throw error
       }
     },
-    async refresh (params, i) { // 将多个查询 分开调用
+    async _refresh (i, limit, offset) {
       try {
-        const metric_query = [{ model: params }]
-        this.$set(this.metricList, i, metric_query)
         this.$set(this.loadingList, i, true)
-        const { series = [] } = await this.fetchData(metric_query)
+        const { series = [], series_total = 0 } = await this.fetchData(this.metricList[i], limit, offset)
         this.$set(this.seriesList, i, series)
+        this.$set(this.seriesListPager, i, { seriesIndex: i, total: series_total, page: 1 + offset / limit, limit: limit })
         this.loadingList[i] = false
       } catch (error) {
         this.$set(this.seriesList, i, [])
@@ -160,12 +161,22 @@ export default {
         throw error
       }
     },
-    async fetchData (metric_query) {
+    async refresh (params, i) { // 将多个查询 分开调用
+      const metric_query = [{ model: params }]
+      this.$set(this.metricList, i, metric_query)
+      await this._refresh(i, 10, 0)
+    },
+    async pageChange (pager) {
+      await this._refresh(pager.seriesIndex, pager.limit, (pager.page - 1) * pager.limit)
+    },
+    async fetchData (metric_query, limit, offset) {
       try {
         const data = {
           metric_query,
           interval: this.timeGroup,
           scope: this.$store.getters.scope,
+          slimit: limit,
+          soffset: offset,
           ...this.timeRangeParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
