@@ -7,7 +7,7 @@
     </a-form-item>
     <a-form-item v-if="method !== 'scripts'">
      <span slot="label">
-        {{ $t('compute.text_user') }}
+        {{ $t('compute.text_163') }}
         <a-tooltip :title="$t('compute.vminstance.setup_ssh_authentication.create.username.tips')">
           <a-icon type="question-circle-o" />
         </a-tooltip>
