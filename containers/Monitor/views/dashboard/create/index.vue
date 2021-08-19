@@ -253,6 +253,7 @@ export default {
           slimit: limit,
           soffset: offset,
           ...this.timeRangeParams,
+          ...this.extraParams,
         }
         if (!data.metric_query || !data.metric_query.length || !data.from) return
         data.signature = getSignature(data)
