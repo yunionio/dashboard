@@ -246,6 +246,7 @@ export const PERMISSION = {
   server_perform_aet_auto_renew: ['compute', 'servers', 'perform', 'set-auto-renew'],
   server_perform_setup_ssh_proxy: ['compute', 'servers', 'perform', 'make-sshable'],
   server_perform_detect_ssh_proxy: ['compute', 'servers', 'get', 'sshable'],
+  server_perform_install_agent: ['compute', 'servers', 'perform', 'install-agent'],
   /**
    * images 相关操作
    */
