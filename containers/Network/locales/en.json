@@ -967,5 +967,13 @@
   },
   "network.lb.instance_number": "Instance Number",
   "network.waf": "WAF strategy",
-  "network.waf.delete": "Delete WAF strategy"
+  "network.waf.delete": "Delete WAF strategy",
+  "network.cdn.area": "Area",
+  "network.cdn.area.mainland": "Mainland",
+  "network.cdn.area.overseas": "Overseas",
+  "network.cdn.area.global": "Global",
+  "network.cdn.service_type": "Service Type",
+  "network.cdn.service_type.web": "Web",
+  "network.cdn.service_type.download": "Download",
+  "network.cdn.service_type.media": "Media"
 }

@@ -32,6 +32,7 @@ import AgentForm from '@Network/views/agent/form'
 import Layout from '@/layouts/RouterView'
 import Cloudregion from '@Cloudenv/views/cloudregion'
 import Zone from '@Cloudenv/views/zone'
+import DomainList from '@Network/views/cdn'
 
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -598,6 +599,35 @@ export default {
               name: 'AgentForm',
               path: 'form',
               component: AgentForm,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('dictionary.cdn'),
+      },
+      submenus: [
+        {
+          path: '/cdn',
+          meta: {
+            label: i18n.t('dictionary.cdn_domain'),
+            permission: 'cdn_domains_list',
+            t: 'dictionary.cdn_domain',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.cdn_domain')) {
+                return true
+              }
+              return !hasSetupKey(['onestack', 'private', 'public'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'DomainList',
+              path: '',
+              component: DomainList,
             },
           ],
         },
