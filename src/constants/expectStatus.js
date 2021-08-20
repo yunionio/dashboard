@@ -441,4 +441,9 @@ export default {
     success: ['available'],
     info: ['unknown', 'unavailable'],
   },
+  cdnDomain: {
+    success: ['online'],
+    info: ['unknown', 'offline'],
+    danger: ['rejected', 'delete_failed'],
+  },
 }

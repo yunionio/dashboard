@@ -966,5 +966,13 @@
   },
   "network.lb.instance_number": "实例数量",
   "network.waf": "WAF策略",
-  "network.waf.delete": "删除WAF策略"
+  "network.waf.delete": "删除WAF策略",
+  "network.cdn.area": "加速区域",
+  "network.cdn.area.mainland": "中国境内",
+  "network.cdn.area.overseas": "中国境外",
+  "network.cdn.area.global": "全球",
+  "network.cdn.service_type": "加速类别",
+  "network.cdn.service_type.web": "静态加速",
+  "network.cdn.service_type.download": "下载加速",
+  "network.cdn.service_type.media": "流媒体点播加速"
 }

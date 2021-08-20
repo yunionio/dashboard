@@ -986,6 +986,14 @@
       "available": "Available",
       "unavailable": "Unavailable",
       "unknown": "Unknown"
+    },
+    "cdnDomain": {
+      "offline": "Offline",
+      "processing": "Processing",
+      "rejected": "Rejected",
+      "online": "Online",
+      "deleting": "Deleting",
+      "delete_failed": "Deletion failed"
     }
   },
   "skuCategoryOptions": {
@@ -2419,10 +2427,12 @@
     "data_analysis": "Data Analysis",
     "elasticsearch": "Elasticsearch",
     "mongodb": "MongoDB Instance",
-    "ext_jenkins":"Jenkins",
-    "ext_mysql":"MySQL",
-    "ext_redis":"Redis",
-    "ext_rabbitmq":"RabbitMQ"
+    "ext_jenkins": "Jenkins",
+    "ext_mysql": "MySQL",
+    "ext_redis": "Redis",
+    "ext_rabbitmq": "RabbitMQ",
+    "cdn": "CDN",
+    "cdn_domain": "Domain"
   },
   "res": {
     "role": "Role",

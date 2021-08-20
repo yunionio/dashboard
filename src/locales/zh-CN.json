@@ -998,6 +998,14 @@
       "available": "正常",
       "unavailable": "不可用",
       "unknown": "未知"
+    },
+    "cdnDomain": {
+      "offline": "已关闭",
+      "processing": "部署中",
+      "rejected": "被拒绝",
+      "online": "已启动",
+      "deleting": "删除中",
+      "delete_failed": "删除失败"
     }
   },
   "skuCategoryOptions": {
@@ -2431,10 +2439,12 @@
     "data_analysis": "数据分析",
     "elasticsearch": "Elasticsearch",
     "mongodb": "MongoDB实例",
-    "ext_jenkins":"Jenkins",
-    "ext_mysql":"MySQL",
-    "ext_redis":"Redis",
-    "ext_rabbitmq":"RabbitMQ"
+    "ext_jenkins": "Jenkins",
+    "ext_mysql": "MySQL",
+    "ext_redis": "Redis",
+    "ext_rabbitmq": "RabbitMQ",
+    "cdn": "内容分发网络",
+    "cdn_domain": "域名"
   },
   "res": {
     "role": "@:dictionary.role",
