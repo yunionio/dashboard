@@ -2611,7 +2611,8 @@
       "input": "请输入{0}",
       "optional_input": "选填，请输入{0}"
     },
-    "adv_config": "高级配置"
+    "adv_config": "高级配置",
+    "refresh": "刷新"
   },
   "navbar": {
     "view": {
