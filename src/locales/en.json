@@ -2599,8 +2599,7 @@
       "input": "Please enter {0}",
       "optional_input": "Optional, Please enter {0}"
     },
-    "adv_config": "Advanced configuration",
-    "refresh": "Refresh"
+    "adv_config": "Advanced configuration"
   },
   "navbar": {
     "view": {
