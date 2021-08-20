@@ -18,8 +18,8 @@
               :select-props="{ placeholder: `${$t('common.text00106')}${$t('dictionary.domain')}` }" />
           </a-form-item>
           <a-form-item :label="$t('common.name')">
-            <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" @change="handleNameChange" />
-            <name-repeated v-slot:extra res="proxy_endpoints" :name="name" />
+            <a-input v-decorator="decorators.generate_name" :placeholder="$t('common.placeholder')" @change="handleNameChange" />
+            <name-repeated v-slot:extra res="proxy_endpoints" :name="generate_name" />
           </a-form-item>
           <area-selects
             class="mb-0"
@@ -155,7 +155,7 @@ export default {
       detecting: false,
       title: this.$t('network.ssh-proxy.endpoints.create'),
       networkTitle: JSON.stringify(`${this.$t('network.text_565')}: `),
-      name: '',
+      generate_name: '',
       step: {
         steps: [
           { title: this.$t('network.ssh-proxy.endpoint.create.step1'), key: 'select-endpoint' },
@@ -165,8 +165,8 @@ export default {
       },
       endpointForm: this.$form.createForm(this.$refs.endpointFormRef),
       decorators: {
-        name: [
-          'name',
+        generate_name: [
+          'generate_name',
           {
             rules: [
               { required: true, message: this.$t('network.text_116') },
@@ -361,7 +361,7 @@ export default {
       this.table2Key += 1
     },
     handleNameChange (e) {
-      this.name = e.target.value
+      this.generate_name = e.target.value
     },
     lastStep () {
       this.sshableStatus = ''

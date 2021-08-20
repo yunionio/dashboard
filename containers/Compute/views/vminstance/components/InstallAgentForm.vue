@@ -6,7 +6,7 @@
           {{ install_failed_reason }}
         </template>
         {{ installTips }}
-        <help-link href="/docs/en/docs/user/network/ssh/sshproxy/" v-if="showPEHelpLink">PE</help-link>
+        <help-link :href="peHelpLink" v-if="showPEHelpLink">PE</help-link>
       </a-tooltip>
       <a-tooltip>
         <template slot="title" v-if="disableTips">
@@ -89,6 +89,14 @@ export default {
     },
     showPEHelpLink () {
       return this.agent_install_status === 'install_failed' && this.install_failed_code === 'NoReachInfluxdb'
+    },
+    peHelpLink () {
+      const lang = this.$store.getters.setting.language
+      if (lang === 'zh-CN') {
+        return '/docs/zh/docs/user/network/ssh/sshproxy/'
+      } else {
+        return '/docs/en/docs/user/network/ssh/sshproxy/'
+      }
     },
   },
   methods: {
