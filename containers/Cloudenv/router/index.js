@@ -18,7 +18,7 @@ export default {
   index: 90,
   meta: {
     label: i18n.t('cloudenv.text_8'),
-    icon: 'onecloud',
+    icon: 'menu-multicloud',
   },
   menus: [
     {
