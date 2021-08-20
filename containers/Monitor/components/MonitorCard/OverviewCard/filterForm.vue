@@ -108,6 +108,22 @@ export default {
       immediate: false,
       deep: true,
     },
+    scope (val, oldval) {
+      if (val !== oldval) {
+        this.curScope = val
+        this.handleRefreshAll()
+      }
+    },
+    dimentionId (val, oldval) {
+      if (val !== oldval) {
+        this.handleRefreshAll()
+      }
+    },
+    res (val, oldval) {
+      if (val !== oldval) {
+        this.dimentionId = val === 'server' ? 'vm_id' : 'host_id'
+      }
+    },
   },
   mounted () {
     this.handleRefreshAll()
