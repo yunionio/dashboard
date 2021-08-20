@@ -2667,7 +2667,8 @@
       "input": "Please enter {0}",
       "optional_input": "Optional, Please enter {0}"
     },
-    "adv_config": "Advanced configuration"
+    "adv_config": "Advanced configuration",
+    "refresh": "Refresh"
   },
   "navbar": {
     "view": {
