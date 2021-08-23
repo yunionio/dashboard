@@ -1,5 +1,11 @@
 
 export default {
+  // 通用状态
+  common: {
+    success: ['available'],
+    info: ['unknown'],
+    danger: ['create_failed', 'delete_failed'],
+  },
   server: {
     success: ['running'],
     info: ['ready', 'deallocated', 'unknown', 'suspend', 'converted'],
