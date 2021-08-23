@@ -158,6 +158,26 @@ const resourceMode = {
       )
     },
   },
+  robots: {
+    vnode: (vm, h) => {
+      const text = vm.getLabel()
+      let typeText = ''
+      if (vm.data.type && vm.data.type.length) {
+        const k = `common.${vm.data.type}-robot`
+        if (i18n.te(k)) {
+          typeText = i18n.t(`common.${vm.data.type}-robot`)
+        } else {
+          typeText = vm.data.type
+        }
+      }
+      return (
+        <div class='d-flex'>
+          <span class='text-truncate flex-fill mr-2' title={ text }>{ text }</span>
+          <div style="color: #8492a6; font-size: 13px">{ typeText }</div>
+        </div>
+      )
+    },
+  },
 }
 
 export default {
