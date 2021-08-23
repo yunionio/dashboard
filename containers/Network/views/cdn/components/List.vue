@@ -16,7 +16,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
@@ -43,6 +43,9 @@ export default {
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.cdnDomain).flat(),
         filterOptions: {
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
           id: {
             label: this.$t('table.title.id'),
           },
@@ -55,6 +58,7 @@ export default {
           },
           status: getStatusFilter('cdnDomain'),
           cloudaccount: getAccountFilter(),
+          manager: getCloudProviderFilter(),
           brand: getBrandFilter('cdn_brands'),
           project_domains: getProjectDomainFilter(),
         },
@@ -69,6 +73,8 @@ export default {
           { label: this.$t('network.text_198'), key: 'provider' },
           { label: this.$t('network.text_196'), key: 'manager' },
           { label: this.$t('network.text_313'), key: 'created_at' },
+          { label: this.$t('network.cdn.service_type'), key: 'service_type' },
+          { label: this.$t('network.cdn.area'), key: 'area' },
           {
             label: this.$t('network.text_232'),
             key: 'public_scope',

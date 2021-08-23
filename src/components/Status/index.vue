@@ -38,14 +38,14 @@ export default {
     statusClass () {
       const currentStatusMap = expectStatusMap[this.statusModule]
       if (currentStatusMap) {
-        if (this.isStatus(currentStatusMap.success)) {
+        if (this.isStatus(currentStatusMap.success) || this.isStatus(expectStatusMap.common.success)) {
           return ['status-success']
         }
         const dangerStatus = this.dangerStatusBase.concat(currentStatusMap.danger || [])
-        if (this.isStatus(dangerStatus)) {
+        if (this.isStatus(dangerStatus) || this.isStatus(expectStatusMap.common.danger)) {
           return ['status-danger']
         }
-        if (this.isStatus(currentStatusMap.info)) {
+        if (this.isStatus(currentStatusMap.info) || this.isStatus(expectStatusMap.common.info)) {
           return ['status-info']
         }
         if (this.isStatus(currentStatusMap.warning)) {
@@ -60,6 +60,9 @@ export default {
         if (moduleStatusMap[this.status]) {
           return this.$t(`status.${this.statusModule}.${this.status}`)
         }
+      }
+      if (statusMap.common[this.status]) {
+        return this.$t(`status.common.${this.status}`)
       }
       return this.status
     },

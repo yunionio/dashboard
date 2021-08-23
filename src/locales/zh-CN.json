@@ -1,5 +1,14 @@
 {
   "status": {
+    "common": {
+      "sync_status": "同步状态",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "deleting": "删除中",
+      "delete_failed": "删除失败",
+      "available": "可用",
+      "unknown": "未知"
+    },
     "monitorresources": {
       "init": "未设置告警",
       "alerting": "发生告警",

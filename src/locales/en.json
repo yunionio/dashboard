@@ -1,5 +1,14 @@
 {
   "status": {
+    "common": {
+      "sync_status": "Sync Status",
+      "creating": "Creating",
+      "create_failed": "Create Failed",
+      "deleting": "Deleting",
+      "delete_failed": "Delete Failed",
+      "available": "Available",
+      "unknown": "Unknown"
+    },
     "monitorresources": {
       "init": "No alarm is set",
       "alerting": "Alerting",
