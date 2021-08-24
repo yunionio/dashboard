@@ -41,9 +41,23 @@ export default {
         if (this.scope === 'project' && k === 'host') {
           continue
         }
+
+        if (total === 0) {
+          continue
+        }
+
+        let icon = `res-${k}`
+        if (k === 'guest') {
+          icon = 'res-vminstance'
+        } else if (k === 'oss') {
+          icon = 'res-bucket'
+        } else if (k === 'storage') {
+          icon = 'res-blockstorage'
+        }
+
         cards.push({
           title: this.$t(`dictionary.${k}`),
-          icon: k === 'guest' ? 'res-vminstance' : 'res-host',
+          icon: icon,
           total: total,
           items: items,
         })
