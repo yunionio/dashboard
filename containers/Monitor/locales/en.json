@@ -261,5 +261,11 @@
   "monitor.chart.toolbar.line": "switch to line chart",
   "monitor.chart.toolbar.bar": "switch to bar chart",
   "monitor.dashboard.dialog.project.clone": "Clone Chart",
+  "monitor.alerts.shield.dismiss": "Dismiss",
+  "monitor.alerts.shield.shield": "Shield",
+  "monitor.alerts.shield.time": "Shield Duration",
+  "monitor.alerts.shield.timerange": "Shield Time",
+  "monitor.alerts.shield.reason": "Shield Reason",
+  "monitor.alerts.shield.tips": "The status is shield and the operation is not supported",
   "monitor.view_system": "System"
 }
