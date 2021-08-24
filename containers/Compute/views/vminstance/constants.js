@@ -13,6 +13,16 @@ const DISK_USED_PERCENT = {
   metric: metricItems.used_percent.key,
 }
 
+const BASIC_MEM_USED_PERCENT = {
+  name: 'mem',
+  label: i18n.t('compute.text_518'),
+  seleteItem: 'used_percent',
+  fromItem: 'vm_mem',
+  unit: '%',
+  transfer: 1,
+  metric: metricItems['vm_mem.used_percent'].key,
+}
+
 const MEM_USED_PERCENT = {
   name: 'mem',
   label: i18n.t('compute.text_518'),
@@ -199,6 +209,7 @@ export const ONECLOUD_MONITOR = [
     transfer: 1,
     metric: metricItems['vm_cpu.usage_active'].key, // 报警指标
   },
+  BASIC_MEM_USED_PERCENT,
   {
     name: 'netio',
     label: i18n.t('compute.text_524'),
@@ -248,6 +259,7 @@ export const VMWARE_MONITOR = [
     transfer: 1,
     metric: metricItems['vm_cpu.usage_active'].key,
   },
+  BASIC_MEM_USED_PERCENT,
   {
     name: 'netio',
     label: i18n.t('compute.text_524'),
@@ -297,6 +309,7 @@ export const OTHER_MONITOR = [
     unit: '%',
     metric: metricItems['vm_cpu.usage_active'].key,
   },
+  BASIC_MEM_USED_PERCENT,
   {
     name: 'netio',
     label: i18n.t('compute.text_524'),

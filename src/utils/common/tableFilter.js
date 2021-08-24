@@ -355,3 +355,24 @@ export function getTimeRangeFilter ({ label = '', field = '' }) {
     },
   }
 }
+
+export function getImageDistributionFilter () {
+  return {
+    label: i18n.t('table.title.os'),
+    dropdown: true,
+    multiple: true,
+    items: [
+      { label: 'Windows', key: 'Windows' },
+      { label: 'CentOS', key: 'CentOS' },
+      { label: 'Ubuntu', key: 'Ubuntu' },
+      { label: 'Debian', key: 'Debian' },
+      { label: 'ArchLinux', key: 'ArchLinux' },
+      { label: 'OpenEuler', key: 'OpenEuler' },
+      { label: 'Suse', key: 'Suse' },
+      { label: 'CoreOS', key: 'CoreOS' },
+      { label: 'FreeBSD', key: 'FreeBSD' },
+      { label: 'Linux', key: 'Linux' },
+      { label: 'VMWare', key: 'VMWare' },
+    ],
+  }
+}
