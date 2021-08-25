@@ -26,7 +26,7 @@ const colorList = [
     key: i18n.t('common_319'), color: '#2F54EB',
   },
   {
-    key: i18n.t('common_320'), color: '#722ED1',
+    key: i18n.t('common_320'), color: '#A100FF',
   },
 ]
 
