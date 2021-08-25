@@ -1,7 +1,7 @@
 <template>
   <component :is="chartType" style="height: 100%;" :data="chartData" v-bind="chartConfigC" :loading="loading" :settings="chartSettings" :extend="chartExtend" :events="chartEvents" ref="chart">
     <div class="monitor-list-line-loader d-flex flex-column justify-content-center" v-if="!loading && noData">
-      <a-empty :description="emptyContent" />
+      <data-empty :description="emptyContent" />
     </div>
   </component>
 </template>

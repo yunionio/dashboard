@@ -5,7 +5,7 @@
     :options="chartOptions"
     @chartInstance="v => $emit('chartInstance', v)"
     autoresize />
-  <a-empty v-else />
+  <data-empty v-else />
 </template>
 
 <script>
