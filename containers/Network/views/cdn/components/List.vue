@@ -88,6 +88,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_201'),
+          permission: 'cdn_domains_perform_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['online', 'offline'],
@@ -96,9 +97,17 @@ export default {
               },
             })
           },
-          meta: () => ({
-            validate: this.list.selected.length,
-          }),
+          meta: () => {
+            if (this.list.selectedItems.some(item => !this.isOwner(item))) {
+              return {
+                validate: false,
+                tooltip: this.$t('network.text_627'),
+              }
+            }
+            return {
+              validate: this.list.selectedItems.length,
+            }
+          },
         },
         {
           label: this.$t('network.text_200'),
