@@ -22,6 +22,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { getDocsUrl } from '../../../utils/utils'
+import { getThemeName } from '@/utils/theme/utils'
 
 export default {
   name: 'HelpPopover',
@@ -33,7 +34,7 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode']),
     docsUrl () {
-      return getDocsUrl(this.$store.getters.scope)
+      return getDocsUrl(this.$store.getters.scope) + `?theme=${getThemeName(this.$store.getters.themeColor)}`
     },
   },
   destroyed () {
