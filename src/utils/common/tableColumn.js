@@ -647,7 +647,7 @@ export const getBillingTableColumn = ({
             <template slot="title">
               { tooltipCon }
             </template>
-            <a-icon type="question-circle-o" />
+            <icon type="help" />
           </a-tooltip>
           const dateArr = vm.$moment(row.expired_at).fromNow().split(' ')
           const date = dateArr.join(' ')

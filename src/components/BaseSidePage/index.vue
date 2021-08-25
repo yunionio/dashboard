@@ -52,7 +52,7 @@
         </template>
         <template v-else>
           <template v-if="hasError">
-            <a-empty :description="errorInfo.detail" />
+            <data-empty :description="errorInfo.detail" />
           </template>
           <template v-else><slot /></template>
         </template>

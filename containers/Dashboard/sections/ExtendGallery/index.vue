@@ -12,7 +12,7 @@
           v-for="item in options"
           :key="item.component"
           :data-component="item.component">
-          <div class="extend-thumb flex-shrink-0 flex-grow-0"><icon :type="item.icon" style="font-size: 40px; color: #2A8FF7;" /></div>
+          <div class="extend-thumb flex-shrink-0 flex-grow-0"><icon :type="item.icon" class="dashboard-icon" /></div>
           <div class="extend-content ml-4 flex-fill">
             <div class="extend-title">{{ item.label }}</div>
             <div class="extend-desc text-color-help mt-1">{{ item.desc }}</div>
@@ -62,6 +62,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '~@/styles/less/theme';
+
 .extend-gallery-wrap {
   background-color: #fff;
   width: 300px;
@@ -119,5 +121,9 @@ export default {
 }
 .extend-desc {
   font-size: 12px;
+}
+.dashboard-icon {
+  font-size: 40px;
+  color: @primary-color;
 }
 </style>

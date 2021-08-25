@@ -379,6 +379,9 @@ export default {
   }
   & ::v-deep .ant-empty-image {
     height: 46px;
+    .data-empty{
+      margin-top: 0;
+    }
   }
 }
 .remove-tag {

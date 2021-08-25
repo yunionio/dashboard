@@ -43,11 +43,12 @@ export default {
         title={ this.title }
         trigger='click'
         destroyTooltipOnHide>
-        <a-icon
+        <icon type="copy" onClick={ this.doCopy } />
+        {/* <a-icon
           class='copy-icon'
           type='copy'
           class='primary-color'
-          onClick={ this.doCopy } />
+          onClick={ this.doCopy } /> */}
       </a-tooltip>
     )
   },

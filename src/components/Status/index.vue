@@ -113,8 +113,8 @@ export default {
       background-color: @warning-color;
     }
     .status-dot {
-      width: 6px;
-      height: 6px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       position: relative;
     }

@@ -147,7 +147,7 @@ export default {
     background-color: @sidebar-light-bg-color;
     .level-2-menu {
       .title {
-        color: #333;
+        color: #000;
       }
     }
     .level-3-item {
@@ -157,18 +157,18 @@ export default {
       .menu-item {
         color: @sidebar-light-text-color;
         &::after {
-          background-color: @primary-2;
+          background-color: @primary-color;
         }
         &:hover, &.active {
           &::after {
-            background-color: @primary-3;
+            background-color: @primary-color;
           }
         }
         &:hover {
           color: @sidebar-light-hover-text-color;
         }
         &.active {
-          color: @sidebar-light-active-text-color;
+          color: @primary-color;
         }
       }
     }
@@ -187,7 +187,8 @@ export default {
   padding: 24px 0 0 23px;
   .title {
     color: #fff;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: bold;
     margin-bottom: 16px;
   }
 }
@@ -220,7 +221,7 @@ export default {
       top: 0;
       height: 100%;
       width: 1px;
-      background-color: @primary-3;
+      background-color: @primary-color;
       transition: width .2s ease;
     }
     &:hover, &.active {

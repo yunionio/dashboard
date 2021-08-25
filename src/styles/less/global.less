@@ -35,7 +35,7 @@
   color: @box-shadow-base;
 }
 .text-color-help {
-  color: @text-color-secondary;
+  color: #9C9C9C;
 }
 .primary-color-hover {
   &:hover {
@@ -44,6 +44,9 @@
 }
 
 // vxe table
+.vxe-table {
+  font-size: 14px !important;
+}
 .vxe-table .vxe-cell--checkbox:not(.is--disabled):hover .vxe-checkbox--icon:before {
   border-color: @primary-color !important;
 }
@@ -98,7 +101,7 @@
 }
 
 .text-weak {
-  color: @disabled-color;
+  color: #9C9C9C;
 }
 
 .ant-collapse {
@@ -134,6 +137,8 @@
 // global
 body {
   width: 100% !important;
+  color: #606266;
+  font-family: 'Source Han Sans CN', 'PingFang SC', 'Microsoft Yahei', sans-serif;
 }
 
 #app, .app-container {
@@ -278,4 +283,10 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.ant-tooltip-inner {
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #9C9C9C;
 }

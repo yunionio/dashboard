@@ -43,7 +43,7 @@
       </li>
     </ul>
     <div v-if="!hidePlaceholder" class="text-weak help-tips text-truncate">{{ placeholder }}</div>
-    <a-icon type="search" class="cursor-pointer" />
+    <icon type="search" class="cursor-pointer" />
   </div>
 </template>
 
