@@ -52,11 +52,11 @@ export default {
   height: 60px;
   position: relative;
   > h3 {
-    font-size: 20px;
-    color: #1a2736;
+    font-size: 28px;
+    color: #000;
     margin: 0;
     padding: 0;
-    font-weight: normal;
+    font-weight: bold;
   }
   &::before {
     position: absolute;
@@ -83,6 +83,10 @@ export default {
     }
     .ant-tabs-nav .ant-tabs-tab {
       padding: 16px 16px 20px 16px;
+      font-weight: bold;
+    }
+    .ant-tabs-nav-wrap {
+      margin-bottom: 0;
     }
   }
 }

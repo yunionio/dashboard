@@ -1,11 +1,11 @@
 <template>
   <div v-if="!loading">
     <div v-if="isEmpty">
-      <a-empty style="padding-top: 200px;">
+      <data-empty style="padding-top: 200px;">
         <a-button type="primary" @click="handleCreateDashboard">
           {{ $t('monitor.dashboard.dialog.create') }}
         </a-button>
-      </a-empty>
+      </data-empty>
     </div>
     <div v-else>
       <a-row :gutter="8">

@@ -1,7 +1,7 @@
 <template>
   <ve-line :data="chartData" v-bind="lineConfig" :loading="loading" :settings="chartSettings">
     <div class="monitor-list-line-loader d-flex flex-column justify-content-center" v-if="!loading && noData">
-      <a-empty />
+      <data-empty />
     </div>
   </ve-line>
 </template>
