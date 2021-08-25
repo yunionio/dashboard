@@ -27,7 +27,7 @@
           </div>
         </template>
         <template v-else>
-          <a-empty />
+          <data-empty />
         </template>
       </div>
     </div>

@@ -330,7 +330,7 @@ export default {
                     buttonType: 'link',
                     buttonSize: 'small',
                     buttonStyle: {
-                      fontSize: '12px',
+                      fontSize: '14px',
                     },
                   },
                 }),

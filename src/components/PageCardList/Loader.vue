@@ -4,7 +4,7 @@
       <a-skeleton active />
     </div>
     <div v-else>
-      <a-empty />
+      <data-empty />
     </div>
   </div>
 </template>
