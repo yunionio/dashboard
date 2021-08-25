@@ -43,10 +43,10 @@ export default {
       },
     },
     {
-      key: '#722ED1',
-      fileName: '#722ED1.css',
+      key: '#A100FF',
+      fileName: '#A100FF.css',
       modifyVars: {
-        '@primary-color': '#722ED1',
+        '@primary-color': '#A100FF',
       },
     },
   ],

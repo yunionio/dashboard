@@ -2,7 +2,7 @@
   <div>
     <template v-if="isInternal">
       <a-alert type="warning" class="mb-2" :message="$t('storage.internal_bucket_file')" />
-      <a-empty />
+      <data-empty />
     </template>
     <page-list
       v-else

@@ -1,13 +1,10 @@
 <template>
   <div class="wrap d-flex justify-content-center align-items-center">
-    <div v-if="loading" class="text-center">
-      <div class="loading-image">
-        <a-icon type="sync" spin />
-      </div>
-      <div class="loading-description">{{$t('common.loding')}}</div>
-    </div>
-    <div v-else class="text-center">
-      <data-empty />
+    <div>
+      <a-empty :description="noDataText">
+        <slot />
+        <icon slot="image" type="data-empty" class="data-empty" />
+      </a-empty>
     </div>
   </div>
 </template>
@@ -16,11 +13,8 @@
 import i18n from '@/locales'
 
 export default {
-  name: 'Loader',
+  name: 'DataEmpty',
   props: {
-    loading: {
-      type: Boolean,
-    },
     noDataText: {
       type: String,
       default: i18n.t('common.notData'),
