@@ -46,9 +46,9 @@ export default {
         if (item.scope && !item.scope.includes(this.scope)) {
           effective = false
         }
-        // if (!this.globalConfig.enable_quota_check && (item.component === 'Quota' || item.component === 'ProjectQuota')) {
-        //   effective = false
-        // }
+        if (!this.globalConfig.enable_quota_check && (item.component === 'Quota' || item.component === 'ProjectQuota')) {
+          effective = false
+        }
         // 开源版本过滤
         if (process.env.VUE_APP_PLATFORM === 'cmp_public' && ['ConsumptionPercent', 'ConsumptionTrend', 'SuggestsysAlertsOverview', 'SuggestsysAlertsDetail'].includes(item.component)) {
           effective = false
