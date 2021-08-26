@@ -19,7 +19,13 @@ export function disableDeleteAction (params = {}, dialogParams = {}) {
         columns,
       })
     },
-    meta: (row) => {
+    meta: row => {
+      if (dialogParams.meta) {
+        const ret = dialogParams.meta(row)
+        if (ret && !ret.validate) {
+          return ret
+        }
+      }
       const validate = getData(row) && getData(row).length > 0
       return {
         validate: validate,

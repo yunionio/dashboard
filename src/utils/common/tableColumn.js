@@ -302,7 +302,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
   }
 }
 
-export const getSwitchTableColumn = ({ field, title, change }) => {
+export const getSwitchTableColumn = ({ field, title, change, disabled }) => {
   return {
     field,
     title,
@@ -314,7 +314,7 @@ export const getSwitchTableColumn = ({ field, title, change }) => {
           if (checked === 'false') checked = false
         }
         return [
-          <a-switch checked={ checked } checkedChildren={i18n.t('common_292')} unCheckedChildren={i18n.t('common_293')} onChange={ change } />,
+          <a-switch checked={ checked } disabled={ disabled } checkedChildren={i18n.t('common_292')} unCheckedChildren={i18n.t('common_293')} onChange={ change } />,
         ]
       },
     },

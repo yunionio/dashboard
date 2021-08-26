@@ -10,6 +10,7 @@
 
 <script>
 
+import { mapGetters } from 'vuex'
 import { getAreaColumn, getServiceTypeColumn } from '../mixins/columns'
 import {
   getPublicScopeTableColumn,
@@ -37,7 +38,12 @@ export default {
         getPublicScopeTableColumn({ vm: this, resource: 'cdn_domains' }),
         getBrandTableColumn(),
       ],
-      extraInfo: [
+    }
+  },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    extraInfo () {
+      return [
         {
           title: this.$t('network.text_308'),
           items: [
@@ -51,6 +57,7 @@ export default {
             getSwitchTableColumn({
               field: 'disable_delete',
               title: this.$t('common.text00076'),
+              disabled: !this.isOwner(this.data),
               change: val => {
                 this.onManager('update', {
                   id: this.data.id,
@@ -62,8 +69,15 @@ export default {
             }),
           ],
         },
-      ],
-    }
+      ]
+    },
+  },
+  methods: {
+    isOwner (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return false
+    },
   },
 }
 </script>
