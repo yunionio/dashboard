@@ -177,6 +177,12 @@ export default {
 <style lang="less" scoped>
 .number-card-number {
   font-size: 50px;
+  color: #000;
+}
+.number-card-unit {
+  font-size: 14px;
+  color: #4F4B53;
+  margin-left: 5px;
 }
 .drawer-wrapper {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
