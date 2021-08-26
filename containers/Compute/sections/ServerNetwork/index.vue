@@ -90,6 +90,9 @@ export default {
     hypervisor: {
       type: String,
     },
+    cloudprovider: {
+      type: String,
+    },
     serverCount: {
       type: Number,
       default: 1,
@@ -167,6 +170,11 @@ export default {
       if (val === HYPERVISORS_MAP.esxi.key || oldVal === HYPERVISORS_MAP.esxi.key) {
         await this.refreshNetworkConfig()
         this.changeIpDisable(this.serverCount > 1)
+      }
+    },
+    async cloudprovider (val, oldVal) {
+      if (val !== oldVal) {
+        await this.refreshNetworkConfig()
       }
     },
     serverCount (val, oldVal) {
