@@ -9,23 +9,23 @@
       </div>
       <div class="dashboard-card-body align-items-center">
         <a-progress type="circle" :percent="percent" :strokeWidth="12" :status="status" :strokeColor="percentColor">
-          <template v-slot:format><span class="percent-tips" :style="{ color: percentColor }">{{ percentTips }}</span></template>
+          <template v-slot:format><span class="percent-tips" :style="{ color: '#000' }">{{ percentTips }}</span></template>
         </a-progress>
         <div class="flex-fill ml-4">
           <div class="d-flex bottomborder-box align-items-end">
-            <div>{{ useLabel }}</div>
+            <div class="label-unit">{{ useLabel }}</div>
             <div class="flex-number mr-2 ml-1 text-right">{{usage.usage}}</div>
-            <div>{{ usage.unit }}</div>
+            <div class="label-unit">{{ usage.unit }}</div>
           </div>
           <div class="d-flex bottomborder-box align-items-end">
-            <div>{{ unUseLabel }}</div>
+            <div class="label-unit">{{ unUseLabel }}</div>
             <div class="flex-number mr-2 ml-1 text-right">{{displayUnUsage.usage}}</div>
-            <div>{{displayUnUsage.unit}}</div>
+            <div class="label-unit">{{displayUnUsage.unit}}</div>
           </div>
           <div class="d-flex bottomborder-box align-items-end">
-            <div>{{ $t('dashboard.text_44') }}</div>
+            <div class="label-unit">{{ $t('dashboard.text_44') }}</div>
             <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
-            <div>{{allUsage.unit}}</div>
+            <div class="label-unit">{{allUsage.unit}}</div>
           </div>
         </div>
       </div>
@@ -310,9 +310,15 @@ export default {
   font-size: 18px;
   line-height: 20px;
   flex: 1 1 auto;
+  color: #000;
+  font-weight: bold;
+}
+.label-unit{
+  color: #837F89;
 }
 .percent-tips {
-  font-size: 18px;
+  font-size: 22px;
+  font-weight: bold;
 }
 .ring-drawer-wrapper {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
