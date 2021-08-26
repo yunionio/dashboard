@@ -269,6 +269,9 @@ export default {
     isZStack () {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.zstack.key
     },
+    isHCSO () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.huaweicloudstack.key
+    },
     showServerAccount () {
       return this.form.fd.loginType !== LOGIN_TYPES_MAP.image.key
     },
