@@ -34,7 +34,7 @@ export default {
           return [
             disableDeleteAction(this, {
               name: this.$t('dictionary.cdn_domain'),
-              hidden: () => {
+              meta: () => {
                 if (!this.isOwner(obj)) {
                   return {
                     validate: false,
