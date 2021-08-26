@@ -162,6 +162,11 @@ export const PERMISSION = {
   cloudaccounts_list: ['compute', 'cloudaccounts', 'list'],
   // 代理
   proxysettings_list: ['compute', 'proxysettings', 'list'],
+  // CDN
+  cdn_domains_list: ['compute', 'cdn_domains', 'list'],
+  cdn_domains_update: ['compute', 'cdn_domains', 'update'],
+  cdn_domains_delete: ['compute', 'cdn_domains', 'delete'],
+  cdn_domains_perform_syncstatus: ['compute', 'cdn_domains', 'perform', 'syncstatus'],
   // 域
   domains_list: ['identity', 'domains', 'list'],
   // 域详情

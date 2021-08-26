@@ -11,7 +11,9 @@
         <span>{{ item.name }}</span>
       </li>
     </draggable>
-    <a-button @click="handleRefresh" type="link" icon="sync" class="action-btn" />
+    <a-button @click="handleRefresh" type="link" class="action-btn">
+      <icon type="refresh" />
+    </a-button>
     <a-dropdown :trigger="['click']" slot="tabBarExtraContent" placement="bottomRight">
       <a class="ant-dropdown-link font-weight-bold pl-2 pr-2 h-100 d-block action-btn" @click="e => e.preventDefault()">
         <icon type="more" style="font-size: 18px;" />

@@ -4,7 +4,7 @@
       <div class="dashboard-card-header">
         <div class="dashboard-card-header-left" @click.alt="showDebuggerInfo = !showDebuggerInfo">{{ form.fd.name || $t('dashboard.text_6') }}
           <a-icon class="ml-2" type="loading" v-if="loading" />
-          <a-tooltip v-if="isServersAnypool"><template slot="title">{{ $t('dashboard.server_tips') }}</template><a-icon type="question-circle" /></a-tooltip>
+          <a-tooltip v-if="isServersAnypool"><template slot="title">{{ $t('dashboard.server_tips') }}</template><icon type="help" /></a-tooltip>
         </div>
         <div class="dashboard-card-header-right">
           <span v-if="showDebuggerInfo">{{ `${$t('dashboard.text_20')}: ${form.fd.usage_key}` }}</span>

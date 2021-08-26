@@ -26,6 +26,15 @@
           :cloudregion-params="cloudregionParams"
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
+      <a-form-item :label="$t('compute.text_15')" v-if="isHCSO">
+        <base-select
+          resource="cloudproviders"
+          v-decorator="decorators.cloudprovider"
+          :params="policycloudproviderParams"
+          :isDefaultSelect="true"
+          :showSync="true"
+          :select-props="{ placeholder: $t('compute.text_149') }" />
+      </a-form-item>
       <a-form-item :label="$t('compute.text_228')" v-if="!isServertemplate">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
         <name-repeated
@@ -105,7 +114,9 @@
           :schedtag-params="schedtagParams"
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource"
+          :cloudprovider="this.form.fd.cloudprovider"
           :serverCount="form.fd.count"
+          :key="serverNetwork"
           :networkResourceMapper="networkResourceMapper" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
@@ -201,7 +212,9 @@ export default {
       return params
     },
     cacheImageParams () {
-      const params = {}
+      const params = {
+        manager_id: this.form.fd.cloudprovider,
+      }
       if (R.is(Object, this.form.fd.sku)) {
         if (this.cloudregionZoneParams.cloudregion) {
           params.cloudregion_id = this.cloudregionZoneParams.cloudregion
@@ -280,6 +293,7 @@ export default {
     cloudproviderParamsExtra () {
       const params = {
         cloud_env: 'private',
+        manager_id: this.form.fd.cloudprovider,
         ...this.scopeParams,
       }
       if (this.form.fd.hypervisor && this.form.fd.hypervisor) {
@@ -292,6 +306,18 @@ export default {
         return this.form.fd.systemDiskType.key === 'nova'
       }
       return false
+    },
+    policycloudproviderParams () {
+      const params = {
+        limit: 0,
+        brand: this.form.fd.provider,
+        cloudregion: this.form.fd.cloudregion,
+        ...this.scopeParams,
+      }
+      if (this.form.fd.zone) {
+        params.zone = this.form.fd.zone
+      }
+      return params
     },
   },
   methods: {
