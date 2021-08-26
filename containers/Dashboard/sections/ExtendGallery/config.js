@@ -19,7 +19,7 @@ const options = [
   {
     label: i18n.t('dashboard.text_54'),
     desc: i18n.t('dashboard.text_82'),
-    icon: 'dashboard-usage',
+    icon: 'dashboard-suggest-overview',
     h: 5,
     w: 5,
     component: 'SuggestsysAlertsOverview',
@@ -27,7 +27,7 @@ const options = [
   {
     label: i18n.t('dashboard.text_47'),
     desc: i18n.t('dashboard.text_83'),
-    icon: 'dashboard-usage',
+    icon: 'dashboard-suggest-detail',
     h: 5,
     w: 13,
     component: 'SuggestsysAlertsDetail',
