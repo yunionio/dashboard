@@ -1,79 +1,81 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_606')" />
-    <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
-      <a-divider orientation="left">{{$t('network.text_397')}}</a-divider>
-      <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
-      </a-form-item>
-      <a-form-item :label="$t('network.text_198')" v-bind="formItemLayout">
-        <a-radio-group v-decorator="decorators.platform_type">
-          <a-radio-button
-            v-for="item of platformOpts"
-            :key="item.key"
-            :disabled="item.key !== 'idc'"
-            :value="item.key">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item :label="$t('network.text_574')" v-bind="formItemLayout">
-        <a-radio-group v-decorator="decorators.server_type" @change="handleServerTypeChange">
-          <a-radio-button
-            v-for="item of serverTypeOpts"
-            :key="item.key"
-            :disabled="item.key !== server_type"
-            :value="item.key">{{ item.label }}</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item :label="$t('network.text_607')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.guest_ip_start" />
-      </a-form-item>
-      <a-form-item :label="$t('network.text_608')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.guest_ip_end" />
-      </a-form-item>
-      <a-form-item :label="$t('network.text_609')" v-bind="formItemLayout">
-        <a-select v-decorator="decorators.guest_ip_mask">
-        <a-select-option v-for="item in netMaskOptions" :key="item.value" :value="item.value">
-          {{item.label}}
-        </a-select-option>
-      </a-select>
-      </a-form-item>
-      <a-form-item :label="$t('network.text_610')" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.guest_gateway" />
-      </a-form-item>
-      <a-form-item label="VLAN ID" v-bind="formItemLayout">
-        <a-input v-decorator="decorators.vlan_id" />
-      </a-form-item>
-      <a-collapse :bordered="false">
-        <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
-          <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="server_type === 'eip'">
-            <a-input v-decorator="decorators.bgp_type" />
-            <span slot="extra">{{$t('network.text_744')}}</span>
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout">
-            <span slot="label">{{$t('network.text_583')}}<help-tooltip class="ml-1" name="networkPolicy" /></span>
-            <a-radio-group v-decorator="decorators.alloc_policy">
-              <a-radio-button
-                v-for="item of allocPolicyoptions"
-                :key="item.key"
-                :value="item.key">{{ item.label }}</a-radio-button>
-            </a-radio-group>
-          </a-form-item>
-          <a-form-item :label="$t('network.text_585')" v-bind="formItemLayout">
-            <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout">
-            <span slot="label">{{$t('network.text_586')}}<help-tooltip class="ml-1" name="networkDomain" /></span>
-            <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
-          </a-form-item>
-        </a-collapse-panel>
-      </a-collapse>
-      <page-footer>
-        <template v-slot:right>
-          <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_606')}}</a-button>
-          <a-button class="ml-3" size="large" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
-        </template>
-      </page-footer>
-    </a-form>
+    <page-header :title="$t('network.text_606')" style="margin-bottom: 7px;" />
+    <page-body>
+      <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
+        <a-divider orientation="left">{{$t('network.text_397')}}</a-divider>
+        <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
+        </a-form-item>
+        <a-form-item :label="$t('network.text_198')" v-bind="formItemLayout">
+          <a-radio-group v-decorator="decorators.platform_type">
+            <a-radio-button
+              v-for="item of platformOpts"
+              :key="item.key"
+              :disabled="item.key !== 'idc'"
+              :value="item.key">{{ item.label }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('network.text_574')" v-bind="formItemLayout">
+          <a-radio-group v-decorator="decorators.server_type" @change="handleServerTypeChange">
+            <a-radio-button
+              v-for="item of serverTypeOpts"
+              :key="item.key"
+              :disabled="item.key !== server_type"
+              :value="item.key">{{ item.label }}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('network.text_607')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.guest_ip_start" />
+        </a-form-item>
+        <a-form-item :label="$t('network.text_608')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.guest_ip_end" />
+        </a-form-item>
+        <a-form-item :label="$t('network.text_609')" v-bind="formItemLayout">
+          <a-select v-decorator="decorators.guest_ip_mask">
+          <a-select-option v-for="item in netMaskOptions" :key="item.value" :value="item.value">
+            {{item.label}}
+          </a-select-option>
+        </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('network.text_610')" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.guest_gateway" />
+        </a-form-item>
+        <a-form-item label="VLAN ID" v-bind="formItemLayout">
+          <a-input v-decorator="decorators.vlan_id" />
+        </a-form-item>
+        <a-collapse :bordered="false">
+          <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
+            <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="server_type === 'eip'">
+              <a-input v-decorator="decorators.bgp_type" />
+              <span slot="extra">{{$t('network.text_744')}}</span>
+            </a-form-item>
+            <a-form-item v-bind="formItemLayout">
+              <span slot="label">{{$t('network.text_583')}}<help-tooltip class="ml-1" name="networkPolicy" /></span>
+              <a-radio-group v-decorator="decorators.alloc_policy">
+                <a-radio-button
+                  v-for="item of allocPolicyoptions"
+                  :key="item.key"
+                  :value="item.key">{{ item.label }}</a-radio-button>
+              </a-radio-group>
+            </a-form-item>
+            <a-form-item :label="$t('network.text_585')" v-bind="formItemLayout">
+              <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
+            </a-form-item>
+            <a-form-item v-bind="formItemLayout">
+              <span slot="label">{{$t('network.text_586')}}<help-tooltip class="ml-1" name="networkDomain" /></span>
+              <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
+            </a-form-item>
+          </a-collapse-panel>
+        </a-collapse>
+      </a-form>
+    </page-body>
+    <page-footer>
+      <template v-slot:right>
+        <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_606')}}</a-button>
+        <a-button class="ml-3" size="large" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
+      </template>
+    </page-footer>
   </div>
 </template>
 
