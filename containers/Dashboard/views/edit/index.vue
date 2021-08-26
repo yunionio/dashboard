@@ -3,8 +3,8 @@
     <!-- header -->
     <div class="edit-topbar position-relative d-flex justify-content-center align-items-center flex-grow-0 flex-shrink-0">
       <div class="mr-2">{{$t('dashboard.text_118')}}</div>
-      <a-button type="primary" @click="handleConfirm" :loading="submiting">{{ $t('common.save') }}</a-button>
-      <a-button @click="handleBack" class="ml-2">{{ $t('dialog.cancel') }}</a-button>
+      <a-button size="small" type="primary" @click="handleConfirm" :loading="submiting">{{ $t('common.save') }}</a-button>
+      <a-button size="small" @click="handleBack" class="ml-2">{{ $t('dialog.cancel') }}</a-button>
     </div>
     <!-- main -->
     <div class="edit-main position-relative flex-fill flex-nowrap align-items-stretch d-flex">
@@ -45,9 +45,15 @@
                     :style="{ outline: item.isTemplate ? '2px dashed darkmagenta' : '' }">
                     <component :is="item.component" :options="item" :params="dashboardParams[item.i]" @update="handleUpdateDashboardParams" edit>
                       <template v-slot:actions="{ handleEdit }">
-                        <a-button class="p-0 h-auto" type="link" icon="delete" @click="handleRemove(item)" />
-                        <a-button class="p-0 h-auto ml-2" type="link" icon="setting" @click="handleEdit" />
-                        <a-button class="p-0 h-auto ml-2" type="link" icon="copy" @click="handleCopy(item, dashboardParams[item.i])" />
+                        <a-button class="p-0 h-auto" type="link" @click="handleRemove(item)">
+                          <icon type="delete" />
+                        </a-button>
+                        <a-button class="p-0 h-auto ml-2" type="link" @click="handleCopy(item, dashboardParams[item.i])">
+                          <icon type="copy" />
+                        </a-button>
+                        <a-button class="p-0 h-auto ml-2" type="link" @click="handleEdit">
+                          <icon type="setting" />
+                        </a-button>
                       </template>
                     </component>
                   </grid-item>

@@ -19,7 +19,7 @@
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
-            <div>{{ unUseLabel }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><a-icon type="question-circle" /></a-tooltip></div>
+            <div>{{ unUseLabel }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.un_usage_tips')"><icon type="help" /></a-tooltip></div>
             <div class="flex-number mr-1 ml-1 text-right">{{displayUnUsage.usage}}</div>
             <div>{{displayUnUsage.unit}}</div>
           </div>
@@ -32,14 +32,14 @@
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showGpuReserved">
             <div class="flex-shrink-0 flex-grow-0">
-              {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><a-icon type="question-circle" /></a-tooltip>
+              {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><icon type="help" /></a-tooltip>
             </div>
             <div class="flex-number mr-2 ml-1 text-right">{{gpuReserved.usage}}</div>
             <div>{{gpuReserved.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
-            <div>{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><a-icon type="question-circle" /></a-tooltip></div>
+            <div>{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><icon type="help" /></a-tooltip></div>
             <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
             <div>{{allUsage.unit}}</div>
           </div>
