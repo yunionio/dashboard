@@ -132,7 +132,7 @@ export default {
     },
     handleDelete () {
       this.createDialog('CommonDialog', {
-        header: this.$t('dashboard.text_108'),
+        header: this.deleteText,
         body: () => {
           let number
           if (R.is(Array, this.data)) {
@@ -145,7 +145,7 @@ export default {
             number,
           }]
           return [
-            <dialog-selected-tips count={1} action={this.$t('dashboard.text_108')} name={this.$t('dashboard.text_109')} />,
+            <dialog-selected-tips count={1} action={this.deleteText} name={this.$t('dashboard.text_109')} />,
             <dialog-table
               vxeGridProps={{ showOverflow: 'title' }}
               data={ data }
@@ -264,6 +264,7 @@ export default {
   &.active {
     border-bottom: 1px solid #1890ff;
     color: #1890ff;
+    font-weight: bold;
   }
   &:hover {
     color: #1890ff;
