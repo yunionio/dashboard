@@ -616,7 +616,7 @@ export default {
             permission: 'cdn_domains_list',
             t: 'dictionary.cdn_domain',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.cdn_domain')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.cdn')) {
                 return true
               }
               return !hasSetupKey(['onestack', 'private', 'public'])
