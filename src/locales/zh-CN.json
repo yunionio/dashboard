@@ -1931,7 +1931,8 @@
     "qcloud": "腾讯云",
     "aws": "AWS",
     "huawei": "华为云",
-    "ucloud": "UCloud"
+    "ucloud": "UCloud",
+    "huaweicloudstack": "华为云Stack"
   },
   "bandwidths": {
     "100": "百 兆(100M)",
