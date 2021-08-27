@@ -1919,7 +1919,8 @@
     "qcloud": "Tencent Cloud",
     "aws": "AWS",
     "huawei": "Huawei Cloud",
-    "ucloud": "UCloud"
+    "ucloud": "UCloud",
+    "huaweicloudstack": "Huawei Cloud Stack"
   },
   "bandwidths": {
     "100": "one hundred megabytes (100M)",
