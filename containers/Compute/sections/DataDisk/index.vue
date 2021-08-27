@@ -331,7 +331,11 @@ export default {
         }
       })
     },
+<<<<<<< HEAD
     add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, ...ret } = {}) {
+=======
+    add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, ...ret } = {}) {
+>>>>>>> .
       const key = uuid()
       const typeObj = this.typesMap[diskType]
       let dataDiskTypes = {
