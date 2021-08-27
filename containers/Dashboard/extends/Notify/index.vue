@@ -89,7 +89,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'scope', 'isAdminMode']),
+    ...mapGetters(['userInfo', 'scope', 'isAdminMode', 'themeColor']),
     readmarkTotal () {
       return this.readmarkData.total || 0
     },
@@ -98,7 +98,7 @@ export default {
       return data.some(item => item.user_id === this.userInfo.id)
     },
     likeColor () {
-      if (this.liked) return '#faad14'
+      if (this.liked) return this.themeColor
       return '#1890ff'
     },
   },
