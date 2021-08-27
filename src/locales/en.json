@@ -2571,7 +2571,10 @@
       "pd-standard": "Standard Persistent Disk",
       "cloudhssd": "Enhanced SSD cloud hard Disk",
       "pd-balanced": "Balanced Persistent Disk",
-      "gp3": "General-purpose SSD (gp3)"
+      "gp3": "General-purpose SSD (gp3)",
+      "SSD": "Ultra-high IO cloud hard drive",
+      "SAS": "High IO cloud hard drive",
+      "SATA": "Common IO cloud hard Disk"
     },
     "view": "View",
     "total": "Total:{0}",
