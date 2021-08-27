@@ -98,8 +98,7 @@ export default {
       return data.some(item => item.user_id === this.userInfo.id)
     },
     likeColor () {
-      if (this.liked) return this.themeColor
-      return '#1890ff'
+      return this.themeColor
     },
   },
   watch: {
