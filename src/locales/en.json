@@ -2431,7 +2431,7 @@
     "access_group_rule": "Access Group Rule",
     "access_group_cache": "Access Group Cache",
     "mount_target": "Mount Target",
-    "waf": "WAF Strategy",
+    "waf_instance": "WAF Strategy",
     "message_queue": "Message Queue",
     "kafka": "Kafka",
     "data_analysis": "Data Analysis",
