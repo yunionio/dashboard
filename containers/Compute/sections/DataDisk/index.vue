@@ -479,7 +479,6 @@ export default {
       }
     },
     getDiskTypeLabel (i, diskTypeLabel) {
-      console.log(i, diskTypeLabel)
       if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
         return this.$te(`common.storage.${diskTypeLabel}`) ? this.$t(`common.storage.${diskTypeLabel}`) : diskTypeLabel
       }
