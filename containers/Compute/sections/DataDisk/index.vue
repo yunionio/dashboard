@@ -335,7 +335,6 @@ export default {
       })
     },
     add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, ...ret } = {}) {
-      console.log('add ', size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, medium, ret)
       const key = uuid()
       let newDiskType = diskType
       if (this.getHypervisor() === HYPERVISORS_MAP.kvm.key && diskType === 'local' && medium) {
@@ -373,7 +372,6 @@ export default {
         dataDiskItem.min = Math.max(min, this.min, DISK_MIN_SIZE)
       }
       this.dataDisks.push(dataDiskItem)
-      console.log('diskItem', dataDiskItem)
       this.$nextTick(() => {
         const value = {
           [`dataDiskSizes[${key}]`]: R.is(Number, size) ? size : (min || this.min),
