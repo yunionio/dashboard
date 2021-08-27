@@ -33,6 +33,7 @@
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showGpuReserved">
             <div class="flex-shrink-0 flex-grow-0 label-unit">
               {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><icon type="help" /></a-tooltip>
+            </div>
             <div class="flex-number mr-2 ml-1 text-right">{{gpuReserved.usage}}</div>
             <div  class="label-unit">{{gpuReserved.unit}}</div>
           </div>
