@@ -28,6 +28,63 @@ export const RDS_ACCOUNT_PRIVILEGES = {
   custom: i18n.t('db.text_10'),
 }
 
+const HUAWEI_RDS_MONITOR_CHARTS = [
+  {
+    name: 'cpu',
+    label: i18n.t('db.text_11'),
+    seleteItem: 'usage_active',
+    fromItem: 'rds_cpu',
+    as: i18n.t('db.text_11'),
+    unit: '%',
+    transfer: 1,
+  },
+  {
+    name: 'mem',
+    label: i18n.t('db.text_12'),
+    seleteItem: 'used_percent',
+    fromItem: 'rds_mem',
+    as: i18n.t('db.text_12'),
+    unit: '%',
+    transfer: 1,
+  },
+  {
+    name: 'bps_recv',
+    label: i18n.t('db.text_19'),
+    seleteItem: 'bps_recv',
+    fromItem: 'rds_netio',
+    as: i18n.t('db.text_19'),
+    unit: 'bps',
+    transfer: 1024,
+  },
+  {
+    name: 'bps_sent',
+    label: i18n.t('db.text_20'),
+    seleteItem: 'bps_sent',
+    as: i18n.t('db.text_20'),
+    fromItem: 'rds_netio',
+    unit: 'bps',
+    transfer: 1024,
+  },
+  {
+    name: 'disk',
+    label: i18n.t('db.text_13'),
+    seleteItem: 'used_percent',
+    as: i18n.t('db.text_13'),
+    fromItem: 'rds_disk',
+    unit: '%',
+    transfer: 1,
+  },
+  {
+    name: 'conn',
+    label: i18n.t('db.text_18'),
+    seleteItem: 'usage_active',
+    as: i18n.t('db.text_13'),
+    fromItem: 'rds_conn',
+    unit: '%',
+    transfer: 1,
+  },
+]
+
 export const RDS_MONITOR_OPTS = {
   aliyun: [
     {
@@ -115,62 +172,8 @@ export const RDS_MONITOR_OPTS = {
       transfer: 1,
     },
   ],
-  huawei: [
-    {
-      name: 'cpu',
-      label: i18n.t('db.text_11'),
-      seleteItem: 'usage_active',
-      fromItem: 'rds_cpu',
-      as: i18n.t('db.text_11'),
-      unit: '%',
-      transfer: 1,
-    },
-    {
-      name: 'mem',
-      label: i18n.t('db.text_12'),
-      seleteItem: 'used_percent',
-      fromItem: 'rds_mem',
-      as: i18n.t('db.text_12'),
-      unit: '%',
-      transfer: 1,
-    },
-    {
-      name: 'bps_recv',
-      label: i18n.t('db.text_19'),
-      seleteItem: 'bps_recv',
-      fromItem: 'rds_netio',
-      as: i18n.t('db.text_19'),
-      unit: 'bps',
-      transfer: 1024,
-    },
-    {
-      name: 'bps_sent',
-      label: i18n.t('db.text_20'),
-      seleteItem: 'bps_sent',
-      as: i18n.t('db.text_20'),
-      fromItem: 'rds_netio',
-      unit: 'bps',
-      transfer: 1024,
-    },
-    {
-      name: 'disk',
-      label: i18n.t('db.text_13'),
-      seleteItem: 'used_percent',
-      as: i18n.t('db.text_13'),
-      fromItem: 'rds_disk',
-      unit: '%',
-      transfer: 1,
-    },
-    {
-      name: 'conn',
-      label: i18n.t('db.text_18'),
-      seleteItem: 'usage_active',
-      as: i18n.t('db.text_13'),
-      fromItem: 'rds_conn',
-      unit: '%',
-      transfer: 1,
-    },
-  ],
+  huawei: HUAWEI_RDS_MONITOR_CHARTS,
+  huaweicloudstack: HUAWEI_RDS_MONITOR_CHARTS,
   qcloud: [
     {
       name: 'cpu',
