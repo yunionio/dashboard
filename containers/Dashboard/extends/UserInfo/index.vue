@@ -132,6 +132,8 @@ export default {
 }
 </script>
 <style scoped lang="less">
+@import '~@/styles/less/theme';
+
 .selected-user-content {
   align-items: center;
   // border: 1px solid #d9d9d9;
@@ -156,7 +158,7 @@ export default {
   text-align: center;
   line-height: 30px;
   border-radius: 50%;
-  background-color: #1890ff;
+  background-color: @primary-color;
   font-size: 14px;
 }
 .user-info-text{
