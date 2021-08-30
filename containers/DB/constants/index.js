@@ -77,7 +77,7 @@ const HUAWEI_RDS_MONITOR_CHARTS = [
   {
     name: 'conn',
     label: i18n.t('db.text_18'),
-    seleteItem: 'usage_active',
+    seleteItem: 'usage_percent',
     as: i18n.t('db.text_13'),
     fromItem: 'rds_conn',
     unit: '%',
@@ -165,7 +165,7 @@ export const RDS_MONITOR_OPTS = {
     {
       name: 'conn',
       label: i18n.t('db.text_18'),
-      seleteItem: 'usage_active',
+      seleteItem: 'usage_percent',
       as: i18n.t('db.text_13'),
       fromItem: 'rds_conn',
       unit: '%',
