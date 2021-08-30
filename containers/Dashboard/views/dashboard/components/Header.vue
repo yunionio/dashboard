@@ -252,6 +252,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '~@/styles/less/theme';
+
 .wrap {
   border-bottom: 1px solid #d8d8d8;
 }
@@ -264,12 +266,12 @@ export default {
     margin-right: 0;
   }
   &.active {
-    border-bottom: 1px solid #1890ff;
-    color: #1890ff;
+    border-bottom: 1px solid @primary-color;
+    color: @primary-color;
     font-weight: bold;
   }
   &:hover {
-    color: #1890ff;
+    color: @primary-color;
     .handle {
       visibility: visible;
     }
