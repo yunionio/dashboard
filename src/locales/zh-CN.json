@@ -4792,7 +4792,7 @@
   "license.feature.monitor": "@:license.module.monitor",
   "license.feature.bill": "费用优化",
   "license.feature.auth": "认证安全",
-  "license.group.onecloud": "@:brand私有云平台",
+  "license.group.onecloud": "内置私有云平台",
   "license.group.public": "@:scope.text_75",
   "license.group.private": "@:scope.text_76",
   "license.group.storage": "@:scope.text_77",
