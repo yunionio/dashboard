@@ -46,7 +46,7 @@ export default {
   data () {
     const details = changeToArr(this.params.error).map(val => ({
       ...val,
-      resource: JSON.stringify(val.resource, null, 2),
+      resource: JSON.stringify({ ...val.resource, time: this.$moment() }, null, 2),
     }))
     const request = JSON.stringify(this.params.request, null, 2)
     return {
