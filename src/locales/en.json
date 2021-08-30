@@ -4867,7 +4867,7 @@
   "license.feature.monitor": "@:license.module.monitor",
   "license.feature.bill": "Cost",
   "license.feature.auth": "IAM",
-  "license.group.onecloud": "@:brand Private Cloud Platform",
+  "license.group.onecloud": "Built-in Private Cloud Platform",
   "license.group.public": "@:scope.text_75",
   "license.group.private": "@:scope.text_76",
   "license.group.storage": "@:scope.text_77",
