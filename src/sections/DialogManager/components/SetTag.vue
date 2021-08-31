@@ -28,7 +28,7 @@
           </template>
         </div>
       </div> -->
-      <!-- 用户标签 -->
+      <!-- 标签 -->
       <div class="tag-wrap">
         <a-divider orientation="left">
           <div class="font-weight-normal" style="font-size: 14px;">{{ userTagTitle }}</div>
@@ -67,7 +67,7 @@
                   :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
                   <div class="d-flex align-items-center">
                     <span class="flex-fill text-truncate">{{ item.title }}</span>
-                    <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click.stop="removeTag(item)" />
+                    <a-icon v-if="!isSysTag(item.key)" class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click.stop="removeTag(item)" />
                   </div>
                 </div>
               </a-popover>
@@ -114,7 +114,7 @@
 
 <script>
 import * as R from 'ramda'
-import { filterUserTag, getTagColor, getTagTitle } from '@/utils/common/tag'
+import { filterUserTag, getTagColor, getTagTitle, isSysTag } from '@/utils/common/tag'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import TagSelect from '@/sections/TagSelect'
@@ -340,7 +340,13 @@ export default {
       this.checked = newChecked
     },
     handleTagVisibleChange (item, visible) {
-      if (!visible) {
+      let _visable = visible
+      if (isSysTag(item.key)) {
+        this.checkedInfo[item.key].visible = false
+        _visable = false
+        return
+      }
+      if (!_visable) {
         const newCheckedInfo = { ...this.checkedInfo }
         newCheckedInfo[item.key] = {
           visible: false,
@@ -356,6 +362,7 @@ export default {
       this.checkedInfo[item.key].visible = false
       this.handleTagVisibleChange(item, false)
     },
+    isSysTag,
   },
 }
 </script>
