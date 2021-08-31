@@ -498,7 +498,7 @@ export const diskCreateSnapshotConfig = {
       tooltip: i18n.t('compute.text_476'),
     }
   },
-  huaweicloudstack (obj) {
+  hcso (obj) {
     const provider = obj.provider
     const guestStatus = ['ready', 'running']
     if (obj.guest && !guestStatus.includes(obj.guest_status)) {

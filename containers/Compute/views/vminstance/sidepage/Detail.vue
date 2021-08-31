@@ -149,7 +149,7 @@ export default {
               minWidth: 100,
               slots: {
                 default: ({ row }) => {
-                  if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public || row.hypervisor === HYPERVISORS_MAP.huaweicloudstack.hypervisor) {
+                  if (findPlatform(row.hypervisor, 'hypervisor') === SERVER_TYPE.public || row.hypervisor === HYPERVISORS_MAP.hcso.hypervisor) {
                     return '-'
                   }
                   const text = row.host || '-'

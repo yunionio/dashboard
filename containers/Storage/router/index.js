@@ -67,7 +67,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.bucket')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage', 'huaweicloudstack'])
+              return !hasSetupKey(['aliyun', 'aws', 'azure', 'huawei', 'qcloud', 'google', 'storage', 'hcso'])
             },
           },
           component: Layout,

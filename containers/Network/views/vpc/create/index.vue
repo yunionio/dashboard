@@ -35,8 +35,8 @@
           <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
           <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
         </a-form-item>
-        <template v-if="cloudEnv === 'public' || isHuaweiCloudStack">
-          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public' || isHuaweiCloudStack">
+        <template v-if="cloudEnv === 'public' || isHCSO">
+          <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout" v-show="cloudEnv === 'public' || isHCSO">
             <base-select
               class="w-50"
               v-decorator="decorators.cloudprovider"
@@ -224,9 +224,9 @@ export default {
     currentCloudregion () {
       return this.regionList[this.cloudregion]
     },
-    isHuaweiCloudStack () {
+    isHCSO () {
       if (this.currentCloudregion) {
-        return this.currentCloudregion.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.hcso.provider
       }
       return false
     },

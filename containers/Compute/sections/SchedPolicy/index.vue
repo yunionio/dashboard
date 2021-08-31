@@ -187,7 +187,7 @@ export default {
           return true
         }
       }
-      return this.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+      return this.provider === HYPERVISORS_MAP.hcso.provider
     },
     disabledCloudproviders () {
       return this.allCloudproviders.filter(val => !this.usableCloudproviderMaps[val.id]).map(val => val.id)
