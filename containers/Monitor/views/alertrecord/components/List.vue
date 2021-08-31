@@ -49,11 +49,12 @@ export default {
         items: [
           { key: 'alert_name', label: this.$t('monitor.text_99') },
           { key: 'created_at', label: this.$t('monitor.text_14') },
+          { key: 'state', label: this.$t('common.status') },
           { key: 'res_type', label: this.$t('monitor.text_97') },
           { key: 'alert_rule', label: this.$t('monitor.strategy_detail') },
           { key: 'level', label: this.$t('monitor.level') },
           { key: 'res_num', label: this.$t('cloudenv.text_417') },
-          { key: 'status', label: this.$t('common.status') },
+          { key: 'send_state', label: this.$t('common.sendState') },
         ].filter(item => {
           return !this.hiddenColumns.some(item2 => item2 === item.key)
         }),
