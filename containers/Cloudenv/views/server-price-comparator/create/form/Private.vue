@@ -154,11 +154,11 @@ export default {
       return params
     },
     instanceSpecParmas () {
-      if (this.form.fd.hypervisor === HYPERVISORS_MAP.huaweicloudstack.hypervisor) {
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.hcso.hypervisor) {
         const params = {
           usable: true,
           enabled: true,
-          provider: HYPERVISORS_MAP.huaweicloudstack.provider,
+          provider: HYPERVISORS_MAP.hcso.provider,
         }
 
         if (this.cloudregionZoneParams.cloudregion) {

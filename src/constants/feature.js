@@ -127,7 +127,7 @@ const LicenseItems = [
     meta: meta('resource_managent', 'private', true),
   },
   {
-    key: 'huaweicloudstack',
+    key: 'hcso',
     meta: meta('resource_managent', 'private', true),
   },
   {

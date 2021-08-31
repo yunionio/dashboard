@@ -8,7 +8,7 @@
     "Ctyun": "天翼云",
     "JDcloud": "京东云",
     "Apsara": "飞天",
-    "HuaweiCloudStack": "华为云Stack",
+    "HCSO": "HCSO",
     "Ecloud": "移动云",
     "Cloudpods": "Cloudpods"
   },
@@ -28,7 +28,7 @@
     "jdcloud": "京东云",
     "ucloud": "UCloud",
     "ecloud": "移动云",
-    "HuaweiCloudStack": "华为云Stack",
+    "HCSO": "HCSO",
     "cloudpods": "Cloudpods"
   }
 }

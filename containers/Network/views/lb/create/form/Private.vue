@@ -35,18 +35,18 @@
         </a-col>
       </a-row>
     </a-form-item>
-    <a-form-item :label="$t('network.text_16')" v-if="isHuaweiCloudStack">
+    <a-form-item :label="$t('network.text_16')" v-if="isHCSO">
       <a-radio-group v-decorator="decorators.address_type">
         <a-radio-button value="internet">{{$t('network.text_270')}}</a-radio-button>
         <a-radio-button value="intranet">{{$t('network.text_271')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('network.text_273')" v-if="isHuaweiCloudStack">
+    <a-form-item :label="$t('network.text_273')" v-if="isHCSO">
       <a-radio-group v-decorator="decorators.ip">
         <a-radio-button value="ipv4">IPv4</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('network.text_221')" v-if="isHuaweiCloudStack && form.fd.address_type === 'internet'">
+    <a-form-item :label="$t('network.text_221')" v-if="isHCSO && form.fd.address_type === 'internet'">
       <base-select
         v-decorator="decorators.eip"
         resource="eips"
@@ -100,9 +100,9 @@ export default {
       }
       return params
     },
-    isHuaweiCloudStack () {
+    isHCSO () {
       if (this.zoneObj) {
-        return this.zoneObj.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+        return this.zoneObj.provider === HYPERVISORS_MAP.hcso.provider
       }
       return false
     },
@@ -120,7 +120,7 @@ export default {
           __meta__: values.__meta__,
         }
 
-        if (this.isHuaweiCloudStack) {
+        if (this.isHCSO) {
           data.zone = values.zone.key
           data.cloudregion = values.cloudregion.key
           data.address_type = values.address_type

@@ -38,7 +38,7 @@
             :vpcResourceMapper="vpcResourceMapper"
             :showIpConfig="cloudEnv !== 'public'" />
         </template>
-        <template v-if="cloudEnv !== 'private' || isHuaweiCloudStack">
+        <template v-if="cloudEnv !== 'private' || isHCSO">
           <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout">
             <a-radio-group v-decorator="decorators.charge_type" @change="chargeTypeChange">
               <a-radio-button v-for="item in chargeTypeOptions" :value="item.value" :key="item.value">
@@ -62,7 +62,7 @@
             </div>
           </a-form-item>
         </template>
-        <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout" v-if="cloudEnv === 'public' || isHuaweiCloudStack" key="manager">
+        <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout" v-if="cloudEnv === 'public' || isHCSO" key="manager">
           <base-select
             :remote="true"
             v-decorator="decorators.manager"
@@ -78,7 +78,7 @@
       </a-form>
     </page-body>
     <bottom-bar
-      :isHuaweiCloudStack="isHuaweiCloudStack"
+      :isHCSO="isHCSO"
       :current-cloudregion="selectedRegionItem"
       :size="bandwidth"
       :bgp-type="bgp_type" />
@@ -236,9 +236,9 @@ export default {
       ret = { ...ret, ...{ 1: '1Mbps', [this.maxBandwidth]: `${this.maxBandwidth}Mbps` } }
       return ret
     },
-    isHuaweiCloudStack () {
+    isHCSO () {
       if (this.selectedRegionItem) {
-        return this.selectedRegionItem.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+        return this.selectedRegionItem.provider === HYPERVISORS_MAP.hcso.provider
       }
       return false
     },
@@ -246,7 +246,7 @@ export default {
       return {
         enabled: 1,
         details: true,
-        public_cloud: !this.isHuaweiCloudStack,
+        public_cloud: !this.isHCSO,
         scope: this.$store.getters.scope,
         usable: true,
       }
@@ -354,7 +354,7 @@ export default {
       return ['provider', 'cloudregion']
     },
     showIpSubnet () {
-      if (this.selectedRegionItem.provider === HYPERVISORS_MAP.huaweicloudstack.provider) return false
+      if (this.selectedRegionItem.provider === HYPERVISORS_MAP.hcso.provider) return false
       if (this.providerC === 'zstack' || this.providerC === 'openstack') return true
       if (this.cloudEnv === 'onpremise' && this.selectedRegionItem && this.selectedRegionItem.id) return true
       if (this.cloudEnv === 'private' && this.selectedRegionItem && this.selectedRegionItem.id) return true
@@ -396,7 +396,7 @@ export default {
       this.$nextTick(() => {
         this.form.fc.getFieldDecorator('charge_type', { initialValue: newValue === 'onpremise' ? 'bandwidth' : 'traffic' })
       })
-      this.bandwidth = newValue === 'private' && !this.isHuaweiCloudStack ? 0 : 30
+      this.bandwidth = newValue === 'private' && !this.isHCSO ? 0 : 30
     },
   },
   provide () {

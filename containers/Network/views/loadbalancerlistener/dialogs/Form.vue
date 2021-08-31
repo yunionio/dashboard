@@ -63,7 +63,7 @@ export default {
     let component = lbDetail.brand.toLowerCase()
     if (component === 'aws') {
       component += `-${lbDetail.loadbalancer_spec}`
-    } else if (component === 'huaweicloudstack') {
+    } else if (component === 'hcso') {
       component = 'Huawei'
     }
     return {

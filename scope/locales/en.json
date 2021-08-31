@@ -8,7 +8,7 @@
     "Ctyun": "eCloud",
     "JDcloud": "JD Cloud",
     "Apsara": "Apsara",
-    "HuaweiCloudStack": "Huawei Cloud Stack",
+    "HCSO": "HCSO",
     "Ecloud": "mCloud"
   },
   "scopeProviders": {
@@ -26,7 +26,7 @@
     "huawei": "Huawei Cloud",
     "jdcloud": "JD Cloud",
     "ucloud": "UCloud",
-    "HuaweiCloudStack": "Huawei Cloud Stack",
+    "HCSO": "HCSO",
     "ecloud": "mCloud"
   }
 }
