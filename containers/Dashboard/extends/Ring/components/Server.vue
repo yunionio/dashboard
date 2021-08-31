@@ -431,7 +431,7 @@ export default {
 <style lang="less" scoped>
 .flex-number{
   font-size: 18px;
-  line-height: 20px;
+  line-height: 19px;
   flex: 1 1 auto;
   color: #000;
   font-weight: bold;
