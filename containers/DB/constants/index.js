@@ -173,7 +173,7 @@ export const RDS_MONITOR_OPTS = {
     },
   ],
   huawei: HUAWEI_RDS_MONITOR_CHARTS,
-  huaweicloudstack: HUAWEI_RDS_MONITOR_CHARTS,
+  hcso: HUAWEI_RDS_MONITOR_CHARTS,
   qcloud: [
     {
       name: 'cpu',

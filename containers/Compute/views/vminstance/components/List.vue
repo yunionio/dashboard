@@ -1018,7 +1018,7 @@ export default {
       return true
     },
     isSameArch () {
-      if (this.list.selectedItems[0] && this.list.selectedItems[0].hypervisor.toLowerCase() === 'huaweicloudstack') {
+      if (this.list.selectedItems[0] && this.list.selectedItems[0].hypervisor.toLowerCase() === 'hcso') {
         const instancetype = this.list.selectedItems[0].instance_type || ''
         const isArm = instancetype.startsWith('k')
         return this.list.selectedItems.every(item => item.instance_type && item.instance_type.startsWith('k') === isArm)

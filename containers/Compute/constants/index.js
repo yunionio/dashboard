@@ -742,7 +742,7 @@ export const STORAGE_TYPES = {
       sort: 1,
     },
   },
-  huaweicloudstack: {
+  hcso: {
     SSD: {
       label: i18n.t('compute.text_73'),
       value: 'SSD',

@@ -231,7 +231,7 @@ export default {
         isError: false,
       }
       if (this.ignoreStorageStatus || !this.form.fd.systemDiskType || !this.form.fd.systemDiskType.key) return statusMap
-      if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic && this.hypervisor !== HYPERVISORS_MAP.huaweicloudstack.hypervisor) {
+      if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic && this.hypervisor !== HYPERVISORS_MAP.hcso.hypervisor) {
         const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor] || {}
         const storageTypes = Object.keys(storageTypes3)
         for (const item of storageTypes) {

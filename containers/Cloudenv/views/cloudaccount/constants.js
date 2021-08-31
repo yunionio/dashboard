@@ -19,7 +19,7 @@ const googleLogo = require('../../../../src/assets/images/providers/gcp.svg')
 const ctyunLogo = require('../../../../src/assets/images/providers/tianyi.svg')
 const apsaraLogo = require('../../../../src/assets/images/providers/apsara.svg')
 const ecloudLogo = require('../../../../src/assets/images/providers/ecloud.svg')
-const huaweicloudstackLogo = require('../../../../src/assets/images/providers/huaweicloudstack.svg')
+const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -117,11 +117,11 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'ApsaraCreate',
       provider: providerMap.apsara.key,
     },
-    huaweicloudstack: {
-      name: providerMap.huaweicloudstack.label,
-      logo: huaweicloudstackLogo,
-      component: 'HuaweiCloudStackCreate',
-      provider: providerMap.huaweicloudstack.key,
+  hcso: {
+      name: providerMap.hcso.label,
+      logo: hcsoLogo,
+      component: 'HCSOCreate',
+      provider: providerMap.hcso.key,
     },
   },
   storage: {
@@ -173,7 +173,13 @@ export function getCloudaccountDocs (scope) {
     ctyun: i18n.t('cloudenv.text_138', [docs_path]),
     apsara: i18n.t('cloudenv.create_apsara_cloud_account', [docs_path]),
     ecloud: i18n.t('cloudenv.create_ecloud', [docs_path]),
+<<<<<<< HEAD
     huaweicloudstack: i18n.t('cloudenv.create_huaweicloudstack', [docs_path]),
+=======
+    jdcloud: i18n.t('cloudenv.create_jdcloud', [docs_path]),
+    cloudpods: i18n.t('cloudenv.create_cloudpods', [docs_path]),
+    hcso: i18n.t('cloudenv.create_hcso', [docs_path]),
+>>>>>>> change huaweicloudstack to hcso
   }
 }
 
@@ -413,10 +419,10 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
-  huaweicloudstack: {
+  hcso: {
     k: 'access_key_id',
     s: 'access_key_secret',
-    text: i18n.t('cloudPrvidersMap.HuaweiCloudStack'),
+    text: i18n.t('cloudPrvidersMap.HCSO'),
     placeholder: {
       k: i18n.t('cloudenv.text_144'),
       s: i18n.t('cloudenv.text_145'),
