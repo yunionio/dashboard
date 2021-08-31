@@ -76,24 +76,51 @@ export default {
           hidden: () => this.hiddenActions.includes('create'),
         },
         {
-          label: this.$t('network.text_131'),
-          permission: 'proxy_endpoints_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: this.$t('network.text_131'),
-              name: this.$t('network.ssh-proxy.endpoints'),
-              onManager: this.onManager,
-            })
+          label: this.$t('network.text_200'),
+          actions: () => {
+            return [
+              {
+                label: this.$t('network.text_349'),
+                permission: 'proxy_endpoints_update',
+                action: () => {
+                  this.createDialog('UpdateSSHPortDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: this.$t('network.text_349'),
+                    name: this.$t('network.ssh-proxy.endpoints'),
+                    onManager: this.onManager,
+                  })
+                },
+              },
+              {
+                label: this.$t('network.text_131'),
+                permission: 'proxy_endpoints_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: this.$t('network.text_131'),
+                    name: this.$t('network.ssh-proxy.endpoints'),
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
           },
           meta: () => {
             return {
-              validate: this.list.allowDelete(),
+              validate: this.list.selected.length,
             }
           },
-        }],
+        },
+      ],
     }
   },
   computed: {
