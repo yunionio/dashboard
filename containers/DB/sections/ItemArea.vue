@@ -15,7 +15,7 @@
 <script>
 import AreaSelects from '@/sections/AreaSelects'
 const PROVIDERS = {
-  postpaid: ['Aliyun', 'Huawei', 'Google', 'Qcloud', 'HuaweiCloudStack'],
+  postpaid: ['Aliyun', 'Huawei', 'Google', 'Qcloud', 'HCSO'],
   prepaid: ['Aliyun', 'Huawei', 'Qcloud'],
 }
 export default {

@@ -1547,7 +1547,7 @@
     "Qcloud": "Tencent Cloud",
     "Azure": "Azure",
     "Ctyun": "eCloud",
-    "HuaweiCloudStack": "Huawei Cloud Stack",
+    "HCSO": "HCSO",
     "Apsara": "Apsara"
   },
   "shareScope": {
@@ -1847,7 +1847,7 @@
     "aws": "AWS",
     "huawei": "Huawei Cloud",
     "ucloud": "UCloud",
-    "huaweicloudstack": "Huawei Cloud Stack"
+    "hcso": "HCSO"
   },
   "bandwidths": {
     "100": "one hundred megabytes (100M)",
@@ -4769,7 +4769,7 @@
   "license.provider.zstack": "@:scopeProviders.zstack",
   "license.provider.apsara": "@:cloudPrvidersMap.Apsara",
   "license.provider.cloudpods": "@:scopeProviders.cloudpods",
-  "license.provider.huaweicloudstack": "@:cloudPrvidersMap.HuaweiCloudStack",
+  "license.provider.hcso": "@:cloudPrvidersMap.HCSO",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",

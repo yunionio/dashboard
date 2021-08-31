@@ -41,7 +41,7 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHuaweiCloudStack">
+      <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHCSO">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout">
             <base-select
@@ -228,9 +228,9 @@ export default {
     currentCloudzone () {
       return this.zoneList[this.form.fd.zone]
     },
-    isHuaweiCloudStack () {
+    isHCSO () {
       if (this.currentCloudregion) {
-        return this.currentCloudregion.provider === HYPERVISORS_MAP.huaweicloudstack.provider
+        return this.currentCloudregion.provider === HYPERVISORS_MAP.hcso.provider
       }
       return false
     },

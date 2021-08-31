@@ -300,7 +300,7 @@ export const STORAGE_TYPES = {
       sort: 1,
     },
   },
-  [HYPERVISORS_MAP.huaweicloudstack.key]: {
+  [HYPERVISORS_MAP.hcso.key]: {
     SSD: {
       label: i18n.t('common.storage.ssd'),
       key: 'SSD',

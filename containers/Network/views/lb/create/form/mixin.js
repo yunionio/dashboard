@@ -257,7 +257,7 @@ export default {
         ...this.scopeParams,
       }
       if (this.type === 'private') {
-        params['filter.0'] = 'provider.in(OpenStack,HuaweiCloudStack)'
+        params['filter.0'] = 'provider.in(OpenStack,HCSO)'
       } else {
         delete params.provider
       }

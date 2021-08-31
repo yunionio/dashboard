@@ -1560,7 +1560,7 @@
     "Qcloud": "腾讯云",
     "Azure": "微软云",
     "Ctyun": "天翼云",
-    "HuaweiCloudStack": "华为云Stack",
+    "HCSO": "HCSO",
     "Apsara": "飞天"
   },
   "shareScope": {
@@ -1860,7 +1860,7 @@
     "aws": "AWS",
     "huawei": "华为云",
     "ucloud": "UCloud",
-    "huaweicloudstack": "华为云Stack"
+    "hcso": "HCSO"
   },
   "bandwidths": {
     "100": "百 兆(100M)",
@@ -4782,7 +4782,7 @@
   "license.provider.zstack": "@:scopeProviders.zstack",
   "license.provider.apsara": "@:cloudPrvidersMap.Apsara",
   "license.provider.cloudpods": "@:scopeProviders.cloudpods",
-  "license.provider.huaweicloudstack": "@:cloudPrvidersMap.HuaweiCloudStack",
+  "license.provider.hcso": "@:cloudPrvidersMap.HCSO",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",

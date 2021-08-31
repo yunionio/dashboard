@@ -270,7 +270,7 @@ export default {
       return this.form.fd.hypervisor === HYPERVISORS_MAP.zstack.key
     },
     isHCSO () {
-      return this.form.fd.hypervisor === HYPERVISORS_MAP.huaweicloudstack.key
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.hcso.key
     },
     showServerAccount () {
       return this.form.fd.loginType !== LOGIN_TYPES_MAP.image.key

@@ -75,7 +75,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vm_release')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'huaweicloudstack'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'])
             },
             // invisible: () => true,
           },
@@ -128,7 +128,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_chart')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'huaweicloudstack'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'])
             },
             // invisible: () => true,
           },
@@ -155,7 +155,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_repo')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'huaweicloudstack'])
+              return !hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'])
             },
             // invisible: () => true,
           },

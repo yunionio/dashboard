@@ -13,7 +13,7 @@ import OpenstackZstack from './components/OpenstackZstack'
 import S3CephXsky from './components/S3CephXsky'
 import Google from './components/Google'
 import Apsara from './components/Apsara'
-import HuaweiCloudStack from './components/HuaweiCloudStack'
+import HCSO from './components/HCSO'
 
 export default {
   name: 'CreateCloudaccount',
@@ -35,7 +35,7 @@ export default {
     CtyunCreate: AwsHuawei,
     ApsaraCreate: Apsara,
     EcloudCreate: Aliyun,
-    HuaweiCloudStackCreate: HuaweiCloudStack,
+    HCSOCreate: HCSO,
   },
   props: {
     currentItem: {
