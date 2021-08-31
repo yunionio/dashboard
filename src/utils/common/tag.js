@@ -6,7 +6,14 @@ import colorHash from '@/utils/colorHash'
  * @param {String} key
  */
 export function isUserTag (key) {
-  return key.startsWith('user:')
+  return key.startsWith('user:') || isSysTag(key)
+}
+/**
+ * 判断是不是sys标签
+ * @param {String} key
+ */
+export function isSysTag (key) {
+  return key.startsWith('sys:')
 }
 /**
  * 判断是不是同步过来的云标签
@@ -92,5 +99,5 @@ export function getTagColor (key, value, type = 'hex') {
 export function getTagTitle (key, value) {
   let str = key
   if (value) str += `:${value}`
-  return R.replace(/(ext:|user:)/, '', str)
+  return R.replace(/(ext:|user:|sys:)/, '', str)
 }
