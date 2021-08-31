@@ -158,6 +158,7 @@ export const getNameDescriptionTableColumn = ({
   resource = '', // 资源名称
   title = i18n.t('table.title.name'),
   field = 'name',
+  descField = 'description',
   slotCallback,
   onManager,
   steadyStatus,
@@ -210,7 +211,7 @@ export const getNameDescriptionTableColumn = ({
             max: 256,
             message: i18n.t('validator.maxLength', ['256']),
           })
-          let field = 'description'
+          let field = descField
           if (_.get(row, '_i18n.description')) field = '_i18n.description' // 如果多语言里面有备注，则取多语言里的字段
           ret.push(h('list-body-cell-wrap', {
             props: {
