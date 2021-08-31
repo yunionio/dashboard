@@ -179,7 +179,7 @@
   "cloudenv.text_137": "{0}#create-google-account",
   "cloudenv.text_138": "{0}#create-ecloud-account",
   "cloudenv.create_ecloud": "{0}#create-mcloud-account",
-  "cloudenv.create_huaweicloudstack": "{0}#create-hcso-account",
+  "cloudenv.create_hcso": "{0}#create-hcso-account",
   "cloudenv.text_139": "Global Zone",
   "cloudenv.text_140": "China Region",
   "cloudenv.text_141": "United States Administrative District",
