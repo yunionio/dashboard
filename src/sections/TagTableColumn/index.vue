@@ -89,7 +89,7 @@ export default {
     },
     tags () {
       let ret = this.data.arr.filter((item) => {
-        return item.key.startsWith('user:')
+        return item.key.startsWith('user:') || item.key.startsWith('sys:')
       }).map(item => {
         const rgb = getTagColor(item.key, item.value, 'rgb')
         const strRgb = rgb.join(',')
