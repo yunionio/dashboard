@@ -60,8 +60,6 @@
           v-decorator="decorator.networks(item.key)"
           :data="networkOpts"
           width="100%"
-          show-status
-          :status-desc="$t('compute.network_status_desc')"
           layout="between"
           :loading="networkLoading"
           :formatter="networkFormatter"
