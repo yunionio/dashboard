@@ -5,6 +5,20 @@ export default {
   created () {
     this.singleActions = [
       {
+        label: this.$t('network.text_349'),
+        permission: 'proxy_endpoints_update',
+        action: (obj) => {
+          this.createDialog('UpdateSSHPortDialog', {
+            vm: this,
+            data: [obj],
+            columns: this.columns,
+            title: this.$t('network.text_349'),
+            name: this.$t('network.ssh-proxy.endpoints'),
+            onManager: this.onManager,
+          })
+        },
+      },
+      {
         label: i18n.t('network.text_131'),
         permission: 'sshproxy_endpoint_delete',
         action: obj => {
