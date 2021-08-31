@@ -14,7 +14,7 @@ import S3CephXsky from './components/S3CephXsky'
 import Google from './components/Google'
 import Apsara from './components/Apsara'
 import Cloudpods from './components/Cloudpods'
-import HuaweiCloudStack from './components/HuaweiCloudStack'
+import HCSO from './components/HCSO'
 
 export default {
   name: 'CreateCloudaccount',
@@ -38,7 +38,7 @@ export default {
     EcloudCreate: Aliyun,
     JDcloudCreate: Aliyun,
     CloudpodsCreate: Cloudpods,
-    HuaweiCloudStackCreate: HuaweiCloudStack,
+    HCSOCreate: HCSO,
   },
   props: {
     currentItem: {

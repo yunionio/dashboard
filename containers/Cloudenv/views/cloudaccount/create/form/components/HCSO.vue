@@ -14,61 +14,61 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.default_region')">
-        <a-input v-decorator="decorators.default_region" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.huaweicloudstack.default_region')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.default_region')">
+        <a-input v-decorator="decorators.default_region" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.hcso.default_region')])" />
         <div slot="extra">
-          {{$t('cloudenv.cloudaccount.huaweicloudstack.endpoint_domain.tips')}}
+          {{$t('cloudenv.cloudaccount.hcso.endpoint_domain.tips')}}
         </div>
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.endpoint_domain')">
-        <a-input v-decorator="decorators.endpoint_domain" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.huaweicloudstack.endpoint_domain')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.endpoint_domain')">
+        <a-input v-decorator="decorators.endpoint_domain" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.hcso.endpoint_domain')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.iam')">
-        <a-input v-decorator="decorators.iam" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.iam')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.iam')">
+        <a-input v-decorator="decorators.iam" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.iam')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.ecs')">
-        <a-input v-decorator="decorators.ecs" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.huaweicloudstack.ecs')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.ecs')">
+        <a-input v-decorator="decorators.ecs" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.hcso.ecs')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.vpc')">
-        <a-input v-decorator="decorators.vpc" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.huaweicloudstack.vpc')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.vpc')">
+        <a-input v-decorator="decorators.vpc" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.hcso.vpc')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.ims')">
-        <a-input v-decorator="decorators.ims" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.ims')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.ims')">
+        <a-input v-decorator="decorators.ims" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.ims')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.evs')">
-        <a-input v-decorator="decorators.evs" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.evs')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.evs')">
+        <a-input v-decorator="decorators.evs" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.evs')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.dcs')">
-        <a-input v-decorator="decorators.dcs" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.dcs')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.dcs')">
+        <a-input v-decorator="decorators.dcs" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.dcs')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.elb')">
-        <a-input v-decorator="decorators.elb" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.elb')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.elb')">
+        <a-input v-decorator="decorators.elb" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.elb')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.obs')">
-        <a-input v-decorator="decorators.obs" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.obs')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.obs')">
+        <a-input v-decorator="decorators.obs" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.obs')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.rds')">
-        <a-input v-decorator="decorators.rds" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.rds')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.rds')">
+        <a-input v-decorator="decorators.rds" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.rds')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.nat')">
-        <a-input v-decorator="decorators.nat" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.nat')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.nat')">
+        <a-input v-decorator="decorators.nat" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.nat')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.cts')">
-        <a-input v-decorator="decorators.cts" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.cts')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.cts')">
+        <a-input v-decorator="decorators.cts" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.cts')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.ces')">
-        <a-input v-decorator="decorators.ces" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.ces')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.ces')">
+        <a-input v-decorator="decorators.ces" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.ces')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.eps')">
-        <a-input v-decorator="decorators.eps" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.eps')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.eps')">
+        <a-input v-decorator="decorators.eps" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.eps')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.sfs_turbo')">
-        <a-input v-decorator="decorators.sfs_turbo" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.sfs_turbo')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.sfs_turbo')">
+        <a-input v-decorator="decorators.sfs_turbo" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.sfs_turbo')])" />
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns')">
-        <a-input v-decorator="decorators.default_subnet_dns" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns')])" />
+      <a-form-item :label="$t('cloudenv.cloudaccount.hcso.default_subnet_dns')">
+        <a-input v-decorator="decorators.default_subnet_dns" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.hcso.default_subnet_dns')])" />
         <div slot="extra">
-          {{$t('cloudenv.cloudaccount.huaweicloudstack.default_subnet_dns.tips')}}
+          {{$t('cloudenv.cloudaccount.hcso.default_subnet_dns.tips')}}
         </div>
       </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
@@ -88,7 +88,7 @@ import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccou
 import { isRequired } from '@/utils/validate'
 
 export default {
-  name: 'HuaweiCloudStack',
+  name: 'HCSO',
   components: {
     AutoSync,
     DomainProject,
@@ -183,7 +183,7 @@ export default {
           'endpoint_domain',
           {
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.huaweicloudstack.endpoint_domain')]) },
+              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.hcso.endpoint_domain')]) },
             ],
           },
         ],
@@ -191,7 +191,7 @@ export default {
           'default_region',
           {
             rules: [
-              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.huaweicloudstack.default_region')]) },
+              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.hcso.default_region')]) },
             ],
           },
         ],

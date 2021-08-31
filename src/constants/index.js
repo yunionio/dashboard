@@ -14,7 +14,7 @@ export const HYPERVISORS_MAP = {
   zstack: { key: 'zstack', label: 'ZStack', provider: 'ZStack', brand: 'ZStack', host_type: 'zstack', hypervisor: 'zstack', env: 'private', cloud_env: 'private' },
   apsara: { key: 'apsara', label: i18n.t('scopeCloudPrvidersMap.Apsara'), provider: 'Apsara', brand: 'Apsara', host_type: 'apsara', hypervisor: 'apsara', env: 'private', cloud_env: 'private' },
   cloudpods: { key: 'cloudpods', label: i18n.t('scopeCloudPrvidersMap.Cloudpods'), provider: 'Cloudpods', brand: 'Cloudpods', host_type: 'cloudpods', hypervisor: 'cloudpods', env: 'private', cloud_env: 'private' },
-  huaweicloudstack: { key: 'huaweicloudstack', label: i18n.t('cloudPrvidersMap.HuaweiCloudStack'), provider: 'HuaweiCloudStack', brand: 'HuaweiCloudStack', host_type: 'huaweicloudstack', hypervisor: 'huaweicloudstack', env: 'private', cloud_env: 'private' },
+  hcso: { key: 'hcso', label: i18n.t('cloudPrvidersMap.HCSO'), provider: 'HCSO', brand: 'HCSO', host_type: 'hcso', hypervisor: 'hcso', env: 'private', cloud_env: 'private' },
   // Public
   aliyun: { key: 'aliyun', label: i18n.t('scopeCloudPrvidersMap.Aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
   azure: { key: 'azure', label: 'Azure', provider: 'Azure', brand: 'Azure', host_type: 'azure', hypervisor: 'azure', env: 'public', cloud_env: 'public' },
