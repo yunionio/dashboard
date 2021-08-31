@@ -242,6 +242,9 @@ export default {
   .option-show {
     display: inline-block !important;
   }
+  .ant-badge-status-default {
+    background-color: transparent;
+  }
 }
 .ant-select-selection-selected-value {
   .ant-badge {
