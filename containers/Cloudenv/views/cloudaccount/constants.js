@@ -173,13 +173,7 @@ export function getCloudaccountDocs (scope) {
     ctyun: i18n.t('cloudenv.text_138', [docs_path]),
     apsara: i18n.t('cloudenv.create_apsara_cloud_account', [docs_path]),
     ecloud: i18n.t('cloudenv.create_ecloud', [docs_path]),
-<<<<<<< HEAD
-    huaweicloudstack: i18n.t('cloudenv.create_huaweicloudstack', [docs_path]),
-=======
-    jdcloud: i18n.t('cloudenv.create_jdcloud', [docs_path]),
-    cloudpods: i18n.t('cloudenv.create_cloudpods', [docs_path]),
     hcso: i18n.t('cloudenv.create_hcso', [docs_path]),
->>>>>>> change huaweicloudstack to hcso
   }
 }
 
