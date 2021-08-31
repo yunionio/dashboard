@@ -1,5 +1,8 @@
 <template>
   <a-form :form="form" v-bind="formItemLayout">
+    <a-form-item :label="$t('network.ssh-proxy.port')">
+      <a-input-number v-decorator="decorators.port" />
+    </a-form-item>
     <a-form-item :label="$t('compute.vminstance.setup_ssh_authentication.method')">
       <a-radio-group v-model="method">
         <a-radio-button v-for="m in METHODS" :value="m.value" :key="m.key">{{ m.label }}</a-radio-button>
@@ -72,6 +75,16 @@ export default {
       },
       form: this.$form.createForm(this),
       decorators: {
+        port: [
+          'port',
+          {
+            initialValue: 22,
+            rules: [
+              { required: true, message: this.$t('network.text_176') },
+              { type: 'number', min: 1, max: 65535, message: this.$t('network.text_347') },
+            ],
+          },
+        ],
         method: [
           'method',
           {
@@ -130,7 +143,6 @@ export default {
     handleSubmitResult (ret) {
       const tasks = {}
       for (const item of ret) {
-        console.log(item)
         if (item.data && item.data.ansible_playbook_id) {
           tasks[item.id] = item.data.ansible_playbook_id
         } else {
@@ -141,15 +153,16 @@ export default {
     },
     async submit () {
       try {
-        if (this.method === 'scripts') {
-          this.$emit('tasks', {})
-          return
-        }
         if (!this.servers) {
           console.log('no servers to submit make-sshable')
           return
         }
         const values = await this.validateForm()
+        if (this.method === 'scripts') {
+          await new this.$Manager('servers').batchUpdate({ ids: this.servers, data: { ssh_port: values.port } })
+          this.$emit('tasks', {})
+          return
+        }
         const ret = await new this.$Manager('servers').batchPerformAction({
           action: 'make-sshable',
           ids: this.servers,
@@ -194,5 +207,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
