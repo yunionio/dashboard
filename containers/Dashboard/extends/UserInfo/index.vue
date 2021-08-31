@@ -158,7 +158,7 @@ export default {
   text-align: center;
   line-height: 30px;
   border-radius: 50%;
-  background-color: @primary-color;
+  background-color: var(--antd-wave-shadow-color);
   font-size: 14px;
 }
 .user-info-text{
