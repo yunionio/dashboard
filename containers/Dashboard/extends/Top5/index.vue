@@ -390,7 +390,7 @@ export default {
           condition: 'or',
         }
       })
-      if (this.brandEnvs.every(env => env === 'public')) {
+      if (this.brandEnvs.length && this.brandEnvs.every(env => env === 'public')) {
         if (fd.resType === 'server') {
           // ret = `SELECT ${fd.order}("${usageKeys[0]}", "vm_name", "vm_ip", "hypervisor", ${fd.limit}) FROM "${usageKeys[1]}" WHERE time > now() - ${min}m AND "${brandKey}"='${brand}'`
           ret = {
@@ -483,12 +483,12 @@ export default {
                     },
                     ...brandTags,
                   ],
-                  group_by: [
-                    {
-                      type: 'tag',
-                      params: ['host'],
-                    },
-                  ],
+                  // group_by: [
+                  //   {
+                  //     type: 'tag',
+                  //     params: ['host'],
+                  //   },
+                  // ],
                 },
               },
             ],
@@ -556,12 +556,12 @@ export default {
                       operator: '=',
                     },
                   ],
-                  group_by: [
-                    {
-                      type: 'tag',
-                      params: ['host'],
-                    },
-                  ],
+                  // group_by: [
+                  //   {
+                  //     type: 'tag',
+                  //     params: ['host'],
+                  //   },
+                  // ],
                 },
               },
             ],
