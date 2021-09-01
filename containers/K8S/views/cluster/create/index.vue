@@ -607,7 +607,7 @@ export default {
             disks[0].schedtags = [{ id: data.systemDiskSchedtag[key], strategy: data.systemDiskPolicy[key] }]
           }
         }
-        if (hypervisor === HYPERVISORS_MAP.kvm.key && disks[0].backend.indexOf('local') !== -1) {
+        if ((hypervisor === HYPERVISORS_MAP.kvm.key || hypervisor === HYPERVISORS_MAP.cloudpods.key) && disks[0].backend.indexOf('local') !== -1) {
           disks[0].medium = disks[0].backend.split('-')[1]
           disks[0].backend = disks[0].backend.split('-')[0]
         }
