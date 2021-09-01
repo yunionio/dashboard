@@ -1,4 +1,6 @@
 import i18n from '@/locales'
+import { STORAGE_TYPES } from '@Storage/constants'
+
 export const getUnusedTableColumn = ({ hidden } = {}) => {
   return {
     field: 'unused',
@@ -10,5 +12,16 @@ export const getUnusedTableColumn = ({ hidden } = {}) => {
       },
     },
     hidden,
+  }
+}
+
+export const getStorageTypeTableColumn = () => {
+  return {
+    field: 'storage_type',
+    title: i18n.t('storage.text_38'),
+    width: 100,
+    formatter: ({ row }) => {
+      return STORAGE_TYPES[row.storage_type] || row.storage_type
+    },
   }
 }
