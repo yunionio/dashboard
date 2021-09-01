@@ -141,7 +141,7 @@ export default {
               params: [val],
             },
             { // 对应 mean(val.seleteItem)
-              type: 'mean',
+              type: val.selectType ? val.selectType : 'mean',
               params: [],
             },
             { // 确保后端返回columns有 val.label 的别名
