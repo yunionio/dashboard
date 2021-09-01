@@ -1,5 +1,8 @@
 import { MEDIUM_MAP } from '../../../constants'
-import { getUnusedTableColumn } from '../utils/columns'
+import {
+  getUnusedTableColumn,
+  getStorageTypeTableColumn,
+} from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -46,6 +49,7 @@ export default {
         title: i18n.t('table.title.disk_format'),
         width: 70,
       },
+      getStorageTypeTableColumn(),
       {
         field: 'disk_type',
         title: i18n.t('table.title.disk_type'),
