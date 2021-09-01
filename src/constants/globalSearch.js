@@ -45,6 +45,15 @@ export const getSearchMaps = (searchRes = {}) => {
     return { params, surportType }
   }
 
+  const normalizeIp = (s) => {
+    var r = /^([0-9]{1,3}\.){0,3}[0-9]{1,3}$/
+    if (r.test(s)) {
+      return s
+    } else {
+      return '0.0.0.0'
+    }
+  }
+
   const maps = {
     servers: {
       res_name: 'servers',
@@ -321,7 +330,7 @@ export const getSearchMaps = (searchRes = {}) => {
           filter: `name.contains(${getFilter('name')})`,
         },
         ip: {
-          ip_match: searchRes.ip ? searchRes.ip[0] : '',
+          ip_match: searchRes.ip ? normalizeIp(searchRes.ip[0]) : '',
         },
         id: {
           id: searchRes.id,
