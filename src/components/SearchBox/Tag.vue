@@ -43,7 +43,7 @@
           <span @click="handleCancel($event)">{{$t('common.cancel')}}</span>
         </div>
       </div>
-      <a-tag class="tag" closable @close="handleClose($event)">{{ label }}</a-tag>
+      <a-tag class="tag" closable @close="handleClose($event)">{{ getLabel(label) }}</a-tag>
     </a-popover>
   </div>
 </template>
@@ -226,6 +226,12 @@ export default {
     },
     getDateSelectPopupContainer (trigger) {
       return this.$parent.$refs['search-box-wrap']
+    },
+    getLabel (label) {
+      if (label.length > 40) {
+        return `${label.slice(0, 40)}...`
+      }
+      return label
     },
   },
 }
