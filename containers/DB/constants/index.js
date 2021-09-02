@@ -76,11 +76,12 @@ const HUAWEI_RDS_MONITOR_CHARTS = [
   },
   {
     name: 'conn',
-    label: i18n.t('db.text_18'),
-    seleteItem: 'used_percent',
-    as: i18n.t('db.text_13'),
+    label: i18n.t('db.used_count'),
+    seleteItem: 'used_count',
+    as: i18n.t('db.used_count'),
     fromItem: 'rds_conn',
-    unit: '%',
+    unit: '',
+    selectType: 'last',
     transfer: 1,
   },
 ]
