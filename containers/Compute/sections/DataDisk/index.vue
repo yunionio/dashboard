@@ -340,6 +340,9 @@ export default {
       if ((this.getHypervisor() === HYPERVISORS_MAP.kvm.key || this.getHypervisor() === HYPERVISORS_MAP.cloudpods.key) && diskType === 'local' && medium) {
         newDiskType = `${diskType}-${medium}`
       }
+      // if (!newDiskType) {
+      //   newDiskType = _.get(this.dataDisks, '[0].diskType.key')
+      // }
       const typeObj = this.typesMap[newDiskType]
       let dataDiskTypes = {
         key: _.get(this.dataDisks, '[0].diskType.key'),
@@ -480,7 +483,16 @@ export default {
       if (this.getHypervisor() === HYPERVISORS_MAP.esxi.key) {
         return this.$te(`common.storage.${diskTypeLabel}`) ? this.$t(`common.storage.${diskTypeLabel}`) : diskTypeLabel
       }
-      return i === 0 ? '' : this.$te(`common.storage.${diskTypeLabel}`) ? this.$t(`common.storage.${diskTypeLabel}`) : diskTypeLabel
+      if (i === 0) {
+        return ''
+      }
+      if (this.$te(`common.storage.${diskTypeLabel}`)) {
+        return this.$t(`common.storage.${diskTypeLabel}`)
+      }
+      if (_.get(this.typesMap, `[${diskTypeLabel}].label`)) {
+        return _.get(this.typesMap, `[${diskTypeLabel}].label`)
+      }
+      return diskTypeLabel
     },
     isSomeLocal (types) {
       const localTypes = types.filter(item => item.indexOf('local') !== -1)
