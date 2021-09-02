@@ -638,7 +638,6 @@ export class GenCreateData {
     this.isPublic = this.createType === SERVER_TYPE.public
     this.isIDC = this.createType === SERVER_TYPE.idc
     this.isPrepaid = this.fd.resourceType === RESOURCE_TYPES_MAP.prepaid.key
-    console.log(fd, 'createServerData')
   }
 
   /**
@@ -681,7 +680,7 @@ export class GenCreateData {
     if (item.storage_id) {
       ret.storage_id = item.storage_id
     }
-    if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key && ret.backend.indexOf('local') !== -1) {
+    if ((this.fd.hypervisor === HYPERVISORS_MAP.kvm.key || this.fd.hypervisor === HYPERVISORS_MAP.cloudpods.key) && ret.backend.indexOf('local') !== -1) {
       ret.backend = ret.backend.split('-')[0]
     }
     return ret
