@@ -54,10 +54,10 @@ export default {
                   tooltip: '',
                 }
                 if (obj.cloud_env === 'onpremise' || obj.cloud_env === 'private' || obj.cloud_env === 'public') {
-                  if (obj.storage_type === 'local') {
-                    ret.tooltip = i18n.t('compute.text_442')
-                    return ret
-                  }
+                  // if (obj.storage_type === 'local') {
+                  //   ret.tooltip = i18n.t('compute.text_442')
+                  //   return ret
+                  // }
                   ret.validate = !obj.guest && obj.status === 'ready'
                   if (obj.guest) {
                     ret.tooltip = i18n.t('compute.text_443')
