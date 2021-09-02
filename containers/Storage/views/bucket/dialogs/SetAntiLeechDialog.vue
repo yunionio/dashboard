@@ -9,16 +9,26 @@
         v-bind="formItemLayout"
         :form="form.fc">
         <a-form-item :label="$t('storage.text_214')">
-          <a-switch v-decorator="decorators.enabled" :checked-children="$t('storage.text_215')" :un-checked-children="$t('storage.text_216')" @change="handleEnabledChange" />
+          <a-tooltip>
+            <template v-if="refererDisabled" slot="title">
+              {{$t('storage.text_68')}}
+            </template>
+            <a-switch v-decorator="decorators.enabled" :disabled="refererDisabled" :checked-children="$t('storage.text_215')" :un-checked-children="$t('storage.text_216')" @change="handleEnabledChange" />
+          </a-tooltip>
         </a-form-item>
         <a-form-item :label="$t('storage.text_208')" :extra="$t('storage.text_209')" v-if="referer_enabled">
           <a-switch v-decorator="decorators.allow_empty_refer" :checked-children="$t('storage.text_184')" :un-checked-children="$t('storage.text_185')" />
         </a-form-item>
         <a-form-item :label="$t('storage.text_86')" v-if="referer_enabled">
-          <a-radio-group v-decorator="decorators.referer_type">
-            <a-radio value="White-List">{{$t('storage.text_206')}}</a-radio>
-            <a-radio value="Black-List">{{$t('storage.black_list')}}</a-radio>
-          </a-radio-group>
+          <a-tooltip>
+            <template v-if="refererDisabled" slot="title">
+              {{$t('storage.text_68')}}
+            </template>
+            <a-radio-group v-decorator="decorators.referer_type" :disabled="refererDisabled">
+              <a-radio value="White-List">{{$t('storage.text_206')}}</a-radio>
+              <a-radio value="Black-List">{{$t('storage.black_list')}}</a-radio>
+            </a-radio-group>
+          </a-tooltip>
         </a-form-item>
         <a-form-item :label="$t('storage.text_219')" v-if="referer_enabled">
           <a-textarea
@@ -39,6 +49,7 @@
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'SetAntiLeechDialog',
@@ -51,6 +62,7 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      init_referer_enabled: referer_enabled,
       referer_enabled,
       decorators: {
         enabled: [
@@ -95,6 +107,13 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    refererDisabled () {
+      const { brand } = this.params.data[0]
+      if (brand === HYPERVISORS_MAP.aliyun.provider && this.init_referer_enabled) {
+        return true
+      }
+      return false
+    },
   },
   methods: {
     handleEnabledChange (val) {
