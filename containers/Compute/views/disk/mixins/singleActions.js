@@ -98,12 +98,12 @@ export default {
                     tooltip: i18n.t('compute.text_445'),
                   }
                 }
-                if (obj.cloud_env === 'onpremise' && obj.storage_type === 'local') {
-                  return {
-                    validate: false,
-                    tooltip: i18n.t('compute.text_446'),
-                  }
-                }
+                // if (obj.cloud_env === 'onpremise' && obj.storage_type === 'local') {
+                //   return {
+                //     validate: false,
+                //     tooltip: i18n.t('compute.text_446'),
+                //   }
+                // }
                 if (obj.disk_type === 'sys') {
                   return {
                     validate: false,
