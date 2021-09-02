@@ -5,6 +5,11 @@
       <a-alert :message="$t('compute.text_440')" banner />
       <dialog-selected-tips :count="params.data.length" :action="$t('compute.disk_perform_detach')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <a-form :form="form.fc" hideRequiredMark>
+        <a-form-item>
+          <a-checkbox v-decorator="decorators.keep_disk">同时删除硬盘</a-checkbox>
+        </a-form-item>
+      </a-form>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -23,6 +28,18 @@ export default {
   data () {
     return {
       loading: false,
+      form: {
+        fc: this.$form.createForm(this),
+      },
+      decorators: {
+        keep_disk: [
+          'keep_disk',
+          {
+            valuePropName: 'checked',
+            initialValue: true,
+          },
+        ],
+      },
     }
   },
   created () {
@@ -43,7 +60,7 @@ export default {
         id: guestId,
         data: {
           disk_id: this.params.data[0].id,
-          keep_disk: true,
+          keep_disk: !data.keep_disk,
         },
       })
     },
@@ -51,7 +68,8 @@ export default {
       this.loading = true
       try {
         this.loading = true
-        await this.doUpdate()
+        const values = await this.form.fc.validateFields()
+        await this.doUpdate(values)
         this.loading = false
         this.params.refresh()
         this.cancelDialog()
