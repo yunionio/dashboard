@@ -342,6 +342,8 @@ export const metric_zh = {
   'Storage usage': i18n.t('monitor.storage_usage'),
   'Free storage': i18n.t('monitor.free_storage'),
   'Storage utilization rate': i18n.t('monitor.storage_utilization_rate'),
+  'cost_alert': i18n.t('monitor_metric_99'),
+  'amount': i18n.t('monitor_metric_100'),
 }
 
 export const filterKeyMap = {

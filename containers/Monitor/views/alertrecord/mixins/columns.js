@@ -1,5 +1,5 @@
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
-import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
+import { strategyColumn, levelColumn, getValueWithUnit } from '@Monitor/views/commonalert/utils'
 import { BRAND_MAP } from '@/constants'
 
 export default {
@@ -69,7 +69,9 @@ export default {
                 field: 'value_str',
                 title: row.state === 'ok' ? this.$t('monitor.text_106') : this.$t('monitor.text_105'),
                 align: 'right',
-                formatter: ({ row }) => row.value_str,
+                formatter: ({ row }) => {
+                  return getValueWithUnit(row.value_str, row.unit)
+                },
               },
             ]
             return <vxe-grid size="mini" border columns={columns} data={row.eval_data} />
