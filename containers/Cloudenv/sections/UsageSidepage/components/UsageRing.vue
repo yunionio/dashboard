@@ -30,11 +30,17 @@
     </div>
   </div>
 </template>
+
 <script>
+import COLORS from '@/constants/color'
+
 export default {
   name: 'UsageRing',
   props: {
     title: {
+      type: String,
+    },
+    field: {
       type: String,
     },
     options: {
@@ -63,13 +69,25 @@ export default {
       return `${this.percent} %`
     },
     percentColor () {
-      if (this.percent < 80) {
-        return '#52c41a'
+      const isReverse = COLORS.COLORS_SCHEME_REVERSE_FIELDS.find(v => this.field.endsWith(v))
+
+      if (isReverse) {
+        if (this.percent < 60) {
+          return COLORS.COLORS_SCHEME.REVERSE.PERCENT_60
+        } else if (this.percent < 80) {
+          return COLORS.COLORS_SCHEME.REVERSE.PERCENT_80
+        } else {
+          return COLORS.COLORS_SCHEME.REVERSE.PERCENT_100
+        }
+      } else {
+        if (this.percent < 60) {
+          return COLORS.COLORS_SCHEME.DEFAULT.PERCENT_60
+        } else if (this.percent < 80) {
+          return COLORS.COLORS_SCHEME.DEFAULT.PERCENT_80
+        } else {
+          return COLORS.COLORS_SCHEME.DEFAULT.PERCENT_100
+        }
       }
-      if (this.percent < 100) {
-        return '#faad14'
-      }
-      return '#f5222d'
     },
     status () {
       let ret = 'normal'
