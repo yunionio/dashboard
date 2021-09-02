@@ -4,6 +4,7 @@ import { metric_zh, alertStrategyMaps, preiodMaps, levelMaps } from '@Monitor/co
 import { channelMaps } from '@/constants'
 import i18n from '@/locales'
 import { transformUnit, arrayToObj } from '@/utils/utils'
+import { currencyUnitMap } from '@/constants/currency'
 
 export const levelColumn = {
   field: 'level',
@@ -216,4 +217,15 @@ export const getVerifiedContactTypesTableColumn = ({ field = 'channel', title = 
       },
     },
   }
+}
+
+export const getValueWithUnit = (value = 0, unit = '') => {
+  const currencyUnitList = Object.keys(currencyUnitMap)
+  // 金额类型的单位
+  for (let i = 0; i < currencyUnitList.length; i++) {
+    if (unit.indexOf(currencyUnitList[i]) !== -1) {
+      return `${currencyUnitMap[currencyUnitList[i]].sign}${value}`
+    }
+  }
+  return value
 }
