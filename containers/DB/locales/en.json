@@ -16,6 +16,7 @@
   "db.text_15": "Mysql network outbound traffic",
   "db.text_16": "SQL Server network inbound traffic",
   "db.text_17": "SQL Server network outbound traffic",
+  "db.used_count": "Total database connections",
   "db.text_18": "Connection Usage Rate",
   "db.text_19": "Network Inbound Traffic",
   "db.text_20": "Network Outbound Traffic",
