@@ -75,14 +75,19 @@ export default {
               if (!value) {
                 return null
               }
-              return (
-                <div class="d-flex align-items-center">
-                  <span class="text-truncate">
-                    {title}：{value}
-                  </span>
-                  <copy message={value} />
-                </div>
-              )
+              // return (
+              //   <div class="d-flex align-items-center">
+              //     <span class="text-truncate">
+              //       {title}：{value}
+              //     </span>
+              //     <copy message={value} />
+              //   </div>
+              // )
+              return [
+                <list-body-cell-wrap hide-field copy message={value}>
+                  {title} : <span>{ value || '-' }</span>
+                </list-body-cell-wrap>,
+              ]
             }
             return [
               connection(i18n.t('db.text_153'), pri),
