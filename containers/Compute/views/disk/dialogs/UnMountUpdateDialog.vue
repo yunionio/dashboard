@@ -7,7 +7,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
         <a-form-item>
-          <a-checkbox v-decorator="decorators.keep_disk">同时删除硬盘</a-checkbox>
+          <a-checkbox v-decorator="decorators.keep_disk">{{ $t('compute.disk.detach') }}</a-checkbox>
         </a-form-item>
       </a-form>
     </div>
