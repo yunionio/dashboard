@@ -17,6 +17,7 @@
   "db.text_16": "SQL Server网络入流量",
   "db.text_17": "SQL Server网络出流量",
   "db.text_18": "连接使用率",
+  "db.used_count": "数据库总连接数",
   "db.text_19": "网络入流量",
   "db.text_20": "网络出流量",
   "db.text_21": "网络瞬时输入流量",
