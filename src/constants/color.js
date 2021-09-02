@@ -2,7 +2,7 @@
 const COLOR_PERCENT_RED = '#f5222d'
 const COLOR_PERCENT_YELLOW = '#faad14'
 const COLOR_PERCENT_GREEN = '#52c41a'
-const COLORS_SCHEME_REVERSE_FIELDS = ['disks.count'] // 需要使用反转方案的指标，使用结尾匹配模式
+const COLORS_SCHEME_REVERSE_FIELDS = ['disks.count', 'eip.floating_ip'] // 需要使用反转方案的指标，使用结尾匹配模式
 const COLORS_SCHEME = {
   DEFAULT: {
     PERCENT_60: COLOR_PERCENT_GREEN,
