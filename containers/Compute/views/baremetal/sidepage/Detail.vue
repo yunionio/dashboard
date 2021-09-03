@@ -17,6 +17,7 @@ import {
   getCopyWithContentTableColumn,
   getBrandTableColumn,
   getSwitchTableColumn,
+  getServerMonitorAgentInstallStatus,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -40,6 +41,7 @@ export default {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.columns, tipName: this.$t('compute.text_92') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.columns, tipName: this.$t('compute.text_92') }),
+        getServerMonitorAgentInstallStatus(),
         {
           field: 'keypair',
           title: this.$t('compute.text_33'),
