@@ -221,7 +221,7 @@ export default {
       })
       callback && callback(selectedValue)
     },
-    async fetchChange (name, list) {
+    async fetchChange (name, list = []) {
       const events = this._events || {}
       const changes = events[`${name}FetchSuccess`]
       let _list = findAndPush(list, ({ name }) => name === 'Other')
