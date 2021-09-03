@@ -25,7 +25,15 @@
       </monitor-header>
       <div>
         <template v-if="chartLoading"><loader loading /></template>
-        <monitor-line v-else class="mb-3" :series="series" :timeFormatStr="timeFormatStr" :lineChartOptions="lineChartOptions" :description="lineDescription" :threshold="threshold" />
+        <monitor-line v-else class="mb-3"
+                      :series="series"
+                      :timeFormatStr="timeFormatStr"
+                      :lineChartOptions="lineChartOptions"
+                      :description="lineDescription"
+                      :threshold="threshold"
+                      :pager="pager"
+                      :key="pager.total"
+                      @pageChange="pageChange" />
       </div>
     </a-col>
   </a-row>
@@ -71,6 +79,7 @@ export default {
       loading: false,
       loaded: false,
       chartLoading: false,
+      pager: { seriesIndex: 0, total: 0, page: 1, limit: 10 },
       lineDescription: {},
       scopeParams: {},
     }
@@ -260,20 +269,31 @@ export default {
         throw error
       }
     },
-    async refresh (params) { // 将多个查询 分开调用
+    async pageChange (pager) {
+      await this._refresh(pager.limit, (pager.page - 1) * pager.limit)
+    },
+    async _refresh (limit, offset) {
+      this.loading = true
       try {
-        this.formmMetric = R.is(Object, params) ? [{ model: params }] : null
-        await this.fetchData()
+        await this.fetchData(limit, offset)
+        this.loading = false
       } catch (error) {
         this.formmMetric = { model: {} }
+        this.loading = false
         throw error
       }
     },
-    async fetchData () {
+    async refresh (params) {
+      this.formmMetric = R.is(Object, params) ? [{ model: params }] : null
+      await this._refresh(10, 0)
+    },
+    async fetchData (limit, offset) {
       try {
         const data = {
           metric_query: this.formmMetric,
           interval: this.timeGroup,
+          slimit: limit,
+          soffset: offset,
           ...this.scopeParams,
         }
         if (this.time === 'custom') { // 自定义时间
@@ -287,10 +307,11 @@ export default {
         if (!data.metric_query || !data.from || !_.get(data.metric_query, '[0].model.measurement') || !_.get(data.metric_query, '[0].model.select')) return
         this.chartLoading = true
         data.signature = getSignature(data)
-        const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
+        const { data: { series = [], series_total = 0 } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
         this.series = []
         this.$nextTick(_ => {
           this.series = series
+          this.pager = { seriesIndex: 0, total: series_total, page: 1 + offset / limit, limit: limit }
           this.chartLoading = false
         })
       } catch (error) {
