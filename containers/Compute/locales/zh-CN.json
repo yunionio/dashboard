@@ -1455,5 +1455,6 @@
   "compute.webapp.env": "环境",
   "compute.webapp.instance_type": "套餐",
   "compute.webapp.instance_number": "实例数量",
-  "compute.disk.detach": "同时删除硬盘"
+  "compute.disk.detach": "同时删除硬盘",
+  "compute.text_1387": "请选择云订阅"
 }

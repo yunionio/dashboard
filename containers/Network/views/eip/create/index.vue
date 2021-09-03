@@ -72,7 +72,7 @@
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             @update:item="providerChange"
             :isDefaultSelect="true"
-            :select-props="{ placeholder: $t('compute.text_149') }"
+            :select-props="{ placeholder: $t('compute.text_1387') }"
             style="width: 320px" />
         </a-form-item>
       </a-form>
@@ -243,13 +243,18 @@ export default {
       return false
     },
     providerParams () {
-      return {
+      const params = {
         enabled: 1,
         details: true,
         public_cloud: !this.isHCSO,
         scope: this.$store.getters.scope,
         usable: true,
       }
+      params.project_domain_id = this.domain_id
+      if (!R.isEmpty(this.selectedRegionItem)) {
+        params.cloudregion_id = this.selectedRegionItem.id
+      }
+      return params
     },
     showBgpTypes () {
       if (!this.bgpTypeOptions || this.bgpTypeOptions.length === 0) {
