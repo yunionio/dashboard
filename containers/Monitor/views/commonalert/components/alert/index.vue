@@ -273,10 +273,13 @@ export default {
       await this._refresh(pager.limit, (pager.page - 1) * pager.limit)
     },
     async _refresh (limit, offset) {
+      this.loading = true
       try {
         await this.fetchData(limit, offset)
+        this.loading = false
       } catch (error) {
         this.formmMetric = { model: {} }
+        this.loading = false
         throw error
       }
     },
