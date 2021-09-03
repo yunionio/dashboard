@@ -6,7 +6,7 @@
       :filterable="true"
       resource="robots"
       version="v1"
-      :select-props="{ placeholder: $t('bill.budget_alert_user_placeholder'), allowClear: true, mode: 'multiple' }" />
+      :select-props="{ placeholder: placeholder, allowClear: true, mode: 'multiple' }" />
   </a-form-item>
 </template>
 
@@ -25,6 +25,10 @@ export default {
       default: () => ({
         robot: 'only',
       }),
+    },
+    placeholder: {
+      type: String,
+      default: i18n.t('bill.budget_alert_user_placeholder'),
     },
     label: {
       type: String,
