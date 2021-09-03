@@ -7,11 +7,20 @@
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.server">
+          <!-- <a-select v-decorator="decorators.server">
             <a-select-option v-for="item in serversOpts" :key="item.id">
               {{item.name}}
             </a-select-option>
-          </a-select>
+          </a-select> -->
+          <base-select
+            class="w-100"
+            remote
+            filterable
+            v-decorator="decorators.server"
+            resource="servers"
+            search-key="search"
+            :remote-fn="q => ({ search: q })"
+            :params="serverParams" />
         </a-form-item>
       </a-form>
     </div>
@@ -54,30 +63,27 @@ export default {
           span: 3,
         },
       },
-      serversOpts: [],
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'scope']),
-  },
-  created () {
-    const itemData = this.params.data[0]
-    const params = {
-      details: true,
-      attachable_servers_for_disk: itemData.id,
-      scope: this.scope,
-      brand: itemData.brand,
-      filter: 'status.in(ready, running)',
-    }
-    if (itemData.cloud_env === 'public' || itemData.cloud_env === 'private') {
-      params.manager = itemData.manager_id
-      params.zone = itemData.zone_id
-    }
-    if (this.isAdminMode || this.isDomainMode) params.project_id = itemData.project_id
-    new this.$Manager('servers').list({ params })
-      .then((res) => {
-        this.serversOpts = res.data.data
-      })
+    serverParams () {
+      const itemData = this.params.data[0]
+      const params = {
+        details: true,
+        attachable_servers_for_disk: itemData.id,
+        scope: this.scope,
+        brand: itemData.brand,
+        filter: 'status.in(ready, running)',
+        limit: 20,
+      }
+      if (itemData.cloud_env === 'public' || itemData.cloud_env === 'private') {
+        params.manager = itemData.manager_id
+        params.zone = itemData.zone_id
+      }
+      if (this.isAdminMode || this.isDomainMode) params.project_id = itemData.project_id
+      return params
+    },
   },
   methods: {
     validateForm () {

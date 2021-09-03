@@ -6,7 +6,7 @@
       <dialog-selected-tips :count="params.data.length" :action="$t('compute.disk_perform_detach')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item>
+        <a-form-item class="mb-0">
           <a-checkbox v-decorator="decorators.keep_disk">{{ $t('compute.disk.detach') }}</a-checkbox>
         </a-form-item>
       </a-form>
@@ -36,7 +36,7 @@ export default {
           'keep_disk',
           {
             valuePropName: 'checked',
-            initialValue: true,
+            initialValue: false,
           },
         ],
       },
