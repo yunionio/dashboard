@@ -596,7 +596,7 @@ export const getSearchMaps = (searchRes = {}) => {
           filter: `name.contains(${getFilter('name')})`,
         },
         ip: {
-          filter: `address.contains(${getFilter('ip')})`,
+          address: searchRes.ip ? searchRes.ip.join(',') : '',
         },
         id: {
           id: searchRes.id,
