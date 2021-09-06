@@ -61,7 +61,7 @@ export default {
     disableds () {
       const _ = {
         Huawei: ['engine', 'engine_version', 'zones', 'category', 'storage_type'],
-        Aliyun: ['engine', 'engine_version', 'zones'],
+        Aliyun: ['engine', 'engine_version', 'zones', 'storage_type'],
         Google: ['engine', 'engine_version', 'zones', 'category'],
       }
       return _[this.rdsItem.brand]
