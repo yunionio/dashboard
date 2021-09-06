@@ -1455,5 +1455,6 @@
   "compute.webapp.env": "Environments",
   "compute.webapp.instance_type": "Instance Type",
   "compute.webapp.instance_number": "Instance Number",
-  "compute.disk.detach": "Delete the hard disk at the same time"
+  "compute.disk.detach": "Delete the hard disk at the same time",
+  "compute.text_1387": "Please select a cloud subscription"
 }
