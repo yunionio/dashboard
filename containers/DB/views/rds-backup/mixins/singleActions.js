@@ -25,11 +25,11 @@ export default {
             validate = false
             tooltip = i18n.t('db.text_224')
           }
-          if (this.data.provider === 'Qcloud') {
+          if (obj.provider === 'Qcloud') {
             validate = false
             tooltip = this.$t('db.text_343')
           }
-          if (this.data.provider === 'Aliyun' && (obj.backup_method === 'Logical' || obj.backup_method === 'Snapshot')) {
+          if (obj.provider === 'Aliyun' && (obj.backup_method === 'Logical' || obj.backup_method === 'Snapshot')) {
             validate = false
             tooltip = i18n.t('db.text_375')
           }
@@ -67,8 +67,8 @@ export default {
             refresh: this.refresh,
           })
         },
-        meta: () => {
-          if (this.data.brand === 'Aliyun') {
+        meta: (obj) => {
+          if (obj.brand === 'Aliyun') {
             return {
               validate: false,
               tooltip: i18n.t('db.text_214'),
