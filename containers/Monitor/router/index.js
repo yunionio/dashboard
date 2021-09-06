@@ -2,6 +2,7 @@ import Overview from '@Monitor/views/overview'
 import CommonalertsIndex from '@Monitor/views/commonalert'
 import commonalertsCreate from '@Monitor/views/commonalert/create'
 import commonalertsUpdate from '@Monitor/views/commonalert/update'
+import MonitorresourcesIndex from '@Monitor/views/monitorresource'
 import AlertresourceIndex from '@Monitor/views/alertresource'
 import AlertrecordIndex from '@Monitor/views/alertrecord'
 import Explorer from '@Monitor/views/explorer'
@@ -33,6 +34,65 @@ export default {
         },
       },
       component: Overview,
+    },
+    {
+      meta: {
+        label: i18n.t('monitor.monitorresources'),
+        t: 'dictionary.monitorresources',
+      },
+      submenus: [
+        {
+          path: '/monitorresources-guest',
+          meta: {
+            label: i18n.t('common.server'),
+            permission: 'monitorresources_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources-guest')) {
+                return true
+              }
+
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+              })
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'MonitorresourcesGuest',
+              path: '',
+              props: { res_type: 'guest' },
+              component: MonitorresourcesIndex,
+            },
+          ],
+        },
+        {
+          path: '/monitorresources-host',
+          meta: {
+            label: i18n.t('dictionary.host'),
+            permission: 'monitorresources_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources-host')) {
+                return true
+              }
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+              })
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'MonitorresourcesHost',
+              path: '',
+              props: { res_type: 'host' },
+              component: MonitorresourcesIndex,
+            },
+          ],
+        },
+      ],
     },
     {
       meta: {

@@ -261,5 +261,7 @@
   "monitor.chart.toolbar.line": "switch to line chart",
   "monitor.chart.toolbar.bar": "switch to bar chart",
   "monitor.dashboard.dialog.project.clone": "Clone Chart",
+  "monitor.monitorresources": "Resources",
+  "monitor.monitorresources.management": "Management Monitor Policy",
   "monitor.view_system": "System"
 }
