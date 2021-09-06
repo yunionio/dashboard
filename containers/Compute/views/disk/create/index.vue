@@ -282,7 +282,10 @@ export default {
             cloud_env: 'public',
             ...project_domain,
           },
-          provider: { cloud_env: 'public' },
+          provider: {
+            cloud_env: 'public',
+            ...project_domain,
+          },
         }
       }
       if (this.isAdminMode) {
