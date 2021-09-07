@@ -266,9 +266,11 @@ export default {
         const data = {}
         let num = 0
         R.forEachObjIndexed((value, key) => {
-          const _key = R.replace(/(ext:|user:)/, '', key)
-          data[_key] = value[0] ? value[0] : ''
-          num++
+          if (key.startsWith('user:')) {
+            const _key = R.replace(/user:/, '', key)
+            data[_key] = value[0] ? value[0] : ''
+            num++
+          }
         }, this.checked)
         if (num > 20) {
           this.$message.warning(this.$t('common_119'))
