@@ -55,6 +55,10 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('storage.text_41'), key: 'status' },
+          { label: this.$t('dictionary.vpc'), key: 'vpc' },
+          { label: this.$t('dictionary.network'), key: 'network' },
+          { label: this.$t('dictionary.access_group'), key: 'access_group' },
+          { label: this.$t('storage.mount.target.domain.name'), key: 'domain_name' },
           { label: this.$t('storage.created_at'), key: 'created_at' },
         ],
       },
