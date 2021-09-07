@@ -216,10 +216,10 @@ export const STORAGE_TYPES = {
       label: i18n.t('common.storage.local'),
       key: 'local',
       min: 1,
-      max: 3 * 1024,
+      max: 20 * 1024,
       default: true,
       sysMin: 10,
-      sysMax: 500,
+      sysMax: 2 * 1024,
       unCreateCloud: true, // 不支持创建云硬盘
     },
     rbd: {
