@@ -1,7 +1,7 @@
 import { mapGetters } from 'vuex'
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import i18n from '@/locales'
-import { BRAND_MAP, PROVIDER_MAP } from '@/constants'
+import { BRAND_MAP, PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
@@ -233,6 +233,25 @@ export default {
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_setup_snapshot_policy'),
             },
             {
+              label: i18n.t('compute.driver.update'),
+              action: () => {
+                this.createDialog('DiskDriverUpdateDialog', {
+                  data: [obj],
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                }
+                if (!(obj.brand === HYPERVISORS_MAP.kvm.brand)) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_1388')
+                }
+                return ret
+              },
+              hidden: () => !this.isAdminMode,
+            },
+            {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
@@ -301,15 +320,6 @@ export default {
               },
               meta: () => this.$getDeleteResult(obj),
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_delete'),
-            },
-            {
-              label: i18n.t('compute.driver.update'),
-              action: () => {
-                this.createDialog('DiskDriverUpdateDialog', {
-                  data: [obj],
-                })
-              },
-              hidden: () => !this.isAdminMode,
             },
           ]
         },
