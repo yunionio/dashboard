@@ -364,7 +364,7 @@ export default {
     },
     // 获取总价格
     async _getPriceList () {
-      if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
+      if (!this.$appConfig.isPrivate) return // 如果是开源版本则取消调用meter服务
       if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
       if (!R.is(Number, this.fd.count)) return
       let skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
