@@ -282,7 +282,8 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
               }),
             ]
           } else {
-            return [<data-loading />]
+            if (vm.isPreLoad) return [<data-loading />]
+            return []
           }
         }
         let ret = []
