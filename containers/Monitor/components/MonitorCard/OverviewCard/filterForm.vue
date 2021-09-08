@@ -293,7 +293,7 @@ export default {
         const col = { field: column, title: column, sortable: true, sortType: 'number', sortBy: (row) => { const v = row && row[column] ? row[column] : 0; return v } }
         if (chart.metric.format) col.formatter = ({ cellValue }) => { return numerify(cellValue, chart.metric.format) }
         data.columns.push(col)
-        chart.chartData.rows.map((row) => {
+        chart.$chartData.rows.map((row) => {
           if (names.indexOf(row.name) < 0) {
             return
           }
@@ -373,6 +373,7 @@ export default {
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
         chart.chartType = this.isLineChart ? 'OverviewLine' : 'OverviewHistogram'
         chart.chartData = this.toChartData(series)
+        chart.$chartData = Object.assign({}, chart.chartData)
         if (formValues.limit && typeof formValues.limit === 'number' && formValues.limit > 0) {
           if (chart.chartData.rows.length > formValues.limit) {
             chart.chartData.rows = chart.chartData.rows.slice(chart.chartData.rows.length - formValues.limit)
