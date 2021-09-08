@@ -66,7 +66,7 @@ export default {
   data () {
     const charts = {}
     MetricOptions.map((m) => {
-      charts[m.field] = newChart(m)
+      charts[m.value] = newChart(m)
     })
     return {
       metricOptions: MetricOptions,
@@ -240,7 +240,7 @@ export default {
     },
     toTableData () {
       const curMetric = this.form.getFieldValue('metric')
-      const names = this.charts[curMetric.field].chartData.rows.map((row) => { return row.name })
+      const names = this.charts[curMetric.value].chartData.rows.map((row) => { return row.name })
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
@@ -388,7 +388,7 @@ export default {
       const loading = this.startLoading()
       try {
         const values = await this.validateForm()
-        await this.fetchChartData(values.metric.field, values)
+        await this.fetchChartData(values.metric.value, values)
         this.emitChart(this.charts[values.metric.field])
       } catch (error) {
         throw error
@@ -400,11 +400,11 @@ export default {
       const loading = this.startLoading()
       try {
         const values = await this.validateForm()
-        const fields = Object.keys(this.charts)
-        for (const field of fields) {
-          await this.fetchChartData(field, values)
+        const vs = Object.keys(this.charts)
+        for (const v of vs) {
+          await this.fetchChartData(v, values)
         }
-        this.emitChart(this.charts[values.metric.field])
+        this.emitChart(this.charts[values.metric.value])
         this.emitTable()
       } catch (error) {
         throw error
