@@ -437,7 +437,7 @@ export default {
       try {
         const values = await this.validateForm()
         await this.fetchChartData(values.metric.value, values)
-        this.emitChart(this.charts[values.metric.field])
+        this.emitChart(this.charts[values.metric.value])
       } catch (error) {
         throw error
       } finally {
