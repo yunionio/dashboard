@@ -102,6 +102,8 @@ export default {
           sysDiskDisabled: false, // 系统盘是否禁用
           cpuDisabled: false,
           memDisabled: false,
+          dataDiskMedium: '',
+          networkVpcObj: {},
         },
         fd: { ...initFd, os: '' },
       },
