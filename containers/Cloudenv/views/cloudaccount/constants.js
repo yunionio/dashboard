@@ -117,7 +117,7 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'ApsaraCreate',
       provider: providerMap.apsara.key,
     },
-  hcso: {
+    hcso: {
       name: providerMap.hcso.label,
       logo: hcsoLogo,
       component: 'HCSOCreate',
