@@ -642,6 +642,8 @@
   "cloudenv.international_cloud": "Public Cloud",
   "cloudenv.finance_cloud": "Financial Cloud",
   "cloudenv.cloudaccount.apsara.endpoint": "ASAPI Endpoint",
+  "cloudenv.cloudaccount.apsara.default_region": "Default RegionId",
+  "cloudenv.cloudaccount.apsara.other.endpoints": "Other Endpoints",
   "cloudenv.cloudaccount.apsara.ecs_endpoint": "EcsEndpoint",
   "cloudenv.cloudaccount.apsara.rds_endpoint": "RdsEndpoint",
   "cloudenv.cloudaccount.apsara.vpc_endpoint": "VpcEndpoint",
