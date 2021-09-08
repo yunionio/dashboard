@@ -640,6 +640,8 @@
   "cloudenv.international_cloud": "公共云",
   "cloudenv.finance_cloud": "金融云",
   "cloudenv.cloudaccount.apsara.endpoint": "ASAPI 端点",
+  "cloudenv.cloudaccount.apsara.default_region": "默认区域ID",
+  "cloudenv.cloudaccount.apsara.other.endpoints": "其他端点",
   "cloudenv.cloudaccount.apsara.ecs_endpoint": "虚拟器端点",
   "cloudenv.cloudaccount.apsara.rds_endpoint": "RDS端点",
   "cloudenv.cloudaccount.apsara.vpc_endpoint": "VPC端点",
