@@ -25,7 +25,11 @@ export default {
             {
               label: i18n.t('storage.host.manage'),
               action: row => {
-                this.$refs.BaseSidePage.handleTabChange('host-list')
+                if (this.handleOpenSidepage) {
+                  this.handleOpenSidepage(row, 'host-list')
+                } else {
+                  this.$refs.BaseSidePage.handleTabChange('host-list')
+                }
               },
             },
             {
