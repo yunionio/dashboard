@@ -163,15 +163,6 @@ export default {
             ],
           },
         ],
-        project: [
-          'project',
-          {
-            initialValue: this.$store.getters.userInfo.projectId,
-            rules: [
-              { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
-            ],
-          },
-        ],
         auto_create_project: [
           'auto_create_project',
           {

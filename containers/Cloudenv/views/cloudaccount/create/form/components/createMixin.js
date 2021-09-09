@@ -32,6 +32,17 @@ export default {
         },
       },
       domainProjectShow: false,
+      decorators: {
+        project: [
+          'project',
+          {
+            initialValue: this.$store.getters.userInfo.projectId,
+            rules: [
+              { validator: this.handleProject, message: this.$t('rules.project'), trigger: 'change' },
+            ],
+          },
+        ],
+      },
     }
   },
   computed: {
@@ -54,6 +65,11 @@ export default {
     this.domainProjectShow = false
     if (this.keepAliveFields) return
     this.form.fc.resetFields()
+  },
+  created () {
+    this.$bus.$on('updateAutoCreate', (v) => {
+      this.handleProjectChange(v)
+    })
   },
   methods: {
     validateForm () {
@@ -83,19 +99,31 @@ export default {
       }
     },
     async handleValuesChange (vm, changedFields) {
-      await this.$nextTick()
+      // await this.$nextTick()
       const fields = Object.keys(changedFields)
       if (changedFields && fields.length > 0) {
         fields.forEach(field => {
-          if (changedFields.hasOwnProperty('domain') || changedFields.hasOwnProperty('environment')) {
-            this.form.fd[field] = changedFields[field]
-          }
+          this.form.fd[field] = changedFields[field]
           const fn = this[`${field}_change`]
           if (fn && typeof fn === 'function') {
             fn()
           }
         })
       }
+    },
+    handleProject (rule, value, callback) {
+      const { auto_create_project } = this.form.fd
+
+      if (auto_create_project || value?.key) {
+        callback()
+      } else {
+        callback(Error)
+      }
+    },
+    handleProjectChange (v) {
+      this.$nextTick(() => {
+        this.form.fc.validateFields(['project'], { force: true })
+      })
     },
   },
 }
