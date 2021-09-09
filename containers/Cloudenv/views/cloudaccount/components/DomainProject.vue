@@ -248,6 +248,7 @@ export default {
     handleAutoCreateProjectChange (e) {
       const checked = e.target.checked
       this.disableProjectSelect = checked
+      this.$bus.$emit('updateAutoCreate', checked)
     },
   },
 }
