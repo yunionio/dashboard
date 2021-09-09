@@ -1,10 +1,10 @@
 <template>
-  <div class="history-wrap d-flex flex-column" :class="{ default: !showDelete }">
+  <div id="chooser" class="history-wrap d-flex flex-column" :class="{ default: !showDelete }">
     <div class="list flex-fill overflow-auto">
       <template v-for="item of dataSource">
         <div class="item d-flex align-items-center pb-2 pt-2" :key="item[0]" @click="handleSelect(item)">
           <div class="left flex-fill">
-            <div class="l1info">{{ item[1]['name'] }} - {{ item[1]['domain']['name'] }}{{ item[1]['isSSO'] ? ' (SSO)' : '' }}</div>
+            <div class="l1info">{{idx}}{{ item[1]['name'] }} - {{ item[1]['domain']['name'] }}{{ item[1]['isSSO'] ? ' (SSO)' : '' }}</div>
             <div class="l2info text-color-help mt-1">{{ $t('common.text00118') }}：{{ $te(`authChooser.${item[1]['scope']}`) ? $t(`authChooser.${item[1]['scope']}`) : '-' }}</div>
             <div class="l2info text-color-help mt-1">{{ $t('dictionary.project') }}：{{ item[1].projectName }}</div>
           </div>
@@ -19,15 +19,21 @@
     <div class="actions flex-grow-0 flex-shrink-0 d-flex">
       <template v-if="!showDelete">
         <div class="flex-shrink-1 flex-grow-1 text-left pr-2">
-          <a-button type="link" icon="user" class="pr-0 week-link-button" size="small" @click="$router.replace({ path: '/auth/login', query: { rf: $route.query.rf, domain: $route.query.domain } })">{{ $t('auth.outher.history.user.btn') }}</a-button>
+          <a-button type="link" size="large" @click="$router.replace({ path: '/auth/login', query: { rf: $route.query.rf, domain: $route.query.domain } })">
+            <icon type="user" class="icon-user" />
+            {{ $t('scope.auth.outher.history.user.btn') }}
+          </a-button>
         </div>
         <div class="flex-shrink-1 flex-grow-1 text-right pl-2">
-          <a-button type="link" icon="user-delete" class="pl-0 week-link-button" @click="showDelete = true" size="small">{{ $t('auth.remove.history.user.btn') }}</a-button>
+          <a-button type="link" class="user-del-btn" size="large" @click="showDelete = true">
+            <icon type="user-del" class="icon-user-del" />
+            {{ $t('scope.auth.remove.history.user.btn') }}
+          </a-button>
         </div>
       </template>
       <template v-else>
         <div class="text-right flex-fill">
-          <a-button type="link" @click="showDelete = false" size="small">{{ $t('common.ok') }}</a-button>
+          <a-button type="primary" size="large" shape="round" @click="showDelete = false">{{ $t('common.ok') }}</a-button>
         </div>
       </template>
     </div>
@@ -114,27 +120,27 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../../styles/less/theme";
+@import "@/styles/less/theme";
 
 .history-wrap {
-  height: 290px !important;
+  height: 346px !important;
   margin: 0 -60px 0;
   .item {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px dashed #c9c9c9;
     padding-left: 60px;
     padding-right: 60px;
     cursor: default;
-    &:last-child {
-      border-bottom: none;
-    }
   }
   .actions {
     padding-left: 60px;
     padding-right: 60px;
-    margin-top: 10px;
+    margin-top: 18px;
   }
   .l1info {
-    font-size: 15px;
+    color: #000;
+    font-size: 22px;
+    font-family: Graphik;
+    font-weight: 400;
   }
   .l2info {
     font-size: 13px;
@@ -146,6 +152,26 @@ export default {
         background-color: @primary-1;
       }
     }
+  }
+}
+// @media only screen and (min-width: 1366px) {
+//   .history-wrap {
+//     height: 252px !important;
+//   }
+// }
+
+#chooser .ant-btn-link{
+  padding-left: 0;
+  .icon-user, .icon-user-del{
+    font-size: 24px;
+    color: #606266;
+    vertical-align: middle;
+  }
+  .icon-user{
+    color: @primary-color;;
+  }
+  &.user-del-btn{
+    color: #606266;
   }
 }
 </style>

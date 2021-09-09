@@ -263,5 +263,11 @@
   "monitor.dashboard.dialog.project.clone": "Clone Chart",
   "monitor.monitorresources": "Resources",
   "monitor.monitorresources.management": "Management Monitor Policy",
+  "monitor.alerts.shield.dismiss": "Dismiss",
+  "monitor.alerts.shield.shield": "Shield",
+  "monitor.alerts.shield.time": "Shield Duration",
+  "monitor.alerts.shield.timerange": "Shield Time",
+  "monitor.alerts.shield.reason": "Shield Reason",
+  "monitor.alerts.shield.tips": "The status is shield and the operation is not supported",
   "monitor.view_system": "System"
 }

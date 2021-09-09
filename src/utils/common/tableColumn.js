@@ -410,6 +410,30 @@ export const getTimeTableColumn = ({
   }
 }
 
+export const getTimeRangeColumn = ({
+  field = 'time_range',
+  start_field = 'start_time',
+  end_field = 'end_time',
+  title = i18n.t('table.title.create_time'),
+  sortable = false,
+} = {}) => {
+  return {
+    field,
+    start_field,
+    end_field,
+    title,
+    width: 160,
+    sortable,
+    slots: {
+      default: ({ row }, h) => {
+        const start = row[start_field] ? moment(row[start_field]).format() : '-'
+        const end = row[end_field] ? moment(row[end_field]).format() : '-'
+        return `${start} ~ ${end}`
+      },
+    },
+  }
+}
+
 export const getAccountTableColumn = ({
   field = 'account',
   title = i18n.t('res.cloudaccount'),
