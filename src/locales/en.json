@@ -4872,5 +4872,18 @@
   "license.group.private": "@:scope.text_76",
   "license.group.storage": "@:scope.text_77",
   "license.group.container": "@:scope.text_78",
-  "license.group.default": ""
+  "license.group.default": "",
+  "scope.auth.login": "Sign in",
+  "scope.auth.username.placeholder": "User",
+  "scope.auth.password.validate": "Please enter your password",
+  "scope.auth.password.placeholder": "Password",
+  "scope.auth.captcha.placeholder": "Code",
+  "scope.auth.captcha.validate": "Please enter the verification code",
+  "scope.login.desc1": "THE CLOUD CONTINUUM",
+  "scope.login.desc2": "Be ever–ready for every opportunity",
+  "scope.auth.chooser": "Select login ID",
+  "scope.auth.remove.history.user.btn": "Remove login ID",
+  "scope.auth.outher.history.user.btn": "Use Another login ID",
+  "scope.login.app.name": "Cloud Management Platform",
+  "scope.brand_private": "Built-in Private Cloud Platform"
 }

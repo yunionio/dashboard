@@ -4884,5 +4884,18 @@
   "license.group.private": "@:scope.text_76",
   "license.group.storage": "@:scope.text_77",
   "license.group.container": "@:scope.text_78",
-  "license.group.default": ""
+  "license.group.default": "",
+  "scope.auth.login": "用户登录",
+  "scope.auth.username.placeholder": "请输入用户名",
+  "scope.auth.password.validate": "请输入密码",
+  "scope.auth.password.placeholder": "请输入密码",
+  "scope.auth.captcha.placeholder": "验证码",
+  "scope.auth.captcha.validate": "请输入验证码",
+  "scope.login.desc1": "智能运营 智赢未来",
+  "scope.login.desc2": "启航智能新时代，驾驭变革，推动增长",
+  "scope.auth.chooser": "选择账号",
+  "scope.auth.remove.history.user.btn": "移除账号",
+  "scope.auth.outher.history.user.btn": "使用其他账号",
+  "scope.login.app.name": "云管理平台",
+  "scope.brand_private": "内置私有云平台"
 }
