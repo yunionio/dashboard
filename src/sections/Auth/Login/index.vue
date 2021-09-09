@@ -1,18 +1,21 @@
 <template>
-  <div class="login-index-wrap flex-fill d-flex h-100 align-items-center" v-loading.fullscreen="!regionsLoading">
-    <div class="login-index-left flex-fill pr-4">
-      <h2>{{ $t('login.desc1') }}</h2>
-      <h4>{{ $t('login.desc2') }}</h4>
-      <h6>{{ $t('login.desc3') }}</h6>
-    </div>
-    <div class="login-index-right d-flex flex-column shadow-lg bg-white rounded">
-      <!-- login form -->
-      <div class="flex-fill position-relative">
-        <div class="login-content-wrap h-100 w-100 overflow-hidden">
-          <h4 class="text-center">{{ title }}</h4>
-          <transition-page>
-            <router-view />
-          </transition-page>
+  <div class="d-flex h-100 w-100">
+    <div class="login-index-wrap d-flex" v-loading.fullscreen="!regionsLoading">
+      <div class="login-index-left d-flex flex-column justify-content-center" :style="{backgroundImage: loginBg}">
+        <div class="login-index-left-content">
+          <h2>{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('scope.login.desc1') }}</h2>
+          <h4>{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('scope.login.desc2') }}</h4>
+        </div>
+      </div>
+      <div class="login-index-right d-flex flex-column justify-content-center align-items-center bg-white">
+        <!-- login form -->
+        <div class="position-relative login-form">
+          <div class="login-content-wrap w-100 overflow-hidden">
+            <h4>{{ title }}</h4>
+            <transition-page>
+              <router-view />
+            </transition-page>
+          </div>
         </div>
       </div>
     </div>
@@ -23,6 +26,7 @@
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import { getLoginDomain } from '@/utils/common/cookie'
+import { getI18nVal } from '@/utils/i18n'
 
 export default {
   name: 'AccountIndex',
@@ -34,16 +38,17 @@ export default {
   },
   computed: {
     ...mapGetters(['auth', 'userInfo', 'loginLogo']),
-    ...mapState('auth', {
-      regions: state => state.regions,
-      loggedUsers: state => state.loggedUsers,
+    ...mapState({
+      regions: state => state.auth.regions,
+      loggedUsers: state => state.auth.loggedUsers,
+      companyInfo: state => state.app.companyInfo,
     }),
     title () {
       if (this.$route.name === 'Auth') {
-        return this.$t('auth.login')
+        return this.$t('scope.auth.login')
       }
       if (this.$route.name === 'LoginChooser') {
-        return this.$t('auth.chooser')
+        return this.$t('scope.auth.chooser')
       }
       return '-'
     },
@@ -58,6 +63,11 @@ export default {
     },
     hasLoginDomain () {
       return this.loginDomain.length > 0
+    },
+    loginBg () {
+      const bg_img = this.companyInfo.login_page_backgroup_image
+      if (!bg_img) return `url(${require('./assets/login-bg.png')})`
+      return `url(data:image/png;base64,${bg_img})`
     },
   },
   async created () {
@@ -154,44 +164,64 @@ export default {
       }
       return str
     },
+    getI18nVal,
   },
 }
 </script>
 
 <style lang="less">
 .login-index-wrap {
-  background-image: url('./assets/bg.png');
-  background-repeat: no-repeat;
-  background-position: center left;
-  background-color: #fff;
+  width: 100%;
 }
 .login-index-left {
+  flex-grow: 3;
+  background-image: url('./assets/bg.png');
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-color: #fff;
+  background-size: cover;
   h2 {
-    margin-bottom: 30px;
-    font-weight: 400;
-    font-size:34px;
+    font-size: 70px;
+    font-family: Source Han Sans CN;
+    font-weight: bold;
+    color: #fff;
   }
   h4 {
-    margin-bottom: 30px;
+    margin-top: 17px;
+    font-size: 26px;
+    font-family: Source Han Sans CN;
     font-weight: 400;
-    font-size:22px;
+    color: rgba(255, 255, 255, .8);
   }
   h6 {
     font-weight: 400;
-    color:rgb(102,102,102);
     font-size:16px;
+    color: #fff;
   }
 }
+.login-index-left-content {
+  margin-left: 145px;
+  margin-top: 160px;
+}
 .login-index-right {
+  flex-grow: 2;
+}
+.login-form {
   min-height: 420px;
-  min-width: 400px;
-  width: 400px;
+  width: 380px;
 }
 .login-content-wrap {
-  padding: 20px 60px 20px;
+  // padding: 20px 60px 20px;
+  padding-left: 10px;
   > h4 {
-    font-weight: 400;
-    margin-bottom: 40px;
+    margin-bottom: 38px;
+    height: 36px;
+    font-size: 36px;
+    font-family: 'Source Han Sans CN';
+    font-weight: bold;
+    line-height: 41px;
+    color: #000000;
+    opacity: 1;
   }
 }
 .fast-login-title {
