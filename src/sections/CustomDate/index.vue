@@ -3,7 +3,7 @@
     <template v-slot:icon><i /></template>
     <template v-slot:title>
       <a-alert v-if="diffHours < 1" class="mb-2" :message="$t('common_587')" type="error" show-icon />
-      <a-form-model hideRequiredMark ref="ruleForm" :model="formData" :rules="rules" v-bind="layout">
+      <a-form-model hideRequiredMark ref="ruleForm" :model="formData" :rules="rules" v-bind="layout" style="min-width: 300px;">
         <a-form-model-item :label="$t('common.text00119')" prop="startValue">
           <a-date-picker
             v-model="formData.startValue"
@@ -39,6 +39,11 @@ import moment from 'moment'
 export default {
   name: 'CustomDate',
   props: {
+    startTime: {
+      type: Object,
+      required: false,
+      default: () => { return null },
+    },
     endTime: {
       type: Object,
       default: () => moment(),
@@ -47,11 +52,15 @@ export default {
       type: Object,
       validator: val => val.from,
     },
+    allowFutureTime: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
       formData: {
-        startValue: null,
+        startValue: this.startTime,
         endValue: this.endTime,
       },
       visible: false,
@@ -106,6 +115,7 @@ export default {
         }
         if (valid) {
           this.$emit('update:time', 'custom')
+          this.$emit('click', 'custom')
           this.$emit('update:customTime', this.getCustomTime())
           this.visible = false
         } else {
@@ -119,16 +129,22 @@ export default {
     disabledStartDate (startValue) {
       const endValue = this.formData.endValue
       if (!startValue || !endValue) {
-        return startValue && (startValue > this.$moment().endOf('day'))
+        return this.disablefutureDate(startValue)
       }
-      return (startValue && (startValue > this.$moment().endOf('day'))) || (startValue.valueOf() > endValue.valueOf())
+      return this.disablefutureDate(startValue) || (startValue.valueOf() > endValue.valueOf())
+    },
+    disablefutureDate (v) {
+      if (this.allowFutureTime) {
+        return false
+      }
+      return v && (v > this.$moment().endOf('day'))
     },
     disabledEndDate (endValue) {
       const startValue = this.formData.startValue
       if (!endValue || !startValue) {
-        return endValue && (endValue > this.$moment().endOf('day'))
+        return this.disablefutureDate(endValue)
       }
-      return (endValue && (endValue > this.$moment().endOf('day'))) || (startValue.valueOf() >= endValue.valueOf())
+      return this.disablefutureDate(endValue) || (startValue.valueOf() >= endValue.valueOf())
     },
     handleStartOpenChange (open) {
       this.startOpen = open
