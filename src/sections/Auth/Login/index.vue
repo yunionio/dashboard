@@ -3,8 +3,8 @@
     <div class="login-index-wrap d-flex" v-loading.fullscreen="!regionsLoading">
       <div class="login-index-left d-flex flex-column justify-content-center" :style="{backgroundImage: loginBg}">
         <div class="login-index-left-content">
-          <h2>{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('scope.login.desc1') }}</h2>
-          <h4>{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('scope.login.desc2') }}</h4>
+          <h2>{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
+          <h4>{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
         </div>
       </div>
       <div class="login-index-right d-flex flex-column justify-content-center align-items-center bg-white">
@@ -66,7 +66,7 @@ export default {
     },
     loginBg () {
       const bg_img = this.companyInfo.login_page_backgroup_image
-      if (!bg_img) return `url(${require('./assets/login-bg.png')})`
+      if (!bg_img) return `url(${require('./assets/bg.png')})`
       return `url(data:image/png;base64,${bg_img})`
     },
   },
@@ -184,14 +184,14 @@ export default {
     font-size: 70px;
     font-family: Source Han Sans CN;
     font-weight: bold;
-    color: #fff;
+    color: #000;
   }
   h4 {
     margin-top: 17px;
     font-size: 26px;
     font-family: Source Han Sans CN;
     font-weight: 400;
-    color: rgba(255, 255, 255, .8);
+    color: rgba(0, 0, 0, .8);
   }
   h6 {
     font-weight: 400;
