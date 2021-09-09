@@ -2404,6 +2404,7 @@
     "monitorresourcealerts": "告警屏蔽",
     "monitor_commonalert": "告警",
     "monitor_metrics": "监控",
+    "monitorresources": "资源",
     "explorer": "监控查询",
     "instance_snapshot": "主机快照",
     "dbinstance": "RDS实例",

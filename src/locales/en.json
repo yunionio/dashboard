@@ -2392,6 +2392,7 @@
     "monitorresourcealerts": "Block Policies",
     "monitor_commonalert": "Alerts",
     "monitor_metrics": "Metrics",
+    "monitorresources": "Resources",
     "explorer": "Query",
     "instance_snapshot": "Server Snapshot",
     "dbinstance": "RDS Instances",

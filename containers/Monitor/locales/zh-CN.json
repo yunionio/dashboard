@@ -261,6 +261,8 @@
   "monitor.chart.toolbar.line": "切换为折线图",
   "monitor.chart.toolbar.bar": "切换为柱状图",
   "monitor.dashboard.dialog.project.clone": "克隆监控图表",
+  "monitor.monitorresources": "资源",
+  "monitor.monitorresources.management": "管理告警策略",
   "monitor.alerts.shield.dismiss": "解除",
   "monitor.alerts.shield.shield": "屏蔽",
   "monitor.alerts.shield.time": "屏蔽时长",
