@@ -39,6 +39,7 @@ export default {
         width: 120,
         slots: {
           default: ({ row }) => {
+            if (!row.brand) return '-'
             if (row.brand.toLowerCase() === 'qcloud') return i18n.t('db.text_349', [row.vcpu_count, sizestr(row.vmem_size_mb, 'M', 1024), row.disk_size_gb])
             if (row.brand.toLowerCase() === 'azure') {
               if (row.metadata && row.metadata['sys:DTU']) {
