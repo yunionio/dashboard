@@ -838,5 +838,6 @@
   "network.ssh-proxy-match.link.create": "关联网络",
   "network.lbcert.is_complete.true": "可用",
   "network.lbcert.is_complete.false": "部分可用",
+  "network.lb.default_backendgroup.tips": "阿里云默认服务器组暂不支持该操作",
   "network.snat.cidr": "网段"
 }

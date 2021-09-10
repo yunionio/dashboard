@@ -839,5 +839,6 @@
   "network.ssh-proxy-match.link.create": "Associate Network",
   "network.lbcert.is_complete.true": "Available",
   "network.lbcert.is_complete.false": "Partially Available",
+  "network.lb.default_backendgroup.tips": "Aliyun default backendgroup currently not support this operate",
   "network.snat.cidr": "Cidr Block"
 }

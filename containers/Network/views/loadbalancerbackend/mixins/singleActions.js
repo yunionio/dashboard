@@ -20,6 +20,12 @@ export default {
               tooltip: i18n.t('network.text_354'),
             }
           }
+          if (this.isAliyunDefaultBackendGroup) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.lb.default_backendgroup.tips'),
+            }
+          }
           if (provider.toLowerCase() === 'aws') {
             return {
               validate: false,
@@ -49,6 +55,12 @@ export default {
         },
         meta: obj => {
           const { provider } = obj
+          if (this.isAliyunDefaultBackendGroup) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.lb.default_backendgroup.tips'),
+            }
+          }
           if (provider.toLowerCase() === 'aws') {
             return {
               validate: false,
@@ -73,7 +85,15 @@ export default {
             onManager: this.onManager,
           })
         },
-        meta: obj => this.$getDeleteResult(obj),
+        meta: obj => {
+          if (this.isAliyunDefaultBackendGroup) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.lb.default_backendgroup.tips'),
+            }
+          }
+          return this.$getDeleteResult(obj)
+        },
       },
     ]
   },
