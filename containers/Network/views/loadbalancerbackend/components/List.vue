@@ -51,6 +51,13 @@ export default {
     }
   },
   computed: {
+    isAliyunDefaultBackendGroup () {
+      const provider = this.data && this.data.provider ? this.data.provider : ''
+      if (provider.toLowerCase() === 'aliyun' && this.data.type === 'default') {
+        return true
+      }
+      return false
+    },
     groupActions () {
       if (this.isListenerSidepage) { // 监听抽屉里面不能直接新建后端服务器
         return []
@@ -80,6 +87,7 @@ export default {
           },
           meta: () => {
             return {
+              validate: !this.isAliyunDefaultBackendGroup,
               buttonType: 'primary',
             }
           },

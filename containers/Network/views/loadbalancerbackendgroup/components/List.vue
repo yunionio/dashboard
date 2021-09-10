@@ -76,7 +76,18 @@ export default {
               onManager: this.onManager,
             })
           },
-          meta: () => this.$getDeleteResult(this.list.selectedItems),
+          meta: () => {
+            if (this.list.selectedItems.length > 0) {
+              const noAliyunDefaultBackendGroup = this.list.selectedItems.every((item) => !this.isAliyunDefaultBackendGroup(item))
+              if (!noAliyunDefaultBackendGroup) {
+                return {
+                  validate: false,
+                  tooltip: this.$t('network.lb.default_backendgroup.tips'),
+                }
+              }
+            }
+            this.$getDeleteResult(this.list.selectedItems)
+          },
         },
       ],
     }
@@ -85,6 +96,13 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    isAliyunDefaultBackendGroup (obj) {
+      const provider = obj && obj.provider ? obj.provider : ''
+      if (provider.toLowerCase() === 'aliyun' && obj.type === 'default') {
+        return true
+      }
+      return false
+    },
     getParam () {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
