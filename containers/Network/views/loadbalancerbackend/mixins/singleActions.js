@@ -16,6 +16,12 @@ export default {
         },
         meta: obj => {
           const { provider } = obj
+          if (this.isAliyunDefaultBackendGroup) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.lb.default_backendgroup.tips'),
+            }
+          }
           if (obj.provider.toLowerCase() === 'azure') {
             return {
               validate: false,
@@ -54,6 +60,12 @@ export default {
         },
         meta: obj => {
           const { provider } = obj
+          if (this.isAliyunDefaultBackendGroup) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.lb.default_backendgroup.tips'),
+            }
+          }
           if (provider.toLowerCase() === 'aws') {
             return {
               validate: false,
@@ -85,6 +97,12 @@ export default {
           })
         },
         meta: obj => {
+          if (this.isAliyunDefaultBackendGroup) {
+            return {
+              validate: false,
+              tooltip: i18n.t('network.lb.default_backendgroup.tips'),
+            }
+          }
           if (obj.provider.toLowerCase() === 'azure') {
             return {
               validate: false,

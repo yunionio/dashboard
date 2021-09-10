@@ -965,6 +965,7 @@
     "APPSYNC": "应用程序同步"
   },
   "network.lb.instance_number": "实例数量",
+  "network.lb.default_backendgroup.tips": "阿里云默认服务器组暂不支持该操作",
   "network.waf": "WAF策略",
   "network.waf.delete": "删除WAF策略",
   "network.cdn.area": "加速区域",
