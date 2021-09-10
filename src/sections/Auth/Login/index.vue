@@ -3,8 +3,8 @@
     <div class="login-index-wrap d-flex" v-loading.fullscreen="!regionsLoading">
       <div class="login-index-left d-flex flex-column justify-content-center" :style="{backgroundImage: loginBg}">
         <div class="login-index-left-content">
-          <h2>{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
-          <h4>{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
+          <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan') }">{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
+          <h4 :style="{ color: getI18nColorVal(companyInfo, 'login_page_sub_slogan') }">{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
         </div>
       </div>
       <div class="login-index-right d-flex flex-column justify-content-center align-items-center bg-white">
@@ -26,7 +26,7 @@
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import { getLoginDomain } from '@/utils/common/cookie'
-import { getI18nVal } from '@/utils/i18n'
+import { getI18nVal, getI18nColorVal } from '@/utils/i18n'
 
 export default {
   name: 'AccountIndex',
@@ -165,6 +165,7 @@ export default {
       return str
     },
     getI18nVal,
+    getI18nColorVal,
   },
 }
 </script>
