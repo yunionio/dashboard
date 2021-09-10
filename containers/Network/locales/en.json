@@ -966,6 +966,7 @@
     "APPSYNC": "APPSYNC"
   },
   "network.lb.instance_number": "Instance Number",
+  "network.lb.default_backendgroup.tips": "Aliyun default backendgroup currently not support this operate",
   "network.waf": "WAF strategy",
   "network.waf.delete": "Delete WAF strategy",
   "network.cdn.area": "Area",
