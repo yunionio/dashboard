@@ -9,6 +9,8 @@
     <area-selects
       v-bind="areaParams"
       @providerFetchSuccess="providerFetchSuccess"
+      @cloudregionFetchSuccess="cloudregionFetchSuccess"
+      @zoneFetchSuccess="zoneFetchSuccess"
       class="mb-0" />
     <a-form-item :label="$t('network.text_268')" v-if="isAliyun">
       <base-select
@@ -132,11 +134,31 @@ export default {
       return (<div>{ item.name }</div>)
     },
     providerFetchSuccess (list) {
-      const showProvider = ['Aliyun', 'Aws', 'Qcloud', 'Huawei', 'Qcloud']
+      const showProvider = ['Aliyun', 'Aws', 'Qcloud', 'Huawei']
       if (list && list.length > 0) {
         return list.filter(item => {
           const { name } = item
           return showProvider.indexOf(name) > -1
+        })
+      }
+      return list
+    },
+    cloudregionFetchSuccess (list) {
+      const showProvider = ['Aliyun', 'Aws', 'Qcloud', 'Huawei']
+      if (list && list.length > 0) {
+        return list.filter(item => {
+          const { provider } = item
+          return showProvider.indexOf(provider) > -1
+        })
+      }
+      return list
+    },
+    zoneFetchSuccess (list) {
+      const showProvider = ['Aliyun', 'Aws', 'Qcloud', 'Huawei']
+      if (list && list.length > 0) {
+        return list.filter(item => {
+          const { provider } = item
+          return showProvider.indexOf(provider) > -1
         })
       }
       return list
