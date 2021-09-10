@@ -24,7 +24,12 @@ export default {
               tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
             }
           }
-
+          if (this.isAliyunDefaultBackendGroup(obj)) {
+            return {
+              validate: false,
+              tooltip: this.$t('network.lb.default_backendgroup.tips'),
+            }
+          }
           if (!obj.can_delete) {
             return {
               validate: false,
