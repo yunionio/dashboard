@@ -207,7 +207,7 @@ export default {
                 if (!supportShpolcyBrand.includes(obj.brand)) {
                   const newSupportShpolcyBrand = supportShpolcyBrand.map(v => {
                     if (v === 'OneCloud') {
-                      return i18n.t('common.yunion_cloud')
+                      return i18n.t('brand')
                     }
                     return v
                   })
