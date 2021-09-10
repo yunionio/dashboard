@@ -14,3 +14,10 @@ export const getI18nVal = (source = {}, key, i18nKey = '_en') => {
   }
   return source[key]
 }
+
+export const getI18nColorVal = (source = {}, key, i18nKey = '_en') => {
+  if (getLanguage() === 'en') {
+    return source[`${key}${i18nKey}_color`]
+  }
+  return source[`${key}_color`]
+}
