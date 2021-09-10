@@ -507,6 +507,10 @@ export default {
           })
         }
       }
+      // 过滤京东云和移动云等只读的云
+      list = list.filter(item => {
+        return ![HYPERVISORS_MAP.jdcloud.key, HYPERVISORS_MAP.ecloud.key].includes(item.name.toLowerCase())
+      })
       this.$set(this.form.fi, 'providerList', list)
       return list
     },
