@@ -1,5 +1,5 @@
 <template>
-  <div id="loginChallenge">
+  <div>
     <div v-if="showUsernameInput && loginDomain" class="login-domain-title d-flex justify-content-center align-items-center">
       <div class="selected-user-wrap d-flex justify-content-center flex-wrap p-1 align-items-center">
         <div class="selected-user-name">{{ $t('auth.current.domain') }}: {{ loginDomain }}</div>
@@ -33,14 +33,14 @@
       <template v-if="showUsernameInput">
         <a-form-model-item prop="username">
           <a-input v-model="fd.username" :placeholder="placeholderOpts.username">
-            <icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25); font-size: 24px;" />
+            <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
           </a-input>
         </a-form-model-item>
       </template>
       <!-- 密码 -->
       <a-form-model-item prop="password">
         <a-input-password v-model="fd.password" :placeholder="placeholderOpts.password">
-          <icon slot="prefix" type="password" style="color: rgba(0, 0, 0, .25); font-size: 24px;" />
+          <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
       </a-form-model-item>
       <!-- 域 -->
@@ -69,7 +69,7 @@
       <template v-if="showCaptchaInput">
         <a-form-model-item prop="captcha" class="captcha-form-item">
           <a-input v-model="fd.captcha" :placeholder="placeholderOpts.captcha">
-            <icon slot="prefix" type="code" style="color: rgba(0, 0, 0, .25); font-size: 24px;" />
+            <a-icon slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, .25)" />
             <template #suffix>
               <div class="captcha-suffix d-flex align-items-center justify-content-end">
                 <a-icon v-show="captchaLoading" slot="suffix" type="loading" style="color: rgba(0, 0, 0, .25)" />
@@ -81,18 +81,15 @@
       </template>
       <!-- 确定按钮 -->
       <a-form-model-item class="mb-0">
-        <div class="d-flex justify-content-between">
-          <a-button type="primary" size="large" shape="round" style="margin-right: 84px;" html-type="submit" :loading="submiting" block>{{ $t('auth.login.submit') }}</a-button>
-          <a-button type="link" size="large" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf, domain: $route.query.domain } })">{{ $t('scope.auth.chooser') }}</a-button>
-        </div>
+        <a-button type="primary" html-type="submit" :loading="submiting" block>{{ $t('auth.login.submit') }}</a-button>
       </a-form-model-item>
       <!-- 额外操作 -->
       <a-form-model-item class="mb-0">
         <div class="d-flex justify-content-between login-link">
           <div class="flex-shrink-1 flex-grow-1 text-left">
-            <!-- <template v-if="hasLoggedUsers">
+            <template v-if="hasLoggedUsers">
               <a class="week-link-button" @click="$router.replace({ path: '/auth/login/chooser', query: { rf: $route.query.rf, domain: $route.query.domain } })">{{ $t('auth.chooser') }}</a>
-            </template> -->
+            </template>
           </div>
           <div class="flex-shrink-1 flex-grow-1 text-right">
             <template v-if="showDomainChooser && showUsernameInput && !loginDomain">
@@ -145,7 +142,6 @@ import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
 // import { removeQueryKeys } from '@/utils/utils'
 import EditForm from '@/components/Edit/Form'
 import { setSsoIdpIdInCookie, removeSsoIdpIdInCookie } from '@/utils/auth'
-
 export default {
   name: 'LoginChallenge',
   components: {
@@ -166,9 +162,9 @@ export default {
   data () {
     return {
       placeholderOpts: {
-        username: this.$t('scope.auth.username.placeholder'),
-        password: this.$t('scope.auth.password.placeholder'),
-        captcha: this.$t('scope.auth.captcha.placeholder'),
+        username: this.$t('auth.username.placeholder'),
+        password: this.$t('auth.password.placeholder'),
+        captcha: this.$t('auth.captcha.placeholder'),
         domain: this.$t('auth.domain.placeholder'),
         region: this.$t('auth.region.placeholder'),
         ...this.placeholder,
@@ -346,7 +342,7 @@ export default {
     getIcon (idp) {
       const { template, driver } = idp
       const key = (template || driver).toLocaleLowerCase()
-      return require(`@/assets/images/idp-icons/round/${key}.png`)
+      return require(`../../../../assets/images/idp-icons/round/${key}.png`)
     },
     handleClickIdp (idpItem) {
       if (this.loginDomain && this.showDomainChooser) {
@@ -375,8 +371,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '~@/styles/less/theme';
-
 .captcha-suffix {
   height: 28px;
   width: 98px;
@@ -423,7 +417,7 @@ export default {
   text-align: center;
   line-height: 22px;
   border-radius: 50%;
-  background-color: @primary-color;
+  background-color: #1890ff;
   font-size: 12px;
 }
 .login-domain-title {
@@ -436,23 +430,5 @@ export default {
 }
 .login-link {
   line-height: 23px;
-}
-
-#loginChallenge ::v-deep {
-  .ant-input {
-    padding-left: 40px;
-    border-top: 0;
-    border-right: 0;
-    border-left: 0;
-    font-size: 18px;
-    font-weight: 300;
-    &:focus{
-      outline: 0 !important;
-      box-shadow: none;
-    }
-  }
-  .ant-input-affix-wrapper .ant-input-prefix {
-    left: 0;
-  }
 }
 </style>
