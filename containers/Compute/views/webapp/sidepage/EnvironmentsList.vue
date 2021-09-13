@@ -50,7 +50,7 @@ export default {
           title: this.$t('compute.webapp.env'),
           slotCallback: row => {
             return (
-              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+              <span>{ row.name }</span>
             )
           },
         }),
