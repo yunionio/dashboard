@@ -100,7 +100,7 @@ export default {
                 label: this.$t('common_277'),
                 action: (row) => {
                   this.createDialog('ChangeDisableDelete', {
-                    name: this.$t('compute.text_97'),
+                    name: this.$t('dictionary.mongodb'),
                     columns: this.columns,
                     onManager: this.onManager,
                     data: this.list.selectedItems,
