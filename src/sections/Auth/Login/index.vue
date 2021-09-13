@@ -1,21 +1,17 @@
 <template>
-  <div class="d-flex h-100 w-100">
-    <div class="login-index-wrap d-flex" v-loading.fullscreen="!regionsLoading">
-      <div class="login-index-left d-flex flex-column justify-content-center" :style="{backgroundImage: loginBg}">
-        <div class="login-index-left-content">
-          <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan') }">{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
-          <h4 :style="{ color: getI18nColorVal(companyInfo, 'login_page_sub_slogan') }">{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
-        </div>
-      </div>
-      <div class="login-index-right d-flex flex-column justify-content-center align-items-center bg-white">
-        <!-- login form -->
-        <div class="position-relative login-form">
-          <div class="login-content-wrap w-100 overflow-hidden">
-            <h4>{{ title }}</h4>
-            <transition-page>
-              <router-view />
-            </transition-page>
-          </div>
+  <div class="login-index-wrap flex-fill d-flex h-100 align-items-center" :style="{backgroundImage: loginBg}" v-loading.fullscreen="!regionsLoading">
+    <div class="login-index-left flex-fill pr-4">
+      <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan') }">{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
+      <h4 :style="{ color: getI18nColorVal(companyInfo, 'login_page_sub_slogan') }">{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
+    </div>
+    <div class="login-index-right d-flex flex-column shadow-lg bg-white rounded">
+      <!-- login form -->
+      <div class="flex-fill position-relative">
+        <div class="login-content-wrap h-100 w-100 overflow-hidden">
+          <h4 class="text-center">{{ title }}</h4>
+          <transition-page>
+            <router-view />
+          </transition-page>
         </div>
       </div>
     </div>
@@ -45,10 +41,10 @@ export default {
     }),
     title () {
       if (this.$route.name === 'Auth') {
-        return this.$t('scope.auth.login')
+        return this.$t('auth.login')
       }
       if (this.$route.name === 'LoginChooser') {
-        return this.$t('scope.auth.chooser')
+        return this.$t('auth.chooser')
       }
       return '-'
     },
@@ -172,57 +168,38 @@ export default {
 
 <style lang="less">
 .login-index-wrap {
-  width: 100%;
-}
-.login-index-left {
-  flex-grow: 3;
   background-image: url('./assets/bg.png');
   background-repeat: no-repeat;
-  background-position: right top;
+  background-position: center left;
   background-color: #fff;
-  background-size: cover;
+}
+.login-index-left {
   h2 {
-    font-size: 70px;
-    font-family: Source Han Sans CN;
-    font-weight: bold;
-    color: #000;
+    margin-bottom: 30px;
+    font-weight: 400;
+    font-size:34px;
   }
   h4 {
-    margin-top: 17px;
-    font-size: 26px;
-    font-family: Source Han Sans CN;
+    margin-bottom: 30px;
     font-weight: 400;
-    color: rgba(0, 0, 0, .8);
+    font-size:22px;
   }
   h6 {
     font-weight: 400;
+    color:rgb(102,102,102);
     font-size:16px;
-    color: #fff;
   }
 }
-.login-index-left-content {
-  margin-left: 145px;
-  margin-top: 160px;
-}
 .login-index-right {
-  flex-grow: 2;
-}
-.login-form {
   min-height: 420px;
-  width: 380px;
+  min-width: 400px;
+  width: 400px;
 }
 .login-content-wrap {
-  // padding: 20px 60px 20px;
-  padding-left: 10px;
+  padding: 20px 60px 20px;
   > h4 {
-    margin-bottom: 38px;
-    height: 36px;
-    font-size: 36px;
-    font-family: 'Source Han Sans CN';
-    font-weight: bold;
-    line-height: 41px;
-    color: #000000;
-    opacity: 1;
+    font-weight: 400;
+    margin-bottom: 40px;
   }
 }
 .fast-login-title {
