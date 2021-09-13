@@ -82,7 +82,7 @@ export default {
         referer_type: [
           'referer_type',
           {
-            initialValue: this.params.data[0].referer?.referer_type || '',
+            initialValue: this.params.data[0].referer?.referer_type || 'White-List',
           },
         ],
         domain_list: [
