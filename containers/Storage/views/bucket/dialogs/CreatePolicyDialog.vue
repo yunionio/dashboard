@@ -21,7 +21,12 @@
             </a-col>
             <a-col :span="12">
               <a-form-item class="mb-0">
-                <a-input v-decorator="decorators.PrincipalId" v-if="isRoot" />
+                <a-input v-if="isRoot" v-decorator="[
+                  'PrincipalId',
+                  {
+                    rules: [{ required: true, message: $t('storage.text_243_1') }, { validator: this.validateRootId }]
+                  },
+                ]" :placeholder="$t('storage.text_243_1')" />
                 <base-select
                   v-else
                   v-decorator="decorators.PrincipalId"
@@ -202,6 +207,17 @@ export default {
         this.params.refresh()
       } catch (error) {
         this.loading = false
+      }
+    },
+    validateRootId (rule, value, callback) {
+      if (!value) {
+        callback()
+        return
+      }
+      if (/^[0-9]*$/.test(value)) {
+        callback()
+      } else {
+        callback(new Error(this.$t('storage.number_validate')))
       }
     },
   },
