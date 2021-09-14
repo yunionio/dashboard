@@ -148,11 +148,12 @@ export default {
           title: this.$t('storage.text_261'),
           slots: {
             default: ({ row }) => {
-              const principal_id = row.principal_id || []
+              const { principal_id = [], principal_names = {} } = row
               return principal_id.map(item => {
                 const item_arr = item.split(':')
+                const item_name = principal_names[item] || ''
                 return (<list-body-cell-wrap hideField copy title={ item_arr[1] } message={ item_arr[1] }>
-                  <span>{ item_arr[1] }</span>
+                  <span>{ item_arr[1] }{ item_name ? `(${item_name})` : ''}</span>
                 </list-body-cell-wrap>)
               })
             },
