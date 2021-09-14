@@ -1,8 +1,10 @@
 <template>
-  <div class="login-index-wrap flex-fill d-flex h-100 align-items-center" :style="{backgroundImage: loginBg}" v-loading.fullscreen="!regionsLoading">
-    <div class="login-index-left flex-fill pr-4">
-      <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan') }">{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
-      <h4 :style="{ color: getI18nColorVal(companyInfo, 'login_page_sub_slogan') }">{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
+  <div class="login-index-wrap flex-fill d-flex h-100 align-items-center" v-loading.fullscreen="!regionsLoading">
+    <div class="login-index-left d-flex flex-fill align-items-center pr-4" :style="{backgroundImage: loginBg}">
+      <div>
+        <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan') }">{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
+        <h4 :style="{ color: getI18nColorVal(companyInfo, 'login_page_sub_slogan') }">{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
+      </div>
     </div>
     <div class="login-index-right d-flex flex-column shadow-lg bg-white rounded">
       <!-- login form -->
@@ -167,11 +169,13 @@ export default {
 </script>
 
 <style lang="less">
-.login-index-wrap {
-  background-image: url('./assets/bg.png');
+.login-index-left {
+  height: 420px;
+  // background-image: url('./assets/bg.png');
   background-repeat: no-repeat;
   background-position: center left;
   background-color: #fff;
+  background-size: cover;
 }
 .login-index-left {
   h2 {
