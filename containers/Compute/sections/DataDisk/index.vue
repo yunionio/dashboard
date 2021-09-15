@@ -337,7 +337,7 @@ export default {
     add ({ size, diskType, policy, schedtag, snapshot, filetype, mountPath, min, disabled = false, sizeDisabled = false, medium, ...ret } = {}) {
       const key = uuid()
       let newDiskType = diskType
-      if ((this.getHypervisor() === HYPERVISORS_MAP.kvm.key || this.getHypervisor() === HYPERVISORS_MAP.cloudpods.key) && diskType === 'local' && medium) {
+      if ((this.getHypervisor() === HYPERVISORS_MAP.kvm.key || this.getHypervisor() === HYPERVISORS_MAP.cloudpods.key) && diskType === 'local' && medium && this.isSomeLocal(Object.keys(this.typesMap))) {
         newDiskType = `${diskType}-${medium}`
       }
       const typeObj = this.typesMap[newDiskType]
