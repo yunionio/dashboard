@@ -626,6 +626,9 @@ export default {
       }
       return types
     },
+    needLocalMedium () {
+      return (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor)
+    },
   },
   created () {
     this.serversManager = new Manager('servers', 'v2')
@@ -896,7 +899,7 @@ export default {
           if (values.dataDiskTypes[key]) {
             // 针对kvm-local盘特殊处理
             let diskKey = values.dataDiskTypes[key].key
-            if (diskKey.indexOf('local') !== -1 && (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor)) {
+            if (diskKey.indexOf('local') !== -1 && this.needLocalMedium) {
               diskKey = diskKey.split('-')[0]
             }
             diskObj.backend = diskKey
@@ -904,7 +907,7 @@ export default {
             if (_.get(dataDisks, '[0].diskType.key')) {
               // 针对kvm-local盘特殊处理
               let diskKey = _.get(dataDisks, '[0].diskType.key') // 默认添加的盘和第一块保持一致
-              if (diskKey.indexOf('local') !== -1 && (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor)) {
+              if (diskKey.indexOf('local') !== -1 && this.needLocalMedium) {
                 diskKey = diskKey.split('-')[0]
               }
               diskObj.backend = diskKey
@@ -930,7 +933,7 @@ export default {
         }
         // 磁盘介质
         const { key: dataDiskKey = '' } = values.dataDiskTypes[key] || {}
-        if (dataDiskKey.split('-')[1]) {
+        if (this.needLocalMedium && dataDiskKey.split('-')[1]) {
           diskObj.medium = dataDiskKey.split('-')[1]
         }
         dataDisk.push(diskObj)
