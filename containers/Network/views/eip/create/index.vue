@@ -250,7 +250,9 @@ export default {
         scope: this.$store.getters.scope,
         usable: true,
       }
-      params.project_domain_id = this.domain_id
+      if (this.isAdminMode) {
+        params.project_domain_id = this.domain_id
+      }
       if (!R.isEmpty(this.selectedRegionItem)) {
         params.cloudregion_id = this.selectedRegionItem.id
       }
@@ -366,10 +368,15 @@ export default {
       return false
     },
     cloudProviderParams () {
-      return {
+      const param = {
         scope: this.scope,
         cloudEnv: this.cloudEnv,
       }
+      if (this.isAdminMode) {
+        param.project_domain_id = this.domain_id
+        delete param.scope
+      }
+      return param
     },
     bgpTypeParams () {
       return {
