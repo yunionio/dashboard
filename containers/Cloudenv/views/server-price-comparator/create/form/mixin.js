@@ -417,6 +417,7 @@ export default {
         defaultMem = memOpts[0]
       }
       this.form.fc.setFieldsValue({
+        vcpu: cpu,
         vmem: defaultMem,
       })
     },
