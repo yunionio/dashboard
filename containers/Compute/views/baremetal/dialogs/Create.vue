@@ -261,6 +261,32 @@ export default {
             step: 2,
           },
         ],
+        AACRaid: [
+          {
+            value: 'none',
+            label: this.$t('compute.text_325'),
+            min: 1,
+            step: 1,
+          },
+          {
+            value: 'raid0',
+            label: 'Raid0',
+            min: 2,
+            step: 1,
+          },
+          {
+            value: 'raid1',
+            label: 'Raid1',
+            min: 2,
+            step: 2,
+          },
+          {
+            value: 'raid10',
+            label: 'Raid10',
+            min: 4,
+            step: 2,
+          },
+        ],
       },
       disksOptions: [],
       maxcount: 0,
