@@ -9,7 +9,7 @@
         </a-row>
         <a-row>
           <a-col :span="16">
-            <div class="oc-selected-display-none text-color-secondary" v-if="showExternalId && item.external_id">{{ $t('compute.text_1346') }}: {{ item.external_id }}</div>
+            <div class="oc-selected-display-none text-color-secondary over-hidden" v-if="showExternalId && item.external_id">{{ $t('compute.text_1346') }}: {{ item.external_id }}</div>
           </a-col>
           <a-col :span="8" align="right">
             <div class="oc-selected-display-none text-color-secondary" style="text-align: right;">
@@ -93,3 +93,12 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.over-hidden{
+  margin-right: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>
