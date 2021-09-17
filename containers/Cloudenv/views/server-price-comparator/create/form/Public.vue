@@ -137,7 +137,7 @@ export default {
         cloud_env: 'public',
         usable: true,
         show_emulated: true,
-        ...this.scopeParams,
+        scope: this.$store.getters.scope,
       }
     },
     zoneParams () {
@@ -147,7 +147,7 @@ export default {
         show_emulated: true,
         order_by: 'created_at',
         order: 'asc',
-        ...this.scopeParams,
+        scope: this.$store.getters.scope,
       }
     },
     cacheImageParams () {
@@ -188,6 +188,9 @@ export default {
         usable: true,
         enabled: true,
         ...this.scopeParams,
+      }
+      if (this.$store.getters.isAdminMode) {
+        delete params.project_domain
       }
       if (this.form.fd.cloudregion) params.cloudregion = this.form.fd.cloudregion
       if (this.form.fd.zone) params.zone_id = this.form.fd.zone
