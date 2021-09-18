@@ -137,8 +137,8 @@ export default {
               const principal_id = row.principal_id || []
               return principal_id.map(item => {
                 const item_arr = item.split(':')
-                if (item_arr[0] === item_arr[1]) return (<div>根账号</div>)
-                return (<div>子账号</div>)
+                if (item_arr[0] === item_arr[1]) return (<div>{this.$t('storage.text_241')}</div>)
+                return (<div>{this.$t('storage.text_242')}</div>)
               })
             },
           },
