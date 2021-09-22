@@ -13,6 +13,7 @@
 <script>
 import commonChartProps from './common'
 import numerify from './formatters'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'OverviewHistogram',
@@ -101,6 +102,9 @@ export default {
   },
   methods: {
     valueFormatter (value) {
+      if (this.yAxisFormat === '0.00 b') {
+        return sizestr(value, 'B', 1024)
+      }
       return numerify(value, this.yAxisFormat)
     },
     labelFormatter (params) {
