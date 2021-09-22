@@ -50,8 +50,16 @@ export default {
       R.forEachObjIndexed((value, key) => {
         const time = storageTopAlert[key]
         if (!time || this.$moment().valueOf() > time) {
-          const message = this.renderMessage(key, value)
-          items.push(message)
+          if (key === 'apiServer') {
+            const url = value.messageOptions[1][2]
+            if (url !== location.origin) {
+              const message = this.renderMessage(key, value)
+              items.push(message)
+            }
+          } else {
+            const message = this.renderMessage(key, value)
+            items.push(message)
+          }
         }
       }, this.topAlert)
       return this.$createElement('div', { class: 'top-alert' }, items)
