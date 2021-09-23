@@ -53,8 +53,18 @@ export default {
       })
   },
   methods: {
-    doUpdate (data) {
+    async doUpdate (data) {
       const guestId = this.params.data[0] && this.params.data[0].guests[0] && this.params.data[0].guests[0].id
+      const diskId = this.params.data[0] && this.params.data[0].id
+      // 删除前先先将auto_delete改为true
+      if (data.keep_disk) {
+        await new this.$Manager('disks').update({
+          id: diskId,
+          data: {
+            auto_delete: true,
+          },
+        })
+      }
       return new this.$Manager('servers').performAction({
         action: 'detachdisk',
         id: guestId,
