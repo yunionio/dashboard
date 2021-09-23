@@ -2,73 +2,29 @@
   <div>
     <a-alert :showIcon="false" :message="$t('cloudenv.text_194')" banner />
     <a-form class="pt-3" :form="form.fc" v-bind="formLayout">
-      <template v-if="isAzure">
-        <a-form-item :label="$t('cloudenv.text_195')">
-          <a-input v-decorator="decorators.enrollment_number" />
-          <span slot="extra">
-            <template v-if="isAzure">
-              {{$t('cloudenv.text_572')}} <help-link :href="enrollmentNumberUrl">{{$t('cloudenv.text_197')}}</help-link>
-            </template>
-            <template v-else>
-              {{$t('cloudenv.text_196')}} <help-link :href="enrollmentNumberUrl">{{$t('cloudenv.text_197')}}</help-link>
-            </template>
-          </span>
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_198')">
-          <a-input v-decorator="decorators.balance_key" type="textarea" rows="4" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.billing_scope')">
-          <a-radio-group v-decorator="decorators.billing_scope">
-            <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
-            <a-radio-button value="all" key="all">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
-          </a-radio-group>
-          <div slot="extra">
-            <div>{{$t('cloudenv.billing_scope.extra')}}</div>
-            <div>{{$t('cloudenv.billing_scope.extra_note')}}</div>
-          </div>
-        </a-form-item>
-      </template>
-      <template v-if="useBillingBucket">
-        <a-divider orientation="left">{{$t('cloudenv.text_199')}}</a-divider>
-        <a-form-item :label="$t('cloudenv.text_200')">
-          <a-radio-group v-model="billingType">
-            <a-radio-button :value="1">{{$t('cloudenv.text_201')}}</a-radio-button>
-            <a-radio-button v-if="!isHuawei" :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_201')" v-if="billingType === 2" :extra="$t('cloudenv.text_203')">
-          <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bucket_account">
+      <a-divider orientation="left">{{$t('cloudenv.text_199')}}</a-divider>
+      <a-form-item :label="$t('cloudenv.text_200')">
+        <a-radio-group v-model="billingType">
+          <a-radio-button :value="1">{{$t('cloudenv.text_201')}}</a-radio-button>
+          <a-radio-button :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
+        </a-radio-group>
+      </a-form-item>
+      <a-form-item :label="$t('cloudenv.text_201')" v-if="billingType === 2" :extra="$t('cloudenv.text_203')">
+        <a-select :filterOption="filterOption" showSearch :loading="cloudAccountLoading" v-decorator="decorators.billing_bigquery_account">
           <template v-for="item in cloudAccounts">
             <a-select-option  v-if="id !== item.id" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
           </template>
-          </a-select>
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.text_204')">
-          <a-input v-decorator="decorators.billing_report_bucket" />
-          <span slot="extra" v-if="bucketUrl">
-            <!-- 请正确输入账单文件所在存储桶的URL，例如：https://bucket-name.oss-cn-beijing.aliyuncs.com <br /> -->{{$t('cloudenv.text_196')}}<help-link :href="bucketUrl">{{$t('cloudenv.text_205')}}</help-link>
-          </span>
-        </a-form-item>
-        <a-form-item v-if="!isHuawei" :label="$t('cloudenv.text_206')" :extra="$t('cloudenv.text_207')">
-          <a-input v-decorator="decorators.billing_file_prefix" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.billing_scope')" :extra="$t('cloudenv.billing_scope.extra')" v-if="billingType === 1">
-          <a-radio-group v-decorator="decorators.billing_scope">
-            <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
-            <a-radio-button value="all" key="all" :disabled="!isAws">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
-          </a-radio-group>
-        </a-form-item>
-        <!-- google -->
-        <template v-if="isGoogle">
-          <a-divider class="mt-5" orientation="left">{{$t('cloudenv.text_208')}}</a-divider>
-          <a-form-item :label="$t('cloudenv.text_204')" :extra="$t('cloudenv.text_209')">
-            <a-input v-decorator="decorators.usage_report_bucket" />
-          </a-form-item>
-          <a-form-item :label="$t('cloudenv.text_206')" :extra="$t('cloudenv.text_207')">
-            <a-input v-decorator="decorators.usage_file_prefix" />
-          </a-form-item>
-        </template>
-      </template>
+        </a-select>
+      </a-form-item>
+      <a-form-item :label="$t('cloudenv.text_204')">
+        <a-input v-decorator="decorators.billing_bigquery_table" />
+      </a-form-item>
+      <a-form-item :label="$t('cloudenv.billing_scope')">
+        <a-radio-group v-decorator="decorators.billing_scope">
+          <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
+<!--          <a-radio-button value="all" key="all">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>-->
+        </a-radio-group>
+      </a-form-item>
       <a-form-item :label="$t('cloudenv.text_210')"  :extra="$t('cloudenv.text_211')">
         <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
@@ -86,13 +42,13 @@
     </a-form>
   </div>
 </template>
+
 <script>
-import { keySecretFields, getBillBucketUrlDocs, getEnrollmentNumberDocs } from '../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'BillConfig',
+  name: 'BigQueryBillForm',
   mixins: [DialogMixin, WindowsMixin],
   props: {
     account: {
@@ -147,69 +103,22 @@ export default {
     isGoogle () {
       return this.provider === 'Google'
     },
-    isHuawei () {
-      return this.provider === 'Huawei'
-    },
-    isAzure () {
-      return this.provider === 'Azure'
-    },
-    isQcloud () {
-      return this.provider === 'Qcloud'
-    },
-    isAws () {
-      return this.provider === 'Aws'
-    },
-    useBillingBucket () {
-      return this.provider === 'Aliyun' || this.provider === 'Aws' || this.provider === 'Huawei' || this.provider === 'Google'
-    },
-    brandCn () {
-      const { brand } = this.cloudAccount
-      return brand ? keySecretFields[brand.toLowerCase()].text : ''
-    },
-    bucketUrl () {
-      const { brand } = this.cloudAccount
-      return brand ? getBillBucketUrlDocs(this.$store.getters.scope)[brand.toLowerCase()] : ''
-    },
-    enrollmentNumberUrl () {
-      return getEnrollmentNumberDocs(this.$store.getters.scope)
-    },
     decorators () {
       const { options = {} } = this.cloudAccount
       return {
-        billing_bucket_account: [
-          'billing_bucket_account',
+        billing_bigquery_account: [
+          'billing_bigquery_account',
           {
-            initialValue: options.billing_bucket_account,
+            initialValue: options.billing_bigquery_account,
           },
         ],
-        billing_report_bucket: [
-          'billing_report_bucket',
+        billing_bigquery_table: [
+          'billing_bigquery_table',
           {
-            initialValue: options.billing_report_bucket,
+            initialValue: options.billing_bigquery_table,
             rules: [
               { required: true, message: this.$t('cloudenv.text_220') },
             ],
-          },
-        ],
-        billing_file_prefix: [
-          'billing_file_prefix',
-          {
-            initialValue: options.billing_file_prefix,
-          },
-        ],
-        usage_report_bucket: [
-          'usage_report_bucket',
-          {
-            initialValue: options.usage_report_bucket,
-            rules: [
-              // { required: true, message: '请输入存储桶URL' },
-            ],
-          },
-        ],
-        usage_file_prefix: [
-          'usage_file_prefix',
-          {
-            initialValue: options.usage_file_prefix,
           },
         ],
         sync_info: [
@@ -217,24 +126,6 @@ export default {
           {
             initialValue: false,
             valuePropName: 'checked',
-          },
-        ],
-        enrollment_number: [
-          'enrollment_number',
-          {
-            initialValue: options.enrollment_number,
-            rules: [
-              { required: true, message: this.$t('cloudenv.text_221') },
-            ],
-          },
-        ],
-        balance_key: [
-          'balance_key',
-          {
-            initialValue: options.balance_key,
-            rules: [
-              { required: true, message: this.$t('cloudenv.text_222') },
-            ],
           },
         ],
         billtask: ['billtask', {
@@ -316,11 +207,6 @@ export default {
           cloudaccount_id: id,
           action: 'override',
         }
-        // const [num, format] = billtask.split(' ')
-        // const endDayMoment = this.$moment().subtract(1, 'd')
-        // const startDayMoment = this.$moment().subtract(num, format)
-        // data.end_day = endDayMoment.format('YYYYMMDD')
-        // data.start_day = startDayMoment.format('YYYYMMDD')
         data.end_day = billtask[1].format('YYYYMMDD')
         data.start_day = billtask[0].format('YYYYMMDD')
         await manager.create({
@@ -346,7 +232,7 @@ export default {
         }
         if (this.billingType === 1) {
           params.data = {
-            remove_options: ['billing_bucket_account', 'billing_bigquery_table'],
+            remove_options: ['billing_bucket_account'],
             ...params.data,
           }
         }
@@ -363,7 +249,7 @@ export default {
       values.cloudaccount_id = this.id
       delete values.sync_info
       delete values.billtask
-      const res = await new this.$Manager('bucket_options', 'v1').performClassAction({
+      const res = await new this.$Manager('bigquery_options', 'v1').performClassAction({
         action: 'verify',
         data: values,
       })
@@ -387,3 +273,7 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+
+</style>
