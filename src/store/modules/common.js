@@ -54,7 +54,14 @@ export default {
       }
       if (state.bill.costConversionOrigin) {
         payload.map(item => {
-          if (item.item_id.indexOf('BRL') === -1) {
+          if ((process.env.BRAND?.en || '').toLowerCase() === 'acpc') {
+            if (item.item_id.indexOf('BRL') === -1) {
+              currencyOpts.push({
+                item_id: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_id,
+                item_name: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_name,
+              })
+            }
+          } else {
             currencyOpts.push({
               item_id: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_id,
               item_name: '*' + (state.bill.exchangeRateAvailable ? '_' : '') + item.item_name,
@@ -128,7 +135,14 @@ export default {
           }
           if (data[0].cost_conversion_origin) {
             data.map(item => {
-              if (item.item_id.indexOf('BRL') === -1) {
+              if ((process.env.BRAND?.en || '').toLowerCase() === 'acpc') {
+                if (item.item_id.indexOf('BRL') === -1) {
+                  currencyList.push({
+                    item_id: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_id,
+                    item_name: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_name,
+                  })
+                }
+              } else {
                 currencyList.push({
                   item_id: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_id,
                   item_name: '*' + (data[0].exchange_rate_available ? '_' : '') + item.item_name,
