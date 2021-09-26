@@ -63,7 +63,7 @@ export default {
       },
       getBrandTableColumn(),
       getAccountTableColumn({ vm: this }),
-      getProjectTableColumn(),
+      getProjectTableColumn({ title: this.$t('common_547', ['']) }),
     ]
     this.extandData = {}
   },

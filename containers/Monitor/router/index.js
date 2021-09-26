@@ -77,6 +77,11 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources-host')) {
                 return true
               }
+
+              if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
+                return true
+              }
+
               return !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],

@@ -270,5 +270,6 @@
   "monitor.alerts.shield.reason": "Shield Reason",
   "monitor.alerts.shield.tips": "The status is shield and the operation is not supported",
   "monitor.monitorresources.alert_state": "Alert State",
+  "monitor.alerts.shield.tips2": "The alert is already shielded",
   "monitor.view_system": "System"
 }

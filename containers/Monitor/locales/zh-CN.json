@@ -270,5 +270,6 @@
   "monitor.alerts.shield.reason": "屏蔽原因",
   "monitor.alerts.shield.tips": "消息状态为已屏蔽的不支持该操作",
   "monitor.monitorresources.alert_state": "监控状态",
+  "monitor.alerts.shield.tips2": "告警已屏蔽",
   "monitor.view_system": "系统"
 }

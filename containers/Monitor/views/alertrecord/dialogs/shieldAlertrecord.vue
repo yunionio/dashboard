@@ -77,7 +77,7 @@ export default {
         hours = parseInt(v.replace('now', ''))
       }
 
-      return moment().add(hours, 'Hours').format('YYYY-MM-DD HH:mm')
+      return moment().add(hours, 'Hours').toISOString()
     },
     parseTimeStr (timeStr) {
       const t = { start_time: undefined, end_time: undefined }
