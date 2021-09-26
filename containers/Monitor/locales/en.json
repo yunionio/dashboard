@@ -270,5 +270,6 @@
   "monitor.monitorresources": "Resources",
   "monitor.monitorresources.management": "Management Monitor Policy",
   "monitor.alerts.shield.tips2": "The alert is already shielded",
+  "monitor.monitorresources.alert_state": "Alert State",
   "monitor.view_system": "System"
 }
