@@ -270,5 +270,6 @@
   "monitor.monitorresources": "资源",
   "monitor.monitorresources.management": "管理告警策略",
   "monitor.alerts.shield.tips2": "告警已屏蔽",
+  "monitor.monitorresources.alert_state": "监控状态",
   "monitor.view_system": "系统"
 }
