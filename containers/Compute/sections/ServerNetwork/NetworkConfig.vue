@@ -311,19 +311,27 @@ export default {
     },
     fetchNetworkOpts (params, item) {
       this.networkLoading = true
-      this.networkOpts = []
-      new this.$Manager('networks').list({ params }).then((res) => {
-        this.networkOpts = res.data.data || []
-        this.$nextTick(() => {
-          this.form.fc.setFieldsValue({ [`networks[${item.key}]`]: this.networkOpts?.[0]?.id })
+      // 未获取vpc时，network也不展示
+      if (!params.vpc) {
+        this.networkOpts = []
+        item.network = {}
+        this.form.fc.setFieldsValue({ [`networks[${item.key}]`]: '' })
+        this.networkLoading = false
+      } else {
+        this.networkOpts = []
+        new this.$Manager('networks').list({ params }).then((res) => {
+          this.networkOpts = res.data.data || []
+          this.$nextTick(() => {
+            this.form.fc.setFieldsValue({ [`networks[${item.key}]`]: this.networkOpts?.[0]?.id })
+          })
+          item.network = this.networkOpts[0]
+          this.networkLoading = false
+        }).catch((err) => {
+          this.networkLoading = false
+          console.log(err)
+          throw err
         })
-        item.network = this.networkOpts[0]
-        this.networkLoading = false
-      }).catch((err) => {
-        this.networkLoading = false
-        console.log(err)
-        throw err
-      })
+      }
     },
   },
 }
