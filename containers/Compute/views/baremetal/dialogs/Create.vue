@@ -261,7 +261,7 @@ export default {
             step: 2,
           },
         ],
-        AACRaid: [
+        AdaptecRaid: [
           {
             value: 'none',
             label: this.$t('compute.text_325'),
