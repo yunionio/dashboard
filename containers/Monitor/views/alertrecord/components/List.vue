@@ -58,49 +58,6 @@ export default {
     }
   },
   computed: {
-    filterOptions () {
-      const options = {
-        name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
-        level: {
-          label: this.$t('monitor.level'),
-          dropdown: true,
-          items: Object.values(levelMaps),
-        },
-        state: {
-          label: this.$t('common.status'),
-          dropdown: true,
-          items: [
-            { label: this.$t('status.alertrecord.ok'), key: 'ok' },
-            { label: this.$t('status.alertrecord.alerting'), key: 'alerting' },
-          ],
-        },
-        res_type: {
-          label: this.$t('monitor.text_97'),
-          dropdown: true,
-          distinctField: {
-            type: 'extra_field',
-            key: 'res_type',
-          },
-          mapper: data => {
-            return data.map(val => {
-              let label = val.label
-              if (this.$te(`dictionary.${val.key}`)) label = this.$t(`dictionary.${val.key}`)
-              return {
-                key: val.key,
-                label,
-              }
-            })
-          },
-        },
-        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'created_at' }),
-      }
-      for (const key of options) {
-        if (this.hiddenColumns.some(item => item === key)) {
-          delete options[key]
-        }
-      }
-      return options
-    },
     list () {
       if (this.alertType === 'un-recovered') {
         return this.unrecoverList
@@ -156,6 +113,12 @@ export default {
                 tooltip: this.$t('monitor.alerts.shield.tips'),
               }
             }
+            if (obj.is_set_shield === true) {
+              return {
+                validate: false,
+                tooltip: this.$t('monitor.alerts.shield.tips2'),
+              }
+            }
             return ret
           },
         })
@@ -174,6 +137,49 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    filters () {
+      const options = {
+        name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
+        level: {
+          label: this.$t('monitor.level'),
+          dropdown: true,
+          items: Object.values(levelMaps),
+        },
+        state: {
+          label: this.$t('common.status'),
+          dropdown: true,
+          items: [
+            { label: this.$t('status.alertrecord.ok'), key: 'ok' },
+            { label: this.$t('status.alertrecord.alerting'), key: 'alerting' },
+          ],
+        },
+        res_type: {
+          label: this.$t('monitor.text_97'),
+          dropdown: true,
+          distinctField: {
+            type: 'extra_field',
+            key: 'res_type',
+          },
+          mapper: data => {
+            return data.map(val => {
+              let label = val.label
+              if (this.$te(`dictionary.${val.key}`)) label = this.$t(`dictionary.${val.key}`)
+              return {
+                key: val.key,
+                label,
+              }
+            })
+          },
+        },
+        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'created_at' }),
+      }
+      for (const key of Object.keys(options)) {
+        if (this.hiddenColumns.some(item => item === key)) {
+          delete options[key]
+        }
+      }
+      return options
+    },
     listOptions (resource) {
       return {
         id: this.listId,
@@ -183,7 +189,7 @@ export default {
         getParams: this.getParam,
         genParamsCb: (params) => { return Object.assign({}, params, { details: true }) },
         filter: this.resType ? { res_type: [this.resType] } : {},
-        filterOptions: this.filterOptions,
+        filterOptions: this.filters(),
       }
     },
     resourceColumns (alertType) {

@@ -269,5 +269,6 @@
   "monitor.alerts.shield.tips": "消息状态为已屏蔽的不支持该操作",
   "monitor.monitorresources": "资源",
   "monitor.monitorresources.management": "管理告警策略",
+  "monitor.alerts.shield.tips2": "告警已屏蔽",
   "monitor.view_system": "系统"
 }
