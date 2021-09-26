@@ -58,49 +58,6 @@ export default {
     }
   },
   computed: {
-    filterOptions () {
-      const options = {
-        name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
-        level: {
-          label: this.$t('monitor.level'),
-          dropdown: true,
-          items: Object.values(levelMaps),
-        },
-        state: {
-          label: this.$t('common.status'),
-          dropdown: true,
-          items: [
-            { label: this.$t('status.alertrecord.ok'), key: 'ok' },
-            { label: this.$t('status.alertrecord.alerting'), key: 'alerting' },
-          ],
-        },
-        res_type: {
-          label: this.$t('monitor.text_97'),
-          dropdown: true,
-          distinctField: {
-            type: 'extra_field',
-            key: 'res_type',
-          },
-          mapper: data => {
-            return data.map(val => {
-              let label = val.label
-              if (this.$te(`dictionary.${val.key}`)) label = this.$t(`dictionary.${val.key}`)
-              return {
-                key: val.key,
-                label,
-              }
-            })
-          },
-        },
-        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'created_at' }),
-      }
-      for (const key of options) {
-        if (this.hiddenColumns.some(item => item === key)) {
-          delete options[key]
-        }
-      }
-      return options
-    },
     list () {
       if (this.alertType === 'un-recovered') {
         return this.unrecoverList
@@ -174,6 +131,53 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    filters () {
+      const options = {
+        name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
+        level: {
+          label: this.$t('monitor.level'),
+          dropdown: true,
+          items: Object.values(levelMaps),
+        },
+        state: {
+          label: this.$t('common.status'),
+          dropdown: true,
+          items: [
+            { label: this.$t('status.alertrecord.ok'), key: 'ok' },
+            { label: this.$t('status.alertrecord.alerting'), key: 'alerting' },
+          ],
+        },
+        res_type: {
+          label: this.$t('monitor.text_97'),
+          dropdown: true,
+          distinctField: {
+            type: 'extra_field',
+            key: 'res_type',
+          },
+          mapper: data => {
+            return data.map(val => {
+              let label = val.label
+              if (this.$te(`dictionary.${val.key}`)) label = this.$t(`dictionary.${val.key}`)
+              return {
+                key: val.key,
+                label,
+              }
+            })
+          },
+        },
+        res_name: {
+          field: 'res_name',
+          label: this.$t('common_151'),
+        },
+        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'created_at' }),
+      }
+      for (const key of Object.keys(options)) {
+        if (this.hiddenColumns.some(item => item === key)) {
+          delete options[key]
+        }
+      }
+      return options
+    },
     listOptions (resource) {
       return {
         id: this.listId,
@@ -183,7 +187,7 @@ export default {
         getParams: this.getParam,
         genParamsCb: (params) => { return Object.assign({}, params, { details: true }) },
         filter: this.resType ? { res_type: [this.resType] } : {},
-        filterOptions: this.filterOptions,
+        filterOptions: this.filters(),
       }
     },
     resourceColumns (alertType) {
@@ -198,7 +202,7 @@ export default {
             field: 'brand',
             title: this.$t('compute.text_176'),
             formatter: ({ row }) => {
-              let brand = R.path(['data', 'tags', 'name'], row)
+              let brand = R.path(['data', 'tags', 'brand'], row)
               if (!brand) return '-'
               if (brand === 'kvm') brand = 'OneCloud'
               return (BRAND_MAP[brand] && BRAND_MAP[brand].label) || brand
@@ -227,18 +231,18 @@ export default {
                   {
                     field: 'name',
                     title: this.$t('dashboard.text_110'),
-                    formatter: ({ row }) => R.path(['tags', 'name'], row) || '-',
+                    formatter: ({ row }) => R.path(['data', 'tags', 'name'], row) || '-',
                   },
                   {
                     field: 'ip',
                     title: 'IP',
-                    formatter: ({ row }) => R.path(['tags', 'ip'], row) || '-',
+                    formatter: ({ row }) => R.path(['data', 'tags', 'ip'], row) || '-',
                   },
                   {
                     field: 'brand',
                     title: this.$t('compute.text_176'),
                     formatter: ({ row }) => {
-                      let brand = R.path(['tags', 'brand'], row)
+                      let brand = R.path(['data', 'tags', 'brand'], row)
                       if (!brand) return '-'
                       if (brand === 'kvm') brand = 'OneCloud'
                       return (BRAND_MAP[brand] && BRAND_MAP[brand].label) || brand

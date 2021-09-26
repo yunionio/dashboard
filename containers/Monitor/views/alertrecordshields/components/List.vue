@@ -22,11 +22,15 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.listId,
-        idKey: 'row_id',
+        idKey: 'id',
         resource: 'alertrecordshields',
         apiVersion: 'v1',
         filterOptions: {
-          name: getNameFilter(),
+          name: getNameFilter({ label: this.$t('monitor.text_99') }),
+          res_name: {
+            field: 'res_name',
+            label: this.$t('common_151'),
+          },
         },
       }),
     }
