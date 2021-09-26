@@ -22,7 +22,6 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.listId,
-        idKey: 'row_id',
         resource: 'alertrecordshields',
         apiVersion: 'v1',
         filterOptions: {

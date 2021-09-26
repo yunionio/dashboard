@@ -100,6 +100,7 @@ export default {
               vm: this,
               columns: this.columns,
               onManager: this.onManager,
+              refresh: this.refresh,
               data: [obj],
             })
           },
@@ -107,12 +108,12 @@ export default {
             const ret = {
               validate: true,
             }
-            if (obj.send_state === 'shield') {
-              return {
-                validate: false,
-                tooltip: this.$t('monitor.alerts.shield.tips'),
-              }
-            }
+            // if (obj.send_state === 'shield') {
+            //   return {
+            //     validate: false,
+            //     tooltip: this.$t('monitor.alerts.shield.tips'),
+            //   }
+            // }
             if (obj.is_set_shield === true) {
               return {
                 validate: false,
@@ -137,6 +138,9 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    refresh () {
+      this.list.fetchData()
+    },
     filters () {
       const options = {
         name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
