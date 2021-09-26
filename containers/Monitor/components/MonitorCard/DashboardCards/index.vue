@@ -6,7 +6,7 @@
     <div style="padding-top: 20px;">
       <a-list :grid="{ gutter: 16, column: 2 }" :data-source="panels">
         <a-list-item slot="renderItem" slot-scope="item">
-          <dashboard-card :panel="item" :edit-chart="editChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
+          <dashboard-card :panel="item" :dashboard_id="id" :edit-chart="editChart" :updated_at="updatedAt" :extraParams="extraParams" @delete="handleDelete" />
         </a-list-item>
       </a-list>
     </div>
