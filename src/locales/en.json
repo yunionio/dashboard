@@ -884,7 +884,8 @@
     },
     "alertSendState": {
       "ok": "Sent",
-      "silent": "Muted"
+      "silent": "Muted",
+      "shield": "Shielded"
     },
     "dnszonecache": {
       "init": "Initialize",
