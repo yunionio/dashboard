@@ -890,7 +890,8 @@
     },
     "alertSendState": {
       "ok": "已发送",
-      "silent": "已收敛"
+      "silent": "已收敛",
+      "shield": "已屏蔽"
     },
     "dnszonecache": {
       "init": "初始化",
