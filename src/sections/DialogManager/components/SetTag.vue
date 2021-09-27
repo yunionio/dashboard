@@ -66,7 +66,12 @@
                   :title="item.title"
                   :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
                   <div class="d-flex align-items-center">
-                    <span class="flex-fill text-truncate">{{ item.title }}</span>
+                    <a-tooltip>
+                      <template slot="title">
+                        {{ $t('common.tag.sys_tag_tooltip') }}
+                      </template>
+                      <span class="flex-fill text-truncate">{{ item.title }}</span>
+                    </a-tooltip>
                     <a-icon v-if="!isSysTag(item.key)" class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click.stop="removeTag(item)" />
                   </div>
                 </div>

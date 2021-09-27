@@ -175,6 +175,10 @@ export default {
             })
           },
         },
+        res_name: {
+          field: 'res_name',
+          label: this.$t('common_151'),
+        },
         created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'created_at' }),
       }
       for (const key of Object.keys(options)) {
@@ -208,7 +212,7 @@ export default {
             field: 'brand',
             title: this.$t('compute.text_176'),
             formatter: ({ row }) => {
-              let brand = R.path(['data', 'tags', 'name'], row)
+              let brand = R.path(['data', 'tags', 'brand'], row)
               if (!brand) return '-'
               if (brand === 'kvm') brand = 'OneCloud'
               return (BRAND_MAP[brand] && BRAND_MAP[brand].label) || brand
@@ -237,18 +241,18 @@ export default {
                   {
                     field: 'name',
                     title: this.$t('dashboard.text_110'),
-                    formatter: ({ row }) => R.path(['tags', 'name'], row) || '-',
+                    formatter: ({ row }) => R.path(['data', 'tags', 'name'], row) || '-',
                   },
                   {
                     field: 'ip',
                     title: 'IP',
-                    formatter: ({ row }) => R.path(['tags', 'ip'], row) || '-',
+                    formatter: ({ row }) => R.path(['data', 'tags', 'ip'], row) || '-',
                   },
                   {
                     field: 'brand',
                     title: this.$t('compute.text_176'),
                     formatter: ({ row }) => {
-                      let brand = R.path(['tags', 'brand'], row)
+                      let brand = R.path(['data', 'tags', 'brand'], row)
                       if (!brand) return '-'
                       if (brand === 'kvm') brand = 'OneCloud'
                       return (BRAND_MAP[brand] && BRAND_MAP[brand].label) || brand
