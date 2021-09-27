@@ -77,7 +77,7 @@ export default {
           'vpc',
           {
             rules: [
-              { required: true, message: this.$t('network.text_212') },
+              { required: true, message: this.$t('network.text_274') },
             ],
           },
         ],

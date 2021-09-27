@@ -10,7 +10,7 @@ import { hasPermission } from '@/utils/auth'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 
-export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
+export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
     field,
     title,
@@ -21,7 +21,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.pr
       default: ({ row }, h) => {
         const ret = []
         const project = row[field]
-        if (!project) return [<data-loading />]
+        if (vm.isPreLoad && !project) return [<data-loading />]
         if (R.is(Array, project)) {
           for (let i = 0, len = project.length; i < len; i++) {
             const row = project[i]

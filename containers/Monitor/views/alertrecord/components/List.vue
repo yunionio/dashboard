@@ -113,6 +113,12 @@ export default {
                 tooltip: this.$t('monitor.alerts.shield.tips'),
               }
             }
+            if (obj.is_set_shield === true) {
+              return {
+                validate: false,
+                tooltip: this.$t('monitor.alerts.shield.tips2'),
+              }
+            }
             return ret
           },
         })

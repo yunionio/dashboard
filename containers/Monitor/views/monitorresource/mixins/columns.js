@@ -26,6 +26,19 @@ export default {
         },
       },
       {
+        field: 'alert_state',
+        title: this.$t('monitor.monitorresources.alert_state'),
+        slots: {
+          default: ({ row }, h) => {
+            return [
+              <div class='text-truncate'>
+                <status status={row.alert_state} statusModule="monitorresources" />
+              </div>,
+            ]
+          },
+        },
+      },
+      {
         field: 'status',
         title: this.$t('common.status'),
         slots: {
@@ -50,7 +63,7 @@ export default {
       },
       getBrandTableColumn(),
       getAccountTableColumn({ vm: this }),
-      getProjectTableColumn(),
+      getProjectTableColumn({ vm: this, title: this.$t('common_547', ['']) }),
     ]
     this.extandData = {}
   },

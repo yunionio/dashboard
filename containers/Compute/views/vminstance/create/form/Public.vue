@@ -129,7 +129,8 @@
           :networkVpcParams="networkVpcParams"
           :vpcResource="vpcResource"
           :serverCount="form.fd.count"
-          :networkResourceMapper="networkResourceMapper" />
+          :networkResourceMapper="networkResourceMapper"
+          :cloudprovider="form.fd.cloudprovider" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
