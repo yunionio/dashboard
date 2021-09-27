@@ -263,7 +263,7 @@ export const getCopyWithContentTableColumn = ({
   }
 }
 
-export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
+export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {} } = {}) => {
   return {
     field,
     title,
