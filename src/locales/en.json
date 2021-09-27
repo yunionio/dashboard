@@ -4887,5 +4887,6 @@
   "scope.auth.remove.history.user.btn": "Remove login ID",
   "scope.auth.outher.history.user.btn": "Use Another login ID",
   "scope.login.app.name": "Cloud Management Platform",
-  "scope.brand_private": "Built-in Private Cloud Platform"
+  "scope.brand_private": "Built-in Private Cloud Platform",
+  "common.tag.sys_tag_tooltip": "System tag on the cloud. The operation is not supported"
 }
