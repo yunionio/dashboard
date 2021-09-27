@@ -6,7 +6,7 @@ export default {
       return R.isEmpty(this.cloudEnvOptions && this.cloudEnvOptions.filter(v => !!v.key))
     },
     isPreLoad () {
-      return this.list.isPreLoad
+      return this.list?.isPreLoad
     },
   },
   methods: {
