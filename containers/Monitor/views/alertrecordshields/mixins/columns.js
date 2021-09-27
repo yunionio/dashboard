@@ -3,11 +3,11 @@ import { getNameDescriptionTableColumn, getTimeRangeColumn } from '@/utils/commo
 export default {
   created () {
     this.columns = [
-      getNameDescriptionTableColumn({
-        field: 'res_name',
-        edit: false,
-        onManager: this.onManager,
-      }),
+      {
+        field: 'alert_name',
+        title: this.$t('monitor.text_99'),
+        minWidth: 80,
+      },
       {
         field: 'res_type',
         title: this.$t('monitor.text_97'),
@@ -19,11 +19,12 @@ export default {
           return '-'
         },
       },
-      {
-        field: 'alert_name',
-        title: this.$t('monitor.text_2'),
-        minWidth: 80,
-      },
+      getNameDescriptionTableColumn({
+        field: 'res_name',
+        title: this.$t('common_151'),
+        edit: false,
+        onManager: this.onManager,
+      }),
       getTimeRangeColumn({ title: this.$t('monitor.alerts.shield.timerange') }),
       {
         field: 'description',
