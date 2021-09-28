@@ -45,8 +45,7 @@
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
       <a-form-item
-        :label="$t('compute.text_1365')"
-        v-show="isKvm && form.fi.capability.host_cpu_archs && form.fi.capability.host_cpu_archs.length > 1">
+        :label="$t('compute.text_1365')">
         <os-arch
           v-decorator="decorators.os_arch"
           :form="form"
