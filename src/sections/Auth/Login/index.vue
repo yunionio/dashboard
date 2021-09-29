@@ -1,9 +1,10 @@
 <template>
   <div class="login-index-wrap flex-fill d-flex h-100 align-items-center" v-loading.fullscreen="!regionsLoading">
-    <div class="login-index-left flex-fill pr-4">
-      <h2>{{ $t('login.desc1') }}</h2>
-      <h4>{{ $t('login.desc2') }}</h4>
-      <h6>{{ $t('login.desc3') }}</h6>
+    <div class="login-index-left d-flex flex-fill align-items-center pl-4 pr-4 pt-4" :style="{backgroundImage: loginBg}">
+      <div>
+        <h2 :style="{ color: getI18nColorVal(companyInfo, 'login_page_slogan') }">{{ getI18nVal(companyInfo, 'login_page_slogan') || $t('login.desc1') }}</h2>
+        <h4 :style="{ color: getI18nColorVal(companyInfo, 'login_page_sub_slogan') }">{{ getI18nVal(companyInfo, 'login_page_sub_slogan') || $t('login.desc2') }}</h4>
+      </div>
     </div>
     <div class="login-index-right d-flex flex-column shadow-lg bg-white rounded">
       <!-- login form -->
@@ -23,6 +24,7 @@
 import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import { getLoginDomain } from '@/utils/common/cookie'
+import { getI18nVal, getI18nColorVal } from '@/utils/i18n'
 
 export default {
   name: 'AccountIndex',
@@ -34,9 +36,10 @@ export default {
   },
   computed: {
     ...mapGetters(['auth', 'userInfo', 'loginLogo']),
-    ...mapState('auth', {
-      regions: state => state.regions,
-      loggedUsers: state => state.loggedUsers,
+    ...mapState({
+      regions: state => state.auth.regions,
+      loggedUsers: state => state.auth.loggedUsers,
+      companyInfo: state => state.app.companyInfo,
     }),
     title () {
       if (this.$route.name === 'Auth') {
@@ -58,6 +61,11 @@ export default {
     },
     hasLoginDomain () {
       return this.loginDomain.length > 0
+    },
+    loginBg () {
+      const bg_img = this.companyInfo.login_page_backgroup_image
+      if (!bg_img) return `url(${require('./assets/bg.png')})`
+      return `url(data:image/png;base64,${bg_img})`
     },
   },
   async created () {
@@ -154,16 +162,20 @@ export default {
       }
       return str
     },
+    getI18nVal,
+    getI18nColorVal,
   },
 }
 </script>
 
 <style lang="less">
-.login-index-wrap {
-  background-image: url('./assets/bg.png');
+.login-index-left {
+  height: 420px;
+  // background-image: url('./assets/bg.png');
   background-repeat: no-repeat;
   background-position: center left;
   background-color: #fff;
+  background-size: cover;
 }
 .login-index-left {
   h2 {

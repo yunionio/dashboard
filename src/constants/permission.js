@@ -827,6 +827,9 @@ export const PERMISSION = {
   cloudgroupcache_delete: ['cloudid', 'cloudgroupcaches', 'delete'],
   // 监控报警
   unifiedmonitors_get: ['monitor', 'unifiedmonitors', 'get'],
+  // 监控资源
+  monitorresources_list: ['monitor', 'monitorresources', 'list'],
+  monitorresources_get: ['monitor', 'monitorresources', 'get'],
   // 报警
   commonalerts_get: ['monitor', 'commonalerts', 'get'],
   commonalerts_create: ['monitor', 'commonalerts', 'create'],

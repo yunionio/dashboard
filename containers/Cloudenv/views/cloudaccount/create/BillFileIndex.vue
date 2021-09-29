@@ -6,7 +6,20 @@
       <content-info :params="params" v-if="isRender" />
     </a-spin>
     <page-body>
-      <bill-form ref="BILL_FORM" />
+      <div>
+        <div v-if="isGoogle" style="margin-bottom: 8px;">
+          <span style="width: 190px;margin-right: 45px">{{ $t('cloudenv.bill.data_source') }}</span>
+          <a-radio-group v-model="billform">
+            <a-radio-button value="bigquery">
+              Bigquery
+            </a-radio-button>
+            <a-radio-button value="bucket">
+              Bucket
+            </a-radio-button>
+          </a-radio-group>
+        </div>
+        <component :is="form" ref="BILL_FORM" />
+      </div>
     </page-body>
     <page-footer>
       <div slot="right">
@@ -20,6 +33,7 @@
 
 <script>
 import BillForm from './form/BillForm'
+import BigQueryBillForm from './form/BigQueryBillForm'
 import ContentInfo from './form/components/ContentInfo'
 import TestButton from '@/sections/TestButton'
 import { getRequestT } from '@/utils/utils'
@@ -28,6 +42,7 @@ export default {
   name: 'CloudaccountBillFileIndex',
   components: {
     BillForm,
+    BigQueryBillForm,
     TestButton,
     ContentInfo,
   },
@@ -36,12 +51,23 @@ export default {
       params: {
         data: [],
       },
+      billform: 'bucket',
       loading: false,
     }
   },
   computed: {
     isRender () {
       return this.params.data.length > 0
+    },
+    isGoogle () {
+      return this.isRender && this.params.data[0].provider === 'Google'
+    },
+    form () {
+      if (this.billform === 'bigquery') {
+        return 'BigQueryBillForm'
+      } else {
+        return 'BillForm'
+      }
     },
   },
   created () {
@@ -74,6 +100,14 @@ export default {
       manager.batchGet({ id: ids, params: { $t: getRequestT() } })
         .then((res) => {
           this.params.data = res.data.data
+          if (this.params.data && this.params.data.length > 0) {
+            const a = this.params.data[0]
+            if (a.provider === 'Google' && a.options && a.options.billing_bigquery_table) {
+              this.billform = 'bigquery'
+            } else {
+              this.billform = 'bucket'
+            }
+          }
         })
     },
   },

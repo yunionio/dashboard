@@ -44,7 +44,8 @@
       <a-form-item :label="$t('compute.text_176')" :extra="$t('compute.text_1151')">
         <hypervisor-radio :decorator="decorators.hypervisor" :type="form.fi.createType" :hypervisors="hypervisors" />
       </a-form-item>
-      <a-form-item :label="$t('compute.text_1365')" v-if="isKvm && form.fi.capability.host_cpu_archs">
+      <a-form-item
+        :label="$t('compute.text_1365')">
         <os-arch
           v-decorator="decorators.os_arch"
           :form="form"
@@ -224,6 +225,7 @@ export default {
   data () {
     return {
       isLocalDisk: true,
+      timer: null,
     }
   },
   computed: {
@@ -540,6 +542,14 @@ export default {
       this.setBios(val)
     },
   },
+  mounted () {
+    this.$nextTick(() => {
+      this.init()
+    })
+  },
+  destroyed () {
+    this.timer = null
+  },
   methods: {
     vpcResourceMapper (list) {
       if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
@@ -634,6 +644,16 @@ export default {
       if (!val) {
         this.form.fc.setFieldsValue({ gpu: '' })
       }
+    },
+    init () {
+      this.initOsArch()
+    },
+    initOsArch () {
+      this.timer = setTimeout(() => {
+        const { os_arch } = this.$route.query
+        // 数据延迟回填
+        this.form.fc.setFieldsValue({ os_arch })
+      }, 3000)
     },
   },
 }

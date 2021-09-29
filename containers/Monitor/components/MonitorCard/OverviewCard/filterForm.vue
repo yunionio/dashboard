@@ -30,6 +30,7 @@ import TopNSelect from '../sections/select/topN'
 import refresh from '../sections/select/refresh'
 import MetricOptions from './metrics'
 import { getSignature } from '@/utils/crypto'
+import { sizestr, mathRoundFix } from '@/utils/utils'
 
 function newChart (metircOption) {
   const chart = {
@@ -125,7 +126,7 @@ export default {
     charts () {
       const charts = {}
       MetricOptions[this.res].map((m) => {
-        charts[m.field] = newChart(m)
+        charts[m.value] = newChart(m)
       })
       return charts
     },
@@ -282,7 +283,7 @@ export default {
     },
     toTableData () {
       const curMetric = this.form.getFieldValue('metric')
-      const names = this.charts[curMetric.field].chartData.rows.map((row) => { return row.name })
+      const names = this.charts[curMetric.value].chartData.rows.map((row) => { return row.name })
       const data = { columns: [], rows: [] }
       const namecolumn = this.getTableNameColumn()
       data.columns.push(namecolumn)
@@ -291,9 +292,15 @@ export default {
         const chart = this.charts[k]
         const column = chart.metric.label
         const col = { field: column, title: column, sortable: true, sortType: 'number', sortBy: (row) => { const v = row && row[column] ? row[column] : 0; return v } }
-        if (chart.metric.format) col.formatter = ({ cellValue }) => { return numerify(cellValue, chart.metric.format) }
+        if (chart.metric.format) {
+          if (chart.metric.format === '0.00 b') {
+            col.formatter = ({ cellValue }) => { return cellValue < 1024 ? mathRoundFix(cellValue, 1, true) + 'B' : sizestr(cellValue, 'B', 1024) }
+          } else {
+            col.formatter = ({ cellValue }) => { return numerify(cellValue, chart.metric.format) }
+          }
+        }
         data.columns.push(col)
-        chart.chartData.rows.map((row) => {
+        chart.$chartData.rows.map((row) => {
           if (names.indexOf(row.name) < 0) {
             return
           }
@@ -373,6 +380,7 @@ export default {
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data })
         chart.chartType = this.isLineChart ? 'OverviewLine' : 'OverviewHistogram'
         chart.chartData = this.toChartData(series)
+        chart.$chartData = Object.assign({}, chart.chartData)
         if (formValues.limit && typeof formValues.limit === 'number' && formValues.limit > 0) {
           if (chart.chartData.rows.length > formValues.limit) {
             chart.chartData.rows = chart.chartData.rows.slice(chart.chartData.rows.length - formValues.limit)
@@ -436,8 +444,8 @@ export default {
       const loading = this.startLoading()
       try {
         const values = await this.validateForm()
-        await this.fetchChartData(values.metric.field, values)
-        this.emitChart(this.charts[values.metric.field])
+        await this.fetchChartData(values.metric.value, values)
+        this.emitChart(this.charts[values.metric.value])
       } catch (error) {
         throw error
       } finally {
@@ -448,11 +456,11 @@ export default {
       const loading = this.startLoading()
       try {
         const values = await this.validateForm()
-        const fields = Object.keys(this.charts)
-        for (const field of fields) {
-          await this.fetchChartData(field, values)
+        const vs = Object.keys(this.charts)
+        for (const v of vs) {
+          await this.fetchChartData(v, values)
         }
-        this.emitChart(this.charts[values.metric.field])
+        this.emitChart(this.charts[values.metric.value])
         this.emitTable()
       } catch (error) {
         throw error

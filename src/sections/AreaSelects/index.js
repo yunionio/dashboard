@@ -221,7 +221,7 @@ export default {
       })
       callback && callback(selectedValue)
     },
-    async fetchChange (name, list) {
+    async fetchChange (name, list = []) {
       const events = this._events || {}
       const changes = events[`${name}FetchSuccess`]
       let _list = findAndPush(list, ({ name }) => name === 'Other')
@@ -418,7 +418,7 @@ export default {
           city,
           provider,
         })
-        if (!fields.provider) { // 当跳过provider直接选中cloudregion时，cloudregion 本身也要根据cloudprovider过滤
+        if (!fields.provider && this.names.indexOf('provider') !== -1) { // 当跳过provider直接选中cloudregion时，cloudregion 本身也要根据cloudprovider过滤, 当不需要显示provider时，不需要再过滤
           this.cloudregionList = await this.fetchCloudregion({
             city,
             provider,
@@ -485,19 +485,23 @@ export default {
         const fields = this.FC.getFieldsValue()
         const { provider, cloudregion_id } = item
         if (!fields.cloudregion) { // 当跳过cloudregion直接选中zone时
-          this.cloudregionList = await this.fetchCloudregion({
+          const param = {
             city: fields.city,
             provider,
             ...this.cloudregionParams,
-          })
+          }
+          if (this.names.indexOf('provider') === -1) delete param.provider
+          this.cloudregionList = await this.fetchCloudregion(param)
         }
         if (!fields.zone) { // 当跳过cloudregion直接选中zone时，zone 本身也要根据cloudregion过滤
-          this.zoneList = await this.fetchZone({
+          const param = {
             city: fields.city,
             provider,
             cloudregion_id,
             ...this.zoneParams,
-          })
+          }
+          if (this.names.indexOf('provider') === -1) delete param.provider
+          this.zoneList = await this.fetchZone(param)
         }
         this.FC.setFieldsValue({
           provider,

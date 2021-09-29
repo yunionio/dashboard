@@ -257,6 +257,7 @@ export default {
           { label: this.$t('table.title.name'), key: 'name' },
           { label: this.$t('table.title.disk_size'), key: 'disk_size' },
           { label: this.$t('table.title.disk_format'), key: 'disk_format' },
+          { label: this.$t('storage.text_38'), key: 'storage_type' },
           { label: this.$t('table.title.disk_type'), key: 'disk_type' },
           { label: this.$t('table.title.disk_guest_count'), key: 'guest_count' },
           { label: this.$t('table.title.disk_guest'), key: 'guest' },

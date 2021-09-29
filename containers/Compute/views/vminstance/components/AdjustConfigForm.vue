@@ -626,6 +626,9 @@ export default {
       }
       return types
     },
+    needLocalMedium () {
+      return (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor)
+    },
   },
   created () {
     this.serversManager = new Manager('servers', 'v2')
@@ -679,7 +682,7 @@ export default {
         // 针对kvm-local盘特殊处理
         let diskKey = this.sysdisk.type
         const { disk_type, medium_type } = this.selectedItem.disks_info[0] || {}
-        if (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor && diskKey === 'local' && disk_type === 'sys' && medium_type) {
+        if ((this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor) && diskKey === 'local' && disk_type === 'sys' && medium_type && this.isSomeLocal()) {
           diskKey = `${diskKey}-${medium_type}`
         }
         this.form.fd.defaultType = {
@@ -896,7 +899,7 @@ export default {
           if (values.dataDiskTypes[key]) {
             // 针对kvm-local盘特殊处理
             let diskKey = values.dataDiskTypes[key].key
-            if (diskKey.indexOf('local') !== -1 && this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor) {
+            if (diskKey.indexOf('local') !== -1 && this.needLocalMedium) {
               diskKey = diskKey.split('-')[0]
             }
             diskObj.backend = diskKey
@@ -904,7 +907,7 @@ export default {
             if (_.get(dataDisks, '[0].diskType.key')) {
               // 针对kvm-local盘特殊处理
               let diskKey = _.get(dataDisks, '[0].diskType.key') // 默认添加的盘和第一块保持一致
-              if (diskKey.indexOf('local') !== -1 && this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor) {
+              if (diskKey.indexOf('local') !== -1 && this.needLocalMedium) {
                 diskKey = diskKey.split('-')[0]
               }
               diskObj.backend = diskKey
@@ -929,8 +932,8 @@ export default {
           }
         }
         // 磁盘介质
-        const { key: dataDiskKey = '' } = values.dataDiskTypes[key]
-        if (dataDiskKey.split('-')[1]) {
+        const { key: dataDiskKey = '' } = values.dataDiskTypes[key] || {}
+        if (this.needLocalMedium && dataDiskKey.split('-')[1]) {
           diskObj.medium = dataDiskKey.split('-')[1]
         }
         dataDisk.push(diskObj)
@@ -1023,6 +1026,13 @@ export default {
       }
       const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
       this.pricesList = data
+    },
+    isSomeLocal () {
+      const { capability = {} } = this.form.fi
+      const { storage_types2 = {} } = capability
+      const types = storage_types2[this.hypervisor] || []
+      const localTypes = types.filter(item => item.indexOf('local') !== -1)
+      return localTypes.length > 1
     },
   },
 }

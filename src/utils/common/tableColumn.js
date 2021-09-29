@@ -10,7 +10,7 @@ import { hasPermission } from '@/utils/auth'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 
-export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
+export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
     field,
     title,
@@ -21,7 +21,7 @@ export const getProjectTableColumn = ({ field = 'tenant', title = i18n.t('res.pr
       default: ({ row }, h) => {
         const ret = []
         const project = row[field]
-        if (!project) return [<data-loading />]
+        if (vm.isPreLoad && !project) return [<data-loading />]
         if (R.is(Array, project)) {
           for (let i = 0, len = project.length; i < len; i++) {
             const row = project[i]
@@ -263,7 +263,7 @@ export const getCopyWithContentTableColumn = ({
   }
 }
 
-export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
+export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {} } = {}) => {
   return {
     field,
     title,
@@ -282,7 +282,8 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm } = {}) => {
               }),
             ]
           } else {
-            return [<data-loading />]
+            if (vm.isPreLoad) return [<data-loading />]
+            return []
           }
         }
         let ret = []
@@ -404,6 +405,30 @@ export const getTimeTableColumn = ({
         if (vm.isPreLoad && !row[field]) return [<data-loading />]
         if (fromNow) return row[field] ? moment(row[field]).fromNow() : '-'
         return row[field] ? moment(row[field]).format() : '-'
+      },
+    },
+  }
+}
+
+export const getTimeRangeColumn = ({
+  field = 'time_range',
+  start_field = 'start_time',
+  end_field = 'end_time',
+  title = i18n.t('table.title.create_time'),
+  sortable = false,
+} = {}) => {
+  return {
+    field,
+    start_field,
+    end_field,
+    title,
+    width: 160,
+    sortable,
+    slots: {
+      default: ({ row }, h) => {
+        const start = row[start_field] ? moment(row[start_field]).format() : '-'
+        const end = row[end_field] ? moment(row[end_field]).format() : '-'
+        return `${start} ~ ${end}`
       },
     },
   }

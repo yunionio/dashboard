@@ -38,7 +38,6 @@
 import * as R from 'ramda'
 import { mapState } from 'vuex'
 import { setSsoIdpIdInCookie } from '@/utils/auth'
-
 export default {
   name: 'LoginChooser',
   props: {
@@ -115,7 +114,6 @@ export default {
 
 <style lang="less" scoped>
 @import "../../../../styles/less/theme";
-
 .history-wrap {
   height: 290px !important;
   margin: 0 -60px 0;

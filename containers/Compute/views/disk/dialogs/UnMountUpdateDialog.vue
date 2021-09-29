@@ -5,6 +5,11 @@
       <a-alert :message="$t('compute.text_440')" banner />
       <dialog-selected-tips :count="params.data.length" :action="$t('compute.disk_perform_detach')" :name="$t('dictionary.disk')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <a-form :form="form.fc" hideRequiredMark>
+        <a-form-item class="mb-0">
+          <a-checkbox v-decorator="decorators.keep_disk">{{ $t('compute.disk.detach') }}</a-checkbox>
+        </a-form-item>
+      </a-form>
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -23,6 +28,18 @@ export default {
   data () {
     return {
       loading: false,
+      form: {
+        fc: this.$form.createForm(this),
+      },
+      decorators: {
+        keep_disk: [
+          'keep_disk',
+          {
+            valuePropName: 'checked',
+            initialValue: false,
+          },
+        ],
+      },
     }
   },
   created () {
@@ -36,14 +53,24 @@ export default {
       })
   },
   methods: {
-    doUpdate (data) {
+    async doUpdate (data) {
       const guestId = this.params.data[0] && this.params.data[0].guests[0] && this.params.data[0].guests[0].id
+      const diskId = this.params.data[0] && this.params.data[0].id
+      // 删除前先先将auto_delete改为true
+      if (data.keep_disk) {
+        await new this.$Manager('disks').update({
+          id: diskId,
+          data: {
+            auto_delete: true,
+          },
+        })
+      }
       return new this.$Manager('servers').performAction({
         action: 'detachdisk',
         id: guestId,
         data: {
           disk_id: this.params.data[0].id,
-          keep_disk: true,
+          keep_disk: !data.keep_disk,
         },
       })
     },
@@ -51,7 +78,8 @@ export default {
       this.loading = true
       try {
         this.loading = true
-        await this.doUpdate()
+        const values = await this.form.fc.validateFields()
+        await this.doUpdate(values)
         this.loading = false
         this.params.refresh()
         this.cancelDialog()

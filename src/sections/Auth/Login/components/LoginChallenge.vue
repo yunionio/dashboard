@@ -142,7 +142,6 @@ import { setLoginDomain, getLoginDomain } from '@/utils/common/cookie'
 // import { removeQueryKeys } from '@/utils/utils'
 import EditForm from '@/components/Edit/Form'
 import { setSsoIdpIdInCookie, removeSsoIdpIdInCookie } from '@/utils/auth'
-
 export default {
   name: 'LoginChallenge',
   components: {
@@ -318,8 +317,8 @@ export default {
         // ------------ 拼接请求所需数据 end ------------
         await this.$store.commit('auth/SET_LOGIN_FORM_DATA', data)
         await this.$store.dispatch('auth/login', data)
-        await this.$store.dispatch('auth/onAfterLogin')
         await this.$emit('after-login')
+        await this.$store.dispatch('auth/onAfterLogin')
         // ---- save login domain ---- //
         if (this.loginDomain && this.showDomainChooser) {
           setLoginDomain(this.loginDomain)

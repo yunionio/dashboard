@@ -346,7 +346,7 @@ export default {
         }
         if (this.billingType === 1) {
           params.data = {
-            remove_options: ['billing_bucket_account'],
+            remove_options: ['billing_bucket_account', 'billing_bigquery_table'],
             ...params.data,
           }
         }

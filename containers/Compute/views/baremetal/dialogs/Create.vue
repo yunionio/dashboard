@@ -112,7 +112,7 @@ export default {
             step: 2,
           },
         ],
-        MPT3SAS: [
+        Mpt3SAS: [
           {
             value: 'none',
             label: this.$t('compute.text_325'),
@@ -123,6 +123,36 @@ export default {
             value: 'raid0',
             label: 'Raid0',
             min: 2,
+            max: 10,
+            step: 1,
+          },
+          {
+            value: 'raid1',
+            label: 'Raid1',
+            min: 2,
+            max: 2,
+            step: 2,
+          },
+          {
+            value: 'raid10',
+            label: 'Raid10',
+            min: 4,
+            max: 10,
+            step: 2,
+          },
+        ],
+        Mpt2SAS: [
+          {
+            value: 'none',
+            label: this.$t('compute.text_325'),
+            min: 1,
+            step: 1,
+          },
+          {
+            value: 'raid0',
+            label: 'Raid0',
+            min: 2,
+            max: 10,
             step: 1,
           },
           {
@@ -216,6 +246,32 @@ export default {
             value: 'raid0',
             label: 'Raid0',
             min: 1,
+            step: 1,
+          },
+          {
+            value: 'raid1',
+            label: 'Raid1',
+            min: 2,
+            step: 2,
+          },
+          {
+            value: 'raid10',
+            label: 'Raid10',
+            min: 4,
+            step: 2,
+          },
+        ],
+        AdaptecRaid: [
+          {
+            value: 'none',
+            label: this.$t('compute.text_325'),
+            min: 1,
+            step: 1,
+          },
+          {
+            value: 'raid0',
+            label: 'Raid0',
+            min: 2,
             step: 1,
           },
           {

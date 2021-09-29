@@ -66,7 +66,13 @@
                   :title="item.title"
                   :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
                   <div class="d-flex align-items-center">
-                    <span class="flex-fill text-truncate">{{ item.title }}</span>
+                    <a-tooltip v-if="isSysTag(item.key)">
+                      <template slot="title">
+                        {{ $t('common.tag.sys_tag_tooltip') }}
+                      </template>
+                      <span class="flex-fill text-truncate">{{ item.title }}</span>
+                    </a-tooltip>
+                    <span v-else class="flex-fill text-truncate">{{ item.title }}</span>
                     <a-icon v-if="!isSysTag(item.key)" class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click.stop="removeTag(item)" />
                   </div>
                 </div>
@@ -266,9 +272,11 @@ export default {
         const data = {}
         let num = 0
         R.forEachObjIndexed((value, key) => {
-          const _key = R.replace(/(ext:|user:)/, '', key)
-          data[_key] = value[0] ? value[0] : ''
-          num++
+          if (key.startsWith('user:')) {
+            const _key = R.replace(/user:/, '', key)
+            data[_key] = value[0] ? value[0] : ''
+            num++
+          }
         }, this.checked)
         if (num > 20) {
           this.$message.warning(this.$t('common_119'))

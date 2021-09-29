@@ -16,7 +16,7 @@
       </a-row>
       <a-row :gutter="16">
         <a-col :md="12" :xl="8" :xxl="6" v-for="obj in ringInfo" :key="obj.field">
-          <usage-ring :title="obj.title" :options="obj.options" />
+          <usage-ring :title="obj.title" :field="obj.field" :options="obj.options" />
         </a-col>
       </a-row>
     </template>
@@ -96,7 +96,9 @@ export default {
         }
         const sum = key ? `${key}.${obj.sum}` : obj.sum
         const use = key ? `${key}.${obj.use}` : obj.use
+
         ringInfo.push({
+          field: sum,
           title: obj.name,
           options: {
             label: {

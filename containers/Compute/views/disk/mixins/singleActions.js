@@ -1,7 +1,7 @@
 import { mapGetters } from 'vuex'
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import i18n from '@/locales'
-import { BRAND_MAP, PROVIDER_MAP } from '@/constants'
+import { BRAND_MAP, PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
@@ -54,10 +54,10 @@ export default {
                   tooltip: '',
                 }
                 if (obj.cloud_env === 'onpremise' || obj.cloud_env === 'private' || obj.cloud_env === 'public') {
-                  if (obj.storage_type === 'local') {
-                    ret.tooltip = i18n.t('compute.text_442')
-                    return ret
-                  }
+                  // if (obj.storage_type === 'local') {
+                  //   ret.tooltip = i18n.t('compute.text_442')
+                  //   return ret
+                  // }
                   ret.validate = !obj.guest && obj.status === 'ready'
                   if (obj.guest) {
                     ret.tooltip = i18n.t('compute.text_443')
@@ -102,12 +102,12 @@ export default {
                     tooltip: i18n.t('compute.text_445'),
                   }
                 }
-                if (obj.cloud_env === 'onpremise' && obj.storage_type === 'local') {
-                  return {
-                    validate: false,
-                    tooltip: i18n.t('compute.text_446'),
-                  }
-                }
+                // if (obj.cloud_env === 'onpremise' && obj.storage_type === 'local') {
+                //   return {
+                //     validate: false,
+                //     tooltip: i18n.t('compute.text_446'),
+                //   }
+                // }
                 if (obj.disk_type === 'sys') {
                   return {
                     validate: false,
@@ -211,7 +211,7 @@ export default {
                 if (!supportShpolcyBrand.includes(obj.brand)) {
                   const newSupportShpolcyBrand = supportShpolcyBrand.map(v => {
                     if (v === 'OneCloud') {
-                      return i18n.t('common.yunion_cloud')
+                      return i18n.t('brand')
                     }
                     return v
                   })
@@ -231,6 +231,25 @@ export default {
                 }
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_setup_snapshot_policy'),
+            },
+            {
+              label: i18n.t('compute.driver.update'),
+              action: () => {
+                this.createDialog('DiskDriverUpdateDialog', {
+                  data: [obj],
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                }
+                if (!(obj.brand === HYPERVISORS_MAP.kvm.brand)) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.text_1388')
+                }
+                return ret
+              },
+              hidden: () => !this.isAdminMode,
             },
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
@@ -301,15 +320,6 @@ export default {
               },
               meta: () => this.$getDeleteResult(obj),
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_delete'),
-            },
-            {
-              label: i18n.t('compute.driver.update'),
-              action: () => {
-                this.createDialog('DiskDriverUpdateDialog', {
-                  data: [obj],
-                })
-              },
-              hidden: () => !this.isAdminMode,
             },
           ]
         },

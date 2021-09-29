@@ -11,6 +11,7 @@
               </a>
               <a-menu slot="overlay" @click="handleActionClick">
                 <a-menu-item key="handleEdit"><a-icon type="edit" />{{$t('dashboard.text_104')}}</a-menu-item>
+                <a-menu-item key="handleClone"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
                 <a-menu-item key="handleDelete"><a-icon type="delete" />{{$t('scope.text_18')}}</a-menu-item>
               </a-menu>
             </a-dropdown>
@@ -47,6 +48,9 @@ export default {
   mixins: [DialogMixin, WindowsMixin],
   props: {
     updated_at: {
+      type: String,
+    },
+    dashboard_id: {
       type: String,
     },
     panel: {
@@ -141,6 +145,13 @@ export default {
     handleDelete () {
       this.createDialog('DeleteMonitorDashboardChart', {
         data: [{ id: this.panel.panel_id, name: this.metric.label }],
+        refresh: () => { this.$emit('delete') },
+        columns: [getNameDescriptionTableColumn()],
+      })
+    },
+    handleClone () {
+      this.createDialog('CloneMonitorDashboardChart', {
+        data: [{ id: this.panel.panel_id, name: this.metric.label, dashboard_id: this.dashboard_id }],
         refresh: () => { this.$emit('delete') },
         columns: [getNameDescriptionTableColumn()],
       })

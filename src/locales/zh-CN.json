@@ -890,7 +890,8 @@
     },
     "alertSendState": {
       "ok": "已发送",
-      "silent": "已收敛"
+      "silent": "已收敛",
+      "shield": "已屏蔽"
     },
     "dnszonecache": {
       "init": "初始化",
@@ -2401,8 +2402,10 @@
     "cloudgroupcache": "权限组缓存",
     "cloudpolicy": "云权限",
     "commonalert": "告警策略",
+    "monitorresourcealerts": "告警屏蔽",
     "monitor_commonalert": "告警",
     "monitor_metrics": "监控",
+    "monitorresources": "资源",
     "explorer": "监控查询",
     "instance_snapshot": "主机快照",
     "dbinstance": "RDS实例",
@@ -4247,8 +4250,8 @@
   "common_466": "输入的值必须大于0",
   "common_467": "无可用平台，请联系管理员",
   "common_468": "无可用平台，无法创建集群，请联系管理员",
-  "common_469": "区域级",
-  "common_470": "单个地区",
+  "common_469": "多个可用区（可用性高）",
+  "common_470": "单个可用区",
   "common_29": "设置支付货币",
   "common_383": "请选择货币类型",
   "common_396": "设置成功",
@@ -4884,5 +4887,19 @@
   "license.group.private": "@:scope.text_76",
   "license.group.storage": "@:scope.text_77",
   "license.group.container": "@:scope.text_78",
-  "license.group.default": ""
+  "license.group.default": "",
+  "scope.auth.login": "用户登录",
+  "scope.auth.username.placeholder": "请输入用户名",
+  "scope.auth.password.validate": "请输入密码",
+  "scope.auth.password.placeholder": "请输入密码",
+  "scope.auth.captcha.placeholder": "验证码",
+  "scope.auth.captcha.validate": "请输入验证码",
+  "scope.login.desc1": "智能运营 智赢未来",
+  "scope.login.desc2": "启航智能新时代，驾驭变革，推动增长",
+  "scope.auth.chooser": "选择账号",
+  "scope.auth.remove.history.user.btn": "移除账号",
+  "scope.auth.outher.history.user.btn": "使用其他账号",
+  "scope.login.app.name": "云管理平台",
+  "scope.brand_private": "内置私有云平台",
+  "common.tag.sys_tag_tooltip": "云上系统标签，暂不支持操作"
 }

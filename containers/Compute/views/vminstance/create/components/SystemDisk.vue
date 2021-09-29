@@ -172,7 +172,7 @@ export default {
         const type = typeItemArr[0]
         const medium = typeItemArr[1]
         let opt = hypervisorDisks[type] || this.getExtraDiskOpt(type)
-        if (hyper === HYPERVISORS_MAP.kvm.key && type === 'local' && this.isSomeLocal(currentTypes)) {
+        if ((hyper === HYPERVISORS_MAP.kvm.key || hyper === HYPERVISORS_MAP.cloudpods.key) && type === 'local' && this.isSomeLocal(currentTypes)) {
           opt = hypervisorDisks[`${type}-${medium}`] // kvm 区分多种介质的硬盘
         }
         if (opt && !opt.sysUnusable) {
@@ -233,7 +233,7 @@ export default {
         isError: false,
       }
       if (this.ignoreStorageStatus || !this.form.fd.systemDiskType || !this.form.fd.systemDiskType.key) return statusMap
-      if (this.capabilityData.storage_types3 && this.hypervisor && !this.isPublic && this.hypervisor !== HYPERVISORS_MAP.hcso.hypervisor) {
+      if (this.capabilityData.storage_types3 && this.hypervisor && this.hypervisor === HYPERVISORS_MAP.openstack.hypervisor) {
         const storageTypes3 = this.capabilityData.storage_types3[this.hypervisor] || {}
         const storages = []
         for (const prop in storageTypes3) {

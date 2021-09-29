@@ -14,6 +14,9 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
+      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.default_region')">
+        <a-input v-decorator="decorators.default_region" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.default_region')])" />
+      </a-form-item>
       <a-form-item :label="$t('cloudenv.cloudaccount.apsara.endpoint')">
         <a-input v-decorator="decorators.endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.endpoint')])" />
         <div slot="extra">
@@ -21,30 +24,34 @@
           <help-link :href="`https://help.aliyun.com/apsara/enterprise/v_3_12_0_20200630/apsara_stack_platform/enterprise-developer-guide/obtain-the-endpoint-of-api-operations.html`">{{$t('cloudenv.text_575')}}</help-link>
         </div>
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.ecs_endpoint')">
-        <a-input v-decorator="decorators.ecs_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.ecs_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.vpc_endpoint')">
-        <a-input v-decorator="decorators.vpc_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.vpc_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.slb_endpoint')">
-        <a-input v-decorator="decorators.slb_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.slb_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.oss_endpoint')">
-        <a-input v-decorator="decorators.oss_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.oss_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.rds_endpoint')">
-        <a-input v-decorator="decorators.rds_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.rds_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.kvs_endpoint')">
-        <a-input v-decorator="decorators.kvs_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.kvs_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.metrics_endpoint')">
-        <a-input v-decorator="decorators.metrics_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.metrics_endpoint')])" />
-      </a-form-item>
-      <a-form-item :label="$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')">
-        <a-input v-decorator="decorators.action_trail_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')])" />
-      </a-form-item>
+      <a-collapse :bordered="false">
+        <a-collapse-panel :header="$t('cloudenv.cloudaccount.apsara.other.endpoints')">
+        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.ecs_endpoint')">
+          <a-input v-decorator="decorators.ecs_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.ecs_endpoint')])" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.vpc_endpoint')">
+          <a-input v-decorator="decorators.vpc_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.vpc_endpoint')])" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.slb_endpoint')">
+          <a-input v-decorator="decorators.slb_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.slb_endpoint')])" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.oss_endpoint')">
+          <a-input v-decorator="decorators.oss_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.oss_endpoint')])" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.rds_endpoint')">
+          <a-input v-decorator="decorators.rds_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.rds_endpoint')])" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.kvs_endpoint')">
+          <a-input v-decorator="decorators.kvs_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.kvs_endpoint')])" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.metrics_endpoint')">
+          <a-input v-decorator="decorators.metrics_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.metrics_endpoint')])" />
+        </a-form-item>
+        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')">
+          <a-input v-decorator="decorators.action_trail_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')])" />
+        </a-form-item>
+        </a-collapse-panel>
+      </a-collapse>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" />
@@ -114,15 +121,6 @@ export default {
             ],
           },
         ],
-        project: [
-          'project',
-          {
-            initialValue: this.$store.getters.userInfo.projectId,
-            rules: [
-              { validator: isRequired(), message: this.$t('rules.project'), trigger: 'change' },
-            ],
-          },
-        ],
         auto_create_project: [
           'auto_create_project',
           {
@@ -135,6 +133,14 @@ export default {
           {
             rules: [
               { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.apsara.endpoint')]) },
+            ],
+          },
+        ],
+        default_region: [
+          'default_region',
+          {
+            rules: [
+              { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.apsara.default_region')]) },
             ],
           },
         ],

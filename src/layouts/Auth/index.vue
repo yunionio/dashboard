@@ -59,7 +59,6 @@ import { mapGetters } from 'vuex'
 import { isChrome } from '@/utils/utils'
 import { setLanguage } from '@/utils/common/cookie'
 import TopAlert from '@/sections/TopAlert'
-
 export default {
   name: 'AuthLayout',
   components: {

@@ -34,7 +34,7 @@
               <icon type="more" style="font-size: 18px;" />
             </a>
             <a-menu slot="overlay" @click="handleActionClick">
-<!--              <a-menu-item key="handleCopy"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>-->
+              <a-menu-item key="handleClone"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
               <a-menu-item key="handleDelete"><a-icon type="delete" />{{$t('scope.text_18')}}</a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -108,6 +108,13 @@ export default {
     },
     handleActionClick ({ key }) {
       if (this[key]) this[key]()
+    },
+    handleClone () {
+      this.createDialog('CloneMonitorDashboard', {
+        data: this.dashboards.filter((item) => { return item.id === this.dashboardId }),
+        refresh: this.switchDashboard,
+        columns: [getNameDescriptionTableColumn(), getProjectDomainTableColumn(), getProjectTableColumn()],
+      })
     },
     handleDelete () {
       this.createDialog('DeleteMonitorDashboard', {

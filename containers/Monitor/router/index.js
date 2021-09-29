@@ -2,11 +2,13 @@ import Overview from '@Monitor/views/overview'
 import CommonalertsIndex from '@Monitor/views/commonalert'
 import commonalertsCreate from '@Monitor/views/commonalert/create'
 import commonalertsUpdate from '@Monitor/views/commonalert/update'
+import MonitorresourcesIndex from '@Monitor/views/monitorresource'
 import AlertresourceIndex from '@Monitor/views/alertresource'
 import AlertrecordIndex from '@Monitor/views/alertrecord'
 import Explorer from '@Monitor/views/explorer'
 import Dashboard from '@Monitor/views/dashboard'
 import MonitorDashboardChartCreate from '@Monitor/views/dashboard/create'
+import AlertRecordShieldsIndex from '@Monitor/views/alertrecordshields'
 import Layout from '@/layouts/RouterView'
 import { setupKeys } from '@/utils/auth'
 import i18n from '@/locales'
@@ -33,6 +35,70 @@ export default {
         },
       },
       component: Overview,
+    },
+    {
+      meta: {
+        label: i18n.t('monitor.monitorresources'),
+        t: 'dictionary.monitorresources',
+      },
+      submenus: [
+        {
+          path: '/monitorresources-guest',
+          meta: {
+            label: i18n.t('common.server'),
+            permission: 'monitorresources_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources-guest')) {
+                return true
+              }
+
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+              })
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'MonitorresourcesGuest',
+              path: '',
+              props: { res_type: 'guest' },
+              component: MonitorresourcesIndex,
+            },
+          ],
+        },
+        {
+          path: '/monitorresources-host',
+          meta: {
+            label: i18n.t('dictionary.host'),
+            permission: 'monitorresources_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources-host')) {
+                return true
+              }
+
+              if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
+                return true
+              }
+
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
+              })
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'MonitorresourcesHost',
+              path: '',
+              props: { res_type: 'host' },
+              component: MonitorresourcesIndex,
+            },
+          ],
+        },
+      ],
     },
     {
       meta: {
@@ -182,6 +248,32 @@ export default {
               name: 'alertresourceIndex',
               path: '',
               component: AlertresourceIndex,
+            },
+          ],
+        },
+        {
+          path: '/monitorresourcealerts',
+          meta: {
+            label: i18n.t('monitor.text_2'),
+            t: 'dictionary.monitorresourcealerts',
+            permission: 'monitorresourcealerts_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.commonalerts')) {
+                return true
+              }
+
+              return !setupKeys.hasVersionedSetupKey({
+                '3.0': ['monitor'],
+                default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'],
+              })
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AlertRecordShieldsIndex',
+              path: '',
+              component: AlertRecordShieldsIndex,
             },
           ],
         },

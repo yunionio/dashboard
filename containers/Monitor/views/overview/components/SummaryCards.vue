@@ -12,6 +12,37 @@
 <script>
 import OverviewSummaryCard from '../../../components/MonitorCard/sections/card'
 
+const cardsTypeMap = {
+  guest: {
+    icon: 'res-vminstance',
+    index: 1,
+  },
+  host: {
+    icon: 'res-host',
+    index: 2,
+  },
+  cloudaccount: {
+    icon: 'res-cloudaccount',
+    index: 3,
+  },
+  oss: {
+    icon: 'res-bucket',
+    index: 4,
+  },
+  storage: {
+    icon: 'res-blockstorage',
+    index: 5,
+  },
+  rds: {
+    icon: 'res-rds',
+    index: 6,
+  },
+  redis: {
+    icon: 'res-redis',
+    index: 7,
+  },
+}
+
 export default {
   name: 'SummaryCards',
   components: { OverviewSummaryCard },
@@ -34,6 +65,7 @@ export default {
     cards () {
       const cards = []
       for (const k in this.data) {
+        console.log(k)
         const items = Object.assign({ alerting: 0, attach: 0, init: 0 }, this.data[k])
         const total = items.total || 0
         delete items.total
@@ -46,22 +78,19 @@ export default {
           continue
         }
 
-        let icon = `res-${k}`
-        if (k === 'guest') {
-          icon = 'res-vminstance'
-        } else if (k === 'oss') {
-          icon = 'res-bucket'
-        } else if (k === 'storage') {
-          icon = 'res-blockstorage'
-        }
+        const icon = cardsTypeMap[k]?.icon || `res-${k}`
 
         cards.push({
           title: this.$t(`dictionary.${k}`),
           icon: icon,
           total: total,
           items: items,
+          index: cardsTypeMap[k]?.index || 10,
         })
       }
+      cards.sort((a, b) => { // 虚拟机和宿主机优先展示
+        return a.index - b.index
+      })
       return cards
     },
   },

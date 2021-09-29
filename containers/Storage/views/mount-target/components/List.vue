@@ -11,13 +11,13 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'MountTargetList',
@@ -53,8 +53,13 @@ export default {
       }),
       exportDataOptions: {
         items: [
+          { label: this.$t('common.network.type'), key: 'network_type' },
           { label: 'ID', key: 'id' },
           { label: this.$t('storage.text_41'), key: 'status' },
+          { label: this.$t('dictionary.vpc'), key: 'vpc' },
+          { label: this.$t('dictionary.network'), key: 'network' },
+          { label: this.$t('dictionary.access_group'), key: 'access_group' },
+          { label: this.$t('storage.mount.target.domain.name'), key: 'domain_name' },
           { label: this.$t('storage.created_at'), key: 'created_at' },
         ],
       },

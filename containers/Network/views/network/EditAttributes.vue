@@ -2,7 +2,7 @@
   <div>
     <page-header :title="$t('network.text_606')" style="margin-bottom: 7px;" />
     <page-body>
-      <a-form class="mt-3" :form="form.fc" @submit.prevent="handleSubmit">
+      <a-form class="mt-3" :form="form.fc">
         <a-divider orientation="left">{{$t('network.text_397')}}</a-divider>
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
@@ -72,7 +72,7 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
-        <a-button type="primary" html-type="submit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_606')}}</a-button>
+        <a-button type="primary" @click="handleSubmit" class="ml-3" :loading="submiting" size="large">{{$t('network.text_606')}}</a-button>
         <a-button class="ml-3" size="large" @click="() => $router.back()">{{$t('common.cancel')}}</a-button>
       </template>
     </page-footer>
@@ -304,6 +304,7 @@ export default {
       })
     },
     async handleSubmit () {
+      console.log('submit')
       this.submiting = true
       try {
         let values = await this.form.fc.validateFields()

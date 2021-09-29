@@ -32,6 +32,7 @@
                       :description="lineDescription"
                       :threshold="threshold"
                       :pager="pager"
+                      :key="pager.total"
                       @pageChange="pageChange" />
       </div>
     </a-col>
@@ -288,7 +289,7 @@ export default {
       this.formmMetric = R.is(Object, params) ? [{ model: params }] : null
       await this._refresh(10, 0)
     },
-    async fetchData (limit, offset) {
+    async fetchData (limit = this.pager.limit, offset = 0) {
       try {
         const data = {
           metric_query: this.formmMetric,
