@@ -4400,7 +4400,7 @@
   "common_719": "{0} resources alert firing.",
   "common_alert_tips": "{0} policies alert firing.",
   "common_720": "There is no resource alert",
-  "workflow.biz_field": "The ticket can be found in the ticket list of 'wait for process', and the execution can be retried. If the execution is always failed, please contact the administrator.",
+  "workflow.biz_field": "You can find the work order on the pending my approval page in the upper right corner. Click pass to retry. If you still fail to retry many times, please contact the administrator for handling",
   "common_721": "Object Storage IP",
   "common_722": "Loadbalance IP",
   "common_723": "Global",
