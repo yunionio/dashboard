@@ -2,6 +2,7 @@
   <page-list
     :list="list"
     :columns="columns"
+    :group-actions="groupActions"
     :single-actions="singleActions" />
 </template>
 
@@ -33,6 +34,26 @@ export default {
           },
         },
       }),
+      groupActions: [
+        {
+          label: this.$t('monitor.alerts.shield.dismiss'),
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('monitor.alerts.shield.dismiss'),
+              name: this.$t('dictionary.monitorresourcealerts'),
+              onManager: this.onManager,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.allowDelete(),
+            }
+          },
+        },
+      ],
     }
   },
   created () {
