@@ -12,11 +12,10 @@ import ColumnsMixin from '../mixins/columns'
 import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import BrandIcon from '@/sections/BrandIcon'
 import { getNameFilter, getTimeRangeFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
-import { BRAND_MAP } from '@/constants'
-import _ from "lodash";
 
 export default {
   name: 'AlertrecordList',
