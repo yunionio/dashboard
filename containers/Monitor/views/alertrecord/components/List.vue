@@ -179,7 +179,7 @@ export default {
           field: 'res_name',
           label: this.$t('common_151'),
         },
-        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'created_at' }),
+        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'trigger_time' }),
       }
       for (const key of Object.keys(options)) {
         if (this.hiddenColumns.some(item => item === key)) {
@@ -285,7 +285,7 @@ export default {
             )
           },
         }),
-        getTimeTableColumn({ title: this.$t('monitor.text_14') }),
+        getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
         getStatusTableColumn({ statusModule: 'alertrecord', field: 'state' }),
         {
           field: 'type',
