@@ -12,10 +12,10 @@ import ColumnsMixin from '../mixins/columns'
 import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import BrandIcon from '@/sections/BrandIcon'
 import { getNameFilter, getTimeRangeFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
-import { BRAND_MAP } from '@/constants'
 
 export default {
   name: 'AlertrecordList',
@@ -179,7 +179,7 @@ export default {
           field: 'res_name',
           label: this.$t('common_151'),
         },
-        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'created_at' }),
+        created_at: getTimeRangeFilter({ label: this.$t('monitor.text_14'), field: 'trigger_time' }),
       }
       for (const key of Object.keys(options)) {
         if (this.hiddenColumns.some(item => item === key)) {
@@ -211,11 +211,15 @@ export default {
           {
             field: 'brand',
             title: this.$t('compute.text_176'),
-            formatter: ({ row }) => {
-              let brand = R.path(['data', 'tags', 'brand'], row)
-              if (!brand) return '-'
-              if (brand === 'kvm') brand = 'OneCloud'
-              return (BRAND_MAP[brand] && BRAND_MAP[brand].label) || brand
+            slots: {
+              default: ({ row }, h) => {
+                let brand = R.path(['data', 'tags', 'brand'], row)
+                if (!brand) return [<data-loading />]
+                if (brand === 'kvm') brand = 'OneCloud'
+                return [
+                  <BrandIcon name={ brand } />,
+                ]
+              },
             },
           },
           {
@@ -241,21 +245,25 @@ export default {
                   {
                     field: 'name',
                     title: this.$t('dashboard.text_110'),
-                    formatter: ({ row }) => R.path(['data', 'tags', 'name'], row) || '-',
+                    formatter: ({ row }) => R.path(['tags', 'name'], row) || '-',
                   },
                   {
                     field: 'ip',
                     title: 'IP',
-                    formatter: ({ row }) => R.path(['data', 'tags', 'ip'], row) || '-',
+                    formatter: ({ row }) => R.path(['tags', 'ip'], row) || '-',
                   },
                   {
                     field: 'brand',
                     title: this.$t('compute.text_176'),
-                    formatter: ({ row }) => {
-                      let brand = R.path(['data', 'tags', 'brand'], row)
-                      if (!brand) return '-'
-                      if (brand === 'kvm') brand = 'OneCloud'
-                      return (BRAND_MAP[brand] && BRAND_MAP[brand].label) || brand
+                    slots: {
+                      default: ({ row }, h) => {
+                        let brand = R.path(['tags', 'brand'], row)
+                        if (!brand) return [<data-loading />]
+                        if (brand === 'kvm') brand = 'OneCloud'
+                        return [
+                          <BrandIcon name={ brand } />,
+                        ]
+                      },
                     },
                   },
                   {
@@ -285,7 +293,7 @@ export default {
             )
           },
         }),
-        getTimeTableColumn({ title: this.$t('monitor.text_14') }),
+        getTimeTableColumn({ field: 'trigger_time', title: this.$t('monitor.text_14') }),
         getStatusTableColumn({ statusModule: 'alertrecord', field: 'state' }),
         {
           field: 'type',
