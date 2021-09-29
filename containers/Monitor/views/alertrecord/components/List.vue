@@ -245,19 +245,19 @@ export default {
                   {
                     field: 'name',
                     title: this.$t('dashboard.text_110'),
-                    formatter: ({ row }) => R.path(['data', 'tags', 'name'], row) || '-',
+                    formatter: ({ row }) => R.path(['tags', 'name'], row) || '-',
                   },
                   {
                     field: 'ip',
                     title: 'IP',
-                    formatter: ({ row }) => R.path(['data', 'tags', 'ip'], row) || '-',
+                    formatter: ({ row }) => R.path(['tags', 'ip'], row) || '-',
                   },
                   {
                     field: 'brand',
                     title: this.$t('compute.text_176'),
                     slots: {
                       default: ({ row }, h) => {
-                        let brand = R.path(['data', 'tags', 'brand'], row)
+                        let brand = R.path(['tags', 'brand'], row)
                         if (!brand) return [<data-loading />]
                         if (brand === 'kvm') brand = 'OneCloud'
                         return [
