@@ -247,6 +247,7 @@
   "cloudenv.text_202": "Associated Account",
   "cloudenv.text_203": "Generally speaking, the information such as the bucket of the bill file is set by the main account, and we need to use the access information of the main account to obtain these bill files for analysis",
   "cloudenv.text_204": "Bucket URL",
+  "cloudenv.text_2041": "BigQuery Table ID",
   "cloudenv.text_205": "How to get the billing bucket URL",
   "cloudenv.text_206": "File Prefix",
   "cloudenv.text_207": "Generally, it is the account ID of the public cloud, which is used to filter the billing files of the bucket. When there is only a billing file in the above bucket, you do not need to pay attention to this field.",

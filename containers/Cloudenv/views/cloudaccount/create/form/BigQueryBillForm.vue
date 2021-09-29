@@ -16,7 +16,7 @@
           </template>
         </a-select>
       </a-form-item>
-      <a-form-item :label="$t('cloudenv.text_204')">
+      <a-form-item :label="$t('cloudenv.text_2041')">
         <a-input v-decorator="decorators.billing_bigquery_table" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.billing_scope')">
