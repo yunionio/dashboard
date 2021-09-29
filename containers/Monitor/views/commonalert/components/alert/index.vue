@@ -236,10 +236,15 @@ export default {
         if (fd.comparator === 'nodata') {
           data.metric_query[0].condition_type = 'nodata_query'
         }
-        if (fd.showChannel && fd.channel) {
+        if (fd.channel) {
           data.channel = fd.channel
         } else {
           data.channel = []
+        }
+        if (fd.robot_ids) {
+          data.robot_ids = fd.robot_ids
+        } else {
+          data.robot_ids = []
         }
         if (fd.enabled_contact_types) {
           data.channel.push(...fd.enabled_contact_types)

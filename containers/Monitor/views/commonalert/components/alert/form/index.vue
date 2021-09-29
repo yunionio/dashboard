@@ -65,7 +65,7 @@
     </a-form-item>
     <a-form-item :label="$t('monitor.channel')">
       <a-checkbox-group
-        v-decorator="decorators.enabled_contact_types">
+        v-decorator="decorators.channel">
         <a-checkbox
           v-for="v in contactArrOpts"
           :key="v.label"
@@ -85,22 +85,10 @@
         </a-checkbox>
       </a-checkbox-group>
     </a-form-item>
-    <template>
-      <a-form-item :label="$t('monitor_metric_95')">
-        <a-tooltip placement="top">
-          <template slot="title">
-            <span v-if="!hadRobot">{{ $t('monitor.commonalerts.robot.disable.tips') }}</span>
-          </template>
-          <a-switch v-decorator="decorators.showChannel" @change="v => showChannel = v " :disabled="!hadRobot" />
-        </a-tooltip>
-      </a-form-item>
-      <notify-types
-        :label="$t('monitor.text_11')"
-        showAllRobot
-        :decorator="decorators.channel"
-        v-show="showChannel"
-        @channelOptsChange="channelOptsChange" />
-    </template>
+    <notify-types
+      :label="$t('monitor_metric_95')"
+      :placeholder="$t('common.tips.select', [$t('monitor.text_11')])"
+      :decorator="decorators.robot_ids" />
   </a-form>
 </template>
 
@@ -159,7 +147,8 @@ export default {
       level: 'normal',
       scope: this.$store.getters.scope,
       recipients: [],
-      enabled_contact_types: ['webconsole'],
+      robot_ids: [],
+      channel: ['webconsole'],
     }
     if (R.is(Object, this.alertData)) {
       initialValue.name = this.alertData.name
@@ -173,12 +162,13 @@ export default {
       initialValue.metric_key = _.get(this.alertData, 'settings.conditions[0].query.model.measurement')
       initialValue.metric_value = _.get(this.alertData, 'settings.conditions[0].query.model.select[0][0].params[0]')
       initialValue.threshold = _.get(this.alertData, 'settings.conditions[0].evaluator.params[0]')
+      if (this.alertData.robot_ids && this.alertData.robot_ids.length) initialValue.robot_ids = this.alertData.robot_ids
       if (this.alertData.recipients && this.alertData.recipients.length) initialValue.recipients = this.alertData.recipients
       if (this.alertData.channel && this.alertData.channel.length) {
         if (this.alertData.channel.indexOf('webconsole') < 0) {
-          initialValue.enabled_contact_types.push(...this.alertData.channel.filter((c) => !c.endsWith('robot')))
+          initialValue.channel.push(...this.alertData.channel.filter((c) => !c.endsWith('robot')))
         } else {
-          initialValue.enabled_contact_types = this.alertData.channel.filter((c) => !c.endsWith('robot'))
+          initialValue.channel = this.alertData.channel.filter((c) => !c.endsWith('robot'))
         }
       }
 
@@ -199,7 +189,6 @@ export default {
         initialValue.scope = 'project'
       }
     }
-    const showChannel = initialValue.channel ? !!initialValue.channel.find(v => v.includes('robot')) : false
     return {
       form: {
         fc: this.$form.createForm(this, {
@@ -375,23 +364,16 @@ export default {
             ],
           },
         ],
-        showChannel: [
-          'showChannel',
+        robot_ids: [
+          'robot_ids',
           {
-            valuePropName: 'checked',
-            initialValue: showChannel,
+            initialValue: initialValue.robot_ids,
           },
         ],
         channel: [
           'channel',
           {
             initialValue: initialValue.channel,
-          },
-        ],
-        enabled_contact_types: [
-          'enabled_contact_types',
-          {
-            initialValue: initialValue.enabled_contact_types,
           },
         ],
       },
@@ -421,8 +403,6 @@ export default {
       projectItem: {},
       metricLoading: false,
       metricInfoLoading: false,
-      hadRobot: false,
-      showChannel,
       recipientOpts: [],
       contactArrOpts: [],
       res_type_measurements: {},
@@ -472,13 +452,13 @@ export default {
       }
     },
     contactArrOpts () {
-      const ect = this.form.fc.getFieldValue('enabled_contact_types')
+      const ect = this.form.fc.getFieldValue('channel')
       if (ect) {
         let newContactTypes = this.contactArrOpts.filter((c) => { return ect.indexOf(c.value) >= 0 }).map((c) => c.value)
         if (newContactTypes.length === 0) {
           newContactTypes = ['webconsole']
         }
-        this.form.fc.setFieldsValue({ enabled_contact_types: newContactTypes })
+        this.form.fc.setFieldsValue({ channel: newContactTypes })
       }
     },
     res_type_measurements () {
@@ -549,12 +529,6 @@ export default {
           }
         })
       }
-    },
-    channelOptsChange (val) {
-      const vs = val.filter((item) => {
-        return isNaN(item.disabled)
-      })
-      this.hadRobot = vs.length > 0
     },
     scopeChange (scopeParams) {
       this.getMeasurement(scopeParams)
