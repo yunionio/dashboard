@@ -657,10 +657,17 @@ export default {
       this.timer = setTimeout(() => {
         const { os_arch } = this.$route.query
         // 数据延迟回填
-        if (os_arch && this.form.fi.capability.host_cpu_archs && this.form.fi.capability.host_cpu_archs && this.form.fi.capability.host_cpu_archs && this.form.fi.capability.host_cpu_archs.indexOf(os_arch) !== -1) {
-          this.form.fc.setFieldsValue({ os_arch })
+        if (os_arch) {
+          let canUseOsArch = ''
+          if (os_arch.indexOf('x86') !== -1) {
+            canUseOsArch = HOST_CPU_ARCHS.x86.key
+          } else if (os_arch.indexOf('aarch') !== -1) {
+            canUseOsArch = HOST_CPU_ARCHS.arm.key
+          }
+          if (!canUseOsArch) return
+          this.form.fc.setFieldsValue({ os_arch: canUseOsArch })
         }
-      }, 1000)
+      }, 3000)
     },
   },
 }
