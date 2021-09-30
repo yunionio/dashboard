@@ -225,6 +225,7 @@ export default {
     return {
       isLocalDisk: true,
       timer: null,
+      isFirstInit: true,
     }
   },
   computed: {
@@ -539,9 +540,9 @@ export default {
     },
   },
   mounted () {
-    this.$nextTick(() => {
-      this.init()
-    })
+    // this.$nextTick(() => {
+    //   this.init()
+    // })
   },
   destroyed () {
     this.timer = null
@@ -616,6 +617,7 @@ export default {
           this.form.fc.setFieldsValue({
             hypervisor: hypervisors[0], // 赋值默认第一个平台
           })
+          this.init()
         })
     },
     fetchInstanceSpecs () {
@@ -642,13 +644,25 @@ export default {
       }
     },
     init () {
-      this.initOsArch()
+      if (this.isFirstInit) {
+        this.initOsArch()
+        this.isFirstInit = false
+      }
     },
     initOsArch () {
       this.timer = setTimeout(() => {
         const { os_arch } = this.$route.query
         // 数据延迟回填
-        this.form.fc.setFieldsValue({ os_arch })
+        if (os_arch) {
+          let canUseOsArch = ''
+          if (os_arch.indexOf('x86') !== -1) {
+            canUseOsArch = HOST_CPU_ARCHS.x86.key
+          } else if (os_arch.indexOf('aarch') !== -1) {
+            canUseOsArch = HOST_CPU_ARCHS.arm.key
+          }
+          if (!canUseOsArch) return
+          this.form.fc.setFieldsValue({ os_arch: canUseOsArch })
+        }
       }, 3000)
     },
   },
