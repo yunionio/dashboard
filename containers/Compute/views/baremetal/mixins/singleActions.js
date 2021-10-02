@@ -2,10 +2,11 @@ import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
 import { commonUnabled, cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
-import { typeClouds } from '@/utils/common/hypervisor'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import i18n from '@/locales'
+import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
+import { hostServerActions } from '../../../utils/hostActions'
 
 export default {
   computed: {
@@ -22,23 +23,7 @@ export default {
         label: i18n.t('compute.text_341'),
         actions: obj => {
           let ret = []
-          ret.push({
-            label: i18n.t('compute.text_342'),
-            action: () => {
-              this.webconsoleManager.objectRpc({
-                methodname: 'DoBaremetalConnect',
-                objId: obj.host_id,
-              }).then(({ data }) => {
-                this.openWebConsole(obj, data)
-              })
-            },
-            meta: () => {
-              const ret = {
-                validate: obj.status === 'running',
-              }
-              return ret
-            },
-          })
+          ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole))
           const mapIpActions = (ipArr, type) => {
             if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error(i18n.t('compute.text_343'))
             const options = []
@@ -117,27 +102,7 @@ export default {
           eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
           ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
           ret = ret.concat(eips).concat(ips)
-          ret.push({
-            label: i18n.t('compute.text_351'),
-            action: () => {
-              const manager = new this.$Manager('servers', 'v2')
-              manager.getSpecific({
-                id: obj.id,
-                spec: 'jnlp',
-              }).then(res => {
-                const blob = new Blob([res.data.jnlp], { type: 'application/x-java-jnlp-file' })
-                const url = window.URL.createObjectURL(blob)
-                const fileName = `${obj.name}.jnlp`
-                const linkDom = document.createElement('a')
-                linkDom.href = url
-                linkDom.setAttribute('download', fileName)
-                document.body.appendChild(linkDom)
-                linkDom.click()
-                document.body.removeChild(linkDom)
-                window.URL.revokeObjectURL(url)
-              })
-            },
-          })
+          ret.push(jnlpConsole(new this.$Manager('servers', 'v2'), obj))
           return ret
         },
         meta: (obj) => {
@@ -155,82 +120,7 @@ export default {
           return [
             {
               label: i18n.t('compute.text_353'),
-              submenus: [
-                {
-                  label: i18n.t('compute.text_272'),
-                  permission: 'server_perform_start',
-                  action: () => {
-                    this.onManager('performAction', {
-                      steadyStatus: 'running',
-                      id: obj.id,
-                      managerArgs: {
-                        action: 'start',
-                      },
-                    })
-                  },
-                  meta: () => {
-                    return {
-                      validate: obj.status === 'ready' && !commonUnabled(obj),
-                    }
-                  },
-                },
-                {
-                  label: i18n.t('compute.text_273'),
-                  permission: 'server_perform_stop',
-                  action: () => {
-                    this.createDialog('VmShutDownDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  },
-                  meta: () => {
-                    return {
-                      validate: obj.status === 'running' && !commonUnabled(obj),
-                    }
-                  },
-                },
-                {
-                  label: i18n.t('compute.text_274'),
-                  permission: 'server_perform_restart',
-                  action: () => {
-                    this.createDialog('VmRestartDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  },
-                  meta: () => {
-                    return {
-                      validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
-                    }
-                  },
-                },
-                {
-                  label: i18n.t('compute.text_354'),
-                  permission: 'server_perform_reset',
-                  action: () => {
-                    this.createDialog('VmResetDialog', {
-                      data: [obj],
-                      columns: this.columns,
-                      onManager: this.onManager,
-                    })
-                  },
-                  meta: () => {
-                    const ret = {
-                      validate: false,
-                      tooltip: null,
-                    }
-                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-                      ret.tooltip = i18n.t('compute.text_355')
-                      return ret
-                    }
-                    return {
-                      validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
-                    }
-                  },
-                },
-              ],
+              submenus: hostServerActions(this.onManager, obj, this, false),
             },
             {
               label: i18n.t('compute.text_356'),

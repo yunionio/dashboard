@@ -5,6 +5,7 @@ import { typeClouds } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
+import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 
 export default {
   destroyed () {
@@ -22,20 +23,9 @@ export default {
           label: i18n.t('compute.text_567'),
           actions: obj => {
             const ret = []
-            if (obj.host_type === 'baremetal') {
-              ret.push({
-                label: i18n.t('compute.text_568'),
-                action: () => {
-                  this.webconsoleManager.objectRpc({ methodname: 'DoBaremetalConnect', objId: obj.id }).then((res) => {
-                    this.openWebConsole(obj, res.data)
-                  }).catch((err) => {
-                    throw err
-                  })
-                },
-                meta: () => ({
-                  validate: obj.status === 'running',
-                }),
-              })
+            if (obj.is_baremetal || obj.host_type === 'baremetal') {
+              ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole))
+              ret.push(jnlpConsole(this.onManager, obj))
             }
             let ips = (obj.server_ips || '').split(',').filter(item => !!item)
             if (obj.access_ip) {
