@@ -5,7 +5,7 @@
       <a-icon class="oc-term-close" type="close" @click="closeCloudShell" />
     </div>
     <div class="oc-term-content">
-      <xterm ref="xterm" :connectParams="connectParams" class="w-100 h-100" />
+      <xterm ref="xterm" :connectParams="connectParams" class="w-100 h-100" @close="onCloudShellClose" />
     </div>
   </div>
 </template>
@@ -76,6 +76,12 @@ export default {
     },
     handleResize () {
       this.$refs.xterm.term.fit()
+    },
+    onCloudShellClose () {
+      console.log('cloudshell close!!!')
+      this.$nextTick(() => {
+        this.closeCloudShell()
+      })
     },
   },
 }
