@@ -103,22 +103,53 @@ export default {
           },
         },
         {
-          label: this.$t('network.text_131'),
-          permission: 'dns_zones_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              title: this.$t('network.text_131'),
-              name: this.$t('dictionary.dns_zone'),
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-            })
+          label: this.$t('compute.text_275'),
+          actions: () => {
+            return [
+              {
+                label: this.$t('compute.text_283'),
+                permission: 'dns_zones_perform_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'network',
+                    },
+                    mode: 'add',
+                  })
+                },
+              },
+              {
+                label: this.$t('network.text_131'),
+                permission: 'dns_zones_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    title: this.$t('network.text_131'),
+                    name: this.$t('dictionary.dns_zone'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
           },
           meta: () => {
-            return {
-              validate: this.list.allowDelete(),
+            const ret = {
+              validate: true,
+              tooltip: null,
             }
+            ret.validate = this.list.selectedItems.length > 0
+            if (!ret.validate) return ret
+            return ret
           },
         },
       ],
