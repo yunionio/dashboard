@@ -115,7 +115,7 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                     params: {
-                      resources: 'network',
+                      resources: 'dns_zones',
                     },
                     mode: 'add',
                   })

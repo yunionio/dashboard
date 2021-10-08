@@ -863,6 +863,7 @@ export const PERMISSION = {
   dns_recordsets_delete: ['compute', 'dns_recordsets', 'delete'],
   dns_recordsets_disable: ['compute', 'dns_recordsets', 'perform', 'disable'],
   dns_recordsets_enable: ['compute', 'dns_recordsets', 'perform', 'enable'],
+  dns_recordsets_perform_set_user_metadata: ['compute', 'dns_recordsets', 'perform', 'set-user-metadata'],
   dns_zonecaches_get: ['compute', 'dns_zonecaches', 'get'],
   dns_zonecaches_create: ['compute', 'dns_zonecaches', 'create'],
   dns_zonecaches_delete: ['compute', 'dns_zonecaches', 'delete'],
