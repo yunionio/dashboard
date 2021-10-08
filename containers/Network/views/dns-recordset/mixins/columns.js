@@ -30,12 +30,12 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dns_recordsets', columns: () => this.columns }),
       getDnsTypeTableColumns(),
       getDnsValueTableColumns(),
       getTrafficPoliciesTableColumns(),
       getTtlTableColumns(),
       getEnabledTableColumn(),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dns_recordsets', columns: () => this.columns }),
     ]
   },
 }
