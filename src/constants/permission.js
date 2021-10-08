@@ -856,6 +856,7 @@ export const PERMISSION = {
   dns_zones_syncstatus: ['compute', 'dns_zones', 'perform', 'syncstatus'],
   dns_zones_sync_recordsets: ['compute', 'dns_zones', 'perform', 'sync-recordsets'],
   dns_zones_change_owner: ['compute', 'dns_zones', 'perform', 'change-owner'],
+  dns_zones_perform_set_user_metadata: ['compute', 'dns_zones', 'perform', 'set-user-metadata'],
   dns_recordsets_create: ['compute', 'dns_recordsets', 'create'],
   dns_recordsets_update: ['compute', 'dns_recordsets', 'update'],
   dns_recordsets_get: ['compute', 'dns_recordsets', 'get'],
