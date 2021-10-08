@@ -7,6 +7,7 @@ import {
 import {
   getNameDescriptionTableColumn,
   getEnabledTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -34,6 +35,7 @@ export default {
       getTrafficPoliciesTableColumns(),
       getTtlTableColumns(),
       getEnabledTableColumn(),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dns_recordsets', columns: () => this.columns }),
     ]
   },
 }

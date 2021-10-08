@@ -80,6 +80,21 @@ export default {
           label: this.$t('common.batchAction'),
           actions: () => {
             return [
+              {
+                label: this.$t('compute.text_283'),
+                permission: 'dns_recordsets_perform_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'dns_recordsets',
+                    },
+                    mode: 'add',
+                  })
+                },
+              },
               ...getEnabledSwitchActions(this),
               {
                 label: this.$t('network.text_131'),
