@@ -15,6 +15,7 @@
       :resId="data.id"
       :data="detailData"
       :resource="resource"
+      :resType="resType"
       :on-manager="onManager"
       :getParams="listParams" />
   </base-side-page>
@@ -23,6 +24,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import CommonalertList from '@Monitor/views/commonalert/components/List'
+import VmInstanceMonitorSidepage from './Monitor'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 
@@ -30,6 +32,7 @@ export default {
   name: 'MonitorResourceSidePage',
   components: {
     CommonalertList,
+    VmInstanceMonitorSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
   computed: {
@@ -39,12 +42,15 @@ export default {
           return 'EventListForHostSidePage'
         case 'CommonalertList':
           return 'CommonalertListSidePage'
+        case 'vm-instance-monitor-sidepage':
+          return 'VmInstanceMonitorSidepage'
         default:
           return ''
       }
     },
     detailTabs () {
       const tabs = [
+        { label: this.$t('monitor.text_122'), key: 'vm-instance-monitor-sidepage' },
         { label: this.$t('dictionary.commonalert'), key: 'CommonalertList' },
         { label: this.$t('dictionary.actions'), key: 'event-drawer' },
       ]
@@ -53,6 +59,9 @@ export default {
     title () {
       const t = this.params.res_type || ''
       return t === 'guest' ? this.$t('common.server') : this.$t('dictionary.host')
+    },
+    resType () {
+      return this.params.res_type
     },
   },
   methods: {

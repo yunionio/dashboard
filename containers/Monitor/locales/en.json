@@ -271,5 +271,19 @@
   "monitor.alerts.shield.tips": "The status is shield and the operation is not supported",
   "monitor.monitorresources.alert_state": "Alert State",
   "monitor.alerts.shield.tips2": "The alert is already shielded",
-  "monitor.view_system": "System"
+  "monitor.view_system": "System",
+  "monitor.text_122": "Monitor Detail",
+  "monitor.text_123": "CPU Utilization Per Core",
+  "monitor.text_124": "Number Of Offline Processes Of CPU Process",
+  "monitor.text_125": "Disk Read Traffic",
+  "monitor.text_126": "Disk Write Traffic",
+  "monitor.text_127": "Memory Used",
+  "monitor.text_128": "CPU IO Utilization",
+  "monitor.text_129": "Disk Reads",
+  "monitor.text_130": "Disk Writes",
+  "monitor.text_131": "Number Of Bytes Sent By The Network Per Second",
+  "monitor.text_132": "Number Of Bytes Accepted By The Network Per Second",
+  "monitor.text_133": "Total Number Of Packets Sent By Network Interface",
+  "monitor.text_134": "Total Number Of Packets Accepted By Network Interface",
+  "monitor.text_135": "Total Number Of Packets lost By Network Interface"
 }

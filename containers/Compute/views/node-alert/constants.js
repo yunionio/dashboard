@@ -18,7 +18,11 @@ export const LEVEL_CN = {
 export const metricItems = {
   // 虚拟机
   'vm_cpu.usage_active': { key: 'vm_cpu.usage_active', label: i18n.t('compute.text_753'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'vm_cpu.usage_iowait': { key: 'vm_cpu.usage_iowait', label: i18n.t('monitor.text_128'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'vm_cpu.reads': { key: 'vm_cpu.reads', label: i18n.t('monitor.text_129'), unit: 'count' },
+  'vm_cpu.writes': { key: 'vm_cpu.writes', label: i18n.t('monitor.text_130'), unit: 'count' },
   'vm_mem.used_percent': { key: 'vm_mem.used_percent', label: i18n.t('compute.text_755'), unit: '%', rules: [{ max: 100, type: 'integer', message: i18n.t('compute.text_754') }] },
+  'vm_mem.used': { key: 'vm_mem.used', label: i18n.t('monitor.text_127'), unit: 'G' },
   'vm_netio.bps_recv': { key: 'vm_netio.bps_recv', label: i18n.t('compute.text_756'), unit: 'bps' },
   'vm_netio.bps_sent': { key: 'vm_netio.bps_sent', label: i18n.t('compute.text_757'), unit: 'bps' },
   'vm_diskio.read_bps': { key: 'vm_diskio.read_bps', label: i18n.t('compute.text_758'), unit: 'bps' },

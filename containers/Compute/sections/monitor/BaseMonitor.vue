@@ -32,6 +32,12 @@ export default {
       type: Object,
       required: true,
     },
+    resId: {
+      type: String,
+    },
+    idKey: {
+      type: String, // vm_id, host_id
+    },
   },
   data () {
     return {
@@ -88,7 +94,7 @@ export default {
   },
   computed: {
     serverId () {
-      return this.data.id
+      return this.resId || this.data.id
     },
   },
   created () {
@@ -104,7 +110,7 @@ export default {
       for (let idx = 0; idx < this.constants.length; idx++) {
         const val = this.constants[idx]
         try {
-          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup)
+          const data = await this.helper.fetchFormatData(this.serverId, val, this.time, this.timeGroup, this.idKey)
           resList.push(data)
           if (idx === this.constants.length - 1) {
             this.loading = false
