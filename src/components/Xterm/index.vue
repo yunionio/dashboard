@@ -100,6 +100,9 @@ export default {
         this.term.write(arrayBuffer)
       })
       this.socket.on('disconnection', this._socketClose())
+      this.socket.on('connect_error', this._socketClose())
+      this.socket.on('disconnect', this._socketClose())
+      this.socket.on('disconnecting', this._socketClose())
       window.addEventListener('resize', () => {
         this.term.fit()
       })
@@ -109,6 +112,7 @@ export default {
       return () => {
         console.log('Connection lose!!!')
         this.socket && this.socket.close()
+        this.$emit('close')
       }
     },
   },
