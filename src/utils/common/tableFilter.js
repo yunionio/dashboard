@@ -12,6 +12,14 @@ export function getBrandItems (key = 'brands', outBrands = []) {
     brands = brands.concat(store.getters.capability[`disabled_${key}`] || [])
     brands = R.uniq(brands)
   }
+  if (store.getters.capability[`read_only_${key}`]) {
+    brands = brands.concat(store.getters.capability[`read_only_${key}`] || [])
+    brands = R.uniq(brands)
+  }
+  if (store.getters.capability[`read_only_disabled_${key}`]) {
+    brands = brands.concat(store.getters.capability[`read_only_disabled_${key}`] || [])
+    brands = R.uniq(brands)
+  }
   return brands.map(item => {
     const brandConfig = HYPERVISORS_MAP[item.toLowerCase()] || {}
     const obj = { key: item, label: brandConfig.label || item }
