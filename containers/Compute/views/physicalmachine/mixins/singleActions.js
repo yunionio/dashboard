@@ -4,6 +4,7 @@ import { canIpmiProbe } from '../utils/status'
 import expectStatus from '@/constants/expectStatus'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { solWebConsole, jnlpConsole } from '../../../utils/webconsole'
 
 export default {
   destroyed () {
@@ -17,19 +18,7 @@ export default {
         actions: obj => {
           const ret = []
           if (obj.host_type === 'baremetal') {
-            ret.push({
-              label: i18n.t('compute.text_568'),
-              action: () => {
-                this.webconsoleManager.objectRpc({ methodname: 'DoBaremetalConnect', objId: obj.id }).then((res) => {
-                  this.openWebConsole(obj, res.data)
-                }).catch((err) => {
-                  throw err
-                })
-              },
-              meta: () => ({
-                validate: obj.status === 'running',
-              }),
-            })
+            ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole))
           }
           let ips = (obj.server_ips || '').split(',').filter(item => !!item)
           if (obj.access_ip) {
@@ -97,23 +86,7 @@ export default {
               meta,
             })
           })
-          ret.push({
-            label: i18n.t('compute.text_351'),
-            action: () => {
-              return new this.$Manager('hosts').getSpecific({ id: obj.id, spec: 'jnlp' }).then(res => {
-                const blob = new Blob([res.data.jnlp], { type: 'application/x-java-jnlp-file' })
-                const url = window.URL.createObjectURL(blob)
-                const fileName = `${obj.name}.jnlp`
-                const linkDom = document.createElement('a')
-                linkDom.href = url
-                linkDom.setAttribute('download', fileName)
-                document.body.appendChild(linkDom)
-                linkDom.click()
-                document.body.removeChild(linkDom)
-                window.URL.revokeObjectURL(url)
-              })
-            },
-          })
+          ret.push(jnlpConsole(new this.$Manager('hosts', 'v2'), obj))
           return ret
         },
       },
