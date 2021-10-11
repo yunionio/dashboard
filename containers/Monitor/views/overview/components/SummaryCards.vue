@@ -3,7 +3,7 @@
     <a-icon type="sync" spin v-if="loading" />
     <a-row v-else type="flex" style="margin-left: 128px;">
       <a-col v-for="card in cards" :key="card.title" :span="8" style="width: 400px" class="mt-4">
-        <overview-summary-card :card="card" />
+        <overview-summary-card :card="card" @resourceClick="handleResClick" />
       </a-col>
     </a-row>
   </div>
@@ -65,7 +65,6 @@ export default {
     cards () {
       const cards = []
       for (const k in this.data) {
-        console.log(k)
         const items = Object.assign({ alerting: 0, attach: 0, init: 0 }, this.data[k])
         const total = items.total || 0
         delete items.total
@@ -86,6 +85,7 @@ export default {
           total: total,
           items: items,
           index: cardsTypeMap[k]?.index || 10,
+          resType: k,
         })
       }
       cards.sort((a, b) => { // 虚拟机和宿主机优先展示
@@ -124,6 +124,14 @@ export default {
       } catch (e) {
         this.loading = false
         throw e
+      }
+    },
+    handleResClick (res) {
+      if (['guest', 'host'].includes(res.resType)) {
+        this.$router.push({
+          path: `/monitorresources-${res.resType}`,
+          query: { defaultFilter: { alert_state: [res.alert_state] } },
+        })
       }
     },
   },

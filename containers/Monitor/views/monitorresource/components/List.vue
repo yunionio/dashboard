@@ -73,6 +73,7 @@ export default {
   },
   created () {
     this.list.fetchData()
+    this.initFilter()
   },
   methods: {
     getParam () {
@@ -92,6 +93,12 @@ export default {
         list: this.list,
         res_type: this.res_type,
       })
+    },
+    initFilter () {
+      const { query = {} } = this.$route
+      if (query.defaultFilter) {
+        this.list.changeFilter(query.defaultFilter)
+      }
     },
   },
 }
