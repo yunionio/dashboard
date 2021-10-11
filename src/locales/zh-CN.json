@@ -7,7 +7,9 @@
       "deleting": "删除中",
       "delete_failed": "删除失败",
       "available": "可用",
-      "unknown": "未知"
+      "unknown": "未知",
+      "update_tags": "更新标签或名称",
+      "update_tags_fail": "更新标签或名称失败"
     },
     "monitorresources": {
       "init": "未设置告警",

@@ -4,7 +4,7 @@ export default {
   common: {
     success: ['available'],
     info: ['unknown'],
-    danger: ['create_failed', 'delete_failed'],
+    danger: ['create_failed', 'delete_failed', 'update_tags_fail'],
   },
   server: {
     success: ['running'],
