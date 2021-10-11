@@ -1,7 +1,7 @@
 
 // import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getAccountTableColumn, getTagTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -19,6 +19,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'mongodb' }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'mongodb', columns: () => this.columns }),
       {
         field: 'instance_type',
         title: this.$t('cloudenv.text_459'),
