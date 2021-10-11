@@ -246,7 +246,7 @@
       "suspended": "Freeze",
       "arrears": "Arrears",
       "unknown": "Unknown status",
-      "no_permission": "No billing right"
+      "no permission": "No Permission"
     },
     "cloudaccountSyncStatus": {
       "idle": "Sync completed",
