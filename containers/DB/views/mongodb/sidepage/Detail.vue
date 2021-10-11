@@ -14,6 +14,10 @@ import { categoryMap } from '../constants'
 // import { NODE_TYPE, PERFORMANCE_TYPE } from '@DB/views/redis/constants'
 
 import {
+  getUserTagColumn,
+} from '@/utils/common/detailColumn'
+
+import {
   getBrandTableColumn,
   getSwitchTableColumn,
   getBillingTypeTableColumn,
@@ -38,6 +42,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'mongodb', columns: () => this.columns, tipName: this.$t('dictionary.mongodb') }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
         {
