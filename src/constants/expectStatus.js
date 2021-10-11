@@ -62,7 +62,7 @@ export default {
   cloudaccountHealthStatus: {
     success: ['normal'],
     danger: ['insufficient', 'suspended', 'arrears'],
-    info: ['unknown', 'no_permission'],
+    info: ['unknown', 'no permission'],
   },
   cloudaccountSyncStatus: {
     success: ['idle'],
