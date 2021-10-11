@@ -130,6 +130,9 @@ export default {
         resource: 'eips',
         getParams: this.getParam,
         filterOptions: {
+          external_id: {
+            label: this.$t('table.title.external_id'),
+          },
           id: {
             label: this.$t('table.title.id'),
           },
