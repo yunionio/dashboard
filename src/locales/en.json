@@ -7,7 +7,9 @@
       "deleting": "Deleting",
       "delete_failed": "Delete Failed",
       "available": "Available",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "update_tags": "Update tag",
+      "update_tags_fail": "Failed to update tag"
     },
     "monitorresources": {
       "init": "No alarm is set",
