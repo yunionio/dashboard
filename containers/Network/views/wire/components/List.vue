@@ -32,6 +32,12 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    cloudEnv: {
+      type: String,
+    },
+    cloudEnvOptions: {
+      type: Array,
+    },
   },
   data () {
     return {
@@ -196,6 +202,26 @@ export default {
         },
       ],
     }
+  },
+  watch: {
+    cloudEnv (val) {
+      switch (val) {
+        case 'onpremise':
+          this.envParams = { is_on_premise: true }
+          break
+        case 'private':
+          this.envParams = { private_cloud: true }
+          break
+        default:
+          this.envParams = {}
+      }
+      const params = this.list.getParams
+      delete params.is_on_premise
+      delete params.private_cloud
+      delete params.public_cloud
+      this.list.getParams = { ...params, ...this.envParams }
+      this.list.fetchData()
+    },
   },
   created () {
     this.initSidePageTab('wire-detail')
