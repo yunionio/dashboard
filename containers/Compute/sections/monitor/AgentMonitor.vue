@@ -1,7 +1,9 @@
 <template>
   <base-monitor
     :data="data"
-    :constants="constants" />
+    :constants="constants"
+    :resId="resId"
+    :idKey="idKey" />
 </template>
 
 <script>
@@ -18,11 +20,16 @@ export default {
       type: Object,
       required: true,
     },
-  },
-  data () {
-    return {
-      constants: AGENT_MONITOR,
-    }
+    constants: {
+      type: Array,
+      default: () => AGENT_MONITOR,
+    },
+    resId: {
+      type: String,
+    },
+    idKey: {
+      type: String,
+    },
   },
 }
 </script>

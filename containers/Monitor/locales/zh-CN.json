@@ -271,5 +271,19 @@
   "monitor.alerts.shield.tips": "消息状态为已屏蔽的不支持该操作",
   "monitor.monitorresources.alert_state": "监控状态",
   "monitor.alerts.shield.tips2": "告警已屏蔽",
-  "monitor.view_system": "系统"
+  "monitor.view_system": "系统",
+  "monitor.text_122": "监控详情",
+  "monitor.text_123": "CPU每核使用率",
+  "monitor.text_124": "CPU进程下线程数",
+  "monitor.text_125": "磁盘读流量",
+  "monitor.text_126": "磁盘写流量",
+  "monitor.text_127": "已使用内存",
+  "monitor.text_128": "CPU IO使用率",
+  "monitor.text_129": "磁盘读取次数",
+  "monitor.text_130": "磁盘写入次数",
+  "monitor.text_131": "网络每秒发送字节数",
+  "monitor.text_132": "网络每秒接受字节数",
+  "monitor.text_133": "网络接口发送数据包总数",
+  "monitor.text_134": "网络接口接收数据包总数",
+  "monitor.text_135": "网络接口丢包总数"
 }

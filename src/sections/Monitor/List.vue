@@ -39,6 +39,18 @@ export default {
       const lineConfig = item.lineConfig || {}
       return {
         ...lineConfig,
+        tooltip: {
+          formatter: (params = [], ticket, callback) => {
+            let ret = '<div>'
+            params.map(param => {
+              ret += `<div>${param.marker || ''}<span>${param.seriesName || ''}: ${param.value}${item.unit}</div>`
+            })
+            ret += '</div>'
+            // eslint-disable-next-line
+            callback(ret)
+            return ret
+          },
+        },
         yAxis: {
           axisLabel: {
             formatter: `{value}${item.unit}`,

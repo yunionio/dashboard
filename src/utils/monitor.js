@@ -1,7 +1,7 @@
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 
-function genServerQueryData (vmId, val, scope, from, interval) {
+function genServerQueryData (vmId, val, scope, from, interval, idKey) {
   const model = {
     measurement: val.fromItem,
     select: [
@@ -22,14 +22,14 @@ function genServerQueryData (vmId, val, scope, from, interval) {
     ],
     tags: [
       {
-        key: 'vm_id',
+        key: idKey,
         value: vmId,
         operator: '=',
       },
     ],
     group_by: [{
       type: 'tag',
-      params: ['vm_id'],
+      params: [idKey],
     }],
   }
 
@@ -67,15 +67,15 @@ export class MonitorHelper {
     this.scope = scope
   }
 
-  genServerQueryData (vmId, val, from, interval) {
-    return genServerQueryData(vmId, val, this.scope, from, interval)
+  genServerQueryData (vmId, val, from, interval, idKey) {
+    return genServerQueryData(vmId, val, this.scope, from, interval, idKey)
   }
 
-  async fetchData (srvId, val, from, interval) {
+  async fetchData (srvId, val, from, interval, idKey) {
     const params = {
       id: 'query',
       action: '',
-      data: this.genServerQueryData(srvId, val, from, interval),
+      data: this.genServerQueryData(srvId, val, from, interval, idKey),
       params: { $t: getRequestT() },
     }
     try {
@@ -86,9 +86,9 @@ export class MonitorHelper {
     }
   }
 
-  async fetchFormatData (srvId, val, from, interval) {
+  async fetchFormatData (srvId, val, from, interval, idKey = 'vm_id') {
     try {
-      const data = await this.fetchData(srvId, val, from, interval)
+      const data = await this.fetchData(srvId, val, from, interval, idKey)
       return {
         title: val.label,
         constants: val,
