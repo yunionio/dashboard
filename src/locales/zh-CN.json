@@ -246,7 +246,7 @@
       "suspended": "冻结",
       "arrears": "欠费",
       "unknown": "未知状态",
-      "no_permission": "无账单权"
+      "no permission": "无权限"
     },
     "cloudaccountSyncStatus": {
       "idle": "同步完成",
