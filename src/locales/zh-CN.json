@@ -1018,6 +1018,9 @@
       "online": "已启动",
       "deleting": "删除中",
       "delete_failed": "删除失败"
+    },
+    "robot": {
+      "ready": "可用"
     }
   },
   "skuCategoryOptions": {
