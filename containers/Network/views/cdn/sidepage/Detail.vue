@@ -13,6 +13,9 @@
 import { mapGetters } from 'vuex'
 import { getAreaColumn, getServiceTypeColumn } from '../mixins/columns'
 import {
+  getUserTagColumn,
+} from '@/utils/common/detailColumn'
+import {
   getPublicScopeTableColumn,
   getBrandTableColumn,
   getSwitchTableColumn,
@@ -35,6 +38,7 @@ export default {
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'cdn_domains', columns: () => this.columns, tipName: this.$t('dictionary.cdn_domain') }),
         getPublicScopeTableColumn({ vm: this, resource: 'cdn_domains' }),
         getBrandTableColumn(),
       ],

@@ -6,6 +6,7 @@ import {
   getTimeTableColumn,
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 
 import i18n from '@/locales'
@@ -62,6 +63,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'cdnDomain' }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'cdn_domain', columns: () => this.columns }),
       getAreaColumn({}),
       getServiceTypeColumn({}),
       getBrandTableColumn(),
