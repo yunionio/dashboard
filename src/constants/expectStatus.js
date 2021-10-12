@@ -452,4 +452,8 @@ export default {
     info: ['unknown', 'offline'],
     danger: ['rejected', 'delete_failed'],
   },
+  robot: {
+    success: ['ready'],
+    info: ['unknown'],
+  },
 }
