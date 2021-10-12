@@ -586,7 +586,7 @@ export default {
           })
         }
       }
-      if (this.cloudEnv === 'private' && this.curVpc?.external_id === 'default') {
+      if (this.cloudEnv === 'private' && this.curVpc?.brand === 'Cloudpods' && this.curVpc?.external_id === 'default') {
         this.isShowWire = true
         this.isGroupGuestIpPrefix = true
       }
@@ -672,7 +672,7 @@ export default {
         return data
       }
       if (this.regionProvider === typeClouds.providerMap.ZStack.key ||
-        (this.cloudEnv === 'private' && this.curVpc?.external_id === 'default')) {
+        (this.cloudEnv === 'private' && this.curVpc?.brand === 'Cloudpods' && this.curVpc?.external_id === 'default')) {
         return {
           project_id: values.project.key,
           guest_ip_prefix: values.guest_ip_prefix[0],
