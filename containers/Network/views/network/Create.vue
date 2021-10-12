@@ -27,6 +27,7 @@
             :isDefaultSelect="true"
             :needParams="true"
             @change="vpcChange"
+            :item.sync="curVpc"
             :labelFormat="vpcLabelFormat"
             :select-props="{ placeholder: $t('common_226') }" />
         </a-form-item>
@@ -385,6 +386,7 @@ export default {
       zoneList: [],
       project_domain: '',
       vpcId: '',
+      curVpc: null,
     }
   },
   computed: {
@@ -571,6 +573,7 @@ export default {
     },
     vpcChange (vpcId) {
       this.vpcId = vpcId
+      this.show = false
       if (this.cloudEnv === 'onpremise') {
         if (vpcId !== 'default') {
           this.isGroupGuestIpPrefix = true
@@ -582,6 +585,9 @@ export default {
             server_type: 'guest',
           })
         }
+      }
+      if (this.cloudEnv === 'private' && this.curVpc?.external_id === 'default') {
+        this.show = true
       }
     },
     vpcLabelFormat (item) {
