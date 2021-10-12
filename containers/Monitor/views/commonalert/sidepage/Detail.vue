@@ -11,7 +11,15 @@
 </template>
 
 <script>
-import { levelColumn, conditionColumn, strategyColumn, projectTableColumn, recipientsColumn, getResTypeColumn, getVerifiedContactTypesTableColumn } from '../utils'
+import {
+  levelColumn,
+  strategyColumn,
+  projectTableColumn,
+  recipientsColumn,
+  getResTypeColumn,
+  getVerifiedContactTypesTableColumn,
+  robotsColumn,
+} from '../utils'
 import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
 export default {
@@ -35,7 +43,6 @@ export default {
         getEnabledTableColumn(),
         strategyColumn(),
         levelColumn,
-        conditionColumn,
         getProjectTableColumn(),
         getVerifiedContactTypesTableColumn({ vm: this }),
       ],
@@ -45,6 +52,7 @@ export default {
     }
   },
   created () {
+    this.getRobots()
     this.getRecipients()
   },
   methods: {
@@ -59,6 +67,22 @@ export default {
             },
           })
         this.baseInfo.push(recipientsColumn(recipientList))
+      } catch (error) {
+        console.error(error)
+        return []
+      }
+    },
+    async getRobots () {
+      try {
+        const { data: { data: robotList } } = await new this.$Manager('robots', 'v1')
+          .list({
+            params: {
+              scope: this.$store.getters.scope,
+              with_meta: true,
+              limit: 0,
+            },
+          })
+        this.baseInfo.push(robotsColumn(robotList))
       } catch (error) {
         console.error(error)
         return []
