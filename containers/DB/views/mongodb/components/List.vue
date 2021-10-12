@@ -100,7 +100,7 @@ export default {
             return [
               {
                 label: this.$t('compute.text_283'),
-                // permission: 'dns_recordsets_perform_set_user_metadata',
+                permission: 'mongodb_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
