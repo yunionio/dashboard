@@ -587,7 +587,8 @@ export default {
         }
       }
       if (this.cloudEnv === 'private' && this.curVpc?.external_id === 'default') {
-        this.show = true
+        this.isShowWire = true
+        this.isGroupGuestIpPrefix = true
       }
     },
     vpcLabelFormat (item) {
@@ -670,7 +671,8 @@ export default {
         }
         return data
       }
-      if (this.regionProvider === typeClouds.providerMap.ZStack.key) {
+      if (this.regionProvider === typeClouds.providerMap.ZStack.key ||
+        (this.cloudEnv === 'private' && this.curVpc?.external_id === 'default')) {
         return {
           project_id: values.project.key,
           guest_ip_prefix: values.guest_ip_prefix[0],
@@ -684,7 +686,7 @@ export default {
         guest_ip_prefix: values.guest_ip_prefix[0],
         name: values.name,
         vpc: values.vpc,
-        zone: values.zone,
+        zone: values?.zone,
         is_auto_alloc: values.is_auto_alloc,
       }
     },
