@@ -12,6 +12,9 @@
 
 import { getNatSpecColumn } from '../mixins/columns'
 import {
+  getUserTagColumn,
+} from '@/utils/common/detailColumn'
+import {
   getCopyWithContentTableColumn,
   getPublicScopeTableColumn,
   getBrandTableColumn,
@@ -37,6 +40,7 @@ export default {
     return {
       baseInfo: [
         getPublicScopeTableColumn({ vm: this, resource: 'natgateways' }),
+        getUserTagColumn({ onManager: this.onManager, resource: 'natgateways', columns: () => this.columns, tipName: this.$t('dictionary.nat') }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
       ],

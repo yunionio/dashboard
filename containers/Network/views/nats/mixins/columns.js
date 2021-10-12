@@ -7,6 +7,7 @@ import {
   getBillingTableColumn,
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -46,6 +47,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'nat' }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'natgateways', columns: () => this.columns }),
       getNatSpecColumn({}),
       getBillingTableColumn({ vm: this }),
       getBrandTableColumn(),
