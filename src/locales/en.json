@@ -1006,6 +1006,9 @@
       "online": "Online",
       "deleting": "Deleting",
       "delete_failed": "Deletion failed"
+    },
+    "robot": {
+      "ready": "Ready"
     }
   },
   "skuCategoryOptions": {
