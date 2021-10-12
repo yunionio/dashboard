@@ -5,7 +5,9 @@
     :list="list"
     :single-actions="singleActions"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :show-tag-columns="true"
+    :show-tag-filter="true" />
 </template>
 
 <script>
@@ -96,6 +98,21 @@ export default {
           label: this.$t('db.text_213'),
           actions: (obj) => {
             return [
+              {
+                label: this.$t('compute.text_283'),
+                // permission: 'dns_recordsets_perform_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'mongodbs',
+                    },
+                    mode: 'add',
+                  })
+                },
+              },
               {
                 label: this.$t('common_277'),
                 action: (row) => {
