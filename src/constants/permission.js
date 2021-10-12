@@ -726,6 +726,7 @@ export const PERMISSION = {
   mongodb_delete: ['compute', 'mongodb', 'delete'],
   mongodb_perform_delete: ['compute', 'mongodb', 'perform', 'delete'],
   mongodb_perform_syncstatus: ['compute', 'mongodb', 'perform', 'syncstatus'],
+  mongodb_perform_set_user_metadata: ['compute', 'mongodb', 'perform', 'set-user-metadata'],
 
   /**
    * 预留IP
