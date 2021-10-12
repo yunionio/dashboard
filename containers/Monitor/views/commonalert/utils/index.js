@@ -33,6 +33,21 @@ export const conditionColumn = {
   },
 }
 
+export const robotsColumn = (robotList) => ({
+  field: 'robot_ids',
+  title: i18n.t('monitor.text_11'),
+  slots: {
+    default: ({ row }, h) => {
+      if (!row.robot_ids || !row.robot_ids.length) return '-'
+      const robotsMap = arrayToObj(robotList, 'id')
+      const robotNames = row.robot_ids.map(val => robotsMap[val].name)
+      return robotNames.map(val => {
+        return h('a-tag', val)
+      })
+    },
+  },
+})
+
 export const strategyColumn = (field = 'common_alert_metric_details', title = i18n.t('monitor.strategy_detail')) => ({
   field,
   title,
