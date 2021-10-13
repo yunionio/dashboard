@@ -15,7 +15,11 @@
           ref="overviewTable"
           :columns="tableData.columns"
           max-height="400"
-          :data="tableData.rows" />
+          :data="tableData.rows">
+          <template v-slot:empty>
+            <loader :loading="loading" :noDataText="$t('common.notData')" />
+          </template>
+        </vxe-grid>
         <div class="vxe-grid--pager-wrapper">
           <div class="vxe-pager size--mini">
             <div class="vxe-pager--wrapper">

@@ -1,10 +1,13 @@
 <template>
   <div>
     <a-icon type="sync" spin v-if="loading" />
-    <a-row v-else type="flex" style="margin-left: 128px;">
+    <a-row v-else-if="cards.length > 0" type="flex" style="margin-left: 128px;">
       <a-col v-for="card in cards" :key="card.title" :span="8" style="width: 400px" class="mt-4">
         <overview-summary-card :card="card" @resourceClick="handleResClick" />
       </a-col>
+    </a-row>
+    <a-row v-else type="flex" style="justify-content:center">
+      <data-empty :description="emptyContent" />
     </a-row>
   </div>
 </template>
@@ -59,6 +62,9 @@ export default {
       manager: new this.$Manager('monitorresources', 'v1'),
       loading: false,
       data: {},
+      emptyContent: {
+        default: this.$t('common.notData'),
+      },
     }
   },
   computed: {
