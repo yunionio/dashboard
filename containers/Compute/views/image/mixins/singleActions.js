@@ -285,6 +285,29 @@ export default {
               hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_change_project'),
             },
             {
+              label: this.$t('dashboard.text_105'),
+              permission: 'images_get',
+              action: () => {
+                this.createDialog('ImageExportDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: false,
+                  tooltip: '',
+                }
+
+                if (obj.status !== 'active') {
+                  ret.tooltip = this.$t('cloudenv.text_368', [this.$t('status.image')[obj.status]])
+                  return ret
+                }
+                return { validate: true, tooltip: '' }
+              },
+            },
+            {
               label: i18n.t('common_277'),
               permission: 'images_delete',
               action: (row) => {

@@ -1456,6 +1456,12 @@
   "compute.webapp.instance_type": "Instance Type",
   "compute.webapp.instance_number": "Instance Number",
   "compute.disk.detach": "Delete the hard disk at the same time",
+  "compute.image.export":  "Export as",
+  "compute.image.export.file":  "File",
+  "compute.image.export.url":  "URL",
+  "compute.image.export.url.title":  "URL Information",
+  "compute.image.export.url.title.tips":  "Image URL:",
+  "compute.image.export.url.confirm":  "Copy&Close",
   "compute.text_1387": "Please select a cloud subscription",
   "compute.text_1388": "This operation is not supported on the current platform"
 }
