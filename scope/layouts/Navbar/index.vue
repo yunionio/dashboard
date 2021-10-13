@@ -349,7 +349,6 @@ export default {
       if ((R.isNil(userInfo.projects) || R.isEmpty(userInfo.projects)) && (R.isNil(userInfo.projectId) || R.isEmpty(userInfo.projectId))) {
         return
       }
-      console.log('发起请求')
       this.$store.dispatch('app/fetchAlertingrecords')
       setInterval(() => {
         this.$store.dispatch('app/fetchAlertingrecords')
