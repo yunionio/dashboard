@@ -17,7 +17,8 @@
       :resource="resource"
       :resType="resType"
       :on-manager="onManager"
-      :getParams="listParams" />
+      :getParams="listParams"
+      :serverColumns="columns" />
   </base-side-page>
 </template>
 
