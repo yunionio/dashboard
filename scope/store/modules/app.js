@@ -1,3 +1,5 @@
+import http from '@/utils/http'
+import { getRequestT } from '@/utils/utils'
 const logo = require('@scope/images/cloudpod_logo.svg')
 const loginLogo = require('@scope/images/cloudpod_login_logo.svg')
 
@@ -23,6 +25,14 @@ export default {
       en: {},
     },
     oem: {},
+    alertresource: {
+      data: [],
+      total: 0,
+    },
+    alertrecords: {
+      data: [],
+      total: 0,
+    },
   },
   getters: {
     logo (state) {
@@ -38,6 +48,12 @@ export default {
   mutations: {
     SET_COMPANY_INFO (state, payload) {
       state.companyInfo = payload
+    },
+    SET_ALERTRESOURCE (state, payload) {
+      state.alertresource = payload
+    },
+    SET_ALERTRECORDS (state, payload) {
+      state.alertrecords = payload
     },
   },
   actions: {
@@ -55,6 +71,36 @@ export default {
     },
     fetchOEM ({ commit }, payload) {
       return Promise.resolve()
+    },
+    /**
+     * @description 获取oem信息
+     */
+    fetchAlertresource ({ commit, rootGetters }, payload) {
+      const params = { scope: rootGetters.scope, limit: 20, $t: getRequestT() }
+      return new Promise((resolve, reject) => {
+        http.get('/v1/alertresources', { params }).then(response => {
+          const data = response.data || {}
+          commit('SET_ALERTRESOURCE', data)
+          resolve(data)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    /**
+     * @description 获取监控策略告警数
+     */
+    fetchAlertingrecords ({ commit, rootGetters }, payload) {
+      const params = { scope: rootGetters.scope, limit: 20, alerting: true, $t: getRequestT() }
+      return new Promise((resolve, reject) => {
+        http.get('/v1/alertrecords', { params }).then(response => {
+          const data = response.data || {}
+          commit('SET_ALERTRECORDS', data)
+          resolve(data)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
   },
 }

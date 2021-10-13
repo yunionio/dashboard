@@ -18,6 +18,8 @@
       </div>
       <h1 class="header-title ml-3">{{ $t('common_210') }}</h1>
     </div>
+    <!-- 资源报警 -->
+    <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
     <!-- 视图选择 -->
     <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
       <a-popover
@@ -142,7 +144,8 @@
 <script>
 import get from 'lodash/get'
 import * as R from 'ramda'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
+import Alertresource from '@/sections/Navbar/components/Alertresource'
 import { setLanguage } from '@/utils/common/cookie'
 import CloudShell from '@/sections/Navbar/components/CloudShell'
 import WindowsMixin from '@/mixins/windows'
@@ -151,6 +154,7 @@ export default {
   name: 'Navbar',
   components: {
     CloudShell,
+    Alertresource,
   },
   mixins: [WindowsMixin],
   props: {
@@ -166,6 +170,10 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo', 'scope', 'logo', 'permission', 'scopeResource', 'setting']),
+    ...mapState('app', {
+      alertresource: state => state.alertresource,
+      alertrecords: state => state.alertrecords,
+    }),
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
         const menus = this.userInfo.menus.map(item => {
@@ -213,6 +221,18 @@ export default {
     language () {
       return this.setting.language
     },
+    showAlertresource () {
+      if (this.alertrecords && this.alertrecords.total > 0) {
+        return true
+      }
+
+      if (this.isAdminMode) {
+        if (this.alertresource) {
+          return this.alertresource.total > 0
+        }
+      }
+      return false
+    },
   },
   watch: {
     userInfo: {
@@ -225,6 +245,9 @@ export default {
       },
       immediate: true,
     },
+  },
+  created () {
+    this.cronjobFetchAlerts()
   },
   methods: {
     async userMenuClick (item) {
@@ -320,6 +343,29 @@ export default {
         }
       }
       return num === 1
+    },
+    cronjobFetchAlerts () { // 定时5分钟请求一次
+      const userInfo = this.$store.getters.userInfo
+      if ((R.isNil(userInfo.projects) || R.isEmpty(userInfo.projects)) && (R.isNil(userInfo.projectId) || R.isEmpty(userInfo.projectId))) {
+        return
+      }
+      console.log('发起请求')
+      this.$store.dispatch('app/fetchAlertingrecords')
+      setInterval(() => {
+        this.$store.dispatch('app/fetchAlertingrecords')
+      }, 5 * 60 * 1000)
+
+      if (this.isAdminMode && this.$store._actions['app/fetchAlertresource']) {
+        this.$store.dispatch('app/fetchAlertresource')
+        setInterval(() => {
+          this.$store.dispatch('app/fetchAlertresource')
+        }, 5 * 60 * 1000)
+      } else {
+        this.$store.commit('app/SET_ALERTRESOURCE', {
+          data: [],
+          total: 0,
+        })
+      }
     },
   },
 }
