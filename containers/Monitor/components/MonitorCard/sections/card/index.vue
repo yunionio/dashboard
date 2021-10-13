@@ -6,9 +6,10 @@
       <div style="font-weight: bold; font-size: 24px;">{{ card.total }}</div>
     </a-col>
     <a-col :span="11">
-      <div v-for="(v, k) in card.items" :key="k" :class="'col ' + (['guest','host'].includes(card.resType)?'asA':'')" style="padding-top: 8px;" @click="handleResClick(card, k)">
+      <div v-for="(v, k) in card.items" :key="k" class="col" style="padding-top: 8px;" @click="handleResClick(card, k)">
         <status :status="k" statusModule="monitorresources" style="display: inline-grid;" />
-        <span>{{ ': '+ (card.items[k] || 0) }}</span>
+        <span>: </span>
+        <span :class="(['guest','host'].includes(card.resType)?'asA':'')">{{ (card.items[k] || 0) }}</span>
       </div>
     </a-col>
     <a-col v-if="card.total > 0">
@@ -44,8 +45,6 @@ export default {
 <style scoped>
 .asA {
   cursor: pointer;
-}
-.asA:hover {
   color: var(--antd-wave-shadow-color);
 }
 </style>

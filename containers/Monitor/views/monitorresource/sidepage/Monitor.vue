@@ -7,7 +7,7 @@
       <a-tab-pane key="agent" :tab="$t('compute.monitor.agent')">
         <div>
           <install-agent-form-visible
-            :data="data"
+            :data="installData"
             :serverColumns="serverColumns" />
           <agent-monitor
             :data="data"
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import BaseMonitor from '@Compute/sections/monitor/BaseMonitor'
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import InstallAgentFormVisible from '@Compute/views/vminstance/components/InstallAgentFormVisible'
@@ -90,6 +91,9 @@ export default {
         return AGENT_MONITOR
       }
       return HOST_AGENT_MONITOR
+    },
+    installData () {
+      return Object.assign({}, R.clone(this.data), { id: this.data.res_id })
     },
   },
   methods: {
