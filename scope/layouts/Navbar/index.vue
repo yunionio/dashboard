@@ -17,107 +17,108 @@
         <img class="logo" :src="logo" />
       </div>
       <h1 class="header-title ml-3">{{ $t('common_210') }}</h1>
+      <!-- 视图选择 -->
+      <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
+        <a-popover
+          trigger="click"
+          v-model="viewChangePopoverVisible"
+          destroyTooltipOnHide
+          :getPopupContainer="triggerNode => triggerNode.parentNode">
+          <template slot="content">
+            <ul class="list-unstyled view-list-wrap" style="max-height: 60vh; overflow-y: auto;">
+              <!-- 管理后台 -->
+              <template v-if="systemProjects && systemProjects.length">
+                <li v-if="systemProjects.length === 1" class="item-link" @click="() => projectChange(systemProjects[0].id, 'system')">
+                  <div class="d-flex h-100 align-items-center">
+                    <div class="flex-fill text-truncate">{{ $t('navbar.view.system_manager') }}</div>
+                    <div style="width: 20px;" class="ml-1">
+                      <a-icon v-show="scope === 'system' && systemProjects[0].id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                    </div>
+                  </div>
+                </li>
+                <li v-else>
+                  <div>{{ $t('navbar.view.system_manager') }}</div>
+                  <ul class="list-unstyled">
+                    <template v-for="item of systemProjects">
+                      <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'system')">
+                        <div class="d-flex h-100 align-items-center">
+                          <div class="flex-fill text-truncate">{{ item.name }}({{ item.domain }})</div>
+                          <div style="width: 20px;" class="ml-1">
+                            <a-icon v-show="scope === 'system' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                          </div>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </li>
+              </template>
+              <!-- 域管理后台 -->
+              <template v-if="domainProjects && domainProjects.length">
+                <li>
+                  <div>{{ domainManagerTitle }}</div>
+                  <ul class="list-unstyled">
+                    <template v-for="item of domainProjects">
+                      <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
+                        <div class="d-flex h-100 align-items-center">
+                          <div class="flex-fill text-truncate" v-if="isSingleProject(domainProjects, item)">{{ item.domain }}</div>
+                          <div class="flex-fill text-truncate" v-else>{{ item.domain }}({{ item.name }})</div>
+                          <div style="width: 20px;" class="ml-1">
+                            <a-icon v-show="scope === 'domain' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                          </div>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </li>
+              </template>
+              <!-- 项目 -->
+              <template v-if="projects && projects.length">
+                <li>
+                  <div>{{$t('navbar.view.project')}}</div>
+                  <ul class="list-unstyled">
+                    <template v-for="item of projects">
+                      <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'project')">
+                        <div class="d-flex h-100 align-items-center">
+                          <div class="flex-fill text-truncate">{{ item.name }}</div>
+                          <div style="width: 20px;" class="ml-1">
+                            <a-icon v-show="scope === 'project' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                          </div>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </li>
+              </template>
+            </ul>
+          </template>
+          <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+            <a-tooltip :title="$t('navbar.view.switch')" placement="right">
+              <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
+            </a-tooltip>
+            <span class="ml-2 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
+            <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+          </div>
+        </a-popover>
+      </div>
+      <!-- 系统选择 -->
+      <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
+        <a-dropdown :trigger="['click']">
+          <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+            <icon type="navbar-setting" style="font-size: 24px; line-height: 1;" />
+            <span class="ml-2">{{$t('dictionary.endpoint')}}</span>
+            <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+          </div>
+          <a-menu slot="overlay" @click="productChange">
+            <a-menu-item v-for="item of products" :key="item.key">{{ item.label }}</a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </div>
     </div>
     <!-- 资源报警 -->
     <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
     <!-- 消息中心 -->
     <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
-    <!-- 视图选择 -->
-    <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
-      <a-popover
-        trigger="click"
-        v-model="viewChangePopoverVisible"
-        destroyTooltipOnHide
-        :getPopupContainer="triggerNode => triggerNode.parentNode">
-        <template slot="content">
-          <ul class="list-unstyled view-list-wrap" style="max-height: 60vh; overflow-y: auto;">
-            <!-- 管理后台 -->
-            <template v-if="systemProjects && systemProjects.length">
-              <li v-if="systemProjects.length === 1" class="item-link" @click="() => projectChange(systemProjects[0].id, 'system')">
-                <div class="d-flex h-100 align-items-center">
-                  <div class="flex-fill text-truncate">{{ $t('navbar.view.system_manager') }}</div>
-                  <div style="width: 20px;" class="ml-1">
-                    <a-icon v-show="scope === 'system' && systemProjects[0].id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-                  </div>
-                </div>
-              </li>
-              <li v-else>
-                <div>{{ $t('navbar.view.system_manager') }}</div>
-                <ul class="list-unstyled">
-                  <template v-for="item of systemProjects">
-                    <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'system')">
-                      <div class="d-flex h-100 align-items-center">
-                        <div class="flex-fill text-truncate">{{ item.name }}({{ item.domain }})</div>
-                        <div style="width: 20px;" class="ml-1">
-                          <a-icon v-show="scope === 'system' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-                        </div>
-                      </div>
-                    </li>
-                  </template>
-                </ul>
-              </li>
-            </template>
-            <!-- 域管理后台 -->
-            <template v-if="domainProjects && domainProjects.length">
-              <li>
-                <div>{{ domainManagerTitle }}</div>
-                <ul class="list-unstyled">
-                  <template v-for="item of domainProjects">
-                    <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
-                      <div class="d-flex h-100 align-items-center">
-                        <div class="flex-fill text-truncate" v-if="isSingleProject(domainProjects, item)">{{ item.domain }}</div>
-                        <div class="flex-fill text-truncate" v-else>{{ item.domain }}({{ item.name }})</div>
-                        <div style="width: 20px;" class="ml-1">
-                          <a-icon v-show="scope === 'domain' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-                        </div>
-                      </div>
-                    </li>
-                  </template>
-                </ul>
-              </li>
-            </template>
-            <!-- 项目 -->
-            <template v-if="projects && projects.length">
-              <li>
-                <div>{{$t('navbar.view.project')}}</div>
-                <ul class="list-unstyled">
-                  <template v-for="item of projects">
-                    <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'project')">
-                      <div class="d-flex h-100 align-items-center">
-                        <div class="flex-fill text-truncate">{{ item.name }}</div>
-                        <div style="width: 20px;" class="ml-1">
-                          <a-icon v-show="scope === 'project' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-                        </div>
-                      </div>
-                    </li>
-                  </template>
-                </ul>
-              </li>
-            </template>
-          </ul>
-        </template>
-        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <a-tooltip :title="$t('navbar.view.switch')" placement="right">
-            <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
-          </a-tooltip>
-          <span class="ml-2 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
-          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
-        </div>
-      </a-popover>
-    </div>
-    <!-- 系统选择 -->
-    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
-      <a-dropdown :trigger="['click']">
-        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <icon type="navbar-setting" />
-          <span class="ml-2">{{$t('dictionary.endpoint')}}</span>
-          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
-        </div>
-        <a-menu slot="overlay" @click="productChange">
-          <a-menu-item v-for="item of products" :key="item.key">{{ item.label }}</a-menu-item>
-        </a-menu>
-      </a-dropdown>
-    </div>
+    <!-- cloudshell -->
     <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
     <div class="navbar-item">
       <a-dropdown :trigger="['click']">
@@ -399,7 +400,7 @@ export default {
 }
 .navbar-item {
   height: 100%;
-  border-left: 1px solid #f5f5f5;
+  // border-left: 1px solid #f5f5f5;
 }
 .navbar-item-icon {
   width: 40px;
