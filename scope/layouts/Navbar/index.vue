@@ -20,6 +20,8 @@
     </div>
     <!-- 资源报警 -->
     <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
+    <!-- 消息中心 -->
+    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
     <!-- 视图选择 -->
     <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
       <a-popover
@@ -148,6 +150,7 @@ import { mapGetters, mapState } from 'vuex'
 import Alertresource from '@/sections/Navbar/components/Alertresource'
 import { setLanguage } from '@/utils/common/cookie'
 import CloudShell from '@/sections/Navbar/components/CloudShell'
+import NotifyPopover from '@/sections/Navbar/components/NotifyPopover'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -155,12 +158,21 @@ export default {
   components: {
     CloudShell,
     Alertresource,
+    NotifyPopover,
   },
   mixins: [WindowsMixin],
   props: {
     showViewSelection: {
       type: Boolean,
       default: true,
+    },
+    showNotify: {
+      type: Boolean,
+      default: true,
+    },
+    notifyMenuTitleUsedText: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
