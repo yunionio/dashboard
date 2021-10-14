@@ -14,7 +14,7 @@ import GlobalVpc from '@Network/views/global-vpc'
 import NatList from '@Network/views/nats'
 import NatCreate from '@Network/views/nats/create/index'
 // import ReservedIpList from '@Network/views/reserved-ip'
-// import DNS from '@Network/views/dns'
+import DNS from '@Network/views/dns'
 import VPC from '@Network/views/vpc'
 import VPCCreate from '@Network/views/vpc/create'
 import LbList from '@Network/views/lb'
@@ -321,13 +321,13 @@ export default {
             },
           ],
         },
-        /* {
+        {
           path: '/dns',
           meta: {
             label: i18n.t('dictionary.dns'),
             permission: 'dnsrecords_list',
             t: 'dictionary.dns',
-            hidden: () => true,
+            // hidden: () => true,
           },
           component: Layout,
           children: [
@@ -337,7 +337,7 @@ export default {
               component: DNS,
             },
           ],
-        }, */
+        },
         {
           path: '/dns-zone',
           meta: {

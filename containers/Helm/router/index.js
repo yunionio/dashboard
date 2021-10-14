@@ -7,6 +7,8 @@ import K8sChartCreate from '@Helm/views/chart/create'
 import Repo from '@Helm/views/repo'
 import Scheduledtask from '@Cloudenv/views/scheduledtask'
 import ScheduledtaskCreate from '@Cloudenv/views/scheduledtask/create'
+import AnsibleTemplate from '@Compute/views/ansible-template'
+import AnsibleTemplateCreate from '@Compute/views/ansible-template/create'
 import Layout from '@/layouts/RouterView'
 import { setupKeys } from '@/utils/auth'
 import i18n from '@/locales'
@@ -58,6 +60,26 @@ export default {
               name: 'ScheduledtaskCreate',
               path: 'create',
               component: ScheduledtaskCreate,
+            },
+          ],
+        },
+        {
+          path: '/ansibletemplate',
+          meta: {
+            label: i18n.t('dictionary.ansibletemplate'),
+            permission: 'ansible_devtool_templates_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'AnsibleTemplate',
+              path: '',
+              component: AnsibleTemplate,
+            },
+            {
+              name: 'AnsibleTemplateCreate',
+              path: 'create',
+              component: AnsibleTemplateCreate,
             },
           ],
         },
