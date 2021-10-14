@@ -417,7 +417,8 @@ export default {
 .header-logo {
   line-height: 1;
   img {
-    width: 45px;
+    width: 30px;
+    border-radius: 50%;
   }
 }
 .header-title {
