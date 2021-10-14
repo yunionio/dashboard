@@ -115,7 +115,7 @@ export const getStatusTableColumn = ({ field = 'status', title = i18n.t('common.
           if (slot || slot === 0) return slot
         }
         if (!statusModule) return 'status module undefined'
-        const val = _.get(row, field)
+        const val = _.get(row, field) || false
         if (R.isNil(val)) return ''
         return [
           <div class='text-truncate'>
