@@ -2,6 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
+    :show-tag-columns="true"
+    :show-tag-filter="true"
     :single-actions="singleActions"
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
@@ -78,22 +80,52 @@ export default {
             }
           },
         },
+
         {
-          label: this.$t('network.text_131'),
-          permission: 'lb_loadbalancercertificates_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              title: this.$t('network.text_131'),
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-              name: this.$t('network.text_143'),
-            })
+          label: this.$t('storage.text_33'),
+          actions: (obj) => {
+            return [
+              {
+                label: this.$t('compute.text_283'),
+                permission: 'lb_loadbalancercertificates_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'lb_loadbalancercertificates',
+                    },
+                    mode: 'add',
+                  })
+                },
+              },
+              {
+                label: this.$t('network.text_131'),
+                permission: 'lb_loadbalancercertificates_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    title: this.$t('network.text_131'),
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    name: this.$t('network.text_143'),
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.allowDelete(),
+                  }
+                },
+              },
+            ]
           },
           meta: () => {
+            const selectedLength = this.list.selectedItems.length
             return {
-              validate: this.list.allowDelete(),
+              validate: selectedLength,
+              tooltip: '',
             }
           },
         },

@@ -103,6 +103,7 @@ export const PERMISSION = {
   lb_loadbalanceracls_list: ['compute', 'loadbalanceracls', 'list'],
   // 负载均衡证书管理
   lb_loadbalancercertificates_list: ['compute', 'loadbalancercertificates', 'list'],
+  lb_loadbalancercertificates_set_user_metadata: ['compute', 'loadbalancercertificates', 'perform', 'set-user-metadata'],
   // 负载均衡集群
   lb_loadbalancerclusters_list: ['compute', 'loadbalancerclusters', 'list'],
   // 负载均衡节点
@@ -140,6 +141,7 @@ export const PERMISSION = {
   route_tables_list: ['compute', 'route_tables', 'list'],
   // NAT网关
   natgateways_list: ['compute', 'natgateways', 'list'],
+  natgateways_set_user_metadata: ['compute', 'natgateways', 'perform', 'set-user-metadata'],
   // 虚拟路由器
   wires_list: ['compute', 'wires', 'list'],
   // 虚拟路由器详情
@@ -167,6 +169,7 @@ export const PERMISSION = {
   cdn_domains_update: ['compute', 'cdn_domains', 'update'],
   cdn_domains_delete: ['compute', 'cdn_domains', 'delete'],
   cdn_domains_perform_syncstatus: ['compute', 'cdn_domains', 'perform', 'syncstatus'],
+  cdn_domains_set_user_metadata: ['compute', 'cdn_domains', 'perform', 'set-user-metadata'],
   // 域
   domains_list: ['identity', 'domains', 'list'],
   // 域详情
@@ -893,6 +896,7 @@ export const PERMISSION = {
   access_groups_list: ['compute', 'access_groups', 'list'],
   access_groups_create: ['compute', 'access_groups', 'create'],
   access_groups_delete: ['compute', 'access_groups', 'delete'],
+  access_groups_set_user_metadata: ['compute', 'access_groups', 'perform', 'set-user-metadata'],
 
   // NAS权限组缓存
   access_group_caches_list: ['compute', 'access_group_caches', 'list'],
@@ -925,6 +929,11 @@ export const PERMISSION = {
   // waf策略
   waf_instances_syncstatus: ['compute', 'waf_instances', 'perform', 'syncstatus'],
   waf_instances_delete: ['compute', 'waf_instances', 'delete'],
+
+  kafkas_set_user_metadata: ['compute', 'kafkas', 'perform', 'set-user-metadata'],
+
+  elastic_search_delete: ['compute', 'elastic_searchs', 'delete'],
+  elastic_search_set_user_metadata: ['compute', 'elastic_searchs', 'perform', 'set-user-metadata'],
 }
 
 // 已声明权限的资源

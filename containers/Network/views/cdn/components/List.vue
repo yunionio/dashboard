@@ -2,6 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
+    :show-tag-columns="true"
+    :show-tag-filter="true"
     :export-data-options="exportDataOptions"
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
@@ -114,6 +116,21 @@ export default {
           actions: (obj) => {
             const isOwner = this.list.selectedItems.every(item => this.isOwner(item))
             return [
+              {
+                label: this.$t('compute.text_283'),
+                permission: 'cdn_domains_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'cdn_domains',
+                    },
+                    mode: 'add',
+                  })
+                },
+              },
               disableDeleteAction(this, {
                 name: this.$t('dictionary.cdn_domain'),
                 meta: () => {
@@ -152,6 +169,13 @@ export default {
                 },
               },
             ]
+          },
+          meta: () => {
+            const selectedLength = this.list.selectedItems.length
+            return {
+              validate: selectedLength,
+              tooltip: '',
+            }
           },
         },
       ],
