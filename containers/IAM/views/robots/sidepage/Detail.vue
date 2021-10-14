@@ -4,14 +4,15 @@
     :data="data"
     :base-info="baseInfo"
     :extraInfo="extraInfo"
-    :hiddenKeys="['external_id', 'status']"
     :show-desc="false"
     :is-edit-name="false"
-    resource="robots" />
+    resource="robots"
+    status-module="robot" />
 </template>
 
 <script>
 import {
+  getStatusTableColumn,
   getEnabledTableColumn,
   getCopyWithContentTableColumn,
   getPublicScopeTableColumn,
@@ -33,11 +34,9 @@ export default {
     },
   },
   data () {
-    const isWebhook = this.data.type === 'webhook'
-
     return {
       baseInfo: [
-        getEnabledTableColumn(),
+        getStatusTableColumn({ statusModule: 'robot' }),
         {
           field: 'project_domain',
           title: this.$t('dictionary.domain'),
@@ -54,10 +53,11 @@ export default {
             return <side-page-trigger permission="projects_get" name="ProjectSidePage" id={row.tenant_id} vm={this}>{ row.tenant }</side-page-trigger>
           },
         },
-        getTypeTableColumn(),
         getPublicScopeTableColumn(),
+        getEnabledTableColumn(),
+        getTypeTableColumn(),
         getCopyWithContentTableColumn({
-          title: isWebhook ? 'URL' : 'Webhook',
+          title: 'Webhook/URL',
           field: 'address',
         }),
       ],
