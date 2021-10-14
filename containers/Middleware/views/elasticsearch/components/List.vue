@@ -2,6 +2,8 @@
   <page-list
     :list="list"
     :columns="columns"
+    :show-tag-columns="true"
+    :show-tag-filter="true"
     :export-data-options="exportDataOptions"
     :group-actions="groupActions"
     :showSearchbox="showSearchbox"
@@ -97,6 +99,21 @@ export default {
           label: this.$t('common.batchAction'),
           actions: (obj) => {
             return [
+              {
+                label: this.$t('compute.text_283'),
+                permission: 'elastic_search_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    params: {
+                      resources: 'elastic_searchs',
+                    },
+                    mode: 'add',
+                  })
+                },
+              },
               disableDeleteAction(this, {
                 name: this.$t('dictionary.elasticsearch'),
               }),
@@ -117,6 +134,13 @@ export default {
                 meta: () => this.$getDeleteResult(this.list.selectedItems),
               },
             ]
+          },
+          meta: () => {
+            const selectedLength = this.list.selectedItems.length
+            return {
+              validate: selectedLength,
+              tooltip: '',
+            }
           },
         },
       ],
