@@ -112,9 +112,13 @@ export default {
               meta: () => {
                 let tooltip
                 if (!obj.enabled) tooltip = i18n.t('cloudenv.text_312')
-                if (obj.enable_auto_sync) tooltip = i18n.t('cloudenv.text_313')
+                let canSync = true
+                if (obj.enable_auto_sync && obj.sync_status !== 'idle') {
+                  canSync = false 
+                  tooltip = i18n.t('cloudenv.text_313')
+                }
                 return {
-                  validate: (obj.enabled && !obj.enable_auto_sync) && ownerDomain,
+                  validate: (obj.enabled && canSync) && ownerDomain,
                   tooltip,
                 }
               },
@@ -324,7 +328,7 @@ export default {
         return true
       })
       const autoSyncValid = items.every(obj => {
-        if (obj.enable_auto_sync) {
+        if (obj.enable_auto_sync && obj.sync_status !== 'idle') {
           tooltip = i18n.t('cloudenv.text_313')
           return false
         }
