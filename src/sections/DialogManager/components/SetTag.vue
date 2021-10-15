@@ -286,6 +286,7 @@ export default {
         const action = this.isBatchAddMode ? 'user-metadata' : 'set-user-metadata'
         await this.params.onManager('batchPerformAction', {
           id: ids,
+          steadyStatus: this.params.list?.steadyStatus || ['running', 'ready'],
           managerArgs: {
             action,
             data,
