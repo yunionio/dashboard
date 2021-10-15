@@ -342,6 +342,9 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.mailconfig')) {
                 return true
               }
+              if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
+                return true
+              }
               return !hasServices('notify')
             },
           },
