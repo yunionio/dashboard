@@ -43,7 +43,7 @@ export default {
         },
         meta: obj => {
           const isIdle = obj.sync_status === 'idle'
-          if (obj.enable_auto_sync) {
+          if (obj.enable_auto_sync && obj.cloudprovider_sync_status !== 'idle') {
             return {
               validate: false,
               tooltip: i18n.t('cloudenv.text_313'),
