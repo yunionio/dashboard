@@ -335,6 +335,7 @@ export const getTagTableColumn = ({
   ignorePrefix,
   width = 50,
   customTitle = '',
+  list = {},
 } = {}) => {
   return {
     field,
@@ -355,6 +356,7 @@ export const getTagTableColumn = ({
               tipName,
               ignorePrefix,
               customTitle,
+              list,
             },
           }),
         ]
