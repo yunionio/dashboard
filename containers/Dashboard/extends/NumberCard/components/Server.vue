@@ -148,7 +148,7 @@ export default {
     },
     canShowEdit () {
       if (!this.params) return false
-      return ['all.servers', 'servers', 'domain.servers', 'baremetals', 'hosts', 'all.buckets'].includes(this.params.usage_key)
+      return this.getPageUrl()
     },
   },
   watch: {
@@ -230,14 +230,35 @@ export default {
     },
     goPage () {
       if (!this.params) return
-      if (['all.servers', 'servers', 'domain.servers'].includes(this.params.usage_key)) {
-        this.$router.push('/vminstance')
-      } else if (['baremetals'].includes(this.params.usage_key)) {
-        this.$router.push('/physicalmachine')
-      } else if (['hosts'].includes(this.params.usage_key)) {
-        this.$router.push('/host')
-      } else if (['all.buckets'].includes(this.params.usage_key)) {
-        this.$router.push('./bucket')
+      const path = this.getPageUrl()
+      if (path) this.$router.push(path)
+    },
+    getPageUrl () {
+      switch (this.params.usage_key) {
+        case 'all.servers':
+          return '/vminstance'
+        case 'servers':
+          return '/vminstance'
+        case 'baremetals':
+          return '/physicalmachine'
+        case 'hosts':
+          return '/host'
+        case 'all.buckets':
+          return '/bucket'
+        case 'all.cache':
+          return '/redis'
+        case 'all.rds':
+          return '/rds'
+        case 'all.loadbalancer':
+          return '/lb'
+        case 'all.eip.floating_ip':
+          return '/eip'
+        case 'all.snapshot':
+          return '/instance-snapshot'
+        case 'all.disks.count':
+          return '/disk'
+        default:
+          return ''
       }
     },
   },
