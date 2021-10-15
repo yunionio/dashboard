@@ -70,6 +70,9 @@ export default {
       default: false,
     },
     customTitle: String,
+    list: {
+      type: Object,
+    },
   },
   inject: {
     // 是否处于BaseDialog中
@@ -133,6 +136,7 @@ export default {
         onManager: this.onManager,
         params: this.params,
         tipName: this.tipName,
+        list: this.list,
       })
     },
   },
