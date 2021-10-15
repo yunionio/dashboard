@@ -324,10 +324,10 @@ export default {
         return true
       })
       const autoSyncValid = items.every(obj => {
-        if (obj.enable_auto_sync) {
-          tooltip = i18n.t('cloudenv.text_313')
-          return false
-        }
+        // if (obj.enable_auto_sync) {
+        //   tooltip = i18n.t('cloudenv.text_313')
+        //   return false
+        // }
         return true
       })
       const ownerDomain = this.isAdminMode || items.every(obj => obj.domain_id === this.userInfo.projectDomainId)
