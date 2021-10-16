@@ -21,7 +21,7 @@
       <!-- <div>{{$t('db.text_263')}}</div> -->
     </template>
     <template v-slot:right>
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center" v-if="hasMeterService()">
           <div class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('db.text_108')}}</div>
             <div class="ml-2 prices">
@@ -69,6 +69,7 @@ import { ENGINE_ARCH, BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import DiscountPrice from '@/sections/DiscountPrice'
+import { hasMeterService } from '@/utils/auth'
 
 export default {
   name: 'BottomBar',
@@ -85,6 +86,7 @@ export default {
     return {
       priceTotal: null,
       loading: false,
+      hasMeterService,
     }
   },
   computed: {
@@ -219,6 +221,7 @@ export default {
       return params
     },
     async _getPrice (price_key) {
+      if (!hasMeterService()) return
       try {
         const { data } = await new this.$Manager('price_infos', 'v1').get({
           id: 'total',
