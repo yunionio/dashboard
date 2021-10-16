@@ -20,7 +20,7 @@
       </div>
     </template>
     <template v-slot:right>
-       <div class="d-flex align-items-center">
+       <div class="d-flex align-items-center" v-if="hasMeterService()">
           <div class="mr-4 d-flex align-items-center">
             <div class="text-truncate">{{$t('db.text_108')}}</div>
             <div class="ml-2 prices">
@@ -49,6 +49,7 @@ import { sizestr } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
 import { numerify } from '@/filters'
 import DiscountPrice from '@/sections/DiscountPrice'
+import { hasMeterService } from '@/utils/auth'
 
 export default {
   name: 'BottomBar',
@@ -66,6 +67,7 @@ export default {
     return {
       loading: false,
       priceTotal: undefined,
+      hasMeterService,
     }
   },
   computed: {
@@ -174,7 +176,7 @@ export default {
     },
     async _getPrice () {
       const { sku, disk_size_gb } = this.values
-      if (!sku || !disk_size_gb) {
+      if (!sku || !disk_size_gb || !hasMeterService()) {
         this.priceTotal = undefined
         return false
       }
