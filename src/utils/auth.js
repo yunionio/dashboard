@@ -339,3 +339,12 @@ export function hasSetupKey (envs) {
   }
   return f
 }
+
+export const hasMeterService = function () {
+  const { services } = store.getters.userInfo
+  const meterService = services.find(val => val.type === 'meter')
+  if (meterService && meterService.status === true) {
+    return true
+  }
+  return false
+}
