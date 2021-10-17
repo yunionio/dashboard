@@ -1457,5 +1457,9 @@
   "compute.webapp.instance_number": "实例数量",
   "compute.disk.detach": "同时删除硬盘",
   "compute.text_1387": "请选择云订阅",
-  "compute.text_1388": "当前平台暂不支持此操作"
+  "compute.text_1388": "当前平台暂不支持此操作",
+  "compute.vdi_protocol": "远程终端协议",
+  "compute.vga": "显卡型号",
+  "compute.prompt_vdi": "请选择远程终端协议",
+  "compute.prompt_vga": "请选择显卡型号"
 }

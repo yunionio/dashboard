@@ -1457,5 +1457,9 @@
   "compute.webapp.instance_number": "Instance Number",
   "compute.disk.detach": "Delete the hard disk at the same time",
   "compute.text_1387": "Please select a cloud subscription",
-  "compute.text_1388": "This operation is not supported on the current platform"
+  "compute.text_1388": "This operation is not supported on the current platform",
+  "compute.vdi_protocol": "Remote console",
+  "compute.vga": "Video driver",
+  "compute.prompt_vdi": "Please specify remote console protocol",
+  "compute.prompt_vga": "Please specify video driver"
 }
