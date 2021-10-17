@@ -69,6 +69,7 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      vdi: 'vnc',
       decorators: {
         disable_delete: [
           'disable_delete',
@@ -197,6 +198,9 @@ export default {
         }
         this.form.fc.setFieldsValue(updateObj)
       })
+    },
+    handleVdiChange (data) {
+      this.vdi = data.value
     },
   },
 }
