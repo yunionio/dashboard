@@ -16,6 +16,7 @@ export default {
         }),
         fd: {
           domain: '',
+          share_mode: 'account_domain',
         },
       },
       keySecretFieldInit: keySecretFields[this.provider.toLowerCase()],
@@ -42,7 +43,19 @@ export default {
             ],
           },
         ],
+        share_mode: [
+          'share_mode',
+          {
+            initialValue: 'account_domain',
+            rules: [{ required: true }],
+          },
+        ],
       },
+      shareModeOptions: [
+        { key: 'account_domain', label: this.$t('cloudenv.text_285') },
+        { key: 'provider_domain', label: this.$t('cloudenv.text_286') },
+        { key: 'system', label: this.$t('cloudenv.text_287') },
+      ],
     }
   },
   computed: {
@@ -51,6 +64,14 @@ export default {
     },
     isAliyun () {
       return this.provider.toLowerCase() === 'aliyun'
+    },
+    extra () {
+      const shareModeExtra = {
+        account_domain: this.$t('cloudenv.text_288', [this.$t('dictionary.cloudaccount'), this.$t('dictionary.domain'), this.$t('dictionary.project'), this.$t('dictionary.cloudaccount')]),
+        provider_domain: this.$t('cloudenv.text_293', [this.$t('dictionary.domain'), this.$t('dictionary.project'), this.$t('dictionary.cloudaccount'), this.$t('dictionary.project')]),
+        system: this.$t('cloudenv.text_296', [this.$t('dictionary.domain'), this.$t('dictionary.project'), this.$t('dictionary.cloudaccount')]),
+      }
+      return shareModeExtra[this.form.fd.share_mode]
     },
   },
   watch: {

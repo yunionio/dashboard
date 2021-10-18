@@ -44,6 +44,13 @@
         </div>
       </a-form-item>
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
+      <a-form-item :label="$t('cloudenv.text_282')" :extra="extra">
+        <a-radio-group v-decorator="decorators.share_mode">
+          <template v-for="item of shareModeOptions">
+            <a-radio-button :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
+          </template>
+        </a-radio-group>
+      </a-form-item>
       <!-- <a-form-item :label="$t('cloudenv.text_242')">
         <a-input v-decorator="decorators.balanceKey" type="textarea" rows="4" />
       </a-form-item> -->
