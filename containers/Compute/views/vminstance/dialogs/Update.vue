@@ -26,6 +26,12 @@
           <a-form-item :label="$t('compute.text_1155')" v-bind="formItemLayout">
             <bios :decorator="decorators.bios" :isArm="isArm" />
           </a-form-item>
+          <a-form-item :label="$t('compute.vdi_protocol')" v-bind="formItemLayout">
+            <vdi :decorator="decorators.vdi" @change="handleVdiChange" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.vga')" v-bind="formItemLayout">
+            <vga :decorator="decorators.vga" :vdi="vdi" />
+          </a-form-item>
         </template>
       </a-form>
     </div>
@@ -40,11 +46,15 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import Bios from '@Compute/sections/BIOS'
+import Vdi from '@Compute/sections/VDI'
+import Vga from '@Compute/sections/VGA'
 
 export default {
   name: 'VmUpdateDialog',
   components: {
     Bios,
+    Vdi,
+    Vga,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -53,6 +63,7 @@ export default {
       form: {
         fc: this.$form.createForm(this),
       },
+      vdi: 'vnc',
       decorators: {
         disable_delete: [
           'disable_delete',
@@ -75,6 +86,22 @@ export default {
           {
             rules: [
               { required: true, message: this.$t('compute.text_1272') },
+            ],
+          },
+        ],
+        vdi: [
+          'vdi',
+          {
+            rules: [
+              { required: true, message: this.$t('compute.prompt_vdi') },
+            ],
+          },
+        ],
+        vga: [
+          'vga',
+          {
+            rules: [
+              { required: true, message: this.$t('compute.prompt_vga') },
             ],
           },
         ],
@@ -150,9 +177,15 @@ export default {
         if (this.isKvm) {
           updateObj.boot_order = data.boot_order
           updateObj.bios = data.bios || (this.isArm ? 'UEFI' : 'BIOS')
+          updateObj.vdi = data.vdi
+          updateObj.vga = data.vga
+          this.vdi = data.vdi
         }
         this.form.fc.setFieldsValue(updateObj)
       })
+    },
+    handleVdiChange (data) {
+      this.vdi = data.value
     },
   },
 }
