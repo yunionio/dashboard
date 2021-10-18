@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -42,7 +43,8 @@ export default {
   },
   data () {
     let agent_install_status
-    if (!this.data.metadata || this.data.metadata['sys:monitor_agent'] !== true) {
+    const ok = _.get(this.data, ['metadata', 'sys:monitor_agent']) || _.get(this.data, ['metadata', '__monitor_agent'])
+    if (!ok) {
       agent_install_status = 'install'
     } else {
       agent_install_status = 'installed'
