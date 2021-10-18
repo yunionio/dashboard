@@ -1,7 +1,7 @@
 <template>
   <page-footer>
     <template v-slot:right>
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center" v-if="hasMeterService()">
         <div class="mr-4 d-flex align-items-center">
           <div class="text-truncate">{{$t('common_419')}}</div>
           <div class="ml-2 prices">
@@ -36,6 +36,7 @@ import { mapGetters } from 'vuex'
 import { numerify } from '@/filters'
 import { findPlatform } from '@/utils/common/hypervisor'
 import DiscountPrice from '@/sections/DiscountPrice'
+import { hasMeterService } from '@/utils/auth'
 
 export default {
   name: 'BottomBar',
@@ -62,6 +63,7 @@ export default {
     return {
       loading: false,
       priceTotal: null,
+      hasMeterService,
     }
   },
   computed: {
@@ -120,7 +122,7 @@ export default {
     },
     async _getPrice () {
       try {
-        if (R.isEmpty(this.currentCloudregion)) return
+        if (R.isEmpty(this.currentCloudregion) || !hasMeterService()) return
         if (!this.size) {
           this.priceTotal = null
           return
