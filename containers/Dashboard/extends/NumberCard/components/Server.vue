@@ -254,7 +254,7 @@ export default {
         case 'all.eip.floating_ip':
           return '/eip'
         case 'all.snapshot':
-          return '/instance-snapshot'
+          return '/disk-snapshot'
         case 'all.disks.count':
           return '/disk'
         default:
