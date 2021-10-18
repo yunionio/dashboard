@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import InstallAgentForm from '@Compute/views/vminstance/components/InstallAgentForm'
 
 export default {
@@ -25,7 +26,8 @@ export default {
     },
   },
   data () {
-    const visible = this.data.status === 'running' && (!this.data.metadata || this.data.metadata['sys:monitor_agent'] !== 'true')
+    const ok = _.get(this.data, ['metadata', 'sys:monitor_agent']) || _.get(this.data, ['metadata', '__monitor_agent'])
+    const visible = this.data.status === 'running' && !ok
     return {
       visible: visible,
       alertType: 'warning',
