@@ -114,7 +114,7 @@ export default {
                 if (!obj.enabled) tooltip = i18n.t('cloudenv.text_312')
                 let canSync = true
                 if (obj.enable_auto_sync && obj.sync_status !== 'idle') {
-                  canSync = false 
+                  canSync = false
                   tooltip = i18n.t('cloudenv.text_313')
                 }
                 return {
