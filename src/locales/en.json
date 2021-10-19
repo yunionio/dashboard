@@ -4894,5 +4894,6 @@
   "scope.auth.outher.history.user.btn": "Use Another login ID",
   "scope.login.app.name": "Cloud Management Platform",
   "scope.brand_private": "Built-in Private Cloud Platform",
-  "common.tag.sys_tag_tooltip": "System tag on the cloud. The operation is not supported"
+  "common.tag.sys_tag_tooltip": "System tag on the cloud. The operation is not supported",
+  "common.export_pdf": "Export as PDF"
 }
