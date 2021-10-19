@@ -4,7 +4,7 @@
     :data="data"
     :base-info="baseInfo"
     :extraInfo="extraInfo"
-    :hiddenKeys="['external_id', 'project_domain', 'tenant', 'status']"
+    :hiddenKeys="['project_domain', 'tenant', 'status']"
     :show-desc="false"
     :is-edit-name="false" />
 </template>
@@ -158,7 +158,7 @@ export default {
             items: [
               {
                 field: 'app_id',
-                title: 'AppId',
+                title: 'AppID',
                 formatter: ({ row }) => {
                   return row.content?.app_id || '-'
                 },
@@ -166,7 +166,7 @@ export default {
             ],
           },
         ],
-        dingding: [
+        dingtalk: [
           {
             title: this.$t('system.text_255'),
             items: [

@@ -61,8 +61,8 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('system.text_126'), key: 'name' },
-          { label: this.$t('system.text_48'), key: 'type' },
+          { label: this.$t('system.notify.topic.name'), key: 'name' },
+          { label: this.$t('system.notify.topic.type'), key: 'type' },
           { label: this.$t('system.text_163'), key: 'enabled' },
         ],
       },

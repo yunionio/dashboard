@@ -3,7 +3,7 @@
     :form="form.fc"
     v-bind="formItemLayout"
     hideRequiredMark>
-    <a-form-item label="AppId">
+    <a-form-item label="AppID">
       <template v-slot:extra>
         <div>{{$t('system.text_279')}}</div>
         <div class="mb-0">{{ $t('system.text_571') }}</div>

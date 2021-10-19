@@ -117,7 +117,7 @@ export default {
           'domain',
           {
             // initialValue: { key: this.$store.getters.userInfo.projectDomainId, label: this.$store.getters.userInfo.projectDomain },
-            validateTrigger: 'blur',
+            // validateTrigger: 'blur',
             rules: [
               { required: true, message: this.$t('rules.domain') },
             ],
