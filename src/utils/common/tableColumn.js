@@ -767,7 +767,7 @@ export const getServerMonitorAgentInstallStatus = ({
     field,
     title,
     formatter: ({ row }) => {
-      const status = _.get(row, ['metadata', 'sys:monitor_agent'])
+      const status = _.get(row, ['metadata', 'sys:monitor_agent']) || _.get(row, ['metadata', '__monitor_agent'])
       if (status) return i18n.t('compute.monitor.agent.install_status.installed')
       return i18n.t('compute.monitor.agent.install_status.uninstall')
     },
