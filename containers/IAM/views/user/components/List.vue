@@ -77,7 +77,6 @@ export default {
           { label: this.$t('scope.text_245'), key: 'displayname' },
           { label: this.$t('dictionary.domain'), key: 'project_domain' },
           { label: this.$t('system.text_163'), key: 'enabled' },
-          { label: this.$t('system.text_164'), key: 'status' },
           { label: this.$t('system.text_475'), key: 'allow_web_console' },
         ],
       },
