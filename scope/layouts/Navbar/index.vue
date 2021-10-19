@@ -17,20 +17,108 @@
         <img class="logo" :src="logo" />
       </div>
       <h1 class="header-title ml-3">{{ $t('common_210') }}</h1>
+      <!-- 视图选择 -->
+      <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
+        <a-popover
+          trigger="click"
+          v-model="viewChangePopoverVisible"
+          destroyTooltipOnHide
+          :getPopupContainer="triggerNode => triggerNode.parentNode">
+          <template slot="content">
+            <ul class="list-unstyled view-list-wrap" style="max-height: 60vh; overflow-y: auto;">
+              <!-- 管理后台 -->
+              <template v-if="systemProjects && systemProjects.length">
+                <li v-if="systemProjects.length === 1" class="item-link" @click="() => projectChange(systemProjects[0].id, 'system')">
+                  <div class="d-flex h-100 align-items-center">
+                    <div class="flex-fill text-truncate">{{ $t('navbar.view.system_manager') }}</div>
+                    <div style="width: 20px;" class="ml-1">
+                      <a-icon v-show="scope === 'system' && systemProjects[0].id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                    </div>
+                  </div>
+                </li>
+                <li v-else>
+                  <div>{{ $t('navbar.view.system_manager') }}</div>
+                  <ul class="list-unstyled">
+                    <template v-for="item of systemProjects">
+                      <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'system')">
+                        <div class="d-flex h-100 align-items-center">
+                          <div class="flex-fill text-truncate">{{ item.name }}({{ item.domain }})</div>
+                          <div style="width: 20px;" class="ml-1">
+                            <a-icon v-show="scope === 'system' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                          </div>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </li>
+              </template>
+              <!-- 域管理后台 -->
+              <template v-if="domainProjects && domainProjects.length">
+                <li>
+                  <div>{{ domainManagerTitle }}</div>
+                  <ul class="list-unstyled">
+                    <template v-for="item of domainProjects">
+                      <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'domain')">
+                        <div class="d-flex h-100 align-items-center">
+                          <div class="flex-fill text-truncate" v-if="isSingleProject(domainProjects, item)">{{ item.domain }}</div>
+                          <div class="flex-fill text-truncate" v-else>{{ item.domain }}({{ item.name }})</div>
+                          <div style="width: 20px;" class="ml-1">
+                            <a-icon v-show="scope === 'domain' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                          </div>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </li>
+              </template>
+              <!-- 项目 -->
+              <template v-if="projects && projects.length">
+                <li>
+                  <div>{{$t('navbar.view.project')}}</div>
+                  <ul class="list-unstyled">
+                    <template v-for="item of projects">
+                      <li class="item-link" :key="item.id" @click="() => projectChange(item.id, 'project')">
+                        <div class="d-flex h-100 align-items-center">
+                          <div class="flex-fill text-truncate">{{ item.name }}</div>
+                          <div style="width: 20px;" class="ml-1">
+                            <a-icon v-show="scope === 'project' && item.id === userInfo.projectId" type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+                          </div>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </li>
+              </template>
+            </ul>
+          </template>
+          <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+            <a-tooltip :title="$t('navbar.view.switch')" placement="right">
+              <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
+            </a-tooltip>
+            <span class="ml-2 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
+            <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+          </div>
+        </a-popover>
+      </div>
+      <!-- 系统选择 -->
+      <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
+        <a-dropdown :trigger="['click']">
+          <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
+            <icon type="navbar-setting" style="font-size: 24px; line-height: 1;" />
+            <span class="ml-2">{{$t('dictionary.endpoint')}}</span>
+            <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+          </div>
+          <a-menu slot="overlay" @click="productChange">
+            <a-menu-item v-for="item of products" :key="item.key">{{ item.label }}</a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </div>
     </div>
-    <!-- 系统选择 -->
-    <div class="navbar-item d-flex align-items-center justify-content-end" v-if="products">
-      <a-dropdown :trigger="['click']">
-        <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
-          <icon type="navbar-setting" />
-          <span class="ml-2">{{$t('dictionary.endpoint')}}</span>
-          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
-        </div>
-        <a-menu slot="overlay" @click="productChange">
-          <a-menu-item v-for="item of products" :key="item.key">{{ item.label }}</a-menu-item>
-        </a-menu>
-      </a-dropdown>
-    </div>
+    <!-- 资源报警 -->
+    <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
+    <!-- 消息中心 -->
+    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
+    <!-- cloudshell -->
     <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
     <div class="navbar-item">
       <a-dropdown :trigger="['click']">
@@ -59,19 +147,46 @@
 <script>
 import get from 'lodash/get'
 import * as R from 'ramda'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
+import Alertresource from '@/sections/Navbar/components/Alertresource'
 import { setLanguage } from '@/utils/common/cookie'
 import CloudShell from '@/sections/Navbar/components/CloudShell'
+import NotifyPopover from '@/sections/Navbar/components/NotifyPopover'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'Navbar',
   components: {
     CloudShell,
+    Alertresource,
+    NotifyPopover,
   },
   mixins: [WindowsMixin],
+  props: {
+    showViewSelection: {
+      type: Boolean,
+      default: true,
+    },
+    showNotify: {
+      type: Boolean,
+      default: true,
+    },
+    notifyMenuTitleUsedText: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data () {
+    return {
+      viewChangePopoverVisible: false,
+    }
+  },
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo', 'scope', 'logo', 'permission', 'scopeResource', 'setting']),
+    ...mapState('app', {
+      alertresource: state => state.alertresource,
+      alertrecords: state => state.alertrecords,
+    }),
     products () {
       if (this.userInfo.menus && this.userInfo.menus.length > 0) {
         const menus = this.userInfo.menus.map(item => {
@@ -89,11 +204,18 @@ export default {
         return a.name.localeCompare(b.name)
       }, this.userInfo.projects)
     },
-    systemProject () {
-      return R.find(R.propEq('system_capable', true))(this.projects)
+    systemProjects () {
+      return this.projects.filter(v => v.system_capable === true)
     },
     domainProject () {
       return R.find(R.propEq('domain_capable', true))(this.projects)
+    },
+    domainProjects () {
+      const ret = this.projects.filter(v => v.domain_capable === true)
+      return R.uniqWith((a, b) => {
+        return this.isSingleProject(ret, a) && this.isSingleProject(ret, b) &&
+          a.domain_id === b.domain_id && R.equals(a.domain_policies, b.domain_policies)
+      })(ret)
     },
     viewLabel () {
       if (this.reLogging) return '-'
@@ -112,6 +234,18 @@ export default {
     language () {
       return this.setting.language
     },
+    showAlertresource () {
+      if (this.alertrecords && this.alertrecords.total > 0) {
+        return true
+      }
+
+      if (this.isAdminMode) {
+        if (this.alertresource) {
+          return this.alertresource.total > 0
+        }
+      }
+      return false
+    },
   },
   watch: {
     userInfo: {
@@ -124,6 +258,9 @@ export default {
       },
       immediate: true,
     },
+  },
+  created () {
+    this.cronjobFetchAlerts()
   },
   methods: {
     async userMenuClick (item) {
@@ -140,16 +277,10 @@ export default {
         this.$router.push('/clouduser')
       }
     },
-    projectChange (item) {
-      let [projectId, scope, viewMode] = item.key.split('$$')
-      // 从视图下拉切换至普通项目
-      if (viewMode) {
-        // 优先选择 domain
-        if (this.domainProject) projectId = this.domainProject.id
-        if (this.systemProject) projectId = this.systemProject.id
-      }
-      if (this.userInfo.projectId === projectId && this.scope === scope) return
-      this.reLogin(projectId, scope)
+    projectChange (id, scope) {
+      this.viewChangePopoverVisible = false
+      if (this.userInfo.projectId === id && this.scope === scope) return
+      this.reLogin(id, scope)
     },
     productChange (item) {
       window.open(item.key, '_blank')
@@ -163,16 +294,21 @@ export default {
         await this.$store.commit('auth/SET_SCOPE', scope)
         await this.$store.commit('auth/SET_TENANT', projectId)
         await this.$store.commit('auth/UPDATE_HISTORY_USERS', {
-          key: this.userInfo.name,
+          key: this.$store.getters['auth/currentLoggedUserKey'],
           value: {
             tenant: projectId,
+            scope,
           },
         })
         await this.$store.commit('auth/UPDATE_HISTORY_USERS', {
-          key: this.userInfo.name,
+          key: this.$store.getters['auth/currentLoggedUserKey'],
           value: {
+            tenant: projectId,
             scope,
           },
+        })
+        await this.$store.dispatch('scopedPolicy/get', {
+          category: ['sub_hidden_menus'],
         })
         window.location.reload()
         return true
@@ -207,11 +343,49 @@ export default {
       setLanguage('en')
       window.location.reload()
     },
+    isSingleProject (projects, item) {
+      const sameDomainProjects = projects.filter(v => v.domain_id === item.domain_id)
+      const num = sameDomainProjects?.length
+      if (num > 1) {
+        const isAll = sameDomainProjects.every(v => {
+          return R.equals(v.domain_policies, item.domain_policies)
+        })
+
+        if (isAll) {
+          return true
+        }
+      }
+      return num === 1
+    },
+    cronjobFetchAlerts () { // 定时5分钟请求一次
+      const userInfo = this.$store.getters.userInfo
+      if ((R.isNil(userInfo.projects) || R.isEmpty(userInfo.projects)) && (R.isNil(userInfo.projectId) || R.isEmpty(userInfo.projectId))) {
+        return
+      }
+      this.$store.dispatch('app/fetchAlertingrecords')
+      setInterval(() => {
+        this.$store.dispatch('app/fetchAlertingrecords')
+      }, 5 * 60 * 1000)
+
+      if (this.isAdminMode && this.$store._actions['app/fetchAlertresource']) {
+        this.$store.dispatch('app/fetchAlertresource')
+        setInterval(() => {
+          this.$store.dispatch('app/fetchAlertresource')
+        }, 5 * 60 * 1000)
+      } else {
+        this.$store.commit('app/SET_ALERTRESOURCE', {
+          data: [],
+          total: 0,
+        })
+      }
+    },
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+@import '../../../src/styles/less/theme';
+
 .navbar-wrap {
   color: #606266;
   height: 60px;
@@ -226,7 +400,7 @@ export default {
 }
 .navbar-item {
   height: 100%;
-  border-left: 1px solid #f5f5f5;
+  // border-left: 1px solid #f5f5f5;
 }
 .navbar-item-icon {
   width: 40px;
@@ -243,7 +417,8 @@ export default {
 .header-logo {
   line-height: 1;
   img {
-    width: 45px;
+    width: 30px;
+    border-radius: 50%;
   }
 }
 .header-title {
@@ -251,6 +426,34 @@ export default {
   padding: 0;
   font-weight: 400;
   font-size: 18px;
+  color: rgba(0,0,0,.85);
+}
+.products-label {
+  max-width: 150px;
+}
+.current-view-label {
+  max-width: 150px;
+}
+.view-list-wrap {
+  max-width: 200px;
+  margin: 0;
+  padding: 0;
+  > li {
+    padding: 5px 0;
+    > ul {
+      margin-top: 5px;
+      > li {
+        padding-left: 10px;
+        height: 24px;
+      }
+    }
+  }
+  .item-link {
+    cursor: pointer;
+    &:hover {
+      color: @link-color;
+    }
+  }
 }
 .global-map-btn {
   width: 50px;

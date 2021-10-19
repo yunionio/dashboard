@@ -125,7 +125,7 @@ export default {
       this.connect(this.auth && this.auth.auth && this.auth.auth.session)
     },
     connect (session) {
-      if (!session) return
+      if (!session || !this.socket) return
       this.socket.io.opts.query.session = session
       this.socket.connect()
     },
