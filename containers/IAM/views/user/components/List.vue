@@ -17,6 +17,7 @@ import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import limit from '@/config/limit'
 
 export default {
   name: 'UserList',
@@ -91,9 +92,14 @@ export default {
             this.$router.push('/systemuser/create')
           },
           meta: () => {
-            return {
+            const ret = {
               buttonType: 'primary',
             }
+            if (!this.$appConfig.isPrivate && this.list.total >= limit.USER_COUNT) {
+              ret.validate = false
+              ret.tooltip = this.$t('IAM.user.limit')
+            }
+            return ret
           },
         },
         {
@@ -103,6 +109,12 @@ export default {
               onManager: this.onManager,
               refresh: this.refresh,
             })
+          },
+          hidden: () => {
+            if (!this.$appConfig.isPrivate) {
+              return true
+            }
+            return false
           },
         },
         {
