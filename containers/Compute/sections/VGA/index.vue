@@ -32,10 +32,10 @@ export default {
           text: 'QXL',
           value: 'qxl',
         },
-        /*{
+        /* {
           text: 'Virtio-VGA',
           value: 'virtio',
-        },*/
+        }, */
       )
       return options
     },
