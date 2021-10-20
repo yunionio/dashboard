@@ -23,13 +23,7 @@
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" />
-      <a-form-item :label="$t('cloudenv.text_282')" :extra="extra">
-        <a-radio-group v-decorator="decorators.share_mode">
-          <template v-for="item of shareModeOptions">
-            <a-radio-button :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
-          </template>
-        </a-radio-group>
-      </a-form-item>
+      <share-mode :fd="form.fd" />
     </a-form>
   </div>
 </template>
@@ -39,6 +33,7 @@ import DomainProject from '../../../components/DomainProject'
 import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
+import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
@@ -48,6 +43,7 @@ export default {
     AutoSync,
     DomainProject,
     ProxySetting,
+    ShareMode,
   },
   mixins: [createMixin],
   data () {
