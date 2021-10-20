@@ -407,6 +407,8 @@ export default {
         session: data.session,
         hypervisor: obj.hypervisor,
         os_type: obj.os_type,
+        ips: obj.ips,
+        instanceName: obj.name,
       }
       // const href = `${this.$appConfig.webConsolePath}?${qs.stringify(query)}`
       const href = `${this.$store.getters.auth.regions.api_server}/web-console/?${qs.stringify(query)}`
