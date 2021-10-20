@@ -848,5 +848,6 @@
   "system.companyinfo.monitor_dashboard_style.overview_private": "私有云",
   "system.companyinfo.monitor_dashboard_style.overview_custom": "默认",
   "system.robot.shared": "被共享的机器人不支持该操作",
-  "system.displayname_tip": "请输入显示名"
+  "system.displayname_tip": "请输入显示名",
+  "IAM.user.limit": "开源版本支持最多创建5个用户"
 }
