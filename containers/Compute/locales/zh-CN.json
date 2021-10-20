@@ -1460,7 +1460,7 @@
   "compute.image.export.file":  "文件下载",
   "compute.image.export.url":  "生成URL",
   "compute.image.export.url.title":  "URL信息",
-  "compute.image.export.url.title.tips":  "镜像URL信息如下:",
+  "compute.image.export.url.title.tips":  "镜像URL信息如下(有效期24小时):",
   "compute.image.export.url.confirm":  "复制且关闭",
   "compute.text_1387": "请选择云订阅",
   "compute.text_1388": "当前平台暂不支持此操作",

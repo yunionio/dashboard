@@ -85,7 +85,7 @@ export default {
           this.formatOptions = data.filter((item) => { return item.status === 'active' }).map((item) => {
             return { key: item.format, label: item.format.toUpperCase() }
           })
-          if (this.formatOptions.length > 1) {
+          if (this.formatOptions.length >= 1) {
             this.form.setFieldsValue({ format: this.formatOptions[0].key })
           }
           this.$nextTick(() => {
@@ -100,7 +100,7 @@ export default {
     async getDownloadUrl (params) {
       const { data } = await new this.$Manager('imageutils', 'v1').getSpecific({ id: 'download', spec: this.params.data[0].id, params })
       let name = this.params.data[0].name || this.params.data[0].id
-      if (params && params.format) {
+      if (params && params.format && !name.endsWith(params.format)) {
         name = name + '.' + params.format
       }
       return '/api/v1/imageutils/image/' + name + '?signature=' + data.signature
