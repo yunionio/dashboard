@@ -44,13 +44,7 @@
         </div>
       </a-form-item>
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
-      <a-form-item :label="$t('cloudenv.text_282')" :extra="extra">
-        <a-radio-group v-decorator="decorators.share_mode">
-          <template v-for="item of shareModeOptions">
-            <a-radio-button :key="item.key" :value="item.key">{{ item.label }}</a-radio-button>
-          </template>
-        </a-radio-group>
-      </a-form-item>
+      <share-mode :fd="form.fd" />
       <!-- <a-form-item :label="$t('cloudenv.text_242')">
         <a-input v-decorator="decorators.balanceKey" type="textarea" rows="4" />
       </a-form-item> -->
@@ -63,6 +57,7 @@ import DomainProject from '../../../components/DomainProject'
 import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
+import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import { getCloudaccountDocs, keySecretFields, ACCESS_URL, getSamlUserDocs } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
@@ -72,6 +67,7 @@ export default {
     AutoSync,
     DomainProject,
     ProxySetting,
+    ShareMode,
   },
   mixins: [createMixin],
   data () {
