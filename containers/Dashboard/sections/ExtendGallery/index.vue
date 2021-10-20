@@ -50,7 +50,7 @@ export default {
           effective = false
         }
         // 开源版本过滤
-        if (process.env.VUE_APP_PLATFORM === 'cmp_public' && ['ConsumptionPercent', 'ConsumptionTrend', 'SuggestsysAlertsOverview', 'SuggestsysAlertsDetail'].includes(item.component)) {
+        if (process.env.VUE_APP_PLATFORM === 'cmp_public' && ['ConsumptionPercent', 'ConsumptionTrend', 'SuggestsysAlertsOverview', 'SuggestsysAlertsDetail', 'Quota', 'BillHistoryLine', 'ResourceHistoryLine'].includes(item.component)) {
           effective = false
         }
         return effective
