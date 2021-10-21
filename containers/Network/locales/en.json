@@ -983,5 +983,20 @@
   "network.cdn.source_type": "Origin Type",
   "network.cdn.source_server_name": "Server Name",
   "network.cdn.source_protocol": "Origin Pull Protocol",
-  "network.cdn.source_origin": "Origin"
+  "network.cdn.source_origin": "Origin",
+  "network": {
+    "cdn": {
+      "origin_type": {
+        "domain": "doamin",
+        "cos": "cos",
+        "ip": "ip",
+        "ipv6": "ipv6",
+        "ip_ipv6": "ip_ipv6",
+        "ipv6_domain": "ipv6_domain",
+        "ip_ipv6_domain": "ip_ipv6_domain",
+        "image": "image",
+        "ftp": "FTP"
+      }
+    }
+  }
 }

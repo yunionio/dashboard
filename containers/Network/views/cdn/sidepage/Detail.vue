@@ -39,7 +39,10 @@ const getTypeTableColumn = (item) => {
     title: i18n.t('network.cdn.source_type'),
     slots: {
       default: () => {
-        return item.type || '-'
+        if (item.type) {
+          return i18n.te(`network.cdn.origin_type.${item.type}`) ? i18n.t(`network.cdn.origin_type.${item.type}`) : item.type
+        }
+        return '-'
       },
     },
   }
