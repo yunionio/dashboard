@@ -11,7 +11,8 @@
 <script>
 
 import { mapGetters } from 'vuex'
-import { getAreaColumn, getServiceTypeColumn } from '../mixins/columns'
+import i18n from '@/locales'
+import { getAreaColumn, getServiceTypeColumn, getCnameTableColumn, getDomainTableColumn } from '../mixins/columns'
 import {
   getUserTagColumn,
 } from '@/utils/common/detailColumn'
@@ -21,6 +22,64 @@ import {
   getSwitchTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
+
+const emptyTableColumn = {
+  field: '',
+  title: ' ',
+  slots: {
+    default: () => {
+      return ' '
+    },
+  },
+}
+
+const getTypeTableColumn = (item) => {
+  return {
+    field: 'type',
+    title: i18n.t('network.cdn.source_type'),
+    slots: {
+      default: () => {
+        return item.type || '-'
+      },
+    },
+  }
+}
+
+const getOriginTableColumn = (item) => {
+  return {
+    field: 'origin',
+    title: i18n.t('network.cdn.source_origin'),
+    slots: {
+      default: () => {
+        return item.origin || '-'
+      },
+    },
+  }
+}
+
+const getProtocolTableColumn = (item) => {
+  return {
+    field: 'protocol',
+    title: i18n.t('network.cdn.source_protocol'),
+    slots: {
+      default: () => {
+        return item.protocol || '-'
+      },
+    },
+  }
+}
+
+const getServerNameTableColumn = (item) => {
+  return {
+    field: 'server_name',
+    title: i18n.t('network.cdn.source_server_name'),
+    slots: {
+      default: () => {
+        return item.server_name || '-'
+      },
+    },
+  }
+}
 
 export default {
   name: 'CdnDetail',
@@ -46,6 +105,22 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+    originItem () {
+      const originItem = {
+        title: this.$t('network.cdn.source_station'),
+        items: [],
+      }
+      const { origins = [] } = this.data
+      if (!origins.length) return []
+      origins.map(item => {
+        originItem.items.push(getTypeTableColumn(item))
+        originItem.items.push(getProtocolTableColumn(item))
+        originItem.items.push(getOriginTableColumn(item))
+        originItem.items.push(getServerNameTableColumn(item))
+        originItem.items.push(emptyTableColumn)
+      })
+      return [originItem]
+    },
     extraInfo () {
       return [
         {
@@ -53,8 +128,11 @@ export default {
           items: [
             getAreaColumn(),
             getServiceTypeColumn(),
+            getCnameTableColumn({}),
+            getDomainTableColumn({}),
           ],
         },
+        ...this.originItem,
         {
           title: this.$t('network.text_38'),
           items: [
