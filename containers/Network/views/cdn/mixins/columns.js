@@ -49,6 +49,30 @@ export const getServiceTypeColumn = ({ field = 'service_type', title = i18n.t('n
   }
 }
 
+export const getCnameTableColumn = ({ field = 'cname', title = i18n.t('network.cdn.cname') } = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }, h) => {
+        return row.cname || '-'
+      },
+    },
+  }
+}
+
+export const getDomainTableColumn = ({ field = 'domain', title = i18n.t('network.cdn.domain') } = {}) => {
+  return {
+    field,
+    title,
+    slots: {
+      default: ({ row }, h) => {
+        return row.domain || '-'
+      },
+    },
+  }
+}
+
 export default {
   created () {
     this.columns = [
@@ -65,6 +89,7 @@ export default {
       getStatusTableColumn({ statusModule: 'cdnDomain' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'cdn_domain', columns: () => this.columns }),
       getAreaColumn({}),
+      getCnameTableColumn({}),
       getServiceTypeColumn({}),
       getBrandTableColumn(),
       getAccountTableColumn(),
