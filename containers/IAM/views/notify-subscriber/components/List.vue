@@ -99,7 +99,7 @@ export default {
           },
         },
         {
-          label: this.$t('system.text_153'),
+          label: this.$t('common.batchAction'),
           actions: obj => {
             return [
               // 启用禁用
