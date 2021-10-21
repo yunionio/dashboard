@@ -5,6 +5,7 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     :hiddenKeys="['external_id', 'type', 'project_domain', 'tenant', 'status']"
+    :show-name="false"
     :show-desc="false"
     :is-edit-name="!data.is_system"
     :is-edit-desc="!data.is_system" />
