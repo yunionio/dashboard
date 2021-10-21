@@ -64,6 +64,7 @@ export default {
               scope: this.$store.getters.scope,
               with_meta: true,
               limit: 0,
+              project_domain_filter: true,
             },
           })
         this.baseInfo.push(recipientsColumn(recipientList))
