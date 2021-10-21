@@ -97,7 +97,7 @@ export default {
             tooltip = i18n.t('cloudenv.text_357')
             validate = false
           }
-          if (this.data.enable_auto_sync && this.data.sync_stauts !== 'idle') {
+          if (this.data.sync_status !== 'idle') {
             tooltip = i18n.t('cloudenv.text_313')
             validate = false
           }
