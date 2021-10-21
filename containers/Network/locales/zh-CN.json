@@ -975,5 +975,27 @@
   "network.cdn.service_type": "加速类别",
   "network.cdn.service_type.web": "静态加速",
   "network.cdn.service_type.download": "下载加速",
-  "network.cdn.service_type.media": "流媒体点播加速"
+  "network.cdn.service_type.media": "流媒体点播加速",
+  "network.cdn.cname": "CNAME",
+  "network.cdn.domain": "加速域名",
+  "network.cdn.source_station": "源站信息",
+  "network.cdn.source_type": "源站类型",
+  "network.cdn.source_server_name": "回源HOST",
+  "network.cdn.source_protocol": "回源协议",
+  "network.cdn.source_origin": "源站地址",
+  "network": {
+    "cdn": {
+      "origin_type": {
+        "domain": "域名类型",
+        "cos": "对象存储源站",
+        "ip": "IP列表作为源站",
+        "ipv6": "源站列表为一个单独的 IPv6 地址",
+        "ip_ipv6": "源站列表为多个 IPv4 地址和IPv6 地址",
+        "ipv6_domain": "源站列表为多个 IPv6 地址以及域名",
+        "ip_ipv6_domain": "源站列表为多个 IPv4 地址IPv6 地址以及域名",
+        "image": "数据万象源站",
+        "ftp": "FTP 托管源源站"
+      }
+    }
+  }
 }
