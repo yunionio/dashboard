@@ -61,13 +61,13 @@ export const getCnameTableColumn = ({ field = 'cname', title = i18n.t('network.c
   }
 }
 
-export const getDomainTableColumn = ({ field = 'domain', title = i18n.t('network.cdn.domain') } = {}) => {
+export const getDomainTableColumn = ({ field = 'external_id', title = i18n.t('network.cdn.domain') } = {}) => {
   return {
     field,
     title,
     slots: {
       default: ({ row }, h) => {
-        return row.domain || '-'
+        return row.external_id || '-'
       },
     },
   }
