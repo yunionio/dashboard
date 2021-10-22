@@ -28,6 +28,7 @@
 import * as R from 'ramda'
 import PageListEmpty from '@/components/PageList/Loader'
 import { BILL_TYPES_MAP } from '@Network/views/nats/constants'
+import { hasMeterService } from '@/utils/auth'
 
 export default {
   name: 'SKUList',
@@ -66,7 +67,7 @@ export default {
       return {}
     },
     tableColumn () {
-      const column = [
+      const columns = [
         { type: 'radio', width: 40 },
         {
           field: 'name',
@@ -119,38 +120,41 @@ export default {
             },
           },
         },
-        {
-          field: 'rate',
-          title: this.$t('network.nat.sku.price'),
-          sortable: true,
-          slots: {
-            default: ({ row: { provider, rate } }) => {
-              if (this.rateLoading) {
-                return [<a-icon type="loading" />]
+      ]
+      const priceColumn = {
+        field: 'rate',
+        title: this.$t('network.nat.sku.price'),
+        sortable: true,
+        slots: {
+          default: ({ row: { provider, rate } }) => {
+            if (this.rateLoading) {
+              return [<a-icon type="loading" />]
+            }
+            const isPackage = this.form.getFieldValue('billing_type') === BILL_TYPES_MAP.prepaid.key
+            if (rate) {
+              let price = rate.hour_price
+              let unit = this.$t('network.unit.hour')
+              if (provider === 'Huawei') {
+                price = rate.hour_price * 24
+                unit = this.$t('network.unit.day')
               }
-              const isPackage = this.form.getFieldValue('billing_type') === BILL_TYPES_MAP.prepaid.key
-              if (rate) {
-                let price = rate.hour_price
-                let unit = this.$t('network.unit.hour')
-                if (provider === 'Huawei') {
-                  price = rate.hour_price * 24
-                  unit = this.$t('network.unit.day')
-                }
-                if (isPackage) {
-                  price = rate.month_price
-                  unit = this.$t('network.unit.month')
-                }
-                return [
-                  <span style="color: rgb(230, 139, 80);">{ price.toFixed(2) }</span>,
-                  <span> { this.$t('currencys.CNY') } / {unit}</span>,
-                ]
+              if (isPackage) {
+                price = rate.month_price
+                unit = this.$t('network.unit.month')
               }
-              return '-'
-            },
+              return [
+                <span style="color: rgb(230, 139, 80);">{ price.toFixed(2) }</span>,
+                <span> { this.$t('currencys.CNY') } / {unit}</span>,
+              ]
+            }
+            return '-'
           },
         },
-      ]
-      return column
+      }
+      if (hasMeterService()) {
+        columns.push(priceColumn)
+      }
+      return columns
     },
   },
   watch: {
@@ -184,6 +188,7 @@ export default {
       return skuList ? skuList.sort((a, b) => a.cnns - b.cnns) : []
     },
     async fetchRates (skuList = this.skuList) {
+      if (!hasMeterService()) return
       const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
       const params = []
       skuList.forEach(sku => {
