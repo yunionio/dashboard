@@ -48,11 +48,23 @@
             :select-props="{ placeholder: $t('compute.text_219') }" />
         </a-form-item>
       </a-form>
+      <div class="d-flex flex-fill mb-2">
+        <!-- 刷新 -->
+        <a-button
+          class="flex-shrink-0"
+          :disabled="loading"
+          @click="handleRefresh">
+          <a-icon v-if="loading" type="sync" spin />
+          <a-icon v-else type="sync" />
+        </a-button>
+      </div>
       <page-list
         :list="list"
         :show-checkbox="true"
         :pagerLayout="['PrevPage', 'Jump', 'PageCount', 'NextPage', 'Total']"
-        :columns="cacheColumns" />
+        :columns="cacheColumns"
+        :show-group-actions="false"
+        :group-actions="[{}]" />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -233,6 +245,9 @@ export default {
     //     this.list.fetchData()
     //   }, 4000)
     // },
+    handleRefresh () {
+      this.list.refresh()
+    },
     fetchPlatform () {
       return new this.$Manager('rpc/cloudregions/region-providers').list({ params: { usable: true, cloud_env: this.params.title } }).then(({ data }) => {
         this.platformOptions = data
