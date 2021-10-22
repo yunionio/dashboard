@@ -14,7 +14,6 @@ import PolicyCreate from '@IAM/views/policy/Create'
 import PolicyUpdate from '@IAM/views/policy/Update'
 import Notification from '@IAM/views/notification'
 import NotifyTopic from '@IAM/views/notify-topic'
-import MailConfig from '@IAM/views/mail-config'
 import Robots from '@IAM/views/robots'
 import NotifyConfigs from '@IAM/views/notifyconfig'
 import NotifyConfigCreate from '@IAM/views/notifyconfig/create'
@@ -294,7 +293,7 @@ export default {
         {
           path: '/notify-topic',
           meta: {
-            label: i18n.t('system.text_16'),
+            label: i18n.t('dictionary.notify-topic'),
             permission: 'topics_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.notify-topic')) {
@@ -313,24 +312,6 @@ export default {
               name: 'NotifyTopic',
               path: '',
               component: NotifyTopic,
-            },
-          ],
-        },
-        {
-          path: '/mailconfig',
-          meta: {
-            label: i18n.t('system.text_19'),
-            permission: 'configs_list',
-            hidden: () => {
-              return true
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'MailConfig',
-              path: '',
-              component: MailConfig,
             },
           ],
         },
