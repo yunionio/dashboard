@@ -4,6 +4,7 @@ import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { findPlatform } from '@/utils/common/hypervisor'
+import { hasMeterService } from '@/utils/auth'
 
 const steadyStatus = {
   status: Object.values(expectStatus.cloudaccount).flat(),
@@ -149,6 +150,9 @@ export default {
                   return ret
                 }
                 return ret
+              },
+              hidden: () => {
+                return !hasMeterService()
               },
             },
             {

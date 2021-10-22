@@ -18,6 +18,7 @@ import {
 import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 import { findPlatform } from '@/utils/common/hypervisor'
 import WindowsMixin from '@/mixins/windows'
+import { hasMeterService } from '@/utils/auth'
 
 export default {
   name: 'CloudaccountDetail',
@@ -90,6 +91,7 @@ export default {
               title: this.$t('cloudaccount.table.title.discount'),
               slots: {
                 default: () => {
+                  if (!hasMeterService()) return '-'
                   if (!this.discountLoaded) {
                     return [<a-icon type='loading' style='font-size: 12px;' class='primary-color' />]
                   }
@@ -111,6 +113,7 @@ export default {
   },
   methods: {
     async fetchDiscount () {
+      if (!hasMeterService()) return
       try {
         const response = await this.$http({
           method: 'GET',
