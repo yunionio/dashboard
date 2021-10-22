@@ -113,11 +113,11 @@ const resolveError = error => {
   const reqMsg = getHttpReqMessage(error)
   showErrorNotify({ errorMsg, reqMsg })
 }
-
+const errors = {}
 const showErrorNotify = ({ errorMsg, reqMsg }) => {
   const message = R.is(Array, errorMsg) ? i18n.t('common.text00123') : errorMsg.class
   const key = `notification-${uuid(32)}`
-  notification.error({
+  const options = {
     key,
     class: 'error-notification',
     message,
@@ -147,7 +147,23 @@ const showErrorNotify = ({ errorMsg, reqMsg }) => {
         },
       }, i18n.t('common_224'))
     },
-  })
+  }
+
+  const last = errors[message] || 0
+  const now = Date.now()
+  if (now > last + 3000) {
+    notification.error(options)
+    errors[message] = now
+  } else {
+    console.debug('duplicate error message', message)
+  }
+
+  // clean data
+  for (var k in errors) {
+    if (now - errors[k] > 6000) {
+      delete errors[k]
+    }
+  }
 }
 
 const showHttpBatchErrorMessage = response => {
