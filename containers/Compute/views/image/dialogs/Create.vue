@@ -163,6 +163,10 @@ export default {
       if (this.params.title === 'onpremise') {
         return [
           {
+            field: 'name',
+            title: this.$t('compute.text_228'),
+          },
+          {
             field: 'brand',
             title: this.$t('compute.text_176'),
           },
@@ -195,6 +199,10 @@ export default {
         ]
       } else {
         return [
+          {
+            field: 'name',
+            title: this.$t('compute.text_228'),
+          },
           {
             field: 'brand',
             title: this.$t('compute.text_176'),
@@ -249,7 +257,7 @@ export default {
       this.list.refresh()
     },
     fetchPlatform () {
-      return new this.$Manager('rpc/cloudregions/region-providers').list({ params: { usable: true, cloud_env: this.params.title } }).then(({ data }) => {
+      return new this.$Manager('rpc/cloudregions/region-providers').list({ params: { usable: true, cloud_env: this.params.title, scope: this.$store.getters.scope } }).then(({ data }) => {
         this.platformOptions = data
       })
     },
