@@ -747,7 +747,7 @@
   "network.ports_used": "Usage (Used)",
   "network.text_727": "Total: {0}",
   "network.text_728": "Used: {0}",
-  "network.text_729": "No scheulder tags",
+  "network.text_729": "No scheduler tags",
   "network.text_730": "The operation is only viable when the status of the domain name is 'available'",
   "network.text_731": "MX priority",
   "network.text_732": "The smaller the value, the higher the priority",
