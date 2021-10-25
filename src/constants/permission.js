@@ -194,6 +194,8 @@ export const PERMISSION = {
   notifications_list: ['notify', 'notifications', 'list'],
   // 消息订阅
   topics_list: ['notify', 'topics', 'list'],
+  // 机器人
+  robots: ['notify', 'robots', 'list'],
   // 企业信息
   infos_list: ['yunionagent', 'infos', 'list'],
   // 邮件短信

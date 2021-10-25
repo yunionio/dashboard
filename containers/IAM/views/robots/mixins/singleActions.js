@@ -32,7 +32,7 @@ export default {
           return [
             getSetPublicAction(this, {
               name: this.$t('system.robot'),
-              scope: 'domain',
+              scope: 'project',
               resource: 'robots',
               apiVersion: 'v1',
             }, {
@@ -46,11 +46,11 @@ export default {
                   ret.tooltip = this.$t('system.robot.shared')
                   return ret
                 }
-                if (row.public_scope !== 'none') {
-                  ret.validate = false
-                  ret.tooltip = this.$t('system.robot.shared')
-                  return ret
-                }
+                // if (row.public_scope !== 'none') {
+                //   ret.validate = false
+                //   ret.tooltip = this.$t('system.robot.shared')
+                //   return ret
+                // }
                 return ret
               },
             }),
