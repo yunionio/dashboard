@@ -850,5 +850,6 @@
   "system.companyinfo.monitor_dashboard_style.overview_custom": "Default",
   "system.robot.shared": "The shared robot does not support this operation",
   "system.displayname_tip": "Please enter a displayname",
-  "IAM.user.limit": "The open source version supports the creation of up to 5 users"
+  "IAM.user.limit": "The open source version supports the creation of up to 5 users",
+  "IAM.text_1": "Scope Of Belonging"
 }
