@@ -2,7 +2,11 @@
   <div class="h-100 position-relative">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
-        <div class="dashboard-card-header-left">{{ fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
+        <div class="dashboard-card-header-left">
+          {{ fd.name }}
+          <a-icon class="ml-2" type="loading" v-if="loading" />
+          <a-tooltip><template slot="title">{{ $t('dashboard.suggestsysalert_tips') }}</template><icon type="help" /></a-tooltip>
+        </div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="() => visible = true" />
           <router-link v-if="!edit" to="/suggestsysalert" class="ml-2">
