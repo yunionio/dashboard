@@ -217,6 +217,7 @@
   "dashboard.gpu_reserved_tips": "只有创建GPU卡虚拟机时才可用",
   "dashboard.un_usage_tips": "包含GPU卡等预留资源，有些资源在特定情况下可用",
   "dashboard.all_usage_tips": "总量指物理容量",
+  "dashboard.suggestsysalert_tips": "同一个资源匹配不同规则的优化金额会叠加，预估优化总金额可能会偏高。",
   "dashboard.shutdown": "关机",
   "dashboard.not_shutdown": "未关机",
   "dashboard.mounted": "已挂载",

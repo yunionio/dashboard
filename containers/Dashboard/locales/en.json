@@ -217,6 +217,7 @@
   "dashboard.gpu_reserved_tips": "Available when creating a GPU server",
   "dashboard.un_usage_tips": "Including reserved resources for GPU, some resources are available with certain circumstances",
   "dashboard.all_usage_tips": "Total physical capacities",
+  "dashboard.suggestsysalert_tips": "The optimization amount of the same resource matching different rules will be superimposed, and the total optimization amount may be higher.",
   "dashboard.shutdown": "Stopped",
   "dashboard.not_shutdown": "Unstopped",
   "dashboard.mounted": "Mounted",
