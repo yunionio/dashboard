@@ -331,6 +331,8 @@
   "cloudenv.text_285": "Do Not Share",
   "cloudenv.text_286": "Share Cloud Subscription",
   "cloudenv.text_287": "Share Cloud Account",
+  "cloudenv.global_share": "Global Sharing",
+  "cloudenv.global_share_tip": "The sharing settings for finer dimensions can be set after the cloud account is successfully created.",
   "cloudenv.text_288": "Only any {2} under the {0} belonging to {1} can use any subscription under the {3} to create resources",
   "cloudenv.text_293": "Specified or all {1} ​​under {0} can use the specified subscription under this {2}, after this type of setting is completed, you need to 'change {3}' in the subscription list to make effect",
   "cloudenv.text_294": "Change {0}",
