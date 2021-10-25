@@ -17,8 +17,6 @@ export default {
         fd: {
           domain: '',
           share_mode: 'account_domain',
-          provider_shared_domains: [],
-          system_shared_domains: [],
         },
       },
       keySecretFieldInit: keySecretFields[this.provider.toLowerCase()],
