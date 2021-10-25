@@ -331,6 +331,8 @@
   "cloudenv.text_285": "不共享",
   "cloudenv.text_286": "共享云订阅",
   "cloudenv.text_287": "共享云账号",
+  "cloudenv.global_share": "全局共享",
+  "cloudenv.global_share_tip": "更细维度的共享设置可在云账号新建成功后设置",
   "cloudenv.text_288": "只有该{0}所属{1}下的任意{2}可以使用该{3}下的任意订阅创建资源",
   "cloudenv.text_293": "根据设置指定或所有{0}下的任意{1}可以使用该{2}下的指定订阅，该类型设置完成后，还需要单独在订阅列表进行 【更改{3}】 设置才可生效",
   "cloudenv.text_294": "更改{0}",
