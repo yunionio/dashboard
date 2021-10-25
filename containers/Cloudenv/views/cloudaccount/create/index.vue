@@ -341,6 +341,11 @@ export default {
           values.access_key_id = values.access_key_id + '::' + values.ucloud_project_id
           delete values.ucloud_project_id
         }
+        if (values.share_mode && values.share_mode === 'global') {
+          values.public_scope = 'system'
+          values.is_public = true
+          delete values.share_mode
+        }
         this.newAccountInfo = await this.doCreateCloudaccount(values)
         if (this.isBill) {
           this.currentComponent = 'billConfig'
