@@ -368,6 +368,13 @@ export default {
           path: '/robot',
           meta: {
             label: i18n.t('system.robot_manage'),
+            permission: 'robots_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.robot')) {
+                return true
+              }
+              return false
+            },
           },
           component: Layout,
           children: [
