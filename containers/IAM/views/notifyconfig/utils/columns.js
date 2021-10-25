@@ -14,7 +14,7 @@ export const getConfigTypeTableColumn = () => {
 
 export const getAttirubuteTableColumn = ({ vm = {} } = {}) => {
   return {
-    title: i18n.t('bill.text_219'),
+    title: i18n.t('IAM.text_1'),
     field: 'attribution',
     width: 120,
     slots: {
