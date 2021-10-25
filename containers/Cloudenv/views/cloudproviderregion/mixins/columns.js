@@ -19,15 +19,11 @@ export default {
                 <status status={ row.sync_status } statusModule='cloudaccountSyncStatus' />,
               ]
             } else {
-              let time = this.$moment(row.last_sync)
-              if (row.enable_auto_sync) {
-                time = this.$moment(row.last_auto_sync_at)
+              let time
+              if (row.last_sync) {
+                time = this.$moment(row.last_sync)
               }
-              if (time) {
-                return time.fromNow()
-              } else {
-                return '-'
-              }
+              return time ? time.fromNow() : '-'
             }
           },
         },
