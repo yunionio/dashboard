@@ -31,6 +31,7 @@ import { BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import { sizestr } from '@/utils/utils'
 import PageListEmpty from '@/components/PageList/Loader'
 import { numerify } from '@/filters'
+import { hasMeterService } from '@/utils/auth'
 
 export default {
   name: 'rdsSkuList',
@@ -112,7 +113,9 @@ export default {
           minWidth: 100,
           sortable: true,
         },
-        {
+      ]
+      if (hasMeterService()) {
+        column.push({
           field: 'rate',
           title: this.$t('db.text_128'),
           sortable: true,
@@ -142,8 +145,8 @@ export default {
               return '-'
             },
           },
-        },
-      ]
+        })
+      }
       return column
     },
   },
@@ -174,6 +177,7 @@ export default {
       this.$emit('change', _row)
     },
     async fetchGetRates (skuList = this.skuList) {
+      if (!hasMeterService()) return
       const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
       const params = []
       skuList.forEach(sku => {
