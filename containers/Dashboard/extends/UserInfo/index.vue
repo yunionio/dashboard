@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     refresh () {
-      return this.fetchLogs()
+      return function () {}
     },
     handleEdit () {
       this.visible = true
