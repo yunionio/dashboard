@@ -27,6 +27,7 @@ export default {
       const { name, manager } = vpc
       return (
         <div class='d-flex'>
+          <a-badge status={ vpc.network_count ? 'success' : 'default' } />
           <span class='text-truncate flex-fill mr-2' title={ name }>{ name }</span>
           <span style="color: #8492a6; font-size: 13px">{ this.$t('db.text_340', [manager]) }</span>
         </div>

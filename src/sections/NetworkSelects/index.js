@@ -199,10 +199,16 @@ export default {
       }
       const options = this.vpcList.map((item) => {
         const { id, name } = item
-        return <a-select-option key={id} value={id}>{this.vpcFormat ? this.vpcFormat(item) : name }</a-select-option>
+        return <a-select-option key={id} value={id}>{ this.vpcFormat ? this.vpcFormat(item) : name }</a-select-option>
       })
+      const renderStatusDesc = () => {
+        return <a-select-option key="-1" value="-1" disabled>
+          <a-badge status="success" class="oc-custom-badge text-left text-wrap" text={ this.$t('compute.vpc_status_desc') } />
+        </a-select-option>
+      }
       return (
         <a-select disabled={disabled} onChange={_handleChange} showSearch placeholder={i18n.t('common_226')} loading={vpcLoading} filterOption={filterOption} >
+          { renderStatusDesc() }
           {options}
         </a-select>
       )
