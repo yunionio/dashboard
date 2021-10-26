@@ -32,6 +32,7 @@ import {
   getFileSystemStorageTypeColumn,
   getFileSystemProtocolColumn,
 } from '@Storage/views/file-system/mixins/columns'
+import { hasMeterService } from '@/utils/auth'
 
 export default {
   name: 'SKUList',
@@ -75,7 +76,9 @@ export default {
         getFileSystemTypeColumn(),
         getFileSystemStorageTypeColumn(),
         getFileSystemProtocolColumn(),
-        {
+      ]
+      if (hasMeterService()) {
+        column.push({
           field: 'rate',
           title: this.$t('network.nat.sku.price'),
           sortable: true,
@@ -99,8 +102,8 @@ export default {
               return '-'
             },
           },
-        },
-      ]
+        })
+      }
       return column
     },
   },
@@ -128,6 +131,7 @@ export default {
       this.FC.validateFields(['sku'])
     },
     async fetchRates (skuList = this.skuList) {
+      if (!hasMeterService()) return
       const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
       const params = []
       skuList.forEach(sku => {

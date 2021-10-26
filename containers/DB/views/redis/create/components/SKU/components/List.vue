@@ -30,6 +30,7 @@ import { NODE_TYPE, BILL_TYPES_MAP } from '@DB/views/redis/constants'
 import PageListEmpty from '@/components/PageList/Loader'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
+import { hasMeterService } from '@/utils/auth'
 
 const ELASTIC_CACHE_STORAGE_TYPE = {
   inmemory: i18n.t('db.text_132'),
@@ -137,7 +138,9 @@ export default {
           title: this.$t('db.text_353'),
         },
         { field: 'max_connections', title: this.$t('db.text_127'), sortable: true },
-        {
+      ]
+      if (hasMeterService()) {
+        column.push({
           field: 'rate',
           title: this.$t('db.text_128'),
           sortable: true,
@@ -162,8 +165,8 @@ export default {
               return '-'
             },
           },
-        },
-      ]
+        })
+      }
       return column
     },
   },
@@ -201,6 +204,7 @@ export default {
       })
     },
     async fetchGetRates (skuList = this.skuList) {
+      if (!hasMeterService()) return
       const managerRates = new this.$Manager('cloud_sku_rates', 'v1')
       const params = []
       skuList.forEach(sku => {
