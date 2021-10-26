@@ -26,6 +26,7 @@ export default {
     },
     globalConfig: {},
     openCloudShell: false,
+    globalServices: [],
   },
   mutations: {
     UPDATE_OBJECT (state, { name, data }) {
@@ -102,6 +103,9 @@ export default {
     },
     SET_OPEN_CLOUDSHELL (state, payload) {
       state.openCloudShell = payload
+    },
+    SET_GLOBAL_SERVICE (state, payload) {
+      state.globalServices = payload
     },
   },
   actions: {
@@ -188,6 +192,21 @@ export default {
         throw error
       } finally {
         manager = null
+      }
+    },
+    async fetchGlobalServices ({ commit }, paramObj) {
+      try {
+        const response = await new Manager('services', 'v1').list({
+          params: {
+            type: ['identity', 'common', 'yunionapi', 'notify', 'compute_v2', 'image', 'baremetal', 'websocket', 'meter'],
+            ...paramObj,
+          },
+        })
+        const data = (response.data.data && response.data.data) || []
+        commit('SET_GLOBAL_SERVICE', data)
+        this.loaded = true
+      } catch (error) {
+        throw error
       }
     },
   },
