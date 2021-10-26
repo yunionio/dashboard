@@ -9,7 +9,7 @@ export default {
   name: 'TopAlert',
   mixins: [WindowsMixin],
   computed: {
-    ...mapGetters(['common']),
+    ...mapGetters(['common', 'isAdminMode']),
     topAlert () {
       return this.common.topAlert || {}
     },
