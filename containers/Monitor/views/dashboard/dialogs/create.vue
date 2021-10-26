@@ -3,7 +3,7 @@
     <div slot="header">{{$t('monitor.dashboard.dialog.create')}}</div>
     <div slot="body">
       <a-form :form="form" v-bind="formLayout">
-        <a-form-item :label="$t('bill.text_219')">
+        <a-form-item :label="$t('IAM.text_1')">
           <scope-select v-decorator="decorators.scope" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_228')">
