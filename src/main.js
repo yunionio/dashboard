@@ -53,6 +53,7 @@ async function start () {
   try {
     await store.dispatch('app/fetchCompayInfo')
     await store.dispatch('app/fetchWorkflowEnabledKeys', { $t: uuid() })
+    store.dispatch('common/fetchGlobalServices', { $t: uuid() })
   } finally {
     app.$mount('#app')
   }
