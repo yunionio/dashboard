@@ -52,10 +52,10 @@ export default {
                 return true
               }
 
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
-              })
+              }) : false
             },
           },
           component: Layout,
@@ -82,10 +82,10 @@ export default {
                 return true
               }
 
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
-              })
+              }) : false
             },
           },
           component: Layout,
@@ -116,10 +116,10 @@ export default {
                 return true
               }
 
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
-              })
+              }) : false
             },
           },
           path: '/monitor-dashboard',
@@ -151,10 +151,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.explorer')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
-              })
+              }) : false
             },
           },
           path: '/explorer',
@@ -179,10 +179,10 @@ export default {
                 return true
               }
 
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'hcso'],
-              })
+              }) : false
             },
           },
           component: Layout,
@@ -262,10 +262,10 @@ export default {
                 return true
               }
 
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'huaweicloudstack'],
-              })
+              }) : false
             },
           },
           component: Layout,
