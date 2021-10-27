@@ -4,7 +4,7 @@
       class="base-select"
       :disabled="disabled"
       v-bind="{ ...selectProps, ...filterOpts }"
-      :style="{ width: (showSync ? 'calc(100% - 22px)' : '100%'), 'min-width': minWidth }"
+      :style="{ width: (showSync ? 'calc(100% - 24px)' : '100%'), 'min-width': minWidth }"
       :value="value"
       :option-label-prop="optionLabelProp"
       @blur="onBlur"
