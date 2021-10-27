@@ -36,7 +36,8 @@
             :vpcParams="vpcParams"
             :networkParams="networkParams"
             :vpcResourceMapper="vpcResourceMapper"
-            :showIpConfig="cloudEnv !== 'public'" />
+            :showIpConfig="cloudEnv !== 'public'"
+            :helplink="{ipSubnetHelp: $t('network.eip.tip'), ipSubnetHref: '/network/create'}" />
         </template>
         <template v-if="cloudEnv !== 'private' || isHCSO">
           <a-form-item :label="$t('network.text_192')" v-bind="formItemLayout">
