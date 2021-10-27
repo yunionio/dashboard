@@ -68,7 +68,7 @@ export default {
       const url = this.topAlert.apiServer.messageOptions[1][2] || location.origin
       const key = 'api_server'
       const service = 'common'
-      const serviceId = this.commonService.id || 'f05647ced7eb4ef189b49593dd0ab938'
+      const serviceId = this.commonService?.id || 'f05647ced7eb4ef189b49593dd0ab938'
       const row = {
         opt: {
           component: 'a-input',
