@@ -48,11 +48,12 @@ export default {
             },
           },
         },
+        params: { scope: this.$store.getters.scope },
         itemGet: (data, params) => {
-          const getParams = Object.assign({}, params)
+          const getParams = Object.assign({ }, params)
           delete getParams.joint_filter
           return this.$http.get(`/v2/cloudproviders/${data.cloudprovider_id}/cloudregions/${data.cloudregion_id}`, {
-            getParams,
+            params: getParams,
           })
         },
       }),
