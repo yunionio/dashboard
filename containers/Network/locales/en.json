@@ -998,5 +998,6 @@
         "ftp": "FTP"
       }
     }
-  }
+  },
+  "network.eip.tip": "No IP subnets of EIP type available yet? Go to "
 }

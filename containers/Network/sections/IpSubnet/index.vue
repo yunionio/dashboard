@@ -33,6 +33,9 @@
             :params="networkParamsConcat"
             :mapper="networkResourceMapper"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
+            <div slot="extra" v-if="helplink">
+              {{helplink.ipSubnetHelp}}<help-link :href="helplink.ipSubnetHref">{{$t('network.text_26')}}</help-link>
+            </div>
         </a-form-item>
       </a-col>
       <a-col :span="8" v-if="showIpConfig">
@@ -110,6 +113,9 @@ export default {
     showIpConfig: {
       type: Boolean,
       default: true,
+    },
+    helplink: {
+      type: Object,
     },
   },
   data () {
