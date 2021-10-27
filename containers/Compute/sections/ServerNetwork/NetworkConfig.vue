@@ -3,6 +3,7 @@
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in networkList" :key="item.key">
       <a-tag color="blue" class="mr-1" style="margin-top: 10px;">{{ isBonding ? 'bond' : $t('compute.text_193')}}{{i + count}}</a-tag>
       <a-form-item
+        v-show="showVpc"
         :wrapperCol="{ span: 24 }"
         class="mb-0 mr-1">
         <!-- <base-select
@@ -41,7 +42,7 @@
         :wrapperCol="{ span: 24 }"
         style="flex: 1;"
         class="mb-0 mr-1 network-item">
-        <!-- <base-select
+        <base-select
           class="w-100"
           v-decorator="decorator.networks(item.key)"
           resource="networks"
@@ -55,8 +56,8 @@
           :remote-fn="q => ({ search: q })"
           :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
           @change="v => networkChange(v, item)"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" /> -->
-        <oc-select
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
+        <!-- <oc-select
           v-decorator="decorator.networks(item.key)"
           :data="networkOpts"
           width="100%"
@@ -65,7 +66,7 @@
           :formatter="networkFormatter"
           :sort="(arr) => arr.sort((a, b) => (a.ports - a.ports_used) > (b.ports - b.ports_used) ? -1 : 1)"
           @selectChange="(curObjArr) => networkSelectChange(curObjArr, item)"
-          @fetchSuccess="(data) => fetchNetworkSuccessHandle(data, item)" />
+          @fetchSuccess="(data) => fetchNetworkSuccessHandle(data, item)" /> -->
           <div slot="extra" v-if="i === 0">{{$t('compute.text_196')}}<help-link href="/network2">{{$t('compute.perform_create')}}</help-link>
           </div>
       </a-form-item>
@@ -147,6 +148,9 @@ export default {
     ipsDisable: {
       type: Boolean,
       default: false,
+    },
+    showVpc: {
+      type: Boolean,
     },
   },
   data () {
