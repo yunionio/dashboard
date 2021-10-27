@@ -4895,5 +4895,6 @@
   "scope.login.app.name": "Cloud Management Platform",
   "scope.brand_private": "Built-in Private Cloud Platform",
   "common.tag.sys_tag_tooltip": "System tag on the cloud. The operation is not supported",
-  "common.export_pdf": "Export as PDF"
+  "common.export_pdf": "Export as PDF",
+  "common.export_excel": "Export as Excel"
 }

@@ -4907,5 +4907,6 @@
   "scope.login.app.name": "云管理平台",
   "scope.brand_private": "内置私有云平台",
   "common.tag.sys_tag_tooltip": "云上系统标签，暂不支持操作",
-  "common.export_pdf": "导出PDF"
+  "common.export_pdf": "导出PDF",
+  "common.export_excel": "导出Excel"
 }
