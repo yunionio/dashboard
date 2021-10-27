@@ -23,7 +23,8 @@
         :ipsDisable="ipsDisable"
         :network-resource-mapper="networkResourceMapper"
         :vpc-resource-mapper="vpcResourceMapper"
-        :limit="form.fi.capability.max_nic_count" />
+        :limit="form.fi.capability.max_nic_count"
+        :show-vpc="showVpc" />
     </a-form-item>
     <a-form-item v-if="networkComponent === 'schedtag'">
       <network-schedtag
@@ -110,6 +111,10 @@ export default {
     },
     allowNetworkTypes: {
       type: Array,
+    },
+    showVpc: {
+      type: Boolean,
+      default: true,
     },
   },
   data () {
