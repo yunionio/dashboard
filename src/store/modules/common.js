@@ -198,13 +198,12 @@ export default {
       try {
         const response = await new Manager('services', 'v1').list({
           params: {
-            type: ['identity', 'common', 'yunionapi', 'notify', 'compute_v2', 'image', 'baremetal', 'websocket', 'meter'],
+            type: ['common'],
             ...paramObj,
           },
         })
         const data = (response.data.data && response.data.data) || []
         commit('SET_GLOBAL_SERVICE', data)
-        this.loaded = true
       } catch (error) {
         throw error
       }
