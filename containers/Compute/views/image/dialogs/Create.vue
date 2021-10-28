@@ -153,6 +153,7 @@ export default {
         limit: 5,
         getParams: this.params.title === 'onpremise' ? {
           cloud_env: this.params.title,
+          usable: true,
         } : {
           show_emulated: true,
           cloud_env: this.params.title,

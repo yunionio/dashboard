@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { getStatusTableColumn, getTimeTableColumn, getBrandTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
 import { getBrandFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
@@ -34,7 +35,6 @@ export default {
           cachedimage_id: this.resId,
           details: true,
         },
-        steadyStatus: Object.values(expectStatus.imageCache).flat(),
         filterOptions: {
           brand: getBrandFilter('compute_engine_brands'),
         },
@@ -113,12 +113,24 @@ export default {
     this.list.fetchData()
   },
   mounted () {
-    // this.timer = setInterval(() => {
-    //   this.list.refresh()
-    // }, 10000)
+    const steadyStatus = Object.values(expectStatus.imageCache).flat()
+
+    this.timer = setInterval(() => {
+      let preStatusNum = 0
+
+      R.forEachObjIndexed((value, key) => {
+        if (!steadyStatus.includes(value.data?.status)) {
+          preStatusNum++
+        }
+      }, this.list.data)
+
+      if (preStatusNum !== 0) {
+        this.list.refresh()
+      }
+    }, 10000)
   },
   destroyed () {
-    // clearInterval(this.timer)
+    clearInterval(this.timer)
   },
   methods: {
     createCache (title, obj) {
