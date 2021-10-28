@@ -6,6 +6,7 @@ import {
   getRegionTableColumn,
   getProjectDomainTableColumn,
   getStatusTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 // import VueI18n from 'vue-i18n'
 import i18n from '@/locales'
@@ -24,6 +25,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'waf_instances', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'waf' }),
       {
         field: 'type',
