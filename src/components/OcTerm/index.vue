@@ -2,7 +2,9 @@
   <div class="oc-term-box" id="oc-term-box" v-if="openCloudShell">
     <div class="oc-term-resize" title="term resize" v-dragging="handleResize">
       <div class="mask">一</div>
-      <a-icon class="oc-term-close" type="close" @click="closeCloudShell" />
+      <div class="oc-term-close" @click="closeCloudShell">
+        <a-icon class="close" type="close" />
+      </div>
     </div>
     <div class="oc-term-content">
       <xterm ref="xterm" :connectParams="connectParams" class="w-100 h-100" />
@@ -117,12 +119,21 @@ export default {
 }
 .oc-term-close {
   position: absolute;
-  right: 2px;
-  top: 4px;
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.45);
+  right: 0px;
+  top: 0px;
+  width: 25px;
+  height: 20px;
   z-index: 99;
+  text-align: center;
   cursor: pointer;
+  .close {
+    color: rgba(0,0,0,0.45);
+  }
+  &:hover{
+    .close{
+      color: blue;
+    }
+  }
 }
 .oc-term-content {
   position: absolute;
