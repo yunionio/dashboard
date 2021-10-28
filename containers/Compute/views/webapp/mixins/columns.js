@@ -5,6 +5,7 @@ import {
   getAccountTableColumn,
   getRegionTableColumn,
   getProjectTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import {
   getTypeTableColumn,
@@ -24,6 +25,7 @@ export default {
           )
         },
       }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'webapp', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'webapp' }),
       getTypeTableColumn(),
       getKindTableColumn(),
