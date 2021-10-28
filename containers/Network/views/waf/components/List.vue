@@ -3,6 +3,8 @@
     <page-list
       :list="list"
       :columns="columns"
+      :show-tag-filter="true"
+      :show-tag-columns="true"
       :group-actions="groupActions"
       :single-actions="singleActions"
       :export-data-options="exportDataOptions" />
@@ -60,17 +62,39 @@ export default {
       }),
       groupActions: [
         {
-          label: this.$t('cloudenv.text_108'),
-          permission: 'waf_instances_delete',
-          action: () => {
-            this.createDialog('DeleteWafInstancesDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              title: this.$t('network.waf.delete'),
-              name: this.$t('network.waf'),
-              onManager: this.onManager,
-            })
+          label: this.$t('network.text_200'),
+          actions: () => {
+            return [
+              {
+                label: this.$t('table.action.set_tag'),
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'waf_instance',
+                    },
+                    tipName: this.$t('compute.text_100'),
+                  })
+                },
+              },
+              {
+                label: this.$t('cloudenv.text_108'),
+                permission: 'waf_instances_delete',
+                action: () => {
+                  this.createDialog('DeleteWafInstancesDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    title: this.$t('network.waf.delete'),
+                    name: this.$t('network.waf'),
+                    onManager: this.onManager,
+                  })
+                },
+              },
+            ]
           },
           meta: () => {
             return {
@@ -88,6 +112,7 @@ export default {
           { label: this.$t('res.cloudaccount'), key: 'account' },
           { label: this.$t('network.waf.manager'), key: 'manager' },
           { label: this.$t('res.region'), key: 'region' },
+          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
         ],
       },
     }
