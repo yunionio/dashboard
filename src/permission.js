@@ -83,6 +83,7 @@ router.beforeEach(async (to, from, next) => {
   const hasStats = !R.isEmpty(store.getters.stats) && !R.isNil(store.getters.stats)
   const hasScopePolicy = !R.isEmpty(store.getters.scopedPolicy) && !R.isNil(store.getters.scopedPolicy) && !R.isEmpty(store.getters.scopedPolicy.sub_hidden_menus) && !R.isNil(store.getters.scopedPolicy.sub_hidden_menus)
   const hasGlobalConfig = !R.isEmpty(store.state.common.globalConfig) && !R.isNil(store.state.common.globalConfig)
+  const hasGlobalServices = !R.isEmpty(store.state.common.globalServices) && !R.isNil(store.state.common.globalServices)
 
   try {
     !hasRoles && await store.dispatch('auth/getInfo')
@@ -96,6 +97,7 @@ router.beforeEach(async (to, from, next) => {
       category: ['sub_hidden_menus'],
     })
     !hasGlobalConfig && await store.dispatch('common/fetchGlobalConfig')
+    !hasGlobalServices && await store.dispatch('common/fetchGlobalServices')
   } catch (error) {
     throw error
   } finally {
