@@ -81,6 +81,7 @@ export default {
           { label: this.$t('system.text_475'), key: 'allow_web_console' },
         ],
       },
+      userTotal: 0,
     }
   },
   computed: {
@@ -95,7 +96,7 @@ export default {
             const ret = {
               buttonType: 'primary',
             }
-            if (!this.$appConfig.isPrivate && this.list.total >= limit.USER_COUNT) {
+            if (!this.$appConfig.isPrivate && this.userTotal >= limit.USER_COUNT) {
               ret.validate = false
               ret.tooltip = this.$t('IAM.user.limit')
             }
@@ -190,6 +191,7 @@ export default {
   created () {
     this.initSidePageTab('user-detail')
     this.list.fetchData()
+    this.initTotal()
   },
   methods: {
     getParam () {
@@ -208,6 +210,13 @@ export default {
       }, {
         list: this.list,
         tab,
+      })
+    },
+    initTotal () {
+      if (this.$appConfig.isPrivate) return
+      new this.$Manager('users', 'v1').list({ params: { $t: 'userList', scope: this.$store.getters.scope } }).then(res => {
+        const { total } = res.data
+        this.userTotal = total
       })
     },
   },
