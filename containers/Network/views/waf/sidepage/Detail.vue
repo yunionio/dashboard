@@ -15,6 +15,11 @@ import {
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
 
+import {
+  getUserTagColumn,
+  getExtTagColumn,
+} from '@/utils/common/detailColumn'
+
 export default {
   name: 'WafInstanceDetail',
   mixins: [WindowsMixin],
@@ -31,6 +36,8 @@ export default {
   data () {
     return {
       baseInfo: [
+        getUserTagColumn({ onManager: this.onManager, resource: 'waf_instance', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'waf_instance', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
         {
           title: i18n.t('network.waf.type'),
           field: 'type',
