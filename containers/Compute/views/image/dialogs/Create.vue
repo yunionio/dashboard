@@ -13,8 +13,12 @@
         <a-form-item :label="$t('compute.text_591')" v-bind="formItemLayout" v-if="params.title === 'onpremise'">
           <a-input v-decorator="decorators.sn" :placeholder="$t('compute.text_591')" @change="handleChange" />
         </a-form-item> -->
-        <a-form-item :label="$t('compute.text_176')" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
-          <a-select v-decorator="decorators.platform" @change="handlePlatformChange" :placeholder="$t('compute.text_219')">
+        <a-form-item :label="$t('compute.text_176')" v-bind="formItemLayout">
+          <a-select
+            v-decorator="decorators.platform"
+            @change="handlePlatformChange"
+            :placeholder="$t('compute.text_219')"
+            allowClear>
             <a-select-option
               v-for="(item, index) in platformOptions"
               :key="index"
@@ -23,6 +27,20 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <template v-if="params.title === 'onpremise'">
+          <a-form-item :label="$t('compute.text_111')" v-bind="formItemLayout">
+            <base-select
+              :remote="true"
+              class="w-100"
+              :needParams="true"
+              v-decorator="decorators.host"
+              resource="hosts"
+              :params="hostParams"
+              :remote-fn="q => ({ filter: `name.contains(${q})` })"
+              @change="handleHostChange"
+              :select-props="{ placeholder: $t('compute.text_314'), allowClear: true }" />
+          </a-form-item>
+        </template>
         <a-form-item :label="$t('compute.text_653')" v-bind="formItemLayout" v-if="params.title !== 'onpremise'">
           <base-select
             :remote="true"
@@ -76,6 +94,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'ImageCreateCache',
@@ -105,6 +124,9 @@ export default {
         region: [
           'region',
         ],
+        host: [
+          'host',
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -117,43 +139,25 @@ export default {
       platformOptions: [],
       regionParams: {},
       providerParams: {},
+      hostParams: {
+        'filter.0': 'host_type.notequals(baremetal)',
+        show_emulated: true,
+        usable: true,
+        cloud_env: this.params.title,
+        show_fail_reason: true,
+        scope: this.$store.getters.scope,
+      },
       filters: ['host_type.notequals(baremetal)'],
       list: this.$list.createList(this, {
-        resource: 'hosts',
+        resource: this.params.title === 'onpremise' ? 'storages' : 'hosts',
         limit: 5,
         getParams: this.params.title === 'onpremise' ? {
-          show_emulated: true,
           cloud_env: this.params.title,
-          'filter.0': 'host_type.notequals(baremetal)',
-          usable: true,
         } : {
           show_emulated: true,
           cloud_env: this.params.title,
           usable: true,
         },
-        filterOptions: this.params.title === 'onpremise' ? {
-          // name: {
-          //   label: '名称',
-          //   filter: true,
-          //   formatter: val => {
-          //     return `name.contains(${val})`
-          //   },
-          // },
-          access_ip: {
-            label: 'IP',
-            filter: true,
-            formatter: val => {
-              return `access_ip.contains("${val}")`
-            },
-          },
-          sn: {
-            label: 'SN',
-            distinctField: {
-              type: 'extra_field',
-              key: 'sn',
-            },
-          },
-        } : undefined,
       }),
       timeout: null,
     }
@@ -167,6 +171,37 @@ export default {
             title: this.$t('compute.text_228'),
           },
           {
+            field: 'capacity',
+            title: this.$t('storage.text_177'),
+            width: 180,
+            slots: {
+              default: ({ row }, h) => {
+                const capacity = sizestr(row.capacity, 'M', 1024)
+                const allowedBrands = ['VMware', 'OneCloud']
+                const actual_capacity_used = allowedBrands.includes(row.brand) ? sizestr(row.actual_capacity_used, 'M', 1024) : '-'
+                return [<div>
+                  <div>{this.$t('storage.text_178', [actual_capacity_used])}</div>
+                  <div>{this.$t('storage.text_180', [capacity])}</div>
+                </div>]
+              },
+            },
+          },
+          {
+            field: 'virtual_capacity',
+            title: this.$t('storage.text_43'),
+            width: 180,
+            slots: {
+              default: ({ row }, h) => {
+                const virtual_capacity = sizestr(row.virtual_capacity, 'M', 1024)
+                const used_capacity = sizestr(row.used_capacity, 'M', 1024)
+                return [<div>
+                  <div>{this.$t('storage.text_181', [used_capacity])}</div>
+                  <div>{this.$t('storage.text_180', [virtual_capacity])}</div>
+                </div>]
+              },
+            },
+          },
+          {
             field: 'brand',
             title: this.$t('compute.text_176'),
           },
@@ -177,24 +212,6 @@ export default {
           {
             field: 'zone',
             title: this.$t('compute.text_270'),
-          },
-          {
-            field: 'access_ip',
-            title: 'IP',
-          },
-          {
-            field: 'name',
-            title: this.$t('compute.text_654'),
-          },
-          {
-            field: 'sn',
-            title: 'SN',
-            formatter: ({ cellValue }) => {
-              if (!cellValue) {
-                return '-'
-              }
-              return cellValue
-            },
           },
         ]
       } else {
@@ -257,9 +274,27 @@ export default {
       this.list.refresh()
     },
     fetchPlatform () {
-      return new this.$Manager('rpc/cloudregions/region-providers').list({ params: { usable: true, cloud_env: this.params.title, scope: this.$store.getters.scope } }).then(({ data }) => {
-        this.platformOptions = data
-      })
+      if (this.params.title === 'onpremise') {
+        new this.$Manager('capabilities')
+          .list({
+            scope: this.$store.getters.scope,
+          }).then((res) => {
+            const supportBrands = ['OneCloud', 'VMware']
+            const brands = res.data.data[0].brands
+            this.platformOptions = supportBrands.filter(v => {
+              return brands.includes(v)
+            }).map(v => {
+              return {
+                name: v,
+              }
+            })
+          })
+      } else {
+        new this.$Manager('rpc/cloudregions/region-providers')
+          .list({ params: { usable: true, cloud_env: this.params.title, scope: this.$store.getters.scope } }).then(({ data }) => {
+            this.platformOptions = data
+          })
+      }
     },
     handlePlatformChange (e) {
       if (this.params.title !== 'onpremise') {
@@ -273,10 +308,15 @@ export default {
           usable: true,
           provider: e,
         }
+      } else {
+        this.hostParams = {
+          ...this.hostParams,
+          brand: e,
+        }
       }
       this.list.getParams = {
         ...this.list.getParams,
-        provider: e,
+        brand: e,
       }
       this.list.fetchData()
     },
@@ -291,6 +331,13 @@ export default {
       this.list.getParams = {
         ...this.list.getParams,
         manager: e,
+      }
+      this.list.fetchData()
+    },
+    handleHostChange (v) {
+      this.list.getParams = {
+        ...this.list.getParams,
+        host_id: v,
       }
       this.list.fetchData()
     },
@@ -315,6 +362,7 @@ export default {
         }
         await this.doSave()
         this.loading = false
+        this.params.refresh()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
