@@ -994,7 +994,8 @@
         "ipv6_domain": "源站列表为多个 IPv6 地址以及域名",
         "ip_ipv6_domain": "源站列表为多个 IPv4 地址IPv6 地址以及域名",
         "image": "数据万象源站",
-        "ftp": "FTP 托管源源站"
+        "ftp": "FTP 托管源源站",
+        "ipaddr": "IP地址"
       }
     }
   },
