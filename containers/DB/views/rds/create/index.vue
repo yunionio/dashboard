@@ -49,10 +49,6 @@
   </div>
 </template>
 <script>
-import { DECORATORS } from './constants/index'
-import SKU from './components/SKU'
-import BottomBar from './components/BottomBar'
-import changeMinxin from './changeMinxin'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import Duration from '@Compute/sections/Duration'
@@ -62,6 +58,10 @@ import NameRepeated from '@/sections/NameRepeated'
 import DomainProject from '@/sections/DomainProject'
 import Tag from '@/sections/Tag'
 import { getInitialValue } from '@/utils/common/ant'
+import changeMinxin from './changeMinxin'
+import BottomBar from './components/BottomBar'
+import SKU from './components/SKU'
+import { DECORATORS } from './constants/index'
 
 export default {
   name: 'RDSCreate',
