@@ -995,7 +995,8 @@
         "ipv6_domain": "ipv6_domain",
         "ip_ipv6_domain": "ip_ipv6_domain",
         "image": "image",
-        "ftp": "FTP"
+        "ftp": "FTP",
+        "ipaddr": "IP Address"
       }
     }
   },
