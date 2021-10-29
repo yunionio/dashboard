@@ -1,6 +1,5 @@
-import { SKU_PARAMS, CAPABILIT_PARAMS, SPECS_PARAMS, DECORATORS } from '../constants'
-
 import { getInitialValue } from '@/utils/common/ant'
+import { SKU_PARAMS, CAPABILIT_PARAMS, SPECS_PARAMS, DECORATORS } from '../constants'
 
 export default {
   computed: {
@@ -94,6 +93,11 @@ export default {
       }
     },
     zone_id_change () {
+      if (this.networkRef && this.networkRef.fetchVpc) {
+        this.networkRef.fetchVpc()
+      }
+    },
+    zone_change () {
       if (this.networkRef && this.networkRef.fetchVpc) {
         this.networkRef.fetchVpc()
       }

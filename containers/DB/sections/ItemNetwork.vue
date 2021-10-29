@@ -39,9 +39,9 @@ export default {
         cloudregion_id: fd.cloudregion_id || fd.cloudregion,
         ...this.scopeParams,
       }
-      const zone = this.form.getFieldValue('zone')
+      const zone = fd.zones || fd.zone
       if (zone) {
-        params.zone = zone
+        params.zone_id = zone.split('+')[0]
       }
       return params
     },
