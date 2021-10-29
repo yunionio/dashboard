@@ -5,6 +5,7 @@ export default {
   created () {
     this.columns = [
       {
+        field: 'index',
         title: i18n.t('compute.text_375'),
         width: 50,
         slots: {
