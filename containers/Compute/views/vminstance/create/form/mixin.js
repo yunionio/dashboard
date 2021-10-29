@@ -1,9 +1,5 @@
 import * as R from 'ramda'
 import _ from 'lodash'
-import BottomBar from '../components/BottomBar'
-import Servertemplate from '../components/Servertemplate'
-import SystemDisk from '../components/SystemDisk'
-import Tag from '../components/Tag'
 import { SCHED_POLICY_OPTIONS_MAP, SERVER_TYPE, SELECT_IMAGE_KEY_SUFFIX, LOGIN_TYPES_MAP } from '@Compute/constants'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
@@ -33,6 +29,10 @@ import { getInitialValue } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
+import Tag from '../components/Tag'
+import SystemDisk from '../components/SystemDisk'
+import Servertemplate from '../components/Servertemplate'
+import BottomBar from '../components/BottomBar'
 
 const CreateServerForm = {
   wrapperCol: {
@@ -221,6 +221,7 @@ export default {
       return params
     },
     networkVpcParams () {
+      const zone = _.get(this.form.fd, 'zone.key')
       const params = {
         // usable: true,
         limit: 0,
@@ -230,6 +231,10 @@ export default {
       }
       if (this.isZStack) {
         params.show_emulated = true
+      }
+      if (zone) {
+        params.usable = true
+        params.zone_id = zone
       }
       return params
     },
