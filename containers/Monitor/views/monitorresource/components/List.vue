@@ -53,22 +53,6 @@ export default {
           return !this.hiddenColumns.some(item2 => item2 === item.key)
         }),
       },
-      singleActions: [
-        {
-          label: this.$t('monitor.monitorresources.management'),
-          action: (obj) => {
-            this.sidePageTriggerHandle(this, 'MonitorResourceSidePage', {
-              id: obj.id,
-              resource: 'monitorresources',
-              getParams: this.getParam,
-              apiVersion: 'v1',
-            }, {
-              list: this.list,
-              res_type: this.res_type,
-            })
-          },
-        },
-      ],
     }
   },
   created () {
@@ -83,7 +67,8 @@ export default {
       }
       return ret
     },
-    handleOpenSidepage (row) {
+    handleOpenSidepage (row, tab) {
+      this.initSidePageTab(tab)
       this.sidePageTriggerHandle(this, 'MonitorResourceSidePage', {
         id: row.id,
         resource: 'monitorresources',

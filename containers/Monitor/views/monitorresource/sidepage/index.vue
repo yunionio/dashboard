@@ -8,6 +8,13 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
+    <template v-slot:actions>
+      <actions
+        :options="singleActions"
+        :row="detailData"
+        button-type="link"
+        button-size="small" />
+    </template>
     <component
       :is="params.windowData.currentTab"
       :listId="listId"
@@ -23,19 +30,22 @@
 </template>
 
 <script>
+import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import CommonalertList from '@Monitor/views/commonalert/components/List'
 import VmInstanceMonitorSidepage from './Monitor'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'MonitorResourceSidePage',
   components: {
     CommonalertList,
     VmInstanceMonitorSidepage,
+    Actions,
   },
-  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
     listId () {
       switch (this.params.windowData.currentTab) {
@@ -77,6 +87,9 @@ export default {
         ...params,
         res_type: this.detailData.res_type,
       }
+    },
+    handleOpenSidepage (row, tab) {
+      this.params.windowData.currentTab = tab
     },
   },
 }
