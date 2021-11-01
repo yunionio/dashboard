@@ -38,10 +38,10 @@
 </template>
 
 <script>
-import NetworkConfig from './NetworkConfig'
-import NetworkSchedtag from './NetworkSchedtag'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import { HYPERVISORS_MAP } from '@/constants'
+import NetworkConfig from './NetworkConfig'
+import NetworkSchedtag from './NetworkSchedtag'
 
 export default {
   name: 'ServerNetwork',
@@ -190,7 +190,10 @@ export default {
   },
   methods: {
     change (e) {
-      this.form.fd.networkType = e.target.value
+      if (this.form.fd) {
+        this.form.fd.networkType = e.target.value
+      }
+
       switch (e.target.value) {
         case NETWORK_OPTIONS_MAP.default.key:
           this.networkComponent = ''
