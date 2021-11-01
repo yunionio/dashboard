@@ -99,6 +99,14 @@ const options = [
     component: 'ConsumptionTrend',
   },
   {
+    label: i18n.t('dashboard.vm_history_count'),
+    desc: '',
+    icon: 'dashboard-trend',
+    h: 4,
+    w: 10,
+    component: 'VmHistoryCount',
+  },
+  {
     label: i18n.t('dashboard.alerts_trend'),
     desc: '',
     icon: 'dashboard-trend',
@@ -114,22 +122,6 @@ const options = [
     w: 5,
     scope: ['system', 'domain'],
     component: 'AccountHealth',
-  },
-  {
-    label: i18n.t('dashboard.text_89'),
-    desc: i18n.t('dashboard.text_90'),
-    icon: 'dashboard-resource',
-    h: 5,
-    w: 10,
-    component: 'ResourceHistoryLine',
-  },
-  {
-    label: i18n.t('dashboard.text_87'),
-    desc: i18n.t('dashboard.text_88'),
-    icon: 'dashboard-fee',
-    h: 5,
-    w: 10,
-    component: 'BillHistoryLine',
   },
   {
     label: i18n.t('dashboard.userinfo'),

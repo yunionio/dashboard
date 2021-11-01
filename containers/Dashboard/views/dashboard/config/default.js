@@ -222,37 +222,37 @@ export default {
           name: i18n.t('dashboard.text_131'),
         },
       },
-      {
-        layout: {
-          component: 'ResourceHistoryLine',
-          h: 5,
-          w: 10,
-          x: 0,
-          y: 12,
-        },
-        params: {
-          name: i18n.t('dashboard.text_137'),
-        },
-      },
-      {
-        layout: {
-          component: 'BillHistoryLine',
-          h: 5,
-          w: 10,
-          x: 10,
-          y: 12,
-        },
-        params: {
-          name: i18n.t('dashboard.text_138'),
-        },
-      },
+      // {
+      //   layout: {
+      //     component: 'ResourceHistoryLine',
+      //     h: 5,
+      //     w: 10,
+      //     x: 0,
+      //     y: 12,
+      //   },
+      //   params: {
+      //     name: i18n.t('dashboard.text_137'),
+      //   },
+      // },
+      // {
+      //   layout: {
+      //     component: 'BillHistoryLine',
+      //     h: 5,
+      //     w: 10,
+      //     x: 10,
+      //     y: 12,
+      //   },
+      //   params: {
+      //     name: i18n.t('dashboard.text_138'),
+      //   },
+      // },
       {
         layout: {
           component: 'Quota',
           h: 7,
           w: 5,
           x: 0,
-          y: 17,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_139'),
@@ -267,7 +267,7 @@ export default {
           h: 7,
           w: 5,
           x: 5,
-          y: 17,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_140'),
@@ -282,7 +282,7 @@ export default {
           h: 7,
           w: 5,
           x: 10,
-          y: 17,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_141'),
@@ -297,7 +297,7 @@ export default {
           h: 7,
           w: 5,
           x: 15,
-          y: 17,
+          y: 12,
         },
         params: {
           name: i18n.t('dashboard.text_142'),
@@ -312,7 +312,7 @@ export default {
           h: 7,
           w: 5,
           x: 0,
-          y: 24,
+          y: 19,
         },
         params: {
           name: i18n.t('dashboard.text_143'),
@@ -327,7 +327,7 @@ export default {
           h: 7,
           w: 5,
           x: 5,
-          y: 24,
+          y: 19,
         },
         params: {
           name: i18n.t('dashboard.text_144'),
@@ -342,7 +342,7 @@ export default {
           h: 7,
           w: 5,
           x: 10,
-          y: 24,
+          y: 19,
         },
         params: {
           name: i18n.t('dashboard.text_145'),
@@ -357,7 +357,7 @@ export default {
           h: 7,
           w: 5,
           x: 15,
-          y: 24,
+          y: 19,
         },
         params: {
           name: i18n.t('dashboard.text_146'),
@@ -627,37 +627,37 @@ export default {
           name: i18n.t('dashboard.text_17'),
         },
       },
-      {
-        layout: {
-          component: 'ResourceHistoryLine',
-          h: 5,
-          w: 10,
-          x: 0,
-          y: 14,
-        },
-        params: {
-          name: i18n.t('dashboard.text_90'),
-        },
-      },
-      {
-        layout: {
-          component: 'BillHistoryLine',
-          h: 5,
-          w: 10,
-          x: 10,
-          y: 14,
-        },
-        params: {
-          name: i18n.t('dashboard.text_88'),
-        },
-      },
+      // {
+      //   layout: {
+      //     component: 'ResourceHistoryLine',
+      //     h: 5,
+      //     w: 10,
+      //     x: 0,
+      //     y: 14,
+      //   },
+      //   params: {
+      //     name: i18n.t('dashboard.text_90'),
+      //   },
+      // },
+      // {
+      //   layout: {
+      //     component: 'BillHistoryLine',
+      //     h: 5,
+      //     w: 10,
+      //     x: 10,
+      //     y: 14,
+      //   },
+      //   params: {
+      //     name: i18n.t('dashboard.text_88'),
+      //   },
+      // },
       {
         layout: {
           component: 'Quota',
           h: 7,
           w: 5,
           x: 0,
-          y: 19,
+          y: 14,
         },
         params: {
           field: 'cpu',
@@ -672,7 +672,7 @@ export default {
           h: 7,
           w: 5,
           x: 5,
-          y: 19,
+          y: 14,
         },
         params: {
           field: 'memory',
@@ -687,7 +687,7 @@ export default {
           h: 7,
           w: 5,
           x: 10,
-          y: 19,
+          y: 14,
         },
         params: {
           field: 'storage',
@@ -702,7 +702,7 @@ export default {
           h: 7,
           w: 5,
           x: 15,
-          y: 19,
+          y: 14,
         },
         params: {
           field: 'eip',
@@ -717,7 +717,7 @@ export default {
           h: 7,
           w: 5,
           x: 0,
-          y: 26,
+          y: 21,
         },
         params: {
           field: 'port',
@@ -732,7 +732,7 @@ export default {
           h: 7,
           w: 5,
           x: 5,
-          y: 26,
+          y: 21,
         },
         params: {
           field: 'isolated_device',
@@ -747,7 +747,7 @@ export default {
           h: 7,
           w: 5,
           x: 10,
-          y: 26,
+          y: 21,
         },
         params: {
           field: 'image',
@@ -762,7 +762,7 @@ export default {
           h: 7,
           w: 5,
           x: 15,
-          y: 26,
+          y: 21,
         },
         params: {
           field: 'snapshot',
@@ -1032,37 +1032,37 @@ export default {
           name: i18n.t('dashboard.text_131'),
         },
       },
-      {
-        layout: {
-          component: 'ResourceHistoryLine',
-          h: 5,
-          w: 10,
-          x: 0,
-          y: 14,
-        },
-        params: {
-          name: i18n.t('dashboard.text_90'),
-        },
-      },
-      {
-        layout: {
-          component: 'BillHistoryLine',
-          h: 5,
-          w: 10,
-          x: 10,
-          y: 14,
-        },
-        params: {
-          name: i18n.t('dashboard.text_88'),
-        },
-      },
+      // {
+      //   layout: {
+      //     component: 'ResourceHistoryLine',
+      //     h: 5,
+      //     w: 10,
+      //     x: 0,
+      //     y: 14,
+      //   },
+      //   params: {
+      //     name: i18n.t('dashboard.text_90'),
+      //   },
+      // },
+      // {
+      //   layout: {
+      //     component: 'BillHistoryLine',
+      //     h: 5,
+      //     w: 10,
+      //     x: 10,
+      //     y: 14,
+      //   },
+      //   params: {
+      //     name: i18n.t('dashboard.text_88'),
+      //   },
+      // },
       {
         layout: {
           component: 'ProjectQuota',
           h: 3,
           w: 5,
           x: 0,
-          y: 19,
+          y: 14,
         },
         params: {
           all_usage_key: 'cpu',
@@ -1077,7 +1077,7 @@ export default {
           h: 3,
           w: 5,
           x: 5,
-          y: 19,
+          y: 14,
         },
         params: {
           all_usage_key: 'memory',
@@ -1092,7 +1092,7 @@ export default {
           h: 3,
           w: 5,
           x: 10,
-          y: 19,
+          y: 14,
         },
         params: {
           all_usage_key: 'storage',
@@ -1107,7 +1107,7 @@ export default {
           h: 3,
           w: 5,
           x: 15,
-          y: 19,
+          y: 14,
         },
         params: {
           all_usage_key: 'eip',
@@ -1122,7 +1122,7 @@ export default {
           h: 3,
           w: 5,
           x: 0,
-          y: 22,
+          y: 17,
         },
         params: {
           all_usage_key: 'port',
@@ -1137,7 +1137,7 @@ export default {
           h: 3,
           w: 5,
           x: 5,
-          y: 22,
+          y: 17,
         },
         params: {
           all_usage_key: 'isolated_device',
@@ -1152,7 +1152,7 @@ export default {
           h: 3,
           w: 5,
           x: 10,
-          y: 22,
+          y: 17,
         },
         params: {
           all_usage_key: 'image',
@@ -1167,7 +1167,7 @@ export default {
           h: 3,
           w: 5,
           x: 15,
-          y: 22,
+          y: 17,
         },
         params: {
           all_usage_key: 'snapshot',
