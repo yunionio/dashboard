@@ -260,5 +260,9 @@
   "dashboard.text_187": "Current project：",
   "dashboard.text_188": "System time：",
   "dashboard.text_189": "Last login：",
-  "dashboard.text_190": "Recovery"
+  "dashboard.text_190": "Recovery",
+  "dashboard.vm_history_count": "Number of historical virtual machines",
+  "dashboard.vm_count_near": "{0} day",
+  "dashboard.near": "Nearly",
+  "dashboard.stage": "{0}"
 }
