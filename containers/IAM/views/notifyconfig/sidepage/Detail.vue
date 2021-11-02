@@ -226,7 +226,9 @@ export default {
   },
   methods: {
     fetchNotifyTpl () {
-      this.notifytemplatesManager.list({ params: { contact_type: 'mobile' } })
+      const { type } = this.data
+      if (type !== 'mobile') return
+      this.notifytemplatesManager.list({ params: { contact_type: type } })
         .then(res => {
           const { data: { data } } = res
           data.forEach(v => {
