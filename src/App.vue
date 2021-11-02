@@ -25,6 +25,7 @@ import WindowResizeListener from '@/sections/WindowResizeListener'
 import notificationListener from '@/utils/notificationListener'
 import i18n from '@/locales'
 import { updateThemeColor } from '@/utils/theme/utils'
+import WindowsMixin from '@/mixins/windows'
 import {
   getTokenFromCookie,
   decodeToken,
@@ -44,6 +45,7 @@ export default {
     SidePageManager,
     WindowResizeListener,
   },
+  mixins: [WindowsMixin],
   data () {
     return {
       locale: antdLocales[this.$store.getters.setting.language],
@@ -97,6 +99,7 @@ export default {
   created () {
     this.initIO()
     this.initVisibilityChangeListener()
+    this.initMonitorAlertNotify()
   },
   methods: {
     initVisibilityChangeListener () {
@@ -128,6 +131,18 @@ export default {
       if (!session || !this.socket) return
       this.socket.io.opts.query.session = session
       this.socket.connect()
+    },
+    initMonitorAlertNotify () {
+      // this.$notification.warning({
+      //   message: 'Notification Title',
+      //   description: ,
+      //   onClick: () => {
+      //     console.log('Notification Clicked!')
+      //   },
+      //   duration: 0,
+      //   placement: 'bottomRight',
+      // })
+      this.createDialog('MonitorAlertNotifyDialog', {})
     },
   },
 }
