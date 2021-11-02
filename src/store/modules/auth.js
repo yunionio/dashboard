@@ -255,7 +255,7 @@ export default {
     },
   },
   actions: {
-    async login ({ commit, state }, data) {
+    async login ({ commit, state, dispatch }, data) {
       try {
         const _data = { ...data }
         let matchedUser

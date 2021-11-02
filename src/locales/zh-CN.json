@@ -4908,5 +4908,8 @@
   "scope.brand_private": "内置私有云平台",
   "common.tag.sys_tag_tooltip": "云上系统标签，暂不支持操作",
   "common.export_pdf": "导出PDF",
-  "common.export_excel": "导出Excel"
+  "common.export_excel": "导出Excel",
+  "common.monitor_alert_fatal": "发生致命告警",
+  "common.monitor_alert": "发生致命告警",
+  "common.later_handle": "稍后处理"
 }
