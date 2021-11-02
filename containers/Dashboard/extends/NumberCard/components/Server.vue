@@ -239,23 +239,43 @@ export default {
           return '/vminstance'
         case 'servers':
           return '/vminstance'
+        case 'domain.servers':
+          return '/vminstance'
         case 'baremetals':
+          return '/physicalmachine'
+        case 'domain.baremetals':
           return '/physicalmachine'
         case 'hosts':
           return '/host'
+        case 'domain.hosts':
+          return '/host'
         case 'all.buckets':
+          return '/bucket'
+        case 'domain.buckets':
           return '/bucket'
         case 'all.cache':
           return '/redis'
+        case 'domain.cache':
+          return '/redis'
         case 'all.rds':
+          return '/rds'
+        case 'domain.rds':
           return '/rds'
         case 'all.loadbalancer':
           return '/lb'
+        case 'domain.loadbalancer':
+          return '/lb'
         case 'all.eip.floating_ip':
+          return '/eip'
+        case 'domain.eip.floating_ip':
           return '/eip'
         case 'all.snapshot':
           return '/disk-snapshot'
+        case 'domain.snapshot':
+          return '/disk-snapshot'
         case 'all.disks.count':
+          return '/disk'
+        case 'domain.disks.count':
           return '/disk'
         default:
           return ''
