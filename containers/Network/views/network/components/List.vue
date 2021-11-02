@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows.js'
-import { getNameFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
@@ -85,26 +85,7 @@ export default {
           return `guest_ip_end.contains(${val})`
         },
       },
-      status: {
-        label: this.$t('network.text_27'),
-        dropdown: true,
-        items: [
-          { label: this.$t('network.text_613'), key: 'init' },
-          { label: this.$t('network.text_614'), key: 'pending' },
-          { label: this.$t('network.text_615'), key: 'available' },
-          { label: this.$t('network.text_616'), key: 'failed' },
-          { label: this.$t('network.text_617'), key: 'start_delete' },
-          { label: this.$t('network.text_618'), key: 'deleting' },
-          { label: this.$t('network.text_619'), key: 'deleted' },
-          { label: this.$t('network.text_620'), key: 'delete_failed' },
-          { label: this.$t('network.text_507'), key: 'unknown' },
-          { label: this.$t('common_715'), key: 'user_tags' },
-        ],
-        filter: true,
-        formatter: val => {
-          return `status.in(${val})`
-        },
-      },
+      status: getStatusFilter('network'),
       is_auto_alloc: {
         label: this.$t('common_498'),
         dropdown: true,
