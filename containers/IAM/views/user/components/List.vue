@@ -17,7 +17,6 @@ import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
-import limit from '@/config/limit'
 
 export default {
   name: 'UserList',
@@ -96,10 +95,6 @@ export default {
             const ret = {
               buttonType: 'primary',
             }
-            if (!this.$appConfig.isPrivate && this.userTotal >= limit.USER_COUNT) {
-              ret.validate = false
-              ret.tooltip = this.$t('IAM.user.limit')
-            }
             return ret
           },
         },
@@ -110,12 +105,6 @@ export default {
               onManager: this.onManager,
               refresh: this.refresh,
             })
-          },
-          hidden: () => {
-            if (!this.$appConfig.isPrivate) {
-              return true
-            }
-            return false
           },
         },
         {
@@ -191,7 +180,6 @@ export default {
   created () {
     this.initSidePageTab('user-detail')
     this.list.fetchData()
-    this.initTotal()
   },
   methods: {
     getParam () {
@@ -210,13 +198,6 @@ export default {
       }, {
         list: this.list,
         tab,
-      })
-    },
-    initTotal () {
-      if (this.$appConfig.isPrivate) return
-      new this.$Manager('users', 'v1').list({ params: { $t: 'userList', scope: this.$store.getters.scope } }).then(res => {
-        const { total } = res.data
-        this.userTotal = total
       })
     },
   },
