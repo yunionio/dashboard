@@ -89,7 +89,7 @@ export default {
           return [
             getSetPublicAction(this, {
               name: this.$t('system.robot'),
-              scope: 'domain',
+              scope: 'project',
               resource: 'robots',
               apiVersion: 'v1',
             }, {
