@@ -144,7 +144,7 @@ export default {
   created () {
     this.manager = new this.$Manager('notifyconfigs', 'v1')
     this.notifytemplatesManager = new this.$Manager('notifytemplates/save', 'v1')
-    this.fetchTypes({ attribution: 'system', scope: this.$store.getters.scope })
+    this.fetchTypes({ attribution: 'system', scope: this.$store.getters.scope, project_domain_id: '74b10297293343c983b2161473076609' })
   },
   destroyed () {
     this.manager = null
@@ -162,6 +162,8 @@ export default {
       }
     },
     fetchTypes (params) {
+      console.log(this.form.fd)
+      console.log(this.$store.getters)
       this.manager.list({ params }).then(res => {
         const { data } = res.data
         this.existTypes = data.map(v => v.type)
