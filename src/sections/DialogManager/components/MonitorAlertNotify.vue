@@ -8,7 +8,7 @@
           <!-- 策略名称 -->
           {{$t('monitor.text_99')}}: {{obj.alert_name}}<br />
           <!-- 触发时间 -->
-          {{$t('monitor.text_14')}}: {{obj.trigger_time}}<br />
+          {{$t('monitor.text_14')}}: {{getTriggerTime(obj.trigger_time)}}<br />
           <!-- 报警级别 -->
           {{$t('compute.text_738')}}: {{ levelMaps[obj.level] ? levelMaps[obj.level].label : obj.level }}<br />
           <!-- 触发条件 -->
@@ -30,6 +30,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import moment from 'moment'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { levelMaps } from '@Monitor/constants'
@@ -58,6 +59,17 @@ export default {
       return this.monitorResourceAlerts?.length > 0
     },
   },
+  watch: {
+    isShowMonitorAlert (val) {
+      if (!val) {
+        this.modalProps.dialogStyle.bottom = '-404px'
+      } else {
+        this.timer = setTimeout(() => {
+          this.modalProps.dialogStyle.bottom = '0'
+        }, 500)
+      }
+    },
+  },
   mounted () {
     this.timer = setTimeout(() => {
       this.modalProps.dialogStyle.bottom = '0'
@@ -70,6 +82,12 @@ export default {
     async handleConfirm () {
       this.cancelDialog()
       this.$router.push('/alertrecord')
+    },
+    cancelDialog () {
+      this.$store.commit('monitor/setMonitorResourceAlerts', [])
+    },
+    getTriggerTime (time) {
+      return moment(time).format() || '-'
     },
   },
 }

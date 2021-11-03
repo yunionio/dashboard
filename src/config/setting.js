@@ -10,4 +10,5 @@ export default {
   theme: storage.get('__oc_theme__') || process.env.THEME || 'dark',
   brand: process.env.BRAND || { 'zh-CN': '云联壹云', en: 'YunionCloud' },
   l2MenuVisible: !R.isNil(_l2MenuVisible) && !R.isNil(_l2MenuVisible) ? _l2MenuVisible : true,
+  monitorAlertNotifyTriggerTime: process.env.VUE_APP_MONITOR_ALERT_NOTIFY_TRIGGER_TIME || 1000 * 60 * 60, // 默认值1小时
 }

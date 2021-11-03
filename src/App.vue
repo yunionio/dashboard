@@ -25,6 +25,7 @@ import WindowResizeListener from '@/sections/WindowResizeListener'
 import notificationListener from '@/utils/notificationListener'
 import i18n from '@/locales'
 import { updateThemeColor } from '@/utils/theme/utils'
+import setting from '@/config/setting'
 import WindowsMixin from '@/mixins/windows'
 import {
   getTokenFromCookie,
@@ -133,15 +134,9 @@ export default {
       this.socket.connect()
     },
     initMonitorAlertNotify () {
-      // this.$notification.warning({
-      //   message: 'Notification Title',
-      //   description: ,
-      //   onClick: () => {
-      //     console.log('Notification Clicked!')
-      //   },
-      //   duration: 0,
-      //   placement: 'bottomRight',
-      // })
+      setInterval(() => {
+        this.$store.dispatch('monitor/loadMonitorResourceAlerts')
+      }, setting.monitorAlertNotifyTriggerTime)
       this.createDialog('MonitorAlertNotifyDialog', {})
     },
   },
