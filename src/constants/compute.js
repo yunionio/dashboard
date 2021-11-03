@@ -226,9 +226,9 @@ export const STORAGE_TYPES = {
       label: 'Ceph RBD',
       key: 'rbd',
       min: 1,
-      max: 3 * 1024,
+      max: 20 * 1024,
       sysMin: 10,
-      sysMax: 500,
+      sysMax: 2 * 1024,
     },
     gpfs: {
       label: 'GPFS',
