@@ -254,7 +254,7 @@ export default {
       return ['oidc', 'saml', 'cas'].indexOf(template) > -1
     },
     templateOptions () {
-      const templateOptions = {}
+      let templateOptions = {}
       const idpDrivers = this.$t('idpDrivers')
       Object.keys(idpDrivers).forEach(key => {
         templateOptions[key] = []
@@ -269,6 +269,10 @@ export default {
       if (this.isShowDomain) {
         const index = R.findIndex(R.propEq('key', 'msad_multi_domain'))(templateOptions.LDAP)
         templateOptions.LDAP = R.remove(index, 1, templateOptions.LDAP)
+      }
+      // 开源只保留LDAP
+      if (!this.$appConfig.isPrivate) {
+        templateOptions = { LDAP: templateOptions.LDAP }
       }
       return templateOptions
     },
