@@ -11,6 +11,7 @@ import * as R from 'ramda'
 import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
+import { HYPERVISORS_MAP } from '@/constants'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
@@ -79,6 +80,9 @@ export default {
             }
             if (this.data.brand === 'Qcloud') {
               tooltip = this.$t('db.text_355')
+            }
+            if ((this.data.brand === HYPERVISORS_MAP.aws.brand || this.data.brand === HYPERVISORS_MAP.azure.brand) && !tooltip) {
+              tooltip = this.$t('db.text_384', [this.data.brand])
             }
             return {
               buttonType: 'primary',

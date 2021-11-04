@@ -22,6 +22,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'RedisList',
@@ -169,10 +170,22 @@ export default {
                   })
                 },
                 meta: () => {
-                  return {
+                  const ret = {
                     validate: selectedLength,
                     tooltip: notSelectedTooltip,
                   }
+                  // aws 和 azure禁用
+                  let awsOrAzure = ''
+                  this.list.selectedItems.map((item) => {
+                    if (item.brand === HYPERVISORS_MAP.aws.brand || item.brand === HYPERVISORS_MAP.azure.brand) {
+                      awsOrAzure = item.brand
+                    }
+                  })
+                  if (awsOrAzure) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('db.text_384', [awsOrAzure])
+                  }
+                  return ret
                 },
               },
               {
@@ -205,10 +218,22 @@ export default {
                 meta: () => {
                   const isNotQcloud = this.list.selectedItems.every(item => item.brand !== 'Qcloud')
                   const isQcloudTip = isNotQcloud ? null : this.$t('db.text_358')
-                  return {
+                  const ret = {
                     validate: selectedLength && isRunning && isNotQcloud,
                     tooltip: notSelectedTooltip || notRunninTip || isQcloudTip,
                   }
+                  // aws 和 azure禁用
+                  let awsOrAzure = ''
+                  this.list.selectedItems.map((item) => {
+                    if (item.brand === HYPERVISORS_MAP.aws.brand || item.brand === HYPERVISORS_MAP.azure.brand) {
+                      awsOrAzure = item.brand
+                    }
+                  })
+                  if (awsOrAzure && ret.validate) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('db.text_384', [awsOrAzure])
+                  }
+                  return ret
                 },
               },
               {

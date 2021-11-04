@@ -395,5 +395,6 @@
   "db.text_380": "Replicate",
   "db.text_381": "Serverless",
   "db.text_382": "{0} nodes",
-  "db.text_383": "{0} slices"
+  "db.text_383": "{0} slices",
+  "db.text_384": "{0} do not support this operation"
 }

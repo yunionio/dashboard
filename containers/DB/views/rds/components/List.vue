@@ -20,6 +20,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'RDSList',
@@ -159,10 +160,22 @@ export default {
                   })
                 },
                 meta: () => {
-                  return {
+                  const ret = {
                     validate: selectedLength,
                     tooltip: notSelectedTooltip,
                   }
+                  // aws 和 azure禁用
+                  let awsOrAzure = ''
+                  this.list.selectedItems.map((item) => {
+                    if (item.brand === HYPERVISORS_MAP.aws.brand || item.brand === HYPERVISORS_MAP.azure.brand) {
+                      awsOrAzure = item.brand
+                    }
+                  })
+                  if (awsOrAzure) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('db.text_384', [awsOrAzure])
+                  }
+                  return ret
                 },
               },
               {
