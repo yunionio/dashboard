@@ -626,7 +626,7 @@ export const STORAGE_TYPES = {
 export const DISK_MOUNT_POINT_OPTIONS = [
   { key: 'ext4', label: 'ext4' },
   { key: 'xfs', label: 'xfs' },
-  { key: 'swap', label: 'swap' },
+  // { key: 'swap', label: 'swap' },
 ]
 
 export const HOST_CPU_ARCHS = {
