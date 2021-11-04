@@ -12,6 +12,7 @@ import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { getStatusTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
+import { HYPERVISORS_MAP } from '@/constants'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 export default {
   name: 'RedisAccountList',
@@ -96,6 +97,10 @@ export default {
             if (this.data.brand === 'Qcloud' && this.data.slave_zones && this.data.slave_zones.length > 0) {
               validate = false
               tooltip = this.$t('db.redis.qcloud.multizone.tooltips')
+            }
+            if ((this.data.brand === HYPERVISORS_MAP.aws.brand || this.data.brand === HYPERVISORS_MAP.azure.brand) && validate) {
+              validate = false
+              tooltip = this.$t('db.text_384', [this.data.brand])
             }
             return {
               buttonType: 'primary',

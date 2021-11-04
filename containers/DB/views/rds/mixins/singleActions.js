@@ -1,5 +1,6 @@
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { checkSecgroup } from '@DB/views/utils'
+import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 
 export default {
@@ -39,10 +40,16 @@ export default {
                 })
               },
               meta: () => {
-                return {
+                const ret = {
                   validate: isRunning,
                   tooltip: notRunninTip,
                 }
+                // aws 和 azure禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('db.text_384', [obj.brand])
+                }
+                return ret
               },
             },
             {
@@ -57,10 +64,16 @@ export default {
                 })
               },
               meta: () => {
-                return {
+                const ret = {
                   validate: isRunning,
                   tooltip: notRunninTip,
                 }
+                // aws 和 azure禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('db.text_384', [obj.brand])
+                }
+                return ret
               },
             },
             {
@@ -78,7 +91,13 @@ export default {
                 })
               },
               meta: () => {
-                return checkSecgroup(obj, 'rds')
+                const ret = checkSecgroup(obj, 'rds')
+                // aws 和 azure禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('db.text_384', [obj.brand])
+                }
+                return ret
               },
             },
             {

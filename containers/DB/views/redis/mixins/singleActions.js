@@ -1,5 +1,6 @@
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { checkSecgroup } from '@DB/views/utils'
+import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 
 export default {
@@ -47,6 +48,9 @@ export default {
                   } else if (obj.brand === 'Qcloud' && obj.network_type !== 'vpc') {
                     validate = false
                     tooltip = i18n.t('db.text_354')
+                  } else if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && validate) {
+                    validate = false
+                    tooltip = i18n.t('db.text_384', [obj.brand])
                   }
                   return {
                     validate,
@@ -79,6 +83,9 @@ export default {
                 } else if (obj.brand === 'Qcloud' && obj.network_type !== 'vpc') {
                   validate = false
                   tooltip = i18n.t('db.text_354')
+                } else if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && validate) {
+                  validate = false
+                  tooltip = i18n.t('db.text_384', [obj.brand])
                 }
                 return {
                   validate,
@@ -101,10 +108,16 @@ export default {
                 })
               },
               meta: () => {
-                return {
+                const ret = {
                   validate: isRunning && obj.brand !== 'Qcloud',
                   tooltip: notRunninTip || (obj.brand === 'Qcloud' ? i18n.t('db.text_358') : ''),
                 }
+                // aws 和 azure禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('db.text_384', [obj.brand])
+                }
+                return ret
               },
             },
             {
@@ -123,10 +136,16 @@ export default {
                 const isPrepaid = obj.billing_type === 'prepaid'
                 // 腾讯云暂不支持调整配置
                 const isQcloud = obj.brand.toLowerCase() === 'qcloud'
-                return {
+                const ret = {
                   validate: isRunning && !isPrepaid && !isQcloud,
                   tooltip: notRunninTip || (isPrepaid ? i18n.t('db.text_307') : '') || (isQcloud ? i18n.t('db.text_352') : ''),
                 }
+                // aws 和 azure禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('db.text_384', [obj.brand])
+                }
+                return ret
               },
             },
             {
@@ -142,10 +161,16 @@ export default {
                 })
               },
               meta: () => {
-                return {
+                const ret = {
                   validate: isRunning,
                   tooltip: notRunninTip,
                 }
+                // aws 和 azure禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('db.text_384', [obj.brand])
+                }
+                return ret
               },
             },
             {
@@ -161,10 +186,16 @@ export default {
                 })
               },
               meta: () => {
-                return {
+                const ret = {
                   validate: isRunning,
                   tooltip: notRunninTip,
                 }
+                // aws 和 azure禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('db.text_384', [obj.brand])
+                }
+                return ret
               },
             },
             {
@@ -196,7 +227,13 @@ export default {
                 })
               },
               meta: () => {
-                return checkSecgroup(obj, 'redis', ['Qcloud'])
+                const ret = checkSecgroup(obj, 'redis', ['Qcloud'])
+                // aws 和 azure禁用
+                if ((obj.brand === HYPERVISORS_MAP.aws.brand || obj.brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('db.text_384', [obj.brand])
+                }
+                return ret
               },
             },
             setAuthMode(),

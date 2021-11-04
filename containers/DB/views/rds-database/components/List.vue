@@ -13,6 +13,7 @@ import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'RDSDatabaseList',
@@ -63,8 +64,9 @@ export default {
   },
   computed: {
     commonMeta () {
-      const isRun = this.data.status === 'running'
-      const isQcloud = this.data.provider === 'Qcloud'
+      const { status, provider, brand } = this.data
+      const isRun = status === 'running'
+      const isQcloud = provider === 'Qcloud'
       let tooltip = ''
       if (!isRun) {
         tooltip = this.$t('db.text_198')
@@ -72,10 +74,15 @@ export default {
       if (isQcloud) {
         tooltip = this.$t('db.text_348')
       }
-      return {
+      const ret = {
         validate: isRun && !isQcloud,
         tooltip: tooltip,
       }
+      if ((brand === HYPERVISORS_MAP.aws.brand || brand === HYPERVISORS_MAP.azure.brand) && ret.validate) {
+        ret.validate = false
+        ret.tooltip = this.$t('db.text_384', [brand])
+      }
+      return ret
     },
   },
   created () {

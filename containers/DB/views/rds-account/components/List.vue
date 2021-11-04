@@ -13,6 +13,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'RDSAccountList',
@@ -52,7 +53,7 @@ export default {
             })
           },
           meta: () => {
-            const { engine, provider } = this.data
+            const { engine, provider, brand } = this.data
             const { isRunning } = this.commonMeta
             const _meta = () => {
               if (!isRunning) {
@@ -71,6 +72,12 @@ export default {
                 return {
                   validate: false,
                   tooltip: this.$t('db.text_200'),
+                }
+              }
+              if (brand === HYPERVISORS_MAP.aws.brand || brand === HYPERVISORS_MAP.azure.brand) {
+                return {
+                  validate: false,
+                  tooltip: this.$t('db.text_384', [brand]),
                 }
               }
               return {

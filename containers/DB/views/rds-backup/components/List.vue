@@ -16,6 +16,7 @@ import ListMixin from '@/mixins/list'
 import { getNameFilter, getFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
+import { HYPERVISORS_MAP } from '@/constants'
 import i18n from '@/locales'
 const BACKUP_TYPE = {
   automated: i18n.t('db.text_33'),
@@ -106,6 +107,10 @@ export default {
             if (this.data.provider === 'Qcloud' && this.data.category === 'basic') {
               validate = false
               tooltip = this.$t('db.text_342')
+            }
+            if ((this.data.brand === HYPERVISORS_MAP.aws.brand || this.data.brand === HYPERVISORS_MAP.azure.brand) && validate) {
+              validate = false
+              tooltip = this.$t('db.text_384', [this.data.brand])
             }
             return {
               buttonType: 'primary',

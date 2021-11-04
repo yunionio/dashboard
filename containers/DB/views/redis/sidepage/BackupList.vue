@@ -12,6 +12,7 @@ import { getStatusTableColumn, getRegionTableColumn, getBrandTableColumn, getNam
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
+import { HYPERVISORS_MAP } from '@/constants'
 import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
 
 export default {
@@ -131,6 +132,10 @@ export default {
             if (this.data.status !== 'running') {
               validate = false
               tooltip = this.$t('db.text_156')
+            }
+            if ((this.data.brand === HYPERVISORS_MAP.aws.brand || this.data.brand === HYPERVISORS_MAP.azure.brand) && validate) {
+              validate = false
+              tooltip = this.$t('db.text_384', [this.data.brand])
             }
             return {
               buttonType: 'primary',
