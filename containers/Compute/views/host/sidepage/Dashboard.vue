@@ -2,8 +2,8 @@
   <div>
     <a-divider orientation="left">{{$t('compute.text_572')}}</a-divider>
       <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
-        <a-col class="mb-3" :lg="12" :xl="6" v-for="item in progressList" :key="item.label">
-          <progress-card :progress="item" />
+        <a-col class="mb-3" :lg="12" :xl="6" v-for="(item, index) in progressList" :key="item.label">
+          <progress-card :progress="item" :colorReverse="index === 3" />
         </a-col>
       </a-row>
     <a-divider class="mt-3" orientation="left">{{$t('compute.text_573')}}</a-divider>
