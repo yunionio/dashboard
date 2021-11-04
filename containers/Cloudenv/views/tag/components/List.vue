@@ -6,10 +6,10 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'TagList',
@@ -128,17 +128,17 @@ export default {
       if (this.cloudEnv === 'local_compute') {
         params = {
           service: 'compute',
-          with_user_meta: true,
+          user_meta: true,
         }
       } else if (this.cloudEnv === 'local_image') {
         params = {
           service: 'image',
-          with_user_meta: true,
+          user_meta: true,
         }
       } else if (this.cloudEnv === 'local_identity') {
         params = {
           service: 'identity',
-          with_user_meta: true,
+          user_meta: true,
         }
       }
       const ret = {
