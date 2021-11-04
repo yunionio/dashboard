@@ -12,7 +12,8 @@
     <a-form-item class="mb-0" v-if="filetype !== 'swap'" :wrapperCol="{ span: 24 }">
       <a-input
         v-decorator="decorators.mountPath"
-        :placeholder="$t('common_150')" />
+        :placeholder="$t('common_150')"
+        style="min-width: 170px;" />
     </a-form-item>
   </div>
 </template>
