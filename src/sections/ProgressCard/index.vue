@@ -38,6 +38,10 @@ export default {
     percentFormat: {
       type: Function,
     },
+    colorReverse: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     progressProps () {
@@ -57,11 +61,11 @@ export default {
     },
     status () {
       if (this.percent >= 90) {
-        return 'exception'
+        return this.colorReverse ? 'success' : 'exception'
       } else if (this.percent >= 60) {
         return 'normal'
       }
-      return 'success'
+      return this.colorReverse ? 'exception' : 'success'
     },
   },
   methods: {
