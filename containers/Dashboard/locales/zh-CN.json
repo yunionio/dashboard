@@ -261,7 +261,7 @@
   "dashboard.text_188": "平台时间：",
   "dashboard.text_189": "最后登录：",
   "dashboard.text_190": "恢复",
-  "dashboard.vm_history_count": "历史虚拟机数量",
+  "dashboard.vm_history_count": "虚拟机数量趋势",
   "dashboard.vm_count_near": "{0}天",
   "dashboard.near": "近",
   "dashboard.stage": "{0}台"
