@@ -44,7 +44,7 @@ export default {
       modalProps: {
         dialogStyle: {
           position: 'fixed',
-          right: 0,
+          right: '15px',
           bottom: '-404px',
           top: 'auto !important',
           transition: 'all .5s',
