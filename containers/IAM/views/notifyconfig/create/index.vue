@@ -144,7 +144,7 @@ export default {
   created () {
     this.manager = new this.$Manager('notifyconfigs', 'v1')
     this.notifytemplatesManager = new this.$Manager('notifytemplates/save', 'v1')
-    this.fetchTypes({ attribution: 'system', scope: this.$store.getters.scope })
+    this.fetchTypes({ attribution: this.$store.getters.scope, scope: this.$store.getters.scope })
   },
   destroyed () {
     this.manager = null
