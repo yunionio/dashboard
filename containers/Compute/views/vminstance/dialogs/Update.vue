@@ -32,8 +32,12 @@
           <a-form-item :label="$t('compute.vga')" v-bind="formItemLayout">
             <vga :decorator="decorators.vga" :vdi="vdi" />
           </a-form-item>
+          <a-form-item :label="$t('compute.machine')" v-bind="formItemLayout">
+            <machine :decorator="decorators.machine" />
+          </a-form-item>
         </template>
       </a-form>
+      <a-alert :message="$t('compute.need_reboot_prompt')" banner />
     </div>
     <div slot="footer">
       <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t('dialog.ok') }}</a-button>
@@ -48,6 +52,7 @@ import WindowsMixin from '@/mixins/windows'
 import Bios from '@Compute/sections/BIOS'
 import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
+import Machine from '@Compute/sections/Machine'
 
 export default {
   name: 'VmUpdateDialog',
@@ -55,6 +60,7 @@ export default {
     Bios,
     Vdi,
     Vga,
+    Machine,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -102,6 +108,14 @@ export default {
           {
             rules: [
               { required: true, message: this.$t('compute.prompt_vga') },
+            ],
+          },
+        ],
+        machine: [
+          'machine',
+          {
+            rules: [
+              { required: true, message: this.$t('compute.prompt_machine') },
             ],
           },
         ],
@@ -177,9 +191,10 @@ export default {
         if (this.isKvm) {
           updateObj.boot_order = data.boot_order
           updateObj.bios = data.bios || (this.isArm ? 'UEFI' : 'BIOS')
-          updateObj.vdi = data.vdi
-          updateObj.vga = data.vga
-          this.vdi = data.vdi
+          updateObj.vdi = data.vdi ? data.vdi : 'vnc'
+          updateObj.vga = data.vga ? data.vga : 'std'
+          this.vdi = updateObj.vdi
+          updateObj.machine = data.machine ? data.machine : 'pc'
         }
         this.form.fc.setFieldsValue(updateObj)
       })
