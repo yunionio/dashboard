@@ -73,36 +73,32 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.text_275'),
-          actions: () => {
-            return [
-              {
-                label: this.$t('table.action.set_tag'),
-                action: () => {
-                  this.createDialog('SetTagDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    mode: 'add',
-                    params: {
-                      resources: 'webapp',
-                    },
-                    tipName: this.$t('compute.text_100'),
-                  })
-                },
+          label: this.$t('common.text00043'),
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['ready'],
+              managerArgs: {
+                action: 'syncstatus',
               },
-              {
-                label: this.$t('common.text00043'),
-                action: () => {
-                  this.onManager('batchPerformAction', {
-                    steadyStatus: ['ready'],
-                    managerArgs: {
-                      action: 'syncstatus',
-                    },
-                  })
-                },
+            })
+          },
+          meta: () => ({
+            validate: this.list.selected.length,
+          }),
+        },
+        {
+          label: this.$t('table.action.set_tag'),
+          action: () => {
+            this.createDialog('SetTagDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              mode: 'add',
+              params: {
+                resources: 'webapp',
               },
-            ]
+              tipName: this.$t('compute.text_100'),
+            })
           },
           meta: () => ({
             validate: this.list.selected.length,
