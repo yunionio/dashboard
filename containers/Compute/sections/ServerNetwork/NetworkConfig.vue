@@ -304,7 +304,7 @@ export default {
       this.$nextTick(() => {
         this.form.fc.setFieldsValue({ [`vpcs[${item.key}]`]: data?.[0]?.key })
       })
-      this.fetchNetworkOpts(this.networkParamsC, item)
+      // this.fetchNetworkOpts(this.networkParamsC, item)
     },
     fetchNetworkSuccessHandle (data, item) {
       item.network = data[0]
