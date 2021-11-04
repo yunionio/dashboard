@@ -55,6 +55,7 @@ export default {
           return !this.hiddenColumns.some(item2 => item2 === item.key)
         }),
       },
+      resTypeItems: [],
     }
   },
   computed: {
@@ -131,11 +132,19 @@ export default {
     alertType (val) {
       this.$nextTick(() => {
         this.list.fetchData()
+        if (this.resTypeItems.length) this.list.filterOptions = this.filters()
+      })
+    },
+    resTypeItems (val) {
+      this.$nextTick(() => {
+        this.list.filterOptions = this.filters()
       })
     },
   },
   created () {
+    this.allAlertManager = new this.$Manager('alertrecords', 'v1')
     this.list.fetchData()
+    this.initResType()
   },
   methods: {
     refresh () {
@@ -149,31 +158,23 @@ export default {
           dropdown: true,
           items: Object.values(levelMaps),
         },
-        state: {
-          label: this.$t('common.status'),
+        send_state: {
+          label: this.$t('common.sendState'),
           dropdown: true,
+          filter: true,
           items: [
-            { label: this.$t('status.alertrecord.ok'), key: 'ok' },
-            { label: this.$t('status.alertrecord.alerting'), key: 'alerting' },
+            { key: 'ok', label: this.$t('status.alertSendState.ok') },
+            { key: 'silent', label: this.$t('status.alertSendState.silent') },
+            { key: 'shield', label: this.$t('status.alertSendState.shield') },
           ],
+          formatter: (val) => {
+            return `send_state.equals(${val})`
+          },
         },
         res_type: {
           label: this.$t('monitor.text_97'),
           dropdown: true,
-          distinctField: {
-            type: 'extra_field',
-            key: 'res_type',
-          },
-          mapper: data => {
-            return data.map(val => {
-              let label = val.label
-              if (this.$te(`dictionary.${val.key}`)) label = this.$t(`dictionary.${val.key}`)
-              return {
-                key: val.key,
-                label,
-              }
-            })
-          },
+          items: this.resTypeItems,
         },
         res_name: {
           field: 'res_name',
@@ -332,6 +333,28 @@ export default {
         resource: 'commonalerts',
         apiVersion: 'v1',
         getParams: this.getParam,
+      })
+    },
+    initResType () {
+      this.allAlertManager.get({
+        id: 'distinct-field',
+        params: {
+          scope: this.$store.getters.scope,
+          extra_field: 'res_type',
+          details: true,
+        },
+      }).then(res => {
+        const { res_type = [] } = res.data || {}
+        this.resTypeItems = res_type.map(item => {
+          let label = item
+          if (this.$te(`dictionary.${item}`)) {
+            label = this.$t(`dictionary.${item}`)
+          }
+          return {
+            key: item,
+            label,
+          }
+        })
       })
     },
   },
