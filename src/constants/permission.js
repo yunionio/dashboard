@@ -847,6 +847,7 @@ export const PERMISSION = {
   suggestsysruleconfigs_list: ['suggestion', 'suggestsysruleconfigs', 'list'],
   suggestsysrules_list: ['suggestion', 'suggestsysrules', 'list'],
   suggestsysalerts_list: ['suggestion', 'suggestsysalerts', 'list'],
+  suggestsysalerts_delete: ['suggestion', 'suggestsysalerts', 'delete'],
   // 资源消费预警
   costalerts_create: ['meter', 'costalerts', 'create'],
   costalerts_delete: ['meter', 'costalerts', 'delete'],
