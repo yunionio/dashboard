@@ -799,7 +799,7 @@ export class GenCreateData {
         if (this.fd.networkExits) {
           const exit = this.fd.networkExits[key]
           if (exit) {
-            // obj.exit = true
+            obj.exit = true
           }
         }
         ret.push(obj)

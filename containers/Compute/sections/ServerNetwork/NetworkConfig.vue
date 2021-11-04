@@ -34,7 +34,7 @@
           :mapper="vpcResourceMapper"
           :sort="(arr) => arr.sort((a, b) => a.network_count > b.network_count ? -1 : 1)"
           :placeholder="$t('compute.text_194')"
-          @selectChange="(curObjArr) => vpcSelectChange(curObjArr, item)"
+          @selectChange="(curObjArr) => vpcSelectChange(curObjArr, i, item)"
           @fetchSuccess="(data) => fetchVpcSuccessHandle(data, item)" />
         <a-tag v-else color="blue" class="w-100 mr-1">{{ getVpcTag(networkList[0].vpc) }}</a-tag>
       </a-form-item>
@@ -281,17 +281,16 @@ export default {
         }
       })
     },
-    vpcSelectChange (curObjArr, item) {
+    vpcSelectChange (curObjArr, i, item) {
       item.vpc = curObjArr[0]
       this.$nextTick(() => {
         if (this.form.fi) {
-          const networkVpcObj = curObjArr[0]
+          const networkVpcObj = item.vpc
           if (R.is(Object, networkVpcObj)) {
             this.$set(this.form.fi, 'networkVpcObj', networkVpcObj)
           }
         }
       })
-      this.fetchNetworkOpts(this.networkParamsC, item)
     },
     beforeDefaultSelectCallBack (data = []) {
       const cur = data[0]
