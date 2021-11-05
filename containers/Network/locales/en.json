@@ -1000,5 +1000,7 @@
       }
     }
   },
-  "network.eip.tip": "No IP subnets of EIP type available yet? Go to "
+  "network.eip.tip": "No IP subnets of EIP type available yet? Go to ",
+  "network.text_759": "Used SNAT Ports",
+  "network.text_760": "SNAT Connection Count"
 }
