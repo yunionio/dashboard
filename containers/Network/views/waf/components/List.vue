@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getBrandFilter, getAccountFilter, getDomainFilter, getRegionFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'WafList',
@@ -62,39 +62,37 @@ export default {
       }),
       groupActions: [
         {
-          label: this.$t('network.text_200'),
-          actions: () => {
-            return [
-              {
-                label: this.$t('table.action.set_tag'),
-                action: () => {
-                  this.createDialog('SetTagDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    mode: 'add',
-                    params: {
-                      resources: 'waf_instance',
-                    },
-                    tipName: this.$t('compute.text_100'),
-                  })
-                },
+          label: this.$t('table.action.set_tag'),
+          action: () => {
+            this.createDialog('SetTagDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              mode: 'add',
+              params: {
+                resources: 'waf_instance',
               },
-              {
-                label: this.$t('cloudenv.text_108'),
-                permission: 'waf_instances_delete',
-                action: () => {
-                  this.createDialog('DeleteWafInstancesDialog', {
-                    vm: this,
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    title: this.$t('network.waf.delete'),
-                    name: this.$t('network.waf'),
-                    onManager: this.onManager,
-                  })
-                },
-              },
-            ]
+              tipName: this.$t('compute.text_100'),
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length,
+            }
+          },
+        },
+        {
+          label: this.$t('cloudenv.text_108'),
+          permission: 'waf_instances_delete',
+          action: () => {
+            this.createDialog('DeleteWafInstancesDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('network.waf.delete'),
+              name: this.$t('network.waf'),
+              onManager: this.onManager,
+            })
           },
           meta: () => {
             return {
