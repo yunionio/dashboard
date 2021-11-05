@@ -1024,6 +1024,20 @@
     },
     "robot": {
       "ready": "可用"
+    },
+    "vpcNetwork": {
+      "available": "正常",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "delete_failed": "删除失败",
+      "deleting": "删除中",
+      "add_vpc": "添加VPC",
+      "add_vpc_failed": "添加VPC失败",
+      "remove_vpc": "删除VPC",
+      "remove_vpc_failed": "删除VPC失败",
+      "update_route": "更新路由",
+      "update_route_failed": "更新路由失败",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
@@ -2467,7 +2481,8 @@
     "ext_redis": "Redis",
     "ext_rabbitmq": "RabbitMQ",
     "cdn": "内容分发网络",
-    "cdn_domain": "域名"
+    "cdn_domain": "域名",
+    "vpc_network": "VPC互联"
   },
   "res": {
     "role": "@:dictionary.role",
