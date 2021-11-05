@@ -176,6 +176,15 @@
           <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
             <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" />
           </a-form-item>
+          <a-form-item :label="$t('compute.vdi_protocol')" class="mb-0" v-if="isKvm">
+            <vdi :decorator="decorators.vdi" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.vga')" class="mb-0" v-if="isKvm">
+            <vga :decorator="decorators.vga" :vdi="vdi" />
+          </a-form-item>
+          <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
+            <machine :decorator="decorators.machine" :isArm="isArm" />
+          </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
             <backup
               :decorator="decorators.backup"
@@ -212,6 +221,9 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import EipConfig from '@Compute/sections/EipConfig'
 import OsArch from '@/sections/OsArch'
+import Vdi from '@Compute/sections/VDI'
+import Vga from '@Compute/sections/VGA'
+import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 
 export default {
@@ -220,6 +232,9 @@ export default {
     SecgroupConfig,
     EipConfig,
     OsArch,
+    Vdi,
+    Vga,
+    Machine,
   },
   mixins: [mixin],
   data () {
@@ -238,6 +253,9 @@ export default {
     },
     isArm () {
       return this.form.fd.os_arch === HOST_CPU_ARCHS.arm.key
+    },
+    vdi () {
+      return this.form.fd.vdi
     },
     hypervisors () {
       const { hypervisors = [] } = this.form.fi.capability
