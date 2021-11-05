@@ -999,5 +999,7 @@
       }
     }
   },
-  "network.eip.tip": "暂无可用的弹性公网IP类型的IP子网？去"
+  "network.eip.tip": "暂无可用的弹性公网IP类型的IP子网？去",
+  "network.text_759": "SNAT已分配端口",
+  "network.text_760": "SNAT连接端口"
 }

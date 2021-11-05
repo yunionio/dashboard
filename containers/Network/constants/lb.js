@@ -62,3 +62,26 @@ export const LB_LISTENEER_ACTION_POLICIES = {
     disableHealthCheck: false,
   },
 }
+
+export const LB_MONITOR_OPTS = {
+  azure: [
+    {
+      name: 'used_snat_port',
+      label: i18n.t('network.text_759'),
+      seleteItem: 'used_snat_port',
+      as: i18n.t('network.text_759'),
+      fromItem: 'haproxy',
+      unit: '',
+      transfer: 1,
+    },
+    {
+      name: 'snat_conn_count',
+      label: i18n.t('network.text_760'),
+      seleteItem: 'snat_conn_count',
+      fromItem: 'haproxy',
+      as: i18n.t('network.text_760'),
+      unit: '',
+      transfer: 1,
+    },
+  ],
+}

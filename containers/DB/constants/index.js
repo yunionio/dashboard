@@ -287,6 +287,53 @@ export const RDS_MONITOR_OPTS = {
       transfer: 1,
     },
   ],
+  azure: [
+    {
+      name: 'cpu',
+      label: i18n.t('db.text_11'), // cpu使用率
+      seleteItem: 'usage_active',
+      fromItem: 'rds_cpu',
+      as: i18n.t('db.text_11'),
+      unit: '%',
+      transfer: 1,
+    },
+    {
+      name: 'diskio',
+      label: i18n.t('db.text_385'), // io使用率
+      seleteItem: 'used_percent',
+      fromItem: 'rds_diskio',
+      as: i18n.t('db.text_385'),
+      unit: '%',
+      transfer: 1,
+    },
+    {
+      name: 'disk',
+      label: i18n.t('db.text_13'), // 磁盘使用率
+      seleteItem: 'used_percent',
+      as: i18n.t('db.text_13'),
+      fromItem: 'rds_disk',
+      unit: '%',
+      transfer: 1,
+    },
+    {
+      name: 'conn',
+      label: i18n.t('db.text_386'), // 数据库有效连接数
+      seleteItem: 'active_count',
+      as: i18n.t('db.text_386'),
+      fromItem: 'rds_conn',
+      unit: '',
+      transfer: 1,
+    },
+    {
+      name: 'conn',
+      label: i18n.t('db.text_387'), // 数据库失败连接数
+      seleteItem: 'failed_count',
+      as: i18n.t('db.text_387'),
+      fromItem: 'rds_conn',
+      unit: '',
+      transfer: 1,
+    },
+  ],
 }
 
 export const REDIS_MONITOR_OPTS = {
@@ -507,6 +554,53 @@ export const REDIS_MONITOR_OPTS = {
       as: i18n.t('db.text_18'),
       fromItem: 'dcs_conn',
       unit: '%',
+      transfer: 1,
+    },
+  ],
+  azure: [
+    {
+      name: 'used_conn',
+      label: i18n.t('db.text_23'), // Redis客户端连接数
+      seleteItem: 'used_conn',
+      as: i18n.t('db.text_23'),
+      fromItem: 'dcs_conn',
+      unit: '',
+      transfer: 1,
+    },
+    {
+      name: 'mem',
+      label: i18n.t('db.text_12'),
+      seleteItem: 'used_percent',
+      fromItem: 'dcs_mem',
+      as: i18n.t('db.text_12'),
+      unit: '%',
+      transfer: 1,
+    },
+    {
+      name: 'server_load',
+      label: i18n.t('db.text_389'), // CPU负载率
+      seleteItem: 'server_load',
+      fromItem: 'dcs_cpu',
+      as: i18n.t('db.text_389'),
+      unit: '%',
+      transfer: 1,
+    },
+    {
+      name: 'cpu',
+      label: i18n.t('db.text_11'),
+      seleteItem: 'usage_percent',
+      fromItem: 'dcs_cpu',
+      as: i18n.t('db.text_11'),
+      unit: '%',
+      transfer: 1,
+    },
+    {
+      name: 'dcs_conn',
+      label: i18n.t('db.text_390'),
+      seleteItem: 'errors',
+      fromItem: 'dcs_conn',
+      as: i18n.t('db.text_390'),
+      unit: '',
       transfer: 1,
     },
   ],
