@@ -28,15 +28,16 @@
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import LbDetail from './Detail'
-import LbProperties from './Properties'
 import LoadbalancerlistenersList from '@Network/views/loadbalancerlistener/components/List'
 import LoadbalancerbackendgroupsList from '@Network/views/loadbalancerbackendgroup/components/List'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import LbDetail from './Detail'
+import LbProperties from './Properties'
+import LbMonitor from './Monitor'
 
 export default {
   name: 'LbSidePage',
@@ -46,6 +47,7 @@ export default {
     LoadbalancerbackendgroupsList,
     LoadbalancerlistenersList,
     LbProperties,
+    LbMonitor,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -53,6 +55,7 @@ export default {
       { label: this.$t('network.text_67'), key: 'lb-detail' },
       { label: this.$t('network.text_138'), key: 'loadbalancerlisteners-list' },
       { label: this.$t('network.text_139'), key: 'loadbalancerbackendgroups-list' },
+      { label: this.$t('network.text_520'), key: 'lb-monitor' },
       { label: this.$t('network.text_150'), key: 'event-drawer' },
     ]
 

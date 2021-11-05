@@ -396,5 +396,10 @@
   "db.text_381": "Serverless",
   "db.text_382": "{0} nodes",
   "db.text_383": "{0} slices",
-  "db.text_384": "{0} do not support this operation"
+  "db.text_384": "{0} do not support this operation",
+  "db.text_385": "Disk IO Usage",
+  "db.text_386": "Valid Connection Count",
+  "db.text_387": "Failed connection Count",
+  "db.text_389": "CPU Load Rate",
+  "db.text_390": "Connection Error Rate"
 }

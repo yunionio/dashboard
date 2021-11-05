@@ -8,18 +8,19 @@
         :loading="loading"
         @refresh="fetchData" />
     </div>
-    <a-alert
-      v-else
-      :message="$t('db.text_183')"
-      :description="$t('db.text_184')"
-      type="warning" />
+    <template v-else>
+      <a-alert
+        :message="$t('db.text_183')"
+        class="mb-2"
+        type="warning" />
+    </template>
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import { REDIS_MONITOR_OPTS } from '@DB/constants'
+import { LB_MONITOR_OPTS } from '@Network/constants/lb'
 import { UNITS, autoComputeUnit, getRequestT } from '@/utils/utils'
 import Monitor from '@/sections/Monitor'
 import WindowsMixin from '@/mixins/windows'
@@ -27,7 +28,7 @@ import { HYPERVISORS_MAP } from '@/constants'
 import { getSignature } from '@/utils/crypto'
 
 export default {
-  name: 'RedisMonitorSidepage',
+  name: 'LbMnitorSidepage',
   components: {
     Monitor,
   },
@@ -47,17 +48,20 @@ export default {
     }
   },
   computed: {
+    brand () {
+      if (this.data.brand) {
+        return this.data.brand.toLowerCase()
+      }
+      return ''
+    },
     hadMonitor () {
       const brand = this.data.brand.toLowerCase()
-      const surportBrand = [HYPERVISORS_MAP.aliyun.key, HYPERVISORS_MAP.huawei.key, HYPERVISORS_MAP.qcloud.key, HYPERVISORS_MAP.azure.key]
+      const surportBrand = [HYPERVISORS_MAP.azure.key]
       return surportBrand.includes(brand)
     },
     monitorConstants () {
-      if (this.data.brand) {
-        const brand = this.data.brand.toLowerCase()
-        return REDIS_MONITOR_OPTS[brand] || []
-      }
-      return []
+      const brand = this.brand
+      return LB_MONITOR_OPTS[brand] || []
     },
     dbId () {
       return this.data.id
@@ -137,7 +141,7 @@ export default {
               params: [val],
             },
             { // 对应 mean(val.seleteItem)
-              type: 'mean',
+              type: val.selectType ? val.selectType : 'mean',
               params: [],
             },
             { // 确保后端返回columns有 val.label 的别名
@@ -166,7 +170,7 @@ export default {
       }
       const tags = [
         {
-          key: 'redis_id',
+          key: 'lb_id',
           value: this.dbId,
           operator: '=',
         },
