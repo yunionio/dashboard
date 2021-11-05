@@ -107,7 +107,7 @@ export default {
         {
           path: '/vpc-network',
           meta: {
-            label: 'VPC互联',
+            label: i18n.t('dictionary.vpc_network'),
           },
           component: Layout,
           children: [
