@@ -1467,5 +1467,8 @@
   "compute.vdi_protocol": "远程终端协议",
   "compute.vga": "显卡型号",
   "compute.prompt_vdi": "请选择远程终端协议",
-  "compute.prompt_vga": "请选择显卡型号"
+  "compute.prompt_vga": "请选择显卡型号",
+  "compute.machine": "主机型号",
+  "compute.prompt_machine": "请选择主机型号",
+  "compute.need_reboot_prompt": "配置更改后需要重启主机才能生效."
 }
