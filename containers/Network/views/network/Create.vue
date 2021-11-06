@@ -84,7 +84,7 @@
           <a-switch v-decorator="decorators.is_auto_alloc" />
           <template slot="extra">{{$t('common_500')}}</template>
         </a-form-item>
-        <a-collapse :bordered="false"  v-if="show">
+        <a-collapse :bordered="false" v-if="isShowAdvanceOptions">
           <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
             <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="form.fd.server_type === 'eip'">
               <a-input v-decorator="decorators.bgp_type" />
@@ -100,8 +100,8 @@
               </a-radio-group>
               <span slot="extra" v-if="form.fc.getFieldValue('alloc_policy') === 'none'">{{$t('network.text_584')}}</span>
             </a-form-item>
-            <a-form-item :label="$t('network.text_585')" v-bind="formItemLayout">
-              <a-input :placeholder="$t('validator.IPv4')" v-decorator="decorators.guest_dns" />
+            <a-form-item :label="$t('network.dns_server')" v-bind="formItemLayout">
+              <a-input :placeholder="$t('validator.IPv4s')" v-decorator="decorators.guest_dns" />
             </a-form-item>
             <a-form-item v-bind="formItemLayout">
               <span slot="label">{{$t('network.text_586')}}</span>
@@ -112,6 +112,9 @@
                 <div>{{$t('network.text_590')}}</div>
               </template>
               <a-input :placeholder="$t('validator.domain')" v-decorator="decorators.guest_domain" />
+            </a-form-item>
+            <a-form-item :label="$t('network.ntp_server')" v-bind="formItemLayout">
+              <a-input :placeholder="$t('validator.domains')" v-decorator="decorators.guest_ntp" />
             </a-form-item>
           </a-collapse-panel>
         </a-collapse>
@@ -281,7 +284,7 @@ export default {
           {
             initialValue: '',
             rules: [
-              { validator: this.$validate('IPv4', false) },
+              { validator: this.$validate('IPv4s', false) },
             ],
           },
         ],
@@ -291,6 +294,15 @@ export default {
             initialValue: '',
             rules: [
               { validator: this.$validate('domain', false) },
+            ],
+          },
+        ],
+        guest_ntp: [
+          'guest_ntp',
+          {
+            initialValue: '',
+            rules: [
+              { validator: this.$validate('domains', false) },
             ],
           },
         ],
@@ -398,6 +410,10 @@ export default {
         return ['guest', undefined].includes(server_type)
       }
       return true
+    },
+    // 是否显示高级配置
+    isShowAdvanceOptions () {
+      return this.cloudEnv === 'onpremise'
     },
     remain () {
       const remain = 6 - this.guestIpPrefix.length
@@ -575,10 +591,10 @@ export default {
       this.vpcId = vpcId
       this.show = false
       if (this.cloudEnv === 'onpremise') {
-        if (vpcId !== 'default') {
+        if (vpcId !== 'default') { // vpc network
           this.isGroupGuestIpPrefix = true
           this.show = false
-        } else {
+        } else { // classic network
           this.isGroupGuestIpPrefix = false
           this.show = true
           this.form.fc.setFieldsValue({
@@ -639,6 +655,10 @@ export default {
         if (this.isGroupGuestIpPrefix) {
           R.forEachObjIndexed((value, key) => {
             const obj = {
+              alloc_policy: values.alloc_policy,
+              guest_dns: values.guest_dns,
+              guest_domain: values.guest_domain,
+              guest_ntp: values.guest_ntp,
               guest_ip_prefix: value,
               name: values.name,
               vpc: values.vpc,
@@ -655,6 +675,7 @@ export default {
               alloc_policy: values.alloc_policy,
               guest_dns: values.guest_dns,
               guest_domain: values.guest_domain,
+              guest_ntp: values.guest_ntp,
               guest_gateway: values.gateway[key],
               guest_ip_end: values.endip[key],
               guest_ip_mask: values.netmask[key],
