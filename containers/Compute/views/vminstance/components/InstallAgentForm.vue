@@ -43,7 +43,10 @@ export default {
   },
   data () {
     let agent_install_status
-    const ok = _.get(this.data, ['metadata', 'sys:monitor_agent']) || _.get(this.data, ['metadata', '__monitor_agent'])
+    let ok = _.get(this.data, ['metadata', 'sys:monitor_agent']) || _.get(this.data, ['metadata', '__monitor_agent'])
+    if (this.data.hasOwnProperty('have_agent')) {
+      ok = this.data.have_agent
+    }
     if (!ok) {
       agent_install_status = 'install'
     } else {
