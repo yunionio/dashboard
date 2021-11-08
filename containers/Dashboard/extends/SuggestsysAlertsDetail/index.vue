@@ -283,7 +283,7 @@ export default {
       if (percent && percent < 10) {
         return percent.toFixed(1)
       }
-      return `${parseInt(percent)}`
+      return `${numerify(percent, 'percent')}`
     },
     compareData (a, b) {
       if (a.amount > b.amount) {
