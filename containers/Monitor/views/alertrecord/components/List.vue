@@ -8,14 +8,14 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
 import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
-import { getNameFilter, getTimeRangeFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTimeRangeFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'AlertrecordList',
@@ -150,6 +150,12 @@ export default {
     refresh () {
       this.list.fetchData()
     },
+    getStatusTableFilter () {
+      if (this.alertType !== 'un-recovered') {
+        return [getStatusFilter({ field: 'state', statusModule: 'alertrecord' })]
+      }
+      return []
+    },
     filters () {
       const options = {
         name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
@@ -158,6 +164,7 @@ export default {
           dropdown: true,
           items: Object.values(levelMaps),
         },
+        ...this.getStatusTableFilter(),
         send_state: {
           label: this.$t('common.sendState'),
           dropdown: true,

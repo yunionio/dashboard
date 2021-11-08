@@ -889,7 +889,9 @@
     },
     "alertrecord": {
       "ok": "告警已恢复",
-      "alerting": "发生告警"
+      "alerting": "发生告警",
+      "effective": "生效中",
+      "expired": "已过期"
     },
     "alertSendState": {
       "ok": "已发送",
