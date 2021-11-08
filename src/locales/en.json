@@ -883,7 +883,9 @@
     },
     "alertrecord": {
       "ok": "Alert has been restored",
-      "alerting": "Alerting"
+      "alerting": "Alerting",
+      "effective": "Effective",
+      "expired": "Expired"
     },
     "alertSendState": {
       "ok": "Sent",

@@ -374,8 +374,8 @@ export default {
     success: ['available'],
   },
   alertrecord: {
-    info: [],
-    success: ['ok'],
+    info: ['expired'],
+    success: ['ok', 'effective'],
     danger: ['alerting'],
   },
   alertSendState: {
