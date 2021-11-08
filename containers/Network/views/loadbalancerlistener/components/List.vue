@@ -38,6 +38,7 @@ export default {
         id: 'LoadbalancerListenerList',
         resource: 'loadbalancerlisteners',
         getParams: this.getParam,
+        fetchDataCb: this.fetchDataCb,
         filterOptions: {
           name: getNameFilter(),
           project_domains: getDomainFilter(),
@@ -49,7 +50,7 @@ export default {
   computed: {
     groupActions () {
       const provider = R.path(['provider'], this.data)
-      if (provider && provider.toLowerCase() === 'azure') return []
+      if (provider && (provider.toLowerCase() === 'azure' || provider.toLowerCase() === 'google')) return []
       if (this.$route.name === 'LbaclList') { return [] }
       if (this.$route.name === 'LbcertList') {
         return [
@@ -139,6 +140,20 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    fetchDataCb () {
+      if (this.list.total > 0 && this.data.provider === 'Google') {
+        for (const item in this.list.data) {
+          const data = this.list.data[item].data
+          data.provider = this.data.provider
+          data.cloudregion = this.data.cloudregion
+          data.cloudregion_id = this.data.cloudregion_id
+          data.region = this.data.region
+          data.region_ext_id = this.data.region_ext_id
+          data.region_external_id = this.data.region_external_id
+          data.region_id = this.data.region_id
+        }
+      }
+    },
     getParam () {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
