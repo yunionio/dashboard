@@ -196,6 +196,15 @@ export default {
     },
   },
   methods: {
+    async fetchDataCallback () {
+      try {
+        if (!this.data.data) return
+        const ret = await new this.$Manager('servers').performAction({ id: this.data.data.id, action: 'have-agent' })
+        this.data.data.have_agent = ret.data.have || false
+      } catch (e) {
+        throw e
+      }
+    },
     beforeShowMenu () {
       return this.$store.dispatch('scopedPolicy/get', {
         category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address', 'disk_hidden_menus'],
