@@ -1007,5 +1007,6 @@
   "network.lb.google.spec.regional_tcp_lb": "区域性TCP",
   "network.text_759": "SNAT已分配端口",
   "network.text_760": "SNAT连接端口",
-  "network.ntp_server": "时间服务器(NTP)"
+  "network.ntp_server": "时间服务器(NTP)",
+  "network.vpc_network.vpc_action_refresh": "提示：操作后数据更新存在延迟，列表自动刷新2次，间隔时间为6s，可手动刷新"
 }

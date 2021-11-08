@@ -76,6 +76,9 @@ export default {
   },
   created () {
     this.list.fetchData()
+    this.$bus.$on('VpcNetworkListSingleRefresh', (...arg) => {
+      this.list.refresh(...arg)
+    }, false)
   },
   methods: {
     getParam () {
