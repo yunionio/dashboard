@@ -583,7 +583,7 @@
   "network.text_582": "Add subnet",
   "network.text_583": "Address Allocation Strategy",
   "network.text_584": "The default policy is that for host machines addresses are allocated from low to high, and for virtual servers the reverse direction",
-  "network.text_585": "Domain Name Server",
+  "network.dns_server": "Domain Name Server",
   "network.text_586": "Domain name suffix",
   "network.text_587": "When the system assigns an IP to a host, it will also create a domain name record pointing to the address. The domain name consists of the server name + the domain name suffix. E.g.",
   "network.text_588": "The server name is vm01, and the host ip is 192.168.1.1",
@@ -1002,5 +1002,6 @@
   },
   "network.eip.tip": "No IP subnets of EIP type available yet? Go to ",
   "network.text_759": "Used SNAT Ports",
-  "network.text_760": "SNAT Connection Count"
+  "network.text_760": "SNAT Connection Count",
+  "network.ntp_server": "NTP Server"
 }

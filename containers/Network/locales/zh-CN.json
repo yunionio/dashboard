@@ -582,7 +582,7 @@
   "network.text_582": "添加子网网段",
   "network.text_583": "地址分配策略",
   "network.text_584": "缺省策略为：物理机从低地址分配，虚拟机从高地址分配",
-  "network.text_585": "域名服务器",
+  "network.dns_server": "域名服务器",
   "network.text_586": "主机域名后缀",
   "network.text_587": "系统为主机分配IP时，会同时创建一条指向该IP的域名记录，域名由主机名称+主机域名后缀组成。例如：",
   "network.text_588": "主机名称为vm01，主机ip为192.168.1.1",
@@ -1001,5 +1001,6 @@
   },
   "network.eip.tip": "暂无可用的弹性公网IP类型的IP子网？去",
   "network.text_759": "SNAT已分配端口",
-  "network.text_760": "SNAT连接端口"
+  "network.text_760": "SNAT连接端口",
+  "network.ntp_server": "时间服务器(NTP)"
 }
