@@ -128,7 +128,7 @@ export default {
             validate: true,
             tooltip: null,
           }
-          if (obj.provider && obj.provider.toLowerCase() === 'azure') {
+          if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
             return {
               validate: false,
               tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),

@@ -21,4 +21,9 @@ export const LB_SPEC = {
     { key: 'application', label: i18n.t('network.text_266') },
     { key: 'network', label: i18n.t('network.text_267') },
   ],
+  google: [
+    { key: 'regional_http_lb', label: i18n.t('network.lb.google.spec.regional_http_lb') },
+    { key: 'regional_udp_lb', label: i18n.t('network.lb.google.spec.regional_udp_lb') },
+    { key: 'regional_tcp_lb', label: i18n.t('network.lb.google.spec.regional_tcp_lb') },
+  ],
 }

@@ -34,7 +34,7 @@ export default {
   data () {
     let groupActions = []
     const provider = R.path(['provider'], this.lbData)
-    if (provider && provider.toLowerCase() !== 'azure') {
+    if (provider && (provider.toLowerCase() !== 'azure' && provider.toLowerCase() !== 'google')) {
       groupActions = [
         {
           label: this.$t('network.text_26'),
@@ -62,6 +62,7 @@ export default {
         id: 'LoadbalancerListenerRuleList',
         resource: 'loadbalancerlistenerrules',
         getParams: this.getParam,
+        fetchDataCb: this.fetchDataCb,
         filterOptions: {
           name: getNameFilter(),
         },
@@ -76,6 +77,20 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    fetchDataCb () {
+      if (this.list.total > 0 && this.data.provider === 'Google') {
+        for (const item in this.list.data) {
+          const data = this.list.data[item].data
+          data.provider = this.data.provider
+          data.cloudregion = this.data.cloudregion
+          data.cloudregion_id = this.data.cloudregion_id
+          data.region = this.data.region
+          data.region_ext_id = this.data.region_ext_id
+          data.region_external_id = this.data.region_external_id
+          data.region_id = this.data.region_id
+        }
+      }
+    },
     getParam () {
       const ret = {
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
