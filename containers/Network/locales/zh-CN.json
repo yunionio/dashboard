@@ -14,6 +14,8 @@
   "network.text_13": "基于源IP地址的一致性hash，相同的源地址会调度到相同的后端服务器。",
   "network.text_14": "基于四元组一致性哈希",
   "network.text_15": "基于四元组的一致性hash（源IP+目的IP+源端口+目的端口），相同的流会调度到相同的后端服务器。",
+  "network.text_0015": "基于QUIC Connection ID一致性hash",
+  "network.text_0115": "基于QUIC Connection ID一致性hash，相同的QUIC Connection ID会调度到相同的后端服务器。",
   "network.text_16": "网络",
   "network.text_17": "负载均衡集群",
   "network.text_18": "网络负载均衡集群",
@@ -1000,6 +1002,9 @@
     }
   },
   "network.eip.tip": "暂无可用的弹性公网IP类型的IP子网？去",
+  "network.lb.google.spec.regional_http_lb": "区域性HTTP",
+  "network.lb.google.spec.regional_udp_lb": "区域性UDP",
+  "network.lb.google.spec.regional_tcp_lb": "区域性TCP",
   "network.text_759": "SNAT已分配端口",
   "network.text_760": "SNAT连接端口",
   "network.ntp_server": "时间服务器(NTP)"

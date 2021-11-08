@@ -80,6 +80,9 @@ export default {
         field: 'vpc',
         title: 'VPC',
         minWidth: 100,
+        formatter: ({ row }) => {
+          return row.vpc || '-'
+        },
         hidden: this.$store.getters.isProjectMode,
       },
       {
