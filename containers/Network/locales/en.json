@@ -14,6 +14,8 @@
   "network.text_13": "Source consistent hash. Requests from the same source address will be scheduled to the same backend server.",
   "network.text_14": "TCH",
   "network.text_15": "4-Tuple consistent hash. Requests with same tuple of (src-ip, src-port, dst-ip, dst-port) will be distributed to the same server.",
+  "network.text_0015": "Based on the QUIC Connection ID consistent hash",
+  "network.text_0115": "Based on the QUIC Connection ID consistent hash, the same QUIC Connection ID will be scheduled to the same back-end server.",
   "network.text_16": "Network",
   "network.text_17": "Load Balancing Clusters",
   "network.text_18": "Network Load Balancing Cluster",
@@ -1001,6 +1003,9 @@
     }
   },
   "network.eip.tip": "No IP subnets of EIP type available yet? Go to ",
+  "network.lb.google.spec.regional_http_lb": "Regional HTTP",
+  "network.lb.google.spec.regional_udp_lb": "Regional UDP",
+  "network.lb.google.spec.regional_tcp_lb": "Regional TCP",
   "network.text_759": "Used SNAT Ports",
   "network.text_760": "SNAT Connection Count"
 }

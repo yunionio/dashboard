@@ -20,6 +20,10 @@ export const LB_SCHEDULER_MAP = {
     text: i18n.t('network.text_14'),
     desc: i18n.t('network.text_15'),
   },
+  qch: {
+    text: i18n.t('network.text_0015'),
+    desc: i18n.t('network.text_0115'),
+  },
 }
 
 export const healcheckDiff = {

@@ -10,6 +10,7 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import { LB_SPEC, CHARGE_TYPE } from '@Network/views/lb/constants'
 import { getBrandTableColumn, getCopyWithContentTableColumn, getZone1TableColumn, getSwitchTableColumn } from '@/utils/common/tableColumn'
 import {
@@ -138,6 +139,19 @@ export default {
                       <span className="text-color-secondary">{row.address_type === 'intranet' ? this.$t('network.text_306') : this.$t('network.text_307')}</span>
                       <copy message={row.address}/>
                     </div>)
+                  }
+
+                  const _ips = _.get(row, ['metadata', 'sys:FrontendIPs'])
+                  if (_ips !== undefined && _ips.length > 0) {
+                    const ips = _ips.split(',')
+                    for (const v of ips) {
+                      if (v !== row.address && v !== row.eip) {
+                        ret.push(<div>
+                          <span>{ v }</span>
+                          <copy class="ml-2" message={row.address}/>
+                        </div>)
+                      }
+                    }
                   }
 
                   return ret
