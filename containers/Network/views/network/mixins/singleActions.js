@@ -58,12 +58,14 @@ export default {
                 }
                 if (this.isPower(obj)) {
                   const { hasbrand, canUpdate } = canAdjustConfig(obj)
+                  /*
                   if (obj.cloud_env === 'onpremise' && obj.vpc_id !== 'default') {
                     return {
                       validate: false,
                       tooltip: i18n.t('network.text_650'),
                     }
                   }
+                  */
                   if (!hasbrand) {
                     return {
                       validate: true,
