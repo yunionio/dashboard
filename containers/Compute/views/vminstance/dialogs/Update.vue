@@ -33,7 +33,7 @@
             <vga :decorator="decorators.vga" :vdi="vdi" />
           </a-form-item>
           <a-form-item :label="$t('compute.machine')" v-bind="formItemLayout">
-            <machine :decorator="decorators.machine" />
+            <machine :decorator="decorators.machine" :isArm="isArm" />
           </a-form-item>
         </template>
       </a-form>
@@ -194,7 +194,7 @@ export default {
           updateObj.vdi = data.vdi ? data.vdi : 'vnc'
           updateObj.vga = data.vga ? data.vga : 'std'
           this.vdi = updateObj.vdi
-          updateObj.machine = data.machine ? data.machine : 'pc'
+          updateObj.machine = data.machine ? data.machine : (this.isArm ? 'virt' : 'pc')
         }
         this.form.fc.setFieldsValue(updateObj)
       })
