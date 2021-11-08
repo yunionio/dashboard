@@ -450,6 +450,24 @@ export const createVmDecorators = type => {
         initialValue: 'BIOS',
       },
     ],
+    vdi: [
+      'vdi',
+      {
+        initialValue: 'vnc',
+      },
+    ],
+    vga: [
+      'vga',
+      {
+        initialValue: 'std',
+      },
+    ],
+    machine: [
+      'machine',
+      {
+        initialValue: 'pc',
+      },
+    ],
     backup: {
       backupEnable: [
         'backupEnable',
@@ -596,7 +614,7 @@ export const createVmDecorators = type => {
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch'],
   public: ['domain', 'project', 'name', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider'],
 }
@@ -1076,9 +1094,12 @@ export class GenCreateData {
     if (zoneId) {
       data.prefer_zone = zoneId
     }
-    // 只有kvm支持启动方式
+    // 只有kvm支持启动方式, VDI, VGA, Machine
     if (this.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
       data.bios = this.fd.bios
+      data.vdi = this.fd.vdi
+      data.vga = this.fd.vga
+      data.machine = this.fd.machine
     }
     // 到期释放
     if (this.fd.billType !== BILL_TYPES_MAP.package.key && this.fd.durationStandard !== 'none') {
