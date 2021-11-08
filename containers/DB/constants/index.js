@@ -559,12 +559,12 @@ export const REDIS_MONITOR_OPTS = {
   ],
   azure: [
     {
-      name: 'used_conn',
-      label: i18n.t('db.text_23'), // Redis客户端连接数
-      seleteItem: 'used_conn',
-      as: i18n.t('db.text_23'),
-      fromItem: 'dcs_conn',
-      unit: '',
+      name: 'cpu',
+      label: i18n.t('db.text_11'),
+      seleteItem: 'usage_percent',
+      fromItem: 'dcs_cpu',
+      as: i18n.t('db.text_11'),
+      unit: '%',
       transfer: 1,
     },
     {
@@ -586,12 +586,12 @@ export const REDIS_MONITOR_OPTS = {
       transfer: 1,
     },
     {
-      name: 'cpu',
-      label: i18n.t('db.text_11'),
-      seleteItem: 'usage_percent',
-      fromItem: 'dcs_cpu',
-      as: i18n.t('db.text_11'),
-      unit: '%',
+      name: 'used_conn',
+      label: i18n.t('db.text_23'), // Redis客户端连接数
+      seleteItem: 'used_conn',
+      as: i18n.t('db.text_23'),
+      fromItem: 'dcs_conn',
+      unit: '',
       transfer: 1,
     },
     {
