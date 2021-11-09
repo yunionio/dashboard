@@ -7,8 +7,8 @@
           <div class="ml-2 prices">
             <div class="hour d-flex">
               <template v-if="price">
-                <m-animated-number :value="price" :formatValue="formatToPrice" />
-                <discount-price class="ml-2 mini-text" :discount="priceTotal.discount" :origin="priceTotal.hour_gross_price" />
+                <m-animated-number :value="price" :formatValue="priceFormat" />
+                <discount-price class="ml-2 mini-text" :discount="discount" :origin="originPrice" />
               </template>
             </div>
             <div class="tips text-truncate">
@@ -31,11 +31,12 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import { PROVIDER_MAP } from '@/constants'
-import { numerify } from '@/filters'
 import DiscountPrice from '@/sections/DiscountPrice'
 import { hasMeterService } from '@/utils/auth'
+import { PriceFetcherByPriceKey } from '@/utils/common/price'
 
 export default {
   name: 'BottomBar',
@@ -64,40 +65,22 @@ export default {
     },
   },
   data () {
+    this._getPrice = _.debounce(this._getPrice, 500)
     return {
       loading: false,
-      priceTotal: null,
+      priceObj: null,
+      currency: '¥',
+      discount: 0,
+      price: null,
+      priceFormat: null,
+      originPrice: null,
+      priceTips: '--',
       key: '',
       hasMeterService,
     }
   },
   computed: {
     ...mapGetters(['userInfo']),
-    price () {
-      if (this.priceTotal) {
-        const { hour_price } = this.priceTotal
-        return hour_price
-      }
-      return null
-    },
-    currency () {
-      const currencys = {
-        USD: '$',
-        CNY: '¥',
-      }
-      if (this.priceTotal) {
-        return currencys[this.priceTotal.currency]
-      }
-      return '¥'
-    },
-    priceTips () {
-      if (this.price) {
-        const _day = numerify(this.price * 24, '0,0.00')
-        const _month = numerify(this.priceTotal.month_price, '0,0.00')
-        return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
-      }
-      return '--'
-    },
   },
   watch: {
     currentStorage: {
@@ -129,11 +112,6 @@ export default {
     this._getPrice()
   },
   methods: {
-    formatToPrice (val) {
-      let ret = `${this.currency} ${numerify(val, '0,0.000')}`
-      ret += this.$t('compute.text_296')
-      return ret
-    },
     async _getPrice () {
       if (!hasMeterService()) return
       try {
@@ -153,7 +131,7 @@ export default {
         if (!external_id) {
           external_id = '/'
         }
-        let pv = this.currentCloudregion.provider.toLowerCase()
+        let pv = this.currentCloudregion.provider
         if (this.currentCloudregion.external_id && this.currentCloudregion.external_id.includes('/')) {
           const cloudregionExternalArr = external_id.split('/')
           if (this.currentCloudregion.cloud_env === 'public') {
@@ -164,18 +142,25 @@ export default {
           } else {
             key = `${backend}.${type}`
           }
-          pv = cloudregionExternalArr[0].toLowerCase()
+          pv = cloudregionExternalArr[0]
         }
         this.key = key
-        const price_keys = `${pv}::${region}::${zone}::disk::${key}::${this.size}GB`
-        const { data } = await new this.$Manager('price_infos', 'v1').get({
-          id: 'total',
-          params: {
-            price_keys,
-            scope: this.$store.getters.scope,
-          },
+        const price_key = `${pv}::${region}::${zone}::disk::${key}`
+
+        const pf = new PriceFetcherByPriceKey({
+          scope: this.$store.getters.scope,
+          priceKey: price_key,
+          amount: this.size,
         })
-        this.priceTotal = data
+
+        const p = await pf.getPriceObj()
+        p.setOptions({ priceFmt: '0,0.000' })
+        this.currency = p.currency
+        this.discount = p.discount
+        this.price = p.price
+        this.priceFormat = p.priceFormat
+        this.originPrice = p.originPrice
+        this.priceTips = p.priceTips
       } catch (err) {
         throw err
       }

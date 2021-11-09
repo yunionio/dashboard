@@ -21,22 +21,7 @@
       <!-- <div>{{$t('db.text_263')}}</div> -->
     </template>
     <template v-slot:right>
-      <div class="d-flex align-items-center" v-if="hasMeterService()">
-          <div class="mr-4 d-flex align-items-center">
-            <div class="text-truncate">{{$t('db.text_108')}}</div>
-            <div class="ml-2 prices">
-              <div class="hour d-flex">
-                <template v-if="price">
-                  <m-animated-number :value="price" :formatValue="formatToPrice" />
-                  <discount-price class="ml-2 mini-text" :discount="priceTotal.discount" :origin="originPrice" />
-                </template>
-              </div>
-              <div class="tips text-truncate">
-                <span v-html="priceTips" />
-              </div>
-            </div>
-          </div>
-      </div>
+      <price-fetcher :values="values" />
       <div class="btns-wrapper d-flex align-items-center">
         <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">{{$t('db.text_41')}}</a-button>
       </div>
@@ -65,16 +50,15 @@
 <script>
 // import * as R from 'ramda'
 // import _ from 'lodash'
-import { ENGINE_ARCH, BILL_TYPES_MAP } from '@DB/views/redis/constants'
+import { ENGINE_ARCH } from '@DB/views/redis/constants'
 import { sizestrWithUnit } from '@/utils/utils'
 import { Manager } from '@/utils/manager'
-import DiscountPrice from '@/sections/DiscountPrice'
-import { hasMeterService } from '@/utils/auth'
+import PriceFetcher from '@/components/PriceFetcher'
 
 export default {
   name: 'BottomBar',
   components: {
-    DiscountPrice,
+    PriceFetcher,
   },
   inject: ['form'],
   props: {
@@ -84,9 +68,7 @@ export default {
   },
   data () {
     return {
-      priceTotal: null,
       loading: false,
-      hasMeterService,
     }
   },
   computed: {
@@ -112,73 +94,6 @@ export default {
     sku  () {
       return this.values.sku || null
     },
-    isPackage () {
-      return this.values.billing_type === BILL_TYPES_MAP.prepaid.key
-    },
-    rate () {
-      const { sku = {} } = this.values
-      if (sku && sku.rate) {
-        return sku.rate
-      }
-      return null
-    },
-
-    durationNum () {
-      if (this.isPackage) {
-        const { duration } = this.values
-        let num = parseInt(duration)
-        if (num && duration.endsWith('Y')) {
-          num *= 12
-        }
-        return num
-      }
-      return 0
-    },
-    price () {
-      const { count } = this.values
-      if (this.rate && count && this.priceTotal) {
-        const { month_price: month } = this.rate
-        const { hour_price: hour } = this.priceTotal
-        if (this.isPackage && this.durationNum) {
-          return parseFloat(month) * parseFloat(count) * this.durationNum
-        }
-        return parseFloat(hour) * parseFloat(count)
-      }
-      return null
-    },
-    originPrice () {
-      const { count } = this.values
-      if (this.priceTotal && count) {
-        const { month_gross_price: month, hour_gross_price: hour } = this.priceTotal
-        if (this.isPackage && this.durationNum) {
-          return parseFloat(month) * parseFloat(count) * this.durationNum
-        }
-        return parseFloat(hour) * parseFloat(count)
-      }
-      return null
-    },
-    priceTips () {
-      if (this.price) {
-        if (this.isPackage && this.durationNum) {
-          const _day = (this.price / 30 / this.durationNum).toFixed(2)
-          const _hour = (parseFloat(_day) / 24).toFixed(2)
-          return this.$t('db.text_266', [_day, _hour])
-        } else {
-          const _day = (this.price * 24).toFixed(2)
-          const _month = (parseFloat(_day) * 30).toFixed(2)
-          return this.$t('db.text_267', [_day, _month])
-        }
-      }
-      return '--'
-    },
-  },
-  watch: {
-    'rate.price_key': {
-      handler (val) {
-        val && this._getPrice(val)
-      },
-      immediate: true,
-    },
   },
   methods: {
     validateForm () {
@@ -187,11 +102,6 @@ export default {
         f = err === null
       })
       return f
-    },
-    formatToPrice (val) {
-      let ret = `¥ ${val.toFixed(2)}`
-      ret += !this.isPackage ? this.$t('db.text_115') : ''
-      return ret
     },
     formatParams () {
       const params = {
@@ -219,21 +129,6 @@ export default {
       }
       delete params.durationStandard
       return params
-    },
-    async _getPrice (price_key) {
-      if (!hasMeterService()) return
-      try {
-        const { data } = await new this.$Manager('price_infos', 'v1').get({
-          id: 'total',
-          params: {
-            price_keys: [price_key],
-            scope: this.$store.getters.scope,
-          },
-        })
-        this.priceTotal = data
-      } catch (err) {
-        throw err
-      }
     },
     async doCreate () {
       if (!this.validateForm()) return false

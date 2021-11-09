@@ -79,8 +79,8 @@
             <div class="ml-2 prices">
               <div class="hour error-color d-flex">
                 <template v-if="price">
-                  <m-animated-number :value="price" :formatValue="formatToPrice" />
-                  <discount-price class="ml-2 mini-text" :discount="priceData.discount" :origin="originPrice" />
+                  <m-animated-number :value="price" :formatValue="priceFormat" />
+                  <discount-price class="ml-2 mini-text" :discount="discount" :origin="originPrice" />
                 </template>
                 <template v-else>---</template>
               </div>
@@ -106,12 +106,13 @@ import MemRadio from '@Compute/sections/MemRadio'
 import DataDisk from '@Compute/sections/DataDisk'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import sku from '@Compute/sections/SKU'
-import { SERVER_TYPE, BILL_TYPES_MAP } from '@Compute/constants'
+import { SERVER_TYPE, BILL_TYPES_MAP, EIP_TYPES_MAP } from '@Compute/constants'
 import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import WindowsMixin from '@/mixins/windows'
 import WorkflowMixin from '@/mixins/workflow'
-import { HYPERVISORS_MAP, PROVIDER_MAP } from '@/constants'
+import { HYPERVISORS_MAP } from '@/constants'
+import { PriceFetcher } from '@/utils/common/price'
 import {
   getNameDescriptionTableColumn,
   getIpsTableColumn,
@@ -121,7 +122,7 @@ import {
 } from '@/utils/common/tableColumn'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { isRequired } from '@/utils/validate'
-import { sizestr, sizestrWithUnit } from '@/utils/utils'
+import { sizestr } from '@/utils/utils'
 import { STORAGE_TYPES } from '@/constants/compute'
 import DiscountPrice from '@/sections/DiscountPrice'
 
@@ -337,7 +338,12 @@ export default {
       diskLoaded: false,
       domain: itemData.domain_id,
       sysdisk: {},
-      pricesList: [],
+      origin_price: null,
+      price: null,
+      priceFormat: null,
+      currency: '',
+      priceTips: '--',
+      discount: 0,
       dataDiskType: '',
     }
   },
@@ -514,42 +520,6 @@ export default {
       }
       return false
     },
-    price () {
-      const count = this.count
-      if (count && this.pricesList && this.pricesList.length > 0) {
-        const { month_price: month, sum_price: sum } = this.pricesList[0]
-        let _price = parseFloat(sum)
-        if (this.isPackage && this.durationNum) {
-          _price = parseFloat(month) * this.durationNum
-        }
-        return _price * parseFloat(count)
-      }
-      return null
-    },
-    currency () {
-      const currencys = {
-        USD: '$',
-        CNY: '¥',
-      }
-      if (this.pricesList && this.pricesList.length > 0) {
-        return currencys[this.pricesList[0].currency]
-      }
-      return '¥'
-    },
-    priceTips () {
-      if (this.price) {
-        if (this.isPackage && this.durationNum) {
-          const _day = (this.price / 30 / this.durationNum).toFixed(2)
-          const _hour = (parseFloat(_day) / 24).toFixed(2)
-          return this.$t('compute.text_1137', [this.currency, _day, this.currency, _hour])
-        } else {
-          const _day = (this.price * 24).toFixed(2)
-          const _month = (parseFloat(_day) * 30).toFixed(2)
-          return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
-        }
-      }
-      return '--'
-    },
     // 是否为包年包月
     isPackage () {
       return this.form.fd.billType === BILL_TYPES_MAP.package.key
@@ -592,22 +562,11 @@ export default {
     isPublic () {
       return this.params.data[0].cloud_env === SERVER_TYPE.public
     },
-    priceData () {
-      const data = _.get(this.pricesList, '[0]', { discount: 1 })
-      return data
-    },
     originPrice () {
-      if (this.pricesList && this.pricesList.length > 0) {
-        const { month_gross_price: month, hour_gross_price: sum } = this.pricesList[0]
-        let _price = parseFloat(sum)
-        if (this.isPackage && this.durationNum) {
-          _price = parseFloat(month) * this.durationNum
-        }
-
-        return _price
+      if (this.origin_price) {
+        this.$emit('getOriginPrice', this.origin_price)
       }
-
-      return null
+      return this.origin_price
     },
     requireSysDiskType () {
       if (this.sysdisk && this.sysdisk.type) {
@@ -636,7 +595,7 @@ export default {
     this.serverskusM = new Manager('serverskus')
     this.loadData(this.params.data)
     this.fetchInstanceSpecs()
-    this.getPriceList = _.debounce(this._getPriceList, 500)
+    this.getPriceList = _.debounce(this._getPriceList2, 500)
     this.baywatch([
       'form.fd.sku.id',
       'form.fd.dataDiskSizes',
@@ -952,80 +911,130 @@ export default {
       }
       props.forEach(iterator, this)
     },
-    formatToPrice (val) {
-      let ret = `${this.currency} ${val.toFixed(2)}`
-      ret += !this.isPackage ? this.$t('compute.text_296') : ''
-      return ret
-    },
-    // 获取总价格
-    async _getPriceList () {
+    // // 获取总价格
+    // async _getPriceList () {
+    //   if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
+    //   if (R.isEmpty(this.form.fd.sku) || R.isNil(this.form.fd.sku)) return
+    //   let skuProvider = this.form.fd.sku.provider || PROVIDER_MAP.OneCloud.key
+    //   const brand = PROVIDER_MAP[skuProvider].brand
+    //   const params = {
+    //     scope: this.$store.getters.scope,
+    //     quantity: this.count,
+    //     brand,
+    //   }
+    //   if (this.isPublic) {
+    //     if (this.form.fd.sku && this.form.fd.sku.cloud_env) {
+    //       params.brand = this.form.fd.sku.cloud_env
+    //       skuProvider = this.form.fd.sku.cloud_env
+    //     }
+    //   }
+    //   const { systemDiskSize = 0, systemDiskType = {}, sysdisks = [] } = this.form.fd
+    //   if (this.params.data[0].cloud_env !== SERVER_TYPE.public) {
+    //     let diskSize = this.disk || 0
+    //     if (!this.disk && sysdisks) {
+    //       diskSize = sysdisks.reduce((sum, disk) => { return sum + disk.value }, 0) / this.count
+    //     }
+    //     params.spec = `cpu=${this.form.fd.vcpu}core;mem=${sizestrWithUnit(this.form.fd.vmem, 'M', 1024)};disk=${diskSize}GB`
+    //   } else {
+    //     const { sku } = this.form.fd
+    //     const { region_ext_id: regionExtId, name, zone_ext_id: zoneExtId } = sku
+    //     const image = this.form.fi.imageMsg || {}
+    //     const osType = image.os_type ? image.os_type.toLowerCase() : ''
+    //     params.region_id = regionExtId
+    //     let provider = skuProvider.toLowerCase()
+    //     if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+    //       if (provider === HYPERVISORS_MAP.azure.key) {
+    //         const cloud_env = this.form.fd.sku.cloud_env
+    //         params.brand = cloud_env
+    //         provider = cloud_env
+    //       }
+    //       params.price_key = `${provider}::${regionExtId}::::instance::`
+    //       if (sku.name) {
+    //         params.price_key += `${sku.name}`
+    //       }
+    //     } else {
+    //       params.price_key = `${regionExtId}::${name}::${osType}::${zoneExtId}`
+    //     }
+    //     // spec
+    //     params.spec = `${systemDiskSize}:${systemDiskType.key}`
+    //     if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+    //       params.spec = `${systemDiskSize}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`
+    //     }
+    //     const dataDiskSpec = []
+    //     const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
+    //     R.forEach((value) => {
+    //       if (isUcloudAzure) {
+    //         dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${this.dataDiskType}`)
+    //       } else {
+    //         dataDiskSpec.push(`${value}:${this.dataDiskType}`)
+    //       }
+    //     }, Object.values(this.form.fd.dataDiskSizes))
+    //     if (dataDiskSpec && dataDiskSpec.length > 0) {
+    //       params.spec += `;${dataDiskSpec.join(';')}`
+    //     }
+    //     if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
+    //       params.period = this.form.fd.duration
+    //     }
+    //     params.version = 'v2'
+    //     if (R.isNil(params.region_id) || R.isEmpty(params.region_id)) return
+    //   }
+    //   const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
+    //   this.pricesList = data
+    // },
+    async _getPriceList2 () {
+      const f = this.form.fd
       if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
-      if (R.isEmpty(this.form.fd.sku) || R.isNil(this.form.fd.sku)) return
-      let skuProvider = this.form.fd.sku.provider || PROVIDER_MAP.OneCloud.key
-      const brand = PROVIDER_MAP[skuProvider].brand
-      const params = {
-        scope: this.$store.getters.scope,
-        quantity: this.count,
-        brand,
-      }
-      if (this.isPublic) {
-        if (this.form.fd.sku && this.form.fd.sku.cloud_env) {
-          params.brand = this.form.fd.sku.cloud_env
-          skuProvider = this.form.fd.sku.cloud_env
+      if (R.isEmpty(f.sku) || R.isNil(f.sku)) return
+      const isPublic = this.params.data[0].cloud_env === SERVER_TYPE.public
+      if (isPublic && (R.isNil(f.sku.region_ext_id) || R.isEmpty(f.sku.region_ext_id))) return
+      if (R.isNil(f.systemDiskSize)) return
+
+      const pf = new PriceFetcher()
+      pf.initialForm(this.$store.getters.scope, f.sku, f.duration, f.billType, this.isPublic)
+      // add price items
+      if (!isPublic) {
+        // server instance
+        pf.addCpu(f.vcpu)
+        pf.addMem(f.vmem / 1024)
+
+        // gpu
+        if (f.gpuEnable && f.gpu && f.gpu.indexOf('=') >= 0) {
+          const tmps = f.gpu.split('=')[1].split(':')
+          if (tmps.length >= 2) {
+            pf.addGpu(`${tmps[0]}.${tmps[1]}`, f.gpuCount || 0)
+          }
         }
-      }
-      const { systemDiskSize = 0, systemDiskType = {}, sysdisks = [] } = this.form.fd
-      if (this.params.data[0].cloud_env !== SERVER_TYPE.public) {
-        let diskSize = this.disk || 0
-        if (!this.disk && sysdisks) {
-          diskSize = sysdisks.reduce((sum, disk) => { return sum + disk.value }, 0) / this.count
-        }
-        params.spec = `cpu=${this.form.fd.vcpu}core;mem=${sizestrWithUnit(this.form.fd.vmem, 'M', 1024)};disk=${diskSize}GB`
       } else {
-        const { sku } = this.form.fd
-        const { region_ext_id: regionExtId, name, zone_ext_id: zoneExtId } = sku
-        const image = this.form.fi.imageMsg || {}
-        const osType = image.os_type ? image.os_type.toLowerCase() : ''
-        params.region_id = regionExtId
-        let provider = skuProvider.toLowerCase()
-        if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
-          if (provider === HYPERVISORS_MAP.azure.key) {
-            const cloud_env = this.form.fd.sku.cloud_env
-            params.brand = cloud_env
-            provider = cloud_env
-          }
-          params.price_key = `${provider}::${regionExtId}::::instance::`
-          if (sku.name) {
-            params.price_key += `${sku.name}`
-          }
-        } else {
-          params.price_key = `${regionExtId}::${name}::${osType}::${zoneExtId}`
-        }
-        // spec
-        params.spec = `${systemDiskSize}:${systemDiskType.key}`
-        if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
-          params.spec = `${systemDiskSize}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`
-        }
-        const dataDiskSpec = []
-        const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
-        R.forEach((value) => {
-          if (isUcloudAzure) {
-            dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${this.dataDiskType}`)
-          } else {
-            dataDiskSpec.push(`${value}:${this.dataDiskType}`)
-          }
-        }, Object.values(this.form.fd.dataDiskSizes))
-        if (dataDiskSpec && dataDiskSpec.length > 0) {
-          params.spec += `;${dataDiskSpec.join(';')}`
-        }
-        if (this.form.fd.billType === BILL_TYPES_MAP.package.key) {
-          params.period = this.form.fd.duration
-        }
-        params.version = 'v2'
-        if (R.isNil(params.region_id) || R.isEmpty(params.region_id)) return
+        // server instance
+        pf.addServer(f.sku.name, 1)
+        // others
       }
-      const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
-      this.pricesList = data
+
+      // disks
+      const { systemDiskSize, systemDiskType } = f
+      const { systemDiskMedium, dataDiskMedium } = this.form.fi
+      let systemDisk = systemDiskType.key
+      if (!isPublic) systemDisk = `${systemDiskMedium}::${systemDiskType.key}`
+      pf.addDisk(systemDisk, systemDiskSize)
+      if (this.dataDiskType) {
+        const datadisks = Object.values(this.form.fd.dataDiskSizes || {})
+        let dataDisk = this.dataDiskType
+        if (!isPublic) dataDisk = `${dataDiskMedium}::${this.dataDiskType}`
+        pf.addDisks(dataDisk, datadisks)
+      }
+
+      // eip
+      if (f.eip_bw && f.eip_type === EIP_TYPES_MAP.new.key) {
+        pf.addEipBandwidth(f.eip_bgp_type || '', f.eip_bw)
+      }
+
+      const price = await pf.getPriceObj()
+      price.setOptions({ count: this.count || 0 })
+      this.currency = price.currency
+      this.price = price.price
+      this.priceFormat = price.priceFormat
+      this.origin_price = price.originPrice
+      this.priceTips = price.priceTips
     },
     isSomeLocal () {
       const { capability = {} } = this.form.fi

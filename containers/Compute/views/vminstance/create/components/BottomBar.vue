@@ -27,8 +27,8 @@
             <div class="ml-2 prices">
               <div class="hour d-flex">
                 <template v-if="price">
-                  <m-animated-number :value="price" :formatValue="formatToPrice" />
-                  <discount-price class="ml-2 mini-text" :discount="priceData.discount" :origin="originPrice" />
+                  <m-animated-number :value="price" :formatValue="priceFormat" />
+                  <discount-price class="ml-2 mini-text" :discount="discount" :origin="originPrice" />
                 </template>
                 <template v-else>---</template>
               </div>
@@ -59,7 +59,7 @@ import * as R from 'ramda'
 import _ from 'lodash'
 import { SERVER_TYPE, BILL_TYPES_MAP, EIP_TYPES_MAP } from '@Compute/constants'
 import { sizestrWithUnit } from '@/utils/utils'
-import { HYPERVISORS_MAP, PROVIDER_MAP } from '@/constants'
+import { PriceFetcher } from '@/utils/common/price'
 import SideErrors from '@/sections/SideErrors'
 import DiscountPrice from '@/sections/DiscountPrice'
 
@@ -107,9 +107,14 @@ export default {
     },
   },
   data () {
-    this.getPriceList = _.debounce(this._getPriceList, 500)
+    this.getPriceList = _.debounce(this._getPriceList2, 500)
     return {
-      pricesList: [],
+      origin_price: null,
+      discount: 0,
+      price: null,
+      priceFormat: null,
+      currency: '',
+      priceTips: '--',
       disabled: false,
     }
   },
@@ -215,42 +220,6 @@ export default {
       }
       return 0
     },
-    price () {
-      const { count } = this.fd
-      if (count && this.pricesList && this.pricesList.length > 0) {
-        const { month_price: month, sum_price: sum } = this.pricesList[0]
-        let _price = parseFloat(sum)
-        if (this.isPackage && this.durationNum) {
-          _price = parseFloat(month) * this.durationNum
-        }
-        return _price * parseFloat(count)
-      }
-      return null
-    },
-    currency () {
-      const currencys = {
-        USD: '$',
-        CNY: '¥',
-      }
-      if (this.pricesList && this.pricesList.length > 0) {
-        return _.get(currencys, `[${this.pricesList[0].currency}]`) || currencys.CNY
-      }
-      return '¥'
-    },
-    priceTips () {
-      if (this.price) {
-        if (this.isPackage && this.durationNum) {
-          const _day = (this.price / 30 / this.durationNum).toFixed(2)
-          const _hour = (parseFloat(_day) / 24).toFixed(2)
-          return this.$t('compute.text_1137', [this.currency, _day, this.currency, _hour])
-        } else {
-          const _day = (this.price * 24).toFixed(2)
-          const _month = (parseFloat(_day) * 30).toFixed(2)
-          return this.$t('compute.text_1138', [this.currency, _day, this.currency, _month])
-        }
-      }
-      return '--'
-    },
     confirmText () {
       if (this.isServertemplate) return this.$t('compute.text_1139')
       return this.isOpenWorkflow ? this.$t('compute.text_288') : this.$t('compute.text_289')
@@ -279,21 +248,11 @@ export default {
       if (this.dataDiskObj && this.dataDiskObj.label) return this.dataDiskObj.label
       return ''
     },
-    priceData () {
-      const data = _.get(this.pricesList, '[0]', { discount: 1 })
-      return data
-    },
     originPrice () {
-      const { count } = this.fd
-      if (count && this.pricesList && this.pricesList.length > 0) {
-        const { month_gross_price: month, hour_gross_price: sum } = this.pricesList[0]
-        let _price = parseFloat(sum)
-        if (this.isPackage && this.durationNum) {
-          _price = parseFloat(month) * this.durationNum
-        }
-        return _price * parseFloat(count)
+      if (this.origin_price) {
+        this.$emit('getOriginPrice', this.origin_price)
       }
-      return null
+      return this.origin_price
     },
   },
   watch: {
@@ -325,6 +284,9 @@ export default {
     'fd.gpuEnable' (val, oldV) {
       this.getPriceList()
     },
+    'fd.backupEnbale' (val, oldV) {
+      this.calcPrice()
+    },
   },
   created () {
     this.baywatch([
@@ -351,104 +313,161 @@ export default {
     changeErrors (errors) {
       this.$emit('update:errors', {})
     },
-    formatToPrice (val) {
-      let ret = `${this.currency} ${val.toFixed(2)}`
-      ret += !this.isPackage ? this.$t('compute.text_296') : ''
-      return ret
-    },
     baywatch (props, watcher) {
       const iterator = function (prop) {
         this.$watch(prop, watcher)
       }
       props.forEach(iterator, this)
     },
-    // 获取总价格
-    async _getPriceList () {
-      if (!this.$appConfig.isPrivate) return // 如果是开源版本则取消调用meter服务
-      if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
-      if (!R.is(Number, this.fd.count)) return
-      let skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
-      const brand = PROVIDER_MAP[skuProvider].brand
-      const params = {
-        scope: this.$store.getters.scope,
-        quantity: this.fd.count,
-        brand,
-      }
-      if (this.isIDC && this.fd.eip_type === EIP_TYPES_MAP.new.key && this.fd.eip_bgp_type) {
-        params.eip_bgp_type = this.fd.eip_bgp_type
-      }
-      if (this.isPublic) {
-        if (this.fd.sku && this.fd.sku.cloud_env) {
-          params.brand = this.fd.sku.cloud_env
-          skuProvider = this.fd.sku.cloud_env
-        }
-      }
-      const { systemDiskSize, systemDiskType } = this.fd
-      const { systemDiskMedium, dataDiskMedium } = this.form.fi
-      if (R.isNil(systemDiskSize)) return
+    // // 获取总价格
+    // async _getPriceList () {
+    //   if (!this.$appConfig.isPrivate) return // 如果是开源版本则取消调用meter服务
+    //   if (R.isEmpty(this.fd.sku) || R.isNil(this.fd.sku)) return
+    //   if (!R.is(Number, this.fd.count)) return
+    //   let skuProvider = this.fd.sku.provider || PROVIDER_MAP.OneCloud.key
+    //   const brand = PROVIDER_MAP[skuProvider].brand
+    //   const params = {
+    //     scope: this.$store.getters.scope,
+    //     quantity: this.fd.count,
+    //     brand,
+    //   }
+    //   if (this.isIDC && this.fd.eip_type === EIP_TYPES_MAP.new.key && this.fd.eip_bgp_type) {
+    //     params.eip_bgp_type = this.fd.eip_bgp_type
+    //   }
+    //   if (this.isPublic) {
+    //     if (this.fd.sku && this.fd.sku.cloud_env) {
+    //       params.brand = this.fd.sku.cloud_env
+    //       skuProvider = this.fd.sku.cloud_env
+    //     }
+    //   }
+    //   const { systemDiskSize, systemDiskType } = this.fd
+    //   const { systemDiskMedium, dataDiskMedium } = this.form.fi
+    //   if (R.isNil(systemDiskSize)) return
+    //   if (this.fi.createType !== SERVER_TYPE.public) {
+    //     const diskSize = this.dataDisk || 0
+    //     params.spec = `cpu=${this.fd.vcpu}core;mem=${sizestrWithUnit(this.fd.vmem, 'M', 1024)};disk=${systemDiskSize}GB,model=${systemDiskMedium}::${systemDiskType.key};disk=${diskSize}GB,model=${dataDiskMedium}::${this.dataDiskType}`
+    //     if (this.fd.gpuEnable && this.fd.gpu) {
+    //       const vendor = this.fd.gpu.split('=')[1]
+    //       if (vendor) {
+    //         const tmps = vendor.split(':')
+    //         params.spec += `;gpu=${this.fd.gpuCount},model=${tmps[0]}.${tmps[1]}`
+    //       }
+    //     }
+    //   } else {
+    //     const { sku } = this.fd
+    //     const { region_ext_id: regionExtId, name, zone_ext_id: zoneExtId } = sku
+    //     const image = this.fi.imageMsg
+    //     const osType = image.os_type ? image.os_type.toLowerCase() : ''
+    //     params.region_id = regionExtId
+    //     const provider = skuProvider.toLowerCase()
+    //     // price_key
+    //     if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
+    //       params.price_key = `${provider}::${regionExtId}::::instance::`
+    //       if (sku.name) {
+    //         params.price_key += `${sku.name}`
+    //       }
+    //     } else {
+    //       params.price_key = `${regionExtId}::${name}::${osType}::${zoneExtId}`
+    //     }
+    //     // spec
+    //     const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
+    //     params.spec = `${systemDiskSize}:${systemDiskType.key}`
+    //     if (isUcloudAzure) {
+    //       params.spec = `${systemDiskSize}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`
+    //     }
+    //     const dataDiskSpec = []
+    //     // if (this.dataDiskSizes && this.dataDiskSizes.length && !this.dataDiskType) return
+    //     R.forEach((value) => {
+    //       if (isUcloudAzure) {
+    //         dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${this.dataDiskType}`)
+    //       } else {
+    //         dataDiskSpec.push(`${value}:${this.dataDiskType}`)
+    //       }
+    //     }, this.dataDiskSizes)
+    //     if (dataDiskSpec && dataDiskSpec.length > 0) {
+    //       params.spec += `;${dataDiskSpec.join(';')}`
+    //     }
+    //     if (this.fd.billType === BILL_TYPES_MAP.package.key) {
+    //       params.period = this.fd.duration
+    //     }
+    //     params.version = 'v2'
+    //     if (R.isNil(params.region_id) || R.isEmpty(params.region_id)) return
+    //   }
+    //   if (R.isNil(params.brand) || R.isEmpty(params.brand)) return
+    //   if (this.fd.eip_type === EIP_TYPES_MAP.new.key) {
+    //     params.eip = this.fd.eip_bw + 'Mb'
+    //   }
+    //   if (this.fd.backupEnable) {
+    //     params.backup_host = true
+    //   }
+    //   try {
+    //     const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
+    //     this.pricesList = data
+    //   } catch (error) {
+    //     throw error
+    //   }
+    // },
+    async _getPriceList2 () {
+      const f = this.fd
+      if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
+      if (R.isEmpty(f.sku) || R.isNil(f.sku)) return
+      if (this.fi.createType === SERVER_TYPE.public && (R.isNil(f.sku.region_ext_id) || R.isEmpty(f.sku.region_ext_id))) return
+      if (!R.is(Number, f.count)) return
+      if (R.isNil(f.systemDiskSize)) return
+
+      const pf = new PriceFetcher()
+      pf.initialForm(this.$store.getters.scope, f.sku, f.duration, f.billType, this.isPublic)
+      // add price items
       if (this.fi.createType !== SERVER_TYPE.public) {
-        const diskSize = this.dataDisk || 0
-        params.spec = `cpu=${this.fd.vcpu}core;mem=${sizestrWithUnit(this.fd.vmem, 'M', 1024)};disk=${systemDiskSize}GB,model=${systemDiskMedium}::${systemDiskType.key};disk=${diskSize}GB,model=${dataDiskMedium}::${this.dataDiskType}`
-        if (this.fd.gpuEnable && this.fd.gpu) {
-          const vendor = this.fd.gpu.split('=')[1]
-          if (vendor) {
-            const tmps = vendor.split(':')
-            params.spec += `;gpu=${this.fd.gpuCount},model=${tmps[0]}.${tmps[1]}`
+        // server instance
+        pf.addCpu(f.vcpu)
+        pf.addMem(f.vmem / 1024)
+
+        // gpu
+        if (f.gpuEnable && f.gpu && f.gpu.indexOf('=') >= 0) {
+          const tmps = f.gpu.split('=')[1].split(':')
+          if (tmps.length >= 2) {
+            pf.addGpu(`${tmps[0]}.${tmps[1]}`, f.gpuCount || 0)
           }
         }
       } else {
-        const { sku } = this.fd
-        const { region_ext_id: regionExtId, name, zone_ext_id: zoneExtId } = sku
-        const image = this.fi.imageMsg
-        const osType = image.os_type ? image.os_type.toLowerCase() : ''
-        params.region_id = regionExtId
-        const provider = skuProvider.toLowerCase()
-        // price_key
-        if (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key) {
-          params.price_key = `${provider}::${regionExtId}::::instance::`
-          if (sku.name) {
-            params.price_key += `${sku.name}`
-          }
-        } else {
-          params.price_key = `${regionExtId}::${name}::${osType}::${zoneExtId}`
-        }
-        // spec
-        const isUcloudAzure = (provider === HYPERVISORS_MAP.ucloud.key || provider === HYPERVISORS_MAP.azure.key)
-        params.spec = `${systemDiskSize}:${systemDiskType.key}`
-        if (isUcloudAzure) {
-          params.spec = `${systemDiskSize}:${provider}::${regionExtId}::::disk::${systemDiskType.key}`
-        }
-        const dataDiskSpec = []
-        // if (this.dataDiskSizes && this.dataDiskSizes.length && !this.dataDiskType) return
-        R.forEach((value) => {
-          if (isUcloudAzure) {
-            dataDiskSpec.push(`${value}:${provider}::${regionExtId}::::disk::${this.dataDiskType}`)
-          } else {
-            dataDiskSpec.push(`${value}:${this.dataDiskType}`)
-          }
-        }, this.dataDiskSizes)
-        if (dataDiskSpec && dataDiskSpec.length > 0) {
-          params.spec += `;${dataDiskSpec.join(';')}`
-        }
-        if (this.fd.billType === BILL_TYPES_MAP.package.key) {
-          params.period = this.fd.duration
-        }
-        params.version = 'v2'
-        if (R.isNil(params.region_id) || R.isEmpty(params.region_id)) return
+        // server instance
+        pf.addServer(f.sku.name, 1)
+        // others
       }
-      if (R.isNil(params.brand) || R.isEmpty(params.brand)) return
-      if (this.fd.eip_type === EIP_TYPES_MAP.new.key) {
-        params.eip = this.fd.eip_bw + 'Mb'
+
+      // disks
+      const { systemDiskSize, systemDiskType } = f
+      const { systemDiskMedium, dataDiskMedium } = this.form.fi
+      let systemDisk = systemDiskType.key
+      if (this.fi.createType !== SERVER_TYPE.public) systemDisk = `${systemDiskMedium}::${systemDiskType.key}`
+      pf.addDisk(systemDisk, systemDiskSize)
+      if (this.dataDiskType) {
+        const datadisks = this.dataDiskSizes || (this.dataDisk ? [this.dataDisk] : [])
+        let dataDisk = this.dataDiskType
+        if (this.fi.createType !== SERVER_TYPE.public) dataDisk = `${dataDiskMedium}::${this.dataDiskType}`
+        pf.addDisks(dataDisk, datadisks)
       }
-      if (this.fd.backupEnable) {
-        params.backup_host = true
+
+      // eip
+      if (f.eip_bw && f.eip_type === EIP_TYPES_MAP.new.key) {
+        pf.addEipBandwidth(f.eip_bgp_type || '', f.eip_bw)
       }
-      try {
-        const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
-        this.pricesList = data
-      } catch (error) {
-        throw error
-      }
+
+      const price = await pf.getPriceObj()
+      this.priceObj = price
+      this.calcPrice()
+    },
+    calcPrice () {
+      const price = this.priceObj
+      if (!price) return
+      price.setOptions({ count: this.fd.count || 0, backupEnbale: this.fd.backupEnable })
+      this.currency = price.currency
+      this.price = price.price
+      this.discount = price.discount
+      this.priceFormat = price.priceFormat
+      this.origin_price = price.originPrice
+      this.priceTips = price.priceTips
     },
   },
 }
