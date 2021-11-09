@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -75,6 +76,7 @@ export default {
     }
   },
   created () {
+    this.initSidePageTab('detail')
     this.list.fetchData()
     this.$bus.$on('VpcNetworkListSingleRefresh', (...arg) => {
       this.list.refresh(...arg)
@@ -83,8 +85,7 @@ export default {
   methods: {
     getParam () {
       const ret = {
-        ...this.getParams,
-        details: true,
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
       return ret
     },

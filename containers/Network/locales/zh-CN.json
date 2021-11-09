@@ -1011,5 +1011,7 @@
   "network.vpc_network.vpc_action_refresh": "提示：操作后数据更新存在延迟，列表自动刷新2次，间隔时间为6s，可手动刷新",
   "network.vpc_network.target_address": "目标地址",
   "network.vpc_network.next_hop": "下一跳",
-  "network.vpc_network.next_hop_region": "下一跳所属区域"
+  "network.vpc_network.next_hop_region": "下一跳所属区域",
+  "network.vpc_network.route": "路由",
+  "network.vpc_network.manage_vpc": "管理VPC"
 }

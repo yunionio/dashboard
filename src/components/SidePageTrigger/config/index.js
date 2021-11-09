@@ -166,4 +166,7 @@ export default {
   DnsZoneSidePage: {
     resource: 'dns_zones',
   },
+  VpcNetworkSidePage: {
+    resource: 'inter_vpc_networks',
+  },
 }
