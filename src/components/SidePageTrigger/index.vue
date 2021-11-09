@@ -40,6 +40,7 @@ export default {
     noStore: {
       type: Boolean,
     },
+    init: Boolean,
   },
   inject: {
     // 是否处于List中
@@ -74,7 +75,7 @@ export default {
       }
       if (this.name && this.id && this.vm) {
         this.updateSidepageLeft()
-        const { name, id, vm, options, list, tab, params } = this
+        const { name, id, vm, options, list, tab, params, init } = this
         vm.sidePageTriggerHandle(vm, name, {
           id,
           ...config[name],
@@ -82,8 +83,10 @@ export default {
         }, {
           list,
           ...params,
+          tab,
         })
-        if (tab) {
+
+        if (!init && tab) {
           vm.initSidePageTab(tab)
         }
       }

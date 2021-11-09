@@ -28,7 +28,7 @@ export default {
         slots: {
           default: ({ row }) => {
             return [
-              <side-page-trigger name='VpcNetworkSidePage' id={row.id} tab='vpc' vm={this}>{row.vpc_count}</side-page-trigger>,
+              <side-page-trigger name='VpcNetworkSidePage' id={row.id} tab='vpc' vm={this} init>{row.vpc_count}</side-page-trigger>,
             ]
           },
         },
