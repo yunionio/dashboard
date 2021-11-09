@@ -60,7 +60,7 @@ export default {
           { label: this.$t('network.text_21'), key: 'name' },
           { label: this.$t('network.text_27'), key: 'status' },
           { label: this.$t('common_715'), key: 'user_tags' },
-          { label: 'VPC数量', key: 'vpc_count' },
+          { label: this.$t('network.text_243'), key: 'vpc_count' },
           {
             label: this.$t('common_101'),
             key: 'public_scope',
