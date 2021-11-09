@@ -23,7 +23,7 @@ import {
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'vpcListSidePage',
+  name: 'vpcListForVpcNetworkSidePage',
   mixins: [WindowsMixin],
   props: {
     resId: String,

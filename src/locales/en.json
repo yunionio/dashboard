@@ -1026,6 +1026,12 @@
       "update_route": "Update Route",
       "update_route_failed": "Update Route Failed",
       "unknown": "Unknown"
+    },
+    "routeSet": {
+      "available": "Available",
+      "unknown": "Unknown",
+      "conflict": "Conflict",
+      "disabled": "Disabled"
     }
   },
   "skuCategoryOptions": {

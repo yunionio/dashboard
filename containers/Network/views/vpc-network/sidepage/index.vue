@@ -35,12 +35,14 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 import Vpc from './Vpc'
+import RouteSet from './RouteSet'
 
 export default {
   name: 'VpcNetworkSidePage',
   components: {
     Detail,
     Vpc,
+    RouteSet,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -53,6 +55,7 @@ export default {
       const tabs = [
         { label: this.$t('network.text_67'), key: 'detail' },
         { label: 'VPC', key: 'vpc' },
+        { label: '路由', key: 'route-set' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       return tabs

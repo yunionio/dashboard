@@ -1038,6 +1038,12 @@
       "update_route": "更新路由",
       "update_route_failed": "更新路由失败",
       "unknown": "未知"
+    },
+    "routeSet": {
+      "available": "正常",
+      "unknown": "未知",
+      "conflict": "冲突",
+      "disabled": "禁用"
     }
   },
   "skuCategoryOptions": {
