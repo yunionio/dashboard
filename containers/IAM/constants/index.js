@@ -17,6 +17,7 @@ export const NOTIFY_SUBSCRIBER_TYPES = [
 export const NOTIFY_SUBSCRIBER_TYPES_MAP = arrayToObj(NOTIFY_SUBSCRIBER_TYPES, 'key')
 
 export const NOTIFY_TOPIC_NAMES_MAP = {
+  'resource sync': i18n.t('system.notify.name.resource_sync'),
   'snapshot policy execute': i18n.t('system.notify.name.snapshot_policy_execute'),
   'scheduled task execute': i18n.t('system.notify.name.scheduled_task_execute'),
   'scaling policy execute': i18n.t('system.notify.name.scaling_policy_execute'),
