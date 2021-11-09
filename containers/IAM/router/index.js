@@ -296,7 +296,7 @@ export default {
             label: i18n.t('dictionary.notify-topic'),
             permission: 'topics_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.notify-topic')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.notify_topic')) {
                 return true
               }
               if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {

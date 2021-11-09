@@ -48,7 +48,7 @@ export default {
             label: i18n.t('common.server'),
             permission: 'monitorresources_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources-guest')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources_guest')) {
                 return true
               }
 
@@ -74,7 +74,7 @@ export default {
             label: i18n.t('dictionary.host'),
             permission: 'monitorresources_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources-host')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.monitorresources_host')) {
                 return true
               }
 
