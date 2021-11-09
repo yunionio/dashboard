@@ -107,7 +107,13 @@ export default {
         {
           path: '/vpc-network',
           meta: {
+            permission: 'inter_vpc_networks',
             label: i18n.t('dictionary.vpc_network'),
+            t: 'dictionary.vpc_network',
+            hidden: () => {
+              if (store.getters.isProjectMode) return true
+              return !hasSetupKey(['aliyun', 'qcloud'])
+            },
           },
           component: Layout,
           children: [
