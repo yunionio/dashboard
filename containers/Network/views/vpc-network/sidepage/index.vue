@@ -19,6 +19,7 @@
       :data="detailData"
       :on-manager="onManager"
       :columns="columns"
+      :getParams="getParams"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -55,10 +56,16 @@ export default {
       const tabs = [
         { label: this.$t('network.text_67'), key: 'detail' },
         { label: 'VPC', key: 'vpc' },
-        { label: '路由', key: 'route-set' },
+        { label: this.$t('network.vpc_network.route'), key: 'route-set' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       return tabs
+    },
+    getParams () {
+      if (this.params.windowData.currentTab === 'vpc') {
+        return { details: true, inter_vpc_network_id: this.detailData.id }
+      }
+      return null
     },
     listId () {
       switch (this.params.windowData.currentTab) {
@@ -68,6 +75,9 @@ export default {
           return ''
       }
     },
+  },
+  created () {
+    if (this.params.tab) this.handleTabChange(this.params.tab)
   },
 }
 </script>

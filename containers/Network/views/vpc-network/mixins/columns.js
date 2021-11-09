@@ -27,7 +27,9 @@ export default {
         sortable: true,
         slots: {
           default: ({ row }) => {
-            return row.vpc_count || 0
+            return [
+              <side-page-trigger name='VpcNetworkSidePage' id={row.id} tab='vpc' vm={this}>{row.vpc_count}</side-page-trigger>,
+            ]
           },
         },
       },

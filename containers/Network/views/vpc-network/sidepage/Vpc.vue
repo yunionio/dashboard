@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import {
   getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
@@ -31,13 +32,14 @@ export default {
       type: Object,
       required: true,
     },
+    getParams: [Function, Object],
   },
   data () {
     return {
       list: this.$list.createList(this, {
         id: 'vpcListForVpcNetworkSidePage',
         resource: 'vpcs',
-        getParams: { details: true, inter_vpc_network_id: this.resId },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: this.$t('network.text_21'),
@@ -143,6 +145,12 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    getParam () {
+      const ret = {
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      return ret
     },
   },
 }
