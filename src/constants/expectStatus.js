@@ -456,4 +456,13 @@ export default {
     success: ['ready'],
     info: ['unknown'],
   },
+  vpcNetwork: {
+    success: ['available'],
+    info: ['unknown'],
+    danger: ['create_failed', 'delete_failed'],
+  },
+  routeSet: {
+    success: ['available'],
+    info: ['unknown', 'conflict', 'disabled'],
+  },
 }

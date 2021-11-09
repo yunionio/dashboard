@@ -1012,6 +1012,26 @@
     },
     "robot": {
       "ready": "Ready"
+    },
+    "vpcNetwork": {
+      "available": "Available",
+      "creating": "Creating",
+      "create_failed": "Create Failed",
+      "delete_failed": "Delete Failed",
+      "deleting": "Deleting",
+      "add_vpc": "Add Vpc",
+      "add_vpc_failed": "Add Vpc Failed",
+      "remove_vpc": "Remove Vpc",
+      "remove_vpc_failed": "Remove Vpc Failed",
+      "update_route": "Update Route",
+      "update_route_failed": "Update Route Failed",
+      "unknown": "Unknown"
+    },
+    "routeSet": {
+      "available": "Available",
+      "unknown": "Unknown",
+      "conflict": "Conflict",
+      "disabled": "Disabled"
     }
   },
   "skuCategoryOptions": {
@@ -2455,7 +2475,8 @@
     "ext_redis": "Redis",
     "ext_rabbitmq": "RabbitMQ",
     "cdn": "CDN",
-    "cdn_domain": "Domain"
+    "cdn_domain": "Domain",
+    "vpc_network": "VPC Network"
   },
   "res": {
     "role": "Role",

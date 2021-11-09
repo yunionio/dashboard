@@ -1008,5 +1008,9 @@
   "network.lb.google.spec.regional_tcp_lb": "Regional TCP",
   "network.text_759": "Used SNAT Ports",
   "network.text_760": "SNAT Connection Count",
-  "network.ntp_server": "NTP Server"
+  "network.ntp_server": "NTP Server",
+  "network.vpc_network.vpc_action_refresh": "Reminder: There is a delay in data update after the operation, the list is automatically refreshed twice, the interval is 6s, and it can be refreshed manually",
+  "network.vpc_network.target_address": "Target Address",
+  "network.vpc_network.next_hop": "Next Hop",
+  "network.vpc_network.next_hop_region": "Next Hop Region"
 }

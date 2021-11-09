@@ -16,6 +16,7 @@ import NatCreate from '@Network/views/nats/create/index'
 // import ReservedIpList from '@Network/views/reserved-ip'
 // import DNS from '@Network/views/dns'
 import VPC from '@Network/views/vpc'
+import VpcNetwork from '@Network/views/vpc-network'
 import VPCCreate from '@Network/views/vpc/create'
 import LbList from '@Network/views/lb'
 import LBCreate from '@Network/views/lb/create/index'
@@ -103,6 +104,20 @@ export default {
         label: i18n.t('network.text_711'),
       },
       submenus: [
+        {
+          path: '/vpc-network',
+          meta: {
+            label: i18n.t('dictionary.vpc_network'),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'VpcNetwork',
+              path: '',
+              component: VpcNetwork,
+            },
+          ],
+        },
         {
           path: '/globalvpc',
           meta: {
