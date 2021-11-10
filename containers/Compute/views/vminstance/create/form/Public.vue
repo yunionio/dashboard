@@ -196,6 +196,7 @@ import { resolveValueChangeField } from '@/utils/common/ant'
 import { PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import AreaSelects from '@/sections/AreaSelects'
+import { IMAGES_TYPE_MAP } from '@/constants/compute'
 
 export default {
   name: 'VMPublicCreate',
@@ -275,8 +276,10 @@ export default {
       return params
     },
     cacheImageParams () {
-      const params = {
-        manager_id: this.form.fd.cloudprovider
+      const {imageType, cloudprovider} = this.form.fd
+      const params = {}
+      if (imageType !== IMAGES_TYPE_MAP.public.key) {
+        params.manager_id = this.form.fd.cloudprovider
       }
       if (R.is(Object, this.form.fd.sku)) {
         if (this.cloudregionZoneParams.cloudregion) {
