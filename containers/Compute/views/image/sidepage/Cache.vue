@@ -13,7 +13,6 @@ import {
   getTimeTableColumn,
   getBrandTableColumn,
   getRegionTableColumn,
-  getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 import { getBrandFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
@@ -52,20 +51,17 @@ export default {
         //   minWidth: 150,
         //   showOverflow: 'title',
         // },
-        getNameDescriptionTableColumn({
-          field: 'host.name',
-          hideField: true,
-          edit: false,
-          showDesc: false,
+        {
+          field: 'storagecache',
           title: this.$t('compute.text_654'),
           minWidth: 150,
           showOverflow: 'title',
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.host?.name }</side-page-trigger>
-            )
+          slots: {
+            default: ({ row }) => {
+              return row.storagecache
+            },
           },
-        }),
+        },
         getStatusTableColumn({ statusModule: 'imageCache' }),
         getTimeTableColumn({ title: this.$t('compute.text_691'), field: 'updated_at' }),
         getBrandTableColumn({ field: 'host.brand' }),
