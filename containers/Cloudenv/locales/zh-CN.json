@@ -170,7 +170,7 @@
   "cloudenv.text_128": "{0}#新建腾讯云账号",
   "cloudenv.text_129": "{0}#新建华为云账号",
   "cloudenv.text_130": "{0}#新建ucloud账号",
-  "cloudenv.text_131": "{0}#新建zstack-dstack账号",
+  "cloudenv.text_131": "{0}#新建zstackdstack账号",
   "cloudenv.text_132": "{0}#新建openstack账号",
   "cloudenv.text_133": "{0}#新建vmware账号",
   "cloudenv.text_134": "{0}#新建s3账号",

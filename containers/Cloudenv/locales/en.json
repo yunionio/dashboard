@@ -170,7 +170,7 @@
   "cloudenv.text_128": "{0}#create-tencent-cloud-account",
   "cloudenv.text_129": "{0}#create-huawei-cloud-account",
   "cloudenv.text_130": "{0}#create-ucloud-account",
-  "cloudenv.text_131": "{0}#create-zstack-dstack-account",
+  "cloudenv.text_131": "{0}#create-zstackdstack-account",
   "cloudenv.text_132": "{0}#create-openstack-account",
   "cloudenv.text_133": "{0}#create-vmware-account",
   "cloudenv.text_134": "{0}#create-s3-account",
