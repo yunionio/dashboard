@@ -20,6 +20,9 @@
       <a-form-item :label="keySecretField.label.s">
         <a-input-password v-decorator="decorators.password" :placeholder="keySecretField.placeholder.s" />
       </a-form-item>
+      <a-form-item :label="$t('cloudenv.crm_biz_id')" v-if="provider.toLowerCase() === 'ctyun'">
+        <a-input v-decorator="decorators.crm_biz_id" :placeholder="$t('cloudenv.crm_biz_id.tips')" />
+      </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <a-form-item :label="$t('cloudaccount.create_form.saml_user_label')" v-show="!isNotSupportSaml">
@@ -113,6 +116,12 @@ export default {
             rules: [
               { required: true, message: keySecretField.placeholder.s },
             ],
+          },
+        ],
+        crm_biz_id: [
+          'crm_biz_id',
+          {
+            initialValue: '',
           },
         ],
         domain: [
