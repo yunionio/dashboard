@@ -640,6 +640,8 @@
     "create_title": "Create SAML User",
     "create_cloudgroup_extra": "Corresponding to the user group on the cloud, a collection of permissions"
   },
+  "cloudenv.crm_biz_id": "CRM Biz ID",
+  "cloudenv.crm_biz_id.tips": "required if account type is crm account",
   "cloudenv.environment": "Account Type",
   "cloudenv.environment_check": "Please select the account type",
   "cloudenv.international_cloud": "Public Cloud",
