@@ -111,6 +111,7 @@ export default {
         scope: this.scope,
         cloudregion_id: this.regionId,
         filter: `provider.in(${brand})`,
+        usable_for_inter_vpc_network_id: this.curItem.id,
       }
       if (this.isAdminMode) {
         params.project_domain = this.curItem.project_domain

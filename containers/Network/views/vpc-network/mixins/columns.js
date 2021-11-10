@@ -4,6 +4,7 @@ import {
   getTagTableColumn,
   getPublicScopeTableColumn,
   getBrandTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -35,6 +36,7 @@ export default {
       },
       getPublicScopeTableColumn({ vm: this, resource: 'inter_vpc_networks' }),
       getBrandTableColumn(),
+      getAccountTableColumn({ vm: this }),
     ]
   },
 }
