@@ -12,6 +12,7 @@ export default {
             onManager: this.onManager,
             name: i18n.t('network.text_651'),
             refresh: this.refresh,
+            query: this.getParams,
           })
         },
         meta: (obj) => {
