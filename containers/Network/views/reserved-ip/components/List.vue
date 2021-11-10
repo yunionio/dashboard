@@ -80,6 +80,7 @@ export default {
               columns: this.columns,
               data: this.list.selectedItems,
               name: this.$t('network.text_651'),
+              query: this.getParams,
             })
           },
           meta: () => {
