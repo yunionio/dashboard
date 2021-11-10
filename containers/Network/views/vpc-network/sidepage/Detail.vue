@@ -6,7 +6,7 @@
     :extra-info="extraInfo"
     resource="inter_vpc_networks"
     statusModule="vpcNetwork"
-    :hiddenKeys="['tenant', 'project_domain']" />
+    :hiddenKeys="['tenant', 'project_domain', 'region', 'zone']" />
 </template>
 
 <script>
