@@ -640,6 +640,8 @@
     "create_title": "新建免密登录用户",
     "create_cloudgroup_extra": "对应云上用户组，是权限的集合"
   },
+  "cloudenv.crm_biz_id": "CRM Biz ID",
+  "cloudenv.crm_biz_id.tips": "如果是天翼云CRM账号,必须填写此参数",
   "cloudenv.environment": "账号类型",
   "cloudenv.environment_check": "请选择账号类型",
   "cloudenv.international_cloud": "公共云",
