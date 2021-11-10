@@ -164,7 +164,13 @@ export default {
                 name: this.$t('dictionary.host'),
                 resource: 'hosts',
               }, {
-                meta: function (obj) {
+                meta: (obj) => {
+                  if (!this.$store.getters.l3PermissionEnable) {
+                    return {
+                      validate: false,
+                      tooltip: i18n.t('common_281'),
+                    }
+                  }
                   return {
                     validate: ownerDomain,
                   }
