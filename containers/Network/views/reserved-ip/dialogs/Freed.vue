@@ -30,8 +30,11 @@ export default {
       try {
         const manager = new this.$Manager('reservedips')
         const ips = this.params.data.map(item => item.ip_addr)
+        const query = this.params.query
+        query.scope = this.$store.getters.scope
         const params = {
           ips,
+          query,
         }
         await manager.rpc({ methodname: 'DoBatchReleaseReservedIps', params })
         this.cancelDialog()
