@@ -1,11 +1,14 @@
 <template>
   <div>
-    <base-chart  chartType="ve-ring"
-                :chartData="chartData"
-                :chartConfig="chartConfig"
-                :chartSettings="chartSettings"
-                :loading="loading"
-                :chartEvents="chartEvents" />
+    <base-chart
+      :id="this.id"
+      chartType="ve-ring"
+      :chartData="chartData"
+      :chartConfig="chartConfig"
+      :chartSettings="chartSettings"
+      :loading="loading"
+      :chartEvents="chartEvents"
+      :extraToolbox="extraToolbox" />
   </div>
 </template>
 
@@ -15,6 +18,10 @@ import commonChartProps from './common'
 export default {
   name: 'OverviewRing',
   props: Object.assign({
+    id: {
+      type: String,
+      default: 'overview-ring',
+    },
     title: {
       type: String,
       default: '',
@@ -25,6 +32,14 @@ export default {
     },
   }, commonChartProps()),
   computed: {
+    extraToolbox () {
+      return {
+        pdf: {
+          name: this.title,
+          target: `#${this.id}`,
+        },
+      }
+    },
     chartConfig () {
       const config = {
         height: this.chartHeigth,
@@ -60,6 +75,11 @@ export default {
           //     display: '<span>ƒ</span> position(point, params, dom, rect, size)',
           //   },
           // },
+        },
+        toolbox: {
+          show: true,
+          feature: {},
+          right: 20,
         },
       }
       return config
