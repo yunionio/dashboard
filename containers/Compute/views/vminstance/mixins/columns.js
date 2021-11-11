@@ -91,12 +91,12 @@ export default {
         },
       }),
       getStatusTableColumn({
-        minWidth: 130,
+        minWidth: 180,
         statusModule: 'server',
         slotCallback: row => {
           return [
             <div class='d-flex align-items-center text-truncate'>
-              <status status={ row.status } statusModule='server' />
+              <status status={ row.status } statusModule='server' process={ row.progress } />
               { row.metadata && getToolTip(row) }
             </div>,
           ]
