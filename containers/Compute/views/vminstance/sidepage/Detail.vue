@@ -27,6 +27,7 @@ import {
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'VmInstanceDetail',
@@ -199,7 +200,7 @@ export default {
               field: 'vmem_size',
               title: this.$t('compute.text_369'),
               formatter: ({ row }) => {
-                return (row.vmem_size / 1024) + 'GB'
+                return sizestr(row.vmem_size, 'M', 1024)
               },
             },
             {
