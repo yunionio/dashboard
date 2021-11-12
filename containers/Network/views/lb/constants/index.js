@@ -1,5 +1,5 @@
 import i18n from '@/locales'
-export const surpportLb = ['onecloud', 'aliyun', 'qcloud', 'huawei', 'aws', 'openstack', 'azure']
+export const surpportLb = ['onecloud', 'aliyun', 'qcloud', 'huawei', 'aws', 'openstack', 'azure', 'google']
 
 export const CHARGE_TYPE = {
   postpaid: i18n.t('network.text_256'),
