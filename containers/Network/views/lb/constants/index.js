@@ -23,7 +23,7 @@ export const LB_SPEC = {
   ],
   google: [
     { key: 'regional_http_lb', label: i18n.t('network.lb.google.spec.regional_http_lb') },
-    { key: 'regional_udp_lb', label: i18n.t('network.lb.google.spec.regional_udp_lb') },
-    { key: 'regional_tcp_lb', label: i18n.t('network.lb.google.spec.regional_tcp_lb') },
+    { key: 'regional_udp', label: i18n.t('network.lb.google.spec.regional_udp') },
+    { key: 'regional_tcp', label: i18n.t('network.lb.google.spec.regional_tcp') },
   ],
 }

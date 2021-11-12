@@ -1003,8 +1003,8 @@
   },
   "network.eip.tip": "暂无可用的弹性公网IP类型的IP子网？去",
   "network.lb.google.spec.regional_http_lb": "区域性HTTP",
-  "network.lb.google.spec.regional_udp_lb": "区域性UDP",
-  "network.lb.google.spec.regional_tcp_lb": "区域性TCP",
+  "network.lb.google.spec.regional_udp": "区域性UDP",
+  "network.lb.google.spec.regional_tcp": "区域性TCP",
   "network.text_759": "SNAT已分配端口",
   "network.text_760": "SNAT连接端口",
   "network.ntp_server": "时间服务器(NTP)"
