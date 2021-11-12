@@ -1004,8 +1004,8 @@
   },
   "network.eip.tip": "No IP subnets of EIP type available yet? Go to ",
   "network.lb.google.spec.regional_http_lb": "Regional HTTP",
-  "network.lb.google.spec.regional_udp_lb": "Regional UDP",
-  "network.lb.google.spec.regional_tcp_lb": "Regional TCP",
+  "network.lb.google.spec.regional_udp": "Regional UDP",
+  "network.lb.google.spec.regional_tcp": "Regional TCP",
   "network.text_759": "Used SNAT Ports",
   "network.text_760": "SNAT Connection Count",
   "network.ntp_server": "NTP Server"

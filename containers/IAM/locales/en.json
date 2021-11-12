@@ -797,7 +797,7 @@
   "system.notify.subscriber.type.role": "Role",
   "system.notify.subscriber.type.robot": "Bot",
   "system.notify.subscriber.receivers": "Recipients",
-  "system.notify.name.resource sync": "Send message for resource sync",
+  "system.notify.name.resource_sync": "Send message for resource sync",
   "system.notify.name.snapshot_policy_execute": "Send message for snapshot policy to take effect",
   "system.notify.name.scheduled_task_execute": "Send message for resource timed power on/off and reboot",
   "system.notify.name.scaling_policy_execute": "Send message for scaling strategy to take effect",
