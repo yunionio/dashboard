@@ -70,7 +70,7 @@ export default {
         getProjectTableColumn(),
       ]
       if (this.data.provider && this.data.provider.toUpperCase() !== 'onecloud') arr.splice(7, 1)
-      if (this.data.provider && this.data.provider.toLowerCase() === 'azure') {
+      if (this.data.provider && (this.data.provider.toLowerCase() === 'azure' || this.data.provider.toLowerCase() === 'google')) {
         arr.splice(3, 0, {
           field: 'metadata',
           title: i18n.t('network.text_248'),
