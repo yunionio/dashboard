@@ -796,7 +796,7 @@
   "system.notify.subscriber.type.role": "角色",
   "system.notify.subscriber.type.robot": "机器人",
   "system.notify.subscriber.receivers": "接收对象",
-  "system.notify.name.resource sync": "资源同步通知",
+  "system.notify.name.resource_sync": "资源同步通知",
   "system.notify.name.snapshot_policy_execute": "自动快照策略生效发送通知",
   "system.notify.name.scheduled_task_execute": "资源定时开关机、重启发送通知",
   "system.notify.name.scaling_policy_execute": "伸缩策略生效发送通知",
