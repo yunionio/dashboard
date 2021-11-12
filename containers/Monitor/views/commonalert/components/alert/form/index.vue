@@ -172,7 +172,6 @@ export default {
         }
       }
 
-      if (this.alertData.channel && this.alertData.channel.length) initialValue.channel = this.alertData.channel.filter((c) => c.endsWith('robot'))
       initialValue.comparator = _.get(this.alertData, 'common_alert_metric_details[0].comparator')
       if (initialValue.comparator === 'lt') initialValue.comparator = '<='
       if (initialValue.comparator === 'gt') initialValue.comparator = '>='
