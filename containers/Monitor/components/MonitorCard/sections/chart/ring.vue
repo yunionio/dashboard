@@ -9,6 +9,7 @@
       :loading="loading"
       :chartEvents="chartEvents"
       :extraToolbox="extraToolbox" />
+    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="exportExcelColumns" :name="`export.xls`" />
   </div>
 </template>
 
@@ -30,15 +31,24 @@ export default {
       type: String,
       default: '',
     },
+    exportExcelColumns: {
+      type: Object,
+    },
   }, commonChartProps()),
   computed: {
     extraToolbox () {
-      return {
+      const ret = {
         pdf: {
           name: this.title,
           target: `#${this.id}`,
         },
       }
+      if (this.exportExcelColumns) {
+        ret.excel = {
+          export: this.exportExcel,
+        }
+      }
+      return ret
     },
     chartConfig () {
       const config = {
@@ -95,6 +105,11 @@ export default {
         cs.limitShowNum = 9
       }
       return Object.assign(cs, this.chartSetting)
+    },
+  },
+  methods: {
+    exportExcel () {
+      this.$refs.excel.generate()
     },
   },
 }
