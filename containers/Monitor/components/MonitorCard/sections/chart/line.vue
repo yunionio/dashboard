@@ -10,7 +10,7 @@
       :loading="loading"
       :chartEvents="chartEvents"
       :extraToolbox="extraToolbox" />
-    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="predictExcelColumnMap" :name="`export.xls`" />
+    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="excelColumnMap" :name="`export.xls`" />
   </div>
 </template>
 
@@ -31,9 +31,12 @@ export default {
       type: String,
       default: false,
     },
+    loading: {
+      type: Boolean,
+    },
   }, commonChartProps()),
   computed: {
-    predictExcelColumnMap () {
+    excelColumnMap () {
       const columnMap = {}
       this.chartData.columns.map(item => {
         columnMap[item] = { field: item }
