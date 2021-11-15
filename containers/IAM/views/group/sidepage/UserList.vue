@@ -50,8 +50,9 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('dictionary.name'), key: 'name' },
-          { label: this.$t('system.text_164'), key: 'enabled' },
+          { label: this.$t('dictionary.user'), key: 'name' },
+          { label: this.$t('system.text_163'), key: 'enabled' },
+          { label: this.$t('table.title.owner_domain'), key: 'project_domain' },
         ],
       },
       columns: [
