@@ -48,7 +48,11 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('table.title.brand'), key: 'brand' },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
+          { label: this.$t('cloudenv.text_329'), key: 'cloudpolicies' },
+          { label: this.$t('table.title.brand'), key: 'provider' },
+          { label: this.$t('table.title.share_range'), key: 'public_scope' },
+          { label: this.$t('table.title.owner_domain'), key: 'project_domain' },
         ],
       },
       groupActions: [
