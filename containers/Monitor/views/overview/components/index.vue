@@ -27,7 +27,8 @@
             :chartEvents="ringChartEvent()"
             :title="$t('monitor.overview_alert_sum_pie')"
             :subtitle="ringChart.subtitle"
-            :loading="ringChart.loading" />
+            :loading="ringChart.loading"
+            :exportExcelColumns="exportExcelColumns" />
         </div>
       </a-col>
       <a-col :span="16">
@@ -41,7 +42,7 @@
             :isHistogram="true"
             :chartData="lineChart.chartData"
             :chartSetting="lineChart.chartSetting"
-            :loading="lineChart.loading"  />
+            :loading="ringChart.loading" />
         </div>
       </a-col>
     </a-row>
@@ -87,8 +88,17 @@ export default {
       lineChart: {
         loading: true,
         chartSetting: {},
+        chartData: { rows: [], columns: [] },
       },
       loading: false,
+      exportExcelColumns: {
+        [this.$t('common_151')]: {
+          field: 'name',
+        },
+        [this.$t('monitor.text_98')]: {
+          field: 'count',
+        },
+      },
     }
   },
   computed: {
@@ -192,7 +202,8 @@ export default {
         rows: [],
       }
       if (rawDatas && rawDatas.length > 0) {
-        chartData.columns = ['name']
+        const name = this.$t('common_648')
+        chartData.columns = [name]
         const _temp = {}
         rawDatas.map((item) => {
           const points = item.points
@@ -202,10 +213,10 @@ export default {
           const columnName = item.raw_name ? this.$t(`dictionary.${item.raw_name}`) : this.$t('monitor.overview_alert.undefined')
           chartData.columns.push(columnName)
           let series = points.map((item) => {
-            return { name: item[1], value: item[0] }
+            return { [name]: item[1], value: item[0] }
           })
           series = series.sort((a, b) => {
-            return a.name - b.name
+            return a[name] - b[name]
           })
           for (const i in series) {
             const d = new Date(series[i].name)
@@ -213,7 +224,7 @@ export default {
             if (_temp.hasOwnProperty(rn)) {
               _temp[rn][columnName] = series[i].value
             } else {
-              _temp[rn] = { name: rn }
+              _temp[rn] = { [name]: rn }
               _temp[rn][columnName] = series[i].value
             }
           }
@@ -231,7 +242,7 @@ export default {
           if (_temp.hasOwnProperty(rn)) {
             rows.push(Object.assign({}, initData, _temp[rn]))
           } else {
-            rows.push(Object.assign({}, { name: rn }, initData))
+            rows.push(Object.assign({}, { [name]: rn }, initData))
           }
         }
         chartData.rows = rows

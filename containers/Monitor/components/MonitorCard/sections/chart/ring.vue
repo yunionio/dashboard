@@ -1,11 +1,15 @@
 <template>
   <div>
-    <base-chart  chartType="ve-ring"
-                :chartData="chartData"
-                :chartConfig="chartConfig"
-                :chartSettings="chartSettings"
-                :loading="loading"
-                :chartEvents="chartEvents" />
+    <base-chart
+      :id="this.id"
+      chartType="ve-ring"
+      :chartData="chartData"
+      :chartConfig="chartConfig"
+      :chartSettings="chartSettings"
+      :loading="loading"
+      :chartEvents="chartEvents"
+      :extraToolbox="extraToolbox" />
+    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="exportExcelColumns" :name="`export.xls`" />
   </div>
 </template>
 
@@ -15,6 +19,10 @@ import commonChartProps from './common'
 export default {
   name: 'OverviewRing',
   props: Object.assign({
+    id: {
+      type: String,
+      default: 'overview-ring',
+    },
     title: {
       type: String,
       default: '',
@@ -23,8 +31,25 @@ export default {
       type: String,
       default: '',
     },
+    exportExcelColumns: {
+      type: Object,
+    },
   }, commonChartProps()),
   computed: {
+    extraToolbox () {
+      const ret = {
+        pdf: {
+          name: this.title,
+          target: `#${this.id}`,
+        },
+      }
+      if (this.exportExcelColumns) {
+        ret.excel = {
+          export: this.exportExcel,
+        }
+      }
+      return ret
+    },
     chartConfig () {
       const config = {
         height: this.chartHeigth,
@@ -61,6 +86,11 @@ export default {
           //   },
           // },
         },
+        toolbox: {
+          show: true,
+          feature: {},
+          right: 20,
+        },
       }
       return config
     },
@@ -75,6 +105,11 @@ export default {
         cs.limitShowNum = 9
       }
       return Object.assign(cs, this.chartSetting)
+    },
+  },
+  methods: {
+    exportExcel () {
+      this.$refs.excel.generate()
     },
   },
 }
