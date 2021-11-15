@@ -45,7 +45,7 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('table.title.brand'), key: 'brand' },
+          { label: this.$t('table.title.desc'), key: 'description' },
         ],
       },
       groupActions: [
