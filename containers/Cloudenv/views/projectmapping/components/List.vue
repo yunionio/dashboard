@@ -64,6 +64,7 @@ export default {
           actions: () => {
             return [
               ...getEnabledSwitchActions(this, undefined, ['projectmappings_perform_enable', 'projectmappings_perform_disable'], {
+                resourceName: this.$t('cloudenv.text_580'),
                 metas: [
                   () => {
                     const isEnable = !!this.list.selectedItems.find(item => item.enabled)
