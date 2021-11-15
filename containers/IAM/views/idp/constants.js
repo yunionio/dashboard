@@ -6,7 +6,7 @@ export function docs (scope) {
   const docsUrl = getDocsUrl(scope)
   const idpUrl = `${docsUrl}/user/iam/keystone/ldp`
   return {
-    google_oidc: `${idpUrl}/#${i18n.t('system.google_oidc_doc')}`,
+    // google_oidc: `${idpUrl}/#${i18n.t('system.google_oidc_doc')}`,
     github_oidc: `${idpUrl}/#${i18n.t('system.github_oidc_doc')}`,
     azure_oidc: `${idpUrl}/#${i18n.t('system.azure_oidc_doc')}`,
     azure_ad_saml: `${idpUrl}/#${i18n.t('system.azure_ad_saml_doc')}`,
