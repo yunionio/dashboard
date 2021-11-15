@@ -1,16 +1,21 @@
 <template>
   <div>
-    <base-chart :chartType="chartType"
-                :chartData="chartData"
-                :chartConfig="chartConfig"
-                :chartSettings="chartSettings"
-                :chartExtend="chartExtend"
-                :loading="loading"
-                :chartEvents="chartEvents" />
+    <base-chart
+      :id="this.id"
+      :chartType="chartType"
+      :chartData="chartData"
+      :chartConfig="chartConfig"
+      :chartSettings="chartSettings"
+      :chartExtend="chartExtend"
+      :loading="loading"
+      :chartEvents="chartEvents"
+      :extraToolbox="extraToolbox" />
+    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="excelColumnMap" :name="`export.xls`" />
   </div>
 </template>
 
 <script>
+import * as R from 'ramda'
 import commonChartProps from './common'
 // eslint-disable-next-line no-unused-vars
 import numerify from './formatters'
@@ -18,12 +23,60 @@ import numerify from './formatters'
 export default {
   name: 'OverviewLine',
   props: Object.assign({
+    id: {
+      type: String,
+      default: 'overview-line',
+    },
     isHistogram: {
       type: String,
       default: false,
     },
+    loading: {
+      type: Boolean,
+    },
   }, commonChartProps()),
   computed: {
+    excelColumnMap () {
+      const columnMap = {}
+      this.chartData.columns.map(item => {
+        columnMap[item] = { field: item }
+      })
+      return columnMap
+    },
+    extraToolbox () {
+      return {
+        pdf: {
+          name: 'export',
+          target: `#${this.id}`,
+        },
+        excel: {
+          export: this.exportExcel,
+        },
+      }
+    },
+    predictExcelData () {
+      if (this.seriesArr.length) {
+        const dataList = []
+        const dataMap = {}
+        this.seriesArr.map(item => {
+          if (!dataMap[item.time]) {
+            dataMap[item.time] = R.clone(item)
+          } else {
+            if (!dataMap[item.time].predict) {
+              dataMap[item.time].predict = item.predict
+            }
+          }
+        })
+        for (const key in dataMap) {
+          dataList.push(dataMap[key])
+        }
+        dataList.sort((a, b) => {
+          return a.time - b.time
+        })
+        return dataList
+      }
+      return []
+    },
     chartType () {
       return this.isHistogram ? 've-histogram' : 've-line'
     },
@@ -71,6 +124,11 @@ export default {
         cs.yAxisType = [this.yAxisFormat]
       }
       return Object.assign(cs, this.chartSetting)
+    },
+  },
+  methods: {
+    exportExcel () {
+      this.$refs.excel.generate()
     },
   },
 }

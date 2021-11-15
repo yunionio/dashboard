@@ -5,6 +5,7 @@ import 'xe-utils'
 // import '../mock'
 import VXETable from 'vxe-table'
 import VXETablePluginAntd from 'vxe-table-plugin-antd'
+import JsonExcel from 'vue-json-excel'
 
 import './styles/less/index.less'
 import './styles/scss/index.scss'
@@ -33,6 +34,7 @@ Vue.use(VXETable, {
   i18n: key => i18n.t(key),
 })
 Vue.use(antdGlobalConfig)
+Vue.component('downloadExcel', JsonExcel)
 
 Vue.prototype.$log = window.console.log
 Vue.prototype.$appConfig = {
