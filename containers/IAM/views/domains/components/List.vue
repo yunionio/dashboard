@@ -55,8 +55,8 @@ export default {
           { label: 'ID', key: 'id' },
           { label: this.$t('system.text_101'), key: 'name' },
           { label: this.$t('system.text_163'), key: 'enabled' },
-          { label: this.$t('system.text_164'), key: 'status' },
           { label: this.$t('system.text_165'), key: 'idp' },
+          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
         ],
       },
       groupActions: [
