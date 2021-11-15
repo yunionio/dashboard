@@ -43,8 +43,9 @@ export default {
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('table.title.brand'), key: 'brand' },
+          { label: this.$t('cloudenv.text_332'), key: 'name' },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
+          { label: this.$t('dictionary.cloudaccount'), key: 'cloudaccount' },
         ],
       },
       groupActions: [
