@@ -77,13 +77,13 @@ export default {
           fields: ['cidr', 'status', 'enabled'],
           metas: [
             () => {
-              const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
+              const isDisable = this.list.selectedItems.some(item => !item.enabled)
               return {
                 validate: this.list.selectedItems.length && isDisable,
               }
             },
             () => {
-              const isEnable = !!this.list.selectedItems.find(item => item.enabled)
+              const isEnable = this.list.selectedItems.some(item => item.enabled)
               return {
                 validate: this.list.selectedItems.length && isEnable,
               }
