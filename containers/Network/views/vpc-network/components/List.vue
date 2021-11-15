@@ -72,7 +72,46 @@ export default {
           { label: this.$t('table.title.brand'), key: 'provider' },
         ],
       },
-      groupActions: [],
+      groupActions: [
+        {
+          label: this.$t('table.action.set_tag'),
+          action: () => {
+            this.createDialog('SetTagDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              mode: 'add',
+              params: {
+                resources: 'inter_vpc_networks',
+              },
+              tipName: this.$t('dictionary.vpc_network'),
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length,
+            }
+          },
+        },
+        {
+          label: this.$t('network.text_131'),
+          action: () => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: this.list.selectedItems,
+              columns: this.columns,
+              title: this.$t('network.text_131'),
+              name: this.$t('dictionary.vpc_network'),
+              onManager: this.onManager,
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.allowDelete(),
+            }
+          },
+        },
+      ],
     }
   },
   created () {
