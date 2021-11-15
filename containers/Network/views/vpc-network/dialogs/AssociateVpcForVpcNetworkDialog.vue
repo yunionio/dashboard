@@ -103,7 +103,7 @@ export default {
       return this.params.data[0]
     },
     vpcParams () {
-      const accountId = this.curItem.account_id
+      // const accountId = this.curItem.account_id
       const brand = this.curItem.brand
       const params = {
         limit: 0,
@@ -118,12 +118,12 @@ export default {
         delete params.scope
       }
       if (!this.regionId) return {}
-      if (accountId) {
-        return {
-          ...params,
-          cloudaccount_id: accountId,
-        }
-      }
+      // if (accountId) {
+      //   return {
+      //     ...params,
+      //     cloudaccount_id: accountId,
+      //   }
+      // }
       return params
     },
     providerParams () {

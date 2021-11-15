@@ -83,7 +83,7 @@ export default {
               }
             },
             () => {
-              const isEnable = this.list.selectedItems.some(item => item.enabled)
+              const isEnable = this.list.selectedItems.every(item => item.enabled)
               return {
                 validate: this.list.selectedItems.length && isEnable,
               }

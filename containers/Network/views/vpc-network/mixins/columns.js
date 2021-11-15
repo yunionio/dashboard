@@ -38,21 +38,16 @@ export default {
         title: this.$t('common.attribution_scope'),
         slots: {
           default: ({ row }, h) => {
-            if (!row.tenant && !row.project_domain) {
-              return this.$t('shareScope.system')
-            }
+            const ret = []
             const domain = row.project_domain || row.domain
-            if (!row.tenant && domain) {
-              return `${domain}${this.$t('shareScope.domain')}`
-            }
-            if (row.tenant && domain) {
-              return [
-                <list-body-cell-wrap copy field='tenant' row={row} />,
+            if (domain) {
+              ret.push(
                 <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
-                  <span class='text-weak'>{ domain }</span>
+                  <span>{ domain }</span>
                 </list-body-cell-wrap>,
-              ]
+              )
             }
+            return ret
           },
         },
       },

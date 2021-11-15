@@ -17,6 +17,9 @@ import WindowsMixin from '@/mixins/windows'
 import {
   getStatusFilter,
   getInBrandFilter,
+  getDomainFilter,
+  getAccountFilter,
+  getCloudProviderFilter,
 } from '@/utils/common/tableFilter'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -31,9 +34,6 @@ export default {
     },
   },
   data () {
-    const scopeResource = this.$store.getters.scopeResource
-    const l3PermissionEnable = this.$store.getters.l3PermissionEnable
-
     return {
       list: this.$list.createList(this, {
         id: this.id,
@@ -53,6 +53,9 @@ export default {
           },
           status: getStatusFilter('vpcNetwork'),
           brand: getInBrandFilter('brands', ['Aliyun', 'Qcloud']),
+          project_domains: getDomainFilter(),
+          cloudaccount: getAccountFilter(),
+          manager: getCloudProviderFilter(),
         },
       }),
       exportDataOptions: {
@@ -62,14 +65,9 @@ export default {
           { label: this.$t('network.text_27'), key: 'status' },
           { label: this.$t('common_715'), key: 'user_tags' },
           { label: this.$t('network.text_243'), key: 'vpc_count' },
-          {
-            label: this.$t('common_101'),
-            key: 'public_scope',
-            hidden: () => {
-              return !l3PermissionEnable && (scopeResource && scopeResource.domain.includes('inter_vpc_networks'))
-            },
-          },
+          { label: this.$t('common.attribution_scope'), key: 'project_domain' },
           { label: this.$t('table.title.brand'), key: 'provider' },
+          { label: this.$t('res.cloudaccount'), key: 'manager' },
         ],
       },
       groupActions: [
