@@ -771,7 +771,7 @@
   "system.google_oidc_doc": "how-to-get-google-related-parameters",
   "system.github_oidc_doc": "how-to-get-github-related-parameters",
   "system.azure_oidc_doc": "how-to-get-azure-ad-oauth2-related-parameters",
-  "system.azure_ad_saml_doc": "how-to-get-azure-ad-saml2-0-related-parameters",
+  "system.azure_ad_saml_doc": "how-to-get-azure-ad-saml20-related-parameters",
   "system.saml_doc": "how-to-get-saml-related-parameters",
   "system.feishu_oauth2_doc": "how-to-get-lark-related-parameters",
   "system.dingtalk_oauth2_doc": "how-to-get-dingtalk-related-parameters",

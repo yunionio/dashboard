@@ -55,7 +55,7 @@ export default {
       isEndpoint: false,
       decorators: {
         client_id: ['client_id', {
-          rules: [{ required: true, message: this.$t('common_524') }],
+          rules: [{ required: true, message: this.$t('common_525') }],
         }],
         client_secret: ['client_secret', {
           rules: [{ required: true, message: this.$t('common_526') }],
