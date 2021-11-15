@@ -97,7 +97,7 @@ export default {
               params: {
                 resources: 'webapp',
               },
-              tipName: this.$t('compute.text_100'),
+              tipName: this.$t('compute.webapp'),
             })
           },
           meta: () => ({
