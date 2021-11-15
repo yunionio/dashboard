@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('cloudenv.text_554')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('cloudenv.text_580')" :count="params.data.length" :action="$t('cloudenv.text_593')" />
+      <dialog-selected-tips :name="$t('cloudenv.text_580')" :count="params.data.length" :action="$t('cloudenv.text_459')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         v-bind="formItemLayout"
