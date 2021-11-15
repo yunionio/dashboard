@@ -36,8 +36,8 @@ export default {
   data () {
     return {
       baseInfo: [
-        getUserTagColumn({ onManager: this.onManager, resource: 'waf_instance', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'waf_instance', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
+        getUserTagColumn({ onManager: this.onManager, resource: 'waf_instance', columns: () => this.columns, tipName: this.$t('network.waf') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'waf_instance', columns: () => this.columns, tipName: this.$t('network.waf') }),
         {
           title: i18n.t('network.waf.type'),
           field: 'type',
