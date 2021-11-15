@@ -4941,5 +4941,6 @@
   "common.export_excel": "导出Excel",
   "common.monitor_alert_fatal": "发生致命告警",
   "common.monitor_alert": "发生致命告警",
-  "common.later_handle": "稍后处理"
+  "common.later_handle": "稍后处理",
+  "common.attribution_scope": "归属范围"
 }
