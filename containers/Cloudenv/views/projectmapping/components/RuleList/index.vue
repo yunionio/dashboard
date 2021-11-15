@@ -210,7 +210,6 @@ export default {
   },
   created () {
     this.treeDrop()
-    console.log('params', this.data)
   },
   methods: {
     treeDrop () {
