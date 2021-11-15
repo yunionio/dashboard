@@ -2,7 +2,6 @@ import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
   getTagTableColumn,
-  getPublicScopeTableColumn,
   getBrandTableColumn,
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
@@ -34,7 +33,29 @@ export default {
           },
         },
       },
-      getPublicScopeTableColumn({ vm: this, resource: 'inter_vpc_networks' }),
+      {
+        field: 'project',
+        title: this.$t('common.attribution_scope'),
+        slots: {
+          default: ({ row }, h) => {
+            if (!row.tenant && !row.project_domain) {
+              return this.$t('shareScope.system')
+            }
+            const domain = row.project_domain || row.domain
+            if (!row.tenant && domain) {
+              return `${domain}${this.$t('shareScope.domain')}`
+            }
+            if (row.tenant && domain) {
+              return [
+                <list-body-cell-wrap copy field='tenant' row={row} />,
+                <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
+                  <span class='text-weak'>{ domain }</span>
+                </list-body-cell-wrap>,
+              ]
+            }
+          },
+        },
+      },
       getBrandTableColumn(),
       getAccountTableColumn({ vm: this }),
     ]
