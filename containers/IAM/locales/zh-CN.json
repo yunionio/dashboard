@@ -770,7 +770,7 @@
   "system.google_oidc_doc": "google相关参数获取方式",
   "system.github_oidc_doc": "github相关参数获取方式",
   "system.azure_oidc_doc": "azure-ad-oauth2相关参数获取方式",
-  "system.azure_ad_saml_doc": "azure-ad-saml2-0相关参数获取方式",
+  "system.azure_ad_saml_doc": "azure-ad-saml20相关参数获取方式",
   "system.saml_doc": "通用saml相关参数获取方式",
   "system.feishu_oauth2_doc": "飞书相关参数获取方式",
   "system.dingtalk_oauth2_doc": "钉钉相关参数获取方式",
