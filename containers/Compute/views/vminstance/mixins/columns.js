@@ -152,7 +152,7 @@ export default {
             if (row.instance_type) {
               ret.push(<div class='text-truncate' style={{ color: '#0A1F44' }}>{ row.instance_type }</div>)
             }
-            const config = row.vcpu_count + 'C' + sizestr(row.vmem_size, 'M', 1024) + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
+            const config = row.vcpu_count + 'C' + (row.vmem_size / 1024) + 'G' + (row.disk ? sizestr(row.disk, 'M', 1024) : '')
             return ret.concat(<div class='text-truncate' style={{ color: '#53627C' }}>{ config }</div>)
           },
         },
@@ -213,7 +213,7 @@ export default {
         slots: {
           default: ({ row }) => {
             if (row.vmem_size) {
-              const config = sizestr(row.vmem_size, 'M', 1024)
+              const config = (row.vmem_size / 1024) + 'G'
               return [<list-body-cell-wrap row={{ row }} hide-field field="vmem_size">{ config }</list-body-cell-wrap>]
             }
             return []
