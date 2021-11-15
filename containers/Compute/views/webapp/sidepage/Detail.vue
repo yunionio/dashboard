@@ -36,8 +36,8 @@ export default {
   data () {
     return {
       baseInfo: [
-        getUserTagColumn({ onManager: this.onManager, resource: 'webapp', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'webapp', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
+        getUserTagColumn({ onManager: this.onManager, resource: 'webapp', columns: () => this.columns, tipName: this.$t('compute.webapp') }),
+        getExtTagColumn({ onManager: this.onManager, resource: 'webapp', columns: () => this.columns, tipName: this.$t('compute.webapp') }),
         getBrandTableColumn(),
         getTypeTableColumn(),
         getKindTableColumn(),
