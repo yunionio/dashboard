@@ -71,39 +71,30 @@ export default {
         },
         getRegionTableColumn({ title: this.$t('network.vpc_network.next_hop_region') }),
       ],
-      groupActions: [],
+      groupActions: [
+        ...getEnabledSwitchActions(this, undefined, [], {
+          resourceName: this.$t('network.vpc_network.route'),
+          fields: ['cidr', 'status', 'enabled'],
+          metas: [
+            () => {
+              const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
+              return {
+                validate: this.list.selectedItems.length && isDisable,
+              }
+            },
+            () => {
+              const isEnable = !!this.list.selectedItems.find(item => item.enabled)
+              return {
+                validate: this.list.selectedItems.length && isEnable,
+              }
+            },
+          ],
+        }),
+      ],
       singleActions: [
         ...getEnabledSwitchActions(this, undefined, [], {
-          actions: [
-            async (obj) => {
-              await this.onManager('batchPerformAction', {
-                id: [obj.id],
-                managerArgs: {
-                  action: 'enable',
-                },
-              })
-            },
-            async (obj) => {
-              await this.onManager('batchPerformAction', {
-                id: [obj.id],
-                managerArgs: {
-                  action: 'disable',
-                },
-              })
-            },
-          ],
-          metas: [
-            (obj) => {
-              return {
-                validate: !obj.enabled,
-              }
-            },
-            (obj) => {
-              return {
-                validate: obj.enabled,
-              }
-            },
-          ],
+          resourceName: this.$t('network.vpc_network.route'),
+          fields: ['cidr', 'status', 'enabled'],
         }),
       ],
     }

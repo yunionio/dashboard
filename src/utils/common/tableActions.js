@@ -160,7 +160,7 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
     throw Error('not found vm instance')
   }
   const { resourceName = '', fields, actions, metas } = params
-  const data = getSelectedData(row, vm)
+  // const data = getSelectedData(row, vm)
   const openDialog = (rowItem, type, index) => {
     const { list = {} } = vm
     const { resource } = list
@@ -168,7 +168,7 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
       fields,
       resourceName,
       vm,
-      data,
+      data: getSelectedData(row, vm),
       resource: vm.resource || resource,
       onManager: vm.onManager,
       refresh: vm.refresh,
@@ -185,6 +185,7 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
   }
   const btns = ['enable', 'disable'].map((type, index) => {
     const _permissions = permissions || []
+    const data = getSelectedData(row, vm)
     return {
       permissions: _permissions[index],
       label: i18n.t('status.enabled')[type],
