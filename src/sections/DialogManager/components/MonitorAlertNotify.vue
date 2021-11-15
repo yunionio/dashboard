@@ -1,5 +1,5 @@
 <template>
-  <base-dialog v-if="isShowMonitorAlert" @cancel="cancelDialog" :modalProps="modalProps" width="400px">
+  <base-dialog v-if="isShowMonitorAlert" @cancel="cancelDialog" :modalProps="modalProps" width="400px" :drag="false">
     <div class="oc-monitor-alert-header" slot="header">{{$t('common.monitor_alert_fatal')}}</div>
     <div class="oc-monitor-alert-body" slot="body">
       <ul>
