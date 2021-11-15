@@ -45,7 +45,12 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('cloudenv.clouduser_list_t5'), key: 'is_console_login' },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
+          { label: this.$t('cloudenv.clouduser_list_t3'), key: 'iam_login_url' },
+          { label: this.$t('cloudenv.clouduser_list_t4'), key: 'owner_name' },
           { label: this.$t('table.title.brand'), key: 'brand' },
+          { label: this.$t('common.text00108'), key: 'cloudaccount' },
         ],
       },
       groupActions: [
