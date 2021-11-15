@@ -63,5 +63,10 @@ export default {
       }
     },
   },
+  methods: {
+    openSidePageRuleList (row) {
+      this.params.windowData.currentTab = 'rule-list'
+    },
+  },
 }
 </script>

@@ -49,6 +49,7 @@ export default {
             },
             // 启用禁用
             ...getEnabledSwitchActions(this, obj, ['projectmappings_perform_enable', 'projectmappings_perform_disable'], {
+              resourceName: this.$t('cloudenv.text_580'),
               metas: [
                 () => {
                   const ret = {
