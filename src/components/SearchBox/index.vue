@@ -133,7 +133,7 @@ export default {
       this.newValues = {}
       R.forEachObjIndexed((value, key) => {
         if (Array.isArray(value)) {
-          const whiteList = ['created_at']
+          const whiteList = ['created_at', 'received_at']
           if (!whiteList.includes(key)) {
             value = value.filter((item) => {
               if (R.is(Boolean, item)) return true
