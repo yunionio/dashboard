@@ -72,7 +72,7 @@ export default {
               params: {
                 resources: 'waf_instance',
               },
-              tipName: this.$t('compute.text_100'),
+              tipName: this.$t('network.waf'),
             })
           },
           meta: () => {
