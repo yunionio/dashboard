@@ -17,6 +17,10 @@
       "attach": "正常",
       "unknown": "未知"
     },
+    "expired": {
+      "true": "已过期",
+      "false": "生效中"
+    },
     "enabled": {
       "true": "启用",
       "false": "禁用",

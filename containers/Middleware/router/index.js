@@ -31,7 +31,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.kafka')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'qcloud'])
+              return !hasSetupKey(['qcloud'])
             },
           },
           component: Layout,
@@ -61,7 +61,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.elasticsearch')) {
                 return true
               }
-              return !hasSetupKey(['aliyun', 'qcloud'])
+              return !hasSetupKey(['qcloud'])
             },
           },
           component: Layout,
