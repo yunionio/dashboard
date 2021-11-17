@@ -44,7 +44,7 @@ export default {
               label: i18n.t('system.text_225'),
               action: () => {
                 this.createDialog('DisableDialog', {
-                  title: i18n.t('system.text_342', i18n.t('dictionary.policy')),
+                  title: i18n.t('system.text_342', [i18n.t('dictionary.policy')]),
                   name: this.$t('dictionary.policy'),
                   columns: this.columns,
                   data: [obj],
