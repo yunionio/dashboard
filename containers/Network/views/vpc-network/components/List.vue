@@ -92,6 +92,22 @@ export default {
           },
         },
         {
+          label: this.$t('network.text_201'),
+          action: () => {
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['running', 'ready'],
+              managerArgs: {
+                action: 'syncstatus',
+              },
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems.length,
+            }
+          },
+        },
+        {
           label: this.$t('network.text_131'),
           action: () => {
             this.createDialog('DeleteResDialog', {
