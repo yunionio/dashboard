@@ -51,11 +51,15 @@ export default {
               label: i18n.t('cloudenv.text_106'),
               permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
               action: () => {
-                this.createDialog('CloudaccountSetAutoSyncDialog', {
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  steadyStatus,
+                this.sidePageTriggerHandle(this, 'CloudaccountSidePage', {
+                  id: obj.id,
+                  resource: 'cloudaccounts',
+                  getParams: this.getParams,
+                  refresh: this.refresh,
+                }, {
+                  tab: 'scheduledtasks-list',
+                  list: this.list,
+                  hiddenActions: this.hiddenActions,
                 })
               },
               meta: () => this.setAutoSyncPolicy(obj, ownerDomain),

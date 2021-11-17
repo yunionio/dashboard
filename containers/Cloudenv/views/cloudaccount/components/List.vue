@@ -138,19 +138,19 @@ export default {
                 },
                 meta: () => this.syncPolicy(this.list.selectedItems),
               },
-              {
-                label: this.$t('cloudenv.text_106'),
-                permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
-                action: () => {
-                  this.createDialog('CloudaccountSetAutoSyncDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    steadyStatus: this.list.steadyStatus,
-                  })
-                },
-                meta: () => this.setAutoSyncPolicy(this.list.selectedItems, ownerDomain),
-              },
+              // {
+              //   label: this.$t('cloudenv.text_106'),
+              //   permission: 'cloudaccounts_perform_enable_auto_sync,cloudaccounts_perform_disable_auto_sync',
+              //   action: () => {
+              //     this.createDialog('CloudaccountSetAutoSyncDialog', {
+              //       data: this.list.selectedItems,
+              //       columns: this.columns,
+              //       onManager: this.onManager,
+              //       steadyStatus: this.list.steadyStatus,
+              //     })
+              //   },
+              //   meta: () => this.setAutoSyncPolicy(this.list.selectedItems, ownerDomain),
+              // },
               {
                 label: this.$t('cloudenv.text_107'),
                 permission: 'cloudaccounts_perform_sync',
