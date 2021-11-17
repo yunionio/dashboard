@@ -1,4 +1,6 @@
+import * as R from 'ramda'
 import i18n from '@/locales'
+
 export default {
   created () {
     this.singleActions = [
@@ -18,7 +20,9 @@ export default {
         meta: (obj) => {
           let { validate, tooltip } = this.$getDeleteResult(obj)
           if (validate) {
-            validate = this.isOwner(obj)
+            if (!R.isNil(this.data) && !R.isEmpty(this.data)) {
+              validate = this.isOwner(this.data)
+            }
           }
           return {
             validate,
