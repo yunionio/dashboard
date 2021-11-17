@@ -475,7 +475,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lb')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -511,7 +511,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbacl')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'hcso'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'hcso', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -532,7 +532,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.lbcert')) {
                 return true
               }
-              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso'])
+              return !hasSetupKey(['lb', 'aliyun', 'huawei', 'qcloud', 'aws', 'k8s', 'apsara', 'hcso', 'azure', 'google'])
             },
           },
           component: Layout,
@@ -619,7 +619,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cdn')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'public'])
+              return !hasSetupKey(['aliyun', 'qcloud'])
             },
           },
           component: Layout,
