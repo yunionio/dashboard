@@ -155,6 +155,9 @@ export default {
     if (R.isNil(R.find(R.propEq('key', this.params.windowData.currentTab))(this.detailTabs))) {
       this.handleTabChange(this.detailTabs[0].key)
     }
+    if (this.params.tab) {
+      this.handleTabChange(this.params.tab)
+    }
   },
 }
 </script>
