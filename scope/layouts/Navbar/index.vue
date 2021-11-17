@@ -260,6 +260,7 @@ export default {
     },
   },
   created () {
+    this.pushApiServerUrlAlert(this.userInfo.id)
     this.cronjobFetchAlerts()
   },
   methods: {
@@ -377,6 +378,37 @@ export default {
           data: [],
           total: 0,
         })
+      }
+    },
+    async pushApiServerUrlAlert (id) {
+      if (!id) return
+      try {
+        const params = {}
+        if (this.$store.getters.scope !== 'system') {
+          params.domain = this.$store.getters.userInfo.projectDomain
+        }
+        const regions = await this.$store.dispatch('auth/getRegions', params)
+        const currentHost = window.location.hostname
+        const apiServer = regions.api_server || ''
+        if (apiServer) {
+          if (!apiServer.includes(currentHost)) {
+            this.$store.dispatch('common/updateObject', {
+              name: 'topAlert',
+              data: {
+                apiServer: {
+                  messageOptions: [
+                    this.$t('common_222'),
+                    ['a', { attrs: { href: apiServer } }, apiServer],
+                    this.$t('common_223'),
+                  ],
+                  interval: 1000 * 60 * 60 * 24,
+                },
+              },
+            })
+          }
+        }
+      } catch (error) {
+        throw error
       }
     },
   },
