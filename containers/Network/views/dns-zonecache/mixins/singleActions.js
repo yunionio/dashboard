@@ -13,6 +13,7 @@ export default {
             title: i18n.t('storage.text_74'),
             name: i18n.t('common.text00107'),
             onManager: this.onManager,
+            alert: this.$t('network.text_763'),
           })
         },
         meta: (obj) => {

@@ -134,6 +134,7 @@ export default {
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
+                    alert: this.$t('network.text_762'),
                   })
                 },
                 meta: () => {
