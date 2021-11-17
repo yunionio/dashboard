@@ -1007,5 +1007,8 @@
   "network.lb.google.spec.regional_tcp": "区域性TCP",
   "network.text_759": "SNAT已分配端口",
   "network.text_760": "SNAT连接端口",
-  "network.ntp_server": "时间服务器(NTP)"
+  "network.ntp_server": "时间服务器(NTP)",
+  "network.text_761": "该操作将会以平台的解析列表为准向公有云同步，可能会删除云上的解析列表，请谨慎操作!",
+  "network.text_762": "删除DNS解析会同步删除已同步到公有云的DNS解析",
+  "network.text_763": "释放缓存将会删除已同步到公有云的DNS解析"
 }
