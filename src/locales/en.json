@@ -17,6 +17,10 @@
       "attach": "Normal",
       "unknown": "Unknown"
     },
+    "expired": {
+      "true": "Expired",
+      "false": "Effective"
+    },
     "enabled": {
       "true": "Enabled",
       "false": "Disabled",

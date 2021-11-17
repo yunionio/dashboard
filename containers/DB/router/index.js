@@ -126,7 +126,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.mongodb')) {
                 return true
               }
-              return false
+              return !hasSetupKey(['aliyun', 'qcloud'])
             },
           },
           component: Layout,
