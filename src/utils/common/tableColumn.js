@@ -810,3 +810,35 @@ export const getCycleTimerColumn = ({ timeFormat = 'YYYY-MM-DD HH:mm:ss' } = {})
     },
   }
 }
+
+// 所属域
+export const getDomainColumn = ({ vm }) => {
+  return {
+    field: 'domain',
+    title: i18n.t('common.attribution_scope'),
+    slots: {
+      default: ({ row }, h) => {
+        const domain = row.project_domain || row.domain
+        if (!row.domain_id) return domain || '-'
+        if (!domain) return '-'
+        const p = hasPermission({ key: 'domains_get' })
+        let node
+        if (p) {
+          node = (
+            <list-body-cell-wrap copy row={ vm.data } onManager={ vm.onManager } field='project_domain' title={ row.project_domain } message={domain} hideField={ true }>
+              <side-page-trigger permission='domains_get' name='DomainSidePage' id={row.project_domain} vm={vm}>{ domain }</side-page-trigger>
+            </list-body-cell-wrap>
+          )
+        } else {
+          node = (
+            <list-body-cell-wrap copy row={ vm.data } onManager={ vm.onManager } field='project_domain' title={ row.project_domain } message={domain} />
+          )
+        }
+        return [
+          <div class='text-truncate'>{ node }</div>,
+        ]
+      },
+    },
+    hidden: () => store.getters.isProjectMode,
+  }
+}

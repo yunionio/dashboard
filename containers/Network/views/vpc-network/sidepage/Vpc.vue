@@ -19,6 +19,8 @@ import {
 } from '@/utils/common/tableColumn'
 import {
   getRegionFilter,
+  getAccountFilter,
+  getCloudProviderFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 
@@ -51,20 +53,16 @@ export default {
             label: this.$t('network.text_244'),
           },
           region: getRegionFilter(),
+          cloudaccount: getAccountFilter(),
+          manager: getCloudProviderFilter(),
         },
       }),
       columns: [
-        {
+        getCopyWithContentTableColumn({
           field: 'name',
           title: this.$t('table.title.name'),
-          minWidth: 120,
-          showOverflow: 'ellipsis',
-          slots: {
-            default: ({ row }, h) => {
-              return row.name
-            },
-          },
-        },
+          sortable: true,
+        }),
         getCopyWithContentTableColumn({
           field: 'cidr_block',
           title: this.$t('network.text_244'),
