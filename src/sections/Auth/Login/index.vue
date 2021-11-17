@@ -93,21 +93,21 @@ export default {
             }
             window.location.href = `${api_server}/auth/login${nsearch}`
             return
-          }
-        } else {
-          this.$store.dispatch('common/updateObject', {
-            name: 'topAlert',
-            data: {
-              apiServer: {
-                messageOptions: [
-                  this.$t('common_222'),
-                  ['a', { attrs: { href: api_server } }, api_server],
-                  this.$t('common_223'),
-                ],
-                interval: 1000 * 60 * 60 * 24,
+          } else {
+            this.$store.dispatch('common/updateObject', {
+              name: 'topAlert',
+              data: {
+                apiServer: {
+                  messageOptions: [
+                    this.$t('common_222'),
+                    ['a', { attrs: { href: api_server } }, api_server],
+                    this.$t('common_223'),
+                  ],
+                  interval: 1000 * 60 * 60 * 24,
+                },
               },
-            },
-          })
+            })
+          }
         }
       }
       if (this.$route.name !== 'LoginChooserDefault') {
