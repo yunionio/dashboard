@@ -86,7 +86,9 @@ export default {
           meta: () => {
             let { validate, tooltip } = this.$getDeleteResult(this.list.selectedItems)
             if (validate) {
-              validate = this.list.selectedItems.every(item => this.isOwner(item))
+              if (!R.isNil(this.data) && !R.isEmpty(this.data)) {
+                validate = this.isOwner(this.data)
+              }
             }
             return {
               validate,
