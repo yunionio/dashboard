@@ -12,7 +12,6 @@
 <script>
 import * as R from 'ramda'
 import {
-  getNameDescriptionTableColumn,
   getCopyWithContentTableColumn,
   getRegionTableColumn,
   getBrandTableColumn,
@@ -55,15 +54,17 @@ export default {
         },
       }),
       columns: [
-        getNameDescriptionTableColumn({
-          onManager: this.onManager,
-          hideField: true,
-          slotCallback: row => {
-            return (
-              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
-            )
+        {
+          field: 'name',
+          title: this.$t('table.title.name'),
+          minWidth: 120,
+          showOverflow: 'ellipsis',
+          slots: {
+            default: ({ row }, h) => {
+              return row.name
+            },
           },
-        }),
+        },
         getCopyWithContentTableColumn({
           field: 'cidr_block',
           title: this.$t('network.text_244'),
