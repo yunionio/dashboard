@@ -59,10 +59,15 @@ export default {
               label: this.$t('network.text_721'),
               permission: 'dns_zones_sync_recordsets',
               action: () => {
-                this.createDialog('ConfirmDialog', {
-                  width: '550px',
-                  content: this.$t('network.text_761'),
-                  onOk: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  title: this.$t('network.text_721'),
+                  name: this.$t('dictionary.dns_zone'),
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  alert: this.$t('network.text_761'),
+                  ok: () => {
                     this.onManager('performAction', {
                       steadyStatus: ['available'],
                       id: obj.id,
@@ -80,10 +85,6 @@ export default {
                   validate: !['sync_record_sets'].includes(obj.status),
                 }
               },
-              // confirm: {
-              //   tip: this.$t('network.text_761'),
-              //   ok: this.$t('network.text_721'),
-              // },
             },
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.dns_zone'),
@@ -113,10 +114,6 @@ export default {
                 if (!ret.validate) return ret
                 return this.$getDeleteResult(obj)
               },
-              // confirm: {
-              //   tip: this.$t('network.text_762'),
-              //   ok: this.$t('network.text_131'),
-              // },
             },
           ]
         },
