@@ -25,6 +25,7 @@ export default {
   mixins: [WindowsMixin, ListMixin],
   props: {
     id: String,
+    resId: String,
     data: Object,
     getParams: [Function, Object],
   },
@@ -95,6 +96,7 @@ export default {
           action: () => {
             this.createDialog('ScheduledtaskCreateDialog', {
               data: [this.data],
+              resId: this.resId,
               columns: this.columns,
               onManager: this.onManager,
             })
