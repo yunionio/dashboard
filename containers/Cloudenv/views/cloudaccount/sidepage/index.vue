@@ -42,6 +42,7 @@ import CloudgroupList from '@Cloudenv/views/cloudgroup/components/List'
 import ClouduserList from '@Cloudenv/views/clouduser/components/List'
 import ExternalprojectList from '@Cloudenv/views/externalproject/components/List'
 import SamluserList from '@Cloudenv/views/samluser/components/List'
+import ScheduledtasksList from './Schedule'
 
 export default {
   name: 'CloudaccountSidePage',
@@ -55,6 +56,7 @@ export default {
     CloudgroupList,
     ExternalprojectList,
     SamluserList,
+    ScheduledtasksList,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   computed: {
@@ -80,6 +82,7 @@ export default {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }
+      detailTabs.push({ label: '定时任务', key: 'scheduledtasks-list' })
       detailTabs.push({ label: this.$t('cloudenv.text_15'), key: 'event-drawer' })
       return detailTabs
     },
@@ -114,6 +117,11 @@ export default {
         return {
           cloudaccount: this.data.id,
         }
+      } else if (this.params.windowData.currentTab === 'scheduledtasks-list') {
+        return {
+          label: this.data.id,
+          resource_type: 'cloudaccount',
+        }
       }
       return null
     },
@@ -133,6 +141,8 @@ export default {
           return 'CloudgroupListForCloudaccountSidePage'
         case 'samluser-list':
           return 'SamluserListForCloudaccountSidePage'
+        case 'scheduledtasks-list':
+          return 'ScheduledtasksListForCloudaccountSidepage'
         default:
           return ''
       }
