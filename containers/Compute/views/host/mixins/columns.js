@@ -45,7 +45,7 @@ export default {
               if (row.is_baremetal) {
                 ret.push(<a-tooltip title={i18n.t('compute.text_562')}><icon class='ml-2' type='res-host' style={{ color: '#1890ff' }} /></a-tooltip>)
               }
-              if (row.reserved_resource_for_gpu) {
+              if (row.isolated_device_count) {
                 ret.push(<a-tooltip title={i18n.t('compute.text_113')}><icon class='ml-2' type='gpu' /></a-tooltip>)
               }
               return ret
