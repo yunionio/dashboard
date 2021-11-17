@@ -1014,5 +1014,8 @@
   "network.vpc_network.next_hop": "Next Hop",
   "network.vpc_network.next_hop_region": "Next Hop Region",
   "network.vpc_network.route": "Route",
-  "network.vpc_network.manage_vpc": "Manage VPC"
+  "network.vpc_network.manage_vpc": "Manage VPC",
+  "network.text_761": "This operation will be synchronized to the public cloud based on the resolution list of the platform, and the resolution list on the cloud may be deleted. Please be careful!",
+  "network.text_762": "Deleting DNS resolution will synchronously delete the DNS resolution synchronized to the public cloud",
+  "network.text_763": "Releasing the cache will delete DNS resolutions synchronized to the public cloud"
 }
