@@ -72,6 +72,10 @@
           </span>
           <a-input-number :min="1" :max="100" v-decorator="decorators.priority" />
         </a-form-item>
+        <a-form-item>
+          <span slot="label">{{$t('compute.text_312')}}</span>
+          <a-input v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -142,6 +146,12 @@ export default {
           'priority',
           {
             initialValue: selectItem.priority || 1,
+          },
+        ],
+        description: [
+          'description',
+          {
+            initialValue: selectItem.description || '',
           },
         ],
       },
@@ -320,7 +330,7 @@ export default {
           ...this.params.data[0],
           ...data,
           secgroup: this.params.secgroup,
-          description,
+          description: data.description && data.description.length > 0 ? data.description : description,
         }
         return new this.$Manager('secgrouprules').create({
           data: params,
@@ -335,7 +345,7 @@ export default {
         const params = {
           ...data,
           secgroup: this.params.secgroup,
-          description,
+          description: data.description && data.description.length > 0 ? data.description : description,
           direction: this.params.type,
         }
         return new this.$Manager('secgrouprules').create({
