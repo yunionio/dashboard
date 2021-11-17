@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.perform_delete')}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.image')" :count="params.data.length" :action="$t('compute.perform_delete')" />
+      <dialog-selected-tips :name="$t('common.text00107')" :count="params.data.length" :action="$t('compute.perform_delete')" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-checkbox v-model="checked">{{$t('compute.text_655')}}</a-checkbox>
     </div>
