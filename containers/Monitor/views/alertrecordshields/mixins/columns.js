@@ -1,4 +1,4 @@
-import { getNameDescriptionTableColumn, getTimeRangeColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getTimeRangeColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -8,6 +8,7 @@ export default {
         title: this.$t('monitor.text_99'),
         minWidth: 80,
       },
+      getStatusTableColumn({ field: 'expired', statusModule: 'expired', minWidth: 50 }),
       {
         field: 'res_type',
         title: this.$t('monitor.text_97'),

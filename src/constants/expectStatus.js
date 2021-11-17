@@ -39,6 +39,10 @@ export default {
     success: ['ready', 'active'],
     info: ['init'],
   },
+  expired: {
+    success: [false],
+    info: [true],
+  },
   // 特殊状态，表示启用禁用
   enabled: {
     success: [true],
