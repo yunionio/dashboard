@@ -51,7 +51,7 @@ export default {
       columns: [
         getCopyWithContentTableColumn({
           field: 'cidr',
-          title: this.$t('network.vpc_network.target_address'),
+          title: this.$t('network.text_244'),
           sortable: true,
         }),
         getStatusTableColumn({ statusModule: 'routeSet' }),

@@ -12,6 +12,7 @@
 <script>
 import {
   getBrandTableColumn,
+  getDomainColumn,
 } from '@/utils/common/tableColumn'
 import {
   getUserTagColumn,
@@ -38,24 +39,7 @@ export default {
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'inter_vpc_networks', columns: () => this.columns, tipName: this.$t('dictionary.vpc_network') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'inter_vpc_networks', columns: () => this.columns, tipName: this.$t('dictionary.vpc_network') }),
-        {
-          field: 'project',
-          title: this.$t('common.attribution_scope'),
-          slots: {
-            default: ({ row }, h) => {
-              const ret = []
-              const domain = row.project_domain || row.domain
-              if (domain) {
-                ret.push(
-                  <list-body-cell-wrap hide-field copy field="domain" row={{ domain }}>
-                    <span>{ domain }</span>
-                  </list-body-cell-wrap>,
-                )
-              }
-              return ret
-            },
-          },
-        },
+        getDomainColumn({ vm: this }),
         getBrandTableColumn(),
       ],
       extraInfo: [],
