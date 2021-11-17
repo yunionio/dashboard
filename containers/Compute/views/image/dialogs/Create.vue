@@ -137,8 +137,12 @@ export default {
         },
       },
       platformOptions: [],
-      regionParams: {},
-      providerParams: {},
+      regionParams: {
+        scope: this.$store.getters.scope,
+      },
+      providerParams: {
+        scope: this.$store.getters.scope,
+      },
       hostParams: {
         'filter.0': 'host_type.notequals(baremetal)',
         show_emulated: true,
@@ -304,10 +308,12 @@ export default {
           cloud_env: this.params.title,
           show_emulated: true,
           provider: e,
+          scope: this.$store.getters.scope,
         }
         this.providerParams = {
           usable: true,
           provider: e,
+          scope: this.$store.getters.scope,
         }
       } else {
         this.hostParams = {
