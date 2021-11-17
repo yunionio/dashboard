@@ -82,7 +82,7 @@ export default {
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.clouduser'), key: 'clouduser-list' })
         detailTabs.splice(detailTabs.length - 1, 0, { label: this.$t('dictionary.cloudgroup'), key: 'cloudgroup-list' })
       }
-      detailTabs.push({ label: '定时任务', key: 'scheduledtasks-list' })
+      detailTabs.push({ label: this.$t('cloudenv.text_431'), key: 'scheduledtasks-list' })
       detailTabs.push({ label: this.$t('cloudenv.text_15'), key: 'event-drawer' })
       return detailTabs
     },
