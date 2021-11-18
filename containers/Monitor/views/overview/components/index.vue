@@ -28,7 +28,8 @@
             :title="$t('monitor.overview_alert_sum_pie')"
             :subtitle="ringChart.subtitle"
             :loading="ringChart.loading"
-            :exportExcelColumns="exportExcelColumns" />
+            :exportExcelColumns="exportExcelColumns"
+            :exportName="$t('monitor.overview_alert_sum')" />
         </div>
       </a-col>
       <a-col :span="16">

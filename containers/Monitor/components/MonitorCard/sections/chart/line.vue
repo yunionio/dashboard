@@ -10,7 +10,7 @@
       :loading="loading"
       :chartEvents="chartEvents"
       :extraToolbox="extraToolbox" />
-    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="excelColumnMap" :name="`export.xls`" />
+    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="excelColumnMap" :name="`${extraToolbox.pdf.name}.xls`" />
   </div>
 </template>
 
@@ -34,6 +34,7 @@ export default {
     loading: {
       type: Boolean,
     },
+    exportName: String,
   }, commonChartProps()),
   computed: {
     excelColumnMap () {
@@ -46,7 +47,7 @@ export default {
     extraToolbox () {
       return {
         pdf: {
-          name: 'export',
+          name: this.exportName || this.$t('monitor.overview_alert_trend'),
           target: `#${this.id}`,
         },
         excel: {
