@@ -753,5 +753,7 @@
   "cloudenv.cloudprovider.delete_tip": "This operation only deletes local records and has no impact on the cloud. If the cloud is not deleted, it will be restored at the next synchronization.",
   "cloudenv.cloudprovider.sync_delete": "This operation is not supported in synchronization",
   "cloudenv.bill.data_source": "Bill data source:",
-  "cloudenv.text_605": "{0} Cloud platform does not support this operation"
+  "cloudenv.text_605": "{0} Cloud platform does not support this operation",
+  "cloudenv.select_region": "Configure synchronization resource region",
+  "cloudenv.select_region_tips": "This configuration can be modified in the cloud account details page-subscription-region after the cloud account is imported, and can be configured according to resource distribution to improve synchronization efficiency!"
 }

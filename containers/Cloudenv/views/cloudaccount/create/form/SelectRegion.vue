@@ -1,7 +1,7 @@
 <template>
   <div class="cloudaccount pt-2">
     <a-alert type="info" show-icon class="mt-2 mb-2" v-if="$store.getters.isAdminMode">
-      <template slot="message">该配置可在云账号导入后在云账号详情页-订阅-区域进行修改，可根据资源分布配置，提高同步同步效率！</template>
+      <template slot="message">{{ $t('cloudenv.select_region_tips') }}</template>
     </a-alert>
     <page-list
       :list="list"

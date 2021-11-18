@@ -154,7 +154,7 @@ export default {
         { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
       ]
       if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
-        steps.push({ title: '配置同步资源区域', key: 'select-region' })
+        steps.push({ title: this.$t('cloudenv.select_region'), key: 'select-region' })
       }
       if (this.isBill) {
         steps.push({ title: this.$t('cloudenv.text_279'), key: 'bill-form' })
