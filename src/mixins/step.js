@@ -14,7 +14,7 @@ export default {
       return R.equals(this.step.steps.length - 1, this.step.currentStep)
     },
     nextStepTitle () {
-      if (this.isLastStep || (this.step.currentStep === 1 && this.isBill)) return this.$t('dialog.ok')
+      if (this.isLastStep || (this.step.currentStep === 2 && this.isBill)) return this.$t('dialog.ok')
       const nextIndex = this.step.currentStep + 1
       if (nextIndex >= this.step.steps.length) return this.step.steps[this.step.steps.length - 1].title
       return i18n.t('common_76', [this.step.steps[nextIndex].title])

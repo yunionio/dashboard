@@ -503,3 +503,10 @@ export function getEnrollmentNumberDocs (scope) {
   const docsUrl = getDocsCloudaccountPath(scope)
   return docsUrl + i18n.t('cloudenv.text_219')
 }
+
+export const notSupportSelectRegion = [
+  providerMap.vmware.key,
+  providerMap.ceph.key,
+  providerMap.s3.key,
+  providerMap.xsky.key,
+]

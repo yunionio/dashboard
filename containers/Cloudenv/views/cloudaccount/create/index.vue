@@ -3,7 +3,14 @@
     <page-header :title="$t('cloudenv.text_271')" />
     <steps class="my-3" v-model="step" />
     <keep-alive>
-      <component :prepareNetData="prepareNetData" :is="currentComponent" :current-item.sync="currentItem" :account="newAccountInfo" ref="stepRef" :provider="currentItem.provider" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
+      <component
+        ref="stepRef"
+        :is="currentComponent"
+        :prepareNetData="prepareNetData"
+        :current-item.sync="currentItem"
+        :account="newAccountInfo"
+        :provider="currentItem.provider"
+        :create-form-data="createCloudaccountFormData" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     </keep-alive>
     <page-footer isForm>
       <div slot="left">
@@ -28,10 +35,11 @@
 <script>
 import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
+import SelectRegion from './form/SelectRegion'
 import BillForm from './form/BillForm'
 import GuestNetwork from './form/GuestNetwork'
 import HostNetwork from './form/HostNetwork'
-import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
+import { CLOUDACCOUNT_TYPES, notSupportSelectRegion } from '@Cloudenv/views/cloudaccount/constants'
 import step from '@/mixins/step'
 import { Manager } from '@/utils/manager'
 import { getRequestT } from '@/utils/utils'
@@ -42,6 +50,7 @@ export default {
   components: {
     SelectCloudaccount,
     CreateCloudaccount,
+    SelectRegion,
     BillForm,
     GuestNetwork,
     HostNetwork,
@@ -62,6 +71,7 @@ export default {
       loading: false,
       prepareNetData: {},
       networkData: {},
+      createCloudaccountFormData: null,
       step: {
         steps: [],
         currentStep: 0,
@@ -139,18 +149,17 @@ export default {
     //   }
     // },
     changeSteps (val) {
-      if (this.isBill) {
-        this.step.steps = [
-          { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
-          { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
-          { title: this.$t('cloudenv.text_279'), key: 'bill-form' },
-        ]
-      } else {
-        this.step.steps = [
-          { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
-          { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
-        ]
+      const steps = [
+        { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
+        { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
+      ]
+      if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+        steps.push({ title: '配置同步资源区域', key: 'select-region' })
       }
+      if (this.isBill) {
+        steps.push({ title: this.$t('cloudenv.text_279'), key: 'bill-form' })
+      }
+      this.step.steps = steps
     },
     cancel () {
       this.$router.push('/cloudaccount')
@@ -327,7 +336,10 @@ export default {
       if (this.brand === 'vmware' && this.step.currentStep > 1) {
         createForm = this.$refs.stepRef
       }
-      if (this.step.currentStep === 2 && this.isBill) {
+      if (this.step.currentStep === 2 && notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+        return this.doCreateCloudaccountByRegion()
+      }
+      if (this.step.currentStep === this.step.steps.length - 1 && this.isBill) {
         return this.fetchBillSubmit()
       }
       if (!createForm) return false
@@ -346,11 +358,20 @@ export default {
           values.is_public = true
           delete values.share_mode
         }
+        if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+          this.createCloudaccountFormData = values // 存储配置账号信息用来在配置同步资源区域步骤创建云账号
+          values.show_sub_accounts = true
+          values.dry_run = true
+        }
         this.newAccountInfo = await this.doCreateCloudaccount(values)
-        if (this.isBill) {
-          this.currentComponent = 'billConfig'
+        if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+          this.currentComponent = 'select-region'
         } else {
-          this.$router.push('/cloudaccount')
+          if (this.isBill) {
+            this.currentComponent = 'billConfig'
+          } else {
+            this.$router.push('/cloudaccount')
+          }
         }
       } catch (err) {
         throw err
@@ -408,6 +429,28 @@ export default {
         action: 'check-create-data',
         data: data,
       })
+    },
+    async doCreateCloudaccountByRegion () {
+      const chooseRegions = this.$refs.stepRef.chooseRegions
+      let data = this.createCloudaccountFormData
+      if (chooseRegions?.length > 0) {
+        const cloudregionIds = chooseRegions.map(v => {
+          if (v.name?.endsWith('/')) {
+            return { id: v.id }
+          }
+          return { name: v.name }
+        })
+        data = {
+          ...this.createCloudaccountFormData,
+          sub_accounts: { cloudregions: cloudregionIds },
+        }
+      }
+      delete data.show_sub_accounts
+      delete data.dry_run
+      await this.doCreateCloudaccount(data)
+      if (this.step.currentStep === this.step.steps.length - 1) {
+        this.$router.push('/cloudaccount')
+      }
     },
   },
 }
