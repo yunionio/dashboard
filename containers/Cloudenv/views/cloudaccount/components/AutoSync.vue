@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-item :label="$t('cloudenv.text_83')" v-bind="formLayout">
+    <a-form-item :label="$t('cloudenv.text_83')" v-bind="formLayout" v-show="false">
       <a-switch :checkedChildren="$t('cloudenv.text_84')" :unCheckedChildren="$t('cloudenv.text_85')" v-decorator="decorators.enable_auto_sync" @change="change" />
     </a-form-item>
     <a-form-item :label="$t('cloudenv.text_86')" v-bind="formLayout" v-if="showSecond">
