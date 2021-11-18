@@ -9,7 +9,7 @@
       :loading="loading"
       :chartEvents="chartEvents"
       :extraToolbox="extraToolbox" />
-    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="exportExcelColumns" :name="`export.xls`" />
+    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="exportExcelColumns" :name="`${exportName||title}.xls`" />
   </div>
 </template>
 
@@ -34,12 +34,13 @@ export default {
     exportExcelColumns: {
       type: Object,
     },
+    exportName: String,
   }, commonChartProps()),
   computed: {
     extraToolbox () {
       const ret = {
         pdf: {
-          name: this.title,
+          name: this.exportName || this.title,
           target: `#${this.id}`,
         },
       }
