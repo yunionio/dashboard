@@ -44,13 +44,13 @@ export default {
           },
         },
       }),
-      exportDataOptions: {
-        items: [
-          { label: 'ID', key: 'id' },
-          { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('dictionary.role'), key: 'roles' },
-        ],
-      },
+      // exportDataOptions: {
+      //   items: [
+      //     { label: 'ID', key: 'id' },
+      //     { label: this.$t('table.title.name'), key: 'name' },
+      //     { label: this.$t('dictionary.role'), key: 'roles' },
+      //   ],
+      // },
       columns: [
         {
           title: this.$t('common_389'),
