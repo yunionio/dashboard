@@ -238,7 +238,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.alertresource')) {
                 return true
               }
-
+              if (!store.getters.isAdminMode) return true
               return !setupKeys.hasVersionedSetupKey({ '3.0': ['monitor'] }, !(!store.getters.isAdminMode && process.env.VUE_APP_IS_PRIVATE))
             },
           },
