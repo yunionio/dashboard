@@ -100,6 +100,9 @@ export default {
               resId: this.resId,
               columns: this.columns,
               onManager: this.onManager,
+              callback: () => {
+                this.refresh()
+              },
             })
           },
           meta: () => {
@@ -226,6 +229,9 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    refresh () {
+      this.list.fetchData()
+    },
     getParam () {
       const ret = {
         details: true,

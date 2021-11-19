@@ -5,6 +5,9 @@
       <dialog-selected-tips :name="$t('cloudenv.text_12')" class="mt-3" :count="params.data.length" :action="$t('cloudenv.text_432')" />
       <dialog-table v-if="columns && columns.length" :data="params.data" :columns="columns" />
       <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
+        <a-form-item :label="$t('cloudenv.text_95')">
+          <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
+        </a-form-item>
         <a-form-item :label="$t('cloudenv.text_433')">
           <a-radio-group v-decorator="decorators.cycle_type">
             <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskGroupCycleType')" :key="k" :value="k">{{v}}</a-radio-button>
@@ -69,6 +72,14 @@ export default {
     return {
       loading: false,
       decorators: {
+        name: [
+          'name',
+          {
+            rules: [
+              { required: true, message: `${this.$t('common.placeholder')}${this.$t('common.name')}` },
+            ],
+          },
+        ],
         cycle_type: [
           'cycleTimer.cycle_type',
           {
@@ -163,6 +174,8 @@ export default {
         resource_type: 'cloudaccount',
         label_type: 'id',
         label: this.params.resId,
+        operation: 'sync',
+        name: values.name,
       }
       if (values.cycleTimer.cycle_type === 'one') {
         params.scheduled_type = 'timing'
@@ -196,7 +209,8 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const params = this.generateData(values)
-        new this.$Manager('scheduledtasks').create({ data: params })
+        new this.$Manager('scheduledtasks', 'v1').create({ data: params })
+        this.params.callback && this.params.callback()
         this.cancelDialog()
       } catch (error) {
         throw error

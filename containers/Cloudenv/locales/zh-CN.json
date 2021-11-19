@@ -8,7 +8,8 @@
   "cloudenvScheduledtaskRuleAction": {
     "start": "开机",
     "stop": "关机",
-    "restart": "重启"
+    "restart": "重启",
+    "sync": "同步"
   },
   "cloudenvScheduledtaskResourceType": {
     "server": "虚拟机"
