@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
+import { notSupportSelectRegion } from '@Cloudenv/views/cloudaccount/constants'
 
 /**
  * step mixin 仅用来与step组件组合使用
@@ -8,13 +9,21 @@ import i18n from '@/locales'
 export default {
   computed: {
     isFirstStep () {
-      return this.step.currentStep === 0 || (this.step.currentStep === 2 && this.isBill)
+      let currentStep = 2
+      if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+        currentStep = 3
+      }
+      return this.step.currentStep === 0 || (this.step.currentStep === currentStep && this.isBill)
     },
     isLastStep () {
       return R.equals(this.step.steps.length - 1, this.step.currentStep)
     },
     nextStepTitle () {
-      if (this.isLastStep || (this.step.currentStep === 1 && this.isBill)) return this.$t('dialog.ok')
+      let currentStep = 2
+      if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+        currentStep = 3
+      }
+      if (this.isLastStep || (this.step.currentStep === currentStep && this.isBill)) return this.$t('dialog.ok')
       const nextIndex = this.step.currentStep + 1
       if (nextIndex >= this.step.steps.length) return this.step.steps[this.step.steps.length - 1].title
       return i18n.t('common_76', [this.step.steps[nextIndex].title])

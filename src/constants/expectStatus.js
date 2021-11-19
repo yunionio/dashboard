@@ -469,4 +469,8 @@ export default {
     success: ['available'],
     info: ['unknown', 'conflict', 'disabled'],
   },
+  region: {
+    success: ['inservice'],
+    error: ['outofservice'],
+  },
 }

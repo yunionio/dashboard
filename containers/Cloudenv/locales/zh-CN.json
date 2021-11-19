@@ -753,5 +753,8 @@
   "cloudenv.cloudprovider.delete_tip": "本次操作仅删除本地记录，对云上没有影响。若云上没有删除，在下次同步时会恢复。",
   "cloudenv.cloudprovider.sync_delete": "同步中不支持此操作",
   "cloudenv.bill.data_source": "账单数据源:",
-  "cloudenv.text_605": "{0}平台不支持此操作"
+  "cloudenv.text_605": "{0}平台不支持此操作",
+  "cloudenv.select_region": "配置同步资源区域",
+  "cloudenv.select_region_tips": "该配置可在云账号导入后在云账号详情页-订阅-区域进行修改，可根据资源分布配置，提高同步同步效率！",
+  "cloudenv.sync_account": "同步云账号"
 }

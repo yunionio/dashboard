@@ -68,22 +68,21 @@ export default {
       {
         label: i18n.t('cloudenv.text_105'),
         action: obj => {
-          this.onManager('performAction', {
-            id: obj.id,
+          this.createDialog('FullSyncResourceDialog', {
+            title: this.$t('cloudenv.text_105'),
+            name: this.$t('common_711'),
+            action: this.$t('cloudenv.text_105'),
             steadyStatus: {
               status: steadyStatus,
               sync_status: ['idle'],
             },
-            managerArgs: {
-              action: 'sync',
-              params: {
-                full_sync: true,
-                force: true,
-              },
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+            callback: () => {
+              // 订阅同步后，云账号也要同步
+              this.cloudaccountListRefresh && this.cloudaccountListRefresh()
             },
-          }).then(() => {
-            // 订阅同步后，云账号也要同步
-            this.cloudaccountListRefresh && this.cloudaccountListRefresh()
           })
         },
         meta: obj => {

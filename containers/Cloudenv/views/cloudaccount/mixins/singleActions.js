@@ -26,18 +26,30 @@ export default {
         label: i18n.t('cloudenv.text_105'),
         permission: 'cloudaccounts_perform_sync',
         action: (obj) => {
-          this.onManager('performAction', {
-            id: obj.id,
+          // this.onManager('performAction', {
+          //   id: obj.id,
+          //   steadyStatus,
+          //   managerArgs: {
+          //     action: 'sync',
+          //     data: {
+          //       full_sync: true,
+          //       force: true,
+          //     },
+          //   },
+          // }).then(res => {
+          //   this.$message.success(this.$t('cloudenv.text_381'))
+          // })
+          this.createDialog('FullSyncResourceDialog', {
+            title: this.$t('cloudenv.text_105'),
+            name: this.$t('common.account'),
+            action: this.$t('cloudenv.text_105'),
             steadyStatus,
-            managerArgs: {
-              action: 'sync',
-              data: {
-                full_sync: true,
-                force: true,
-              },
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+            callback: () => {
+              this.$message.success(this.$t('cloudenv.text_381'))
             },
-          }).then(res => {
-            this.$message.success(this.$t('cloudenv.text_381'))
           })
         },
         meta: (obj) => this.syncPolicy(obj),

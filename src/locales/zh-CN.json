@@ -1048,6 +1048,10 @@
       "unknown": "未知",
       "conflict": "冲突",
       "disabled": "禁用"
+    },
+    "region": {
+      "inservice": "服务中",
+      "outofservice": "停止服务"
     }
   },
   "skuCategoryOptions": {
@@ -4947,5 +4951,6 @@
   "common.monitor_alert_fatal": "发生致命告警",
   "common.monitor_alert": "发生致命告警",
   "common.later_handle": "稍后处理",
-  "common.attribution_scope": "所属域"
+  "common.attribution_scope": "所属域",
+  "common.full_sync_resource_type": "同步资源类型"
 }
