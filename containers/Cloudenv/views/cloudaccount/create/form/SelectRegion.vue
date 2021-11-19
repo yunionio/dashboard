@@ -121,6 +121,16 @@ export default {
       this.list.responseData = { data }
       return response
     },
+    validateForm () {
+      return new Promise((resolve, reject) => {
+        if (this.chooseRegions.length > 0) {
+          resolve()
+        } else {
+          this.$message.warning(this.$t('cloudenv.text_231'))
+          reject(this.$t('cloudenv.text_231'))
+        }
+      })
+    },
   },
 }
 </script>

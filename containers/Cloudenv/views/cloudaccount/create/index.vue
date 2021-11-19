@@ -332,20 +332,21 @@ export default {
     //   }
     // },
     async validateForm () {
-      let createForm = this.$refs.stepRef.$refs.createForm
-      if (this.brand === 'vmware' && this.step.currentStep > 1) {
-        createForm = this.$refs.stepRef
-      }
-      if (this.step.currentStep === 2 && notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
-        return this.doCreateCloudaccountByRegion()
-      }
-      if (this.step.currentStep === this.step.steps.length - 1 && this.isBill) {
-        return this.fetchBillSubmit()
-      }
-      if (!createForm) return false
       try {
-        this.loading = true
+        let createForm = this.$refs.stepRef.$refs.createForm
+        if (this.brand === 'vmware' && this.step.currentStep > 1) {
+          createForm = this.$refs.stepRef
+        }
+        if (this.step.currentStep === 2 && notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+          await this.$refs.stepRef.validateForm()
+          return this.doCreateCloudaccountByRegion()
+        }
+        if (this.step.currentStep === this.step.steps.length - 1 && this.isBill) {
+          return this.fetchBillSubmit()
+        }
+        if (!createForm) return false
         const values = await createForm.validateForm()
+        this.loading = true
         // if (this.brand === 'vmware') {
         //   return await this.vmwareForm(values)
         // }
