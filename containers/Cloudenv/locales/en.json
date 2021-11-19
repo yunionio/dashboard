@@ -8,7 +8,8 @@
   "cloudenvScheduledtaskRuleAction": {
     "start": "Start",
     "stop": "Stop",
-    "restart": "Restart"
+    "restart": "Restart",
+    "sync": "Sync"
   },
   "cloudenvScheduledtaskResourceType": {
     "server": "Server"
