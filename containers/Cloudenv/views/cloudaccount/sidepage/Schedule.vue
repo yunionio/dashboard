@@ -57,6 +57,7 @@ export default {
       ],
       list: this.$list.createList(this, {
         id: this.id,
+        apiVersion: 'v1',
         resource: 'scheduledtasks',
         getParams: this.getParam,
         filterOptions: {
