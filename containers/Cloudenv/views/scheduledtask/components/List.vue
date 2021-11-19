@@ -29,6 +29,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
+        apiVersion: 'v1',
         resource: 'scheduledtasks',
         getParams: { details: true },
         filterOptions: {
@@ -163,6 +164,7 @@ export default {
       // this.initSidePageTab(initSidePageTab)
       this.sidePageTriggerHandle(this, 'ScheduledtaskSidePage', {
         id: row.id,
+        apiVersion: 'v1',
         resource: 'scheduledtasks',
         getParams: { details: true },
       }, {
