@@ -388,6 +388,36 @@ export default {
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                 },
+                {
+                  label: i18n.t('compute.sync_config'),
+                  permission: 'server_perform_sync_config',
+                  action: () => {
+                    this.createDialog('VmSyncConfigDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const provider = obj.provider
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                      return ret
+                    }
+                    if (obj.status !== 'running' && obj.status !== 'ready') {
+                      ret.validate = false
+                      ret.tooltip = i18n.t('compute.text_1126')
+                      return ret
+                    }
+                    ret.validate = true
+                    return ret
+                  },
+                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
+                },
               ],
             },
             {

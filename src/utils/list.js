@@ -1069,7 +1069,9 @@ class CreateList {
         } else {
           if (res.status < 400) {
             if (on !== 'getSpecific') {
-              waitUpdateIds.push(ids[0])
+              for (let i = 0; i < ids.length; i++) {
+                waitUpdateIds.push(ids[i])
+              }
               // this.update(ids[0], res.data)
             }
           } else {
