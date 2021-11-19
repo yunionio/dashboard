@@ -14,7 +14,6 @@
 <script>
 import { getNameFilter, getEnabledFilter } from '@/utils/common/tableFilter'
 import {
-  getEnabledTableColumn,
   getNameDescriptionTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
@@ -56,7 +55,17 @@ export default {
             )
           },
         }),
-        getEnabledTableColumn({ title: this.$t('cloudenv.text_97') }),
+        {
+          field: 'status',
+          title: this.$t('common.status'),
+          slots: {
+            default: ({ row }) => {
+              return [
+                <status status={ row.status } statusModule='region' />,
+              ]
+            },
+          },
+        },
       ],
       groupActions: [
         // {

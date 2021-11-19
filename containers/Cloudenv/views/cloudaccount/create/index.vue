@@ -435,14 +435,17 @@ export default {
       let data = this.createCloudaccountFormData
       if (chooseRegions?.length > 0) {
         const cloudregionIds = chooseRegions.map(v => {
-          if (v.name?.endsWith('/')) {
-            return { id: v.id }
+          if (v.id?.endsWith('/')) {
+            return { name: v.name }
           }
-          return { name: v.name }
+          return { id: v.id }
         })
         data = {
           ...this.createCloudaccountFormData,
-          sub_accounts: { cloudregions: cloudregionIds },
+          sub_accounts: {
+            accounts: this.newAccountInfo.sub_accounts.accounts,
+            cloudregions: cloudregionIds,
+          },
         }
       }
       delete data.show_sub_accounts

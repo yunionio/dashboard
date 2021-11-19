@@ -1048,6 +1048,10 @@
       "unknown": "未知",
       "conflict": "冲突",
       "disabled": "禁用"
+    },
+    "region": {
+      "inservice": "服务中",
+      "outofservice": "停止服务"
     }
   },
   "skuCategoryOptions": {

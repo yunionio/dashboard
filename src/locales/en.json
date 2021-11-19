@@ -1036,6 +1036,10 @@
       "unknown": "Unknown",
       "conflict": "Conflict",
       "disabled": "Disabled"
+    },
+    "region": {
+      "inservice": "Inservice",
+      "outofservice": "Outofservice"
     }
   },
   "skuCategoryOptions": {
