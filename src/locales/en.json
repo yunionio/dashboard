@@ -4939,5 +4939,6 @@
   "common.monitor_alert_fatal": "A fatal alarm has occurred",
   "common.monitor_alert": "A fatal alarm has occurred",
   "common.later_handle": "Handle later",
-  "common.attribution_scope": "Attribution Scope"
+  "common.attribution_scope": "Attribution Scope",
+  "common.full_sync_resource_type": "Sync Resource Type"
 }

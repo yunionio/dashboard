@@ -134,7 +134,16 @@ export default {
                 label: this.$t('cloudenv.text_105'),
                 permission: 'cloudaccounts_perform_sync',
                 action: () => {
-                  this.list.batchPerformAction('sync', { full_sync: true, force: true }, this.list.steadyStatus)
+                  // this.list.batchPerformAction('sync', { full_sync: true, force: true }, this.list.steadyStatus)
+                  this.createDialog('FullSyncResourceDialog', {
+                    title: this.$t('cloudenv.text_105'),
+                    name: this.$t('common.account'),
+                    action: this.$t('cloudenv.text_105'),
+                    steadyStatus: this.list.steadyStatus,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
                 },
                 meta: () => this.syncPolicy(this.list.selectedItems),
               },
