@@ -138,9 +138,11 @@ export default {
       },
       platformOptions: [],
       regionParams: {
+        cloud_env: this.params.title,
         scope: this.$store.getters.scope,
       },
       providerParams: {
+        cloud_env: this.params.title,
         scope: this.$store.getters.scope,
       },
       hostParams: {
@@ -314,6 +316,7 @@ export default {
           usable: true,
           provider: e,
           scope: this.$store.getters.scope,
+          cloud_env: this.params.title,
         }
       } else {
         this.hostParams = {
