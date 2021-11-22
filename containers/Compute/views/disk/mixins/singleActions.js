@@ -130,7 +130,7 @@ export default {
             },
             {
               label: i18n.t('compute.disk_perform_create_snapshot'),
-              permission: 'disks_perform_create_snapshot',
+              permission: 'snapshots_create',
               action: () => {
                 this.createDialog('DiskCreateSnapshotDialog', {
                   data: [obj],
