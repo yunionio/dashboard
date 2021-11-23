@@ -18,7 +18,7 @@
       :data="skuResults"
       :radio-config="{ reserve: true }">
       <template v-slot:empty>
-        <loader :loading="skuLoading" />
+        <loader :loading="skuLoading || !canSkuShow" />
       </template>
     </vxe-grid>
     <div class="mt-1" v-if="selectedTip">{{$t('compute.text_171', [ selectedTip ])}}</div>
@@ -89,6 +89,10 @@ export default {
     skuFilter: {
       type: Function,
       default: (items) => { return items },
+    },
+    canSkuShow: {
+      type: Boolean,
+      default: () => true,
     },
   },
   data () {
@@ -234,6 +238,7 @@ export default {
       return ret
     },
     skuResults () {
+      if (!this.canSkuShow) return []
       const ret = this.skuInfo.skuOptions[this.skuType]
       if (ret && ret.length > 0 && ret[0].hour_price) {
         ret.sort((a, b) => a.hour_price - b.hour_price)
