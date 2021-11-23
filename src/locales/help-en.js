@@ -62,5 +62,6 @@ export default {
                           * During shutdown, many instances of operations (such as adjusting the configuration, reinstalling the system, etc.) may not be supported. If you need to operate, please perform it after booting.<br />
                           * Some instances that do not support shutdown without charging will continue to be charged normally after shutdown`,
     billNegativeNumberReson: 'Negative numbers in the bill are due to refunds arising, such as early release refunds for annual and monthly machines, refunds following the use of coupons, and refunds for other benefits enjoyed by the account.',
+    billCurrentYearFee: 'This year\'s consumption is displayed as the current year\'s expenses on the currently selected date and end date',
   },
 }
