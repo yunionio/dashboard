@@ -163,7 +163,8 @@ export default {
     },
   },
   created () {
-    this.isSingle && this.queryForcastData()
+    // Qiu Jian: no need to query forecast data, let user decide
+    // this.isSingle && this.queryForcastData()
     this.queryHosts()
   },
   methods: {

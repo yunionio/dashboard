@@ -1464,5 +1464,6 @@
   "compute.prompt_vga": "Please specify video driver",
   "compute.machine": "Machine type",
   "compute.prompt_machine": "Please specify machine type",
-  "compute.need_reboot_prompt": "Reboot is required to make configuration changes take effect."
+  "compute.need_reboot_prompt": "Reboot is required to make configuration changes take effect.",
+  "compute.sync_config": "Push Config"
 }
