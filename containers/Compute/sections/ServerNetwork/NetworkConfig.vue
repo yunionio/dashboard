@@ -151,6 +151,7 @@ export default {
     },
     showVpc: {
       type: Boolean,
+      default: true,
     },
   },
   data () {
