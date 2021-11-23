@@ -107,7 +107,7 @@ export default {
       const { data } = this.params
       const resItem = data && data.length > 0 ? data[0] : {}
       return {
-        filter: 'server_type.notin(ipmi, pxe)',
+        filter: 'server_type.notin(ipmi, pxe, eip)',
         usable: true,
         cloudregion: resItem.cloudregion_id,
         zone: resItem.zone_id,
