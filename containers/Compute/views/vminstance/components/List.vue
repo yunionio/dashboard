@@ -358,6 +358,38 @@ export default {
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                   },
+                  {
+                    label: this.$t('compute.sync_config'), // 推送配置
+                    permission: 'server_perform_sync_config',
+                    action: () => {
+                      this.createDialog('VmSyncConfigDialog', {
+                        data: this.list.selectedItems,
+                        columns: this.columns,
+                        onManager: this.onManager,
+                      })
+                    },
+                    meta: () => {
+                      const ret = {
+                        validate: true,
+                        tooltip: null,
+                      }
+                      const isAllKVM = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.kvm.key)
+                      const isAllRunningReady = this.list.selectedItems.every(item => (item.status === 'running' || item.status === 'ready'))
+                      if (!isAllKVM) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1388')
+                        return ret
+                      }
+                      if (!isAllRunningReady) {
+                        ret.validate = false
+                        ret.tooltip = this.$t('compute.text_1126')
+                        return ret
+                      }
+                      ret.validate = true
+                      return ret
+                    },
+                    hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
+                  },
                 ],
               },
               {

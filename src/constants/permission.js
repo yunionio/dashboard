@@ -251,6 +251,7 @@ export const PERMISSION = {
   server_perform_set_user_metadata: ['compute', 'servers', 'perform', 'set-user-metadata'],
   server_perform_suspend: ['compute', 'servers', 'perform', 'suspend'],
   server_perform_resume: ['compute', 'servers', 'perform', 'resume'],
+  server_perform_sync_config: ['compute', 'servers', 'perform', 'sync'],
   server_perform_attach_isolated_device: ['compute', 'servers', 'perform', 'attach-isolated-device'],
   server_perform_detach_isolated_device: ['compute', 'servers', 'perform', 'detach-isolated-device'],
   server_perform_set_isolated_device: ['compute', 'servers', 'perform', 'set-isolated-device'],
