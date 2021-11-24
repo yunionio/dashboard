@@ -32,7 +32,8 @@
               :require-sys-disk-type="requireSysDiskType"
               :require-data-disk-types="requireDataDiskTypes"
               :instance-type="instanceType"
-              :hypervisor="hypervisor" />
+              :hypervisor="hypervisor"
+              :canSkuShow="diskLoaded" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
             <system-disk
@@ -407,6 +408,11 @@ export default {
       }
       if (this.type === SERVER_TYPE.idc) {
         params.provider = HYPERVISORS_MAP.kvm.provider
+        params.public_cloud = false
+        params.postpaid_status = 'available'
+        if (this.selectedItem) {
+          params.cloudregion = this.selectedItem.cloudregion_id
+        }
       }
       if (this.type === SERVER_TYPE.private) {
         if (this.selectedItem && this.selectedItem.provider === HYPERVISORS_MAP.hcso.provider) {
@@ -416,6 +422,7 @@ export default {
           params['provider.0'] = HYPERVISORS_MAP.kvm.provider
           params['provider.1'] = HYPERVISORS_MAP.openstack.provider
         }
+        params.private_cloud = true
         params.postpaid_status = 'available'
       }
       if (this.type === SERVER_TYPE.public) {
