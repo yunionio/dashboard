@@ -272,7 +272,11 @@ export default {
       }
       if ([IMAGES_TYPE_MAP.host.key, IMAGES_TYPE_MAP.snapshot.key].includes(this.form.fd.imageType)) return // 主机镜像和主机快照设置默认值交给外层处理
       const keys = Object.keys(this.typesMap)
-      const firstKey = keys[0]
+      let firstKey = keys[0]
+      const { systemDiskSize, systemDiskType } = this.form.fd
+      if (systemDiskSize && systemDiskType && this.typesMap[systemDiskType.key]) { // 此前选定的系统盘类型，仍然有，则保留之前的配置
+        firstKey = systemDiskType.key
+      }
       const diskMsg = this.typesMap[firstKey]
       this.form.fc.setFieldsValue(this.defaultType || {
         [this.decorator.type[0]]: { key: diskMsg.key, label: diskMsg.label },
@@ -280,8 +284,12 @@ export default {
       this.setDiskMedium(diskMsg)
       this.$nextTick(() => { // 解决磁盘大小 inputNumber 第一次点击变为0 的bug
         const initSize = this.defaultSize && this.defaultSize > this.imageMinDisk ? this.defaultSize : this.imageMinDisk
+        let newDiskSize = initSize || +diskMsg.sysMin
+        if (systemDiskSize && systemDiskType && this.decorator.size[0] === 'systemDiskSize') { // 保留之前选择的系统盘大小
+          newDiskSize = (systemDiskSize >= diskMsg.sysMin && systemDiskSize < diskMsg.sysMax) ? systemDiskSize : newDiskSize
+        }
         this.form.fc.setFieldsValue({
-          [this.decorator.size[0]]: initSize || +diskMsg.sysMin,
+          [this.decorator.size[0]]: newDiskSize,
         })
       })
     },
