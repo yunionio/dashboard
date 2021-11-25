@@ -14,7 +14,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter, getRegionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter, getRegionFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -53,6 +53,7 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
           status: getStatusFilter('servertemplate'),

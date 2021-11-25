@@ -35,6 +35,7 @@ import {
   getOsArchFilter,
   getRegionFilter,
   getCloudProviderFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -74,6 +75,7 @@ export default {
         label: this.$t('table.title.id'),
       },
       name: getNameFilter(),
+      description: getDescriptionFilter(),
       brand: getBrandFilter('compute_engine_brands'),
       ip_addr: {
         label: 'IP',
