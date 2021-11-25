@@ -14,6 +14,9 @@
         <a-form-item :label="$t('cloudenv.text_95')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <!-- 规则 -->
         <a-form-item :label="$t('cloudenv.text_582')">
           <div v-for="(item,index) in form.fc.getFieldValue('rules')" :key="item" :value="item" class="d-flex align-items-center">
@@ -149,6 +152,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         project_domain_id: [
           'project_domain_id',
           {
@@ -340,10 +344,11 @@ export default {
         this.loading = false
       }
     },
-    getCreateParams ({ project_domain_id, name, rules, tags, matchs, maps }) {
+    getCreateParams ({ project_domain_id, name, description, rules, tags, matchs, maps }) {
       const result = {
         project_domain_id,
         name,
+        description,
         rules: [],
       }
       result.rules = rules.map((item, index) => {

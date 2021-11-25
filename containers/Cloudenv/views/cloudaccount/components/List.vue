@@ -14,7 +14,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -52,6 +52,7 @@ export default {
         },
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           // access_url: getFilter({
           //   field: 'access_url',
           //   title: '环境',
