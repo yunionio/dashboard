@@ -15,6 +15,9 @@
         <a-form-item :label="$t('storage.text_40')">
           <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('storage.text_39')">
           <a-radio-group v-decorator="decorators.medium_type" buttonStyle="solid">
             <a-radio-button v-for="(v, k) in MEDIUM_TYPES" :key="v" :value="k">{{v}}</a-radio-button>
@@ -90,6 +93,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         regionZone: {
           cloudregion: [
             'cloudregion',

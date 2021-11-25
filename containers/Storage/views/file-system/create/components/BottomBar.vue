@@ -49,6 +49,7 @@ export default {
         const params = {
           billing_type: values.billing_type,
           name: values.name,
+          description: values.description,
           network_id: values.network,
           zone_id: values.zone_id,
           project_domain: values.project_domain,

@@ -21,6 +21,9 @@
           <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />
           <span slot="extra">{{$t('storage.text_101')}}<template v-if="cloudregion.provider === 'Azure'"><br />{{$t('storage.text_102')}}</template></span>
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('compute.text_15')" required v-bind="formItemLayout">
           <base-select
             class="w-50"
@@ -127,6 +130,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         cloudprovider: [
           'cloudprovider',
           {
