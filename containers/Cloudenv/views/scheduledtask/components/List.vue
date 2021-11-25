@@ -14,6 +14,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import {
   getStatusFilter,
   getTenantFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -40,6 +41,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           enabled: {
             label: this.$t('cloudenv.text_97'),
             dropdown: true,
