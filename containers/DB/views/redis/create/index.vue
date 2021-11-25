@@ -16,6 +16,9 @@
             <name-repeated res="dbinstances" :name="form.getFieldValue('generate_name')" />
           </template>
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <!-- 计费方式 -->
         <clearing-radios v-bind="formItemLayout" :auto_renew="false" />
         <a-form-item :label="$t('db.text_71')" v-if="form.fd.billing_type !== 'prepaid'">

@@ -48,6 +48,7 @@ export const DECORATORS = {
       ],
     },
   ],
+  description: ['description'],
   loginConfig: {
     loginType: [
       'loginType',

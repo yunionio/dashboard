@@ -141,6 +141,7 @@ export const DECORATORS = {
       ],
     },
   ],
+  description: ['description'],
   count: [
     'count',
     {
