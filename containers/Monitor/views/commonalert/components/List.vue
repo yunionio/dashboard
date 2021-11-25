@@ -14,7 +14,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getTenantFilter, getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getEnabledFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { levelMaps } from '@Monitor/constants'
@@ -45,6 +45,7 @@ export default {
         steadyStatus: Object.values(expectStatus.commonalert).flat(),
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           status: getStatusFilter('commonalert'),
           enabled: getEnabledFilter(),
           tenant: getTenantFilter(),

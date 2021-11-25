@@ -12,7 +12,7 @@ import { levelMaps } from '@Monitor/constants'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import BrandIcon from '@/sections/BrandIcon'
-import { getNameFilter, getTimeRangeFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTimeRangeFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getTimeTableColumn, getStatusTableColumn, getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import { strategyColumn, levelColumn } from '@Monitor/views/commonalert/utils'
 import ColumnsMixin from '../mixins/columns'
@@ -159,6 +159,7 @@ export default {
     filters () {
       const options = {
         name: getNameFilter({ field: 'name', label: this.$t('monitor.text_99') }),
+        description: getDescriptionFilter(),
         level: {
           label: this.$t('monitor.level'),
           dropdown: true,

@@ -12,7 +12,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'List',
@@ -34,6 +34,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           status: getStatusFilter('cloudaccount'),
           alert_state: getStatusFilter({
             field: 'alert_state',
