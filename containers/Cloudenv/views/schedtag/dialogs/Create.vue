@@ -12,6 +12,9 @@
               res="schedtags"
               :name="form.fi.name" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item required :label="$t('cloudenv.text_413')" v-bind="formItemLayout">
           <strategy-radio :decorator="decorators.default_strategy" />
         </a-form-item>
@@ -65,6 +68,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         default_strategy: [
           'default_strategy',
           {

@@ -13,7 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getEnabledFilter, getFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 
 const getParams = { details: true }
 
@@ -31,6 +31,7 @@ export default {
         getParams,
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           enabled: getEnabledFilter(),
           strategy: {
             label: this.$t('cloudenv.text_413'),

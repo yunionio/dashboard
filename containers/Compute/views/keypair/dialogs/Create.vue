@@ -7,6 +7,9 @@
         <a-form-item :label="$t('compute.text_727')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_728')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('compute.text_1379')" v-bind="formItemLayout" :extra="extra">
           <a-radio-group v-decorator="decorators.createType" @change="handleCreateTypeChange">
             <a-radio-button value="new">
@@ -79,6 +82,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         public_key: [
           'public_key',
           {

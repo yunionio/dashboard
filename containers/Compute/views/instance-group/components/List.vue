@@ -10,7 +10,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getStatusFilter, getDomainFilter, getTenantFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getDomainFilter, getTenantFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -41,6 +41,7 @@ export default {
               return `name.contains(${val})`
             },
           },
+          description: getDescriptionFilter(),
           status: getStatusFilter('instanceGroup'),
           force_dispersion: {
             label: this.$t('table.title.strategy'),

@@ -19,6 +19,9 @@
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item label="VPC" v-bind="formItemLayout">
           <base-select
             v-decorator="decorators.vpc"
@@ -240,6 +243,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         vpc: [
           'vpc',
           {
@@ -661,6 +665,7 @@ export default {
               guest_ntp: values.guest_ntp,
               guest_ip_prefix: value,
               name: values.name,
+              description: values.description,
               vpc: values.vpc,
               zone: values.zone,
               project_id: values.project.key,
@@ -682,6 +687,7 @@ export default {
               guest_ip_start: values.startip[key],
               vlan_id: values.vlan[key] === '' ? '1' : values.vlan[key],
               name: values.name,
+              description: values.description,
               project_id: values.project.key,
               server_type: values.server_type,
               wire_id: values.wire,
@@ -698,6 +704,7 @@ export default {
           project_id: values.project.key,
           guest_ip_prefix: values.guest_ip_prefix[0],
           name: values.name,
+          description: values.description,
           wire_id: values.wire,
           is_auto_alloc: values.is_auto_alloc,
         }
@@ -706,6 +713,7 @@ export default {
         project_id: values.project.key,
         guest_ip_prefix: values.guest_ip_prefix[0],
         name: values.name,
+        description: values.description,
         vpc: values.vpc,
         zone: values?.zone,
         is_auto_alloc: values.is_auto_alloc,

@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows.js'
-import { getNameFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
@@ -68,6 +68,7 @@ export default {
         label: this.$t('table.title.id'),
       },
       name: getNameFilter(),
+      description: getDescriptionFilter(),
       ip_match: {
         label: 'IP',
       },

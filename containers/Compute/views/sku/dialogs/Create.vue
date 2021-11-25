@@ -10,6 +10,9 @@
         <a-form-item :label="$t('compute.text_1052')" :extra="$t('compute.text_1056')">
           <a-input-number :min="0.5" :max="512" v-decorator="decorators.memory_size_mb" /> GB
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -45,6 +48,7 @@ export default {
             initialValue: 16,
           },
         ],
+        description: ['description'],
       },
       formItemLayout: {
         wrapperCol: {

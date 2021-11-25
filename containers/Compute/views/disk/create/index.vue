@@ -22,6 +22,9 @@
       <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
+      <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+        <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+      </a-form-item>
       <a-form-item :label="$t('compute.text_100')" required v-bind="formItemLayout" :extra="extra">
         <a-row>
           <a-col :span="6" class="mr-2">
@@ -164,6 +167,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         backend: [
           'backend',
           {

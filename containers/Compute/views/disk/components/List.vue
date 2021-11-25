@@ -27,6 +27,7 @@ import {
   getDomainFilter,
   getAccountFilter,
   getRegionFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -191,6 +192,7 @@ export default {
         label: this.$t('table.title.id'),
       },
       name: getNameFilter(),
+      description: getDescriptionFilter(),
       status: getStatusFilter('disk'),
       storage: {
         label: this.$t('table.title.disk_storage'),
