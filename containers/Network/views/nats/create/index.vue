@@ -12,6 +12,9 @@
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <!-- 计费方式 -->
         <clearing-radios v-bind="formItemLayout" :auto_renew="false" />
         <a-form-item :label="$t('network.expired_release')" v-if="form.fd.billing_type !== 'prepaid'">

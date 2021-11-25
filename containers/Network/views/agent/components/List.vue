@@ -18,6 +18,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import regexp from '@/utils/regexp'
+import { getDescriptionFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'AgentList',
@@ -40,6 +41,7 @@ export default {
           return `name.contains(${val})`
         },
       },
+      description: getDescriptionFilter(),
       ip: {
         label: 'IP',
       },

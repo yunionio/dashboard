@@ -20,7 +20,7 @@ import { validateEnabled, validateDisable } from '../utils'
 import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter, getCloudProviderFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import { PROVIDER_MAP } from '@/constants'
@@ -52,6 +52,7 @@ export default {
         label: this.$t('table.title.id'),
       },
       name: getNameFilter(),
+      description: getDescriptionFilter(),
       status: getStatusFilter('lb'),
       address: {
         label: this.$t('network.text_248'),

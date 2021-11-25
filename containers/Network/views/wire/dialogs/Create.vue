@@ -10,6 +10,9 @@
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')"  />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item label="VPC" v-bind="formItemLayout" :validateStatus="vpcValidateStatus" :help="vpcHelp" :required="true">
           <a-row :gutter="8">
             <a-col :span="12">
@@ -143,6 +146,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         bandwidth: [
           'bandwidth',
           {
@@ -256,6 +260,7 @@ export default {
       const params = {
         project_domain: data.project_domain,
         name: data.name,
+        description: data.description,
         zone_id: data.zone,
         vpc_id: data.vpc,
         bandwidth: data.bandwidth,

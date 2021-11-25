@@ -16,6 +16,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import { getDescriptionFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'SshProxyList',
@@ -42,6 +43,7 @@ export default {
               return `name.contains(${val})`
             },
           },
+          description: getDescriptionFilter(),
           ip_addr: {
             label: 'IP',
             filter: true,

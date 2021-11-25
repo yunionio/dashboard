@@ -49,9 +49,10 @@ export default {
       try {
         const { $refs: { step1Ref } } = this
         const values = await step1Ref.form.fc.validateFields()
-        const { name, project_domain, zoneType } = values
+        const { name, project_domain, zoneType, description } = values
         const data = {
           name,
+          description,
           project_domain_id: project_domain,
           zone_type: zoneType,
         }

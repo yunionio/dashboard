@@ -6,6 +6,9 @@
         <a-form-item :label="$t('network.text_21')">
           <a-input :disabled="!!lbAgentId" v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('network.text_19')" v-bind="formItemLayout">
           <base-select
             :disabled="!!lbAgentId"
@@ -142,6 +145,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         cluster_id: [
           'cluster_id',
           {

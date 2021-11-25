@@ -7,6 +7,9 @@
         <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('cloudenv.text_10')" v-bind="formItemLayout">
           <base-select
             resource="cloudregions"
@@ -50,6 +53,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         region: [
           'region',
           {

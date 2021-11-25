@@ -18,7 +18,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getCloudProviderFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
@@ -58,6 +58,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           status: getStatusFilter('cdnDomain'),
           cloudaccount: getAccountFilter(),
           manager: getCloudProviderFilter(),

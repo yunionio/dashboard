@@ -7,7 +7,7 @@
 
 <script>
 import ColumnsMixin from '../mixins/columns'
-import { getNameFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -25,6 +25,7 @@ export default {
         getParams: { cloud_env: 'private_or_onpremise' },
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           enabled: getEnabledFilter({ label: this.$t('cloudenv.text_98') }),
         },
       }),
