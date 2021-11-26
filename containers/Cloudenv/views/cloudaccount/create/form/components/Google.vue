@@ -4,6 +4,9 @@
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
+      <a-form-item :label="$t('common.description')">
+        <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+      </a-form-item>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <upload-json-file :fc="form.fc">
         <a-form-item label="project_id">
@@ -64,6 +67,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         project_id: [
           'gcp_project_id',
           {

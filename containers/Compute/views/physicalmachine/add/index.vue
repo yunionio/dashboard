@@ -148,6 +148,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         ipmi_ip_addr: [
           'ipmi_ip_addr',
           {
@@ -276,6 +277,7 @@ export default {
       const data = [
         this.form.fd.mac,
         this.form.fd.name,
+        this.form.fd.description,
         this.form.fd.ipmi_ip_addr,
         this.form.fd.ipmi_username,
         this.form.fd.ipmi_password,
@@ -326,6 +328,7 @@ export default {
     doIsoSingleAdd () {
       const data = {
         name: this.form.fd.name,
+        description: this.form.fd.description,
         ipmi_ip_addr: this.form.fd.ipmi_ip_addr,
         ipmi_username: this.form.fd.ipmi_username,
         ipmi_password: this.form.fd.ipmi_password,
@@ -367,6 +370,7 @@ export default {
     doPxeSingleAdd () {
       const data = {
         name: this.form.fd.name,
+        description: this.form.fd.description,
         ipmi_ip_addr: this.form.fd.ipmi_ip_addr,
         ipmi_username: this.form.fd.ipmi_username,
         ipmi_password: this.form.fd.ipmi_password,

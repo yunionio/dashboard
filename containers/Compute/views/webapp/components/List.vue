@@ -22,6 +22,7 @@ import {
   getAccountFilter,
   getRegionFilter,
   getCloudProviderFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 
 export default {
@@ -41,6 +42,7 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           brand: getBrandFilter('compute_engine_brands'),
           status: getStatusFilter('webapp'),
           tech_stack: {

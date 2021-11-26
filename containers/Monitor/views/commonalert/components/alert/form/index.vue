@@ -4,6 +4,9 @@
     <a-form-item :label="$t('common.name')">
       <a-input v-decorator="decorators.name" :placeholder="$t('common.placeholder')" :disabled="disabled" />
     </a-form-item>
+    <a-form-item :label="$t('common.description')">
+      <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+    </a-form-item>
     <a-form-item :label="$t('monitor.monitor_metric')" class="mb-0">
       <metric
         :form="form"
@@ -233,6 +236,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         metric_res_type: [
           'metric_res_type',
           {

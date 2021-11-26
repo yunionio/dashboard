@@ -17,7 +17,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { getFilter, getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getFilter, getStatusFilter, getBrandFilter, getAccountFilter, getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -53,6 +53,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           status: getStatusFilter('nas'),
           cloudaccount: getAccountFilter(),
           brand: getBrandFilter('nas_brands'),

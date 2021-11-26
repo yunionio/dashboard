@@ -6,6 +6,9 @@
         <a-form-item :label="$t('system.text_101')">
           <a-input v-decorator="decorators.name" :placeholder="$t('system.text_168')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('system.text_169')" required v-if="l3PermissionEnable&&isEnableQuotaCheck">
           <quota-set
             ref="quotaSetRef"
@@ -54,6 +57,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
       },
       formItemLayout: {
         wrapperCol: {
@@ -107,6 +111,7 @@ export default {
         const { data } = await manager.create({
           data: {
             name: escapeHTML(this.form.fc.getFieldValue('name')),
+            description: this.form.fc.getFieldValue('description'),
           },
         })
         return data

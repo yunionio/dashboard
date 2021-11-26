@@ -21,6 +21,9 @@
             <a-input v-decorator="decorators.generate_name" :placeholder="$t('common.placeholder')" @change="handleNameChange" />
             <name-repeated v-slot:extra res="proxy_endpoints" :name="generate_name" />
           </a-form-item>
+          <a-form-item :label="$t('common.description')">
+            <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+          </a-form-item>
           <area-selects
             class="mb-0"
             ref="areaSelects"
@@ -174,6 +177,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         server_id: [
           'server_id',
           {

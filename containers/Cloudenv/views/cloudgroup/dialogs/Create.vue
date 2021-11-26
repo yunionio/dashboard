@@ -25,6 +25,9 @@
             :name="form.fi.generate_name"
             :params="nameRepeatParams" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('common.brand')">
           <a-select
             showSearch
@@ -97,6 +100,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         provider: [
           'provider',
           {

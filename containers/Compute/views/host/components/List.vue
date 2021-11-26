@@ -18,7 +18,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter, getOsArchFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -61,6 +61,7 @@ export default {
         label: this.$t('table.title.id'),
       },
       name: getNameFilter(),
+      description: getDescriptionFilter(),
       status: getStatusFilter('host'),
       enabled: getEnabledFilter(),
       host_status: {

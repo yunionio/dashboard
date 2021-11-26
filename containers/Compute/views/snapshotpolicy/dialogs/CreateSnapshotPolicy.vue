@@ -18,6 +18,9 @@
             <div>{{$t('compute.text_1091')}}</div>
           </div>
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('compute.text_431')" v-bind="formItemLayout">
           <a-checkbox-group v-decorator="decorators.repeat_weekdays">
             <a-checkbox
@@ -107,6 +110,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         repeat_weekdays: [
           'repeat_weekdays',
           {

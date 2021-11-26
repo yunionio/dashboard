@@ -20,7 +20,7 @@ import { getWiresMergeAction } from '../utils/groupactions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
-import { getNameFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
@@ -65,6 +65,7 @@ export default {
             },
           },
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           bandwidth: {
             label: this.$t('network.text_694'),
             dropdown: true,

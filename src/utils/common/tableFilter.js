@@ -414,3 +414,14 @@ export function getImageDistributionFilter () {
     ],
   }
 }
+
+export function getDescriptionFilter (params = {}) {
+  const { label = i18n.t('table.title.desc'), field = 'description' } = params
+  return {
+    label,
+    filter: true,
+    formatter: val => {
+      return `${field}.contains('${val}')`
+    },
+  }
+}

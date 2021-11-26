@@ -16,7 +16,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
@@ -45,6 +45,7 @@ export default {
               return `name.contains(${val})`
             },
           },
+          description: getDescriptionFilter(),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
         },

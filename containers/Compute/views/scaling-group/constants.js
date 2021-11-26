@@ -30,6 +30,9 @@ export const DECORATORS = {
       ],
     },
   ],
+  description: [
+    'description',
+  ],
   guest_template_id: [
     'guest_template_id',
     {

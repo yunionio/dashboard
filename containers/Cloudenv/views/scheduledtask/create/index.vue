@@ -9,6 +9,9 @@
         <a-form-item :label="$t('cloudenv.text_95')">
           <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('cloudenv.text_433')">
           <a-radio-group v-decorator="decorators.cycle_type">
             <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskGroupCycleType')" :key="k" :value="k">{{v}}</a-radio-button>
@@ -129,6 +132,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         cycle_type: [
           'cycleTimer.cycle_type',
           {
@@ -287,9 +291,10 @@ export default {
       }
     },
     generateData (values) {
-      const { domain, project, name, action, labelType, servers, cycleTimer, resourceType } = values
+      const { domain, project, name, description, action, labelType, servers, cycleTimer, resourceType } = values
       const params = {
         generate_name: name,
+        description,
         resource_type: resourceType,
         project_domain: (domain && domain.key) || this.userInfo.projectDomainId,
         project_id: (project && project.key) || this.userInfo.projectId,

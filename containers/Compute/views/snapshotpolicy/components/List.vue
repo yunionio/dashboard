@@ -12,7 +12,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getTenantFilter, getStatusFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -40,6 +40,7 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           status: getStatusFilter('snapshotpolicy'),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),

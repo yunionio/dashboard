@@ -20,6 +20,7 @@ import expectStatus from '@/constants/expectStatus'
 import {
   getDomainFilter,
   getStatusFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
@@ -48,6 +49,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           status: getStatusFilter('dnszone'),
           zone_type: {
             label: this.$t('network.text_717'),

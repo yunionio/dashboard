@@ -10,6 +10,9 @@
         <a-form-item :label="$t('network.text_317')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item v-bind="formItemLayout">
           <span slot="label">{{$t('network.text_322')}}<a-tooltip>
               <div slot="title">{{$t('network.text_323')}}<br />{{$t('network.text_324')}}<br />{{$t('network.text_325')}}</div>
@@ -87,6 +90,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         certificate: [
           'certificate',
           {

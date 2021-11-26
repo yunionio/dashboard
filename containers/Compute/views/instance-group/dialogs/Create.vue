@@ -10,6 +10,9 @@
         <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('compute.text_694')" v-bind="formItemLayout" :extra="forceDispersionExtra">
           <a-radio-group v-decorator="decorators.force_dispersion">
             <a-radio-button :value="true">{{$t('compute.text_695')}}</a-radio-button>
@@ -83,6 +86,9 @@ export default {
               { validator: this.$validate('resourceName') },
             ],
           },
+        ],
+        description: [
+          'description',
         ],
         force_dispersion: [
           'force_dispersion',

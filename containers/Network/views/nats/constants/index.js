@@ -85,6 +85,7 @@ export const DECORATORS = {
       ],
     },
   ],
+  description: ['description'],
 }
 
 // capbilit接口所需要的参数

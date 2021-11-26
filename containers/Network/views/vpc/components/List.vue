@@ -24,6 +24,7 @@ import {
   getAccountFilter,
   getProjectDomainFilter,
   getRegionFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
@@ -71,6 +72,7 @@ export default {
           return `name.contains("${val}")`
         },
       },
+      description: getDescriptionFilter(),
       status: getStatusFilter('vpc'),
       cloudaccount: getAccountFilter(),
       brand: getBrandFilter('brands', ['VMware']),

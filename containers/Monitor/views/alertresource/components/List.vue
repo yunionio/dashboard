@@ -14,7 +14,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'AlertresourceList',
@@ -30,6 +30,7 @@ export default {
         apiVersion: 'v1',
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
         },
       }),
     }

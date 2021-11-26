@@ -11,7 +11,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getRegionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getRegionFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -36,6 +36,7 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           dev_type: {
             label: this.$t('compute.text_481'),
             filter: true,

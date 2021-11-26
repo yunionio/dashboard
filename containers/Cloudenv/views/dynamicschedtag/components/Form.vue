@@ -4,6 +4,9 @@
     <a-form-item :label="$t('cloudenv.text_95')" v-bind="formItemLayout" v-if="!updateValue">
       <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
     </a-form-item>
+    <a-form-item :label="$t('common.description')" v-bind="formItemLayout" v-if="!updateValue">
+      <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+    </a-form-item>
     <a-form-item :label="$t('cloudenv.text_18')" v-bind="formItemLayout">
       <base-select
         v-decorator="decorators.schedtag"
@@ -61,6 +64,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         schedtag: [
           'schedtag',
           {

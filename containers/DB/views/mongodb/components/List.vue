@@ -15,7 +15,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getStatusFilter, getTenantFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getTenantFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
@@ -37,6 +37,7 @@ export default {
         steadyStatus: Object.values(expectStatus.mongodb).flat(),
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           status: getStatusFilter('mongodb'),
           ip_addr: {
             field: 'ip_addr',

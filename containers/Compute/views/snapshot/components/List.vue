@@ -27,6 +27,7 @@ import {
   getAccountFilter,
   getOsArchFilter,
   getRegionFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 
 export default {
@@ -51,6 +52,7 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           status: getStatusFilter('snapshot'),
           server_id: {
             label: this.$t('res.server'),

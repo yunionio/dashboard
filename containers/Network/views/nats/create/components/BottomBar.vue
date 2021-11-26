@@ -49,6 +49,7 @@ export default {
         const params = {
           project_domain: values.project_domain,
           name: values.name,
+          description: values.description,
           cloudregion_id: values.cloudregion_id,
           network_id: values.network,
           vpc_id: values.vpc,

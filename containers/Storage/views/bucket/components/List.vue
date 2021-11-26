@@ -19,7 +19,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { ACL_TYPE } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter, getDomainFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getBrandFilter, getStatusFilter, getAccountFilter, getDomainFilter, getCloudProviderFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -53,6 +53,7 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           brand: getBrandFilter('object_storage_brands'),
           projects: getTenantFilter(),
           status: getStatusFilter({ statusModule: 'bucket' }),

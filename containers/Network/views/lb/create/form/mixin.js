@@ -68,6 +68,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         cluster_id: [
           'cluster_id',
           {

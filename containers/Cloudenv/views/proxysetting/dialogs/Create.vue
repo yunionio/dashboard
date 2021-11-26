@@ -12,6 +12,9 @@
         <a-form-item :label="$t('cloudenv.text_95')">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <common-form-items />
       </a-form>
     </div>
@@ -61,6 +64,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         project_domain: [
           'project_domain',
           {

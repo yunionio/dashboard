@@ -12,7 +12,7 @@
 <script>
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getEnabledFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getEnabledFilter, getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -50,6 +50,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           displayname: {
             label: this.$t('scope.text_245'),
             filter: true,

@@ -20,6 +20,7 @@ import {
   getDomainFilter,
   getAccountFilter,
   getCloudProviderFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -51,6 +52,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           status: getStatusFilter('vpcNetwork'),
           brand: getInBrandFilter('brands', ['Aliyun', 'Qcloud']),
           project_domains: getDomainFilter(),

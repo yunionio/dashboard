@@ -9,6 +9,9 @@
     <a-form-item :label="$t('network.text_21')">
       <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />
     </a-form-item>
+    <a-form-item :label="$t('common.description')">
+      <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+    </a-form-item>
     <a-form-item :label="$t('cloudenv.text_7')">
       <a-row :gutter="9">
         <a-col :span="12">
@@ -115,6 +118,7 @@ export default {
         const data = {
           manager: manager_id,
           name: values.name.trim(),
+          description: values.description,
           project: values.project,
           network: values.network,
           __meta__: values.__meta__,

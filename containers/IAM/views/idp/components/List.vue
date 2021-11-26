@@ -26,7 +26,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
-import { getEnabledFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getEnabledFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getRequestT } from '@/utils/utils'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -60,6 +60,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           enabled: getEnabledFilter(),
           status: getStatusFilter('idp'),
           auto_create_user: getEnabledFilter({

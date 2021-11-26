@@ -10,6 +10,9 @@
         <a-form-item :label="$t('network.text_291')" v-bind="formItemLayout" v-if="params.type === 'create'">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout" v-if="params.type === 'create'">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item v-bind="formItemLayout">
           <span slot="label">{{$t('network.text_292')}}<a-tooltip>
               <div slot="title">{{$t('network.text_293')}}<br />{{$t('network.text_294')}}<br />{{$t('network.text_295')}}<br />{{$t('network.text_296')}}<br />{{$t('network.text_297')}}</div>
@@ -127,6 +130,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         acl_entries: [
           'acl_entries',
           {

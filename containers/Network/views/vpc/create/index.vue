@@ -23,6 +23,9 @@
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_684')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item v-if="!isGoogle || cloudEnv !== 'public'" :label="$t('network.text_244')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
           <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
@@ -110,6 +113,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         cloudprovider: [
           'cloudprovider',
           {
@@ -290,11 +294,13 @@ export default {
             cloudregion_id: values.cloudregion,
             manager: values.cloudprovider,
             name: values.name,
+            description: values.description,
           }
         } else {
           params = {
             cloudregion_id: values.cloudregion,
             name: values.name,
+            description: values.description,
           }
         }
         if (!this.isGoogle) {

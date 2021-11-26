@@ -4,6 +4,9 @@
       <a-form-item :label="$t('cloudenv.text_95')">
         <a-input v-decorator="decorators.name" :placeholder="$t('cloudenv.text_190')" />
       </a-form-item>
+      <a-form-item :label="$t('common.description')">
+        <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+      </a-form-item>
       <a-form-item :label="$t('cloudenv.environment')" v-if="isAliyun">
         <base-select
           :options="environments"
@@ -83,6 +86,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         environment: [
           'environment',
           {

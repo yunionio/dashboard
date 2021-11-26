@@ -13,6 +13,9 @@
             res="scalinggroups"
             :default-text="$t('compute.text_893')"  /> -->
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+        <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+      </a-form-item>
         <a-form-item :label="$t('compute.text_176')">
           <a-radio-group v-decorator="decorators.brand">
             <a-radio-button v-for="item in brands" :key="item.brand" :value="item.brand">{{item.label}}</a-radio-button>

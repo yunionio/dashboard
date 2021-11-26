@@ -5,6 +5,9 @@
       <a-form-item :label="$t('compute.text_772')" :extra="$t('compute.text_773')">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.serverName')" />
       </a-form-item>
+      <a-form-item :label="$t('common.description')">
+        <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+      </a-form-item>
       <a-form-item :label="$t('compute.text_774')" :extra="$t('compute.text_775')">
         <a-input v-decorator="decorators.ipmi_ip_addr" />
       </a-form-item>

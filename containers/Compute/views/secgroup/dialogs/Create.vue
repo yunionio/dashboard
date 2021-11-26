@@ -19,6 +19,9 @@
         <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('compute.text_210')" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
       </a-form>
       <a-tabs defaultActiveKey="in" @change="tabCallback">
         <a-tab-pane :tab="$t('compute.text_993')" key="in">
@@ -97,6 +100,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
       },
       formItemLayout: {
         wrapperCol: {
@@ -275,6 +279,7 @@ export default {
         }
         const newValues = {
           name: values.name,
+          description: values.description,
           rules,
           tenant: values.project && values.project.key,
         }

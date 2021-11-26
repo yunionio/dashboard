@@ -11,7 +11,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { ENABLED_OPTS } from '@/constants'
 import ListMixin from '@/mixins/list'
 
@@ -29,6 +29,7 @@ export default {
         getParams: { details: true },
         filterOptions: {
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           enabled: {
             label: this.$t('cloudenv.text_97'),
             dropdown: true,

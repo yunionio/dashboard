@@ -8,6 +8,9 @@
         <a-form-item :label="$t('system.text_101')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
+        <a-form-item :label="$t('common.description')">
+          <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+        </a-form-item>
         <a-form-item :label="$t('dictionary.domain')" v-if="isAdminMode">
           <base-select
             v-decorator="decorators.domain_id"
@@ -17,10 +20,6 @@
             :params="{ enabled: true }"
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             :select-props="{ mode: 'default' }" />
-        </a-form-item>
-        <a-form-item :label="$t('system.text_193')">
-          <a-input
-            v-decorator="decorators.description" />
         </a-form-item>
       </a-form>
     </div>

@@ -35,6 +35,9 @@
           <a-form-item :label="$t('common_186')">
             <a-input v-decorator="decorators.name" :placeholder="$t('common_549')" />
           </a-form-item>
+          <a-form-item :label="$t('common.description')">
+            <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+          </a-form-item>
           <a-form-item :label="$t('system.text_204')">
             <a-radio-group @change="({ target })=> driverChange(target.value)" v-decorator="decorators.driver">
               <a-radio-button v-for="(item, key) of templateOptions" :key="key" :value="key">
@@ -181,6 +184,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         project_domain: [
           'project_domain',
           {
@@ -374,9 +378,10 @@ export default {
       }
     },
     doCreate (values) {
-      const { name, template, driver, target_domain, project_domain, auto_create_user, ...rest } = values
+      const { name, description, template, driver, target_domain, project_domain, auto_create_user, ...rest } = values
       const data = {
         name,
+        description,
         driver: driver.toLowerCase(),
         target_domain: this.isDomainMode ? this.projectDomainId : target_domain,
         owner_domain_id: this.isDomainMode ? this.projectDomainId : project_domain,

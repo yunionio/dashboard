@@ -349,10 +349,11 @@ export default {
     },
     doCreateServertemplate (genCreateData) {
       const data = genCreateData.all()
-      const { project_id, ...rest } = data
+      const { project_id, description, ...rest } = data
       const templateData = {
         name: this.form.fc.getFieldValue('servertemplate_name'),
         project: project_id,
+        description,
         content: {
           ...rest,
         },
