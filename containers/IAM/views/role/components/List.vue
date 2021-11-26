@@ -13,7 +13,7 @@
 <script>
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import {
   getSetPublicAction,
 } from '@/utils/common/tableActions'
@@ -54,6 +54,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           project_domains: getProjectDomainFilter(),
         },
         responseData: this.responseData,

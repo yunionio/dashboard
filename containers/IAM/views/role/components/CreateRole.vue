@@ -5,6 +5,9 @@
     <a-form-item :label="$t('system.text_101')">
       <a-input v-decorator="decorators.name" />
     </a-form-item>
+    <a-form-item :label="$t('common.description')">
+      <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
+    </a-form-item>
     <a-form-item :label="$t('dictionary.domain')" v-if="isAdminMode && l3PermissionEnable">
       <base-select
         v-decorator="decorators.domain_id"
@@ -46,6 +49,7 @@ export default {
             ],
           },
         ],
+        description: ['description'],
         domain_id: [
           'domain_id',
           {

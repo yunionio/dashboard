@@ -13,7 +13,7 @@
 import { mapGetters } from 'vuex'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -45,6 +45,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           project_domain: getProjectDomainFilter(),
         },
         responseData: this.responseData,

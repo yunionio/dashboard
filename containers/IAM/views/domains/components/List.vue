@@ -19,6 +19,7 @@ import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import { getDescriptionFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'DomainList',
@@ -47,6 +48,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
         },
         responseData: this.responseData,
       }),
