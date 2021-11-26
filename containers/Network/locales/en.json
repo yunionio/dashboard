@@ -713,7 +713,7 @@
   "network.text_716": "Certificates",
   "network.text_717": "Zone Type",
   "network.text_718": "Records",
-  "network.text_719": "VPCs",
+  "network.text_719": "Associated VPC",
   "network.text_720": "DNS",
   "network.text_721": "Sync Records",
   "network.text_722": "Update LBagent",
