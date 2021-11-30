@@ -103,7 +103,14 @@ export default {
     return {
       loading: false,
       form: {
-        fc: this.$form.createForm(this),
+        fc: this.$form.createForm(this, {
+          onValuesChange: (props, values) => {
+            Object.keys(values).forEach((key) => {
+              this.$set(this.form.fd, key, values[key])
+            })
+          },
+        }),
+        fd: {},
       },
       decorators: {
         name: [
@@ -338,6 +345,16 @@ export default {
       this.list.fetchData()
     },
     handleManagerChange (e) {
+      if (this.params.title !== 'onpremise') {
+        this.regionParams = {
+          usable: true,
+          cloud_env: this.params.title,
+          show_emulated: true,
+          provider: this.form.fd.platform,
+          manager: e,
+          scope: this.$store.getters.scope,
+        }
+      }
       this.list.getParams = {
         ...this.list.getParams,
         manager: e,
