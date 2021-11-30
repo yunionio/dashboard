@@ -95,6 +95,7 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import { BRAND_MAP } from '@/constants'
 
 export default {
   name: 'ImageCreateCache',
@@ -287,28 +288,19 @@ export default {
     handleRefresh () {
       this.list.refresh()
     },
-    fetchPlatform () {
-      if (this.params.title === 'onpremise') {
-        new this.$Manager('capabilities')
-          .list({
-            scope: this.$store.getters.scope,
-          }).then((res) => {
-            const supportBrands = ['OneCloud', 'VMware']
-            const brands = res.data.data[0].brands
-            this.platformOptions = supportBrands.filter(v => {
-              return brands.includes(v)
-            }).map(v => {
-              return {
-                name: v,
-              }
-            })
-          })
-      } else {
-        new this.$Manager('rpc/cloudregions/region-providers')
-          .list({ params: { usable: true, cloud_env: this.params.title, scope: this.$store.getters.scope } }).then(({ data }) => {
-            this.platformOptions = data
-          })
-      }
+    async fetchPlatform () {
+      const res = await new this.$Manager('capabilities').list({
+        scope: this.$store.getters.scope,
+      })
+      const supportBrands = Object.values(BRAND_MAP).filter(v => v.cloud_env === this.params.title)
+      const brands = res.data.data[0].brands
+      this.platformOptions = supportBrands.filter(v => {
+        return brands.includes(v.brand)
+      }).map(v => {
+        return {
+          name: v.brand,
+        }
+      })
     },
     handlePlatformChange (e) {
       if (this.params.title !== 'onpremise') {
@@ -316,12 +308,12 @@ export default {
           usable: true,
           cloud_env: this.params.title,
           show_emulated: true,
-          provider: e,
+          brand: e,
           scope: this.$store.getters.scope,
         }
         this.providerParams = {
           usable: true,
-          provider: e,
+          brand: e,
           scope: this.$store.getters.scope,
           cloud_env: this.params.title,
         }
@@ -350,7 +342,7 @@ export default {
           usable: true,
           cloud_env: this.params.title,
           show_emulated: true,
-          provider: this.form.fd.platform,
+          brand: this.form.fd.platform,
           manager: e,
           scope: this.$store.getters.scope,
         }
