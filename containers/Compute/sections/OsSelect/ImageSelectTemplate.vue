@@ -1,7 +1,7 @@
 <template>
   <a-select label-in-value :value="value" :loading="loading" @change="imageChange" :filterOption="filterOption" :showSearch="true" option-filter-prop="children" :placeholder="$t('compute.text_214')" allowClear>
     <a-select-option v-for="item in imageOptions" :key="item.id" :value="item.id">
-      <div>
+      <div :key="`${item.name} ${item.id}`">
         <a-row>
           <a-col :span="24">
             <div>{{ item.name }}</div>
@@ -78,9 +78,8 @@ export default {
     },
     filterOption (inp, option) {
       const input = inp.toLowerCase()
-      const text = _.get(option.componentOptions, 'children[0].children[0].children[0].text') || ''
-      const textId = _.get(option.componentOptions, 'children[0].children[1].children[0].text') || ''
-      return text.toLowerCase().indexOf(input) >= 0 || textId.toLowerCase().indexOf(input) >= 0
+      const text = _.get(option.componentOptions, 'children[0].key') || ''
+      return text.toLowerCase().indexOf(input) >= 0
     },
     imgLabels (img) {
       const size = sizestr(img.size, 'B', 1024)
