@@ -96,8 +96,12 @@ export default {
       const ret = []
       R.forEachObjIndexed((value, key) => {
         if (value.length > 0) {
-          for (let i = 0, len = value.length; i < len; i++) {
-            ret.push(this.genTag(key, value[i]))
+          if (Array.isArray(value)) {
+            for (let i = 0, len = value.length; i < len; i++) {
+              ret.push(this.genTag(key, value[i]))
+            }
+          } else {
+            ret.push(this.genTag(key, value))
           }
         } else {
           ret.push(this.genTag(key, null))
