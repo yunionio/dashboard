@@ -57,6 +57,10 @@
             :networkParams="netParams"
             v-bind="formItemLayout" />
         </template>
+        <a-form-item :label="$t('compute.text_1154')" class="mb-0">
+          <tag
+            v-decorator="decorators.tag" />
+        </a-form-item>
       </a-form>
       <bottom-bar :values="form.fc.getFieldsValue()" />
     </page-body>
@@ -64,6 +68,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import FileSystemSku from './components/SKU'
 import BottomBar from './components/BottomBar'
@@ -71,8 +76,17 @@ import DomainSelect from '@/sections/DomainSelect'
 import Duration from '@Compute/sections/Duration'
 import NetworkSelects from '@/sections/NetworkSelects'
 import validateForm from '@/utils/validate'
+import Tag from '@/sections/Tag'
 import AreaSelects from '@/sections/AreaSelects'
 import { getInitialValue } from '@/utils/common/ant'
+import i18n from '@/locales'
+
+function validateTag (rule, value, callback) {
+  if (R.is(Object, value) && Object.keys(value).length > 20) {
+    return callback(new Error(i18n.t('compute.text_209')))
+  }
+  callback()
+}
 
 export default {
   name: 'FileSystemCreate',
@@ -83,6 +97,7 @@ export default {
     FileSystemSku,
     NetworkSelects,
     BottomBar,
+    Tag,
   },
   data () {
     const decorators = {
@@ -130,6 +145,14 @@ export default {
         'billing_type',
         {
           initialValue: 'postpaid',
+        },
+      ],
+      tag: [
+        'tag',
+        {
+          rules: [
+            { validator: validateTag },
+          ],
         },
       ],
     }

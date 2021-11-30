@@ -54,6 +54,9 @@ export default {
           zone_id: values.zone_id,
           project_domain: values.project_domain,
         }
+        if (values.tag) {
+          params.__meta__ = values.tag
+        }
         if (values.sku) {
           params.file_system_type = values.sku.file_system_type
           params.protocol = values.sku.protocol
