@@ -290,7 +290,9 @@ export default {
     },
     async fetchPlatform () {
       const res = await new this.$Manager('capabilities').list({
-        scope: this.$store.getters.scope,
+        params: {
+          scope: this.$store.getters.scope,
+        },
       })
       const supportBrands = Object.values(BRAND_MAP).filter(v => v.cloud_env === this.params.title)
       const brands = res.data.data[0].brands
