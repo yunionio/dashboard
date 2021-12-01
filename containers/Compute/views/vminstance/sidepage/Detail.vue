@@ -45,6 +45,10 @@ export default {
   data () {
     return {
       baseInfo: [
+        {
+          field: 'hostname',
+          title: this.$t('common_388'),
+        },
         getOsArch(),
         getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         // getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),

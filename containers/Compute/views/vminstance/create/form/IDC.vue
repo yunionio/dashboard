@@ -27,7 +27,7 @@
           :decorator="decorators.cloudregionZone" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_228')" v-if="!isServertemplate">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
+        <a-input v-decorator="decorators.name" />
         <template v-slot:extra>
           <name-repeated res="servers" :name="form.fd.name" :default-text="$t('compute.text_893')" />
         </template>
@@ -157,6 +157,15 @@
             :cloud-env="type"
             :form="form"
             :formItemLayout="formItemLayout" />
+          <a-form-item v-if="!isServertemplate">
+            <span slot="label">
+              {{ $t('common_388') }}&nbsp;
+              <a-tooltip :title="$t('compute.host_name_tips')">
+                <a-icon type="question-circle-o" />
+              </a-tooltip>
+            </span>
+            <host-name v-decorator="decorators.hostName" />
+          </a-form-item>
           <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
             <secgroup-config
               :form="form"
