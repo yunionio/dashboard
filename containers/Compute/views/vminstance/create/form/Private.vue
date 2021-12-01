@@ -36,7 +36,7 @@
           :select-props="{ placeholder: $t('compute.text_149') }" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_228')" v-if="!isServertemplate">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
+        <a-input v-decorator="decorators.name" />
         <name-repeated
           v-slot:extra
           res="servers"
@@ -129,6 +129,15 @@
       <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
+          <a-form-item v-if="!isServertemplate">
+            <span slot="label">
+              {{ $t('common_388') }}&nbsp;
+              <a-tooltip :title="$t('compute.host_name_tips')">
+                <a-icon type="question-circle-o" />
+              </a-tooltip>
+            </span>
+            <host-name v-decorator="decorators.hostName" />
+          </a-form-item>
           <a-form-item :label="$t('compute.text_105')">
             <secgroup-config
               :decorators="decorators.secgroup"

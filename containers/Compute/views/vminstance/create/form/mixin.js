@@ -16,6 +16,7 @@ import Backup from '@Compute/sections/Backup'
 import Duration from '@Compute/sections/Duration'
 import InstanceGroups from '@Compute/sections/InstanceGroups'
 import DataDisk from '@Compute/sections/DataDisk'
+import HostName from '@Compute/sections/HostName'
 import storage from '@/utils/storage'
 import { WORKFLOW_TYPES } from '@/constants/workflow'
 import workflowMixin from '@/mixins/workflow'
@@ -72,6 +73,7 @@ export default {
     Servertemplate,
     NameRepeated,
     ServerAccount,
+    HostName,
   },
   mixins: [workflowMixin],
   props: {
