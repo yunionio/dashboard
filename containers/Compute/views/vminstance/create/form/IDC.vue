@@ -195,7 +195,7 @@
             <vga :decorator="decorators.vga" :vdi="vdi" />
           </a-form-item>
           <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
-            <machine :decorator="decorators.machine" :isArm="isArm" />
+            <machine :decorator="getMachineDecorator()" :isArm="isArm" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
             <backup
@@ -698,6 +698,18 @@ export default {
           this.form.fc.setFieldsValue({ os_arch: canUseOsArch })
         }
       }, 3000)
+    },
+    getMachineDecorator () {
+      let initValue = 'pc'
+      if (this.isArm) {
+        initValue = 'virt'
+      }
+      return [
+        'machine',
+        {
+          initialValue: initValue,
+        },
+      ]
     },
   },
 }
