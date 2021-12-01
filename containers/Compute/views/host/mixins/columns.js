@@ -31,7 +31,7 @@ export default {
         addBackup: true,
         formRules: [
           { required: true, message: i18n.t('compute.text_210') },
-          { validator: this.$validate('serverCreateName') },
+          // { validator: this.$validate('serverCreateName') },
         ],
         slotCallback: row => {
           return (
