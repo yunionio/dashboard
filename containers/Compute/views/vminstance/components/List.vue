@@ -1041,7 +1041,7 @@ export default {
       tagConfigParams: {
         title: this.$t('common.text00124'),
         resources: 'servers',
-        queryTreeId: 'project-tag-value-tree',,
+        queryTreeId: 'project-tag-value-tree',
       },
     }
   },
