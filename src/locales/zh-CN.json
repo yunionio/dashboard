@@ -3873,6 +3873,7 @@
   "common.text00121": "自定义",
   "common.text00122": "数据加载中，请稍候",
   "common.text00123": "批量操作错误",
+  "common.text00124": "配置标签层级",
   "common_1": "按量付费",
   "common_2": "包年包月",
   "common_3": "1个月",
@@ -4952,5 +4953,14 @@
   "common.monitor_alert": "发生致命告警",
   "common.later_handle": "稍后处理",
   "common.attribution_scope": "所属域",
-  "common.full_sync_resource_type": "同步资源类型"
+  "common.full_sync_resource_type": "同步资源类型",
+  "common.toggle_project_open": "展开标签层级",
+  "common.toggle_project_close": "关闭标签层级",
+  "common_734": "{0}/{1} 项",
+  "common_735": "{0} 项",
+  "common_736": "无{0}标签",
+  "common_737": "全部标签",
+  "common_738": "匹配标签",
+  "common_739": "待选",
+  "common_740": "已选"
 }

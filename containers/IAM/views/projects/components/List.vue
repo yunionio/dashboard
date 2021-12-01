@@ -2,6 +2,7 @@
   <page-list
     show-tag-columns
     show-tag-filter
+    show-tag-config
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
@@ -9,7 +10,8 @@
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
     :showSingleActions="showSingleActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
@@ -68,6 +70,13 @@ export default {
           { label: this.$t('system.text_101'), key: 'name' },
           { label: this.$t('dictionary.domain'), key: 'project_domain' },
         ],
+      },
+      tagConfigParams: {
+        id: this.id,
+        title: this.$t('common.text00124'),
+        resources: 'projects',
+        queryTreeId: 'tag-value-tree',
+        tagFilterKey: 'tags',
       },
     }
   },

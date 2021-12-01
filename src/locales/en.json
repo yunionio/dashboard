@@ -3861,6 +3861,7 @@
   "common.text00121": "Custom",
   "common.text00122": "Loading, please wait...",
   "common.text00123": "Batch operation error",
+  "common.text00124": "Configure tags level",
   "common_1": "Postpaid",
   "common_2": "Prepaid",
   "common_3": "1 month",
@@ -4940,5 +4941,14 @@
   "common.monitor_alert": "A fatal alarm has occurred",
   "common.later_handle": "Handle later",
   "common.attribution_scope": "Attribution Scope",
-  "common.full_sync_resource_type": "Sync Resource Type"
+  "common.full_sync_resource_type": "Sync Resource Type",
+  "common.toggle_project_open": "Expend Tags Tree",
+  "common.toggle_project_close": "Close Tags Tree",
+  "common_734": "{0}/{1} items",
+  "common_735": "{0} items",
+  "common_736": "No {0} tag",
+  "common_737": "All tags",
+  "common_738": "Matched tags",
+  "common_739": "Unselected",
+  "common_740": "Selected"
 }

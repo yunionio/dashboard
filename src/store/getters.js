@@ -32,4 +32,5 @@ export default {
   setting: state => state.setting,
   scopedPolicy: state => state.scopedPolicy,
   globalConfig: state => state.common.globalConfig,
+  projectTags: state => state.projectTags,
 }

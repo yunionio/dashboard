@@ -120,6 +120,7 @@ export default {
       this.submiting = true
       try {
         const data = await this.$refs.policyForm.getData()
+        data.tag_update_policy = 'replace'
         await this.$http.patch(`/v1/auth/policies/${this.policy.id}`, data)
         this.$router.push('/policy')
       } catch (error) {
