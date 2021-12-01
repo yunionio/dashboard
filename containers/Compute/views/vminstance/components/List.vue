@@ -2,6 +2,7 @@
   <page-list
     show-tag-filter
     show-tag-columns
+    show-tag-config
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
@@ -11,7 +12,8 @@
     :showGroupActions="showGroupActions"
     :defaultSearchKey="defaultSearchKey"
     :before-show-menu="beforeShowMenu"
-    :refresh-method="handleListRefresh" />
+    :refresh-method="handleListRefresh"
+    :tag-config-params="tagConfigParams" />
 </template>
 
 <script>
@@ -1036,6 +1038,11 @@ export default {
         },
       ],
       execLoading: false,
+      tagConfigParams: {
+        title: this.$t('common.text00124'),
+        resources: 'servers',
+        queryTreeId: 'project-tag-value-tree',
+      },
     }
   },
   computed: {

@@ -343,12 +343,20 @@ export const getTagTableColumn = ({
     width,
     slots: {
       default: ({ row }, h) => {
+        let metadata = _.get(row, field) || {}
+        if (field === 'project_tags') {
+          metadata = {}
+          const fieldValue = row[field] || []
+          fieldValue.map(item => {
+            metadata[item.key] = item.value
+          })
+        }
         return [
           h(TagTableColumn, {
             props: {
               row,
               onManager,
-              metadata: _.get(row, field) || {},
+              metadata,
               ignoreKeys,
               needExt,
               resource,

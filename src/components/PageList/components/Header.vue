@@ -53,6 +53,12 @@
     <!-- 搜索框 -->
     <template v-if="showSearchbox && _filterOptions">
       <div class="d-flex">
+        <!-- 层级选择开关 -->
+        <a-tooltip :title="treeToggleOpen ? $t('common.toggle_project_close') : $t('common.toggle_project_open')">
+          <a-button class="mr-2" style="height: 38px" v-if="showTagConfig" @click="toggleTreeSelect">
+            <a-icon type="apartment" />
+          </a-button>
+        </a-tooltip>
         <div class="flex-fill">
           <search-box
             :options="_filterOptions"
@@ -151,6 +157,9 @@ export default {
     showExtTags: {
       type: Boolean,
     },
+    showTagConfig: Boolean,
+    tagConfigParams: Object,
+    treeToggleOpen: Boolean,
   },
   computed: {
     _filterOptions () {
@@ -226,6 +235,9 @@ export default {
         resource: this.resource,
         hidenColumns,
       })
+    },
+    toggleTreeSelect () {
+      this.$emit('treeToggleClick')
     },
   },
 }
