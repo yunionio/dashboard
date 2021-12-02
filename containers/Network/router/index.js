@@ -10,7 +10,7 @@ import BatchEditAttributes from '@Network/views/network/BatchEditAttributes'
 import Eip from '@Network/views/eip'
 import Waf from '@Network/views/waf'
 import GlobalVpc from '@Network/views/global-vpc'
-// import RouteTableList from '@Network/views/route-table'
+import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 import NatCreate from '@Network/views/nats/create/index'
 // import ReservedIpList from '@Network/views/reserved-ip'
@@ -173,21 +173,21 @@ export default {
             },
           ],
         },
-        // {
-        //   path: '/routetable',
-        //   meta: {
-        //     label: '路由表',
-        //     permission: 'route_tables_list',
-        //   },
-        //   component: Layout,
-        //   children: [
-        //     {
-        //       name: 'RouteTable',
-        //       path: '',
-        //       component: RouteTableList,
-        //     },
-        //   ],
-        // },
+        {
+          path: '/routetable',
+          meta: {
+            label: '路由表',
+            permission: 'route_tables_list',
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'RouteTable',
+              path: '',
+              component: RouteTableList,
+            },
+          ],
+        },
         {
           path: '/wire',
           meta: {

@@ -10,7 +10,7 @@ import { changeToArr } from '@/utils/utils'
 import store from '@/store'
 
 // 需要添加区域（cloudregion/cloudregion_id), 可用区（zone/zone_id)，云账号(account/account_id)，云订阅（manager/manager_id)的资源
-const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'natgateways', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets', 'networkinterfaces', 'lbs', 'nats', 'nas', 'kafkas', 'elasticsearchs', 'webapps', 'cdn_domains', 'inter_vpc_networks']
+const appendOutherResources = ['servers', 'hosts', 'disks', 'storages', 'vpcs', 'wires', 'networks', 'natgateways', 'snapshots', 'eips', 'dbinstances', 'elasticcaches', 'servertemplates', 'buckets', 'networkinterfaces', 'lbs', 'nats', 'nas', 'kafkas', 'elasticsearchs', 'webapps', 'cdn_domains', 'inter_vpc_networks', 'route_tables']
 
 const getDefaultLastBaseInfo = (vm, h, { data, onManager, resource }) => {
   const outher = [
