@@ -115,6 +115,10 @@ export default {
         },
       ],
       baseInfo: [
+        {
+          field: 'hostname',
+          title: this.$t('common_388'),
+        },
         getUserTagColumn({ onManager: this.onManager, resource: 'host', columns: () => this.columns, tipName: this.$t('dictionary.host') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'host', columns: () => this.columns, tipName: this.$t('dictionary.host') }),
         getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),

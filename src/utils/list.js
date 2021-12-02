@@ -160,41 +160,46 @@ class DataWrap {
 }
 
 class CreateList {
-  constructor (templateContext, {
-    id,
-    resource,
-    apiVersion = 'v2',
-    ctx,
-    getParams,
-    limit = 20,
-    idKey = 'id',
-    filterOptions = {},
-    filter = {},
-    // 期望的状态，如果不符合预期，则进行定时更新
-    steadyStatus = null,
-    // 定时更新间隔时间，默认10s
-    refreshInterval = 10,
-    // 定义的默认隐藏列
-    hiddenColumns = [],
-    // 标签的过滤项
-    tagFilter = {},
-    // 外传responseData
-    responseData = {},
-    // get status 额外参数
-    itemGetParams = {},
-    // get item 自定义方法
-    itemGet,
-    // 不使用localstorage中的limit参数
-    disableStorageLimit = false,
-    // 额外的data获取方法Object
-    extraDataFecther = {},
-    // 重新生成list的params
-    genParamsCb = null,
-    // fetchData完成后的回调
-    fetchDataCb = null,
-    // 标识是否是预加载数据
-    isPreLoad = true,
-  }) {
+  constructor (
+    templateContext,
+    {
+      id,
+      resource,
+      apiVersion = 'v2',
+      ctx,
+      getParams,
+      limit = 20,
+      idKey = 'id',
+      filterOptions = {},
+      filter = {},
+      // 期望的状态，如果不符合预期，则进行定时更新
+      steadyStatus = null,
+      // 定时更新间隔时间，默认10s
+      refreshInterval = 10,
+      // 定义的默认隐藏列
+      hiddenColumns = [],
+      // 标签的过滤项
+      tagFilter = {},
+      // 标签层级过滤项
+      projectTagFilter = {},
+      // 外传responseData
+      responseData = {},
+      // get status 额外参数
+      itemGetParams = {},
+      // get item 自定义方法
+      itemGet,
+      // 不使用localstorage中的limit参数
+      disableStorageLimit = false,
+      // 额外的data获取方法Object
+      extraDataFecther = {},
+      // 重新生成list的params
+      genParamsCb = null,
+      // fetchData完成后的回调
+      fetchDataCb = null,
+      // 标识是否是预加载数据
+      isPreLoad = true,
+    },
+  ) {
     // 列表唯一标识
     this.id = id ? `LIST_${id}` : undefined
     // vm 实例
@@ -244,6 +249,7 @@ class CreateList {
     this.configLoaded = false
     // 标签的过滤项
     this.tagFilter = tagFilter
+    this.projectTagFilter = projectTagFilter
     // 外传responseData
     this.responseData = responseData
     // 初始化 params
@@ -387,13 +393,18 @@ class CreateList {
       } else {
         this.offset = 0
       }
-      if (!R.isNil(this.extraDataFecther) && !R.isEmpty(this.extraDataFecther)) {
+      if (
+        !R.isNil(this.extraDataFecther) &&
+        !R.isEmpty(this.extraDataFecther)
+      ) {
         for (const key in this.extraDataFecther) {
-          this.extraDataFecther[key](response.data, this.params).then(extraResponse => {
-            Vue.set(this.extraData, key, extraResponse.data)
-          }).catch((error) => {
-            console.error(`get ${key} data error: ${error}`)
-          })
+          this.extraDataFecther[key](response.data, this.params)
+            .then(extraResponse => {
+              Vue.set(this.extraData, key, extraResponse.data)
+            })
+            .catch(error => {
+              console.error(`get ${key} data error: ${error}`)
+            })
         }
       }
       if (R.is(Function, this.fetchDataCb)) {
@@ -528,7 +539,7 @@ class CreateList {
       ...params,
       ...this.genFilterParams(params),
     }
-    if (!R.isEmpty(this.tagFilter) && !R.isNil(this.tagFilter)) {
+    if ((!R.isEmpty(this.tagFilter) && !R.isNil(this.tagFilter)) || (!R.isEmpty(this.projectTagFilter) && !R.isNil(this.projectTagFilter))) {
       params = {
         ...params,
         ...this.genTagFilterParams(params),
@@ -595,7 +606,12 @@ class CreateList {
     }
     for (let i = 0, len = arr.length; i < len; i++) {
       const item = arr[i]
-      data[item[this.idKey]] = new DataWrap(this, item, this.idKey, i + dataLength)
+      data[item[this.idKey]] = new DataWrap(
+        this,
+        item,
+        this.idKey,
+        i + dataLength,
+      )
     }
     return data
   }
@@ -645,9 +661,10 @@ class CreateList {
    */
   checkSteadyStatus () {
     if (
-      (R.isNil(this.steadyStatus) || R.isEmpty(this.steadyStatus)) ||
-      (R.isNil(this.data) || R.isEmpty(this.data))
-    ) return
+      R.isNil(this.steadyStatus) ||
+      R.isEmpty(this.steadyStatus) ||
+      R.isNil(this.data) || R.isEmpty(this.data)
+    ) { return }
     for (const key in this.data) {
       const item = this.data[key]
       const isSteadyStatus = item.isSteadyStatus(this.steadyStatus)
@@ -663,9 +680,10 @@ class CreateList {
    */
   clearWaitJob () {
     if (
-      (R.isNil(this.steadyStatus) || R.isEmpty(this.steadyStatus)) ||
-      (R.isNil(this.data) || R.isEmpty(this.data))
-    ) return
+      R.isNil(this.steadyStatus) ||
+      R.isEmpty(this.steadyStatus) ||
+      R.isNil(this.data) || R.isEmpty(this.data)
+    ) { return }
     for (const key in this.data) {
       const item = this.data[key]
       item.clearWaitJob()
@@ -722,6 +740,19 @@ class CreateList {
     this.tagFilter = tagFilter
     this.reset()
     this.fetchData(0, 0)
+  }
+
+  /**
+   * @description 项目标签过滤条件变更
+   * @param {tags: Array, no_tags: Array} projectTagFilter
+   * @memberof CreateList
+   */
+  changeProjectTagFilter (projectTagFilter) {
+    if (!R.equals(this.projectTagFilter, projectTagFilter)) {
+      this.projectTagFilter = projectTagFilter
+      this.reset()
+      this.fetchData(0, 0)
+    }
   }
 
   /**
@@ -813,7 +844,9 @@ class CreateList {
       let params = {
         scope: this.templateContext.$store.getters.scope,
         [item.distinctField.type]: item.distinctField.key,
-        ...(R.is(Function, item.distinctField.getParams) ? item.distinctField.getParams() : item.distinctField.getParams),
+        ...(R.is(Function, item.distinctField.getParams)
+          ? item.distinctField.getParams()
+          : item.distinctField.getParams),
         ...this.getOptionParams(),
       }
       params = {
@@ -830,8 +863,13 @@ class CreateList {
       })
       let options = []
       const values = response.data[item.distinctField.key] || []
-      if (item.distinctField.afterFetch && R.is(Function, item.distinctField.afterFetch)) {
-        options = await item.distinctField.afterFetch(values, { scope: this.templateContext.$store.getters.scope })
+      if (
+        item.distinctField.afterFetch &&
+        R.is(Function, item.distinctField.afterFetch)
+      ) {
+        options = await item.distinctField.afterFetch(values, {
+          scope: this.templateContext.$store.getters.scope,
+        })
       } else {
         options = values.map(item => ({ label: item, key: item }))
       }
@@ -878,8 +916,33 @@ class CreateList {
   genTagFilterParams (params) {
     const ret = {}
     let index = 0
+    const { projectTagFilter = {} } = this
+    const { tagFilterKey = 'project_tags' } = projectTagFilter
+    if (projectTagFilter[tagFilterKey]) {
+      if (tagFilterKey === 'tags') {
+        projectTagFilter[tagFilterKey].map(item => {
+          ret[`${tagFilterKey}.${index}.key`] = item.key
+          ret[`${tagFilterKey}.${index}.value`] = item.value
+          index++ // 当过滤key为tags，与普通标签参数合并
+        })
+      } else {
+        projectTagFilter[tagFilterKey].map((item, idx) => {
+          ret[`${tagFilterKey}.0.${idx}.key`] = item.key
+          ret[`${tagFilterKey}.0.${idx}.value`] = item.value
+        })
+      }
+    }
+    if (projectTagFilter[`no_${tagFilterKey}`]) {
+      projectTagFilter[`no_${tagFilterKey}`].map((item, idx) => {
+        if (tagFilterKey === 'tags') {
+          ret[`no_${tagFilterKey}.${idx}.key`] = item.key
+        } else {
+          ret[`no_${tagFilterKey}.0.${idx}.key`] = item.key
+        }
+      })
+    }
     R.forEachObjIndexed((value, key) => {
-      if (key === 'without_user_meta' && (value && value[0] === true)) {
+      if (key === 'without_user_meta' && value && value[0] === true) {
         ret.without_user_meta = true
       } else {
         ret[`tags.${index}.key`] = []
@@ -896,6 +959,7 @@ class CreateList {
         }
       }
     }, this.tagFilter)
+
     return ret
   }
 
@@ -907,7 +971,10 @@ class CreateList {
       return false
     }
     for (let i = 0, len = this.selectedItems.length; i < len; i++) {
-      const { disable_delete: disableDelete, can_delete: canDelete } = this.selectedItems[i]
+      const {
+        disable_delete: disableDelete,
+        can_delete: canDelete,
+      } = this.selectedItems[i]
       if (R.is(Boolean, disableDelete) && disableDelete) {
         return false
       } else if (R.is(Boolean, canDelete) && !canDelete) {
@@ -967,16 +1034,18 @@ class CreateList {
     const params = { ...this.params }
     delete params.offset
     delete params.limit
-    return this.manager.get({
-      id,
-      params,
-    }).then(response => {
-      this.update(id, response.data)
-      if (steadyStatus) {
-        this.waitStatus(id, steadyStatus)
-      }
-      return response
-    })
+    return this.manager
+      .get({
+        id,
+        params,
+      })
+      .then(response => {
+        this.update(id, response.data)
+        if (steadyStatus) {
+          this.waitStatus(id, steadyStatus)
+        }
+        return response
+      })
   }
 
   /**
@@ -1024,11 +1093,7 @@ class CreateList {
    */
   onManager (on, opts) {
     if (!this.manager) return Promise.resolve()
-    let {
-      steadyStatus,
-      id: ids = this.selected,
-      managerArgs = {},
-    } = opts
+    let { steadyStatus, id: ids = this.selected, managerArgs = {} } = opts
     const refreshActions = ['create', 'delete', 'batchDelete']
     if (R.is(Array, ids)) {
       if (!managerArgs.ids) managerArgs.ids = ids
@@ -1042,66 +1107,68 @@ class CreateList {
     if (!R.is(Object, managerArgs)) {
       throw Error(i18n.t('common_75'))
     }
-    const promise = this.manager[on]({ ...managerArgs }).then(async res => {
-      if (refreshActions.includes(on)) {
-        this.refresh()
-        return res
-      }
-      let isBatch = false
-      if (R.is(Array, res.data.data) && on !== 'getSpecific') {
-        isBatch = true
-      }
-      // 需要调用get更新数据的id
-      const waitUpdateIds = []
-      if (on !== 'get') {
-        if (isBatch) {
-          for (let i = 0, len = res.data.data.length; i < len; i++) {
-            const rec = res.data.data[i]
-            if (rec.status < 400) {
-              // success
-              // this.update(rec[this.idKey], rec.data)
-              waitUpdateIds.push(rec[this.idKey])
-            } else {
-              // failure
-              this.setError(rec[this.idKey], res)
-            }
-          }
-        } else {
-          if (res.status < 400) {
-            if (on !== 'getSpecific') {
-              for (let i = 0; i < ids.length; i++) {
-                waitUpdateIds.push(ids[i])
+    const promise = this.manager[on]({ ...managerArgs })
+      .then(async res => {
+        if (refreshActions.includes(on)) {
+          this.refresh()
+          return res
+        }
+        let isBatch = false
+        if (R.is(Array, res.data.data) && on !== 'getSpecific') {
+          isBatch = true
+        }
+        // 需要调用get更新数据的id
+        const waitUpdateIds = []
+        if (on !== 'get') {
+          if (isBatch) {
+            for (let i = 0, len = res.data.data.length; i < len; i++) {
+              const rec = res.data.data[i]
+              if (rec.status < 400) {
+                // success
+                // this.update(rec[this.idKey], rec.data)
+                waitUpdateIds.push(rec[this.idKey])
+              } else {
+                // failure
+                this.setError(rec[this.idKey], res)
               }
-              // this.update(ids[0], res.data)
             }
           } else {
-            this.setError(ids[0], res)
+            if (res.status < 400) {
+              if (on !== 'getSpecific') {
+                for (let i = 0; i < ids.length; i++) {
+                  waitUpdateIds.push(ids[i])
+                }
+                // this.update(ids[0], res.data)
+              }
+            } else {
+              this.setError(ids[0], res)
+            }
           }
         }
-      }
-      if (waitUpdateIds.length > 0) {
-        const params = { ...this.params }
-        delete params.limit
-        delete params.offset
-        const batchResponse = await this.manager.batchGet({
-          id: waitUpdateIds,
-          params,
-        })
-        for (let i = 0, len = batchResponse.data.data.length; i < len; i++) {
-          const rec = batchResponse.data.data[i]
-          this.update(rec[this.idKey], rec)
+        if (waitUpdateIds.length > 0) {
+          const params = { ...this.params }
+          delete params.limit
+          delete params.offset
+          const batchResponse = await this.manager.batchGet({
+            id: waitUpdateIds,
+            params,
+          })
+          for (let i = 0, len = batchResponse.data.data.length; i < len; i++) {
+            const rec = batchResponse.data.data[i]
+            this.update(rec[this.idKey], rec)
+          }
         }
-      }
-      if (steadyStatus) {
-        for (let i = 0, len = ids.length; i < len; i++) {
-          const id = ids[i]
-          this.waitStatus(id, steadyStatus)
+        if (steadyStatus) {
+          for (let i = 0, len = ids.length; i < len; i++) {
+            const id = ids[i]
+            this.waitStatus(id, steadyStatus)
+          }
         }
-      }
-      return res
-    }).catch(err => {
-      return Promise.reject(err)
-    })
+        return res
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
     return promise
   }
 }

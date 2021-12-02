@@ -21,7 +21,7 @@
           @fetchProjectCallback="fetchProjectCallback" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_228')" v-if="!isServertemplate">
-        <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
+        <a-input v-decorator="decorators.name" />
         <name-repeated
           v-slot:extra
           res="servers"
@@ -153,6 +153,15 @@
             :form="form"
             :hasPublicIp="hypervisor === 'qcloud' || hypervisor === 'aliyun'"
             :formItemLayout="formItemLayout" />
+          <a-form-item v-if="!isServertemplate">
+            <span slot="label">
+              {{ $t('common_388') }}&nbsp;
+              <a-tooltip :title="$t('compute.host_name_tips')">
+                <a-icon type="question-circle-o" />
+              </a-tooltip>
+            </span>
+            <host-name v-decorator="decorators.hostName" />
+          </a-form-item>
           <a-form-item :label="$t('compute.text_105')">
             <secgroup-config
               :provider="hypervisor"

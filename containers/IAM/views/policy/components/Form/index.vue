@@ -14,7 +14,8 @@
           remote
           :params="{ enabled: true }"
           :remote-fn="q => ({ filter: `name.contains(${q})` })"
-          :select-props="{ allowClear: true }" />
+          :select-props="{ allowClear: true }"
+          @update:item="handleDomainChange" />
       </a-form-model-item>
       <a-form-model-item :label="$t('system.text_101')" prop="name">
         <a-input v-model="model.name" :placeholder="$t('system.text_323', [$t('dictionary.policy')])" />
@@ -41,6 +42,9 @@
             <a-radio-button :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
           </template>
         </a-radio-group>
+      </a-form-model-item>
+      <a-form-model-item :label="$t('common_738')" prop="__meta__">
+        <pairs-tag :value="tags" @change="handleTagsChange" />
       </a-form-model-item>
       <template v-if="editType === 'checkbox'">
         <template v-if="showPolicyCheckbox">
@@ -69,6 +73,8 @@ import { genPolicyGroups } from '../../utils'
 import { DEFAULT_ACTIONS_KEY } from '../../constants'
 import ScopeSelect from './ScopeSelect'
 import PolicyRuleCheckbox from './PolicyRuleCheckbox'
+import PairsTag from '@/sections/PairsTag'
+import validateForm from '@/utils/validate'
 
 // 权限级别
 const policyLevel = {
@@ -196,6 +202,7 @@ export default {
   components: {
     ScopeSelect,
     PolicyRuleCheckbox,
+    PairsTag,
   },
   props: {
     policy: Object,
@@ -213,6 +220,7 @@ export default {
     const initialScopeValue = (this.policy && this.policy.scope) || SCOPES_MAP.project.key
     const initialYamlPolicyValue = (this.editType === 'yaml' && this.policy && this.policy.policy) || 'policy:\n  "*": allow'
     const initialDescriptionValue = (this.policy && this.policy.description) || ''
+    const initTagsValue = (this.policy && this.policy.project_tags) || []
     return {
       checkAllDisabled: false,
       scopesMap: SCOPES_MAP,
@@ -223,10 +231,15 @@ export default {
         domain: initialDomainValue,
         description: initialDescriptionValue,
       },
+      tags: initTagsValue,
+      currentDomain: {},
       rules: {
         name: [
           { required: true, message: this.$t('common.text00042') },
           { validator: this.$validate('resourceName') },
+        ],
+        __meta__: [
+          { validator: validateForm('tagName') },
         ],
       },
       formItemLayout: {
@@ -302,6 +315,7 @@ export default {
       try {
         await this.$refs.form.validate()
         const { name, scope, domain, description } = this.model
+        const { tags } = this
         let data = {}
         let policy
         if (this.editType === 'checkbox') {
@@ -338,6 +352,7 @@ export default {
         if (description) {
           data.description = description
         }
+        data.project_tags = tags
         return data
       } catch (error) {
         throw error
@@ -394,6 +409,12 @@ export default {
         }
       }
       return ret
+    },
+    handleDomainChange (domain) {
+      this.currentDomain = domain
+    },
+    handleTagsChange (tags) {
+      this.tags = tags || []
     },
   },
 }

@@ -30,10 +30,14 @@
       :before-show-menu-loaded="beforeShowMenuLoaded"
       :extTagParams="extTagParams"
       :show-ext-tags="showExtTags"
+      :show-tag-config="showTagConfig"
+      :tag-config-params="tagConfigParams"
+      :treeToggleOpen="treeToggleOpen"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
-      @filter-change="filterChange">
+      @filter-change="filterChange"
+      @treeToggleClick="treeToggleClick">
       <slot name="group-actions-append" slot="group-actions-append" />
       <slot name="right-tools-prepend" slot="right-tools-prepend" />
     </page-list-header>
@@ -59,6 +63,7 @@
         :pager-layout="pagerLayout"
         :expand-config="expandConfig"
         :config="config"
+        :resource="resource"
         :next-marker="nextMarker"
         :selection-type="selectionType"
         :inBaseSidePage="inBaseSidePage"
@@ -67,13 +72,18 @@
         :show-page="showPage"
         :span-method="spanMethod"
         :before-show-menu-loaded="beforeShowMenuLoaded"
+        :tree-toggle-open="treeToggleOpen"
+        :show-tag-config="showTagConfig"
+        :tag-config-params="tagConfigParams"
+        :update-config="updateConfig"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
         @change-selected="changeSelected"
         @clear-selected="clearSelected"
         @change-next-marker="changeNextMarker"
-        @radio-change="radioChange" />
+        @radio-change="radioChange"
+        @project-tag-filter-change="projectTagFilterChange" />
     </template>
     <template v-if="!loading && !configLoaded">
       <loader :loading="loading" :noDataText="noDataText" />
@@ -185,6 +195,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 是否展示标签分级
+    showTagConfig: {
+      type: Boolean,
+      default: false,
+    },
+    tagConfigParams: {
+      type: Object,
+    },
   },
   provide: {
     // 声明在List中
@@ -199,6 +217,7 @@ export default {
   data () {
     return {
       beforeShowMenuLoaded: R.isNil(this.beforeShowMenu) || R.isEmpty(this.beforeShowMenu),
+      treeToggleOpen: false,
     }
   },
   computed: {
@@ -290,6 +309,9 @@ export default {
     filterChange (filter) {
       this.list.changeFilter(filter)
     },
+    projectTagFilterChange (projectTagFilter) {
+      this.list.changeProjectTagFilter(projectTagFilter)
+    },
     onManager () {
       return this.list.onManager(...arguments)
     },
@@ -335,6 +357,9 @@ export default {
     },
     fetchDistinctField (item) {
       return this.list.fetchDistinctField(item)
+    },
+    treeToggleClick () {
+      this.treeToggleOpen = !this.treeToggleOpen
     },
   },
 }

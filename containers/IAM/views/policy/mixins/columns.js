@@ -3,6 +3,7 @@ import {
   getProjectDomainTableColumn,
   getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -17,11 +18,15 @@ export default {
         editDesc: row => !row.is_system,
         hideField: true,
         slotCallback: (row, h) => {
-          return this.$createElement('side-page-trigger', {
-            on: {
-              trigger: () => this.handleOpenSidepage(row),
+          return this.$createElement(
+            'side-page-trigger',
+            {
+              on: {
+                trigger: () => this.handleOpenSidepage(row),
+              },
             },
-          }, row.name)
+            row.name,
+          )
         },
       }),
       getEnabledTableColumn(),
@@ -33,6 +38,12 @@ export default {
           return this.$t(`policyScopeLabel.${row.scope}`)
         },
       },
+      getTagTableColumn({
+        customTitle: this.$t('common_738'),
+        title: this.$t('common_738'),
+        field: 'project_tags',
+        columns: () => this.columns,
+      }),
       getPublicScopeTableColumn({ vm: this, resource: 'policies' }),
       getProjectDomainTableColumn(),
     ]

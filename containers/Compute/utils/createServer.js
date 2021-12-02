@@ -77,7 +77,7 @@ export const createVmDecorators = type => {
         validateFirst: true,
         rules: [
           { required: true, message: i18n.t('compute.text_210') },
-          { validator: validateForm('resourceCreateName') },
+          // { validator: validateForm('resourceCreateName') },
         ],
       },
     ],
@@ -619,13 +619,22 @@ export const createVmDecorators = type => {
         ],
       },
     ],
+    hostName: [
+      'hostName',
+      {
+        initialValue: '',
+        rules: [
+          { validator: validateForm('resourceCreateName', false) },
+        ],
+      },
+    ],
   }
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch'],
-  public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider'],
-  private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName'],
+  public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName'],
+  private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName'],
 }
 
 export class Decorator {
@@ -1043,6 +1052,7 @@ export class GenCreateData {
       vmem_size: this.getMemSize(),
       project_id: (this.fd.project && this.fd.project.key) || store.getters.userInfo.projectId,
       os_arch: _.get(HOST_CPU_ARCHS, `[${this.fd.os_arch}].key`),
+      hostname: this.fd.hostName,
     }
     // 非预付费资源池不会添加sku
     if (!this.isPrepaid) {

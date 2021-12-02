@@ -1471,5 +1471,6 @@
   "compute.machine": "Machine type",
   "compute.prompt_machine": "Please specify machine type",
   "compute.need_reboot_prompt": "Reboot is required to make configuration changes take effect.",
-  "compute.sync_config": "Push Config"
+  "compute.sync_config": "Push Config",
+  "compute.host_name_tips": "Indicates the computer name inside the operating system."
 }

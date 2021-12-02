@@ -1,33 +1,47 @@
 <template>
   <floating-scroll ref="floating-scroll" :hiddenScrollbar="hiddenScrollbar" unobtrusive>
-    <vxe-grid
-      show-header-overflow
-      highlight-hover-row
-      highlight-current-row
-      class="page-list-grid"
-      ref="grid"
-      align="left"
-      :data="tableData"
-      :row-id="idKey"
-      :columns="tableColumns"
-      :style="gridStyle"
-      :sort-config="{ sortMethod: () => {} }"
-      :expand-config="expandConfig"
-      :pager-config="tablePage"
-      :span-method="spanMethod"
-      @page-change="handlePageChange"
-      @sort-change="handleSortChange"
-      v-on="dynamicEvents"
-      v-bind="dynamicProps">
-      <template v-slot:empty>
-        <loader :loading="loading" :noDataText="noDataText" />
+    <div class="table-container d-flex">
+      <template v-if="showTagConfig">
+        <tree-project
+          ref="projectTag"
+          v-show="treeToggleOpen"
+          :treeToggleOpen="treeToggleOpen"
+          :tag-config-params="{config,...tagConfigParams}"
+          @select="handleProjectTagSelect"
+          @treeProjectConfig="handleTreeProjectConfig" />
       </template>
-    </vxe-grid>
-    <template v-if="tableData.length > 0 && nextMarker">
-      <div class="text-center mt-4">
-        <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
+      <div style="flex: 1 1 auto">
+        <vxe-grid
+          show-header-overflow
+          highlight-hover-row
+          highlight-current-row
+          class="page-list-grid"
+          ref="grid"
+          align="left"
+          :data="tableData"
+          :row-id="idKey"
+          :columns="tableColumns"
+          :style="gridStyle"
+          :sort-config="{ sortMethod: () => {} }"
+          :expand-config="expandConfig"
+          :pager-config="tablePage"
+          :span-method="spanMethod"
+          @page-change="handlePageChange"
+          @sort-change="handleSortChange"
+          v-on="dynamicEvents"
+          v-bind="dynamicProps">
+          <template v-slot:empty>
+            <loader :loading="loading" :noDataText="noDataText" />
+          </template>
+        </vxe-grid>
+        <template v-if="tableData.length > 0 && nextMarker">
+          <div class="text-center mt-4">
+            <a-button :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
+          </div>
+        </template>
       </div>
-    </template>
+    </div>
+
   </floating-scroll>
 </template>
 
@@ -40,9 +54,15 @@ import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
 import { getTagTitle } from '@/utils/common/tag'
 import storage from '@/utils/storage'
 import Actions from '../Actions'
+import TreeProject from '@/sections/TreeProject'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
   name: 'PageListTable',
+  components: {
+    TreeProject,
+  },
+  mixins: [WindowsMixin],
   props: {
     id: String,
     idKey: String,
@@ -104,6 +124,18 @@ export default {
     noDataText: String,
     showPage: Boolean,
     beforeShowMenuLoaded: Boolean,
+    showTagConfig: Boolean,
+    treeToggleOpen: Boolean,
+    tagConfigParams: {
+      type: Object,
+      default: () => {},
+    },
+    // create list传递的resource
+    resource: [String, Object, Function],
+    updateConfig: {
+      type: Function,
+      required: true,
+    },
   },
   data () {
     const storageKey = this.id && `__oc_${this.id}__`
@@ -484,6 +516,17 @@ export default {
             this.tableData = [...tableTreeData]
           },
         })
+      })
+    },
+    handleProjectTagSelect (filter) {
+      this.$emit('clear-selected')
+      this.$emit('project-tag-filter-change', filter)
+    },
+    handleTreeProjectConfig () {
+      this.createDialog('TreeConfigDialog', {
+        title: this.$t('common.text00011'),
+        resource: this.resource,
+        ...this.tagConfigParams,
       })
     },
   },

@@ -139,6 +139,9 @@
             </template>
           </div>
         </a-form-item>
+        <a-form-item :label="$t('compute.text_1154')" class="mb-0">
+          <tag v-decorator="decorators.tag" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -153,12 +156,16 @@ import { mapGetters } from 'vuex'
 import { providers, policy_types, policy_values } from '../constants'
 import { getDnsTypes, getDnsProviders, getTtls } from '../utils'
 import { uuid } from '@/utils/utils'
-import { validate } from '@/utils/validate'
+import validateForm, { validate } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'DnsRecordSetCreateDialog',
+  components: {
+    Tag,
+  },
   mixins: [DialogMixin, WindowsMixin],
   data () {
     const dnsTypes = getDnsTypes(this.params.detailData)
@@ -340,6 +347,16 @@ export default {
             rules: [{ validator: checkPolicyTxtValue }],
           },
         ]),
+        tag: [
+          'tag',
+          {
+            initialValue: this.params?.data[0]?.metadata,
+            rules: [
+              { required: true, message: this.$t('cloudenv.text_451') },
+              { validator: validateForm('tagName') },
+            ],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -500,6 +517,7 @@ export default {
         traffic_policies: trafficPolicies,
         dns_zone_id: id,
         enabled: true,
+        __meta__: values.tag,
       }
       if (this.isMX) {
         data.mx_priority = mx_priority
