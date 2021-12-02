@@ -1,9 +1,9 @@
 <template>
   <div :class="`${isInPopover?'':'tree-wrapper mr-2'}`" style="position: relative">
     <div class="tree-wrapper-content">
-      <div v-if="!isInPopover" class="tree-wrapper-header d-flex justify-content-end">
-        <!-- <a-button @click="initTree"><icon type="refresh" /></a-button> -->
-        <a-button @click="handleSetting"><icon type="setting" /></a-button>
+      <div v-if="!isInPopover" class="tree-wrapper-header d-flex justify-content-between">
+        <a-button size="small" @click="initTree"><icon type="refresh" /></a-button>
+        <a-button size="small" @click="handleSetting"><icon type="setting" /></a-button>
       </div>
       <data-empty v-if="!loading && !treeData.length" />
       <a-tree
