@@ -1,7 +1,7 @@
 <template>
-  <div class="tree-wrapper mr-2">
+  <div :class="`${isInPopover?'':'tree-wrapper mr-2'}`" style="position: relative">
     <div class="tree-wrapper-content">
-      <div class="tree-wrapper-header d-flex justify-content-end">
+      <div v-if="!isInPopover" class="tree-wrapper-header d-flex justify-content-end">
         <!-- <a-button @click="initTree"><icon type="refresh" /></a-button> -->
         <a-button @click="handleSetting"><icon type="setting" /></a-button>
       </div>
@@ -29,7 +29,7 @@ import { uuid } from '@/utils/utils'
 export default {
   name: 'TreeProject',
   props: {
-    treeToggleOpen: Boolean,
+    isInPopover: Boolean,
     tagConfigParams: {
       type: Object,
     },
@@ -58,7 +58,7 @@ export default {
   },
   created () {
     this.pM = new this.$Manager('parmeters', 'v1')
-    this.tM = new this.$Manager(this.tagConfigParams.resources, 'v1')
+    this.tM = new this.$Manager(this.tagConfigParams.resource, 'v1')
     this.initProjectTags()
   },
   methods: {
@@ -104,13 +104,16 @@ export default {
       const treeNode = tree
       treeNode.tag = treeNode.key
       if (treeNode.value === 'root') {
-        treeNode.title = this.$t('common_737')
+        treeNode.title = `${this.$t('common_737')}(${treeNode.count})`
       } else if (treeNode.value === '___other___') {
-        treeNode.title = this.$t('common_736', [treeNode.tag.replace('user:', '')])
+        treeNode.title = (
+          <div><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{this.$t('common_736')}</div>
+        )
       } else {
-        treeNode.title = treeNode.value
+        treeNode.title = (
+          <div><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${treeNode.value}(${treeNode.count})`}</div>
+        )
       }
-      treeNode.title = `${treeNode.title}(${treeNode.count})`
       treeNode.key = uuid()
       if (treeNode.children && treeNode.children.length) {
         for (let i = 0; i < treeNode.children.length; i++) {
@@ -133,8 +136,10 @@ export default {
       if (keys.length) {
         const { dataRef } = event.node
         this.$emit('select', this.genProjectTagFilter(dataRef))
+        this.$emit('update:item', dataRef)
       } else {
         this.$emit('select', this.genProjectTagFilter({}))
+        this.$emit('update:item', {})
       }
     },
     handleSelectNone () {
@@ -172,5 +177,12 @@ export default {
   border-bottom: 1px solid #f1f1f1;
   padding: 10px;
   min-width: 200px;
+}
+.tag-title-budge {
+  font-size: 12px;
+  box-sizing: border-box;
+  display: inline-block;
+  color: rgba(0,0,0,0.3);
+  margin-right: 5px;
 }
 </style>

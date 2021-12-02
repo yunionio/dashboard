@@ -44,7 +44,7 @@
         </a-radio-group>
       </a-form-model-item>
       <a-form-model-item :label="$t('common_738')" prop="__meta__">
-        <tag :value="tags" @change="handleTagsChange" />
+        <pairs-tag :value="tags" @change="handleTagsChange" />
       </a-form-model-item>
       <template v-if="editType === 'checkbox'">
         <template v-if="showPolicyCheckbox">
@@ -73,7 +73,7 @@ import { genPolicyGroups } from '../../utils'
 import { DEFAULT_ACTIONS_KEY } from '../../constants'
 import ScopeSelect from './ScopeSelect'
 import PolicyRuleCheckbox from './PolicyRuleCheckbox'
-import Tag from '@/sections/Tag'
+import PairsTag from '@/sections/PairsTag'
 import validateForm from '@/utils/validate'
 
 // 权限级别
@@ -202,7 +202,7 @@ export default {
   components: {
     ScopeSelect,
     PolicyRuleCheckbox,
-    Tag,
+    PairsTag,
   },
   props: {
     policy: Object,
@@ -220,12 +220,7 @@ export default {
     const initialScopeValue = (this.policy && this.policy.scope) || SCOPES_MAP.project.key
     const initialYamlPolicyValue = (this.editType === 'yaml' && this.policy && this.policy.policy) || 'policy:\n  "*": allow'
     const initialDescriptionValue = (this.policy && this.policy.description) || ''
-    const initTagsValue = {}
-    if (this.policy && this.policy.project_tags) {
-      this.policy.project_tags.map(item => {
-        initTagsValue[item.key] = [item.value]
-      })
-    }
+    const initTagsValue = (this.policy && this.policy.project_tags) || []
     return {
       checkAllDisabled: false,
       scopesMap: SCOPES_MAP,
@@ -357,15 +352,7 @@ export default {
         if (description) {
           data.description = description
         }
-        const ret = []
-        const tagsKeys = Object.keys(tags)
-        if (tagsKeys.length) {
-          tagsKeys.map((key, index) => {
-            const value = R.is(String, tags[key]) ? tags[key] : tags[key][0]
-            ret.push({ key, value })
-          })
-        }
-        data.project_tags = ret
+        data.project_tags = tags
         return data
       } catch (error) {
         throw error
@@ -427,7 +414,7 @@ export default {
       this.currentDomain = domain
     },
     handleTagsChange (tags) {
-      this.tags = tags || {}
+      this.tags = tags || []
     },
   },
 }
