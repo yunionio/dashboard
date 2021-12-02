@@ -1040,7 +1040,7 @@ export default {
       execLoading: false,
       tagConfigParams: {
         title: this.$t('common.text00124'),
-        resources: 'servers',
+        resource: 'servers',
         queryTreeId: 'project-tag-value-tree',
       },
     }

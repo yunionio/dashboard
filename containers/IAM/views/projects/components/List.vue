@@ -74,7 +74,7 @@ export default {
       tagConfigParams: {
         id: this.id,
         title: this.$t('common.text00124'),
-        resources: 'projects',
+        resource: 'projects',
         queryTreeId: 'tag-value-tree',
         tagFilterKey: 'tags',
       },
