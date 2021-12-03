@@ -1,6 +1,6 @@
 <template>
   <a-config-provider :locale="locale">
-    <div id="app">
+    <div id="app" @click="handleAppAction">
       <component :is="layout">
         <router-view />
       </component>
@@ -27,6 +27,7 @@ import i18n from '@/locales'
 import { updateThemeColor } from '@/utils/theme/utils'
 import setting from '@/config/setting'
 import WindowsMixin from '@/mixins/windows'
+import LogoutMixin from '@/mixins/logout'
 import {
   getTokenFromCookie,
   decodeToken,
@@ -46,7 +47,7 @@ export default {
     SidePageManager,
     WindowResizeListener,
   },
-  mixins: [WindowsMixin],
+  mixins: [WindowsMixin, LogoutMixin],
   data () {
     return {
       locale: antdLocales[this.$store.getters.setting.language],
