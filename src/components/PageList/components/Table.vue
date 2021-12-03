@@ -58,7 +58,7 @@ export default {
     loading: Boolean,
     // 是否显示列选择
     showCheckbox: {
-      type: [String], // String | Boolean, 默认不传
+      type: String,
     },
     groupActions: Array,
     // 单行操作配置
@@ -121,7 +121,7 @@ export default {
   computed: {
     // 是否开启checkbox
     checkboxEnabled () {
-      if (R.is(Boolean, this.showCheckbox)) return this.showCheckbox
+      if (this.showCheckbox) return JSON.parse(this.showCheckbox)
       return (
         (this.groupActions && this.groupActions.length > 0) &&
         this.selectionType === 'checkbox'
