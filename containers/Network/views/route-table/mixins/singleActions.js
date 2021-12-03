@@ -18,6 +18,18 @@ export default {
           validate: true,
         }),
       },
+      {
+        label: this.$t('network.manage_route'),
+        action: obj => {
+          this.sidePageTriggerHandle(this, 'RouteTableSidePage', {
+            id: obj.id,
+            resource: 'route_tables',
+            getParams: this.getParam,
+          }, {
+            tab: 'route-set',
+          })
+        },
+      },
     ]
   },
 }
