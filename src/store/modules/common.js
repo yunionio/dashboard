@@ -166,7 +166,7 @@ export default {
       try {
         const response = await manager.list({
           params: {
-            type: ['common', 'meter'],
+            type: ['common', 'meter', 'identity'],
           },
         })
         const resData = response?.data?.data
@@ -187,6 +187,15 @@ export default {
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('SET_GLOBAL_BILL_CONFIG', config)
+        }
+        const identityId = resData.find(v => v.type === 'identity')?.id || ''
+        if (identityId) {
+          const configResponse = await manager.getSpecific({
+            id: identityId,
+            spec: 'config',
+          })
+          const config = (configResponse.data.config && configResponse.data.config.default) || {}
+          commit('auth/SET_NO_ACTION_LOGOUT_SECONDS', config.no_action_logout_seconds, { root: true })
         }
       } catch (error) {
         throw error
