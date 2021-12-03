@@ -147,7 +147,7 @@ export default {
     },
     // 是否显示列选择
     showCheckbox: {
-      type: Boolean,
+      type: [String], // String | Boolean
     },
     // 导出数据配置
     exportDataOptions: Object,

@@ -77,7 +77,9 @@ export default {
     },
     loading: Boolean,
     // 是否显示列选择
-    showCheckbox: Boolean,
+    showCheckbox: {
+      type: [String], // String | Boolean, 默认不传
+    },
     groupActions: Array,
     // 单行操作配置
     singleActions: Array,
