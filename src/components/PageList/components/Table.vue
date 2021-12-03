@@ -76,9 +76,10 @@ export default {
       required: true,
     },
     loading: Boolean,
-    // 是否显示列选择
-    showCheckbox: {
-      type: [String], // String | Boolean, 默认不传
+    // 是否隐藏列选择
+    hideRowselect: {
+      type: Boolean,
+      default: false,
     },
     groupActions: Array,
     // 单行操作配置
@@ -153,7 +154,7 @@ export default {
   computed: {
     // 是否开启checkbox
     checkboxEnabled () {
-      if (R.is(Boolean, this.showCheckbox)) return this.showCheckbox
+      if (this.hideRowselect) return false
       return (
         (this.groupActions && this.groupActions.length > 0) &&
         this.selectionType === 'checkbox'
@@ -161,7 +162,7 @@ export default {
     },
     // 是否开启radio
     radioEnabled () {
-      return this.selectionType === 'radio'
+      return !this.hideRowselect && this.selectionType === 'radio'
     },
     gridStyle () {
       if (!this.inBaseSidePage && this.isSidepageOpen) return {} // 如果打开抽屉，且列表是最外层列表，则禁用横向滚动条

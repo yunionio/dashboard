@@ -5,7 +5,7 @@
       :columns="columns"
       :single-actions="singleActions"
       :group-actions="groupActions"
-      :showCheckbox="false" />
+      :hideRowselect="true" />
   </div>
 </template>
 
