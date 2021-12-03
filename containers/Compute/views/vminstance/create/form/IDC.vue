@@ -164,7 +164,7 @@
                 <a-icon type="question-circle-o" />
               </a-tooltip>
             </span>
-            <host-name v-decorator="decorators.hostName" />
+            <host-name v-decorator="decorators.hostName" :isWindows="isWindows" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
             <secgroup-config

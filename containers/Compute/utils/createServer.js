@@ -621,12 +621,6 @@ export const createVmDecorators = type => {
     ],
     hostName: [
       'hostName',
-      {
-        initialValue: '',
-        rules: [
-          { validator: validateForm('resourceCreateName', false) },
-        ],
-      },
     ],
   }
 }
