@@ -1016,5 +1016,6 @@
   "network.vpc_network.manage_vpc": "管理VPC",
   "network.text_761": "该操作将会以平台的解析列表为准向公有云同步，可能会删除云上的解析列表，请谨慎操作!",
   "network.text_762": "删除DNS解析会同步删除已同步到公有云的DNS解析",
-  "network.text_763": "释放缓存将会删除已同步到公有云的DNS解析"
+  "network.text_763": "释放缓存将会删除已同步到公有云的DNS解析",
+  "network.manage_route": "管理路由"
 }

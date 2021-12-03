@@ -1052,6 +1052,13 @@
     "region": {
       "inservice": "服务中",
       "outofservice": "停止服务"
+    },
+    "routeTable": {
+      "available": "正常",
+      "unknown": "未知",
+      "conflict": "冲突",
+      "disabled": "禁用",
+      "update_falied": "更新失败"
     }
   },
   "skuCategoryOptions": {

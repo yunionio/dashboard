@@ -1040,6 +1040,13 @@
     "region": {
       "inservice": "Inservice",
       "outofservice": "Outofservice"
+    },
+    "routeTable": {
+      "available": "Available",
+      "unknown": "Unknown",
+      "conflict": "Conflict",
+      "disabled": "Disabled",
+      "update_falied": "Update Failed"
     }
   },
   "skuCategoryOptions": {

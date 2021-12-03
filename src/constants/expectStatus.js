@@ -473,4 +473,9 @@ export default {
     success: ['inservice'],
     error: ['outofservice'],
   },
+  routeTable: {
+    success: ['available'],
+    info: ['unknown', 'conflict', 'disabled'],
+    danger: ['update_falied'],
+  },
 }
