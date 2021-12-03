@@ -17,7 +17,6 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
-        showDesc: false,
         edit: false,
         slotCallback: row => {
           return (
