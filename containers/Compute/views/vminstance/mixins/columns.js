@@ -82,7 +82,7 @@ export default {
         addBackup: true,
         formRules: [
           { required: true, message: i18nLocale.t('compute.text_210') },
-          { validator: this.$validate('resourceCreateName') },
+          // { validator: this.$validate('resourceCreateName') },
         ],
         slotCallback: row => {
           return (

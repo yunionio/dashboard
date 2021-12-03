@@ -1472,5 +1472,7 @@
   "compute.prompt_machine": "请选择主机型号",
   "compute.need_reboot_prompt": "配置更改后需要重启主机才能生效.",
   "compute.sync_config": "推送配置",
-  "compute.host_name_tips": "表示操作系统内部的计算机名。"
+  "compute.host_name_tips": "表示操作系统内部的计算机名。",
+  "compute.validate.windows": "长度为 2～15 个字符，允许使用大小写字母、数字或连字符（-）。不能以连字符（-）开头或结尾，不能连续使用连字符（-），也不能仅使用数字。",
+  "compute.validate.others": "长度为 2～60 个字符，允许使用点号（.）分隔字符成多段，每段允许使用大小写字母、数字或连字符（-），但不能连续使用点号（.）或连字符（-）。不能以点号（.）或连字符（-）开头或结尾。"
 }

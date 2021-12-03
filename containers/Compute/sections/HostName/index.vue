@@ -1,14 +1,14 @@
 <template>
   <a-input
     :value="hostName"
-    :placeholder="$t('validator.resourceCreateName')"
+    :placeholder="isWindows ? $t('compute.validate.windows') : $t('compute.validate.others')"
     @change="handleHostNameChange" />
 </template>
 
 <script>
 export default {
   name: 'HostName',
-  props: ['value'],
+  props: ['value', 'isWindows'],
   data () {
     return {
       hostName: this.value,
