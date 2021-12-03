@@ -26,7 +26,7 @@ const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
   if (isCE()) {
-    return `${docsUrl}/howto/multicloud/cloudaccount/`
+    return `${docsUrl}multicloud/cloudaccounts`
   }
   return `${docsUrl}/user/multiplecloud/cloudaccount/cloudaccount/`
 }
@@ -169,7 +169,7 @@ export const ENV_TITLE = {
 
 export function getCloudaccountDocs (scope) {
   const docs_path = getDocsCloudaccountPath(scope)
-  return {
+  const docs = {
     aliyun: i18n.t('cloudenv.text_125', [docs_path]),
     azure: i18n.t('cloudenv.text_126', [docs_path]),
     aws: i18n.t('cloudenv.text_127', [docs_path]),
@@ -191,6 +191,12 @@ export function getCloudaccountDocs (scope) {
     cloudpods: i18n.t('cloudenv.create_cloudpods', [docs_path]),
     hcso: i18n.t('cloudenv.create_hcso', [docs_path]),
   }
+  if (isCE()) {
+    Object.keys(docs).forEach(v => {
+      docs[v] = `${docs_path}/tutorial/create`
+    })
+  }
+  return docs
 }
 
 export const ACCESS_URL = {
@@ -496,6 +502,9 @@ export function getBillBucketUrlDocs (scope) {
 
 export function getSamlUserDocs (scope) {
   const docsUrl = getDocsCloudaccountPath(scope)
+  if (isCE) {
+    return `${docsUrl}/tutorial/cloudsso/cloudsso/`
+  }
   return i18n.t('cloudenv.dentity_provider', [docsUrl])
 }
 
