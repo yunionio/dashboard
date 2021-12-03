@@ -54,7 +54,7 @@
         :loading="loading"
         :group-actions="groupActions"
         :single-actions="singleActions"
-        :show-checkbox="showCheckbox"
+        :hide-rowselect="hideRowselect"
         :show-single-actions="showSingleActions"
         :get-limit="getLimit"
         :limit="limit"
@@ -145,9 +145,10 @@ export default {
       type: Array,
       required: true,
     },
-    // 是否显示列选择
-    showCheckbox: {
-      type: String,
+    // 是否隐藏列选择
+    hideRowselect: {
+      type: Boolean,
+      default: false,
     },
     // 导出数据配置
     exportDataOptions: Object,

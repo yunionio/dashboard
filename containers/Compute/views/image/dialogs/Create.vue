@@ -78,7 +78,6 @@
       </div>
       <page-list
         :list="list"
-        :show-checkbox="true"
         :pagerLayout="['PrevPage', 'Jump', 'PageCount', 'NextPage', 'Total']"
         :columns="cacheColumns"
         :show-group-actions="false"
