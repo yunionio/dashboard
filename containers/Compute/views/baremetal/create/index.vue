@@ -21,6 +21,9 @@
         :extra="$t('compute.text_301')">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />
       </a-form-item>
+      <a-form-item :label="$t('compute.text_312')" v-bind="formItemLayout" v-if="!isInstallOperationSystem">
+        <a-input v-decorator="decorators.description" />
+      </a-form-item>
       <a-form-item :label="$t('compute.text_294')" v-bind="formItemLayout">
         <a-input-number v-decorator="decorators.count" :min="1" :max="100" :disabled="isInstallOperationSystem" />
       </a-form-item>
