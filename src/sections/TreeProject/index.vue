@@ -74,7 +74,7 @@ export default {
       const params = {
         limit: 0,
         scope: this.$store.getters.scope,
-        with_user_meta: true,
+        // with_user_meta: true,
       }
       this.projectTreeTags.map((item, index) => {
         params[`keys.${index}`] = item.key
