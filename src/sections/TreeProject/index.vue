@@ -143,7 +143,7 @@ export default {
       treeNode.tag = treeNode.key
       if (treeNode.value === 'root') {
         treeNode.title = `${this.$t('common_737')}(${treeNode.count})`
-      } else if (treeNode.value === '___other___') {
+      } else if (treeNode.value === '___no_value__') {
         treeNode.title = (
           <div><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{this.$t('common_736')}</div>
         )
@@ -165,9 +165,8 @@ export default {
     genProjectTagFilter (data) {
       const { tagFilterKey = 'project_tags' } = this.tagConfigParams
       const ret = { tagFilterKey }
-      const { tags = [], no_tags = [] } = data
+      const { tags = [] } = data
       ret[tagFilterKey] = tags
-      ret[`no_${tagFilterKey}`] = no_tags
       return ret
     },
     handleTreeNodeSelect (keys, event) {
