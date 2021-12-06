@@ -4950,7 +4950,7 @@
   "common.attribution_scope": "Attribution Scope",
   "common.full_sync_resource_type": "Sync Resource Type",
   "common.toggle_project_open": "Expend Project Levels",
-  "common.toggle_project_close": "Close Project Levels",
+  "common.toggle_project_close": "Fold Project Levels",
   "common_734": "{0}/{1} items",
   "common_735": "{0} items",
   "common_736": "Unclassified",
