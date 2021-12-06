@@ -1474,5 +1474,6 @@
   "compute.sync_config": "Push Config",
   "compute.host_name_tips": "Indicates the computer name inside the operating system.",
   "compute.validate.windows": "The length is 2-15 characters, uppercase and lowercase letters, numbers, or hyphens (-) are allowed. Do not start or end with a hyphen (-), and cannot use consecutive hyphens (-) , You can’t just use numbers either.",
-  "compute.validate.others": "The length is 2 to 60 characters, and dots (.) are allowed to separate characters into multiple paragraphs. Uppercase and lowercase letters, numbers, or hyphens (-) are allowed in each paragraph, but dots cannot be used consecutively. Sign (.) or hyphen (-). It cannot start or end with a period (.) or hyphen (-)."
+  "compute.validate.others": "The length is 2 to 60 characters, and dots (.) are allowed to separate characters into multiple paragraphs. Uppercase and lowercase letters, numbers, or hyphens (-) are allowed in each paragraph, but dots cannot be used consecutively. Sign (.) or hyphen (-). It cannot start or end with a period (.) or hyphen (-).",
+  "compute.cache_cnt": "Cache Number"
 }
