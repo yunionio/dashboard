@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { exportDataOptions } from '../utils'
 
 export default {
   computed: {
@@ -119,9 +120,10 @@ export default {
               action: () => {
                 this.createDialog('ImportSecgroupRuleDialog', {
                   data: [obj],
-                  exportDataOptions: this.exportDataOptions,
+                  exportDataOptions,
                   onManager: this.onManager,
                   refresh: this.refresh,
+                  a: 1,
                 })
               },
               meta: () => {
