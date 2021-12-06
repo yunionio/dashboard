@@ -180,7 +180,7 @@ export default {
       let ret = {
         limit: 0,
         scope: this.scope,
-        with_user_meta: true,
+        // with_user_meta: true,
       }
       if (this.resources) ret.resources = this.resources
       if (this.params) {
