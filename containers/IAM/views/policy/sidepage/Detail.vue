@@ -11,8 +11,10 @@
 <script>
 import {
   getEnabledTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import PolicyViewer from '../components/PolicyViewer'
+import { getTagColor } from '@/utils/common/tag'
 
 export default {
   name: 'PolicyDetail',
@@ -37,6 +39,29 @@ export default {
             return cellValue ? this.$t('system.text_432') : this.$t('system.text_433')
           },
         },
+        {
+          field: 'project_tags',
+          title: this.$t('common_738'),
+          slots: {
+            default: ({ row }, h) => {
+              const ret = []
+              if (row.project_tags) {
+                row.project_tags.map(item => {
+                  const rgb = getTagColor(item.key, item.value, 'rgb')
+                  const strRgb = rgb.join(',')
+                  const style = `background:rgba(${strRgb},.1);border: solid 1px rgb(${strRgb});padding: 0px 6px 0 4px;line-height: 20px;margin-right:10px;overflow:hidden;max-width:100%;text-overflow: ellipsis;white-space: nowrap;`
+                  ret.push(<span class="tag text-truncate d-inline-block" style={style}>{item.key.replace('user:', '')}:{item.value}</span>)
+                })
+                return <div>{...ret}</div>
+              }
+              return '-'
+            },
+          },
+        },
+        getTagTableColumn({
+          columns: () => this.columns,
+          tipName: this.$t('dictionary.schedtag'),
+        }),
       ],
       extraInfo: [
         {

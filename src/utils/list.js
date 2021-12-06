@@ -932,15 +932,15 @@ class CreateList {
         })
       }
     }
-    if (projectTagFilter[`no_${tagFilterKey}`]) {
-      projectTagFilter[`no_${tagFilterKey}`].map((item, idx) => {
-        if (tagFilterKey === 'tags') {
-          ret[`no_${tagFilterKey}.${idx}.key`] = item.key
-        } else {
-          ret[`no_${tagFilterKey}.0.${idx}.key`] = item.key
-        }
-      })
-    }
+    // if (projectTagFilter[`no_${tagFilterKey}`]) {
+    //   projectTagFilter[`no_${tagFilterKey}`].map((item, idx) => {
+    //     if (tagFilterKey === 'tags') {
+    //       ret[`no_${tagFilterKey}.${idx}.key`] = item.key
+    //     } else {
+    //       ret[`no_${tagFilterKey}.0.${idx}.key`] = item.key
+    //     }
+    //   })
+    // }
     R.forEachObjIndexed((value, key) => {
       if (key === 'without_user_meta' && value && value[0] === true) {
         ret.without_user_meta = true
