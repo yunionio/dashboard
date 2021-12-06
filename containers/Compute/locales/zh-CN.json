@@ -1465,5 +1465,6 @@
   "compute.machine": "主机型号",
   "compute.prompt_machine": "请选择主机型号",
   "compute.need_reboot_prompt": "配置更改后需要重启主机才能生效.",
-  "compute.sync_config": "推送配置"
+  "compute.sync_config": "推送配置",
+  "compute.cache_cnt": "缓存数量"
 }
