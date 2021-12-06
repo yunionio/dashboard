@@ -111,6 +111,16 @@ export default {
         },
         hidden: () => this.hiddenColumns.includes('guest_cnt'),
       },
+      {
+        field: 'cache_cnt',
+        title: this.$t('compute.cache_cnt'),
+        slots: {
+          default: ({ row }, h) => {
+            if (row.cache_cnt === undefined) return [<data-loading />]
+            return row.cache_cnt
+          },
+        },
+      },
       getPublicScopeTableColumn({ vm: this, resource: 'secgroups' }),
       getProjectTableColumn(),
     ]
