@@ -6,25 +6,28 @@
         <a-button size="small" @click="handleSetting"><icon type="setting" /></a-button>
       </div>
       <data-empty v-if="!loading && !treeData.length" />
-      <a-tree
-       v-if="treeData.length"
-       default-expand-all
-       show-line
-       :selectedKeys.sync="selectedKeys"
-       :treeData="treeData"
-       @select="handleTreeNodeSelect"
-       style="padding:10px 0">
-        <a-icon slot="switcherIcon" type="down" />
-      </a-tree>
+      <div :style="contentStyle">
+        <a-tree
+        v-if="treeData.length"
+        default-expand-all
+        show-line
+        :selectedKeys.sync="selectedKeys"
+        :treeData="treeData"
+        @select="handleTreeNodeSelect"
+        style="padding:10px 0">
+          <a-icon slot="switcherIcon" type="down" />
+        </a-tree>
+      </div>
     </div>
     <div v-if="loading" class="loading"><a-spin :spinning="loading" /></div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import * as R from 'ramda'
 import { uuid } from '@/utils/utils'
+import storage from '@/utils/storage'
 
 export default {
   name: 'TreeProject',
@@ -43,10 +46,45 @@ export default {
   },
   computed: {
     // ...mapGetters(['projectTags']),
+    ...mapGetters(['common', 'isAdminMode']),
+    topAlert () {
+      return this.common.topAlert || {}
+    },
+    topAlertLen () {
+      const items = []
+      if (!R.isEmpty(this.topAlert) && !R.isNil(this.topAlert)) {
+        const storageTopAlert = storage.get('topAlert') || {}
+        R.forEachObjIndexed((value, key) => {
+          const time = storageTopAlert[key]
+          if (!time || this.$moment().valueOf() > time) {
+            if (key === 'apiServer') {
+              const url = value.messageOptions[1][2]
+              if (url !== location.origin) {
+                // const message = this.renderMessage(key, value)
+                items.push(1)
+              }
+            } else {
+              // const message = this.renderMessage(key, value)
+              items.push(1)
+            }
+          }
+        }, this.topAlert)
+      }
+      return items.length
+    },
     ...mapState({
       projectTreeTags: state => state.projectTags.projectTreeTags,
       isLoaded: state => state.projectTags.isLoaded,
     }),
+    contentStyle () {
+      const ret = {
+        maxWidth: '400px',
+        overflow: 'auto',
+      }
+      const h = document.body.clientHeight
+      ret.maxHeight = (h - 60 - 60 - 30 - 48 - 38 - 66 - this.topAlertLen * 41) + 'px'
+      return ret
+    },
   },
   watch: {
     projectTreeTags: {
@@ -175,7 +213,7 @@ export default {
 }
 .tree-wrapper-header{
   border-bottom: 1px solid #f1f1f1;
-  padding: 10px;
+  padding: 11.5px;
   min-width: 200px;
 }
 .tag-title-budge {

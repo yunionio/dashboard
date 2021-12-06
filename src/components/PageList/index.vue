@@ -360,6 +360,9 @@ export default {
       return this.list.fetchDistinctField(item)
     },
     treeToggleClick () {
+      if (this.treeToggleOpen) {
+        this.$refs.table.$refs.projectTag.handleSelectNone()
+      }
       this.treeToggleOpen = !this.treeToggleOpen
     },
   },

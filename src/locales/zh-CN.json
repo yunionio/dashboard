@@ -4962,7 +4962,7 @@
   "common.attribution_scope": "所属域",
   "common.full_sync_resource_type": "同步资源类型",
   "common.toggle_project_open": "展开层级项目",
-  "common.toggle_project_close": "关闭层级项目",
+  "common.toggle_project_close": "折叠层级项目",
   "common_734": "{0}/{1} 项",
   "common_735": "{0} 项",
   "common_736": "未归类",
