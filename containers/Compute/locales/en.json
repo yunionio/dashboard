@@ -1465,5 +1465,6 @@
   "compute.machine": "Machine type",
   "compute.prompt_machine": "Please specify machine type",
   "compute.need_reboot_prompt": "Reboot is required to make configuration changes take effect.",
-  "compute.sync_config": "Push Config"
+  "compute.sync_config": "Push Config",
+  "compute.cache_cnt": "Cache Number"
 }
