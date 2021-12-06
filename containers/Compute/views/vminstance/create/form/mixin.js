@@ -113,6 +113,10 @@ export default {
       capabilityParams: {}, // 防止 capability 反复调用，这里对当前的接口参数做记录
       price: null,
       collapseActive: [],
+      hostNameValidate: {
+        validateStatus: '',
+        errorMsg: '',
+      },
     }
   },
   provide () {
@@ -305,6 +309,15 @@ export default {
           this._resetDataDisk() // 重置数据盘数据
         })
       },
+    },
+    isWindows (val) {
+      const hostName = this.form.fd.hostName
+
+      if (hostName) {
+        this.hostNameValidate = {
+          ...this.validateHostNameChange(hostName),
+        }
+      }
     },
   },
   methods: {
@@ -546,6 +559,76 @@ export default {
         this.form.fc.setFieldsValue({
           project: { key: project },
         })
+      }
+    },
+    validateHostNameChange (v) {
+      const error = {
+        validateStatus: 'success',
+        errorMsg: null,
+      }
+      if (!v) return error
+      if (this.isWindows) {
+        if (v.length < 2 || v.length > 15) {
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.windows')
+          return error
+        }
+        if (!/^[a-z0-9A-Z-]+$/.test(v)) {
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.windows')
+          return error
+        }
+        if (/^[0-9]+$/.test(v)) { // 不能仅仅使用数字
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+          return error
+        }
+        if (/(-)\1+/.test(v)) { // 不能连续使用连字符
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+          return error
+        }
+        if (/^(?=(-)).*/.test(v)) { // 不能以连字符开头
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+          return error
+        }
+        if (/.*(?<=(-))$/.test(v)) { // 不能以连字符结尾
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+          return error
+        }
+      } else {
+        if (v.length < 2 || v.length > 60) {
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+        }
+        if (!/^[a-z0-9A-Z.-]+$/.test(v)) {
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+          return error
+        }
+        if (/(\.|-)\1+/.test(v)) { // 不能连续使用点号或连字符
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+          return error
+        }
+        if (/^(?=(\.|-)).*/.test(v)) { // 不能以点号或连字符开头
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+          return error
+        }
+        if (/.*(?<=(\.|-))$/.test(v)) { // 不能以点号或连字符结尾
+          error.validateStatus = 'error'
+          error.errorMsg = this.$t('compute.validate.others')
+          return error
+        }
+      }
+      return error
+    },
+    handleHostNameChange (v) {
+      this.hostNameValidate = {
+        ...this.validateHostNameChange(v),
       }
     },
   },

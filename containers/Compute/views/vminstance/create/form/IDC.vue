@@ -157,14 +157,17 @@
             :cloud-env="type"
             :form="form"
             :formItemLayout="formItemLayout" />
-          <a-form-item v-if="!isServertemplate">
+          <a-form-item
+            v-if="!isServertemplate"
+            :validate-status="hostNameValidate.validateStatus"
+            :help="hostNameValidate.errorMsg">
             <span slot="label">
               {{ $t('common_388') }}&nbsp;
               <a-tooltip :title="$t('compute.host_name_tips')">
                 <a-icon type="question-circle-o" />
               </a-tooltip>
             </span>
-            <host-name v-decorator="decorators.hostName" :isWindows="isWindows" />
+            <host-name v-decorator="decorators.hostName" :isWindows="isWindows" @change="handleHostNameChange" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_105')" v-if="isKvm">
             <secgroup-config
