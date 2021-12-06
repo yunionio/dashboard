@@ -41,10 +41,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.scheduledtask')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'private', 'public', 'vmware'],
-              })
+              }) : false
             },
             label: i18n.t('helm.text_8'),
             permission: 'scheduledtasks_list',
@@ -100,10 +100,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.vm_release')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'],
-              })
+              }) : false
             },
             // invisible: () => true,
           },
@@ -159,10 +159,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_chart')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'],
-              })
+              }) : false
             },
             // invisible: () => true,
           },
@@ -189,10 +189,10 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.k8s_repo')) {
                 return true
               }
-              return !setupKeys.hasVersionedSetupKey({
+              return process.env.VUE_APP_IS_PRIVATE ? !setupKeys.hasVersionedSetupKey({
                 '3.0': ['monitor'],
                 default: ['onestack', 'openstack', 'dstack', 'zstack', 'public', 'k8s', 'vmware', 'hcso'],
-              })
+              }) : false
             },
             // invisible: () => true,
           },
