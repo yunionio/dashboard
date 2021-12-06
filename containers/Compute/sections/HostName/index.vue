@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     handleHostNameChange (e) {
-      this.$emit('change', e)
+      this.$emit('change', e.target.value)
     },
   },
 }
