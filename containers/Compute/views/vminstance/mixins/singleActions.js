@@ -8,6 +8,7 @@ import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import { PROVIDER_MAP } from '@/constants'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   computed: {
@@ -326,7 +327,7 @@ export default {
                       validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
                     }
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_reset'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_reset'),
                 },
                 {
                   label: i18n.t('compute.text_1128'),
@@ -356,7 +357,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
+                  hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
                 },
                 {
                   label: i18n.t('compute.text_478'),
@@ -386,7 +387,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
+                  hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                 },
                 {
                   label: i18n.t('compute.sync_config'),
@@ -416,7 +417,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_sync_config'),
                 },
               ],
             },
@@ -441,7 +442,7 @@ export default {
                       tooltip: !isOneCloud && i18n.t('compute.text_473', [PROVIDER_MAP[provider].label]),
                     }
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_update'),
+                  hidden: (row) => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_update'),
                 },
                 {
                   label: i18n.t('compute.text_357'),
@@ -617,7 +618,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_create_same_config'),
+                  hidden: () => !(hasSetupKey(['onecloud', 'public'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_create_same_config'),
                 },
                 {
                   label: i18n.t('compute.text_1112'),
@@ -647,7 +648,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('acttachGpu', obj)
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
                 },
                 {
                   label: i18n.t('compute.text_1249'),
@@ -676,7 +677,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_disk_speed'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_disk_speed'),
                 },
                 {
                   label: i18n.t('compute.text_1132'),
@@ -737,7 +738,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_clone'),
                 },
                 {
                   label: i18n.t('compute.text_1181', [i18n.t('dictionary.instancegroup')]),
@@ -772,7 +773,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_instancegroup'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_instancegroup'),
                 },
                 {
                   label: i18n.t('compute.text_1117'),
@@ -806,7 +807,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
+                  hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_Renew'),
                 },
                 {
                   label: i18n.t('compute.text_1120'),
@@ -839,7 +840,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
+                  hidden: () => !(hasSetupKey(['aliyun', 'qcloud', 'huawei', 'ucloud', 'ecloud', 'jdcloud', 'ctyun'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_auto_renewal'),
                 },
                 // {
                 //   label: '保存主机模板',
@@ -1080,7 +1081,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('insertiso', obj)
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_mount_iso'),
+                  hidden: () => !(hasSetupKey(['vmware', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_mount_iso'),
                 },
                 {
                   label: i18n.t('compute.text_367'),
@@ -1116,7 +1117,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('ejectiso', obj)
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unmount_iso'),
+                  hidden: () => !(hasSetupKey(['vmware', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unmount_iso'),
                 },
               ],
             },
@@ -1142,7 +1143,7 @@ export default {
                     }
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
+                  hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'public', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_secgroup'),
                 },
                 {
                   label: i18n.t('compute.text_1179'),
@@ -1181,7 +1182,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('bindEip', obj)
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_bind_elastic_public_ip'),
+                  hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'public', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_bind_elastic_public_ip'),
                 },
                 // 解绑弹性公网IP
                 {
@@ -1213,7 +1214,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('unbindEip', obj)
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unbind_elastic_public_ip'),
+                  hidden: () => !(hasSetupKey(['onestack', 'onecloud', 'public', 'openstack', 'dstack', 'zstack', 'apsara', 'cloudpods', 'hcso'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_unbind_elastic_public_ip'),
                 },
                 {
                   label: i18n.t('compute.text_1121'),
@@ -1243,7 +1244,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('publicIpToEip', obj)
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_public_ip_to_eip'),
+                  hidden: () => !(hasSetupKey(['aliyun', 'qcloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_public_ip_to_eip'),
                 },
                 {
                   label: i18n.t('compute.text_1124'),
@@ -1271,7 +1272,7 @@ export default {
                     }
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_source_check'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_source_check'),
                 },
               ],
             },
@@ -1313,7 +1314,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_backup'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_add_backup'),
                 },
                 {
                   label: i18n.t('compute.text_1209'),
@@ -1346,7 +1347,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete_backup'),
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete_backup'),
                 },
                 {
                   label: i18n.t('compute.text_1127'),
@@ -1384,7 +1385,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('transfer', obj)
                     return ret
                   },
-                  hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                  hidden: () => !(hasSetupKey(['openstack', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                 },
               ],
             },
