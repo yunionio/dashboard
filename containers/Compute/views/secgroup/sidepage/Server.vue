@@ -41,7 +41,7 @@ export default {
     return {
       hideColumnFields: ['is_gpu', 'instance_type', 'os_type', 'host', 'account'],
       list: this.$list.createList(this, {
-        id: this.id,
+        id: this.getParams.listId,
         resource: 'servers',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.server).flat(),

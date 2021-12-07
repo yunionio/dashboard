@@ -73,19 +73,23 @@ export default {
         return {
           type: 'in',
           id: this.data.id,
+          listId: 'LIST_Secgroup_Inlist',
         }
       } else if (this.params.windowData.currentTab === 'out-direction') {
         return {
           type: 'out',
           id: this.data.id,
+          listId: 'LIST_Secgroup_Outlist',
         }
       } else if (this.params.windowData.currentTab === 'cache-list') {
         return {
           id: this.data.id,
+          listId: 'LIST_Secgroup_Cachelist',
         }
       } else if (this.params.windowData.currentTab === 'vminstance-list') {
         return {
           secgroup: this.detailData.id,
+          listId: 'LIST_Secgroup_Vmlist',
         }
       }
       return null

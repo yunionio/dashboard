@@ -27,6 +27,7 @@ export default {
   data () {
     return {
       list: this.$list.createList(this, {
+        id: this.getParams.listId,
         resource: 'secgroupcaches',
         getParams: {
           details: true,
