@@ -13,7 +13,7 @@
 
 <script>
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getBrandFilter, getAccountFilter, getDomainFilter, getRegionFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getBrandFilter, getAccountFilter, getDomainFilter, getRegionFilter, getCloudProviderFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -40,6 +40,7 @@ export default {
             label: this.$t('table.title.external_id'),
           },
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           type: {
             label: this.$t('network.waf.type'),
             dropdown: true,
