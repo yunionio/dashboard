@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       loading: false,
-      resources: ['all', 'compute', 'loadbalancer', 'objectstore', 'rds', 'cache', 'nat', 'nas', 'waf', 'mongodb', 'es', 'kafka', 'app', 'container'],
+      resources: ['all', 'network', 'compute', 'loadbalancer', 'objectstore', 'rds', 'cache', 'nat', 'nas', 'waf', 'mongodb', 'es', 'kafka', 'app', 'container'],
       form: {
         fc: this.$form.createForm(this),
       },
