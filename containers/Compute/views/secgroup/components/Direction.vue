@@ -41,11 +41,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    listId: {
+      type: String,
+    },
   },
   data () {
     const title = this.type === 'out' ? this.$t('compute.text_978') : this.$t('compute.text_979')
     return {
       list: this.$list.createList(this, {
+        id: this.listId,
         resource: 'secgrouprules',
         getParams: {
           direction: this.type,
