@@ -26,7 +26,7 @@
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">{{$t('cloudenv.text_273')}}</a-button>
         <a-button :disabled="nextDisabled" class="mr-3" type="primary"  @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
         <test-button v-if="currentComponent === 'create-cloudaccount' || currentComponent === 'bill-form'" class="mr-3" :post="testPost" />
-        <a-button @click="cancel">{{currentComponent === 'bill-form' ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
+        <a-button @click="cancel">{{['select-region', 'bill-form'].includes(currentComponent) ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -161,7 +161,11 @@ export default {
       }
       this.step.steps = steps
     },
-    cancel () {
+    async cancel () {
+      if (this.step.currentStep === 2 && notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+        await this.$refs.stepRef.validateForm()
+        await this.doCreateCloudaccountByRegion()
+      }
       this.$router.push('/cloudaccount')
     },
     showName (item) {
@@ -447,6 +451,10 @@ export default {
             accounts: this.newAccountInfo.sub_accounts.accounts,
             cloudregions: cloudregionIds,
           },
+        }
+      } else {
+        data = {
+          ...this.createCloudaccountFormData,
         }
       }
       delete data.show_sub_accounts

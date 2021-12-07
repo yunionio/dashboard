@@ -756,6 +756,6 @@
   "cloudenv.bill.data_source": "账单数据源:",
   "cloudenv.text_605": "{0}平台不支持此操作",
   "cloudenv.select_region": "配置同步资源区域",
-  "cloudenv.select_region_tips": "请选择要同步资源的区域，该配置可在云账号导入后在云账号详情页-订阅-区域进行修改，请放心配置！",
+  "cloudenv.select_region_tips": "请选择要同步资源的区域，该配置可在云账号导入后在云账号详情页-订阅-区域进行修改，请放心配置！（默认同步所有区域）",
   "cloudenv.sync_account": "同步云账号"
 }
