@@ -22,6 +22,10 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
+        <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.tag" />
+        </a-form-item>
       </a-form>
       <a-tabs defaultActiveKey="in" @change="tabCallback">
         <a-tab-pane :tab="$t('compute.text_993')" key="in">
@@ -49,12 +53,14 @@
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DomainProject from '@/sections/DomainProject'
-import { isRequired } from '@/utils/validate'
+import validateForm, { isRequired } from '@/utils/validate'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'CreateSecgroupDialog',
   components: {
     DomainProject,
+    Tag,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -101,6 +107,16 @@ export default {
           },
         ],
         description: ['description'],
+        tag: [
+          'tag',
+          {
+            initialValue: {},
+            rules: [
+              { required: true, message: this.$t('cloudenv.text_451') },
+              { validator: validateForm('tagName') },
+            ],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -282,6 +298,7 @@ export default {
           description: values.description,
           rules,
           tenant: values.project && values.project.key,
+          __meta__: values.tag,
         }
         await this.doCreate(newValues)
         this.loading = false
