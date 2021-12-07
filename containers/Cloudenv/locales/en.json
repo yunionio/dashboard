@@ -756,6 +756,6 @@
   "cloudenv.bill.data_source": "Bill data source:",
   "cloudenv.text_605": "{0} Cloud platform does not support this operation",
   "cloudenv.select_region": "Configure synchronization resource region",
-  "cloudenv.select_region_tips": "Please select the area where you want to synchronize resources. The configuration can be modified in the cloud account details page-subscription-area after the cloud account is imported, please rest assured to configure!",
+  "cloudenv.select_region_tips": "Please select the area where you want to synchronize resources. The configuration can be modified in the cloud account details page-subscription-area after the cloud account is imported, please rest assured to configure!（Synchronize all regions by default）",
   "cloudenv.sync_account": "Sync Account"
 }

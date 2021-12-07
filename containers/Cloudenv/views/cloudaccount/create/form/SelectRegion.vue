@@ -123,12 +123,7 @@ export default {
     },
     validateForm () {
       return new Promise((resolve, reject) => {
-        if (this.chooseRegions.length > 0) {
-          resolve()
-        } else {
-          this.$message.warning(this.$t('cloudenv.text_231'))
-          reject(this.$t('cloudenv.text_231'))
-        }
+        resolve()
       })
     },
   },
