@@ -173,7 +173,7 @@ export default {
       const params = {
         resource_type: 'cloudaccount',
         label_type: 'id',
-        label: this.params.resId,
+        labels: [this.params.resId],
         operation: 'sync',
         name: values.name,
       }

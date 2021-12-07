@@ -337,7 +337,7 @@ export default {
       return params
     },
     async handleConfirm () {
-      const manager = new this.$Manager('scheduledtasks')
+      const manager = new this.$Manager('scheduledtasks', 'v1')
       try {
         const values = await this.form.fc.validateFields()
         this.loading = true
