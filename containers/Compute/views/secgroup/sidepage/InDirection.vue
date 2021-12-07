@@ -4,7 +4,7 @@
       :message="$t('compute.text_1031')"
       type="warning"
       style="margin-bottom: 20px" />
-    <direction-list :type="getParams.type" :id="getParams.id" :isRead="isRead" />
+    <direction-list :type="getParams.type" :id="getParams.id" :isRead="isRead" :listId="getParams.listId" />
   </div>
 </template>
 
