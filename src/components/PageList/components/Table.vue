@@ -123,10 +123,7 @@ export default {
     // 是否开启checkbox
     checkboxEnabled () {
       if (this.hideRowselect) return false
-      return (
-        (this.groupActions && this.groupActions.length > 0) &&
-        this.selectionType === 'checkbox'
-      )
+      return this.selectionType === 'checkbox'
     },
     // 是否开启radio
     radioEnabled () {
