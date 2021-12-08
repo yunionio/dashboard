@@ -291,12 +291,22 @@ export default {
       for (const k in this.charts) {
         const chart = this.charts[k]
         const column = chart.metric.label
-        const col = { field: column, title: column, sortable: true, sortType: 'number', sortBy: (row) => { const v = row && row[column] ? row[column] : 0; return v } }
+        const col = { field: column, title: column, sortable: true, sortType: 'number', sortBy: (row) => { const v = row && row[column] ? row[column] : '-'; return v } }
         if (chart.metric.format) {
           if (chart.metric.format === '0.00 b') {
-            col.formatter = ({ cellValue }) => { return cellValue < 1024 ? mathRoundFix(cellValue, 1, true) + 'B' : sizestr(cellValue, 'B', 1024) }
+            col.formatter = ({ cellValue }) => {
+              if (typeof (cellValue) === 'undefined' || cellValue === '-') {
+                return '-'
+              }
+              return cellValue < 1024 ? mathRoundFix(cellValue, 1, true) + 'B' : sizestr(cellValue, 'B', 1024)
+            }
           } else {
-            col.formatter = ({ cellValue }) => { return numerify(cellValue, chart.metric.format) }
+            col.formatter = ({ cellValue }) => {
+              if (typeof (cellValue) === 'undefined' || cellValue === '-') {
+                return '-'
+              }
+              return numerify(cellValue, chart.metric.format)
+            }
           }
         }
         data.columns.push(col)
