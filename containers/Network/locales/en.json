@@ -1011,5 +1011,11 @@
   "network.ntp_server": "NTP Server",
   "network.text_761": "This operation will be synchronized to the public cloud based on the resolution list of the platform, and the resolution list on the cloud may be deleted. Please be careful!",
   "network.text_762": "Deleting DNS resolution will synchronously delete the DNS resolution synchronized to the public cloud",
-  "network.text_763": "Releasing the cache will delete DNS resolutions synchronized to the public cloud"
+  "network.text_763": "Releasing the cache will delete DNS resolutions synchronized to the public cloud",
+  "network.manage_route": "Manage Route",
+  "network.text_764": "After expiration, the NAT gateway of the corresponding platform will be deleted. There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
+  "network.text_765": "The renewal operation will directly deduct the fees on the corresponding account of the public cloud platform.",
+  "network.text_766": "After expiration, the fees on the corresponding account of the public cloud platform will be automatically deducted for renewal.",
+  "network.text_767": "Deleting access control will not affect the access control synchronized to the public cloud platform.",
+  "network.text_768": "Deleting a certificate will not affect the certificate that has been synchronized to the public cloud platform."
 }

@@ -177,6 +177,7 @@ export default {
                 action: () => {
                   this.createDialog('SetDurationDialog', {
                     data: this.list.selectedItems,
+                    alert: this.$t('network.text_764'),
                     columns: this.columns,
                     onManager: this.onManager,
                     name: this.$t('dictionary.nat'),
@@ -212,6 +213,7 @@ export default {
                   this.createDialog('RenewDialog', {
                     name: this.$t('dictionary.nat'),
                     data: this.list.selectedItems,
+                    alert: this.$t('network.text_765'),
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
@@ -249,6 +251,7 @@ export default {
                   this.createDialog('AutoRenewDialog', {
                     name: i18n.t('dictionary.nat'),
                     data: this.list.selectedItems,
+                    alert: this.$t('network.text_766'),
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,

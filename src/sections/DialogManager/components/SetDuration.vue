@@ -5,7 +5,7 @@
       <a-alert class="mb-2" type="warning">
         <div slot="message">
           <!-- {{$t('common.text00059')}} <br /> -->
-          {{$t('common.text00060')}}
+          {{tip}}
         </div>
       </a-alert>
       <dialog-selected-tips :name="name" :count="params.data.length" :action="action" />
@@ -105,6 +105,9 @@ export default {
     }
   },
   computed: {
+    tip () {
+      return this.params.alert || this.$t('common.text00060')
+    },
     help () {
       return this.$t('common.text00067')
     },

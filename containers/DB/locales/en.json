@@ -401,5 +401,8 @@
   "db.text_386": "Valid Connection Count",
   "db.text_387": "Failed connection Count",
   "db.text_389": "CPU Load Rate",
-  "db.text_390": "Connection Error Rate"
+  "db.text_390": "Connection Error Rate",
+  "db.text_391": "After expiration, the RDS instance of the corresponding platform will be deleted. There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
+  "db.text_392": "The data cannot be retrieved after clearing, please operate with caution.",
+  "db.text_393": "After expiration, the redis instance of the corresponding platform will be deleted. There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual."
 }

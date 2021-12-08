@@ -116,6 +116,7 @@ export default {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
+              alert: this.$t('storage.text_267'),
               columns: this.columns,
               title: this.$t('storage.text_36'),
               onManager: this.onManager,

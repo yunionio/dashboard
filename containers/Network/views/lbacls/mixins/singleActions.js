@@ -66,6 +66,7 @@ export default {
                   vm: this,
                   title: i18n.t('network.text_131'),
                   name: this.$t('network.text_142'),
+                  alert: this.$t('network.text_767'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
