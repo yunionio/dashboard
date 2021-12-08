@@ -318,5 +318,7 @@
   "storage.filesystem.storage.type.standard.enhanced": "标准型增强版",
   "storage.filesystem.storage.type.performance.enhanced": "性能型增强版",
   "storage.mount.target.max.count": "最多支持{0}个挂载点",
-  "storage.capacity": "容量"
+  "storage.capacity": "容量",
+  "storage.text_266": "删除NAS权限组不会影响已同步到公有云平台的NAS权限组。",
+  "storage.text_267": "删除缓存将会删除已同步到公有云平台的NAS权限组。"
 }

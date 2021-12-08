@@ -318,5 +318,7 @@
   "storage.filesystem.storage.type.standard.enhanced": "StandardEnhanced",
   "storage.filesystem.storage.type.performance.enhanced": "PerformanceEnhanced",
   "storage.mount.target.max.count": "The number of Mount targets has reached the upper limit of {0} and cannot be added for the time being",
-  "storage.capacity": "Capacity"
+  "storage.capacity": "Capacity",
+  "storage.text_266": "Deleting a NAS permission group does not affect the NAS permission group that has been synchronized to the public cloud platform.",
+  "storage.text_267": "Deleting the cache will delete the NAS permission group synchronized to the public cloud platform."
 }

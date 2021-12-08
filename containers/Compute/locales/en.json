@@ -1198,9 +1198,9 @@
   "compute.text_1219": "Please select an ISO image",
   "compute.text_1220": "Whether to start automatically after rebuilding the system",
   "compute.text_1221": "The system disk image was not found, unable to reinstall the system",
-  "compute.text_1222": "Due to OpenStack's own reasons, the new password may not take effect when reinstalling the system. It is recommended to reset the password or log in with the original password after reinstalling the system",
-  "compute.text_1223": "Because ZStack/DStack itself does not support reinstalling the system to set a new password, you can reset the password in the host list after reinstalling the system",
-  "compute.text_1224": "The minimum disk size of the selected image must be smaller than the size of the server system disk",
+  "compute.text_1222": "Reinstalling the system will reassign a new system disk, and the original data on the system disk will be cleared.Due to OpenStack's own reasons, the new password may not take effect when reinstalling the system. It is recommended to reset the password or log in with the original password after reinstalling the system",
+  "compute.text_1223": "Reinstalling the system will reassign a new system disk, and the original data on the system disk will be cleared.Because ZStack/DStack itself does not support reinstalling the system to set a new password, you can reset the password in the host list after reinstalling the system",
+  "compute.text_1224": "Reinstalling the system will reassign a new system disk, and the original data on the system disk will be cleared.The minimum disk size of the selected image must be smaller than the size of the server system disk",
   "compute.text_1225": "The selected multiple {0} are not under the same subscription and cannot select {1}",
   "compute.text_1227": "The difference between restart and reset: restart is a process-level restart of the host (qemu),",
   "compute.text_1228": "VNC will break; reset to the server system (OS) level restart, VNC will not break.",
@@ -1475,5 +1475,13 @@
   "compute.host_name_tips": "Indicates the computer name inside the operating system.",
   "compute.validate.windows": "The length is 2-15 characters, uppercase and lowercase letters, numbers, or hyphens (-) are allowed. Do not start or end with a hyphen (-), and cannot use consecutive hyphens (-) , You can’t just use numbers either.",
   "compute.validate.others": "The length is 2 to 60 characters, and dots (.) are allowed to separate characters into multiple paragraphs. Uppercase and lowercase letters, numbers, or hyphens (-) are allowed in each paragraph, but dots cannot be used consecutively. Sign (.) or hyphen (-). It cannot start or end with a period (.) or hyphen (-).",
-  "compute.cache_cnt": "Cache Number"
+  "compute.cache_cnt": "Cache Number",
+  "compute.text_1389": "The renewal operation will deduct the fees on the corresponding account of the public cloud platform.",
+  "compute.text_1390": "After expiration, the fees on the corresponding account of the public cloud platform will be automatically deducted for renewal.",
+  "compute.text_1391": "After expiration, the virtual machine of the corresponding platform will be deleted (if the recycle bin is turned on, it will be shut down and put into the recycle bin). There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
+  "compute.text_1392": "If the trash is opened, it will be put into the recycle bin, if the trash is not opened, it will be deleted directly.",
+  "compute.text_1393": "Deleting an image does not affect the image cached on the corresponding platform or host.",
+  "compute.text_1394": "Deleting the cache will delete the images on the corresponding platform and host.",
+  "compute.text_1395": "Deleting a security group will synchronously delete it to the security group cached on the corresponding platform.",
+  "compute.text_1396": "Deleting the cache will delete the security group on the corresponding platform."
 }

@@ -105,6 +105,7 @@ export default {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: [obj],
+              alert: this.$t('compute.text_1396'),
               columns: this.columns,
               title: this.$t('compute.perform_delete'),
               onManager: this.onManager,

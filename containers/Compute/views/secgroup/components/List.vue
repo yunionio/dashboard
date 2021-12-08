@@ -174,6 +174,7 @@ export default {
             this.createDialog('DeleteResDialog', {
               vm: this,
               data: this.list.selectedItems,
+              alert: this.$t('compute.text_1395'),
               columns: this.columns,
               title: this.$t('compute.perform_delete'),
               name: this.$t('dictionary.secgroup'),

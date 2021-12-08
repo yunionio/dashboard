@@ -2,6 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_1232')}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning" v-if="tip">
+        <div slot="message">{{tip}}</div>
+      </a-alert>
       <dialog-selected-tips :name="params.name" :count="params.data.length" :action="$t('compute.text_1232')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form
@@ -54,6 +57,9 @@ export default {
     columns () {
       const showFields = ['name', 'billing_type', 'brand']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
+    },
+    tip () {
+      return this.params.alert
     },
   },
   methods: {

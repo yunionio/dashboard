@@ -687,6 +687,7 @@ export default {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
+                      alert: this.$t('compute.text_1391'),
                       refresh: this.refresh,
                     })
                   },

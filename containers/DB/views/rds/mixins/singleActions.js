@@ -120,6 +120,7 @@ export default {
                 this.createDialog('SetDurationDialog', {
                   data: [obj],
                   columns: this.columns,
+                  alert: this.$t('db.text_391'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                   name: this.$t('dictionary.dbinstances'),
@@ -144,6 +145,7 @@ export default {
                 this.createDialog('RedisRenewDialog', {
                   title: i18n.t('db.text_157'),
                   name: i18n.t('dictionary.dbinstances'),
+                  alert: this.$t('network.text_765'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,
@@ -169,6 +171,7 @@ export default {
                 this.createDialog('AutoRenewDialog', {
                   name: i18n.t('dictionary.dbinstances'),
                   data: [obj],
+                  alert: this.$t('network.text_766'),
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
