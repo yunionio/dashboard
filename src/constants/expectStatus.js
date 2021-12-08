@@ -478,4 +478,9 @@ export default {
     info: ['unknown', 'conflict', 'disabled'],
     danger: ['update_falied'],
   },
+  vpcPeerConnect: {
+    success: ['active'],
+    info: ['unknown', 'pending-acceptance'],
+    danger: ['create_failed', 'delete_failed'],
+  },
 }

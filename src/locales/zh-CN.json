@@ -1059,6 +1059,15 @@
       "conflict": "冲突",
       "disabled": "禁用",
       "update_falied": "更新失败"
+    },
+    "vpcPeerConnect": {
+      "active": "可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "delete_failed": "删除失败",
+      "pending-acceptance": "建立连接",
+      "deleting": "删除中",
+      "unknown": "未知"
     }
   },
   "skuCategoryOptions": {
@@ -2507,7 +2516,8 @@
     "ext_rabbitmq": "RabbitMQ",
     "cdn": "内容分发网络",
     "cdn_domain": "域名",
-    "vpc_network": "VPC互联"
+    "vpc_network": "VPC互联",
+    "vpc_peer_connect": "VPC对等连接"
   },
   "res": {
     "role": "@:dictionary.role",

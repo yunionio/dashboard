@@ -1047,6 +1047,15 @@
       "conflict": "Conflict",
       "disabled": "Disabled",
       "update_falied": "Update Failed"
+    },
+    "vpcPeerConnect": {
+      "active": "Available",
+      "creating": "Creating",
+      "create_failed": "Create Failed",
+      "delete_failed": "Delete Failed",
+      "pending-acceptance": "Pending Acceptance",
+      "deleting": "Deleting",
+      "unknown": "Unknown"
     }
   },
   "skuCategoryOptions": {
@@ -2495,7 +2504,8 @@
     "ext_rabbitmq": "RabbitMQ",
     "cdn": "CDN",
     "cdn_domain": "Domain",
-    "vpc_network": "VPC Network"
+    "vpc_network": "VPC Network",
+    "vpc_peer_connect": "VPC Peer Connect"
   },
   "res": {
     "role": "Role",
