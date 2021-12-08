@@ -196,7 +196,7 @@ export default {
         {
           path: '/routetable',
           meta: {
-            label: '路由表',
+            label: i18n.t('dictionary.route_table'),
             permission: 'route_tables_list',
           },
           component: Layout,
