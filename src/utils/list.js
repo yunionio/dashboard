@@ -744,11 +744,13 @@ class CreateList {
 
   /**
    * @description 项目标签过滤条件变更
-   * @param {tags: Array, no_tags: Array} projectTagFilter
+   * @param {[tags, project_tags]: Array, tagFilterKey: String} projectTagFilter
    * @memberof CreateList
    */
   changeProjectTagFilter (projectTagFilter) {
-    if (!R.equals(this.projectTagFilter, projectTagFilter)) {
+    if (!this.projectTagFilter.tagFilterKey) {
+      this.projectTagFilter = projectTagFilter
+    } else if (!R.equals(this.projectTagFilter, projectTagFilter)) {
       this.projectTagFilter = projectTagFilter
       this.reset()
       this.fetchData(0, 0)
