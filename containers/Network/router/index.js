@@ -17,6 +17,7 @@ import NatCreate from '@Network/views/nats/create/index'
 // import DNS from '@Network/views/dns'
 import VPC from '@Network/views/vpc'
 import VpcNetwork from '@Network/views/vpc-network'
+import VpcPeerConnect from '@Network/views/vpc-peer-connect'
 import VPCCreate from '@Network/views/vpc/create'
 import LbList from '@Network/views/lb'
 import LBCreate from '@Network/views/lb/create/index'
@@ -121,6 +122,25 @@ export default {
               name: 'VpcNetwork',
               path: '',
               component: VpcNetwork,
+            },
+          ],
+        },
+        {
+          path: '/vpc-peerconnect',
+          meta: {
+            label: i18n.t('dictionary.vpc_peer_connect'),
+            t: 'dictionary.vpc_peer_connect',
+            hidden: () => {
+              if (store.getters.isProjectMode) return true
+              return !hasSetupKey(['aliyun', 'qcloud'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'VpcPeerConnect',
+              path: '',
+              component: VpcPeerConnect,
             },
           ],
         },
