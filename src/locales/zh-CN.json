@@ -53,7 +53,7 @@
       "rebuild_root_fail": "重装系统失败",
       "snapshot_start": "开始创建快照",
       "snapshot": "正在创建快照",
-      "block_stream": "数据同步",
+      "block_stream": "运行中",
       "snapshot_succ": "快照创建成功",
       "snapshot_failed": "快照创建失败",
       "syncing": "同步中",
