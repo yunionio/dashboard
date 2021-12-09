@@ -7,7 +7,7 @@ export default {
     danger: ['create_failed', 'delete_failed', 'update_tags_fail'],
   },
   server: {
-    success: ['running'],
+    success: ['running', 'block_stream'],
     info: ['ready', 'deallocated', 'unknown', 'suspend', 'converted'],
     // danger: [new RegExp('fail')] // 这条会在 base组件 中默认存在
   },
