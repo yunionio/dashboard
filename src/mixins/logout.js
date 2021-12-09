@@ -71,6 +71,8 @@ export default {
             path: '/auth/login',
             query: genReferRouteQuery(router.currentRoute),
           })
+          // 登出后将记录检测时间的config置空，便于重新登录后重新获取新的config
+          store.commit('common/SET_GLOBAL_CONFIG', {})
         }
       })
     },
