@@ -368,6 +368,7 @@ export default {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
                   data: [obj],
+                  alert: this.$t('compute.text_1393'),
                   columns: this.columns,
                   title: i18n.t('compute.perform_delete'),
                   name: this.$t('dictionary.image'),

@@ -88,6 +88,7 @@ export default {
               vm: this,
               title: this.$t('network.text_131'),
               name: this.$t('network.text_142'),
+              alert: this.$t('network.text_767'),
               data: this.list.selectedItems,
               columns: this.columns,
               onManager: this.onManager,

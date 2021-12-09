@@ -30,6 +30,7 @@ export default {
                   vm: this,
                   title: i18n.t('storage.text_36'),
                   name: this.$t('dictionary.access_group'),
+                  alert: this.$t('storage.text_266'),
                   data: [obj],
                   columns: this.columns,
                   onManager: this.onManager,

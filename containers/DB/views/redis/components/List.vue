@@ -243,6 +243,7 @@ export default {
                   this.createDialog('SetDurationDialog', {
                     data: this.list.selectedItems,
                     columns: this.columns,
+                    alert: this.$t('db.text_393'),
                     onManager: this.onManager,
                     refresh: this.refresh,
                     name: this.$t('dictionary.elasticcaches'),
@@ -282,6 +283,7 @@ export default {
                   this.createDialog('RedisRenewDialog', {
                     title: this.$t('db.text_157'),
                     name: this.$t('dictionary.elasticcaches'),
+                    alert: this.$t('network.text_765'),
                     data: this.list.selectedItems,
                     columns: this.columns,
                     onManager: this.onManager,
@@ -303,6 +305,7 @@ export default {
                   this.createDialog('AutoRenewDialog', {
                     name: this.$t('dictionary.elasticcaches'),
                     data: this.list.selectedItems,
+                    alert: this.$t('network.text_766'),
                     columns: this.columns,
                     onManager: this.onManager,
                     refresh: this.refresh,
