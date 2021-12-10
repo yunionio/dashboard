@@ -60,7 +60,12 @@ export default {
     },
     getParams () {
       if (this.params.windowData.currentTab === 'vpc') {
-        return { details: true, filter: `id.in(${this.detailData.vpc_id})` }
+        const { vpc_id, peer_vpc_id } = this.detailData
+        const vpcIds = [vpc_id]
+        if (peer_vpc_id) {
+          vpcIds.push(peer_vpc_id)
+        }
+        return { details: true, filter: `id.in(${vpcIds.join(',')})` }
       }
       return null
     },
