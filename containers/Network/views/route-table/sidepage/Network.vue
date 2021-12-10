@@ -1,5 +1,6 @@
 <template>
   <page-list
+    :hideRowselect="true"
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
@@ -11,7 +12,6 @@ import * as R from 'ramda'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import {
-  getCopyWithContentTableColumn,
   getStatusTableColumn,
   getBrandTableColumn,
   getProjectTableColumn,
@@ -60,11 +60,18 @@ export default {
         },
       }),
       columns: [
-        getCopyWithContentTableColumn({
+        {
           field: 'name',
           title: this.$t('table.title.name'),
           sortable: true,
-        }),
+          slots: {
+            default: ({ row }, h) => {
+              return [
+                <side-page-trigger name='NetworkSidePage' id={row.id} vm={this}>{row.name}</side-page-trigger>,
+              ]
+            },
+          },
+        },
         getStatusTableColumn({ statusModule: 'network' }),
         {
           field: 'ip',
