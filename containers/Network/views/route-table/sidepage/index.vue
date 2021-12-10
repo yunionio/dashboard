@@ -56,7 +56,7 @@ export default {
       const tabs = [
         { label: this.$t('network.text_67'), key: 'detail' },
         { label: this.$t('network.vpc_network.route'), key: 'route-set' },
-        { label: this.$t('compute.text_104'), key: 'network' },
+        { label: this.$t('network.text_565'), key: 'network' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       return tabs
