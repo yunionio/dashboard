@@ -2,6 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{this.params.title}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning">
+        <div slot="message">{{$t('db.text_392')}}</div>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.elasticcaches')" :count="params.data.length" :action="this.params.title" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" class="mt-3">

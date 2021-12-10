@@ -206,6 +206,7 @@ export default {
                 this.createDialog('SetDurationDialog', {
                   data: [obj],
                   columns: this.columns,
+                  alert: this.$t('db.text_393'),
                   onManager: this.onManager,
                   refresh: this.refresh,
                   name: this.$t('dictionary.elasticcaches'),
@@ -231,6 +232,7 @@ export default {
                   title: i18n.t('db.text_157'),
                   name: this.$t('dictionary.elasticcaches'),
                   data: [obj],
+                  alert: this.$t('network.text_765'),
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,
@@ -251,6 +253,7 @@ export default {
                 this.createDialog('AutoRenewDialog', {
                   name: i18n.t('dictionary.elasticcaches'),
                   data: [obj],
+                  alert: this.$t('network.text_766'),
                   columns: this.columns,
                   onManager: this.onManager,
                   refresh: this.refresh,

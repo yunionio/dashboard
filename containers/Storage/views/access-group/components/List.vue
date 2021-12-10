@@ -101,6 +101,7 @@ export default {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
                     data: this.list.selectedItems,
+                    alert: this.$t('storage.text_266'),
                     columns: this.columns,
                     title: this.$t('storage.text_36'),
                     name: this.$t('dictionary.access_group'),
