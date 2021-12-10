@@ -3878,7 +3878,7 @@
   "common.text00121": "Custom",
   "common.text00122": "Loading, please wait...",
   "common.text00123": "Batch operation error",
-  "common.text00124": "Configure tags level",
+  "common.text00124": "Configure Levels",
   "common_1": "Postpaid",
   "common_2": "Prepaid",
   "common_3": "1 month",
@@ -4967,5 +4967,8 @@
   "common_737": "All",
   "common_738": "Matched tags",
   "common_739": "Unselected",
-  "common_740": "Selected"
+  "common_740": "Selected",
+  "common_741": "Add Level",
+  "common_742": "Please select a level. If it is not selected, this level will be ignored",
+  "common_743": "Level "
 }
