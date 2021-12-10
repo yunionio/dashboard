@@ -16,7 +16,7 @@ import * as R from 'ramda'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
-import { getStatusFilter, getNameFilter, getTenantFilter, getCloudProviderFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getNameFilter, getDescriptionFilter, getTenantFilter, getCloudProviderFilter, getAccountFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import ListMixin from '@/mixins/list'
 import ColumnsMixin from '../mixins/columns'
@@ -53,6 +53,7 @@ export default {
             label: this.$t('table.title.external_id'),
           },
           name: getNameFilter(),
+          description: getDescriptionFilter(),
           status: getStatusFilter('kafka'),
           account: getAccountFilter(),
           manager: getCloudProviderFilter(),

@@ -21,6 +21,7 @@ import {
   getCloudProviderFilter,
   getBrandFilter,
   getRegionFilter,
+  getDescriptionFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
@@ -63,6 +64,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          description: getDescriptionFilter(),
           status: getStatusFilter('routeTable'),
           brand: getBrandFilter('brands'),
           project_domains: getDomainFilter(),
