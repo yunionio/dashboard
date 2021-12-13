@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
+import protocolCheck from 'custom-protocol-detection'
 import { commonUnabled, cloudEnabled, cloudUnabledTip, commonEnabled, commonTip } from '../utils'
 import { SERVER_TYPE } from '@Compute/constants'
 import { disableDeleteAction } from '@/utils/common/tableActions'
@@ -12,13 +13,6 @@ import { PROVIDER_MAP } from '@/constants'
 export default {
   computed: {
     ...mapGetters(['isAdminMode', 'isDomainMode']),
-  },
-  data () {
-    return {
-      readyToBlur: false,
-      hashPlugin: false,
-      timer: null,
-    }
   },
   created () {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
@@ -1403,11 +1397,6 @@ export default {
   },
   destroyed () {
     this.webconsoleManager = null
-    window.removeEventListener('blur', this.blurHandle)
-    clearTimeout(this.timer)
-  },
-  mounted () {
-    window.addEventListener('blur', this.blurHandle)
   },
   methods: {
     openWebConsole (obj, data) {
@@ -1433,25 +1422,17 @@ export default {
     },
     open (obj, url) {
       if (obj.hypervisor === typeClouds.hypervisorMap.esxi.key) {
-        this.readyToBlur = true
-        window.location.href = url
-
-        this.timer = setTimeout(() => {
-          if (!this.hashPlugin) {
-            this.createDialog('VmrcDownload', {
-              data: [obj],
-              columns: this.columns,
-              onManager: this.onManager,
-            })
-          }
-        }, 1000)
+        protocolCheck(url, () => {
+          this.createDialog('VmrcDownload', {
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+          })
+        }, () => {
+          window.location.href = url
+        })
       } else {
         window.open(url)
-      }
-    },
-    blurHandle () {
-      if (this.readyToBlur) {
-        this.hashPlugin = true
       }
     },
   },
