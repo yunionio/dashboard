@@ -10,6 +10,8 @@
 <script>
 import {
   getPublicScopeTableColumn,
+  getBrandTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 
@@ -29,6 +31,8 @@ export default {
   data () {
     return {
       baseInfo: [
+        getBrandTableColumn(),
+        getAccountTableColumn(),
         getPublicScopeTableColumn({ vm: this, resource: 'globalvpcs' }),
         // {
         //   field: 'model',

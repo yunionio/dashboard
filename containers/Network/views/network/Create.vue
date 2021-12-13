@@ -499,6 +499,7 @@ export default {
         usable: false,
         usable_vpc: true,
         project_domain: this.form.fd.domain?.key,
+        filter: 'provider.notequals("Google")',
       }
     },
   },
