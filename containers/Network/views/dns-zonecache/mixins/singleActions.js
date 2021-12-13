@@ -3,14 +3,14 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('storage.text_74'),
+        label: i18n.t('network.text_131'),
         permission: 'dns_zonecaches_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,
             data: [obj],
             columns: this.columns,
-            title: i18n.t('storage.text_74'),
+            title: i18n.t('network.text_131'),
             name: i18n.t('common.text00107'),
             onManager: this.onManager,
             alert: this.$t('network.text_763'),
