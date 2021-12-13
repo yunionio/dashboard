@@ -65,20 +65,21 @@ export default {
         ],
       },
       groupActions: [
-        // {
-        //   label: '新建',
-        //   action: () => {
-        //     this.createDialog('GlobalVpcCreateDialog', {
-        //       title: '新建全局VPC',
-        //       onManager: this.onManager,
-        //     })
-        //   },
-        //   meta: () => {
-        //     return {
-        //       buttonType: 'primary',
-        //     }
-        //   },
-        // },
+        {
+          label: this.$t('network.text_26'),
+          permission: 'vpcs_create',
+          action: () => {
+            this.$router.push({
+              path: '/globalvpc/create',
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
+          // hidden: () => this.hiddenActions.includes('create'),
+        },
         {
           label: this.$t('common.batchAction'),
           actions: () => {
