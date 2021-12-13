@@ -161,9 +161,11 @@ export default {
     },
     addKey () {
       this.keysList = this.keysList.concat([undefined])
+      this.updateDisabledItems()
     },
     deleteKey (index) {
       this.keysList = this.keysList.filter((item, idx) => index !== idx)
+      this.updateDisabledItems()
     },
   },
 }
