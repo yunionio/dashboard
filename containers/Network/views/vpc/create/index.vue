@@ -34,17 +34,6 @@
             <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item v-if="isGoogle" :label="$t('network.text_242')" v-bind="formItemLayout">
-          <base-select
-              class="w-50"
-              v-decorator="decorators.globalvpc_id"
-              resource="globalvpcs"
-              :params="globalvpcParams"
-              :isDefaultSelect="true"
-              :needParams="true"
-              :showSync="true"
-              :select-props="{ placeholder: $t('compute.text_149') }" />
-        </a-form-item>
         <a-form-item :label="$t('network.external_access_mode_label')" v-if="cloudEnv === 'public'" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
           <template v-slot:extra>{{ $t('network.external_access_mode_extra') }}</template>
@@ -60,9 +49,21 @@
               :needParams="true"
               :showSync="true"
               :select-props="{ placeholder: $t('compute.text_149') }"
-              :resList.sync="cloudproviderData" />
+              :resList.sync="cloudproviderData"
+              @change="handleProviderChange" />
           </a-form-item>
         </template>
+        <a-form-item v-if="isGoogle" :label="$t('network.text_242')" v-bind="formItemLayout">
+          <base-select
+              class="w-50"
+              v-decorator="decorators.globalvpc_id"
+              resource="globalvpcs"
+              :params="globalvpcParams"
+              :isDefaultSelect="true"
+              :needParams="true"
+              :showSync="true"
+              :select-props="{ placeholder: $t('compute.text_149') }" />
+        </a-form-item>
       </a-form>
     </page-body>
     <page-footer>
@@ -180,6 +181,7 @@ export default {
       cloudproviderData: [],
       cloudregion: '',
       regionList: {},
+      cloudprovider: '',
     }
   },
   computed: {
@@ -204,12 +206,15 @@ export default {
       return params
     },
     globalvpcParams () {
-      return {
+      const params = {
         scope: this.scope,
         limit: 0,
         details: true,
-        provider: 'Google',
       }
+      if (this.cloudprovider) {
+        params.manager_id = this.cloudprovider
+      }
+      return params
     },
     providerParams () {
       const ret = {
@@ -278,6 +283,9 @@ export default {
         this.isGoogle = provider.toLowerCase() === 'google'
         this.isAws = provider.toLowerCase() === 'aws'
       }
+    },
+    handleProviderChange (data) {
+      this.cloudprovider = data
     },
     cloudregionMapper (data) {
       if (this.cloudEnv === 'private') {

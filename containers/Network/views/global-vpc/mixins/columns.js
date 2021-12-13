@@ -4,6 +4,7 @@ import {
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
   getBrandTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -27,6 +28,7 @@ export default {
         title: i18n.t('network.text_243'),
         width: 100,
       },
+      getAccountTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'globalvpcs' }),
       getProjectDomainTableColumn(),
     ]
