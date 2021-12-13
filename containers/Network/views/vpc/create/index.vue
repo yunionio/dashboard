@@ -26,13 +26,24 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
-        <a-form-item v-if="!isGoogle || cloudEnv !== 'public'" :label="$t('network.text_244')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
+        <a-form-item :label="$t('network.text_244')" v-bind="formItemLayout" :extra="cloudEnv !== 'onpremise' ? $t('network.text_685') : $t('network.text_686')">
           <a-input v-decorator="decorators.cidr_block" :placeholder="$t('network.text_687')" v-if="cloudEnv !== 'onpremise'" />
           <a-select v-decorator="decorators.cidr_block" v-else>
             <a-select-option value="192.168.0.0/16">192.168.0.0/16</a-select-option>
             <a-select-option value="172.16.0.0/12">172.16.0.0/12</a-select-option>
             <a-select-option value="10.0.0.0/8">10.0.0.0/8</a-select-option>
           </a-select>
+        </a-form-item>
+        <a-form-item v-if="isGoogle" :label="$t('network.text_242')" v-bind="formItemLayout">
+          <base-select
+              class="w-50"
+              v-decorator="decorators.globalvpc_id"
+              resource="globalvpcs"
+              :params="globalvpcParams"
+              :isDefaultSelect="true"
+              :needParams="true"
+              :showSync="true"
+              :select-props="{ placeholder: $t('compute.text_149') }" />
         </a-form-item>
         <a-form-item :label="$t('network.external_access_mode_label')" v-if="cloudEnv === 'public'" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.external_access_mode" :disabled="!isAws" />
@@ -122,6 +133,12 @@ export default {
             ],
           },
         ],
+        globalvpc_id: [
+          'globalvpc_id',
+          {
+            rules: [{ required: true }],
+          },
+        ],
         cidr_block: [
           'cidr_block',
           {
@@ -185,6 +202,14 @@ export default {
         delete params.domain_id
       }
       return params
+    },
+    globalvpcParams () {
+      return {
+        scope: this.scope,
+        limit: 0,
+        details: true,
+        provider: 'Google',
+      }
     },
     providerParams () {
       const ret = {
@@ -303,8 +328,9 @@ export default {
             description: values.description,
           }
         }
-        if (!this.isGoogle) {
-          params.cidr_block = values.cidr_block
+        params.cidr_block = values.cidr_block
+        if (this.isGoogle) {
+          params.globalvpc_id = values.globalvpc_id
         }
         if (values.project_domain) {
           params.project_domain = values.project_domain

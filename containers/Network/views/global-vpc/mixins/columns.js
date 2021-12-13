@@ -3,6 +3,7 @@ import {
   getStatusTableColumn,
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
+  getBrandTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -20,6 +21,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'globalVpc' }),
+      getBrandTableColumn(),
       {
         field: 'vpc_count',
         title: i18n.t('network.text_243'),

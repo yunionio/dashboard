@@ -10,6 +10,7 @@ import BatchEditAttributes from '@Network/views/network/BatchEditAttributes'
 import Eip from '@Network/views/eip'
 import Waf from '@Network/views/waf'
 import GlobalVpc from '@Network/views/global-vpc'
+import GlobalVpcCreate from '@Network/views/global-vpc/create'
 import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 import NatCreate from '@Network/views/nats/create/index'
@@ -163,6 +164,11 @@ export default {
               name: 'GlobalVPC',
               path: '',
               component: GlobalVpc,
+            },
+            {
+              name: 'GlobalVpcCreate',
+              path: 'create',
+              component: GlobalVpcCreate,
             },
           ],
         },
