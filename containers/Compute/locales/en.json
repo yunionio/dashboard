@@ -1468,7 +1468,7 @@
   "compute.sync_config": "Push Config",
   "compute.cache_cnt": "Cache Number",
   "compute.text_1389": "The renewal operation will deduct the fees on the corresponding account of the public cloud platform.",
-  "compute.text_1390": "After expiration, the fees on the corresponding account of the public cloud platform will be automatically deducted for renewal.",
+  "compute.text_1390": "When auto-renewal enabled, the fees on the corresponding account of the public cloud platform will be automatically deducted for renewal after expiration.",
   "compute.text_1391": "After expiration, the virtual machine of the corresponding platform will be deleted (if the recycle bin is turned on, it will be shut down and put into the recycle bin). There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
   "compute.text_1392": "If the trash is opened, it will be put into the recycle bin, if the trash is not opened, it will be deleted directly.",
   "compute.text_1393": "Deleting an image does not affect the image cached on the corresponding platform or host.",

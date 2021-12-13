@@ -717,7 +717,7 @@
   "network.text_718": "记录数",
   "network.text_719": "关联VPC",
   "network.text_720": "DNS解析",
-  "network.text_721": "同步解析列表",
+  "network.text_721": "推送解析列表",
   "network.text_722": "修改节点",
   "network.text_723": "新建VPC",
   "network.text_724": "新建弹性公网IP",
@@ -1010,11 +1010,11 @@
   "network.ntp_server": "时间服务器(NTP)",
   "network.text_761": "该操作将会以平台的解析列表为准向公有云同步，可能会删除云上的解析列表，请谨慎操作!",
   "network.text_762": "删除DNS解析会同步删除已同步到公有云的DNS解析",
-  "network.text_763": "释放缓存将会删除已同步到公有云的DNS解析",
+  "network.text_763": "删除缓存将会删除已同步到公有云的DNS解析",
   "network.manage_route": "管理路由",
   "network.text_764": "到期后，将会删除对应平台的NAT网关。实际释放时间与设置时间存在一定误差，具体释放时间以实际为准。",
   "network.text_765": "续费操作将直接扣除公有云平台对应账号上的费用。",
-  "network.text_766": "到期后将自动扣除公有云平台对应账号上的费用进行续费。",
+  "network.text_766": "启用自动续费后，到期后将会自动扣除公有云平台对应账号上的费用进行续费。",
   "network.text_767": "删除访问控制不会影响已同步到公有云平台的访问控制。",
   "network.text_768": "删除证书不会影响已同步到公有云平台的证书"
 }
