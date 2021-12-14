@@ -1477,11 +1477,11 @@
   "compute.validate.others": "The length is 2 to 60 characters, and dots (.) are allowed to separate characters into multiple paragraphs. Uppercase and lowercase letters, numbers, or hyphens (-) are allowed in each paragraph, but dots cannot be used consecutively. Sign (.) or hyphen (-). It cannot start or end with a period (.) or hyphen (-).",
   "compute.cache_cnt": "Cache Number",
   "compute.text_1389": "The renewal operation will deduct the fees on the corresponding account of the public cloud platform.",
-  "compute.text_1390": "When auto-renewal enabled, the fees on the corresponding account of the public cloud platform will be automatically deducted for renewal after expiration.",
-  "compute.text_1391": "After expiration, the virtual machine of the corresponding platform will be deleted (if the recycle bin is turned on, it will be shut down and put into the recycle bin). There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
+  "compute.text_1390": "The fees on the corresponding account of the public cloud platform will be automatically deducted for renewal after expiration.",
+  "compute.text_1391": "When it expires, the VM instances of the corresponding platform will be deleted (if the trash is opened, it will be shut down into the trash). There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
   "compute.text_1392": "If the trash is opened, it will be put into the recycle bin, if the trash is not opened, it will be deleted directly.",
-  "compute.text_1393": "Deleting an image does not affect the image cached on the corresponding platform or host.",
-  "compute.text_1394": "Deleting the cache will delete the images on the corresponding platform and host.",
-  "compute.text_1395": "Deleting a security group will synchronously delete it to the security group cached on the corresponding platform.",
+  "compute.text_1393": "Deleting images does not affect images that have been cached on the corresponding platform or host.",
+  "compute.text_1394": "Deleting the cache will delete the security group on the corresponding platform.",
+  "compute.text_1395": "Deleting a security group will synchronize the deletion to the security groups that have been cached on the corresponding platform.",
   "compute.text_1396": "Deleting the cache will delete the security group on the corresponding platform."
 }

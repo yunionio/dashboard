@@ -200,6 +200,7 @@ export default {
                     title: this.$t('compute.text_617'),
                     name: this.$t('dictionary.guestimage'),
                     onManager: this.onManager,
+                    alert: this.$t('compute.text_1393'),
                     requestData: {
                       override_pending_delete: true,
                     },

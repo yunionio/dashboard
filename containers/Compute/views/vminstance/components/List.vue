@@ -566,6 +566,7 @@ export default {
                         columns: this.columns,
                         onManager: this.onManager,
                         refresh: this.refresh,
+                        alert: this.$t('compute.text_1391'),
                       })
                     },
                     meta: () => {
