@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-header :title="$t('network.text_723')" />
+    <page-header :title="$t('network.text_769')" />
     <page-body>
       <a-form
         class="mt-3"
@@ -9,9 +9,9 @@
           <domain-select v-decorator="decorators.project_domain" @change="handleDomainChange" />
         </a-form-item>
         <a-form-item :label="$t('network.text_198')" v-bind="formItemLayout">
-          <a-select v-decorator="decorators.platform">
-            <a-select-option value="google">Google</a-select-option>
-          </a-select>
+          <a-radio-group v-decorator="decorators.platform">
+            <a-radio-button value="Google">Google</a-radio-button>
+          </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_684')" />
@@ -71,7 +71,7 @@ export default {
             validateFirst: true,
             validateTrigger: ['blur'],
             rules: [
-              { required: true, message: this.$t('network.text_688') },
+              { required: true, message: this.$t('network.text_770') },
               { validator: this.$validate('broadName') },
             ],
           },
@@ -79,7 +79,7 @@ export default {
         platform: [
           'platform',
           {
-            initialValue: 'google',
+            initialValue: 'Google',
             rules: [{ required: true }],
           },
         ],
@@ -155,6 +155,7 @@ export default {
           name: values.name,
           description: values.description,
           manager: values.cloudprovider,
+          platform: values.platform, // 未起作用
         }
         if (values.project_domain) {
           params.project_domain = values.project_domain

@@ -1018,5 +1018,6 @@
   "network.text_766": "When auto-renewal enabled, the fees on the corresponding account of the public cloud platform will be automatically deducted for renewal after expiration.",
   "network.text_767": "Deleting access control will not affect the access control synchronized to the public cloud platform.",
   "network.text_768": "Deleting a certificate will not affect the certificate that has been synchronized to the public cloud platform.",
-  "network.text_769": "Create Global VPC"
+  "network.text_769": "Create Global VPC",
+  "network.text_770": "Please enter the Global VPC name"
 }

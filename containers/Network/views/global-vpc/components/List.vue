@@ -1,5 +1,7 @@
 <template>
   <page-list
+    show-tag-column
+    show-tag-filter
     :list="list"
     :columns="columns"
     :single-actions="singleActions"
@@ -8,6 +10,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
@@ -83,6 +86,29 @@ export default {
           label: this.$t('common.batchAction'),
           actions: () => {
             return [
+              {
+                label: this.$t('network.text_201'),
+                permission: 'globalvpcs_perform_syncstatus',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+                meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
+              },
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.globalvpc'),
                 resource: 'globalvpcs',
@@ -121,11 +147,19 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo']),
+  },
   created () {
     this.initSidePageTab('detail')
     this.list.fetchData()
   },
   methods: {
+    isPower (obj) {
+      if (this.isAdminMode) return true
+      if (this.isDomainMode) return obj.domain_id === this.userInfo.projectDomainId
+      return false
+    },
     getParam () {
       const ret = {
         ...this.getParams,
