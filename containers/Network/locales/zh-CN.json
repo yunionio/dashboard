@@ -1015,14 +1015,16 @@
   "network.vpc_network.route": "路由",
   "network.vpc_network.manage_vpc": "管理VPC",
   "network.text_761": "该操作将会以平台的解析列表为准向公有云同步，可能会删除云上的解析列表，请谨慎操作!",
-  "network.text_762": "删除DNS解析会同步删除已同步到公有云的DNS解析",
-  "network.text_763": "删除缓存将会删除已同步到公有云的DNS解析",
+  "network.text_762": "删除DNS解析将会删除已同步到公有云平台的DNS解析。",
+  "network.text_763": "删除缓存将会删除已同步到公有云平台的DNS解析。",
   "network.manage_route": "管理路由",
   "network.text_764": "到期后，将会删除对应平台的NAT网关。实际释放时间与设置时间存在一定误差，具体释放时间以实际为准。",
   "network.text_765": "续费操作将直接扣除公有云平台对应账号上的费用。",
-  "network.text_766": "启用自动续费后，到期后将会自动扣除公有云平台对应账号上的费用进行续费。",
+  "network.text_766": "到期后将会自动扣除公有云平台对应账号上的费用进行续费。",
   "network.text_767": "删除访问控制不会影响已同步到公有云平台的访问控制。",
   "network.text_768": "删除证书不会影响已同步到公有云平台的证书",
   "network.text_769": "新建全局VPC",
-  "network.text_770": "请输入全局VPC名称"
+  "network.text_770": "请输入全局VPC名称",
+  "network.text_771": "删除缓存将会删除已同步到公有云平台的访问控制",
+  "network.text_772": "删除缓存将会删除已同步到公有云平台的证书"
 }
