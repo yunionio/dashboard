@@ -4982,5 +4982,6 @@
   "common_740": "已选",
   "common_741": "添加层级",
   "common_742": "请选择层级，未选时忽略此层级",
-  "common_743": "层级"
+  "common_743": "层级",
+  "common.sync_resource": "同步资源"
 }

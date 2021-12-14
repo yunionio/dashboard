@@ -132,14 +132,14 @@ export default {
             const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
             return [
               {
-                label: this.$t('cloudenv.text_105'),
+                label: this.$t('cloudenv.sync_account'),
                 permission: 'cloudaccounts_perform_sync',
                 action: () => {
                   // this.list.batchPerformAction('sync', { full_sync: true, force: true }, this.list.steadyStatus)
                   this.createDialog('FullSyncResourceDialog', {
-                    title: this.$t('cloudenv.text_105'),
+                    title: this.$t('cloudenv.sync_account'),
                     name: this.$t('common.account'),
-                    action: this.$t('cloudenv.text_105'),
+                    action: this.$t('cloudenv.sync_account'),
                     steadyStatus: this.list.steadyStatus,
                     data: this.list.selectedItems,
                     columns: this.columns,

@@ -4970,5 +4970,6 @@
   "common_740": "Selected",
   "common_741": "Add Level",
   "common_742": "Please select a level. If it is not selected, this level will be ignored",
-  "common_743": "Level "
+  "common_743": "Level ",
+  "common.sync_resource": "Sync Resource"
 }
