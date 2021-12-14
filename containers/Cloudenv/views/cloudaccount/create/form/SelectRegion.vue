@@ -4,6 +4,7 @@
       <template slot="message">{{ $t('cloudenv.select_region_tips') }}</template>
     </a-alert>
     <page-list
+      :showSync="false"
       :list="list"
       :columns="columns"
       :group-actions="groupActions"
