@@ -5,6 +5,7 @@ import {
   getProjectDomainTableColumn,
   getBrandTableColumn,
   getAccountTableColumn,
+  getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -22,6 +23,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'globalVpc' }),
+      getTagTableColumn({ onManager: this.onManager, resource: 'globalvpc', columns: () => this.columns, tipName: this.$t('dictionary.globalvpc') }),
       getBrandTableColumn(),
       {
         field: 'vpc_count',
