@@ -751,6 +751,9 @@ export const PERMISSION = {
    * 网络-全局vpc
    */
   network_globalvpcs_list: ['compute', 'globalvpcs', 'list'],
+  network_globalvpcs_create: ['compute', 'globalvpcs', 'create'],
+  network_globalvpcs_delete: ['compute', 'globalvpcs', 'delete'],
+  network_globalvpcs_perform_set_schedtag: ['compute', 'globalvpcs', 'perform', 'set-schedtag'],
   // 公有云日志
   cloudevents_list: ['cloudevent', 'cloudevents', 'list'],
   // 报警资源
