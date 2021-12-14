@@ -173,6 +173,7 @@ export default {
                   title: i18n.t('compute.perform_delete'),
                   name: this.$t('dictionary.guestimage'),
                   onManager: this.onManager,
+                  alert: this.$t('compute.text_1393'),
                   requestData: {
                     override_pending_delete: true,
                   },
