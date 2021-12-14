@@ -7,7 +7,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_201'),
-        permission: 'globalvpcs_perform_syncstatus',
+        permission: 'network_globalvpcs_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
