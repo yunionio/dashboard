@@ -66,12 +66,12 @@ export default {
         },
       },
       {
-        label: i18n.t('cloudenv.text_105'),
+        label: i18n.t('common.sync_resource'),
         action: obj => {
           this.createDialog('FullSyncResourceDialog', {
-            title: this.$t('cloudenv.text_105'),
+            title: this.$t('common.sync_resource'),
             name: this.$t('common_711'),
-            action: this.$t('cloudenv.text_105'),
+            action: this.$t('common.sync_resource'),
             steadyStatus: {
               status: steadyStatus,
               sync_status: ['idle'],

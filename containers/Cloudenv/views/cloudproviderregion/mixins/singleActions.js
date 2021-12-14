@@ -21,7 +21,7 @@ export default {
         },
       },
       {
-        label: i18n.t('cloudenv.text_105'),
+        label: i18n.t('common.sync_resource'),
         permission: 'cloudaccounts_perform_sync',
         action: obj => {
           new this.$Manager('cloudproviders').performAction({

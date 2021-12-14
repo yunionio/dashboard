@@ -23,7 +23,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('cloudenv.text_105'),
+        label: i18n.t('cloudenv.sync_account'),
         permission: 'cloudaccounts_perform_sync',
         action: (obj) => {
           // this.onManager('performAction', {
@@ -40,9 +40,9 @@ export default {
           //   this.$message.success(this.$t('cloudenv.text_381'))
           // })
           this.createDialog('FullSyncResourceDialog', {
-            title: this.$t('cloudenv.text_105'),
+            title: this.$t('cloudenv.sync_account'),
             name: this.$t('common.account'),
-            action: this.$t('cloudenv.text_105'),
+            action: this.$t('cloudenv.sync_account'),
             steadyStatus,
             data: [obj],
             columns: this.columns,
