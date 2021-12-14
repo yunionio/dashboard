@@ -4,8 +4,8 @@
     <div slot="body">
       <dialog-selected-tips :name="params.name" class="mt-3" :count="params.data.length" :action="params.action" />
       <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
-      <a-form :form="form.fc">
-        <a-form-item :label="$t('common.full_sync_resource_type')" v-bind="formItemLayout">
+      <a-form :form="form.fc" v-bind="formItemLayout">
+        <a-form-item :label="$t('common.full_sync_resource_type')">
           <a-select
             mode="multiple"
             v-decorator="[
@@ -46,10 +46,10 @@ export default {
       },
       formItemLayout: {
         wrapperCol: {
-          span: 20,
+          span: 19,
         },
         labelCol: {
-          span: 4,
+          span: 5,
         },
       },
     }
