@@ -24,21 +24,16 @@ export default {
         label: i18n.t('common.sync_resource'),
         permission: 'cloudaccounts_perform_sync',
         action: obj => {
-          new this.$Manager('cloudproviders').performAction({
-            id: obj.cloudprovider_id,
-            action: 'sync',
-            data: {
-              region: [
-                obj.cloudregion_id,
-              ],
+          this.createDialog('FullSyncResourceDialog', {
+            title: this.$t('common.sync_resource'),
+            name: this.$t('cloudenv.text_10'),
+            action: this.$t('common.sync_resource'),
+            steadyStatus: this.list.steadyStatus,
+            data: [obj],
+            columns: this.columns,
+            callback: () => {
+              this.list.refresh()
             },
-            params: {
-              full_sync: true,
-              force: true,
-            },
-          }).then(() => {
-            this.list.refresh()
-            this.$message.success(i18n.t('cloudenv.text_367'))
           })
         },
         meta: obj => {

@@ -87,18 +87,36 @@ export default {
         const ids = this.params.data.map(item => item.id)
         const values = await this.validateForm()
 
-        await this.params.onManager('batchPerformAction', {
-          id: ids,
-          steadyStatus: this.params.steadyStatus || {},
-          managerArgs: {
+        if (this.params.onManager) {
+          await this.params.onManager('batchPerformAction', {
+            id: ids,
+            steadyStatus: this.params.steadyStatus || {},
+            managerArgs: {
+              action: 'sync',
+              data: {
+                full_sync: true,
+                force: true,
+                resources: values.resource[0] === 'all' ? [] : values.resource,
+              },
+            },
+          })
+        } else {
+          const ids = this.params.data.map(item => item.cloudprovider_id)
+          await new this.$Manager('cloudproviders').batchPerformAction({
+            ids: ids,
             action: 'sync',
             data: {
+              resources: values.resource[0] === 'all' ? [] : values.resource,
+              region: [
+                this.params.data[0].cloudregion_id,
+              ],
+            },
+            params: {
               full_sync: true,
               force: true,
-              resources: values.resource[0] === 'all' ? this.resources.filter(v => v !== 'all') : values.resource,
             },
-          },
-        })
+          })
+        }
         this.params.callback && this.params.callback()
         this.cancelDialog()
       } catch (error) {
