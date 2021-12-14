@@ -428,10 +428,9 @@ export default {
             permission: 'wafs_list',
             t: 'dictionary.waf_instance',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) {
-                return true
-              }
-              return (store.getters.isDomainMode || store.getters.isAdminMode) && !hasSetupKey(['aws', 'azure', 'aliyun'])
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) return true
+              if (!(store.getters.isDomainMode || store.getters.isAdminMode)) return true
+              return !hasSetupKey(['aws', 'azure', 'aliyun'])
             },
           },
           component: Layout,
