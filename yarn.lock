@@ -3698,6 +3698,11 @@ cssstyle@^2.0.0:
   dependencies:
     cssom "~0.3.6"
 
+custom-protocol-detection@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/custom-protocol-detection/-/custom-protocol-detection-1.0.1.tgz#41c82717b2bcccead86a7e5506cb48636667de0b"
+  integrity sha1-QcgnF7K8zOrYan5VBstIY2Zn3gs=
+
 cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
