@@ -69,7 +69,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
-          permission: 'vpcs_create',
+          permission: 'network_globalvpcs_create',
           action: () => {
             this.$router.push({
               path: '/globalvpc/create',
@@ -80,7 +80,6 @@ export default {
               buttonType: 'primary',
             }
           },
-          // hidden: () => this.hiddenActions.includes('create'),
         },
         {
           label: this.$t('common.batchAction'),
@@ -88,7 +87,7 @@ export default {
             return [
               {
                 label: this.$t('network.text_201'),
-                permission: 'globalvpcs_perform_syncstatus',
+                permission: 'network_globalvpcs_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
@@ -118,6 +117,33 @@ export default {
                 scope: 'domain',
                 resource: 'globalvpcs',
               }),
+              {
+                label: this.$t('table.action.set_tag'),
+                permission: 'network_globalvpcs_perform_set_schedtag',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'globalvpc',
+                    },
+                    tipName: this.$t('dictionary.globalvpc'),
+                  })
+                },
+                meta: () => {
+                  if (this.list.selectedItems.some(item => !this.isPower(item))) {
+                    return {
+                      validate: false,
+                      tooltip: this.$t('network.text_627'),
+                    }
+                  }
+                  return {
+                    validate: true,
+                  }
+                },
+              },
               {
                 label: this.$t('network.text_131'),
                 action: () => {
