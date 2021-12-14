@@ -5,6 +5,7 @@
     </a-alert>
     <page-list
       :showSync="false"
+      :showSearchbox="false"
       :list="list"
       :columns="columns"
       :group-actions="groupActions"
