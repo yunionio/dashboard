@@ -1051,5 +1051,5 @@
   "network.system": "系统",
   "network.custom": "自定义",
   "network.propagate": "动态",
-  "network.route_delete_tips": "仅自定义路由支持删除操作"
+  "network.route_delete_tips": "该类型路由不支持删除"
 }

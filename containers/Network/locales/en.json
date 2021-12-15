@@ -1052,5 +1052,5 @@
   "network.system": "System",
   "network.custom": "Custom",
   "network.propagate": "Propagate",
-  "network.route_delete_tips": "Only custom routes support delete operations"
+  "network.route_delete_tips": "This type of route does not support deletion"
 }

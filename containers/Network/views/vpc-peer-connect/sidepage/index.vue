@@ -36,12 +36,14 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
 // import Vpc from './Vpc'
+import RouteSet from './RouteSet'
 
 export default {
   name: 'VpcPeerConnectSidePage',
   components: {
     Detail,
     // Vpc,
+    RouteSet,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -54,19 +56,12 @@ export default {
       const tabs = [
         { label: this.$t('network.text_67'), key: 'detail' },
         // { label: 'VPC', key: 'vpc' },
+        { label: this.$t('network.vpc_network.route'), key: 'route-set' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       return tabs
     },
     getParams () {
-      if (this.params.windowData.currentTab === 'vpc') {
-        const { vpc_id, peer_vpc_id } = this.detailData
-        const vpcIds = [vpc_id]
-        if (peer_vpc_id) {
-          vpcIds.push(peer_vpc_id)
-        }
-        return { details: true, filter: `id.in(${vpcIds.join(',')})` }
-      }
       return null
     },
     listId () {
