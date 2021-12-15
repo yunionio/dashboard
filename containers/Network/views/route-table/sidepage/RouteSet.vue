@@ -54,6 +54,10 @@ export default {
         },
         {
           field: 'next_hop_type',
+          title: this.$t('network.next_hop_type'),
+        },
+        {
+          field: 'type',
           title: this.$t('network.text_249'),
         },
       ],

@@ -73,6 +73,7 @@ export default {
         this.handlePropsTrigger()
         return
       }
+
       if (this.name && this.id && this.vm) {
         this.updateSidepageLeft()
         const { name, id, vm, options, list, tab, params, init } = this

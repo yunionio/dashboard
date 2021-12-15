@@ -18,6 +18,11 @@ import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import {
+  getVpcTableColumn,
+  getPeerVpcTableColumn,
+  getExtPeerAccountTableColumn,
+} from '../utils/column'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -42,7 +47,16 @@ export default {
         getDomainColumn({ vm: this }),
         getBrandTableColumn(),
       ],
-      extraInfo: [],
+      extraInfo: [
+        {
+          title: this.$t('network.text_308'),
+          items: [
+            getVpcTableColumn(this),
+            getPeerVpcTableColumn(),
+            getExtPeerAccountTableColumn(),
+          ],
+        },
+      ],
     }
   },
 }
