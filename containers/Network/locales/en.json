@@ -1027,5 +1027,11 @@
   "network.text_769": "Create Global VPC",
   "network.text_770": "Please enter the Global VPC name",
   "network.text_771": "Deleting the cache will remove the access control that has been synced to the public cloud platform.",
-  "network.text_772": "Deleting the cache will delete the certificates that have been synced to the public cloud platform."
+  "network.text_772": "Deleting the cache will delete the certificates that have been synced to the public cloud platform.",
+  "network.local_vpc": "VPC",
+  "network.peer_vpc": "Peer VPC",
+  "network.peer_account": "Peer Account",
+  "network.cross_account": "Cross Account",
+  "network.same_account": "Same account",
+  "network.next_hop_type": "Next Hop Type"
 }

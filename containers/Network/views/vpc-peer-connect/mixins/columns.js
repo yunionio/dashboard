@@ -6,6 +6,12 @@ import {
   getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 
+import {
+  getVpcTableColumn,
+  getPeerVpcTableColumn,
+  getExtPeerAccountTableColumn,
+} from '../utils/column'
+
 export default {
   created () {
     this.columns = [
@@ -20,6 +26,9 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'vpcPeerConnect' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'vpc_peering_connections', columns: () => this.columns }),
+      getVpcTableColumn(this),
+      getPeerVpcTableColumn(),
+      getExtPeerAccountTableColumn(),
       {
         field: 'project',
         title: this.$t('common.attribution_scope'),

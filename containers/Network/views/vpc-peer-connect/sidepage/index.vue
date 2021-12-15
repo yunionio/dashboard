@@ -35,13 +35,13 @@ import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import Detail from './Detail'
-import Vpc from './Vpc'
+// import Vpc from './Vpc'
 
 export default {
   name: 'VpcPeerConnectSidePage',
   components: {
     Detail,
-    Vpc,
+    // Vpc,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -53,7 +53,7 @@ export default {
     detailTabs () {
       const tabs = [
         { label: this.$t('network.text_67'), key: 'detail' },
-        { label: 'VPC', key: 'vpc' },
+        // { label: 'VPC', key: 'vpc' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       return tabs

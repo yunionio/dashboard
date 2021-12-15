@@ -125,7 +125,7 @@ export default {
     }
   },
   created () {
-    this.initSidePageTab('detail')
+    // this.initSidePageTab('detail')
     this.list.fetchData()
     this.$bus.$on('VpcPeerConnectListSingleRefresh', (...arg) => {
       this.list.refresh(...arg)

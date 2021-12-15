@@ -16,18 +16,18 @@ export default {
           validate: true,
         }),
       },
-      {
-        label: this.$t('network.vpc_network.manage_vpc'),
-        action: (obj) => {
-          this.sidePageTriggerHandle(this, 'VpcPeerConnectSidePage', {
-            id: obj.id,
-            resource: 'vpc_peering_connections',
-            getParams: this.getParam,
-          }, {
-            tab: 'vpc',
-          })
-        },
-      },
+      // {
+      //   label: this.$t('network.vpc_network.manage_vpc'),
+      //   action: (obj) => {
+      //     this.sidePageTriggerHandle(this, 'VpcPeerConnectSidePage', {
+      //       id: obj.id,
+      //       resource: 'vpc_peering_connections',
+      //       getParams: this.getParam,
+      //     }, {
+      //       tab: 'vpc',
+      //     })
+      //   },
+      // },
       {
         label: this.$t('network.text_131'),
         action: (obj) => {
