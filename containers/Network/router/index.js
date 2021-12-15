@@ -133,7 +133,7 @@ export default {
             t: 'dictionary.vpc_peer_connect',
             hidden: () => {
               if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['aliyun', 'qcloud'])
+              return !hasSetupKey(['aliyun', 'huawei', 'aws'])
             },
           },
           component: Layout,
@@ -204,6 +204,10 @@ export default {
           meta: {
             label: i18n.t('dictionary.route_table'),
             permission: 'route_tables_list',
+            hidden: () => {
+              if (store.getters.isProjectMode) return true
+              return !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'aws'])
+            },
           },
           component: Layout,
           children: [

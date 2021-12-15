@@ -853,6 +853,26 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
+    route_tables: {
+      menu_key: 'routetable',
+      res_name: 'route_tables',
+      label: i18n.t('dictionary.route_table'),
+      id: 'route_tables',
+      component: 'RouteTableList',
+      hasPermission: hasPermission({ key: 'route_tables_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
   }
 
   const validMaps = R.filter((val, key) => {
