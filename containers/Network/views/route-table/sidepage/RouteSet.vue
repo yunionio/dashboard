@@ -13,6 +13,10 @@ import {
   getCopyWithContentTableColumn,
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
+import {
+  NEXT_HOP_TYPES_MAP,
+  TYPES_MAP,
+} from '../constants'
 
 export default {
   name: 'RouteSetListForRouteTableSidePage',
@@ -55,10 +59,20 @@ export default {
         {
           field: 'next_hop_type',
           title: this.$t('network.next_hop_type'),
+          slots: {
+            default: ({ row }) => {
+              return NEXT_HOP_TYPES_MAP[row.next_hop_type]?.value || row.next_hop_type
+            },
+          },
         },
         {
           field: 'type',
           title: this.$t('network.text_249'),
+          slots: {
+            default: ({ row }) => {
+              return TYPES_MAP[row.type]?.value || row.type
+            },
+          },
         },
       ],
       groupActions: [
@@ -78,6 +92,12 @@ export default {
             })
           },
           meta: (obj) => {
+            if (this.list.selectedItems.some(v => v.type !== 'Custom')) {
+              return {
+                validate: false,
+                tooltip: this.$t('network.route_delete_tips'),
+              }
+            }
             return {
               validate: this.list.allowDelete(),
             }
@@ -100,7 +120,15 @@ export default {
               },
             })
           },
-          meta: (obj) => this.$getDeleteResult(obj),
+          meta: (obj) => {
+            if (obj.type !== 'Custom') {
+              return {
+                validate: false,
+                tooltip: this.$t('network.route_delete_tips'),
+              }
+            }
+            return this.$getDeleteResult(obj)
+          },
         },
       ],
     }
