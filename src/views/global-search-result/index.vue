@@ -59,6 +59,7 @@ import DnsZoneList from '@Network/views/dns-zone/components/List'
 import LbList from '@Network/views/lb/components/List'
 import LbaclsList from '@Network/views/lbacls/components/List'
 import LbcertList from '@Network/views/lbcerts/components/List'
+import RouteTableList from '@Network/views/route-table/components/List'
 import CloudaccountList from '@Cloudenv/views/cloudaccount/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
 
@@ -100,6 +101,7 @@ export default {
     LbaclsList,
     LbcertList,
     CloudaccountList,
+    RouteTableList,
   },
   data () {
     const maps = getSearchMaps()
