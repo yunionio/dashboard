@@ -498,7 +498,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.sku')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'private', 'baremetal', 'vmware'])
+              return !hasSetupKey(['onestack', 'private', 'baremetal', 'vmware', 'public'])
             },
           },
           component: Layout,
