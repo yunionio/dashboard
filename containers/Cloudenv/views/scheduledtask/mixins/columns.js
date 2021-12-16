@@ -2,7 +2,7 @@ import {
   getOperationColumns,
   getResourceTypeColumns,
   getResourceNumberColumns,
-  getLabelTypeColumns,
+  // getLabelTypeColumns,
   getTimerDescColumns,
 } from '../utils/columns'
 import {
@@ -30,7 +30,7 @@ export default {
       getOperationColumns(),
       getResourceTypeColumns(),
       getResourceNumberColumns(this),
-      getLabelTypeColumns(),
+      // getLabelTypeColumns(),
       getTimerDescColumns(),
       getTimeTableColumn(),
       getProjectTableColumn(),

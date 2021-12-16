@@ -54,7 +54,7 @@
         </template>
         <a-form-item :label="$t('cloudenv.text_384')">
           <a-select v-decorator="decorators.resourceType">
-            <a-select-option v-for="(v, k) in $t('cloudenvScheduledtaskResourceType')" :key="k" :value="k">{{v}}</a-select-option>
+            <a-select-option v-for="(v, k) in resourceTypeOpts" :key="k" :value="k">{{v}}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :label="$t('cloudenv.text_425')">
@@ -70,7 +70,7 @@
         <a-form-item :label="$t('cloudenv.text_440')" v-if="form.fc.getFieldValue('labelType') === 'id'">
           <list-select
             v-decorator="decorators.servers"
-            :list-props="serverProps"
+            :list-props="resourceProps"
             :multiple="true"
             :formatter="formatter" />
         </a-form-item>
@@ -90,7 +90,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ServerPropsMixin from '../mixins/serverProps'
+import ResourcePropsMixin from '../mixins/resourceProps'
 import Tag from '@/sections/Tag'
 import DomainProject from '@/sections/DomainProject'
 import ListSelect from '@/sections/ListSelect'
@@ -103,10 +103,11 @@ export default {
     Tag,
     ListSelect,
   },
-  mixins: [ServerPropsMixin],
+  mixins: [ResourcePropsMixin],
   data () {
     return {
       loading: false,
+      resourceTypeOpts: { ...this.$t('cloudenvScheduledtaskResourceType') },
       decorators: {
         domain: [
           'domain',
@@ -234,7 +235,7 @@ export default {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
             if (values.hasOwnProperty('project')) {
-              this.serverProps.list.getParams.tenant = values.project && values.project.key
+              this.resourceProps.list.getParams.tenant = values.project && values.project.key
             }
           },
         }),
@@ -255,6 +256,9 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo']),
+  },
+  created () {
+    delete this.resourceTypeOpts.cloudaccount
   },
   methods: {
     disabledDate (current) {

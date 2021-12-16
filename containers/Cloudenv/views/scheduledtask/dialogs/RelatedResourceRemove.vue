@@ -2,7 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('cloudenv.text_452')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :action="$t('cloudenv.text_452')" :name="$t('cloudenv.text_99')" />
+      <dialog-selected-tips :count="params.data.length" :action="$t('cloudenv.text_452')" :name="$t('cloudenv.text_469')" />
       <dialog-table :data="params.data" :columns="columns" />
     </div>
     <div slot="footer">
@@ -37,7 +37,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       const { data } = this.params
-      const manager = new this.$Manager('scheduledtasks')
+      const manager = new this.$Manager('scheduledtasks', 'v1')
       try {
         const ids = data.map(({ id }) => id)
         const labels = this.params.resData.labels.filter((item) => !ids.includes(item))

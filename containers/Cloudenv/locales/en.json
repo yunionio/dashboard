@@ -12,7 +12,8 @@
     "sync": "Sync"
   },
   "cloudenvScheduledtaskResourceType": {
-    "server": "Server"
+    "server": "Server",
+    "cloudaccount": "Cloudaccount"
   },
   "cloudenvScheduledtaskLabelType": {
     "id": "Specify server"
@@ -479,7 +480,7 @@
   "cloudenv.text_437": "Trigger Time",
   "cloudenv.text_438": "Valid Date",
   "cloudenv.text_439": "Binding Resources",
-  "cloudenv.text_440": "Servers",
+  "cloudenv.text_440": "Resource",
   "cloudenv.text_441": "Maximum number of tags per resource is 20",
   "cloudenv.text_442": "Tag cannot exceed 20",
   "cloudenv.text_443": "Please select the repetition period",
