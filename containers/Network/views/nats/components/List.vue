@@ -23,6 +23,7 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import { checkReadOnly } from '../utils'
 
 export default {
   name: 'NatList',
@@ -148,6 +149,9 @@ export default {
                     mode: 'add',
                   })
                 },
+                meta: () => {
+                  return checkReadOnly(this.list.selectedItems, this.$t('compute.text_283'))
+                },
               },
               {
                 label: this.$t('network.text_201'),
@@ -160,6 +164,8 @@ export default {
                   })
                 },
                 meta: () => {
+                  const ret = checkReadOnly(this.list.selectedItems, this.$t('network.text_201'))
+                  if (!ret.validate) return ret
                   if (!isOwner) {
                     return {
                       validate: false,
@@ -186,10 +192,8 @@ export default {
                   })
                 },
                 meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
+                  const ret = checkReadOnly(this.list.selectedItems, this.$t('network.expired_release'))
+                  if (!ret.validate) return ret
                   if (!isOwner) {
                     return {
                       validate: false,
@@ -197,14 +201,15 @@ export default {
                     }
                   }
                   if (isPrepaid) {
+                    ret.validate = false
                     ret.tooltip = i18n.t('network.nat.prepaid.unsupported')
                     return ret
                   }
                   if (selectedLength === 0) {
+                    ret.validate = false
                     ret.tooltip = notSelectedTooltip
                     return ret
                   }
-                  ret.validate = true
                   return ret
                 },
               },
@@ -221,10 +226,8 @@ export default {
                   })
                 },
                 meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
+                  const ret = checkReadOnly(this.list.selectedItems, this.$t('network.renew'))
+                  if (!ret.validate) return ret
                   if (!isOwner) {
                     return {
                       validate: false,
@@ -232,14 +235,17 @@ export default {
                     }
                   }
                   if (!isAvailable) {
+                    ret.validate = false
                     ret.tooltip = notAvailableTip
                     return ret
                   }
                   if (!isPrepaid) {
+                    ret.validate = false
                     ret.tooltip = i18n.t('network.nat.postpaid.unsupported')
                     return ret
                   }
                   if (selectedLength === 0) {
+                    ret.validate = false
                     ret.tooltip = notSelectedTooltip
                     return ret
                   }
@@ -259,10 +265,8 @@ export default {
                   })
                 },
                 meta: () => {
-                  const ret = {
-                    validate: false,
-                    tooltip: null,
-                  }
+                  const ret = checkReadOnly(this.list.selectedItems, this.$t('network.auto.renew'))
+                  if (!ret.validate) return ret
                   if (!isOwner) {
                     return {
                       validate: false,
@@ -270,14 +274,17 @@ export default {
                     }
                   }
                   if (!isAvailable) {
+                    ret.validate = false
                     ret.tooltip = notAvailableTip
                     return ret
                   }
                   if (!isPrepaid) {
+                    ret.validate = false
                     ret.tooltip = i18n.t('network.nat.postpaid.unsupported')
                     return ret
                   }
                   if (selectedLength === 0) {
+                    ret.validate = false
                     ret.tooltip = notSelectedTooltip
                     return ret
                   }
@@ -292,6 +299,10 @@ export default {
                       tooltip: i18n.t('network.text_627'),
                     }
                   }
+                },
+                meta: () => {
+                  const ret = checkReadOnly(this.list.selectedItems, this.$t('common_277'))
+                  if (!ret.validate) return ret
                 },
               }),
               {
@@ -309,6 +320,8 @@ export default {
                   })
                 },
                 meta: () => {
+                  const ret = checkReadOnly(this.list.selectedItems, this.$t('network.text_131'))
+                  if (!ret.validate) return ret
                   if (!isOwner) {
                     return {
                       validate: false,

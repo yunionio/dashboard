@@ -15,6 +15,7 @@ import expectStatus from '@/constants/expectStatus'
 import ListMixin from '@/mixins/list'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { checkReadOnly } from '../utils'
 
 export default {
   name: 'DNatList',
@@ -91,11 +92,15 @@ export default {
               onManager: this.onManager,
             })
           },
-          meta: () => ({
-            buttonType: 'primary',
-            validate,
-            tooltip: validate ? '' : this.$t('network.nat.status.unavailable.tooltip'),
-          }),
+          meta: () => {
+            const ret = checkReadOnly(this.data, this.$t('network.text_26'))
+            if (!ret.validate) return ret
+            return {
+              buttonType: 'primary',
+              validate,
+              tooltip: validate ? '' : this.$t('network.nat.status.unavailable.tooltip'),
+            }
+          },
         },
         {
           label: this.$t('network.text_131'),
@@ -111,6 +116,8 @@ export default {
             })
           },
           meta: () => {
+            const ret = checkReadOnly(this.data, this.$t('network.text_131'))
+            if (!ret.validate) return ret
             return {
               validate: this.list.allowDelete(),
             }
@@ -130,6 +137,9 @@ export default {
               name: this.$t('network.text_562'),
               alert: this.$t('network.text_563'),
             })
+          },
+          meta: (obj) => {
+            return checkReadOnly(this.data, this.$t('network.text_131'))
           },
         },
       ],

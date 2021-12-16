@@ -4971,5 +4971,6 @@
   "common_741": "Add Level",
   "common_742": "Please select a level. If it is not selected, this level will be ignored",
   "common_743": "Level ",
-  "common.sync_resource": "Sync Resource"
+  "common.sync_resource": "Sync Resource",
+  "common.check_readonly": "{0} platform does not support {1}"
 }
