@@ -774,11 +774,22 @@ export const getServerMonitorAgentInstallStatus = ({
   return {
     field,
     title,
-    formatter: ({ row }) => {
-      let status = _.get(row, ['metadata', 'sys:monitor_agent']) || _.get(row, ['metadata', '__monitor_agent'])
-      if (row.hasOwnProperty('have_agent')) status = row.have_agent
-      if (status) return i18n.t('compute.monitor.agent.install_status.installed')
-      return i18n.t('compute.monitor.agent.install_status.uninstall')
+    slots: {
+      default: function ({ row }, h) {
+        const status = _.get(row, ['metadata', 'sys:monitor_agent']) || _.get(row, ['metadata', '__monitor_agent'])
+        if (row.hasOwnProperty('agent_status')) {
+          if (row.agent_status === 'succeed') {
+            return i18n.t('compute.monitor.agent.install_status.installed')
+          } else if (row.agent_status === 'applying') {
+            return (<div>{i18n.t('compute.monitor.agent.install_status.installing')}<a-icon style="margin-left:5px" type="loading" /></div>)
+          } else if (row.agent_status === 'failed') {
+            return i18n.t('compute.monitor.agent.install_status.installfailed')
+          }
+        } else if (status) {
+          return i18n.t('compute.monitor.agent.install_status.installed')
+        }
+        return i18n.t('compute.monitor.agent.install_status.uninstall')
+      },
     },
   }
 }

@@ -19,13 +19,14 @@
     <component
       v-bind="listActives"
       :is="params.windowData.currentTab"
-      :data="detailData"
+      :data="componentData"
       :serverColumns="columns"
       :res-id="data.id"
       :id="listId"
       :getParams="componentParams"
       :on-manager="onManager"
       :show-create-action="false"
+      :isPageDestroyed="isPageDestroyed"
       @refresh="refresh"
       @single-refresh="singleRefresh"
       @tab-change="handleTabChange" />
@@ -35,6 +36,11 @@
 <script>
 import * as R from 'ramda'
 // import HostList from '@Compute/views/host/components/List'
+import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
+import { hasPermission } from '@/utils/auth'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { cloudEnabled, cloudUnabledTip } from '../utils'
@@ -44,14 +50,9 @@ import VmInstanceAlertSidepage from './Alert'
 import VmSnapshotSidepage from './Snapshot'
 import SecgroupList from './Secgroup'
 import DiskListForVmInstanceSidepage from './DiskList'
-import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
 // import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
 // import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
 import EipListForVmInstanceSidepage from './EipList'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
-import { hasPermission } from '@/utils/auth'
 
 export default {
   name: 'VmInstanceSidePage',
@@ -99,6 +100,10 @@ export default {
     }
     return {
       detailTabs,
+      agent_status: '',
+      agent_fail_reason: '',
+      agent_fail_code: '',
+      isPageDestroyed: false,
     }
   },
   computed: {
@@ -194,13 +199,42 @@ export default {
           return ''
       }
     },
+    componentData () {
+      return Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code })
+    },
+  },
+  created () {
+    this.$bus.$on('agentStatusQuery', (val) => {
+      if (this.agent_status === 'failed') {
+        this.agent_status = 'applying'
+      }
+      this.handleInstallTask({
+        script_apply_id: val,
+      })
+    })
+  },
+  beforeDestroy () {
+    this.isPageDestroyed = true
   },
   methods: {
     async fetchDataCallback () {
       try {
         if (!this.data.data) return
-        const ret = await new this.$Manager('servers').performAction({ id: this.data.data.id, action: 'have-agent' })
-        this.data.data.have_agent = ret.data.have || false
+        const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: { server_id: this.data.data.id, details: false, limit: 1 } })
+        if (data[0]) {
+          this.agent_status = data[0].status
+          if (data[0].status === 'applying') {
+            if (!this.componentData.id) return
+            this.handleInstallTask({
+              server_id: this.componentData.id,
+              details: false,
+              limit: 1,
+            })
+          } else if (data[0].status === 'failed') {
+            this.agent_fail_reason = data[0].reason
+            this.agent_fail_code = data[0].fail_code || ''
+          }
+        }
       } catch (e) {
         throw e
       }
@@ -209,6 +243,29 @@ export default {
       return this.$store.dispatch('scopedPolicy/get', {
         category: ['vminstance_hidden_menus', 'vminstance_configured_callback_address', 'disk_hidden_menus'],
       })
+    },
+    async handleInstallTask (params) {
+      try {
+        let maxTry = 60
+        while (maxTry > 0) {
+          if (this.isPageDestroyed) {
+            break
+          }
+          const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: params })
+          if (data[0]) {
+            if (data[0].status === 'succeed' || data[0].status === 'failed') {
+              this.agent_status = data[0].status
+              this.agent_fail_reason = data[0].reason
+              this.agent_fail_code = data[0].fail_code || ''
+              break
+            }
+          }
+          maxTry -= 1
+          await new Promise(resolve => setTimeout(resolve, 6000))
+        }
+      } catch (e) {
+        throw e
+      }
     },
   },
 }

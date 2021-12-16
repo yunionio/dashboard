@@ -1,7 +1,7 @@
 <template>
     <div v-if="visible">
       <a-alert class="mb-2" :type="alertType" v-if="visible">
-        <install-agent-form slot="message" :data="data" :serverColumns="serverColumns" @onInstall="handleInstallResult" />
+        <install-agent-form slot="message" :data="data" :serverColumns="serverColumns" :isPageDestroyed="isPageDestroyed" @onInstall="handleInstallResult" />
       </a-alert>
     </div>
 </template>
@@ -24,11 +24,12 @@ export default {
       type: Array,
       required: true,
     },
+    isPageDestroyed: Boolean,
   },
   data () {
     let ok = _.get(this.data, ['metadata', 'sys:monitor_agent']) || _.get(this.data, ['metadata', '__monitor_agent'])
-    if (this.data.hasOwnProperty('have_agent')) {
-      ok = this.data.have_agent
+    if (this.data.hasOwnProperty('agent_status')) {
+      ok = this.data.agent_status === 'succeed'
     }
     const visible = this.data.status === 'running' && !ok
     return {

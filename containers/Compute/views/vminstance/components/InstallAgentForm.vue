@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+// import _ from 'lodash'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -40,17 +40,23 @@ export default {
       type: Array,
       required: true,
     },
+    isPageDestroyed: Boolean,
   },
   data () {
     let agent_install_status
-    let ok = _.get(this.data, ['metadata', 'sys:monitor_agent']) || _.get(this.data, ['metadata', '__monitor_agent'])
-    if (this.data.hasOwnProperty('have_agent')) {
-      ok = this.data.have_agent
-    }
-    if (!ok) {
-      agent_install_status = 'install'
+    if (this.data.hasOwnProperty('agent_status')) {
+      const { agent_status } = this.data
+      if (agent_status === 'succeed') {
+        agent_install_status = 'installed'
+      } else if (agent_status === 'applying') {
+        agent_install_status = 'installing'
+      } else if (agent_status === 'failed') {
+        agent_install_status = 'install_failed'
+      } else {
+        agent_install_status = 'install'
+      }
     } else {
-      agent_install_status = 'installed'
+      agent_install_status = 'install'
     }
     const disable = this.data.os_type && this.data.os_type === 'Windows'
     let disableTips = ''
@@ -59,9 +65,7 @@ export default {
       disable: disable,
       disableTips: disableTips,
       /* install, installed, installing, install_failed */
-      agent_install_status: agent_install_status,
-      install_failed_reason: '',
-      install_failed_code: '',
+      agent_install_status,
     }
   },
   computed: {
@@ -103,6 +107,26 @@ export default {
         return '/docs/en/docs/user/network/ssh/sshproxy/'
       }
     },
+    install_failed_code () {
+      return this.agent_install_status === 'install_failed' && this.data.agent_fail_code
+    },
+    install_failed_reason () {
+      return this.agent_install_status === 'install_failed' && this.data.agent_fail_reason
+    },
+  },
+  watch: {
+    'data.agent_status': {
+      handler: function (val, oldval) {
+        if (oldval === 'applying' || this.agent_install_status === 'installing') {
+          if (val === 'succeed' || val === 'failed') {
+            this.agent_install_status = val === 'succeed' ? 'installed' : 'install_failed'
+            this.$emit('onInstall', { status: val })
+          }
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   methods: {
     async handleInstallAgent (e) {
@@ -123,32 +147,42 @@ export default {
         callback: this.handleInstallTask,
       })
     },
-    async handleInstallTask (id) {
+    handleInstallTask (id) {
       if (!id) return
       this.agent_install_status = 'installing'
-      try {
-        const params = {
-          script_apply_id: id,
-        }
-        let maxTry = 60
-        while (maxTry > 0) {
-          const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: params })
-          if (data) {
-            if (data[0].status === 'succeed' || data[0].status === 'failed') {
-              this.agent_install_status = data[0].status === 'succeed' ? 'installed' : 'install_failed'
-              this.install_failed_reason = data[0].reason
-              this.install_failed_code = data[0].fail_code || ''
-              this.$emit('onInstall', data[0])
-              break
-            }
-          }
-          maxTry -= 1
-          await new Promise(resolve => setTimeout(resolve, 6000))
-        }
-      } catch (e) {
-        throw e
-      }
+      this.$bus.$emit('agentStatusQuery', id)
     },
+    // async handleInstallTask (id) {
+    //   if (!id) return
+    //   this.agent_install_status = 'installing'
+    //   try {
+    //     const params = {
+    //       script_apply_id: id,
+    //     }
+    //     let maxTry = 60
+    //     while (maxTry > 0) {
+    //       console.log('ispagedestroyed', this.isPageDestroyed)
+    //       if (this.isPageDestroyed) {
+    //         break
+    //       }
+    //       const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: params })
+    //       if (data) {
+    //         if (data[0].status === 'succeed' || data[0].status === 'failed') {
+    //           this.agent_install_status = data[0].status === 'succeed' ? 'installed' : 'install_failed'
+    //           this.install_failed_reason = data[0].reason
+    //           this.install_failed_code = data[0].fail_code || ''
+    //           this.$emit('onInstall', data[0])
+    //           break
+    //         }
+    //       }
+    //       maxTry -= 1
+    //       console.log('maxTry', maxTry)
+    //       await new Promise(resolve => setTimeout(resolve, 6000))
+    //     }
+    //   } catch (e) {
+    //     throw e
+    //   }
+    // },
   },
 }
 </script>

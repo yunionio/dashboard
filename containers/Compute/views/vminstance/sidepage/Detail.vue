@@ -296,6 +296,17 @@ export default {
       handler: 'checkImage',
       immediate: true,
     },
+    'data.agent_status': {
+      handler: function (val, oldval) {
+        if (oldval === 'applying') {
+          if (val === 'succeed' || val === 'failed') {
+            this.baseInfo[3] = getServerMonitorAgentInstallStatus()
+          }
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   methods: {
     _diskStringify (diskObj) {
