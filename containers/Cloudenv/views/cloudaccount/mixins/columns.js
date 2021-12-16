@@ -36,7 +36,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'account', title: i18n.t('cloudenv.text_94') }),
       getHostCountTableColumn(),
       getGuestCountTableColumn(),
-      getEnabledTableColumn({ field: 'enable_auto_sync', title: i18n.t('cloudenv.text_83'), minWidth: 90 }),
+      // getEnabledTableColumn({ field: 'enable_auto_sync', title: i18n.t('cloudenv.text_83'), minWidth: 90 }),
       {
         field: 'last_auto_sync',
         title: i18n.t('cloudenv.text_103'),
