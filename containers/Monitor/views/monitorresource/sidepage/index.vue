@@ -20,23 +20,24 @@
       :listId="listId"
       :id="listId"
       :resId="data.id"
-      :data="detailData"
+      :data="componentData"
       :resource="resource"
       :resType="resType"
       :on-manager="onManager"
       :getParams="listParams"
+      :isPageDestroyed="isPageDestroyed"
       :serverColumns="columns" />
   </base-side-page>
 </template>
 
 <script>
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import CommonalertList from '@Monitor/views/commonalert/components/List'
-import VmInstanceMonitorSidepage from './Monitor'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import VmInstanceMonitorSidepage from './Monitor'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'MonitorResourceSidePage',
@@ -46,6 +47,14 @@ export default {
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  data () {
+    return {
+      agent_status: '',
+      agent_fail_reason: '',
+      agent_fail_code: '',
+      isPageDestroyed: false,
+    }
+  },
   computed: {
     listId () {
       switch (this.params.windowData.currentTab) {
@@ -74,8 +83,46 @@ export default {
     resType () {
       return this.params.res_type
     },
+    componentData () {
+      return Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code })
+    },
+  },
+  created () {
+    this.$bus.$on('agentStatusQuery', (val) => {
+      if (this.agent_status === 'failed') {
+        this.agent_status = 'applying'
+      }
+      this.handleInstallTask({
+        script_apply_id: val,
+      })
+    })
+  },
+  beforeDestroy () {
+    this.isPageDestroyed = true
   },
   methods: {
+    async fetchDataCallback () {
+      if (this.params.res_type !== 'guest') return
+      try {
+        if (!this.data.data) return
+        const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: { server_id: this.data.data.res_id, details: false, limit: 1 } })
+        if (data[0]) {
+          this.agent_status = data[0].status
+          if (data[0].status === 'applying') {
+            this.handleInstallTask({
+              server_id: this.componentData.res_id,
+              details: false,
+              limit: 1,
+            })
+          } else if (data[0].status === 'failed') {
+            this.agent_fail_reason = data[0].reason
+            this.agent_fail_code = data[0].fail_code || ''
+          }
+        }
+      } catch (e) {
+        throw e
+      }
+    },
     listParams () {
       let params = {}
       if (typeof this.getParams === 'function') {
@@ -90,6 +137,29 @@ export default {
     },
     handleOpenSidepage (row, tab) {
       this.params.windowData.currentTab = tab
+    },
+    async handleInstallTask (params) {
+      try {
+        let maxTry = 60
+        while (maxTry > 0) {
+          if (this.isPageDestroyed) {
+            break
+          }
+          const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params })
+          if (data[0]) {
+            if (data[0].status === 'succeed' || data[0].status === 'failed') {
+              this.agent_status = data[0].status
+              this.agent_fail_reason = data[0].reason
+              this.agent_fail_code = data[0].fail_code || ''
+              break
+            }
+          }
+          maxTry -= 1
+          await new Promise(resolve => setTimeout(resolve, 6000))
+        }
+      } catch (e) {
+        throw e
+      }
     },
   },
 }

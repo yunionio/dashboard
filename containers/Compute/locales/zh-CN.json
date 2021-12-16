@@ -1432,6 +1432,8 @@
   "compute.monitor.agent.install_status": "Agent安装状态",
   "compute.monitor.agent.install_status.installed": "已安装",
   "compute.monitor.agent.install_status.uninstall": "未安装",
+  "compute.monitor.agent.install_status.installing": "安装中",
+  "compute.monitor.agent.install_status.installfailed": "安装失败",
   "compute.monitor.basic": "基础监控",
   "compute.monitor.agent": "Agent监控",
   "compute.monitor.agent.temperature": "温度监控",

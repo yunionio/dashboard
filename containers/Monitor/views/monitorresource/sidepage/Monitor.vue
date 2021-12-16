@@ -8,7 +8,8 @@
         <div>
           <install-agent-form-visible
             :data="installData"
-            :serverColumns="serverColumns" />
+            :serverColumns="serverColumns"
+            :isPageDestroyed="isPageDestroyed" />
           <agent-monitor
             :data="data"
             key="monitor-agent"
@@ -61,6 +62,7 @@ export default {
       type: String,
       required: true,
     },
+    isPageDestroyed: Boolean,
   },
   data () {
     return {
