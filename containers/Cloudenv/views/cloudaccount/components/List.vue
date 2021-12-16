@@ -92,7 +92,7 @@ export default {
           { label: this.$t('cloudenv.text_101'), key: 'host_count' },
           { label: this.$t('cloudenv.text_94'), key: 'account' },
           { label: this.$t('cloudenv.text_102'), key: 'brand' },
-          { label: this.$t('cloudenv.text_83'), key: 'enable_auto_sync' },
+          // { label: this.$t('cloudenv.text_83'), key: 'enable_auto_sync' },
           { label: this.$t('cloudenv.text_103'), key: 'last_auto_sync' },
           {
             label: this.$t('compute.text_505'),
