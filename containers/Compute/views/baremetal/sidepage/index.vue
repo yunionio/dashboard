@@ -13,12 +13,13 @@
     </template>
     <component
       :is="params.windowData.currentTab"
-      :data="detailData"
+      :data="componentData"
       :id="listId"
       :res-id="data.id"
       :getParams="getParams"
       :on-manager="onManager"
       :columns="columns"
+      :isPageDestroyed="isPageDestroyed"
       @side-page-trigger-handle="sidePageTriggerHandle"
       @init-side-page-tab="initSidePageTab"
       @refresh="refresh"
@@ -28,6 +29,9 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import BaremetalDetail from './Detail'
@@ -35,9 +39,6 @@ import NetworkListForBaremetalSidepage from './Network'
 import DiskListForBaremetalSidepage from './Disk'
 import BaremetalMonitorSidepage from './Monitor'
 // import BaremetalAlertSidepage from './Alert'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'BaremetalSidePage',
@@ -60,6 +61,10 @@ export default {
         // { label: '报警', key: 'baremetal-alert-sidepage' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
+      agent_status: '',
+      agent_fail_reason: '',
+      agent_fail_code: '',
+      isPageDestroyed: false,
     }
   },
   computed: {
@@ -84,6 +89,68 @@ export default {
           return 'EventListForBaremetalSidepage'
         default:
           return ''
+      }
+    },
+    componentData () {
+      return Object.assign({}, this.detailData, { agent_status: this.agent_status, agent_fail_reason: this.agent_fail_reason, agent_fail_code: this.agent_fail_code })
+    },
+  },
+  created () {
+    this.$bus.$on('agentStatusQuery', (val) => {
+      if (this.agent_status === 'failed') {
+        this.agent_status = 'applying'
+      }
+      this.handleInstallTask({
+        script_apply_id: val,
+      })
+    })
+  },
+  beforeDestroy () {
+    this.isPageDestroyed = true
+  },
+  methods: {
+    async fetchDataCallback () {
+      try {
+        if (!this.data.data) return
+        const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params: { server_id: this.data.data.id, details: false, limit: 1 } })
+        if (data[0]) {
+          this.agent_status = data[0].status
+          if (data[0].status === 'applying') {
+            this.handleInstallTask({
+              server_id: this.componentData.id,
+              details: false,
+              limit: 1,
+            })
+          } else if (data[0].status === 'failed') {
+            this.agent_fail_reason = data[0].reason
+            this.agent_fail_code = data[0].fail_code || ''
+          }
+        }
+      } catch (e) {
+        throw e
+      }
+    },
+    async handleInstallTask (params) {
+      try {
+        let maxTry = 60
+        while (maxTry > 0) {
+          if (this.isPageDestroyed) {
+            break
+          }
+          const { data: { data = [] } } = await new this.$Manager('scriptapplyrecords').list({ params })
+          if (data[0]) {
+            if (data[0].status === 'succeed' || data[0].status === 'failed') {
+              this.agent_status = data[0].status
+              this.agent_fail_reason = data[0].reason
+              this.agent_fail_code = data[0].fail_code || ''
+              break
+            }
+          }
+          maxTry -= 1
+          await new Promise(resolve => setTimeout(resolve, 6000))
+        }
+      } catch (e) {
+        throw e
       }
     },
   },

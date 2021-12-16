@@ -1,6 +1,6 @@
 <template>
   <div>
-    <install-agent-form-visible :data="data" :serverColumns="[]" />
+    <install-agent-form-visible :data="data" :serverColumns="[]" :isPageDestroyed="isPageDestroyed" />
     <!-- monitor tabs -->
     <div>
       <a-tabs default-active-key="agent-basic" @change="handleTabChange">
@@ -22,8 +22,8 @@
 <script>
 import AgentMonitor from '@Compute/sections/monitor/AgentMonitor.vue'
 import AgentTemperatureMonitor from '@Compute/sections/monitor/AgentTemperatureMonitor.vue'
-import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
 import WindowsMixin from '@/mixins/windows'
+import InstallAgentFormVisible from '../../vminstance/components/InstallAgentFormVisible'
 
 export default {
   name: 'BaremetalMonitorSidepage',
@@ -38,6 +38,7 @@ export default {
       type: Object,
       required: true,
     },
+    isPageDestroyed: Boolean,
   },
   computed: {
     serverId () {
