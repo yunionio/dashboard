@@ -112,7 +112,7 @@ export default {
           {
             initialValue: {},
             rules: [
-              { required: true, message: this.$t('cloudenv.text_451') },
+              { required: false, message: this.$t('cloudenv.text_451') },
               { validator: validateForm('tagName') },
             ],
           },
