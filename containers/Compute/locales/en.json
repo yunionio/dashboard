@@ -1432,6 +1432,8 @@
   "compute.monitor.agent.install_status": "Agent install status",
   "compute.monitor.agent.install_status.installed": "Installed",
   "compute.monitor.agent.install_status.uninstall": "Uninstall",
+  "compute.monitor.agent.install_status.installing": "Installing",
+  "compute.monitor.agent.install_status.installfailed": "Install Failed",
   "compute.monitor.basic": "Basic Monitor",
   "compute.monitor.agent": "Agent Monitor",
   "compute.monitor.agent.temperature": "Temperature Monitor",
