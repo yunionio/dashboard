@@ -197,7 +197,7 @@ export default {
     doCreate (data) {
       return this.manager.create({
         data: {
-          name: data.name,
+          generate_name: data.name,
           proxy_endpoint: this.params.proxy_endpoint_id,
           match_scope: data.match_scope,
           match_value: data.match_scope === 'vpc' ? data.vpc : data.network,
