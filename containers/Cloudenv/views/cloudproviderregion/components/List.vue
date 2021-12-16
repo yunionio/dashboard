@@ -7,11 +7,12 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'CloudproviderregionList',
@@ -74,6 +75,47 @@ export default {
             }
           },
         },
+        ...getEnabledSwitchActions(this, undefined, undefined, {
+          actions: [
+            async (obj) => {
+              await this.pM.performAction({
+                id: this.cloudproviderId,
+                action: 'set-syncing',
+                data: {
+                  cloudregion_ids: this.list.selectedItems.map(item => item.cloudregion_id),
+                  enabled: true,
+                },
+              })
+              this.refresh()
+            },
+            async (obj) => {
+              await this.pM.performAction({
+                id: this.cloudproviderId,
+                action: 'set-syncing',
+                data: {
+                  cloudregion_ids: this.list.selectedItems.map(item => item.cloudregion_id),
+                  enabled: false,
+                },
+              })
+              this.refresh()
+            },
+          ],
+          fields: ['cloudregion', 'enabled', 'last_auto_sync'],
+          metas: [
+            () => {
+              const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
+              return {
+                validate: this.list.selectedItems.length && isDisable,
+              }
+            },
+            () => {
+              const isEnable = !!this.list.selectedItems.find(item => item.enabled)
+              return {
+                validate: this.list.selectedItems.length && isEnable,
+              }
+            },
+          ],
+        }),
       ],
     }
   },
@@ -89,6 +131,9 @@ export default {
     this.list.fetchData()
   },
   methods: {
+    refresh () {
+      this.list.refresh()
+    },
     fetchRegionList () {
       const params = {
         manager: this.cloudproviderId,
