@@ -12,7 +12,8 @@
     "sync": "同步"
   },
   "cloudenvScheduledtaskResourceType": {
-    "server": "虚拟机"
+    "server": "虚拟机",
+    "cloudaccount": "云账号"
   },
   "cloudenvScheduledtaskLabelType": {
     "id": "指定虚拟机"
@@ -479,7 +480,7 @@
   "cloudenv.text_437": "触发时间",
   "cloudenv.text_438": "有效时间",
   "cloudenv.text_439": "绑定资源",
-  "cloudenv.text_440": "指定虚拟机",
+  "cloudenv.text_440": "关联资源",
   "cloudenv.text_441": "最多可绑定20个标签",
   "cloudenv.text_442": "标签不可超过20个",
   "cloudenv.text_443": "请选择重复周期",

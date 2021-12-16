@@ -3,7 +3,7 @@
     <div slot="header">{{ title }}</div>
     <div slot="body">
       <dialog-selected-tips :name="$t('cloudenv.text_431')" class="mt-3" :count="params.data.length" :action="title" />
-      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-table v-if="params.columns && params.columns.length" :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc"
         v-bind="formItemLayout"
@@ -11,7 +11,7 @@
         <a-form-item :label="$t('cloudenv.text_440')" v-if="isServer">
           <list-select
             v-decorator="decorators.servers"
-            :list-props="serverProps"
+            :list-props="resourceProps"
             :multiple="true"
             :formatter="formatter" />
         </a-form-item>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import ServerPropsMixin from '../mixins/serverProps'
+import ResourcePropsMixin from '../mixins/resourceProps'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import Tag from '@/sections/Tag'
@@ -41,7 +41,7 @@ export default {
     Tag,
     ListSelect,
   },
-  mixins: [DialogMixin, WindowsMixin, ServerPropsMixin],
+  mixins: [DialogMixin, WindowsMixin, ResourcePropsMixin],
   data () {
     const getInitTags = (labels) => {
       const tag = {}
@@ -96,11 +96,15 @@ export default {
     title () {
       return this.params.title || this.$t('cloudenv.text_454')
     },
+    columns () {
+      const showColumns = ['name', 'status', 'resource_type']
+      return this.params.columns.filter(v => showColumns.includes(v.field))
+    },
   },
   methods: {
     async handleConfirm () {
       this.loading = true
-      const manager = new this.$Manager('scheduledtasks')
+      const manager = new this.$Manager('scheduledtasks', 'v1')
       try {
         const values = await this.form.fc.validateFields()
         const ids = this.params.data.map(item => item.id)
