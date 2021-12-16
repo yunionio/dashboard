@@ -156,7 +156,7 @@ export default {
         enabled: 1,
         // cloud_env: 'public',
         scope: this.scope,
-        provider: this.$store.getters.capability.nat_brands,
+        provider: this.$store.getters.capability.nat_brands.filter(v => v !== 'Aws'),
       }
       if (!this.$store.getters.capability.nat_brands || this.$store.getters.capability.nat_brands.length === 0) {
         params.provider = 'Other'
