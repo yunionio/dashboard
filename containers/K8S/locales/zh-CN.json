@@ -414,5 +414,8 @@
   "k8s.text_413": "请选择@:dictionary.domain",
   "k8s.docs_cluster_onecloud": "{0}#内置私有云",
   "k8s.provider_image_not_prepared": "没有找到对应平台镜像，",
-  "k8s.ref_prepare_doc": "请参考文档准备环境"
+  "k8s.ref_prepare_doc": "请参考文档准备环境",
+  "k8s.text_414": "监控",
+  "k8s.text_415": "CPU使用率",
+  "k8s.text_416": "内存使用率"
 }
