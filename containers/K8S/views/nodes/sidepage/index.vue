@@ -37,6 +37,7 @@
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import K8sNodeDetail from './Detail'
+import K8sNodeMonitor from './Monitor'
 import StatusSidepage from '@K8S/sections/StatusSidepage'
 import EventsSidepage from '@K8S/sections/EventsSidepage'
 import PodList from '@K8S/views/pod/components/List'
@@ -54,12 +55,14 @@ export default {
     StatusSidepage,
     EventsSidepage,
     SourceInformationSidepage,
+    K8sNodeMonitor,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: this.$t('k8s.text_217'), key: 'k8s-node-detail' },
+        { label: this.$t('k8s.text_414'), key: 'k8s-node-monitor' },
         { label: this.$t('k8s.text_9'), key: 'pod-list' },
         { label: this.$t('k8s.text_35'), key: 'status-sidepage' },
         { label: this.$t('k8s.text_218'), key: 'events-sidepage' },

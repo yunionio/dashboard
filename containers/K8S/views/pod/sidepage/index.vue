@@ -23,6 +23,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import Detail from './Detail'
 import Terminal from './Terminal'
 import Log from './Log'
+import Monitor from './Monitor'
 import EventsSidepage from '@K8S/sections/EventsSidepage'
 import ContainerSidepage from '@K8S/sections/ContainerSidepage'
 import InitContainerSidepage from '@K8S/sections/ContainerSidepage'
@@ -44,12 +45,14 @@ export default {
     ContainerSidepage,
     InitContainerSidepage,
     ConditionSidepage,
+    Monitor,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
         { label: this.$t('k8s.text_217'), key: 'detail' },
+        { label: this.$t('k8s.text_414'), key: 'monitor' },
         { label: this.$t('k8s.text_324'), key: 'terminal' },
         { label: this.$t('k8s.text_325'), key: 'log' },
         { label: this.$t('k8s.text_1'), key: 'container-sidepage' },
