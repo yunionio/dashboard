@@ -1,6 +1,7 @@
 import { mapGetters } from 'vuex'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { checkReadOnly } from '../utils'
 
 export default {
   created () {
@@ -18,6 +19,8 @@ export default {
           })
         },
         meta: (obj) => {
+          const ret = checkReadOnly(obj, i18n.t('network.text_201'))
+          if (!ret.validate) return ret
           if (!this.isOwner(obj)) {
             return {
               validate: false,
@@ -34,7 +37,7 @@ export default {
         actions: (obj) => {
           const { status } = obj
           const isAvailable = status.toLowerCase() === 'available'
-          const notAvailableTip = !isAvailable ? i18n.t('network.not.available.tooltip') : null
+          const notAvailableTip = !isAvailable ? i18n.t('network.instance.not.available.tooltip') : null
           return [
             {
               label: i18n.t('network.expired_release'),
@@ -50,10 +53,8 @@ export default {
                 })
               },
               meta: () => {
-                const ret = {
-                  validate: true,
-                  tooltip: null,
-                }
+                const ret = checkReadOnly(obj, i18n.t('network.expired_release'))
+                if (!ret.validate) return ret
                 if (obj.billing_type === 'prepaid') {
                   ret.validate = false
                   ret.tooltip = i18n.t('network.nat.prepaid.unsupported')
@@ -81,10 +82,8 @@ export default {
                 })
               },
               meta: () => {
-                const ret = {
-                  validate: true,
-                  tooltip: null,
-                }
+                const ret = checkReadOnly(obj, i18n.t('network.renew'))
+                if (!ret.validate) return ret
                 if (obj.billing_type === 'postpaid') {
                   ret.validate = false
                   ret.tooltip = i18n.t('network.nat.postpaid.unsupported')
@@ -114,6 +113,8 @@ export default {
               meta: () => {
                 const isPrepaid = obj.billing_type === 'prepaid'
                 const validate = (isAvailable && isPrepaid)
+                const ret = checkReadOnly(obj, i18n.t('network.auto.renew'))
+                if (!ret.validate) return ret
                 if (!this.isOwner(obj)) {
                   return {
                     validate: false,
@@ -136,6 +137,10 @@ export default {
                   }
                 }
               },
+              meta: () => {
+                const ret = checkReadOnly(obj, i18n.t('common_277'))
+                if (!ret.validate) return ret
+              },
             }),
             {
               label: i18n.t('network.text_131'),
@@ -153,6 +158,8 @@ export default {
                 })
               },
               meta: () => {
+                const ret = checkReadOnly(obj, i18n.t('network.text_131'))
+                if (!ret.validate) return ret
                 if (!this.isOwner(obj)) {
                   return {
                     validate: false,

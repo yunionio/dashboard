@@ -47,14 +47,7 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
-    return {
-      detailTabs: [
-        { label: this.$t('network.text_67'), key: 'nat-detail' },
-        { label: 'SNAT', key: 'snat' },
-        { label: 'DNAT', key: 'dnat' },
-        { label: this.$t('network.text_150'), key: 'event-drawer' },
-      ],
-    }
+    return {}
   },
   computed: {
     getParams () {
@@ -67,6 +60,17 @@ export default {
         default:
           return ''
       }
+    },
+    detailTabs () {
+      const detailTabs = [
+        { label: this.$t('network.text_67'), key: 'nat-detail' },
+      ]
+      if (this.detailData.brand && this.detailData.brand !== 'Aws') {
+        detailTabs.push({ label: 'SNAT', key: 'snat' })
+        detailTabs.push({ label: 'DNAT', key: 'dnat' })
+      }
+      detailTabs.push({ label: this.$t('network.text_150'), key: 'event-drawer' })
+      return detailTabs
     },
   },
 }

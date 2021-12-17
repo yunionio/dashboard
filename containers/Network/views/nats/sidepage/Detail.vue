@@ -96,6 +96,7 @@ export default {
                   },
                 })
               },
+              disabled: this.data.brand === 'Aws',
             }),
           ],
         },
