@@ -164,8 +164,8 @@ export default {
                   })
                 },
                 meta: () => {
-                  const ret = checkReadOnly(this.list.selectedItems, this.$t('network.text_201'))
-                  if (!ret.validate) return ret
+                  // const ret = checkReadOnly(this.list.selectedItems, this.$t('network.text_201'))
+                  // if (!ret.validate) return ret
                   if (!isOwner) {
                     return {
                       validate: false,
