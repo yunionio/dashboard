@@ -119,7 +119,9 @@ export default {
           title: this.$t('dictionary.route_table'),
           slots: {
             default: ({ row }) => {
-              return row.route_table_id
+              return [
+                <side-page-trigger name='RouteTableSidePage' options={{ resource: 'route_tables' }} id={row.route_table_id} vm={this}>{row.route_table_id}</side-page-trigger>,
+              ]
             },
           },
         },
