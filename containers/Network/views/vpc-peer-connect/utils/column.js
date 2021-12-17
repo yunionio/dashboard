@@ -24,7 +24,7 @@ export const getPeerVpcTableColumn = () => {
     showOverflow: 'ellipsis',
     slots: {
       default: ({ row }) => {
-        return row.peer_vpc_name || row.peer_vpc_id
+        return row.peer_vpc_name || row.peer_vpc_id || row.ext_peer_vpc_id
       },
     },
   }
@@ -38,7 +38,7 @@ export const getExtPeerAccountTableColumn = () => {
     showOverflow: 'title',
     slots: {
       default: ({ row }, h) => {
-        const text = !row.peer_vpc_name ? `${row.peer_account_id}(${i18n.t('network.cross_account')})` : i18n.t('network.same_account')
+        const text = !row.peer_vpc_name ? `${row.peer_account_id || row.ext_peer_account_id}(${i18n.t('network.cross_account')})` : i18n.t('network.same_account')
         return [
           <list-body-cell-wrap copy field='ext_peer_account_id' row={row} hideField='true' message={text}>
             { text }
