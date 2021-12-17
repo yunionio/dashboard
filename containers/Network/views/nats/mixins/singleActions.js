@@ -19,8 +19,8 @@ export default {
           })
         },
         meta: (obj) => {
-          const ret = checkReadOnly(obj, i18n.t('network.text_201'))
-          if (!ret.validate) return ret
+          // const ret = checkReadOnly(obj, i18n.t('network.text_201'))
+          // if (!ret.validate) return ret
           if (!this.isOwner(obj)) {
             return {
               validate: false,
