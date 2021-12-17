@@ -78,6 +78,11 @@ export default {
                 })
               },
               meta: () => {
+                if (obj.brand === 'Aws' && obj.associate_type === 'natgateway') {
+                  return {
+                    validate: false,
+                  }
+                }
                 if (obj.associate_id) {
                   return {
                     validate: true,
