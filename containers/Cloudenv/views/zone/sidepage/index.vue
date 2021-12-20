@@ -45,14 +45,7 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
-    return {
-      detailTabs: [
-        { label: this.$t('cloudenv.text_237'), key: 'zone-detail' },
-        { label: this.$t('cloudenv.text_101'), key: 'host-list' },
-        { label: this.$t('cloudenv.text_319'), key: 'dashboard' },
-        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
-      ],
-    }
+    return {}
   },
   computed: {
     getParams () {
@@ -78,6 +71,17 @@ export default {
     },
     hiddenActions () {
       return this.params.hiddenActions || []
+    },
+    detailTabs () {
+      const detailTabs = [
+        { label: this.$t('cloudenv.text_237'), key: 'zone-detail' },
+        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
+      ]
+      if (!['public'].includes(this.detailData.cloud_env)) {
+        detailTabs.splice(1, 0, { label: this.$t('cloudenv.text_319'), key: 'dashboard' })
+        detailTabs.splice(1, 0, { label: this.$t('cloudenv.text_101'), key: 'host-list' })
+      }
+      return detailTabs
     },
   },
 }
