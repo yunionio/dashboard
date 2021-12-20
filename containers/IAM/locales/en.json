@@ -856,5 +856,13 @@
   "system.robot.shared": "The shared robot does not support this operation",
   "system.displayname_tip": "Please enter a displayname",
   "IAM.user.limit": "The open source version supports the creation of up to 5 users",
-  "IAM.text_1": "Scope Of Belonging"
+  "IAM.text_1": "Scope Of Belonging",
+  "IAM.text_2": "Bandwidth",
+  "IAM.text_3": "Infrastructure resource statistics",
+  "IAM.text_4": "{0} C",
+  "IAM.text_5": "{0}",
+  "IAM.text_6": "{0}",
+  "IAM.text_7": "{0}",
+  "IAM.text_8": "({0})",
+  "IAM.text_9": "Total"
 }
