@@ -423,7 +423,7 @@ export default {
   },
   methods: {
     refresh () {
-      console.log('refresh')
+      this.list.fetchData()
     },
     extraExportParams ({ currentExportType }) {
       if (currentExportType === 'all') return { baremetal: false }
