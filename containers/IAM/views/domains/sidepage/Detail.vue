@@ -71,6 +71,7 @@ export default {
         {
           title: this.$t('system.text_87'),
           field: 'diskList',
+          width: '30%',
           slots: {
             default: ({ row }) => {
               if (!row.diskList.length) return '-'
@@ -83,11 +84,12 @@ export default {
         {
           title: 'GPU',
           field: 'gpu',
+          width: '15%',
           slots: {
             default: ({ row }) => {
               return [<div>
                 <div>{this.$t('IAM.text_5', [row.gpu.gpu])}{this.$t('IAM.text_8', [this.$t('IAM.text_9')])}</div>
-                <div>{this.$t('IAM.text_5', [row.gpu.gpu_server])}{this.$t('IAM.text_8', [this.$t('system.text_30')])}</div>
+                <div>{this.$t('IAM.text_5', [row.gpu.gpu_server])}{this.$t('IAM.text_8', [this.$t('common_407')])}</div>
               </div>]
             },
           },
@@ -255,7 +257,7 @@ export default {
         slots: {
           default: ({ row }, h) => {
             return [
-              <vxe-grid class="mb-2" data={ this.usageData } columns={ this.usageColumns } />,
+              <vxe-grid class="mb-2" resizable data={ this.usageData } columns={ this.usageColumns } />,
             ]
           },
         },
@@ -293,10 +295,9 @@ export default {
       const list = []
       const keys = Object.keys(map)
       keys.map(key => {
-        if (key.indexOf('domain.disks.medium_type') === 0 && key !== 'domain.disks.medium_type') {
-          console.log('ey', key)
-          const newKey = key.replace('domain.disks.medium_type.', '')
-          if (newKey) {
+        if (key.indexOf('domain.disks.attached.storage_type') === 0 && key !== 'domain.disks.attached.storage_type') {
+          const newKey = key.replace('domain.disks.attached.storage_type.', '')
+          if (newKey && map[key]) {
             list.push({ medium_type: newKey, value: map[key] })
           }
         }
