@@ -95,6 +95,11 @@ export default {
               name: this.$t('dictionary.server'),
               requestParams: { override_pending_delete: true },
               onManager: this.onManager,
+              success: () => {
+                this.list.selectedItems.map(obj => {
+                  this.list.singleRefresh(obj.id, ['deleting'])
+                })
+              },
             })
           },
           meta: () => {
