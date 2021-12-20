@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { sizestrWithUnit } from '@/utils/utils'
 import {
   getEnabledTableColumn,
 } from '@/utils/common/tableColumn'
@@ -42,6 +43,7 @@ export default {
   data () {
     return {
       loading: false,
+      domainUsageMap: {},
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'domain', columns: () => this.columns, tipName: this.$t('dictionary.domain') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'domain', columns: () => this.columns, tipName: this.$t('dictionary.domain') }),
@@ -51,11 +53,86 @@ export default {
         },
         getEnabledTableColumn(),
       ],
+      usageColumns: [
+        {
+          title: 'CPU',
+          field: 'cpu',
+          formatter: ({ row }) => {
+            return this.$t('IAM.text_4', [row.cpu])
+          },
+        },
+        {
+          title: this.$t('system.text_86'),
+          field: 'mem',
+          formatter: ({ row }) => {
+            return sizestrWithUnit(row.mem, 'M', 1024)
+          },
+        },
+        {
+          title: this.$t('system.text_87'),
+          field: 'diskList',
+          slots: {
+            default: ({ row }) => {
+              if (!row.diskList.length) return '-'
+              return row.diskList.map(item => {
+                return <div>{sizestrWithUnit(item.value, 'M', 1024)}{this.$t('IAM.text_8', [this.$te(`common.storage.${item.medium_type}`) ? this.$t(`common.storage.${item.medium_type}`) : item.medium_type])}</div>
+              })
+            },
+          },
+        },
+        {
+          title: 'GPU',
+          field: 'gpu',
+          slots: {
+            default: ({ row }) => {
+              return [<div>
+                <div>{this.$t('IAM.text_5', [row.gpu.gpu])}{this.$t('IAM.text_8', [this.$t('IAM.text_9')])}</div>
+                <div>{this.$t('IAM.text_5', [row.gpu.gpu_server])}{this.$t('IAM.text_8', [this.$t('system.text_30')])}</div>
+              </div>]
+            },
+          },
+        },
+        {
+          title: this.$t('system.text_30'),
+          field: 'vm',
+          formatter: ({ row }) => {
+            return this.$t('IAM.text_6', [row.vm])
+          },
+        },
+        {
+          title: 'EIP',
+          field: 'eip',
+          formatter: ({ row }) => {
+            return this.$t('IAM.text_7', [row.eip])
+          },
+        },
+        {
+          title: this.$t('IAM.text_2'),
+          field: 'mb',
+          formatter: ({ row }) => {
+            return sizestrWithUnit(row.mb, 'M', 1024)
+          },
+        },
+      ],
     }
   },
   computed: {
     extResources () {
       return this.data.ext_resource ? this.data.ext_resource : {}
+    },
+    usageData () {
+      return [{
+        cpu: this.domainUsageMap['domain.servers.cpu'] || 0,
+        mem: this.domainUsageMap['domain.servers.memory'] || 0,
+        diskList: this.genDiskTypeList(this.domainUsageMap),
+        gpu: {
+          gpu: this.domainUsageMap.isolated_devices || 0,
+          gpu_server: this.domainUsageMap['domain.servers.isolated_devices'] || 0,
+        },
+        vm: this.domainUsageMap['domain.servers'] || 0,
+        eip: this.domainUsageMap['domain.eip'] || 0,
+        mb: (this.domainUsageMap['domain.eip.floating_ip.bandwidth.mb'] || 0) + (this.domainUsageMap['domain.eip.public_ip.bandwidth.mb'] || 0),
+      }]
     },
     extraInfo () {
       const serverRes = {
@@ -172,8 +249,22 @@ export default {
           },
         ],
       }
-      return [serverRes, multiCloudRes]
+      const usageRes = {
+        title: this.$t('IAM.text_3'),
+        field: 'usage',
+        slots: {
+          default: ({ row }, h) => {
+            return [
+              <vxe-grid class="mb-2" data={ this.usageData } columns={ this.usageColumns } />,
+            ]
+          },
+        },
+      }
+      return [usageRes, serverRes, multiCloudRes]
     },
+  },
+  created () {
+    this.fetchUsage()
   },
   methods: {
     refresh () {
@@ -186,6 +277,31 @@ export default {
       }).catch(() => {
         this.loading = false
       })
+    },
+    async fetchUsage () {
+      const res = await new this.$Manager('rpc', 'v2').get({
+        resource: 'rpc',
+        id: 'usages/general-usage',
+        params: {
+          scope: 'domain',
+          domain_id: this.data.id,
+        },
+      })
+      this.domainUsageMap = res.data || {}
+    },
+    genDiskTypeList (map) {
+      const list = []
+      const keys = Object.keys(map)
+      keys.map(key => {
+        if (key.indexOf('domain.disks.medium_type') === 0 && key !== 'domain.disks.medium_type') {
+          console.log('ey', key)
+          const newKey = key.replace('domain.disks.medium_type.', '')
+          if (newKey) {
+            list.push({ medium_type: newKey, value: map[key] })
+          }
+        }
+      })
+      return list
     },
   },
 }
