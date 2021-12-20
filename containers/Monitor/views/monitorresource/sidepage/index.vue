@@ -119,9 +119,7 @@ export default {
             this.agent_fail_code = data[0].fail_code || ''
           }
         }
-      } catch (e) {
-        throw e
-      }
+      } catch (e) {}
     },
     listParams () {
       let params = {}
@@ -157,9 +155,7 @@ export default {
           maxTry -= 1
           await new Promise(resolve => setTimeout(resolve, 6000))
         }
-      } catch (e) {
-        throw e
-      }
+      } catch (e) {}
     },
   },
 }
