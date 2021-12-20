@@ -39,16 +39,7 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
   data () {
-    return {
-      detailTabs: [
-        { label: this.$t('cloudenv.text_237'), key: 'cloudregion-detail' },
-        { label: this.$t('cloudenv.text_11'), key: 'zone-list' },
-        { label: 'VPC', key: 'v-p-c-list' },
-        { label: this.$t('cloudenv.text_181'), key: 'network-list' },
-        { label: this.$t('cloudenv.text_319'), key: 'dashboard' },
-        { label: this.$t('cloudenv.text_15'), key: 'event-drawer' },
-      ],
-    }
+    return {}
   },
   computed: {
     listId () {
@@ -58,6 +49,19 @@ export default {
         default:
           return ''
       }
+    },
+    detailTabs () {
+      const detailTabs = [
+        { label: this.$t('cloudenv.text_237'), key: 'cloudregion-detail' },
+        { label: this.$t('cloudenv.text_11'), key: 'zone-list' },
+        { label: 'VPC', key: 'v-p-c-list' },
+        { label: this.$t('cloudenv.text_181'), key: 'network-list' },
+      ]
+      if (!['public'].includes(this.detailData.cloud_env)) {
+        detailTabs.push({ label: this.$t('cloudenv.text_319'), key: 'dashboard' })
+      }
+      detailTabs.push({ label: this.$t('cloudenv.text_15'), key: 'event-drawer' })
+      return detailTabs
     },
   },
 }
