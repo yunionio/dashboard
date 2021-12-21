@@ -1052,5 +1052,6 @@
   "network.system": "System",
   "network.custom": "Custom",
   "network.propagate": "Propagate",
-  "network.route_delete_tips": "This type of route does not support deletion"
+  "network.route_delete_tips": "This type of route does not support deletion",
+  "network.unbind_net_gateway": "Unbind NAT Gateway"
 }
