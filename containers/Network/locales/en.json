@@ -1021,5 +1021,6 @@
   "network.text_769": "Create Global VPC",
   "network.text_770": "Please enter the Global VPC name",
   "network.text_771": "Deleting the cache will remove the access control that has been synced to the public cloud platform.",
-  "network.text_772": "Deleting the cache will delete the certificates that have been synced to the public cloud platform."
+  "network.text_772": "Deleting the cache will delete the certificates that have been synced to the public cloud platform.",
+  "network.unbind_net_gateway": "Unbind NAT Gateway"
 }

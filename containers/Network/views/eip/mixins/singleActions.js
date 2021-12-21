@@ -81,7 +81,7 @@ export default {
                 if (obj.brand === 'Aws' && obj.associate_type === 'natgateway') {
                   return {
                     validate: false,
-                    tooltip: this.$t('common.check_readonly', ['Aws', i18n.t('network.text_219')]),
+                    tooltip: this.$t('common.check_readonly', ['Aws', i18n.t('network.unbind_net_gateway')]),
                   }
                 }
                 if (obj.associate_id) {
