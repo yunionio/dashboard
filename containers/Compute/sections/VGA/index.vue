@@ -17,6 +17,9 @@ export default {
     vdi: {
       type: String,
     },
+    form: {
+      type: Object,
+    },
   },
   computed: {
     vgaOptions () {
@@ -38,6 +41,16 @@ export default {
         },*/
       )
       return options
+    },
+  },
+  watch: {
+    vdi: {
+      handler: function (val) {
+        const vga = this.form.fc.getFieldValue('vga')
+        if (!this.vgaOptions.some(item => item.value === vga)) {
+          this.form.fc.setFieldsValue({ vga: this.vgaOptions[0].value })
+        }
+      },
     },
   },
 }
