@@ -30,7 +30,7 @@
             <vdi :decorator="decorators.vdi" @change="handleVdiChange" />
           </a-form-item>
           <a-form-item :label="$t('compute.vga')" v-bind="formItemLayout">
-            <vga :decorator="decorators.vga" :vdi="vdi" />
+            <vga :decorator="decorators.vga" :vdi="vdi" :form="form" />
           </a-form-item>
           <a-form-item :label="$t('compute.machine')" v-bind="formItemLayout">
             <machine :decorator="decorators.machine" :isArm="isArm" />

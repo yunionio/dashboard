@@ -180,7 +180,7 @@
             <vdi :decorator="decorators.vdi" />
           </a-form-item>
           <a-form-item :label="$t('compute.vga')" class="mb-0" v-if="isKvm">
-            <vga :decorator="decorators.vga" :vdi="vdi" />
+            <vga :decorator="decorators.vga" :vdi="vdi" :form="form" />
           </a-form-item>
           <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
             <machine :decorator="getMachineDecorator()" :isArm="isArm" />
