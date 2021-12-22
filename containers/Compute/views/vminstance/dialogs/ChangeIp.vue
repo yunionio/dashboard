@@ -9,8 +9,8 @@
       </a-alert>
       <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_390')" />
       <dialog-table :data="params.data" :columns="columns" />
-      <a-form :form="form.fc" hideRequiredMark>
-        <a-form-item :label="$t('compute.text_106')" v-bind="formItemLayout" class="mb-0">
+      <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
+        <a-form-item :label="$t('compute.text_106')" class="mb-0">
           <a-row :gutter="20">
             <a-col :span="14">
               <a-form-item :help="help">
@@ -36,6 +36,9 @@
               </a-form-item>
             </a-col>
           </a-row>
+        </a-form-item>
+        <a-form-item>
+          <a-checkbox v-decorator="decorators.restartNetwork">{{$t('compute.restart_network')}}</a-checkbox>
         </a-form-item>
       </a-form>
     </div>
@@ -101,6 +104,12 @@ export default {
             ],
           },
         ],
+        restartNetwork: [
+          'restartNetwork',
+          {
+            initialValue: false,
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -146,6 +155,7 @@ export default {
         const data = {
           ip_addr: this.params.data[0].ip_addr,
           net_desc: values.ip ? `${values.network}:${values.ip}` : values.network,
+          restart_network: values.restartNetwork,
         }
         await manager.performAction({
           id: this.params.resId,
