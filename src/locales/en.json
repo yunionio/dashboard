@@ -156,7 +156,9 @@
       "instance_snapshot_reset": "Rollback host",
       "update_tags": "Update tag",
       "update_tags_fail": "Failed to update tag",
-      "image_caching": "Image Caching"
+      "image_caching": "Image Caching",
+      "restart_network": "Restart Network",
+      "restart_network_failed": "Restart Network Failed"
     },
     "network": {
       "init": "Initialize",

@@ -156,7 +156,9 @@
       "instance_snapshot_reset": "回滚主机",
       "update_tags": "更新标签或名称",
       "update_tags_fail": "更新标签或名称失败",
-      "image_caching": "缓存镜像中"
+      "image_caching": "缓存镜像中",
+      "restart_network": "正在重启网卡",
+      "restart_network_failed": "重启网卡失败"
     },
     "network": {
       "init": "初始化",
