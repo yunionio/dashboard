@@ -59,22 +59,6 @@ export default {
         },
       }),
       groupActions: [
-        {
-          label: this.$t('cloudenv.text_363'),
-          action: () => {
-            this.createDialog('cloudproviderregionsSetAutoSyncDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              refresh: this.refresh,
-              cloudproviderId: this.cloudproviderId,
-            })
-          },
-          meta: () => {
-            return {
-              validate: this.list.selectedItems.length,
-            }
-          },
-        },
         ...getEnabledSwitchActions(this, undefined, undefined, {
           actions: [
             async (obj) => {

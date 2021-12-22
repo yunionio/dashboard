@@ -7,22 +7,6 @@ export default {
     const ownerDomain = obj => this.$store.getters.isAdminMode || obj.cloudaccount_domain_id === this.$store.getters.userInfo.projectDomainId
     this.singleActions = [
       {
-        label: i18n.t('cloudenv.text_363'),
-        action: obj => {
-          this.createDialog('cloudproviderregionsSetAutoSyncDialog', {
-            data: [obj],
-            columns: this.columns,
-            refresh: this.refresh,
-            cloudproviderId: this.cloudproviderId,
-          })
-        },
-        meta: obj => {
-          return {
-            validate: ownerDomain(obj),
-          }
-        },
-      },
-      {
         label: i18n.t('common.sync_resource'),
         permission: 'cloudaccounts_perform_sync',
         action: obj => {
@@ -84,10 +68,10 @@ export default {
               fields: ['cloudregion', 'enabled', 'last_auto_sync'],
               metas: [
                 () => ({
-                  validate: !obj.enabled,
+                  validate: !obj.enabled && ownerDomain(obj),
                 }),
                 () => ({
-                  validate: obj.enabled,
+                  validate: obj.enabled && ownerDomain(obj),
                 }),
               ],
             }),
