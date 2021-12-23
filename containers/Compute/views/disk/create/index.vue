@@ -44,6 +44,10 @@
           </a-col>
         </a-row>
       </a-form-item>
+      <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
+        <tag
+          v-decorator="decorators.__meta__" />
+      </a-form-item>
       <a-collapse :bordered="false" v-if="cloudEnv === 'public' || isHCSO">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
           <a-form-item :label="$t('compute.text_15')" v-bind="formItemLayout">
@@ -79,11 +83,12 @@ import BottomBar from './components/BottomBar'
 import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
-import { isRequired } from '@/utils/validate'
+import validateForm, { isRequired } from '@/utils/validate'
 import i18n from '@/locales'
 import DomainProject from '@/sections/DomainProject'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import { MEDIUM_MAP } from '@Compute/constants'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'DiskCreate',
@@ -91,6 +96,7 @@ export default {
     AreaSelects,
     DomainProject,
     BottomBar,
+    Tag,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -195,6 +201,14 @@ export default {
         ],
         manager_id: [
           'manager_id',
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
         ],
       },
       formItemLayout: {

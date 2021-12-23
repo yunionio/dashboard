@@ -64,6 +64,10 @@
               :showSync="true"
               :select-props="{ placeholder: $t('compute.text_149') }" />
         </a-form-item>
+        <a-form-item :label="$t('common.text00012')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
       </a-form>
     </page-body>
     <page-footer>
@@ -81,12 +85,15 @@ import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainSelect from '@/sections/DomainSelect'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
+import Tag from '@/sections/Tag'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'VPCCreate',
   components: {
     AreaSelects,
     DomainSelect,
+    Tag,
   },
   data () {
     const cloudEnvOptions = getCloudEnvOptions('network_manage_brands', true)
@@ -162,6 +169,14 @@ export default {
           {
             valuePropName: 'checked',
             initialValue: true,
+          },
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
           },
         ],
       },
@@ -343,6 +358,7 @@ export default {
         if (values.project_domain) {
           params.project_domain = values.project_domain
         }
+        params.__meta__ = values.__meta__
         if (this.cloudEnv === 'public') params.external_access_mode = values.external_access_mode ? 'eip' : 'none'
         await this.doCreate(params)
         this.loading = false

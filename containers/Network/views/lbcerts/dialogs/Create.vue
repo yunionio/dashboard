@@ -35,6 +35,10 @@
             :placeholder="$t('network.text_329')"
             rows="4" />
         </a-form-item>
+        <a-form-item :label="$t('common.text00012')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -45,15 +49,17 @@
 </template>
 
 <script>
-import { isRequired } from '@/utils/validate'
+import validateForm, { isRequired } from '@/utils/validate'
 import DomainProject from '@/sections/DomainProject'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'LbcertsCreateDialog',
   components: {
     DomainProject,
+    Tag,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -108,6 +114,14 @@ export default {
             validateTrigger: ['blur'],
             rules: [
               { required: true, message: this.$t('network.text_331') },
+            ],
+          },
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
             ],
           },
         ],

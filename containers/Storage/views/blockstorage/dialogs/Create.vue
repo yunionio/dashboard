@@ -31,6 +31,10 @@
           </a-radio-group>
         </a-form-item>
         <form-items :storage_type="getFieldValue('storage_type')" />
+        <a-form-item :label="$t('common.text00012')" class="mb-0">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -48,6 +52,8 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import CloudregionZone from '@/sections/CloudregionZone'
 import DomainSelect from '@/sections/DomainSelect'
+import Tag from '@/sections/Tag'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'BlockStorageCreateDialog',
@@ -55,6 +61,7 @@ export default {
     CloudregionZone,
     FormItems,
     DomainSelect,
+    Tag,
   },
   mixins: [DialogMixin, WindowsMixin],
   provide () {
@@ -130,6 +137,14 @@ export default {
           'project_domain',
           {
             initialValue: this.userInfo.projectDomainId,
+          },
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
           },
         ],
       }

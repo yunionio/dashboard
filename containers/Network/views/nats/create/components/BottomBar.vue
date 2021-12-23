@@ -55,6 +55,7 @@ export default {
           vpc_id: values.vpc,
           nat_spec: values.sku.name,
           billing_type: values.billing_type,
+          __meta__: values.__meta__,
         }
         if (params.billing_type === 'postpaid') {
           if (values.durationStandard !== 'none') {

@@ -20,6 +20,10 @@
       <a-form-item :label="$t('compute.text_777')" :extra="$t('compute.text_782', [ ipmiPassword ])">
         <a-input-password v-decorator="decorators.ipmi_password" />
       </a-form-item>
+      <a-form-item :label="$t('common.text00012')" class="mb-0">
+        <tag
+          v-decorator="decorators.__meta__" />
+      </a-form-item>
     </template>
     <template v-if="isBatch">
       <a-form-item :wrapper-col="offsetWrapperCol">
@@ -56,12 +60,14 @@
 <script>
 import ModeSelect from '../components/ModeSelect'
 import FileSelect from '../components/FileSelect'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'PhysicalmachinePreAdd',
   components: {
     ModeSelect,
     FileSelect,
+    Tag,
   },
   inject: ['form'],
   props: {

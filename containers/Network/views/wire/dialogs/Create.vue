@@ -58,6 +58,10 @@
             </a-select-option>
           </a-select>
         </a-form-item>
+        <a-form-item :label="$t('common.text00012')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -73,11 +77,14 @@ import { BAND_WIDTH_OPTION } from '../../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import DomainSelect from '@/sections/DomainSelect'
+import Tag from '@/sections/Tag'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'WireCreateDialog',
   components: {
     DomainSelect,
+    Tag,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -159,6 +166,14 @@ export default {
           'project_domain',
           {
             initialValue: this.$store.getters.userInfo.projectDomainId,
+          },
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
           },
         ],
       },
@@ -264,6 +279,7 @@ export default {
         zone_id: data.zone,
         vpc_id: data.vpc,
         bandwidth: data.bandwidth,
+        __meta__: data.__meta__,
       }
       return this.params.onManager('create', {
         managerArgs: {
