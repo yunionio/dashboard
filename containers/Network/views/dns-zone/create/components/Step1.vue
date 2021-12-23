@@ -22,6 +22,10 @@
         <a-form-item :label="$t('common.description')">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
+        <a-form-item :label="$t('common.text00012')" class="mb-0">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
       </a-form>
   </div>
 </template>
@@ -30,13 +34,15 @@
 import { mapGetters } from 'vuex'
 import { zoneTypes } from '../../constants'
 import DomainSelect from '@/sections/DomainSelect'
-import { validate } from '@/utils/validate'
+import validateForm, { validate } from '@/utils/validate'
 import { isValidDomain } from '@/utils/utils'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'DnsZoneCreateStep1',
   components: {
     DomainSelect,
+    Tag,
   },
   data () {
     const projectDomainId = this.$store.getters.userInfo.projectDomainId
@@ -83,6 +89,14 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('network.text_717') },
+            ],
+          },
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
             ],
           },
         ],

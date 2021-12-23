@@ -85,6 +85,10 @@
       <a-form-item :label="$t('compute.text_308')" v-bind="formItemLayout" v-if="!isCheckedIso">
         <server-password :form="form" :login-types="loginTypes" :isSnapshotImageType="false" :decorator="decorators.loginConfig" />
       </a-form-item>
+      <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
+        <tag
+          v-decorator="decorators.__meta__" />
+      </a-form-item>
       <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider>
       <a-form-item :label="$t('compute.text_104')" v-bind="formItemLayout" class="mb-0">
         <server-network
@@ -138,6 +142,7 @@ import ServerNetwork from '@Compute/sections/ServerNetwork'
 import SchedPolicy from '@Compute/sections/SchedPolicy'
 import DomainProject from '@/sections/DomainProject'
 import CloudregionZone from '@/sections/CloudregionZone'
+import Tag from '@/sections/Tag'
 import validateForm, { isRequired, isWithinRange } from '@/utils/validate'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { sizestr } from '@/utils/utils'
@@ -167,6 +172,7 @@ export default {
     ServerNetwork,
     SchedPolicy,
     DomainProject,
+    Tag,
   },
   mixins: [WindowsMixin, workflowMixin],
   data () {
@@ -448,6 +454,14 @@ export default {
         },
         description: [
           'description',
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
         ],
       },
       zone: '',
@@ -1212,6 +1226,7 @@ export default {
         description: values.description,
         prefer_region: values.cloudregion ? values.cloudregion.key : this.$route.query.region_id,
         prefer_zone: values.zone ? values.zone.key : this.$route.query.zone_id,
+        __meta__: values.__meta__,
       }
       if (values.loginPassword) params.password = values.loginPassword
       if (values.loginKeypair) params.keypair = values.loginKeypair.key

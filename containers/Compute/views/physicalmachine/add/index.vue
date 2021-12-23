@@ -213,6 +213,14 @@ export default {
         access_mac: [
           'access_mac',
         ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
+        ],
       }
     },
     desc () {
@@ -281,6 +289,7 @@ export default {
         this.form.fd.ipmi_ip_addr,
         this.form.fd.ipmi_username,
         this.form.fd.ipmi_password,
+        this.form.fd.__meta__,
       ]
       const params = {
         hosts: data.join(','),
@@ -334,6 +343,7 @@ export default {
         ipmi_password: this.form.fd.ipmi_password,
         enable_pxe_boot: false,
         no_prepare: this.form.fd.no_prepare || false,
+        __meta__: this.form.fd.__meta__,
       }
       if (this.form.fd.project_domain && this.isAdminMode) {
         data.project_domain = this.form.fd.project_domain
@@ -377,6 +387,7 @@ export default {
         enable_pxe_boot: true,
         no_prepare: this.form.fd.no_prepare || false,
         access_mac: this.form.fd.access_mac,
+        __meta__: this.form.fd.__meta__,
       }
       if (this.form.fd.project_domain && this.isAdminMode) {
         data.project_domain = this.form.fd.project_domain

@@ -87,6 +87,10 @@
           <a-switch v-decorator="decorators.is_auto_alloc" />
           <template slot="extra">{{$t('common_500')}}</template>
         </a-form-item>
+        <a-form-item :label="$t('common.text00012')" class="mb-0">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
         <a-collapse :bordered="false" v-if="isShowAdvanceOptions">
           <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
             <a-form-item :label="$t('network.text_743')" v-bind="formItemLayout" v-if="form.fd.server_type === 'eip'">
@@ -136,7 +140,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import IpSubnets from './components/IpSubnets'
-import { isRequired, REGEXP } from '@/utils/validate'
+import validateForm, { isRequired, REGEXP } from '@/utils/validate'
 import { Manager } from '@/utils/manager'
 import { uuid } from '@/utils/utils'
 import { typeClouds, getCloudEnvOptions } from '@/utils/common/hypervisor'
@@ -144,6 +148,7 @@ import DomainProject from '@/sections/DomainProject'
 import AreaSelects from '@/sections/AreaSelects'
 import i18n from '@/locales'
 import { HYPERVISORS_MAP } from '@/constants'
+import Tag from '@/sections/Tag'
 
 const { networkSegment } = REGEXP
 const masks = {
@@ -180,6 +185,7 @@ export default {
     IpSubnets,
     DomainProject,
     AreaSelects,
+    Tag,
   },
   data () {
     const cloudEnvOptions = getCloudEnvOptions('network_manage_brands', true)
@@ -377,6 +383,14 @@ export default {
         }],
         bgp_type: [
           'bgp_type',
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
         ],
       },
       serverTypeOpts: [
@@ -671,6 +685,7 @@ export default {
               zone: values.zone,
               project_id: values.project.key,
               is_auto_alloc: values.is_auto_alloc,
+              __meta__: values.__meta__,
             }
             data.push(obj)
           }, values.guest_ip_prefix)
@@ -693,6 +708,7 @@ export default {
               server_type: values.server_type,
               wire_id: values.wire,
               is_auto_alloc: values.is_auto_alloc,
+              __meta__: values.__meta__,
             }
             data.push(obj)
           }, values.startip)
@@ -708,6 +724,7 @@ export default {
           description: values.description,
           wire_id: values.wire,
           is_auto_alloc: values.is_auto_alloc,
+          __meta__: values.__meta__,
         }
       }
       return {
@@ -718,6 +735,7 @@ export default {
         vpc: values.vpc,
         zone: values?.zone,
         is_auto_alloc: values.is_auto_alloc,
+        __meta__: values.__meta__,
       }
     },
     clearIpSubnetsError () {

@@ -55,6 +55,7 @@ export default {
           description,
           project_domain_id: project_domain,
           zone_type: zoneType,
+          __meta__: values.__meta__,
         }
         const dnsZone = await step1Ref.doCreate(data)
         this.currentDnsZone = dnsZone.data

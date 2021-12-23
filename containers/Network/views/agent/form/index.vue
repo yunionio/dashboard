@@ -38,6 +38,10 @@
         <a-form-item :label="$t('network.text_92')" :extra="$t('network.text_93')">
           <a-input v-decorator="decorators.vrrp_advert_int" type="number" :addonAfter="$t('network.text_76')" />
         </a-form-item>
+        <a-form-item v-if="!lbAgentId" :label="$t('common.text00012')" class="mb-0">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
         <a-collapse :bordered="false">
          <a-collapse-panel :header="$t('network.text_94')" key="1" forceRender>
             <a-form-item :label="$t('network.text_95')" :extra="$t('network.text_96')">
@@ -112,9 +116,14 @@
 <script>
 import workflowMixin from '@/mixins/workflow'
 import WindowsMixin from '@/mixins/windows'
+import Tag from '@/sections/Tag'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'AgentCreate',
+  components: {
+    Tag,
+  },
   mixins: [WindowsMixin, workflowMixin],
   data () {
     return {
@@ -146,6 +155,14 @@ export default {
           },
         ],
         description: ['description'],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
+        ],
         cluster_id: [
           'cluster_id',
           {

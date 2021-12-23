@@ -79,6 +79,10 @@
             :select-props="{ placeholder: $t('compute.text_1387') }"
             style="width: 320px" />
         </a-form-item>
+        <a-form-item :label="$t('common.text00012')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
       </a-form>
     </page-body>
     <bottom-bar
@@ -96,9 +100,10 @@ import BottomBar from './components/BottomBar'
 import IpSubnet from '@Network/sections/IpSubnet'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainProject from '@/sections/DomainProject'
-import { isRequired } from '@/utils/validate'
+import validateForm, { isRequired } from '@/utils/validate'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import { HYPERVISORS_MAP } from '../../../../../src/constants'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'EipCreate',
@@ -107,6 +112,7 @@ export default {
     DomainProject,
     IpSubnet,
     BottomBar,
+    Tag,
   },
   data () {
     const cloudEnvOptions = getCloudEnvOptions('network_manage_brands', true)
@@ -208,6 +214,14 @@ export default {
         ],
         bgp_type: [
           'bgp_type',
+        ],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
         ],
       },
       formItemLayout: {

@@ -86,6 +86,14 @@ export const DECORATORS = {
     },
   ],
   description: ['description'],
+  __meta__: [
+    '__meta__',
+    {
+      rules: [
+        { validator: validateForm('tagName') },
+      ],
+    },
+  ],
 }
 
 // capbilit接口所需要的参数

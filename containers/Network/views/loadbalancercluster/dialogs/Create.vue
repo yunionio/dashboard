@@ -16,6 +16,10 @@
         <a-form-item :label="$t('common.description')" v-bind="formItemLayout">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
         </a-form-item>
+        <a-form-item :label="$t('common.text00012')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -29,11 +33,14 @@
 import CloudregionZone from '@/sections/CloudregionZone'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import Tag from '@/sections/Tag'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'LoadbalancerclusterCreateDialog',
   components: {
     CloudregionZone,
+    Tag,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -55,6 +62,14 @@ export default {
           },
         ],
         description: ['description'],
+        __meta__: [
+          '__meta__',
+          {
+            rules: [
+              { validator: validateForm('tagName') },
+            ],
+          },
+        ],
         regionZone: {
           cloudregion: [
             'cloudregion',
@@ -111,6 +126,7 @@ export default {
           name: data.zone.label,
           regionId: data.cloudregion.key,
         },
+        __meta__: data.__meta__,
       }
       return new this.$Manager('loadbalancerclusters').create({
         data: params,
@@ -120,6 +136,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        console.log('values', values)
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()

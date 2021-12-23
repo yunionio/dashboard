@@ -55,6 +55,10 @@
             :hasPublicIp="false"
             :formItemLayout="formItemLayout" />
         </template>
+        <a-form-item :label="$t('common.text00012')" class="mb-0" v-bind="formItemLayout">
+          <tag
+            v-decorator="decorators.__meta__" />
+        </a-form-item>
       </a-form>
       <bottom-bar :values="form.fc.getFieldsValue()" />
     </page-body>
@@ -74,6 +78,7 @@ import NetworkSelects from '@/sections/NetworkSelects'
 import { PROVIDER_MAP } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import EipConfig from '@Compute/sections/EipConfig'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'NatCreate',
@@ -85,6 +90,7 @@ export default {
     NetworkSelects,
     EipConfig,
     BottomBar,
+    Tag,
   },
   mixins: [changeMinxin],
   data () {

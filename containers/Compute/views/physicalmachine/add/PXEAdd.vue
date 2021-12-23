@@ -26,6 +26,10 @@
           {{ $t('compute.text_781') }} <help-link href="/network/create">{{$t('common.create')}}</help-link>
         </template>
       </a-form-item>
+      <a-form-item :label="$t('common.text00012')" class="mb-0">
+        <tag
+          v-decorator="decorators.__meta__" />
+      </a-form-item>
     </template>
     <template v-if="isFile">
       <file-select
@@ -43,6 +47,7 @@
 import ModeSelect from '../components/ModeSelect'
 import FileSelect from '../components/FileSelect'
 import NetSelect from '../components/NetSelect'
+import Tag from '@/sections/Tag'
 
 export default {
   name: 'PhysicalmachinePXEAdd',
@@ -50,6 +55,7 @@ export default {
     ModeSelect,
     FileSelect,
     NetSelect,
+    Tag,
   },
   props: {
     offsetWrapperCol: {
