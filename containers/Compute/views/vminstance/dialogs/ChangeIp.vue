@@ -107,7 +107,8 @@ export default {
         restartNetwork: [
           'restartNetwork',
           {
-            initialValue: false,
+            valuePropName: 'checked',
+            initialValue: true,
           },
         ],
       },
