@@ -731,6 +731,10 @@
     "common$ignore_nonrunning_guests": {
       "label": "Shutdown Servers doesn't occupy resources switch",
       "desc": "Turned on by default, shutdown servers no longer occupy host CPU and memory resources, but when the host resources are fully allocated, it will cause the servers to fail to boot properly. When turned off, the shutdown servers will occupy the host CPU and memory resources so that they will not be allocated."
+    },
+    "compute$enable_auto_switch_server_sku": {
+      "label": "Give priority to ensuring the success of the new virtual machine",
+      "desc": "When opening, if the sku is sold out and does not match, we will automatically switch to the sku of the same specification and try to create."
     }
   },
   "user": {
