@@ -1,25 +1,29 @@
 <template>
-  <div class="wire d-flex">
-    <span class="line" />
-    <div class="text-center">
-      <a-tooltip placement="right">
+  <div class="res-container d-flex justify-content-center">
+    <div class="res res-ipsubnet">
+      <p class="desc">{{ desc }}</p>
+      <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
+          <p class="title">IP子网</p>
           <p>名称：{{ name }}</p>
           <p>状态：运行中</p>
         </template>
-        <icon type="res-wire" />
+        <icon type="res-network" />
       </a-tooltip>
       <span class="name">{{ name }}</span>
     </div>
-    <span class="line" />
   </div>
 </template>
 
 <script>
+import ResMixin from './ResMixin'
+
 export default {
-  name: 'ResWire',
+  name: 'ResIpsubnet',
+  mixins: [ResMixin],
   props: {
     name: String,
+    desc: String,
   },
   data () {
     return {}

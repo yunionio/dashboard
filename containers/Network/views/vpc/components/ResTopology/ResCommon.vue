@@ -2,8 +2,9 @@
   <div class="res-container d-flex justify-content-center align-items-center">
     <i class="line" :class="{'full': multiple}" />
     <div class="res d-flex">
-      <a-tooltip placement="right">
+      <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
+          <p class="title">资源类型</p>
           <p>名称：{{ name }}</p>
           <p>状态：运行中</p>
         </template>
@@ -15,8 +16,11 @@
 </template>
 
 <script>
+import ResMixin from './ResMixin'
+
 export default {
   name: 'ResCommon',
+  mixins: [ResMixin],
   props: {
     name: String,
     type: String,
