@@ -60,6 +60,7 @@ export default {
   },
   props: {
     physical: Boolean,
+    dataSource: Object,
   },
   data () {
     return {}
@@ -69,20 +70,4 @@ export default {
 
 <style lang="scss" scoped>
 @import "../index.scss";
-</style>
-
-<style lang="scss">
-.res-topology {
-  margin-left: 206px;
-  .title {
-    margin-bottom: 2px;
-    border-bottom: 1px solid #ccc;
-  }
-  .ant-tooltip-inner {
-    background-color: rgba(250,252,254, 1);
-    color: #5D6F80;
-    border: 1px solid #c8e2f7;
-    border-radius: 4px;
-  }
-}
 </style>

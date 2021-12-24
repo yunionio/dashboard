@@ -1,16 +1,17 @@
 <template>
   <div class="res-container d-flex justify-content-center">
     <div class="res res-ipsubnet">
-      <p class="desc">{{ desc }}</p>
+      <p class="desc">起:{{ network.guest_ip_start }}</p>
+      <p class="desc">止:{{ network.guest_ip_end }}</p>
       <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
           <p class="title">IP子网</p>
-          <p>名称：{{ name }}</p>
-          <p>状态：运行中</p>
+          <p>名称：{{ network.name }}</p>
+          <p>状态：{{ $t('status.network.' + network.status) }}</p>
         </template>
         <icon type="res-network" />
       </a-tooltip>
-      <span class="name">{{ name }}</span>
+      <span class="name">{{ network.name }}</span>
     </div>
   </div>
 </template>
@@ -22,11 +23,15 @@ export default {
   name: 'ResIpsubnet',
   mixins: [ResMixin],
   props: {
-    name: String,
-    desc: String,
+    dataSource: Object,
   },
   data () {
     return {}
+  },
+  computed: {
+    network () {
+      return this.dataSource || {}
+    },
   },
 }
 </script>

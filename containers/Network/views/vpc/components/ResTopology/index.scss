@@ -3,13 +3,7 @@ p {
   margin: 0;
   line-height: 26px;
 }
-.res-topology {
-  margin-left: 206px;
-  margin-top: 100px;
-}
 .c-left {
-  width: 200px;
-  height: 500px;
   position: relative;
 }
 .c-right {
@@ -19,9 +13,6 @@ p {
 .wire {
   width: 100px;
   height: 100%;
-  position: absolute;
-  right: 0;
-  top: 0;
   border-left: 2px solid #ccc;
   i {
     font-size: 40px;
@@ -37,13 +28,12 @@ p {
     border: 1px solid #ccc;
   }
   &.vpc {
-    right: 100px;
     border-left: none;
   }
-}
-.vpc-topology {
-  .vpc {
-    right: 0;
+  .name {
+    display: inline-block;
+    width: 54px;
+    word-break: break-word;
   }
 }
 .list {
@@ -70,6 +60,7 @@ p {
 }
 .res {
   width: 98px;
+  height: 40px;
   text-align: center;
   position: absolute;
   left: 50px;
@@ -87,7 +78,7 @@ p {
     background-color: #fff;
   }
   &.res-ipsubnet {
-    transform: translateY(-50%);
+    transform: translateY(-182%);
     i {
       border-radius: 50%;
     }

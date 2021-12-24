@@ -4,12 +4,12 @@
       <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
           <p class="title">VPC</p>
-          <p>名称：{{ name }}</p>
-          <p>状态：运行中</p>
+          <p>名称：{{ dataSource.name }}</p>
+          <p>状态：{{ $t('status.vpc.' + dataSource.status) }}</p>
         </template>
         <icon type="res-vpc" />
       </a-tooltip>
-      <span class="name">{{ name }}</span>
+      <span class="name">{{ dataSource.name }}</span>
     </div>
     <span class="line" />
   </div>
@@ -22,7 +22,12 @@ export default {
   name: 'ResVpc',
   mixins: [ResMixin],
   props: {
-    name: String,
+    dataSource: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
   },
   data () {
     return {}

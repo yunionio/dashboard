@@ -5,12 +5,12 @@
       <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
           <p class="title">二层网络</p>
-          <p>名称：{{ name }}</p>
-          <p>状态：运行中</p>
+          <p>名称：{{ dataSource.name }}</p>
+          <p>状态：{{ $t('status.wire.' + dataSource.status) }}</p>
         </template>
-        <icon type="res-wire" />
+        <icon type="res-broadcast" />
       </a-tooltip>
-      <span class="name">{{ name }}</span>
+      <span class="name">{{ dataSource.name }}</span>
     </div>
     <span class="line" />
   </div>
@@ -19,12 +19,12 @@
       <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
           <p class="title">二层网络</p>
-          <p>名称：{{ name }}</p>
-          <p>状态：运行中</p>
+          <p>名称：{{ dataSource.name }}</p>
+          <p>状态：{{ $t('status.wire.' + dataSource.status) }}</p>
         </template>
-        <icon type="res-wire" />
+        <icon type="res-broadcast" />
       </a-tooltip>
-      <span class="name">{{ name }}</span>
+      <span class="name">{{ dataSource.name }}</span>
     </div>
   </div>
 </template>
@@ -37,6 +37,7 @@ export default {
   mixins: [ResMixin],
   props: {
     name: String,
+    dataSource: Object,
     physical: String,
   },
   data () {
