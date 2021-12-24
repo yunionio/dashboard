@@ -58,12 +58,7 @@ export default {
     } else {
       agent_install_status = 'install'
     }
-    const disable = this.data.os_type && this.data.os_type === 'Windows'
-    let disableTips = ''
-    if (disable) disableTips = this.$t('compute.text_1285')
     return {
-      disable: disable,
-      disableTips: disableTips,
       /* install, installed, installing, install_failed */
       agent_install_status,
     }
@@ -112,6 +107,18 @@ export default {
     },
     install_failed_reason () {
       return this.agent_install_status === 'install_failed' && this.data.agent_fail_reason
+    },
+    disable () {
+      return (this.data.os_type && this.data.os_type === 'Windows') || this.data.status !== 'running'
+    },
+    disableTips () {
+      if (this.data.os_type && this.data.os_type === 'Windows') {
+        return this.$t('compute.text_1285')
+      }
+      if (this.data.status !== 'running') {
+        return this.$t('compute.text_1397')
+      }
+      return ''
     },
   },
   watch: {

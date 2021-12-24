@@ -31,9 +31,9 @@ export default {
     if (this.data.hasOwnProperty('agent_status')) {
       ok = this.data.agent_status === 'succeed'
     }
-    const visible = this.data.status === 'running' && !ok
+    // const visible = this.data.status === 'running' && !ok
     return {
-      visible: visible,
+      visible: !ok,
       alertType: 'warning',
     }
   },
