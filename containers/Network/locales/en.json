@@ -1053,5 +1053,9 @@
   "network.custom": "Custom",
   "network.propagate": "Propagate",
   "network.route_delete_tips": "This type of route does not support deletion",
-  "network.unbind_net_gateway": "Unbind NAT Gateway"
+  "network.unbind_net_gateway": "Unbind NAT Gateway",
+  "network.topology.res_type.hosts": "Hosts",
+  "network.topology.res_type.reservedips": "IP",
+  "network.topology.res_type.servers": "Servers",
+  "network.topology.res_type.loadbalancers": "LB"
 }
