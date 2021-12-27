@@ -1486,5 +1486,6 @@
   "compute.text_1394": "Deleting the cache will delete the security group on the corresponding platform.",
   "compute.text_1395": "Deleting a security group will synchronize the deletion to the security groups that have been cached on the corresponding platform.",
   "compute.text_1396": "Deleting the cache will delete the security group on the corresponding platform.",
-  "compute.restart_network": "Restart Network"
+  "compute.restart_network": "Restart Network",
+  "compute.text_1397": "This operation is not supported in the current state."
 }
