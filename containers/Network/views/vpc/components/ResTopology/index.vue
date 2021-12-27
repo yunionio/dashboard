@@ -1,24 +1,31 @@
 <template>
-  <div>
+  <div style="margin-top: 80px;">
     <!-- <vpc-topology v-if="!classic" :dataSource="dataSource" /> -->
-    <wire-topology
-      v-for="(wire, idx) in wires"
-      :key="idx"
-      :idx="idx"
-      :vpc="vpc"
-      :dataSource="wire" />
-    <!-- <vpc-topology v-else :physical="physical" :dataSource="dataSource" /> -->
+    <template v-if="classic && !physical">
+      <wire-topology
+        v-for="(wire, idx) in wires"
+        :key="idx"
+        :idx="idx"
+        :vpc="vpc"
+        :dataSource="wire" />
+    </template>
+    <template v-if="classic && physical">
+      <vpc-topology :physical="physical" :classic="classic" :dataSource="dataSource" />
+    </template>
+    <template v-if="!classic">
+      <vpc-topology :dataSource="dataSource" />
+    </template>
   </div>
 </template>
 
 <script>
-// import VpcTopology from './Vpc'
+import VpcTopology from './Vpc'
 import WireTopology from './Wire'
 
 export default {
   name: 'ResTopology',
   components: {
-    // VpcTopology,
+    VpcTopology,
     WireTopology,
   },
   props: {

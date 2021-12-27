@@ -4,9 +4,10 @@
     <div class="text-center">
       <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
-          <p class="title">二层网络</p>
-          <p>名称：{{ dataSource.name }}</p>
-          <p>状态：{{ $t('status.wire.' + dataSource.status) }}</p>
+          <!-- 二层网络 -->
+          <p class="title">{{ $t('dictionary.wire') }}</p>
+          <p>{{ $t('common.name') }}：{{ dataSource.name }}</p>
+          <p>{{ $t('common.status') }}：{{ $t('status.wire.' + dataSource.status) }}</p>
         </template>
         <icon type="res-broadcast" />
       </a-tooltip>
@@ -15,12 +16,12 @@
     <span class="line" />
   </div>
   <div v-else class="res-container d-flex justify-content-center">
-    <div class="res res-ipsubnet" style="transform: translateY(-34%)">
+    <div class="res res-ipsubnet" style="transform: translateY(-52%)">
       <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
-          <p class="title">二层网络</p>
-          <p>名称：{{ dataSource.name }}</p>
-          <p>状态：{{ $t('status.wire.' + dataSource.status) }}</p>
+          <p class="title">{{ $t('dictionary.wire') }}</p>
+          <p>{{ $t('common.name') }}：{{ dataSource.name }}</p>
+          <p>{{ $t('common.status') }}：{{ $t('status.wire.' + dataSource.status) }}</p>
         </template>
         <icon type="res-broadcast" />
       </a-tooltip>
@@ -36,7 +37,6 @@ export default {
   name: 'ResWire',
   mixins: [ResMixin],
   props: {
-    name: String,
     dataSource: Object,
     physical: String,
   },

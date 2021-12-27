@@ -12,7 +12,7 @@ p {
 }
 .wire {
   width: 100px;
-  height: 100%;
+  min-height: 200px;
   border-left: 2px solid #ccc;
   i {
     font-size: 40px;
