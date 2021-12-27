@@ -459,7 +459,7 @@ export default {
       }
       delete data.show_sub_accounts
       delete data.dry_run
-      await this.doCreateCloudaccount(data)
+      this.newAccountInfo = await this.doCreateCloudaccount(data)
       if (this.step.currentStep === this.step.steps.length - 1) {
         this.$router.push('/cloudaccount')
       }
