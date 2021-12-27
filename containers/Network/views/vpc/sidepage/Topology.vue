@@ -4,10 +4,16 @@
       <a-icon v-if="loading" type="sync" spin />
       <a-icon v-else type="sync" />
     </a-button>
-    <res-topology v-if="dataSource" :classic="classic" :dataSource="dataSource" />
+    <a-select
+      v-show="classic"
+      v-model="view"
+      @change="handleChange"
+      style="width: 180px; margin-left: -1px;">
+      <a-select-option value="virtual">{{ $t('network.topology.view.virtual') }}</a-select-option>
+      <a-select-option value="physical">{{ $t('network.topology.view.pysical') }}</a-select-option>
+    </a-select>
+    <res-topology v-if="dataSource" :classic="classic" :physical="physical" :dataSource="dataSource" />
     <a-skeleton active v-if="!dataSource" />
-    <!-- <res-topology :classic="false" :physical="false" :dataSource="dataSource" /> -->
-    <!-- <res-topology :classic="true" :physical="true" :dataSource="dataSource" /> -->
   </div>
 </template>
 
@@ -21,17 +27,18 @@ export default {
   },
   props: {
     resId: String,
-    detailData: Object,
   },
   data () {
     return {
       loading: false,
       dataSource: null,
+      physical: false,
+      view: 'virtual',
     }
   },
   computed: {
     classic () {
-      return this.detailData?.id === 'default'
+      return this.resId === 'default'
     },
   },
   created () {
@@ -52,6 +59,9 @@ export default {
     },
     refreshHandle () {
       this.fetchVpcTopology()
+    },
+    handleChange (v) {
+      this.physical = v === 'physical'
     },
   },
 }

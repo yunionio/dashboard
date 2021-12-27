@@ -4,8 +4,8 @@
       <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
           <p class="title">VPC</p>
-          <p>名称：{{ dataSource.name }}</p>
-          <p>状态：{{ $t('status.vpc.' + dataSource.status) }}</p>
+          <p>{{ $t('common.name') }}：{{ dataSource.name }}</p>
+          <p>{{ $t('common.status') }}：{{ $t('status.vpc.' + dataSource.status) }}</p>
         </template>
         <icon type="res-vpc" />
       </a-tooltip>

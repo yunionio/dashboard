@@ -6,13 +6,14 @@
     </div>
     <div class="c-right">
       <ul class="list">
-        <li class="item d-flex" v-for="(network, idx) in networks" :key="idx">
+        <li class="item d-flex" v-for="(network, nidx) in networks" :key="nidx">
           <res-ipsubnet :dataSource="network" />
-          <res-common
-            v-for="(obj, idx) in network.address"
-            :key="idx"
-            :type="RES_ICON_MAP[obj.owner_type]"
-            :dataSource="obj" />
+          <div v-for="(obj, idx) in network.address" :key="idx">
+            <res-common
+              :type="RES_ICON_MAP[obj.owner_type]"
+              :dataSource="obj"
+              :multiple="getMultiple(nidx, networks, obj)" />
+          </div>
         </li>
       </ul>
     </div>
@@ -48,6 +49,14 @@ export default {
     networks () {
       const networks = this.dataSource?.networks || []
       return networks.filter(v => v.server_type === 'guest')
+    },
+  },
+  methods: {
+    getMultiple (nidx, networks, curAddress) {
+      if (nidx > 1 && networks[nidx - 1]) {
+        return networks[nidx - 1].address.includes(curAddress)
+      }
+      return false
     },
   },
 }

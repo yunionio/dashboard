@@ -1057,5 +1057,14 @@
   "network.topology.res_type.hosts": "Hosts",
   "network.topology.res_type.reservedips": "IP",
   "network.topology.res_type.servers": "Servers",
-  "network.topology.res_type.loadbalancers": "LB"
+  "network.topology.res_type.loadbalancers": "LB",
+  "network.topology.res_type.hypervisor": "Hypervisor",
+  "network.topology.res_type.baremetal": "Baremetal",
+  "network.topology.res_type.exsi": "VMware",
+  "network.topology.res_type.instancegroups": "Instancegroups",
+  "network.topology.start": "Start", 
+  "network.topology.end": "End",
+  "network.topology": "Topology",
+  "network.topology.view.virtual": "Virtual",
+  "network.topology.view.pysical": "Pysical"
 }

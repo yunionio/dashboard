@@ -4,19 +4,20 @@
     <div class="res d-flex">
       <a-tooltip placement="right" :get-popup-container="getPopupContainer">
         <template slot="title">
-          <p class="title">{{ $t('network.topology.res_type.' + resSource.owner_type) }}</p>
-          <p>名称：{{ resSource.owner }}</p>
-          <p>状态：{{ resSource.status || '可用' }}</p>
+          <p class="title">{{ $t('network.topology.res_type.' + getType(resSource)) }}</p>
+          <p>{{ $t('common.name') }}：{{ getName(resSource) }}</p>
+          <p>{{ $t('common.status') }}：{{ getStatus(resSource) }}</p>
         </template>
         <icon :type="iconType" />
       </a-tooltip>
-      <span class="name ml-1 pt-2">{{ resSource.owner }}</span>
+      <span class="name ml-1 pt-2">{{ getName(resSource) }}</span>
     </div>
   </div>
 </template>
 
 <script>
 import ResMixin from './ResMixin'
+import { STATUS_MAP } from './constants'
 
 export default {
   name: 'ResCommon',
@@ -35,6 +36,18 @@ export default {
     },
     resSource () {
       return this.dataSource || {}
+    },
+  },
+  methods: {
+    getStatus (resSource) {
+      if (!resSource.status) return this.$t('common.text00001')
+      return this.$t(`status.${STATUS_MAP[this.type] || this.type}.${resSource.status}`)
+    },
+    getName (resSource) {
+      return resSource.owner || resSource.name
+    },
+    getType (resSource) {
+      return resSource.owner_type || resSource.host_type
     },
   },
 }

@@ -58,7 +58,7 @@ export default {
       const tabs = [
         { label: this.$t('network.text_67'), key: 'vpc-detail' },
         { label: this.$t('network.text_565'), key: 'network-list' },
-        { label: '拓扑', key: 'topology' },
+        { label: this.$t('network.topology'), key: 'topology' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (this.detailData.brand === 'Huawei' || this.detailData.brand === 'Aliyun' || this.detailData.brand === 'OpenStack') {
