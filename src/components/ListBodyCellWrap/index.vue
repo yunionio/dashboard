@@ -110,10 +110,12 @@ export default {
       showBtn: false,
       editVisible: false, // edit form 的显隐
       l: _,
-      defaultValue: _.get(this.row, this.field) || '',
     }
   },
   computed: {
+    defaultValue () {
+      return _.get(this.row, this.field) || ''
+    },
     copyMessage () {
       if (this.message) {
         return this.message
