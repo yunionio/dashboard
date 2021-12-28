@@ -1165,7 +1165,7 @@
   "compute.text_1186": "Bandwidth",
   "compute.text_1187": "Mbps, please enter an integer from 0 to 10000",
   "compute.text_1188": "Please enter the bandwidth limit",
-  "compute.text_1189": "After changing the IP, restart the network or restart the machine to take effect",
+  "compute.text_1189": "After replacing the IP, you need to restart the network card at the same time to take effect",
   "compute.text_1190": "Please enter the IP address in the subnet, not required",
   "compute.text_1191": "Please select a subnet",
   "compute.text_1192": "Enter a legal IP address",
