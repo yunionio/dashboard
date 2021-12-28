@@ -68,11 +68,11 @@ export default {
       }
       const detailTabs = [
         { label: this.$t('cloudenv.text_237'), key: 'cloudaccount-detail' },
+        { label: this.$t('cloudenv.text_319'), key: 'usage' },
         { label: this.$t('cloudenv.text_318'), key: 'cloudprovider-list' },
         { label: this.$t('cloudenv.text_386'), key: 'externalproject-list' },
       ]
       if (platform === 'idc' || platform === 'private') {
-        detailTabs.splice(1, 0, { label: this.$t('cloudenv.text_319'), key: 'usage' })
         detailTabs.splice(1, 0, { label: this.$t('cloudenv.text_101'), key: 'host-list' })
       }
       if ((this.$store.getters.capability.saml_auth_brands || []).includes(data.provider) && data.saml_auth) {
