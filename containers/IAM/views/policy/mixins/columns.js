@@ -10,6 +10,7 @@ export default {
   created () {
     this.columns = [
       getNameDescriptionTableColumn({
+        onManager: this.onManager,
         field: 'name',
         title: i18n.t('system.text_101'),
         minWidth: 100,
