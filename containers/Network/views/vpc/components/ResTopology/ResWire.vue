@@ -11,7 +11,7 @@
         </template>
         <icon type="res-broadcast" />
       </a-tooltip>
-      <span class="name">{{ dataSource.name }}</span>
+      <span class="name text-truncate text-center">{{ dataSource.name }}</span>
     </div>
     <span class="line" />
   </div>
@@ -25,7 +25,7 @@
         </template>
         <icon type="res-broadcast" />
       </a-tooltip>
-      <span class="name">{{ dataSource.name }}</span>
+      <span class="name text-truncate text-center">{{ dataSource.name }}</span>
     </div>
   </div>
 </template>

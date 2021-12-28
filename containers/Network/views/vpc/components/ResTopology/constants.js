@@ -7,8 +7,10 @@ export const RES_ICON_MAP = {
   dbinstances: 'rds',
   baremetal: 'baremetal',
   esxi: 'host',
+  networkinterfaces: 'networkinterfaces',
 }
 
 export const STATUS_MAP = {
   vminstance: 'server',
+  baremetal: 'host',
 }

@@ -9,7 +9,7 @@
         </template>
         <icon type="res-vpc" />
       </a-tooltip>
-      <span class="name">{{ dataSource.name }}</span>
+      <span class="name text-truncate">{{ dataSource.name }}</span>
     </div>
     <span class="line" />
   </div>

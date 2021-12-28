@@ -7,8 +7,21 @@ p {
   position: relative;
 }
 .c-right {
+  position: relative;
   flex: 1;
   border-left: 2px solid #ccc;
+  &.bl-none {
+    border-left: none;
+  }
+  &::after {
+    content: "";
+    background: rgb(255, 255, 255);
+    width: 2px;
+    height: 212px;
+    position: absolute;
+    left: -2px;
+    bottom: 0;
+  }
 }
 .wire {
   width: 100px;
@@ -59,13 +72,15 @@ p {
   }
 }
 .res {
-  width: 98px;
+  // width: 98px;
   height: 40px;
   text-align: center;
   position: absolute;
   left: 50px;
   .name {
     display: block;
+    width: 100px;
+    text-align: left;
   }
   .desc {
     margin: 0;

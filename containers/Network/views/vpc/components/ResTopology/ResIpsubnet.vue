@@ -11,7 +11,7 @@
         </template>
         <icon type="res-network" />
       </a-tooltip>
-      <span class="name">{{ network.name }}</span>
+      <span class="name text-truncate text-center">{{ network.name }}</span>
     </div>
   </div>
 </template>

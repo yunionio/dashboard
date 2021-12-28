@@ -7,10 +7,22 @@
           <p class="title">{{ $t('network.topology.res_type.' + getType(resSource)) }}</p>
           <p>{{ $t('common.name') }}：{{ getName(resSource) }}</p>
           <p>{{ $t('common.status') }}：{{ getStatus(resSource) }}</p>
+          <template v-if="type === 'vminstance'">
+            <p>{{ $t('common_240') }}：{{ resSource.ip_addr }}</p>
+          </template>
+          <template v-else-if="type === 'lb'">
+            <p>{{ $t('network.text_248') }}：{{ resSource.ip_addr }}</p>
+          </template>
+          <template v-else-if="type === 'host'">
+            <p v-for="(obj, idx) in resSource.networks" :key="idx">{{ $t('common_240') }}：{{ obj.ip_addr }}</p>
+          </template>
+          <template v-else-if="type === 'baremetal'">
+            <p v-for="(obj, idx) in resSource.networks" :key="idx">{{ $t('common_240') }}：{{ obj.ip_addr }}</p>
+          </template>
         </template>
         <icon :type="iconType" />
       </a-tooltip>
-      <span class="name ml-1 pt-2">{{ getName(resSource) }}</span>
+      <span class="name text-truncate ml-1 pt-2">{{ getName(resSource) }}</span>
     </div>
   </div>
 </template>
