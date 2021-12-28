@@ -128,8 +128,9 @@ export default {
         name: this.$t('common.name'),
         description: this.$t('common.description'),
       }
-      if (fieldMap[this.field]) {
-        return fieldMap[this.field]
+      const field = this.field === '_i18n.description' ? 'description' : this.field
+      if (fieldMap[field]) {
+        return fieldMap[field]
       }
       return ''
     },
