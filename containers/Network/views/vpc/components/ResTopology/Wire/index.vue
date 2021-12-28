@@ -10,9 +10,9 @@
           <res-ipsubnet :dataSource="network" />
           <div v-for="(obj, idx) in getAddress(network)" :key="idx">
             <res-common
+              v-if="!obj.hidden"
               :type="RES_ICON_MAP[obj.owner_type]"
-              :dataSource="obj"
-              :multiple="getMultiple(nidx, networks, obj)" />
+              :dataSource="obj" />
           </div>
         </li>
       </ul>
@@ -54,9 +54,15 @@ export default {
     },
   },
   methods: {
-    getMultiple (nidx, networks, curAddress) {
-      if (nidx > 1 && networks[nidx - 1]) {
-        return networks[nidx - 1].address.includes(curAddress)
+    getMultiple (nidx, resArr, curObj) {
+      if (resArr[nidx + 1]) {
+        return resArr[nidx + 1].address.some((v, i) => {
+          if (v.owner_id === undefined || curObj.owner_id === undefined) return false
+          if (v.owner_id === curObj.owner_id) {
+            resArr[nidx + 1].address[i].hidden = true
+          }
+          return v.owner_id === curObj.owner_id
+        })
       }
       return false
     },

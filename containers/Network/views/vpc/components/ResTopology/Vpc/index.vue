@@ -10,9 +10,9 @@
               <res-wire :physical="physical" :dataSource="wire" />
               <div v-for="(obj, idx) in getHost(wire)" :key="idx">
                 <res-common
+                  v-if="!obj.hidden"
                   :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
-                  :dataSource="obj"
-                  :multiple="getMultiple(nidx, wires, obj)" />
+                  :dataSource="obj" />
               </div>
           </li>
         </template>
@@ -21,9 +21,9 @@
             <res-ipsubnet :dataSource="network" />
             <div v-for="(obj, idx) in getAddress(network)" :key="idx">
               <res-common
+                v-if="!obj.hidden"
                 :type="RES_ICON_MAP[obj.owner_type] || obj.owner_type"
-                :dataSource="obj"
-                :multiple="getMultiple(nidx, networks, obj)" />
+                :dataSource="obj" />
             </div>
           </li>
         </template>
@@ -76,12 +76,24 @@ export default {
   methods: {
     getMultiple (nidx, resArr, curObj) {
       if (this.physical) {
-        if (nidx > 1 && resArr[nidx - 1]) {
-          return resArr[nidx - 1].hosts.includes(curObj)
+        if (resArr[nidx + 1]) {
+          return resArr[nidx + 1].hosts.some((v, i) => {
+            if (v.id === undefined || curObj.id === undefined) return false
+            if (v.id === curObj.id) {
+              resArr[nidx + 1].hosts[i].hidden = true
+            }
+            return v.id === curObj.id
+          })
         }
       } else {
-        if (nidx > 1 && resArr[nidx - 1]) {
-          return resArr[nidx - 1].address.includes(curObj)
+        if (resArr[nidx + 1]) {
+          return resArr[nidx + 1].address.some((v, i) => {
+            if (v.owner_id === undefined || curObj.owner_id === undefined) return false
+            if (v.owner_id === curObj.owner_id) {
+              resArr[nidx + 1].address[i].hidden = true
+            }
+            return v.owner_id === curObj.owner_id
+          })
         }
       }
       return false
