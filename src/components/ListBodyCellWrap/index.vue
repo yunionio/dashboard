@@ -21,7 +21,7 @@
       :label="labelCn"
       :formRules="formRulesComputer"
       :visible.sync="editVisible"
-      :defaultValue="row[field]"
+      :defaultValue="defaultValue"
       :showSuccessMessage="showSuccessMessage" />
     <copy
       slot="copy"
@@ -110,6 +110,7 @@ export default {
       showBtn: false,
       editVisible: false, // edit form 的显隐
       l: _,
+      defaultValue: _.get(this.row, this.field) || '',
     }
   },
   computed: {
@@ -188,13 +189,14 @@ export default {
         this.ok(formData.input)
       } else {
         if (this.onManager) {
+          const field = this.field === '_i18n.description' ? 'description' : this.field
           this.onManager('update', {
             id: this.row.id,
             steadyStatus: this.steadyStatus,
             managerArgs: {
               id: this.row.id,
               data: {
-                [this.field]: formData.input,
+                [field]: formData.input,
               },
             },
           })
