@@ -2,11 +2,11 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_390')}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning">
+      <!-- <a-alert class="mb-2" type="warning">
         <template v-slot:message>
           <div>{{$t('compute.text_1189')}}</div>
         </template>
-      </a-alert>
+      </a-alert> -->
       <dialog-selected-tips :count="params.data.length" :action="$t('compute.text_390')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
@@ -37,7 +37,7 @@
             </a-col>
           </a-row>
         </a-form-item>
-        <a-form-item>
+        <a-form-item :extra="$t('compute.text_1189')">
           <a-checkbox v-decorator="decorators.restartNetwork">{{$t('compute.restart_network')}}</a-checkbox>
         </a-form-item>
       </a-form>

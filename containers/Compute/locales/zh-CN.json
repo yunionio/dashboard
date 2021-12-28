@@ -1165,7 +1165,7 @@
   "compute.text_1186": "带宽",
   "compute.text_1187": "Mbps，请输入0~10000的整数",
   "compute.text_1188": "请输入带宽限制",
-  "compute.text_1189": "更换IP后，重启网络或重启机器后生效",
+  "compute.text_1189": "更换IP后需同时重启网卡才生效",
   "compute.text_1190": "请输入子网内的IP地址，非必填",
   "compute.text_1191": "请选择子网",
   "compute.text_1192": "输入合法IP地址",
