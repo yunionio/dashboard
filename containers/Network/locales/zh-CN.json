@@ -1034,6 +1034,7 @@
   "network.topology.start": "起", 
   "network.topology.end": "止",
   "network.topology": "拓扑",
-  "network.topology.view.virtual": "虚拟视图",
-  "network.topology.view.pysical": "物理视图"
+  "network.topology.view": "视图",
+  "network.topology.view.virtual": "虚拟拓扑",
+  "network.topology.view.pysical": "物理拓扑"
 }
