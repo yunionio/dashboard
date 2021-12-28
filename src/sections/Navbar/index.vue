@@ -726,7 +726,7 @@ export default {
   line-height: 1;
   cursor: pointer;
   img {
-    width: 45px;
+    height: 45px;
   }
 }
 .header-title {
