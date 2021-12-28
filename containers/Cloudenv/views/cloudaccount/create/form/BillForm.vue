@@ -174,7 +174,7 @@ export default {
       return getEnrollmentNumberDocs(this.$store.getters.scope)
     },
     decorators () {
-      const { options = {} } = this.cloudAccount
+      const options = this.cloudAccount.options || {}
       return {
         billing_bucket_account: [
           'billing_bucket_account',
