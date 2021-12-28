@@ -1,17 +1,15 @@
 <template>
   <div>
-    <a-button @click="refreshHandle">
-      <a-icon v-if="loading" type="sync" spin />
-      <a-icon v-else type="sync" />
-    </a-button>
-    <a-select
-      v-show="classic"
-      v-model="view"
-      @change="handleChange"
-      style="width: 180px; margin-left: -1px;">
-      <a-select-option value="virtual">{{ $t('network.topology.view.virtual') }}</a-select-option>
-      <a-select-option value="physical">{{ $t('network.topology.view.pysical') }}</a-select-option>
-    </a-select>
+    <div class="d-flex">
+      <a-button @click="refreshHandle">
+        <a-icon v-if="loading" type="sync" spin />
+        <a-icon v-else type="sync" />
+      </a-button>
+      <a-radio-group v-if="classic" v-model="view" @change="handleChange" class="ml-2">
+        <a-radio-button value="virtual">{{ $t('network.topology.view.virtual') }}</a-radio-button>
+        <a-radio-button value="physical">{{ $t('network.topology.view.pysical') }}</a-radio-button>
+      </a-radio-group>
+    </div>
     <res-topology v-if="dataSource" :classic="classic" :physical="physical" :dataSource="dataSource" />
     <a-skeleton active v-if="!dataSource" />
   </div>
@@ -60,8 +58,8 @@ export default {
     refreshHandle () {
       this.fetchVpcTopology()
     },
-    handleChange (v) {
-      this.physical = v === 'physical'
+    handleChange (e) {
+      this.physical = e.target.value === 'physical'
     },
   },
 }
