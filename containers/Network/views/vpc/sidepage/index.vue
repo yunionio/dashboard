@@ -34,6 +34,7 @@ import ColumnsMixin from '../mixins/columns'
 import RouteTableList from './RouteTable'
 import NetworkList from './Network'
 import VpcDetail from './Detail'
+import Topology from './Topology'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -45,6 +46,7 @@ export default {
     NetworkList,
     Actions,
     RouteTableList,
+    Topology,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -56,6 +58,7 @@ export default {
       const tabs = [
         { label: this.$t('network.text_67'), key: 'vpc-detail' },
         { label: this.$t('network.text_565'), key: 'network-list' },
+        { label: this.$t('network.topology'), key: 'topology' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ]
       if (this.detailData.brand === 'Huawei' || this.detailData.brand === 'Aliyun' || this.detailData.brand === 'OpenStack') {

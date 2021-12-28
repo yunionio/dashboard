@@ -1052,5 +1052,19 @@
   "network.custom": "自定义",
   "network.propagate": "动态",
   "network.route_delete_tips": "该类型路由不支持删除",
-  "network.unbind_netgateway": "解绑NAT网关"
+  "network.unbind_netgateway": "解绑NAT网关",
+  "network.topology.res_type.hosts": "宿主机",
+  "network.topology.res_type.reservedips": "IP",
+  "network.topology.res_type.servers": "虚拟机",
+  "network.topology.res_type.loadbalancers": "负载均衡",
+  "network.topology.res_type.hypervisor": "宿主机",
+  "network.topology.res_type.baremetal": "物理机",
+  "network.topology.res_type.esxi": "ESXI宿主机",
+  "network.topology.res_type.instancegroups": "实例组",
+  "network.topology.res_type.networkinterfaces": "弹性网卡",
+  "network.topology.start": "起", 
+  "network.topology.end": "止",
+  "network.topology": "拓扑",
+  "network.topology.view.virtual": "虚拟视图",
+  "network.topology.view.pysical": "物理视图"
 }
