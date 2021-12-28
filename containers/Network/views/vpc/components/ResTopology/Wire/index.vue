@@ -4,11 +4,11 @@
       <res-vpc :dataSource="vpc" :class="{'invisible': idx > 0 }" />
       <res-wire :dataSource="dataSource" />
     </div>
-    <div class="c-right">
+    <div class="c-right" :class="{'bl-none': isEmpty(networks)}">
       <ul class="list">
         <li class="item d-flex" v-for="(network, nidx) in networks" :key="nidx">
           <res-ipsubnet :dataSource="network" />
-          <div v-for="(obj, idx) in network.address" :key="idx">
+          <div v-for="(obj, idx) in getAddress(network)" :key="idx">
             <res-common
               :type="RES_ICON_MAP[obj.owner_type]"
               :dataSource="obj"
@@ -26,6 +26,7 @@ import ResWire from '../ResWire'
 import ResIpsubnet from '../ResIpsubnet'
 import ResCommon from '../ResCommon'
 import { RES_ICON_MAP } from '../constants'
+import ResMixin from '../ResMixin'
 
 export default {
   name: 'WireTopology',
@@ -35,6 +36,7 @@ export default {
     ResIpsubnet,
     ResCommon,
   },
+  mixins: [ResMixin],
   props: {
     vpc: Object,
     dataSource: Object,
@@ -57,6 +59,10 @@ export default {
         return networks[nidx - 1].address.includes(curAddress)
       }
       return false
+    },
+    getAddress (network) {
+      const resTypes = ['servers', 'hosts', 'loadbalancers', 'dbinstances']
+      return network.address?.filter(v => resTypes.includes(v.owner_type))
     },
   },
 }
