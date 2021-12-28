@@ -53,15 +53,15 @@ export default {
     },
   },
   methods: {
-    getStatus (resSource) {
-      if (!resSource.status) return this.$t('common.text00001')
-      return this.$t(`status.${STATUS_MAP[this.type] || this.type}.${resSource.status}`)
+    getStatus ({ status, owner_status }) {
+      if (!status && !owner_status) return this.$t('common.text00001')
+      return this.$t(`status.${STATUS_MAP[this.type] || this.type}.${status || owner_status}`)
     },
-    getName (resSource) {
-      return resSource.owner || resSource.name
+    getName ({ owner, name }) {
+      return owner || name
     },
-    getType (resSource) {
-      return resSource.owner_type || resSource.host_type
+    getType ({ owner_type, host_type }) {
+      return owner_type || host_type
     },
   },
 }
