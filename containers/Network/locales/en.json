@@ -1066,6 +1066,7 @@
   "network.topology.start": "Start", 
   "network.topology.end": "End",
   "network.topology": "Topology",
+  "network.topology.view": "View",
   "network.topology.view.virtual": "Virtual",
   "network.topology.view.pysical": "Pysical"
 }
