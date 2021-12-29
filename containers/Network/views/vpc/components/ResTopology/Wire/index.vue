@@ -21,12 +21,12 @@
 </template>
 
 <script>
+import ResCommon from '@Network/sections/Topology/ResCommon'
+import { RES_ICON_MAP } from '@Network/sections/Topology/constants'
+import ResMixin from '@Network/sections/Topology/ResMixin'
 import ResVpc from '../ResVpc'
 import ResWire from '../ResWire'
 import ResIpsubnet from '../ResIpsubnet'
-import ResCommon from '../ResCommon'
-import { RES_ICON_MAP } from '../constants'
-import ResMixin from '../ResMixin'
 
 export default {
   name: 'WireTopology',
@@ -75,5 +75,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../index.scss";
+// @import "@Network/sections/Topology/index.scss";
 </style>
