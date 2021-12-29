@@ -379,7 +379,8 @@ export default {
           this.form.fi.cpuMem = data
           const vcpuDecorator = this.decorators.vcpu
           const vcpuInit = vcpuDecorator[1].initialValue
-          this.cpuChange(vcpuInit)
+          const cpu = this.form.fd.vcpu || vcpuInit
+          this.cpuChange(cpu)
         })
     },
   },
