@@ -1,32 +1,25 @@
 <template>
   <div class="d-flex res-topology vpc-topology">
     <div class="c-left">
-      <res-vpc :dataSource="dataSource" />
+      <res-wire :dataSource="dataSource" />
     </div>
-    <div class="c-right" :class="{'bl-none': classic ? isEmpty(wires) : isEmpty(networks)}">
-      <ul class="list">
-        <template v-if="classic">
-          <li class="item d-flex" v-for="(wire, nidx) in wires" :key="nidx">
-              <res-wire :physical="physical" :dataSource="wire" />
-              <div v-for="(obj, idx) in getHost(wire)" :key="idx">
-                <res-common
-                  v-if="!obj.hidden"
-                  :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
-                  :dataSource="obj" />
-              </div>
-          </li>
-        </template>
-        <template v-else>
-          <li class="item d-flex" v-for="(network, nidx) in networks" :key="nidx">
-            <res-ipsubnet :dataSource="network" />
-            <div v-for="(obj, idx) in getAddress(network)" :key="idx">
-              <res-common
-                v-if="!obj.hidden"
-                :type="RES_ICON_MAP[obj.owner_type] || obj.owner_type"
-                :dataSource="obj" />
-            </div>
-          </li>
-        </template>
+    <div class="c-right" :class="{'res-topology-wire': physical ? !isEmpty(hosts) : !isEmpty(networks)}">
+      <ul class="list" v-if="physical">
+        <li class="item d-flex" v-for="(obj, nidx) in hosts" :key="nidx">
+            <res-common
+              :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
+              :dataSource="obj" />
+        </li>
+      </ul>
+      <ul class="list" v-else>
+        <li class="item d-flex" v-for="(network, nidx) in networks" :key="nidx">
+          <res-ipsubnet :dataSource="network" />
+          <div v-for="(obj, idx) in getAddress(network)" :key="idx">
+            <res-common
+              :type="RES_ICON_MAP[obj.owner_type] || obj.owner_type"
+              :dataSource="obj" />
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -36,21 +29,18 @@
 import ResCommon from '@Network/sections/Topology/ResCommon'
 import { RES_ICON_MAP } from '@Network/sections/Topology/constants'
 import ResMixin from '@Network/sections/Topology/ResMixin'
-import ResVpc from '../ResVpc'
 import ResWire from '../ResWire'
 import ResIpsubnet from '../ResIpsubnet'
 
 export default {
   name: 'VpcTopology',
   components: {
-    ResVpc,
     ResWire,
     ResCommon,
     ResIpsubnet,
   },
   mixins: [ResMixin],
   props: {
-    classic: Boolean,
     physical: Boolean,
     dataSource: Object,
   },
@@ -60,17 +50,11 @@ export default {
     }
   },
   computed: {
-    wires () {
-      return this.dataSource?.wires || []
-    },
     networks () {
-      let networks = []
-      if (this.dataSource) {
-        this.dataSource.wires.forEach(v => {
-          networks = networks.concat(v.networks.filter(v => v.server_type === 'guest'))
-        })
-      }
-      return networks
+      return this.dataSource?.networks || []
+    },
+    hosts () {
+      return this.dataSource?.hosts || []
     },
   },
   methods: {
@@ -103,7 +87,7 @@ export default {
       return wire.hosts?.filter(v => resTypes.includes(v.host_type))
     },
     getAddress (network) {
-      const resTypes = ['servers', 'hosts', 'loadbalancers', 'dbinstances']
+      const resTypes = ['servers', 'loadbalancers', 'dbinstances']
       return network.address?.filter(v => resTypes.includes(v.owner_type))
     },
   },

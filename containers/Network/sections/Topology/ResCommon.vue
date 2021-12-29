@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import ResMixin from './ResMixin'
+import ResMixin from '@Network/sections/Topology/ResMixin'
 import { STATUS_MAP } from './constants'
 
 export default {
@@ -68,5 +68,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "index.scss";
+// @import "@Network/sections/Topology/index.scss";
 </style>
