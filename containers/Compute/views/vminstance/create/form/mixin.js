@@ -474,6 +474,10 @@ export default {
       }
       this.form.fi.cpuMem.mems_mb = memOpts
       let defaultMem = 2048
+      const currentMem = this.form.fc.getFieldValue('vmem')
+      if (currentMem && this.form.fi.cpuMem.mems_mb.includes(currentMem)) {
+        return
+      }
       if (!this.form.fi.cpuMem.mems_mb.includes(2048)) { // 如果返回值不包括默认内存2G，选择第一项
         defaultMem = memOpts[0]
       }
