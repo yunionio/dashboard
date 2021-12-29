@@ -35,7 +35,7 @@ export default {
               tooltip: this.$t('compute.text_487', [this.$t('dictionary.server')]),
             }
           }
-          if (obj.guest_status !== 'ready') {
+          if (obj.guest_status !== 'ready' && obj.guest_status !== 'running') {
             return {
               validate: false,
               tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
