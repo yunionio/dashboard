@@ -56,6 +56,7 @@ import { validate, isWithinRange } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import { HYPERVISORS_MAP } from '@/constants'
+import expectStatus from '@/constants/expectStatus'
 
 export default {
   name: 'VmChangeIpDialog',
@@ -164,7 +165,7 @@ export default {
           data,
         })
         this.params.refresh()
-        this.$bus.$emit('VMInstanceListSingleUpdate', [this.params.resId])
+        this.$bus.$emit('VMInstanceListSingleRefresh', [this.params.resId, Object.values(expectStatus.server).flat()])
         this.cancelDialog()
         this.$message.success(this.$t('compute.text_423'))
       } finally {
