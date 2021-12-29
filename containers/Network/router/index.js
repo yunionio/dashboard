@@ -109,7 +109,7 @@ export default {
         {
           path: '/vpc-network',
           meta: {
-            permission: 'inter_vpc_networks',
+            permission: 'inter_vpc_networks_list',
             label: i18n.t('dictionary.vpc_network'),
             t: 'dictionary.vpc_network',
             hidden: () => {
@@ -130,6 +130,7 @@ export default {
           path: '/vpc-peerconnect',
           meta: {
             label: i18n.t('dictionary.vpc_peer_connect'),
+            permission: 'vpc_peering_connections_list',
             t: 'dictionary.vpc_peer_connect',
             hidden: () => {
               if (store.getters.isProjectMode) return true
@@ -393,7 +394,7 @@ export default {
           path: '/dns-zone',
           meta: {
             label: i18n.t('dictionary.dns_zone'),
-            permission: 'dnszone_list',
+            permission: 'dns_zones_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.dns_zone')) {
                 return true
@@ -429,7 +430,7 @@ export default {
           path: '/waf',
           meta: {
             label: i18n.t('dictionary.waf_instance'),
-            permission: 'wafs_list',
+            permission: 'waf_instances_list',
             t: 'dictionary.waf_instance',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) return true

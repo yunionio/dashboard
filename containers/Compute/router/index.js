@@ -203,6 +203,7 @@ export default {
           path: '/webapp',
           meta: {
             label: i18n.t('compute.webapp'),
+            permission: 'webapps_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.webapp')) {
                 return true
@@ -465,6 +466,7 @@ export default {
           path: '/keypair',
           meta: {
             label: i18n.t('compute.text_108'),
+            permission: 'keypairs_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.keypair')) {
                 return true
@@ -662,7 +664,7 @@ export default {
           path: '/schedtag',
           meta: {
             label: i18n.t('cloudenv.text_18'),
-            // permission: 'schedtags_list',
+            permission: 'schedtags_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
                 return true
