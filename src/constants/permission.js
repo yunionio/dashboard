@@ -93,6 +93,8 @@ export const PERMISSION = {
   servertemplates_list: ['compute', 'servertemplates', 'list'],
   // 弹性伸缩组
   scalinggroups_list: ['compute', 'scalinggroups', 'list'],
+  // webapp
+  webapps_list: ['compute', 'webapps', 'list'],
   // 负载均衡实例管理
   lb_loadbalancers_list: ['compute', 'loadbalancers', 'list'],
   // 负载均衡监听
@@ -123,6 +125,10 @@ export const PERMISSION = {
   areas_get: ['compute', 'cloudregions', 'get'],
   // 可用区
   zones_list: ['compute', 'zones', 'list'],
+  // vpc互联
+  inter_vpc_networks_list: ['compute', 'inter_vpc_networks', 'list'],
+  // vpc对等链接
+  vpc_peering_connections_list: ['compute', 'vpc_peering_connections', 'list'],
   // 服务器
   hosts_list: ['compute', 'hosts', 'list'],
   // 服务器详情
@@ -194,8 +200,10 @@ export const PERMISSION = {
   notifications_list: ['notify', 'notifications', 'list'],
   // 消息订阅
   topics_list: ['notify', 'topics', 'list'],
+  // 通知渠道
+  notifyconfigs_list: ['notify', 'notifyconfigs', 'list'],
   // 机器人
-  robots: ['notify', 'robots', 'list'],
+  robots_list: ['notify', 'robots', 'list'],
   // 企业信息
   infos_list: ['yunionagent', 'infos', 'list'],
   // 邮件短信
@@ -206,6 +214,7 @@ export const PERMISSION = {
   serverskus_list: ['compute', 'serverskus', 'list'],
   // 认证源
   idps_list: ['identity', 'identity_providers', 'list'],
+  extra_users_create: ['identity', 'extra-users', 'create'],
   // 常用系统(接入端)
   endpoints_list: ['identity', 'endpoints', 'list'],
   // 报警
@@ -666,6 +675,10 @@ export const PERMISSION = {
   billsdimensions_update: ['compute', 'billsdimensions', 'list'],
   billsdimensions_delete: ['compute', 'billsdimensions', 'delete'],
   billsdimensions_perform: ['compute', 'billsdimensions', 'perform'],
+
+  // 二次定价
+  cost_conversions_list: ['meter', 'cost_conversions', 'list'],
+
   /**
    * cloudwatcher 相关操作
    */
@@ -760,6 +773,10 @@ export const PERMISSION = {
   alertresources_list: ['monitor', 'alertresources', 'list'],
   // 报警记录
   alertrecords_list: ['monitor', 'alertrecords', 'list'],
+  // 屏蔽告警
+  alertrecordshields_list: ['monitor', 'alertrecordshields', 'list'],
+  // 未恢复告警
+  monitorresourcealerts_list: ['monitor', 'monitorresourcealerts', 'list'],
   /**
    * 配额更新
    */
@@ -934,6 +951,7 @@ export const PERMISSION = {
   subscribers_enable: ['notify', 'subscribers', 'perform', 'enable'],
 
   // waf策略
+  waf_instances_list: ['compute', 'waf_instances', 'list'],
   waf_instances_syncstatus: ['compute', 'waf_instances', 'perform', 'syncstatus'],
   waf_instances_delete: ['compute', 'waf_instances', 'delete'],
 
@@ -941,6 +959,11 @@ export const PERMISSION = {
 
   elastic_search_delete: ['compute', 'elastic_searchs', 'delete'],
   elastic_search_set_user_metadata: ['compute', 'elastic_searchs', 'perform', 'set-user-metadata'],
+  // kafka
+  kafkas_list: ['compute', 'kafkas', 'list'],
+  elastic_searchs_list: ['compute', 'elastic_searchs', 'list'],
+  services_get: ['common', 'services', 'get'],
+  dictionary_get: ['yunionconf', 'parameters', 'get'],
 }
 
 // 已声明权限的资源

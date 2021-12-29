@@ -208,7 +208,7 @@ export default {
           path: '/alertrecord',
           meta: {
             label: i18n.t('dictionary.alertrecord'),
-            permission: 'alertrecords_list',
+            permission: 'alertrecords_list,monitorresourcealerts_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.alertrecord')) {
                 return true
@@ -256,7 +256,7 @@ export default {
           meta: {
             label: i18n.t('monitor.text_2'),
             t: 'dictionary.monitorresourcealerts',
-            permission: 'monitorresourcealerts_list',
+            permission: 'alertrecordshields_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.commonalerts')) {
                 return true
