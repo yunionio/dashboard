@@ -348,7 +348,7 @@ export default {
           path: '/dns-zone',
           meta: {
             label: i18n.t('dictionary.dns_zone'),
-            permission: 'dnszone_list',
+            permission: 'dns_zones_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.dns_zone')) {
                 return true
@@ -384,7 +384,7 @@ export default {
           path: '/waf',
           meta: {
             label: i18n.t('dictionary.waf_instance'),
-            permission: 'wafs_list',
+            permission: 'waf_instances_list',
             t: 'dictionary.waf_instance',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) return true
