@@ -38,6 +38,7 @@ import HostsList from './Hosts'
 import Dashboard from './Dashboard'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import Topology from './Topology'
 import Actions from '@/components/PageList/Actions'
 
 export default {
@@ -49,6 +50,7 @@ export default {
     Dashboard,
     Actions,
     NetworkList,
+    Topology,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -59,6 +61,7 @@ export default {
         { label: this.$t('network.text_598'), key: 'baremetals-list' },
         { label: this.$t('network.text_70'), key: 'hosts-list' },
         { label: this.$t('network.text_710'), key: 'dashboard' },
+        { label: this.$t('network.topology'), key: 'topology' },
         { label: this.$t('network.text_150'), key: 'event-drawer' },
       ],
     }
