@@ -81,7 +81,7 @@ export default {
     }
     new this.$Manager('servers').list({ params })
       .then((res) => {
-        this.guestesOpts = res.data.data.filter(val => val.status === 'ready')
+        this.guestesOpts = res.data.data.filter(val => val.status === 'ready' || val.status === 'running')
       })
   },
   methods: {

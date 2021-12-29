@@ -104,7 +104,7 @@ export default {
                 tooltip: this.$t('compute.text_486'),
               }
             }
-            const validateGuestStatus = item.every(item => item.guest_id && item.guest_status === 'ready')
+            const validateGuestStatus = item.every(item => item.guest_id && (item.guest_status === 'ready' || item.guest_status === 'running'))
             const validateGuestId = item.every(item => item.guest_id)
             if (!validateGuestId) {
               return {
