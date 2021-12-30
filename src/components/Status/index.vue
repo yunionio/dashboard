@@ -74,6 +74,7 @@ export default {
       return parseInt(this.process)
     },
     showProcess () {
+      if (['running'].includes(this.status)) return false
       return this.curProcess > 0 && this.curProcess < 100
     },
   },
