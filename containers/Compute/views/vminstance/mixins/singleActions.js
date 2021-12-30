@@ -645,6 +645,36 @@ export default {
                   hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_gpu'),
                 },
                 {
+                  label: i18n.t('compute.text_1399'),
+                  permission: 'attach-isolated-device,server_perform_detach_isolated_device,server_perform_set_isolated_device',
+                  action: () => {
+                    this.createDialog('VmAttachUsbDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                    })
+                  },
+                  meta: () => {
+                    const provider = obj.provider
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (!this.isAdminMode && !this.isDomainMode) {
+                      ret.tooltip = i18n.t('compute.text_1279', [i18n.t('dictionary.domain')])
+                      return ret
+                    }
+                    if (findPlatform(obj.hypervisor, 'hypervisor') !== SERVER_TYPE.idc) {
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
+                      return ret
+                    }
+                    ret.validate = cloudEnabled('acttachUsb', obj)
+                    ret.tooltip = cloudUnabledTip('acttachUsb', obj)
+                    return ret
+                  },
+                  hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_usb'),
+                },
+                {
                   label: i18n.t('compute.text_1249'),
                   permission: 'server_perform_io_throttle',
                   action: () => {

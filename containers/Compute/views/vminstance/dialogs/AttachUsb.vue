@@ -3,7 +3,7 @@
     <div slot="header">{{action}}</div>
     <div slot="body">
       <a-alert class="mb-2" type="warning">
-        <div slot="message" v-if="params.data.length === 1">{{$t('compute.text_1167')}}</div>
+        <div slot="message" v-if="params.data.length === 1">{{$t('compute.text_1400')}}</div>
         <div slot="message" v-else>
           <p>{{$t('compute.text_1168')}}</p>
           <p>{{$t('compute.text_1169')}}</p>
@@ -82,12 +82,12 @@ import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
-  name: 'VmAttachGpuDialog',
+  name: 'VmAttachUsbDialog', // 目前只支持单挑操作，批量逻辑未调整
   mixins: [DialogMixin, WindowsMixin],
   data () {
     return {
       loading: false,
-      action: this.$t('compute.text_1176'),
+      action: this.$t('compute.text_1399'),
       form: {
         fc: this.$form.createForm(this, { onValuesChange: this.onValuesChange }),
         fd: {
@@ -135,14 +135,14 @@ export default {
         },
         getIpsTableColumn({ field: 'ip', title: 'IP' }),
         {
-          field: 'gpu',
-          title: 'GPU',
+          field: 'usb',
+          title: 'USB',
           slots: {
             default: ({ row }) => {
               const ret = []
               if (row.isolated_devices) {
                 row.isolated_devices.map(item => {
-                  if (item.dev_type.indexOf('GPU') !== -1) {
+                  if (item.dev_type === 'USB') {
                     ret.push(<span>{item.model}</span>)
                   }
                 })
@@ -165,7 +165,7 @@ export default {
           host += item.host_id + ','
         })
         host = host.substring(0, host.lastIndexOf(','))
-        return { 'filter.0': `host_id.in(${host})`, limit: 0, 'filter.1': 'dev_type.in(GPU-HPC,GPU-VGA)' }
+        return { 'filter.0': `host_id.in(${host})`, limit: 0, 'filter.1': 'dev_type.in(USB)' }
       }
       return {}
     },
