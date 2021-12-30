@@ -61,6 +61,8 @@ import LbaclsList from '@Network/views/lbacls/components/List'
 import LbcertList from '@Network/views/lbcerts/components/List'
 import RouteTableList from '@Network/views/route-table/components/List'
 import CloudaccountList from '@Cloudenv/views/cloudaccount/components/List'
+import VpcPeerConnectList from '@Network/views/vpc-peer-connect/components/List'
+import VpcNetworkList from '@Network/views/vpc-network/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
 
 export default {
@@ -102,6 +104,8 @@ export default {
     LbcertList,
     CloudaccountList,
     RouteTableList,
+    VpcPeerConnectList,
+    VpcNetworkList,
   },
   data () {
     const maps = getSearchMaps()
