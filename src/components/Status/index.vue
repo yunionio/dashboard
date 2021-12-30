@@ -7,6 +7,7 @@
       </div>
       <div class="status-text flex-fill text-truncate">
         {{ statusText }}
+        <span v-if="showProcess">({{curProcess}}%)</span>
       </div>
     </div>
     <slot />
@@ -32,6 +33,9 @@ export default {
     dangerStatusBase: {
       type: Array,
       default: () => [new RegExp('fail')],
+    },
+    process: {
+      type: Number,
     },
   },
   computed: {
@@ -65,6 +69,12 @@ export default {
         return this.$t(`status.common.${this.status}`)
       }
       return this.status
+    },
+    curProcess () {
+      return parseInt(this.process)
+    },
+    showProcess () {
+      return this.curProcess > 0 && this.curProcess < 100
     },
   },
   methods: {
@@ -117,6 +127,10 @@ export default {
       height: 10px;
       border-radius: 50%;
       position: relative;
+    }
+    .oc-status-process {
+      width: 10px;
+      height: 10px;
     }
   }
 }
