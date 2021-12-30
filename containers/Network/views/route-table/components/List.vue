@@ -22,6 +22,7 @@ import {
   getBrandFilter,
   getRegionFilter,
   getDescriptionFilter,
+  getVpcFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import expectStatus from '@/constants/expectStatus'
@@ -71,6 +72,7 @@ export default {
           cloudaccount: getAccountFilter(),
           manager: getCloudProviderFilter(),
           region: getRegionFilter(),
+          vpc: getVpcFilter(),
         },
         hiddenColumns: this.defaultHiddenColumns,
       }),
