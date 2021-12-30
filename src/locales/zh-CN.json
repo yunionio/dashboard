@@ -535,7 +535,8 @@
       "disabled": "禁用",
       "offline": "离线",
       "online": "在线",
-      "unknown": "未知"
+      "unknown": "未知",
+      "unmount": "待挂载"
     },
     "bucket": {
       "start_create": "开始创建",
