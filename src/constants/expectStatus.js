@@ -168,7 +168,7 @@ export default {
     danger: ['failed'],
   },
   blockstorage: {
-    info: ['offline', 'disabled'],
+    info: ['offline', 'disabled', 'unmount'],
     success: ['online', 'enabled'],
     danger: ['failed', 'delete_failed'],
   },
