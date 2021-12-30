@@ -118,6 +118,14 @@ export default {
                 tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
               }
             }
+            // gpu不支持热插拔
+            const validateGpu = item.some(item => item.dev_type !== 'USB' && item.guest_status && item.guest_status !== 'ready')
+            if (validateGpu) {
+              return {
+                validate: false,
+                tooltip: this.$t('compute.text_489_2', [this.$t('dictionary.server')]),
+              }
+            }
             return {
               validate: true,
             }
@@ -139,6 +147,18 @@ export default {
               return {
                 validate: false,
                 tooltip: this.$t('compute.text_491'),
+              }
+            }
+            let otherType = ''
+            item.map(obj => {
+              if (obj.dev_type && obj.dev_type.indexOf('GPU') === -1) {
+                otherType = obj.dev_type
+              }
+            })
+            if (otherType) {
+              return {
+                validate: false,
+                tooltip: this.$t('compute.text_1398', [otherType]),
               }
             }
             return {

@@ -35,10 +35,19 @@ export default {
               tooltip: this.$t('compute.text_487', [this.$t('dictionary.server')]),
             }
           }
-          if (obj.guest_status !== 'ready' && obj.guest_status !== 'running') {
-            return {
-              validate: false,
-              tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
+          if (obj.dev_type === 'USB') {
+            if (obj.guest_status !== 'ready' && obj.guest_status !== 'running') {
+              return {
+                validate: false,
+                tooltip: this.$t('compute.text_489', [this.$t('dictionary.server')]),
+              }
+            }
+          } else {
+            if (obj.guest_status !== 'ready') {
+              return {
+                validate: false,
+                tooltip: this.$t('compute.text_489_1', [this.$t('dictionary.server')]),
+              }
             }
           }
           return {
@@ -55,6 +64,19 @@ export default {
             columns: this.columns,
             refresh: this.refresh,
           })
+        },
+        meta: obj => {
+          const { dev_type } = obj
+          if (!dev_type) {
+            return { validate: false }
+          }
+          if (dev_type.indexOf('GPU') === -1) {
+            return {
+              validate: false,
+              tooltip: this.$t('compute.text_1398', [dev_type]),
+            }
+          }
+          return { validate: true }
         },
       },
     ]

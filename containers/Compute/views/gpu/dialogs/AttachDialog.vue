@@ -2,8 +2,8 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{params.title}}</div>
     <div slot="body">
-      <dialog-selected-tips :name="$t('dictionary.gpu')" :count="params.data.length" :action="params.title" />
-      <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
+      <dialog-selected-tips :name="$t('compute.text_113')" :count="params.data.length" :action="params.title" />
+      <dialog-table :data="params.data" :columns="columns" />
       <a-form
         :form="form.fc">
         <a-form-item :label="$t('compute.text_492', [this.$t('dictionary.server')])" v-bind="formItemLayout" :extra="$t('compute.text_493')">
@@ -72,6 +72,17 @@ export default {
       },
     }
   },
+  computed: {
+    columns () {
+      const ret = []
+      this.params.columns.map(item => {
+        if (['name', 'dev_type', 'model', 'host'].indexOf(item.field) !== -1) {
+          ret.push(item)
+        }
+      })
+      return ret
+    },
+  },
   created () {
     const params = {
       host: this.params.data[0].host_id,
@@ -81,7 +92,12 @@ export default {
     }
     new this.$Manager('servers').list({ params })
       .then((res) => {
-        this.guestesOpts = res.data.data.filter(val => val.status === 'ready' || val.status === 'running')
+        const { dev_type } = this.params.data[0]
+        if (dev_type === 'USB') {
+          this.guestesOpts = res.data.data.filter(val => val.status === 'ready' || val.status === 'running')
+        } else {
+          this.guestesOpts = res.data.data.filter(val => val.status === 'ready')
+        }
       })
   },
   methods: {

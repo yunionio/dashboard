@@ -358,6 +358,13 @@ const actionEableMap = {
       vmware: false,
     },
   },
+  acttachUsb: {
+    cn: i18n.t('compute.text_1399'),
+    brand: {
+      onecloud: ['ready', 'running'],
+      vmware: false,
+    },
+  },
   publicIpToEip: {
     cn: i18n.t('compute.text_1305'),
     brand: {
