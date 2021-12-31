@@ -8,7 +8,7 @@
 
 <script>
 import { sizestr } from '@/utils/utils'
-import { getStatusTableColumn, getCopyWithContentTableColumn, getNameDescriptionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getStatusTableColumn, getCopyWithContentTableColumn, getNameDescriptionTableColumn, getIpsTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -106,6 +106,7 @@ export default {
             },
           },
         },
+        getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
         getTimeTableColumn({
           field: 'attach_time',
           title: this.$t('compute.text_722'),
