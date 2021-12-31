@@ -270,7 +270,7 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {} } = {})
     width: '180px',
     slots: {
       default: ({ row }, h) => {
-        if (!row.eip && !row.ips) {
+        if (!row.eip && !row.ips && !row.vips) {
           if (row.hypervisor === typeClouds.hypervisorMap.esxi.key && ['ready', 'running'].includes(row.status)) {
             return [
               h(IpSupplement, {
@@ -292,8 +292,15 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {} } = {})
             <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({ row.eip_mode === 'elastic_ip' ? i18n.t('common_290') : i18n.t('common_291') })</span></list-body-cell-wrap>,
           )
         }
+        let iparr = []
         if (row.ips) {
-          const ips = row.ips.split(',').map(ip => {
+          iparr = row.ips.split(',')
+        }
+        if (row.vips) {
+          iparr = row.vips
+        }
+        if (iparr) {
+          const ips = iparr.map(ip => {
             return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class="text-color-help">({ i18n.t('common_287') })</span></list-body-cell-wrap>
           })
           ret = ret.concat(ips)

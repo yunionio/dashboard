@@ -302,7 +302,9 @@
       "update_tags_fail": "更新标签或名称失败"
     },
     "instanceGroup": {
-      "init": "正常"
+      "init": "正常",
+      "associate_eip": "绑定EIP",
+      "dissociate_eip": "解绑EIP"
     },
     "redisAccount": {
       "available": "正常",
