@@ -71,7 +71,7 @@ export default {
       return this.status
     },
     curProcess () {
-      return parseInt(this.process)
+      return parseFloat(this.process)
     },
     showProcess () {
       if (['running'].includes(this.status)) return false
