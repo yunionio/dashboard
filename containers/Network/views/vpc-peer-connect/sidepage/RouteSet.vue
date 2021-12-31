@@ -38,7 +38,7 @@ export default {
       list: this.$list.createList(this, {
         id: 'routeListForVpcPeerConnectSidePage',
         resource: 'route_table_route_sets',
-        getParams: { next_hop_id: this.data.peer_vpc_id, next_hop_type: 'VpcPeering' },
+        getParams: { next_hop_id: this.data.id, next_hop_type: 'VpcPeering' },
         filterOptions: {
           cidr: {
             label: this.$t('network.vpc_network.target_address'),
