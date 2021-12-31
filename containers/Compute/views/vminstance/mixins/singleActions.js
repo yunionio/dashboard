@@ -9,6 +9,7 @@ import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import { PROVIDER_MAP } from '@/constants'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   computed: {
