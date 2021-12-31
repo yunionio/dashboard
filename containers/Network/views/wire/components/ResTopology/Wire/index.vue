@@ -5,10 +5,12 @@
     </div>
     <div class="c-right" :class="{'res-topology-wire': physical ? !isEmpty(hosts) : !isEmpty(networks)}">
       <ul class="list" v-if="physical">
-        <li class="item d-flex" v-for="(obj, nidx) in hosts" :key="nidx">
-            <res-common
-              :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
-              :dataSource="obj" />
+        <li class="item d-flex">
+            <div v-for="(obj, nidx) in hosts" :key="nidx">
+              <res-common
+                :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
+                :dataSource="obj" />
+            </div>
         </li>
       </ul>
       <ul class="list" v-else>
