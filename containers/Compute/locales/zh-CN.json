@@ -1492,5 +1492,8 @@
   "compute.text_1397": "当前状态不支持此操作",
   "compute.text_1398": "{0}设备类型不支持该操作",
   "compute.text_1399": "设置USB透传",
-  "compute.text_1400": "开关打开时可关联或解绑多个USB设备，关闭后则解绑所有USB设备"
+  "compute.text_1400": "开关打开时可关联或解绑多个USB设备，关闭后则解绑所有USB设备",
+  "compute.text_1401": "USB设备",
+  "compute.text_1402": "只能关联与主机出于统一宿主机的USB设备，且已经被使用的USB设备不可选择",
+  "compute.text_1403": "请选择USB设备"
 }

@@ -1492,5 +1492,8 @@
   "compute.text_1397": "This operation is not supported in the current state.",
   "compute.text_1398": "The {0} device type does not support this operation",
   "compute.text_1399": "Set USB passthrough",
-  "compute.text_1400": "When the switch is on, multiple USB devices can be associated or unbound. When it is off, all USB devices can be unbound"
+  "compute.text_1400": "When the switch is on, multiple USB devices can be associated or unbound. When it is off, all USB devices can be unbound",
+  "compute.text_1401": "USB Device",
+  "compute.text_1402": "You can only associate a USB device that is a unified host with the host, and the USB device that has been used cannot be selected",
+  "compute.text_1403": "Please select USB devices"
 }
