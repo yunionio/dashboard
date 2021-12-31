@@ -15,28 +15,28 @@
         :form="form.fc"
         v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_1170')">
-          <a-radio-group name="radioGroup" :defaultValue="true" v-if="isGroupAction" v-model="isOpenGpu">
+          <a-radio-group name="radioGroup" :defaultValue="true" v-if="isGroupAction" v-model="isOpenUsb">
             <a-radio :value="true">{{$t('compute.text_902')}}</a-radio>
             <a-radio :value="false">{{$t('compute.text_723')}}</a-radio>
           </a-radio-group>
-          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="isOpenGpu" v-else />
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="isOpenUsb" v-else />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_607')" v-show="isOpenGpu" :extra="$t('compute.text_1171')">
+        <a-form-item :label="$t('compute.text_1401')" v-show="isOpenUsb" :extra="$t('compute.text_1402')">
           <!-- 批量设置 -->
           <base-select
             v-if="isGroupAction"
             v-decorator="decorators.device"
-            :params="gpuParams"
+            :params="usbParams"
             :need-params="false"
             :labelFormat="labelFormat"
             :disabled-items="disabledItems"
             filterable
-            :resList.sync="gpuOpt"
+            :resList.sync="usbOpt"
             :mapper="mapper"
             resource="isolated_devices"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }">
             <template v-slot:optionTemplate>
-              <a-select-option v-for="item in gpuOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
+              <a-select-option v-for="item in usbOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
                 <div class="d-flex">
                   <span class="text-truncate flex-fill mr-2" :title="item.model">{{ item.model }}</span>
                   <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount > item.usedCount">{{$t('compute.text_1173', [ item.totalCount - item.usedCount , item.totalCount ])}}</span>
@@ -49,16 +49,16 @@
           <base-select
             v-else
             v-decorator="decorators.device"
-            :params="gpuParams"
+            :params="usbParams"
             :need-params="false"
             :labelFormat="labelFormat"
             :disabled-items="disabledItems"
             filterable
-            :resList.sync="gpuOpt"
+            :resList.sync="usbOpt"
             resource="isolated_devices"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'multiple' }" />
+            :select-props="{ allowClear: true, placeholder: $t('compute.text_1403'), mode: 'multiple' }" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_294')" v-show="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
+        <a-form-item :label="$t('compute.text_294')" v-show="isOpenUsb && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')">
@@ -99,7 +99,7 @@ export default {
           'device',
           {
             rules: [
-              { required: true, type: 'any', message: this.$t('compute.text_1172'), trigger: 'change' },
+              { required: true, type: 'any', message: this.$t('compute.text_1403'), trigger: 'change' },
             ],
           },
         ],
@@ -125,9 +125,9 @@ export default {
           span: 4,
         },
       },
-      gpuOpt: [],
-      isOpenGpu: false,
-      bindGpus: [],
+      usbOpt: [],
+      isOpenUsb: false,
+      bindUsbs: [],
       columns: [
         {
           field: 'name',
@@ -158,7 +158,7 @@ export default {
     selectedItems () {
       return this.params.data
     },
-    gpuParams () {
+    usbParams () {
       if (this.selectedItems && this.selectedItems.length > 0) {
         let host = ''
         this.selectedItems.map(item => {
@@ -169,15 +169,15 @@ export default {
       }
       return {}
     },
-    attchGpu () {
-      return this.form.fd.device.filter((id) => { return !this.bindGpus.includes(id) })
+    attchUsb () {
+      return this.form.fd.device.filter((id) => { return !this.bindUsbs.includes(id) })
     },
-    detachGpu () {
-      return this.bindGpus.filter((id) => { return !this.form.fd.device.includes(id) })
+    detachUsb () {
+      return this.bindUsbs.filter((id) => { return !this.form.fd.device.includes(id) })
     },
     disabledItems () {
       if (this.isGroupAction) {
-        return this.gpuOpt.filter(val => {
+        return this.usbOpt.filter(val => {
           if (val.usedCount === val.totalCount) {
             return true
           } else if (val.totalCount - val.usedCount < this.params.data.length) {
@@ -186,7 +186,7 @@ export default {
           return false
         }).map(item => { return item.id })
       } else {
-        return this.gpuOpt.filter(val => { return val.guest_id && val.guest_id !== this.selectedItems[0].id }).map(item => { return item.id })
+        return this.usbOpt.filter(val => { return val.guest_id && val.guest_id !== this.selectedItems[0].id }).map(item => { return item.id })
       }
     },
     isGroupAction () { // 是否是批量操作
@@ -195,19 +195,19 @@ export default {
     },
   },
   watch: {
-    gpuOpt () {
+    usbOpt () {
       if (!this.isGroupAction) {
-        this.bindGpus = this.gpuOpt.filter(item => item.guest_id === this.params.data[0].id).map(item => { return item.id })
-        if (this.bindGpus.length > 0) {
-          this.form.fc.setFieldsValue({ device: this.bindGpus })
-          this.isOpenGpu = true
+        this.bindUsbs = this.usbOpt.filter(item => item.guest_id === this.params.data[0].id).map(item => { return item.id })
+        if (this.bindUsbs.length > 0) {
+          this.form.fc.setFieldsValue({ device: this.bindUsbs })
+          this.isOpenUsb = true
         }
       }
     },
     disabledItems () {
       if (this.disabledItems && this.disabledItems.length && this.isGroupAction) { // 禁用某些选项
         this.disabledItems.forEach(disabledId => {
-          this.gpuOpt.forEach(item => {
+          this.usbOpt.forEach(item => {
             if (disabledId === item.id) {
               item.__disabled = true
             }
@@ -219,17 +219,17 @@ export default {
   methods: {
     async doAttachSubmit (data) {
       const params = {
-        add_devices: this.attchGpu,
-        del_devices: this.detachGpu,
+        add_devices: this.attchUsb,
+        del_devices: this.detachUsb,
         auto_start: data.autoStart,
       }
       const ids = this.params.data.map(item => item.id)
       if (ids.length > 1) {
         const selectedNum = this.params.data.length
         const { number: count } = data
-        const gpuItem = this.gpuOpt.filter(item => { return item.id === this.attchGpu[0] })
-        const model = gpuItem[0].model
-        const remain = gpuItem[0].totalCount - gpuItem[0].usedCount
+        const usbItem = this.usbOpt.filter(item => { return item.id === this.attchUsb[0] })
+        const model = usbItem[0].model
+        const remain = usbItem[0].totalCount - usbItem[0].usedCount
         if (selectedNum * count > remain) {
           this.$message.warning(this.$t('compute.text_1177'))
           throw new Error(this.$t('compute.text_1178'))
@@ -267,7 +267,7 @@ export default {
       } else {
         params = {
           add_devices: [],
-          del_devices: this.bindGpus,
+          del_devices: this.bindUsbs,
           auto_start: data.autoStart,
         }
       }
@@ -285,7 +285,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        if (this.isOpenGpu) {
+        if (this.isOpenUsb) {
           const values = await this.form.fc.validateFields()
           await this.doAttachSubmit(values)
         } else {
@@ -362,7 +362,7 @@ export default {
       }
       return this.filterSameModel(obj)
     },
-    // 获取多个宿主机下共有的GPU型号数据
+    // 获取多个宿主机下共有的型号数据
     filterSameModel (obj) {
       // 转成二维数组
       const arrs = []
