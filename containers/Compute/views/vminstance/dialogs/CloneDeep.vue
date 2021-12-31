@@ -21,8 +21,7 @@
         <a-form-item
           :label="$t('compute.text_228')">
           <a-input
-            v-decorator="decorators.name"
-            :placeholder="$t('validator.resourceCreateName')" />
+            v-decorator="decorators.name" />
           <template #extra>
             <name-repeated
               res="servers"
@@ -91,7 +90,6 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.text_1043') },
-              { validator: this.$validate('resourceCreateName') },
             ],
           },
         ],

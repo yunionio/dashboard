@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_228')">
-          <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')"  @change="e => { form.fi.generate_name = e.target.value }" />
+          <a-input v-decorator="decorators.name" @change="e => { form.fi.generate_name = e.target.value }" />
           <template #extra>
             <name-repeated
               res="servers"
@@ -91,7 +91,6 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.text_210') },
-              { validator: this.$validate('resourceCreateName') },
             ],
           },
         ],
