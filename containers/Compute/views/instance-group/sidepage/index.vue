@@ -30,6 +30,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import InstanceGroupDetail from './Detail'
 import VMInstanceListForInstanceGroup from './VMInstanceListForInstanceGroup'
+import VipNetworkListForInstanceGroup from './VIPList'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -40,6 +41,7 @@ export default {
     Actions,
     InstanceGroupDetail,
     VMInstanceListForInstanceGroup,
+    VipNetworkListForInstanceGroup,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -47,6 +49,7 @@ export default {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'instance-group-detail' },
         { label: this.$t('common_460', [this.$t('dictionary.server')]), key: 'v-m-instance-list-for-instance-group' },
+        { label: 'VIP', key: 'vip-network-list-for-instance-group' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
