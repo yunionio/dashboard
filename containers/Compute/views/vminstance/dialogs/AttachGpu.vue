@@ -143,7 +143,7 @@ export default {
               if (row.isolated_devices) {
                 row.isolated_devices.map(item => {
                   if (item.dev_type.indexOf('GPU') !== -1) {
-                    ret.push(<span>{item.model}</span>)
+                    ret.push(<list-body-cell-wrap row={{ showName: `${item.addr || ''} ${item.model || ''}` }} field="showName" />)
                   }
                 })
               }
@@ -399,7 +399,7 @@ export default {
       return arr
     },
     labelFormat (val) {
-      return val.model
+      return `${val.addr || ''} ${val.model || ''}`
     },
     onValuesChange (props, values) {
       Object.keys(values).forEach((key) => {
