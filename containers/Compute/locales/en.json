@@ -1495,5 +1495,13 @@
   "compute.text_1400": "When the switch is on, multiple USB devices can be associated or unbound. When it is off, all USB devices can be unbound",
   "compute.text_1401": "USB Device",
   "compute.text_1402": "You can only associate a USB device that is a unified host with the host, and the USB device that has been used cannot be selected",
-  "compute.text_1403": "Please select USB devices"
+  "compute.text_1403": "Please select USB devices",
+  "compute.create_vip": "Add VIP",
+  "compute.instance_group_no_network_id": "This instance group is not attached to instance, no network configuration can be determined",
+  "compute.too_many_instance_group_vip": "Every instance group can have no less than 1 VIP",
+  "compute.instancegroup_detach_network": "Detach",
+  "compute.vip_address": "VIP Address",
+  "compute.prompt_empty_instance_group_vip": "No VIP for this instance group",
+  "compute.prompt_already_associate_eip": "This instance group has already been associated with EIP",
+  "compute.prompt_no_associate_eip": "This instance group has no EIP to dissociate"
 }
