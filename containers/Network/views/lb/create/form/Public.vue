@@ -32,7 +32,7 @@
         <a-radio-button value="intranet">{{$t('network.text_271')}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('network.text_272')" v-if="isAliyun && form.fd.address_type === 'internet' ">
+    <a-form-item :label="$t('network.text_272')" v-if="(isAliyun || isQcloud) && form.fd.address_type === 'internet' ">
       <charge-type-radio :decorators="decorators" />
     </a-form-item>
     <a-form-item :label="$t('network.text_273')">
