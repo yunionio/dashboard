@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!physical" class="wire d-flex">
+  <div v-if="!physical" class="wire d-flex" :class="{'bl-none': idx === len - 1 }">
     <span class="line" />
     <div class="text-center">
       <a-tooltip placement="left" :get-popup-container="getPopupContainer">
@@ -39,6 +39,8 @@ export default {
   props: {
     dataSource: Object,
     physical: String,
+    idx: Number,
+    len: Number,
   },
   data () {
     return {}
