@@ -40,7 +40,7 @@
         <a-radio-button value="ipv4">IPv4</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('bill.text_233')" v-if="isShowCloudprovider">
+    <a-form-item :label="$t('common_711')" v-if="isShowCloudprovider">
       <base-select
         v-decorator="decorators.manager"
         resource="cloudproviders"
