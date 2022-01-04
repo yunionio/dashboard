@@ -5,6 +5,7 @@
         v-for="(wire, idx) in wires"
         :key="idx"
         :idx="idx"
+        :len="wires && wires.length"
         :vpc="vpc"
         :dataSource="wire" />
     </template>
