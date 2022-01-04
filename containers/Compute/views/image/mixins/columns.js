@@ -33,7 +33,7 @@ export default {
             const fileProcess = row.status === 'saving' ? <FileProcess size={ row.size }></FileProcess> : null
             return [
               <div class='text-truncate'>
-                <status status={ row.status } statusModule={ 'image' } />
+                <status status={ row.status } statusModule={ 'image' } process={ row.progress } />
                 { fileProcess }
               </div>,
             ]
