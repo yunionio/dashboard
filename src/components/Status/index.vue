@@ -75,6 +75,7 @@ export default {
     },
     showProcess () {
       if (!['block_stream', 'migrating', 'image_caching'].includes(this.status)) return false
+      if (this.statusModule === 'image' && this.status !== 'saving') return false
       return this.curProcess < 100
     },
   },
