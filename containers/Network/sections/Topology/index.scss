@@ -5,6 +5,9 @@
     margin: 0;
     line-height: 26px;
   }
+  .bl-none {
+    border-left: none !important;
+  }
   .c-left {
     position: relative;
   }
@@ -12,9 +15,6 @@
     position: relative;
     flex: 1;
     border-left: 2px solid #ccc;
-    &.bl-none {
-      border-left: none;
-    }
     &::after {
       content: "";
       background: rgb(255, 255, 255);
@@ -26,6 +26,12 @@
     }
     &.res-topology-wire::after {
       height: 0;
+    }
+  }
+  .res-topology-wire {
+    border-left: none;
+    .list .item:not(:last-child) {
+      border-left: 2px solid #ccc;
     }
   }
   .wire {

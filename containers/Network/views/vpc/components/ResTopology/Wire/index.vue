@@ -2,7 +2,7 @@
   <div class="d-flex res-topology">
     <div class="c-left d-flex">
       <res-vpc :dataSource="vpc" :class="{'invisible': idx > 0 }" />
-      <res-wire :dataSource="dataSource" />
+      <res-wire :dataSource="dataSource" :idx="idx" :len="len" />
     </div>
     <div class="c-right" :class="{'bl-none': isEmpty(networks)}">
       <ul class="list">
@@ -41,6 +41,7 @@ export default {
     vpc: Object,
     dataSource: Object,
     idx: Number,
+    len: Number,
   },
   data () {
     return {
