@@ -71,11 +71,11 @@ export default {
       return this.status
     },
     curProcess () {
-      return parseFloat(this.process)
+      return Math.ceil(this.process * 100) / 100
     },
     showProcess () {
-      if (['running'].includes(this.status)) return false
-      return this.curProcess > 0 && this.curProcess < 100
+      if (!['block_stream', 'migrating', 'image_caching'].includes(this.status)) return false
+      return this.curProcess < 100
     },
   },
   methods: {
