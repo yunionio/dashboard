@@ -173,7 +173,7 @@ const getDefaultTopBaseInfo = (vm, h, { idKey, statusKey, statusModule, data, on
       slots: {
         default: ({ row }) => {
           if (statusModule && row[statusKey]) {
-            return [<status status={ row[statusKey] } statusModule={ statusModule } process={ row.process } />]
+            return [<status status={ row[statusKey] } statusModule={ statusModule } process={ row.progress } />]
           }
           return '-'
         },
