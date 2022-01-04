@@ -8,7 +8,7 @@
           :value="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('compute.text_1359')" v-if="isNew && (cloudEnv === 'idc' || cloudEnv === 'onpremise')"  v-show="showBgpTypes" v-bind="formItemLayout">
+    <a-form-item :label="$t('compute.text_1359')" v-if="isNew && (cloudEnv == null || cloudEnv === 'idc' || cloudEnv === 'onpremise')"  v-show="showBgpTypes" v-bind="formItemLayout">
       <a-select v-decorator="decorators.bgp_type">
         <a-select-option v-for="item in bgpTypeOptions" :value="item" :key="item">{{ item === '' ? $t('compute.text_1352') : item }}</a-select-option>
       </a-select>
@@ -159,7 +159,7 @@ export default {
       ].includes(this.hypervisor)) {
         delete ret.bandwidth
       }
-      if (this.hypervisor === 'kvm') {
+      if (this.hypervisor == null || this.hypervisor === 'kvm') {
         delete ret.traffic
       }
       return ret

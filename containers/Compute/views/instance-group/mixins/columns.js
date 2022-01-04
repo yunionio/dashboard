@@ -4,6 +4,7 @@ import {
   getStatusTableColumn,
   getProjectTableColumn,
   getTimeTableColumn,
+  getIpsTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -47,6 +48,7 @@ export default {
           },
         },
       },
+      getIpsTableColumn({ field: 'vips', title: i18n.t('compute.vip_address'), vm: this }),
       getTimeTableColumn(),
       getProjectTableColumn(),
     ]

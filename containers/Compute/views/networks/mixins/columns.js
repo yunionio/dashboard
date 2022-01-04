@@ -17,6 +17,7 @@ export default {
       getCopyWithContentTableColumn({ field: 'ifname', title: i18n.t('compute.text_384'), sortable: true }),
       getCopyWithContentTableColumn({ field: 'mac_addr', title: i18n.t('compute.text_385'), sortable: true }),
       getCopyWithContentTableColumn({ field: 'ip_addr', title: i18n.t('compute.text_386'), sortable: true }),
+      getCopyWithContentTableColumn({ field: 'eip_addr', title: 'EIP', sortable: true }),
       getCopyWithContentTableColumn({ field: 'driver', title: i18n.t('compute.text_378') }),
       {
         field: 'guest_id',
