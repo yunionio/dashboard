@@ -213,6 +213,7 @@ export default {
       return ret
     },
     handleOpenSidepage (row) {
+      this.initSidePageTab('eip-detail')
       this.sidePageTriggerHandle(this, 'EipSidePage', {
         id: row.id,
         resource: 'eips',
@@ -221,6 +222,7 @@ export default {
       }, {
         list: this.list,
         hiddenColumns: this.hiddenColumns,
+        tab: 'eip-detail',
       })
     },
     defaultSearchKey (search) {
