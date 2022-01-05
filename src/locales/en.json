@@ -531,7 +531,8 @@
       "disabled": "Disabled",
       "offline": "Offline",
       "online": "Online",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "unmount": "Unmount"
     },
     "bucket": {
       "start_create": "Start to create",
