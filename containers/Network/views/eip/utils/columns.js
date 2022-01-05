@@ -16,15 +16,15 @@ export const getAssociateNameTableColumn = ({ vm = {} } = {}) => {
         const text = `${row.associate_name}(${type[row.associate_type] || '-'})`
         let permission = 'server_get'
         let name = 'VmInstanceSidePage'
+        let tab = 'vm-instance-detail'
         if (row.associate_type === 'loadbalancer') {
           name = 'LbSidePage'
           permission = 'lb_loadbalancers_get'
+          tab = 'lb-detail'
         }
         if (vm) {
           return [
-            <list-body-cell-wrap copy hideField={true} field='associate_name' row={row} message={text}>
-              <side-page-trigger permission={permission} name={name} id={row.associate_id} vm={vm}>{text}</side-page-trigger>
-            </list-body-cell-wrap>,
+            <side-page-trigger permission={permission} tab={tab} name={name} id={row.associate_id} vm={vm}>{text}</side-page-trigger>,
           ]
         }
         return text
