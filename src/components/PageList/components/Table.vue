@@ -26,7 +26,7 @@
     <template v-if="tableData.length > 0 && nextMarker">
       <div class="text-center mt-4">
         <a-button v-if="nextMarker" :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
-        <span v-else>没有更多了</span>
+        <span v-else>{{ $t('common.load_no_more') }}</span>
       </div>
     </template>
   </floating-scroll>
