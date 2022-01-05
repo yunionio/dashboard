@@ -6,7 +6,7 @@
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('compute.text_492', [this.$t('dictionary.server')])" v-bind="formItemLayout" :extra="$t('compute.text_493')">
+        <a-form-item :label="$t('compute.text_492', [this.$t('dictionary.server')])" v-bind="formItemLayout" :extra="extra">
           <a-select v-decorator="decorators.guest">
             <a-select-option v-for="item in guestesOpts" :key="item.id">
               {{item.name}}
@@ -71,6 +71,28 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    dev_type () { // 目前支持USB和GPU卡
+      const { dev_type } = this.params.data[0]
+      return dev_type === 'USB' ? 'USB' : 'GPU'
+    },
+    columns () {
+      const ret = []
+      this.params.columns.map(item => {
+        if (['name', 'dev_type', 'model', 'host'].indexOf(item.field) !== -1) {
+          ret.push(item)
+        }
+      })
+      return ret
+    },
+    extra () {
+      if (this.dev_type === 'USB') {
+        return this.$t('compute.text_493')
+      } else {
+        return this.$t('compute.gpu_associate_server')
+      }
+    },
   },
   created () {
     const params = {
