@@ -5007,5 +5007,6 @@
   "common_742": "请选择层级，未选时忽略此层级",
   "common_743": "层级",
   "common.sync_resource": "同步资源",
-  "common.check_readonly": "{0}平台暂不支持{1}"
+  "common.check_readonly": "{0}平台暂不支持{1}",
+  "common.load_no_more": "没有更多了"
 }
