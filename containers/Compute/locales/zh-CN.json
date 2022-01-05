@@ -1485,7 +1485,7 @@
   "compute.text_1399": "设置USB透传",
   "compute.text_1400": "开关打开时可关联或解绑多个USB设备，关闭后则解绑所有USB设备",
   "compute.text_1401": "USB设备",
-  "compute.text_1402": "只能关联与主机出于统一宿主机的USB设备，且已经被使用的USB设备不可选择",
+  "compute.text_1402": "只能关联与主机出于同一宿主机的USB设备，且已经被使用的USB设备不可选择",
   "compute.text_1403": "请选择USB设备",
   "compute.create_vip": "添加VIP",
   "compute.instance_group_no_network_id": "该反亲和组还未添加主机，无法确定网络设置",
@@ -1494,5 +1494,6 @@
   "compute.vip_address": "VIP地址",
   "compute.prompt_empty_instance_group_vip": "该反亲和组还未绑定VIP",
   "compute.prompt_already_associate_eip": "该反亲和组已经绑定了EIP",
-  "compute.prompt_no_associate_eip": "该反亲和组还未绑定EIP"
+  "compute.prompt_no_associate_eip": "该反亲和组还未绑定EIP",
+  "compute.gpu_associate_server": "只能选择与透传设备同一宿主机出于关机状态的虚拟机"
 }
