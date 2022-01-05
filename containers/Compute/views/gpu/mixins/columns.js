@@ -59,7 +59,7 @@ export default {
             if (this.isPreLoad && !row.guest) return [<data-loading />]
             return [
               <div class='text-truncate'>
-                <list-body-cell-wrap copy={true} row={row} onManager={this.onManager} hideField={ true }>
+                <list-body-cell-wrap copy={true} row={row} field="guest" onManager={this.onManager} hideField={ true }>
                   <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row, 'servers-list') }>{ row.guest }</side-page-trigger>
                 </list-body-cell-wrap>
                 {row.guest_status ? <status status={ row.guest_status } statusModule='server'/> : ''}
