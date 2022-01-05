@@ -4932,5 +4932,6 @@
   "common.export_pdf": "Export as PDF",
   "common.export_excel": "Export as Excel",
   "common.sync_resource": "Sync Resource",
-  "common.check_readonly": "{0} platform does not support {1}"
+  "common.check_readonly": "{0} platform does not support {1}",
+  "common.load_no_more": "No More"
 }
