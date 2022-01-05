@@ -110,7 +110,7 @@
   "compute.text_110": "Physical Resources",
   "compute.text_111": "Hosts",
   "compute.text_112": "Baremetal Hosts",
-  "compute.text_113": "GPU",
+  "compute.text_113": "Passthrough",
   "compute.text_114": "Trash",
   "compute.text_115": "On",
   "compute.text_116": "Off",
@@ -488,7 +488,7 @@
   "compute.text_490": "Set reserved resources",
   "compute.text_491": "Please select the GPU card to set reserved resources",
   "compute.text_492": "Select {0}",
-  "compute.text_493": "Only virtual machines with the same host as the transparent device can be selected",
+  "compute.text_493": "Only virtual machines with the same host as the passthrough device can be selected",
   "compute.text_494": "Auto start",
   "compute.text_495": "Whether to start automatically after successful setting",
   "compute.text_496": "Please choose to associate {0}",
@@ -1494,5 +1494,6 @@
   "compute.vip_address": "VIP Address",
   "compute.prompt_empty_instance_group_vip": "No VIP for this instance group",
   "compute.prompt_already_associate_eip": "This instance group has already been associated with EIP",
-  "compute.prompt_no_associate_eip": "This instance group has no EIP to dissociate"
+  "compute.prompt_no_associate_eip": "This instance group has no EIP to dissociate",
+  "compute.gpu_associate_server": "Only virtual machines with the same host as the Passthrough in the shutdown state can be selected"
 }
