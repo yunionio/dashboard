@@ -15,28 +15,28 @@
         :form="form.fc"
         v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_1170')">
-          <a-radio-group name="radioGroup" :defaultValue="true" v-if="isGroupAction" v-model="isOpenGpu">
+          <a-radio-group name="radioGroup" :defaultValue="true" v-if="isGroupAction" v-model="isOpenUsb">
             <a-radio :value="true">{{$t('compute.text_902')}}</a-radio>
             <a-radio :value="false">{{$t('compute.text_723')}}</a-radio>
           </a-radio-group>
-          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="isOpenGpu" v-else />
+          <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="isOpenUsb" v-else />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_607')" v-show="isOpenGpu" :extra="$t('compute.text_1171')">
+        <a-form-item :label="$t('compute.text_1401')" v-show="isOpenUsb" :extra="$t('compute.text_1402')">
           <!-- 批量设置 -->
           <base-select
             v-if="isGroupAction"
             v-decorator="decorators.device"
-            :params="gpuParams"
+            :params="usbParams"
             :need-params="false"
             :labelFormat="labelFormat"
             :disabled-items="disabledItems"
             filterable
-            :resList.sync="gpuOpt"
+            :resList.sync="usbOpt"
             :mapper="mapper"
             resource="isolated_devices"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_1172'), mode: 'default' }">
             <template v-slot:optionTemplate>
-              <a-select-option v-for="item in gpuOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
+              <a-select-option v-for="item in usbOpt" :key="item.id" :value="item.id" :disabled="item.__disabled">
                 <div class="d-flex">
                   <span class="text-truncate flex-fill mr-2" :title="item.model">{{ item.model }}</span>
                   <span style="color: #8492a6; font-size: 13px" v-show="item.totalCount > item.usedCount">{{$t('compute.text_1173', [ item.totalCount - item.usedCount , item.totalCount ])}}</span>
@@ -49,13 +49,13 @@
           <base-select
             v-else
             v-decorator="decorators.device"
-            :params="gpuParams"
+            :params="usbParams"
             :need-params="false"
             filterable
             :options="usbOptions"
             :select-props="{ allowClear: true, placeholder: $t('compute.text_1403'), mode: 'multiple' }" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_294')" v-show="isOpenGpu && isGroupAction" :extra="$t('compute.text_1175')">
+        <a-form-item :label="$t('compute.text_294')" v-show="isOpenUsb && isGroupAction" :extra="$t('compute.text_1175')">
           <a-input-number :min="1" v-decorator="decorators.number" />
         </a-form-item>
         <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_495')">
@@ -96,7 +96,7 @@ export default {
           'device',
           {
             rules: [
-              { required: true, type: 'any', message: this.$t('compute.text_1172'), trigger: 'change' },
+              { required: true, type: 'any', message: this.$t('compute.text_1403'), trigger: 'change' },
             ],
           },
         ],
@@ -247,7 +247,7 @@ export default {
     async handleConfirm () {
       this.loading = true
       try {
-        if (this.isOpenGpu) {
+        if (this.isOpenUsb) {
           const values = await this.form.fc.validateFields()
           await this.doAttachSubmit(values)
         } else {
