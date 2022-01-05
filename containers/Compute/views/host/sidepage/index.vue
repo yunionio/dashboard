@@ -59,7 +59,7 @@ export default {
         { label: this.$t('compute.text_91'), key: 'vminstance-list' },
         { label: this.$t('compute.text_104'), key: 'network-list' },
         { label: this.$t('compute.text_99'), key: 'storage-list' },
-        { label: this.$t('compute.text_607'), key: 'gpu-list' },
+        { label: this.$t('compute.text_113'), key: 'gpu-list' },
         { label: this.$t('compute.text_114'), key: 'server-recovery' },
         { label: this.$t('compute.text_608'), key: 'monitor' },
         // { label: '报警', key: 'alert' },
