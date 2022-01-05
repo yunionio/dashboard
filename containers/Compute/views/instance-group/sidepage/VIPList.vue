@@ -58,7 +58,6 @@ export default {
             })
           },
           meta: () => {
-            console.log(this.data)
             let tooltip = null
             if (!this.data.network_id) {
               tooltip = this.$t('compute.instance_group_no_network_id')
@@ -88,6 +87,10 @@ export default {
         id,
         resource: 'networks',
       })
+    },
+    refresh () {
+      this.list.refresh()
+      this.$bus.$emit('InstanceGroupListRefresh')
     },
   },
 }

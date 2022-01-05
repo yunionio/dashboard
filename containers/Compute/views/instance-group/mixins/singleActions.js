@@ -46,7 +46,6 @@ export default {
                   tooltip = this.$t('compute.too_many_instance_group_vip')
                 }
                 return {
-                  buttonType: 'primary',
                   validate: (obj.network_id !== '' && obj.vips.length < 1),
                   tooltip,
                 }
