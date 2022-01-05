@@ -399,7 +399,7 @@ class CreateList {
       if (R.is(Function, this.fetchDataCb)) {
         this.fetchDataCb()
       }
-      if (!showDetails && this.total > 0) {
+      if (!showDetails && this.total > 0 && !response.data.marker_field) {
         setTimeout(() => {
           this.fetchData(offset, limit, true)
         }, 1)
