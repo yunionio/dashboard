@@ -5,7 +5,8 @@
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
-    :showGroupActions="showGroupActions" />
+    :showGroupActions="showGroupActions"
+    :export-data-options="exportDataOptions" />
 </template>
 
 <script>
@@ -52,6 +53,13 @@ export default {
           field: 'name',
           title: this.$t('cloudenv.text_386'),
         },
+        {
+          field: 'manager',
+          title: this.$t('cloudevent.title.manager'),
+          formatter: ({ row }) => {
+            return row.manager || '-'
+          },
+        },
         getStatusTableColumn({ statusModule: 'externalproject' }),
         getProjectTableColumn({ title: this.$t('table.title.local_project') }),
         getTimeTableColumn({
@@ -59,6 +67,26 @@ export default {
           title: this.$t('cloudenv.text_103'),
         }),
       ],
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: this.$t('cloudenv.text_386'), key: 'name' },
+          {
+            key: 'manager',
+            label: this.$t('cloudevent.title.manager'),
+          },
+          { label: this.$t('cloudenv.text_98'), key: 'status' },
+          {
+            label: this.$t('table.title.owner_domain'),
+            key: 'project_domain',
+          },
+          {
+            label: this.$t('table.title.local_project'),
+            key: 'tenant',
+          },
+          { label: this.$t('cloudenv.text_103'), key: 'created_at' },
+        ],
+      },
       groupActions: [
         {
           label: this.$t('cloudenv.text_388'),
