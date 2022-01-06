@@ -320,7 +320,10 @@ export default {
         { label: this.$t('network.text_194'), value: 'bandwidth' },
         { label: this.$t('network.text_193'), value: 'traffic' },
       ]
-      if ((this.showBandwidth && this.cloudEnv === 'onpremise') || !this.showBandwidth) {
+      if (this.cloudEnv === 'onpremise') {
+        return [arr[0]]
+      }
+      if (!this.showBandwidth) {
         arr.shift()
       }
       return arr
