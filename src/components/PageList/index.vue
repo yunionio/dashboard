@@ -59,6 +59,7 @@
         :pager-layout="pagerLayout"
         :expand-config="expandConfig"
         :config="config"
+        :resource="resource"
         :next-marker="nextMarker"
         :selection-type="selectionType"
         :inBaseSidePage="inBaseSidePage"
