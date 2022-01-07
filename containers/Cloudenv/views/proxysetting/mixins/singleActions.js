@@ -22,6 +22,7 @@ export default {
         scope: 'domain',
         resource: 'proxysettings',
       }, {
+        permission: 'proxysettings_perform_public',
         meta: this.commonMeta,
       }),
       {

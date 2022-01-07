@@ -9,13 +9,13 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getStatusFilter, getEnabledFilter, getRegionFilter, getBrandFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'SkuList',
@@ -117,6 +117,7 @@ export default {
               ...getEnabledSwitchActions(this, undefined, ['skus_update', 'skus_update']),
               {
                 label: this.$t('compute.sku.setup.sell.status'),
+                permission: 'skus_update',
                 action: () => {
                   this.createDialog('ServerSkuUpdateDialog', {
                     data: this.list.selectedItems,

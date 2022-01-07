@@ -142,6 +142,7 @@ export default {
             },
             {
               label: i18n.t('cloudaccount.table.action.set_discount'),
+              permission: 'price_infos_perform_discount',
               action: () => {
                 this.createDialog('CloudaccountSetDiscountDialog', {
                   data: [obj],
@@ -173,6 +174,7 @@ export default {
             },
             {
               label: i18n.t('cloudenv.text_281'),
+              permission: 'cloudaccounts_perform_public',
               action: () => {
                 this.createDialog('CloudaccountSetShareDialog', {
                   data: [obj],
@@ -196,7 +198,7 @@ export default {
             },
             {
               label: i18n.t('cloudenv.text_316'),
-              permission: 'proxysettings_list',
+              permission: 'cloudaccounts_update',
               action: () => {
                 this.createDialog('UpdateProxySettingDialog', {
                   title: i18n.t('cloudenv.text_316'),

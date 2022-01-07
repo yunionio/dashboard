@@ -18,7 +18,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalancercluster', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'lb_loadbalancerclusters', columns: () => this.columns }),
       getRegionTableColumn(),
     ]
   },

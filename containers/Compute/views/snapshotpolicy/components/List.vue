@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getTenantFilter, getStatusFilter, getDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'SnapshotPolicyList',
@@ -78,7 +78,7 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
-          permission: 'snapshotpolicies_delete',
+          permission: 'snapshotpolicy_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

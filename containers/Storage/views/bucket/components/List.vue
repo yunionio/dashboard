@@ -135,6 +135,8 @@ export default {
                 name: this.$t('dictionary.bucket'),
                 scope: 'project',
                 resource: 'buckets',
+              }, {
+                permission: 'buckets_perform_public',
               }),
               {
                 label: this.$t('storage.text_96', [this.$t('dictionary.project')]),
@@ -187,6 +189,7 @@ export default {
               },
               {
                 label: this.$t('storage.text_100'),
+                permission: 'buckets_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
@@ -199,6 +202,7 @@ export default {
               },
               {
                 label: this.$t('table.action.set_tag'),
+                permission: 'buckets_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,

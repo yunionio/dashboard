@@ -143,6 +143,7 @@ export default {
             return [
               {
                 label: this.$t('db.text_69'),
+                permission: 'redis_elasticcaches_perform_sync',
                 action: (obj) => {
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
@@ -160,6 +161,7 @@ export default {
               },
               {
                 label: this.$t('db.text_239'),
+                permission: 'redis_elasticcaches_perform_flush_instance',
                 action: () => {
                   this.createDialog('RedisClearDataDialog', {
                     title: this.$t('db.text_239'),
@@ -191,6 +193,7 @@ export default {
               },
               {
                 label: this.$t('table.action.set_tag'),
+                permission: 'redis_elasticcaches_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -206,6 +209,7 @@ export default {
               },
               {
                 label: this.$t('db.text_70'),
+                permission: 'redis_elasticcaches_perform_restart',
                 action: () => {
                   this.createDialog('RedisRestartdialog', {
                     title: this.$t('db.text_70'),
@@ -239,6 +243,7 @@ export default {
               },
               {
                 label: this.$t('db.text_71'),
+                permission: 'redis_elasticcaches_perform_postpaid_expire',
                 action: () => {
                   this.createDialog('SetDurationDialog', {
                     data: this.list.selectedItems,
@@ -279,6 +284,7 @@ export default {
               },
               {
                 label: this.$t('db.text_157'),
+                permission: 'redis_elasticcaches_perform_renew',
                 action: () => {
                   this.createDialog('RedisRenewDialog', {
                     title: this.$t('db.text_157'),
@@ -301,6 +307,7 @@ export default {
               },
               {
                 label: this.$t('db.text_351'),
+                permission: 'redis_elasticcaches_perform_set_auto_renew',
                 action: () => {
                   this.createDialog('AutoRenewDialog', {
                     name: this.$t('dictionary.elasticcaches'),
@@ -320,11 +327,12 @@ export default {
                   }
                 },
               },
-              disableDeleteAction(this, {
+              disableDeleteAction(Object.assign(this, { permission: 'redis_elasticcaches_update' }), {
                 name: this.$t('dictionary.elasticcaches'),
               }),
               {
                 label: this.$t('db.text_42'),
+                permission: 'redis_elasticcaches_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

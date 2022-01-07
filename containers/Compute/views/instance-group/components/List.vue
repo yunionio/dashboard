@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getStatusFilter, getDomainFilter, getTenantFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'InstanceGroupList',
@@ -94,6 +94,7 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
+          permission: 'instancegroups_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

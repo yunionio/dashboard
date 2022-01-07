@@ -5,6 +5,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('db.text_69'),
+        permission: 'mongodbs_perform_syncstatus',
         action: (obj) => {
           this.onManager('performAction', {
             id: obj.id,
@@ -21,6 +22,7 @@ export default {
           return [
             {
               label: i18n.t('common_277'),
+              permission: 'mongodbs_update',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
                   name: this.$t('dictionary.mongodb'),
@@ -32,7 +34,7 @@ export default {
             },
             {
               label: i18n.t('db.text_42'),
-              permission: 'mongodb_delete',
+              permission: 'mongodbs_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

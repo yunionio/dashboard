@@ -84,6 +84,7 @@ export default {
       groupActions: [
         {
           label: this.$t('middleware.syncstatus'),
+          permission: 'elastic_searchs_perform_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['available', 'unknown'],
@@ -102,7 +103,7 @@ export default {
             return [
               {
                 label: this.$t('compute.text_283'),
-                permission: 'elastic_search_set_user_metadata',
+                permission: 'elastic_searchs_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -115,12 +116,14 @@ export default {
                   })
                 },
               },
-              disableDeleteAction(this, {
+              disableDeleteAction(Object.assign(this, {
+                permission: 'elastic_searchs_update',
+              }), {
                 name: this.$t('dictionary.elasticsearch'),
               }),
               {
                 label: this.$t('middleware.delete'),
-                permission: 'elastic_search_delete',
+                permission: 'elastic_searchs_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

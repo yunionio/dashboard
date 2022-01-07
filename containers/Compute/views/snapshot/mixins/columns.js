@@ -1,5 +1,3 @@
-import { DISK_TYPES } from '../constants'
-import { getStorageTypeTableColumn } from '../utils/columns'
 import { sizestr } from '@/utils/utils'
 import {
   getNameDescriptionTableColumn,
@@ -14,6 +12,8 @@ import {
   getOsArch,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import { getStorageTypeTableColumn } from '../utils/columns'
+import { DISK_TYPES } from '../constants'
 
 export default {
   created () {
@@ -28,7 +28,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'snapshot' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'snapshot', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'snapshots', columns: () => this.columns }),
       getOsArch(),
       {
         field: 'size',

@@ -88,7 +88,7 @@ export default {
             return [
               {
                 label: this.$t('compute.text_283'),
-                permission: 'lb_loadbalancercertificates_set_user_metadata',
+                permission: 'lb_loadbalancercertificates_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,

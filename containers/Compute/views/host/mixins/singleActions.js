@@ -101,7 +101,7 @@ export default {
           actions: (obj) => {
             const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
             return [
-              ...getEnabledSwitchActions(this, undefined, undefined, {
+              ...getEnabledSwitchActions(this, obj, ['hosts_perform_enable', 'hosts_perform_disable'], {
                 actions: [
                   async (obj) => {
                     await this.onManager('batchPerformAction', {
@@ -133,6 +133,7 @@ export default {
               }),
               {
                 label: i18n.t('compute.text_540'),
+                permission: 'hosts_perform_set_schedtag',
                 action: () => {
                   this.createDialog('HostsAdjustLabelDialog', {
                     data: [obj],
@@ -147,6 +148,7 @@ export default {
               },
               {
                 label: i18n.t('compute.text_513'),
+                permission: 'hosts_update',
                 action: () => {
                   this.createDialog('HostAdjustOversoldRatioDialog', {
                     data: [obj],
@@ -164,6 +166,7 @@ export default {
                 name: this.$t('dictionary.host'),
                 resource: 'hosts',
               }, {
+                permission: 'hosts_perform_change_owner',
                 meta: (obj) => {
                   if (!this.$store.getters.l3PermissionEnable) {
                     return {
@@ -181,6 +184,7 @@ export default {
                 scope: 'domain',
                 resource: 'hosts',
               }, {
+                permission: 'hosts_perform_public',
                 meta: function (obj) {
                   return {
                     validate: ownerDomain,
@@ -189,6 +193,7 @@ export default {
               }),
               {
                 label: i18n.t('compute.text_547'),
+                permission: 'hosts_perform_auto_migrate_on_host_down',
                 action: () => {
                   this.createDialog('DowntimeMigrateDialog', {
                     data: [obj],
@@ -212,6 +217,7 @@ export default {
               },
               {
                 label: i18n.t('compute.text_508'),
+                permission: 'hosts_perform_undo_convert',
                 action: () => {
                   this.createDialog('HostUnconvertDialog', {
                     data: [obj],
@@ -260,6 +266,7 @@ export default {
               },
               {
                 label: i18n.t('compute.text_550'),
+                permission: 'hosts_perform_host_maintenance',
                 action: () => {
                   this.createDialog('HostMaintenanceInDialog', {
                     data: [obj],
@@ -289,6 +296,7 @@ export default {
               },
               {
                 label: i18n.t('compute.text_559'),
+                permission: 'hosts_perform_host_maintenance',
                 action: () => {
                   this.createDialog('HostMaintenanceOutDialog', {
                     data: [obj],
@@ -311,6 +319,7 @@ export default {
               },
               {
                 label: i18n.t('compute.text_514'),
+                permission: 'hosts_perform_set_reserved_resource_for_isolated_device',
                 action: obj => {
                   this.createDialog('SetHostReserveResourceDialog', {
                     onManager: this.onManager,
@@ -339,6 +348,7 @@ export default {
               },
               {
                 label: i18n.t('compute.perform_delete'),
+                permission: 'hosts_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

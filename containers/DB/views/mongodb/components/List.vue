@@ -77,7 +77,7 @@ export default {
       groupActions: [
         {
           label: this.$t('db.text_69'),
-          permission: 'mongodb_perform_syncstatus',
+          permission: 'mongodbs_perform_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['running', 'ready'],
@@ -101,7 +101,7 @@ export default {
             return [
               {
                 label: this.$t('compute.text_283'),
-                permission: 'mongodb_perform_set_user_metadata',
+                permission: 'mongodbs_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -116,6 +116,7 @@ export default {
               },
               {
                 label: this.$t('common_277'),
+                permission: 'mongodbs_update',
                 action: (row) => {
                   this.createDialog('ChangeDisableDelete', {
                     name: this.$t('dictionary.mongodb'),
@@ -127,7 +128,7 @@ export default {
               },
               {
                 label: this.$t('compute.perform_delete'),
-                permission: 'mongodb_perform_delete',
+                permission: 'mongodbs_perform_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

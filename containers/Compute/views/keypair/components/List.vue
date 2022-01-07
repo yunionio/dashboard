@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'KeyPairList',
@@ -51,6 +51,7 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
+          permission: 'keypairs_create',
           action: () => {
             this.createDialog('CreateKeyPairDialog', {
               title: this.$t('compute.perform_create'),
@@ -63,6 +64,7 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
+          permission: 'keypairs_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

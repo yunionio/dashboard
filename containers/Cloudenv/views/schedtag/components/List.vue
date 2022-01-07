@@ -64,6 +64,7 @@ export default {
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
+          permission: 'schedtags_create',
           action: () => {
             this.createDialog('CreateSchedtagDialog', {
               onManager: this.onManager,
@@ -83,6 +84,7 @@ export default {
         },
         {
           label: this.$t('table.action.set_tag'),
+          permission: 'schedtags_perform_set_user_metadata',
           action: () => {
             this.createDialog('SetTagDialog', {
               data: this.list.selectedItems,
@@ -102,6 +104,7 @@ export default {
         },
         {
           label: this.$t('cloudenv.text_108'),
+          permission: 'schedtags_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

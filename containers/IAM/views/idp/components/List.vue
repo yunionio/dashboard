@@ -108,6 +108,7 @@ export default {
       groupActions: [
         {
           label: this.$t('system.text_128'),
+          permission: 'idps_create',
           action: () => {
             this.jumpTo('create')
           },
@@ -121,9 +122,10 @@ export default {
           label: this.$t('storage.text_33'),
           actions: () => {
             return [
-              ...getEnabledSwitchActions(this),
+              ...getEnabledSwitchActions(this, undefined, ['idps_perform_enable', 'idps_perform_disable']),
               {
                 label: this.$t('common.delete'),
+                permission: 'idps_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     title: this.$t('common.delete'),

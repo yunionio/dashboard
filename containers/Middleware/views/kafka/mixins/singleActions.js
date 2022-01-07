@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('middleware.syncstatus'),
+        permission: 'kafkas_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['available'],
@@ -23,12 +24,14 @@ export default {
         label: i18n.t('middleware.more'),
         actions: (obj) => {
           return [
-            disableDeleteAction(this, {
+            disableDeleteAction(Object.assign(this, {
+              permission: 'kafkas_update',
+            }), {
               name: this.$t('dictionary.kafka'),
             }),
             {
               label: i18n.t('middleware.delete'),
-              permission: 'kafka_delete',
+              permission: 'kafkas_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

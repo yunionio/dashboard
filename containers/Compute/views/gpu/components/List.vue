@@ -88,6 +88,7 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.text_485', [this.$t('dictionary.server')]),
+          permission: 'server_perform_detach_isolated_device',
           action: () => {
             this.createDialog('DetachGpuDialog', {
               data: this.list.selectedItems,
@@ -133,6 +134,7 @@ export default {
         },
         {
           label: this.$t('compute.text_490'),
+          permission: 'isolated_devices_update',
           action: () => {
             this.createDialog('SetReserveResourceDialog', {
               onManager: this.onManager,

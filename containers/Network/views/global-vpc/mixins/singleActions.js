@@ -36,14 +36,19 @@ export default {
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.globalvpc'),
               resource: 'globalvpcs',
+            }, {
+              permission: 'network_globalvpcs_perform_change_owner',
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.globalvpc'),
               scope: 'domain',
               resource: 'globalvpcs',
+            }, {
+              permission: 'network_globalvpcs_perform_public',
             }),
             {
               label: i18n.t('network.text_131'),
+              permission: 'network_globalvpcs_delete',
               action: (obj) => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
