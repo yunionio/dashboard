@@ -14,14 +14,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getStatusFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'EipList',
@@ -69,6 +69,7 @@ export default {
           return [
             {
               label: this.$t('network.text_201'),
+              permission: 'eips_perform_syncstatus',
               action: () => {
                 this.onManager('batchPerformAction', {
                   steadyStatus: ['running', 'ready'],
@@ -80,6 +81,7 @@ export default {
             },
             {
               label: this.$t('table.action.set_tag'),
+              permission: 'eips_perform_set_user_metadata',
               action: () => {
                 this.createDialog('SetTagDialog', {
                   data: this.list.selectedItems,

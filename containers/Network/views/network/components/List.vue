@@ -15,8 +15,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows.js'
 import { getNameFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter, getStatusFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
@@ -24,6 +22,8 @@ import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import regexp from '@/utils/regexp'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'NetworkList',
@@ -243,6 +243,8 @@ export default {
                 name: this.$t('dictionary.network'),
                 scope: 'project',
                 resource: 'networks',
+              }, {
+                permission: 'networks_perform_public',
               }),
               // {
               //   label: '设置共享',
@@ -327,6 +329,7 @@ export default {
               },
               {
                 label: this.$t('common_564'),
+                permission: 'networks_update',
                 action: () => {
                   this.createDialog('NetworkUpdateIsAutoAllocDialog', {
                     vm: this,
@@ -386,6 +389,7 @@ export default {
               },
               {
                 label: this.$t('table.action.set_tag'),
+                permission: 'networks_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,

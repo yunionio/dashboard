@@ -68,6 +68,7 @@ export default {
       groupActions: [
         {
           label: this.$t('system.text_128'),
+          permission: 'roles_create',
           action: () => {
             this.createDialog('RoleCreateDialog', {
               domain: this.resource === 'domains' ? this.resId : '',
@@ -90,6 +91,7 @@ export default {
           apiVersion: 'v1',
           noCandidateDomains: true,
         }, {
+          permission: 'roles_perform_public',
           meta: () => {
             return {
               validate: this.list.selectedItems.length,

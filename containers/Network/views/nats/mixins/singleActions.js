@@ -8,7 +8,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_201'),
-        // permission: 'natgateways_perform_syncstatus',
+        permission: 'natgateways_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['available'],
@@ -41,7 +41,7 @@ export default {
           return [
             {
               label: i18n.t('network.expired_release'),
-              permission: 'natgateway_perform_postpaid_expire',
+              permission: 'natgateways_perform_postpaid_expire',
               action: () => {
                 this.createDialog('SetDurationDialog', {
                   data: [obj],
@@ -71,6 +71,7 @@ export default {
             },
             {
               label: i18n.t('network.renew'),
+              permission: 'natgateways_perform_renew',
               action: () => {
                 this.createDialog('RenewDialog', {
                   name: this.$t('dictionary.nat'),
@@ -100,6 +101,7 @@ export default {
             },
             {
               label: i18n.t('network.auto.renew'),
+              permission: 'natgateways_perform_set_auto_renew',
               action: () => {
                 this.createDialog('AutoRenewDialog', {
                   name: i18n.t('dictionary.nat'),
@@ -129,6 +131,7 @@ export default {
             },
             disableDeleteAction(this, {
               name: this.$t('dictionary.nat'),
+              permission: 'natgateways_update',
               hidden: () => {
                 if (!this.isOwner(obj)) {
                   return {
@@ -144,7 +147,7 @@ export default {
             }),
             {
               label: i18n.t('network.text_131'),
-              permission: 'natgateway_delete',
+              permission: 'natgateways_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

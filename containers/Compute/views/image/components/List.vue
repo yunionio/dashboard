@@ -15,14 +15,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { getNameFilter, getTenantFilter, getDomainFilter, getOsArchFilter, getImageDistributionFilter } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 
 export default {
   name: 'ImageList',
@@ -132,6 +132,7 @@ export default {
                 resource: 'images',
                 apiVersion: 'v1',
               }, {
+                permission: 'images_perform_public,images_perform_private',
                 meta: () => {
                   let ret = {
                     validate: false,
@@ -172,6 +173,7 @@ export default {
               }),
               {
                 label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+                permission: 'images_perform_change_owner',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -203,6 +205,7 @@ export default {
               },
               {
                 label: this.$t('common_277'),
+                permission: 'images_update',
                 action: (row) => {
                   this.createDialog('ChangeDisableDelete', {
                     name: this.$t('compute.text_97'),
@@ -261,6 +264,7 @@ export default {
               },
               {
                 label: this.$t('table.action.set_tag'),
+                permission: 'images_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,

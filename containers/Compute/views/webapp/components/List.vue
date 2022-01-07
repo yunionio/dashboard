@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import {
@@ -23,6 +21,8 @@ import {
   getRegionFilter,
   getCloudProviderFilter,
 } from '@/utils/common/tableFilter'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'WebAppList',
@@ -74,6 +74,7 @@ export default {
       groupActions: [
         {
           label: this.$t('common.text00043'),
+          permission: 'webapps_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['ready'],
@@ -88,6 +89,7 @@ export default {
         },
         {
           label: this.$t('table.action.set_tag'),
+          permission: 'webapps_set_user_metadata',
           action: () => {
             this.createDialog('SetTagDialog', {
               data: this.list.selectedItems,

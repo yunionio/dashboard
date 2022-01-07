@@ -7,6 +7,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('db.text_69'),
+        permission: 'redis_elasticcaches_perform_sync',
         action: (obj) => {
           this.onManager('performAction', {
             id: obj.id,
@@ -28,6 +29,7 @@ export default {
             if (!isAuthModeOn && obj.brand !== 'Huawei') {
               return {
                 label: i18n.t('db.text_304'),
+                permission: 'redis_elasticcaches_perform_reset_password',
                 action: () => {
                   this.createDialog('RedisUpdateAuthModeDialog', {
                     title: i18n.t('db.text_304'),
@@ -57,6 +59,7 @@ export default {
             }
             return {
               label: i18n.t('db.text_305'),
+              permission: 'redis_elasticcaches_perform_update_auth_mode',
               action: () => {
                 this.createDialog('RedisUpdateAuthModeDialog', {
                   title: i18n.t('db.text_305'),
@@ -90,6 +93,7 @@ export default {
           return [
             {
               label: i18n.t('db.text_70'),
+              permission: 'redis_elasticcaches_perform_restart',
               action: () => {
                 this.createDialog('RedisRestartdialog', {
                   title: i18n.t('db.text_70'),
@@ -109,6 +113,7 @@ export default {
             },
             {
               label: i18n.t('db.text_159'),
+              permission: 'redis_elasticcaches_perform_change_spec',
               action: () => {
                 this.createDialog('RedisSetConfigDialog', {
                   title: i18n.t('db.text_159'),
@@ -131,6 +136,7 @@ export default {
             },
             {
               label: i18n.t('db.text_239'),
+              permission: 'redis_elasticcaches_perform_flush_instance',
               action: () => {
                 this.createDialog('RedisClearDataDialog', {
                   title: i18n.t('db.text_239'),
@@ -150,6 +156,7 @@ export default {
             },
             {
               label: provider === 'Huawei' ? i18n.t('db.text_308') : i18n.t('db.text_201'),
+              permission: 'redis_elasticcaches_perform_reset_password',
               action: () => {
                 this.createDialog('RedisResetPassworddialog', {
                   title: provider === 'Huawei' ? i18n.t('db.text_308') : i18n.t('db.text_201'),
@@ -169,6 +176,7 @@ export default {
             },
             {
               label: i18n.t('db.text_160', [i18n.t('dictionary.project')]),
+              permission: 'redis_elasticcaches_perform_change_owner',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   title: i18n.t('db.text_160', [i18n.t('dictionary.project')]),
@@ -202,6 +210,7 @@ export default {
             setAuthMode(),
             {
               label: i18n.t('db.text_71'),
+              permission: 'redis_elasticcaches_perform_postpaid_expire',
               action: () => {
                 this.createDialog('SetDurationDialog', {
                   data: [obj],
@@ -227,6 +236,7 @@ export default {
             },
             {
               label: i18n.t('db.text_157'),
+              permission: 'redis_elasticcaches_perform_renew',
               action: () => {
                 this.createDialog('RedisRenewDialog', {
                   title: i18n.t('db.text_157'),
@@ -249,6 +259,7 @@ export default {
             },
             {
               label: i18n.t('db.text_351'),
+              permission: 'redis_elasticcaches_perform_set_auto_renew',
               action: () => {
                 this.createDialog('AutoRenewDialog', {
                   name: i18n.t('dictionary.elasticcaches'),
@@ -268,7 +279,7 @@ export default {
                 }
               },
             },
-            disableDeleteAction(this, {
+            disableDeleteAction(Object.assign(this, { permission: 'redis_elasticcaches_update' }), {
               name: this.$t('dictionary.elasticcaches'),
             }),
             {

@@ -88,6 +88,7 @@ export default {
       const actions = [
         {
           label: this.$t('system.text_128'),
+          permission: 'users_create',
           action: () => {
             this.$router.push('/systemuser/create')
           },
@@ -100,6 +101,7 @@ export default {
         },
         {
           label: this.$t('system.text_478'),
+          permission: 'users_create',
           action: () => {
             this.createDialog('UserImprotDialog', {
               onManager: this.onManager,
@@ -113,6 +115,7 @@ export default {
             return [
               {
                 label: this.$t('system.text_479'),
+                permission: 'users_update',
                 action: () => {
                   this.createDialog('UserUpdateDialog', {
                     data: this.list.selectedItems,
@@ -121,7 +124,7 @@ export default {
                   })
                 },
               },
-              ...getEnabledSwitchActions(this, undefined, undefined, {
+              ...getEnabledSwitchActions(this, undefined, ['users_perform_enable', 'users_perform_disable'], {
                 actions: [
                   () => {
                     this.onManager('batchUpdate', {
@@ -147,6 +150,7 @@ export default {
               }),
               {
                 label: this.$t('system.text_129'),
+                permission: 'users_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

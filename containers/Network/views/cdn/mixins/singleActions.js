@@ -7,6 +7,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_201'),
+        permission: 'cdn_domains_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['offline', 'online'],
@@ -32,7 +33,9 @@ export default {
         label: i18n.t('network.text_129'),
         actions: (obj) => {
           return [
-            disableDeleteAction(this, {
+            disableDeleteAction(Object.assign(this, {
+              permission: 'cdn_domains_update',
+            }), {
               name: this.$t('dictionary.cdn_domain'),
               meta: () => {
                 if (!this.isOwner(obj)) {

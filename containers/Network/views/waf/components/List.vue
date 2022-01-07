@@ -63,6 +63,7 @@ export default {
       groupActions: [
         {
           label: this.$t('table.action.set_tag'),
+          permission: 'waf_instances_perform_set_user_metadata',
           action: () => {
             this.createDialog('SetTagDialog', {
               data: this.list.selectedItems,

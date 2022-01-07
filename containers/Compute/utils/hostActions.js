@@ -6,6 +6,7 @@ export function hostCommonActions (hostList) {
   return [
     {
       label: hostList.$t('compute.text_272'),
+      permission: 'hosts_perform_start',
       action: (obj) => {
         hostList.list.batchPerformAction('start', null, hostList.list.steadyStatus)
       },
@@ -43,6 +44,7 @@ export function hostCommonActions (hostList) {
     },
     {
       label: hostList.$t('compute.text_273'),
+      permission: 'hosts_perform_stop',
       action: (obj) => {
         hostList.list.batchPerformAction('stop', null, hostList.list.steadyStatus)
       },
@@ -80,6 +82,7 @@ export function hostCommonActions (hostList) {
     },
     {
       label: hostList.$t('compute.text_274'),
+      permission: 'hosts_perform_reset',
       action: (obj) => {
         hostList.list.batchPerformAction('reset', null, hostList.list.steadyStatus)
       },
@@ -117,6 +120,7 @@ export function hostCommonActions (hostList) {
     },
     {
       label: hostList.$t('compute.text_550'),
+      permission: 'hosts_perform_maintenance',
       action: () => {
         hostList.list.batchPerformAction('maintenance', null, hostList.list.steadyStatus)
       },
@@ -161,6 +165,7 @@ export function hostCommonActions (hostList) {
     },
     {
       label: hostList.$t('compute.text_559'),
+      permission: 'hosts_perform_unmaintenance',
       action: () => {
         hostList.list.batchPerformAction('unmaintenance', null, hostList.list.steadyStatus)
       },
@@ -205,6 +210,7 @@ export function hostCommonActions (hostList) {
     },
     {
       label: hostList.$t('compute.perform_sync_status'),
+      permission: 'hosts_perform_syncstatus',
       action: () => {
         hostList.list.batchPerformAction('syncstatus', null, hostList.list.steadyStatus)
       },

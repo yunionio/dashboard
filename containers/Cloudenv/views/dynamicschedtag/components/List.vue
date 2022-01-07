@@ -57,6 +57,7 @@ export default {
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
+          permission: 'dynamicschedtags_create',
           action: () => {
             this.createDialog('CreateDynamicschedtagDialog', {
               onManager: this.onManager,
@@ -70,6 +71,7 @@ export default {
         },
         {
           label: this.$t('cloudenv.text_108'),
+          permission: 'dynamicschedtags_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

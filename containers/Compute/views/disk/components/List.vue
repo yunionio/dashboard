@@ -16,9 +16,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { MEDIUM_MAP } from '../../../constants'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import {
   getTenantFilter,
   getStatusFilter,
@@ -33,6 +30,9 @@ import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
 import { PROVIDER_MAP } from '@/constants'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import { MEDIUM_MAP } from '../../../constants'
 
 export default {
   name: 'DiskList',
@@ -146,6 +146,7 @@ export default {
             },
             {
               label: this.$t('table.action.set_tag'),
+              permission: 'disks_perform_set_user_metadata',
               action: () => {
                 this.createDialog('SetTagDialog', {
                   data: this.list.selectedItems,

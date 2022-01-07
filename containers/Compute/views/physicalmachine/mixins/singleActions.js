@@ -94,9 +94,10 @@ export default {
         label: i18n.t('compute.text_352'),
         actions: (obj) => {
           return [
-            ...getEnabledSwitchActions(Object.assign({}, this, { resource: 'physicalmachine' }), obj, undefined, { resourceName: this.$t('dictionary.physicalmachine') }),
+            ...getEnabledSwitchActions(Object.assign({}, this, { resource: 'physicalmachine' }), obj, ['hosts_perform_enable', 'hosts_perform_disable'], { resourceName: this.$t('dictionary.physicalmachine') }),
             {
               label: i18n.t('compute.text_541'),
+              permission: 'hosts_perform_set_schedtag',
               action: () => {
                 this.createDialog('HostsAdjustLabelDialog', {
                   data: [obj],
@@ -107,6 +108,7 @@ export default {
             },
             {
               label: i18n.t('compute.perform_sync_status'),
+              permission: 'hosts_perform_syncstatus',
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -131,14 +133,19 @@ export default {
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.physicalmachine'),
               resource: 'hosts',
+            }, {
+              permission: 'hosts_perform_change_owner',
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.physicalmachine'),
               scope: 'domain',
               resource: 'hosts',
+            }, {
+              permission: 'hosts_perform_public',
             }),
             {
               label: i18n.t('compute.text_298'),
+              permission: 'server_create',
               action: () => {
                 let wire_id = ''
                 if (obj.nic_info) {
@@ -198,6 +205,7 @@ export default {
             },
             {
               label: i18n.t('compute.text_828'),
+              permission: 'hosts_perform_convert_hypervisor',
               action: () => {
                 this.createDialog('HostsConvertDialog', {
                   data: [obj],
@@ -247,6 +255,7 @@ export default {
             },
             {
               label: i18n.t('compute.host_ipmi_probe'),
+              permission: 'hosts_perform_ipmi_probe',
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -260,6 +269,7 @@ export default {
             },
             {
               label: i18n.t('compute.host_prepare'),
+              permission: 'hosts_perform_prepare',
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -273,6 +283,7 @@ export default {
             },
             {
               label: i18n.t('compute.text_272'),
+              permission: 'hosts_perform_start',
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -295,6 +306,7 @@ export default {
             },
             {
               label: i18n.t('compute.text_273'),
+              permission: 'hosts_perform_stop',
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -327,6 +339,7 @@ export default {
             },
             {
               label: i18n.t('compute.text_550'),
+              permission: 'hosts_perform_maintenance',
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -370,6 +383,7 @@ export default {
             },
             {
               label: i18n.t('compute.text_559'),
+              permission: 'hosts_perform_unmaintenance',
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,
@@ -413,6 +427,7 @@ export default {
             },
             {
               label: i18n.t('compute.perform_delete'),
+              permission: 'hosts_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   name: this.$t('dictionary.physicalmachine'),

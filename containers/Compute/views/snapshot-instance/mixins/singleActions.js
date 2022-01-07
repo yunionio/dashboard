@@ -4,6 +4,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_1355'),
+        permission: 'server_perform_instance_snapshot_reset',
         action: obj => {
           this.createDialog('RollbackHostDialog', {
             vm: this,
@@ -22,7 +23,7 @@ export default {
       },
       {
         label: i18n.t('compute.perform_delete'),
-        permission: 'snapshots_delete',
+        permission: 'instance_snapshots_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,

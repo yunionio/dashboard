@@ -79,6 +79,9 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) 
       return ret
     },
   }
+  if (params.permission) {
+    options.permission = params.permission
+  }
   return options
 }
 
@@ -186,7 +189,7 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
   const btns = ['enable', 'disable'].map((type, index) => {
     const _permissions = permissions || []
     return {
-      permissions: _permissions[index],
+      permission: _permissions[index],
       label: i18n.t('status.enabled')[type],
       action: (rowItem) => openDialog(rowItem, type, index),
       meta: (rowItem) => {

@@ -4,6 +4,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('compute.text_483', [this.$t('dictionary.server')]),
+        permission: 'server_perform_attach_isolated_device',
         action: obj => {
           this.createDialog('AttachGpuDialog', {
             data: [obj],
@@ -20,6 +21,7 @@ export default {
       },
       {
         label: this.$t('compute.text_485', [this.$t('dictionary.server')]),
+        permission: 'server_perform_detach_isolated_device',
         action: obj => {
           this.createDialog('DetachGpuDialog', {
             data: [obj],
@@ -57,6 +59,7 @@ export default {
       },
       {
         label: i18n.t('compute.text_490'),
+        permission: 'isolated_devices_update',
         action: obj => {
           this.createDialog('SetReserveResourceDialog', {
             onManager: this.onManager,
