@@ -21,7 +21,7 @@
             v-decorator="decorators.auto_start" />
         </a-form-item>
         <!-- 跳过CPU检查 -->
-        <a-form-item :label="$t('compute.live_migrate.skip_cpu_check')" v-if="isSingle && firstData.status === 'running'" :extra="$t('compute.live_migrate.skip_cpu_check.explain')">
+        <a-form-item :label="$t('compute.live_migrate.skip_cpu_check')" v-if="firstData.status === 'running'" :extra="$t('compute.live_migrate.skip_cpu_check.explain')">
           <a-switch
             :checkedChildren="$t('compute.text_115')"
             :unCheckedChildren="$t('compute.text_116')"
@@ -201,6 +201,9 @@ export default {
         guest_ids: ids,
         prefer_host: values.host,
       }
+      if (values.skip_cpu_check) {
+        data.skip_cpu_check = true
+      }
       return this.params.onManager('performClassAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
@@ -260,6 +263,7 @@ export default {
     skipCpuCheckChangeHandle (v) {
       const rescue_mode = this.form.fc.getFieldValue('rescue_mode')
       if (rescue_mode) return
+      if (!this.isSingle) return
       this.queryForcastData(v)
     },
     queryHosts () {
