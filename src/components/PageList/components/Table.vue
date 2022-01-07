@@ -108,6 +108,8 @@ export default {
     noDataText: String,
     showPage: Boolean,
     beforeShowMenuLoaded: Boolean,
+    // create list传递的resource
+    resource: [String, Object, Function],
   },
   data () {
     const storageKey = this.id && `__oc_${this.id}__`
