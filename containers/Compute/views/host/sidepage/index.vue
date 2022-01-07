@@ -95,7 +95,7 @@ export default {
       } else if (this.params.windowData.currentTab === 'gpu-list') {
         return {
           host: this.data.id,
-          gpu: true,
+          // gpu: true,
         }
       } else if (this.params.windowData.currentTab === 'bmc-log') {
         return {

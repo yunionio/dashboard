@@ -96,7 +96,7 @@ export default {
   methods: {
     getParam () {
       const ret = {
-        gpu: true,
+        // gpu: true,
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
         host: this.resId,
       }
