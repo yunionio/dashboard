@@ -68,7 +68,7 @@
       "rebuild_root_fail": "Fail to reset OS",
       "snapshot_start": "Start snapshotting",
       "snapshot": "Snapshotting",
-      "block_stream": "Running",
+      "block_stream": "Data Copying",
       "snapshot_succ": "Snapshot successfully",
       "snapshot_failed": "Fail to snapshot",
       "syncing": "Syncing",
