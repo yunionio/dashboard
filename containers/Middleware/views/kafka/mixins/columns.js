@@ -26,7 +26,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'kafka', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'kafkas', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'kafka' }),
       {
         field: 'version',

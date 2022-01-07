@@ -4,7 +4,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_131'),
-        permission: 'lb_loadbalancercertificates_delete',
+        permission: 'lb_loadbalancerclusters_delete',
         action: (obj) => {
           this.createDialog('ClusterDeleteDialog', {
             vm: this,

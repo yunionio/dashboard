@@ -4,6 +4,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('cloudenv.text_383'),
+        permission: 'dynamicschedtags_update',
         action: (obj) => {
           this.createDialog('UpdateDynamicschedtagDialog', {
             data: [obj],
@@ -19,6 +20,7 @@ export default {
           return [
             {
               label: i18n.t('cloudenv.text_334'),
+              permission: 'dynamicschedtags_update',
               action: obj => {
                 this.onManager('update', {
                   id: obj.id,
@@ -35,6 +37,7 @@ export default {
             },
             {
               label: i18n.t('cloudenv.text_335'),
+              permission: 'dynamicschedtags_update',
               action: obj => {
                 this.onManager('update', {
                   id: obj.id,
@@ -51,6 +54,7 @@ export default {
             },
             {
               label: i18n.t('cloudenv.text_108'),
+              permission: 'dynamicschedtags_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

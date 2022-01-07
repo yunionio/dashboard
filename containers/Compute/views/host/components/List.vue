@@ -15,9 +15,7 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
-import SingleActionsMixin from '../mixins/singleActions'
 import { getNameFilter, getDescriptionFilter, getStatusFilter, getEnabledFilter, getBrandFilter, getProjectDomainFilter, getAccountFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -26,6 +24,8 @@ import { typeClouds } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import regexp from '@/utils/regexp'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'HostList',
@@ -160,7 +160,7 @@ export default {
       const ownerDomain = this.$store.getters.isAdminMode || this.list.selectedItems.every(obj => obj.domain_id === this.$store.getters.userInfo.projectDomainId)
       return _frontGroupActions.concat(
         [
-          ...getEnabledSwitchActions(this, undefined, undefined, {
+          ...getEnabledSwitchActions(this, undefined, ['hosts_perform_enable', 'hosts_perform_disable'], {
             actions: [
               async (obj) => {
                 const ids = this.list.selectedItems.map(item => item.id)
@@ -206,6 +206,7 @@ export default {
                   name: this.$t('dictionary.host'),
                   resource: 'hosts',
                 }, {
+                  permission: 'hosts_perform_change_owner',
                   meta: function () {
                     return {
                       validate: ownerDomain,
@@ -216,9 +217,12 @@ export default {
                   name: this.$t('dictionary.host'),
                   scope: 'domain',
                   resource: 'hosts',
+                }, {
+                  permission: 'hosts_perform_public',
                 }),
                 {
                   label: this.$t('compute.text_540'),
+                  permission: 'hosts_perform_set_schedtag',
                   action: (obj) => {
                     this.createDialog('HostsAdjustLabelDialog', {
                       data: this.list.selectedItems,
@@ -233,6 +237,7 @@ export default {
                 },
                 {
                   label: this.$t('compute.text_508'),
+                  permission: 'hosts_perform_undo_convert',
                   action: (obj) => {
                     // this.list.batchPerformAction('disable', null)
                     this.createDialog('HostUnconvertDialog', {
@@ -287,6 +292,7 @@ export default {
                 },
                 {
                   label: this.$t('compute.text_513'),
+                  permission: 'hosts_update',
                   action: () => {
                     this.createDialog('HostAdjustOversoldRatioDialog', {
                       data: this.list.selectedItems,
@@ -302,6 +308,7 @@ export default {
                 },
                 {
                   label: this.$t('compute.text_514'),
+                  permission: 'hosts_perform_set_reserved_resource_for_isolated_device',
                   action: () => {
                     this.createDialog('SetHostReserveResourceDialog', {
                       onManager: this.onManager,
@@ -332,6 +339,7 @@ export default {
                 },
                 {
                   label: this.$t('table.action.set_tag'),
+                  permission: 'hosts_perform_set_user_metadata',
                   action: () => {
                     this.createDialog('SetTagDialog', {
                       data: this.list.selectedItems,

@@ -21,7 +21,7 @@ export default {
         label: i18n.t('system.text_153'),
         actions: (row) => {
           return [
-            ...getEnabledSwitchActions(this, row, undefined, {
+            ...getEnabledSwitchActions(this, row, ['domains_perform_enable', 'disable'], {
               actions: [
                 () => {
                   this.onManager('batchUpdate', {
@@ -58,6 +58,7 @@ export default {
             // },
             {
               label: i18n.t('system.text_129'),
+              permission: 'domains_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

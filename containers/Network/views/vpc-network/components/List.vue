@@ -75,6 +75,7 @@ export default {
       groupActions: [
         {
           label: this.$t('table.action.set_tag'),
+          permission: 'inter_vpc_networks_perform_set_user_metadata',
           action: () => {
             this.createDialog('SetTagDialog', {
               data: this.list.selectedItems,
@@ -95,6 +96,7 @@ export default {
         },
         {
           label: this.$t('network.text_201'),
+          permission: 'inter_vpc_networks_perform_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['running', 'ready'],
@@ -111,6 +113,7 @@ export default {
         },
         {
           label: this.$t('network.text_131'),
+          permission: 'inter_vpc_networks_perform_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

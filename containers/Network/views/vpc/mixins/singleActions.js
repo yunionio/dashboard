@@ -42,6 +42,8 @@ export default {
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.vpc'),
               resource: 'vpcs',
+            }, {
+              permission: 'vpcs_perform_change_owner',
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.vpc'),

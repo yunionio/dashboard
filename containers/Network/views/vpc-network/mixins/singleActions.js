@@ -3,6 +3,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('network.text_201'),
+        permission: 'inter_vpc_networks_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
@@ -30,6 +31,7 @@ export default {
       },
       {
         label: this.$t('network.text_131'),
+        permission: 'inter_vpc_networks_perform_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,

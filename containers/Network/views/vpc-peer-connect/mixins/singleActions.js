@@ -3,6 +3,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('network.text_201'),
+        permission: 'vpc_peering_connections_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
@@ -30,6 +31,7 @@ export default {
       // },
       {
         label: this.$t('network.text_131'),
+        permission: 'vpc_peering_connections_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,

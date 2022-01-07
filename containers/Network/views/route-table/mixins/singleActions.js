@@ -5,6 +5,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('common.text00043'),
+        permission: 'route_tables_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: Object.values(expectStatus.routeTable).flat(),

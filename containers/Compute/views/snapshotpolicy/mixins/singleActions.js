@@ -4,6 +4,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_1084'),
+        permission: 'disks_perform_bind_snapshotpolicy',
         action: obj => {
           this.createDialog('AttachDiskDialog', {
             data: [obj],

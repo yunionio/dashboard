@@ -174,6 +174,8 @@ export default {
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.vpc'),
                 resource: 'vpcs',
+              }, {
+                permission: 'vpcs_perform_change_owner',
               }),
               getSetPublicAction(this, {
                 name: this.$t('dictionary.vpc'),
@@ -184,7 +186,7 @@ export default {
               }),
               {
                 label: this.$t('table.action.set_tag'),
-                permission: 'vpcs_perform_set_schedtag',
+                permission: 'vpcs_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,

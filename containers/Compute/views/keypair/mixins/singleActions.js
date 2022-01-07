@@ -4,6 +4,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.perform_delete'),
+        permission: 'keypairs_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,

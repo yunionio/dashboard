@@ -82,6 +82,7 @@ export default {
           scope: 'domain',
           resource: 'proxysettings',
         }, {
+          permission: 'proxysettings_perform_public',
           meta: () => {
             const lent = this.list.selectedItems.length
             if (lent === 0) {
