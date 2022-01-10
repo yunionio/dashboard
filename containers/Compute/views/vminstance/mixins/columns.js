@@ -84,6 +84,7 @@ export default {
           { required: true, message: i18nLocale.t('compute.text_210') },
           // { validator: this.$validate('resourceCreateName') },
         ],
+        statusModule: 'server',
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
