@@ -267,7 +267,7 @@ export default {
     },
     brands () {
       const isServer = this.form.fd.resType === 'server'
-      const brands = this.capability.brands.map(item => {
+      const brands = (this.capability.brands || []).map(item => {
         const opt = typeClouds.brandMap[item]
         if (opt) {
           return {
