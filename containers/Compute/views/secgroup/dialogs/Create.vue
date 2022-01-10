@@ -102,7 +102,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.text_333') },
-              { validator: this.$validate('templateName') },
+              // { validator: this.$validate('templateName') },
             ],
           },
         ],
