@@ -95,6 +95,7 @@ export default {
       singleActions: [
         {
           label: this.$t('db.text_328'),
+          permission: 'redis_elasticcacheacls_update',
           action: (obj) => {
             this.createDialog('RedisWhiteListFormDialog', {
               title: this.$t('db.text_328'),

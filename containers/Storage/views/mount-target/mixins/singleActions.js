@@ -5,6 +5,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('storage.text_100'),
+        permission: 'mount_targets_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['available'],
@@ -24,7 +25,7 @@ export default {
           return [
             {
               label: i18n.t('storage.text_36'),
-              permission: 'mount_target_delete',
+              permission: 'mount_targets_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

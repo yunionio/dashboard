@@ -75,6 +75,7 @@ export default {
       groupActions: [
         {
           label: this.$t('system.text_452', [this.$t('dictionary.user')]),
+          permission: 'groups_perform_add_users',
           action: () => {
             this.createDialog('GroupJoinUserDialog', {
               data: [this.data],
@@ -109,6 +110,7 @@ export default {
         },
         {
           label: this.$t('compute.text_950'),
+          permission: 'groups_perform_remove_users',
           action: () => {
             this.createDialog('GroupLeaveUserDialog', {
               title: this.$t('system.text_525'),
@@ -128,6 +130,7 @@ export default {
       singleActions: [
         {
           label: this.$t('compute.text_950'),
+          permission: 'groups_perform_remove_users',
           action: (obj) => {
             this.createDialog('GroupLeaveUserDialog', {
               title: this.$t('compute.text_950'),

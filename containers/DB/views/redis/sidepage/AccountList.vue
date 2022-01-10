@@ -113,6 +113,7 @@ export default {
       singleActions: [
         {
           label: this.$t('db.text_201'),
+          permission: 'redis_elasticcacheaccounts_perform_reset_password',
           action: (obj) => {
             this.createDialog('RedisAccountLisResetPwdDialog', {
               data: [obj],
@@ -126,6 +127,7 @@ export default {
         },
         {
           label: this.$t('db.text_203'),
+          permission: 'redis_elasticcacheaccounts_perform_reset_password',
           action: (obj) => {
             this.createDialog('RedisAccountListSetPrivilegeDialog', {
               title: this.$t('db.text_203'),

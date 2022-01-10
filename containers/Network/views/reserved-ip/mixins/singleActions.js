@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_666'),
+        permission: 'reservedips_update',
         action: (obj) => {
           this.createDialog('ReservedIPFreedDialog', {
             title: i18n.t('network.text_666'),

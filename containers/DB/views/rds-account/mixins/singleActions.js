@@ -27,6 +27,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('db.text_201'),
+        permission: 'rds_dbinstanceaccounts_perform_reset_password',
         action: (obj) => {
           this.createDialog('RedisAccountLisResetPwdDialog', {
             data: [obj],
@@ -47,6 +48,7 @@ export default {
       },
       {
         label: this.$t('db.text_203'),
+        permission: 'rds_dbinstanceaccounts_perform_set_privileges',
         action: (obj) => {
           this.createDialog('RDSAccountUpdatePrivilegeDialog', {
             title: this.$t('db.text_203'),

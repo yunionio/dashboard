@@ -71,6 +71,7 @@ export default {
       groupActions: [
         {
           label: this.$t('role.action.add_policies'),
+          permission: 'roles_perform_set_policies',
           action: () => {
             this.createDialog('RoleSetPoliciesDialog', {
               data: [this.data],
@@ -90,6 +91,7 @@ export default {
         },
         {
           label: this.$t('common.remove'),
+          permission: 'rolepolicies_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -106,6 +108,7 @@ export default {
       singleActions: [
         {
           label: this.$t('common.remove'),
+          permission: 'rolepolicies_delete',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               vm: this,

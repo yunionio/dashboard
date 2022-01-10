@@ -97,7 +97,7 @@ export default {
                   })
                 },
               },
-              ...getEnabledSwitchActions(this),
+              ...getEnabledSwitchActions(this, undefined, ['dns_recordsets_enable', 'dns_recordsets_disable']),
               {
                 label: this.$t('network.text_131'),
                 permission: 'dns_recordsets_delete',

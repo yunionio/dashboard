@@ -9,6 +9,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('table.action.delete'),
+        permission: 'samlusers_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,

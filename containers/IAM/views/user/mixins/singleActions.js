@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('system.text_479'),
+        permission: 'users_update',
         action: row => {
           this.createDialog('UserUpdateDialog', {
             data: [row],
@@ -18,7 +19,7 @@ export default {
         label: i18n.t('system.text_153'),
         actions: row => {
           return [
-            ...getEnabledSwitchActions(this, row, undefined, {
+            ...getEnabledSwitchActions(this, row, ['users_perform_enable', 'users_perform_disable'], {
               actions: [
                 () => {
                   this.onManager('update', {
@@ -44,6 +45,7 @@ export default {
             }),
             {
               label: i18n.t('compute.text_276'),
+              permission: 'users_update',
               action: () => {
                 this.createDialog('UserUpdatePasswordDialog', {
                   data: [row],
@@ -76,7 +78,7 @@ export default {
             },
             {
               label: i18n.t('system.text_129'),
-              permission: 'cloudaccounts_delete',
+              permission: 'users_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

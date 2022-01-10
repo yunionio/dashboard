@@ -140,6 +140,7 @@ export default {
       singleActions: [
         {
           label: this.$t('compute.text_950'),
+          permission: 'server_perform_detach_scaling_group',
           action: (row) => {
             this.createDialog('ScalingGroupServerRemoveDialog', {
               title: this.$t('compute.text_950'),
@@ -155,6 +156,7 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.text_950'),
+          permission: 'server_perform_detach_scaling_group',
           action: (row) => {
             this.createDialog('ScalingGroupServerRemoveDialog', {
               title: this.$t('compute.text_950'),
