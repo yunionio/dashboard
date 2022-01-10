@@ -57,6 +57,7 @@ export default {
       groupActions: [
         {
           label: this.$t('system.text_128'),
+          permission: 'contacts_create',
           action: () => {
             this.createDialog('ContactCreateDialog', {
               success: () => {
@@ -76,6 +77,7 @@ export default {
             return [
               {
                 label: this.$t('system.management_notify_channels'),
+                permission: 'contacts_update',
                 action: () => {
                   this.createDialog('SetupNotifyChannelsDialog', {
                     data: this.list.selectedItems,
@@ -102,6 +104,7 @@ export default {
               },
               {
                 label: this.$t('system.text_129'),
+                permission: 'contacts_delete',
                 action: (obj) => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
