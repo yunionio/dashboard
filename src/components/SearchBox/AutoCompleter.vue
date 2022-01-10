@@ -351,7 +351,7 @@ export default {
       e.stopPropagation()
       this.search = e.target.value
       let value = (e.target.value && e.target.value.split(this.keySeparator)) || []
-      value = value[1] && value[1].split(this.valueSeparator)
+      value = (value[1] && value[1].split(this.valueSeparator)) || value[0]
       if (this.isDropdown && !this.isDate) {
         if (!value) {
           this.selectKey = null
