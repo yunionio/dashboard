@@ -189,8 +189,8 @@ export default {
     },
     fetchCloudEnvs () {
       const cloudEnvs = []
-      let brands = this.capability.brands
-      brands = R.concat(brands, this.capability.disabled_brands)
+      let brands = this.capability.brands || []
+      brands = R.concat(brands, this.capability.disabled_brands || [])
       brands = R.uniq(brands)
       for (let i = 0, len = brands.length; i < len; i++) {
         const data = R.find(R.propEq('key', typeClouds.brandMap[brands[i]].cloud_env))(cloudEnvs)
