@@ -807,6 +807,7 @@
   "system.notify.name.resource_update": "资源密码变更发送通知",
   "system.notify.name.resource_release_due_3_day": "资源（含包年包月）到期释放前3天发送通知",
   "system.notify.name.resource_release_due_1_day": "资源（含包年包月）到期释放前1天发送通知",
+  "system.notify.name.resource_release_due_n_day": "资源（含包年包月）到期释放前{0}天发送通知",
   "system.notify.name.resource_operation_failed": "资源操作失败发送通知",
   "system.notify.name.resource_create_or_delete": "资源创建、删除发送通知",
   "system.notify.name.resource_change_config": "资源调整配置发送通知",
