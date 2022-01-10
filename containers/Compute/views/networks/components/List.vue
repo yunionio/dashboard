@@ -48,6 +48,7 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.text_199'),
+          permission: 'server_perform_attachnetwork',
           action: () => {
             this.createDialog('VmSetNetworkDialog', {
               title: this.$t('compute.text_199'),

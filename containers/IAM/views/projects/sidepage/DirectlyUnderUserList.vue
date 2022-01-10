@@ -117,6 +117,7 @@ export default {
       groupActions: [
         {
           label: this.$t('common_114'),
+          permission: 'projects_perform_join',
           action: () => {
             this.createDialog('ProjectAddUserOrGroupDialog', {
               data: [this.data],
@@ -146,6 +147,7 @@ export default {
         },
         {
           label: this.$t('compute.text_950'),
+          permission: 'projects_perform_leave',
           action: () => {
             this.createDialog('ProjectDeleteResDialog', {
               vm: this,
@@ -179,6 +181,7 @@ export default {
       singleActions: [
         {
           label: this.$t('common_490'),
+          permission: 'projects_perform_join',
           action: (obj) => {
             this.createDialog('ProjectEditRolesDialog', {
               data: [obj],
@@ -196,6 +199,7 @@ export default {
         },
         {
           label: this.$t('compute.text_950'),
+          permission: 'projects_delete',
           action: (obj) => {
             this.createDialog('ProjectDeleteResDialog', {
               vm: this,

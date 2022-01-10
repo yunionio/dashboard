@@ -49,6 +49,7 @@ export default {
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
+          permission: 'samlusers_create',
           action: () => {
             this.createDialog('SamluserCreateDialog', {
               onManager: this.onManager,
@@ -67,6 +68,7 @@ export default {
         },
         {
           label: this.$t('table.action.delete'),
+          permission: 'samlusers_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

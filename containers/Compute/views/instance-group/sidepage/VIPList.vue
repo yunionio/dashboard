@@ -47,6 +47,7 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.create_vip'),
+          permission: 'instancegroups_perform_attach_network',
           action: () => {
             this.createDialog('InstanceGroupAddVipNetworkDialog', {
               title: this.$t('compute.create_vip'),

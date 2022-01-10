@@ -49,6 +49,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
+          permission: 'reservedips_create',
           action: () => {
             this.createDialog('ReservedIpCreateDialog', {
               title: this.$t('network.text_26'),

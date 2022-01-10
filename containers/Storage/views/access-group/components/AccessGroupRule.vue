@@ -70,7 +70,7 @@ export default {
       singleActions: [
         {
           label: this.$t('common.action.edit'),
-          permission: 'access_group_rule_update',
+          permission: 'access_group_rules_update',
           action: obj => {
             this.createDialog('AccessGroupRuleEditDialog', {
               data: [obj],

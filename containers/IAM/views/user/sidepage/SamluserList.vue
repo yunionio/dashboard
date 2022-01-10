@@ -50,6 +50,7 @@ export default {
       groupActions: [
         {
           label: this.$t('common.create'),
+          permission: 'samlusers_create',
           action: () => {
             this.createDialog('SamluserCreateForUserDialog', {
               user: this.data,
@@ -64,6 +65,7 @@ export default {
         },
         {
           label: this.$t('common.delete'),
+          permission: 'samlusers_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -80,6 +82,7 @@ export default {
       singleActions: [
         {
           label: this.$t('common.delete'),
+          permission: 'samlusers_delete',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               vm: this,

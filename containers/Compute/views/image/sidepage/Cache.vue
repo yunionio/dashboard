@@ -75,6 +75,7 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
+          permission: 'storagecachedimages_create',
           actions: (obj) => {
             return [
               {
@@ -106,6 +107,7 @@ export default {
       singleActions: [
         {
           label: this.$t('compute.perform_delete'),
+          permission: 'storagecachedimages_delete',
           action: (obj) => {
             this.createDialog('DeleteCacheDialog', {
               data: [obj],

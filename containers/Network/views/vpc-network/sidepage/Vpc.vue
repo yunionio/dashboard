@@ -75,6 +75,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_719'),
+          permission: 'inter_vpc_networks_perform_addvpc',
           action: () => {
             this.createDialog('AssociateVpcForVpcNetworkDialog', {
               title: this.$t('network.text_719'),
@@ -96,6 +97,7 @@ export default {
       singleActions: [
         {
           label: this.$t('network.text_219'),
+          permission: 'inter_vpc_networks_perform_removevpc',
           action: (obj) => {
             this.createDialog('RemoveVpcForVpcNetworkDialog', {
               title: this.$t('network.text_719'),

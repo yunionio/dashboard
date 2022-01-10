@@ -51,6 +51,7 @@ export default {
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
+          permission: 'cloudproviders_create',
           action: () => {
             this.createDialog('cloudproviderCreateDialog', {
               data: this.data,
@@ -70,7 +71,7 @@ export default {
           label: this.$t('common.batchAction'),
           actions: obj => {
             return [
-              ...getEnabledSwitchActions(this, undefined, undefined, {
+              ...getEnabledSwitchActions(this, undefined, ['cloudproviders_perform_enable', 'cloudproviders_perform_disable'], {
                 actions: [
                   async (obj) => {
                     const ids = this.list.selectedItems.map(item => item.id)
@@ -110,6 +111,7 @@ export default {
               }),
               {
                 label: this.$t('cloudenv.text_294', [this.$t('dictionary.project')]),
+                permission: 'cloudproviders_perform_change_project',
                 action: () => {
                   if (isAccountDomain(this.data)) {
                     this.createDialog('ChangeProjectDialog', {
@@ -139,6 +141,7 @@ export default {
               },
               {
                 label: this.$t('cloudenv.text_108'),
+                permission: 'cloudproviders_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

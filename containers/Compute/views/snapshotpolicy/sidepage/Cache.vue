@@ -51,6 +51,7 @@ export default {
       singleActions: [
         {
           label: this.$t('compute.perform_delete'),
+          permission: 'snapshotpolicycaches_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,

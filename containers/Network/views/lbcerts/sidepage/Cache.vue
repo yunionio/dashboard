@@ -69,6 +69,7 @@ export default {
       singleActions: [
         {
           label: this.$t('network.text_131'),
+          permission: 'cachedloadbalancercertificates_delete',
           action: (obj) => {
             this.createDialog('DeleteResDialog', {
               vm: this,

@@ -96,6 +96,7 @@ export default {
       singleActions: [
         {
           label: this.$t('storage.text_100'),
+          permission: 'access_group_caches_perform_syncstatus',
           action: obj => {
             this.onManager('performAction', {
               steadyStatus: ['available'],
@@ -111,7 +112,7 @@ export default {
         },
         {
           label: this.$t('storage.text_36'),
-          permission: 'access_group_cache_delete',
+          permission: 'access_group_caches_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,

@@ -72,7 +72,7 @@ export default {
         getRegionTableColumn({ title: this.$t('network.vpc_network.next_hop_region') }),
       ],
       groupActions: [
-        ...getEnabledSwitchActions(this, undefined, [], {
+        ...getEnabledSwitchActions(this, undefined, ['inter_vpc_network_route_sets_perform_enable', 'inter_vpc_network_route_sets_perform_disable'], {
           resourceName: this.$t('network.vpc_network.route'),
           fields: ['cidr', 'status', 'enabled'],
           metas: [
@@ -92,7 +92,7 @@ export default {
         }),
       ],
       singleActions: [
-        ...getEnabledSwitchActions(this, undefined, [], {
+        ...getEnabledSwitchActions(this, undefined, ['inter_vpc_network_route_sets_perform_enable', 'inter_vpc_network_route_sets_perform_disable'], {
           resourceName: this.$t('network.vpc_network.route'),
           fields: ['cidr', 'status', 'enabled'],
         }),

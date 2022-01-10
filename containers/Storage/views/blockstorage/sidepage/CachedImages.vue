@@ -61,6 +61,7 @@ export default {
       groupActions: [
         {
           label: this.$t('storage.text_74'),
+          permission: 'cachedimages_uncache_image',
           action: row => {
             this.createDialog('UncacheImageDialog', {
               data: this.list.selectedItems,
@@ -81,6 +82,7 @@ export default {
       singleActions: [
         {
           label: this.$t('storage.text_74'),
+          permission: 'cachedimages_uncache_image',
           action: row => {
             this.createDialog('UncacheImageDialog', {
               data: [row],
