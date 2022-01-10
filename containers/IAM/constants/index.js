@@ -24,6 +24,7 @@ export const NOTIFY_TOPIC_NAMES_MAP = {
   'resource update': i18n.t('system.notify.name.resource_update'),
   'resource release due 3 day': i18n.t('system.notify.name.resource_release_due_3_day'),
   'resource release due 1 day': i18n.t('system.notify.name.resource_release_due_1_day'),
+  'resource release due 30 day': i18n.t('system.notify.name.resource_release_due_n_day', [30]),
   'resource operation failed': i18n.t('system.notify.name.resource_operation_failed'),
   'resource create or delete': i18n.t('system.notify.name.resource_create_or_delete'),
   'resource change config': i18n.t('system.notify.name.resource_change_config'),

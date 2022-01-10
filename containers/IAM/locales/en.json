@@ -812,6 +812,7 @@
   "system.notify.name.resource_update": "Send message for resource password changes",
   "system.notify.name.resource_release_due_3_day": "Send message for resource expiration 3 days in advance",
   "system.notify.name.resource_release_due_1_day": "Send message for resource expiration 1 days in advance",
+  "system.notify.name.resource_release_due_n_day": "Send message for resource expiration {0} days in advance",
   "system.notify.name.resource_operation_failed": "Send message for operation failure",
   "system.notify.name.resource_create_or_delete": "Send message for resource creation and deletion",
   "system.notify.name.resource_change_config": "Send message for resource configuration changes",
