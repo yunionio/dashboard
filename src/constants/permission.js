@@ -255,6 +255,11 @@ export const PERMISSION = {
   users_perform_disable: ['identity', 'users', 'perform', 'disable'],
   // 联系方式
   contacts_list: ['notify', 'receivers', 'list'],
+  contacts_create: ['notify', 'receivers', 'create'],
+  contacts_update: ['notify', 'receivers', 'update'],
+  contacts_delete: ['notify', 'receivers', 'delete'],
+  contacts_perform_enable: ['notify', 'receivers', 'perform', 'enable'],
+  contacts_perform_disable: ['notify', 'receivers', 'perform', 'disable'],
   // 项目
   projects_list: ['identity', 'projects', 'list'],
   projects_get: ['identity', 'projects', 'get'],
@@ -283,8 +288,17 @@ export const PERMISSION = {
   topics_perform_disable: ['notify', 'topics', 'perform', 'disable'],
   // 通知渠道
   notifyconfigs_list: ['notify', 'notifyconfigs', 'list'],
+  notifyconfigs_create: ['notify', 'notifyconfigs', 'create'],
+  notifyconfigs_delete: ['notify', 'notifyconfigs', 'delete'],
   // 机器人
   robots_list: ['notify', 'robots', 'list'],
+  robots_create: ['notify', 'robots', 'create'],
+  robots_update: ['notify', 'robots', 'update'],
+  robots_delete: ['notify', 'robots', 'delete'],
+  robots_perform_enable: ['notify', 'robots', 'perform', 'enable'],
+  robots_perform_disable: ['notify', 'robots', 'perform', 'disable'],
+  robots_perform_change_owner: ['notify', 'robots', 'perform', 'change-owner'],
+  robots_perform_public: ['notify', 'robots', 'perform', 'public'],
   // 企业信息
   infos_list: ['yunionagent', 'infos', 'list'],
   // 邮件短信
@@ -474,6 +488,8 @@ export const PERMISSION = {
   k8s_repos_create: ['k8s', 'repos', 'create'],
   k8s_repos_delete: ['k8s', 'repos', 'delete'],
   k8s_repos_update: ['k8s', 'repos', 'update'],
+  k8s_repos_perform_public: ['k8s', 'repos', 'perform', 'public'],
+  k8s_repos_perform_change_owner: ['k8s', 'repos', 'perform', 'change-owner'],
   k8s_charts_create: ['k8s', 'charts', 'create'],
   k8s_services_create: ['k8s', 'k8s_services', 'create'],
   k8s_services_update: ['k8s', 'k8s_services', 'update'],
@@ -808,6 +824,14 @@ export const PERMISSION = {
 
   // 二次定价
   cost_conversions_list: ['meter', 'cost_conversions', 'list'],
+  cost_conversions_delete: ['meter', 'cost_conversions', 'delete'],
+  cost_conversions_create: ['meter', 'cost_conversions', 'create'],
+
+  // 汇率
+  billing_exchange_rates_list: ['meter', 'billing_exchange_rates', 'list'],
+  billing_exchange_rates_create: ['meter', 'billing_exchange_rates', 'create'],
+  billing_exchange_rates_update: ['meter', 'billing_exchange_rates', 'update'],
+  billing_exchange_rates_delete: ['meter', 'billing_exchange_rates', 'delete'],
 
   /**
    * cloudwatcher 相关操作
@@ -1015,6 +1039,7 @@ export const PERMISSION = {
   // 监控资源
   monitorresources_list: ['monitor', 'monitorresources', 'list'],
   monitorresources_get: ['monitor', 'monitorresources', 'get'],
+  monitorresources_delete: ['monitor', 'monitorresources', 'delete'],
   // 报警
   commonalerts_get: ['monitor', 'commonalerts', 'get'],
   commonalerts_create: ['monitor', 'commonalerts', 'create'],
@@ -1024,9 +1049,14 @@ export const PERMISSION = {
   commonalerts_perform_disable: ['monitor', 'commonalerts', 'perform', 'disable'],
   /** 费用优化 */
   suggestsysruleconfigs_list: ['suggestion', 'suggestsysruleconfigs', 'list'],
+  suggestsysruleconfigs_delete: ['suggestion', 'suggestsysruleconfigs', 'delete'],
   suggestsysrules_list: ['suggestion', 'suggestsysrules', 'list'],
+  suggestsysrules_update: ['suggestion', 'suggestsysrules', 'update'],
+  suggestsysrules_perform_enable: ['suggestion', 'suggestsysrules', 'perform', 'enable'],
+  suggestsysrules_perform_disable: ['suggestion', 'suggestsysrules', 'perform', 'disable'],
   suggestsysalerts_list: ['suggestion', 'suggestsysalerts', 'list'],
   suggestsysalerts_delete: ['suggestion', 'suggestsysalerts', 'delete'],
+  suggestsysalerts_perform_ignore: ['suggestion', 'suggestsysalerts', 'perform', 'ignore'],
   // 资源消费预警
   costalerts_create: ['meter', 'costalerts', 'create'],
   costalerts_delete: ['meter', 'costalerts', 'delete'],

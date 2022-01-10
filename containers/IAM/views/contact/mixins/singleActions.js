@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('system.text_152'),
+        permission: 'contacts_update',
         action: (obj) => {
           const contact = this.parseDetail(obj.details)
           this.createDialog('ContactUpdateDialog', {
@@ -23,9 +24,10 @@ export default {
         label: i18n.t('system.text_153'),
         actions: obj => {
           return [
-            ...getEnabledSwitchActions(this),
+            ...getEnabledSwitchActions(this, obj, ['contacts_perform_enable', 'contacts_perform_disable']),
             {
               label: i18n.t('system.text_129'),
+              permission: 'contacts_delete',
               action: (obj) => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,
