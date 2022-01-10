@@ -9,6 +9,7 @@ import i18n from '@/locales'
 import { hasPermission } from '@/utils/auth'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
+import expectStatus from '@/constants/expectStatus'
 
 export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
@@ -162,6 +163,7 @@ export const getNameDescriptionTableColumn = ({
   slotCallback,
   onManager,
   steadyStatus,
+  statusModule,
   addLock,
   hideField,
   showDesc = true,
@@ -194,7 +196,7 @@ export const getNameDescriptionTableColumn = ({
               field,
               row,
               onManager,
-              steadyStatus,
+              steadyStatus: steadyStatus || (expectStatus[statusModule] && Object.values(expectStatus[statusModule]).flat()),
               hideField,
               addLock,
               addBackup,
