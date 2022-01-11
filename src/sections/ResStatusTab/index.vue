@@ -56,7 +56,7 @@ export default {
         &.running {
           background-color: #52c41a;
         }
-        &.ready {
+        &.ready, &.available {
           background-color: #d9d9d9;
         }
         &.error {
