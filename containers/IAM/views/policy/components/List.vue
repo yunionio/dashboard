@@ -66,6 +66,7 @@ export default {
       groupActions: [
         {
           label: this.$t('system.text_128'),
+          permission: 'policies_create',
           action: () => {
             this.$router.push('/policy/create')
           },
@@ -77,6 +78,7 @@ export default {
         },
         {
           label: this.$t('system.text_226'),
+          permission: 'policies_update',
           action: () => {
             const ids = this.list.selected
             this.createDialog('DisableDialog', {
@@ -114,6 +116,7 @@ export default {
         },
         {
           label: this.$t('system.text_225'),
+          permission: 'policies_update',
           action: () => {
             const ids = this.list.selected
             this.createDialog('DisableDialog', {
@@ -156,6 +159,7 @@ export default {
           apiVersion: 'v1',
           noCandidateDomains: true,
         }, {
+          permission: 'policies_perform_public',
           meta: () => {
             if (this.list.selectedItems.some(obj => obj.is_system)) {
               return {

@@ -111,15 +111,19 @@ export default {
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.globalvpc'),
                 resource: 'globalvpcs',
+              }, {
+                permission: 'network_globalvpcs_perform_syncstatus',
               }),
               getSetPublicAction(this, {
                 name: this.$t('dictionary.globalvpc'),
                 scope: 'domain',
                 resource: 'globalvpcs',
+              }, {
+                permission: 'network_globalvpcs_perform_public',
               }),
               {
                 label: this.$t('table.action.set_tag'),
-                permission: 'network_globalvpcs_perform_set_schedtag',
+                permission: 'network_globalvpcs_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -146,6 +150,7 @@ export default {
               },
               {
                 label: this.$t('network.text_131'),
+                permission: 'network_globalvpcs_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

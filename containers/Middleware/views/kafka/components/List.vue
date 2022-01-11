@@ -85,6 +85,7 @@ export default {
       groupActions: [
         {
           label: this.$t('middleware.syncstatus'),
+          permission: 'kafkas_perform_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['available', 'unknown'],
@@ -103,7 +104,7 @@ export default {
             return [
               {
                 label: this.$t('compute.text_283'),
-                permission: 'kafkas_set_user_metadata',
+                permission: 'kafkas_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -116,12 +117,14 @@ export default {
                   })
                 },
               },
-              disableDeleteAction(this, {
+              disableDeleteAction(Object.assign(this, {
+                permission: 'kafkas_update',
+              }), {
                 name: this.$t('dictionary.kafka'),
               }),
               {
                 label: this.$t('middleware.delete'),
-                permission: 'kafka_delete',
+                permission: 'kafkas_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

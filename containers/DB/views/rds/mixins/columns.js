@@ -22,7 +22,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'rds' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'dbinstance', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'rds_dbinstances', columns: () => this.columns }),
       {
         field: 'category',
         title: i18n.t('db.text_61'),

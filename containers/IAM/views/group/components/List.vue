@@ -59,6 +59,7 @@ export default {
       groupActions: [
         {
           label: this.$t('system.text_128'),
+          permission: 'groups_create',
           action: () => {
             this.createDialog('GroupCreateDialog', {
               success: () => {
@@ -74,7 +75,7 @@ export default {
         },
         {
           label: this.$t('system.text_129'),
-          permission: 'roles_delete',
+          permission: 'groupss_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

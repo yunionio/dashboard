@@ -997,10 +997,11 @@ export default {
                 label: this.$t('compute.perform_delete'),
                 submenus: [
                   disableDeleteAction(Object.assign(this, {
-                    name: this.$t('dictionary.server'),
                     permission: 'server_update',
+                  }), {
+                    name: this.$t('dictionary.server'),
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
-                  })),
+                  }),
                   {
                     label: this.$t('compute.perform_delete'),
                     permission: 'server_delete',

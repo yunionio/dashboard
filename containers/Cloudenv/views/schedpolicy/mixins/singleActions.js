@@ -7,6 +7,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('cloudenv.text_383'),
+        permission: 'schedpolicies_update',
         action: (obj) => {
           this.createDialog('UpdateSchedpolicyDialog', {
             data: [obj],
@@ -22,6 +23,7 @@ export default {
           return [
             {
               label: i18n.t('cloudenv.text_334'),
+              permission: 'schedpolicies_update',
               action: obj => {
                 this.onManager('update', {
                   id: obj.id,
@@ -38,6 +40,7 @@ export default {
             },
             {
               label: i18n.t('cloudenv.text_335'),
+              permission: 'schedpolicies_update',
               action: obj => {
                 this.onManager('update', {
                   id: obj.id,
@@ -54,6 +57,7 @@ export default {
             },
             {
               label: i18n.t('cloudenv.text_108'),
+              permission: 'schedpolicies_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

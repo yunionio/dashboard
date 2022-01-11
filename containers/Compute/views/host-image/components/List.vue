@@ -13,14 +13,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getTenantFilter, getStatusFilter, getDomainFilter, getOsArchFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'HostImageList',
@@ -76,7 +76,7 @@ export default {
           scope: 'project',
           resource: 'guestimages',
         }, {
-          permission: 'images_perform_public',
+          permission: 'guestimages_perform_public,guestimages_perform_private',
           meta: () => {
             if (!this.list.selectedItems || this.list.selectedItems.length <= 0) {
               return {
@@ -127,6 +127,7 @@ export default {
             return [
               {
                 label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+                permission: 'guestimages_perform_change_owner',
                 action: () => {
                   this.createDialog('ChangeOwenrDialog', {
                     data: this.list.selectedItems,
@@ -157,6 +158,7 @@ export default {
               },
               {
                 label: this.$t('common_277'),
+                permission: 'guestimages_update',
                 action: () => {
                   this.createDialog('ChangeDisableDelete', {
                     name: this.$t('dictionary.guestimage'),
@@ -175,6 +177,7 @@ export default {
               },
               {
                 label: this.$t('table.action.set_tag'),
+                permission: 'guestimages_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -190,7 +193,7 @@ export default {
               },
               {
                 label: this.$t('compute.perform_delete'),
-                permission: 'images_delete',
+                permission: 'guestimages_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

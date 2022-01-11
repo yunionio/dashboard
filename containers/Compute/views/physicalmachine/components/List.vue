@@ -134,6 +134,7 @@ export default {
       return [
         {
           label: this.$t('compute.text_822'),
+          permission: 'hosts_create',
           action: () => {
             this.$router.push('/physicalmachine/add')
           },
@@ -150,7 +151,7 @@ export default {
             }
           },
         },
-        ...getEnabledSwitchActions(this, undefined),
+        ...getEnabledSwitchActions(this, undefined, ['hosts_perform_enable', 'hosts_perform_disable']),
         {
           label: this.$t('compute.text_275'),
           actions: (obj) => {
@@ -159,14 +160,19 @@ export default {
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.host'),
                 resource: 'hosts',
+              }, {
+                permission: 'hosts_perform_change_owner',
               }),
               getSetPublicAction(this, {
                 name: this.$t('dictionary.host'),
                 scope: 'domain',
                 resource: 'hosts',
+              }, {
+                permission: 'hosts_perform_public',
               }),
               {
                 label: this.$t('compute.host_ipmi_probe'),
+                permission: 'hosts_perform_ipmi_probe',
                 action: () => {
                   this.list.batchPerformAction('ipmi-probe', null, this.list.steadyStatus)
                 },
@@ -191,6 +197,7 @@ export default {
               },
               {
                 label: this.$t('compute.host_prepare'),
+                permission: 'hosts_perform_prepare',
                 action: () => {
                   this.list.batchPerformAction('prepare', null, this.list.steadyStatus)
                 },
@@ -215,6 +222,7 @@ export default {
               },
               {
                 label: this.$t('compute.text_541'),
+                permission: 'hosts_perform_set_schedtag',
                 action: (obj) => {
                   this.createDialog('HostsAdjustLabelDialog', {
                     data: this.list.selectedItems,
@@ -228,6 +236,7 @@ export default {
               },
               {
                 label: this.$t('compute.text_283'),
+                permission: 'hosts_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,

@@ -116,6 +116,7 @@ export default {
               ...getEnabledSwitchActions(this, undefined, ['skus_update', 'skus_update']),
               {
                 label: this.$t('compute.sku.setup.sell.status'),
+                permission: 'skus_update',
                 action: () => {
                   this.createDialog('ServerSkuUpdateDialog', {
                     data: this.list.selectedItems,

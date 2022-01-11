@@ -117,7 +117,7 @@ export default {
             return [
               {
                 label: this.$t('compute.text_283'),
-                permission: 'file_systems_set_user_metadata',
+                permission: 'file_systems_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -132,6 +132,7 @@ export default {
               },
               {
                 label: this.$t('storage.text_100'),
+                permission: 'file_systems_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['available'],
@@ -145,12 +146,14 @@ export default {
                   tooltip: notSelectedTooltip,
                 }),
               },
-              disableDeleteAction(this, {
+              disableDeleteAction(Object.assign(this, {
+                permission: 'file_systems_update',
+              }), {
                 name: this.$t('dictionary.nas'),
               }),
               {
                 label: this.$t('storage.text_36'),
-                permission: 'file_system_delete',
+                permission: 'file_systems_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

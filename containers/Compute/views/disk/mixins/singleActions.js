@@ -149,6 +149,7 @@ export default {
             },
             {
               label: i18n.t('compute.disk_perform_setup_snapshot_policy'),
+              permission: 'snapshotpolicy_delete',
               action: () => {
                 this.createDialog('DiskSetSnapshotDialog', {
                   vm: this,
@@ -234,6 +235,7 @@ export default {
             },
             {
               label: i18n.t('compute.driver.update'),
+              permission: 'disks_update',
               action: () => {
                 this.createDialog('DiskDriverUpdateDialog', {
                   data: [obj],
@@ -253,6 +255,7 @@ export default {
             },
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+              permission: 'disks_perform_public',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
