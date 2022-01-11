@@ -1,7 +1,7 @@
 // import { message } from 'ant-design-vue'
 import * as R from 'ramda'
 import Vue from 'vue'
-// import ERROR_INFO from '@/constants/error'
+import ERROR_INFO from '@/constants/error'
 import i18n from '@/locales'
 import store from '@/store'
 import windowsMixin from '@/mixins/windows'
@@ -59,21 +59,21 @@ export const getHttpErrorMessage = (err, isErrorBody = false) => {
   // 默认为错误的元信息
   const ret = errorBody.details
   // 查到对应的class翻译信息
-  // const errorInfo = ERROR_INFO[errorBody.class]
-  // if (errorInfo) {
-  //   if (errorBody.data) {
-  //     const { id = '', fields = [] } = errorBody.data
-  //     // 查到对应class的details翻译信息
-  //     const errorInfoDetails = errorInfo.details || {}
-  //     const detail = errorInfoDetails[id]
-  //     if (detail) {
-  //       ret = `${replaceErrorMessage(detail['zh-CN'], fields)}`
-  //     }
+  const errorClass = ERROR_INFO[errorBody.class]
+  // if (errorClass) {
+  // if (errorBody.data) {
+  //   const { id = '', fields = [] } = errorBody.data
+  //   // 查到对应class的details翻译信息
+  //   const errorInfoDetails = errorInfo.details || {}
+  //   const detail = errorInfoDetails[id]
+  //   if (detail) {
+  //     ret = `${replaceErrorMessage(detail['zh-CN'], fields)}`
   //   }
+  // }
   // }
   return {
     // class: errorInfo ? errorInfo['zh-CN'] : errorBody.class,
-    class: errorBody.class,
+    class: errorClass || errorBody.class,
     detail: ret,
     resource: !isErrorBody ? err.response.data : err,
   }

@@ -4933,5 +4933,8 @@
   "common.export_excel": "Export as Excel",
   "common.sync_resource": "Sync Resource",
   "common.check_readonly": "{0} platform does not support {1}",
-  "common.load_no_more": "No More"
+  "common.load_no_more": "No More",
+  "error_title": {
+    "ForbiddenError": "Permission Denied"
+  }
 }
