@@ -100,7 +100,7 @@ export default {
       singleActions: [
         {
           label: this.$t('compute.perform_delete'),
-          permission: 'secgroups_delete',
+          permission: 'secgroupcaches_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,

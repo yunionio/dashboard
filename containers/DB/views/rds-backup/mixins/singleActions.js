@@ -5,6 +5,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('db.text_45'),
+        permission: 'rds_dbinstances_perform_recovery',
         action: (obj) => {
           this.createDialog('RDSBackupRecovery', {
             title: i18n.t('db.text_45'),
@@ -41,6 +42,7 @@ export default {
       },
       {
         label: i18n.t('db.text_69'),
+        permission: 'rds_dbinstancebackups_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],

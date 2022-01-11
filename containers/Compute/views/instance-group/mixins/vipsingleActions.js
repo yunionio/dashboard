@@ -5,6 +5,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.instancegroup_detach_network'),
+        permission: 'instancegroups_perform_detach_network',
         action: (obj) => {
           this.createDialog('InstanceGroupDetachVipNetworkDialog', {
             data: [obj],

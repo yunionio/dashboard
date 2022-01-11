@@ -3,7 +3,6 @@ export default {
     this.singleActions = [
       {
         label: this.$t('system.text_129'),
-        permission: 'notifyconfigs_delete',
         action: (obj) => {
           this.createDialog('DeleteResDialog', {
             vm: this,

@@ -46,6 +46,7 @@ export default {
       groupActions: [
         {
           label: this.$t('storage.text_31'),
+          permission: 'cors_create',
           action: () => {
             this.createDialog('CreateCorsDialog', {
               title: this.$t('storage.text_31'),
@@ -70,6 +71,7 @@ export default {
         },
         {
           label: this.$t('storage.text_36'),
+          permission: 'cors_delete',
           action: () => {
             this.createDialog('DeleteCorsDialog', {
               title: this.$t('storage.text_36'),
@@ -95,6 +97,7 @@ export default {
       singleActions: [
         {
           label: this.$t('storage.text_212'),
+          permission: 'cors_create',
           action: (row) => {
             this.createDialog('CreateCorsDialog', {
               data: [row],
@@ -115,6 +118,7 @@ export default {
         },
         {
           label: this.$t('storage.text_36'),
+          permission: 'cors_delete',
           action: (row) => {
             this.createDialog('DeleteCorsDialog', {
               title: this.$t('storage.text_36'),

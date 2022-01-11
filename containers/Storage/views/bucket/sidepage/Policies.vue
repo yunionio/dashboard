@@ -46,6 +46,7 @@ export default {
       groupActions: [
         {
           label: this.$t('storage.text_31'),
+          permission: 'policy_create',
           action: () => {
             this.createDialog('CreatePolicyDialog', {
               title: this.$t('storage.text_259'),
@@ -71,6 +72,7 @@ export default {
         },
         {
           label: this.$t('storage.text_36'),
+          permission: 'policy_delete',
           action: () => {
             this.createDialog('DeletePolicyDialog', {
               title: this.$t('storage.text_36'),
@@ -96,6 +98,7 @@ export default {
       singleActions: [
         {
           label: this.$t('storage.text_36'),
+          permission: 'policy_delete',
           action: (row) => {
             this.createDialog('DeletePolicyDialog', {
               title: this.$t('storage.text_36'),

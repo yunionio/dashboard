@@ -123,6 +123,7 @@ export default {
       groupActions: [
         {
           label: this.$t('common_384'),
+          permission: 'users_perform_join',
           action: () => {
             this.createDialog('UserProjectJoinDialog', {
               data: [this.data],
@@ -152,6 +153,7 @@ export default {
         },
         {
           label: this.$t('compute.text_950'),
+          permission: 'users_perform_leave',
           action: () => {
             this.createDialog('UserProjectLeaveDialog', {
               data: this.list.selectedItems,
@@ -182,6 +184,7 @@ export default {
       singleActions: [
         {
           label: this.$t('common_490'),
+          permission: 'users_perform_join',
           action: (obj) => {
             this.createDialog('UserEditRolesDialog', {
               data: [obj],
@@ -206,6 +209,7 @@ export default {
         },
         {
           label: this.$t('compute.text_950'),
+          permission: 'users_perform_leave',
           action: (obj) => {
             this.createDialog('UserProjectLeaveDialog', {
               data: [obj],

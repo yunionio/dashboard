@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('network.text_130'),
+        permission: 'dns_recordsets_update',
         action: (obj) => {
           this.createDialog('DnsRecordSetCreateDialog', {
             title: this.$t('network.text_130'),
@@ -25,9 +26,10 @@ export default {
         label: this.$t('network.text_129'),
         actions: obj => {
           return [
-            ...getEnabledSwitchActions(this, obj),
+            ...getEnabledSwitchActions(this, obj, ['dns_recordsets_enable', 'dns_recordsets_disable']),
             {
               label: this.$t('network.text_155'),
+              permission: 'dns_recordsets_create',
               action: () => {
                 this.createDialog('DnsRecordSetCreateDialog', {
                   title: this.$t('network.text_155'),

@@ -111,6 +111,7 @@ export default {
       groupActions: [
         {
           label: this.$t('db.text_41'),
+          permission: 'redis_elasticcachebackups_create',
           action: () => {
             this.createDialog('BackupListCreate', {
               list: this.list,
@@ -143,6 +144,7 @@ export default {
       singleActions: [
         {
           label: this.$t('db.text_45'),
+          permission: 'redis_elasticcachebackups_perform_restore_instance',
           action: (obj) => {
             this.createDialog('RedisBackupResumeDialog', {
               data: [obj],

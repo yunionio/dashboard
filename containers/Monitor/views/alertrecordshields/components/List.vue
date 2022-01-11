@@ -37,7 +37,6 @@ export default {
       groupActions: [
         {
           label: this.$t('monitor.alerts.shield.dismiss'),
-          permission: 'monitorresourcealerts_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

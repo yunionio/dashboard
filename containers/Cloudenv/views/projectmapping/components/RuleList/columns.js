@@ -135,7 +135,7 @@ export default {
       },
       {
         label: i18n.t('cloudenv.text_108'),
-        permission: 'projectMappings_update',
+        permission: 'projectmappings_delete',
         action: (row) => {
           this.checkedRecords = [row]
           this.deleteProjectMappingRules()

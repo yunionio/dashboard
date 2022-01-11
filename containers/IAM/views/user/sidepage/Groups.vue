@@ -55,6 +55,7 @@ export default {
       groupActions: [
         {
           label: this.$t('system.text_195', [this.$t('dictionary.group')]),
+          permission: 'users_perform_join',
           action: () => {
             this.createDialog('UserGroupJoinDialog', {
               onManager: this.onManager,
@@ -89,6 +90,7 @@ export default {
         },
         {
           label: this.$t('system.text_525'),
+          permission: 'users_perform_leave',
           action: () => {
             this.createDialog('UserGroupLeaveDialog', {
               title: this.$t('system.text_525'),
@@ -115,6 +117,7 @@ export default {
       singleActions: [
         {
           label: this.$t('system.text_525'),
+          permission: 'users_perform_leave',
           action: (obj) => {
             this.createDialog('UserGroupLeaveDialog', {
               title: this.$t('system.text_525'),

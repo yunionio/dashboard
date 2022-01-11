@@ -72,7 +72,6 @@ export default {
       },
       groupActions: [{
         label: this.$t('system.text_128'),
-        permission: 'robots_create',
         action: () => {
           this.createDialog('CreateRobotDialog', {
             onManager: this.onManager,
@@ -94,7 +93,6 @@ export default {
               resource: 'robots',
               apiVersion: 'v1',
             }, {
-              permission: 'robots_perform_public',
               meta: (row) => {
                 const ret = {
                   validate: true,
@@ -110,7 +108,6 @@ export default {
             }),
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
-              permission: 'robots_perform_change_owner',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: this.list.selectedItems,
@@ -134,7 +131,7 @@ export default {
                 return ret
               },
             },
-            ...getEnabledSwitchActions(this, undefined, ['robots_perform_enable', 'robots_perform_disable'], {
+            ...getEnabledSwitchActions(this, undefined, undefined, {
               resourceName: this.$t('system.robot'),
               metas: [
                 () => {
@@ -165,7 +162,6 @@ export default {
             }),
             {
               label: this.$t('system.text_129'),
-              permission: 'robots_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

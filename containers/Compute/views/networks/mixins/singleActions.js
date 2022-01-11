@@ -11,6 +11,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_389'),
+        permission: 'server_perform_change_bandwidth',
         action: (obj) => {
           this.$openNewWindowForMenuHook('vminstance_configured_callback_address.modify_bandwidth_callback_address', () => {
             this.createDialog('VmChangeBandwidthDialog', {
@@ -25,6 +26,7 @@ export default {
       },
       {
         label: i18n.t('compute.text_390'),
+        permission: 'server_perform_change_ipaddr',
         action: (obj) => {
           this.createDialog('VmChangeIpDialog', {
             data: [obj],
@@ -55,6 +57,7 @@ export default {
       },
       {
         label: i18n.t('compute.detach_network'),
+        permission: 'server_perform_detachnetwork',
         action: (obj) => {
           this.createDialog('VmDetachNetworkDialog', {
             data: [obj],

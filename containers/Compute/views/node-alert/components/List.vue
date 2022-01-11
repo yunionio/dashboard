@@ -116,6 +116,7 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
+          permission: 'nodealerts_create',
           action: () => {
             this.createDialog('CreateNodeAlert', {
               list: this.list,
@@ -164,6 +165,7 @@ export default {
       singleActions: [
         {
           label: this.$t('compute.text_749'),
+          permission: 'nodealerts_update',
           action: obj => {
             this.createDialog('UpdateNodeAlert', {
               data: [obj],
@@ -177,7 +179,7 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
-          permission: 'server_delete',
+          permission: 'nodealerts_delete',
           action: obj => {
             this.createDialog('DeleteResDialog', {
               vm: this,

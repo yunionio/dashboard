@@ -120,6 +120,7 @@ export default {
             return [
               {
                 label: this.$t('db.text_69'),
+                permission: 'rds_dbinstancebackups_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['running', 'ready'],
