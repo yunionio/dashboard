@@ -245,6 +245,7 @@ export default {
           path: menuPath('/securityalerts'),
           meta: {
             label: i18n.t('scope.text_961'),
+            permission: 'notifications_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.iam_securityalerts')) {
                 return true
@@ -319,6 +320,7 @@ export default {
           path: '/notifyconfig',
           meta: {
             label: i18n.t('system.text_19'),
+            permission: 'notifyconfigs_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.mailconfig')) {
                 return true
