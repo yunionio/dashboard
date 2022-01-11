@@ -28,7 +28,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_247'),
-        permission: 'guestimages_update',
+        permission: 'images_update',
         action: obj => {
           this.createDialog('ImageEditAttributesDialog', {
             data: [obj],
@@ -69,7 +69,7 @@ export default {
               resource: 'guestimages',
               apiVersion: 'v1',
             }, {
-              permission: 'images_perform_public,guestimages_perform_private',
+              permission: 'images_perform_public',
               meta: () => {
                 function validate (val, tooltip = validateActionTooltip(obj)) {
                   return {
@@ -123,7 +123,6 @@ export default {
             // },
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
-              permission: 'guestimages_perform_change_owner',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
@@ -154,7 +153,6 @@ export default {
             },
             {
               label: i18n.t('common_277'),
-              permission: 'guestimages_update',
               action: (row) => {
                 this.createDialog('ChangeDisableDelete', {
                   name: this.$t('dictionary.guestimage'),
@@ -166,7 +164,7 @@ export default {
             },
             {
               label: i18n.t('compute.perform_delete'),
-              permission: 'guestimages_delete',
+              permission: 'images_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

@@ -68,8 +68,6 @@ export default {
               resource: 'roles',
               apiVersion: 'v1',
               noCandidateDomains: true,
-            }, {
-              permission: 'roles_perform_public',
             }),
             {
               label: i18n.t('system.text_129'),

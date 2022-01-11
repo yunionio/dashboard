@@ -21,7 +21,7 @@ export default {
         label: i18n.t('storage.text_65'),
         actions: (row) => {
           return [
-            ...getEnabledSwitchActions(this, undefined, ['storages_perform_enable', 'storages_perform_disable']),
+            ...getEnabledSwitchActions(this),
             {
               label: i18n.t('storage.host.manage'),
               action: row => {
@@ -71,7 +71,6 @@ export default {
             },
             {
               label: i18n.t('compute.text_540'),
-              permission: 'storages_update',
               action: row => {
                 this.createDialog('BlockStorageUpdateTagsDialog', {
                   data: [row],
@@ -86,7 +85,6 @@ export default {
               name: this.$t('dictionary.storages'),
               resource: 'storages',
             }, {
-              permission: 'storages_perform_change_owner',
               meta: (row) => {
                 const isLocal = row.storage_type === 'local'
                 const ret = {
@@ -105,7 +103,6 @@ export default {
               scope: 'domain',
               resource: 'storages',
             }, {
-              permission: 'storages_perform_public',
               meta: (row) => {
                 const isLocal = row.storage_type === 'local'
                 const ret = {

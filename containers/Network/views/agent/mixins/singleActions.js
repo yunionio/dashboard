@@ -11,7 +11,6 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_41'),
-        permission: 'lb_loadbalanceragents_update',
         action: (obj) => {
           this.createDialog('AgentDeployDialog', {
             title: i18n.t('network.text_41'),
@@ -24,7 +23,6 @@ export default {
       },
       {
         label: i18n.t('network.text_126'),
-        permission: 'lb_loadbalanceragents_perform_undeploy',
         action: (obj) => {
           this.createDialog('DisableDialog', {
             title: i18n.t('network.text_126'),
@@ -71,7 +69,6 @@ export default {
       },
       {
         label: i18n.t('network.text_129'),
-        permission: 'lb_loadbalanceragents_update',
         actions: (obj) => {
           return [
             {
@@ -87,7 +84,6 @@ export default {
             },
             {
               label: i18n.t('network.text_74'),
-              permission: 'lb_loadbalanceragents_update',
               action: () => {
                 this.createDialog('AgentUpdateDialog', {
                   data: [obj],

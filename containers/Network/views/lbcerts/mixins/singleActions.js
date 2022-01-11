@@ -7,7 +7,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_225', [i18n.t('dictionary.project')]),
-        permission: 'lb_loadbalancercertificates_change_owner',
+        permission: 'networks_perform_change_owner',
         action: (obj) => {
           this.createDialog('ChangeOwenrDialog', {
             data: [obj],
@@ -40,8 +40,6 @@ export default {
         name: this.$t('network.text_142'),
         scope: 'project',
         resource: 'loadbalancercertificates',
-      }, {
-        permission: 'lb_loadbalancercertificates_perform_public',
       }),
       {
         label: i18n.t('network.text_131'),

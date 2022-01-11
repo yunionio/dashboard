@@ -35,7 +35,7 @@ export default {
         label: i18n.t('network.text_129'),
         actions: (obj) => {
           return [
-            ...getEnabledSwitchActions(this, undefined, ['lb_loadbalancers_perform_enable', 'lb_loadbalancers_perform_disable'], {
+            ...getEnabledSwitchActions(this, undefined, undefined, {
               actions: [
                 (obj) => {
                   this.onManager('performAction', {
@@ -87,7 +87,6 @@ export default {
             }),
             {
               label: i18n.t('network.text_253'),
-              permission: 'lb_loadbalancers_update',
               action: () => {
                 this.createDialog('LbUpdateCluster', {
                   title: i18n.t('network.text_253'),
@@ -105,9 +104,7 @@ export default {
                 }
               },
             },
-            disableDeleteAction(Object.assign(this, {
-              permission: 'lb_loadbalancers_update',
-            }), {
+            disableDeleteAction(this, {
               name: this.$t('dictionary.loadbalancer'),
             }),
             {

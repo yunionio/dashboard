@@ -76,7 +76,6 @@ export default {
       const actions = [
         {
           label: this.$t('system.text_128'),
-          permission: 'projects_create',
           action: () => {
             this.$router.push('/project/create')
           },
@@ -88,7 +87,6 @@ export default {
         },
         {
           label: this.$t('table.action.set_tag'),
-          permission: 'projects_perform_set_user_metadata',
           action: () => {
             this.createDialog('SetTagDialog', {
               data: this.list.selectedItems,

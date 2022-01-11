@@ -93,7 +93,6 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
-          permission: 'instancegroups_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

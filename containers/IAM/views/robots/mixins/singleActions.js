@@ -6,6 +6,7 @@ export default {
     this.singleActions = [
       {
         label: this.$t('table.action.modify'),
+        permission: 'robots_update',
         action: (row) => {
           this.createDialog('CreateRobotDialog', {
             data: row,
@@ -36,6 +37,7 @@ export default {
               resource: 'robots',
               apiVersion: 'v1',
             }, {
+              permission: 'robots_perform_public',
               meta: (row) => {
                 const ret = {
                   validate: true,
@@ -56,6 +58,7 @@ export default {
             }),
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
+              permission: 'robots_perform_change_owner',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [row],
@@ -79,7 +82,7 @@ export default {
                 return ret
               },
             },
-            ...getEnabledSwitchActions(this, row, undefined, {
+            ...getEnabledSwitchActions(this, row, ['robots_perform_enable', 'robots_perform_disable'], {
               resourceName: this.$t('system.robot'),
               metas: [
                 () => {
@@ -110,6 +113,7 @@ export default {
             }),
             {
               label: this.$t('system.text_129'),
+              permission: 'robots_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

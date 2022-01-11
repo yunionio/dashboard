@@ -178,7 +178,7 @@ export default {
                   }
                 },
               },
-              ...getEnabledSwitchActions(this, undefined, ['lb_loadbalancers_perform_enable', 'lb_loadbalancers_perform_disable'], {
+              ...getEnabledSwitchActions(this, undefined, undefined, {
                 actions: [
                   (obj) => {
                     const ids = this.list.selectedItems.map(item => item.id)
@@ -218,7 +218,6 @@ export default {
               }),
               {
                 label: this.$t('network.text_253'),
-                permission: 'lb_loadbalancers_update',
                 action: () => {
                   this.createDialog('LbUpdateCluster', {
                     title: this.$t('network.text_253'),
@@ -253,7 +252,6 @@ export default {
               },
               {
                 label: this.$t('table.action.set_tag'),
-                permission: 'lb_loadbalancers_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -268,7 +266,6 @@ export default {
               },
               disableDeleteAction(this, {
                 name: this.$t('dictionary.loadbalancer'),
-                permission: 'lb_loadbalancers_update',
               }),
               {
                 label: this.$t('network.text_131'),

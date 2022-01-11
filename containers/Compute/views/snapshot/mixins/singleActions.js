@@ -1,5 +1,5 @@
-import i18n from '@/locales'
 import { RollbackDiskValidate } from '../validate'
+import i18n from '@/locales'
 
 export default {
   created () {
@@ -27,7 +27,6 @@ export default {
       },
       {
         label: i18n.t('compute.perform_sync_status'),
-        permission: 'snapshots_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],

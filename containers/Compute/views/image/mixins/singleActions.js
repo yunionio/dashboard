@@ -166,7 +166,6 @@ export default {
               resource: 'images',
               apiVersion: 'v1',
             }, {
-              permission: 'images_perform_public,images_perform_private',
               meta: () => {
                 let ret = {
                   validate: false,
@@ -256,7 +255,6 @@ export default {
             // },
             {
               label: this.$t('compute.perform_change_owner', [this.$t('dictionary.project')]),
-              permission: 'images_perform_change_owner',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],

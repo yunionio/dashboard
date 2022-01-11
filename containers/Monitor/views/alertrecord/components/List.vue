@@ -96,7 +96,6 @@ export default {
       if (this.alertType === 'un-recovered') {
         actions.push({
           label: this.$t('monitor.alerts.shield.shield'),
-          permission: 'alertrecordshields_create',
           action: (obj) => {
             this.createDialog('ShieldAlertrecord', {
               vm: this,

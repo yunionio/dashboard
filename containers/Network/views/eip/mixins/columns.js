@@ -1,3 +1,4 @@
+import { getAssociateNameTableColumn } from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
@@ -8,7 +9,6 @@ import {
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
-import { getAssociateNameTableColumn } from '../utils/columns'
 
 export default {
   created () {
@@ -23,7 +23,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'eip' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'eips', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns }),
       {
         field: 'ip_addr',
         title: 'IP',

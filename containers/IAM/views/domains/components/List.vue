@@ -75,7 +75,7 @@ export default {
           label: this.$t('system.text_166'),
           actions: () => {
             return [
-              ...getEnabledSwitchActions(this, undefined, ['domains_perform_enable', 'domains_perform_disable'], {
+              ...getEnabledSwitchActions(this, undefined, undefined, {
                 actions: [
                   () => {
                     this.list.batchUpdate(this.list.selectedItems.map(({ id }) => id), {
@@ -91,7 +91,6 @@ export default {
               }),
               {
                 label: this.$t('table.action.set_tag'),
-                permission: 'domains_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -106,7 +105,6 @@ export default {
               },
               {
                 label: this.$t('system.text_129'),
-                permission: 'domains_delete',
                 action: (row) => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

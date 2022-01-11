@@ -19,7 +19,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'redis' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'redis_elasticcaches', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'elasticcache', columns: () => this.columns }),
       {
         field: 'arch_type',
         title: i18n.t('db.text_119'),

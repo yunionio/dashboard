@@ -132,7 +132,6 @@ export default {
             return [
               {
                 label: this.$t('db.text_69'),
-                permission: 'rds_dbinstances_perform_syncstatus',
                 action: (obj) => {
                   this.onManager('batchPerformAction', {
                     id: this.list.selectedItems.map(item => item.id),
@@ -150,7 +149,6 @@ export default {
               },
               {
                 label: this.$t('db.text_70'),
-                permission: 'rds_dbinstances_perform_reboot',
                 action: () => {
                   this.createDialog('RDSRestartdialog', {
                     title: this.$t('db.text_70'),
@@ -169,7 +167,6 @@ export default {
               },
               {
                 label: this.$t('db.text_71'),
-                permission: 'rds_dbinstances_perform_postpaid_expire',
                 action: () => {
                   this.createDialog('SetDurationDialog', {
                     data: this.list.selectedItems,
@@ -210,7 +207,6 @@ export default {
               },
               {
                 label: this.$t('table.action.set_tag'),
-                permission: 'rds_dbinstances_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -226,7 +222,6 @@ export default {
               },
               {
                 label: this.$t('db.text_157'),
-                permission: 'rds_dbinstances_perform_renew',
                 action: () => {
                   this.createDialog('RedisRenewDialog', {
                     title: this.$t('db.text_157'),
@@ -249,7 +244,6 @@ export default {
               },
               {
                 label: this.$t('db.text_351'),
-                permission: 'rds_dbinstances_perform_set_auto_renew',
                 action: () => {
                   this.createDialog('AutoRenewDialog', {
                     name: this.$t('dictionary.dbinstances'),
@@ -269,7 +263,7 @@ export default {
                   }
                 },
               },
-              disableDeleteAction(Object.assign(this, { permission: 'rds_dbinstances_update' }), {
+              disableDeleteAction(this, {
                 name: this.$t('dictionary.dbinstances'),
               }),
               {

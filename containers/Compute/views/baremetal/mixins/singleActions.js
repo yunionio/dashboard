@@ -190,7 +190,6 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_359'),
-                  permission: 'server_create',
                   action: () => {
                     this.createDialog('VmCloneDialog', {
                       data: [obj],

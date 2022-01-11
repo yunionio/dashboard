@@ -26,7 +26,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'elastic_searchs', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'elastic_search', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'elasticSearch' }),
       {
         field: 'category',

@@ -50,7 +50,6 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
-          permission: 'keypairs_create',
           action: () => {
             this.createDialog('CreateKeyPairDialog', {
               title: this.$t('compute.perform_create'),
@@ -63,7 +62,6 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
-          permission: 'keypairs_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

@@ -154,7 +154,6 @@ export default {
               },
               {
                 label: this.$t('network.text_201'),
-                permission: 'natgateways_perform_syncstatus',
                 action: () => {
                   this.onManager('batchPerformAction', {
                     steadyStatus: ['available'],
@@ -180,7 +179,7 @@ export default {
               },
               {
                 label: i18n.t('network.expired_release'),
-                permission: 'natgateways_perform_postpaid_expire',
+                permission: 'natgateway_perform_postpaid_expire',
                 action: () => {
                   this.createDialog('SetDurationDialog', {
                     data: this.list.selectedItems,
@@ -215,7 +214,6 @@ export default {
               },
               {
                 label: i18n.t('network.renew'),
-                permission: 'natgateways_perform_renew',
                 action: () => {
                   this.createDialog('RenewDialog', {
                     name: this.$t('dictionary.nat'),
@@ -255,7 +253,6 @@ export default {
               },
               {
                 label: i18n.t('network.auto.renew'),
-                permission: 'natgateways_perform_set_auto_renew',
                 action: () => {
                   this.createDialog('AutoRenewDialog', {
                     name: i18n.t('dictionary.nat'),
@@ -294,7 +291,6 @@ export default {
               },
               disableDeleteAction(this, {
                 name: this.$t('dictionary.nat'),
-                permission: 'natgateways_update',
                 hidden: () => {
                   if (!isOwner) {
                     return {

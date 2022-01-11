@@ -16,7 +16,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('storage.text_100'),
-        permission: 'buckets_perform_syncstatus',
+        permission: 'server_perform_syncstatus',
         action: (row) => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
@@ -53,12 +53,9 @@ export default {
               name: this.$t('dictionary.bucket'),
               scope: 'project',
               resource: 'buckets',
-            }, {
-              permission: 'buckets_perform_public',
             }),
             {
               label: i18n.t('storage.text_138'),
-              permission: 'buckets_perform_acl',
               action: row => {
                 this.createDialog('ObjectsUpdateAclDialog', {
                   title: i18n.t('storage.text_138'),

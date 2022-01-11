@@ -15,6 +15,9 @@
 
 <script>
 import * as R from 'ramda'
+import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter, getRegionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
@@ -23,9 +26,6 @@ import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 
 export default {
   name: 'BaremetalList',
@@ -299,7 +299,6 @@ export default {
               },
               {
                 label: this.$t('table.action.set_tag'),
-                permission: 'server_perform_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -312,7 +311,7 @@ export default {
                   })
                 },
               },
-              disableDeleteAction(Object.assign(this, { permission: 'server_update' })),
+              disableDeleteAction(this),
               {
                 label: this.$t('compute.perform_delete'),
                 permission: 'server_delete',

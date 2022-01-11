@@ -63,7 +63,7 @@ export default {
       groupActions: [
         {
           label: this.$t('network.text_26'),
-          permission: 'loadbalanceracls_create',
+          permission: 'lb_loadbalanceracls_create',
           action: () => {
             this.createDialog('LbaclsCreateDialog', {
               title: this.$t('network.text_315'),
@@ -81,7 +81,7 @@ export default {
         },
         {
           label: this.$t('network.text_131'),
-          permission: 'loadbalanceracls_delete',
+          permission: 'lb_loadbalancerlisteners_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

@@ -40,6 +40,7 @@ export default {
       }),
       groupActions: [{
         label: this.$t('system.text_128'),
+        permission: 'notifyconfigs_create',
         action: () => {
           this.$router.push({
             path: '/notifyconfig/create',
@@ -52,6 +53,7 @@ export default {
         },
       }, {
         label: this.$t('system.text_129'),
+        permission: 'notifyconfigs_delete',
         action: (row) => {
           this.createDialog('DeleteResDialog', {
             vm: this,

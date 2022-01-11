@@ -1,3 +1,8 @@
+import { MEDIUM_MAP } from '../../../constants'
+import {
+  getUnusedTableColumn,
+  getStorageTypeTableColumn,
+} from '../utils/columns'
 import {
   getNameDescriptionTableColumn,
   getBrandTableColumn,
@@ -12,11 +17,6 @@ import {
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
-import {
-  getUnusedTableColumn,
-  getStorageTypeTableColumn,
-} from '../utils/columns'
-import { MEDIUM_MAP } from '../../../constants'
 
 export default {
   created () {
@@ -35,7 +35,7 @@ export default {
         },
       }),
       // getStatusTableColumn({ statusModule: 'disk' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'disks', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'disk', columns: () => this.columns }),
       {
         field: 'disk_size',
         title: i18n.t('table.title.disk_size'),

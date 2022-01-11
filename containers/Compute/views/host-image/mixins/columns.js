@@ -18,7 +18,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'image' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'guestimages', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'guestimage', columns: () => this.columns }),
       {
         field: 'child_image',
         title: i18n.t('table.title.child_image'),

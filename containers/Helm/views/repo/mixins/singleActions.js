@@ -9,12 +9,15 @@ export default {
         scope: 'domain',
         resource: 'repos',
         apiVersion: 'v1',
+      }, {
+        permission: 'k8s_repos_perform_public',
       }),
       getDomainChangeOwnerAction(this, {
         name: this.$t('dictionary.host'),
         resource: 'repos',
         apiVersion: 'v1',
       }, {
+        permission: 'k8s_repos_perform_change_owner',
         meta: obj => {
           const ownerDomain = this.$store.getters.isAdminMode || obj.domain_id === this.$store.getters.userInfo.projectDomainId
           return {

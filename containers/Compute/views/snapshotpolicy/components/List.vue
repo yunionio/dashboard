@@ -77,7 +77,7 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
-          permission: 'snapshotpolicy_delete',
+          permission: 'snapshotpolicies_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

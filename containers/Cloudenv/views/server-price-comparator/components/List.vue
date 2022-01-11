@@ -32,7 +32,6 @@ export default {
       groupActions: [
         {
           label: this.$t('bill.text_193'),
-          permission: 'server_create',
           action: (row) => {
             this.$router.push({
               path: '/pricecomparator/create',

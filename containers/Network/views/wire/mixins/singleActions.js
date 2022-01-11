@@ -32,8 +32,6 @@ export default {
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.wire'),
               resource: 'wires',
-            }, {
-              permission: 'wires_perform_change_owner',
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.wire'),

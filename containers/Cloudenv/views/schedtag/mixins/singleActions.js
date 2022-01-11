@@ -7,7 +7,6 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('cloudenv.text_454'),
-        permission: 'schedtags_perform_set_resource',
         action: obj => {
           this.createDialog('AssociatedResourcesDialog', {
             data: [obj],
@@ -34,7 +33,6 @@ export default {
 
             {
               label: i18n.t('cloudenv.text_423'),
-              permission: 'schedtags_perform_set_scope',
               action: obj => {
                 this.createDialog('SetOwnerDialog', {
                   data: [obj],
@@ -59,7 +57,6 @@ export default {
             },
             {
               label: i18n.t('cloudenv.text_422'),
-              permission: 'schedtags_update',
               action: obj => {
                 this.createDialog('SetStrategyDialog', {
                   data: [obj],
@@ -81,7 +78,6 @@ export default {
             },
             {
               label: i18n.t('cloudenv.text_108'),
-              permission: 'schedtags_delete',
               action: obj => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

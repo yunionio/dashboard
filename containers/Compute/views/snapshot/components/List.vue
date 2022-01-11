@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import { steadyStatus } from '../constants'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -25,9 +28,6 @@ import {
   getOsArchFilter,
   getRegionFilter,
 } from '@/utils/common/tableFilter'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import { steadyStatus } from '../constants'
 
 export default {
   name: 'SnapshotList',
@@ -104,7 +104,6 @@ export default {
       groupActions: [
         {
           label: this.$t('compute.perform_sync_status'),
-          permission: 'snapshots_perform_syncstatus',
           action: () => {
             this.onManager('batchPerformAction', {
               steadyStatus: ['running', 'ready'],
@@ -119,7 +118,6 @@ export default {
         },
         {
           label: this.$t('table.action.set_tag'),
-          permission: 'snapshots_perform_set_user_metadata',
           action: () => {
             this.createDialog('SetTagDialog', {
               data: this.list.selectedItems,

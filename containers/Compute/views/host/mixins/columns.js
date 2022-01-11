@@ -71,7 +71,7 @@ export default {
           ]
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'hosts', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'host', columns: () => this.columns }),
       {
         field: 'custom_ip',
         title: 'IP',

@@ -94,7 +94,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'file_systems', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'file_system', columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'nas' }),
       getFileSystemTypeColumn(),
       getFileSystemStorageTypeColumn(),

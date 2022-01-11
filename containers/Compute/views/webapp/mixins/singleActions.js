@@ -3,7 +3,6 @@ export default {
     this.singleActions = [
       {
         label: this.$t('common.text00043'),
-        permission: 'webapps_syncstatus',
         action: (obj) => {
           this.onManager('performAction', {
             steadyStatus: ['ready'],

@@ -128,14 +128,10 @@ export default {
                 scope: 'domain',
                 resource: 'wires',
                 refresh: this.refresh,
-              }, {
-                permission: 'wires_perform_merge_from',
               }),
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.wire'),
                 resource: 'wires',
-              }, {
-                permission: 'wires_perform_change_owner',
               }),
               getSetPublicAction(this, {
                 name: this.$t('dictionary.wire'),
@@ -146,7 +142,7 @@ export default {
               }),
               {
                 label: this.$t('table.action.set_tag'),
-                permission: 'wires_perform_set_user_metadata',
+                permission: 'wires_perform_set_schedtag',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,

@@ -27,7 +27,6 @@ export default {
             ...getEnabledSwitchActions(this, obj, ['instancegroups_perform_enable', 'instancegroups_perform_disable']),
             {
               label: this.$t('compute.create_vip'),
-              permission: 'instancegroups_perform_attach_network',
               action: () => {
                 this.createDialog('InstanceGroupAddVipNetworkDialog', {
                   title: this.$t('compute.create_vip'),

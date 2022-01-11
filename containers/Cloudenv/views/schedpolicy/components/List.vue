@@ -57,7 +57,6 @@ export default {
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
-          permission: 'schedpolicies_create',
           action: () => {
             this.createDialog('CreateSchedpolicyDialog', {
               title: this.$t('cloudenv.text_414'),
@@ -72,7 +71,6 @@ export default {
         },
         {
           label: this.$t('cloudenv.text_108'),
-          permission: 'schedpolicies_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

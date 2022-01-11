@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import { steadyStatus } from '../constants'
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
@@ -23,9 +26,6 @@ import {
   getOsArchFilter,
   getRegionFilter,
 } from '@/utils/common/tableFilter'
-import SingleActionsMixin from '../mixins/singleActions'
-import ColumnsMixin from '../mixins/columns'
-import { steadyStatus } from '../constants'
 
 export default {
   name: 'InstanceSnapshotList',
@@ -77,7 +77,6 @@ export default {
       groupActions: [
         {
           label: this.$t('table.action.set_tag'),
-          permission: 'instance_snapshots_perform_set_user_metadata',
           action: () => {
             this.createDialog('SetTagDialog', {
               data: this.list.selectedItems,
@@ -99,7 +98,7 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
-          permission: 'instance_snapshots_delete',
+          permission: 'snapshots_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

@@ -6,7 +6,6 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('system.text_246'),
-        permission: 'idps_update',
         action: (obj) => {
           this.jumpTo(`update/${obj.id}`)
         },
@@ -52,10 +51,9 @@ export default {
             //     }
             //   },
             // },
-            ...getEnabledSwitchActions(this, undefined, ['idps_perform_enable', 'idps_perform_disable']),
+            ...getEnabledSwitchActions(this),
             {
               label: i18n.t('system.text_250'),
-              permission: 'idps_perform_sync',
               action: () => {
                 this.onManager('performAction', {
                   id: obj.id,

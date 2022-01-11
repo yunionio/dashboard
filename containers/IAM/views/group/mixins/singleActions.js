@@ -28,7 +28,7 @@ export default {
       },
       {
         label: i18n.t('system.text_129'),
-        permission: 'groups_delete',
+        permission: 'roles_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,

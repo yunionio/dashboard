@@ -58,7 +58,6 @@ export default {
       groupActions: [
         {
           label: this.$t('cloudenv.text_104'),
-          permission: 'zones_create',
           action: () => {
             this.createDialog('CreateZoneDialog', {
               title: this.$t('cloudenv.text_479'),
@@ -75,7 +74,6 @@ export default {
         },
         {
           label: this.$t('cloudenv.text_108'),
-          permission: 'zones_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,

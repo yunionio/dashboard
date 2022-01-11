@@ -118,7 +118,7 @@ export default {
             return [
               {
                 label: this.$t('compute.text_283'),
-                permission: 'cdn_domains_perform_set_user_metadata',
+                permission: 'cdn_domains_set_user_metadata',
                 action: () => {
                   this.createDialog('SetTagDialog', {
                     data: this.list.selectedItems,
@@ -131,9 +131,7 @@ export default {
                   })
                 },
               },
-              disableDeleteAction(Object.assign(this, {
-                permission: 'cdn_domains_update',
-              }), {
+              disableDeleteAction(this, {
                 name: this.$t('dictionary.cdn_domain'),
                 meta: () => {
                   if (!isOwner) {

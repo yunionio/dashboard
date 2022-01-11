@@ -96,7 +96,7 @@ export default {
             return [
               {
                 label: this.$t('storage.text_36'),
-                permission: 'access_groups_delete',
+                permission: 'access_group_delete',
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,

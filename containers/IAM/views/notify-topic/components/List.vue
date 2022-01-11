@@ -69,7 +69,6 @@ export default {
       groupActions: [
         {
           label: this.$t('system.text_225'),
-          permission: 'topics_perform_enable',
           action: () => {
             this.createDialog('DisableDialog', {
               title: this.$t('system.text_225'),
@@ -104,7 +103,6 @@ export default {
         },
         {
           label: this.$t('system.text_226'),
-          permission: 'topics_perform_disable',
           action: () => {
             this.createDialog('DisableDialog', {
               title: this.$t('system.text_226'),

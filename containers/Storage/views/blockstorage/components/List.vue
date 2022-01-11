@@ -43,7 +43,6 @@ export default {
     const groupActions = [
       {
         label: this.$t('storage.text_31'),
-        permission: 'storages_create',
         action: () => {
           this.createDialog('BlockStorageCreateDialog', {
             title: this.$t('storage.text_32'),
@@ -62,7 +61,7 @@ export default {
         label: this.$t('storage.text_33'),
         actions: () => {
           return [
-            ...getEnabledSwitchActions(this, undefined, ['storages_perform_enable', 'storages_perform_disable']),
+            ...getEnabledSwitchActions(this),
             {
               label: this.$t('storage.text_34'),
               permission: 'storages_update',
@@ -87,7 +86,6 @@ export default {
               name: this.$t('dictionary.storages'),
               resource: 'storages',
             }, {
-              permission: 'storages_perform_change_owner',
               meta: () => {
                 return {
                   validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
@@ -99,7 +97,6 @@ export default {
               scope: 'domain',
               resource: 'storages',
             }, {
-              permission: 'storages_perform_public',
               meta: () => {
                 return {
                   validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
@@ -120,7 +117,6 @@ export default {
             // },
             {
               label: this.$t('table.action.set_tag'),
-              permission: 'storages_perform_set_user_metadata',
               action: () => {
                 this.createDialog('SetTagDialog', {
                   data: this.list.selectedItems,

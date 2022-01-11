@@ -7,7 +7,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('network.text_130'),
-        permission: 'loadbalanceracls_update',
+        permission: 'lb_loadbalanceracls_update',
         action: (obj) => {
           this.createDialog('LbaclsCreateDialog', {
             title: i18n.t('network.text_130'),
@@ -24,7 +24,7 @@ export default {
           return [
             {
               label: i18n.t('network.text_225', [i18n.t('dictionary.project')]),
-              permission: 'loadbalanceracls_perform_change_owner',
+              permission: 'networks_perform_change_owner',
               action: () => {
                 this.createDialog('ChangeOwenrDialog', {
                   data: [obj],
@@ -57,12 +57,10 @@ export default {
               name: this.$t('network.text_142'),
               scope: 'project',
               resource: 'loadbalanceracls',
-            }, {
-              permission: 'loadbalanceracls_perform_public',
             }),
             {
               label: i18n.t('network.text_131'),
-              permission: 'loadbalanceracls_delete',
+              permission: 'lb_loadbalancerlisteners_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

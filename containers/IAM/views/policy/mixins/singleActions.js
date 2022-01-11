@@ -10,7 +10,6 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('system.text_152'),
-        permission: 'policies_update',
         action: obj => {
           this.$router.push({
             path: '/policy/update',
@@ -43,7 +42,6 @@ export default {
           return [
             {
               label: i18n.t('system.text_225'),
-              permission: 'policies_update',
               action: () => {
                 this.createDialog('DisableDialog', {
                   title: i18n.t('system.text_342', [i18n.t('dictionary.policy')]),
@@ -73,7 +71,6 @@ export default {
             },
             {
               label: i18n.t('system.text_226'),
-              permission: 'policies_update',
               action: () => {
                 this.createDialog('DisableDialog', {
                   alert: i18n.t('system.text_434'),
@@ -104,7 +101,6 @@ export default {
             },
             {
               label: this.$t('table.action.clone'),
-              permission: 'policies_create',
               action: () => {
                 this.createDialog('PolicyCloneDialog', {
                   data: [obj],

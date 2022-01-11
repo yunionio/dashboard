@@ -24,7 +24,6 @@ export default {
       },
       {
         label: i18n.t('system.text_225'),
-        permission: 'topics_perform_enable',
         action: (obj) => {
           this.createDialog('DisableDialog', {
             title: i18n.t('system.text_225'),
@@ -54,7 +53,6 @@ export default {
       },
       {
         label: i18n.t('system.text_226'),
-        permission: 'topics_perform_disable',
         action: (obj) => {
           this.createDialog('DisableDialog', {
             title: i18n.t('system.text_226'),

@@ -6,7 +6,6 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('middleware.syncstatus'),
-        permission: 'elastic_searchs_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['available'],
@@ -24,14 +23,12 @@ export default {
         label: i18n.t('middleware.more'),
         actions: (obj) => {
           return [
-            disableDeleteAction(Object.assign(this, {
-              permission: 'elastic_searchs_update',
-            }), {
+            disableDeleteAction(this, {
               name: this.$t('dictionary.elasticsearch'),
             }),
             {
               label: i18n.t('middleware.delete'),
-              permission: 'elastic_searchs_delete',
+              permission: 'elastic_search_delete',
               action: () => {
                 this.createDialog('DeleteResDialog', {
                   vm: this,

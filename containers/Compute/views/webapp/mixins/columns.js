@@ -25,7 +25,7 @@ export default {
           )
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'webapps', tipName: this.$t('compute.webapp'), columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'webapp', tipName: this.$t('compute.webapp'), columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'webapp' }),
       getTypeTableColumn(),
       getKindTableColumn(),
