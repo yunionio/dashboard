@@ -112,7 +112,7 @@ export default {
               action: () => {
                 this.createDialog('AssociatedHostDialog', {
                   data: [me.detailData],
-                  columns: this.columns,
+                  columns: me.columns,
                   title: this.$t('storage.text_66'),
                   onManager: this.onManager,
                   refresh: this.refresh,
