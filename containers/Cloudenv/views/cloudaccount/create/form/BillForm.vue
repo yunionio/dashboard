@@ -73,15 +73,9 @@
         <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_212')" v-if="form.fc.getFieldValue('sync_info')" :extra="$t('cloudenv.text_213')">
-        <a-range-picker
-          v-decorator="decorators.billtask"
-          :disabled-date="current => current && current > $moment().endOf('day')"
-          :ranges="{
-            [billTasks['7 days']]: [$moment().subtract(1, 'w'), $moment()],
-            [billTasks['1 months']]: [$moment().subtract(1, 'M'), $moment()],
-            [billTasks['3 months']]: [$moment().subtract(3, 'M'), $moment()],
-            [billTasks['6 months']]: [$moment().subtract(6, 'M'), $moment()],
-          }" />
+        <a-month-picker :disabled-date="dateDisabledStart" v-decorator="decorators.billtask_start" @change="startChange" />
+        <span class="ml-2 mr-2">~</span>
+        <a-month-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.billtask_end" @change="endChange" />
       </a-form-item>
     </a-form>
   </div>
@@ -237,8 +231,11 @@ export default {
             ],
           },
         ],
-        billtask: ['billtask', {
-          initialValue: [this.$moment().subtract(1, 'w'), this.$moment()],
+        billtask_start: ['billtask_start', {
+          initialValue: this.$moment().startOf('month'),
+        }],
+        billtask_end: ['billtask_end', {
+          initialValue: this.$moment(),
         }],
         billing_scope: [
           'billing_scope',
@@ -310,19 +307,14 @@ export default {
     async postBillTasks (id, values) {
       const manager = new this.$Manager('bill_tasks', 'v1')
       try {
-        const { billtask } = values
+        const { billtask_start, billtask_end } = values
         const data = {
           sync_info: true,
           cloudaccount_id: id,
           action: 'override',
         }
-        // const [num, format] = billtask.split(' ')
-        // const endDayMoment = this.$moment().subtract(1, 'd')
-        // const startDayMoment = this.$moment().subtract(num, format)
-        // data.end_day = endDayMoment.format('YYYYMMDD')
-        // data.start_day = startDayMoment.format('YYYYMMDD')
-        data.end_day = billtask[1].format('YYYYMMDD')
-        data.start_day = billtask[0].format('YYYYMMDD')
+        data.end_day = billtask_end > this.$moment() ? this.$moment().format('YYYYMMDD') : billtask_end.format('YYYYMMDD')
+        data.start_day = billtask_start.format('YYYYMMDD')
         await manager.create({
           data,
         })
@@ -337,7 +329,8 @@ export default {
           this.postBillTasks(id, values)
         }
         delete values.sync_info
-        delete values.billtask
+        delete values.billtask_start
+        delete values.billtask_end
         const params = {
           id,
           data: {
@@ -362,7 +355,8 @@ export default {
       const values = await this.form.fc.validateFields()
       values.cloudaccount_id = this.id
       delete values.sync_info
-      delete values.billtask
+      delete values.billtask_start
+      delete values.billtask_end
       const res = await new this.$Manager('bucket_options', 'v1').performClassAction({
         action: 'verify',
         data: values,
@@ -383,6 +377,28 @@ export default {
           ),
         })
       } else return false
+    },
+    startChange (value) {
+      this.form.fc.setFieldsValue({
+        billtask_start: value.startOf('month'),
+      })
+    },
+    endChange (value) {
+      this.form.fc.setFieldsValue({
+        billtask_end: value.endOf('month') > this.$moment() ? this.$moment() : value.endOf('month'),
+      })
+    },
+    dateDisabledStart (value) {
+      const dateEnd = this.form.fc.getFieldValue('billtask_end')
+      if (dateEnd && value > dateEnd) return true
+      if (value > this.$moment()) return true
+      return false
+    },
+    dateDisabledEnd (value) {
+      const dateStart = this.form.fc.getFieldValue('billtask_start')
+      if (dateStart && value < dateStart) return true
+      if (value > this.$moment().endOf('month')) return true
+      return false
     },
   },
 }
