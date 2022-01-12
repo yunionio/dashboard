@@ -30,10 +30,11 @@ import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 import regexp from '@/utils/regexp'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'VPCList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
     getParams: {
