@@ -158,7 +158,8 @@
       "update_tags_fail": "Failed to update tag",
       "image_caching": "Image Caching",
       "restart_network": "Restart Network",
-      "restart_network_failed": "Restart Network Failed"
+      "restart_network_failed": "Restart Network Failed",
+      "sync_isolated_device_failed": "Sync isolated device failed"
     },
     "network": {
       "init": "Initialize",
