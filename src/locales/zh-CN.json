@@ -4947,5 +4947,8 @@
   "common.export_excel": "导出Excel",
   "common.sync_resource": "同步资源",
   "common.check_readonly": "{0}平台暂不支持{1}",
-  "common.load_no_more": "没有更多了"
+  "common.load_no_more": "没有更多了",
+  "error_title": {
+    "ForbiddenError": "权限不足"
+  }
 }
