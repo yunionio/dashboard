@@ -76,7 +76,7 @@
   "helm.text_94": "请输入URL",
   "helm.text_95": "Helm仓库(Repo)",
   "helm.text_96": "URL地址",
-  "helm.text_97": "请选择【未被使用】的存储卷",
+  "helm.text_97": "发布数量不为0的Helm仓库不允许被删除",
   "helm.text_98": "存储声明(Persistentvolumeclaim)",
   "helm.text_99": "套餐",
   "helm.text_100": "{0} 核",

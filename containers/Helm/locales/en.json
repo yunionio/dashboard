@@ -76,7 +76,7 @@
   "helm.text_94": "Please enter URL",
   "helm.text_95": "Helm Repo",
   "helm.text_96": "URL address",
-  "helm.text_97": "Please select [unused] storage volume",
+  "helm.text_97": "Helm repositories with a release count not equal to 0 are not allowed to be deleted",
   "helm.text_98": "Storage Claim (Persistentvolumeclaim)",
   "helm.text_99": "Package",
   "helm.text_100": "{0}",
