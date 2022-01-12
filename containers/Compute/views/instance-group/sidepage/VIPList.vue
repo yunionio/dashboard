@@ -68,7 +68,7 @@ export default {
             }
             return {
               buttonType: 'primary',
-              validate: (this.data.network_id !== '' && this.list.total < 1),
+              validate: (!!this.data.network_id && this.list.total < 1),
               tooltip,
             }
           },
