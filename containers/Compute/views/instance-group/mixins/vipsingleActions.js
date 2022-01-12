@@ -15,10 +15,12 @@ export default {
         },
         meta: (obj) => {
           const ret = {
-            validate: false,
-            tooltip: null,
+            validate: true,
           }
-          ret.validate = true
+          if (obj.eip_id) {
+            ret.validate = false
+            ret.tooltip = this.$t('compute.detach_eip')
+          }
           return ret
         },
         hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.instancegroup_detach_network'),

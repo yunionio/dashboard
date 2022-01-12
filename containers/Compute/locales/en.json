@@ -1504,5 +1504,6 @@
   "compute.prompt_empty_instance_group_vip": "No VIP for this instance group",
   "compute.prompt_already_associate_eip": "This instance group has already been associated with EIP",
   "compute.prompt_no_associate_eip": "This instance group has no EIP to dissociate",
-  "compute.gpu_associate_server": "Only virtual machines with the same host as the Passthrough in the shutdown state can be selected"
+  "compute.gpu_associate_server": "Only virtual machines with the same host as the Passthrough in the shutdown state can be selected",
+  "compute.detach_eip": "Please unbind the EIP first"
 }
