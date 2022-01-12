@@ -18,10 +18,11 @@ import ListMixin from '@/mixins/list'
 import { getNameFilter, getStatusFilter, getTenantFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'MongoDBList',
-  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
   },
