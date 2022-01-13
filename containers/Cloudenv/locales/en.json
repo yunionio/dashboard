@@ -752,5 +752,6 @@
   "cloudenv.cloudprovider.delete_tip": "This operation only deletes local records and has no impact on the cloud. If the cloud is not deleted, it will be restored at the next synchronization.",
   "cloudenv.cloudprovider.sync_delete": "This operation is not supported in synchronization",
   "cloudenv.bill.data_source": "Bill data source:",
-  "cloudenv.text_605": "{0} Cloud platform does not support this operation"
+  "cloudenv.text_605": "{0} Cloud platform does not support this operation",
+  "cloudenv.nutanix.prism": "Prism Address"
 }
