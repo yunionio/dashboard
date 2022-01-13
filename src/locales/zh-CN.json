@@ -1953,7 +1953,8 @@
     "aws": "AWS",
     "huawei": "华为云",
     "ucloud": "UCloud",
-    "hcso": "HCSO"
+    "hcso": "HCSO",
+    "nutanix": "Nutanix"
   },
   "bandwidths": {
     "100": "百 兆(100M)",
@@ -4915,6 +4916,7 @@
   "license.provider.apsara": "@:cloudPrvidersMap.Apsara",
   "license.provider.cloudpods": "@:scopeProviders.cloudpods",
   "license.provider.hcso": "@:cloudPrvidersMap.HCSO",
+  "license.provider.nutanix": "@:cloudPrvidersMap.Nutanix",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",

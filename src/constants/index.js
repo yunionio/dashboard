@@ -15,6 +15,7 @@ export const HYPERVISORS_MAP = {
   apsara: { key: 'apsara', label: i18n.t('scopeCloudPrvidersMap.Apsara'), provider: 'Apsara', brand: 'Apsara', host_type: 'apsara', hypervisor: 'apsara', env: 'private', cloud_env: 'private' },
   cloudpods: { key: 'cloudpods', label: i18n.t('scopeCloudPrvidersMap.Cloudpods'), provider: 'Cloudpods', brand: 'Cloudpods', host_type: 'cloudpods', hypervisor: 'cloudpods', env: 'private', cloud_env: 'private' },
   hcso: { key: 'hcso', label: i18n.t('cloudPrvidersMap.HCSO'), provider: 'HCSO', brand: 'HCSO', host_type: 'hcso', hypervisor: 'hcso', env: 'private', cloud_env: 'private' },
+  nutanix: { key: 'nutanix', label: i18n.t('scopeCloudPrvidersMap.Nutanix'), provider: 'Nutanix', brand: 'Nutanix', host_type: 'nutanix', hypervisor: 'nutanix', env: 'private', cloud_env: 'private' },
   // Public
   aliyun: { key: 'aliyun', label: i18n.t('scopeCloudPrvidersMap.Aliyun'), provider: 'Aliyun', brand: 'Aliyun', host_type: 'aliyun', hypervisor: 'aliyun', env: 'public', cloud_env: 'public' },
   azure: { key: 'azure', label: 'Azure', provider: 'Azure', brand: 'Azure', host_type: 'azure', hypervisor: 'azure', env: 'public', cloud_env: 'public' },
@@ -70,6 +71,7 @@ export const HYPERVISORS_GROUP = {
     openstack: HYPERVISORS_MAP.openstack,
     cloudpods: HYPERVISORS_MAP.cloudpods,
     zstack: HYPERVISORS_MAP.zstack,
+    nutanix: HYPERVISORS_MAP.nutanix,
   },
   public: {
     aliyun: HYPERVISORS_MAP.aliyun,
