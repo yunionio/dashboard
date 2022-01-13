@@ -53,10 +53,10 @@ export default {
         &.total {
           background-color: #409eff;
         }
-        &.running, &.available {
+        &.running, &.available, &.online {
           background-color: #52c41a;
         }
-        &.ready {
+        &.ready, &.offline {
           background-color: #d9d9d9;
         }
         &.error {

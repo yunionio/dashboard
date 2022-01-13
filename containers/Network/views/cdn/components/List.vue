@@ -23,10 +23,11 @@ import { disableDeleteAction } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import i18n from '@/locales'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'DomainList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
     getParams: {
