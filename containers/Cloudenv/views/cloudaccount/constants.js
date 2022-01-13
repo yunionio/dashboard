@@ -22,6 +22,7 @@ const ecloudLogo = require('../../../../src/assets/images/providers/ecloud.svg')
 const jdcloudLogo = require('../../../../src/assets/images/providers/jdcloud.svg')
 const cloudpodsLogo = require('../../../../src/assets/images/providers/cloudpods.svg')
 const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
+const nutanixLogo = require('../../../../src/assets/images/providers/nutanix.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -137,6 +138,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'HCSOCreate',
       provider: providerMap.hcso.key,
     },
+    nutanix: {
+      name: providerMap.nutanix.label,
+      logo: nutanixLogo,
+      component: 'NutanixCreate',
+      provider: providerMap.nutanix.key,
+    },
   },
   storage: {
     s3: {
@@ -190,6 +197,7 @@ export function getCloudaccountDocs (scope) {
     jdcloud: i18n.t('cloudenv.create_jdcloud', [docs_path]),
     cloudpods: i18n.t('cloudenv.create_cloudpods', [docs_path]),
     hcso: i18n.t('cloudenv.create_hcso', [docs_path]),
+    nutanix: i18n.t('cloudenv.create_nutanix', [docs_path]),
   }
   if (isCE()) {
     Object.keys(docs).forEach(v => {
@@ -488,6 +496,19 @@ export const keySecretFields = {
       s: i18n.t('cloudenv.text_147'),
     },
   },
+  nutanix: {
+    k: 'username',
+    s: 'password',
+    text: 'Nutanix',
+    placeholder: {
+      k: i18n.t('cloudenv.text_151'),
+      s: i18n.t('cloudenv.text_150'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
 }
 
 export function getBillBucketUrlDocs (scope) {
@@ -515,6 +536,7 @@ export function getEnrollmentNumberDocs (scope) {
 
 export const notSupportSelectRegion = [
   providerMap.vmware.key,
+  providerMap.nutanix.key,
   providerMap.ceph.key,
   providerMap.s3.key,
   providerMap.xsky.key,

@@ -15,6 +15,7 @@ import Google from './components/Google'
 import Apsara from './components/Apsara'
 import Cloudpods from './components/Cloudpods'
 import HCSO from './components/HCSO'
+import Nutanix from './components/Nutanix'
 
 export default {
   name: 'CreateCloudaccount',
@@ -39,6 +40,7 @@ export default {
     JDcloudCreate: Aliyun,
     CloudpodsCreate: Cloudpods,
     HCSOCreate: HCSO,
+    NutanixCreate: Nutanix,
   },
   props: {
     currentItem: {
