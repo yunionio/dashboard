@@ -9,7 +9,8 @@
     "JDcloud": "JD Cloud",
     "Apsara": "Apsara",
     "HCSO": "HCSO",
-    "Ecloud": "mCloud"
+    "Ecloud": "mCloud",
+    "Nutanix": "Nutanix"
   },
   "scopeProviders": {
     "esxi": "VMware",
@@ -27,6 +28,7 @@
     "jdcloud": "JD Cloud",
     "ucloud": "UCloud",
     "HCSO": "HCSO",
-    "ecloud": "mCloud"
+    "ecloud": "mCloud",
+    "nutanix": "Nutanix"
   }
 }
