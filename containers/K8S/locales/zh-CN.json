@@ -412,7 +412,7 @@
   "k8s.text_411": "节点(Nodes)",
   "k8s.text_412": "指定域",
   "k8s.text_413": "请选择@:dictionary.domain",
-  "k8s.docs_cluster_onecloud": "{0}#内置私有云",
+  "k8s.docs_cluster_onecloud": "{0}#前提条件",
   "k8s.provider_image_not_prepared": "没有找到对应平台镜像，",
   "k8s.ref_prepare_doc": "请参考文档准备环境",
   "k8s.text_414": "监控",
