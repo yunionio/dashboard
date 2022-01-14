@@ -1034,6 +1034,15 @@
     },
     "robot": {
       "ready": "可用"
+    },
+    "diskBackup": {
+      "init": "初始化",
+      "snapshot": "正在创建快照",
+      "saving": "正在保存",
+      "ready": "可用",
+      "deleting": "正在删除",
+      "recovery": "正在回滚",
+      "snapshot_failed": "快照创建失败"
     }
   },
   "skuCategoryOptions": {
@@ -4957,5 +4966,6 @@
   "error_title": {
     "ForbiddenError": "权限不足"
   },
-  "common.field_required_placeholder": "请填写{0}"
+  "common.field_required_placeholder": "请填写{0}",
+  "common.backup": "备份"
 }

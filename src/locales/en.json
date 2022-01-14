@@ -1020,6 +1020,15 @@
     },
     "robot": {
       "ready": "Ready"
+    },
+    "diskBackup": {
+      "init": "Initialize",
+      "snapshot": "Snapshot",
+      "saving": "Saving",
+      "ready": "Ready",
+      "deleting": "Deleting",
+      "recovery": "Recovery",
+      "snapshot_failed": "Fail to snapshot"
     }
   },
   "skuCategoryOptions": {
@@ -4943,5 +4952,6 @@
   "error_title": {
     "ForbiddenError": "Permission Denied"
   },
-  "common.field_required_placeholder": "Please fill in {0}"
+  "common.field_required_placeholder": "Please fill in {0}",
+  "common.backup": "Backup"
 }
