@@ -1505,5 +1505,15 @@
   "compute.prompt_already_associate_eip": "This instance group has already been associated with EIP",
   "compute.prompt_no_associate_eip": "This instance group has no EIP to dissociate",
   "compute.gpu_associate_server": "Only virtual machines with the same host as the Passthrough in the shutdown state can be selected",
-  "compute.detach_eip": "Please unbind the EIP first"
+  "compute.detach_eip": "Please unbind the EIP first",
+  "compute.disk_backup": "Disk Backup",
+  "compute.create_disk_backup": "Create Disk Backup",
+  "compute.rollback_disk_backup": "Rollback Disk Backup",
+  "compute.backup_name": "Backup Name",
+  "compute.backup_storage": "Backup Storage",
+  "compute.disk_name_placeholder": "Optional, if empty, the name is the name of the original backup disk",
+  "compute.create_new_disk": "Create a new disk",
+  "compute.rollback_type": "Recovery Type",
+  "compute.backup_size": "Backup Size",
+  "compute.disk_size": "Disk Size"
 }
