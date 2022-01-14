@@ -1020,6 +1020,58 @@
     },
     "robot": {
       "ready": "Ready"
+<<<<<<< HEAD
+=======
+    },
+    "vpcNetwork": {
+      "available": "Available",
+      "creating": "Creating",
+      "create_failed": "Create Failed",
+      "delete_failed": "Delete Failed",
+      "deleting": "Deleting",
+      "add_vpc": "Add Vpc",
+      "add_vpc_failed": "Add Vpc Failed",
+      "remove_vpc": "Remove Vpc",
+      "remove_vpc_failed": "Remove Vpc Failed",
+      "update_route": "Update Route",
+      "update_route_failed": "Update Route Failed",
+      "unknown": "Unknown"
+    },
+    "routeSet": {
+      "available": "Available",
+      "unknown": "Unknown",
+      "conflict": "Conflict",
+      "disabled": "Disabled"
+    },
+    "region": {
+      "inservice": "Inservice",
+      "outofservice": "Outofservice"
+    },
+    "routeTable": {
+      "available": "Available",
+      "unknown": "Unknown",
+      "conflict": "Conflict",
+      "disabled": "Disabled",
+      "update_falied": "Update Failed"
+    },
+    "vpcPeerConnect": {
+      "active": "Available",
+      "creating": "Creating",
+      "create_failed": "Create Failed",
+      "delete_failed": "Delete Failed",
+      "pending-acceptance": "Pending Acceptance",
+      "deleting": "Deleting",
+      "unknown": "Unknown"
+    },
+    "diskBackup": {
+      "init": "Initialize",
+      "snapshot": "Snapshot",
+      "saving": "Saving",
+      "ready": "Ready",
+      "deleting": "Deleting",
+      "recovery": "Recovery",
+      "snapshot_failed": "Fail to snapshot"
+>>>>>>> feat: add disk backup
     }
   },
   "skuCategoryOptions": {
@@ -4943,5 +4995,9 @@
   "error_title": {
     "ForbiddenError": "Permission Denied"
   },
+<<<<<<< HEAD
   "common.field_required_placeholder": "Please fill in {0}"
+=======
+  "common.backup": "Backup"
+>>>>>>> feat: add disk backup
 }
