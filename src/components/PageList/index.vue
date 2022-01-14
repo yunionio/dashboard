@@ -309,6 +309,7 @@ export default {
     },
     filterChange (filter) {
       this.list.changeFilter(filter)
+      this.$emit('filterChange', filter)
     },
     projectTagFilterChange (projectTagFilter) {
       this.list.changeProjectTagFilter(projectTagFilter)
