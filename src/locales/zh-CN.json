@@ -1074,6 +1074,15 @@
       "pending-acceptance": "建立连接",
       "deleting": "删除中",
       "unknown": "未知"
+    },
+    "diskBackup": {
+      "init": "初始化",
+      "snapshot": "正在创建快照",
+      "saving": "正在保存",
+      "ready": "可用",
+      "deleting": "正在删除",
+      "recovery": "正在回滚",
+      "snapshot_failed": "快照创建失败"
     }
   },
   "skuCategoryOptions": {
@@ -1694,7 +1703,8 @@
     "Azure": "Azure",
     "Ctyun": "天翼云",
     "HCSO": "HCSO",
-    "Apsara": "飞天"
+    "Apsara": "飞天",
+    "Nutanix": "Nutanix"
   },
   "shareScope": {
     "system": "系统",
@@ -5014,5 +5024,6 @@
   "common.load_no_more": "没有更多了",
   "error_title": {
     "ForbiddenError": "权限不足"
-  }
+  },
+  "common.backup": "备份"
 }
