@@ -23,6 +23,7 @@ import InstanceGroup from '@Compute/views/instance-group'
 import SKU from '@Compute/views/sku'
 import Keypair from '@Compute/views/keypair'
 import Disk from '@Compute/views/disk'
+import DiskBackup from '@Compute/views/disk-backup'
 import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
 import Servertemplate from '@Compute/views/servertemplate'
@@ -367,6 +368,27 @@ export default {
               name: 'SnapshotPolicy',
               path: '',
               component: SnapshotPolicy,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('common.backup'),
+      },
+      submenus: [
+        {
+          path: '/disk-backup',
+          meta: {
+            label: i18n.t('compute.disk_backup'),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'DiskBackup',
+              path: '',
+              component: DiskBackup,
             },
           ],
         },

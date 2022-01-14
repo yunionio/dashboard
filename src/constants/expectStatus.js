@@ -483,4 +483,7 @@ export default {
     info: ['unknown', 'pending-acceptance'],
     danger: ['create_failed', 'delete_failed'],
   },
+  diskBackup: {
+    success: ['ready'],
+  },
 }

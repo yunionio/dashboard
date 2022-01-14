@@ -148,6 +148,34 @@ export default {
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_create_snapshot'),
             },
             {
+              label: i18n.t('compute.create_disk_backup'),
+              action: () => {
+                this.createDialog('DiskCreateBackupDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const guestStatus = ['running', 'ready']
+                if (obj.guest && !guestStatus.includes(obj.guest_status)) {
+                  return {
+                    validate: false,
+                  }
+                }
+                if (!obj.guest && obj.storage_type === 'local') {
+                  return {
+                    validate: false,
+                    tooltip: '',
+                  }
+                }
+                return {
+                  validate: true,
+                  tooltip: '',
+                }
+              },
+            },
+            {
               label: i18n.t('compute.disk_perform_setup_snapshot_policy'),
               permission: 'snapshotpolicy_delete',
               action: () => {
