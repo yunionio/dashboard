@@ -1060,6 +1060,15 @@
       "pending-acceptance": "Pending Acceptance",
       "deleting": "Deleting",
       "unknown": "Unknown"
+    },
+    "diskBackup": {
+      "init": "Initialize",
+      "snapshot": "Snapshot",
+      "saving": "Saving",
+      "ready": "Ready",
+      "deleting": "Deleting",
+      "recovery": "Recovery",
+      "snapshot_failed": "Fail to snapshot"
     }
   },
   "skuCategoryOptions": {
@@ -5001,5 +5010,6 @@
   "common.load_no_more": "No More",
   "error_title": {
     "ForbiddenError": "Permission Denied"
-  }
+  },
+  "common.backup": "Backup"
 }
