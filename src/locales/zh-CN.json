@@ -1694,7 +1694,8 @@
     "Azure": "Azure",
     "Ctyun": "天翼云",
     "HCSO": "HCSO",
-    "Apsara": "飞天"
+    "Apsara": "飞天",
+    "Nutanix": "Nutanix"
   },
   "shareScope": {
     "system": "系统",

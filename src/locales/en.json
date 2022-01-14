@@ -1680,7 +1680,8 @@
     "Azure": "Azure",
     "Ctyun": "eCloud",
     "HCSO": "HCSO",
-    "Apsara": "Apsara"
+    "Apsara": "Apsara",
+    "Nutanix": "Nutanix"
   },
   "shareScope": {
     "system": "System",
