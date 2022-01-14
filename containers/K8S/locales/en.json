@@ -412,7 +412,7 @@
   "k8s.text_411": "Nodes",
   "k8s.text_412": "Domain",
   "k8s.text_413": "Please select @:dictionary.domain",
-  "k8s.docs_cluster_onecloud": "{0}#Built-in Private Cloud",
+  "k8s.docs_cluster_onecloud": "{0}#pre-conditions",
   "k8s.provider_image_not_prepared": "Platform image not prepared, ",
   "k8s.ref_prepare_doc": "please refer to document setup environment",
   "k8s.text_414": "Monitor",
