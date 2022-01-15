@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import ColumnsMixin from '../mixins/vipcolumns'
-import SingleActionsMixin from '../mixins/vipsingleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import ColumnsMixin from '../mixins/vipcolumns'
+import SingleActionsMixin from '../mixins/vipsingleActions'
 
 export default {
   name: 'GroupNetworkList',
@@ -90,8 +90,8 @@ export default {
       })
     },
     refresh () {
+      this.$bus.$emit('InstanceGroupListRefresh', this.resId)
       this.list.refresh()
-      this.$bus.$emit('InstanceGroupListRefresh')
     },
   },
 }

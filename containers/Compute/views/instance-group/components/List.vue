@@ -11,6 +11,7 @@
 import { getStatusFilter, getDomainFilter, getTenantFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import expectStatus from '@/constants/expectStatus'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -29,6 +30,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'instancegroups',
+        steadyStatus: Object.values(expectStatus.instanceGroup).flat(),
         getParams: this.getParam,
         filterOptions: {
           id: {
@@ -113,9 +115,9 @@ export default {
   created () {
     this.initSidePageTab('instance-group-detail')
     this.list.fetchData()
-    this.$bus.$on('InstanceGroupListRefresh', () => {
-      this.list.refresh()
-    }, this)
+    this.$bus.$on('InstanceGroupListRefresh', (id) => {
+      this.list.singleRefresh(id, Object.values(expectStatus.instanceGroup).flat())
+    })
   },
   methods: {
     getParam () {
