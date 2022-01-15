@@ -9,7 +9,7 @@
 <script>
 import {
   getCopyWithContentTableColumn,
-  getStatusTableColumn,
+  // getStatusTableColumn,
   getEnabledTableColumn,
   getRegionTableColumn,
 } from '@/utils/common/tableColumn'
@@ -54,7 +54,7 @@ export default {
           title: this.$t('network.text_244'),
           sortable: true,
         }),
-        getStatusTableColumn({ statusModule: 'routeSet' }),
+        // getStatusTableColumn({ statusModule: 'routeSet' }),
         getEnabledTableColumn(),
         {
           field: 'vpc',
