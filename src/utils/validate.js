@@ -247,6 +247,10 @@ export const REGEXP = {
     regexp: /^[0-9]+?$/,
     message: i18n.t('validator.nonNegativeInt'),
   },
+  blockStorageName: {
+    regexp: /^[a-zA-Z][a-zA-Z0-9._-]{1,127}$/,
+    message: i18n.t('validator.blockStorageName'),
+  },
 }
 
 /**
