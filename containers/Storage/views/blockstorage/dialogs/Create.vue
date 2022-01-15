@@ -86,7 +86,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('storage.text_56') },
-              { validator: this.$validate('snapshotName') },
+              { validator: this.$validate('blockStorageName') },
             ],
           },
         ],
