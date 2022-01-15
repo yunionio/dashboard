@@ -10,6 +10,10 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        formRules: [
+          { required: true, message: this.$t('storage.text_56') },
+          { validator: this.$validate('blockStorageName') },
+        ],
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name_cn ? `${row.name}(${row.name_cn})` : row.name }</side-page-trigger>
