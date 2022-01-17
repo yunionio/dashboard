@@ -1515,5 +1515,8 @@
   "compute.create_new_disk": "创建新磁盘",
   "compute.rollback_type": "恢复方式",
   "compute.backup_size": "备份大小",
-  "compute.disk_size": "磁盘大小"
+  "compute.disk_size": "磁盘大小",
+  "compute.create_disk_backup2": "创建备份",
+  "compute.backup_type": "备份类别",
+  "compute.instance_backup": "主机备份"
 }
