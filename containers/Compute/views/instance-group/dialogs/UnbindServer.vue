@@ -40,7 +40,7 @@ export default {
         })
         this.params.refresh()
         this.cancelDialog()
-        this.$bus.$emit('InstanceGroupListRefresh')
+        this.$bus.$emit('InstanceGroupListRefresh', this.params.instanceGroupId)
       } finally {
         this.loading = false
       }
