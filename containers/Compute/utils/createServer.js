@@ -256,6 +256,7 @@ export const createVmDecorators = type => {
       policy: [
         'systemDiskPolicy',
         {
+          initialValue: 'require',
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
