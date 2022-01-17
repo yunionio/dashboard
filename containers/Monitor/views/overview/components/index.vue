@@ -220,7 +220,7 @@ export default {
             return a[name] - b[name]
           })
           for (const i in series) {
-            const d = new Date(series[i].name)
+            const d = new Date(series[i][name])
             const rn = `${d.getMonth() + 1}/${d.getDate()}`
             if (_temp.hasOwnProperty(rn)) {
               _temp[rn][columnName] = series[i].value
