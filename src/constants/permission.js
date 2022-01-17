@@ -871,6 +871,9 @@ export const PERMISSION = {
   bill_budgets_delete: ['meter', 'budgets', 'delete'],
   bill_budgets_perform: ['meter', 'budgets', 'perform'],
 
+  // 标签
+  bill_tags_list: ['meter', 'bill_tags', 'list'],
+
   /**
    * billsdimensions 维度管理
    */
