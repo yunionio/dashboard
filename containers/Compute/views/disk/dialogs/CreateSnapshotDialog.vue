@@ -44,6 +44,14 @@ export default {
             ],
           },
         ],
+        storage: [
+          'storage',
+          {
+            rules: [
+              { required: true, message: this.$t('compute.text_1022', [this.$t('compute.backup_storage')]), trigger: 'change' },
+            ],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
