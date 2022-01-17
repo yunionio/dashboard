@@ -121,7 +121,7 @@ export default {
         id: ids,
         managerArgs: {
           action: 'create-eip',
-          steadyStatus: ['running', 'ready'],
+          steadyStatus: ['init'],
           data: {
             charge_type: values.charge_type,
             bandwidth: values.bandwidth,
@@ -135,7 +135,7 @@ export default {
         id: ids,
         managerArgs: {
           action: 'associate-eip',
-          steadyStatus: ['running', 'ready'],
+          steadyStatus: ['init'],
           data: {
             eip: values.eip,
           },
@@ -153,7 +153,7 @@ export default {
         if (values.type === 'bind') {
           await this.doBindEip(ids, values)
         }
-        this.params.refresh()
+        this.$bus.$emit('InstanceGroupListRefresh', ids)
         this.cancelDialog()
       } finally {
         this.loading = false
