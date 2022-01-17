@@ -1515,5 +1515,8 @@
   "compute.create_new_disk": "Create a new disk",
   "compute.rollback_type": "Recovery Type",
   "compute.backup_size": "Backup Size",
-  "compute.disk_size": "Disk Size"
+  "compute.disk_size": "Disk Size",
+  "compute.create_disk_backup2": "Create Disk Backup",
+  "compute.backup_type": "Backup Type",
+  "compute.instance_backup": "Instance Backup"
 }
