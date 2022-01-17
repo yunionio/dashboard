@@ -11,20 +11,18 @@
       <dialog-selected-tips :name="$t('dictionary.instancegroup')" :count="params.data.length" :action="$t('compute.text_483', [this.$t('dictionary.server')])" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
       <a-form-item :label="$t('dictionary.server')" v-bind="formItemLayout">
-        <a-select
-          v-if="serversLoaded"
+        <base-select
+          v-if="bindedServersLoaded"
+          v-show="serversInitLoaded"
           class="w-100"
-          mode="multiple"
-          :placeholder="$t('compute.text_702', [this.$t('dictionary.server')])"
-          :defaultValue="defaultSelected"
-          :loading="serversLoading"
-          :filter-option="false"
-          @search="debounceFetchServers"
-          @change="handleSelectChange">
-          <a-select-option
-            v-for="item of servers"
-            :key="item.id">{{ item.name }}</a-select-option>
-        </a-select>
+          remote
+          resource="servers"
+          :params="serversParams"
+          :value="selectedServers"
+          :mapper="serversMapper"
+          :init-loaded.sync="serversInitLoaded"
+          @change="handleSelectChange"
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_702', [this.$t('dictionary.server')]), mode: 'multiple' }" />
        </a-form-item>
     </div>
     <div slot="footer">
@@ -36,7 +34,6 @@
 
 <script>
 import * as R from 'ramda'
-import debounce from 'lodash/debounce'
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -52,6 +49,9 @@ export default {
       serversLoading: false,
       // 主机列表是否已加载
       serversLoaded: false,
+      serversInitLoaded: false,
+      // 已经绑定列表是否加载
+      bindedServersLoaded: false,
       // 已选择的主机
       selectedServers: [],
       // 已绑定的主机
@@ -68,15 +68,23 @@ export default {
       },
     }
   },
-  computed: mapGetters(['scope']),
+  computed: {
+    ...mapGetters(['scope']),
+    serversParams () {
+      return {
+        scope: this.scope,
+        project: this.params.data[0].tenant_id,
+        limit: 20,
+        filter: ['hypervisor.notin(baremetal,container)'],
+      }
+    },
+  },
   destroyed () {
     this.serversManager = null
-    this.debounceFetchServers = null
   },
   created () {
     this.fetchBindedServers()
     this.serversManager = new this.$Manager('servers')
-    this.debounceFetchServers = debounce(this.fetchServers, 300)
   },
   methods: {
     serversMapper (data) {
@@ -102,31 +110,11 @@ export default {
           },
         })
         this.bindedServers = data
-        this.defaultSelected = data.map(item => item.id)
-        this.fetchServers()
+        const defaultList = data.map(item => item.id)
+        this.selectedServers = defaultList
+        this.defaultSelected = defaultList
+        this.bindedServersLoaded = true
       } catch (error) {
-        throw error
-      }
-    },
-    async fetchServers (query) {
-      this.serversLoading = true
-      const params = {
-        scope: this.scope,
-        project: this.params.data[0].tenant_id,
-        limit: 20,
-        filter: ['hypervisor.notin(baremetal,container)'],
-      }
-      if (query) params.filter.push(`name.contains(${query})`)
-      try {
-        const { data: { data = [] } } = await this.serversManager.list({
-          params,
-        })
-        const servers = this.serversMapper(data)
-        this.servers = servers
-        this.serversLoaded = true
-        this.serversLoading = false
-      } catch (error) {
-        this.serversLoading = false
         throw error
       }
     },
