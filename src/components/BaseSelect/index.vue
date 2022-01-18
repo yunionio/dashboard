@@ -395,7 +395,7 @@ export default {
       this.loadMoreOffset += (this.params.limit || 20)
       const { manager, params } = this.genParams(this.query, this.loadMoreOffset)
       const { list, data, sourceList } = await this.fetchData(manager, params)
-      if (data.length > 0 && (data.total > (sourceList.length + this.sourceList.length))) { // 前提是点击加载更多后data得有数据，才能展示加载更多
+      if ((data.data && data.data.length > 0) && (data.total > (sourceList.length + this.sourceList.length))) { // 前提是点击加载更多后data得有数据，才能展示加载更多
         this.noMoreData = false
         this.showLoadMore = true
       } else {
