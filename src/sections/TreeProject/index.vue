@@ -145,7 +145,7 @@ export default {
         treeNode.title = `${this.$t('common_737')}(${treeNode.count})`
       } else if (treeNode.value === '___no_value__') {
         treeNode.title = (
-          <div><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{this.$t('common_736')}</div>
+          <div><span class="tag-title-budge">{treeNode.tag.replace('user:', '')}:</span>{`${this.$t('common_736')}(${treeNode.count})`}</div>
         )
       } else {
         treeNode.title = (
