@@ -20,7 +20,7 @@
           class=""
           placement="topRight"
           :title="$t('network.text_29')"
-          :ok-text="$t('network.text_30')"
+          :ok-text="$t('scope.text_856')"
           :cancel-text="$t('network.text_31')"
           @confirm="handleStop">
         <a-button class="" :disabled="!this.isRunning">{{$t('network.text_32')}}</a-button>
