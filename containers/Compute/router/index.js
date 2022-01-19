@@ -1,3 +1,4 @@
+import InstanceBackup from '@Compute/views/instance-backup'
 import DiskCreate from '@Compute/views/disk/create/index'
 import VMInstance from '@Compute/views/vminstance'
 import Baremetal from '@Compute/views/baremetal'
@@ -388,6 +389,20 @@ export default {
               name: 'DiskBackup',
               path: '',
               component: DiskBackup,
+            },
+          ],
+        },
+        {
+          path: '/instance-backup',
+          meta: {
+            label: i18n.t('compute.instance_backup'),
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'InstanceBackup',
+              path: '',
+              component: InstanceBackup,
             },
           ],
         },

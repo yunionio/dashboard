@@ -159,7 +159,8 @@
       "image_caching": "缓存镜像中",
       "restart_network": "正在重启网卡",
       "restart_network_failed": "重启网卡失败",
-      "sync_isolated_device_failed": "同步透传设备失败"
+      "sync_isolated_device_failed": "同步透传设备失败",
+      "start_instance_backup": "开始创建备份"
     },
     "network": {
       "init": "初始化",
@@ -1042,7 +1043,18 @@
       "ready": "可用",
       "deleting": "正在删除",
       "recovery": "正在回滚",
-      "snapshot_failed": "快照创建失败"
+      "snapshot_failed": "快照创建失败",
+      "sync_status": "同步状态"
+    },
+    "instanceBackup": {
+      "init": "初始化",
+      "snapshot": "正在创建快照",
+      "saving": "正在保存",
+      "ready": "可用",
+      "deleting": "正在删除",
+      "recovery": "正在回滚",
+      "snapshot_failed": "快照创建失败",
+      "sync_status": "同步状态"
     }
   },
   "skuCategoryOptions": {

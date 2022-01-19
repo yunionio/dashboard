@@ -5,14 +5,14 @@ import {
 } from '@/utils/common/tableColumn'
 import { DISK_TYPES } from '../constants'
 
-export const getBackupSizeTableColumn = () => {
+export const getDiskSizeTableColumn = () => {
   return {
-    field: 'backup_size',
-    title: i18n.t('compute.backup_size'),
+    field: 'disk_size_mb',
+    title: i18n.t('compute.disk_size'),
     minWidth: 70,
     slots: {
       default: ({ row }, h) => {
-        return sizestr(row.backup_size, 'M', 1024)
+        return sizestr(row.disk_size_mb, 'M', 1024)
       },
     },
   }
@@ -21,7 +21,7 @@ export const getBackupSizeTableColumn = () => {
 export const getSizeMbTableColumn = () => {
   return {
     field: 'size_mb',
-    title: i18n.t('compute.disk_size'),
+    title: i18n.t('compute.backup_size'),
     minWidth: 70,
     slots: {
       default: ({ row }, h) => {

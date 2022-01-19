@@ -5,14 +5,14 @@ import {
   getTimeTableColumn,
   getProjectTableColumn,
   getBrandTableColumn,
+  getOsArch,
 } from '@/utils/common/tableColumn'
 
 import {
-  getSizeMbTableColumn,
-  getDiskTypeTableColumn,
-  getDiskNameTableColumn,
-  getDiskSizeTableColumn,
   getBackupStorageNameTableColumn,
+  getGuestTableColumn,
+  getOsTypeTableColumn,
+  getSizeMbTableColumn,
 } from '../utils/columns'
 
 export default {
@@ -27,13 +27,13 @@ export default {
           )
         },
       }),
-      getStatusTableColumn({ statusModule: 'diskBackup' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'diskbackups', columns: () => this.columns }),
-      getDiskTypeTableColumn(),
-      getDiskNameTableColumn(),
-      getDiskSizeTableColumn(),
+      getStatusTableColumn({ statusModule: 'instanceBackup' }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'instancebackups', columns: () => this.columns }),
       getBackupStorageNameTableColumn(),
       getSizeMbTableColumn(),
+      getGuestTableColumn(),
+      getOsArch(),
+      getOsTypeTableColumn(),
       getBrandTableColumn(),
       getTimeTableColumn(),
       getProjectTableColumn(),
