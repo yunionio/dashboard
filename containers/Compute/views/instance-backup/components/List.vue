@@ -26,7 +26,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
 export default {
-  name: 'DiskBackupList',
+  name: 'InstanceBackupList',
   mixins: [WindowsMixin, ListMixin, SingleActionsMixin, ColumnsMixin],
   props: {
     id: String,
@@ -39,7 +39,7 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'diskbackups',
+        resource: 'instancebackups',
         getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.diskBackup).flat(),
         filterOptions: {
@@ -47,7 +47,7 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
-          status: getStatusFilter('diskBackup'),
+          status: getStatusFilter('instanceBackup'),
           brand: getInBrandFilter('brands', ['OneCloud']),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
@@ -61,14 +61,14 @@ export default {
           { label: this.$t('table.title.name'), key: 'name' },
           { label: this.$t('common.status'), key: 'status' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-          { label: this.$t('compute.backup_size'), key: 'size_mb' },
-          { label: this.$t('table.title.disk_type'), key: 'disk_type' },
-          { label: this.$t('res.disk'), key: 'disk_name' },
-          { label: this.$t('compute.disk_size'), key: 'disk_size' },
-          { label: this.$t('res.project'), key: 'tenant' },
           { label: this.$t('table.title.create_time'), key: 'created_at' },
           { label: this.$t('compute.backup_storage'), key: 'backup_storage_name' },
+          { label: this.$t('compute.backup_size'), key: 'size_mb' },
+          { label: this.$t('compute.text_91'), key: 'guest' },
+          { label: this.$t('table.title.os_arch'), key: 'os_arch' },
+          { label: this.$t('table.title.os'), key: 'os_type' },
           { label: this.$t('table.title.brand'), key: 'provider' },
+          { label: this.$t('res.project'), key: 'tenant' },
         ],
       },
       groupActions: [
@@ -95,7 +95,7 @@ export default {
               onManager: this.onManager,
               mode: 'add',
               params: {
-                resources: 'diskbackups',
+                resources: 'instancebackups',
               },
               tipName: this.$t('compute.text_462'),
             })
@@ -142,7 +142,7 @@ export default {
     },
   },
   created () {
-    this.initSidePageTab('disk-backup-detail')
+    this.initSidePageTab('instance-backup-detail')
     this.list.fetchData()
   },
   methods: {
@@ -150,16 +150,15 @@ export default {
       const ret = {
         details: true,
         with_meta: true,
-        is_instance_backup: false,
         ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'DiskBackupSidePage', {
+      this.sidePageTriggerHandle(this, 'InstanceBackupSidePage', {
         id: row.id,
-        resource: 'diskbackups',
+        resource: 'instancebackups',
         getParams: this.getParam,
         steadyStatus: this.list.steadyStatus,
       }, {

@@ -486,4 +486,7 @@ export default {
   diskBackup: {
     success: ['ready'],
   },
+  instanceBackup: {
+    success: ['ready'],
+  },
 }

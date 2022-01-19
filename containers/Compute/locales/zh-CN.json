@@ -1518,5 +1518,9 @@
   "compute.disk_size": "磁盘大小",
   "compute.create_disk_backup2": "创建备份",
   "compute.backup_type": "备份类别",
-  "compute.instance_backup": "主机备份"
+  "compute.instance_backup": "主机备份",
+  "compute.create_new_instance": "创建新主机",
+  "compute.rollback_instance_backup": "回滚备份",
+  "compute.instance_name": "主机名称",
+  "compute.instance_name_placeholder": "选填，为空则名称为原备份主机的名称"
 }
