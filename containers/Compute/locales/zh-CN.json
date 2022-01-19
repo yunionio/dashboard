@@ -1497,5 +1497,22 @@
   "compute.prompt_no_associate_eip": "该反亲和组还未绑定EIP",
   "compute.gpu_associate_server": "只能选择与透传设备同一宿主机出于关机状态的虚拟机",
   "compute.detach_eip": "请先解绑EIP",
-  "compute.disk_size_disbale_tips": "{0}平台系统盘容量默认与镜像一致"
+  "compute.disk_size_disbale_tips": "{0}平台系统盘容量默认与镜像一致",
+  "compute.disk_backup": "硬盘备份",
+  "compute.create_disk_backup": "新建备份",
+  "compute.rollback_disk_backup": "回滚备份",
+  "compute.backup_name": "备份名称",
+  "compute.backup_storage": "备份存储",
+  "compute.disk_name_placeholder": "选填，为空则名称为原备份磁盘的名称",
+  "compute.create_new_disk": "创建新磁盘",
+  "compute.rollback_type": "恢复方式",
+  "compute.backup_size": "备份大小",
+  "compute.disk_size": "磁盘大小",
+  "compute.create_disk_backup2": "创建备份",
+  "compute.backup_type": "备份类别",
+  "compute.instance_backup": "主机备份",
+  "compute.create_new_instance": "创建新主机",
+  "compute.rollback_instance_backup": "回滚备份",
+  "compute.instance_name": "主机名称",
+  "compute.instance_name_placeholder": "选填，为空则名称为原备份主机的名称"
 }

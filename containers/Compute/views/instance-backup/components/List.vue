@@ -12,24 +12,22 @@
 </template>
 
 <script>
-import { steadyStatus } from '../constants'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
 import {
   getNameFilter,
-  getTenantFilter,
   getStatusFilter,
+  getInBrandFilter,
   getDomainFilter,
-  getOsArchFilter,
-  getRegionFilter,
+  getTenantFilter,
 } from '@/utils/common/tableFilter'
+import expectStatus from '@/constants/expectStatus'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
-  name: 'InstanceSnapshotList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  name: 'InstanceBackupList',
+  mixins: [WindowsMixin, ListMixin, SingleActionsMixin, ColumnsMixin],
   props: {
     id: String,
     getParams: {
@@ -41,27 +39,18 @@ export default {
     return {
       list: this.$list.createList(this, {
         id: this.id,
-        resource: 'instance_snapshots',
+        resource: 'instancebackups',
         getParams: this.getParam,
-        steadyStatus,
+        steadyStatus: Object.values(expectStatus.diskBackup).flat(),
         filterOptions: {
           id: {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
-<<<<<<< HEAD:containers/Compute/views/snapshot-instance/components/List.vue
-          status: getStatusFilter('snapshot'),
-          guest_id: {
-            label: this.$t('res.server'),
-          },
-=======
-          status: getStatusFilter('diskBackup'),
+          status: getStatusFilter('instanceBackup'),
           brand: getInBrandFilter('brands', ['OneCloud']),
->>>>>>> feat: add instance backup:containers/Compute/views/disk-backup/components/List.vue
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
-          region: getRegionFilter(),
-          os_arch: getOsArchFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
@@ -70,44 +59,32 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('table.title.name'), key: 'name' },
-          { label: this.$t('table.title.sub_snapshot'), key: 'snapshots' },
-          { label: this.$t('table.title.snapshot_size'), key: 'size' },
           { label: this.$t('common.status'), key: 'status' },
-<<<<<<< HEAD:containers/Compute/views/snapshot-instance/components/List.vue
-=======
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: this.$t('table.title.create_time'), key: 'created_at' },
+          { label: this.$t('compute.backup_storage'), key: 'backup_storage_name' },
           { label: this.$t('compute.backup_size'), key: 'size_mb' },
-          { label: this.$t('table.title.disk_type'), key: 'disk_type' },
-          { label: this.$t('res.disk'), key: 'disk_name' },
-          { label: this.$t('compute.disk_size'), key: 'disk_size' },
->>>>>>> feat: add instance backup:containers/Compute/views/disk-backup/components/List.vue
-          { label: this.$t('res.project'), key: 'tenant' },
-          { label: this.$t('res.server'), key: 'guest' },
-          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: this.$t('compute.text_91'), key: 'guest' },
           { label: this.$t('table.title.os_arch'), key: 'os_arch' },
+          { label: this.$t('table.title.os'), key: 'os_type' },
+          { label: this.$t('table.title.brand'), key: 'provider' },
+          { label: this.$t('res.project'), key: 'tenant' },
         ],
       },
       groupActions: [
         {
-          label: this.$t('table.action.set_tag'),
+          label: this.$t('compute.perform_sync_status'),
           action: () => {
-            this.createDialog('SetTagDialog', {
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-              mode: 'add',
-              params: {
-                resources: 'instance_snapshot',
+            this.onManager('batchPerformAction', {
+              steadyStatus: ['running', 'ready'],
+              managerArgs: {
+                action: 'syncstatus',
               },
-              tipName: this.$t('compute.text_462'),
             })
           },
-          meta: () => {
-            return {
-              validate: this.list.selected.length,
-              tooltip: null,
-            }
-          },
+          meta: () => ({
+            validate: this.list.selected.length,
+          }),
         },
         {
           label: this.$t('table.action.set_tag'),
@@ -118,7 +95,7 @@ export default {
               onManager: this.onManager,
               mode: 'add',
               params: {
-                resources: 'diskbackups',
+                resources: 'instancebackups',
               },
               tipName: this.$t('compute.text_462'),
             })
@@ -132,7 +109,6 @@ export default {
         },
         {
           label: this.$t('compute.perform_delete'),
-          permission: 'snapshots_delete',
           action: () => {
             this.createDialog('DeleteResDialog', {
               vm: this,
@@ -152,11 +128,6 @@ export default {
               ret.validate = false
               return ret
             }
-            if (this.list.selectedItems.some(item => item.is_sub_snapshot)) {
-              ret.validate = false
-              ret.tooltip = this.$t('compute.text_1062')
-              return ret
-            }
             return ret
           },
         },
@@ -171,32 +142,27 @@ export default {
     },
   },
   created () {
-    this.initSidePageTab('snapshot-detail')
+    this.initSidePageTab('instance-backup-detail')
     this.list.fetchData()
   },
   methods: {
     getParam () {
       const ret = {
         details: true,
-<<<<<<< HEAD:containers/Compute/views/snapshot-instance/components/List.vue
-=======
         with_meta: true,
-        is_instance_backup: false,
->>>>>>> feat: add instance backup:containers/Compute/views/disk-backup/components/List.vue
         ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {
-      this.sidePageTriggerHandle(this, 'SnapshotInstanceSidePage', {
+      this.sidePageTriggerHandle(this, 'InstanceBackupSidePage', {
         id: row.id,
-        resource: 'instance_snapshots',
+        resource: 'instancebackups',
         getParams: this.getParam,
         steadyStatus: this.list.steadyStatus,
       }, {
         list: this.list,
-        type: 'instance',
       })
     },
   },

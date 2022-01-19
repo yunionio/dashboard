@@ -460,4 +460,36 @@ export default {
     success: ['ready'],
     info: ['unknown'],
   },
+<<<<<<< HEAD
+=======
+  vpcNetwork: {
+    success: ['available'],
+    info: ['unknown'],
+    danger: ['create_failed', 'delete_failed'],
+  },
+  routeSet: {
+    success: ['available'],
+    info: ['unknown', 'conflict', 'disabled'],
+  },
+  region: {
+    success: ['inservice'],
+    error: ['outofservice'],
+  },
+  routeTable: {
+    success: ['available'],
+    info: ['unknown', 'conflict', 'disabled'],
+    danger: ['update_falied'],
+  },
+  vpcPeerConnect: {
+    success: ['active'],
+    info: ['unknown', 'pending-acceptance'],
+    danger: ['create_failed', 'delete_failed'],
+  },
+  diskBackup: {
+    success: ['ready'],
+  },
+  instanceBackup: {
+    success: ['ready'],
+  },
+>>>>>>> feat: add instance backup
 }

@@ -8,9 +8,17 @@ import {
   getTagTableColumn,
 } from '@/utils/common/tableColumn'
 import {
+<<<<<<< HEAD:containers/Compute/views/webapp/mixins/columns.js
   getTypeTableColumn,
   getKindTableColumn,
   getTechStackTableColumn,
+=======
+  getSizeMbTableColumn,
+  getDiskTypeTableColumn,
+  getDiskNameTableColumn,
+  getDiskSizeTableColumn,
+  getBackupStorageNameTableColumn,
+>>>>>>> feat: add instance backup:containers/Compute/views/disk-backup/mixins/columns.js
 } from '../utils/columns'
 
 export default {
@@ -25,11 +33,21 @@ export default {
           )
         },
       }),
+<<<<<<< HEAD:containers/Compute/views/webapp/mixins/columns.js
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'webapp', tipName: this.$t('compute.webapp'), columns: () => this.columns }),
       getStatusTableColumn({ statusModule: 'webapp' }),
       getTypeTableColumn(),
       getKindTableColumn(),
       getTechStackTableColumn(),
+=======
+      getStatusTableColumn({ statusModule: 'diskBackup' }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'diskbackups', columns: () => this.columns }),
+      getDiskTypeTableColumn(),
+      getDiskNameTableColumn(),
+      getDiskSizeTableColumn(),
+      getBackupStorageNameTableColumn(),
+      getSizeMbTableColumn(),
+>>>>>>> feat: add instance backup:containers/Compute/views/disk-backup/mixins/columns.js
       getBrandTableColumn(),
       getAccountTableColumn({ vm: this }),
       getRegionTableColumn(),

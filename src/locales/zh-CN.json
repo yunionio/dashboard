@@ -159,7 +159,8 @@
       "image_caching": "缓存镜像中",
       "restart_network": "正在重启网卡",
       "restart_network_failed": "重启网卡失败",
-      "sync_isolated_device_failed": "同步透传设备失败"
+      "sync_isolated_device_failed": "同步透传设备失败",
+      "start_instance_backup": "开始创建备份"
     },
     "network": {
       "init": "初始化",
@@ -1034,6 +1035,69 @@
     },
     "robot": {
       "ready": "可用"
+<<<<<<< HEAD
+=======
+    },
+    "vpcNetwork": {
+      "available": "正常",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "delete_failed": "删除失败",
+      "deleting": "删除中",
+      "add_vpc": "添加VPC",
+      "add_vpc_failed": "添加VPC失败",
+      "remove_vpc": "删除VPC",
+      "remove_vpc_failed": "删除VPC失败",
+      "update_route": "更新路由",
+      "update_route_failed": "更新路由失败",
+      "unknown": "未知"
+    },
+    "routeSet": {
+      "available": "正常",
+      "unknown": "未知",
+      "conflict": "冲突",
+      "disabled": "禁用"
+    },
+    "region": {
+      "inservice": "服务中",
+      "outofservice": "停止服务"
+    },
+    "routeTable": {
+      "available": "正常",
+      "unknown": "未知",
+      "conflict": "冲突",
+      "disabled": "禁用",
+      "update_falied": "更新失败"
+    },
+    "vpcPeerConnect": {
+      "active": "可用",
+      "creating": "创建中",
+      "create_failed": "创建失败",
+      "delete_failed": "删除失败",
+      "pending-acceptance": "建立连接",
+      "deleting": "删除中",
+      "unknown": "未知"
+    },
+    "diskBackup": {
+      "init": "初始化",
+      "snapshot": "正在创建快照",
+      "saving": "正在保存",
+      "ready": "可用",
+      "deleting": "正在删除",
+      "recovery": "正在回滚",
+      "snapshot_failed": "快照创建失败",
+      "sync_status": "同步状态"
+    },
+    "instanceBackup": {
+      "init": "初始化",
+      "snapshot": "正在创建快照",
+      "saving": "正在保存",
+      "ready": "可用",
+      "deleting": "正在删除",
+      "recovery": "正在回滚",
+      "snapshot_failed": "快照创建失败",
+      "sync_status": "同步状态"
+>>>>>>> feat: add instance backup
     }
   },
   "skuCategoryOptions": {

@@ -159,7 +159,8 @@
       "image_caching": "Image Caching",
       "restart_network": "Restart Network",
       "restart_network_failed": "Restart Network Failed",
-      "sync_isolated_device_failed": "Sync isolated device failed"
+      "sync_isolated_device_failed": "Sync isolated device failed",
+      "start_instance_backup": "Start Instance Backup"
     },
     "network": {
       "init": "Initialize",
@@ -1020,6 +1021,69 @@
     },
     "robot": {
       "ready": "Ready"
+<<<<<<< HEAD
+=======
+    },
+    "vpcNetwork": {
+      "available": "Available",
+      "creating": "Creating",
+      "create_failed": "Create Failed",
+      "delete_failed": "Delete Failed",
+      "deleting": "Deleting",
+      "add_vpc": "Add Vpc",
+      "add_vpc_failed": "Add Vpc Failed",
+      "remove_vpc": "Remove Vpc",
+      "remove_vpc_failed": "Remove Vpc Failed",
+      "update_route": "Update Route",
+      "update_route_failed": "Update Route Failed",
+      "unknown": "Unknown"
+    },
+    "routeSet": {
+      "available": "Available",
+      "unknown": "Unknown",
+      "conflict": "Conflict",
+      "disabled": "Disabled"
+    },
+    "region": {
+      "inservice": "Inservice",
+      "outofservice": "Outofservice"
+    },
+    "routeTable": {
+      "available": "Available",
+      "unknown": "Unknown",
+      "conflict": "Conflict",
+      "disabled": "Disabled",
+      "update_falied": "Update Failed"
+    },
+    "vpcPeerConnect": {
+      "active": "Available",
+      "creating": "Creating",
+      "create_failed": "Create Failed",
+      "delete_failed": "Delete Failed",
+      "pending-acceptance": "Pending Acceptance",
+      "deleting": "Deleting",
+      "unknown": "Unknown"
+    },
+    "diskBackup": {
+      "init": "Initialize",
+      "snapshot": "Snapshot",
+      "saving": "Saving",
+      "ready": "Ready",
+      "deleting": "Deleting",
+      "recovery": "Recovery",
+      "snapshot_failed": "Fail to snapshot",
+      "sync_status": "Sync Status"
+    },
+    "instanceBackup": {
+      "init": "Initialize",
+      "snapshot": "Snapshot",
+      "saving": "Saving",
+      "ready": "Ready",
+      "deleting": "Deleting",
+      "recovery": "Recovery",
+      "snapshot_failed": "Fail to snapshot",
+      "sync_status": "Sync Status"
+>>>>>>> feat: add instance backup
     }
   },
   "skuCategoryOptions": {
