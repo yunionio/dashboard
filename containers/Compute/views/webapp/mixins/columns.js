@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: mj
+ * @Date: 2022-01-27 15:37:50
+ * @LastEditors: mj
+ * @LastEditTime: 2022-01-27 15:37:50
+ */
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
