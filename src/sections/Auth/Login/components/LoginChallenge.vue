@@ -32,13 +32,18 @@
       <!-- 用户名 -->
       <template v-if="showUsernameInput">
         <a-form-model-item prop="username">
-          <a-input v-model="fd.username" :placeholder="placeholderOpts.username">
+          <a-input v-model="fd.username" :placeholder="placeholderOpts.username" :autocomplete="isForgetLoginUser?'off':'on'">
             <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, .25)" />
           </a-input>
         </a-form-model-item>
       </template>
       <!-- 密码 -->
-      <a-form-model-item prop="password">
+      <a-form-model-item v-if="isForgetLoginUser" prop="password">
+        <a-input style="text-security:disc" v-model="fd.password" :placeholder="placeholderOpts.password" autocomplete="off">
+          <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
+        </a-input>
+      </a-form-model-item>
+      <a-form-model-item v-else prop="password">
         <a-input-password v-model="fd.password" :placeholder="placeholderOpts.password">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
@@ -211,6 +216,9 @@ export default {
       regions: state => state.regions,
       loggedUsers: state => state.loggedUsers,
     }),
+    isForgetLoginUser () {
+      return this.regions.is_forget_login_user
+    },
     idps () {
       return this.regions.idps || []
     },
@@ -229,7 +237,7 @@ export default {
     },
     hasLoggedUsers () {
       const data = Object.entries(this.loggedUsers)
-      return data.length > 0
+      return data.length > 0 && !this.isForgetLoginUser
     },
     displayUserName () {
       const user = this.fd.username

@@ -2,7 +2,10 @@
   <a-config-provider :locale="locale">
     <div id="app">
       <component :is="layout">
-        <router-view />
+        <keep-alive v-if="$route.meta.keepAlive">
+          <router-view />
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive" />
       </component>
       <dialog-manager />
       <side-page-manager />

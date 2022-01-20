@@ -640,6 +640,10 @@
       "label": "Token Expiration Seconds",
       "desc": "The expiration seconds of an token. The default is 86400 seconds (1 day)."
     },
+    "common$is_forget_login_user": {
+      "label": "Log out and clear user information",
+      "desc": "After enabled, logging out will clear the logged in user information. To log in again, you need to re-enter your user name and password."
+    },
     "common$non_default_domain_projects": {
       "label": "Three-level Resource Hierarchy",
       "desc": "If enabled, resources are organized in system/domain/project three-level hierarchy instead of system/project two-level hierarchy. The default is disabled, and it cannot be disabled after it is enabled."
