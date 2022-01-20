@@ -1,11 +1,8 @@
 <template>
   <a-config-provider :locale="locale">
-    <div id="app" @click="handleAppAction">
+    <div id="app">
       <component :is="layout">
-        <keep-alive v-if="$route.meta.keepAlive">
-          <router-view />
-        </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive" />
+        <router-view />
       </component>
       <dialog-manager />
       <side-page-manager />
@@ -28,8 +25,6 @@ import WindowResizeListener from '@/sections/WindowResizeListener'
 import notificationListener from '@/utils/notificationListener'
 import i18n from '@/locales'
 import { updateThemeColor } from '@/utils/theme/utils'
-import WindowsMixin from '@/mixins/windows'
-import LogoutMixin from '@/mixins/logout'
 import {
   getTokenFromCookie,
   decodeToken,
@@ -49,7 +44,6 @@ export default {
     SidePageManager,
     WindowResizeListener,
   },
-  mixins: [WindowsMixin, LogoutMixin],
   data () {
     return {
       locale: antdLocales[this.$store.getters.setting.language],
