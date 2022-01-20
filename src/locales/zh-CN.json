@@ -5038,5 +5038,6 @@
   "error_title": {
     "ForbiddenError": "权限不足"
   },
-  "common.backup": "备份"
+  "common.backup": "备份",
+  "common.field_required_placeholder": "请填写{0}"
 }

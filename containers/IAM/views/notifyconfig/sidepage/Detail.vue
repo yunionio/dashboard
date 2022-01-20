@@ -64,6 +64,13 @@ export default {
                 },
               },
               getEnabledTableColumn({ title: 'SSL', field: 'content.ssl_global' }),
+              {
+                field: 'sender_address',
+                title: this.$t('iam.sender_address'),
+                formatter: ({ row }) => {
+                  return row.content?.sender_address || '-'
+                },
+              },
               // getSwitchTableColumn({
               //   field: 'content.ssl_global',
               //   title: 'SSL',

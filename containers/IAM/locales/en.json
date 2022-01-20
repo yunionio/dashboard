@@ -869,5 +869,6 @@
   "IAM.text_6": "{0}",
   "IAM.text_7": "{0}",
   "IAM.text_8": "({0})",
-  "IAM.text_9": "Total"
+  "IAM.text_9": "Total",
+  "iam.sender_address": "Sender's Email"
 }
