@@ -88,4 +88,22 @@ export const LB_MONITOR_OPTS = {
       transfer: 1,
     },
   ],
+  apsara: [
+    {
+      name: 'bin',
+      label: i18n.t('network.lb_monitor_bin'),
+      seleteItem: 'bin',
+      fromItem: 'haproxy',
+      unit: 'bps',
+      transfer: 1024,
+    },
+    {
+      name: 'bout',
+      label: i18n.t('network.lb_monitor_bout'),
+      seleteItem: 'bout',
+      fromItem: 'haproxy',
+      unit: 'bps',
+      transfer: 1024,
+    },
+  ],
 }
