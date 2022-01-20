@@ -209,7 +209,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         const params = this.generateData(values)
-        new this.$Manager('scheduledtasks', 'v1').create({ data: params })
+        await new this.$Manager('scheduledtasks', 'v1').create({ data: params })
         this.params.callback && this.params.callback()
         this.cancelDialog()
       } catch (error) {
