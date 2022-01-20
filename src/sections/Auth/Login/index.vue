@@ -9,7 +9,7 @@
     <div class="login-index-right d-flex flex-column shadow-lg bg-white rounded">
       <!-- login form -->
       <div class="flex-fill position-relative">
-        <div class="login-content-wrap h-100 w-100 overflow-hidden">
+        <div class="login-content-wrap h-100 w-100" style="overflow-x:hidden">
           <h4 class="text-center">{{ title }}</h4>
           <transition-page>
             <router-view />
@@ -41,6 +41,9 @@ export default {
       loggedUsers: state => state.auth.loggedUsers,
       companyInfo: state => state.app.companyInfo,
     }),
+    isForgetLoginUser () {
+      return this.regions.is_forget_login_user
+    },
     title () {
       if (this.$route.name === 'Auth') {
         return this.$t('auth.login')
@@ -139,8 +142,9 @@ export default {
       })
       return false
     }
+    // 判断是否禁用用户名回填
     // 如果包含历史账号，则显示历史账号
-    if (!R.isEmpty(data)) {
+    if (!R.isEmpty(data) && !this.isForgetLoginUser) {
       this.$router.replace({
         path: '/auth/login/chooser',
         query,
