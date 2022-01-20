@@ -1067,5 +1067,7 @@
   "network.topology": "拓扑",
   "network.topology.view": "视图",
   "network.topology.view.virtual": "虚拟拓扑",
-  "network.topology.view.pysical": "物理拓扑"
+  "network.topology.view.pysical": "物理拓扑",
+  "network.lb_monitor_bin": "负载均衡入流量",
+  "network.lb_monitor_bout": "负载均衡出流量"
 }

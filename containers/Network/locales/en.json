@@ -1068,5 +1068,7 @@
   "network.topology": "Topology",
   "network.topology.view": "View",
   "network.topology.view.virtual": "Virtual",
-  "network.topology.view.pysical": "Pysical"
+  "network.topology.view.pysical": "Pysical",
+  "network.lb_monitor_bin": "Load balancing inflow",
+  "network.lb_monitor_bout": "Load balancing outflow"
 }

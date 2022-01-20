@@ -147,7 +147,7 @@
   "storage.text_146": "{0}个",
   "storage.text_147": "访问权限",
   "storage.text_148": "当前云厂商暂未对接",
-  "storage.text_149": "目前仅阿里云和华为云支持查看监控数据",
+  "storage.text_149": "目前仅阿里云、华为云、飞天支持查看监控数据",
   "storage.text_150": "当前路径：",
   "storage.text_151": "请输入文件夹名称",
   "storage.text_152": "不能以 / 开头作为文件夹名称",
