@@ -170,7 +170,7 @@ export default {
       }
       const tags = [
         {
-          key: 'lb_id',
+          key: 'elb_id',
           value: this.dbId,
           operator: '=',
         },
