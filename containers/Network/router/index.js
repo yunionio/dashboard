@@ -134,7 +134,7 @@ export default {
             t: 'dictionary.vpc_peer_connect',
             hidden: () => {
               if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['aliyun', 'huawei', 'aws'])
+              return !hasSetupKey(['qcloud', 'huawei', 'aws'])
             },
           },
           component: Layout,
