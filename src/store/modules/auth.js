@@ -194,6 +194,10 @@ export default {
     SET_NO_ACTION_LOGOUT_SECONDS (state, payload) {
       state.noActionLogoutSeconds = payload
     },
+    CLEAR_LOGGED_USERS (state) {
+      setLoggedUsersInStorage({})
+      state.loggedUsers = {}
+    },
   },
   getters: {
     // 是否切换到管理后台
@@ -301,7 +305,7 @@ export default {
         throw error
       }
     },
-    async logout ({ commit }, data) {
+    async logout ({ commit, state }, data) {
       try {
         const response = await http.post('/v1/auth/logout', data)
         await commit('LOGOUT')
@@ -309,6 +313,11 @@ export default {
         await commit('profile/REST_ID', null, { root: true })
         await commit('common/REST_BILL_CURRENCY', null, { root: true })
         await commit('scopedPolicy/DEL_DATA', { name: 'sub_hidden_menus' }, { root: true })
+        const { regions = {} } = state
+        const { is_forget_login_user } = regions
+        if (is_forget_login_user) {
+          await commit('CLEAR_LOGGED_USERS')
+        }
         return response.data
       } catch (error) {
         throw error
