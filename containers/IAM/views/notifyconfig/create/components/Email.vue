@@ -18,6 +18,9 @@
     <a-form-item :label="$t('system.text_221')">
       <a-input-password v-decorator="decorators.password" />
     </a-form-item>
+    <a-form-item label="发件人邮箱">
+      <a-input v-decorator="decorators.sender_address" />
+    </a-form-item>
     <a-form-item v-if="false">
       <a-button type="primary" @click="handleSubmit" :loading="submiting">{{ $t('common.ok') }}</a-button>
       <test-button v-if="false" class="ml-3" :post="testPost" />
@@ -87,6 +90,16 @@ export default {
           {
             rules: [
               { required: true, message: this.$t('system.text_239') },
+            ],
+          },
+        ],
+        sender_address: [
+          'sender_address',
+          {
+            validateFirst: true,
+            rules: [
+              { required: true, message: this.$t('common.field_required_placeholder', [this.$t('iam.sender_address')]) },
+              { validator: this.$validate('email') },
             ],
           },
         ],

@@ -872,5 +872,6 @@
   "IAM.text_6": "{0}台",
   "IAM.text_7": "{0}个",
   "IAM.text_8": "({0})",
-  "IAM.text_9": "总量"
+  "IAM.text_9": "总量",
+  "iam.sender_address": "发件人邮箱"
 }
