@@ -739,6 +739,10 @@
     "compute$enable_auto_switch_server_sku": {
       "label": "Give priority to ensuring the success of the new virtual machine",
       "desc": "When opening, if the sku is sold out and does not match, we will automatically switch to the sku of the same specification and try to create."
+    },
+    "log$syslog_url": {
+      "label": "External Syslog Server URL",
+      "desc": "Export audit log to external syslog server, address format is proto://<ip>:<port>@idstr, e.g. tcp://192.168.2.100:514@cloud"
     }
   },
   "user": {
