@@ -742,6 +742,10 @@
     "compute$enable_auto_switch_server_sku": {
       "label": "优先保证新建虚拟机成功",
       "desc": "打开时如遇套餐售罄、不匹配等情况无法新建机器，我们会自动切换同规格套餐尝试新建。"
+    },
+    "log$syslog_url": {
+      "label": "外部日志服务地址",
+      "desc": "以syslog协议实时将操作日志导出到外部syslog日志服务器，地址格式为：proto://<ip>:<port>@idstr，例如：tcp://192.168.2.100:514@cloud"
     }
   },
   "user": {
