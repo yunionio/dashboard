@@ -430,6 +430,12 @@ export default {
         }
         params.private_cloud = true
         params.postpaid_status = 'available'
+
+        if (this.selectedItem && this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider) {
+          params.provider = HYPERVISORS_MAP.kvm.provider
+          params.public_cloud = false
+          params.private_cloud = false
+        }
       }
       if (this.type === SERVER_TYPE.public) {
         params.public_cloud = true
