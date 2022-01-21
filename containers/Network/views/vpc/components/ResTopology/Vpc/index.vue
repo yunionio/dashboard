@@ -12,7 +12,8 @@
                 <res-common
                   v-if="!obj.hidden"
                   :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
-                  :dataSource="obj" />
+                  :dataSource="obj"
+                  :isExist="isHostExist(wires, nidx, obj)" />
               </div>
           </li>
         </template>
@@ -23,7 +24,8 @@
               <res-common
                 v-if="!obj.hidden"
                 :type="RES_ICON_MAP[obj.owner_type] || obj.owner_type"
-                :dataSource="obj" />
+                :dataSource="obj"
+                :isExist="isAddrExist(networks, nidx, obj)" />
             </div>
           </li>
         </template>
@@ -67,7 +69,9 @@ export default {
       let networks = []
       if (this.dataSource) {
         this.dataSource.wires.forEach(v => {
-          networks = networks.concat(v.networks.filter(v => v.server_type === 'guest'))
+          if (v.networks && v.networks.length > 0) {
+            networks = networks.concat(v.networks.filter(v => v.server_type === 'guest'))
+          }
         })
       }
       return networks
@@ -105,6 +109,34 @@ export default {
     getAddress (network) {
       const resTypes = ['servers', 'hosts', 'loadbalancers', 'dbinstances']
       return network.address?.filter(v => resTypes.includes(v.owner_type))
+    },
+    isHostExist (wires, nidx, host) {
+      let isExist = false
+
+      // 跨 wire 查找
+      for (let i = nidx - 1; i >= 0; i--) {
+        const wire = wires[i]
+        if (wire.hosts && wire.hosts.length > 0) {
+          const hostArr = this.getHost(wire)
+          isExist = hostArr.some(v => v.id === host.id)
+        }
+      }
+
+      return isExist
+    },
+    isAddrExist (networks, nidx, addr) {
+      let isExist = false
+
+      // 跨 networks 查找
+      for (let i = nidx - 1; i >= 0; i--) {
+        const network = networks[i]
+        if (network.address && network.address.length > 0) {
+          const addressArr = this.getAddress(network)
+          isExist = addressArr.some(v => v.owner_id === addr.owner_id)
+        }
+      }
+
+      return isExist
     },
   },
 }
