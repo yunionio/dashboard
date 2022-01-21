@@ -1089,6 +1089,7 @@ export default {
                       typeClouds.hypervisorMap.dstack.brand,
                       typeClouds.hypervisorMap.ucloud.brand,
                       typeClouds.hypervisorMap.ctyun.brand,
+                      typeClouds.hypervisorMap.nutanix.brand,
                     ]
                     if (noSupportBrand.includes(obj.brand)) {
                       ret.tooltip = i18n.t('compute.text_1287', [obj.brand])

@@ -242,17 +242,23 @@ export default {
       return false
     },
     skuParam () {
-      return {
+      const params = {
         limit: 0,
-        private_cloud: true,
         postpaid_status: 'available',
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        cloudregion_id: this.cloudregionZoneParams.cloudregion,
         ...this.scopeParams,
       }
+      if (this.form.fd.hypervisor === 'nutanix') {
+        params.is_on_premise = true
+        params.usable = false
+      } else {
+        params.private_cloud = true
+        params.cloudregion_id = this.cloudregionZoneParams.cloudregion
+      }
+      return params
     },
     policyHostParams () {
       const zone = _.get(this.form.fd, 'zone.key')
