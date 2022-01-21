@@ -19,7 +19,8 @@
           <div v-for="(obj, idx) in getAddress(network)" :key="idx">
             <res-common
               :type="RES_ICON_MAP[obj.owner_type] || obj.owner_type"
-              :dataSource="obj" />
+              :dataSource="obj"
+              :isExist="isAddrExist(networks, nidx, obj)" />
           </div>
         </li>
       </ul>
@@ -91,6 +92,20 @@ export default {
     getAddress (network) {
       const resTypes = ['servers', 'loadbalancers', 'dbinstances']
       return network.address?.filter(v => resTypes.includes(v.owner_type))
+    },
+    isAddrExist (networks, nidx, addr) {
+      let isExist = false
+
+      // 跨 networks 查找
+      for (let i = nidx - 1; i >= 0; i--) {
+        const network = networks[i]
+        if (network.address && network.address.length > 0) {
+          const addressArr = this.getAddress(network)
+          isExist = addressArr.some(v => v.owner_id === addr.owner_id)
+        }
+      }
+
+      return isExist
     },
   },
 }

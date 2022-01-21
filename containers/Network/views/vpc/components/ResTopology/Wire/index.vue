@@ -12,7 +12,8 @@
             <res-common
               v-if="!obj.hidden"
               :type="RES_ICON_MAP[obj.owner_type]"
-              :dataSource="obj" />
+              :dataSource="obj"
+              :isExist="isExist(networks, nidx, obj)" />
           </div>
         </li>
       </ul>
@@ -42,6 +43,7 @@ export default {
     dataSource: Object,
     idx: Number,
     len: Number,
+    wires: Array,
   },
   data () {
     return {
@@ -69,7 +71,32 @@ export default {
     },
     getAddress (network) {
       const resTypes = ['servers', 'hosts', 'loadbalancers', 'dbinstances']
-      return network.address?.filter(v => resTypes.includes(v.owner_type))
+      return network.address?.filter(v => resTypes.includes(v.owner_type)) || []
+    },
+    isExist (networks, nidx, addr) {
+      let isExist = false
+
+      // 同 wire 查找
+      for (let i = nidx - 1; i >= 0; i--) {
+        const addressArr = this.getAddress(networks[i])
+        isExist = addressArr.some(v => v.owner_id === addr.owner_id)
+      }
+
+      // 跨 wire 查找
+      for (let i = this.idx - 1; i >= 0; i--) {
+        const wire = this.wires[i]
+        if (wire.networks && wire.networks.length > 0) {
+          for (let j = 0; j < wire.networks.length; j++) {
+            const network = wire.networks[j]
+            if (network && network.address) {
+              const addressArr = this.getAddress(network)
+              isExist = addressArr.some(v => v.owner_id === addr.owner_id)
+            }
+          }
+        }
+      }
+
+      return isExist
     },
   },
 }
