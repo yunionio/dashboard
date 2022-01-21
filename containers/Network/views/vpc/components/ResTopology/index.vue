@@ -7,7 +7,8 @@
         :idx="idx"
         :len="wires && wires.length"
         :vpc="vpc"
-        :dataSource="wire" />
+        :dataSource="wire"
+        :wires="wires" />
     </template>
     <template v-if="classic && physical">
       <vpc-topology
