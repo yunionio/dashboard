@@ -534,6 +534,9 @@ export default {
         if (osVal.toLowerCase().includes('suse')) {
           osVal = 'SUSE'
         }
+        if (osVal.toLowerCase().includes('kylin')) {
+          osVal = 'Kylin'
+        }
         // const osDistribution = osVal && osVal.toLowerCase()
         const osDistribution = osVal
         // 如果 Map 中没有此 key，则创建，同时对options进行push

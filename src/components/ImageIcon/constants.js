@@ -70,4 +70,8 @@ export const CUSTOME_IMG = {
     label: 'Tencent',
     url: 'tencent',
   },
+  kylin: {
+    label: 'kylin',
+    url: 'kylin',
+  },
 }
