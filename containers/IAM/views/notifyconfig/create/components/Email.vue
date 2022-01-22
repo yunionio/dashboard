@@ -18,7 +18,7 @@
     <a-form-item :label="$t('system.text_221')">
       <a-input-password v-decorator="decorators.password" />
     </a-form-item>
-    <a-form-item label="发件人邮箱">
+    <a-form-item :label="$t('iam.sender_address')">
       <a-input v-decorator="decorators.sender_address" />
     </a-form-item>
     <a-form-item v-if="false">
