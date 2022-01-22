@@ -172,7 +172,9 @@ export default {
             if (index !== -1) {
               newOptions.splice(index, 1)
             }
-            await this.$emit('update-options', newOptions)
+            if (newOptions.length) {
+              await this.$emit('update-options', newOptions)
+            }
             await this.pm.delete({
               id: this.current.id,
             })
