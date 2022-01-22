@@ -15,6 +15,7 @@ const euleros = require('./assets/euleros.png')
 const amazon = require('./assets/amazon.png')
 const aliyun = require('./assets/aliyun.png')
 const tencent = require('./assets/tencent.png')
+const kylin = require('./assets/kylin.png')
 
 export default {
   name: 'ImageIcon',
@@ -98,6 +99,9 @@ export default {
             break
           case 'tencent':
             curImg = tencent
+            break
+          case 'kylin':
+            curImg = kylin
             break
           default:
             break

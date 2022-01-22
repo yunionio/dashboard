@@ -169,6 +169,7 @@ export default {
           { text: 'RedHat', value: 'RedHat' },
           { text: 'SUSE Linux', value: 'SUSE Linux' },
           { text: 'Ubuntu', value: 'Ubuntu' },
+          { text: 'Kylin', value: 'Kylin' },
           { text: this.$t('compute.text_151'), value: 'Other' },
         ],
         Other: [
@@ -185,6 +186,7 @@ export default {
         { text: 'RedHat', value: 'RedHat' },
         { text: 'SUSE Linux', value: 'SUSE Linux' },
         { text: 'Ubuntu', value: 'Ubuntu' },
+        { text: 'Kylin', value: 'Kylin' },
         { text: this.$t('compute.text_151'), value: 'Other' },
       ],
       isDisOther: false,
