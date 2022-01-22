@@ -27,7 +27,7 @@ export default {
                 ret.push(<a-tooltip title={i18n.t('compute.text_846')}><icon class='ml-2' type='res-physicalmachine' style={{ color: '#1890ff' }} /></a-tooltip>)
               }
               if (row.isolated_device_count) {
-                ret.push(<a-tooltip title={i18n.t('compute.text_113')}><icon class='ml-2' type='gpu' /></a-tooltip>)
+                ret.push(<a-tooltip title={i18n.t('compute.text_113')}><icon class='ml-2' type='passthrough' /></a-tooltip>)
               }
               return ret
             },
