@@ -112,6 +112,7 @@ export default {
         items: [
           { label: this.$t('compute.text_291', [this.$t('dictionary.server')]), key: 'normal' },
           { label: `GPU${this.$t('dictionary.server')}`, key: 'gpu' },
+          { label: `USB${this.$t('dictionary.server')}`, key: 'usb' },
           { label: this.$t('compute.backup'), key: 'backup' },
         ],
       },
