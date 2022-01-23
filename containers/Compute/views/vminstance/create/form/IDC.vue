@@ -468,12 +468,12 @@ export default {
       let opts = []
       if (this.form.fi.capability.host_cpu_archs && this.form.fi.capability.host_cpu_archs.length) {
         opts = this.form.fi.capability.host_cpu_archs.map(item => {
-          if (item === HOST_CPU_ARCHS.arm.capabilityKey) return HOST_CPU_ARCHS.arm.key
-          if (item === HOST_CPU_ARCHS.x86.capabilityKey) return HOST_CPU_ARCHS.x86.key
+          if (item === HOST_CPU_ARCHS.arm.capabilityKey) return HOST_CPU_ARCHS.arm
+          if (item === HOST_CPU_ARCHS.x86.capabilityKey) return HOST_CPU_ARCHS.x86
           return item
         })
       }
-      return opts
+      return opts.sort((a, b) => a.order - b.order)
     },
     extra () {
       if (this.isIso && this.isWindows) {
