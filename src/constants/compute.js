@@ -646,10 +646,12 @@ export const HOST_CPU_ARCHS = {
     key: 'x86',
     label: 'x86_64',
     capabilityKey: 'x86_64',
+    order: 1,
   },
   arm: {
     key: 'arm',
     label: 'aarch64',
     capabilityKey: 'aarch64',
+    order: 2,
   },
 }
