@@ -2531,9 +2531,10 @@
     "ext_redis": "Redis",
     "ext_rabbitmq": "RabbitMQ",
     "cdn": "CDN",
-    "cdn_domain": "Domain",
+    "cdn_domain": "CDN Domain",
     "vpc_network": "VPC Network",
-    "vpc_peer_connect": "VPC Peer Connect"
+    "vpc_peer_connect": "VPC Peer Connect",
+    "dns_recordset": "DNS-Record"
   },
   "res": {
     "role": "Role",
