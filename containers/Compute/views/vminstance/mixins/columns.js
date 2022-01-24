@@ -228,11 +228,9 @@ export default {
         minWidth: 80,
         slots: {
           default: ({ row }) => {
-            if (row.disk) {
-              const config = row.disk ? sizestr(row.disk, 'M', 1024) : ''
-              return [<list-body-cell-wrap row={{ row }} hide-field field="disk">{ config }</list-body-cell-wrap>]
-            }
-            return [<data-loading />]
+            if (this.isPreLoad && !row.disk) return [<data-loading />]
+            const config = row.disk ? sizestr(row.disk, 'M', 1024) : ''
+            return [<list-body-cell-wrap row={{ row }} hide-field field="disk">{ config }</list-body-cell-wrap>]
           },
         },
       },
