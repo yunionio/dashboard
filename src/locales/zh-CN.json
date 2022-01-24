@@ -2545,9 +2545,10 @@
     "ext_redis": "Redis",
     "ext_rabbitmq": "RabbitMQ",
     "cdn": "内容分发网络",
-    "cdn_domain": "域名",
+    "cdn_domain": "CDN域名",
     "vpc_network": "VPC互联",
-    "vpc_peer_connect": "VPC对等连接"
+    "vpc_peer_connect": "VPC对等连接",
+    "dns_recordset": "DNS解析-记录"
   },
   "res": {
     "role": "@:dictionary.role",
