@@ -153,13 +153,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { providers, policy_types, policy_values } from '../constants'
-import { getDnsTypes, getDnsProviders, getTtls } from '../utils'
 import { uuid } from '@/utils/utils'
 import validateForm, { validate } from '@/utils/validate'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 import Tag from '@/sections/Tag'
+import { getDnsTypes, getDnsProviders, getTtls } from '../utils'
+import { providers, policy_types, policy_values } from '../constants'
 
 export default {
   name: 'DnsRecordSetCreateDialog',
@@ -352,7 +352,7 @@ export default {
           {
             initialValue: this.params?.data[0]?.metadata,
             rules: [
-              { required: true, message: this.$t('cloudenv.text_451') },
+              { required: false, message: this.$t('cloudenv.text_451') },
               { validator: validateForm('tagName') },
             ],
           },
