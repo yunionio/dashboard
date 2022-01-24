@@ -2470,7 +2470,8 @@
     "ext_redis": "Redis",
     "ext_rabbitmq": "RabbitMQ",
     "cdn": "CDN",
-    "cdn_domain": "Domain"
+    "cdn_domain": "CDN Domain",
+    "dns_recordset": "DNS-Record"
   },
   "res": {
     "role": "Role",
