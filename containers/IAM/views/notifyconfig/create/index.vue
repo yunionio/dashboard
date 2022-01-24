@@ -236,17 +236,24 @@ export default {
           const [common, content] = values
           const { type } = common
           this.testLoading = true
-          await this.manager.performClassAction({
+          const res = await this.manager.performClassAction({
             action: 'validate',
             data: {
               content,
               type: type,
             },
           })
-          this.$notification.success({
-            message: this.$t('common_270'),
-            description: this.$t('common_271'),
-          })
+          const { is_valid, message } = res.data
+          if (is_valid) {
+            this.$notification.success({
+              message: this.$t('common_270'),
+              description: this.$t('common_271'),
+            })
+          } else {
+            this.$notification.error({
+              message: message,
+            })
+          }
           this.testLoading = false
         }).catch((err) => {
           this.testLoading = false
