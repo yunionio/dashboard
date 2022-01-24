@@ -27,6 +27,7 @@ import {
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 
 export default {
   name: 'VmInstanceDetail',
@@ -55,6 +56,16 @@ export default {
         },
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
+        {
+          field: 'password',
+          title: this.$t('table.title.init_keypair'),
+          minWidth: 50,
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
+            },
+          },
+        },
       ],
       imageExist: false,
     }
