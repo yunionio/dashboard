@@ -955,6 +955,18 @@ export const STORAGE_TYPES = {
       sysMax: 500,
     },
   },
+  [HYPERVISORS_MAP.nutanix.key]: {
+    local: {
+      label: i18n.t('compute.text_70'),
+      value: 'local',
+      min: 1,
+      max: 3 * 1024, // 鹏博士需求，数据盘上限扩大到 3T
+      default: true,
+      sysMin: 10,
+      sysMax: 500,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+  },
 }
 export const ALL_STORAGE = {}
 export const ALL_STORAGE_LABEL = {}
