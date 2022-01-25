@@ -126,7 +126,7 @@
       <!-- <a-divider orientation="left">{{$t('compute.text_309')}}</a-divider> -->
       <a-collapse :bordered="false" v-model="collapseActive">
         <a-collapse-panel :header="$t('compute.text_309')" key="1">
-          <a-form-item :label="$t('compute.text_105')">
+          <a-form-item :label="$t('compute.text_105')" v-if="showSecgroup">
             <secgroup-config
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
@@ -324,6 +324,10 @@ export default {
         params.zone = this.form.fd.zone
       }
       return params
+    },
+    showSecgroup () {
+      const hiddenSecCloudprovider = ['Nutanix']
+      return !hiddenSecCloudprovider.includes(this.cloudprovider)
     },
   },
   methods: {
