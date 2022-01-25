@@ -138,7 +138,7 @@
             </span>
             <host-name v-decorator="decorators.hostName" :isWindows="isWindows" />
           </a-form-item>
-          <a-form-item :label="$t('compute.text_105')">
+          <a-form-item :label="$t('compute.text_105')" v-if="showSecgroup">
             <secgroup-config
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
@@ -336,6 +336,10 @@ export default {
         params.zone = this.form.fd.zone
       }
       return params
+    },
+    showSecgroup () {
+      const hiddenSecCloudprovider = ['Nutanix']
+      return !hiddenSecCloudprovider.includes(this.cloudprovider)
     },
   },
   methods: {
