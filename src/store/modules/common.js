@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import * as R from 'ramda'
 import storage from '@/utils/storage'
 import { getCurrency, setCookieVal, getExchangeRateAvailable, getCostConversionOrigin } from '@/utils/common/cookie'
 import { Manager } from '@/utils/manager'
@@ -42,7 +43,7 @@ export default {
     SET_BILL_CURRENCYOPTS (state, payload) {
       let currencyOpts = []
       if (!state.bill.exchangeRateAvailable) {
-        currencyOpts = payload
+        currencyOpts = R.clone(payload)
       } else {
         // 添加以汇率为单位的某个账单
         currencyOpts = payload.map(item => {
@@ -74,16 +75,10 @@ export default {
     SET_BILL_EXCHANGE_RATE_AVAILABLE (state, payload) {
       setCookieVal('exchangeRateAvailable', payload)
       state.bill.exchangeRateAvailable = payload
-      // 更新账单选择类型
-      const optsList = state.bill.currencyOpts.filter(item => item.item_id === -1)
-      this.commit('SET_BILL_CURRENCYOPTS', optsList)
     },
     SET_BILL_COST_CONVERSION_ORIGIN (state, payload) {
       setCookieVal('costConversionOrigin', payload)
       state.bill.costConversionOrigin = payload
-      // 账单选择类型
-      const optsList = state.bill.currencyOpts.filter(item => item.item_id === -1)
-      this.commit('SET_BILL_CURRENCYOPTS', optsList)
     },
     SET_K8S_CLUSTER (state, payload) {
       state.k8s.cluster = payload
@@ -121,6 +116,7 @@ export default {
         commit('SET_BILL_EXCHANGE_RATE_AVAILABLE', data && data[0] ? data[0].exchange_rate_available || false : true)
         commit('SET_BILL_COST_CONVERSION_ORIGIN', data && data[0] ? data[0].cost_conversion_origin || false : true)
         commit('SET_BILL_CURRENCYOPTS', data)
+        // 整理当前可展示类型列表，设置选中类型
         if (data && data.length > 0) {
           let currencyList = []
           if (data[0].exchange_rate_available) {
