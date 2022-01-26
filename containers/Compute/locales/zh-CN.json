@@ -1496,5 +1496,6 @@
   "compute.prompt_already_associate_eip": "该反亲和组已经绑定了EIP",
   "compute.prompt_no_associate_eip": "该反亲和组还未绑定EIP",
   "compute.gpu_associate_server": "只能选择与透传设备同一宿主机出于关机状态的虚拟机",
-  "compute.detach_eip": "请先解绑EIP"
+  "compute.detach_eip": "请先解绑EIP",
+  "compute.disk_size_disbale_tips": "{0}平台系统盘容量默认与镜像一致"
 }
