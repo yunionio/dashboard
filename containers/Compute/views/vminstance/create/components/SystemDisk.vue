@@ -25,7 +25,7 @@ import Disk from '@Compute/sections/Disk'
 // import { STORAGE_AUTO } from '@Compute/constants'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
-import { findAndUnshift, findAndPush } from '@/utils/utils'
+import { findAndUnshift, findAndPush, sizestr } from '@/utils/utils'
 // 磁盘最小值
 export const DISK_MIN_SIZE = 10
 // let isFirstSetDefaultSize = true
@@ -287,6 +287,13 @@ export default {
         let newDiskSize = initSize || +diskMsg.sysMin
         if (systemDiskSize && systemDiskType && this.decorator.size[0] === 'systemDiskSize') { // 保留之前选择的系统盘大小
           newDiskSize = (systemDiskSize >= diskMsg.sysMin && systemDiskSize < diskMsg.sysMax) ? systemDiskSize : newDiskSize
+        }
+        if (this.hypervisor === HYPERVISORS_MAP.nutanix.key) {
+          if (this.image.size / 1000000 < 1024) {
+            newDiskSize = 1
+          } else {
+            newDiskSize = parseInt(sizestr(this.image.size, 'B', 1024))
+          }
         }
         this.form.fc.setFieldsValue({
           [this.decorator.size[0]]: newDiskSize,
