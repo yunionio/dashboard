@@ -639,6 +639,10 @@
       "label": "心跳检测时间",
       "desc": "当前这段时间内用户无操作后，登录信息会失效，需重新登录。0代表未开启检测。"
     },
+    "common$is_forget_login_user": {
+      "label": "登出清空用户信息",
+      "desc": "打开后，退出登录会清空登录的用户信息。再次登录需重新输入用户名密码。"
+    },
     "identity$password_char_complexity": {
       "label": "用户密码复杂度",
       "desc": "仅针对本地SQL用户修改个人密码有效，可以限制密码规则为大写字母、小写字母、数字或者符号中的N种，1代表不限制，4代表必须同时满足"
@@ -738,6 +742,10 @@
     "compute$enable_auto_switch_server_sku": {
       "label": "优先保证新建虚拟机成功",
       "desc": "打开时如遇套餐售罄、不匹配等情况无法新建机器，我们会自动切换同规格套餐尝试新建。"
+    },
+    "log$syslog_url": {
+      "label": "外部日志服务地址",
+      "desc": "以syslog协议实时将操作日志导出到外部syslog日志服务器，地址格式为：proto://<ip>:<port>@idstr，例如：tcp://192.168.2.100:514@cloud"
     }
   },
   "user": {
@@ -868,5 +876,6 @@
   "IAM.text_6": "{0}台",
   "IAM.text_7": "{0}个",
   "IAM.text_8": "({0})",
-  "IAM.text_9": "总量"
+  "IAM.text_9": "总量",
+  "iam.sender_address": "发件人邮箱"
 }

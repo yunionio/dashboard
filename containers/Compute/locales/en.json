@@ -1515,5 +1515,12 @@
   "compute.create_new_disk": "Create a new disk",
   "compute.rollback_type": "Recovery Type",
   "compute.backup_size": "Backup Size",
-  "compute.disk_size": "Disk Size"
+  "compute.disk_size": "Disk Size",
+  "compute.create_disk_backup2": "Create Disk Backup",
+  "compute.backup_type": "Backup Type",
+  "compute.instance_backup": "Instance Backup",
+  "compute.create_new_instance": "Create new host",
+  "compute.rollback_instance_backup": "Rollback backup",
+  "compute.instance_name": "Hostname",
+  "compute.instance_name_placeholder": "Optional, if empty, the name is the name of the original backup host"
 }

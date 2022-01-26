@@ -620,6 +620,18 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
   },
+  [HYPERVISORS_MAP.nutanix.key]: {
+    local: {
+      label: i18n.t('common.storage.local'),
+      key: 'local',
+      min: 1,
+      max: 20 * 1024,
+      default: true,
+      sysMin: 10,
+      sysMax: 2 * 1024,
+      unCreateCloud: true, // 不支持创建云硬盘
+    },
+  },
 }
 
 // 磁盘挂载点配置
@@ -634,10 +646,12 @@ export const HOST_CPU_ARCHS = {
     key: 'x86',
     label: 'x86_64',
     capabilityKey: 'x86_64',
+    order: 1,
   },
   arm: {
     key: 'arm',
     label: 'aarch64',
     capabilityKey: 'aarch64',
+    order: 2,
   },
 }

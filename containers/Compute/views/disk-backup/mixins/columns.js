@@ -11,6 +11,7 @@ import {
   getSizeMbTableColumn,
   getDiskTypeTableColumn,
   getDiskNameTableColumn,
+  getDiskSizeTableColumn,
   getBackupStorageNameTableColumn,
 } from '../utils/columns'
 
@@ -28,10 +29,11 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'diskBackup' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'diskbackups', columns: () => this.columns }),
-      getSizeMbTableColumn(),
       getDiskTypeTableColumn(),
       getDiskNameTableColumn(),
+      getDiskSizeTableColumn(),
       getBackupStorageNameTableColumn(),
+      getSizeMbTableColumn(),
       getBrandTableColumn(),
       getTimeTableColumn(),
       getProjectTableColumn(),

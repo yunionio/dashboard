@@ -12,6 +12,9 @@
 <script>
 import WindowsMixin from '@/mixins/windows'
 import {
+  getBrandTableColumn,
+} from '@/utils/common/tableColumn'
+import {
   getVpcTableColumn,
 } from '../utils/columns'
 
@@ -33,6 +36,7 @@ export default {
     return {
       baseInfo: [
         getVpcTableColumn(this),
+        getBrandTableColumn(),
       ],
       extraInfo: [],
     }

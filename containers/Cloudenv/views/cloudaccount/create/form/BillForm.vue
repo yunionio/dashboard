@@ -293,6 +293,7 @@ export default {
         })
         // azure 和 aws billing_scope 没有时选中managed，新建时选中all
         if ((this.isAzure || this.isAws) && (!data.options || !data.options.billing_scope)) {
+          data.options = data.options || {}
           data.options.billing_scope = 'managed'
         }
         this.cloudAccount = data

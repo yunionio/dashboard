@@ -85,6 +85,32 @@ export const OSS_MONITOR_OPTS = {
       },
     },
   ],
+  apsara: [
+    {
+      name: 'GetObjectE2eLatency',
+      label: i18n.t('storage.text_12'),
+      seleteItem: 'req_late',
+      fromItem: 'oss_latency',
+      as: i18n.t('storage.text_13'),
+      unit: 'ms',
+      transfer: 1,
+      tag: {
+        request: 'get',
+      },
+    },
+    {
+      name: 'GetObjectCount',
+      label: i18n.t('storage.text_14'),
+      seleteItem: 'req_count',
+      fromItem: 'oss_req',
+      as: i18n.t('storage.text_14'),
+      unit: '',
+      transfer: 1,
+      tag: {
+        request: 'get',
+      },
+    },
+  ],
 }
 
 export const LOCATION_MAP = {

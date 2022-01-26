@@ -35,21 +35,21 @@ export default {
                   columns: this.columns,
                   resId: obj.Id,
                   refresh: this.refresh,
-                  total: obj.vips.length,
+                  total: obj.vips && obj.vips.length,
                 })
               },
               meta: () => {
-                let tooltip = null
+                const ret = {
+                  validate: true,
+                }
                 if (!obj.network_id) {
-                  tooltip = this.$t('compute.instance_group_no_network_id')
+                  ret.validate = false
+                  ret.tooltip = this.$t('compute.instance_group_no_network_id')
+                } else if (obj.vips && obj.vips.length >= 1) {
+                  ret.validate = false
+                  ret.tooltip = this.$t('compute.too_many_instance_group_vip')
                 }
-                if (obj.vips.length >= 1) {
-                  tooltip = this.$t('compute.too_many_instance_group_vip')
-                }
-                return {
-                  validate: (obj.network_id !== '' && obj.vips.length < 1),
-                  tooltip,
-                }
+                return ret
               },
               // hidden: this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_add_network_card'),
             },
@@ -66,14 +66,13 @@ export default {
               },
               meta: () => {
                 const ret = {
-                  validate: false,
-                  tooltip: null,
+                  validate: true,
                 }
-                if (obj.vips.length > 0 && obj.eip === '') {
-                  ret.validate = true
-                } else if (obj.vips.length === 0) {
+                if (!obj.vips || obj.vips.length === 0) {
+                  ret.validate = false
                   ret.tooltip = this.$t('compute.prompt_empty_instance_group_vip')
-                } else if (obj.eip !== '') {
+                } else if (obj.eip) {
+                  ret.validate = false
                   ret.tooltip = this.$t('compute.prompt_already_associate_eip')
                 }
                 return ret
@@ -94,12 +93,10 @@ export default {
               },
               meta: () => {
                 const ret = {
-                  validate: false,
-                  tooltip: null,
+                  validate: true,
                 }
-                if (obj.eip !== '') {
-                  ret.validate = true
-                } else {
+                if (!obj.eip) {
+                  ret.validate = false
                   ret.tooltip = this.$t('compute.prompt_no_associate_eip')
                 }
                 return ret

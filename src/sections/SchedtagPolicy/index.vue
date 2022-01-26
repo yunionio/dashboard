@@ -53,7 +53,7 @@ export default {
     schedtagChange (val) {
       this.$nextTick(() => {
         if (this.form && this.form.fc) {
-          let defaultStrategy = this.schedtagItem.default_strategy
+          let defaultStrategy = this.schedtagItem.default_strategy || 'require'
           if (defaultStrategy) {
             if (!this.policyOpts.find(val => val.key === defaultStrategy)) {
               defaultStrategy = undefined

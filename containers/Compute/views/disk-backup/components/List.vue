@@ -47,7 +47,7 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
-          status: getStatusFilter('snapshot'),
+          status: getStatusFilter('diskBackup'),
           brand: getInBrandFilter('brands', ['OneCloud']),
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
@@ -61,9 +61,10 @@ export default {
           { label: this.$t('table.title.name'), key: 'name' },
           { label: this.$t('common.status'), key: 'status' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
-          { label: this.$t('compute.disk_size'), key: 'size_mb' },
+          { label: this.$t('compute.backup_size'), key: 'size_mb' },
           { label: this.$t('table.title.disk_type'), key: 'disk_type' },
           { label: this.$t('res.disk'), key: 'disk_name' },
+          { label: this.$t('compute.disk_size'), key: 'disk_size' },
           { label: this.$t('res.project'), key: 'tenant' },
           { label: this.$t('table.title.create_time'), key: 'created_at' },
           { label: this.$t('compute.backup_storage'), key: 'backup_storage_name' },
@@ -84,6 +85,27 @@ export default {
           meta: () => ({
             validate: this.list.selected.length,
           }),
+        },
+        {
+          label: this.$t('table.action.set_tag'),
+          action: () => {
+            this.createDialog('SetTagDialog', {
+              data: this.list.selectedItems,
+              columns: this.columns,
+              onManager: this.onManager,
+              mode: 'add',
+              params: {
+                resources: 'diskbackups',
+              },
+              tipName: this.$t('compute.text_462'),
+            })
+          },
+          meta: () => {
+            return {
+              validate: this.list.selected.length,
+              tooltip: null,
+            }
+          },
         },
         {
           label: this.$t('compute.perform_delete'),
@@ -128,6 +150,7 @@ export default {
       const ret = {
         details: true,
         with_meta: true,
+        is_instance_backup: false,
         ...this.getParams,
       }
       if (this.cloudEnv) ret.cloud_env = this.cloudEnv

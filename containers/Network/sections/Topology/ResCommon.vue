@@ -1,6 +1,6 @@
 <template>
-  <div class="res-container d-flex justify-content-center align-items-center">
-    <i class="line" :class="{'full': multiple}" />
+  <div class="res-container d-flex justify-content-center align-items-center" :class="{'is-exist': isExist}">
+    <span class="line" :class="{'full': multiple}" />
     <div class="res d-flex">
       <a-tooltip placement="topLeft" :get-popup-container="getPopupContainer">
         <template slot="title">
@@ -40,6 +40,7 @@ export default {
     dataSource: Object,
     multiple: Boolean,
     type: String,
+    isExist: Boolean,
   },
   data () {
     return {}

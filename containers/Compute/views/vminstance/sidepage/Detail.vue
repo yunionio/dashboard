@@ -27,6 +27,8 @@ import {
 import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
+import PasswordFetcher from '@Compute/sections/PasswordFetcher'
+import { sizestr } from '@/utils/utils'
 
 export default {
   name: 'VmInstanceDetail',
@@ -59,6 +61,16 @@ export default {
         },
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
+        {
+          field: 'password',
+          title: this.$t('table.title.init_keypair'),
+          minWidth: 50,
+          slots: {
+            default: ({ row }) => {
+              return [<PasswordFetcher serverId={ row.id } resourceType='servers' />]
+            },
+          },
+        },
       ],
       imageExist: false,
     }
@@ -102,6 +114,7 @@ export default {
         image = dataDisks[0].image
         imageId = dataDisks[0].image_id
       }
+
       return {
         sysDisk: this._diskStringify(sysDisk),
         dataDisk: this._diskStringify(dataDisk),
@@ -312,13 +325,14 @@ export default {
     _diskStringify (diskObj) {
       let str = ''
       const storageArr = Object.values(ALL_STORAGE)
+
       for (const k in diskObj) {
         const num = diskObj[k]
         const disk = storageArr.find(v => v.value === k)
         if (disk) {
-          str += `、${parseInt(num / 1024)}GB（${disk.label}）`
+          str += `、${sizestr(num, 'M', 1024)}（${disk.label}）`
         } else {
-          str += `、${parseInt(num / 1024)}GB（${k}）`
+          str += `、${sizestr(num, 'M', 1024)}（${k}）`
         }
       }
       return str.slice(1)

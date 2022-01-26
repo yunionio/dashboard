@@ -644,6 +644,10 @@
       "label": "Heartbeat detection time",
       "desc": "After the user has no operation in the current period of time, the login information will be invalid and needs to be logged in again. Zero means detection is not turned on."
     },
+    "common$is_forget_login_user": {
+      "label": "Log out and clear user information",
+      "desc": "After enabled, logging out will clear the logged in user information. To log in again, you need to re-enter your user name and password."
+    },
     "common$non_default_domain_projects": {
       "label": "Three-level Resource Hierarchy",
       "desc": "If enabled, resources are organized in system/domain/project three-level hierarchy instead of system/project two-level hierarchy. The default is disabled, and it cannot be disabled after it is enabled."
@@ -739,6 +743,10 @@
     "compute$enable_auto_switch_server_sku": {
       "label": "Give priority to ensuring the success of the new virtual machine",
       "desc": "When opening, if the sku is sold out and does not match, we will automatically switch to the sku of the same specification and try to create."
+    },
+    "log$syslog_url": {
+      "label": "External Syslog Server URL",
+      "desc": "Export audit log to external syslog server, address format is proto://<ip>:<port>@idstr, e.g. tcp://192.168.2.100:514@cloud"
     }
   },
   "user": {
@@ -869,5 +877,6 @@
   "IAM.text_6": "{0}",
   "IAM.text_7": "{0}",
   "IAM.text_8": "({0})",
-  "IAM.text_9": "Total"
+  "IAM.text_9": "Total",
+  "iam.sender_address": "Sender's Email"
 }

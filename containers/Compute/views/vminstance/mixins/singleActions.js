@@ -553,6 +553,35 @@ export default {
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_create_snapshot'),
                 },
+                {
+                  label: i18n.t('compute.create_disk_backup2'),
+                  action: () => {
+                    this.createDialog('VmBackupCreateDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      refresh: this.refresh,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (obj.is_prepaid_recycle) {
+                      ret.tooltip = i18n.t('compute.text_285')
+                      return ret
+                    }
+                    if (obj.backup_host_id) {
+                      ret.tooltip = i18n.t('compute.text_1277')
+                      return ret
+                    }
+                    if (commonUnabled(obj)) return ret
+                    ret.validate = cloudEnabled('createBackup', obj)
+                    ret.tooltip = cloudUnabledTip('createBackup', obj)
+                    return ret
+                  },
+                },
                 // {
                 //   label: '加入资源池',
                 //   action: () => {
@@ -1060,6 +1089,7 @@ export default {
                       typeClouds.hypervisorMap.dstack.brand,
                       typeClouds.hypervisorMap.ucloud.brand,
                       typeClouds.hypervisorMap.ctyun.brand,
+                      typeClouds.hypervisorMap.nutanix.brand,
                     ]
                     if (noSupportBrand.includes(obj.brand)) {
                       ret.tooltip = i18n.t('compute.text_1287', [obj.brand])

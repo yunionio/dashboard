@@ -159,7 +159,8 @@
       "image_caching": "缓存镜像中",
       "restart_network": "正在重启网卡",
       "restart_network_failed": "重启网卡失败",
-      "sync_isolated_device_failed": "同步透传设备失败"
+      "sync_isolated_device_failed": "同步透传设备失败",
+      "start_instance_backup": "开始创建备份"
     },
     "network": {
       "init": "初始化",
@@ -1082,7 +1083,18 @@
       "ready": "可用",
       "deleting": "正在删除",
       "recovery": "正在回滚",
-      "snapshot_failed": "快照创建失败"
+      "snapshot_failed": "快照创建失败",
+      "sync_status": "同步状态"
+    },
+    "instanceBackup": {
+      "init": "初始化",
+      "snapshot": "正在创建快照",
+      "saving": "正在保存",
+      "ready": "可用",
+      "deleting": "正在删除",
+      "recovery": "正在回滚",
+      "snapshot_failed": "快照创建失败",
+      "sync_status": "同步状态"
     }
   },
   "skuCategoryOptions": {
@@ -1244,7 +1256,8 @@
     "passwordLevel": "密码必须包含数字，大小写字母，特殊字符中的{0}种，长度至少{1}位",
     "dnsName": "仅支持字符a-z、A-Z、0-9、短划线（-）、下划线（_）、句点（.）、@、*，且短划线和句点不能出现在开头和结尾",
     "maxLength": "长度不能超过{0}个字符",
-    "nonNegativeInt": "请输入非负整数"
+    "nonNegativeInt": "请输入非负整数",
+    "blockStorageName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\""
   },
   "dialog": {
     "ok": "确定",
@@ -2215,18 +2228,18 @@
     "DOWN_SIZE": "建议降配的虚拟机",
     "UP_SIZE": "建议升配的虚拟机",
     "SCALING_SERVER": "建议使用弹性伸缩组的虚拟机",
-    "TIMING_OPEN_SERVER": "定时开关机的主机",
+    "TIMING_OPEN_SERVER": "定时开关机的虚拟机",
     "EXPIRE_SERVER_SKU": "虚拟机过时套餐推荐",
     "SCALE_DOWN": "低负载的虚拟机",
     "RDS_UNREASONABLE": "空闲的RDS",
     "OSS_UNREASONABLE": "空闲的对象存储",
     "REDIS_UNREASONABLE": "空闲的Redis",
-    "SECGROUPRULEINSERVER_ALLIN": "安全组规则的in规则为全开放的主机",
+    "SECGROUPRULEINSERVER_ALLIN": "安全组规则的in规则为全开放的虚拟机",
     "SNAPSHOT_UNUSED": "未使用的快照",
     "OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件",
     "CLOUDACCOUNT_AMOUNT_DAILY": "云账号天消费异常",
     "CLOUDACCOUNT_AMOUNT_MONTH": "云账号月消费异常",
-    "TIMING_SERVER": "具有周期性使用规律的主机"
+    "TIMING_SERVER": "具有周期性使用规律的虚拟机"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "释放未使用的弹性公网IP",
@@ -2532,9 +2545,10 @@
     "ext_redis": "Redis",
     "ext_rabbitmq": "RabbitMQ",
     "cdn": "内容分发网络",
-    "cdn_domain": "域名",
+    "cdn_domain": "CDN域名",
     "vpc_network": "VPC互联",
-    "vpc_peer_connect": "VPC对等连接"
+    "vpc_peer_connect": "VPC对等连接",
+    "dns_recordset": "DNS解析-记录"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -5025,5 +5039,6 @@
   "error_title": {
     "ForbiddenError": "权限不足"
   },
-  "common.backup": "备份"
+  "common.backup": "备份",
+  "common.field_required_placeholder": "请填写{0}"
 }

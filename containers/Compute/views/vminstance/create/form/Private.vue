@@ -138,7 +138,7 @@
             </span>
             <host-name v-decorator="decorators.hostName" :isWindows="isWindows" />
           </a-form-item>
-          <a-form-item :label="$t('compute.text_105')">
+          <a-form-item :label="$t('compute.text_105')" v-if="showSecgroup">
             <secgroup-config
               :decorators="decorators.secgroup"
               :secgroup-params="secgroupParams"
@@ -242,17 +242,23 @@ export default {
       return false
     },
     skuParam () {
-      return {
+      const params = {
         limit: 0,
-        private_cloud: true,
         postpaid_status: 'available',
         cpu_core_count: this.form.fd.vcpu || this.decorators.vcpu[1].initialValue,
         memory_size_mb: this.form.fd.vmem,
         usable: true,
         enabled: true,
-        cloudregion_id: this.cloudregionZoneParams.cloudregion,
         ...this.scopeParams,
       }
+      if (this.form.fd.hypervisor === 'nutanix') {
+        params.is_on_premise = true
+        params.usable = false
+      } else {
+        params.private_cloud = true
+        params.cloudregion_id = this.cloudregionZoneParams.cloudregion
+      }
+      return params
     },
     policyHostParams () {
       const zone = _.get(this.form.fd, 'zone.key')
@@ -330,6 +336,10 @@ export default {
         params.zone = this.form.fd.zone
       }
       return params
+    },
+    showSecgroup () {
+      const hiddenSecCloudprovider = ['Nutanix']
+      return !hiddenSecCloudprovider.includes(this.cloudprovider)
     },
   },
   methods: {
