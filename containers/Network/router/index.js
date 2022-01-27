@@ -183,7 +183,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.wire')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack'])
+              return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack', 'nutanix'])
             },
             // hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
@@ -283,6 +283,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.eip')) {
                 return true
               }
+              if (hasSetupKey('nutanix')) return true
               return !hasSetupKey(['onestack', 'private', 'public'])
             },
           },
