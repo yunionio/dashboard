@@ -460,4 +460,7 @@ export default {
     success: ['ready'],
     info: ['unknown'],
   },
+  diskBackup: {
+    success: ['ready'],
+  },
 }
