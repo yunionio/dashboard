@@ -89,9 +89,7 @@
           :sku="form.fd.sku"
           :capability-data="form.fi.capability"
           :image="form.fi.imageMsg"
-          :defaultSize="systemdiskDefaultSize"
-          :sizeDisabled="disabledSysDiskSize"
-          :disabled="systemDiskTypeDisabled" />
+          :sizeDisabled="disabledSysDiskSize" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk

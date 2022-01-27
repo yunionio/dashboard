@@ -1,14 +1,12 @@
 <template>
   <div class="disk-wrapper d-flex w-auto">
     <a-form-item :wrapperCol="{ span: 24 }" :validate-status="storageStatusMap.type">
-      <a-tooltip :title="diskTooltip" placement="top">
-        <a-tag color="blue" v-if="diskTypeLabel && !disabled">{{ diskTypeLabel }}</a-tag>
-        <a-select v-else v-decorator="decorator.type" labelInValue :style="{minWidth: '180px'}" @change="typeChange" :disabled="disabled">
-          <a-select-option v-for="(item, key) of typesMap" :key="key" :value="key">{{ item.label }}</a-select-option>
-        </a-select>
-      </a-tooltip>
+      <a-tag color="blue" v-if="diskTypeLabel && !disabled">{{ diskTypeLabel }}</a-tag>
+      <a-select v-else v-decorator="decorator.type" labelInValue :style="{minWidth: '180px'}" @change="typeChange" :disabled="disabled">
+        <a-select-option v-for="(item, key) of typesMap" :key="key" :value="key">{{ item.label }}</a-select-option>
+      </a-select>
     </a-form-item>
-    <a-form-item class="mx-1" :wrapperCol="{ span: 24 }" v-if="!hiddenDiskSize">
+    <a-form-item class="mx-1" :wrapperCol="{ span: 24 }">
       <a-tooltip :title="tooltip" placement="top">
         <a-input-number
           v-decorator="decorator.size"
@@ -163,15 +161,6 @@ export default {
     },
     storageClass () {
       return `${this.storageStatusMap.type}-color`
-    },
-    diskTooltip () {
-      if (this.hypervisor === HYPERVISORS_MAP.nutanix.key) {
-        return this.$t('compute.disk_size_disbale_tips', [HYPERVISORS_MAP.nutanix.brand])
-      }
-      return ''
-    },
-    hiddenDiskSize () {
-      return this.hypervisor === HYPERVISORS_MAP.nutanix.key
     },
   },
   watch: {
