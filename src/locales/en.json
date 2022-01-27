@@ -159,7 +159,8 @@
       "image_caching": "Image Caching",
       "restart_network": "Restart Network",
       "restart_network_failed": "Restart Network Failed",
-      "sync_isolated_device_failed": "Sync isolated device failed"
+      "sync_isolated_device_failed": "Sync isolated device failed",
+      "start_instance_backup": "Start Instance Backup"
     },
     "network": {
       "init": "Initialize",
@@ -1028,7 +1029,18 @@
       "ready": "Ready",
       "deleting": "Deleting",
       "recovery": "Recovery",
-      "snapshot_failed": "Fail to snapshot"
+      "snapshot_failed": "Fail to snapshot",
+      "sync_status": "Sync Status"
+    },
+    "instanceBackup": {
+      "init": "Initialize",
+      "snapshot": "Snapshot",
+      "saving": "Saving",
+      "ready": "Ready",
+      "deleting": "Deleting",
+      "recovery": "Recovery",
+      "snapshot_failed": "Fail to snapshot",
+      "sync_status": "Sync Status"
     }
   },
   "skuCategoryOptions": {
