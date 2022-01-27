@@ -230,6 +230,28 @@ const actionEableMap = {
       nutanix: false,
     },
   },
+  createBackup: {
+    cn: i18n.t('compute.text_1276'),
+    brand: {
+      azure: false,
+      qcloud: false,
+      aliyun: false,
+      aws: false,
+      onecloud: ['running', 'ready'],
+      cloudpods: false,
+      vmware: false,
+      baremetal: false,
+      huawei: false,
+      hcso: false,
+      openstack: false,
+      zstack: false,
+      dstack: false,
+      ucloud: false,
+      ctyun: false,
+      google: false,
+      apsara: false,
+    },
+  },
   transfer: {
     cn: i18n.t('compute.text_1127'),
     brand: {
