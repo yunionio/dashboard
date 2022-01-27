@@ -282,6 +282,7 @@ export default {
             usable: true,
             cloud_env: 'private',
             show_emulated: true,
+            filter: `provider.notin(${HYPERVISORS_MAP.nutanix.provider})`,
             ...project_domain,
           },
           provider: {},
