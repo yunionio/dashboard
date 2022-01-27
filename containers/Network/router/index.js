@@ -11,14 +11,12 @@ import Eip from '@Network/views/eip'
 import Waf from '@Network/views/waf'
 import GlobalVpc from '@Network/views/global-vpc'
 import GlobalVpcCreate from '@Network/views/global-vpc/create'
-import RouteTableList from '@Network/views/route-table'
+// import RouteTableList from '@Network/views/route-table'
 import NatList from '@Network/views/nats'
 import NatCreate from '@Network/views/nats/create/index'
 // import ReservedIpList from '@Network/views/reserved-ip'
 // import DNS from '@Network/views/dns'
 import VPC from '@Network/views/vpc'
-import VpcNetwork from '@Network/views/vpc-network'
-import VpcPeerConnect from '@Network/views/vpc-peer-connect'
 import VPCCreate from '@Network/views/vpc/create'
 import LbList from '@Network/views/lb'
 import LBCreate from '@Network/views/lb/create/index'
@@ -107,46 +105,6 @@ export default {
       },
       submenus: [
         {
-          path: '/vpc-network',
-          meta: {
-            permission: 'inter_vpc_networks_list',
-            label: i18n.t('dictionary.vpc_network'),
-            t: 'dictionary.vpc_network',
-            hidden: () => {
-              if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['aliyun', 'qcloud'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'VpcNetwork',
-              path: '',
-              component: VpcNetwork,
-            },
-          ],
-        },
-        {
-          path: '/vpc-peerconnect',
-          meta: {
-            label: i18n.t('dictionary.vpc_peer_connect'),
-            permission: 'vpc_peering_connections_list',
-            t: 'dictionary.vpc_peer_connect',
-            hidden: () => {
-              if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['qcloud', 'huawei', 'aws'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'VpcPeerConnect',
-              path: '',
-              component: VpcPeerConnect,
-            },
-          ],
-        },
-        {
           path: '/globalvpc',
           meta: {
             label: i18n.t('dictionary.globalvpc'),
@@ -200,25 +158,21 @@ export default {
             },
           ],
         },
-        {
-          path: '/routetable',
-          meta: {
-            label: i18n.t('dictionary.route_table'),
-            permission: 'route_tables_list',
-            hidden: () => {
-              if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['aliyun', 'qcloud', 'huawei', 'aws'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'RouteTable',
-              path: '',
-              component: RouteTableList,
-            },
-          ],
-        },
+        // {
+        //   path: '/routetable',
+        //   meta: {
+        //     label: '路由表',
+        //     permission: 'route_tables_list',
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'RouteTable',
+        //       path: '',
+        //       component: RouteTableList,
+        //     },
+        //   ],
+        // },
         {
           path: '/wire',
           meta: {
@@ -229,7 +183,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.wire')) {
                 return true
               }
-              return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack'])
+              return !hasSetupKey(['onestack', 'vmware', 'zstack', 'dstack', 'nutanix'])
             },
             // hidden: () => !hasServices(['esxiagent', 'hostagent', 'bmagent']) && !hasBrands('ZStack'),
           },
@@ -329,6 +283,9 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.eip')) {
                 return true
               }
+              if (hasSetupKey('nutanix')) {
+                return true
+              }
               return !hasSetupKey(['onestack', 'private', 'public'])
             },
           },
@@ -394,7 +351,7 @@ export default {
           path: '/dns-zone',
           meta: {
             label: i18n.t('dictionary.dns_zone'),
-            permission: 'dns_zones_list',
+            permission: 'dnszone_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.dns_zone')) {
                 return true
@@ -430,7 +387,7 @@ export default {
           path: '/waf',
           meta: {
             label: i18n.t('dictionary.waf_instance'),
-            permission: 'waf_instances_list',
+            permission: 'wafs_list',
             t: 'dictionary.waf_instance',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.waf')) return true

@@ -1,4 +1,3 @@
-import InstanceBackup from '@Compute/views/instance-backup'
 import DiskCreate from '@Compute/views/disk/create/index'
 import VMInstance from '@Compute/views/vminstance'
 import Baremetal from '@Compute/views/baremetal'
@@ -24,7 +23,6 @@ import InstanceGroup from '@Compute/views/instance-group'
 import SKU from '@Compute/views/sku'
 import Keypair from '@Compute/views/keypair'
 import Disk from '@Compute/views/disk'
-import DiskBackup from '@Compute/views/disk-backup'
 import GPU from '@Compute/views/gpu'
 import Secgroup from '@Compute/views/secgroup'
 import Servertemplate from '@Compute/views/servertemplate'
@@ -205,7 +203,6 @@ export default {
           path: '/webapp',
           meta: {
             label: i18n.t('compute.webapp'),
-            permission: 'webapps_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.webapp')) {
                 return true
@@ -376,47 +373,6 @@ export default {
     },
     {
       meta: {
-        label: i18n.t('common.backup'),
-      },
-      submenus: [
-        {
-          path: '/disk-backup',
-          meta: {
-            label: i18n.t('compute.disk_backup'),
-            hidden: () => {
-              return !hasSetupKey(['onestack'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'DiskBackup',
-              path: '',
-              component: DiskBackup,
-            },
-          ],
-        },
-        {
-          path: '/instance-backup',
-          meta: {
-            label: i18n.t('compute.instance_backup'),
-            hidden: () => {
-              return !hasSetupKey(['onestack'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'InstanceBackup',
-              path: '',
-              component: InstanceBackup,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      meta: {
         label: i18n.t('compute.text_104'),
       },
       submenus: [
@@ -481,6 +437,9 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.eip2')) {
                 return true
               }
+              if (hasSetupKey('nutanix')) {
+                return true
+              }
               return !hasSetupKey(['onestack', 'public', 'private'])
             },
           },
@@ -509,7 +468,6 @@ export default {
           path: '/keypair',
           meta: {
             label: i18n.t('compute.text_108'),
-            permission: 'keypairs_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.keypair')) {
                 return true
@@ -707,7 +665,7 @@ export default {
           path: '/schedtag',
           meta: {
             label: i18n.t('cloudenv.text_18'),
-            permission: 'schedtags_list',
+            // permission: 'schedtags_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
                 return true
