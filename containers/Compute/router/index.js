@@ -382,6 +382,10 @@ export default {
           path: '/disk-backup',
           meta: {
             label: i18n.t('compute.disk_backup'),
+            permission: 'diskbackups_list',
+            hidden: () => {
+              return !hasSetupKey(['onestack'])
+            },
           },
           component: Layout,
           children: [
@@ -396,6 +400,10 @@ export default {
           path: '/instance-backup',
           meta: {
             label: i18n.t('compute.instance_backup'),
+            permission: 'instancebackups_list',
+            hidden: () => {
+              return !hasSetupKey(['onestack'])
+            },
           },
           component: Layout,
           children: [

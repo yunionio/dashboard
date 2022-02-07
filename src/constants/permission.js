@@ -282,6 +282,18 @@ export const PERMISSION = {
   disks_perform_disk_reset: ['compute', 'disks', 'perform', 'disk-reset'],
   disks_perform_cancel_delete: ['compute', 'disks', 'perform', 'cancel-delete'],
   disks_perform_syncstatus: ['compute', 'disks', 'perform', 'syncstatus'],
+  disks_perform_public: ['compute', 'disks', 'perform', 'public'],
+  disks_perform_set_user_metadata: ['compute', 'disks', 'perform', 'set-user-metadata'],
+  disks_perform_bind_snapshotpolicy: ['compute', 'disks', 'perform', 'bind-snapshotpolicy'],
+
+  /**
+   * diskbackups
+   */
+  diskbackups_list: ['compute', 'diskbackups', 'list'],
+  diskbackups_delete: ['compute', 'diskbackups', 'delete'],
+  diskbackups_perform_recovery: ['compute', 'diskbackups', 'perform', 'recovery'],
+  diskbackups_perform_syncstatus: ['compute', 'diskbackups', 'perform', 'syncstatus'],
+  diskbackups_perform_set_user_metadata: ['compute', 'diskbackups', 'perform', 'set-user-metadata'],
   /**
    * snapshots 相关操作
    */
@@ -684,6 +696,17 @@ export const PERMISSION = {
   instancegroups_perform_bind_guests: ['compute', 'instancegroups', 'perform', 'bind-guests'],
   instancegroups_perform_enable: ['compute', 'instancegroups', 'perform', 'enable'],
   instancegroups_perform_disable: ['compute', 'instancegroups', 'perform', 'disable'],
+  instancegroups_perform_attach_network: ['compute', 'instancegroups', 'perform', 'attachnetwork'],
+  instancegroups_perform_detach_network: ['compute', 'instancegroups', 'perform', 'detachnetwork'],
+
+  /**
+   * instancebackups
+   */
+  instancebackups_list: ['compute', 'instancebackups', 'list'],
+  instancebackups_delete: ['compute', 'instancebackups', 'delete'],
+  instancebackups_perform_syncstatus: ['compute', 'instancebackups', 'perform', 'syncstatus'],
+  instancebackups_perform_recovery: ['compute', 'instancebackups', 'perform', 'recovery'],
+  instancebackups_perform_set_user_metadata: ['compute', 'instancebackups', 'perform', 'set-user-metadata'],
   /**
    * 数据库-RDS
    */
