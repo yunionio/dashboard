@@ -18,7 +18,14 @@
           v-bind="formItemLayout"
           :form="form.fc">
           <a-form-item :label="$t('compute.text_1058')" class="mb-0">
-            <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" :disable-options="disableCpus" @change="cpuChange" :disabled="runningArm" :extra="cpuExtra" />
+            <cpu-radio
+              :decorator="decorators.vcpu"
+              :options="form.fi.cpuMem.cpus || []"
+              :disable-options="disableCpus"
+              @change="cpuChange"
+              :disabled="runningArm"
+              :extra="cpuExtra"
+              :max="form.fd.vcpu < 32 ? 32 : 128" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_369')" class="mb-0">
             <mem-radio :decorator="decorators.vmem" :options="form.fi.cpuMem.mems_mb || []" :disable-options="disableMems" :disabled="runningArm" :extra="cpuExtra" />
