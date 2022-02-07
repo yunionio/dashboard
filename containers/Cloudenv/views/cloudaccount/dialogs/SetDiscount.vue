@@ -11,11 +11,14 @@
         v-bind="formItemLayout">
         <a-form-model-item :label="$t('cloudaccount.table.title.discount')" prop="discount" :extra="$t('cloudenv.text_571')">
           <a-input-number
-            v-model="fd.discount"
+            :value="fd.discount"
             :min="0"
             :max="100"
+            :step="0.01"
+            :precision="2"
             :formatter="value => `${value}%`"
-            :parser="value => value.replace('%', '')" />
+            :parser="value => value.replace('%', '')"
+            @change="discountChange" />
         </a-form-model-item>
       </a-form-model>
     </div>
@@ -59,13 +62,16 @@ export default {
     this.fetchDiscount()
   },
   methods: {
+    discountChange (value) {
+      this.fd.discount = value
+    },
     async fetchDiscount () {
       try {
         const response = await this.$http({
           method: 'GET',
           url: `/v1/price_infos/discount/${this.params.data[0].id}`,
         })
-        this.fd.discount = Math.round(response.data.discount * 100)
+        this.fd.discount = (response.data.discount * 100).toFixed(2)
       } finally {
         this.discountLoaded = true
       }
@@ -78,7 +84,7 @@ export default {
           method: 'PUT',
           url: `/v1/price_infos/discount/${this.params.data[0].id}`,
           data: {
-            discount: this.fd.discount / 100,
+            discount: this.fd.discount * 100 / 10000,
           },
         })
         this.cancelDialog()
