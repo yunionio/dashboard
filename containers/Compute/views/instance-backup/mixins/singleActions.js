@@ -5,6 +5,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.rollback_instance_backup'),
+        permission: 'instancebackups_perform_recovery',
         action: obj => {
           this.createDialog('InstanceBackupRollbackDialog', {
             data: [obj],
@@ -19,6 +20,7 @@ export default {
       },
       {
         label: i18n.t('compute.perform_delete'),
+        permission: 'instancebackups_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,

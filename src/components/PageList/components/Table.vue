@@ -34,7 +34,7 @@
             <loader :loading="loading" :noDataText="noDataText" />
           </template>
         </vxe-grid>
-        <template v-if="tableData.length > 0 && resource === 'actions'">
+        <template v-if="tableData.length > 0 && typeof(nextMarker) !== 'undefined'">
           <div class="text-center mt-4">
             <a-button v-if="nextMarker" :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
             <span v-else>{{ $t('common.load_no_more') }}</span>
@@ -54,9 +54,9 @@ import _ from 'lodash'
 import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
 import { getTagTitle } from '@/utils/common/tag'
 import storage from '@/utils/storage'
-import Actions from '../Actions'
 import TreeProject from '@/sections/TreeProject'
 import WindowsMixin from '@/mixins/windows'
+import Actions from '../Actions'
 
 export default {
   name: 'PageListTable',

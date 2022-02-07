@@ -341,6 +341,9 @@ export default {
       const hiddenSecCloudprovider = ['Nutanix']
       return !hiddenSecCloudprovider.includes(this.cloudprovider)
     },
+    systemDiskTypeDisabled () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.nutanix.key
+    },
   },
   methods: {
     onValuesChange (vm, changedFields) {
