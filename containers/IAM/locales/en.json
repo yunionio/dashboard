@@ -743,6 +743,10 @@
     "log$syslog_url": {
       "label": "External Syslog Server URL",
       "desc": "Export audit log to external syslog server, address format is proto://<ip>:<port>@idstr, e.g. tcp://192.168.2.100:514@cloud"
+    },
+    "compute$enable_tls_migration": {
+      "label": "Enable TLS migration",
+      "desc": "When enabled, KVM virtual machine hot migration will use TLS to encrypt data."
     }
   },
   "user": {
