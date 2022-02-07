@@ -5,6 +5,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.rollback_disk_backup'),
+        permission: 'diskbackups_perform_recovery',
         action: obj => {
           this.createDialog('DiskBackupRollbackDialog', {
             data: [obj],
@@ -19,6 +20,7 @@ export default {
       },
       {
         label: i18n.t('compute.perform_sync_status'),
+        permission: 'diskbackups_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
             steadyStatus: ['running', 'ready'],
@@ -34,6 +36,7 @@ export default {
       },
       {
         label: i18n.t('compute.perform_delete'),
+        permission: 'diskbackups_delete',
         action: obj => {
           this.createDialog('DeleteResDialog', {
             vm: this,
