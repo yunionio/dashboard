@@ -8,6 +8,10 @@
 </template>
 
 <script>
+import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
+import { findPlatform } from '@/utils/common/hypervisor'
+import WindowsMixin from '@/mixins/windows'
+import { hasMeterService } from '@/utils/auth'
 import {
   getAccessUrlTableColumn,
   getBalanceTableColumn,
@@ -15,10 +19,6 @@ import {
   getHostCountTableColumn,
   getPublicScopeTableColumn,
 } from '../utils/columns'
-import { getBrandTableColumn, getEnabledTableColumn, getStatusTableColumn } from '@/utils/common/tableColumn'
-import { findPlatform } from '@/utils/common/hypervisor'
-import WindowsMixin from '@/mixins/windows'
-import { hasMeterService } from '@/utils/auth'
 
 export default {
   name: 'CloudaccountDetail',
@@ -95,7 +95,7 @@ export default {
                   if (!this.discountLoaded) {
                     return [<a-icon type='loading' style='font-size: 12px;' class='primary-color' />]
                   }
-                  return [<span>{ Math.round(this.discount * 100) }%</span>]
+                  return [<span>{ (this.discount * 100).toFixed(2) }%</span>]
                 },
               },
               hidden: () => findPlatform(this.data.brand.toLowerCase()) !== 'public',
