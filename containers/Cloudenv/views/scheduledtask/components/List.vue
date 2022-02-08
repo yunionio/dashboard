@@ -30,7 +30,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'scheduledtasks',
-        getParams: { details: true },
+        getParams: { details: true, utc_offset: this.$moment().utcOffset() / 60 },
         filterOptions: {
           name: {
             label: this.$t('cloudenv.text_95'),
