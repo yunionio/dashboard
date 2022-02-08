@@ -751,6 +751,10 @@
     "compute$enable_tls_migration": {
       "label": "Enable TLS migration",
       "desc": "When enabled, KVM virtual machine hot migration will use TLS to encrypt data."
+    },
+    "identity$enable_organization": {
+      "label": "Level item switch",
+      "desc": "When enabled, you can customize level items."
     }
   },
   "user": {

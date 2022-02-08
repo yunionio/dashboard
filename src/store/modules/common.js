@@ -192,6 +192,7 @@ export default {
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('auth/SET_NO_ACTION_LOGOUT_SECONDS', config.no_action_logout_seconds, { root: true })
+          commit('projectTags/SET_DATA', { name: 'enableOrganization', data: config.enable_organization }, { root: true })
         }
       } catch (error) {
         throw error

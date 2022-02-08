@@ -6,6 +6,7 @@ export default {
   state: {
     isLoaded: false,
     projectTreeTags: [],
+    enableOrganization: false,
   },
   mutations: {
     SET_DATA (state, { name, data }) {

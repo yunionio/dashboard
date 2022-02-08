@@ -30,7 +30,7 @@
       :before-show-menu-loaded="beforeShowMenuLoaded"
       :extTagParams="extTagParams"
       :show-ext-tags="showExtTags"
-      :show-tag-config="showTagConfig"
+      :show-tag-config="showTagConfigCheck"
       :tag-config-params="tagConfigParams"
       :treeToggleOpen="treeToggleOpen"
       @refresh="refresh"
@@ -73,7 +73,7 @@
         :span-method="spanMethod"
         :before-show-menu-loaded="beforeShowMenuLoaded"
         :tree-toggle-open="treeToggleOpen"
-        :show-tag-config="showTagConfig"
+        :show-tag-config="showTagConfigCheck"
         :tag-config-params="tagConfigParams"
         :update-config="updateConfig"
         @change-current-page="changeCurrentPage"
@@ -284,7 +284,10 @@ export default {
     nextMarker () {
       return this.list.nextMarker
     },
-    ...mapGetters(['isSidepageOpen']),
+    showTagConfigCheck () {
+      return this.showTagConfig && this.projectTags.enableOrganization
+    },
+    ...mapGetters(['isSidepageOpen', 'projectTags']),
   },
   beforeDestroy () {
     this.list.clearWaitJob()

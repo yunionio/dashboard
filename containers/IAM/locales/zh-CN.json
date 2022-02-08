@@ -750,6 +750,10 @@
     "compute$enable_tls_migration": {
       "label": "启用 tls 迁移",
       "desc": "启用后，KVM私有云虚拟机热迁移时使会启用 tls 加密数据。"
+    },
+    "identity$enable_organization": {
+      "label": "层级项目开关",
+      "desc": "启用后，可自定义项目的层级。"
     }
   },
   "user": {
