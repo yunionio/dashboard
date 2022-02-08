@@ -743,7 +743,7 @@
       "label": "外部日志服务地址",
       "desc": "以syslog协议实时将操作日志导出到外部syslog日志服务器，地址格式为：proto://<ip>:<port>@idstr，例如：tcp://192.168.2.100:514@cloud"
     },
-    "compute$enable_tls_migration": {
+    "common$enable_tls_migration": {
       "label": "启用 tls 迁移",
       "desc": "启用后，KVM私有云虚拟机热迁移时使会启用 tls 加密数据。"
     }
