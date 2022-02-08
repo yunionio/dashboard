@@ -70,6 +70,16 @@ export function getBrandFilter (key, outBrands) {
   }
 }
 
+// 对符合条件的系统的Brand进行二次过滤，只选择传入的支持的平台
+export function getInBrandFilter (key, inBrands = []) {
+  return {
+    label: i18n.t('table.title.brand'),
+    dropdown: true,
+    multiple: true,
+    items: getBrandItems(key, null).filter(v => inBrands.indexOf(v.key) > -1),
+  }
+}
+
 export function getStatusFilter (params) {
   let label = i18n.t('common.status')
   let statusModule = ''
