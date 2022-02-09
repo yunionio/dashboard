@@ -64,7 +64,6 @@ export default {
     billNegativeNumberReson: '账单中出现负数是因为产生了退款，如包年包月机器提前释放退款、使用优惠券后退款、以及账号享受的其他优惠的退款。',
     billCurrentYearFee: '本年消费展示为当前所选日期截止日期的当年费用',
     restartNetworkToEffectIp: '更换IP后需同时重启网卡才生效',
-    billResourceSharedTip: '启用后，将包年包月的资源费用账单分摊到具体使用日期，分摊后费用 = 按量付费费用 + 包年包月分摊后费用',
-    billSharedTip: '分摊后费用 = 按量付费费用 + 包年包月分摊后费用',
+    billResourceSharedTip: '启用后，将包年包月的资源费用账单分摊到具体使用日期，分摊后总费用 = 按量付费费用 + 包年包月分摊后费用',
   },
 }
