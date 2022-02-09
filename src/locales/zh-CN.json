@@ -2239,7 +2239,8 @@
     "OSS_SEC_ACL": "对象存储权限为开放读、写的存储桶和文件",
     "CLOUDACCOUNT_AMOUNT_DAILY": "云账号天消费异常",
     "CLOUDACCOUNT_AMOUNT_MONTH": "云账号月消费异常",
-    "TIMING_SERVER": "具有周期性使用规律的虚拟机"
+    "TIMING_SERVER": "具有周期性使用规律的虚拟机",
+    "upgrade_prepaid": "建议转化为包年包月套餐"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "释放未使用的弹性公网IP",
