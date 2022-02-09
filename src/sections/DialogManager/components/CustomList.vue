@@ -18,6 +18,7 @@
                 <transition-group type="transition" name="flip-list">
                   <template v-for="item of columnFields">
                     <a-col
+                      v-if="item.title"
                       :span="6"
                       :key="item.property"
                       class="mb-2 checkbox-item d-flex align-items-center">
