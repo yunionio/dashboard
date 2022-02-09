@@ -6,7 +6,8 @@
       :export-data-options="exportDataOptions"
       :show-group-actions="true"
       :show-page="false"
-      :refresh-method="refresh" />
+      :refresh-method="refresh"
+      :single-actions="singleActions" />
   </div>
 </template>
 
@@ -104,25 +105,19 @@ export default {
           field: 'manager',
           title: this.$t('cloudenv.text_318'),
         }),
-        {
-          field: 'notes',
-          title: this.$t('table.title.operation'),
-          width: 70,
-          slots: {
-            default: ({ row, column }) => {
-              let text = ''
-              try {
-                text = JSON.stringify(row.request, null, 4)
-              } catch (e) {
-                text = row.request
-              }
-              let disabled = false
-              if (!row.request) disabled = true
-              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) } disabled={ disabled }>{ this.$t('common.view') }</a-button>]
-            },
-          },
-        },
       ],
+      singleActions: [{
+        label: this.$t('common.view'),
+        action: row => {
+          let text = ''
+          try {
+            text = JSON.stringify(JSON.parse(row.notes), null, 4)
+          } catch (e) {
+            text = row.notes
+          }
+          this.clickHandler(text)
+        },
+      }],
       exportDataOptions: {
         items: [
           // { label: 'ID', key: 'id' },
