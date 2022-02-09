@@ -6,7 +6,8 @@
       :export-data-options="exportDataOptions"
       :show-page="false"
       :refresh-method="refresh"
-      default-search-key="obj_name" />
+      default-search-key="obj_name"
+      :single-actions="singleActions" />
   </div>
 </template>
 
@@ -201,6 +202,10 @@ export default {
           minWidth: 80,
           showOverflow: 'ellipsis',
         },
+        getTimeTableColumn({
+          field: 'start_time',
+          title: this.$t('common_156'),
+        }),
         getCopyWithContentTableColumn({
           title: this.$t('table.title.res_name'),
           field: 'obj_name',
@@ -213,7 +218,7 @@ export default {
           slotCallback: row => this.$te(`dictionary.${row.obj_type}`) ? this.$t(`dictionary.${row.obj_type}`) : row.obj_type,
         }),
         {
-          title: this.$t('table.title.operation'),
+          title: this.$t('compute.text_929'),
           field: '_i18n.action',
           minWidth: 80,
           showOverflow: 'ellipsis',
@@ -273,10 +278,6 @@ export default {
             },
           },
         },
-        getTimeTableColumn({
-          field: 'start_time',
-          title: this.$t('common_156'),
-        }),
         {
           field: 'owner_tenant',
           title: this.$t('table.title.owner_project'),
@@ -295,23 +296,19 @@ export default {
             },
           },
         },
-        {
-          field: 'notes',
-          title: '',
-          width: 70,
-          slots: {
-            default: ({ row, column }) => {
-              let text = ''
-              try {
-                text = JSON.stringify(JSON.parse(row.notes), null, 4)
-              } catch (e) {
-                text = row.notes
-              }
-              return [<a-button size='small' type='link' onClick={ () => this.clickHandler(text) }>{ this.$t('common.view') }</a-button>]
-            },
-          },
-        },
       ],
+      singleActions: [{
+        label: this.$t('common.view'),
+        action: row => {
+          let text = ''
+          try {
+            text = JSON.stringify(JSON.parse(row.notes), null, 4)
+          } catch (e) {
+            text = row.notes
+          }
+          this.clickHandler(text)
+        },
+      }],
     }
   },
   created () {
