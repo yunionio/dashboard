@@ -38,7 +38,7 @@ export default {
           label: i18n.t('compute.text_352'),
           actions: obj => {
             return [
-              ...getEnabledSwitchActions(this, obj, 'skus_update', 'skus_update'),
+              ...getEnabledSwitchActions(this, obj, ['skus_update', 'skus_update']),
               {
                 label: i18n.t('compute.sku.setup.sell.status'),
                 permission: 'skus_update',
