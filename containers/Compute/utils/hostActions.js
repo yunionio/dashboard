@@ -1,4 +1,3 @@
-import { typeClouds } from '@/utils/common/hypervisor'
 import { commonUnabled } from '../views/vminstance/utils'
 import i18n from '@/locales'
 
@@ -285,33 +284,6 @@ export function hostServerActions (manager, obj, objList, isHostServer) {
         })
       },
       meta: () => {
-        return {
-          validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
-        }
-      },
-    },
-    {
-      label: i18n.t('compute.text_354'),
-      permission: 'server_perform_reset',
-      action: () => {
-        objList.createDialog('VmResetDialog', {
-          data: [obj],
-          columns: objList.columns,
-          onManager: manager,
-          isHostServer: isHostServer,
-        })
-      },
-      meta: () => {
-        const ret = {
-          validate: false,
-          tooltip: null,
-        }
-        if (!isHostServer) {
-          if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
-            ret.tooltip = i18n.t('compute.text_355')
-            return ret
-          }
-        }
         return {
           validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
         }
