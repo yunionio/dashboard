@@ -2260,7 +2260,8 @@
     "OSS_SEC_ACL": "调整存储桶权限",
     "CLOUDACCOUNT_AMOUNT_DAILY": "检查云账号昨日消费",
     "CLOUDACCOUNT_AMOUNT_MONTH": "检查云账号本月消费",
-    "TIMING_SERVER": "-"
+    "TIMING_SERVER": "-",
+    "upgrade_prepaid": "转化为包年包月套餐"
   },
   "idpDrivers": {
     "LDAP": [
