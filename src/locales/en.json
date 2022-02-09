@@ -2225,7 +2225,8 @@
     "OSS_SEC_ACL": "Public Read&Write OSS",
     "CLOUDACCOUNT_AMOUNT_DAILY": "Abnormal Daily Cost Of CloudAccount",
     "CLOUDACCOUNT_AMOUNT_MONTH": "Abnormal Monthly Cost Of CloudAccount",
-    "TIMING_SERVER": "Server with periodic usage patterns"
+    "TIMING_SERVER": "Server with periodic usage patterns",
+    "upgrade_prepaid": "Suggest upgrade to Prepaid SKU"
   },
   "suggestsySuggestion": {
     "EIP_UNUSED": "Release Unused EIP",
