@@ -2246,7 +2246,8 @@
     "OSS_SEC_ACL": "Adjust object storage ACL",
     "CLOUDACCOUNT_AMOUNT_DAILY": "Check CloudAccount Cost of yesterday",
     "CLOUDACCOUNT_AMOUNT_MONTH": "Check CloudAccount Cost of this month",
-    "TIMING_SERVER": "-"
+    "TIMING_SERVER": "-",
+    "upgrade_prepaid": "Upgrade to Prepaid SKU"
   },
   "idpDrivers": {
     "LDAP": [
