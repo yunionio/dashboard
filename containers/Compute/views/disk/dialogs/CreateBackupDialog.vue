@@ -50,7 +50,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.text_416') },
-              { validator: this.$validate('snapshotName') },
+              // { validator: this.$validate('snapshotName') },
             ],
           },
         ],

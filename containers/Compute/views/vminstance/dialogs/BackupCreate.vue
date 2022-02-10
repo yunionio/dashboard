@@ -115,7 +115,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('compute.text_1256') },
-              { validator: this.$validate('resourceName') },
+              // { validator: this.$validate('resourceName') },
             ],
           },
         ],
