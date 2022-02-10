@@ -4,7 +4,23 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('compute.rollback_instance_backup'),
+        label: i18n.t('compute.perform_sync_status'),
+        permission: 'instancebackups_perform_syncstatus',
+        action: obj => {
+          this.onManager('performAction', {
+            steadyStatus: ['running', 'ready'],
+            id: obj.id,
+            managerArgs: {
+              action: 'syncstatus',
+            },
+          })
+        },
+        meta: () => ({
+          validate: true,
+        }),
+      },
+      {
+        label: i18n.t('compute.text_478'),
         permission: 'instancebackups_perform_recovery',
         action: obj => {
           this.createDialog('InstanceBackupRollbackDialog', {

@@ -18,7 +18,7 @@ import {
 import {
   getSizeMbTableColumn,
   getDiskTypeTableColumn,
-  getDiskNameTableColumn,
+  // getDiskNameTableColumn,
   getDiskSizeTableColumn,
   getBackupStorageNameTableColumn,
 } from '../utils/columns'
@@ -42,7 +42,19 @@ export default {
       baseInfo: [
         getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'diskbackups', columns: () => this.columns }),
         getDiskTypeTableColumn(),
-        getDiskNameTableColumn(),
+        {
+          field: 'disk_name',
+          title: this.$t('res.disk'),
+          minWidth: 100,
+          sortable: true,
+          slots: {
+            default: ({ row }) => {
+              return [
+                <side-page-trigger name='DiskSidePage' id={row.disk_id} vm={this} init>{row.disk_name}</side-page-trigger>,
+              ]
+            },
+          },
+        },
         getDiskSizeTableColumn(),
         getBackupStorageNameTableColumn(),
         getSizeMbTableColumn(),

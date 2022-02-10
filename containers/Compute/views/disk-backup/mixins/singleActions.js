@@ -4,21 +4,6 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('compute.rollback_disk_backup'),
-        permission: 'diskbackups_perform_recovery',
-        action: obj => {
-          this.createDialog('DiskBackupRollbackDialog', {
-            data: [obj],
-            columns: this.columns,
-            onManager: this.onManager,
-            refresh: this.refresh,
-          })
-        },
-        meta: obj => {
-          return { validate: true }
-        },
-      },
-      {
         label: i18n.t('compute.perform_sync_status'),
         permission: 'diskbackups_perform_syncstatus',
         action: obj => {
@@ -33,6 +18,21 @@ export default {
         meta: () => ({
           validate: true,
         }),
+      },
+      {
+        label: i18n.t('compute.text_478'),
+        permission: 'diskbackups_perform_recovery',
+        action: obj => {
+          this.createDialog('DiskBackupRollbackDialog', {
+            data: [obj],
+            columns: this.columns,
+            onManager: this.onManager,
+            refresh: this.refresh,
+          })
+        },
+        meta: obj => {
+          return { validate: true }
+        },
       },
       {
         label: i18n.t('compute.perform_delete'),

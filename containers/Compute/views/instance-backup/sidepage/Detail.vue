@@ -18,7 +18,7 @@ import {
 
 import {
   getBackupStorageNameTableColumn,
-  getGuestTableColumn,
+  // getGuestTableColumn,
   getOsTypeTableColumn,
   getSizeMbTableColumn,
 } from '../utils/columns'
@@ -44,7 +44,19 @@ export default {
         getBackupStorageNameTableColumn(),
         getSizeMbTableColumn(),
         getBrandTableColumn(),
-        getGuestTableColumn(),
+        {
+          field: 'guest',
+          title: this.$t('compute.text_91'),
+          minWidth: 100,
+          sortable: true,
+          slots: {
+            default: ({ row }) => {
+              return [
+                <side-page-trigger name='VmInstanceSidePage' id={row.guest_id} vm={this} init>{row.guest}</side-page-trigger>,
+              ]
+            },
+          },
+        },
         getOsArch(),
         getOsTypeTableColumn(),
       ],
