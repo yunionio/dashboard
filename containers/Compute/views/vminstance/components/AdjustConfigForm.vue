@@ -345,6 +345,7 @@ export default {
       },
       diskLoaded: false,
       domain: itemData.domain_id,
+      cloudaccountId: itemData.account_id,
       sysdisk: {},
       origin_price: null,
       price: null,
@@ -1010,7 +1011,7 @@ export default {
       if (R.isNil(f.systemDiskSize)) return
 
       const pf = new PriceFetcher()
-      pf.initialForm(this.$store.getters.scope, f.sku, f.duration, f.billType, this.isPublic)
+      pf.initialForm(this.$store.getters.scope, f.sku, f.duration, f.billType, this.isPublic, this.cloudaccountId)
       // add price items
       if (!isPublic) {
         // server instance
@@ -1055,6 +1056,7 @@ export default {
       this.priceFormat = price.priceFormat
       this.origin_price = price.originPrice
       this.priceTips = price.priceTips
+      this.discount = price.discount
     },
     isSomeLocal () {
       const { capability = {} } = this.form.fi
