@@ -105,6 +105,7 @@ export default {
       type: Array,
       default: () => [],
     },
+    cloudaccountId: String,
   },
   data () {
     this.getPriceList = _.debounce(this._getPriceList2, 500)
@@ -416,7 +417,7 @@ export default {
       if (R.isNil(f.systemDiskSize)) return
 
       const pf = new PriceFetcher()
-      pf.initialForm(this.$store.getters.scope, f.sku, f.duration, f.billType, this.isPublic)
+      pf.initialForm(this.$store.getters.scope, f.sku, f.duration, f.billType, this.isPublic, this.cloudaccountId)
       // add price items
       if (this.fi.createType !== SERVER_TYPE.public) {
         // server instance
