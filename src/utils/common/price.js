@@ -18,7 +18,7 @@ export class PriceFetcher {
   }
 
   // 通过解析sku设置.设置provider, region, zone
-  initialForm (scope = '', skuObj = {}, duration = '1h', billType = '', isPublicCloud = false) {
+  initialForm (scope = '', skuObj = {}, duration = '1h', billType = '', isPublicCloud = false, cloudaccountId = '') {
     this.scope = scope
     this.region = skuObj.region_ext_id || ''
     this.zone = skuObj.zone_ext_id || ''
@@ -26,6 +26,7 @@ export class PriceFetcher {
     this.setPeriod(d.period)
     this.setPriceUnit(d.price_unit)
     this.setProvider(skuObj, isPublicCloud)
+    this.setAccount(cloudaccountId, isPublicCloud)
   }
 
   // parse duration
@@ -49,6 +50,11 @@ export class PriceFetcher {
       this.provider = provider
     }
     this.provider = skuObj.cloud_env || provider
+  }
+
+  // 设置cloudaccount
+  setAccount (cloudaccountId = '', isPublicCloud = false) {
+    this.cloudaccountId = cloudaccountId
   }
 
   // 设置计费时长
