@@ -22,11 +22,12 @@
       </a-form-item>
       <a-form-item :label="$t('compute.text_228')" v-if="!isServertemplate">
         <a-input v-decorator="decorators.name" />
-        <name-repeated
-          v-slot:extra
-          res="servers"
-          :name="form.fd.name"
-          :default-text="$t('compute.text_893')" />
+        <template v-slot:extra>
+          <name-repeated
+            res="servers"
+            :name="form.fd.name"
+            :default-text="$t('compute.text_893')" />
+        </template>
       </a-form-item>
       <a-form-item :label="$t('common.description')" v-if="!isServertemplate && !isOpenWorkflow">
         <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
