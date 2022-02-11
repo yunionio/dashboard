@@ -90,7 +90,7 @@ export default {
     },
     async createUser (values) {
       try {
-        const data = { ...values, skip_password_complexity_check: true }
+        const data = { ...values, skip_password_complexity_check: false }
         if (data.domain && data.domain.key) {
           data.domain_id = data.domain.key
           delete data.domain
