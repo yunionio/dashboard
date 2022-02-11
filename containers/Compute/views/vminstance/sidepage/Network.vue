@@ -1,0 +1,62 @@
+<template>
+  <div>
+    <a-tabs :defaultActiveKey="currentComponent" @change="callback" :animated="false">
+      <template v-for="obj of tabs">
+        <a-tab-pane :tab="obj.label" :key="obj.key" />
+      </template>
+    </a-tabs>
+    <div class="mt-2">
+      <keep-alive>
+        <component :is="currentComponent" :getParams="getParams" :id="id" />
+      </keep-alive>
+    </div>
+  </div>
+</template>
+
+<script>
+import NetworkList from '@Compute/views/networks/components/List'
+import EipList from './EipList'
+
+export default {
+  name: 'NetworkIndex',
+  components: {
+    NetworkList,
+    EipList,
+  },
+  props: {
+    getParams: {
+      type: [Function, Object],
+    },
+  },
+  data () {
+    return {
+      currentComponent: 'NetworkList',
+      tabs: [
+        {
+          key: 'NetworkList',
+          label: this.$t('compute.private_network'),
+        },
+        {
+          key: 'EipList',
+          label: this.$t('compute.text_107'),
+        },
+      ],
+    }
+  },
+  computed: {
+    id () {
+      switch (this.currentComponent) {
+        case 'NetworkList':
+          return 'NetworkListForVminstanceSidepage'
+        default:
+          return 'EipListForVminstanceSidepage'
+      }
+    },
+  },
+  methods: {
+    callback (key) {
+      this.currentComponent = key
+    },
+  },
+}
+</script>
