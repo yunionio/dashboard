@@ -1513,5 +1513,6 @@
   "compute.create_new_instance": "创建新主机",
   "compute.rollback_instance_backup": "回滚备份",
   "compute.instance_name": "主机名称",
-  "compute.instance_name_placeholder": "选填，为空则名称为原备份主机的名称"
+  "compute.instance_name_placeholder": "选填，为空则名称为原备份主机的名称",
+  "compute.private_network": "私有网络"
 }
