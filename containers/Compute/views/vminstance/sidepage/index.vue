@@ -124,19 +124,13 @@ export default {
       }
       if (this.params.windowData.currentTab === 'network-list-for-vm-instance-sidepage') {
         return {
+          associate_id: this.detailData.id,
           detail: true,
         }
       }
       if (snapshotsTabs.includes(this.params.windowData.currentTab)) {
         return {
           server_id: this.detailData.id,
-        }
-      }
-      if (this.params.windowData.currentTab === 'eip-list-for-vm-instance-sidepage') {
-        return {
-          associate_id: this.detailData.id,
-          detail: true,
-          // show_emulated: true,
         }
       }
       return null
