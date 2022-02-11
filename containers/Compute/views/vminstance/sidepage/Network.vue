@@ -7,7 +7,7 @@
     </a-tabs>
     <div class="mt-2">
       <keep-alive>
-        <component :is="currentComponent" :getParams="getParams" :id="id" />
+        <component :is="currentComponent" :getParams="params" :id="id" :resId="resId" />
       </keep-alive>
     </div>
   </div>
@@ -24,6 +24,7 @@ export default {
     EipList,
   },
   props: {
+    resId: String,
     getParams: {
       type: [Function, Object],
     },
@@ -51,6 +52,15 @@ export default {
         default:
           return 'EipListForVminstanceSidepage'
       }
+    },
+    params () {
+      const params = {
+        ...this.getParams,
+      }
+      if (this.currentComponent === 'NetworkList') {
+        delete params.associate_id
+      }
+      return params
     },
   },
   methods: {
