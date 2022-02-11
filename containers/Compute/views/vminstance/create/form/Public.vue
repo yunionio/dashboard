@@ -65,7 +65,8 @@
           :params="policycloudproviderParams"
           :isDefaultSelect="true"
           :showSync="true"
-          :select-props="{ placeholder: $t('compute.text_149') }" />
+          :select-props="{ placeholder: $t('compute.text_149') }"
+          @update:item="cloudproviderSelected" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />
@@ -193,7 +194,8 @@
         :dataDiskSizes="dataDiskSizes"
         :isOpenWorkflow="isOpenWorkflow"
         :isServertemplate="isServertemplate"
-        :hasMeterService="hasMeterService" />
+        :hasMeterService="hasMeterService"
+        :cloudaccountId="cloudaccountId" />
     </a-form>
   </div>
 </template>
@@ -220,6 +222,11 @@ export default {
     SecgroupConfig,
   },
   mixins: [mixin],
+  data () {
+    return {
+      cloudaccountId: '',
+    }
+  },
   computed: {
     // 是否为包年包月
     isPackage () {
@@ -598,6 +605,9 @@ export default {
         return `${item.account} / ${item.manager} / ${item.zone}`
       }
       return item.name
+    },
+    cloudproviderSelected (item) {
+      this.cloudaccountId = item.cloudaccount_id || ''
     },
   },
 }
