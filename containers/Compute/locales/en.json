@@ -1513,5 +1513,6 @@
   "compute.create_new_instance": "Create new host",
   "compute.rollback_instance_backup": "Rollback backup",
   "compute.instance_name": "Hostname",
-  "compute.instance_name_placeholder": "Optional, if empty, the name is the name of the original backup host"
+  "compute.instance_name_placeholder": "Optional, if empty, the name is the name of the original backup host",
+  "compute.private_network": "Private Network"
 }

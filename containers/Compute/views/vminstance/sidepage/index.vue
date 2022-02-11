@@ -36,7 +36,7 @@
 <script>
 import * as R from 'ramda'
 // import HostList from '@Compute/views/host/components/List'
-import NetworkListForVmInstanceSidepage from '@Compute/views/networks/components/List'
+import NetworkListForVmInstanceSidepage from './Network'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
@@ -52,7 +52,7 @@ import SecgroupList from './Secgroup'
 import DiskListForVmInstanceSidepage from './DiskList'
 // import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
 // import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
-import EipListForVmInstanceSidepage from './EipList'
+// import EipListForVmInstanceSidepage from './EipList'
 
 export default {
   name: 'VmInstanceSidePage',
@@ -68,7 +68,7 @@ export default {
     VmInstanceMonitorSidepage,
     VmInstanceAlertSidepage,
     VmSnapshotSidepage,
-    EipListForVmInstanceSidepage,
+    // EipListForVmInstanceSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
@@ -77,7 +77,7 @@ export default {
       { label: this.$t('compute.text_105'), key: 'secgroup-list' },
       // { label: '宿主机', key: 'host-list' },
       { label: this.$t('compute.text_104'), key: 'network-list-for-vm-instance-sidepage' },
-      { label: this.$t('compute.text_107'), key: 'eip-list-for-vm-instance-sidepage' },
+      // { label: this.$t('compute.text_107'), key: 'eip-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_376'), key: 'disk-list-for-vm-instance-sidepage' },
       { label: this.$t('compute.text_462'), key: 'vm-snapshot-sidepage' },
       // { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
@@ -193,8 +193,8 @@ export default {
           return 'AlertLiskForVminstanceSidepage'
         case 'event-drawer':
           return 'EventListForVminstanceSidepage'
-        case 'eip-list-for-vm-instance-sidepage':
-          return 'EipListForVmInstanceSidepage'
+        // case 'eip-list-for-vm-instance-sidepage':
+        //   return 'EipListForVmInstanceSidepage'
         default:
           return ''
       }
