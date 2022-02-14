@@ -259,6 +259,7 @@ export default {
         is_instance_snapshot: false,
         $t: uuid(),
         status: 'ready',
+        os_arch: this.form.fd.os_arch,
       }
       const scopeParams = {}
       if (this.$store.getters.isAdminMode) {
