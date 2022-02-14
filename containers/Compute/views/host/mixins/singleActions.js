@@ -318,7 +318,7 @@ export default {
                 },
               },
               {
-                label: i18n.t('compute.text_514'),
+                label: i18n.t('compute.setup_passthrough_reserve'),
                 permission: 'hosts_perform_set_reserved_resource_for_isolated_device',
                 action: obj => {
                   this.createDialog('SetHostReserveResourceDialog', {

@@ -294,16 +294,30 @@ export const getIpsTableColumn = ({ field = 'ips', title = 'IP', vm = {} } = {})
             <list-body-cell-wrap row={row} field="eip" copy><span class="text-color-help">({ row.eip_mode === 'elastic_ip' ? i18n.t('common_290') : i18n.t('common_291') })</span></list-body-cell-wrap>,
           )
         }
-        let iparr = []
         if (row.ips) {
-          iparr = row.ips.split(',')
-        }
-        if (row.vips) {
-          iparr = row.vips
-        }
-        if (iparr) {
+          const iparr = row.ips.split(',')
           const ips = iparr.map(ip => {
             return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ ip }<span class="text-color-help">({ i18n.t('common_287') })</span></list-body-cell-wrap>
+          })
+          ret = ret.concat(ips)
+        }
+        if (row.vips) {
+          const ips = row.vips.map(ip => {
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ip}<span class="text-color-help">({i18n.t('common_vip')})</span></list-body-cell-wrap>
+          })
+          ret = ret.concat(ips)
+        }
+        if (row.vip) {
+          const iparr = row.vip.split(',')
+          const ips = iparr.map(ip => {
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ip}<span class="text-color-help">({i18n.t('common_vip')})</span></list-body-cell-wrap>
+          })
+          ret = ret.concat(ips)
+        }
+        if (row.vip_eip) {
+          const iparr = row.vip_eip.split(',')
+          const ips = iparr.map(ip => {
+            return <list-body-cell-wrap copy row={{ ip }} hide-field field="ip">{ip}<span class="text-color-help">({i18n.t('common_evip')})</span></list-body-cell-wrap>
           })
           ret = ret.concat(ips)
         }

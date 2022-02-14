@@ -211,7 +211,7 @@ export default {
         },
         {
           field: 'isolated_device_count',
-          title: this.$t('compute.text_609'),
+          title: this.$t('compute.passthrough_device_count'),
           slots: {
             default: ({ row }, h) => {
               return [
@@ -297,7 +297,7 @@ export default {
             getOsArch({ field: 'cpu_architecture' }),
             {
               field: 'reserved_cpu',
-              title: this.$t('compute.text_597'),
+              title: this.$t('compute.passthrough_reserved'),
               slots: {
                 default: ({ row }, h) => {
                   const cpu = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_cpu
@@ -347,7 +347,7 @@ export default {
             },
             {
               field: 'reserved_memory',
-              title: this.$t('compute.text_597'),
+              title: this.$t('compute.passthrough_reserved'),
               slots: {
                 default: ({ row }, h) => {
                   const memory = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_memory
@@ -413,7 +413,7 @@ export default {
             },
             {
               field: 'reserved_storage',
-              title: this.$t('compute.text_597'),
+              title: this.$t('compute.passthrough_reserved'),
               slots: {
                 default: ({ row }, h) => {
                   const storage = row.reserved_resource_for_gpu && row.reserved_resource_for_gpu.reserved_storage
