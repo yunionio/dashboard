@@ -752,7 +752,7 @@
       "label": "Enable TLS migration",
       "desc": "When enabled, KVM virtual machine hot migration will use TLS to encrypt data."
     },
-    "identity$enable_organization": {
+    "common$enable_organization": {
       "label": "Organizational structure switch",
       "desc": "After enabling, you can customize the level to control the permissions of the project, and support filtering and viewing in the resource list."
     }

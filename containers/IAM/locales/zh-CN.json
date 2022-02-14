@@ -751,7 +751,7 @@
       "label": "启用 tls 迁移",
       "desc": "启用后，KVM私有云虚拟机热迁移时使会启用 tls 加密数据。"
     },
-    "identity$enable_organization": {
+    "common$enable_organization": {
       "label": "组织架构开关",
       "desc": "开启后，可自定义层级对项目进行权限控制，同时支持在资源列表进行过滤查看。"
     }
