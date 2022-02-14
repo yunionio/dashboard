@@ -39,11 +39,12 @@
       </template>
       <!-- 密码 -->
       <a-form-model-item v-if="isForgetLoginUser" prop="password">
-        <a-input style="text-security:disc" v-model="fd.password" :placeholder="placeholderOpts.password" autocomplete="off">
+        <a-input type="text" style="display: none" />
+        <a-input :type="inputType" v-model="fd.password" :placeholder="placeholderOpts.password" autocomplete="new-password" :readonly="passwordReadonly" @focus="inputFocus" @blur="inputBlur">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input>
       </a-form-model-item>
-      <a-form-model-item v-else prop="password">
+      <a-form-model-item v-lese prop="password">
         <a-input-password v-model="fd.password" :placeholder="placeholderOpts.password">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
@@ -209,6 +210,8 @@ export default {
       domainInputRules: [
         { required: false, message: `${this.$t('common.placeholder')} ${this.$t('common.login_domain')}` },
       ],
+      passwordReadonly: true,
+      inputType: 'text',
     }
   },
   computed: {
@@ -373,6 +376,13 @@ export default {
       this.loginDomain = domain
       this.$store.dispatch('auth/getRegions', params)
       this.$router.replace({ path: '/auth/login', query: params })
+    },
+    inputFocus (item) {
+      this.passwordReadonly = false
+      this.inputType = 'password'
+    },
+    inputBlur (item) {
+      this.passwordReadonly = true
     },
   },
 }
