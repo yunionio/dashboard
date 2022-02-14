@@ -174,6 +174,7 @@ export default {
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('SET_GLOBAL_CONFIG', config)
+          commit('projectTags/SET_DATA', { name: 'enableOrganization', data: config.enable_organization }, { root: true })
         }
         const mneterId = resData.find(v => v.type === 'meter')?.id || ''
         if (mneterId) {
@@ -192,7 +193,6 @@ export default {
           })
           const config = (configResponse.data.config && configResponse.data.config.default) || {}
           commit('auth/SET_NO_ACTION_LOGOUT_SECONDS', config.no_action_logout_seconds, { root: true })
-          commit('projectTags/SET_DATA', { name: 'enableOrganization', data: config.enable_organization }, { root: true })
         }
       } catch (error) {
         throw error
