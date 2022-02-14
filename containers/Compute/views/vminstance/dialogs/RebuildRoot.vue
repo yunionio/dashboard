@@ -132,8 +132,8 @@ export default {
       return this.params.data[0].hypervisor
     },
     osArch () {
-      const t = this.params.data[0].instance_type || ''
-      if (t.startsWith('k')) {
+      const { instance_type = '', os_arch } = this.params.data[0]
+      if (instance_type.startsWith('k') || os_arch === HOST_CPU_ARCHS.arm.capabilityKey) {
         return HOST_CPU_ARCHS.arm.capabilityKey
       }
       return ''
