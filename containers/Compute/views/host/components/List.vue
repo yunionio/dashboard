@@ -307,7 +307,7 @@ export default {
                   }),
                 },
                 {
-                  label: this.$t('compute.text_514'),
+                  label: this.$t('compute.setup_passthrough_reserve'),
                   permission: 'hosts_perform_set_reserved_resource_for_isolated_device',
                   action: () => {
                     this.createDialog('SetHostReserveResourceDialog', {
