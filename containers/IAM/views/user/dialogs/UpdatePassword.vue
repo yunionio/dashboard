@@ -96,7 +96,7 @@ export default {
           managerArgs: {
             data: {
               ...values,
-              skip_password_complexity_check: false,
+              skip_password_complexity_check: true,
             },
           },
         })
