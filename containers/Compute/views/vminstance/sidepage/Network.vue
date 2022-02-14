@@ -7,7 +7,13 @@
     </a-tabs>
     <div class="mt-2">
       <keep-alive>
-        <component :is="currentComponent" :getParams="params" :id="id" :resId="resId" />
+        <component
+          :is="currentComponent"
+          :getParams="params"
+          :id="id"
+          :resId="resId"
+          :serverColumns="serverColumns"
+          :data="data" />
       </keep-alive>
     </div>
   </div>
@@ -27,6 +33,14 @@ export default {
     resId: String,
     getParams: {
       type: [Function, Object],
+    },
+    data: {
+      type: Object,
+      required: true,
+    },
+    serverColumns: {
+      type: Array,
+      default: () => ([]),
     },
   },
   data () {
