@@ -195,7 +195,7 @@ export default {
         },
         {
           field: 'isolated_device_count',
-          title: this.$t('compute.text_609'),
+          title: this.$t('compute.passthrough_device_count'),
           slots: {
             default: ({ row }, h) => {
               return [
