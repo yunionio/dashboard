@@ -310,7 +310,7 @@ export default {
                 },
               },
               {
-                label: i18n.t('compute.text_514'),
+                label: i18n.t('compute.setup_passthrough_reserve'),
                 action: obj => {
                   this.createDialog('SetHostReserveResourceDialog', {
                     onManager: this.onManager,

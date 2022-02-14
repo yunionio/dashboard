@@ -8,7 +8,7 @@
       <dialog-selected-tips :name="$t('dictionary.host')" :count="params.data.length" :action="title" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" layout="inline" hideRequiredMark>
-        <reserve-resource :decorators="decorators" :label="$t('compute.text_561')" />
+        <reserve-resource :decorators="decorators" :label="$t('compute.each_reserved_passthrough')" />
       </a-form>
     </div>
     <div slot="footer">
@@ -40,7 +40,7 @@ export default {
       return Math.ceil(val / this.params.data[0].isolated_device_count)
     }
     return {
-      title: this.$t('compute.text_514'),
+      title: this.$t('compute.setup_passthrough_reserve'),
       loading: false,
       form: {
         fc: this.$form.createForm(this),

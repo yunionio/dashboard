@@ -300,7 +300,7 @@ export default {
                   }),
                 },
                 {
-                  label: this.$t('compute.text_514'),
+                  label: this.$t('compute.setup_passthrough_reserve'),
                   action: () => {
                     this.createDialog('SetHostReserveResourceDialog', {
                       onManager: this.onManager,
