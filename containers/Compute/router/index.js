@@ -482,7 +482,6 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.eip2')) {
                 return true
               }
-              if (hasSetupKey('nutanix')) return true
               return !hasSetupKey(['onestack', 'public', 'private'])
             },
           },
