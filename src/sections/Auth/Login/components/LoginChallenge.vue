@@ -44,7 +44,7 @@
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input>
       </a-form-model-item>
-      <a-form-model-item v-lese prop="password">
+      <a-form-model-item v-else prop="password">
         <a-input-password v-model="fd.password" :placeholder="placeholderOpts.password">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, .25)" />
         </a-input-password>
