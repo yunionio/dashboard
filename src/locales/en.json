@@ -2411,6 +2411,7 @@
     "vpc": "VPC",
     "scalinggroup": "Elastic Scaling Group",
     "lb": "LB",
+    "elb": "LB",
     "lb_listener": "Load Balancing Listener",
     "lb_backendgroup": "Load Balancing Backend Server Group",
     "lb_backend": "Load balancing backend server",
