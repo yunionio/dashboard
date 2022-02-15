@@ -609,6 +609,9 @@ export default {
     cloudproviderSelected (item) {
       this.cloudaccountId = item.cloudaccount_id || ''
     },
+    cloudproviderUpdate (item) {
+      this.cloudaccountId = item.cloudaccount_id || ''
+    }
   },
 }
 </script>

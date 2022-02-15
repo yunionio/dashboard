@@ -1,7 +1,7 @@
 <template>
   <page-footer>
     <template v-slot:right>
-      <price-fetcher :values="values" />
+      <price-fetcher :values="values" :cloudAccountId="cloudAccountId" />
       <div class="btns-wrapper d-flex align-items-center">
         <a-button
           class="ml-3"
@@ -29,6 +29,7 @@ export default {
     values: {
       type: Object,
     },
+    cloudAccountId: String,
   },
   data () {
     return {
