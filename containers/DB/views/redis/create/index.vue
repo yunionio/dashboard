@@ -39,7 +39,7 @@
           <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
         </a-form-item>
         <!-- 网络 -->
-        <item-network ref="REF_NETWORK" />
+        <item-network ref="REF_NETWORK" @vpcListChange="handleVpcListChange" />
         <!-- 安全组 -->
         <a-form-item v-if="form.getFieldValue('provider') === 'Qcloud'" :label="$t('db.text_144')">
           <secgroup-config :max="5" :decorators="decorators.secgroup" :secgroup-params="secgroupParams" />
@@ -48,15 +48,12 @@
         <a-form-item :label="$t('table.title.tag')">
           <tag v-decorator="decorators.__meta__" />
         </a-form-item>
-        <bottom-bar :values="form.fc.getFieldsValue()" />
+        <bottom-bar :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" />
       </a-form>
     </page-body>
   </div>
 </template>
 <script>
-import SKU from './components/SKU'
-import BottomBar from './components/BottomBar'
-import changeMinxin from './changeMinxin'
 import { DECORATORS } from '@DB/views/redis/constants'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import Duration from '@Compute/sections/Duration'
@@ -66,6 +63,9 @@ import DomainProject from '@/sections/DomainProject'
 import NameRepeated from '@/sections/NameRepeated'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import Tag from '@/sections/Tag'
+import changeMinxin from './changeMinxin'
+import BottomBar from './components/BottomBar'
+import SKU from './components/SKU'
 
 export default {
   name: 'IDCCreate',
@@ -114,6 +114,7 @@ export default {
       },
       decorators: DECORATORS,
       project_id: '',
+      vpcList: [],
     }
   },
   computed: {
@@ -130,6 +131,19 @@ export default {
         }
       }
       return { scope: this.$store.getters.scope }
+    },
+    cloudAccountId () {
+      const values = this.form.getFieldsValue()
+      const currentVpc = this.vpcList.filter(item => item.id === values.vpc)
+      if (currentVpc[0]) {
+        return currentVpc[0].account_id
+      }
+      return ''
+    },
+  },
+  methods: {
+    handleVpcListChange (list) {
+      this.vpcList = list
     },
   },
 }

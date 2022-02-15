@@ -60,7 +60,7 @@
             v-decorator="decorators.__meta__" />
         </a-form-item>
       </a-form>
-      <bottom-bar :values="form.fc.getFieldsValue()" />
+      <bottom-bar :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" />
     </page-body>
   </div>
 </template>
@@ -68,9 +68,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import SKU from './components/SKU'
-import BottomBar from './components/BottomBar'
-import changeMinxin from './changeMinxin'
 import DomainSelect from '@/sections/DomainSelect'
 import { DECORATORS } from '@Network/views/nats/constants'
 import Duration from '@Compute/sections/Duration'
@@ -79,6 +76,9 @@ import { PROVIDER_MAP } from '@/constants'
 import AreaSelects from '@/sections/AreaSelects'
 import EipConfig from '@Compute/sections/EipConfig'
 import Tag from '@/sections/Tag'
+import changeMinxin from './changeMinxin'
+import BottomBar from './components/BottomBar'
+import SKU from './components/SKU'
 
 export default {
   name: 'NatCreate',
@@ -117,6 +117,7 @@ export default {
           xxl: { span: 21, offset: 3 },
         },
       },
+      vpcList: [],
     }
   },
   computed: {
@@ -133,6 +134,14 @@ export default {
         if (provider) {
           return PROVIDER_MAP[provider].hypervisor
         }
+      }
+      return ''
+    },
+    cloudAccountId () {
+      const values = this.form.getFieldsValue()
+      const currentVpc = this.vpcList.filter(item => item.id === values.vpc)
+      if (currentVpc[0]) {
+        return currentVpc[0].account_id
       }
       return ''
     },
@@ -153,7 +162,10 @@ export default {
       )
     },
     fetchVpc () {
-      this.$refs.REF_NETWORK.fetchVpc()
+      this.$refs.REF_NETWORK.fetchVpc(this.vpcListChange)
+    },
+    vpcListChange ({ vpcList }) {
+      this.vpcList = vpcList
     },
     handleDomainChange (val) {
       this.project_domain = val

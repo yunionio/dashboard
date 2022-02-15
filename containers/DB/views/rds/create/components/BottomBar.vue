@@ -20,7 +20,7 @@
       </div>
     </template>
     <template v-slot:right>
-      <price-fetcher :values="values" :customPriceKey="customPriceKey" :extraPriceItems="extraPriceItems" />
+      <price-fetcher :values="values" :customPriceKey="customPriceKey" :extraPriceItems="extraPriceItems" :cloudAccountId="cloudAccountId" />
       <div class="btns-wrapper d-flex align-items-center">
         <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">{{$t('db.text_41')}}</a-button>
       </div>
@@ -42,6 +42,7 @@ export default {
     values: {
       type: Object,
     },
+    cloudAccountId: String,
   },
   data () {
     return {

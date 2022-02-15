@@ -21,7 +21,7 @@
       <!-- <div>{{$t('db.text_263')}}</div> -->
     </template>
     <template v-slot:right>
-      <price-fetcher :values="values" />
+      <price-fetcher :values="values" :customPriceKey="customPriceKey" :cloudAccountId="cloudAccountId" />
       <div class="btns-wrapper d-flex align-items-center">
         <a-button @click="doCreate" :loading="loading" type="primary" class="ml-3">{{$t('db.text_41')}}</a-button>
       </div>
@@ -65,6 +65,7 @@ export default {
     values: {
       type: Object,
     },
+    cloudAccountId: String,
   },
   data () {
     return {
@@ -96,6 +97,25 @@ export default {
     },
   },
   methods: {
+    customPriceKey () {
+      const { sku } = this.values
+      if (!sku) return
+
+      if (sku.rate && sku.rate.price_key) {
+        return sku.rate.price_key
+      }
+
+      const { region_ext_id, provider, name, category, engine } = sku
+      let pvt = provider.toLowerCase()
+      if (sku.cloud_env) pvt = sku.cloud_env.toLowerCase() // 阿里金融云
+      if (pvt === 'google') {
+        return `${pvt}::${region_ext_id}::::rds::${category}_${engine}_${name}`
+      } else if (pvt === 'qcloud') {
+        return `${pvt}::${region_ext_id}::::rds::${category}_${name}`
+      } else {
+        return `${pvt}::${region_ext_id}::::rds::${name}`
+      }
+    },
     validateForm () {
       let f = false
       this.form.fc.validateFieldsAndScroll({ scroll: { alignWithTop: true, offsetTop: 100 } }, (err, values) => {
