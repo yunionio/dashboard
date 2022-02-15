@@ -2467,6 +2467,7 @@
     "vpc": "VPC",
     "scalinggroup": "弹性伸缩组",
     "lb": "负载均衡实例",
+    "elb": "负载均衡",
     "lb_listener": "负载均衡监听",
     "lb_backendgroup": "负载均衡后端服务器组",
     "lb_backend": "负载均衡后端服务器",
