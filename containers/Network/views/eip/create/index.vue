@@ -89,21 +89,22 @@
       :isHCSO="isHCSO"
       :current-cloudregion="selectedRegionItem"
       :size="bandwidth"
-      :bgp-type="bgp_type" />
+      :bgp-type="bgp_type"
+      :cloudAccountId="cloudAccountId" />
   </div>
 </template>
 
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import BottomBar from './components/BottomBar'
 import IpSubnet from '@Network/sections/IpSubnet'
 import AreaSelects from '@/sections/AreaSelects'
 import DomainProject from '@/sections/DomainProject'
 import validateForm, { isRequired } from '@/utils/validate'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
-import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import Tag from '@/sections/Tag'
+import { HYPERVISORS_MAP } from '../../../../../src/constants'
+import BottomBar from './components/BottomBar'
 
 export default {
   name: 'EipCreate',
@@ -237,6 +238,7 @@ export default {
         },
       },
       manager: '',
+      cloudAccountId: '',
       selectedRegionItem: {},
       showBandwidth: true,
       charge_type: cloudEnv === 'onpremise' ? 'bandwidth' : 'traffic',
@@ -514,6 +516,9 @@ export default {
         }
         this.hiddenBrandwidthHandle(e.provider)
         this.providerC = e.provider.toLowerCase()
+        this.cloudAccountId = e.cloudaccount_id || ''
+      } else {
+        this.cloudAccountId = ''
       }
     },
     chargeTypeChange (e) {
