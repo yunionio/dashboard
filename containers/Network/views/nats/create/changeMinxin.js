@@ -1,5 +1,5 @@
-import { SKU_PARAMS, CAPABILIT_PARAMS, DECORATORS } from '../constants'
 import { getInitialValue } from '@/utils/common/ant'
+import { SKU_PARAMS, CAPABILIT_PARAMS, DECORATORS } from '../constants'
 
 export default {
   computed: {
@@ -68,7 +68,7 @@ export default {
     },
     cloudregion_id_change () {
       if (this.networkRef && this.networkRef.fetchVpc) {
-        this.networkRef.fetchVpc()
+        this.fetchVpc()
       }
     },
     async handleValuesChange (fc, changedFields) {

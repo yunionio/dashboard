@@ -38,7 +38,7 @@
         <server-password :loginTypes="loginTypes" :decorator="decorators.loginConfig" :form="form" />
       </a-form-item>
       <!-- 网络 -->
-      <item-network ref="NETWORK" />
+      <item-network ref="NETWORK" @vpcListChange="handleVpcListChange" />
       <!-- 选择安全组 -->
       <a-form-item v-if="showSecgroup(form)" :label="$t('db.text_144')">
         <secgroup-config :max="getSecgroupMax(form)" :decorators="decorators.secgroup" />
@@ -47,7 +47,7 @@
       <a-form-item :label="$t('table.title.tag')" class="mb-3">
         <tag v-decorator="decorators.__meta__" />
       </a-form-item>
-      <bottom-bar :values="form.getFieldsValue()" />
+      <bottom-bar :values="form.getFieldsValue()" :cloudAccountId="cloudAccountId" />
     </a-form>
   </div>
 </template>
@@ -108,6 +108,7 @@ export default {
         scope: this.$store.getters.scope,
         project_domain: '',
       },
+      vpcList: [],
     }
   },
   computed: {
@@ -129,6 +130,14 @@ export default {
         return ['Aliyun', 'Huawei']
       }
       return ['Aliyun', 'Huawei', 'Google']
+    },
+    cloudAccountId () {
+      const values = this.form.getFieldsValue()
+      const currentVpc = this.vpcList.filter(item => item.id === values.vpc)
+      if (currentVpc[0]) {
+        return currentVpc[0].account_id
+      }
+      return ''
     },
   },
   provide () {
@@ -155,6 +164,9 @@ export default {
         Aliyun: 3,
       }
       return secgroupMaxMap[form.getFieldValue('provider')] || 5
+    },
+    handleVpcListChange (list) {
+      this.vpcList = list
     },
   },
 }

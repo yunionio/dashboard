@@ -59,6 +59,7 @@ export default {
       required: false,
       default: false,
     },
+    cloudAccountId: String,
   },
   data () {
     this._getPrice = _.debounce(this._getPrice, 500)
@@ -91,6 +92,9 @@ export default {
       this._getPrice()
     },
     bgpType () {
+      this._getPrice()
+    },
+    cloudAccountId () {
       this._getPrice()
     },
   },
@@ -146,6 +150,7 @@ export default {
           scope: this.$store.getters.scope,
           priceKey: price_key,
           amount: this.size,
+          cloudaccountId: this.cloudAccountId,
         })
 
         const p = await pf.getPriceObj()

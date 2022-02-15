@@ -148,8 +148,8 @@ export class PriceFetcher {
 }
 
 export class PriceFetcherByPriceKey {
-  constructor ({ scope = '', priceKey = '', duration = '1h', billType = '', amount = 1 }) {
-    this.priceFetcher = new PriceFetcher({ scope: scope })
+  constructor ({ scope = '', priceKey = '', duration = '1h', billType = '', amount = 1, cloudaccountId = '' }) {
+    this.priceFetcher = new PriceFetcher({ scope: scope, cloudaccountId })
     const d = this.priceFetcher.parseDuration(duration, billType)
     this.priceFetcher.setPeriod(d.period)
     this.priceFetcher.setPriceUnit(d.price_unit)

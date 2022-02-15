@@ -62,7 +62,7 @@
             v-decorator="decorators.tag" />
         </a-form-item>
       </a-form>
-      <bottom-bar :values="form.fc.getFieldsValue()" />
+      <bottom-bar :values="form.fc.getFieldsValue()" :cloudAccountId="cloudAccountId" />
     </page-body>
   </div>
 </template>
@@ -70,8 +70,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import FileSystemSku from './components/SKU'
-import BottomBar from './components/BottomBar'
 import DomainSelect from '@/sections/DomainSelect'
 import Duration from '@Compute/sections/Duration'
 import NetworkSelects from '@/sections/NetworkSelects'
@@ -80,6 +78,8 @@ import Tag from '@/sections/Tag'
 import AreaSelects from '@/sections/AreaSelects'
 import { getInitialValue } from '@/utils/common/ant'
 import i18n from '@/locales'
+import BottomBar from './components/BottomBar'
+import FileSystemSku from './components/SKU'
 
 function validateTag (rule, value, callback) {
   if (R.is(Object, value) && Object.keys(value).length > 20) {
@@ -181,6 +181,7 @@ export default {
           xxl: { span: 21, offset: 3 },
         },
       },
+      vpcList: [],
     }
   },
   computed: {
@@ -201,6 +202,14 @@ export default {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
     areaselectsName () {
       return ['provider', 'cloudregion']
+    },
+    cloudAccountId () {
+      const values = this.form.getFieldsValue()
+      const currentVpc = this.vpcList.filter(item => item.id === values.vpc)
+      if (currentVpc[0]) {
+        return currentVpc[0].account_id
+      }
+      return ''
     },
   },
   provide () {
@@ -272,7 +281,10 @@ export default {
       }
     },
     fetchVpc () {
-      this.$refs.REF_NETWORK.fetchVpc()
+      this.$refs.REF_NETWORK.fetchVpc(this.vpcListChange)
+    },
+    vpcListChange ({ vpcList }) {
+      this.vpcList = vpcList
     },
     fetchNetwork () {
       this.$refs.REF_NETWORK.fetchNetwork()

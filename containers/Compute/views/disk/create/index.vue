@@ -77,9 +77,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import * as CommonConstants from '../../../constants'
-import { HYPERVISORS_MAP } from '../../../../../src/constants'
-import BottomBar from './components/BottomBar'
 import AreaSelects from '@/sections/AreaSelects'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -89,6 +86,9 @@ import DomainProject from '@/sections/DomainProject'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 import { MEDIUM_MAP } from '@Compute/constants'
 import Tag from '@/sections/Tag'
+import BottomBar from './components/BottomBar'
+import { HYPERVISORS_MAP } from '../../../../../src/constants'
+import * as CommonConstants from '../../../constants'
 
 export default {
   name: 'DiskCreate',

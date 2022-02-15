@@ -40,6 +40,7 @@ export default {
       type: Function,
       default: undefined,
     },
+    cloudAccountId: String,
   },
   data () {
     this.getPrice = _.debounce(this._getPrice, 500)
@@ -89,6 +90,12 @@ export default {
       },
       immediate: true,
     },
+    cloudAccountId: {
+      handler (val) {
+        this.getPrice()
+      },
+      immediate: true,
+    },
     'values.capacity': {
       handler (val, oldVal) {
         if (this.priceObj && val && val !== oldVal) {
@@ -127,6 +134,7 @@ export default {
         priceKey: price_key,
         duration: this.values.duration || '',
         billType: this.values.billing_type,
+        cloudaccountId: this.cloudAccountId,
       })
 
       // hook： 注入额外的计费项目

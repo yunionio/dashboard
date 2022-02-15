@@ -72,7 +72,10 @@ export default {
       return params
     },
     fetchVpc () {
-      this.$refs.NETWORK.fetchVpc()
+      this.$refs.NETWORK.fetchVpc(this.vpcListChange)
+    },
+    vpcListChange ({ vpcList }) {
+      this.$emit('vpcListChange', vpcList)
     },
   },
 }
