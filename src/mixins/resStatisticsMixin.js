@@ -15,7 +15,7 @@ export default {
     }
   },
   created () {
-    this.resStaticsManager = new this.$Manager(`${this.resStaticsResource}/statistics`)
+    this.resStaticsManager = new this.$Manager(`${this.resStaticsResource}/statistics`, this.apiVersion ? this.apiVersion : 'v2')
   },
   beforeDestroy () {
     this.resStaticsManager = null
