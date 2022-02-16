@@ -1,12 +1,14 @@
 <template>
   <page-list
+    ref="EXTERNAL"
     :list="list"
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
-    :export-data-options="exportDataOptions" />
+    :export-data-options="exportDataOptions"
+    :editConfig="{trigger: 'click', mode: 'row', showIcon: false}" />
 </template>
 
 <script>
@@ -15,7 +17,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import {
   getTimeTableColumn,
-  getProjectTableColumn,
+  getProjectDomainTableColumn,
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
 import expectStatus from '@/constants/expectStatus'
@@ -47,26 +49,9 @@ export default {
             },
           },
         },
+        projectOpts: [],
       }),
-      columns: [
-        {
-          field: 'name',
-          title: this.$t('cloudenv.text_386'),
-        },
-        {
-          field: 'manager',
-          title: this.$t('cloudevent.title.manager'),
-          formatter: ({ row }) => {
-            return row.manager || '-'
-          },
-        },
-        getStatusTableColumn({ statusModule: 'externalproject' }),
-        getProjectTableColumn({ title: this.$t('table.title.local_project') }),
-        getTimeTableColumn({
-          field: 'created_at',
-          title: this.$t('cloudenv.text_103'),
-        }),
-      ],
+      multipleChangeEnable: false,
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
@@ -107,6 +92,29 @@ export default {
             }
           },
         },
+        {
+          label: this.$t('cloudenv.multiple_modify'),
+          action: obj => {
+            this.multipleChangeEnable = true
+          },
+          hidden: () => {
+            return this.multipleChangeEnable
+          },
+          meta: () => {
+            return {
+              validate: this.isOwner(),
+            }
+          },
+        },
+        {
+          label: this.$t('cloudenv.exit_multiple_modify'),
+          action: obj => {
+            this.multipleChangeEnable = false
+          },
+          hidden: () => {
+            return !this.multipleChangeEnable
+          },
+        },
       ],
       singleActions: [
         {
@@ -129,17 +137,95 @@ export default {
           },
         },
       ],
+      projectOpts: [],
     }
   },
   computed: {
     ...mapGetters(['isAdminMode', 'userInfo']),
+    columns () {
+      const projectColumn = {
+        field: 'project',
+        title: this.$t('table.title.local_project'),
+      }
+      if (this.multipleChangeEnable) {
+        projectColumn.editRender = {
+          name: '$select',
+          options: this.projectOpts,
+          events: { change: this.projectChange },
+        }
+        projectColumn.slots = {
+          default: ({ row }) => {
+            let project = row.project
+            const filter = this.projectOpts.filter(item => item.value === project)
+            if (filter[0]) project = filter[0].label
+            return [<span><span>{project} </span> <i class="vxe-icon--edit-outline"></i></span>]
+          },
+        }
+      }
+      const ret = [
+        {
+          field: 'name',
+          title: this.$t('cloudenv.text_386'),
+        },
+        {
+          field: 'manager',
+          title: this.$t('cloudevent.title.manager'),
+          formatter: ({ row }) => {
+            return row.manager || '-'
+          },
+        },
+        getStatusTableColumn({ statusModule: 'externalproject' }),
+        getProjectDomainTableColumn(),
+        projectColumn,
+        getTimeTableColumn({
+          field: 'created_at',
+          title: this.$t('cloudenv.text_103'),
+        }),
+      ]
+      return ret
+    },
   },
   created () {
     this.list.fetchData()
+    this.pm = new this.$Manager('projects', 'v1')
+    this.fetchProjects()
   },
   methods: {
     isOwner () {
       return this.isAdminMode || (this.cloudaccount && this.cloudaccount.domain_id === this.userInfo.projectDomainId)
+    },
+    async fetchProjects () {
+      const res = await this.pm.list({
+        params: {
+          scope: this.$store.getters.scope,
+          domain_id: this.cloudaccount.domain_id,
+          limit: 0,
+        },
+      })
+      const { data: projects = [] } = res.data
+      this.projectOpts = projects.map(item => {
+        return {
+          label: item.name,
+          value: item.id,
+        }
+      })
+    },
+    async projectChange (data) {
+      try {
+        await this.onManager('performAction', {
+          id: data.row.id,
+          steadyStatus: Object.values(expectStatus.externalproject).flat(),
+          managerArgs: {
+            action: 'change-project',
+            data: {
+              project: data.row.project,
+            },
+          },
+        })
+        this.$message.success(this.$t('cloudenv.modify_success'))
+      } catch (error) {
+        throw error
+      }
     },
   },
 }
