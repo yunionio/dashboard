@@ -23,10 +23,11 @@ import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { getNameFilter, getTenantFilter, getDomainFilter, getOsArchFilter, getImageDistributionFilter } from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'ImageList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
     getParams: {
