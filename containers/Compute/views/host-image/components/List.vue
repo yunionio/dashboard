@@ -21,10 +21,11 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'HostImageList',
-  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, ListMixin, GlobalSearchMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
     id: String,
     getParams: {
