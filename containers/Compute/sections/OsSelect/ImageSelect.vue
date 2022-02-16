@@ -507,6 +507,7 @@ export default {
         const item = images[i]
         // 默认将 os 设置为 其他
         let osVal = 'other'
+        let osLabel = ''
         // 如果有 os_type 标识则赋值给 osVal
         const properties = this.getProperties(item)
         if (properties && properties.os_distribution) {
@@ -537,6 +538,10 @@ export default {
         if (osVal.toLowerCase().includes('kylin')) {
           osVal = 'Kylin'
         }
+        if (osVal.toLowerCase().includes('nfs')) {
+          osLabel = this.$t('compute.os.nfs')
+          osVal = 'nfs'
+        }
         // const osDistribution = osVal && osVal.toLowerCase()
         const osDistribution = osVal
         // 如果 Map 中没有此 key，则创建，同时对options进行push
@@ -544,7 +549,7 @@ export default {
           imageOptsMap[osDistribution] = []
           if (osVal !== 'other') {
             osOpts.push({
-              label: osVal,
+              label: osLabel || osVal,
               key: osVal,
             })
           }
