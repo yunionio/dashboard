@@ -67,6 +67,7 @@
 <script>
 import debounce from 'lodash/debounce'
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
 import { DISK_TYPE } from '@Compute/constants'
 import { INPUT_DEBOUNCE_TIMER } from '@/constants/config'
 import DialogMixin from '@/mixins/dialog'
@@ -137,6 +138,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['scope']),
     diskParams () {
       return {
         scope: this.$store.getters.scope,
@@ -149,6 +151,11 @@ export default {
     },
     manager () {
       return new this.$Manager(this.isDiskBackup ? 'diskbackups' : 'instancebackups', 'v2')
+    },
+    storageParams () {
+      return {
+        scope: this.scope,
+      }
     },
   },
   watch: {
