@@ -1,3 +1,5 @@
+import i18n from '@/locales'
+
 export const IMAGE_MSG = {
   ubuntu: {
     label: 'Ubuntu',
@@ -73,5 +75,9 @@ export const CUSTOME_IMG = {
   kylin: {
     label: 'kylin',
     url: 'kylin',
+  },
+  nfs: {
+    label: i18n.t('compute.os.nfs'),
+    url: 'nfs',
   },
 }
