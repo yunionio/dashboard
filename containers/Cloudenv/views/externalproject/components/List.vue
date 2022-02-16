@@ -195,6 +195,7 @@ export default {
       return this.isAdminMode || (this.cloudaccount && this.cloudaccount.domain_id === this.userInfo.projectDomainId)
     },
     async fetchProjects () {
+      if (!this.cloudaccount || !this.cloudaccount.domain_id) return
       const res = await this.pm.list({
         params: {
           scope: this.$store.getters.scope,
