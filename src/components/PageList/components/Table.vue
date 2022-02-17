@@ -140,6 +140,8 @@ export default {
       type: Function,
       required: true,
     },
+    // 表格编辑配置
+    editConfig: Object,
   },
   data () {
     const storageKey = this.id && `__oc_${this.id}__`
@@ -221,6 +223,10 @@ export default {
       }
       if (this.id) {
         ret.resizable = true
+      }
+      if (this.editConfig) {
+        ret['edit-config'] = this.editConfig
+        ret['keep-source'] = true
       }
       return ret
     },
