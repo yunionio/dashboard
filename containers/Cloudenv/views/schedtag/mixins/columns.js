@@ -44,10 +44,14 @@ export default {
         slots: {
           default: ({ row }) => {
             if (this.isPreLoad && (!row.project_domain && !row.project)) return [<data-loading />]
+            let ret = this.$t('cloudenv.text_504')
             if (!this.$store.getters.l3PermissionEnable) {
+              if (row.project) {
+                ret = this.$t('cloudenv.text_506', [row.project])
+                return ret
+              }
               return this.$t('shareScope.system')
             }
-            let ret = this.$t('cloudenv.text_504')
             if (row.project_domain) {
               ret = this.$t('cloudenv.text_505', [row.project_domain])
             }
