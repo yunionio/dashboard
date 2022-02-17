@@ -36,6 +36,7 @@ export default {
   created () {
     this.fetchResStatistics({
       scope: this.$store.getters.scope,
+      is_guest_image: false,
     }, (resData) => {
       return this.getStatusOpts(resData)
     })
