@@ -76,6 +76,7 @@
         :show-tag-config="showTagConfigCheck"
         :tag-config-params="tagConfigParams"
         :update-config="updateConfig"
+        :edit-config="editConfig"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -204,6 +205,7 @@ export default {
     tagConfigParams: {
       type: Object,
     },
+    editConfig: Object,
   },
   provide: {
     // 声明在List中
