@@ -8,6 +8,7 @@ export default {
   userInfo: state => state.auth.info,
   capability: state => state.auth.capability,
   permission: state => state.auth.permission,
+  stats: state => state.auth.stats,
   scopeResource: state => state.auth.scopeResource,
   windows: state => state.window.windows,
   common: state => state.common,
