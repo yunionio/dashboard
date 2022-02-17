@@ -21,7 +21,15 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { getNameFilter, getTenantFilter, getDomainFilter, getOsArchFilter, getImageDistributionFilter } from '@/utils/common/tableFilter'
+import {
+  getNameFilter,
+  getTenantFilter,
+  getDomainFilter,
+  getOsArchFilter,
+  getImageDistributionFilter,
+  getDescriptionFilter,
+  getStatusFilter,
+} from '@/utils/common/tableFilter'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
@@ -49,6 +57,8 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          status: getStatusFilter('image'),
+          description: getDescriptionFilter(),
           distributions: getImageDistributionFilter(),
           disk_formats: {
             label: this.$t('table.title.disk_format'),
