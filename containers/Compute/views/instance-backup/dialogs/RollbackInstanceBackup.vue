@@ -36,7 +36,7 @@ export default {
   data () {
     return {
       loading: false,
-      action: this.$t('compute.rollback_instance_backup'),
+      action: this.$t('compute.text_478'),
       form: {
         fc: this.$form.createForm(this),
       },
