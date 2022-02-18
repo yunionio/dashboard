@@ -187,6 +187,9 @@ export default {
       delete data.domain
       delete data.project
       if (!this.isAdminMode || !this.l3PermissionEnable) delete data.domain_id
+      if (data.auto_create_project) {
+        delete data.tenant
+      }
     },
     _providerDiff (data) {
       const brand = this.currentItem.provider.toLowerCase()
