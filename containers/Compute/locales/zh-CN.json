@@ -1511,7 +1511,7 @@
   "compute.rollback_disk_backup": "回滚备份",
   "compute.backup_name": "备份名称",
   "compute.backup_storage": "备份存储",
-  "compute.disk_name_placeholder": "选填，为空则名称为原备份磁盘的名称",
+  "compute.disk_name_placeholder": "选填，为空则新创建的硬盘名称为原备份硬盘的名称",
   "compute.create_new_disk": "创建新磁盘",
   "compute.rollback_type": "恢复方式",
   "compute.backup_size": "备份大小",
