@@ -313,6 +313,7 @@ export default {
         await commit('profile/REST_ID', null, { root: true })
         await commit('common/REST_BILL_CURRENCY', null, { root: true })
         await commit('scopedPolicy/DEL_DATA', { name: 'sub_hidden_menus' }, { root: true })
+        await commit('monitor/setMonitorResourceAlerts', [], { root: true })
         const { regions = {} } = state
         const { is_forget_login_user } = regions
         if (is_forget_login_user) {
