@@ -32,6 +32,11 @@
             :remote-fn="q => ({ filter: `name.contains(${q})` })"
             :select-props="{ mode: 'default' }" />
         </a-form-item>
+        <a-form-item :label="$t('iam.role_policy_valid_time_range')">
+          <a-date-picker :disabled-date="dateDisabledStart" v-decorator="decorators.valid_since" @change="startChange" />
+          <span class="ml-2 mr-2">~</span>
+          <a-date-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.valid_until" @change="endChange" />
+        </a-form-item>
       </a-collapse-panel>
     </a-collapse>
   </a-form>
@@ -91,6 +96,12 @@ export default {
         ],
         project: [
           'project',
+        ],
+        valid_since: [
+          'valid_since',
+        ],
+        valid_until: [
+          'valid_until',
         ],
       },
       formItemLayout: {
@@ -172,6 +183,12 @@ export default {
             if (values.project) {
               item.project_id = values.project
             }
+            if (values.valid_since) {
+              item.valid_since = values.valid_since
+            }
+            if (values.valid_until) {
+              item.valid_until = values.valid_until
+            }
             policies.push(item)
           }
         }
@@ -187,6 +204,28 @@ export default {
       } catch (error) {
         throw error
       }
+    },
+    startChange (value) {
+      this.form.fc.setFieldsValue({
+        valid_since: value.startOf('day'),
+      })
+    },
+    endChange (value) {
+      this.form.fc.setFieldsValue({
+        valid_until: value.endOf('day') > this.$moment() ? this.$moment() : value.endOf('day'),
+      })
+    },
+    dateDisabledStart (value) {
+      const dateEnd = this.form.fc.getFieldValue('valid_until')
+      if (dateEnd && value > dateEnd) return true
+      if (value < this.$moment()) return true
+      return false
+    },
+    dateDisabledEnd (value) {
+      const dateStart = this.form.fc.getFieldValue('valid_since')
+      if (dateStart && value < dateStart) return true
+      if (value < this.$moment().endOf('day')) return true
+      return false
     },
   },
 }

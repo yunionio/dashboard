@@ -455,7 +455,7 @@ export const getTimeRangeColumn = ({
     start_field,
     end_field,
     title,
-    width: 160,
+    width: 320,
     sortable,
     slots: {
       default: ({ row }, h) => {
