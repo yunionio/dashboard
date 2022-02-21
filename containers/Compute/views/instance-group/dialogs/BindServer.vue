@@ -158,7 +158,7 @@ export default {
       this.selectedServers = val
     },
     remoteFn (query) {
-      if (/^[a-z]\w+$/.test(query)) {
+      if (/^[a-z]\w+/.test(query) || /[\u4e00-\u9fa5]/.test(query)) {
         return {
           filter: `name.contains(${query})`,
         }
