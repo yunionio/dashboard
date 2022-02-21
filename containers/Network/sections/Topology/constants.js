@@ -8,6 +8,7 @@ export const RES_ICON_MAP = {
   baremetal: 'baremetal',
   esxi: 'host',
   networkinterfaces: 'networkinterfaces',
+  hosts: 'host',
 }
 
 export const STATUS_MAP = {
