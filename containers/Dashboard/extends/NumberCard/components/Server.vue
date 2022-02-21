@@ -121,6 +121,12 @@ export default {
             ],
           },
         ],
+        domain: [
+          'domain',
+        ],
+        project: [
+          'project',
+        ],
       },
       showDebuggerInfo: false,
     }
@@ -192,6 +198,8 @@ export default {
         params.range_id = fd.account
       }
       if (fd.brand) params.brand = fd.brand
+      if (fd.domain) params.project_domain = fd.domain
+      if (fd.project) params.project = fd.project
       return params
     },
     async fetchUsage () {
