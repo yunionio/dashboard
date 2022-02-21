@@ -21,6 +21,8 @@
           :value="selectedServers"
           :mapper="serversMapper"
           :init-loaded.sync="serversInitLoaded"
+          search-key="ip_addr"
+          :remoteFn="remoteFn"
           @change="handleSelectChange"
           :select-props="{ allowClear: true, placeholder: $t('compute.text_702', [this.$t('dictionary.server')]), mode: 'multiple' }" />
        </a-form-item>
@@ -155,6 +157,16 @@ export default {
     },
     handleSelectChange (val) {
       this.selectedServers = val
+    },
+    remoteFn (query) {
+      if (/^[a-z]\w+$/.test(query)) {
+        return {
+          filter: `name.contains(${query})`,
+        }
+      }
+      return {
+        ip_addr: query,
+      }
     },
   },
 }
