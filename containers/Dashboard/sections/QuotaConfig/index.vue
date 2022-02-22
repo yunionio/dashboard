@@ -62,13 +62,6 @@
         </a-select>
       </a-form-item>
     </a-form-item>
-    <a-form-item :label="$t('dictionary.project')">
-      <domain-project
-        allow-clear
-        :label-in-value="false"
-        :fc="fc"
-        :decorators="{ project: decorators.project, domain: decorators.domain }" />
-    </a-form-item>
     <a-form-item :label="$t('dashboard.text_96')" class="mb-0" v-if="decorators.all_usage_key">
       <a-form-item :wrapperCol="{ span: 24 }">
         <usage-select
@@ -134,13 +127,11 @@ import UsageSelect from './UsageSelect'
 import { USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { usageMap } from '@/constants/generalUsage'
-import DomainProject from '@/sections/DomainProject'
 
 export default {
   name: 'QuotaConfig',
   components: {
     UsageSelect,
-    DomainProject,
   },
   props: {
     labelInValue: {
