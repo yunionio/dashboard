@@ -31,7 +31,7 @@ export default {
   methods: {
     change (value) {
       let v = value
-      if (this.labelInValue) {
+      if (this.labelInValue && v) {
         v = {
           key: v,
           label: this.options.find(item => item.id === v).name,
