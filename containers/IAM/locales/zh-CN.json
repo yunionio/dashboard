@@ -886,5 +886,6 @@
   "IAM.text_8": "({0})",
   "IAM.text_9": "总量",
   "iam.sender_address": "发件人邮箱",
-  "iam.role_policy_valid_time_range": "有效时间"
+  "iam.role_policy_valid_time_range": "有效时间",
+  "iam.others": "其它"
 }
