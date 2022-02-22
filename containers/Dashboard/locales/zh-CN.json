@@ -264,5 +264,9 @@
   "dashboard.vm_history_count": "虚拟机数量趋势",
   "dashboard.vm_count_near": "{0}天",
   "dashboard.near": "近",
-  "dashboard.stage": "{0}台"
+  "dashboard.stage": "{0}台",
+  "dashborad.server_numbers": "主机数量分布",
+  "dashborad.server_domain_numbers": "各域主机数量分布",
+  "dashborad.server_project_numbers": "各项目主机数量分布",
+  "dashboard.group_by": "聚合"
 }

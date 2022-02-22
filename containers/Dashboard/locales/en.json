@@ -264,5 +264,9 @@
   "dashboard.vm_history_count": "Servers Count Trend",
   "dashboard.vm_count_near": "{0} day",
   "dashboard.near": "Nearly",
-  "dashboard.stage": "{0}"
+  "dashboard.stage": "{0}",
+  "dashborad.server_numbers": "Host number distribution",
+  "dashborad.server_domain_numbers": "Distribution of the number of hosts in each domain",
+  "dashborad.server_project_numbers": "The distribution of the number of hosts for each project",
+  "dashboard.group_by": "Group By"
 }
