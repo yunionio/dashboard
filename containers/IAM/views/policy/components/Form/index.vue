@@ -49,7 +49,7 @@
       <template v-if="editType === 'checkbox'">
         <template v-if="showPolicyCheckbox">
           <a-form-model-item :label="$t('system.text_327', [$t('dictionary.policy')])">
-            <policy-rule-checkbox :check-all-disabled="checkAllDisabled" :data="policyRuleOptions" :permissions="permissions" :scope="model.scope" />
+            <policy-rule-checkbox :check-all-disabled="checkAllDisabled" :data="policyRuleOptions" :permissions="permissions" :scope="model.scope" :policy="checkboxPolicy" />
           </a-form-model-item>
         </template>
       </template>
@@ -69,12 +69,12 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { SCOPES_MAP } from '@/constants'
 import i18n from '@/locales'
+import PairsTag from '@/sections/PairsTag'
+import validateForm from '@/utils/validate'
 import { genPolicyGroups } from '../../utils'
 import { DEFAULT_ACTIONS_KEY } from '../../constants'
 import ScopeSelect from './ScopeSelect'
 import PolicyRuleCheckbox from './PolicyRuleCheckbox'
-import PairsTag from '@/sections/PairsTag'
-import validateForm from '@/utils/validate'
 
 // 权限级别
 const policyLevel = {
@@ -219,6 +219,7 @@ export default {
     const initialDomainValue = (this.policy && this.policy.domain_id) || this.$store.getters.userInfo.projectDomainId
     const initialScopeValue = (this.policy && this.policy.scope) || SCOPES_MAP.project.key
     const initialYamlPolicyValue = (this.editType === 'yaml' && this.policy && this.policy.policy) || 'policy:\n  "*": allow'
+    const initialCheckboxPolicyValue = (this.policy && this.policy.policy) || {}
     const initialDescriptionValue = (this.policy && this.policy.description) || ''
     const initTagsValue = (this.policy && this.policy.project_tags) || []
     return {
@@ -252,9 +253,10 @@ export default {
       },
       editTypeOptions: [
         { key: 'yaml', label: this.$t('system.policy_edit_type_yaml') },
-        // { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
+        { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
       ],
       yamlPolicy: initialYamlPolicyValue,
+      checkboxPolicy: initialCheckboxPolicyValue,
       cmOptions: {
         tabSize: 2,
         styleActiveLine: true,
