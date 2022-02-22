@@ -25,13 +25,16 @@
           :resource="item"
           @resourceCheckChange="resourceCheckChange"
           :permissions="permissions"
-          :scope="scope" />
+          :scope="scope"
+          :itemPolicy="getItemPolicy(item)" />
       </template>
     </a-card>
   </div>
 </template>
 
 <script>
+// import * as R from 'ramda'
+import yaml from 'js-yaml'
 import { SCOPES_MAP } from '@/constants'
 import Item from './Item'
 
@@ -44,6 +47,7 @@ export default {
     group: Object,
     permissions: Object,
     scope: String,
+    policy: Object,
   },
   data () {
     return {
@@ -144,6 +148,15 @@ export default {
         if (resource.isSystemRes) show = false
       }
       return show
+    },
+    getItemPolicy (item) {
+      if (item.resource === '*' && this.policy) {
+        const { policy = {} } = yaml.safeLoad(this.policy)
+        if (policy[item.service]) {
+          return policy[item.service]['*'] || {}
+        }
+      }
+      return {}
     },
   },
 }
