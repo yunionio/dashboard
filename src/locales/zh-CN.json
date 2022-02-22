@@ -2573,7 +2573,8 @@
     "cost_conversions": "二次定价策略",
     "billing_exchange_rates": "汇率配置",
     "price_infos": "价格对比",
-    "parameters": "用户配置"
+    "parameters": "用户配置",
+    "log_manage": "日志管理"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -5068,5 +5069,6 @@
   },
   "common.backup": "备份",
   "common.field_required_placeholder": "请填写{0}",
-  "common.need_reset_password": "你的密码不符合安全要求，请尽快修改密码！"
+  "common.need_reset_password": "你的密码不符合安全要求，请尽快修改密码！",
+  "common.log_table_name": "日志表名称"
 }
