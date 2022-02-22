@@ -3,8 +3,9 @@
     <a-alert type="info" class="mb-2">
       <template #message>
         <div>{{ $t('system.text_565') }}</div>
-        <div><span class="text-color-help mr-2">* entity_id:</span>{{ serverUrl }}<copy class="ml-1" :message="serverUrl" /></div>
-        <div><span class="text-color-help mr-2">* redirect_uri:</span>{{ serverUrl }}/api/v1/auth/ssologin<copy class="ml-1" :message="`${serverUrl}/api/v1/auth/ssologin`" /></div>
+        <div><span class="text-color-help mr-2">* EntityId:</span>{{ serverUrl }}<copy class="ml-1" :message="serverUrl" /></div>
+        <div><span class="text-color-help mr-2">* AssertionConsumerService(SP Initiated):</span>{{ serverUrl }}/api/v1/auth/ssologin<copy class="ml-1" :message="`${serverUrl}/api/v1/auth/ssologin`" /></div>
+        <div><span class="text-color-help mr-2">* AssertionConsumerService(IDP Initiated):</span>{{ serverUrl }}/api/v1/auth/ssologin/&lt;idp_id&gt;<copy class="ml-1" :message="`${serverUrl}/api/v1/auth/ssologin/<idp_id>`" /></div>
         <div>{{ $t('system.text_566') }}</div>
         <div><span class="text-color-help mr-2">* redirect_uri:</span>{{ serverUrl }}/api/v1/auth/ssologin<copy class="ml-1" :message="`${serverUrl}/api/v1/auth/ssologin`" /></div>
       </template>
