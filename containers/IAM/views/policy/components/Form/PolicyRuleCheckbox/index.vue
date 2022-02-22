@@ -13,7 +13,8 @@
           :group="item"
           @groupCheckChange="groupCheckChange"
           :permissions="permissions"
-          :scope="scope" />
+          :scope="scope"
+          :policy="policy" />
       </template>
     </div>
   </div>
@@ -37,6 +38,7 @@ export default {
     permissions: Object,
     scope: String,
     checkAllDisabled: Boolean,
+    policy: Object,
   },
   data () {
     return {
