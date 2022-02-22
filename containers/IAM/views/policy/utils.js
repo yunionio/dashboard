@@ -45,7 +45,7 @@ export function genPolicyGroups () {
   const ret = Object.values(temp).map(item => {
     return {
       ...item,
-      resources: [...item.resources, { label: i18n.t('common.text00053'), resource: '*' }],
+      resources: [...item.resources, { label: i18n.t('iam.others'), resource: '*' }],
     }
   })
   return ret
