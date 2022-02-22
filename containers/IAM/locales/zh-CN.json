@@ -632,7 +632,7 @@
       "desc": "云管本地用户（SQL）默认密码有效期时长。0代表无限制"
     },
     "identity$token_expiration_seconds": {
-      "label": "会话超时时间",
+      "label": "认证令牌超时时间",
       "desc": "默认为1天，当前会话登录超过该会话时间后，登录信息会失效，需重新登录。"
     },
     "common$is_forget_login_user": {
