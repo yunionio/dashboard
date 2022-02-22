@@ -131,6 +131,14 @@ const options = [
     w: 5,
     component: 'UserInfo',
   },
+  {
+    label: i18n.t('dashborad.server_numbers'),
+    desc: '',
+    icon: 'dashboard-suggest-detail',
+    h: 5,
+    w: 8,
+    component: 'ServerNumberDetail',
+  },
 ]
 
 export default options
