@@ -541,6 +541,114 @@ export const RESOURCES_MAP = {
   exchange_rates: {
     i18n: 'bill.text_285',
   },
+  snapshotpolicycaches: {
+    i18n: 'dictionary.snapshotpolicycaches',
+  },
+  webapps: {
+    i18n: 'dictionary.webapp',
+  },
+  cachedloadbalancercertificates: {
+    i18n: 'dictionary.cachedloadbalancercertificates',
+  },
+  proxy_endpoints: {
+    i18n: 'network.ssh-proxy.endpoints',
+  },
+  proxy_matches: {
+    i18n: 'network.ssh-proxy.endpoints',
+  },
+  proxy_agents: {
+    i18n: 'network.ssh-proxy.proxyservice',
+  },
+  inter_vpc_networks: {
+    i18n: 'dictionary.vpc_network',
+  },
+  inter_vpc_network_route_sets: {
+    i18n: 'dictionary.inter_vpc_network_route_sets',
+  },
+  vpc_peering_connections: {
+    i18n: 'dictionary.vpc_peer_connect',
+  },
+  diskbackups: {
+    i18n: 'compute.disk_backup',
+  },
+  nodealerts: {
+    i18n: 'dictionary.nodealerts',
+  },
+  cors: {
+    i18n: 'storage.text_211',
+  },
+  policy: {
+    i18n: 'compute.text_694',
+  },
+  samlusers: {
+    i18n: 'user.sidepage.tab.samluser',
+  },
+  instancebackups: {
+    i18n: 'compute.instance_backup',
+  },
+  elasticcachebackups: {
+    i18n: 'dictionary.redis_backup',
+  },
+  mongodbs: {
+    i18n: 'dictionary.mongodb',
+  },
+  elastic_searchs: {
+    i18n: 'middleware.elasticsearch',
+  },
+  kafkas: {
+    i18n: 'middleware.kafka',
+  },
+  storagecachedimages: {
+    i18n: 'dictionary.storagecachedimages',
+  },
+  rolepolicies: {
+    i18n: 'dictionary.rolepolicies',
+  },
+  'extra-users': {
+    i18n: 'dictionary.extra_users',
+  },
+  topics: {
+    i18n: 'dictionary.notify-topic',
+  },
+  notifyconfigs: {
+    i18n: 'dictionary.mail_config',
+  },
+  robots: {
+    i18n: 'dictionary.robot_manage',
+  },
+  subscribers: {
+    i18n: 'dictionary.subscribers',
+  },
+  actions: {
+    i18n: 'dictionary.actions',
+  },
+  alertrecordshields: {
+    i18n: 'dictionary.alertrecordshields',
+  },
+  monitorresourcealerts: {
+    i18n: 'dictionary.monitorresourcealerts',
+  },
+  monitorresources: {
+    i18n: 'monitor.monitorresources',
+  },
+  bill_tags: {
+    i18n: 'dictionary.bill_tags',
+  },
+  billsdimensions: {
+    i18n: 'dictionary.billsdimensions',
+  },
+  cost_conversions: {
+    i18n: 'dictionary.cost_conversions',
+  },
+  billing_exchange_rates: {
+    i18n: 'dictionary.billing_exchange_rates',
+  },
+  price_infos: {
+    i18n: 'dictionary.price_infos',
+  },
+  parameters: {
+    i18n: 'dictionary.parameters',
+  },
 }
 
 export const DEFAULT_ACTIONS_KEY = ['list', 'get', 'update', 'create', 'delete', 'perform']

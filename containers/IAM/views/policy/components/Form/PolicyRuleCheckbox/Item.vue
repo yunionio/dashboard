@@ -24,6 +24,7 @@ export default {
   props: {
     resource: Object,
     permissions: Object,
+    itemPolicy: Object,
   },
   watch: {
     permissions: {
@@ -36,6 +37,24 @@ export default {
               permission[permission.length - 1] === 'allow' &&
               !action.disabled
             ) {
+              const checked = [...this.resource.checked]
+              if (!checked.includes(action.action)) {
+                checked.push(action.action)
+                this.handleCheckedActionsChange(checked)
+              } else {
+                this.handleCheckedActionsChange([action.action])
+              }
+            }
+          })
+        }
+      },
+      immediate: true,
+    },
+    itemPolicy: {
+      handler (val) {
+        if (!R.isEmpty(val) && !R.isNil(val)) {
+          this.resource.actions.forEach(action => {
+            if (val[action.action]['*'] === 'allow' && !action.disabled) {
               const checked = [...this.resource.checked]
               if (!checked.includes(action.action)) {
                 checked.push(action.action)
