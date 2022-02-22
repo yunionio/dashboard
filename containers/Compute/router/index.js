@@ -376,6 +376,7 @@ export default {
     {
       meta: {
         label: i18n.t('common.backup'),
+        hidden: true,
       },
       submenus: [
         {
