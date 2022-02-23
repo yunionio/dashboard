@@ -215,16 +215,7 @@ export default {
           },
           {
             title: 'AssertionURI',
-            // field: 'redirect_uri',
-            slots: {
-              default: ({ row }) => {
-                console.log('redirect_uri', row)
-                if (!row.remoteConfig) {
-                  return '-'
-                }
-                return <div>{{ row }}</div>
-              },
-            },
+            field: 'redirect_uri',
           },
         ],
         azure_ad_saml: [
@@ -407,7 +398,7 @@ export default {
             }
             _config.remoteConfig = {}
             if (this.data.driver === 'saml' || this.data.driver === 'oidc' || this.data.driver === 'oauth2' || this.data.driver === 'cas') {
-              _config.remoteConfig = this.queryCallbackUri()
+              _config.remoteConfig = await this.queryCallbackUri()
             }
 
             this.configData = _config
@@ -417,6 +408,15 @@ export default {
               items: this.configChildrens[template].map(item => {
                 if (item.slots) {
                   return item
+                }
+                if (item.field === 'redirect_uri') {
+                  return getCopyWithContentTableColumn({
+                    ...item,
+                    hideField: true,
+                    slotCallback: (row) => {
+                      return row.remoteConfig?.redirect_uri || '-'
+                    },
+                  })
                 }
                 return getCopyWithContentTableColumn({
                   ...item,
@@ -436,7 +436,6 @@ export default {
           id: this.data.id,
           spec: 'info',
         })
-        console.log('queryCallbackUri', data)
         return data
       } catch (err) {
         throw err
