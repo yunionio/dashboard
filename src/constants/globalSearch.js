@@ -853,6 +853,186 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
+    route_tables: {
+      menu_key: 'routetable',
+      res_name: 'route_tables',
+      label: i18n.t('dictionary.route_table'),
+      id: 'route_tables',
+      component: 'RouteTableList',
+      hasPermission: hasPermission({ key: 'route_tables_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    vpc_network: {
+      menu_key: 'vpc-network',
+      res_name: 'inter_vpc_networks',
+      label: i18n.t('dictionary.vpc_network'),
+      id: 'vpc_network',
+      component: 'VpcNetworkList',
+      hasPermission: hasPermission({ key: 'inter_vpc_networks_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    vpc_peer_connect: {
+      menu_key: 'vpc-peerconnect',
+      res_name: 'vpc_peering_connections',
+      label: i18n.t('dictionary.vpc_peer_connect'),
+      id: 'vpc_peer_connect',
+      component: 'VpcPeerConnectList',
+      hasPermission: hasPermission({ key: 'vpc_peering_connections_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    mongodb: {
+      menu_key: 'mongodb',
+      res_name: 'mongodbs',
+      label: i18n.t('dictionary.mongodb'),
+      id: 'mongodb',
+      component: 'MongoDBList',
+      hasPermission: hasPermission({ key: 'mongodbs_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    kafka: {
+      menu_key: 'kafka',
+      res_name: 'mongodbs',
+      label: i18n.t('dictionary.kafka'),
+      id: 'kafka',
+      component: 'KafkaList',
+      hasPermission: hasPermission({ key: 'kafkas_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    elasticsearch: {
+      menu_key: 'elasticsearch',
+      res_name: 'elastic_searchs',
+      label: i18n.t('dictionary.elasticsearch'),
+      id: 'elasticsearch',
+      component: 'ElasticSearchList',
+      hasPermission: hasPermission({ key: 'elastic_searchs_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    cdn: {
+      menu_key: 'cdn',
+      res_name: 'cdn_domains',
+      label: i18n.t('dictionary.cdn'),
+      id: 'cdn',
+      component: 'CdnDomainList',
+      hasPermission: hasPermission({ key: 'cdn_domains_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    waf: {
+      menu_key: 'waf',
+      res_name: 'waf_instances',
+      label: i18n.t('dictionary.waf_instance'),
+      id: 'waf',
+      component: 'WafList',
+      hasPermission: hasPermission({ key: 'waf_instances_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
+    nas: {
+      menu_key: 'nas',
+      res_name: 'file_systems',
+      label: i18n.t('dictionary.filesystem'),
+      id: 'nas',
+      component: 'FileSystemList',
+      hasPermission: hasPermission({ key: 'file_systems_list' }),
+      params: {
+        common: {
+          ...commonSearchQuery,
+        },
+        name: {
+          filter: `name.contains(${getFilter('name')})`,
+        },
+        id: {
+          id: searchRes.id,
+        },
+      },
+      resData: {},
+    },
   }
 
   const validMaps = R.filter((val, key) => {

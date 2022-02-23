@@ -25,6 +25,8 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import qs from 'qs'
+import VpcPeerConnectList from '@Network/views/vpc-peer-connect/components/List'
+import VpcNetworkList from '@Network/views/vpc-network/components/List'
 import IDPList from '@IAM/views/idp/components/List'
 import DomainList from '@IAM/views/domains/components/List'
 import ProjectList from '@IAM/views/projects/components/List'
@@ -60,6 +62,12 @@ import LbList from '@Network/views/lb/components/List'
 import LbaclsList from '@Network/views/lbacls/components/List'
 import LbcertList from '@Network/views/lbcerts/components/List'
 import CloudaccountList from '@Cloudenv/views/cloudaccount/components/List'
+import MongoDBList from '@DB/views/mongodb/components/List'
+import KafkaList from '@Middleware/views/kafka/components/List'
+import ElasticSearchList from '@Middleware/views/elasticsearch/components/List'
+import CdnDomainList from '@Network/views/cdn/components/List'
+import WafList from '@Network/views/waf/components/List'
+import FileSystemList from '@Storage/views/file-system/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
 
 export default {
@@ -100,6 +108,14 @@ export default {
     LbaclsList,
     LbcertList,
     CloudaccountList,
+    VpcPeerConnectList,
+    VpcNetworkList,
+    MongoDBList,
+    KafkaList,
+    ElasticSearchList,
+    CdnDomainList,
+    WafList,
+    FileSystemList,
   },
   data () {
     const maps = getSearchMaps()
