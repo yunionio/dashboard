@@ -40,7 +40,6 @@
       </a-form-item>
       <a-form-item
         :wrapperCol="{ span: 24 }"
-        style="flex: 1;"
         class="mb-0 mr-1 network-item">
         <base-select
           class="w-100"
@@ -56,7 +55,8 @@
           :remote-fn="q => ({ search: q })"
           :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
           @change="v => networkChange(v, item)"
-          :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }" />
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
+          min-width="500px" />
         <!-- <oc-select
           v-decorator="decorator.networks(item.key)"
           :data="networkOpts"
