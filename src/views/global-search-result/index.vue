@@ -63,6 +63,12 @@ import RouteTableList from '@Network/views/route-table/components/List'
 import CloudaccountList from '@Cloudenv/views/cloudaccount/components/List'
 import VpcPeerConnectList from '@Network/views/vpc-peer-connect/components/List'
 import VpcNetworkList from '@Network/views/vpc-network/components/List'
+import MongoDBList from '@DB/views/mongodb/components/List'
+import KafkaList from '@Middleware/views/kafka/components/List'
+import ElasticSearchList from '@Middleware/views/elasticsearch/components/List'
+import CdnDomainList from '@Network/views/cdn/components/List'
+import WafList from '@Network/views/waf/components/List'
+import FileSystemList from '@Storage/views/file-system/components/List'
 import { getSearchMaps } from '@/constants/globalSearch'
 
 export default {
@@ -106,6 +112,12 @@ export default {
     RouteTableList,
     VpcPeerConnectList,
     VpcNetworkList,
+    MongoDBList,
+    KafkaList,
+    ElasticSearchList,
+    CdnDomainList,
+    WafList,
+    FileSystemList,
   },
   data () {
     const maps = getSearchMaps()
