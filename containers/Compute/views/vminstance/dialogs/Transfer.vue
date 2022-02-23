@@ -188,6 +188,7 @@ export default {
         action = 'live-migrate'
         if (values.skip_cpu_check) {
           data.skip_cpu_check = true
+          data.skip_kernel_check = true
         }
       }
       if (values.rescue_mode) {
@@ -210,6 +211,7 @@ export default {
       }
       if (values.skip_cpu_check) {
         data.skip_cpu_check = true
+        data.skip_kernel_check = true
       }
       return this.params.onManager('performClassAction', {
         id: ids,
