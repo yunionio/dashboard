@@ -129,7 +129,7 @@ export default {
       if (this.form.fd.billing_type === 'prepaid') {
         return ['Aliyun', 'Huawei']
       }
-      return ['Aliyun', 'Huawei', 'Google']
+      return ['Aliyun', 'Huawei', 'Google', 'Aws']
     },
     cloudAccountId () {
       const values = this.form.getFieldsValue()
