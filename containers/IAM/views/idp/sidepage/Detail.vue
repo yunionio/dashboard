@@ -152,10 +152,6 @@ export default {
             field: 'userinfo_url',
             title: 'UserinfoUrl',
           },
-          {
-            title: 'RedirectURI',
-            field: 'redirect_uri',
-          },
         ],
         github_oidc: [
           {
@@ -165,10 +161,6 @@ export default {
           {
             field: 'client_secret',
             title: 'ClientSecret',
-          },
-          {
-            title: 'RedirectURI',
-            field: 'redirect_uri',
           },
         ],
         azure_oidc: [
@@ -199,10 +191,6 @@ export default {
               },
             },
           },
-          {
-            title: 'Redirect URI',
-            field: 'redirect_uri',
-          },
         ],
         saml: [
           {
@@ -213,19 +201,11 @@ export default {
             title: 'RedirectSSOURL',
             field: 'redirect_sso_url',
           },
-          {
-            title: 'AssertionURI',
-            field: 'redirect_uri',
-          },
         ],
         azure_ad_saml: [
           {
             field: 'tenant_id',
             title: 'TenantId',
-          },
-          {
-            title: 'AssertionURI',
-            field: 'redirect_uri',
           },
           {
             field: 'cloud_env',
@@ -252,10 +232,6 @@ export default {
             field: 'secret',
             title: 'Secret',
           },
-          {
-            title: 'RedirectURI',
-            field: 'redirect_uri',
-          },
         ],
         dingtalk_oauth2: [
           {
@@ -265,10 +241,6 @@ export default {
           {
             field: 'secret',
             title: 'Secret',
-          },
-          {
-            title: 'RedirectURI',
-            field: 'redirect_uri',
           },
         ],
         qywechat_oauth2: [
@@ -284,11 +256,8 @@ export default {
             field: 'secret',
             title: 'Secret',
           },
-          {
-            title: 'RedirectURI',
-            field: 'redirect_uri',
-          },
         ],
+        google_oidc: [],
       },
       baseInfo: [
         {
@@ -350,6 +319,25 @@ export default {
           },
         },
         {
+          title: this.$t('iam.idp_config_info'),
+          hidden: () => {
+            return !['saml', 'oidc', 'oauth2', 'cas'].includes(this.data.driver)
+          },
+          items: [
+            getCopyWithContentTableColumn({
+              title: this.data.driver === 'saml' ? 'AssertionURI' : 'RedirectURI',
+              field: 'redirect_uri',
+              hideField: true,
+              message: (row) => {
+                return row.remoteConfig?.redirect_uri || '-'
+              },
+              slotCallback: (row) => {
+                return row.remoteConfig?.redirect_uri || '-'
+              },
+            }),
+          ],
+        },
+        {
           title: this.$t('system.text_173'),
           items: [
             {
@@ -408,18 +396,6 @@ export default {
               items: this.configChildrens[template].map(item => {
                 if (item.slots) {
                   return item
-                }
-                if (item.field === 'redirect_uri') {
-                  return getCopyWithContentTableColumn({
-                    ...item,
-                    hideField: true,
-                    message: (row) => {
-                      return row.remoteConfig?.redirect_uri || '-'
-                    },
-                    slotCallback: (row) => {
-                      return row.remoteConfig?.redirect_uri || '-'
-                    },
-                  })
                 }
                 return getCopyWithContentTableColumn({
                   ...item,
