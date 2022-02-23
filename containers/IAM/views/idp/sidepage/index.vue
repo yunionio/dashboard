@@ -19,6 +19,7 @@
 <script>
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
+import JumpTo from '@/mixins/jumper'
 import Actions from '@/components/PageList/Actions'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -30,7 +31,7 @@ export default {
     'idp-detail': IDPDetail,
     Actions,
   },
-  mixins: [WindowsMixin, SidePageMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [WindowsMixin, SidePageMixin, ColumnsMixin, JumpTo, SingleActionsMixin],
   data () {
     return {
       detailTabs: [

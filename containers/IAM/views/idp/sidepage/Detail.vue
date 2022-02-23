@@ -41,6 +41,10 @@ export default {
             field: 'cas_server_url',
             title: this.$t('system.text_210'),
           },
+          {
+            title: 'Redirect URI',
+            field: 'redirect_uri',
+          },
         ],
         msad_one_domain: [
           {
@@ -148,6 +152,10 @@ export default {
             field: 'userinfo_url',
             title: 'UserinfoUrl',
           },
+          {
+            title: 'RedirectURI',
+            field: 'redirect_uri',
+          },
         ],
         github_oidc: [
           {
@@ -157,6 +165,10 @@ export default {
           {
             field: 'client_secret',
             title: 'ClientSecret',
+          },
+          {
+            title: 'RedirectURI',
+            field: 'redirect_uri',
           },
         ],
         azure_oidc: [
@@ -187,6 +199,10 @@ export default {
               },
             },
           },
+          {
+            title: 'Redirect URI',
+            field: 'redirect_uri',
+          },
         ],
         saml: [
           {
@@ -197,11 +213,28 @@ export default {
             title: 'RedirectSSOURL',
             field: 'redirect_sso_url',
           },
+          {
+            title: 'AssertionURI',
+            // field: 'redirect_uri',
+            slots: {
+              default: ({ row }) => {
+                console.log('redirect_uri', row)
+                if (!row.remoteConfig) {
+                  return '-'
+                }
+                return <div>{{ row }}</div>
+              },
+            },
+          },
         ],
         azure_ad_saml: [
           {
             field: 'tenant_id',
             title: 'TenantId',
+          },
+          {
+            title: 'AssertionURI',
+            field: 'redirect_uri',
           },
           {
             field: 'cloud_env',
@@ -228,6 +261,10 @@ export default {
             field: 'secret',
             title: 'Secret',
           },
+          {
+            title: 'RedirectURI',
+            field: 'redirect_uri',
+          },
         ],
         dingtalk_oauth2: [
           {
@@ -237,6 +274,10 @@ export default {
           {
             field: 'secret',
             title: 'Secret',
+          },
+          {
+            title: 'RedirectURI',
+            field: 'redirect_uri',
           },
         ],
         qywechat_oauth2: [
@@ -251,6 +292,10 @@ export default {
           {
             field: 'secret',
             title: 'Secret',
+          },
+          {
+            title: 'RedirectURI',
+            field: 'redirect_uri',
           },
         ],
       },
@@ -360,8 +405,13 @@ export default {
               _config.agent_id = agent_id
               delete _config.app_id
             }
+            _config.remoteConfig = {}
+            if (this.data.driver === 'saml' || this.data.driver === 'oidc' || this.data.driver === 'oauth2' || this.data.driver === 'cas') {
+              _config.remoteConfig = this.queryCallbackUri()
+            }
 
             this.configData = _config
+
             this.extraInfo.unshift({
               title: this.$t('system.text_255'),
               items: this.configChildrens[template].map(item => {
@@ -375,6 +425,19 @@ export default {
             })
           }
         }
+      } catch (err) {
+        throw err
+      }
+    },
+    async queryCallbackUri () {
+      try {
+        const manager = new this.$Manager('auth/idp', 'v1')
+        const { data } = await manager.getSpecific({
+          id: this.data.id,
+          spec: 'info',
+        })
+        console.log('queryCallbackUri', data)
+        return data
       } catch (err) {
         throw err
       }
