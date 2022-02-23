@@ -413,6 +413,9 @@ export default {
                   return getCopyWithContentTableColumn({
                     ...item,
                     hideField: true,
+                    message: (row) => {
+                      return row.remoteConfig?.redirect_uri || '-'
+                    },
                     slotCallback: (row) => {
                       return row.remoteConfig?.redirect_uri || '-'
                     },
