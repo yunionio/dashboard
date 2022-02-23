@@ -888,5 +888,6 @@
   "IAM.text_9": "Total",
   "iam.sender_address": "Sender's Email",
   "iam.role_policy_valid_time_range": "Valid time range",
-  "iam.others": "Other"
+  "iam.others": "Other",
+  "iam.idp_config_info": "Authentication source configuration information"
 }
