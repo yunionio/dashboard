@@ -25,8 +25,6 @@
 import * as R from 'ramda'
 import _ from 'lodash'
 import qs from 'qs'
-import VpcPeerConnectList from '@Network/views/vpc-peer-connect/components/List'
-import VpcNetworkList from '@Network/views/vpc-network/components/List'
 import IDPList from '@IAM/views/idp/components/List'
 import DomainList from '@IAM/views/domains/components/List'
 import ProjectList from '@IAM/views/projects/components/List'
@@ -108,8 +106,6 @@ export default {
     LbaclsList,
     LbcertList,
     CloudaccountList,
-    VpcPeerConnectList,
-    VpcNetworkList,
     MongoDBList,
     KafkaList,
     ElasticSearchList,

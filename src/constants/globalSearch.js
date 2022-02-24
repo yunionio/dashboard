@@ -873,46 +873,6 @@ export const getSearchMaps = (searchRes = {}) => {
       },
       resData: {},
     },
-    vpc_network: {
-      menu_key: 'vpc-network',
-      res_name: 'inter_vpc_networks',
-      label: i18n.t('dictionary.vpc_network'),
-      id: 'vpc_network',
-      component: 'VpcNetworkList',
-      hasPermission: hasPermission({ key: 'inter_vpc_networks_list' }),
-      params: {
-        common: {
-          ...commonSearchQuery,
-        },
-        name: {
-          filter: `name.contains(${getFilter('name')})`,
-        },
-        id: {
-          id: searchRes.id,
-        },
-      },
-      resData: {},
-    },
-    vpc_peer_connect: {
-      menu_key: 'vpc-peerconnect',
-      res_name: 'vpc_peering_connections',
-      label: i18n.t('dictionary.vpc_peer_connect'),
-      id: 'vpc_peer_connect',
-      component: 'VpcPeerConnectList',
-      hasPermission: hasPermission({ key: 'vpc_peering_connections_list' }),
-      params: {
-        common: {
-          ...commonSearchQuery,
-        },
-        name: {
-          filter: `name.contains(${getFilter('name')})`,
-        },
-        id: {
-          id: searchRes.id,
-        },
-      },
-      resData: {},
-    },
     mongodb: {
       menu_key: 'mongodb',
       res_name: 'mongodbs',
