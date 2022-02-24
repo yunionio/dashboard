@@ -1081,6 +1081,11 @@
       "recovery": "Recovery",
       "snapshot_failed": "Fail to snapshot",
       "sync_status": "Sync Status"
+    },
+    "cpp": {
+      "assigned": "assigned",
+      "unassigned": "Unassigned",
+      "unknow": "Unknow"
     }
   },
   "skuCategoryOptions": {

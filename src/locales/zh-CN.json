@@ -1095,6 +1095,11 @@
       "recovery": "正在回滚",
       "snapshot_failed": "快照创建失败",
       "sync_status": "同步状态"
+    },
+    "cpp": {
+      "assigned": "已分配",
+      "unassigned": "未分配",
+      "unknow": "未知"
     }
   },
   "skuCategoryOptions": {
