@@ -486,7 +486,7 @@
   "system.text_503": "2. User name, department, password and whether to log in to the WEB console are required",
   "system.text_504": "3. Duplicate user name, import failed;",
   "system.text_505": "Click or drag files to this area",
-  "system.text_506": "Only upload xlsx files, and no more than 2MB",
+  "system.text_506": "Only upload xlsx files, and no more than 200MB",
   "system.text_507": "Please choose to import a template file",
   "system.text_508": "Prompt: Only {0} with assigned permissions can be selected",
   "system.text_509": "Global MFA authentication is not enabled, please go to the Global Settings to enable it and try again",
