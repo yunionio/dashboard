@@ -71,10 +71,22 @@ export default {
       }
       if (typeof item === 'string') {
         if (item === 'private' && this.globalSettingSetupKeys.indexOf('vmware') > -1) return true
-        return this.globalSettingSetupKeys.indexOf(item) > -1
+        return this.globalSettingSetupKeys.indexOf(item) > -1 || (this.globalSettingSetupKeys.indexOf('bill') > -1 && this.isBillEnv(item))
       }
       // console.log(this.globalSettingSetupKeys, item.provider.toLowerCase(), this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1)
-      return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1
+      return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1 || (this.globalSettingSetupKeys.indexOf('bill') > -1 && this.isBillItem(item))
+    },
+    isBillEnv (env) {
+      if (env === 'public') {
+        return true
+      }
+      return false
+    },
+    isBillItem (item) {
+      if (['aws', 'aliyun', 'google', 'huawei', 'azure', 'qcloud', 'jdcloud'].indexOf(item.provider.toLowerCase()) > -1) {
+        return true
+      }
+      return false
     },
     selectProvider (item) {
       this.$emit('update:currentItem', item)
