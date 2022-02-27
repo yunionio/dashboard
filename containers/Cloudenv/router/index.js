@@ -35,7 +35,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.cloudaccount')) {
                 return true
               }
-              return !hasSetupKey(['private', 'vmware', 'public', 'storage'])
+              return !hasSetupKey(['bill', 'private', 'vmware', 'public', 'storage'])
             },
           },
           component: Layout,
