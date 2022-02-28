@@ -2554,7 +2554,8 @@
     "cost_conversions": "Adjusted Price",
     "billing_exchange_rates": "Exchange Rate",
     "price_infos": "Price Info",
-    "parameters": "User Config"
+    "parameters": "User Config",
+    "log_manage": "Log Manage"
   },
   "res": {
     "role": "Role",
@@ -5049,5 +5050,6 @@
   },
   "common.backup": "Backup",
   "common.field_required_placeholder": "Please fill in {0}",
-  "common.need_reset_password": "Your password does not meet the security requirements, please change it as soon as possible!"
+  "common.need_reset_password": "Your password does not meet the security requirements, please change it as soon as possible!",
+  "common.log_table_name": "Log Table Name"
 }
