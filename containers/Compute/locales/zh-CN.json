@@ -1528,5 +1528,6 @@
   "compute.os.nfs": "方德",
   "compute.unpack_alert": "将主机备份文件打包，后缀为.tar格式，保存在主机备份所在备份存储上",
   "compute.unpack": "打包",
-  "compute.unpack_name": "包名称"
+  "compute.unpack_name": "包名称",
+  "compute.instance_backup_name": "主机备份名称"
 }

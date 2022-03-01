@@ -1528,5 +1528,6 @@
   "compute.os.nfs": "NFS",
   "compute.unpack_alert": "Package the host backup file with a .tar suffix and save it on the backup storage where the host backup is located",
   "compute.unpack": "Package",
-  "compute.unpack_name": "Package Name"
+  "compute.unpack_name": "Package Name",
+  "compute.instance_backup_name": "Instance Backup Name"
 }
