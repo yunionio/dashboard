@@ -118,13 +118,12 @@ export default {
   },
   methods: {
     doImportUnpackSubmit (values) {
-      const { name, package_name, storage, project, domain } = values
+      const { name, package_name, storage, project } = values
       const params = {
         package_name,
         name,
         backup_storage_id: storage,
-        project: project.key,
-        domain: domain.key,
+        project_id: project.key,
       }
       return this.params.onManager('performClassAction', {
         managerArgs: {
