@@ -449,6 +449,7 @@ export const getTimeRangeColumn = ({
   end_field = 'end_time',
   title = i18n.t('table.title.create_time'),
   sortable = false,
+  format = 'YYYY-MM-DD hh:mm:ss',
 } = {}) => {
   return {
     field,
@@ -459,9 +460,16 @@ export const getTimeRangeColumn = ({
     sortable,
     slots: {
       default: ({ row }, h) => {
-        const start = row[start_field] ? moment(row[start_field]).format() : '-'
-        const end = row[end_field] ? moment(row[end_field]).format() : '-'
-        return `${start} ~ ${end}`
+        const start = row[start_field] ? moment(row[start_field]).format(format) : ''
+        const end = row[end_field] ? moment(row[end_field]).format(format) : ''
+        if (start && end) {
+          return `${start} ~ ${end}`
+        } else if (start) {
+          return i18n.t('common.from_moment', [start])
+        } else if (end) {
+          return i18n.t('common.until_moment', [end])
+        }
+        return i18n.t('common.permanent_effect')
       },
     },
   }

@@ -33,9 +33,9 @@
             :select-props="{ mode: 'default' }" />
         </a-form-item>
         <a-form-item :label="$t('iam.role_policy_valid_time_range')">
-          <a-date-picker :disabled-date="dateDisabledStart" v-decorator="decorators.valid_since" @change="startChange" />
+          <a-date-picker :disabled-date="dateDisabledStart" v-decorator="decorators.valid_since" @change="startChange" format="YYYY-MM-DD hh:mm" :showTime="{ format: 'HH:mm' }" />
           <span class="ml-2 mr-2">~</span>
-          <a-date-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.valid_until" @change="endChange" />
+          <a-date-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.valid_until" @change="endChange" format="YYYY-MM-DD hh:mm" :showTime="{ format: 'HH:mm' }" />
         </a-form-item>
       </a-collapse-panel>
     </a-collapse>
@@ -207,12 +207,12 @@ export default {
     },
     startChange (value) {
       this.form.fc.setFieldsValue({
-        valid_since: value.startOf('day'),
+        valid_since: value,
       })
     },
     endChange (value) {
       this.form.fc.setFieldsValue({
-        valid_until: value.endOf('day') > this.$moment() ? this.$moment() : value.endOf('day'),
+        valid_until: value > this.$moment() ? this.$moment() : value,
       })
     },
     dateDisabledStart (value) {

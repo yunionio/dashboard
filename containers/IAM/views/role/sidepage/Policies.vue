@@ -72,6 +72,7 @@ export default {
           start_field: 'valid_since',
           end_field: 'valid_until',
           title: this.$t('iam.role_policy_valid_time_range'),
+          format: 'YYYY-MM-DD hh:mm',
         }),
       ],
       groupActions: [
