@@ -5070,5 +5070,8 @@
   "common.backup": "备份",
   "common.field_required_placeholder": "请填写{0}",
   "common.need_reset_password": "你的密码不符合安全要求，请尽快修改密码！",
+  "common.from_moment": "从 {0} 开始",
+  "common.until_moment": "到 {0} 截止",
+  "common.permanent_effect": "永久生效",
   "common.log_table_name": "日志表名称"
 }
