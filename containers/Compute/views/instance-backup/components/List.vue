@@ -73,65 +73,87 @@ export default {
       },
       groupActions: [
         {
-          label: this.$t('compute.perform_sync_status'),
-          permission: 'instancebackups_perform_syncstatus',
+          label: this.$t('compute.text_679'),
           action: () => {
-            this.onManager('batchPerformAction', {
-              steadyStatus: ['running', 'ready'],
-              managerArgs: {
-                action: 'syncstatus',
-              },
-            })
-          },
-          meta: () => ({
-            validate: this.list.selected.length,
-          }),
-        },
-        {
-          label: this.$t('table.action.set_tag'),
-          permission: 'instancebackups_perform_set_user_metadata',
-          action: () => {
-            this.createDialog('SetTagDialog', {
+            this.createDialog('ImportUnpackDialog', {
               data: this.list.selectedItems,
-              columns: this.columns,
               onManager: this.onManager,
-              mode: 'add',
-              params: {
-                resources: 'instancebackups',
-              },
-              tipName: this.$t('compute.text_462'),
+              refresh: this.refresh,
             })
           },
           meta: () => {
             return {
-              validate: this.list.selected.length,
-              tooltip: null,
+              buttonType: 'primary',
             }
           },
         },
         {
-          label: this.$t('compute.perform_delete'),
-          permission: 'instancebackups_delete',
-          action: () => {
-            this.createDialog('DeleteResDialog', {
-              vm: this,
-              data: this.list.selectedItems,
-              columns: this.columns,
-              onManager: this.onManager,
-              title: this.$t('compute.perform_delete'),
-              name: this.$t('compute.text_462'),
-            })
-          },
-          meta: () => {
-            const ret = {
-              validate: this.list.selected.length,
-              tooltip: null,
-            }
-            if (this.list.selectedItems.some(item => !item.can_delete)) {
-              ret.validate = false
-              return ret
-            }
-            return ret
+          label: this.$t('compute.text_275'),
+          actions: () => {
+            return [
+              {
+                label: this.$t('compute.perform_sync_status'),
+                permission: 'instancebackups_perform_syncstatus',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+                meta: () => ({
+                  validate: this.list.selected.length,
+                }),
+              },
+              {
+                label: this.$t('table.action.set_tag'),
+                permission: 'instancebackups_perform_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'instancebackups',
+                    },
+                    tipName: this.$t('compute.text_462'),
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: this.list.selected.length,
+                    tooltip: null,
+                  }
+                },
+              },
+              {
+                label: this.$t('compute.perform_delete'),
+                permission: 'instancebackups_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    title: this.$t('compute.perform_delete'),
+                    name: this.$t('compute.text_462'),
+                  })
+                },
+                meta: () => {
+                  const ret = {
+                    validate: this.list.selected.length,
+                    tooltip: null,
+                  }
+                  if (this.list.selectedItems.some(item => !item.can_delete)) {
+                    ret.validate = false
+                    return ret
+                  }
+                  return ret
+                },
+              },
+            ]
           },
         },
       ],
