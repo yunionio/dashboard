@@ -1081,6 +1081,11 @@
       "recovery": "Recovery",
       "snapshot_failed": "Fail to snapshot",
       "sync_status": "Sync Status"
+    },
+    "cpp": {
+      "assigned": "assigned",
+      "unassigned": "Unassigned",
+      "unknow": "Unknow"
     }
   },
   "skuCategoryOptions": {
@@ -2554,7 +2559,8 @@
     "cost_conversions": "Adjusted Price",
     "billing_exchange_rates": "Exchange Rate",
     "price_infos": "Price Info",
-    "parameters": "User Config"
+    "parameters": "User Config",
+    "log_manage": "Log Manage"
   },
   "res": {
     "role": "Role",
@@ -5052,5 +5058,6 @@
   "common.need_reset_password": "Your password does not meet the security requirements, please change it as soon as possible!",
   "common.from_moment": "From {0}",
   "common.until_moment": "Until {0}",
-  "common.permanent_effect": "Permanent effect"
+  "common.permanent_effect": "Permanent effect",
+  "common.log_table_name": "Log Table Name"
 }

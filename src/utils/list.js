@@ -372,7 +372,7 @@ class CreateList {
       if (this.templateContext._isDestroyed) return
       const {
         data: {
-          data = [],
+          data = response.data,
           total = 0,
           limit: responseLimit,
           offset: responseOffset = 0,

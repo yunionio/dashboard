@@ -41,6 +41,10 @@ export default {
             field: 'cas_server_url',
             title: this.$t('system.text_210'),
           },
+          {
+            title: 'Redirect URI',
+            field: 'redirect_uri',
+          },
         ],
         msad_one_domain: [
           {
@@ -253,6 +257,7 @@ export default {
             title: 'Secret',
           },
         ],
+        google_oidc: [],
       },
       baseInfo: [
         {
@@ -314,6 +319,25 @@ export default {
           },
         },
         {
+          title: this.$t('iam.idp_config_info'),
+          hidden: () => {
+            return !['saml', 'oidc', 'oauth2', 'cas'].includes(this.data.driver)
+          },
+          items: [
+            getCopyWithContentTableColumn({
+              title: this.data.driver === 'saml' ? 'AssertionURI' : 'RedirectURI',
+              field: 'redirect_uri',
+              hideField: true,
+              message: (row) => {
+                return row.remoteConfig?.redirect_uri || '-'
+              },
+              slotCallback: (row) => {
+                return row.remoteConfig?.redirect_uri || '-'
+              },
+            }),
+          ],
+        },
+        {
           title: this.$t('system.text_173'),
           items: [
             {
@@ -360,8 +384,13 @@ export default {
               _config.agent_id = agent_id
               delete _config.app_id
             }
+            _config.remoteConfig = {}
+            if (this.data.driver === 'saml' || this.data.driver === 'oidc' || this.data.driver === 'oauth2' || this.data.driver === 'cas') {
+              _config.remoteConfig = await this.queryCallbackUri()
+            }
 
             this.configData = _config
+
             this.extraInfo.unshift({
               title: this.$t('system.text_255'),
               items: this.configChildrens[template].map(item => {
@@ -375,6 +404,18 @@ export default {
             })
           }
         }
+      } catch (err) {
+        throw err
+      }
+    },
+    async queryCallbackUri () {
+      try {
+        const manager = new this.$Manager('auth/idp', 'v1')
+        const { data } = await manager.getSpecific({
+          id: this.data.id,
+          spec: 'info',
+        })
+        return data
       } catch (err) {
         throw err
       }

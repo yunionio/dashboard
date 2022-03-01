@@ -489,4 +489,8 @@ export default {
   instanceBackup: {
     success: ['ready'],
   },
+  cpp: {
+    success: ['assigned'],
+    info: ['unknown', 'unassigned'],
+  },
 }
