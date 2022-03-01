@@ -85,7 +85,6 @@ export default {
         const values = await this.form.fc.validateFields()
         await this.doUnpackSubmit(values)
         this.params.refresh && this.params.refresh()
-        this.loading = false
         this.cancelDialog()
       } catch (error) {
         throw error
