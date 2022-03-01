@@ -1094,7 +1094,9 @@
       "deleting": "正在删除",
       "recovery": "正在回滚",
       "snapshot_failed": "快照创建失败",
-      "sync_status": "同步状态"
+      "sync_status": "同步状态",
+      "pack": "打包",
+      "pack_failed": "打包失败"
     },
     "cpp": {
       "assigned": "已分配",

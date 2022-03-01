@@ -1525,5 +1525,8 @@
   "compute.instance_name_placeholder": "Optional, if empty, the name is the name of the original backup host",
   "compute.disk_size_disbale_tips": "The default capacity of the {0} platform system disk is the same as that of the image",
   "compute.private_network": "Private Network",
-  "compute.os.nfs": "NFS"
+  "compute.os.nfs": "NFS",
+  "compute.unpack_alert": "Package the host backup file with a .tar suffix and save it on the backup storage where the host backup is located",
+  "compute.unpack": "Package",
+  "compute.unpack_name": "Package Name"
 }
