@@ -1080,7 +1080,9 @@
       "deleting": "Deleting",
       "recovery": "Recovery",
       "snapshot_failed": "Fail to snapshot",
-      "sync_status": "Sync Status"
+      "sync_status": "Sync Status",
+      "pack": "Pack",
+      "pack_failed": "Pack Failed"
     },
     "cpp": {
       "assigned": "assigned",

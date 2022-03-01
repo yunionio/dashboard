@@ -1525,5 +1525,8 @@
   "compute.instance_name_placeholder": "选填，为空则名称为原备份主机的名称",
   "compute.disk_size_disbale_tips": "{0}平台系统盘容量默认与镜像一致",
   "compute.private_network": "私有网络",
-  "compute.os.nfs": "方德"
+  "compute.os.nfs": "方德",
+  "compute.unpack_alert": "将主机备份文件打包，后缀为.tar格式，保存在主机备份所在备份存储上",
+  "compute.unpack": "打包",
+  "compute.unpack_name": "包名称"
 }
