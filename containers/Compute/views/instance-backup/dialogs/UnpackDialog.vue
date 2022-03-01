@@ -12,7 +12,8 @@
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
         <a-form-item :label="$t('compute.unpack_name')">
           <a-input
-            v-decorator="decorators.name" />
+            v-decorator="decorators.name"
+            :placeholder="$t('common.tips.input', [$t('compute.unpack_name')])" />
         </a-form-item>
       </a-form>
     </div>
@@ -64,12 +65,12 @@ export default {
     },
   },
   methods: {
-    async doUnpackSubmit (values) {
+    doUnpackSubmit (values) {
       const params = {
         package_name: values.name,
       }
       const ids = this.params.data.map(item => item.id)
-      await this.params.onManager('performAction', {
+      return this.params.onManager('performAction', {
         id: ids[0],
         steadyStatus: ['ready'],
         managerArgs: {
