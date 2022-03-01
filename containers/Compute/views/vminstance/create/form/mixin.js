@@ -597,7 +597,7 @@ export default {
           error.errorMsg = this.$t('compute.validate.others')
           return error
         }
-        if (/.*(?<=(-))$/.test(v)) { // 不能以连字符结尾
+        if (/.*?(-)$/.test(v)) { // 不能以连字符结尾
           error.validateStatus = 'error'
           error.errorMsg = this.$t('compute.validate.others')
           return error
@@ -622,7 +622,7 @@ export default {
           error.errorMsg = this.$t('compute.validate.others')
           return error
         }
-        if (/.*(?<=(\.|-))$/.test(v)) { // 不能以点号或连字符结尾
+        if (/.*?(\.|-)$/.test(v)) { // 不能以点号或连字符结尾
           error.validateStatus = 'error'
           error.errorMsg = this.$t('compute.validate.others')
           return error
