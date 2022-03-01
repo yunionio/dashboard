@@ -41,7 +41,7 @@ export default {
         id: this.id,
         resource: 'instancebackups',
         getParams: this.getParam,
-        steadyStatus: Object.values(expectStatus.diskBackup).flat(),
+        steadyStatus: Object.values(expectStatus.instanceBackup).flat(),
         filterOptions: {
           id: {
             label: this.$t('table.title.id'),
