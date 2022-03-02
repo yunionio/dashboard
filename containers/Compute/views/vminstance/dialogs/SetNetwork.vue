@@ -15,7 +15,8 @@
           :networkLimit="networkLimit"
           :vpcParams="vpcParams"
           :vpcResource="vpcResource"
-          :vpcObj="vpcObj" />
+          :vpcObj="vpcObj"
+          :is-dialog="true" />
       </a-form>
     </div>
     <div slot="footer">
