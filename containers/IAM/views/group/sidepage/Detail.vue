@@ -2,7 +2,8 @@
   <detail
     :onManager="onManager"
     :data="data"
-    :base-info="baseInfo" />
+    :base-info="baseInfo"
+    :nameRules="nameRules" />
 </template>
 
 <script>
@@ -20,6 +21,9 @@ export default {
   },
   data () {
     return {
+      nameRules: [
+        { required: true, message: this.$t('system.text_168') },
+      ],
       baseInfo: [
         {
           field: 'user_count',
