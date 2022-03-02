@@ -24,7 +24,8 @@
         :network-resource-mapper="networkResourceMapper"
         :vpc-resource-mapper="vpcResourceMapper"
         :limit="form.fi.capability.max_nic_count"
-        :show-vpc="showVpc" />
+        :show-vpc="showVpc"
+        :is-dialog="isDialog" />
     </a-form-item>
     <a-form-item v-if="networkComponent === 'schedtag'">
       <network-schedtag
@@ -115,6 +116,10 @@ export default {
     showVpc: {
       type: Boolean,
       default: true,
+    },
+    isDialog: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
