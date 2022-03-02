@@ -127,7 +127,7 @@ export default {
       }
       return this.params.onManager('performClassAction', {
         managerArgs: {
-          action: 'create_from_package',
+          action: 'create-from-package',
           data: params,
         },
       })
