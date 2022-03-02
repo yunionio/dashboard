@@ -12,7 +12,8 @@
       :base-info="baseInfo"
       :extra-info="extraInfo"
       :on-manager="onManager"
-      :resource="resource" />
+      :resource="resource"
+      :nameRules="nameRules" />
   </div>
 </template>
 
@@ -107,6 +108,9 @@ export default {
   data () {
     return {
       loading: false,
+      nameRules: [
+        { required: true, message: this.$t('system.text_168') },
+      ],
       baseInfo: [
         getUserTagColumn({ onManager: this.onManager, resource: 'domain', columns: () => this.columns, tipName: this.$t('dictionary.project') }),
         getExtTagColumn({ onManager: this.onManager, resource: 'domain', columns: () => this.columns, tipName: this.$t('dictionary.project') }),
