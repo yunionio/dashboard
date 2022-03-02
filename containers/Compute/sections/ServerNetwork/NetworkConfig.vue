@@ -40,6 +40,7 @@
       </a-form-item>
       <a-form-item
         :wrapperCol="{ span: 24 }"
+        :style="isDialog ? { flex: 1 } : ''"
         class="mb-0 mr-1 network-item">
         <base-select
           class="w-100"
@@ -56,7 +57,7 @@
           :beforeDefaultSelectCallBack="beforeDefaultSelectCallBack"
           @change="v => networkChange(v, item)"
           :select-props="{ allowClear: true, placeholder: $t('compute.text_195') }"
-          min-width="500px" />
+          :min-width="isDialog ? '200px' : '500px'" />
         <!-- <oc-select
           v-decorator="decorator.networks(item.key)"
           :data="networkOpts"
@@ -152,6 +153,9 @@ export default {
     showVpc: {
       type: Boolean,
       default: true,
+    },
+    isDialog: {
+      type: Boolean,
     },
   },
   data () {
