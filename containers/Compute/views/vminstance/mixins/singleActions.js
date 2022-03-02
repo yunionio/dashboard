@@ -733,6 +733,33 @@ export default {
                   hidden: () => !(hasSetupKey(['onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_set_disk_speed'),
                 },
                 {
+                  label: this.$t('compute.bind_physical_cpu'),
+                  action: () => {
+                    this.createDialog('BindPhysicalCpuDialog', {
+                      data: [obj],
+                      columns: this.columns,
+                      onManager: this.onManager,
+                      alert: this.$t('compute.text_1391'),
+                      refresh: this.refresh,
+                    })
+                  },
+                  meta: () => {
+                    const ret = {
+                      validate: false,
+                      tooltip: null,
+                    }
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
+                      ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[obj.provider].label])
+                      return ret
+                    }
+                    return {
+                      ...ret,
+                      validate: true,
+                    }
+                  },
+                  hidden: () => !hasSetupKey(['onecloud']),
+                },
+                {
                   label: i18n.t('compute.text_1132'),
                   permission: 'server_perform_cancel_expire',
                   action: () => {
