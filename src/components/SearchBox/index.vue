@@ -161,13 +161,12 @@ export default {
         } else {
           let newKey = key
           if (this.autocompleterSearch && !this.autocompleterSearch.includes(this.keySeparator)) {
-            console.log(value)
             const ipKey = Object.keys(this.options).find(v => v.startsWith('ip'))
             if (/^\d+.*$/.test(value) && value <= 255 && ipKey) {
               if (Array.isArray(value)) {
                 const isErrIp = value[0].split('.').some(v => v > 255)
                 if (isErrIp) {
-                  newKey = this.defaultSearchKey
+                  newKey = 'name'
                 } else {
                   newKey = ipKey
                 }
