@@ -45,6 +45,24 @@ export default {
               return `name.contains("${val}")`
             },
           },
+          manager: {
+            label: this.$t('cloudevent.title.manager'),
+            dropdown: true,
+            multiple: false,
+            distinctField: {
+              type: 'extra_field',
+              key: 'manager',
+            },
+          },
+          projects: {
+            label: this.$t('table.title.local_project'),
+            dropdown: true,
+            multiple: true,
+            distinctField: {
+              type: 'extra_field',
+              key: 'tenant',
+            },
+          },
         },
       }),
       columns: [
