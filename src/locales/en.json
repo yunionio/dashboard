@@ -2512,7 +2512,9 @@
     "cost_conversions": "Adjusted Price",
     "billing_exchange_rates": "Exchange Rate",
     "price_infos": "Price Info",
-    "parameters": "User Config"
+    "parameters": "Dictionary",
+    "log_manage": "Log Manage",
+    "services": "Global Setting"
   },
   "res": {
     "role": "Role",

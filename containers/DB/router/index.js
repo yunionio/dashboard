@@ -121,7 +121,7 @@ export default {
           path: '/mongodb',
           meta: {
             label: i18n.t('dictionary.mongodb'),
-            permission: 'mongodb_list',
+            permission: 'mongodbs_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.mongodb')) {
                 return true

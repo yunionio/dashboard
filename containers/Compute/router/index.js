@@ -779,7 +779,7 @@ export default {
           path: '/serverrecovery',
           meta: {
             label: i18n.t('compute.text_91'),
-            permission: 'servers_list,server_delete',
+            permission: 'servers_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.serverrecovery')) {
                 return true
@@ -800,7 +800,7 @@ export default {
           path: '/diskrecovery',
           meta: {
             label: i18n.t('compute.text_100'),
-            permission: 'disks_list,disks_delete',
+            permission: 'disks_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.diskrecovery')) {
                 return true
@@ -822,7 +822,7 @@ export default {
           path: '/imagerecovery',
           meta: {
             label: i18n.t('compute.text_96'),
-            permission: 'images_list,images_delete',
+            permission: 'images_list',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.imagerecovery')) {
                 return true
