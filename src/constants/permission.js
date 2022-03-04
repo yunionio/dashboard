@@ -125,6 +125,29 @@ export const PERMISSION = {
   zones_list: ['compute', 'zones', 'list'],
   // 服务器
   hosts_list: ['compute', 'hosts', 'list'],
+  hosts_create: ['compute', 'hosts', 'create'],
+  hosts_delete: ['compute', 'hosts', 'delete'],
+  hosts_update: ['compute', 'hosts', 'update'],
+  hosts_perform_start: ['compute', 'hosts', 'perform', 'start'],
+  hosts_perform_stop: ['compute', 'hosts', 'perform', 'stop'],
+  hosts_perform_reset: ['compute', 'hosts', 'perform', 'reset'],
+  hosts_perform_disable: ['compute', 'hosts', 'perform', 'disable'],
+  hosts_perform_enable: ['compute', 'hosts', 'perform', 'enable'],
+  hosts_perform_syncstatus: ['compute', 'hosts', 'perform', 'syncstatus'],
+  hosts_perform_set_schedtag: ['compute', 'hosts', 'perform', 'set-schedtag'],
+  hosts_perform_change_owner: ['compute', 'hosts', 'perform', 'change-owner'],
+  hosts_perform_public: ['compute', 'hosts', 'perform', 'public'],
+  hosts_perform_auto_migrate_on_host_down: ['compute', 'hosts', 'perform', 'auto-migrate-on-host-down'],
+  hosts_perform_undo_convert: ['compute', 'hosts', 'perform', 'undo-convert'],
+  hosts_perform_maintenance: ['compute', 'hosts', 'perform', 'maintenance'],
+  hosts_perform_unmaintenance: ['compute', 'hosts', 'perform', 'unmaintenance'],
+  hosts_perform_host_maintenance: ['compute', 'hosts', 'perform', 'host-maintenance'],
+  hosts_perform_set_reserved_resource_for_isolated_device: ['compute', 'hosts', 'perform', 'set-reserved-resource-for-isolated-device'],
+  hosts_perform_set_user_metadata: ['compute', 'hosts', 'perform', 'set-user-metadata'],
+  hosts_perform_convert_hypervisor: ['compute', 'hosts', 'perform', 'convert-hypervisor'],
+  hosts_perform_ipmi_probe: ['compute', 'hosts', 'perform', 'ipmi-probe'],
+  hosts_perform_prepare: ['compute', 'hosts', 'perform', 'prepare'],
+  hosts_get_ipmi: ['compute', 'hosts', 'get', 'ipmi'],
   // 服务器详情
   hosts_get: ['compute', 'hosts', 'get'],
   // 调度标签
@@ -206,6 +229,13 @@ export const PERMISSION = {
   serverskus_list: ['compute', 'serverskus', 'list'],
   // 认证源
   idps_list: ['identity', 'identity_providers', 'list'],
+  idps_create: ['identity', 'identity_providers', 'create'],
+  idps_update: ['identity', 'identity_providers', 'update'],
+  idps_delete: ['identity', 'identity_providers', 'delete'],
+  idps_perform_enable: ['identity', 'identity_providers', 'perform', 'enable'],
+  idps_perform_disable: ['identity', 'identity_providers', 'perform', 'disable'],
+  idps_perform_sync: ['identity', 'identity_providers', 'perform', 'sync'],
+  extra_users_create: ['itsm', 'extra-users', 'create'],
   // 常用系统(接入端)
   endpoints_list: ['identity', 'endpoints', 'list'],
   // 报警
@@ -260,6 +290,16 @@ export const PERMISSION = {
   server_perform_setup_ssh_proxy: ['compute', 'servers', 'perform', 'make-sshable'],
   server_perform_detect_ssh_proxy: ['compute', 'servers', 'get', 'sshable'],
   server_perform_install_agent: ['compute', 'servers', 'perform', 'install-agent'],
+  server_perform_instance_snapshot_reset: ['compute', 'servers', 'perform', 'instance-snapshot-reset'],
+  server_perform_change_bandwidth: ['compute', 'servers', 'perform', 'change-bandwidth'],
+  server_perform_change_ipaddr: ['compute', 'servers', 'perform', 'change-ipaddr'],
+  server_perform_detachnetwork: ['compute', 'servers', 'perform', 'detachnetwork'],
+  server_perform_attachnetwork: ['compute', 'servers', 'perform', 'attachnetwork'],
+  server_perform_detach_scaling_group: ['compute', 'servers', 'perform', 'detach-scaling-group'],
+  server_perform_instance_backup: ['compute', 'servers', 'perform', 'instance-backup'],
+  server_perform_list_forward: ['compute', 'servers', 'perform', 'list-forward'],
+  server_perform_open_forward: ['compute', 'servers', 'perform', 'open-forward'],
+  server_get_jnlp: ['compute', 'servers', 'get', 'jnlp'],
   /**
    * images 相关操作
    */
@@ -290,6 +330,7 @@ export const PERMISSION = {
    * diskbackups
    */
   diskbackups_list: ['compute', 'diskbackups', 'list'],
+  diskbackups_create: ['compute', 'diskbackups', 'create'],
   diskbackups_delete: ['compute', 'diskbackups', 'delete'],
   diskbackups_perform_recovery: ['compute', 'diskbackups', 'perform', 'recovery'],
   diskbackups_perform_syncstatus: ['compute', 'diskbackups', 'perform', 'syncstatus'],
@@ -703,6 +744,7 @@ export const PERMISSION = {
    * instancebackups
    */
   instancebackups_list: ['compute', 'instancebackups', 'list'],
+  instancebackups_create: ['compute', 'instancebackups', 'create'],
   instancebackups_delete: ['compute', 'instancebackups', 'delete'],
   instancebackups_perform_syncstatus: ['compute', 'instancebackups', 'perform', 'syncstatus'],
   instancebackups_perform_recovery: ['compute', 'instancebackups', 'perform', 'recovery'],
@@ -964,6 +1006,16 @@ export const PERMISSION = {
   waf_instances_delete: ['compute', 'waf_instances', 'delete'],
 
   kafkas_set_user_metadata: ['compute', 'kafkas', 'perform', 'set-user-metadata'],
+  // elastic_search
+  elastic_searchs_list: ['compute', 'elastic_searchs', 'list'],
+  elastic_searchs_update: ['compute', 'elastic_searchs', 'update'],
+  elastic_searchs_delete: ['compute', 'elastic_searchs', 'delete'],
+  elastic_searchs_perform_syncstatus: ['compute', 'elastic_searchs', 'perform', 'syncstatus'],
+  elastic_searchs_perform_set_user_metadata: ['compute', 'elastic_searchs', 'perform', 'set-user-metadata'],
+  // 全局设置
+  services_get: ['common', 'services', 'get'],
+  // 字典配置
+  dictionary_get: ['yunionconf', 'parameters', 'get'],
 
   elastic_search_delete: ['compute', 'elastic_searchs', 'delete'],
   elastic_search_set_user_metadata: ['compute', 'elastic_searchs', 'perform', 'set-user-metadata'],
