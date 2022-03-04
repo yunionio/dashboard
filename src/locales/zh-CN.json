@@ -2575,8 +2575,9 @@
     "cost_conversions": "二次定价策略",
     "billing_exchange_rates": "汇率配置",
     "price_infos": "价格对比",
-    "parameters": "用户配置",
-    "log_manage": "日志管理"
+    "parameters": "字典设置",
+    "log_manage": "日志管理",
+    "services": "全局设置"
   },
   "res": {
     "role": "@:dictionary.role",

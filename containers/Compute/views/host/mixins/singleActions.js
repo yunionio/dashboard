@@ -25,7 +25,7 @@ export default {
             const ret = []
             if (obj.is_baremetal || obj.host_type === 'baremetal') {
               ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole))
-              ret.push(jnlpConsole(this.onManager, obj))
+              ret.push({ ...jnlpConsole(this.onManager, obj), permission: 'server_get_jnlp' })
             }
             let ips = (obj.server_ips || '').split(',').filter(item => !!item)
             if (obj.access_ip) {

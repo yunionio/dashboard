@@ -7,6 +7,7 @@ export function solWebConsole (manager, host, onData) {
   }
   return {
     label: i18n.t('compute.text_342'),
+    permission: 'hosts_get_ipmi',
     action: () => {
       manager.objectRpc({
         methodname: 'DoBaremetalConnect',
