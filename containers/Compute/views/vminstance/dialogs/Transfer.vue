@@ -32,12 +32,11 @@
           :label="$t('compute.text_111')"
           :validate-status="hostValidateStatus"
           :help="hostValidateMsg">
-          <base-select
+          <list-select
             v-decorator="decorators.host"
-            remote
-            :remote-fn="q => ({ filter: `name.contains(${q})` })"
-            :options="hostsOptions"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_314') }" />
+            :list-props="resourceProps"
+            :formatter="v => v.name"
+            :multiple="false" />
         </a-form-item>
       </a-form>
     </div>
@@ -52,10 +51,15 @@
 import { mapGetters } from 'vuex'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import ListSelect from '@/sections/ListSelect'
+import ResourceProps from '../mixins/resourceProps'
 
 export default {
   name: 'VmTransferDialog',
-  mixins: [DialogMixin, WindowsMixin],
+  components: {
+    ListSelect,
+  },
+  mixins: [DialogMixin, WindowsMixin, ResourceProps],
   data () {
     return {
       loading: false,
