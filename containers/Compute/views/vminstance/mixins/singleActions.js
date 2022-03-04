@@ -738,6 +738,7 @@ export default {
                 },
                 {
                   label: this.$t('compute.bind_physical_cpu'),
+                  permission: 'server_get_cpuset_cores',
                   action: () => {
                     this.createDialog('BindPhysicalCpuDialog', {
                       data: [obj],

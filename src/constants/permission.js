@@ -408,6 +408,7 @@ export const PERMISSION = {
   server_perform_list_forward: ['compute', 'servers', 'perform', 'list-forward'],
   server_perform_open_forward: ['compute', 'servers', 'perform', 'open-forward'],
   server_get_jnlp: ['compute', 'servers', 'get', 'jnlp'],
+  server_get_cpuset_cores: ['compute', 'servers', 'get', 'cpuset-cores'],
   /**
    * images 相关操作
    */
