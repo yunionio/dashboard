@@ -498,6 +498,8 @@ export default {
         scope: this.scope,
         show_emulated: true,
         'filter.0': 'status.equals(enable)',
+        order: 'asc',
+        order_by: 'external_id',
       }
       if (this.isAdminMode) {
         params.project_domain = this.project_domain
