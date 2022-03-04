@@ -649,6 +649,18 @@ export const RESOURCES_MAP = {
   parameters: {
     i18n: 'dictionary.parameters',
   },
+  services: {
+    i18n: 'dictionary.services',
+  },
+  cdn_domains: {
+    i18n: 'dictionary.cdn_domain',
+  },
+  cachedimages: {
+    i18n: 'dictionary.storagecachedimages',
+  },
+  waf_instances: {
+    i18n: 'dictionary.waf_instance',
+  },
 }
 
 export const DEFAULT_ACTIONS_KEY = ['list', 'get', 'update', 'create', 'delete', 'perform']
