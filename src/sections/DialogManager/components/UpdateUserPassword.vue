@@ -28,6 +28,7 @@
 
 <script>
 import * as R from 'ramda'
+import { Base64 } from 'js-base64'
 import { mapGetters } from 'vuex'
 import { passwordLevel } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
@@ -169,9 +170,11 @@ export default {
       try {
         const values = await this.validateForm()
         const data = {
-          ...values,
+          password_confirm: Base64.encode(values.password_new),
+          password_old: Base64.encode(values.password_old),
+          password_new: Base64.encode(values.password_new),
+          com_password: Base64.encode(values.com_password),
         }
-        data.password_confirm = values.password_new
         this.loading = true
         await this.doUpdatePassword(data)
         this.$message.success(this.$t('common.success'))
