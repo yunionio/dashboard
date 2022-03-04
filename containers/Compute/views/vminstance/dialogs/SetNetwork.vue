@@ -113,6 +113,7 @@ export default {
         cloudregion: resItem.cloudregion_id,
         zone: resItem.zone_id,
         // host: resItem.host,
+        scope: this.$store.getters.scope,
       }
     },
     networkLimit () {
