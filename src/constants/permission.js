@@ -189,6 +189,7 @@ export const PERMISSION = {
   hosts_perform_convert_hypervisor: ['compute', 'hosts', 'perform', 'convert-hypervisor'],
   hosts_perform_ipmi_probe: ['compute', 'hosts', 'perform', 'ipmi-probe'],
   hosts_perform_prepare: ['compute', 'hosts', 'perform', 'prepare'],
+  hosts_get_ipmi: ['compute', 'hosts', 'get', 'ipmi'],
   // 服务器详情
   hosts_get: ['compute', 'hosts', 'get'],
   // 调度标签
@@ -338,7 +339,7 @@ export const PERMISSION = {
   idps_perform_enable: ['identity', 'identity_providers', 'perform', 'enable'],
   idps_perform_disable: ['identity', 'identity_providers', 'perform', 'disable'],
   idps_perform_sync: ['identity', 'identity_providers', 'perform', 'sync'],
-  extra_users_create: ['identity', 'extra-users', 'create'],
+  extra_users_create: ['itsm', 'extra-users', 'create'],
   // 常用系统(接入端)
   endpoints_list: ['identity', 'endpoints', 'list'],
   endpoints_create: ['identity', 'endpoints', 'create'],
@@ -403,6 +404,10 @@ export const PERMISSION = {
   server_perform_detachnetwork: ['compute', 'servers', 'perform', 'detachnetwork'],
   server_perform_attachnetwork: ['compute', 'servers', 'perform', 'attachnetwork'],
   server_perform_detach_scaling_group: ['compute', 'servers', 'perform', 'detach-scaling-group'],
+  server_perform_instance_backup: ['compute', 'servers', 'perform', 'instance-backup'],
+  server_perform_list_forward: ['compute', 'servers', 'perform', 'list-forward'],
+  server_perform_open_forward: ['compute', 'servers', 'perform', 'open-forward'],
+  server_get_jnlp: ['compute', 'servers', 'get', 'jnlp'],
   /**
    * images 相关操作
    */
@@ -441,6 +446,7 @@ export const PERMISSION = {
    * diskbackups
    */
   diskbackups_list: ['compute', 'diskbackups', 'list'],
+  diskbackups_create: ['compute', 'diskbackups', 'create'],
   diskbackups_delete: ['compute', 'diskbackups', 'delete'],
   diskbackups_perform_recovery: ['compute', 'diskbackups', 'perform', 'recovery'],
   diskbackups_perform_syncstatus: ['compute', 'diskbackups', 'perform', 'syncstatus'],
@@ -926,6 +932,7 @@ export const PERMISSION = {
    * instancebackups
    */
   instancebackups_list: ['compute', 'instancebackups', 'list'],
+  instancebackups_create: ['compute', 'instancebackups', 'create'],
   instancebackups_delete: ['compute', 'instancebackups', 'delete'],
   instancebackups_perform_syncstatus: ['compute', 'instancebackups', 'perform', 'syncstatus'],
   instancebackups_perform_recovery: ['compute', 'instancebackups', 'perform', 'recovery'],
@@ -1253,7 +1260,9 @@ export const PERMISSION = {
   elastic_searchs_delete: ['compute', 'elastic_searchs', 'delete'],
   elastic_searchs_perform_syncstatus: ['compute', 'elastic_searchs', 'perform', 'syncstatus'],
   elastic_searchs_perform_set_user_metadata: ['compute', 'elastic_searchs', 'perform', 'set-user-metadata'],
+  // 全局设置
   services_get: ['common', 'services', 'get'],
+  // 字典配置
   dictionary_get: ['yunionconf', 'parameters', 'get'],
 
   //

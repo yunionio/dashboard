@@ -102,7 +102,7 @@ export default {
           eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
           ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
           ret = ret.concat(eips).concat(ips)
-          ret.push(jnlpConsole(new this.$Manager('servers', 'v2'), obj))
+          ret.push({ ...jnlpConsole(new this.$Manager('servers', 'v2'), obj), permission: 'server_get_jnlp' })
           return ret
         },
         meta: (obj) => {

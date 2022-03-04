@@ -86,7 +86,7 @@ export default {
               meta,
             })
           })
-          ret.push(jnlpConsole(new this.$Manager('hosts', 'v2'), obj))
+          ret.push({ ...jnlpConsole(new this.$Manager('hosts', 'v2'), obj), permission: 'server_get_jnlp' })
           return ret
         },
       },

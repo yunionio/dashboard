@@ -20,6 +20,7 @@ export default {
     this.singleActions = [
       {
         label: i18n.t('compute.text_341'),
+        permission: 'server_get_vnc',
         actions: obj => {
           let ret = []
           ret.push({
@@ -130,6 +131,7 @@ export default {
 
               options.push({
                 label: `SSH ${ipAddr}`,
+                permission: 'server_perform_list_forward,server_perform_open_forward',
                 action: () => {
                   openWebconsole(22)
                 },
@@ -137,6 +139,7 @@ export default {
               })
               options.push({
                 label: i18n.t('compute.text_345', [ipAddr]),
+                permission: 'server_perform_list_forward,server_perform_open_forward',
                 action: () => {
                   this.createDialog('SmartFormDialog', {
                     title: i18n.t('compute.text_346'),
@@ -555,6 +558,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.create_disk_backup2'),
+                  permission: 'server_perform_instance_backup,diskbackups_create,instancebackups_create',
                   action: () => {
                     this.createDialog('VmBackupCreateDialog', {
                       data: [obj],
