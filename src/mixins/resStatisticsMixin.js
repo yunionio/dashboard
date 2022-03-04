@@ -85,7 +85,7 @@ export default {
       }
     },
     refreshHandle () {
-      this.fetchResStatistics()
+      // this.fetchResStatistics()
     },
   },
 }
