@@ -48,7 +48,7 @@ export default {
               return `name.contains("${val}")`
             },
           },
-          manager: {
+          cloudprovider_id: {
             label: this.$t('cloudevent.title.manager'),
             dropdown: true,
             multiple: false,
