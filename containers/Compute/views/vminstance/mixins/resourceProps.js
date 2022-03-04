@@ -112,10 +112,14 @@ export default {
     fetchDataCb () {
       const { total, data } = this.resourceProps.list
       if (total > 0) {
+        const hostIds = this.forcastData?.filtered_candidates?.map(v => v.id) || []
+        if (this.forcastData?.can_create === false) {
+          this.resourceProps.list.data = []
+        }
         for (const key in data) {
           const obj = data[key].data
-          if (obj.delete_fail_reason?.code === 400) {
-            // delete data[obj.id]
+          if (hostIds.includes(obj.id)) {
+            delete data[obj.id]
           }
         }
       }
