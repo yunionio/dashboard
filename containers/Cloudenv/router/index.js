@@ -88,6 +88,13 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.proxysetting')) {
                 return true
               }
+              const haskeys = setupKeys.hasVersionedSetupKey({
+                '3.0': ['bill'],
+                default: true,
+              })
+              if (haskeys) {
+                return false
+              }
               return !hasSetupKey(['private', 'vmware', 'public', 'storage'])
             },
           },
@@ -108,6 +115,13 @@ export default {
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.projectmapping')) {
                 return true
+              }
+              const haskeys = setupKeys.hasVersionedSetupKey({
+                '3.0': ['bill'],
+                default: true,
+              })
+              if (haskeys) {
+                return false
               }
               return !hasSetupKey('public') || setupKeys.isSubSet(['public', 'jdcloud', 'ecloud'])
             },
