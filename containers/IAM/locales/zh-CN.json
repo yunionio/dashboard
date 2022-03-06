@@ -754,6 +754,10 @@
     "common$enable_organization": {
       "label": "组织架构开关",
       "desc": "开启后，可自定义层级对项目进行权限控制，同时支持在资源列表进行过滤查看。"
+    },
+    "common$create_server_auto_start": {
+      "label": "新建虚拟机后自动启动",
+      "desc": "默认开启，虚拟机新建成功后会自动启动。关闭后，新建成功的虚拟机默认为关机状态。"
     }
   },
   "user": {
