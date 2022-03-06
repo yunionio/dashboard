@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 // import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -30,7 +31,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'scheduledtasks',
-        getParams: { details: true, utc_offset: this.$moment().utcOffset() / 60 },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: this.$t('cloudenv.text_95'),
@@ -168,6 +169,17 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    refresh () {
+      this.list.fetchData()
+    },
+    getParam () {
+      const ret = {
+        details: true,
+        utc_offset: this.$moment().utcOffset() / 60,
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
+      return ret
     },
   },
 }
