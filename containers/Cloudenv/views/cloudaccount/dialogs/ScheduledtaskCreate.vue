@@ -186,7 +186,9 @@ export default {
       }
       // 触发时间
       if (values.hourMinute) {
-        params.cycle_timer.hour = values.hourMinute.hours()
+        // 转换为utc hour
+        const time = this.$moment(values.hourMinute)
+        params.cycle_timer.hour = time.subtract(time.utcOffset(), 'minutes').hour()
         params.cycle_timer.minute = values.hourMinute.minutes()
       }
       // 有效时间
