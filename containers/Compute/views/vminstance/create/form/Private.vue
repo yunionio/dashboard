@@ -121,7 +121,8 @@
           :cloudprovider="this.form.fd.cloudprovider"
           :serverCount="form.fd.count"
           :key="serverNetwork"
-          :networkResourceMapper="networkResourceMapper" />
+          :networkResourceMapper="networkResourceMapper"
+          :showMacConfig="form.fd.hypervisor === 'kvm'" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
@@ -171,11 +172,11 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import mixin from './mixin'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
+import mixin from './mixin'
 
 export default {
   name: 'VMPrivateCreate',
