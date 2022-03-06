@@ -84,6 +84,21 @@
       <a-tooltip v-else :title="ipBtnTooltip">
         <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowIp(item)">{{$t('compute.text_198')}}</a-button>
       </a-tooltip>
+      <template v-if="showMacConfig">
+        <template v-if="item.macShow">
+          <a-form-item class="mb-0"  :wrapperCol="{ span: 24 }">
+            <a-input
+              style="width: 200px"
+              :placeholder="$t('compute.text_806')"
+              @change="e => macChange(e, i)"
+              v-decorator="decorator.macs(item.key, item.network)" />
+          </a-form-item>
+          <a-button type="link" class="mt-1" @click="triggerShowMac(item)">{{$t('compute.text_135')}}</a-button>
+        </template>
+        <a-tooltip v-else :title="ipBtnTooltip">
+          <a-button type="link" class="mr-1 mt-1" :disabled="ipsDisabled" @click="triggerShowMac(item)">{{$t('compute.mac_config')}}</a-button>
+        </a-tooltip>
+      </template>
       <a-button shape="circle" icon="minus" size="small" v-if="i !== 0" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <div class="d-flex align-items-center" v-if="networkCountRemaining > 0">
@@ -120,7 +135,7 @@ export default {
     decorator: {
       type: Object,
       required: true,
-      validator: val => R.is(Function, val.vpcs) && R.is(Function, val.networks) && R.is(Function, val.ips),
+      validator: val => R.is(Function, val.vpcs) && R.is(Function, val.networks) && R.is(Function, val.ips) && R.is(Function, val.macs),
     },
     isBonding: {
       type: Boolean,
@@ -156,6 +171,10 @@ export default {
     },
     isDialog: {
       type: Boolean,
+    },
+    showMacConfig: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -219,12 +238,16 @@ export default {
     ipChange (e, i) {
       this.networkList[i].ip = e.target.value
     },
+    macChange (e, i) {
+      this.networkList[i].mac = e.target.value
+    },
     add () {
       const uid = uuid()
       const data = {
         network: {},
         vpc: {},
         ipShow: false,
+        macShow: false,
         key: uid,
       }
       if (this.vpcObj) {
@@ -242,6 +265,10 @@ export default {
     triggerShowIp (item, i) {
       item.ipShow = !item.ipShow
     },
+    triggerShowMac (item, i) {
+      console.log(item)
+      item.macShow = !item.macShow
+    },
     decrease (uid, index) {
       this.networkList.splice(index, 1)
     },
@@ -251,6 +278,7 @@ export default {
         this.networkList = [firstItem]
       }
       this.$set(this.networkList[0], 'ipShow', false)
+      this.$set(this.networkList[0], 'macShow', false)
       this.ipsDisabled = ipsDisabled
     },
     networkChange (val, item) {
