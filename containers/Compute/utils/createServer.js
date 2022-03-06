@@ -398,6 +398,22 @@ export const createVmDecorators = type => {
             ],
           },
         ],
+        macs: (i, networkData) => [
+          `networkMacs[${i}]`,
+          {
+            validateFirst: true,
+            validateTrigger: ['blur', 'change'],
+            rules: [
+              {
+                required: true,
+                message: i18n.t('compute.text_806'),
+              },
+              {
+                validator: validateForm('mac'),
+              },
+            ],
+          },
+        ],
       },
       networkSchedtag: {
         schedtags: i => [
@@ -826,6 +842,12 @@ export class GenCreateData {
           const address = this.fd.networkIps[key]
           if (address) {
             obj.address = address
+          }
+        }
+        if (this.fd.networkMacs) {
+          const mac = this.fd.networkMacs[key]
+          if (mac) {
+            obj.mac = mac
           }
         }
         if (this.fd.networkExits) {

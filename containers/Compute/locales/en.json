@@ -1530,5 +1530,6 @@
   "compute.unpack": "Package",
   "compute.unpack_name": "Package Name",
   "compute.instance_backup_name": "Instance Backup Name",
-  "compute.bind_physical_cpu": "Bind Physical CPU"
+  "compute.bind_physical_cpu": "Bind Physical CPU",
+  "compute.mac_config": "Set the MAC address"
 }
