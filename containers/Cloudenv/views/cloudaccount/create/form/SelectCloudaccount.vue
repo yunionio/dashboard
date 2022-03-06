@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { hasSetupKey } from '@/utils/auth'
 import { CLOUDACCOUNT_TYPES, ENV_TITLE } from '@Cloudenv/views/cloudaccount/constants'
 
 export default {
@@ -32,7 +33,6 @@ export default {
   },
   data () {
     return {
-      types: CLOUDACCOUNT_TYPES,
       envTitle: ENV_TITLE,
     }
   },
@@ -43,6 +43,23 @@ export default {
         return globalSetting.value.setupKeys
       }
       return undefined
+    },
+    types () {
+      const typesMap = {}
+      for (const box in CLOUDACCOUNT_TYPES) {
+        for (const brand in CLOUDACCOUNT_TYPES[box]) {
+          if (hasSetupKey([brand])) {
+            if (!typesMap[box]) {
+              typesMap[box] = {
+                [brand]: CLOUDACCOUNT_TYPES[box][brand],
+              }
+            } else {
+              typesMap[box][brand] = CLOUDACCOUNT_TYPES[box][brand]
+            }
+          }
+        }
+      }
+      return typesMap
     },
   },
   watch: {
