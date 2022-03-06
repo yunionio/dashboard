@@ -34,4 +34,5 @@ export default {
   scopedPolicy: state => state.scopedPolicy,
   globalConfig: state => state.common.globalConfig,
   projectTags: state => state.projectTags,
+  globalSetting: state => state.globalSetting,
 }

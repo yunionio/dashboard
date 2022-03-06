@@ -1035,8 +1035,9 @@ export class GenCreateData {
    * @memberof GenCreateData
    */
   all () {
+    const { create_server_auto_start = true } = store.getters.globalSetting.value || {}
     const data = {
-      auto_start: true,
+      auto_start: create_server_auto_start,
       generate_name: this.fd.name,
       description: this.fd.description,
       hypervisor: this.getHypervisor(),
