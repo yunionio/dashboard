@@ -278,6 +278,9 @@ export default {
       if (type === 'cycle' && row.cycle_timer) {
         const timer = row.cycle_timer
         const { hour, minute, start_time: startTime, end_time: endTime } = timer
+        const now = this.$moment()
+        const utcOffset = now.utcOffset() * -1
+        const trueHour = now.set({ hour }).subtract(utcOffset, 'minutes').hour()
         const typeTxt = this.$t('flexGroupCycleType')[timer.cycle_type]
         let itemsTxt = ''
         // 周
@@ -296,7 +299,7 @@ export default {
         if (startTime && endTime) {
           tiemStr = this.$t('compute.text_970', [this.$moment(startTime).format('YYYY-MM-DD'), this.$moment(endTime).format('YYYY-MM-DD')])
         }
-        return this.$t('compute.text_972', [typeTxt, itemsTxt, numerify(hour, '00'), numerify(minute, '00'), tiemStr])
+        return this.$t('compute.text_972', [typeTxt, itemsTxt, numerify(trueHour, '00'), numerify(minute, '00'), tiemStr])
       }
       return '-'
     },
