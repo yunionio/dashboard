@@ -340,7 +340,9 @@ export default {
     },
     formatValues (values) {
       if (values.hourMinute) {
-        values.cycleTimer.hour = values.hourMinute.hours()
+        // 转换为utc hour
+        const time = this.$moment(values.hourMinute)
+        values.cycleTimer.hour = time.subtract(time.utcOffset(), 'minutes').hour()
         values.cycleTimer.minute = values.hourMinute.minutes()
         delete values.hourMinute
       }
