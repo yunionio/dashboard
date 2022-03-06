@@ -235,6 +235,7 @@ export default {
     getParam () {
       const ret = {
         details: true,
+        utc_offset: this.$moment().utcOffset() / 60,
         ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
       }
       return ret
