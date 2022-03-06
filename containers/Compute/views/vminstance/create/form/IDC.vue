@@ -138,7 +138,8 @@
           :hypervisor="form.fd.hypervisor"
           :serverCount="form.fd.count"
           :vpcResourceMapper="vpcResourceMapper"
-          :networkResourceMapper="networkResourceMapper" />
+          :networkResourceMapper="networkResourceMapper"
+          :showMacConfig="form.fd.hypervisor === 'kvm'" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0">
         <tag
@@ -229,7 +230,6 @@
 <script>
 import _ from 'lodash'
 import * as R from 'ramda'
-import mixin from './mixin'
 import SecgroupConfig from '@Compute/sections/SecgroupConfig'
 import { HYPERVISORS_MAP } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
@@ -240,6 +240,7 @@ import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
+import mixin from './mixin'
 
 export default {
   name: 'VM_IDCCreate',
