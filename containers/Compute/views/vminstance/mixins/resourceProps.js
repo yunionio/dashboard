@@ -12,11 +12,15 @@ export default {
     resourceProps () {
       return {
         list: this.$list.createList(this, {
+          id: 'VmHostsListForTransferDialog',
           resource: 'hosts',
           getParams: {
             ...this.hostsParams,
           },
           filterOptions: {
+            id: {
+              label: this.$t('table.title.id'),
+            },
             name: getNameFilter(),
             any_ip: {
               label: 'IP',
@@ -45,24 +49,40 @@ export default {
           {
             field: 'custom_ip',
             title: 'IP',
-            width: 200,
+            minWidth: 200,
             showOverflow: 'ellipsis',
             slots: {
               default: ({ row }) => {
                 const cellWrap = []
                 if (row.access_ip) {
-                  cellWrap.push(
-                    <div class="d-flex">
-                      <list-body-cell-wrap row={row} field="access_ip" copy><span class="text-color-help">{this.$t('compute.text_1319')}</span></list-body-cell-wrap>
-                    </div>,
-                  )
+                  if (row.ipmi_ip) {
+                    cellWrap.push(
+                      <div class="d-flex">
+                        <list-body-cell-wrap row={row} field="access_ip" copy><span class="text-color-help">{this.$t('compute.text_1319')}</span></list-body-cell-wrap>
+                      </div>,
+                    )
+                  } else {
+                    cellWrap.push(
+                      <div class="d-flex">
+                        <list-body-cell-wrap row={row} field="access_ip" copy></list-body-cell-wrap>
+                      </div>,
+                    )
+                  }
                 }
                 if (row.ipmi_ip) {
-                  cellWrap.push(
-                    <div class="d-flex">
-                      <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">{this.$t('compute.text_1320')}</span></list-body-cell-wrap>
-                    </div>,
-                  )
+                  if (row.access_ip) {
+                    cellWrap.push(
+                      <div class="d-flex">
+                        <list-body-cell-wrap row={row} field="ipmi_ip" copy><span class="text-color-help">{this.$t('compute.text_1320')}</span></list-body-cell-wrap>
+                      </div>,
+                    )
+                  } else {
+                    cellWrap.push(
+                      <div class="d-flex">
+                        <list-body-cell-wrap row={row} field="ipmi_ip" copy></list-body-cell-wrap>
+                      </div>,
+                    )
+                  }
                 }
                 return cellWrap
               },
@@ -104,6 +124,27 @@ export default {
               },
             },
           },
+          {
+            field: 'model',
+            title: this.$t('compute.text_580'),
+            minWidth: 100,
+            formatter: ({ cellValue, row }) => {
+              return ((row.sys_info || {}).model) || '-'
+            },
+          },
+          {
+            field: 'nonsystem_guests',
+            sortBy: 'order_by_server_count',
+            title: '#VM',
+            minWidth: 80,
+            sortable: true,
+            slots: {
+              default: ({ row }, h) => {
+                if (row.nonsystem_guests === undefined) return [<data-loading />]
+                return `${row.nonsystem_guests}`
+              },
+            },
+          },
         ],
       }
     },
@@ -120,6 +161,7 @@ export default {
           const obj = data[key].data
           if (hostIds.includes(obj.id)) {
             delete data[obj.id]
+            this.resourceProps.list.total--
           }
         }
       }
