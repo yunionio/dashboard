@@ -1516,5 +1516,6 @@
   "compute.instance_name_placeholder": "选填，为空则名称为原备份主机的名称",
   "compute.disk_size_disbale_tips": "{0}平台系统盘容量默认与镜像一致",
   "compute.private_network": "私有网络",
-  "compute.os.nfs": "方德"
+  "compute.os.nfs": "方德",
+  "compute.transfer_mutiple_dialog_alert": "有{0}个虚拟机已经在该宿主机上，本次迁移会失败，但是不影响其他虚拟机迁移！"
 }
