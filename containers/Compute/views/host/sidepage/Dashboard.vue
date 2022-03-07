@@ -6,7 +6,7 @@
           <progress-card :progress="item" :colorReverse="index === 3" />
         </a-col>
       </a-row>
-    <a-divider class="mt-3" orientation="left">{{$t('compute.text_573')}}</a-divider>
+    <!-- <a-divider class="mt-3" orientation="left">{{$t('compute.text_573')}}</a-divider>
     <a-spin :spinning="loading">
       <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
         <a-col class="mb-3" :lg="12" :xl="6" v-for="item in gaugeList" :key="item.label">
@@ -18,7 +18,7 @@
             :percentFormat="item.percentFormat" />
         </a-col>
       </a-row>
-    </a-spin>
+    </a-spin> -->
     <a-divider class="mt-3" orientation="left">TOP5</a-divider>
     <a-spin :spinning="top5Loading">
       <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
@@ -33,11 +33,11 @@
 <script>
 import _ from 'lodash'
 import numerify from 'numerify'
-import { GAUGEMSG, HOST_TOP5 } from '../constants'
 import ProgressCard from '@/sections/ProgressCard'
 import { sizestrWithUnit, getRequestT } from '@/utils/utils'
 import Top5 from '@/sections/Top5'
 import { getSignature } from '@/utils/crypto'
+import { GAUGEMSG, HOST_TOP5 } from '../constants'
 
 export default {
   name: 'HostDashboard',
@@ -72,7 +72,7 @@ export default {
   },
   created () {
     this.turnToList(this.data)
-    this.fetchGaugeData()
+    // this.fetchGaugeData()
     this.fetchTop5Data()
   },
   methods: {
@@ -176,7 +176,6 @@ export default {
           msg: {
             current,
             total,
-            currentLabel: this.$t('compute.text_574'),
           },
         }
       })()
@@ -188,7 +187,6 @@ export default {
           percent: total ? (current / total) : 0,
           msg: {
             current: sizestrWithUnit(current, 'M', 1024),
-            currentLabel: this.$t('compute.text_574'),
             total: sizestrWithUnit(total, 'M', 1024),
           },
         }
@@ -197,7 +195,7 @@ export default {
         const current = obj.storage_used || 0
         const total = obj.storage_size || 0
         return {
-          title: this.$t('compute.text_575'),
+          title: this.$t('compute.text_99'),
           percent: total ? (current / total) : 0,
           msg: {
             current: sizestrWithUnit(current, 'M', 1024),
@@ -215,7 +213,6 @@ export default {
             current,
             currentLabel: this.$t('compute.text_574'),
             total,
-            totalLabel: this.$t('compute.text_576'),
           },
         }
       })()
