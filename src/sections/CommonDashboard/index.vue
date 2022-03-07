@@ -77,7 +77,7 @@ export default {
           },
         },
         {
-          title: this.$t('common.text00049'),
+          title: this.$t('dictionary.storage'),
           percent: disk.used.value / (disk.total.value || 1),
           msg: {
             current: disk.used.formatValue,
