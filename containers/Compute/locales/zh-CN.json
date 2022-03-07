@@ -1531,5 +1531,11 @@
   "compute.unpack_name": "包名称",
   "compute.instance_backup_name": "主机备份名称",
   "compute.bind_physical_cpu": "绑定物理CPU",
-  "compute.mac_config": "手动配置MAC地址"
+  "compute.mac_config": "手动配置MAC地址",
+  "compute.mem_snapshot": "内存快照",
+  "compute.create_mem_snapshot_same_time": "同时新建内存快照",
+  "compute.contains": "包含",
+  "compute.not_contains": "不包含",
+  "compute.rollback_mem_snapshot_same_time": "同时回滚内存快照",
+  "compute.create_mem_snapshot_limit": "只有【运行中】的虚拟机才可以新建内存快照"
 }
