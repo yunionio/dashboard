@@ -36,7 +36,9 @@
             v-decorator="decorators.host"
             :list-props="resourceProps"
             :formatter="v => v.name"
-            :multiple="false" />
+            :multiple="false"
+            :placeholder="$t('compute.text_314')"
+            :dialog-params="{ title: $t('compute.text_111'), width: 1060 }" />
         </a-form-item>
       </a-form>
     </div>
