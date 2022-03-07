@@ -50,6 +50,18 @@
             <div v-show="!isDiskSnapshot">{{$t('compute.text_1255', [ diskCount ])}}</div>
           </div>
         </a-form-item>
+        <a-form-item v-if="!isDiskSnapshot">
+          <a-tooltip>
+            <template v-if="!isRunningVm" slot="title">
+              {{$t('compute.create_mem_snapshot_limit')}}
+            </template>
+            <a-checkbox
+              v-decorator="decorators.with_memory"
+              :disabled="!isRunningVm">
+              {{$t('compute.create_mem_snapshot_same_time')}}
+            </a-checkbox>
+          </a-tooltip>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -116,6 +128,9 @@ export default {
             ],
           },
         ],
+        with_memory: [
+          'with_memory',
+        ],
       },
       formItemLayout: {
         labelCol: { span: 4 },
@@ -147,6 +162,9 @@ export default {
     },
     diskCount () {
       return this.params.data[0].disk_count
+    },
+    isRunningVm () {
+      return this.params.data[0].status === 'running'
     },
   },
   watch: {
@@ -199,9 +217,12 @@ export default {
       return this.manager.create({ data: params })
     },
     async doCreateInstanceSnapshot () {
-      const values = await this.validateForm(['snapshotName'])
+      const values = await this.validateForm(['snapshotName', 'with_memory'])
       const params = {
         generate_name: values.snapshotName,
+      }
+      if (values.with_memory) {
+        params.with_memory = true
       }
       return this.params.onManager('performAction', {
         id: this.params.data[0].id,
