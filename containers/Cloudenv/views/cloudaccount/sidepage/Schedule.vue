@@ -15,7 +15,6 @@ import {
 import {
   getStatusTableColumn,
   getEnabledTableColumn,
-  getCycleTimerColumn,
 } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -53,7 +52,15 @@ export default {
             return this.$t('cloudenvScheduledtaskRuleAction')[row.operation] || '-'
           },
         },
-        getCycleTimerColumn(),
+        {
+          field: 'timer_desc',
+          title: this.$t('cloudenv.text_427'),
+          minWidth: 200,
+          showOverflow: 'title',
+          formatter: ({ row }) => {
+            return row.timer_desc || '-'
+          },
+        },
       ],
       list: this.$list.createList(this, {
         id: this.id,
