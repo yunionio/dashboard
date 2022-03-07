@@ -27,6 +27,13 @@ export default {
       },
     }
   },
+  watch: {
+    '$route.path' (v) {
+      if (v !== '/global-search-result') {
+        this.value = ''
+      }
+    },
+  },
   created () {
     this.initSearchText()
   },
