@@ -27,6 +27,9 @@ export default {
   props: {
     id: String,
     cloudEnv: String,
+    getParams: {
+      type: Object,
+    },
     cloudEnvOptions: {
       type: Array,
     },
@@ -36,9 +39,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'dbinstances',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.rds).flat(),
         filterOptions: {
           external_id: {
@@ -308,6 +309,13 @@ export default {
     this.$bus.$off('RdsRefresh')
   },
   methods: {
+    getParam () {
+      const ret = {
+        ...this.getParams,
+        details: true,
+      }
+      return ret
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'RDSSidePage', {
         id: row.id,
