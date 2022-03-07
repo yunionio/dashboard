@@ -10,6 +10,12 @@
         <a-form-item :label="$t('compute.text_494')" :extra="$t('compute.text_1356')" v-bind="formItemLayout">
           <a-switch v-decorator="decorators.auto_start" :checked-children="$t('compute.text_115')" :un-checked-children="$t('compute.text_116')" />
         </a-form-item>
+        <a-form-item v-if="hasMemorySnapshot">
+          <a-checkbox
+            v-decorator="decorators.with_memory">
+            {{$t('compute.rollback_mem_snapshot_same_time')}}
+          </a-checkbox>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -41,6 +47,9 @@ export default {
             initialValue: true,
           },
         ],
+        with_memory: [
+          'with_memory',
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -57,6 +66,9 @@ export default {
     columns () {
       const showFields = ['name', 'guest', 'brand']
       return this.params.columns.filter((item) => { return showFields.includes(item.field) })
+    },
+    hasMemorySnapshot () {
+      return this.params.data[0].with_memory
     },
   },
   methods: {

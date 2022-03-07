@@ -24,10 +24,10 @@ import {
   getRegionFilter,
   getDescriptionFilter,
 } from '@/utils/common/tableFilter'
+import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import { steadyStatus } from '../constants'
-import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
 export default {
   name: 'InstanceSnapshotList',
@@ -60,6 +60,14 @@ export default {
           project_domains: getDomainFilter(),
           region: getRegionFilter(),
           os_arch: getOsArchFilter(),
+          with_memory: {
+            label: this.$t('compute.mem_snapshot'),
+            dropdown: true,
+            items: [
+              { label: this.$t('compute.contains'), key: 'true' },
+              { label: this.$t('compute.not_contains'), key: 'false' },
+            ],
+          },
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],

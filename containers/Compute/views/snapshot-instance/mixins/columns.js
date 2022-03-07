@@ -43,6 +43,14 @@ export default {
           },
         },
       },
+      {
+        field: 'with_memory',
+        title: i18n.t('compute.mem_snapshot'),
+        width: 100,
+        formatter: ({ row }) => {
+          return row.with_memory ? i18n.t('compute.contains') : i18n.t('compute.not_contains')
+        },
+      },
       getOsArch(),
       {
         field: 'size',
