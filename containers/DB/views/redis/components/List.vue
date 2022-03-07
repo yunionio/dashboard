@@ -30,6 +30,9 @@ export default {
   props: {
     id: String,
     cloudEnv: String,
+    getParams: {
+      type: Object,
+    },
     cloudEnvOptions: {
       type: Array,
     },
@@ -39,9 +42,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'elasticcaches',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam,
         steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
           external_id: {
@@ -365,6 +366,13 @@ export default {
     this.initSidePageTab('redis-detail')
   },
   methods: {
+    getParam () {
+      const ret = {
+        ...this.getParams,
+        details: true,
+      }
+      return ret
+    },
     createServer () {
       this.$router.push('/redis/create')
     },
