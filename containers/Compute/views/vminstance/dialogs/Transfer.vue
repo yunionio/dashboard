@@ -2,6 +2,9 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_1127')}}</div>
     <div slot="body">
+      <a-alert class="mb-2" type="warning" v-if="message">
+        <div slot="message">{{ message }}</div>
+      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1127')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
@@ -38,7 +41,8 @@
             :formatter="v => v.name"
             :multiple="false"
             :placeholder="$t('compute.text_314')"
-            :dialog-params="{ title: $t('compute.text_111'), width: 1060 }" />
+            :dialog-params="{ title: $t('compute.text_111'), width: 1060 }"
+            @change="hostChangeHandle" />
         </a-form-item>
       </a-form>
     </div>
@@ -70,6 +74,7 @@ export default {
       },
       forcastData: null,
       hosts: [],
+      message: '',
       decorators: {
         host: [
           'host',
@@ -289,6 +294,14 @@ export default {
         console.log(err)
         throw err
       })
+    },
+    hostChangeHandle (hostId) {
+      const hostArr = this.params.data.filter(v => v.host_id === hostId)
+      if (hostArr.length > 0) {
+        this.message = this.$t('compute.transfer_mutiple_dialog_alert', [hostArr.length])
+      } else {
+        this.message = ''
+      }
     },
   },
 }
