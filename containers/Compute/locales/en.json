@@ -1531,5 +1531,11 @@
   "compute.unpack_name": "Package Name",
   "compute.instance_backup_name": "Instance Backup Name",
   "compute.bind_physical_cpu": "Bind Physical CPU",
-  "compute.mac_config": "Set the MAC address"
+  "compute.mac_config": "Set the MAC address",
+  "compute.mem_snapshot": "Memory Snapshot",
+  "compute.create_mem_snapshot_same_time": "Create memory snapshot at the same time",
+  "compute.contains": "Contain",
+  "compute.not_contains": "Does not contain",
+  "compute.rollback_mem_snapshot_same_time": "Rollback memory snapshot at the same time",
+  "compute.create_mem_snapshot_limit": "Only the [running] virtual machine can create memory snapshot"
 }
