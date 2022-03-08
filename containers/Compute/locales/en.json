@@ -1538,5 +1538,6 @@
   "compute.not_contains": "Does not contain",
   "compute.rollback_mem_snapshot_same_time": "Rollback memory snapshot at the same time",
   "compute.create_mem_snapshot_limit": "Only the [running] virtual machine can create memory snapshot",
-  "compute.transfer_mutiple_dialog_alert": "There are {0} VMs already on the host, this migration will fail, but it will not affect other VMs migrations!"
+  "compute.transfer_mutiple_dialog_alert": "There are {0} VMs already on the host, this migration will fail, but it will not affect other VMs migrations!",
+  "compute.instance_backup_delete_alert": "When the backup storage is unavailable, you can check forced deletion to delete database records"
 }

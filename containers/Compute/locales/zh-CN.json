@@ -1538,5 +1538,6 @@
   "compute.not_contains": "不包含",
   "compute.rollback_mem_snapshot_same_time": "同时回滚内存快照",
   "compute.create_mem_snapshot_limit": "只有【运行中】的虚拟机才可以新建内存快照",
-  "compute.transfer_mutiple_dialog_alert": "有{0}个虚拟机已经在该宿主机上，本次迁移会失败，但是不影响其他虚拟机迁移！"
+  "compute.transfer_mutiple_dialog_alert": "有{0}个虚拟机已经在该宿主机上，本次迁移会失败，但是不影响其他虚拟机迁移！",
+  "compute.instance_backup_delete_alert": "当备份存储不可用时，可勾选强制删除，删除数据库记录"
 }
