@@ -245,23 +245,20 @@ export default {
             }
           }
         })
-
         // base data
         const initData = {}
         chartData.columns.map((item) => { initData[item] = 0 })
         // fill data
         const rows = []
-        if (Object.keys(_temp).length < 30) {
-          const now = new Date()
-          for (let i = 30; i > 0; i--) {
-            const cur = new Date(now - i * 24 * 60 * 60 * 1000)
-            const rn = `${cur.getMonth() + 1}-${cur.getDate()}`
-            dateList.push(rn)
-            if (_temp.hasOwnProperty(rn)) {
-              rows.push(Object.assign({}, initData, _temp[rn]))
-            } else {
-              rows.push(Object.assign({}, { name: rn }, initData))
-            }
+        const now = new Date()
+        for (let i = 30; i > 0; i--) {
+          const cur = new Date(now - i * 24 * 60 * 60 * 1000)
+          const rn = `${cur.getMonth() + 1}-${cur.getDate()}`
+          dateList.push(rn)
+          if (_temp.hasOwnProperty(rn)) {
+            rows.push(Object.assign({}, initData, _temp[rn]))
+          } else {
+            rows.push(Object.assign({}, { name: rn }, initData))
           }
         }
         // 拼接数据
