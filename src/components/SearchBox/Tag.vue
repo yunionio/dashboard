@@ -13,8 +13,13 @@
           <template v-if="isDropdown">
             <!-- 如果有配置项则渲染 -->
             <template v-if="config.items">
+              <a-input-search
+                id="dropdownSearchInput"
+                class="dropdown-search-input"
+                :placeholder="$t('common.search')"
+                @change="onSearch" />
               <li
-                v-for="item of config.items"
+                v-for="item of getItems()"
                 :key="item.key">
                 <span>
                   <a-checkbox
@@ -92,6 +97,7 @@ export default {
     return {
       visible: false,
       newValue: [...this.value],
+      dropdownSearch: '',
     }
   },
   computed: {
@@ -157,6 +163,16 @@ export default {
     }
   },
   methods: {
+    onSearch (e) {
+      this.dropdownSearch = e.target.value
+    },
+    getItems () {
+      return this.config.items.filter(v => {
+        if (!v.label) return true
+        const label = v.label.toLowerCase()
+        return label.includes(this.dropdownSearch.toLowerCase())
+      })
+    },
     handleClose (e) {
       e.stopPropagation()
       this.$emit('remove', this.id)
@@ -179,12 +195,14 @@ export default {
         ...this.allValue,
         [this.id]: this.newValue,
       })
+      this.dropdownSearch = ''
     },
     handleCancel (e) {
       e.stopPropagation()
       this.newValue = this.value
       this.visible = false
       this.$emit('update-focus', false)
+      this.dropdownSearch = ''
     },
     handleValueChange (e) {
       e.stopPropagation()
@@ -320,5 +338,10 @@ export default {
       color: rgba(0, 0, 0, 0.25);
     }
   }
+}
+
+.dropdown-search-input ::v-deep .ant-input {
+  border: none;
+  border-bottom: 1px solid #d9d9d9;
 }
 </style>
