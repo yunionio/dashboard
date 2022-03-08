@@ -37,6 +37,9 @@ export default {
   },
   data () {
     return {
+      deleteResProps: {
+        force_delete: false,
+      },
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'instancebackups',
@@ -139,6 +142,13 @@ export default {
                     onManager: this.onManager,
                     title: this.$t('compute.perform_delete'),
                     name: this.$t('compute.text_462'),
+                    content: () => {
+                      const change = (bool) => {
+                        this.deleteResProps.force_delete = bool
+                      }
+                      return <a-checkbox onInput={ change }>{ this.$t('compute.text_655') }</a-checkbox>
+                    },
+                    requestParams: this.deleteResProps,
                   })
                 },
                 meta: () => {
