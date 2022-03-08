@@ -60,6 +60,7 @@ export default {
                   title: i18n.t('compute.perform_delete'),
                   onManager: this.onManager,
                   name: i18n.t('compute.text_462'),
+                  alert: i18n.t('compute.instance_backup_delete_alert'),
                   content: () => {
                     const change = (bool) => {
                       this.deleteResProps.force_delete = bool
