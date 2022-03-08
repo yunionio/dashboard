@@ -60,6 +60,13 @@ export default {
                   title: i18n.t('compute.perform_delete'),
                   onManager: this.onManager,
                   name: i18n.t('compute.text_462'),
+                  content: () => {
+                    const change = (bool) => {
+                      this.deleteResProps.force_delete = bool
+                    }
+                    return <a-checkbox onInput={ change }>{ this.$t('compute.text_655') }</a-checkbox>
+                  },
+                  requestParams: this.deleteResProps,
                 })
               },
               meta: obj => {
