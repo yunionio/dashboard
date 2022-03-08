@@ -2,9 +2,6 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('compute.text_1127')}}</div>
     <div slot="body">
-      <a-alert class="mb-2" type="warning" v-if="message">
-        <div slot="message">{{ message }}</div>
-      </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_1127')" />
       <dialog-table :data="params.data" :columns="columns" />
       <a-form :form="form.fc" hideRequiredMark v-bind="formItemLayout">
@@ -33,8 +30,8 @@
         </a-form-item>
         <a-form-item
           :label="$t('compute.text_111')"
-          :validate-status="hostValidateStatus"
-          :help="hostValidateMsg">
+          :validate-status="message ? 'warning' : hostValidateStatus"
+          :help="message || hostValidateMsg">
           <list-select
             v-decorator="decorators.host"
             :list-props="resourceProps"
