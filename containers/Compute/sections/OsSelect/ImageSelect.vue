@@ -661,7 +661,7 @@ export default {
         this.form.fc.setFieldsValue({ os })
         const images = this.imagesInfo.imageOptsMap[os] || []
         let image = images.find((item) => { return item.id === imageId })
-        this.defaultSelect(os)
+        this.defaultSelect(os === 'Nfs' ? 'nfs' : os)
         if (image) {
           image = { key: image.id, label: image.name }
           if (this.imageOptions.length === 0) {
