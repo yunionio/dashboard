@@ -3,7 +3,8 @@
     statusModule="rdsAccount"
     :base-info="baseInfo"
     :data="data"
-    :on-manager="onManager" />
+    :on-manager="onManager"
+    :is-edit-name="false" />
 </template>
 
 <script>
