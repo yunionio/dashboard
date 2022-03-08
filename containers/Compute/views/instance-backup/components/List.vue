@@ -142,6 +142,7 @@ export default {
                     onManager: this.onManager,
                     title: this.$t('compute.perform_delete'),
                     name: this.$t('compute.text_462'),
+                    alert: this.$t('compute.instance_backup_delete_alert'),
                     content: () => {
                       const change = (bool) => {
                         this.deleteResProps.force_delete = bool
