@@ -9,10 +9,9 @@
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
- </template>
+</template>
+
 <script>
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getFilter, getTenantFilter, getDomainFilter, getStatusFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
@@ -21,11 +20,16 @@ import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { HYPERVISORS_MAP } from '@/constants'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'RDSList',
   mixins: [WindowsMixin, ListMixin, globalSearchMixins, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
+    getParams: {
+      type: Object,
+    },
     id: String,
     cloudEnv: String,
     cloudEnvOptions: {
@@ -37,9 +41,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'dbinstances',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam(),
         steadyStatus: Object.values(expectStatus.rds).flat(),
         filterOptions: {
           external_id: {
@@ -328,6 +330,14 @@ export default {
     this.$bus.$off('RdsRefresh')
   },
   methods: {
+    getParam () {
+      const { getParams = {} } = this
+      const param = {
+        details: true,
+        ...getParams,
+      }
+      return param
+    },
     handleOpenSidepage (row) {
       this.sidePageTriggerHandle(this, 'RDSSidePage', {
         id: row.id,

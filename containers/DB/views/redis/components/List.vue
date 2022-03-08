@@ -12,9 +12,6 @@
 </template>
 
 <script>
-import { ENGINE_ARCH } from '../constants/index.js'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import { getNameFilter, getStatusFilter, getTenantFilter, getFilter, getDomainFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
@@ -23,11 +20,17 @@ import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { HYPERVISORS_MAP } from '@/constants'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import { ENGINE_ARCH } from '../constants/index.js'
 
 export default {
   name: 'RedisList',
   mixins: [WindowsMixin, globalSearchMixins, ListMixin, ColumnsMixin, SingleActionsMixin, ResStatusFilterMixin],
   props: {
+    getParams: {
+      type: Object,
+    },
     id: String,
     cloudEnv: String,
     cloudEnvOptions: {
@@ -39,9 +42,7 @@ export default {
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'elasticcaches',
-        getParams: {
-          details: true,
-        },
+        getParams: this.getParam(),
         steadyStatus: Object.values(expectStatus.redis).flat(),
         filterOptions: {
           external_id: {
@@ -365,6 +366,14 @@ export default {
     this.initSidePageTab('redis-detail')
   },
   methods: {
+    getParam () {
+      const { getParams = {} } = this
+      const param = {
+        details: true,
+        ...getParams,
+      }
+      return param
+    },
     createServer () {
       this.$router.push('/redis/create')
     },
