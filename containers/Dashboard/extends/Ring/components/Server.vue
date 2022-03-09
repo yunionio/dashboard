@@ -55,19 +55,19 @@
         <a-form-item :label="$t('dashboard.text_6')">
           <a-input v-decorator="decorators.name" />
         </a-form-item>
-        <quota-config :fc="form.fc" :fd="form.fd" :decorators="decorators" />
+        <quota-config :fc="form.fc" :fd="form.fd" :decorators="decorators" @update:usage_key="setDefaultName" />
       </a-form>
     </base-drawer>
   </div>
 </template>
 
 <script>
-import mixin from './mixin'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import QuotaConfig from '@Dashboard/sections/QuotaConfig'
 import { USAGE_CONFIG } from '@Dashboard/constants'
 import { load } from '@Dashboard/utils/cache'
 import { getRequestT, sizestrWithUnit } from '@/utils/utils'
+import mixin from './mixin'
 
 export default {
   name: 'RingServer',
@@ -77,12 +77,14 @@ export default {
   },
   mixins: [mixin],
   data () {
-    const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || this.$t('dashboard.text_46')
+    const all_usage_key = this.$store.getters.isAdminMode ? 'all.servers' : this.$store.getters.isDomainMode ? 'domain.servers' : 'servers'
+    const usage_key = this.$store.getters.isAdminMode ? 'all.running_servers' : this.$store.getters.isDomainMode ? 'domain.running_servers' : 'running_servers'
+    const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || this.$t('usage')[usage_key]
     const initialCloudEnvValue = ((this.params && this.params.type !== 'k8s') && this.params.cloud_env) || ''
     const initialBrandValue = ((this.params && this.params.type !== 'k8s') && this.params.brand) || ''
     const initialRegionValue = ((this.params && this.params.type !== 'k8s') && this.params.region) || ''
-    const initialAllUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.all_usage_key) || ''
-    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || ''
+    const initialAllUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.all_usage_key) || all_usage_key
+    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || usage_key
     const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
     const initialColorValue = ((this.params && this.params.type !== 'k8s') && this.params.color) || 'default'
     const initialUsageLabelValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_label && this.params.usage_label.length > 0) ? this.params.usage_label : this.$t('dashboard.text_33')
@@ -364,8 +366,11 @@ export default {
   created () {
     if (this.params && this.params.type !== 'k8s') {
       this.form.fd = this.params
+    } else if (this.form.fd.usage_key) {
+      this.$emit('update', this.options.i, this.form.fd)
+      this.setDefaultName(this.form.fd.usage_key)
+      this.refresh()
     }
-    // this.$emit('update', this.options.i, this.form.fd)
   },
   methods: {
     refresh () {

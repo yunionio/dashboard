@@ -56,8 +56,9 @@ export default {
     edit: Boolean,
   },
   data () {
-    const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || `${this.$t('dashboard.text_23')}${this.$t('dictionary.project')}${this.$t('dictionary.server')}`
-    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || ''
+    const usage_key = this.$store.getters.isAdminMode ? 'all.servers' : this.$store.getters.isDomainMode ? 'domain.servers' : 'servers'
+    const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || usage_key
+    const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || this.$t('usage')[initialUsageKeyValue]
     const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
     return {
       data: {},
@@ -167,6 +168,10 @@ export default {
   created () {
     if (this.params && this.params.type !== 'k8s') {
       this.form.fd = this.params
+    } else if (this.form.fd.usage_key) {
+      this.$emit('update', this.options.i, this.form.fd)
+      this.setDefaultName(this.form.fd.usage_key)
+      this.refresh()
     }
     this.$bus.$on('DashboardCardRefresh', args => {
       this.fetchUsage()
