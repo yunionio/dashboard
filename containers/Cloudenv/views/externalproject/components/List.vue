@@ -8,7 +8,8 @@
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions"
-    :editConfig="{trigger: 'click', mode: 'row', showIcon: false}" />
+    :editConfig="{trigger: 'click', mode: 'row', showIcon: false}"
+    :extra-export-params="extraExportParams" />
 </template>
 
 <script>
@@ -89,6 +90,9 @@ export default {
           },
           { label: this.$t('cloudenv.text_103'), key: 'created_at' },
         ],
+      },
+      extraExportParams: {
+        cloudaccount_id: this.cloudaccount?.id,
       },
       groupActions: [
         {
