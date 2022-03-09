@@ -3,7 +3,8 @@
     <a-divider orientation="left">{{$t('compute.text_572')}}</a-divider>
       <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
         <a-col class="mb-3" :lg="12" :xl="6" v-for="(item, index) in progressList" :key="item.label">
-          <progress-card :progress="item" :colorReverse="index === 3" />
+          <progress-card :progress="item" v-if="index !== 3" />
+          <ring-card v-else :options="item" height="210px" />
         </a-col>
       </a-row>
     <!-- <a-divider class="mt-3" orientation="left">{{$t('compute.text_573')}}</a-divider>
@@ -34,6 +35,7 @@
 import _ from 'lodash'
 import numerify from 'numerify'
 import ProgressCard from '@/sections/ProgressCard'
+import RingCard from '@/sections/RingCard'
 import { sizestrWithUnit, getRequestT } from '@/utils/utils'
 import Top5 from '@/sections/Top5'
 import { getSignature } from '@/utils/crypto'
@@ -44,6 +46,7 @@ export default {
   components: {
     ProgressCard,
     Top5,
+    RingCard,
   },
   props: {
     resId: {
@@ -166,7 +169,7 @@ export default {
       return (<div>{oversell}<div class="mt-2 text-color">{ numerify(per * 100, vm.numerifyFloat) }{ vm.unit }</div></div>)
     },
     turnToList (obj) {
-      const tempList = new Array(4)
+      const tempList = new Array(3)
       tempList[0] = (() => {
         const current = obj.cpu_commit || 0
         const total = obj.cpu_count - (obj.cpu_reserved || 0)
@@ -205,15 +208,31 @@ export default {
       })()
       tempList[3] = (() => {
         const current = obj.running_guests || 0
-        const total = obj.guests || 0
+        const ready = obj.ready_guests || 0
+        const pend = obj.pending_deleted_guests || 0
+        const other = obj.other_guests || 0
+        const total = current + ready + pend + other
         return {
-          title: this.$t('dictionary.server'),
-          percent: total ? (current / total) : 0,
-          msg: {
-            current,
-            currentLabel: this.$t('compute.text_574'),
-            total,
-          },
+          pieData: [
+            {
+              name: `${this.$t('common.text00051')}: ${current}`,
+              value: current,
+            },
+            {
+              name: `${this.$t('status.server.ready')}: ${ready}`,
+              value: ready,
+            },
+            {
+              name: `${this.$t('common.text00052')}: ${pend}`,
+              value: pend,
+            },
+            {
+              name: `${this.$t('common.text00053')}: ${other}`,
+              value: other,
+            },
+          ],
+          title: this.$t('common.text00054'),
+          total: total,
         }
       })()
       this.progressList = tempList
