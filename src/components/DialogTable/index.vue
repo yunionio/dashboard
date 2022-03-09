@@ -2,7 +2,7 @@
   <div class="mb-2">
     <vxe-grid
       ref="grid"
-      show-overflow="title"
+      :show-overflow="showOverflow?false:'title'"
       highlight-hover-row
       :row-id="idKey"
       :data="cData"
@@ -65,6 +65,7 @@ export default {
         return {}
       },
     },
+    showOverflow: Boolean,
   },
   data () {
     return {
