@@ -164,7 +164,7 @@
             :help="hostNameValidate.errorMsg">
             <span slot="label">
               {{ $t('common_388') }}&nbsp;
-              <a-tooltip :title="$t('compute.host_name_tips')">
+              <a-tooltip :title="hostNameTips">
                 <a-icon type="question-circle-o" />
               </a-tooltip>
             </span>
