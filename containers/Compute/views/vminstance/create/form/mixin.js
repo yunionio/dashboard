@@ -288,6 +288,13 @@ export default {
     showServerAccount () {
       return this.form.fd.loginType !== LOGIN_TYPES_MAP.image.key
     },
+    hostNameTips () {
+      if (this.isWindows) {
+        return `${this.$t('compute.host_name_tips')} ${this.$t('compute.validate.windows')}`
+      } else {
+        return `${this.$t('compute.host_name_tips')} ${this.$t('compute.validate.others')}`
+      }
+    },
   },
   created () {
     this.zoneM = new Manager('zones')
