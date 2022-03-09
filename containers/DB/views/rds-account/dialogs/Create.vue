@@ -9,10 +9,11 @@
               <template #extra>
                 <div>
                   <p class="mb-0">{{$t('db.text_345')}}</p>
-                  <p class="mb-0">{{$t('db.text_346')}}</p>
+                  <!-- <p class="mb-0">{{$t('db.text_346')}}</p> -->
                 </div>
               </template>
-              <a-textarea :auto-size="{ minRows: 3, maxRows: 5 }" v-decorator="decorators.host" />
+              <a-input v-decorator="decorators.host" />
+              <!-- <a-textarea :auto-size="{ minRows: 3, maxRows: 5 }" v-decorator="decorators.host" /> -->
             </a-form-item>
             <a-form-item v-bind="formItemLayout" :label="$t('db.text_28')" v-if="this.params.rdsItem.brand !== 'Google'">
               <account-privileges :rdsItem="params.rdsItem" />
