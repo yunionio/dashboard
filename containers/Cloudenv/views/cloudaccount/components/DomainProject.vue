@@ -14,7 +14,8 @@
       </a-select>
     </a-form-item>
     <a-form-item :label="$t('scope.text_573', [$t('dictionary.project')])" v-bind="formLayout" :extra="$t('cloudenv.text_91', [$t('dictionary.project'),$t('dictionary.project'),$t('dictionary.project')])">
-      <a-select
+      <div class="d-flex align-items-center">
+        <a-select
         :disabled="disableProjectSelect || isOpenstack"
         :allowClear="allowClear"
         :labelInValue="labelInValue"
@@ -24,8 +25,10 @@
         @change="projectChange"
         :filterOption="filterOption"
         showSearch>
-        <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
-      </a-select>
+          <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
+        </a-select>
+        <a @click="fetchProjects"><a-icon :spin="projectLoading" type="sync" class="ml-2" /></a>
+      </div>
       <div class="d-flex">
         <div class="flex-shrink-0 flex-grow-0">
           <template v-if="isOpenstack">
@@ -175,7 +178,7 @@ export default {
         this.domainLoading = false
       }
     },
-    async fetchProjects (domainId) {
+    async fetchProjects (domainId = 'default') {
       if (!this.isAdminMode && !this.isDomainMode) {
         const data = [{
           key: this.userInfo.projectId,
