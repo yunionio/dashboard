@@ -170,7 +170,9 @@ export default {
         const lastSelectedImageInfo = storage.get('oc_selected_image') || {}
         const { imageType = lastSelectedImageInfo.imageType } = this.$route.query
         if (this.isFirstLoad && imageType) {
-          this.form.fc.setFieldsValue({ imageType })
+          setTimeout(() => {
+            this.form.fc.setFieldsValue({ imageType })
+          }, 0)
           this.imageType = imageType
         }
       },
