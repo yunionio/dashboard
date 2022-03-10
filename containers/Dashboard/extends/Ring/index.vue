@@ -2,6 +2,7 @@
   <component
     ref="usage"
     :is="type"
+    :type="type"
     :visible.sync="visible"
     :formItemLayout="formItemLayout"
     :options="options"
@@ -22,9 +23,9 @@
 </template>
 
 <script>
+import { hasSetupKey } from '@/utils/auth'
 import Server from './components/Server'
 import K8s from './components/K8s'
-import { hasSetupKey } from '@/utils/auth'
 
 export default {
   name: 'Ring',
