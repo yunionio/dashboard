@@ -351,7 +351,7 @@
   "db.text_342": "Tencent Cloud MySQL Basic Edition, currently does not support custom backup functions.",
   "db.text_343": "Tencent Cloud does not currently support backup and recovery",
   "db.text_344": "Host",
-  "db.text_345": "1.IP format, supports filling in %",
+  "db.text_345": "IP format, supports filling in %",
   "db.text_346": "2.Multiple hosts are separated by delimiters, delimiters support;,|newlines and spaces",
   "db.text_347": "Please fill in the host",
   "db.text_348": "Tencent Cloud does not currently support this operation, you need to log in to the database to perform this operation",
