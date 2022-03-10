@@ -1,9 +1,32 @@
 import { Icon as AntIcon } from 'ant-design-vue'
 import { mergeProps } from 'ant-design-vue/lib/_util/props-util'
 
-const requireAll = requireContext => requireContext.keys().map(requireContext)
-const req = require.context('../../../scope/assets', false, /\.svg$/)
-requireAll(req)
+const commonContext = require.context('./assets', false, /\.svg$/)
+const scopeContext = require.context('@scope/assets', false, /\.svg$/)
+
+const requireAll = (commonContext, scopeContext) => {
+  const commonFilePath = []
+  const scopeFilePath = []
+
+  commonContext.keys().forEach(v => {
+    if (scopeContext.keys().includes(v)) {
+      scopeFilePath.push(v)
+    } else {
+      commonFilePath.push(v)
+    }
+  })
+
+  scopeContext.keys().forEach(v => {
+    if (!commonContext.keys().includes(v)) {
+      scopeFilePath.push(v)
+    }
+  })
+
+  commonFilePath.forEach(commonContext)
+  scopeFilePath.forEach(scopeContext)
+}
+
+requireAll(commonContext, scopeContext)
 
 // 暂时修改为非函数式组件
 // 主要因为在升级到antv 1.5后，icon外层使用tooltip的时候（最终会调用antv的trigger组件），将会触发warning
