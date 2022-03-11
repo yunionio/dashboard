@@ -3,8 +3,8 @@
     <a-select
       class="base-select"
       :disabled="disabled"
-      v-bind="{ ...selectProps, ...filterOpts }"
-      :style="{ width: (showSync ? 'calc(100% - 24px)' : '100%'), 'min-width': minWidth }"
+      v-bind="{ ...selectProps, ...filterOpts, ...otherOpts }"
+      :style="{ width: (showSync ? 'calc(100% - 24px)' : '100%'), 'min-width': minWidth, ...selectStyle }"
       :value="value"
       :option-label-prop="optionLabelProp"
       @blur="onBlur"
@@ -165,6 +165,11 @@ export default {
       type: Function,
       required: false,
     },
+    selectStyle: Object,
+    dropdownItemWordWrap: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     this.loadOptsDebounce = debounce(this.loadOpts, 500)
@@ -204,6 +209,13 @@ export default {
       return {
         filterOption: false,
       }
+    },
+    otherOpts () {
+      const ret = {}
+      if (this.dropdownItemWordWrap) {
+        ret.dropdownClassName = 'dropdown-item-word-wrap'
+      }
+      return ret
     },
     loadingC () {
       if (this.selectProps && R.is(Boolean, this.selectProps.loading)) return this.selectProps.loading
@@ -499,3 +511,11 @@ export default {
   },
 }
 </script>
+
+<style lang="less">
+.dropdown-item-word-wrap {
+  .ant-select-dropdown-menu-item {
+    white-space: inherit;
+  }
+}
+</style>
