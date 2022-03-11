@@ -154,13 +154,13 @@ export default {
      */
     {
       meta: {
-        label: '备份存储',
+        label: i18n.t('dictionary.backup_storage'),
       },
       submenus: [
         {
           path: '/backup-storage',
           meta: {
-            label: '备份存储',
+            label: i18n.t('dictionary.backup_storage'),
             permission: 'backupstorages_list',
             hidden: () => {
               return !hasSetupKey(['onestack'])
