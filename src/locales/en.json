@@ -1088,6 +1088,11 @@
       "assigned": "assigned",
       "unassigned": "Unassigned",
       "unknow": "Unknow"
+    },
+    "backupStorage": {
+      "init": "init",
+      "online": "online",
+      "offline": "offline"
     }
   },
   "skuCategoryOptions": {
@@ -2563,7 +2568,8 @@
     "price_infos": "Price Info",
     "parameters": "Dictionary",
     "log_manage": "Log Manage",
-    "services": "Global Setting"
+    "services": "Global Setting",
+    "backup_storage": "Backup Storage"
   },
   "res": {
     "role": "Role",

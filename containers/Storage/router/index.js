@@ -9,6 +9,7 @@ import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
+import BackupStorage from '@Storage/views/backup-storage'
 
 export default {
   index: 50,
@@ -143,6 +144,34 @@ export default {
               name: 'AccessGroup',
               path: '',
               component: AccessGroup,
+            },
+          ],
+        },
+      ],
+    },
+    /**
+     * 备份存储
+     */
+    {
+      meta: {
+        label: i18n.t('dictionary.backup_storage'),
+      },
+      submenus: [
+        {
+          path: '/backup-storage',
+          meta: {
+            label: i18n.t('dictionary.backup_storage'),
+            permission: 'backupstorages_list',
+            hidden: () => {
+              return !hasSetupKey(['onestack'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'BackupStorage',
+              path: '',
+              component: BackupStorage,
             },
           ],
         },

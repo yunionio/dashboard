@@ -1102,6 +1102,11 @@
       "assigned": "已分配",
       "unassigned": "未分配",
       "unknow": "未知"
+    },
+    "backupStorage": {
+      "init": "初始化",
+      "online": "在线",
+      "offline": "离线"
     }
   },
   "skuCategoryOptions": {
@@ -2577,7 +2582,8 @@
     "price_infos": "价格对比",
     "parameters": "字典设置",
     "log_manage": "日志管理",
-    "services": "全局设置"
+    "services": "全局设置",
+    "backup_storage": "备份存储"
   },
   "res": {
     "role": "@:dictionary.role",

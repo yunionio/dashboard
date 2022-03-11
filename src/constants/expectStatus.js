@@ -493,4 +493,9 @@ export default {
     success: ['assigned'],
     info: ['unknown', 'unassigned'],
   },
+  backupStorage: {
+    success: ['online'],
+    info: ['init'],
+    danger: ['offline'],
+  },
 }
