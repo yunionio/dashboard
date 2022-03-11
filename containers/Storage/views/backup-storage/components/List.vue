@@ -18,7 +18,6 @@ import {
   getNameFilter,
   getStatusFilter,
   getDomainFilter,
-  getTenantFilter,
 } from '@/utils/common/tableFilter'
 import {
   getSetPublicAction,
@@ -53,7 +52,6 @@ export default {
           },
           name: getNameFilter(),
           status: getStatusFilter('backupStorage'),
-          projects: getTenantFilter(),
           project_domains: getDomainFilter(),
         },
         responseData: this.responseData,
@@ -63,38 +61,35 @@ export default {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('table.title.name'), key: 'name' },
+          { label: this.$t('common.status'), key: 'status' },
+          { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: this.$t('storage.text_38'), key: 'storage_type' },
+          { label: this.$t('storage.capacity'), key: 'capacity_mb' },
+          { label: this.$t('common.attribution_scope'), key: 'project_domain' },
+          { label: this.$t('table.title.share_range'), key: 'public_scope' },
         ],
       },
       groupActions: [
         {
-          label: this.$t('compute.perform_sync_status'),
-          permission: 'backupstorages_perform_syncstatus',
+          label: this.$t('storage.text_31'),
+          permission: 'backupstorages_create',
           action: () => {
-            this.onManager('batchPerformAction', {
-              steadyStatus: ['running', 'ready'],
-              managerArgs: {
-                action: 'syncstatus',
-              },
+            this.createDialog('BackupStorageCreateDialog', {
+              title: this.$t('common_628', [this.$t('compute.backup_storage')]),
+              onManager: this.onManager,
+              refresh: this.refresh,
             })
           },
-          meta: () => ({
-            validate: this.list.selected.length,
-          }),
+          meta: () => {
+            return {
+              buttonType: 'primary',
+            }
+          },
         },
         {
           label: this.$t('compute.text_275'),
           actions: () => {
             return [
-              getSetPublicAction(this, {
-                name: this.$t('dictionary.backup_storage'),
-                scope: 'domain',
-                resource: 'backupstorages',
-              }, {
-                permission: 'backupstorages_perform_public',
-                meta: () => ({
-                  validate: this.list.selected.length,
-                }),
-              }),
               {
                 label: this.$t('table.action.set_tag'),
                 permission: 'backupstorages_perform_set_user_metadata',
@@ -117,6 +112,31 @@ export default {
                   }
                 },
               },
+              {
+                label: this.$t('compute.perform_sync_status'),
+                permission: 'backupstorages_perform_syncstatus',
+                action: () => {
+                  this.onManager('batchPerformAction', {
+                    steadyStatus: ['running', 'ready'],
+                    managerArgs: {
+                      action: 'syncstatus',
+                    },
+                  })
+                },
+                meta: () => ({
+                  validate: this.list.selected.length,
+                }),
+              },
+              getSetPublicAction(this, {
+                name: this.$t('dictionary.backup_storage'),
+                scope: 'domain',
+                resource: 'backupstorages',
+              }, {
+                permission: 'backupstorages_perform_public',
+                meta: () => ({
+                  validate: this.list.selected.length,
+                }),
+              }),
               {
                 label: this.$t('compute.perform_delete'),
                 permission: 'backupstorages_delete',
@@ -143,6 +163,12 @@ export default {
                 },
               },
             ]
+          },
+          meta: () => {
+            return {
+              validate: this.list.selected.length,
+              tooltip: null,
+            }
           },
         },
       ],

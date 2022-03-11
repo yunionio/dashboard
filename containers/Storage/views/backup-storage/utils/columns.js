@@ -5,8 +5,8 @@ export const getStorageTypeColumns = () => {
   return {
     field: 'storage_type',
     title: i18n.t('storage.text_38'),
-    slot: {
-      default: (row) => {
+    slots: {
+      default: ({ row }) => {
         return row.storage_type
       },
     },
@@ -17,8 +17,8 @@ export const getCapacityMbColumns = () => {
   return {
     field: 'capacity_mb',
     title: i18n.t('storage.capacity'),
-    slot: {
-      default: (row) => {
+    slots: {
+      default: ({ row }) => {
         return sizestr(row.capacity_mb, 'M', 1024) || '-'
       },
     },
