@@ -5,7 +5,8 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     resource="backupstorages"
-    status-module="backupStorage" />
+    status-module="backupStorage"
+    :hiddenKeys="['tenant']" />
 </template>
 
 <script>
