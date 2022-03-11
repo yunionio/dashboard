@@ -1,6 +1,6 @@
 <template>
   <a-form-item>
-    <a-radio-group v-decorator="decorator">
+    <a-radio-group v-decorator="decorator" @change="handleBiosChange">
       <a-tooltip :title="$t('compute.text_1362')" v-if="isArm">
         <a-radio-button value="BIOS" :disabled="isArm">BIOS</a-radio-button>
       </a-tooltip>
@@ -23,6 +23,11 @@ export default {
     },
     isArm: {
       type: Boolean,
+    },
+  },
+  methods: {
+    handleBiosChange (e) {
+      this.$emit('change', e.target.value)
     },
   },
 }
