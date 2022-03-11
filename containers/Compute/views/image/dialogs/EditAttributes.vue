@@ -16,6 +16,7 @@
         </a-form-item> -->
         <a-form-item :label="$t('compute.text_1365')">
           <os-arch
+            v-on:change="osArchChangeHandle"
             v-decorator="decorators.os_arch"
             :form="form" />
         </a-form-item>
@@ -55,6 +56,20 @@
             </a-radio-button>
           </a-radio-group>
         </a-form-item>
+        <a-form-item :label="$t('compute.text_1155')">
+          <a-radio-group v-decorator="decorators.bios">
+            <a-radio-button v-for="(item, index) in biosOptions" :value="item.value" :key="index" :disabled="isArm && item.value==='BIOS'">
+              {{item.text}}
+            </a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('compute.vdi_protocol')">
+          <a-radio-group v-decorator="decorators.vdi">
+            <a-radio-button v-for="(item, index) in vdiOptions" :value="item.value" :key="index">
+              {{item.text}}
+            </a-radio-button>
+          </a-radio-group>
+        </a-form-item>
       </a-form>
     </div>
     <div slot="footer">
@@ -83,7 +98,13 @@ export default {
     if (data.properties && data.properties.os_arch) {
       os_arch = data.properties.os_arch.includes('x86') ? HOST_CPU_ARCHS.x86.key : HOST_CPU_ARCHS.arm.key
     }
+    let bios = 'BIOS'
+    if (data.properties && data.properties.uefi_support === 'true') {
+      bios = 'UEFI'
+    }
+    const isArm = (os_arch === HOST_CPU_ARCHS.arm.key)
     return {
+      isArm: isArm,
       loading: false,
       form: {
         fc: this.$form.createForm(this),
@@ -140,6 +161,18 @@ export default {
             initialValue: os_arch,
           },
         ],
+        bios: [
+          'bios',
+          {
+            initialValue: bios,
+          },
+        ],
+        vdi: [
+          'vdi',
+          {
+            initialValue: 'vnc',
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -169,7 +202,7 @@ export default {
           { text: 'RedHat', value: 'RedHat' },
           { text: 'SUSE Linux', value: 'SUSE Linux' },
           { text: 'Ubuntu', value: 'Ubuntu' },
-          { text: 'Kylin', value: 'Kylin' },
+          { text: this.$t('compute.os.kylin'), value: 'Kylin' },
           { text: this.$t('compute.os.nfs'), value: 'nfs' },
           { text: this.$t('compute.text_151'), value: 'Other' },
         ],
@@ -187,7 +220,7 @@ export default {
         { text: 'RedHat', value: 'RedHat' },
         { text: 'SUSE Linux', value: 'SUSE Linux' },
         { text: 'Ubuntu', value: 'Ubuntu' },
-        { text: 'Kylin', value: 'Kylin' },
+        { text: this.$t('compute.os.kylin'), value: 'Kylin' },
         { text: this.$t('compute.os.nfs'), value: 'nfs' },
         { text: this.$t('compute.text_151'), value: 'Other' },
       ],
@@ -207,6 +240,15 @@ export default {
         { text: 'e1000', value: 'e1000' },
         { text: 'vmxnet3', value: 'vmxnet3' },
       ],
+      biosOptions: [
+        { text: 'BIOS', value: 'BIOS' },
+        { text: 'UEFI', value: 'UEFI' },
+      ],
+      vdiOptions: [
+        { text: this.$t('compute.text_661'), value: '' },
+        { text: 'vnc', value: 'vnc' },
+        { text: 'spice', value: 'spice' },
+      ],
       initMinDisk: 0,
     }
   },
@@ -224,7 +266,7 @@ export default {
       this.manager.get({ id: this.params.data[0].id })
         .then((res) => {
           const { name, min_disk: minDisk } = res.data
-          const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver } = res.data.properties
+          const { os_type: osType, os_distribution: osDistribution, disk_driver: diskDriver, net_driver: netDriver, uefi_support: uefiSupport, vdi_protocol: vdiProtocol } = res.data.properties
           this.initName = name
           this.initMinDisk = minDisk
           this.$nextTick(() => {
@@ -236,9 +278,18 @@ export default {
               osDistribution,
               diskDriver: diskDriver || '',
               netDriver: netDriver || '',
+              bios: this.getBios(uefiSupport),
+              vdi: vdiProtocol || 'vnc',
             })
           })
         })
+    },
+    getBios (uefiSupport) {
+      if (uefiSupport && uefiSupport === 'true') {
+        return 'UEFI'
+      } else {
+        return 'BIOS'
+      }
     },
     checkTemplateName (rule, value, callback) {
       return new this.$Manager(this.isHostImage ? 'guestimages' : 'images', 'v1').list({
@@ -256,6 +307,12 @@ export default {
         } else {
           callback()
         }
+      })
+    },
+    osArchChangeHandle (e) {
+      this.isArm = (e === HOST_CPU_ARCHS.arm.key)
+      this.$nextTick(() => {
+        this.form.fc.setFieldsValue({ bios: 'UEFI' })
       })
     },
     osTypeChangeHandle (e) {
@@ -286,7 +343,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver, os_arch } = values
+        const { name, osType, osDistribution, osOtherDistribution, minDisk, diskDriver, netDriver, os_arch, bios, vdi } = values
         const params = {
           name,
           // protected: values.protected,
@@ -297,6 +354,8 @@ export default {
             disk_driver: diskDriver,
             net_driver: netDriver,
             os_arch,
+            uefi_support: bios === 'UEFI' ? 'true' : '',
+            vdi_protocol: vdi,
           },
         }
         if (!this.isHostImage) {

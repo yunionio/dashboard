@@ -123,6 +123,24 @@ export default {
               },
             },
             {
+              field: 'uefi_support',
+              title: this.$t('compute.text_1155'),
+              formatter: ({ cellValue, row }) => {
+                if (row.properties && row.properties.uefi_support === 'true') {
+                  return 'UEFI'
+                } else {
+                  return 'BIOS'
+                }
+              },
+            },
+            {
+              field: 'vdi_protocol',
+              title: this.$t('compute.vdi_protocol'),
+              formatter: ({ cellValue, row }) => {
+                return (row.properties && row.properties.vdi_protocol) || '-'
+              },
+            },
+            {
               field: 'hypervisor',
               title: this.$t('compute.text_636'),
             },

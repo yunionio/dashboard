@@ -1526,6 +1526,7 @@
   "compute.disk_size_disbale_tips": "The default capacity of the {0} platform system disk is the same as that of the image",
   "compute.private_network": "Private Network",
   "compute.os.nfs": "NFS",
+  "compute.os.kylin": "Galaxy Kylin",
   "compute.unpack_alert": "Package the host backup file with a .tar suffix and save it on the backup storage where the host backup is located",
   "compute.unpack": "Package",
   "compute.unpack_name": "Package Name",
