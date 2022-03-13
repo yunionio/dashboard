@@ -67,7 +67,7 @@ export default {
                 tooltip = i18n.t('network.text_473')
               }
             }
-            if (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google') {
+            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
               return {
                 validate: false,
                 tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
@@ -93,7 +93,7 @@ export default {
             })
           },
           meta: obj => {
-            if (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google') {
+            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
               return {
                 validate: false,
                 tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
@@ -203,7 +203,7 @@ export default {
             },
           ],
           meta: (obj) => {
-            if (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google') {
+            if (obj.provider && (obj.provider.toLowerCase() === 'azure' || obj.provider.toLowerCase() === 'google')) {
               return {
                 validate: false,
                 tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
