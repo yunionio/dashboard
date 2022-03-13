@@ -18,12 +18,12 @@
     </div>
     <div slot="footer">
       <template v-if="isLbRedirected">
-        <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">{{$t('network.text_30')}}</a-button>
+        <a-button type="primary" class="mr-2" @click="isUpdate ? update() : validateForm() " :loading="loading">{{ buttonText }}</a-button>
       </template>
       <template v-else>
         <a-button @click="prev" v-if="!isFirstStep" class="mr-2">{{$t('network.text_466')}}</a-button>
         <a-button type="primary" class="mr-2" @click="next" :loading="isUpdate ? false : loading" v-if="!isLastStep">{{ nextStepTitle }}</a-button>
-        <a-button type="primary" class="mr-2" v-if="isLastStep" @click="isUpdate ? update() : validateForm()" :loading="loading">{{$t('network.text_30')}}</a-button>
+        <a-button type="primary" class="mr-2" v-if="isLastStep" @click="isUpdate ? update() : validateForm()" :loading="loading">{{ buttonText }}</a-button>
       </template>
       <a-button @click="cancel">{{$t('network.text_31')}}</a-button>
     </div>
@@ -85,6 +85,13 @@ export default {
   computed: {
     isLbRedirected () {
       return this.$store.getters.common.lbRedirected.isLbRedirected
+    },
+    buttonText () {
+      if (this.isUpdate) {
+        return this.$t('network.text_130')
+      } else {
+        return this.$t('network.text_30')
+      }
     },
   },
   created () {
@@ -170,6 +177,9 @@ export default {
         }
         if (data.health_check === 'off') {
           data = filterObj((val, k) => !k.startsWith('health_check_'), data)
+        }
+        if (data.redirect === 'off') {
+          data = filterObj((val, k) => !k.startsWith('redirect_'), data)
         }
         await this.params.onManager('update', {
           id: this.params.listenerData.id,
