@@ -806,6 +806,7 @@
     },
     "lbRedirect": {
       "raw": "已开启",
+      "false": "未开启",
       "off": "未开启"
     },
     "scheduledtask": {
