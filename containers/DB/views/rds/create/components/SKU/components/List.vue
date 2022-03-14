@@ -223,7 +223,10 @@ export default {
     },
     getSkuParams () {
       const { getFieldsValue } = this.form
-      const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'cloudregion', 'zones']
+      const paramsKeys = ['engine', 'engine_version', 'category', 'storage_type', 'vcpu_count', 'vmem_size_mb', 'cloudregion']
+      if (this.form.fd.provider !== 'Aws') { // aws 可用区根据套餐来定 [单,双]
+        paramsKeys.push('zones')
+      }
       const PARAMS = getFieldsValue(paramsKeys)
       PARAMS.cloudregion_id = PARAMS.cloudregion
       if (PARAMS.zones) {

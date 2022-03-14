@@ -35,14 +35,12 @@ export default {
       this.skuRef.fetchSkus()
       this.networkRef.fetchVpc()
     },
-    // provider_change () {
-    //   const { provider } = this.form.fd
-    //   if (provider && provider === 'Aliyun') {
-    //     this.loginTypes = ['random']
-    //   } else {
-    //     this.loginTypes = ['random', 'password']
-    //   }
-    // },
+    provider_change () {
+      const { provider } = this.form.fd
+      if (provider && provider === 'Aws') {
+        this.networkRef.fetchVpc()
+      }
+    },
     async handleValuesChange (fc, changedFields) {
       this.form.fd = {
         ...this.form.fd,

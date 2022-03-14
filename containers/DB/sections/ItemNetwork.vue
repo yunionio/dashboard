@@ -40,8 +40,12 @@ export default {
         ...this.scopeParams,
       }
       const zone = fd.zones || fd.zone
-      if (zone) {
-        params.zone_id = zone.split('+')[0]
+      if (fd.provider === 'Aws') {
+        params.provider = 'Aws'
+      } else {
+        if (zone) {
+          params.zone_id = zone.split('+')[0]
+        }
       }
       return params
     },
@@ -53,10 +57,14 @@ export default {
       }
       // zones是rds新建
       const zonesStr = this.form.getFieldValue('zones')
-      if (zonesStr) {
-        const zoneArr = zonesStr.split('+')
-        if (zoneArr && zoneArr.length > 0) {
-          params['zones.0'] = zoneArr[0]
+      if (fd.provider === 'Aws') {
+        params.provider = 'Aws'
+      } else {
+        if (zonesStr) {
+          const zoneArr = zonesStr.split('+')
+          if (zoneArr && zoneArr.length > 0) {
+            params['zones.0'] = zoneArr[0]
+          }
         }
       }
       // zone是redis新建

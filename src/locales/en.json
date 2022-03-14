@@ -1209,6 +1209,13 @@
       "others": "Others"
     }
   },
+  "skuStorageTypeOptions": {
+    "aws": {
+      "standard": "standard",
+      "gp2": "gp2",
+      "io1": "io1"
+    }
+  },
   "label": {
     "standardImage": "Public Image",
     "unstandardImage": "Private Image"
