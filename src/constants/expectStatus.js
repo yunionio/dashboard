@@ -318,7 +318,7 @@ export default {
     danger: ['refused', 'expired'],
   },
   lbRedirect: {
-    info: ['off'],
+    info: [false, '', 'off'],
     success: ['raw'],
     danger: [],
   },

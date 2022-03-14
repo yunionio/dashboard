@@ -777,6 +777,7 @@
     },
     "lbRedirect": {
       "raw": "Opened",
+      "false": "Not open",
       "off": "Not open"
     },
     "scheduledtask": {
