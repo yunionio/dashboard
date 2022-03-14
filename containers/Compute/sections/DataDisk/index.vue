@@ -17,6 +17,7 @@
           :disabled="getDisabled(item)"
           :size-disabled="item.sizeDisabled"
           :simplify="simplify"
+          :storageParams="storageParams"
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val)" />
         <a-button v-if="!getDisabled(item, 'minus') && (dataDisks.length > 1 ? (i !== 0) : true)" shape="circle" icon="minus" size="small" @click="decrease(item.key)" class="mt-2" />
@@ -111,6 +112,9 @@ export default {
     systemStorageShow: {
       type: Boolean,
       default: false,
+    },
+    storageParams: {
+      type: Object,
     },
   },
   data () {
