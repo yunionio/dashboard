@@ -181,6 +181,9 @@ export default {
         if (data.redirect === 'off') {
           data = filterObj((val, k) => !k.startsWith('redirect_'), data)
         }
+        if (data.sticky_session_type === 'insert') {
+          data = filterObj((val, k) => !k.startsWith('sticky_session_cookie'), data)
+        }
         await this.params.onManager('update', {
           id: this.params.listenerData.id,
           managerArgs: {
