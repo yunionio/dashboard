@@ -471,6 +471,10 @@ export default {
           vmem: 0,
         })
         return
+      } else if (this.form.fc.getFieldValue('vcpu') !== cpu) { // 因之前未获取cpu设置为0，这一步设置回来
+        this.form.fc.setFieldsValue({
+          vcpu: cpu,
+        })
       }
       this.form.fi.cpuMem.mems_mb = memOpts
       let defaultMem = 2048
