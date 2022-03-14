@@ -344,6 +344,15 @@ export const createVmDecorators = type => {
           }],
         },
       ],
+      storage: i => [
+        `dataDiskStorages[${i}]`,
+        {
+          rules: [{
+            required: true,
+            message: i18n.t('compute.text_1351'),
+          }],
+        },
+      ],
     },
     network: {
       networkType: [
@@ -764,9 +773,9 @@ export class GenCreateData {
           diskObj.schedtags[0].strategy = this.fd.dataDiskPolicys[key]
         }
       }
-      if (this.fd.systemDiskStorage) {
+      if (this.fd.dataDiskStorages && this.fd.dataDiskStorages[key]) {
         // if system disk specifies storage, the data disks should do the same
-        diskObj.storage_id = this.fd.systemDiskStorage
+        diskObj.storage_id = this.fd.dataDiskStorages[key] || this.fd.systemDiskStorage
       }
       if (this.fi.dataDiskMedium) {
         diskObj.medium = this.fi.dataDiskMedium
