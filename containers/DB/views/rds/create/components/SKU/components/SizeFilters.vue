@@ -10,7 +10,7 @@
         <a-radio-button :key="size" :value="size" v-for="size in mems_mbs">{{sizestr(size, 'M', 1024)}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('db.text_133')" v-bind="formItemLayout">
+    <a-form-item :label="$t('db.text_133')" v-bind="formItemLayout" v-if="form.fd.provider !== 'Aws'">
       <slot name="zone" v-if="$slots.zone" />
       <a-radio-group v-else v-decorator="['zones']" @change="$emit('change')">
         <a-radio-button :key="id" :value="id" v-for="(zone, id) of zones">{{zone}}</a-radio-button>

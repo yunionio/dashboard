@@ -1223,6 +1223,13 @@
       "others": "其他"
     }
   },
+  "skuStorageTypeOptions": {
+    "aws": {
+      "standard": "磁介质",
+      "gp2": "通用型 SSD",
+      "io1": "预置 IOPS SSD"
+    }
+  },
   "label": {
     "standardImage": "公共镜像",
     "unstandardImage": "私有镜像"
