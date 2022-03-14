@@ -146,6 +146,9 @@ export default {
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push('snapshot')
       }
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        ret.push('storage') // 这里暂时写死，因为目前只是有vmware的数据盘会指定存储
+      }
       if (this.isIDC || this.isPrivate) {
         if (this.systemStorageShow) {
           return ret // 指定块存储后，系统盘和数据盘均确定且不在支持设置调度标签
