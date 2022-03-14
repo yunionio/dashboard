@@ -404,5 +404,7 @@
   "db.text_390": "Connection Error Rate",
   "db.text_391": "When it expires, the RDS instance of the corresponding platform will be deleted. There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
   "db.text_392": "Data cannot be recovered after clearing, so please operate with caution.",
-  "db.text_393": "When it expires, the Redis instance of the corresponding platform will be deleted. There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual."
+  "db.text_393": "When it expires, the Redis instance of the corresponding platform will be deleted. There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
+  "db.zone_single": "Single zone",
+  "db.zone_multi": "Multiple zones"
 }

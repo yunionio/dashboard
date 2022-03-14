@@ -18,6 +18,8 @@ export const DBINSTANCE_CATEGORY = {
   standalone: i18n.t('db.category.standalone'),
   disaster: i18n.t('db.category.disaster'),
   tdsql: i18n.t('db.category.tdsql'),
+  'General Purpose': i18n.t('skuCategoryOptions.aws.General purpose'),
+  'Memory Optimized': i18n.t('skuCategoryOptions.aws.Memory optimized'),
 }
 
 export const DBINSTANCE_STORAGE_TYPE_KEYS = ['SATA', 'SAS', 'SSD', 'local_ssd', 'cloud_ssd', 'cloud_essd', 'cloud_essd2', 'cloud_essd3', 'PD_SSD', 'PD_HDD', 'HIGH', 'ULTRAHIGH', 'ULTRAHIGHPRO', 'COMMON', 'LOCAL_SSD', 'LOCAL_NVME', 'EBS_SSD']
@@ -39,6 +41,9 @@ export const DBINSTANCE_STORAGE_TYPE = {
   LOCAL_SSD: i18n.t('db.LOCAL_SSD'),
   LOCAL_NVME: i18n.t('db.LOCAL_NVME'),
   EBS_SSD: i18n.t('db.EBS_SSD'),
+  standard: i18n.t('skuStorageTypeOptions.aws.standard'),
+  io1: i18n.t('skuStorageTypeOptions.aws.io1'),
+  gp2: i18n.t('skuStorageTypeOptions.aws.gp2'),
 }
 
 export const ACCOUNT_PRIVILEGES = {
