@@ -155,6 +155,7 @@ export default {
     storageParams () {
       return {
         scope: this.scope,
+        project_domain: this.params.data[0].project_domain,
       }
     },
   },

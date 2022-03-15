@@ -81,17 +81,17 @@ export default {
         const pattern = /^(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))$/
         const ips = value.split(',')
         if (!value || value === '') {
-          return _callback(new Error(this.$t('storage.text_23')))
+          return _callback(new Error(this.$t('storage.nfs_host_check_reqiure')))
         }
         ips.forEach((item) => {
           const [ip, dir] = item.split(':')
           if (!pattern.test(ip)) {
-            return _callback(new Error(this.$t('storage.text_24')))
+            return _callback(new Error(this.$t('storage.nfs_host_check_valid')))
           } else {
             if (dir) {
               const reg = /^\/.+/
               if (!reg.test(dir)) {
-                return _callback(new Error(this.$t('storage.text_24')))
+                return _callback(new Error(this.$t('storage.nfs_host_check_valid')))
               }
             }
           }
