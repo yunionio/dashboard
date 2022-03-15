@@ -320,5 +320,7 @@
   "storage.mount.target.max.count": "最多支持{0}个挂载点",
   "storage.capacity": "容量",
   "storage.text_266": "删除NAS权限组不会影响已同步到公有云平台的NAS权限组。",
-  "storage.text_267": "删除缓存将会删除已同步到公有云平台的NAS权限组。"
+  "storage.text_267": "删除缓存将会删除已同步到公有云平台的NAS权限组。",
+  "storage.nfs_host_check_reqiure": "必须输入NFS Host",
+  "storage.nfs_host_check_valid": "请输入合法的NFS Host，例如： 192.168.1.1,192.168.1.2"
 }

@@ -18,6 +18,8 @@ import {
 import {
   getStorageTypeColumns,
   getCapacityMbColumns,
+  getNFSHostColumns,
+  getNFSSharedDirColumns,
 } from '../utils/columns'
 
 export default {
@@ -40,6 +42,8 @@ export default {
         getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'backupstorages', columns: () => this.columns }),
         getPublicScopeTableColumn({ vm: this, resource: 'backupstorages' }),
         getStorageTypeColumns(),
+        getNFSHostColumns(),
+        getNFSSharedDirColumns(),
         getCapacityMbColumns(),
       ],
       extraInfo: [],
