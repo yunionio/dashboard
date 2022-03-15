@@ -28,7 +28,7 @@
         <a-form-item label="NFS Shared Dir">
           <a-input :placeholder="$t('storage.text_22')" v-decorator="decorators.nfs_shared_dir" />
         </a-form-item>
-        <a-form-item :label="$t('storage.capacity')">
+        <a-form-item :label="$t('storage.capacity')" v-show="false">
           <a-input-number :min="0" v-decorator="decorators.capacity_mb" /> GB
         </a-form-item>
       </a-form>
@@ -145,6 +145,9 @@ export default {
         ],
         capacity_mb: [
           'capacity_mb',
+          {
+            initialValue: 0,
+          },
         ],
       }
     },
