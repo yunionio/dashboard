@@ -320,5 +320,7 @@
   "storage.mount.target.max.count": "The number of Mount targets has reached the upper limit of {0} and cannot be added for the time being",
   "storage.capacity": "Capacity",
   "storage.text_266": "Deleting NAS access groups will not affect NAS access groups that have been synced to the public cloud platform.",
-  "storage.text_267": "Deleting the cache will delete the NAS access groups that have been synced to the public cloud platform."
+  "storage.text_267": "Deleting the cache will delete the NAS access groups that have been synced to the public cloud platform.",
+  "storage.nfs_host_check_reqiure": "NFS Host must be entered",
+  "storage.nfs_host_check_valid": "Please enter a valid NFS Host, e.g., 192.168.1.1,192.168.1.2"
 }

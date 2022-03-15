@@ -45,3 +45,27 @@ export const getProjectDomainTableColumns = () => {
     },
   }
 }
+
+export const getNFSHostColumns = () => {
+  return {
+    field: 'nfs_host',
+    title: 'NFS Host',
+    slots: {
+      default: ({ row }) => {
+        return row.nfs_host
+      },
+    },
+  }
+}
+
+export const getNFSSharedDirColumns = () => {
+  return {
+    field: 'nfs_shared_dir',
+    title: 'NFS Shared Dir',
+    slots: {
+      default: ({ row }) => {
+        return row.nfs_shared_dir
+      },
+    },
+  }
+}
