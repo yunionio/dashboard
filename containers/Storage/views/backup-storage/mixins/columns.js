@@ -7,7 +7,7 @@ import {
 
 import {
   getStorageTypeColumns,
-  getCapacityMbColumns,
+  // getCapacityMbColumns,
   getProjectDomainTableColumns,
 } from '../utils/columns'
 
@@ -26,7 +26,7 @@ export default {
       getStatusTableColumn({ statusModule: 'backupStorage' }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'backupstorages', columns: () => this.columns }),
       getStorageTypeColumns(),
-      getCapacityMbColumns(),
+      // getCapacityMbColumns(),
       getProjectDomainTableColumns(),
       getPublicScopeTableColumn({ vm: this, resource: 'backupstorages' }),
     ]
