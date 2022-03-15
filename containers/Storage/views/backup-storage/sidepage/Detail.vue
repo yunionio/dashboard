@@ -17,7 +17,7 @@ import {
 } from '@/utils/common/tableColumn'
 import {
   getStorageTypeColumns,
-  getCapacityMbColumns,
+  // getCapacityMbColumns,
   getNFSHostColumns,
   getNFSSharedDirColumns,
 } from '../utils/columns'
@@ -44,7 +44,7 @@ export default {
         getStorageTypeColumns(),
         getNFSHostColumns(),
         getNFSSharedDirColumns(),
-        getCapacityMbColumns(),
+        // getCapacityMbColumns(),
       ],
       extraInfo: [],
     }
