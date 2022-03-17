@@ -2,7 +2,7 @@
   <div class="vm-sched-policy">
     <a-form-item>
       <a-radio-group v-decorator="decorators.schedPolicyType" @change="change">
-        <a-radio-button v-for="(item, key) of schedPolicyOptionsMap" :value="key" :key="key">{{ item.label }}</a-radio-button>
+        <a-radio-button v-for="(item, key) of schedPolicyOptionsMap" :value="key" :key="key">{{ item.t ? $t(item.t) : item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item v-if="schedPolicyComponent === 'host'" class="host-form-item">
