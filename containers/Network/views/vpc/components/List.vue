@@ -18,6 +18,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import {
   getStatusFilter,
   getBrandFilter,
@@ -177,6 +178,12 @@ export default {
                 resource: 'vpcs',
               }, {
                 permission: 'vpcs_perform_change_owner',
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               }),
               getSetPublicAction(this, {
                 name: this.$t('dictionary.vpc'),
@@ -184,6 +191,12 @@ export default {
                 resource: 'vpcs',
               }, {
                 permission: 'vpcs_perform_public',
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               }),
               {
                 label: this.$t('table.action.set_tag'),
@@ -211,6 +224,12 @@ export default {
                     validate: true,
                   }
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               {
                 label: this.$t('network.text_131'),
@@ -234,6 +253,12 @@ export default {
                   return {
                     validate: this.list.allowDelete(),
                   }
+                },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
                 },
               },
             ]

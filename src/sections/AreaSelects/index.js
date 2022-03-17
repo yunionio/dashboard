@@ -1,4 +1,6 @@
 import * as R from 'ramda'
+import { mapGetters } from 'vuex'
+import { cloudregionFilterByCapability } from '@/utils/common/capability'
 import i18n from '@/locales'
 import { findAndPush } from '@/utils/utils'
 
@@ -101,6 +103,7 @@ export default {
       default: true,
     },
     cloudregionParamsMapper: Function,
+    filterBrandResource: String,
   },
   watch: {
     /*
@@ -134,6 +137,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['capability']),
     FC () {
       if (this.form && this.form.fc) {
         return this.form.fc
@@ -344,6 +348,14 @@ export default {
           methodname: 'getRegionProviders',
           params,
         })
+        if (this.filterBrandResource) {
+          return cloudregionFilterByCapability({
+            dataList: data,
+            capability: this.capability,
+            regionKey: 'name',
+            resource: this.filterBrandResource,
+          })
+        }
         return data
       } finally {
         this.providerLoading = false
@@ -395,6 +407,14 @@ export default {
         const manager = new this.$Manager('cloudregions', 'v2')
         const { data = {} } = await manager.list({ params })
         let retList = !R.isEmpty(data.data) ? data.data : []
+        // 剔除只读云
+        if (this.filterBrandResource) {
+          retList = cloudregionFilterByCapability({
+            dataList: retList,
+            capability: this.capability,
+            resource: this.filterBrandResource,
+          })
+        }
         if (this.cloudregionMapper) {
           retList = this.cloudregionMapper(retList)
         }

@@ -221,6 +221,12 @@ export default {
             }
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
+            // 某些云不支持
+            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+            if (!unenableCloudCheck.validate) {
+              ret = unenableCloudCheck
+              return ret
+            }
             ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
               ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
               return ret
@@ -246,6 +252,12 @@ export default {
             }
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
+            // 某些云不支持
+            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+            if (!unenableCloudCheck.validate) {
+              ret = unenableCloudCheck
+              return ret
+            }
             ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
               ret.validate = this.list.selectedItems.every(item => item.status === 'running')
               return ret
@@ -271,6 +283,12 @@ export default {
             }
             ret.validate = this.list.selectedItems.length > 0
             if (!ret.validate) return ret
+            // 某些云不支持
+            const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+            if (!unenableCloudCheck.validate) {
+              ret = unenableCloudCheck
+              return ret
+            }
             ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
               ret.validate = this.list.selectedItems.every(item => ['running', 'stop_fail'].includes(item.status))
               return ret
@@ -557,6 +575,16 @@ export default {
                         mode: 'add',
                       })
                     },
+                    meta: () => {
+                      let ret = { validate: true }
+                      // 某些云不支持
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+                      if (!unenableCloudCheck.validate) {
+                        ret = unenableCloudCheck
+                        return ret
+                      }
+                      return ret
+                    },
                   },
                   {
                     label: this.$t('compute.text_1132'),
@@ -571,7 +599,7 @@ export default {
                       })
                     },
                     meta: () => {
-                      const ret = {
+                      let ret = {
                         validate: false,
                         tooltip: null,
                       }
@@ -581,6 +609,12 @@ export default {
                       })
                       if (isSomePrepaid) {
                         ret.tooltip = this.$t('compute.text_285')
+                        return ret
+                      }
+                      // 某些云不支持
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+                      if (!unenableCloudCheck.validate) {
+                        ret = unenableCloudCheck
                         return ret
                       }
                       // 暂只支持同时操作已设置到期或未设置到期释放的机器
@@ -610,7 +644,7 @@ export default {
                       })
                     },
                     meta: () => {
-                      const ret = {
+                      let ret = {
                         validate: true,
                         tooltip: null,
                       }
@@ -621,10 +655,8 @@ export default {
                       const isAllAdmin = this.list.selectedItems.every((item) => {
                         return this.isAdminMode
                       })
-                      // 如果是 VMware提示不支持
-                      const isSomeVMware = this.list.selectedItems.some((item) => {
-                        return item.hypervisor === 'esxi'
-                      })
+                      // 某些云不支持
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems, [typeClouds.hypervisorMap.bingocloud.key, 'esxi'])
                       if (!isAllAdmin) {
                         ret.validate = false
                         ret.tooltip = this.$t('compute.text_1113')
@@ -640,9 +672,8 @@ export default {
                         ret.tooltip = this.$t('compute.text_1115')
                         return ret
                       }
-                      if (isSomeVMware) {
-                        ret.validate = false
-                        ret.tooltip = this.$t('compute.text_450')
+                      if (!unenableCloudCheck.validate) {
+                        ret = unenableCloudCheck
                         return ret
                       }
                       return ret
@@ -1006,6 +1037,11 @@ export default {
                     permission: 'server_update',
                   }), {
                     name: this.$t('dictionary.server'),
+                    meta: () => {
+                      // 某些云不支持
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+                      return unenableCloudCheck
+                    },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
                   }),
                   {
@@ -1022,7 +1058,13 @@ export default {
                         })
                       })
                     },
-                    meta: () => this.$getDeleteResult(this.list.selectedItems),
+                    meta: () => {
+                      const unenableCloudCheck = this.hasSomeCloud(this.list.selectedItems)
+                      if (!unenableCloudCheck.validate) {
+                        return unenableCloudCheck
+                      }
+                      return this.$getDeleteResult(this.list.selectedItems)
+                    },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
                   },
                 ],
@@ -1127,6 +1169,15 @@ export default {
       this.list.refresh()
       // 新建按钮无法点击时，刷新云资源情况
       this.cloudEnvEmpty && this.$store.dispatch('auth/getCapabilities')
+    },
+    hasSomeCloud (selectItems, clouds = [typeClouds.hypervisorMap.bingocloud.key]) {
+      const ret = { validate: true, tooltip: '' }
+      const hasList = selectItems.filter(item => clouds.includes(item.hypervisor))
+      if (hasList && hasList[0]) {
+        ret.validate = false
+        ret.tooltip = this.$t('compute.text_473', [typeClouds.hypervisorMap[hasList[0].hypervisor].label])
+      }
+      return ret
     },
   },
 }

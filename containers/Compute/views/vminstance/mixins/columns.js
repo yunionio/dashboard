@@ -16,7 +16,7 @@ import {
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, typeClouds } from '@/utils/common/hypervisor'
 import i18nLocale from '@/locales'
 
 export default {
@@ -123,7 +123,14 @@ export default {
           },
         },
       },
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'server', columns: () => this.columns, tipName: this.$t('dictionary.server') }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        needExt: true,
+        resource: 'server',
+        columns: () => this.columns,
+        tipName: this.$t('dictionary.server'),
+        editCheck: (row) => row.hypervisor !== typeClouds.hypervisorMap.bingocloud.key,
+      }),
       getIpsTableColumn({ field: 'ip', title: 'IP', vm: this }),
       {
         field: 'macs',

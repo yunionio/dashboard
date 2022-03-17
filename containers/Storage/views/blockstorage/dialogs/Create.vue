@@ -10,7 +10,8 @@
         <a-form-item :label="$t('storage.text_47')">
           <cloudregion-zone
             :cloudregionParams="{cloud_env: 'onpremise'}"
-            :decorator="decorators.regionZone" />
+            :decorator="decorators.regionZone"
+            filterBrandResource="loadbalancer_engine" />
         </a-form-item>
         <a-form-item :label="$t('storage.text_40')">
           <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />

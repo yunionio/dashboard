@@ -17,6 +17,84 @@ const _tran = enArr => {
 }
 
 const actionEableMap = {
+  start: {
+    cn: i18n.t('compute.text_272'),
+    brand: {
+      azure: ['ready'],
+      qcloud: ['ready'],
+      aliyun: ['ready'],
+      aws: ['ready'],
+      onecloud: ['ready'],
+      cloudpods: ['ready'],
+      vmware: ['ready'],
+      baremetal: ['ready'],
+      huawei: ['ready'],
+      hcso: ['ready'],
+      openstack: ['ready'],
+      zstack: ['ready'],
+      dstack: ['ready'],
+      ucloud: ['ready'],
+      ctyun: ['ready'],
+      google: ['ready'],
+      apsara: ['ready'],
+      jdcloud: ['ready'],
+      ecloud: ['ready'],
+      nutanix: ['ready'],
+      bingocloud: false,
+    },
+  },
+  stop: {
+    cn: i18n.t('compute.text_273'),
+    brand: {
+      azure: ['running'],
+      qcloud: ['running'],
+      aliyun: ['running'],
+      aws: ['running'],
+      onecloud: ['running'],
+      cloudpods: ['running'],
+      vmware: ['running'],
+      baremetal: ['running'],
+      huawei: ['running'],
+      hcso: ['running'],
+      openstack: ['running'],
+      zstack: ['running'],
+      dstack: ['running'],
+      ucloud: ['running'],
+      ctyun: ['running'],
+      google: ['running'],
+      apsara: ['running'],
+      jdcloud: ['running'],
+      ecloud: ['running'],
+      nutanix: ['running'],
+      bingocloud: false,
+    },
+  },
+  restart: {
+    cn: i18n.t('compute.text_274'),
+    brand: {
+      azure: ['running', 'stop_fail'],
+      qcloud: ['running', 'stop_fail'],
+      aliyun: ['running', 'stop_fail'],
+      aws: ['running', 'stop_fail'],
+      onecloud: ['running', 'stop_fail'],
+      cloudpods: ['running', 'stop_fail'],
+      vmware: ['running', 'stop_fail'],
+      baremetal: ['running', 'stop_fail'],
+      huawei: ['running', 'stop_fail'],
+      hcso: ['running', 'stop_fail'],
+      openstack: ['running', 'stop_fail'],
+      zstack: ['running', 'stop_fail'],
+      dstack: ['running', 'stop_fail'],
+      ucloud: ['running', 'stop_fail'],
+      ctyun: ['running', 'stop_fail'],
+      google: ['running', 'stop_fail'],
+      apsara: ['running', 'stop_fail'],
+      jdcloud: ['running', 'stop_fail'],
+      ecloud: ['running', 'stop_fail'],
+      nutanix: ['running', 'stop_fail'],
+      bingocloud: false,
+    },
+  },
   rebuildRoot: {
     cn: i18n.t('compute.text_357'),
     brand: {
@@ -38,6 +116,7 @@ const actionEableMap = {
       google: ['ready'],
       apsara: ['running', 'ready'],
       nutanix: false,
+      bingocloud: false,
     },
   },
   resetPassword: {
@@ -61,6 +140,7 @@ const actionEableMap = {
       google: ['ready'],
       apsara: ['running'],
       nutanix: false,
+      bingocloud: false,
     },
   },
   bindKeyPair: {
@@ -84,6 +164,7 @@ const actionEableMap = {
       google: ['ready'],
       apsara: ['running'],
       nutanix: false,
+      bingocloud: false,
     },
   },
   unBindKeyPair: {
@@ -107,6 +188,7 @@ const actionEableMap = {
       google: ['ready'],
       apsara: ['running'],
       nutanix: false,
+      bingocloud: false,
     },
   },
   adjustConfig: {
@@ -130,6 +212,7 @@ const actionEableMap = {
       google: ['ready'],
       apsara: ['ready'],
       nutanix: ['ready'],
+      bingocloud: false,
     },
   },
   vnc: {
@@ -155,6 +238,7 @@ const actionEableMap = {
       jdcloud: ['running'],
       ecloud: ['running'],
       nutanix: false,
+      bingocloud: false,
     },
   },
   'EIP SSH': {
@@ -180,6 +264,7 @@ const actionEableMap = {
       jdcloud: ['running'],
       ecloud: ['running'],
       nutanix: ['running'],
+      bingocloud: false,
     },
   },
   'IP SSH': {
@@ -205,6 +290,7 @@ const actionEableMap = {
       jdcloud: false,
       ecloud: false,
       nutanix: ['running'],
+      bingocloud: false,
     },
   },
   createSnapshot: {
@@ -228,6 +314,7 @@ const actionEableMap = {
       google: ['running', 'ready'],
       apsara: false,
       nutanix: false,
+      bingocloud: false,
     },
   },
   createBackup: {
@@ -251,6 +338,7 @@ const actionEableMap = {
       google: false,
       apsara: false,
       nutanix: false,
+      bingocloud: false,
     },
   },
   transfer: {
@@ -274,6 +362,7 @@ const actionEableMap = {
       google: false,
       apsara: false,
       nutanix: false,
+      bingocloud: false,
     },
   },
   assignSecgroup: {
@@ -297,6 +386,7 @@ const actionEableMap = {
       google: true,
       apsara: false,
       nutanix: false,
+      bingocloud: false,
     },
   },
   insertiso: {
@@ -319,6 +409,7 @@ const actionEableMap = {
       google: false,
       apsara: false,
       nutanix: false,
+      bingocloud: false,
     },
   },
   ejectiso: {
@@ -341,6 +432,7 @@ const actionEableMap = {
       google: false,
       apsara: false,
       nutanix: false,
+      bingocloud: false,
     },
   },
   bindEip: {
@@ -364,6 +456,7 @@ const actionEableMap = {
       google: ['running', 'ready'],
       apsara: false,
       nutanix: false,
+      bingocloud: false,
     },
   },
   unbindEip: {
@@ -387,6 +480,7 @@ const actionEableMap = {
       google: ['running', 'ready'],
       apsara: false,
       nutanix: false,
+      bingocloud: false,
     },
   },
   acttachGpu: {
@@ -394,6 +488,7 @@ const actionEableMap = {
     brand: {
       onecloud: ['ready'],
       vmware: false,
+      bingocloud: false,
     },
   },
   acttachUsb: {
@@ -401,6 +496,7 @@ const actionEableMap = {
     brand: {
       onecloud: ['ready', 'running'],
       vmware: false,
+      bingocloud: false,
     },
   },
   publicIpToEip: {
@@ -410,6 +506,7 @@ const actionEableMap = {
       aliyun: ['running', 'ready'],
       google: false,
       aws: false,
+      bingocloud: false,
     },
   },
 }

@@ -21,6 +21,7 @@ import { mapGetters } from 'vuex'
 import { Manager } from '@/utils/manager'
 import Cloudregion from './components/Cloudregion'
 import Zone from './components/Zone'
+import { cloudregionFilterByCapability } from '@/utils/common/capability'
 
 export default {
   name: 'RegionZoneSelect',
@@ -42,6 +43,8 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    // 选择过滤掉哪些资源的只读云
+    filterBrandResource: String,
   },
   inject: ['form'],
   data () {
@@ -50,7 +53,7 @@ export default {
       zoneOpts: [],
     }
   },
-  computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+  computed: mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable', 'capability']),
   watch: {
     cloudregionParams: {
       deep: true,
@@ -94,7 +97,16 @@ export default {
       }
       this.cloudregionsM.list({ params })
         .then(({ data: { data = [] } }) => {
-          this.regionOpts = data
+          // 根据全局capability剔除掉只读云的cloudregion
+          if (this.filterBrandResource) {
+            this.regionOpts = cloudregionFilterByCapability({
+              capability: this.capability,
+              resource: 'compute_engine',
+              dataList: data,
+            })
+          } else {
+            this.regionOpts = data
+          }
           this.$emit('update:closeregionOpts', this.regionOpts)
           if (this.regionOpts.length && this.form) {
             const firstRegion = this.regionOpts[0]

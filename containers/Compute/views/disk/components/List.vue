@@ -26,6 +26,7 @@ import {
   getRegionFilter,
   getDescriptionFilter,
 } from '@/utils/common/tableFilter'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -161,6 +162,12 @@ export default {
                   tipName: this.$t('compute.text_100'),
                 })
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
               // hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_set_tags'),
             },
             {
@@ -175,6 +182,12 @@ export default {
                 })
               },
               meta: () => this.$getDeleteResult(this.list.selectedItems),
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_delete'),
             },
           ]

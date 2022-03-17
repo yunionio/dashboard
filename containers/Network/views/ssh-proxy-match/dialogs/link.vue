@@ -17,6 +17,7 @@
             :cloudregionParams="regionParams"
             :providerParams="providerParams"
             :isRequired="false"
+            filterBrandResource="compute_engine"
             @change="handleRegionChange" />
         <a-form-item :label="$t('network.text_277')" v-bind="formItemLayout">
           <a-radio-group v-decorator="decorators.match_scope" :defaultChecked="true" @change="handleScopeChange">

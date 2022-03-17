@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex'
 import i18n from '@/locales'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { getSetPublicAction } from '@/utils/common/tableActions'
 
 const PROVIDER_FILTER_CN = i18n.t('env')
@@ -37,6 +37,12 @@ export default {
           return {
             validate: this.isPower(obj),
           }
+        },
+        extraMeta: obj => {
+          return getDisabledProvidersActionMeta({
+            row: obj,
+            disabledProviders: ['BingoCloud'],
+          })
         },
       },
       {
@@ -84,6 +90,12 @@ export default {
                   }
                 }
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
             {
               label: i18n.t('network.text_225', [i18n.t('dictionary.project')]),
@@ -115,6 +127,12 @@ export default {
                   validate: this.isPower(obj),
                 }
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
             getSetPublicAction(this, {
               name: this.$t('dictionary.network'),
@@ -122,6 +140,12 @@ export default {
               resource: 'networks',
             }, {
               permission: 'networks_perform_public',
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             }),
             // {
             //   label: '设置为共享',
@@ -175,6 +199,12 @@ export default {
                   }
                 }
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
             {
               label: i18n.t('network.text_651'),
@@ -197,6 +227,12 @@ export default {
                 return {
                   validate: true,
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
             },
             {
@@ -228,6 +264,12 @@ export default {
                 return {
                   validate: true,
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
             },
             {
@@ -290,6 +332,12 @@ export default {
                   validate: true,
                   tooltip: '',
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
             },
           ]

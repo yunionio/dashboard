@@ -45,8 +45,20 @@ export default {
   data () {
     return {
       baseInfo: [
-        getUserTagColumn({ onManager: this.onManager, resource: 'storage', columns: () => this.columns, tipName: this.$t('storage.text_37') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'storage', columns: () => this.columns, tipName: this.$t('storage.text_37') }),
+        getUserTagColumn({
+          onManager: this.onManager,
+          resource: 'storage',
+          columns: () => this.columns,
+          tipName: this.$t('storage.text_37'),
+          editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        }),
+        getExtTagColumn({
+          onManager: this.onManager,
+          resource: 'storage',
+          columns: () => this.columns,
+          tipName: this.$t('storage.text_37'),
+          editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        }),
         getPublicScopeTableColumn({ vm: this, resource: 'storages' }),
         getBrandTableColumn(),
         getEnabledTableColumn(),

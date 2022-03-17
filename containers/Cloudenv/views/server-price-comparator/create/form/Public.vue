@@ -30,6 +30,7 @@
         :cloudregionParams="cloudregionParams"
         :zoneParams="zoneParams"
         :defaultActiveFirstOption="['provider']"
+        filterBrandResource="compute_engine"
         @providerFetchSuccess="providerFetchSuccess" />
       <a-form-item :label="$t('compute.text_1058')" class="mb-0">
         <cpu-radio :decorator="decorators.vcpu" :options="form.fi.cpuMem.cpus || []" @change="cpuChange" />

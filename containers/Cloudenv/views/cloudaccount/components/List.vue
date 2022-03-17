@@ -19,6 +19,7 @@ import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 
 export default {
   name: 'CloudaccountList',
@@ -206,6 +207,20 @@ export default {
                     }
                   },
                 ],
+                extraMetas: [
+                  obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
+                  obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
+                ],
               }),
               {
                 label: this.$t('cloudenv.text_108'),
@@ -263,6 +278,12 @@ export default {
                   return {
                     validate: ownerDomain,
                   }
+                },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
                 },
               },
             ]

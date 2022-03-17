@@ -11,6 +11,7 @@
     </a-form-item>
     <area-selects
       v-bind="areaParams"
+      filterBrandResource="loadbalancer_engine"
       @providerFetchSuccess="providerFetchSuccess"
       @cloudregionFetchSuccess="cloudregionFetchSuccess"
       @zoneFetchSuccess="zoneFetchSuccess"

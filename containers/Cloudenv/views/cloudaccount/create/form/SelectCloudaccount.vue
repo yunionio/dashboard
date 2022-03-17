@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { hasSetupKey } from '@/utils/auth'
+// import { hasSetupKey } from '@/utils/auth'
 import { CLOUDACCOUNT_TYPES, ENV_TITLE } from '@Cloudenv/views/cloudaccount/constants'
 
 export default {
@@ -45,21 +45,22 @@ export default {
       return undefined
     },
     types () {
-      const typesMap = {}
-      for (const box in CLOUDACCOUNT_TYPES) {
-        for (const brand in CLOUDACCOUNT_TYPES[box]) {
-          if (hasSetupKey([brand])) {
-            if (!typesMap[box]) {
-              typesMap[box] = {
-                [brand]: CLOUDACCOUNT_TYPES[box][brand],
-              }
-            } else {
-              typesMap[box][brand] = CLOUDACCOUNT_TYPES[box][brand]
-            }
-          }
-        }
-      }
-      return typesMap
+      // const typesMap = {}
+      // for (const box in CLOUDACCOUNT_TYPES) {
+      //   for (const brand in CLOUDACCOUNT_TYPES[box]) {
+      //     if (hasSetupKey([brand])) {
+      //       if (!typesMap[box]) {
+      //         typesMap[box] = {
+      //           [brand]: CLOUDACCOUNT_TYPES[box][brand],
+      //         }
+      //       } else {
+      //         typesMap[box][brand] = CLOUDACCOUNT_TYPES[box][brand]
+      //       }
+      //     }
+      //   }
+      // }
+      // return typesMap
+      return CLOUDACCOUNT_TYPES
     },
   },
   watch: {
@@ -83,15 +84,16 @@ export default {
       }
     },
     isShowItem (item) {
-      if (this.globalSettingSetupKeys === undefined) {
-        return true
-      }
-      if (typeof item === 'string') {
-        if (item === 'private' && this.globalSettingSetupKeys.indexOf('vmware') > -1) return true
-        return this.globalSettingSetupKeys.indexOf(item) > -1 || (this.globalSettingSetupKeys.indexOf('bill') > -1 && this.isBillEnv(item))
-      }
-      // console.log(this.globalSettingSetupKeys, item.provider.toLowerCase(), this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1)
-      return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1 || (this.globalSettingSetupKeys.indexOf('bill') > -1 && this.isBillItem(item))
+      return true
+      // if (this.globalSettingSetupKeys === undefined) {
+      //   return true
+      // }
+      // if (typeof item === 'string') {
+      //   if (item === 'private' && this.globalSettingSetupKeys.indexOf('vmware') > -1) return true
+      //   return this.globalSettingSetupKeys.indexOf(item) > -1 || (this.globalSettingSetupKeys.indexOf('bill') > -1 && this.isBillEnv(item))
+      // }
+      // // console.log(this.globalSettingSetupKeys, item.provider.toLowerCase(), this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1)
+      // return this.globalSettingSetupKeys.indexOf(item.provider.toLowerCase()) > -1 || (this.globalSettingSetupKeys.indexOf('bill') > -1 && this.isBillItem(item))
     },
     isBillEnv (env) {
       if (env === 'public') {
