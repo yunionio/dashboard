@@ -23,6 +23,7 @@ const jdcloudLogo = require('../../../../src/assets/images/providers/jdcloud.svg
 const cloudpodsLogo = require('../../../../src/assets/images/providers/cloudpods.svg')
 const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
 const nutanixLogo = require('../../../../src/assets/images/providers/nutanix.svg')
+const bingocloudLogo = require('../../../../src/assets/images/providers/bingocloud.svg')
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -144,6 +145,12 @@ export const CLOUDACCOUNT_TYPES = {
       component: 'NutanixCreate',
       provider: providerMap.nutanix.key,
     },
+    bingocloud: {
+      name: providerMap.bingocloud.label,
+      logo: bingocloudLogo,
+      component: 'BingoCloudCreate',
+      provider: providerMap.bingocloud.key,
+    },
   },
   storage: {
     s3: {
@@ -198,6 +205,7 @@ export function getCloudaccountDocs (scope) {
     cloudpods: i18n.t('cloudenv.create_cloudpods', [docs_path]),
     hcso: i18n.t('cloudenv.create_hcso', [docs_path]),
     nutanix: i18n.t('cloudenv.create_nutanix', [docs_path]),
+    bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
   }
   if (isCE()) {
     Object.keys(docs).forEach(v => {
@@ -506,6 +514,19 @@ export const keySecretFields = {
     },
     label: {
       k: i18n.t('cloudenv.text_94'),
+      s: i18n.t('cloudenv.text_147'),
+    },
+  },
+  bingocloud: {
+    k: 'access_key_id',
+    s: 'access_key_secret',
+    text: i18n.t('cloudenv.bingocloud'),
+    placeholder: {
+      k: i18n.t('cloudenv.text_144'),
+      s: i18n.t('cloudenv.text_145'),
+    },
+    label: {
+      k: i18n.t('cloudenv.text_146'),
       s: i18n.t('cloudenv.text_147'),
     },
   },

@@ -82,6 +82,7 @@ export function getDomainChangeOwnerAction (vm, dialogParams = {}, params = {}) 
   if (params.permission) {
     options.permission = params.permission
   }
+  if (params.extraMeta) options.extraMeta = params.extraMeta
   return options
 }
 
@@ -154,6 +155,7 @@ export function getSetPublicAction (vm, dialogParams = {}, params = {}) {
     },
   }
   if (params.permission) options.permission = params.permission
+  if (params.extraMeta) options.extraMeta = params.extraMeta
   if (params.hidden) options.hidden = params.hidden
   return options
 }
@@ -162,7 +164,7 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
   if (!vm) {
     throw Error('not found vm instance')
   }
-  const { resourceName = '', fields, actions, metas } = params
+  const { resourceName = '', fields, actions, metas, extraMetas } = params
   // const data = getSelectedData(row, vm)
   const openDialog = (rowItem, type, index) => {
     const { list = {} } = vm
@@ -210,6 +212,13 @@ export function getEnabledSwitchActions (vm, row, permissions = [], params = {})
         return {
           validate: data.length > 0, // 批量数量大于0才可以操作
         }
+      },
+      extraMeta: (rowItem) => {
+        if (extraMetas && extraMetas.length > 0) {
+          const extraMeta = extraMetas[index]
+          return extraMeta && extraMeta(rowItem)
+        }
+        return { validate: true }
       },
     }
   })

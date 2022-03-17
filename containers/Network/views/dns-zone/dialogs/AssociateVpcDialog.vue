@@ -16,6 +16,7 @@
           :providerParams="providerParams"
           :cloudregionParams="cloudregionParams"
           :isRequired="true"
+          filterBrandResource="network_manage"
           @change="handleRegionChange" />
         <a-form-item label="VPC" v-bind="formItemLayout">
           <base-select

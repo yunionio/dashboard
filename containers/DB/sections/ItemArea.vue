@@ -9,6 +9,7 @@
     :zoneParams="zoneParams"
     :providerParams="providerParams"
     :cloudregionParams="cloudregionParams"
+    :filterBrandResource="filterBrandResource"
     @providerFetchSuccess="providerFetchSuccess"
     @cloudregionFetchSuccess="cloudregionFetchSuccess" />
 </template>
@@ -37,6 +38,7 @@ export default {
     billingType: {
       type: String,
     },
+    filterBrandResource: String,
   },
   data () {
     return {

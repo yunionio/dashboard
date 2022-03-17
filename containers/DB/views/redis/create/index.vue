@@ -32,7 +32,8 @@
           v-if="form.fd.project"
           class="mb-0"
         :defaultActiveFirstOption="['provider', 'cloudregion']"
-        :values="form.fc.getFieldsValue()" />
+        :values="form.fc.getFieldsValue()"
+        filterBrandResource="redis_engine" />
         <!-- 套餐 -->
         <s-k-u ref="REF_SKU" />
         <a-form-item :label="$t('db.text_143')">

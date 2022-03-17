@@ -8,7 +8,8 @@
           <cloudregion-zone
             :zone-params="resParams.zone"
             :cloudregion-params="resParams.region"
-            :decorator="decorators.regionZone" />
+            :decorator="decorators.regionZone"
+            filterBrandResource="loadbalancer_engine" />
         </a-form-item>
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />
@@ -136,7 +137,6 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        console.log('values', values)
         await this.doCreate(values)
         this.loading = false
         this.cancelDialog()

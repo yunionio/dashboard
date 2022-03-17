@@ -54,6 +54,7 @@
         :cloudregionParams="cloudregionParams"
         :zoneParams="zoneParams"
         :defaultActiveFirstOption="['provider', 'cloudregion']"
+        filterBrandResource="compute_engine"
         @providerFetchSuccess="providerFetchSuccess" />
       <!-- <a-form-item class="mb-0" :label="$t('compute.text_1159')">
         <resource :decorator="decorators.resourceType" />

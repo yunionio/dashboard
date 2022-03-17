@@ -31,7 +31,8 @@
         v-if="form.fd.project"
         class="mb-0"
         :isRequired="true"
-        :names="['provider', 'cloudregion']" />
+        :names="['provider', 'cloudregion']"
+        filterBrandResource="rds_engine" />
       <!-- 套餐信息 -->
       <s-k-u ref="SKU" />
       <a-form-item v-if="form.fd.provider !== 'Aliyun'" :label="$t('db.text_143')">

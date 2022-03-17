@@ -20,7 +20,7 @@ import { getNameFilter, getDescriptionFilter, getStatusFilter, getEnabledFilter,
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ListMixin from '@/mixins/list'
-import { typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import regexp from '@/utils/regexp'
@@ -197,6 +197,20 @@ export default {
                 }
               },
             ],
+            extraMetas: [
+              (obj) => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
+              (obj) => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
+            ],
           }),
           {
             label: this.$t('common.batchAction'),
@@ -212,6 +226,12 @@ export default {
                       validate: ownerDomain,
                     }
                   },
+                  extraMeta: obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
                 }),
                 getSetPublicAction(this, {
                   name: this.$t('dictionary.host'),
@@ -219,6 +239,12 @@ export default {
                   resource: 'hosts',
                 }, {
                   permission: 'hosts_perform_public',
+                  extraMeta: obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
                 }),
                 {
                   label: this.$t('compute.text_540'),
@@ -234,6 +260,12 @@ export default {
                   meta: () => ({
                     validate: this.list.selectedItems.length && ownerDomain,
                   }),
+                  extraMeta: obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
                 },
                 {
                   label: this.$t('compute.text_508'),
@@ -289,6 +321,12 @@ export default {
                       tooltip: '',
                     }
                   },
+                  extraMeta: obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
                 },
                 {
                   label: this.$t('compute.text_513'),
@@ -305,6 +343,12 @@ export default {
                   meta: () => ({
                     validate: this.list.selectedItems.every(item => { return item.brand.toLowerCase() !== 'zstack' }) && ownerDomain,
                   }),
+                  extraMeta: obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
                 },
                 {
                   label: this.$t('compute.setup_passthrough_reserve'),
@@ -336,6 +380,12 @@ export default {
                       validate: ownerDomain,
                     }
                   },
+                  extraMeta: obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
                 },
                 {
                   label: this.$t('table.action.set_tag'),
@@ -350,6 +400,12 @@ export default {
                         resources: 'host',
                       },
                       tipName: this.$t('dictionary.host'),
+                    })
+                  },
+                  extraMeta: obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
                     })
                   },
                 },
@@ -377,6 +433,12 @@ export default {
                     return {
                       validate: ownerDomain,
                     }
+                  },
+                  extraMeta: obj => {
+                    return getDisabledProvidersActionMeta({
+                      rows: this.list.selectedItems,
+                      disabledProviders: ['BingoCloud'],
+                    })
                   },
                 },
               ]

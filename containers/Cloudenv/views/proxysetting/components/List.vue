@@ -14,6 +14,7 @@ import { getNameFilter, getDomainFilter, getDescriptionFilter } from '@/utils/co
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 
 export default {
   name: 'ProxysettingList',
@@ -110,6 +111,12 @@ export default {
               validate: true,
             }
           },
+          extraMeta: obj => {
+            return getDisabledProvidersActionMeta({
+              rows: this.list.selectedItems,
+              disabledProviders: ['BingoCloud'],
+            })
+          },
         }),
         {
           label: this.$t('cloudenv.text_108'),
@@ -127,6 +134,12 @@ export default {
             return {
               validate: this.list.allowDelete(),
             }
+          },
+          extraMeta: obj => {
+            return getDisabledProvidersActionMeta({
+              rows: this.list.selectedItems,
+              disabledProviders: ['BingoCloud'],
+            })
           },
         },
       ],

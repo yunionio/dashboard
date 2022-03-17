@@ -513,4 +513,9 @@ export const diskCreateSnapshotConfig = {
       tooltip: '',
     }
   },
+  bingocloud (obj) {
+    return {
+      validate: false,
+    }
+  },
 }

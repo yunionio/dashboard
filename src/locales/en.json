@@ -1723,7 +1723,8 @@
     "Ctyun": "eCloud",
     "HCSO": "HCSO",
     "Apsara": "Apsara",
-    "Nutanix": "Nutanix"
+    "Nutanix": "Nutanix",
+    "BingoCloud": "BingoCloud"
   },
   "shareScope": {
     "system": "System",
@@ -2023,7 +2024,8 @@
     "huawei": "Huawei Cloud",
     "ucloud": "UCloud",
     "hcso": "HCSO",
-    "nutanix": "Nutanix"
+    "nutanix": "Nutanix",
+    "bingocloud": "BingoCloud"
   },
   "bandwidths": {
     "100": "one hundred megabytes (100M)",
@@ -5016,6 +5018,7 @@
   "license.provider.cloudpods": "@:scopeProviders.cloudpods",
   "license.provider.hcso": "@:cloudPrvidersMap.HCSO",
   "license.provider.nutanix": "@:cloudPrvidersMap.Nutanix",
+  "license.provider.bingocloud": "@:cloudPrvidersMap.BingoCloud",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",

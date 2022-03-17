@@ -24,7 +24,8 @@
         <cloudregion-zone
           :zone-params="zoneParams"
           :cloudregion-params="cloudregionParams"
-          :decorator="decorators.cloudregionZone" />
+          :decorator="decorators.cloudregionZone"
+          filterBrandResource="compute_engine" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_15')" v-if="isHCSO">
         <base-select

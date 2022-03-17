@@ -3,7 +3,7 @@ import { changeToArr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
-import { findPlatform } from '@/utils/common/hypervisor'
+import { findPlatform, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { hasMeterService } from '@/utils/auth'
 
 const steadyStatus = {
@@ -167,6 +167,12 @@ export default {
                   return ret
                 }
                 return ret
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
               hidden: () => {
                 return !hasMeterService()

@@ -25,6 +25,7 @@ import regexp from '@/utils/regexp'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 
 export default {
   name: 'NetworkList',
@@ -211,6 +212,12 @@ export default {
                   }
                   return ret
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               {
                 label: this.$t('network.text_225', [this.$t('dictionary.project')]),
@@ -240,6 +247,12 @@ export default {
                     validate: f,
                   }
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               getSetPublicAction(this, {
                 name: this.$t('dictionary.network'),
@@ -247,6 +260,12 @@ export default {
                 resource: 'networks',
               }, {
                 permission: 'networks_perform_public',
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               }),
               // {
               //   label: '设置共享',
@@ -328,6 +347,12 @@ export default {
                     tooltip,
                   }
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               {
                 label: this.$t('common_564'),
@@ -358,6 +383,12 @@ export default {
                   return {
                     validate: true,
                   }
+                },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
                 },
               },
               {
@@ -415,6 +446,12 @@ export default {
                     validate: true,
                   }
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               {
                 label: this.$t('network.text_131'),
@@ -439,6 +476,12 @@ export default {
                   return {
                     validate: this.list.allowDelete(),
                   }
+                },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
                 },
               },
             ]
