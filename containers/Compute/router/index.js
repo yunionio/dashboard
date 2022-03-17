@@ -707,8 +707,9 @@ export default {
         {
           path: '/schedtag',
           meta: {
-            label: i18n.t('cloudenv.text_18'),
-            // permission: 'schedtags_list',
+            label: i18n.t('dictionary.schedtag'),
+            permission: 'schedtags_list',
+            t: 'dictionary.schedtag',
             hidden: () => {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.schedtag')) {
                 return true

@@ -29,6 +29,7 @@ export const NETWORK_OPTIONS_MAP = {
   schedtag: {
     label: i18n.t('compute.text_3'),
     key: 'schedtag',
+    t: 'compute.text_3',
   },
 }
 
@@ -175,6 +176,7 @@ export const SCHED_POLICY_OPTIONS_MAP = {
   schedtag: {
     label: i18n.t('compute.text_3'),
     key: 'schedtag',
+    t: 'compute.text_3',
   },
 }
 

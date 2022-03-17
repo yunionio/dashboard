@@ -4,7 +4,7 @@
       <a-radio-group v-decorator="decorator.networkType" @change="change">
         <template  v-for="(item, key) in networkMaps">
           <a-radio-button v-if="(isServertemplate && (key !== 'schedtag')) || !isServertemplate" :value="key" :key="key">
-            {{ item.label }}
+            {{ item.t ? $t(item.t) : item.label }}
             <help-tooltip v-if="key === 'default'" :name="`${key}ServerNetwork`" class="ml-2" />
           </a-radio-button>
         </template>
