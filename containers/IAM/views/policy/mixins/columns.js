@@ -18,6 +18,9 @@ export default {
         edit: row => !row.is_system,
         editDesc: row => !row.is_system,
         hideField: true,
+        formRules: [
+          { required: true, message: i18n.t('system.text_168') },
+        ],
         slotCallback: (row, h) => {
           return this.$createElement(
             'side-page-trigger',
