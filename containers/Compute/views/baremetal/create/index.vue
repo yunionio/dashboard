@@ -13,7 +13,8 @@
         <cloudregion-zone
           :zone-params="params.zone"
           :cloudregion-params="params.region"
-          :decorator="decorators.regionZone" />
+          :decorator="decorators.regionZone"
+          filterBrandResource="compute_engine" />
       </a-form-item>
       <a-form-item
         :label="$t('compute.text_228')"

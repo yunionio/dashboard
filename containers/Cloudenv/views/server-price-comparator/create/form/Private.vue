@@ -18,7 +18,8 @@
         <cloudregion-zone
           :zone-params="zoneParams"
           :cloudregion-params="cloudregionParams"
-          :decorator="decorators.cloudregionZone" />
+          :decorator="decorators.cloudregionZone"
+          filterBrandResource="compute_engine" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_294')">
         <a-input-number v-decorator="decorators.count" @blur="countBlur" :min="1" :max="100" />

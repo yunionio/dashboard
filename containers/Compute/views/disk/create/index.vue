@@ -18,6 +18,7 @@
         :providerParams="param.provider"
         :isRequired="true"
         :region.sync="regionList"
+        filterBrandResource="compute_engine"
         :zone.sync="zoneList" />
       <a-form-item :label="$t('compute.text_228')" v-bind="formItemLayout">
         <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceCreateName')" />

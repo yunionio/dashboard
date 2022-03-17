@@ -73,6 +73,7 @@ export default {
     list: {
       type: Object,
     },
+    canEdit: Boolean,
   },
   inject: {
     // 是否处于BaseDialog中
@@ -114,7 +115,7 @@ export default {
       return { resources: this.resource }
     },
     isPermission () {
-      return hasPermission({ key: `${this.resource}_perform_set_user_metadata` })
+      return this.canEdit && hasPermission({ key: `${this.resource}_perform_set_user_metadata` })
     },
     validate () {
       if (this.isPermission) {

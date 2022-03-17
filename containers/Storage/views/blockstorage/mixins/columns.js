@@ -22,7 +22,14 @@ export default {
       }),
       getStatusTableColumn({ statusModule: 'blockstorage' }),
       getEnabledTableColumn(),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'storages', columns: () => this.columns, tipName: this.$t('dictionary.blockstorage') }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        needExt: true,
+        resource: 'storages',
+        columns: () => this.columns,
+        tipName: this.$t('dictionary.blockstorage'),
+        editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+      }),
       {
         field: 'capacity',
         title: this.$t('storage.text_177'),

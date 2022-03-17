@@ -4,7 +4,12 @@
       <domain-project :fc="form.fc" :decorators="decorators" :domain.sync="domain" :project.sync="project" :labelInValue="false" />
     </a-form-item>
     <a-form-item :label="$t('network.text_199')" class="mb-0">
-      <cloudregion-zone :decorator="decorators" :cloudregionParams="cloudregionParams" :zoneParams="zoneParams" :zone.sync="zoneObj" />
+      <cloudregion-zone
+      :decorator="decorators"
+      :cloudregionParams="cloudregionParams"
+      :zoneParams="zoneParams"
+      :zone.sync="zoneObj"
+      filterBrandResource="loadbalancer_engine" />
     </a-form-item>
     <a-form-item :label="$t('network.text_21')">
       <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />

@@ -2,6 +2,7 @@ import { mapGetters } from 'vuex'
 import { diskResizeConfig, diskCreateSnapshotConfig } from '@Compute/views/disk/utils'
 import i18n from '@/locales'
 import { BRAND_MAP, PROVIDER_MAP, HYPERVISORS_MAP } from '@/constants'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 const supportShpolcyBrand = ['OneCloud', 'Qcloud', 'Aliyun']
 
 export default {
@@ -31,6 +32,12 @@ export default {
           return {
             validate: true,
           }
+        },
+        extraMeta: obj => {
+          return getDisabledProvidersActionMeta({
+            row: obj,
+            disabledProviders: ['BingoCloud'],
+          })
         },
         hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_resize'),
       },
@@ -72,6 +79,12 @@ export default {
                 }
                 ret.validate = true
                 return ret
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_attach'),
             },
@@ -126,6 +139,12 @@ export default {
                   tooltip: '',
                 }
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_detach'),
             },
             {
@@ -144,6 +163,12 @@ export default {
                   validate: diskCreateSnapshotConfig[provider](obj).validate,
                   tooltip: diskCreateSnapshotConfig[provider](obj).tooltip,
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_create_snapshot'),
             },
@@ -173,6 +198,12 @@ export default {
                   validate: true,
                   tooltip: '',
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
             },
             {
@@ -259,6 +290,12 @@ export default {
                   validate: true,
                 }
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_setup_snapshot_policy'),
             },
             {
@@ -278,6 +315,12 @@ export default {
                   ret.tooltip = i18n.t('compute.text_1388')
                 }
                 return ret
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
               hidden: () => !this.isAdminMode,
             },
@@ -306,6 +349,12 @@ export default {
                   validate: obj.guest_count < 1,
                   tooltip: obj.guest ? i18n.t('compute.text_458', [i18n.t('dictionary.project')]) : '',
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_perform_change_project'),
             },
@@ -350,6 +399,12 @@ export default {
                 })
               },
               meta: () => this.$getDeleteResult(obj),
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
               hidden: () => this.$isScopedPolicyMenuHidden('disk_hidden_menus.disk_delete'),
             },
           ]

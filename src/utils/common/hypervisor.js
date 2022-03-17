@@ -120,3 +120,34 @@ export const getCloudEnvOptions = (capabilityBrandKey, ignoreAll) => {
   ret = ret.sort((a, b) => orderKeys.indexOf(a.key) - orderKeys.indexOf(b.key))
   return ret
 }
+
+/**
+ * 获取禁用的云平台对action验证的meta
+ * @param {Object} obj {row, rows, disabledProviders, supportProviders, matchType, matchKey} matchType 取值 every，some
+ * @returns {Object} {validate: Boolean, tooltip: String}
+ */
+export const getDisabledProvidersActionMeta = ({ row, rows, disabledProviders, matchType = 'every', matchKey }) => {
+  const ret = { validate: true }
+  const dataList = row ? [row] : rows
+  if (!dataList.length) return ret
+  try {
+    // 禁用操作的云平台
+    if (disabledProviders.length) {
+      let hypervisorText = ''
+      dataList.map(item => {
+        // 取用data中的哪个字段去匹配hypervisor
+        const dataHypervisor = matchKey ? item[matchKey] : item.hypervisor || item.provider || ''
+        if (dataHypervisor && disabledProviders.includes(dataHypervisor)) {
+          ret.validate = false
+          hypervisorText += hypervisorText ? '、' : ''
+          hypervisorText += typeClouds.brandlowcaseMap[dataHypervisor.toLowerCase()].label
+        }
+      })
+      if (!ret.validate) {
+        ret.tooltip = i18n.t('compute.text_473', [hypervisorText])
+      }
+    }
+    // TODO 支持操作的云平台
+  } catch (err) { }
+  return ret
+}

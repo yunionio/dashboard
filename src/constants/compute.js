@@ -632,6 +632,18 @@ export const STORAGE_TYPES = {
       unCreateCloud: true, // 不支持创建云硬盘
     },
   },
+  // [HYPERVISORS_MAP.bingocloud.key]: {
+  //   local: {
+  //     label: i18n.t('common.storage.local'),
+  //     key: 'local',
+  //     min: 1,
+  //     max: 20 * 1024,
+  //     default: true,
+  //     sysMin: 10,
+  //     sysMax: 2 * 1024,
+  //     unCreateCloud: true, // 不支持创建云硬盘
+  //   },
+  // },
 }
 
 // 磁盘挂载点配置

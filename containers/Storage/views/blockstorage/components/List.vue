@@ -24,6 +24,7 @@ import { HYPERVISORS_MAP, EXTRA_HYPERVISORS } from '@/constants'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 
 export default {
   name: 'BlockStorageList',
@@ -62,7 +63,22 @@ export default {
         label: this.$t('storage.text_33'),
         actions: () => {
           return [
-            ...getEnabledSwitchActions(this, undefined, ['storages_perform_enable', 'storages_perform_disable']),
+            ...getEnabledSwitchActions(this, undefined, ['storages_perform_enable', 'storages_perform_disable'], {
+              extraMetas: [
+                obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
+                obj => {
+                  return getDisabledProvidersActionMeta({
+                    rows: this.list.selectedItems,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
+              ],
+            }),
             {
               label: this.$t('storage.text_34'),
               permission: 'storages_update',
@@ -82,6 +98,12 @@ export default {
                   tooltip: !validate && this.$t('storage.text_35'),
                 }
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
             getDomainChangeOwnerAction(this, {
               name: this.$t('dictionary.storages'),
@@ -92,6 +114,12 @@ export default {
                 return {
                   validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
             }),
             getSetPublicAction(this, {
@@ -104,6 +132,12 @@ export default {
                 return {
                   validate: this.list.selectedItems.every(item => item.storage_type === 'local'),
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
             }),
             // {
@@ -133,6 +167,12 @@ export default {
                   tipName: this.$t('storage.text_37'),
                 })
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
             {
               label: this.$t('storage.text_36'),
@@ -149,6 +189,12 @@ export default {
                 })
               },
               meta: () => this.$getDeleteResult(this.list.selectedItems),
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  rows: this.list.selectedItems,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
           ]
         },

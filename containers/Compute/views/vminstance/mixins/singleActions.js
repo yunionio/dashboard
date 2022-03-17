@@ -261,7 +261,7 @@ export default {
                   },
                   meta: () => {
                     return {
-                      validate: obj.status === 'ready' && !commonUnabled(obj),
+                      validate: cloudEnabled('start', obj),
                     }
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_start'),
@@ -277,9 +277,7 @@ export default {
                     })
                   },
                   meta: () => {
-                    return {
-                      validate: obj.status === 'running' && !commonUnabled(obj),
-                    }
+                    return { validate: cloudEnabled('stop', obj) }
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_stop'),
                 },
@@ -295,7 +293,7 @@ export default {
                   },
                   meta: () => {
                     return {
-                      validate: (obj.status === 'running' || obj.status === 'stop_fail') && !commonUnabled(obj),
+                      validate: cloudEnabled('restart', obj),
                     }
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_restart'),
@@ -315,6 +313,10 @@ export default {
                     const ret = {
                       validate: false,
                       tooltip: null,
+                    }
+                    if (obj.hypervisor === typeClouds.hypervisorMap.bingocloud.key) {
+                      ret.tooltip = this.$t('compute.text_473', [typeClouds.hypervisorMap.bingocloud.label])
+                      return ret
                     }
                     if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
@@ -783,6 +785,10 @@ export default {
                     }
                     if (obj.billing_type === 'prepaid') {
                       ret.tooltip = i18n.t('compute.text_285')
+                      return ret
+                    }
+                    if (obj.hypervisor === typeClouds.hypervisorMap.bingocloud.key) {
+                      ret.tooltip = this.$t('compute.text_473', [typeClouds.hypervisorMap.bingocloud.label])
                       return ret
                     }
                     ret.validate = true
@@ -1483,6 +1489,15 @@ export default {
                   permission: 'server_update',
                 }), {
                   name: this.$t('dictionary.server'),
+                  meta: () => {
+                    const ret = { validate: true }
+                    if (obj.hypervisor === typeClouds.hypervisorMap.bingocloud.key) {
+                      ret.tooltip = this.$t('compute.text_473', [typeClouds.hypervisorMap.bingocloud.label])
+                      ret.validate = false
+                      return ret
+                    }
+                    return ret
+                  },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_set_delete_protection'),
                 }),
                 {
@@ -1502,7 +1517,14 @@ export default {
                       })
                     })
                   },
-                  meta: () => this.$getDeleteResult(obj),
+                  meta: () => {
+                    const ret = { validate: false }
+                    if (obj.hypervisor === typeClouds.hypervisorMap.bingocloud.key) {
+                      ret.tooltip = this.$t('compute.text_473', [typeClouds.hypervisorMap.bingocloud.label])
+                      return ret
+                    }
+                    return this.$getDeleteResult(obj)
+                  },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
                 },
               ],

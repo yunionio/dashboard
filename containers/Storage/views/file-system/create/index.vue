@@ -29,6 +29,7 @@
           :providerParams="providerParams"
           :cloudregionParams="regionParams"
           :isRequired="true"
+          filterBrandResource="compute_engine"
           @change="handleRegionChange" />
         <!-- 套餐 -->
         <file-system-sku

@@ -33,7 +33,8 @@
             :labelCol="formItemLayout.labelCol"
             :names="areaselectsName"
             :cloudregionParams="renderOrders.region.params"
-            :providerParams="renderOrders.brand.params" />
+            :providerParams="renderOrders.brand.params"
+            filterBrandResource="compute_engine" />
           <a-form-item :label="$t('cloudenv.text_7')">
             <a-row :gutter="9">
               <a-col :span="12">
