@@ -1,4 +1,5 @@
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
 export default {
@@ -16,12 +17,33 @@ export default {
             refresh: this.refresh,
           })
         },
+        extraMeta: obj => {
+          return getDisabledProvidersActionMeta({
+            row: obj,
+            disabledProviders: ['BingoCloud'],
+          })
+        },
       },
       {
         label: i18n.t('storage.text_65'),
         actions: (row) => {
           return [
-            ...getEnabledSwitchActions(this, undefined, ['storages_perform_enable', 'storages_perform_disable']),
+            ...getEnabledSwitchActions(this, undefined, ['storages_perform_enable', 'storages_perform_disable'], {
+              extraMetas: [
+                obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
+                obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
+              ],
+            }),
             {
               label: i18n.t('storage.host.manage'),
               action: row => {
@@ -30,6 +52,12 @@ export default {
                 } else {
                   this.$refs.BaseSidePage.handleTabChange('host-list')
                 }
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
             },
             {
@@ -50,6 +78,12 @@ export default {
                   tooltip: row.provider === 'ZStack' && i18n.t('storage.text_68'),
                 }
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
             {
               label: i18n.t('storage.text_69'),
@@ -68,6 +102,12 @@ export default {
                   validate: row.provider === 'OpenStack',
                 }
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
             {
               label: i18n.t('compute.text_540'),
@@ -79,6 +119,12 @@ export default {
                   title: i18n.t('compute.text_540'),
                   onManager: this.onManager,
                   refresh: this.refresh,
+                })
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
                 })
               },
             },
@@ -99,6 +145,12 @@ export default {
                 }
                 return ret
               },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.storages'),
@@ -117,6 +169,12 @@ export default {
                   ret.tooltip = i18n.t('storage.text_70')
                 }
                 return ret
+              },
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
               },
             }),
             // {
@@ -149,6 +207,12 @@ export default {
                 })
               },
               meta: (row) => this.$getDeleteResult(row),
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
           ]
         },

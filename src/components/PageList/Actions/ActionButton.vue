@@ -40,16 +40,24 @@ export default {
         ...rest,
       }
     },
+    extraMeta () {
+      const { validate = true, ...rest } = R.is(Function, this.item.extraMeta) ? this.item.extraMeta(this.row) : {}
+      return {
+        validate,
+        ...rest,
+      }
+    },
     disabled () {
       const isValidate = this.meta.validate
+      const isExtraValidate = this.extraMeta?.validate
       let isPermission = true
       if (this.item.permission) {
         isPermission = hasPermission({ key: this.item.permission, resourceData: this.row })
       }
-      return !isValidate || !isPermission
+      return !isValidate || !isPermission || !isExtraValidate
     },
     tooltip () {
-      return this.meta.tooltip
+      return this.meta.tooltip || this.extraMeta.tooltip
     },
   },
   methods: {

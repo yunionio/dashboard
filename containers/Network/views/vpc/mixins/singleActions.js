@@ -1,5 +1,6 @@
 import { mapGetters } from 'vuex'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
 export default {
@@ -44,6 +45,12 @@ export default {
               resource: 'vpcs',
             }, {
               permission: 'vpcs_perform_change_owner',
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             }),
             getSetPublicAction(this, {
               name: this.$t('dictionary.vpc'),
@@ -51,6 +58,12 @@ export default {
               resource: 'vpcs',
             }, {
               permission: 'vpcs_perform_public',
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             }),
             {
               label: i18n.t('network.text_131'),
@@ -67,6 +80,12 @@ export default {
                 })
               },
               meta: () => this.$getDeleteResult(obj),
+              extraMeta: obj => {
+                return getDisabledProvidersActionMeta({
+                  row: obj,
+                  disabledProviders: ['BingoCloud'],
+                })
+              },
             },
           ]
         },

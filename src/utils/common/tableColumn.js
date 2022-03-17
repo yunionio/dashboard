@@ -359,6 +359,7 @@ export const getTagTableColumn = ({
   width = 50,
   customTitle = '',
   list = {},
+  editCheck = (row) => true,
 } = {}) => {
   return {
     field,
@@ -388,6 +389,7 @@ export const getTagTableColumn = ({
               ignorePrefix,
               customTitle,
               list,
+              canEdit: editCheck(row),
             },
           }),
         ]

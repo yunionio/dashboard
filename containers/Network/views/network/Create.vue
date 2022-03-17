@@ -15,6 +15,7 @@
           :providerParams="providerParams"
           :cloudregionParams="cloudregionParams"
           :isRequired="true"
+          filterBrandResource="network_manage"
           @change="handleRegionChange" />
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('validator.resourceName')" />

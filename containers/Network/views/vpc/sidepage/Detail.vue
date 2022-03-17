@@ -36,8 +36,20 @@ export default {
   data () {
     return {
       baseInfo: [
-        getUserTagColumn({ onManager: this.onManager, resource: 'vpc', columns: () => this.columns, tipName: this.$t('dictionary.vpc') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'vpc', columns: () => this.columns, tipName: this.$t('dictionary.vpc') }),
+        getUserTagColumn({
+          onManager: this.onManager,
+          resource: 'vpc',
+          columns: () => this.columns,
+          tipName: this.$t('dictionary.vpc'),
+          editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        }),
+        getExtTagColumn({
+          onManager: this.onManager,
+          resource: 'vpc',
+          columns: () => this.columns,
+          tipName: this.$t('dictionary.vpc'),
+          editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        }),
         getPublicScopeTableColumn({ vm: this, resource: 'vpcs' }),
         getBrandTableColumn(),
         {

@@ -37,8 +37,20 @@ export default {
   data () {
     return {
       baseInfo: [
-        getUserTagColumn({ onManager: this.onManager, resource: 'disk', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'disk', columns: () => this.columns, tipName: this.$t('compute.text_100') }),
+        getUserTagColumn({
+          onManager: this.onManager,
+          resource: 'disk',
+          columns: () => this.columns,
+          tipName: this.$t('compute.text_100'),
+          editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        }),
+        getExtTagColumn({
+          onManager: this.onManager,
+          resource: 'disk',
+          columns: () => this.columns,
+          tipName: this.$t('compute.text_100'),
+          editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        }),
         getBrandTableColumn(),
         getBillingTypeTableColumn(),
         {

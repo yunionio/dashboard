@@ -1,7 +1,7 @@
 import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
-import { typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
@@ -48,6 +48,12 @@ export default {
                 label: `SSH ${ip}`,
                 action: actionGenerator(ip),
                 meta,
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               })
               ret.push({
                 label: i18n.t('compute.text_345', [ip]),
@@ -91,6 +97,12 @@ export default {
                   })
                 },
                 meta,
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               })
             })
             return ret
@@ -130,6 +142,20 @@ export default {
                     validate: obj.enabled && ownerDomain,
                   }),
                 ],
+                extraMetas: [
+                  obj => {
+                    return getDisabledProvidersActionMeta({
+                      row: obj,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
+                  obj => {
+                    return getDisabledProvidersActionMeta({
+                      row: obj,
+                      disabledProviders: ['BingoCloud'],
+                    })
+                  },
+                ],
               }),
               {
                 label: i18n.t('compute.text_540'),
@@ -145,6 +171,12 @@ export default {
                 meta: obj => ({
                   validate: ownerDomain,
                 }),
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               {
                 label: i18n.t('compute.text_513'),
@@ -161,6 +193,12 @@ export default {
                 meta: obj => ({
                   validate: obj.brand.toLowerCase() !== 'zstack' && ownerDomain,
                 }),
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               getDomainChangeOwnerAction(this, {
                 name: this.$t('dictionary.host'),
@@ -178,6 +216,12 @@ export default {
                     validate: ownerDomain,
                   }
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               }),
               getSetPublicAction(this, {
                 name: this.$t('dictionary.host'),
@@ -189,6 +233,12 @@ export default {
                   return {
                     validate: ownerDomain,
                   }
+                },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
                 },
               }),
               {
@@ -213,6 +263,12 @@ export default {
                     validate: false,
                     tooltip: obj.provider.toLowerCase() !== 'onecloud' ? i18n.t('compute.text_570') : '',
                   }
+                },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
                 },
               },
               {
@@ -263,6 +319,12 @@ export default {
                     validate: true,
                   }
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               {
                 label: i18n.t('compute.text_550'),
@@ -293,6 +355,12 @@ export default {
                     tooltip: obj.status !== 'running' ? i18n.t('compute.text_571') : '',
                   }
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               {
                 label: i18n.t('compute.text_559'),
@@ -315,6 +383,12 @@ export default {
                   return {
                     validate: ['maintaining', 'maintain_fail'].includes(obj.status) && ownerDomain,
                   }
+                },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
                 },
               },
               {
@@ -345,6 +419,12 @@ export default {
                     validate: ownerDomain,
                   }
                 },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
+                },
               },
               {
                 label: i18n.t('compute.perform_delete'),
@@ -370,6 +450,12 @@ export default {
                   return {
                     validate: ownerDomain,
                   }
+                },
+                extraMeta: obj => {
+                  return getDisabledProvidersActionMeta({
+                    row: obj,
+                    disabledProviders: ['BingoCloud'],
+                  })
                 },
               },
             ]

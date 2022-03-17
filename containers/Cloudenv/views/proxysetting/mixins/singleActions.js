@@ -1,4 +1,5 @@
 import { getSetPublicAction } from '@/utils/common/tableActions'
+import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
 import i18n from '@/locales'
 
 export default {
@@ -16,6 +17,12 @@ export default {
           })
         },
         meta: this.commonMeta,
+        extraMeta: obj => {
+          return getDisabledProvidersActionMeta({
+            row: obj,
+            disabledProviders: ['BingoCloud'],
+          })
+        },
       },
       getSetPublicAction(this, {
         name: this.$t('dictionary.proxysetting'),
@@ -24,6 +31,12 @@ export default {
       }, {
         permission: 'proxysettings_perform_public',
         meta: this.commonMeta,
+        extraMeta: obj => {
+          return getDisabledProvidersActionMeta({
+            row: obj,
+            disabledProviders: ['BingoCloud'],
+          })
+        },
       }),
       {
         label: i18n.t('cloudenv.text_108'),
@@ -39,6 +52,12 @@ export default {
           })
         },
         meta: (row) => this.commonMeta(row, 'delete'),
+        extraMeta: obj => {
+          return getDisabledProvidersActionMeta({
+            row: obj,
+            disabledProviders: ['BingoCloud'],
+          })
+        },
       },
     ]
   },

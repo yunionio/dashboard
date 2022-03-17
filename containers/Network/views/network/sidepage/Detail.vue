@@ -37,8 +37,20 @@ export default {
   data () {
     return {
       baseInfo: [
-        getUserTagColumn({ onManager: this.onManager, resource: 'network', columns: () => this.columns, tipName: this.$t('dictionary.network') }),
-        getExtTagColumn({ onManager: this.onManager, resource: 'network', columns: () => this.columns, tipName: this.$t('dictionary.network') }),
+        getUserTagColumn({
+          onManager: this.onManager,
+          resource: 'network',
+          columns: () => this.columns,
+          tipName: this.$t('dictionary.network'),
+          editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        }),
+        getExtTagColumn({
+          onManager: this.onManager,
+          resource: 'network',
+          columns: () => this.columns,
+          tipName: this.$t('dictionary.network'),
+          editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        }),
         getPublicScopeTableColumn({ vm: this, resource: 'networks' }),
         getBrandTableColumn(),
         {

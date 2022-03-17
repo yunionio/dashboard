@@ -16,6 +16,7 @@
           :isRequired="true"
           :cloudregionParamsMapper="cloudregionParamsMapper"
           :providerParams="providerParams"
+          filterBrandResource="object_storage"
           @change="handleCloudregionChange" />
         <a-form-item :label="$t('storage.text_40')">
           <a-input :placeholder="$t('storage.text_56')" v-decorator="decorators.name" />

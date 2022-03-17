@@ -52,7 +52,13 @@ export default {
           title: this.$t('common_388'),
         },
         getOsArch(),
-        getUserTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
+        getUserTagColumn({
+          onManager: this.onManager,
+          resource: 'server',
+          columns: () => this.serverColumns,
+          tipName: this.$t('dictionary.server'),
+          editCheck: (row) => row.hypervisor !== 'bingocloud',
+        }),
         // getExtTagColumn({ onManager: this.onManager, resource: 'server', columns: () => this.serverColumns, tipName: this.$t('dictionary.server') }),
         getServerMonitorAgentInstallStatus(),
         {

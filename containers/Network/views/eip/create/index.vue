@@ -17,6 +17,7 @@
           :providerParams="cloudProviderParams"
           :isRequired="true"
           :region.sync="regionList"
+          filterBrandResource="network_manage"
           @change="cloudregionChange" />
         <a-form-item :label="$t('network.text_21')" v-bind="formItemLayout">
           <a-input v-decorator="decorators.name" :placeholder="$t('network.text_44')" />

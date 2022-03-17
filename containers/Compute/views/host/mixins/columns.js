@@ -71,7 +71,13 @@ export default {
           ]
         },
       }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'hosts', columns: () => this.columns }),
+      getTagTableColumn({
+        onManager: this.onManager,
+        needExt: true,
+        resource: 'hosts',
+        columns: () => this.columns,
+        editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+      }),
       {
         field: 'custom_ip',
         title: 'IP',
