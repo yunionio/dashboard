@@ -237,7 +237,6 @@ export default {
       rules: {
         name: [
           { required: true, message: this.$t('common.text00042') },
-          { validator: this.$validate('resourceName') },
         ],
         __meta__: [
           { validator: validateForm('tagName') },
