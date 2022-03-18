@@ -63,7 +63,7 @@ export default {
                   alert: i18n.t('compute.instance_backup_delete_alert'),
                   content: () => {
                     const change = (bool) => {
-                      this.deleteResProps.force_delete = bool
+                      this.deleteResProps.force = bool
                     }
                     return <a-checkbox onInput={ change }>{ this.$t('compute.text_655') }</a-checkbox>
                   },
