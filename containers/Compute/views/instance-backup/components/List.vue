@@ -38,7 +38,7 @@ export default {
   data () {
     return {
       deleteResProps: {
-        force_delete: false,
+        force: false,
       },
       list: this.$list.createList(this, {
         id: this.id,
@@ -145,7 +145,7 @@ export default {
                     alert: this.$t('compute.instance_backup_delete_alert'),
                     content: () => {
                       const change = (bool) => {
-                        this.deleteResProps.force_delete = bool
+                        this.deleteResProps.force = bool
                       }
                       return <a-checkbox onInput={ change }>{ this.$t('compute.text_655') }</a-checkbox>
                     },
