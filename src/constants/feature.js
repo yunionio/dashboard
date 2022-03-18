@@ -135,6 +135,10 @@ const LicenseItems = [
     meta: meta('resource_managent', 'private', true),
   },
   {
+    key: 'bingocloud',
+    meta: meta('resource_managent', 'private', true),
+  },
+  {
     key: 's3',
     meta: meta('resource_managent', 'storage', true),
   },
