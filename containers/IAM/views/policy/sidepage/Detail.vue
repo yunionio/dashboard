@@ -5,7 +5,8 @@
     :base-info="baseInfo"
     :extra-info="extraInfo"
     :is-edit-name="!data.is_system"
-    :is-edit-desc="!data.is_system" />
+    :is-edit-desc="!data.is_system"
+    :nameRules="nameRules" />
 </template>
 
 <script>
@@ -60,6 +61,9 @@ export default {
             },
           ],
         },
+      ],
+      nameRules: [
+        { required: true, message: this.$t('system.text_168') },
       ],
     }
   },
