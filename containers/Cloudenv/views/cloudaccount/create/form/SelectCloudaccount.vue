@@ -9,7 +9,7 @@
         <div class="items d-flex flex-wrap">
           <template v-for="(item, cloudaccount) of cloudaccounts">
             <div class="item d-flex p-2 mr-3 align-items-center" v-if="isShowItem(item)" :class="{ active: currentItem.name === item.name }" :key="cloudaccount" @click="selectProvider(item)">
-              <img :src="item.logo" />
+              <img :src="item.logo" :style="item.logoStyle" />
               <h5 class="flex-fill" v-if="showName(item)">{{ item.name }}</h5>
             </div>
           </template>
