@@ -150,6 +150,10 @@ export const CLOUDACCOUNT_TYPES = {
       logo: bingocloudLogo,
       component: 'BingoCloudCreate',
       provider: providerMap.bingocloud.key,
+      hiddenName: true,
+      logoStyle: {
+        width: '100px',
+      },
     },
   },
   storage: {
@@ -561,4 +565,5 @@ export const notSupportSelectRegion = [
   providerMap.ceph.key,
   providerMap.s3.key,
   providerMap.xsky.key,
+  providerMap.bingocloud.key,
 ]
