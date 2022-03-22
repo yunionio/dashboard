@@ -1097,7 +1097,8 @@
       "snapshot_failed": "快照创建失败",
       "sync_status": "同步状态",
       "pack": "打包",
-      "pack_failed": "打包失败"
+      "pack_failed": "打包失败",
+      "save_failed": "保存失败"
     },
     "cpp": {
       "assigned": "已分配",

@@ -1083,7 +1083,8 @@
       "snapshot_failed": "Fail to snapshot",
       "sync_status": "Sync Status",
       "pack": "Pack",
-      "pack_failed": "Pack Failed"
+      "pack_failed": "Pack Failed",
+      "save_failed": "Save Failed"
     },
     "cpp": {
       "assigned": "assigned",
