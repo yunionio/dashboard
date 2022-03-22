@@ -2712,7 +2712,8 @@
       "modify": "修改",
       "set_tag": "编辑标签",
       "clone": "克隆",
-      "smal_login": "免密登录"
+      "smal_login": "免密登录",
+      "export": "导出"
     },
     "validate": {
       "no_share_res_permission": "共享资源，无操作权限",
@@ -5094,5 +5095,25 @@
   "common.from_moment": "从 {0} 开始",
   "common.until_moment": "到 {0} 截止",
   "common.permanent_effect": "永久生效",
-  "common.log_table_name": "日志表名称"
+  "common.log_table_name": "日志表名称",
+  "common_log_table_key": {
+    "id": "ID",
+    "action": "操作",
+    "tenant": "@:dictionary.project",
+    "tenant_id": "@:dictionary.project ID",
+    "domain": "@:dictionary.domain",
+    "domain_id": "@:dictionary.domain ID",
+    "user": "@:dictionary.user",
+    "user_id": "@:dictionary.user ID",
+    "roles": "@:dictionary.role",
+    "owner_tenant_id": "@:dictionary.user归属@:dictionary.project ID",
+    "owner_domain_id": "@:dictionary.user归属@:dictionary.domain ID",
+    "project_domain": "@:dictionary.project归属@:dictionary.domain",
+    "project_domain_id": "@:dictionary.project归属@:dictionary.domain ID",
+    "obj_name": "资源名称",
+    "obj_type": "资源类型",
+    "obj_id": "资源ID",
+    "ops_time": "操作时间",
+    "notes": "Notes"
+  }
 }
