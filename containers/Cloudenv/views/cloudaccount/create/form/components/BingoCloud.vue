@@ -10,7 +10,7 @@
       <a-form-item :label="$t('cloudenv.text_253')">
         <a-input v-decorator="decorators.endpoint" />
         <span slot="extra">
-          {{$t('common_569')}}
+          {{$t('common_571_2')}}
         </span>
       </a-form-item>
       <a-form-item :label="keySecretField.label.k">
@@ -32,13 +32,13 @@
 </template>
 
 <script>
-import DomainProject from '../../../components/DomainProject'
-import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
+import createMixin from './createMixin'
+import DomainProject from '../../../components/DomainProject'
 
 export default {
   name: 'BingoCloud',
