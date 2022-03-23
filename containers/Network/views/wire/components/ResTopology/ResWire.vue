@@ -1,5 +1,5 @@
 <template>
-  <div class="wire vpc d-flex">
+  <div class="wire vpc d-flex" :class="{'wire-host': physical}">
     <div class="text-center">
       <a-tooltip placement="left" :get-popup-container="getPopupContainer">
         <template slot="title">
@@ -28,6 +28,7 @@ export default {
         return {}
       },
     },
+    physical: Boolean,
   },
   data () {
     return {}
