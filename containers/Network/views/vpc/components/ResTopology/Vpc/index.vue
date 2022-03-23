@@ -13,7 +13,8 @@
                   v-if="!obj.hidden"
                   :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
                   :dataSource="obj"
-                  :isExist="isHostExist(wires, nidx, obj)" />
+                  :isExist="isHostExist(wires, nidx, obj)"
+                  :schedTagColorsMap="schedTagColorsMap" />
               </div>
           </li>
         </template>
@@ -41,6 +42,8 @@ import ResMixin from '@Network/sections/Topology/ResMixin'
 import ResVpc from '../ResVpc'
 import ResWire from '../ResWire'
 import ResIpsubnet from '../ResIpsubnet'
+
+const COLORS = ['#E45826', '#874356', '#0E3EDA', '#139487', '#464E2E', '#A1B57D', '#6E3CBC', '#6FB2D2', '#C5D8A4', '#F473B9', '#D18CE0', '#203239']
 
 export default {
   name: 'VpcTopology',
@@ -75,6 +78,25 @@ export default {
         })
       }
       return networks
+    },
+    schedTagColorsMap () {
+      const ret = {}
+      let index = 0
+      const { wires = [], hosts = [] } = this.dataSource
+      const originWires = wires.length ? wires : [{ hosts }]
+      originWires.map(wire => {
+        const { hosts = [] } = wire
+        hosts.map(host => {
+          const { schedtags = [] } = host
+          schedtags.map(schedtag => {
+            if (schedtag.name && !ret[schedtag.name]) {
+              ret[schedtag.name] = COLORS[index % COLORS.length]
+              index++
+            }
+          })
+        })
+      })
+      return ret
     },
   },
   methods: {
