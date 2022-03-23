@@ -1097,7 +1097,8 @@
       "snapshot_failed": "快照创建失败",
       "sync_status": "同步状态",
       "pack": "打包",
-      "pack_failed": "打包失败"
+      "pack_failed": "打包失败",
+      "save_failed": "保存失败"
     },
     "cpp": {
       "assigned": "已分配",
@@ -2712,7 +2713,8 @@
       "modify": "修改",
       "set_tag": "编辑标签",
       "clone": "克隆",
-      "smal_login": "免密登录"
+      "smal_login": "免密登录",
+      "export": "导出"
     },
     "validate": {
       "no_share_res_permission": "共享资源，无操作权限",
@@ -4523,6 +4525,7 @@
   "common_569": "请输入认证的URL地址，例如：http|https://ip:port/v3",
   "common_570": "请输入认证的URL地址，例如：http|https://192.168.1.1:8080(注意端口)",
   "common_571": "请输入认证的URL地址，例如：http|https://ip:port",
+  "common_571_2": "请输入认证的URL地址，例如：http://192.168.1.1",
   "common_572": "请输入IP地址或者域名地址，例如192.168.1.1或者domain-name.com",
   "common_573": "城市",
   "common_574": "RDS-账号",
@@ -5093,5 +5096,25 @@
   "common.from_moment": "从 {0} 开始",
   "common.until_moment": "到 {0} 截止",
   "common.permanent_effect": "永久生效",
-  "common.log_table_name": "日志表名称"
+  "common.log_table_name": "日志表名称",
+  "common_log_table_key": {
+    "id": "ID",
+    "action": "操作",
+    "tenant": "@:dictionary.project",
+    "tenant_id": "@:dictionary.project ID",
+    "domain": "@:dictionary.domain",
+    "domain_id": "@:dictionary.domain ID",
+    "user": "@:dictionary.user",
+    "user_id": "@:dictionary.user ID",
+    "roles": "@:dictionary.role",
+    "owner_tenant_id": "@:dictionary.user归属@:dictionary.project ID",
+    "owner_domain_id": "@:dictionary.user归属@:dictionary.domain ID",
+    "project_domain": "@:dictionary.project归属@:dictionary.domain",
+    "project_domain_id": "@:dictionary.project归属@:dictionary.domain ID",
+    "obj_name": "资源名称",
+    "obj_type": "资源类型",
+    "obj_id": "资源ID",
+    "ops_time": "操作时间",
+    "notes": "Notes"
+  }
 }
