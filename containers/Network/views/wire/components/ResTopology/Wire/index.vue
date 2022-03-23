@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex res-topology vpc-topology">
     <div class="c-left">
-      <res-wire :dataSource="dataSource" />
+      <res-wire :dataSource="dataSource" :physical="physical" />
     </div>
     <div class="c-right" :class="{'res-topology-wire': physical ? !isEmpty(hosts) : !isEmpty(networks)}">
       <ul class="list" v-if="physical">
@@ -9,7 +9,8 @@
             <div v-for="(obj, nidx) in hosts" :key="nidx">
               <res-common
                 :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
-                :dataSource="obj" />
+                :dataSource="obj"
+                :schedTagColorsMap="schedTagColorsMap" />
             </div>
         </li>
       </ul>
@@ -35,6 +36,8 @@ import ResMixin from '@Network/sections/Topology/ResMixin'
 import ResWire from '../ResWire'
 import ResIpsubnet from '../ResIpsubnet'
 
+const COLORS = ['#E45826', '#874356', '#0E3EDA', '#139487', '#464E2E', '#A1B57D', '#6E3CBC', '#6FB2D2', '#C5D8A4', '#F473B9', '#D18CE0', '#203239']
+
 export default {
   name: 'VpcTopology',
   components: {
@@ -58,6 +61,25 @@ export default {
     },
     hosts () {
       return this.dataSource?.hosts || []
+    },
+    schedTagColorsMap () {
+      const ret = {}
+      let index = 0
+      const { wires = [], hosts = [] } = this.dataSource
+      const originWires = wires.length ? wires : [{ hosts }]
+      originWires.map(wire => {
+        const { hosts = [] } = wire
+        hosts.map(host => {
+          const { schedtags = [] } = host
+          schedtags.map(schedtag => {
+            if (schedtag.name && !ret[schedtag.name]) {
+              ret[schedtag.name] = COLORS[index % COLORS.length]
+              index++
+            }
+          })
+        })
+      })
+      return ret
     },
   },
   methods: {
