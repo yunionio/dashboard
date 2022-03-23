@@ -109,6 +109,22 @@
       }
     }
   }
+  .res-host {
+    height: auto;
+    top: 70px;
+  }
+  .res-container-host{
+    width: 300px;
+    .line{
+      left: 119px;
+    }
+    .res-box{
+      width:140px;
+      border:solid 1px #000;
+      padding:5px;
+      background:#fff;
+    }
+  }
   .is-exist {
     .name {
       color: rgba(153, 153, 153, 0.3);
@@ -131,5 +147,28 @@
     color: #5D6F80;
     border: 1px solid #c8e2f7;
     border-radius: 4px;
+  }
+  .tag-list {
+    
+    .tag {
+      color: #fff;
+      box-sizing: border-box;
+      background: #000;
+      margin: 2px 4px 2px 4px;
+      padding: 0 5px;
+      font-size: 12px;
+      line-height: 20px;
+      max-width: 100%;
+      border: solid 1px #ccc;
+    }
+  }
+  .tag-list-limit {
+    max-height: 124px;
+    overflow: hidden;
+    .tag {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 }
