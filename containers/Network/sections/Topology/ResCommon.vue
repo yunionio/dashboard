@@ -1,7 +1,7 @@
 <template>
-  <div class="res-container d-flex justify-content-center align-items-center" :class="{'is-exist': isExist, 'res-container-host': isHost}">
+  <div class="res-container d-flex justify-content-center align-items-center" :class="{'is-exist': isExist, 'res-container-host': showSchedTag}">
     <span class="line" :class="{'full': multiple}" />
-    <div class="res d-flex" :class="{'res-host': isHost}">
+    <div class="res d-flex" :class="{'res-host': showSchedTag}">
       <a-tooltip placement="top" :get-popup-container="getPopupContainer">
         <template slot="title">
           <p class="title">{{ $t('network.topology.res_type.' + getType(resSource)) }}</p>
@@ -19,7 +19,7 @@
           <template v-else-if="type === 'baremetal'">
             <p v-for="(obj, idx) in resSource.networks" :key="idx">{{ $t('network.waf.rule_ip') }}：{{ obj.ip_addr }}</p>
           </template>
-          <template v-if="type === 'host'">
+          <template v-if="showSchedTag && resSchedTags.length">
             <p>{{ $t('dictionary.schedtag') }}：</p>
             <div class="tag-list d-flex align-items-center flex-wrap">
               <template v-for="(item,index) in resSchedTags">
@@ -29,10 +29,10 @@
           </template>
         </template>
         <div class="d-flex">
-          <icon v-if="!isHost" :type="iconType" />
+          <icon v-if="!showSchedTag" :type="iconType" />
           <div v-else class="res-box">
             <icon :type="iconType" class="mt-2 mb-1" style="border:none;font-size:40px" />
-            <div class="tag-list tag-list-limit d-flex align-items-center flex-wrap">
+            <div class="tag-list tag-list-limit d-flex align-items-center flex-wrap justify-content-center">
               <template v-for="(item,index) in resSchedTags">
                 <div class="tag" :key="index" :style="{background: item.background}" v-if="index<2">{{item.name}}</div>
               </template>
@@ -59,13 +59,14 @@ export default {
     multiple: Boolean,
     type: String,
     isExist: Boolean,
+    schedTagColorsMap: Object,
   },
   data () {
     return {}
   },
   computed: {
-    isHost () {
-      return this.type === 'host'
+    showSchedTag () {
+      return this.type === 'host' || this.type === 'baremetal'
     },
     iconType () {
       return `res-${this.type}`
@@ -79,7 +80,10 @@ export default {
       schedtags.map((item, index) => {
         const tag = {
           name: item.name,
-          background: this.colors[index % 10],
+          background: '#ccc',
+        }
+        if (this.schedTagColorsMap && this.schedTagColorsMap[item.name]) {
+          tag.background = this.schedTagColorsMap[item.name]
         }
         tags.push(tag)
       })
@@ -87,17 +91,6 @@ export default {
         return a.name.length - b.name.length
       })
       return tags
-    },
-    colors () {
-      const colors = ['#E45826', '#874356', '#0E3EDA', '#139487', '#464E2E', '#A1B57D', '#6E3CBC']
-      for (let i = 0; i < 7; i++) {
-        const one = Math.floor((Math.random() * 7))
-        const two = Math.floor((Math.random() * 7))
-        const temp = colors[one]
-        colors[one] = colors[two]
-        colors[two] = temp
-      }
-      return colors
     },
   },
   methods: {
