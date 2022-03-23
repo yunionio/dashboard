@@ -488,6 +488,7 @@ export default {
   },
   instanceBackup: {
     success: ['ready'],
+    danger: ['save_failed'],
   },
   cpp: {
     success: ['assigned'],

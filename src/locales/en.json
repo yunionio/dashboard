@@ -1083,7 +1083,8 @@
       "snapshot_failed": "Fail to snapshot",
       "sync_status": "Sync Status",
       "pack": "Pack",
-      "pack_failed": "Pack Failed"
+      "pack_failed": "Pack Failed",
+      "save_failed": "Save Failed"
     },
     "cpp": {
       "assigned": "assigned",
@@ -2698,7 +2699,8 @@
       "modify": "Modify",
       "set_tag": "Set Tags",
       "clone": "Clone",
-      "smal_login": "SSO login"
+      "smal_login": "SSO login",
+      "export": "Export"
     },
     "validate": {
       "no_share_res_permission": "Shared resource, no operation permission",
@@ -4509,6 +4511,7 @@
   "common_569": "Please enter the certified URL address, e.g. http|https://ip:port/v3",
   "common_570": "Please enter the certified URL address, e.g. http|https://192.168.1.1:8080",
   "common_571": "Please enter the certified URL address, e.g. http|https://ip:port",
+  "common_571_2": "Please enter the certified URL address, e.g. http://192.168.1.1",
   "common_572": "Please enter an IP address or domain name address, such as 192.168.1.1 or domain-name.com",
   "common_573": "City",
   "common_574": "RDS-Account",
@@ -5079,5 +5082,25 @@
   "common.from_moment": "From {0}",
   "common.until_moment": "Until {0}",
   "common.permanent_effect": "Permanent effect",
-  "common.log_table_name": "Log Table Name"
+  "common.log_table_name": "Log Table Name",
+  "common_log_table_key": {
+    "id": "ID",
+    "action": "Action",
+    "tenant": "@:dictionary.project",
+    "tenant_id": "@:dictionary.project ID",
+    "domain": "@:dictionary.domain",
+    "domain_id": "@:dictionary.domain ID",
+    "user": "@:dictionary.user",
+    "user_id": "@:dictionary.user ID",
+    "roles": "@:dictionary.role",
+    "owner_tenant_id": "Owner @:dictionary.project ID",
+    "owner_domain_id": "Owner @:dictionary.domain ID",
+    "project_domain": "Owner @:dictionary.domain",
+    "project_domain_id": "Owner @:dictionary.domain ID",
+    "obj_name": "Resource Name",
+    "obj_type": "Resource Type",
+    "obj_id": "Resource ID",
+    "ops_time": "Ops Time",
+    "notes": "Notes"
+  }
 }
