@@ -40,7 +40,7 @@ export default {
         needExt: true,
         resource: 'disks',
         columns: () => this.columns,
-        editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
       }),
       {
         field: 'disk_size',

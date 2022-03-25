@@ -55,7 +55,7 @@ export default {
         needExt: true,
         resource: 'networks',
         columns: () => this.columns,
-        editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
       }),
       {
         field: 'server_type',
