@@ -28,8 +28,8 @@
 
 <script>
 import * as R from 'ramda'
-import { Base64 } from 'js-base64'
 import { mapGetters } from 'vuex'
+import { aesEncrypt } from '@/utils/crypto'
 import { passwordLevel } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
@@ -170,10 +170,10 @@ export default {
       try {
         const values = await this.validateForm()
         const data = {
-          password_confirm: Base64.encode(values.password_new),
-          password_old: Base64.encode(values.password_old),
-          password_new: Base64.encode(values.password_new),
-          com_password: Base64.encode(values.com_password),
+          password_confirm: aesEncrypt(values.password_new),
+          password_old: aesEncrypt(values.password_old),
+          password_new: aesEncrypt(values.password_new),
+          com_password: aesEncrypt(values.com_password),
         }
         this.loading = true
         await this.doUpdatePassword(data)
