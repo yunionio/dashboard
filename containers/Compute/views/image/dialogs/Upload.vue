@@ -52,7 +52,7 @@
             <a-radio-button value="other">{{$t('compute.text_674')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('compute.image.encryption')" :extra="$t('compute.image.encryption.extra')">
+        <a-form-item v-if="enableEncryption" :label="$t('compute.image.encryption')" :extra="$t('compute.image.encryption.extra')">
           <encrypt-keys :decorators="decorators.encrypt_keys" />
         </a-form-item>
       </a-form>
@@ -183,6 +183,9 @@ export default {
     ...mapGetters(['userInfo']),
     headers () {
       return { Authorization: `Bearer ${this.$store.getters.userInfo.session}` }
+    },
+    enableEncryption () {
+      return this.$appConfig.isPrivate
     },
   },
   destroyed () {
