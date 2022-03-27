@@ -19,19 +19,13 @@
             v-decorator="decorators.os_arch"
             :form="form" />
         </a-form-item>
-        <!-- <a-form-item :label="$t('compute.text_1368')">
-          <a-radio-group v-decorator="decorators.os_bit">
-            <a-radio-button value="64">{{ $t('compute.text_1370') }}</a-radio-button>
-            <a-radio-button value="32">{{ $t('compute.text_1369') }}</a-radio-button>
-          </a-radio-group>
-        </a-form-item> -->
         <a-form-item :label="$t('compute.text_667')" v-bind="formItemLayout">
           <a-radio-group @change="handleUploadTypeChange" v-decorator="decorators.uploadType">
             <a-radio-button value="file">{{$t('compute.text_668')}}</a-radio-button>
             <a-radio-button value="url">{{$t('compute.text_669')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="$t('compute.text_670')" v-bind="formItemLayout" v-if="show" :help="$t('compute.text_671')">
+        <a-form-item :label="$t('compute.text_670')" v-bind="formItemLayout" v-if="byUpload" :help="$t('compute.text_671')">
           <a-upload
             @change="handleUploadChange"
             :fileList="fileList"
@@ -44,19 +38,22 @@
             :percent="imageUploadPercent"
             status="active" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_672')" v-bind="formItemLayout" v-if="!show">
+        <a-form-item :label="$t('compute.text_672')" v-bind="formItemLayout" v-if="!byUpload">
           <a-input :placeholder="$t('compute.text_673')" v-decorator="decorators.copy_from" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout" v-if="!show">
+        <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout" v-if="!byUpload">
           <a-radio-group v-decorator="decorators.os_type">
             <a-radio-button value="Linux">
               Linux
             </a-radio-button>
-            <a-radio-button value="windows">
-              Windows Server
+            <a-radio-button value="Windows">
+              Windows
             </a-radio-button>
             <a-radio-button value="other">{{$t('compute.text_674')}}</a-radio-button>
           </a-radio-group>
+        </a-form-item>
+        <a-form-item :label="$t('compute.image.encryption')" :extra="$t('compute.image.encryption.extra')">
+          <encrypt-keys :decorators="decorators.encrypt_keys" />
         </a-form-item>
       </a-form>
     </div>
@@ -78,12 +75,14 @@ import DomainProject from '@/sections/DomainProject'
 import i18n from '@/locales'
 import OsArch from '@/sections/OsArch'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
+import EncryptKeys from '@Compute/sections/encryptkeys'
 
 export default {
   name: 'ImageUploadDialog',
   components: {
     DomainProject,
     OsArch,
+    EncryptKeys,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -154,6 +153,18 @@ export default {
         //     initialValue: '64',
         //   },
         // ],
+        encrypt_keys: {
+          encryptEnable: [
+            'encryptEnable',
+            {
+              valuePropName: 'checked',
+              initialValue: false,
+            },
+          ],
+          encrypt_key_id: [
+            'encrypt_key_id',
+          ],
+        },
       },
       formItemLayout: {
         wrapperCol: {
@@ -163,7 +174,7 @@ export default {
           span: 4,
         },
       },
-      show: true,
+      byUpload: true,
       fileList: [],
       imageUploadPercent: 0,
     }
@@ -190,9 +201,9 @@ export default {
     },
     handleUploadTypeChange (e) {
       if (e.target.value === 'url') {
-        this.show = false
+        this.byUpload = false
       } else {
-        this.show = true
+        this.byUpload = true
       }
     },
     handleUploadChange ({ file, fileList }) {
@@ -245,6 +256,9 @@ export default {
           os_arch: data.os_arch,
         },
       }
+      if (data.encrypt_key_id) {
+        params.encrypt_key_id = data.encrypt_key_id
+      }
       return this.params.onManager('create', {
         managerArgs: {
           data: params,
@@ -271,6 +285,9 @@ export default {
           formData.append('name', values.name)
           formData.append('os_version', '')
           formData.append('os_arch', values.os_arch)
+          if (values.encrypt_key_id) {
+            formData.append('encrypt_key_id', values.encrypt_key_id)
+          }
           if (fileList.length > 0) {
             formData.append('image_size', fileList[0].size)
             fileList.forEach(file => {

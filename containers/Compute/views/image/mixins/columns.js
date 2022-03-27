@@ -12,6 +12,7 @@ export default {
         onManager: this.onManager,
         hideField: true,
         addLock: true,
+        addEncrypt: true,
         slotCallback: (row, h) => {
           return (
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>

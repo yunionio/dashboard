@@ -160,6 +160,7 @@ export const getNameDescriptionTableColumn = ({
   title = i18n.t('table.title.name'),
   field = 'name',
   descField = 'description',
+  addEncryption,
   slotCallback,
   onManager,
   steadyStatus,
@@ -176,6 +177,7 @@ export const getNameDescriptionTableColumn = ({
   editDesc = true,
   minWidth = 100,
   message,
+  addEncrypt,
 } = {}) => {
   return {
     field,
@@ -199,6 +201,7 @@ export const getNameDescriptionTableColumn = ({
               steadyStatus: steadyStatus || (expectStatus[statusModule] && Object.values(expectStatus[statusModule]).flat()),
               hideField,
               addLock,
+              addEncrypt,
               addBackup,
               formRules,
             },

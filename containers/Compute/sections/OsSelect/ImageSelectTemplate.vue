@@ -4,7 +4,7 @@
       <div :key="`${item.name} ${item.id}`">
         <a-row>
           <a-col :span="24">
-            <div>{{ item.name }}</div>
+            <div>{{ item.name }}<a-icon type="safety-certificate" v-if="isEncryped(item)" :title="$t('common.text.encrption_enable')" /></div>
           </a-col>
         </a-row>
         <a-row>
@@ -88,6 +88,9 @@ export default {
       const bios = props && props.uefi_support ? 'UEFI' : 'BIOS'
       const part = props && props.partition_type ? props.partition_type.toUpperCase() : 'MBR'
       return `${size}|${arch}|${part}|${bios}`
+    },
+    isEncryped (img) {
+      return !!img.encrypt_key_id
     },
   },
 }
