@@ -649,11 +649,23 @@ export const createVmDecorators = type => {
     hostName: [
       'hostName',
     ],
+    encrypt_keys: {
+      encryptEnable: [
+        'encryptEnable',
+        {
+          valuePropName: 'checked',
+          initialValue: false,
+        },
+      ],
+      encrypt_key_id: [
+        'encrypt_key_id',
+      ],
+    },
   }
 }
 
 const decoratorGroup = {
-  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName'],
+  idc: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'gpu', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'bios', 'vdi', 'vga', 'machine', 'backup', 'duration', 'groups', 'tag', 'servertemplate', 'eip', 'os_arch', 'hostName', 'encrypt_keys'],
   public: ['domain', 'project', 'name', 'description', 'count', 'imageOS', 'reason', 'loginConfig', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'schedPolicy', 'bill', 'eip', 'secgroup', 'resourceType', 'tag', 'servertemplate', 'duration', 'cloudprovider', 'hostName'],
   private: ['domain', 'project', 'cloudregionZone', 'name', 'description', 'reason', 'count', 'imageOS', 'loginConfig', 'hypervisor', 'vcpu', 'vmem', 'sku', 'systemDisk', 'dataDisk', 'network', 'secgroup', 'schedPolicy', 'duration', 'tag', 'servertemplate', 'cloudprovider', 'hostName'],
 }
@@ -1185,6 +1197,10 @@ export class GenCreateData {
     // 标签
     if (this.fd.tag) {
       data.__meta__ = this.fd.tag
+    }
+    // 主机加密
+    if (this.fd.encryptEnable && this.fd.encrypt_key_id) {
+      data.encrypt_key_id = this.fd.encrypt_key_id
     }
     return data
   }
