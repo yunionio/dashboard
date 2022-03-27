@@ -79,6 +79,7 @@ export default {
         onManager: this.onManager,
         hideField: true,
         addLock: true,
+        addEncrypt: true,
         addBackup: true,
         formRules: [
           { required: true, message: i18nLocale.t('compute.text_210') },

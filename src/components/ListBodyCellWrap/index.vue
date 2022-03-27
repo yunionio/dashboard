@@ -8,6 +8,9 @@
     <template v-if="showDeleteLock">
       <a-icon class="ml-1" type="lock" :title="$t('common.text00008')" />
     </template>
+    <template v-if="showEncryptionLock">
+      <a-icon class="ml-1" type="safety-certificate" :title="$t('common.text.encrption_enable')" />
+    </template>
     <template v-if="addBackup && row.backup_host_id">
       <icon type="gaokeyong" class="ml-1" :title="$t('common.text00009')" />
     </template>
@@ -85,6 +88,7 @@ export default {
     },
     titleClass: String,
     addLock: Boolean,
+    addEncrypt: Boolean,
     addBackup: Boolean,
     // 自定义确定事件，如果传递了此事件，则不会执行默认的确定事件
     ok: Function,
@@ -173,6 +177,15 @@ export default {
         }
         if (R.is(String, this.row.can_delete)) {
           return this.row.can_delete === 'true'
+        }
+      }
+      return false
+    },
+    showEncryptionLock () {
+      if (this.addEncrypt) {
+        console.log('showEncryptionLock', this.row.encrypt_key_id)
+        if (R.is(String, this.row.encrypt_key_id) && this.row.encrypt_key_id) {
+          return true
         }
       }
       return false
