@@ -214,7 +214,7 @@
           <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
           </a-form-item>
-          <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
+          <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
             <encrypt-keys :decorators="decorators.encrypt_keys" />
           </a-form-item>
         </a-collapse-panel>
@@ -502,6 +502,9 @@ export default {
         return this.$t('compute.iso_windows_help')
       }
       return this.$t('compute.text_302')
+    },
+    enableEncryption () {
+      return this.$appConfig.isPrivate
     },
   },
   watch: {
