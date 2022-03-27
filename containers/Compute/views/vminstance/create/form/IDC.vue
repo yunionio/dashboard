@@ -214,6 +214,9 @@
           <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
           </a-form-item>
+          <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
+            <encrypt-keys :decorators="decorators.encrypt_keys" />
+          </a-form-item>
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar
@@ -236,6 +239,7 @@ import { HYPERVISORS_MAP } from '@/constants'
 import { resolveValueChangeField } from '@/utils/common/ant'
 import { IMAGES_TYPE_MAP, STORAGE_TYPES, HOST_CPU_ARCHS } from '@/constants/compute'
 import EipConfig from '@Compute/sections/EipConfig'
+import EncryptKeys from '@Compute/sections/encryptkeys'
 import OsArch from '@/sections/OsArch'
 import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
@@ -252,6 +256,7 @@ export default {
     Vdi,
     Vga,
     Machine,
+    EncryptKeys,
   },
   mixins: [mixin],
   data () {

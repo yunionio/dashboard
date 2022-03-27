@@ -144,6 +144,17 @@ export default {
               field: 'hypervisor',
               title: this.$t('compute.text_636'),
             },
+            {
+              field: 'encrypt_key_id',
+              title: this.$t('compute.title.encryption_key'),
+              formatter: ({ callValue, row }) => {
+                if (row.encrypt_key_id) {
+                  return row.encrypt_key + ' (' + row.encrypt_key_id + ',' + row.encrypt_alg.toUpperCase() + ')'
+                } else {
+                  return this.$t('compute.no_encryption')
+                }
+              },
+            },
           ],
         },
         {

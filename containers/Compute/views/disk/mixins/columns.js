@@ -24,6 +24,8 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        addLock: true,
+        addEncrypt: true,
         formRules: [
           { required: true, message: i18n.t('compute.text_210') },
           { validator: this.$validate('resourceCreateName') },
