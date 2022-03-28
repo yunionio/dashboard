@@ -50,6 +50,10 @@ export default {
       required: true,
     },
     resId: String,
+    getParams: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data () {
     return {
@@ -129,6 +133,7 @@ export default {
         data: [obj],
         columns: this.columns,
         onManager: this.onManager,
+        query: this.getParams,
         refresh: () => {
           this.refresh()
           this.$emit('updateDetail')
