@@ -59,6 +59,14 @@ export default {
           }
         }
       }
+      if (!hasSetupKey(['private', 'public', 'onecloud']) && hasSetupKey(['bill'])) {
+        if (!typesMap.public) {
+          typesMap.public = {}
+        }
+        ['aliyun', 'aws', 'azure', 'google', 'huawei', 'qcloud', 'jdcloud'].map(key => {
+          typesMap.public[key] = CLOUDACCOUNT_TYPES.public[key]
+        })
+      }
       return typesMap
     },
   },
