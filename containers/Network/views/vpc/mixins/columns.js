@@ -29,7 +29,7 @@ export default {
         needExt: true,
         resource: 'vpcs',
         columns: () => this.columns,
-        editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
       }),
       getCopyWithContentTableColumn({
         field: 'cidr_block',

@@ -76,7 +76,7 @@ export default {
         needExt: true,
         resource: 'hosts',
         columns: () => this.columns,
-        editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
       }),
       {
         field: 'custom_ip',

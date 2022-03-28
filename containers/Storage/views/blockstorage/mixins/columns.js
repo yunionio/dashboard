@@ -28,7 +28,7 @@ export default {
         resource: 'storages',
         columns: () => this.columns,
         tipName: this.$t('dictionary.blockstorage'),
-        editCheck: (row) => (row.provider).toLowerCase() !== 'bingocloud',
+        editCheck: (row) => (row.provider || '').toLowerCase() !== 'bingocloud',
       }),
       {
         field: 'capacity',
