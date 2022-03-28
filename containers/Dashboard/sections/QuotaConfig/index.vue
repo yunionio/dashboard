@@ -481,7 +481,13 @@ export default {
       const keys = []
       for (const res in usageMap) {
         if (usageMap[res].field && usageMap[res].field.total && usageMap[res].field.total[this.scope]) {
-          keys.push(usageMap[res].field.total[this.scope])
+          if (R.is(Array, usageMap[res].field.total[this.scope])) {
+            usageMap[res].field.total[this.scope].map(key => {
+              keys.push(key)
+            })
+          } else {
+            keys.push(usageMap[res].field.total[this.scope])
+          }
         }
       }
       return keys
@@ -497,14 +503,23 @@ export default {
             if (!usageMap[res].field.total[this.scope]) {
               continue
             }
-            if (usageMap[res].field.total[this.scope] !== totalKey) {
+            if (R.is(String, usageMap[res].field.total[this.scope]) && usageMap[res].field.total[this.scope] !== totalKey) {
+              continue
+            }
+            if (R.is(Array, usageMap[res].field.total[this.scope]) && !usageMap[res].field.total[this.scope].includes(totalKey)) {
               continue
             }
           }
           for (const part in usageMap[res].field) {
             if (part !== 'total') {
               if (usageMap[res].field[part][this.scope]) {
-                keys.push(usageMap[res].field[part][this.scope])
+                if (R.is(Array, usageMap[res].field[part][this.scope])) {
+                  usageMap[res].field[part][this.scope].map(key => {
+                    keys.push(key)
+                  })
+                } else {
+                  keys.push(usageMap[res].field[part][this.scope])
+                }
               }
             }
           }
