@@ -24,10 +24,10 @@
 </template>
 <script>
 import * as R from 'ramda'
-import { DBINSTANCE_CATEGORY, DBINSTANCE_CATEGORY_KEYS, DBINSTANCE_STORAGE_TYPE, DBINSTANCE_STORAGE_TYPE_KEYS, ENGINR_VERSION_SERVER_ALIYUN_KYES, ENGINR_VERSION_SERVER_HUAWEI_KYES, ENGINR_VERSION } from '@DB/views/rds/constants'
+import { DBINSTANCE_CATEGORY, ENGINR_VERSION_POSTGRE_KYES, DBINSTANCE_CATEGORY_KEYS, DBINSTANCE_STORAGE_TYPE, DBINSTANCE_STORAGE_TYPE_KEYS, ENGINR_VERSION_SERVER_ALIYUN_KYES, ENGINR_VERSION_SERVER_HUAWEI_KYES, ENGINR_VERSION } from '@DB/views/rds/constants'
 
 const VERSION_SORT = {
-  // PostgreSQL: ENGINR_VERSION_POSTGRE_KYES,
+  PostgreSQL: ENGINR_VERSION_POSTGRE_KYES,
   SQLServer: ENGINR_VERSION_SERVER_ALIYUN_KYES,
 }
 export default {
@@ -49,6 +49,12 @@ export default {
   },
   methods: {
     versionCn (key) {
+      if (this.form.getFieldValue('provider') === 'Aws') {
+        const _arr = key.split('.')
+        if (_arr && _arr.length) {
+          return _arr[1] ? `${_arr[0]}.${_arr[1]}` : _arr[0]
+        }
+      }
       const _arr = key.split('_')
       if (_arr && _arr.length > 0) {
         const t = ENGINR_VERSION[_arr.pop()]
