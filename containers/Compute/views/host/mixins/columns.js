@@ -169,6 +169,8 @@ export default {
         field: 'storage',
         title: i18n.t('compute.text_565'),
         minWidth: 80,
+        sortable: true,
+        sortBy: 'order_by_storage',
         slots: {
           default: ({ row }) => {
             if (this.isPreLoad && !row.storage) return [<data-loading />]
