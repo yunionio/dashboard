@@ -1,6 +1,6 @@
 <template>
   <a-config-provider :locale="locale">
-    <div id="app">
+    <div id="app" @click="handleAppAction">
       <component :is="layout">
         <router-view />
       </component>
@@ -17,6 +17,7 @@ import * as R from 'ramda'
 import { mapGetters, mapState } from 'vuex'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import enUS from 'ant-design-vue/es/locale/en_US'
+import LogoutMixin from '@/mixins/logout'
 import DefaultLayout from '@/layouts/Default'
 import FullScreenLayout from '@/layouts/FullScreen'
 import DialogManager from '@/sections/DialogManager'
@@ -25,6 +26,7 @@ import WindowResizeListener from '@/sections/WindowResizeListener'
 import notificationListener from '@/utils/notificationListener'
 import i18n from '@/locales'
 import { updateThemeColor } from '@/utils/theme/utils'
+
 import {
   getTokenFromCookie,
   decodeToken,
@@ -44,6 +46,7 @@ export default {
     SidePageManager,
     WindowResizeListener,
   },
+  mixins: [LogoutMixin],
   data () {
     return {
       locale: antdLocales[this.$store.getters.setting.language],
