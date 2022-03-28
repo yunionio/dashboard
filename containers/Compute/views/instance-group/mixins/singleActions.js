@@ -71,7 +71,7 @@ export default {
                 if (!obj.vips || obj.vips.length === 0) {
                   ret.validate = false
                   ret.tooltip = this.$t('compute.prompt_empty_instance_group_vip')
-                } else if (obj.eip) {
+                } else if (obj.vip_eip) {
                   ret.validate = false
                   ret.tooltip = this.$t('compute.prompt_already_associate_eip')
                 }
@@ -95,7 +95,7 @@ export default {
                 const ret = {
                   validate: true,
                 }
-                if (!obj.eip) {
+                if (!obj.vip_eip) {
                   ret.validate = false
                   ret.tooltip = this.$t('compute.prompt_no_associate_eip')
                 }
