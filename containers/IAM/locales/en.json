@@ -640,6 +640,10 @@
       "label": "Token Expiration Seconds",
       "desc": "The expiration seconds of an token. The default is 86400 seconds (1 day)."
     },
+    "identity$no_action_logout_seconds": {
+      "label": "Web console session timeout",
+      "desc": "After the user has no operation in the current period of time, the login information will be invalid and needs to be logged in again. Zero means detection is not turned on."
+    },
     "common$is_forget_login_user": {
       "label": "Log out and clear user information",
       "desc": "After enabled, logging out will clear the logged in user information. To log in again, you need to re-enter your user name and password."

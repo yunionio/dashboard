@@ -53,6 +53,7 @@ const initialState = {
   // 提交的登录表单数据
   loginFormData: {},
   canRenderDefaultLayout: false,
+  noActionLogoutSeconds: 0,
 }
 
 export default {
@@ -193,6 +194,9 @@ export default {
     CLEAR_LOGGED_USERS (state) {
       setLoggedUsersInStorage({})
       state.loggedUsers = {}
+    },
+    SET_NO_ACTION_LOGOUT_SECONDS (state, payload) {
+      state.noActionLogoutSeconds = payload
     },
   },
   getters: {
