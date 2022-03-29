@@ -44,7 +44,7 @@ export default {
   },
   data () {
     const typeOps = []
-    if (hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware'])) {
+    if (hasSetupKey(['onestack', 'openstack', 'dstack', 'zstack', 'public', 'vmware', 'bill'])) {
       typeOps.push({ key: 'server', label: this.$t('dashboard.text_25') })
     }
     if (hasSetupKey(['k8s'])) {
