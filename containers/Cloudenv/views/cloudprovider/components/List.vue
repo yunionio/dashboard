@@ -13,7 +13,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
-import { getStatusFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getEnabledFilter, getTenantFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'CloudproviderList',
@@ -56,6 +56,7 @@ export default {
               return `account.contains("${val}")`
             },
           },
+          tenant: getTenantFilter(),
         },
       }),
       groupActions: [
