@@ -215,6 +215,22 @@ export default {
                 hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_change_project'),
               },
               {
+                label: this.$t('table.action.set_tag'),
+                permission: 'images_perform_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'image',
+                    },
+                    tipName: this.$t('compute.text_97'),
+                  })
+                },
+              },
+              {
                 label: this.$t('common_277'),
                 permission: 'images_update',
                 action: (row) => {
@@ -272,22 +288,6 @@ export default {
                   return { validate: true, tooltip: '' }
                 },
                 hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_set_delete_protection'),
-              },
-              {
-                label: this.$t('table.action.set_tag'),
-                permission: 'images_perform_set_user_metadata',
-                action: () => {
-                  this.createDialog('SetTagDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    mode: 'add',
-                    params: {
-                      resources: 'image',
-                    },
-                    tipName: this.$t('compute.text_97'),
-                  })
-                },
               },
               {
                 label: this.$t('compute.perform_delete'),
