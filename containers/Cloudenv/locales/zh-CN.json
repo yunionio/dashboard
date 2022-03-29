@@ -406,7 +406,7 @@
   "cloudenv.text_366": "启用同步",
   "cloudenv.text_367": "同步完成",
   "cloudenv.text_368": "{0}状态下不支持此操作",
-  "cloudenv.text_369": "云服务器",
+  "cloudenv.text_369": "虚拟机",
   "cloudenv.text_370": "可用区（数量）",
   "cloudenv.text_371": "VPC（数量）",
   "cloudenv.text_372": "IP子网（数量）",
