@@ -1523,6 +1523,11 @@ export default {
                       ret.tooltip = this.$t('compute.text_473', [typeClouds.hypervisorMap.bingocloud.label])
                       return ret
                     }
+                    const { server_delete_limit = false } = this.$store.getters.globalSetting.value || {}
+                    if (server_delete_limit && obj.status !== 'ready') {
+                      ret.tooltip = this.$t('compute.text_358')
+                      return ret
+                    }
                     return this.$getDeleteResult(obj)
                   },
                   hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
