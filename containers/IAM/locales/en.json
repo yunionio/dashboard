@@ -759,6 +759,10 @@
     "common$create_server_auto_start": {
       "label": "Automatically start after creating a new virtual machine",
       "desc": "It is enabled by default. After the virtual machine is successfully created, it will start automatically. After shutdown, the newly created virtual machine is in the shutdown state by default."
+    },
+    "common$server_delete_limit": {
+      "label": "Virtual machine deletion limit switch",
+      "desc": "After being turned on, the virtual machine can be deleted only when it is turned off. There is no limit after being turned off!"
     }
   },
   "user": {
