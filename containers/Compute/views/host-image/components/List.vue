@@ -159,6 +159,22 @@ export default {
                 },
               },
               {
+                label: this.$t('table.action.set_tag'),
+                permission: 'guestimages_perform_set_user_metadata',
+                action: () => {
+                  this.createDialog('SetTagDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                    mode: 'add',
+                    params: {
+                      resources: 'guestimage',
+                    },
+                    tipName: this.$t('dictionary.guestimage'),
+                  })
+                },
+              },
+              {
                 label: this.$t('common_277'),
                 permission: 'guestimages_update',
                 action: () => {
@@ -175,22 +191,6 @@ export default {
                     validate: validate,
                     tooltip: !validate && this.$t('compute.text_616'),
                   }
-                },
-              },
-              {
-                label: this.$t('table.action.set_tag'),
-                permission: 'guestimages_perform_set_user_metadata',
-                action: () => {
-                  this.createDialog('SetTagDialog', {
-                    data: this.list.selectedItems,
-                    columns: this.columns,
-                    onManager: this.onManager,
-                    mode: 'add',
-                    params: {
-                      resources: 'guestimage',
-                    },
-                    tipName: this.$t('dictionary.guestimage'),
-                  })
                 },
               },
               {
