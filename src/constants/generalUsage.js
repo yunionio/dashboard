@@ -7,13 +7,13 @@ export const usageMap = {
   cpu: {
     field: {
       used: {
-        system: ['all.servers.cpu', 'hosts.cpu.virtual'],
-        domain: ['domain.servers.cpu', 'domain.hosts.cpu.virtual'],
+        system: 'all.servers.cpu',
+        domain: 'domain.servers.cpu',
         project: 'servers.cpu',
       },
       total: {
-        system: 'hosts.cpu',
-        domain: 'domain.hosts.cpu',
+        system: ['hosts.cpu', 'hosts.cpu.virtual'],
+        domain: ['domain.hosts.cpu', 'domain.hosts.cpu.virtual'],
       },
     },
     unit: i18n.t('common_60'),
@@ -21,13 +21,13 @@ export const usageMap = {
   memory: {
     field: {
       used: {
-        system: ['all.servers.memory', 'hosts.memory.virtual'],
-        domain: ['domain.servers.memory', 'domain.hosts.memory.virtual'],
+        system: 'all.servers.memory',
+        domain: 'domain.servers.memory',
         project: 'servers.memory',
       },
       total: {
-        system: 'hosts.memory',
-        domain: 'domain.hosts.memory',
+        system: ['hosts.memory', 'hosts.memory.virtual'],
+        domain: ['domain.hosts.memory', 'domain.hosts.memory.virtual'],
       },
     },
     unit: 'M',
@@ -35,13 +35,13 @@ export const usageMap = {
   disk: {
     field: {
       used: {
-        system: ['all.disks', 'storages.virtual'],
-        domain: ['domain.disks', 'domain.storages.virtual'],
+        system: 'all.disks',
+        domain: 'domain.disks',
         project: 'disks',
       },
       total: {
-        system: 'storages',
-        domain: 'domain.storages',
+        system: ['storages', 'storages.virtual'],
+        domain: ['domain.storages', 'domain.storages.virtual'],
       },
     },
     unit: 'M',
