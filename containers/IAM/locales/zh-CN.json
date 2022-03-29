@@ -758,6 +758,10 @@
     "common$create_server_auto_start": {
       "label": "新建虚拟机后自动启动",
       "desc": "默认开启，虚拟机新建成功后会自动启动。关闭后，新建成功的虚拟机默认为关机状态。"
+    },
+    "common$server_delete_limit": {
+      "label": "虚拟机删除限制开关",
+      "desc": "开启后，只有关机状态才允许删除虚拟机，关闭后无限制！"
     }
   },
   "user": {

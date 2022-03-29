@@ -1063,6 +1063,14 @@ export default {
                       if (!unenableCloudCheck.validate) {
                         return unenableCloudCheck
                       }
+                      const isAllReady = !this.list.selectedItems.some((item) => item.status !== 'ready')
+                      const { server_delete_limit = false } = this.$store.getters.globalSetting.value || {}
+                      if (server_delete_limit && !isAllReady) {
+                        return {
+                          validate: false,
+                          tooltip: this.$t('compute.text_358'),
+                        }
+                      }
                       return this.$getDeleteResult(this.list.selectedItems)
                     },
                     hidden: () => this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_delete'),
