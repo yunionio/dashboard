@@ -176,7 +176,7 @@ export default {
           opt = hypervisorDisks[`${type}-${medium}`] // kvm 区分多种介质的硬盘
         }
         if (opt && !opt.sysUnusable) {
-          // 新建ucloud云服务器时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
+          // 新建ucloud虚拟机时，系统盘类型选择普通本地盘或SSD本地盘，其大小只能是系统镜像min_disk大小
           let max = opt.sysMax
           if (hyper === HYPERVISORS_MAP.ucloud.key && ['LOCAL_NORMAL', 'LOCAL_SSD'].includes(opt.key)) {
             max = this.imageMinDisk
