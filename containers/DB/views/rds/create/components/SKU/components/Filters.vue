@@ -51,8 +51,22 @@ export default {
     versionCn (key) {
       if (this.form.getFieldValue('provider') === 'Aws') {
         const _arr = key.split('.')
-        if (_arr && _arr.length) {
-          return _arr[1] ? `${_arr[0]}.${_arr[1]}` : _arr[0]
+        if (_arr && _arr[0]) {
+          let ret = key
+          switch (_arr[0]) {
+            case '12':
+              ret = `2014_${key}`
+              break
+            case '13':
+              ret = `2016_${key}`
+              break
+            case '14':
+              ret = `2017_${key}`
+              break
+            case '15':
+              ret = `2019_${key}`
+          }
+          return ret
         }
       }
       const _arr = key.split('_')
