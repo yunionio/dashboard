@@ -7,8 +7,8 @@ export const usageMap = {
   cpu: {
     field: {
       used: {
-        system: 'all.servers.cpu',
-        domain: 'domain.servers.cpu',
+        system: ['all.servers.cpu', 'hosts.cpu.virtual'],
+        domain: ['domain.servers.cpu', 'domain.hosts.cpu.virtual'],
         project: 'servers.cpu',
       },
       total: {
@@ -21,8 +21,8 @@ export const usageMap = {
   memory: {
     field: {
       used: {
-        system: 'all.servers.memory',
-        domain: 'domain.servers.memory',
+        system: ['all.servers.memory', 'hosts.memory.virtual'],
+        domain: ['domain.servers.memory', 'domain.hosts.memory.virtual'],
         project: 'servers.memory',
       },
       total: {
@@ -35,8 +35,8 @@ export const usageMap = {
   disk: {
     field: {
       used: {
-        system: 'all.disks',
-        domain: 'domain.disks',
+        system: ['all.disks', 'storages.virtual'],
+        domain: ['domain.disks', 'domain.storages.virtual'],
         project: 'disks',
       },
       total: {
@@ -349,6 +349,15 @@ export const getUsageData = (F, resData, dataMap, scope = 'project', scale = 102
     if (R.is(Function, field)) {
       data[scopeKey].value = field(resData)
       data[scopeKey].formatValue = field(resData)
+    } else if (R.is(Array, field)) {
+      field.map(usageKey => {
+        data[scopeKey].value = resData[usageKey]
+        if (UNITS.includes(fieldObj.unit)) {
+          data[scopeKey].formatValue = sizestr(resData[usageKey], fieldObj.unit, scale)
+        } else {
+          data[scopeKey].formatValue = resData[usageKey]
+        }
+      })
     } else {
       data[scopeKey].value = resData[field]
       if (UNITS.includes(fieldObj.unit)) {
