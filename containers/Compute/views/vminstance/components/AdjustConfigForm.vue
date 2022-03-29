@@ -429,21 +429,13 @@ export default {
         }
       }
       if (this.type === SERVER_TYPE.private) {
-        if (this.selectedItem && this.selectedItem.provider === HYPERVISORS_MAP.hcso.provider) {
-          params.provider = HYPERVISORS_MAP.hcso.provider
-          params.cloudregion_id = this.selectedItem.cloudregion_id
-        } else {
-          params['provider.0'] = HYPERVISORS_MAP.kvm.provider
-          params['provider.1'] = HYPERVISORS_MAP.openstack.provider
-        }
-        params.private_cloud = true
-        params.postpaid_status = 'available'
-
+        // nutanix vmware
         if (this.selectedItem && this.selectedItem.provider === HYPERVISORS_MAP.nutanix.provider) {
-          params.provider = HYPERVISORS_MAP.kvm.provider
-          params.public_cloud = false
-          params.private_cloud = false
+          params['provider.0'] = HYPERVISORS_MAP.kvm.provider
+        } else {
+          params.cloudregion_id = this.selectedItem.cloudregion_id
         }
+        params.postpaid_status = 'available'
       }
       if (this.type === SERVER_TYPE.public) {
         params.public_cloud = true
