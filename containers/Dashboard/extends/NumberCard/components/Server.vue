@@ -31,6 +31,14 @@
           <a-input v-decorator="decorators.name" />
         </a-form-item>
         <quota-config :fc="form.fc" :decorators="decorators" :usage-label="$t('dashboard.text_20')" @update:usage_key="setDefaultName" />
+        <a-form-item v-if="canShowUnitConfig" :label="$t('common_250')">
+          <base-select
+              v-decorator="decorators.unit"
+              isDefaultSelect
+              :filterable="true"
+              :options="unitOpts"
+              :select-props="{ placeholder: $t('common_618') }" />
+        </a-form-item>
       </a-form>
     </base-drawer>
   </div>
@@ -60,6 +68,7 @@ export default {
     const initialUsageKeyValue = ((this.params && this.params.type !== 'k8s') && this.params.usage_key) || usage_key
     const initialNameValue = ((this.params && this.params.type !== 'k8s') && this.params.name) || this.$t('usage')[initialUsageKeyValue]
     const initialRegionAccountType = ((this.params && this.params.type !== 'k8s') && this.params.regionAccountType) || 'region'
+    const initUnitValue = (this.params && this.params.unit) || 'auto'
     return {
       data: {},
       loading: false,
@@ -122,24 +131,49 @@ export default {
             ],
           },
         ],
+        unit: [
+          'unit',
+          {
+            initialValue: initUnitValue,
+          },
+        ],
       },
       showDebuggerInfo: false,
+      unitOpts: [
+        { id: 'auto', name: this.$t('common_563') },
+        { id: 'K', name: 'KB' },
+        { id: 'M', name: 'MB' },
+        { id: 'G', name: 'GB' },
+        { id: 'T', name: 'TB' },
+      ],
+      currentUsageKey: initialUsageKeyValue,
     }
   },
   computed: {
     usage () {
+      const usage = (this.data && this.data[this.form.fd.usage_key]) || 0
       const ret = {
-        usage: (this.data && this.data[this.form.fd.usage_key]) || 0,
+        usage,
       }
       const config = USAGE_CONFIG[this.form.fd.usage_key]
+      // 使用默认单位
       if (config && config.formatter) {
-        const fVal = config.formatter(ret.usage)
+        const fVal = config.formatter(usage)
         const fValArr = fVal.split(' ')
         ret.usage = fValArr[0]
         ret.unit = fValArr[1]
       }
       if (config && config.unit) {
         ret.unit = config.unit
+      }
+      // 使用用户配置的单位
+      if (config && config.userUnitFormatter) {
+        if (this.params && this.params.unit && this.params.unit !== 'auto') {
+          const fVal = config.userUnitFormatter(usage, this.params.unit)
+          const fValArr = fVal.split(' ')
+          ret.usage = fValArr[0]
+          ret.unit = fValArr[1]
+        }
       }
       return ret
     },
@@ -150,6 +184,13 @@ export default {
     canShowEdit () {
       if (!this.params) return false
       return this.getPageUrl()
+    },
+    canShowUnitConfig () {
+      const config = USAGE_CONFIG[this.currentUsageKey]
+      if (config && config.canUseUserUnit) {
+        return true
+      }
+      return false
     },
   },
   watch: {
