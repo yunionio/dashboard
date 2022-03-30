@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     versionCn (key) {
-      if (this.form.getFieldValue('provider') === 'Aws') {
+      if (this.form.getFieldValue('provider') === 'Aws' && this.form.getFieldValue('engine') === 'SQLServer') {
         const _arr = key.split('.')
         if (_arr && _arr[0]) {
           let ret = key
