@@ -1,4 +1,4 @@
-import { sizestrWithUnit, getDocsUrl } from '@/utils/utils'
+import { sizestrWithUnit, sizeToDesignatedUnit, getDocsUrl } from '@/utils/utils'
 import i18n from '@/locales'
 import { SCOPES_MAP, CLOUD_ENVS } from '@/constants'
 
@@ -11,6 +11,8 @@ import { SCOPES_MAP, CLOUD_ENVS } from '@/constants'
 export const USAGE_CONFIG = {
   'all.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -30,21 +32,29 @@ export const USAGE_CONFIG = {
   },
   'all.disks': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.disks.unready': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -134,6 +144,8 @@ export const USAGE_CONFIG = {
   },
   'all.pending_delete_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -149,11 +161,15 @@ export const USAGE_CONFIG = {
   },
   'all.pending_delete_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'all.pending_delete_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -164,6 +180,8 @@ export const USAGE_CONFIG = {
   },
   'all.pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -199,6 +217,8 @@ export const USAGE_CONFIG = {
   },
   'all.ready_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -214,11 +234,15 @@ export const USAGE_CONFIG = {
   },
   'all.ready_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'all.ready_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -229,6 +253,8 @@ export const USAGE_CONFIG = {
   },
   'all.ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -244,6 +270,8 @@ export const USAGE_CONFIG = {
   },
   'all.running_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -259,11 +287,15 @@ export const USAGE_CONFIG = {
   },
   'all.running_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'all.running_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -274,6 +306,8 @@ export const USAGE_CONFIG = {
   },
   'all.running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -289,6 +323,8 @@ export const USAGE_CONFIG = {
   },
   'all.servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -304,11 +340,15 @@ export const USAGE_CONFIG = {
   },
   'all.servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'all.servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -319,6 +359,8 @@ export const USAGE_CONFIG = {
   },
   'all.servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -334,6 +376,8 @@ export const USAGE_CONFIG = {
   },
   'all.disks.system': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -344,6 +388,8 @@ export const USAGE_CONFIG = {
   },
   'all.servers.system.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -359,11 +405,15 @@ export const USAGE_CONFIG = {
   },
   'baremetals.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   bucket_bytes: {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -379,21 +429,29 @@ export const USAGE_CONFIG = {
   },
   disks: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'disks.unready': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -439,11 +497,15 @@ export const USAGE_CONFIG = {
   },
   'enabled_hosts.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
   'enabled_hosts.memory.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
@@ -469,16 +531,22 @@ export const USAGE_CONFIG = {
   },
   'hosts.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
   'hosts.memory.total': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
   'hosts.memory.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
@@ -584,6 +652,8 @@ export const USAGE_CONFIG = {
   },
   'pending_delete_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -599,11 +669,15 @@ export const USAGE_CONFIG = {
   },
   'pending_delete_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'pending_delete_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -614,6 +688,8 @@ export const USAGE_CONFIG = {
   },
   'pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -649,6 +725,8 @@ export const USAGE_CONFIG = {
   },
   'ready_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -664,11 +742,15 @@ export const USAGE_CONFIG = {
   },
   'ready_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'ready_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -679,6 +761,8 @@ export const USAGE_CONFIG = {
   },
   'ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -699,6 +783,8 @@ export const USAGE_CONFIG = {
   },
   'running_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -714,11 +800,15 @@ export const USAGE_CONFIG = {
   },
   'running_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'running_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -729,6 +819,8 @@ export const USAGE_CONFIG = {
   },
   'running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -744,6 +836,8 @@ export const USAGE_CONFIG = {
   },
   'servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -759,11 +853,15 @@ export const USAGE_CONFIG = {
   },
   'servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -774,6 +872,8 @@ export const USAGE_CONFIG = {
   },
   'servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -784,6 +884,8 @@ export const USAGE_CONFIG = {
   },
   storages: {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
@@ -793,6 +895,8 @@ export const USAGE_CONFIG = {
   },
   'storages.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
@@ -893,11 +997,15 @@ export const USAGE_CONFIG = {
   },
   'domain.baremetals.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'domain.bucket_bytes': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -922,11 +1030,15 @@ export const USAGE_CONFIG = {
   },
   'domain.disks': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'domain.disks.mounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -942,6 +1054,8 @@ export const USAGE_CONFIG = {
   },
   'domain.disks.unmounted': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -952,6 +1066,8 @@ export const USAGE_CONFIG = {
   },
   'domain.disks.unready': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1027,11 +1143,15 @@ export const USAGE_CONFIG = {
   },
   'domain.hosts.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
   'domain.hosts.memory.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
@@ -1056,6 +1176,8 @@ export const USAGE_CONFIG = {
   },
   'domain.pending_delete_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1071,11 +1193,15 @@ export const USAGE_CONFIG = {
   },
   'domain.pending_delete_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'domain.pending_delete_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -1086,6 +1212,8 @@ export const USAGE_CONFIG = {
   },
   'domain.pending_delete_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1126,6 +1254,8 @@ export const USAGE_CONFIG = {
   },
   'domain.ready_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1141,11 +1271,15 @@ export const USAGE_CONFIG = {
   },
   'domain.ready_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'domain.ready_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -1156,6 +1290,8 @@ export const USAGE_CONFIG = {
   },
   'domain.ready_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1171,6 +1307,8 @@ export const USAGE_CONFIG = {
   },
   'domain.running_servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1186,11 +1324,15 @@ export const USAGE_CONFIG = {
   },
   'domain.running_servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'domain.running_servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -1201,6 +1343,8 @@ export const USAGE_CONFIG = {
   },
   'domain.running_servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1216,6 +1360,8 @@ export const USAGE_CONFIG = {
   },
   'domain.servers.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1231,11 +1377,15 @@ export const USAGE_CONFIG = {
   },
   'domain.servers.ha.disk': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
   'domain.servers.ha.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise],
   },
@@ -1246,6 +1396,8 @@ export const USAGE_CONFIG = {
   },
   'domain.servers.memory': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1256,6 +1408,8 @@ export const USAGE_CONFIG = {
   },
   'domain.storages': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
@@ -1265,6 +1419,8 @@ export const USAGE_CONFIG = {
   },
   'domain.storages.virtual': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private],
   },
@@ -1275,46 +1431,64 @@ export const USAGE_CONFIG = {
   },
   'all.img.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'domain.img.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'img.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.iso.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'domain.iso.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'iso.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'all.imgiso.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'domain.imgiso.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
   'imgiso.total.size': {
     formatter: val => sizestrWithUnit(val, 'B', 1000),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.project.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
@@ -1389,14 +1563,20 @@ export const K8S_USAGE_CONFIG = {
   },
   'all.cluster.node.memory.capacity': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
   },
   'all.cluster.node.memory.limit': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
   },
   'all.cluster.node.memory.request': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.system.key,
   },
   'domain.cluster.count': {
@@ -1437,14 +1617,20 @@ export const K8S_USAGE_CONFIG = {
   },
   'domain.cluster.node.memory.capacity': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
   },
   'domain.cluster.node.memory.limit': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
   },
   'domain.cluster.node.memory.request': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.domain.key,
   },
   'project.cluster.count': {
@@ -1485,14 +1671,20 @@ export const K8S_USAGE_CONFIG = {
   },
   'project.cluster.node.memory.capacity': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.project.key,
   },
   'project.cluster.node.memory.limit': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.project.key,
   },
   'project.cluster.node.memory.request': {
     formatter: val => sizestrWithUnit(val, 'B', 1024),
+    canUseUserUnit: true,
+    userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'B', unit, 1024),
     scope: SCOPES_MAP.project.key,
   },
 }
