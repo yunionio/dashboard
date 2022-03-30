@@ -23,6 +23,7 @@ export default {
           [this.decorators.name[0]]: this.$t(usageKey)[usage],
         })
       }
+      this.currentUsageKey = usage
     },
     cancel () {
       this.$emit('cancel')
