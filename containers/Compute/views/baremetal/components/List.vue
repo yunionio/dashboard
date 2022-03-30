@@ -220,7 +220,7 @@ export default {
                     const hasKeypair = this.list.selectedItems.some(obj => obj.keypair_id && obj.keypair_id.toLowerCase() !== 'none')
                     if (hasKeypair) {
                       return {
-                        validate: false, // 已绑定密钥的云服务器无法重置密码
+                        validate: false, // 已绑定密钥的虚拟机无法重置密码
                         tooltip: this.$t('compute.text_277'),
                       }
                     }
