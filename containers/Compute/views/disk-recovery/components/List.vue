@@ -40,7 +40,7 @@ export default {
           brand: getBrandFilter(),
           status: getStatusFilter('disk'),
           projects: getTenantFilter(),
-          // guest: getFilter({ field: 'guest', title: '云服务器' }),
+          // guest: getFilter({ field: 'guest', title: '虚拟机' }),
           disk_type: getFilter({
             field: 'guest',
             title: this.$t('compute.text_175'),
