@@ -1524,8 +1524,8 @@ export default {
                       return ret
                     }
                     const { server_delete_limit = false } = this.$store.getters.globalSetting.value || {}
-                    if (server_delete_limit && obj.status !== 'ready') {
-                      ret.tooltip = this.$t('compute.text_358')
+                    if (server_delete_limit && obj.status === 'running') {
+                      ret.tooltip = this.$t('compute.delete_limit')
                       return ret
                     }
                     return this.$getDeleteResult(obj)

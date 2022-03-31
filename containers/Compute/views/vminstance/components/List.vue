@@ -1063,12 +1063,12 @@ export default {
                       if (!unenableCloudCheck.validate) {
                         return unenableCloudCheck
                       }
-                      const isAllReady = !this.list.selectedItems.some((item) => item.status !== 'ready')
+                      const isHasRunning = this.list.selectedItems.some((item) => item.status === 'running')
                       const { server_delete_limit = false } = this.$store.getters.globalSetting.value || {}
-                      if (server_delete_limit && !isAllReady) {
+                      if (server_delete_limit && isHasRunning) {
                         return {
                           validate: false,
-                          tooltip: this.$t('compute.text_358'),
+                          tooltip: this.$t('compute.delete_limit'),
                         }
                       }
                       return this.$getDeleteResult(this.list.selectedItems)
