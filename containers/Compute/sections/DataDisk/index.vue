@@ -146,7 +146,7 @@ export default {
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push('snapshot')
       }
-      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key || this.hypervisor === HYPERVISORS_MAP.esxi.key) {
         ret.push('storage') // 这里暂时写死，因为目前只是有vmware的数据盘会指定存储
       }
       if (this.isIDC || this.isPrivate) {
