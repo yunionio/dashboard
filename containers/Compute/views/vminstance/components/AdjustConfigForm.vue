@@ -68,7 +68,8 @@
               :defaultType="form.fd.systemDiskType"
               :sku="form.fd.sku"
               :image="form.fi.imageMsg"
-              :domain="domain" />
+              :domain="domain"
+              :storageParams="dataDiskStorageParams"  />
           </a-form-item>
           <a-form-item :label="$t('compute.text_1041')" v-if="isOpenWorkflow">
             <a-input v-decorator="decorators.reason" :placeholder="$t('compute.text_1105')" />
@@ -310,6 +311,15 @@ export default {
                 message: this.$t('compute.text_126'),
               }, {
                 validator: diskValidator,
+              }],
+            },
+          ],
+          storage: i => [
+            `dataDiskStorages[${i}]`,
+            {
+              rules: [{
+                required: true,
+                message: this.$t('compute.text_1351'),
               }],
             },
           ],
@@ -641,6 +651,24 @@ export default {
     needLocalMedium () {
       return (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor)
     },
+    dataDiskStorageParams () {
+      const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
+      const { prefer_manager, schedtag, prefer_host } = this.form.fd
+      const params = {
+        ...this.scopeParams,
+        usable: true, // 包含了 enable:true, status为online的数据
+        brand: HYPERVISORS_MAP.esxi.brand, // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        manager: prefer_manager,
+        host_schedtag_id: schedtag,
+      }
+      if (systemDiskType) {
+        params.filter = [`storage_type.contains("${systemDiskType}")`]
+      }
+      if (prefer_host) {
+        params.host_id = prefer_host
+      }
+      return params
+    },
   },
   created () {
     this.serversManager = new Manager('servers', 'v2')
@@ -942,6 +970,9 @@ export default {
           if (values.dataDiskPolicys && values.dataDiskPolicys[key]) {
             diskObj.schedtags[0].strategy = values.dataDiskPolicys[key]
           }
+        }
+        if (values.dataDiskStorages && values.dataDiskStorages[key]) {
+          diskObj.storage_id = values.dataDiskStorages[key]
         }
         // 磁盘介质
         const { key: dataDiskKey = '' } = values.dataDiskTypes[key] || {}
