@@ -46,15 +46,22 @@ export default {
     },
   },
   methods: {
+    getDefaultSelectZone (mainZone) {
+      const options = this.options.filter(v => v.id !== mainZone)
+      if (options && options.length > 0) {
+        return options[0].id
+      }
+    },
     resetZones () {
       if (!this.checked) {
         this.selectedZones = undefined
       } else {
         const selectedZones = []
         const mainZone = this.form.fd.zone || ''
+        const defaultSelectZone = this.getDefaultSelectZone(mainZone)
         const replicasNumber = this.form.fd.sku.replicas_num || 0
         for (let i = 0; i < replicasNumber; i++) {
-          selectedZones.push(mainZone)
+          selectedZones.push(defaultSelectZone || mainZone)
         }
         this.selectedZones = selectedZones
       }
