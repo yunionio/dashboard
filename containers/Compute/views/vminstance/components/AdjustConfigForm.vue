@@ -944,9 +944,11 @@ export default {
           }
         }
         // 磁盘介质
-        const { key: dataDiskKey = '' } = values.dataDiskTypes[key] || {}
-        if (this.needLocalMedium && dataDiskKey.split('-')[1]) {
-          diskObj.medium = dataDiskKey.split('-')[1]
+        if (values.dataDiskTypes && values.dataDiskTypes[key]) {
+          const { key: dataDiskKey = '' } = values.dataDiskTypes[key] || {}
+          if (this.needLocalMedium && dataDiskKey.split('-')[1]) {
+            diskObj.medium = dataDiskKey.split('-')[1]
+          }
         }
         dataDisk.push(diskObj)
       }, values.dataDiskSizes)
