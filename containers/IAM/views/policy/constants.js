@@ -1,3 +1,4 @@
+import i18n from '@/locales'
 // 定义服务的映射
 export const SERVICES_MAP = {
   compute: {
@@ -48,11 +49,46 @@ export const RESOURCES_MAP = {
   servers: {
     i18n: 'dictionary.server',
     extras: [
-      {
-        action: 'get',
-        label: 'VNC',
-        value: 'vnc',
-      },
+      { action: 'get', label: 'VNC', value: 'vnc' },
+      { action: 'perform', label: i18n.t('cloudenv.text_354'), value: 'syncstatus' },
+      { action: 'perform', label: i18n.t('cloudenv.text_511'), value: 'start' },
+      { action: 'perform', label: i18n.t('cloudenv.text_512'), value: 'stop' },
+      { action: 'perform', label: i18n.t('cloudenv.text_513'), value: 'restart' },
+      { action: 'perform', label: i18n.t('cloudenv.text_514'), value: 'reset' },
+      { action: 'perform', label: i18n.t('cloudenv.text_515'), value: 'suspend' },
+      { action: 'perform', label: i18n.t('cloudenv.text_516'), value: 'resume' },
+      { action: 'perform', label: i18n.t('compute.sync_config'), value: 'sync' },
+      { action: 'update', label: i18n.t('cloudenv.text_406'), value: '*' }, // 修改属性 同 update
+      { action: 'perform', label: i18n.t('cloudenv.text_517'), value: 'rebuild-root' },
+      { action: 'perform', label: i18n.t('cloudenv.text_518'), value: 'change-config' },
+      { action: 'perform', label: i18n.t('cloudenv.text_519'), value: 'change-owner' },
+      { action: 'perform', label: i18n.t('cloudenv.text_520'), value: 'create-snapshot' },
+      { action: 'perform', label: i18n.t('compute.create_snapshot_backup'), value: 'instance-backup' },
+      { action: 'create', label: i18n.t('cloudenv.text_521'), value: '*' }, // 创建相同配置 同 create
+      { action: 'perform', label: i18n.t('compute.set_usb_gpu'), value: 'set-isolated-device' },
+      { action: 'perform', label: i18n.t('cloudenv.text_523'), value: 'io-throttle' },
+      { action: 'get', label: i18n.t('compute.bind_physical_cpu'), value: 'cpuset-cores' },
+      { action: 'perform', label: i18n.t('cloudenv.text_524'), value: 'cancel-expire' },
+      { action: 'perform', label: i18n.t('cloudenv.text_525'), value: 'snapshot-and-clone' },
+      { action: 'perform', label: i18n.t('cloudenv.text_526'), value: 'bind-groups' },
+      { action: 'perform', label: i18n.t('cloudenv.text_527'), value: 'renew' },
+      { action: 'perform', label: i18n.t('cloudenv.text_528'), value: 'set-auto-renew' },
+      { action: 'perform', label: i18n.t('compute.text_360'), value: 'deploy' },
+      { action: 'perform', label: i18n.t('compute.vminstance.actions.setup_ssh_authentication'), value: 'make-sshable' },
+      { action: 'get', label: i18n.t('compute.vminstance.actions.detect_ssh_authentication'), value: 'sshable' },
+      { action: 'perform', label: i18n.t('cloudenv.text_532'), value: 'save-image' },
+      { action: 'perform', label: i18n.t('cloudenv.text_533'), value: 'insertiso' },
+      { action: 'perform', label: i18n.t('cloudenv.text_534'), value: 'ejectiso' },
+      { action: 'perform', label: i18n.t('cloudenv.text_535'), value: 'add-secgroup' },
+      { action: 'perform', label: i18n.t('cloudenv.text_536'), value: 'create-eip' },
+      { action: 'perform', label: i18n.t('cloudenv.text_537'), value: 'dissociate-eip' },
+      { action: 'perform', label: i18n.t('cloudenv.text_538'), value: 'public-ip-to-eip' },
+      { action: 'perform', label: i18n.t('cloudenv.text_539'), value: 'modify-src-check' },
+      { action: 'perform', label: i18n.t('cloudenv.text_540'), value: 'create-backup' },
+      { action: 'perform', label: i18n.t('cloudenv.text_541'), value: 'delete-backup' },
+      { action: 'perform', label: i18n.t('cloudenv.text_542'), value: 'migrate' },
+      { action: 'perform', label: i18n.t('common_105'), value: 'set-user-metadata' },
+      { action: 'perform', label: i18n.t('compute.text_674'), value: '*' },
     ],
   },
   disks: {
