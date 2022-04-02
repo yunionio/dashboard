@@ -59,7 +59,7 @@ export default {
                   columns: this.columns,
                   title: i18n.t('compute.perform_delete'),
                   onManager: this.onManager,
-                  name: i18n.t('compute.text_462'),
+                  name: i18n.t('compute.instance_backup'),
                   alert: i18n.t('compute.instance_backup_delete_alert'),
                   content: () => {
                     const change = (bool) => {
