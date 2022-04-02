@@ -1549,5 +1549,7 @@
   "compute.transfer_mutiple_dialog_alert": "There are {0} VMs already on the host, this migration will fail, but it will not affect other VMs migrations!",
   "compute.instance_backup_delete_alert": "When the backup storage is unavailable, you can check forced deletion to delete database records",
   "compute.delete_limit": "This operation is not supported in running state. Please shut down and try again!",
-  "compute.host_use_core_tips": "This core has already been used, please select another core"
+  "compute.host_use_core_tips": "This core has already been used, please select another core",
+  "compute.create_snapshot_backup": "Create Snapshot/Backup",
+  "compute.set_usb_gpu": "Set GPU Card/USB"
 }

@@ -527,7 +527,7 @@ export default {
                 },
                 {
                   label: i18n.t('compute.text_1276'),
-                  permission: 'snapshots_create',
+                  permission: 'snapshots_create,server_perform_instance_backup',
                   action: () => {
                     this.$openNewWindowForMenuHook('vminstance_configured_callback_address.create_snapshot_callback_address', () => {
                       this.createDialog('VmSnapshotCreateDialog', {
