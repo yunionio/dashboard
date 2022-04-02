@@ -159,7 +159,7 @@ export default {
       return this.params.data.length >= 1 && this.params.data[0].hypervisor === 'kvm'
     },
     isArm () {
-      return this.params.data.length >= 1 && this.params.data[0].os_arch === 'arm'
+      return this.params.data.length >= 1 && (this.params.data[0].os_arch === 'arm' || this.params.data[0].os_arch === 'aarch64')
     },
   },
   created () {
