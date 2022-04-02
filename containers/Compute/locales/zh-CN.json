@@ -1548,5 +1548,6 @@
   "compute.create_mem_snapshot_limit": "只有【运行中】的虚拟机才可以新建内存快照",
   "compute.transfer_mutiple_dialog_alert": "有{0}个虚拟机已经在该宿主机上，本次迁移会失败，但是不影响其他虚拟机迁移！",
   "compute.instance_backup_delete_alert": "当备份存储不可用时，可勾选强制删除，删除数据库记录",
-  "compute.delete_limit": "运行状态下不支持该操作，请关机后重试！"
+  "compute.delete_limit": "运行状态下不支持该操作，请关机后重试！",
+  "compute.host_use_core_tips": "该核已被使用，请选择其他核"
 }

@@ -18,7 +18,13 @@
               style="width: 100%; margin-top: 10px;">
               <a-row v-for="v in hostCores" :key="v">
                 <a-col :span="4" v-for="c in v" :key="c">
-                  <a-checkbox :value="c">{{ c }}</a-checkbox>
+                  <a-tooltip v-if="hostUsedCores.includes(c)">
+                    <template slot="title">
+                      {{ $t('compute.host_use_core_tips') }}
+                    </template>
+                    <a-checkbox disabled :value="c">{{ c }}</a-checkbox>
+                  </a-tooltip>
+                  <a-checkbox v-else :value="c">{{ c }}</a-checkbox>
                 </a-col>
               </a-row>
             </a-checkbox-group>
@@ -82,6 +88,13 @@ export default {
     hostCores () {
       const hostCores = (this.cpuCoresInfo.host_cores || []).sort((a, b) => a - b)
       return chunk(hostCores, 6)
+    },
+    hostUsedCores () {
+      const hostUsedCores = this.cpuCoresInfo?.host_used_cores || []
+      return hostUsedCores.filter(v => {
+        const pinnedCores = this.cpuCoresInfo?.pinned_cores || []
+        return !pinnedCores.includes(v)
+      })
     },
   },
   created () {
