@@ -153,7 +153,7 @@ const genPolicyRuleOptions = (scopeResource, isUpdate, permissions) => {
           }
           actions.push({
             parent: extras.action,
-            extraAction: 'vnc',
+            extraAction: extras.value,
             label: extras.label,
             action: `${extras.action}_${extras.value}`,
             value: `${extras.action}_${extras.value}`,
