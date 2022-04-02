@@ -44,7 +44,14 @@ export default {
             columns: this.columns,
             title: i18n.t('compute.perform_delete'),
             onManager: this.onManager,
-            name: i18n.t('compute.text_462'),
+            name: i18n.t('compute.disk_backup'),
+            content: () => {
+              const change = (bool) => {
+                this.deleteResProps.force = bool
+              }
+              return <a-checkbox onInput={ change }>{ this.$t('compute.text_655') }</a-checkbox>
+            },
+            requestParams: this.deleteResProps,
           })
         },
         meta: obj => {
