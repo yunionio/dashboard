@@ -183,6 +183,11 @@ export default {
               },
               meta: () => {
                 const guestStatus = ['running', 'ready']
+                if (obj.cloud_env === 'public') {
+                  return {
+                    validate: false,
+                  }
+                }
                 if (obj.guest && !guestStatus.includes(obj.guest_status)) {
                   return {
                     validate: false,
