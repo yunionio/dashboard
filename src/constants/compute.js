@@ -667,3 +667,7 @@ export const HOST_CPU_ARCHS = {
     order: 2,
   },
 }
+
+export const DISK_LABEL_MAP = {
+  GPSSD: i18n.t('compute.disk.rotate_gpssd'),
+}

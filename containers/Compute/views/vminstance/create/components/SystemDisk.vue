@@ -23,7 +23,7 @@ import _ from 'lodash'
 import * as R from 'ramda'
 import Disk from '@Compute/sections/Disk'
 // import { STORAGE_AUTO } from '@Compute/constants'
-import { IMAGES_TYPE_MAP, STORAGE_TYPES } from '@/constants/compute'
+import { IMAGES_TYPE_MAP, STORAGE_TYPES, DISK_LABEL_MAP } from '@/constants/compute'
 import { HYPERVISORS_MAP } from '@/constants'
 import { findAndUnshift, findAndPush } from '@/utils/utils'
 // 磁盘最小值
@@ -190,7 +190,7 @@ export default {
             medium,
             sysMin: Math.max(this.imageMinDisk, opt.sysMin, DISK_MIN_SIZE),
             sysMax: max,
-            label: opt.key === 'nova' ? this.$t('compute.text_1141') : opt.label,
+            label: opt.key === 'nova' ? this.$t('compute.text_1141') : (DISK_LABEL_MAP[opt.label] || opt.label),
           }
           if (this.hypervisor === HYPERVISORS_MAP.google.key) {
             ret[opt.key].sysMin = opt.sysMin
