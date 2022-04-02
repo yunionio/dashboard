@@ -141,6 +141,7 @@ export default {
         if (wire.hosts && wire.hosts.length > 0) {
           const hostArr = this.getHost(wire)
           isExist = hostArr.some(v => v.id === host.id)
+          if (isExist) return true
         }
       }
 
