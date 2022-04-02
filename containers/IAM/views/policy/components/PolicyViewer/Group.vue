@@ -15,8 +15,10 @@
           <div class="actions flex-fill">
             <template v-for="action of sortActions(item.actions)">
               <span
+                v-if="!action.children"
                 :key="action.key"
                 class="mb-2 tag">{{ action.label }}</span>
+              <a-button :key="action.key" v-else type="link" @click="showExtraAction(action.children)">{{ action.label }}</a-button>
             </template>
           </div>
         </div>
@@ -27,8 +29,10 @@
 
 <script>
 import * as R from 'ramda'
+import WindowsMixin from '@/mixins/windows'
 
 export default {
+  mixins: [WindowsMixin],
   props: {
     data: {
       required: true,
@@ -45,10 +49,27 @@ export default {
       this.showContent = !this.showContent
     },
     sortActions (actions) {
-      const sortKeys = ['list', 'get', 'update', 'create', 'delete', 'perform', 'vnc']
-      return R.sort((a, b) => {
+      const sortKeys = ['list', 'get', 'update', 'create', 'delete', 'perform']
+      const sortActions = R.sort((a, b) => {
         return sortKeys.indexOf(a.key) - sortKeys.indexOf(b.key)
       }, actions)
+      const normalActions = sortActions.filter(item => sortKeys.includes(item.key))
+      // 将详细操作收起来
+      const extraActions = sortActions.filter(item => !sortKeys.includes(item.key))
+      if (extraActions.length) {
+        normalActions.push({ key: 'extra', label: this.$t('iam.count_items', [extraActions.length]), children: extraActions })
+      }
+      return normalActions
+    },
+    showExtraAction (actions) {
+      this.createDialog('PolicyExtraActionConfig', {
+        title: this.$t(''),
+        name: this.$t(''),
+        resource: { disabled: true },
+        actions: actions.map(item => ({ action: item.key, label: item.label })),
+        checked: actions.map(action => action.key),
+        isViewer: true,
+      })
     },
   },
 }
