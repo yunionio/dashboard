@@ -37,6 +37,9 @@ export default {
   },
   data () {
     return {
+      deleteResProps: {
+        force: false,
+      },
       list: this.$list.createList(this, {
         id: this.id,
         resource: 'diskbackups',
