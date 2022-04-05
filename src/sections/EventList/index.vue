@@ -170,6 +170,8 @@ export default {
           { label: this.$t('common_56'), key: 'obj_type' },
           { label: this.$t('table.title.operation'), key: 'action' },
           { label: this.$t('table.title.res_name'), key: 'obj_name' },
+          { label: this.$t('common_log_table_key.severity'), key: 'severity' },
+          { label: this.$t('common_log_table_key.kind'), key: 'kind' },
           { label: this.$t('common.status'), key: 'success' },
           { label: this.$t('common_156'), key: 'start_time' },
           { label: this.$t('table.title.sponsor'), key: 'user' },
@@ -247,6 +249,14 @@ export default {
             },
           },
         },
+        getCopyWithContentTableColumn({
+          title: this.$t('common_log_table_key.severity'),
+          field: 'severity',
+        }),
+        getCopyWithContentTableColumn({
+          title: this.$t('common_log_table_key.kind'),
+          field: 'kind',
+        }),
         {
           title: this.$t('table.title.action_result'),
           field: 'success',
@@ -273,6 +283,7 @@ export default {
                   <span class='text-weak' title={ this.$t('shareScope.domain') }> { domain } </span>
                   <span class='text-weak' title={ this.$t('shareScope.project') }> { tenant } </span>
                 </div>,
+                <list-body-cell-wrap style="margin: 3px 0 2px 0" copy field='ip' row={row} />,
               ]
               return ret
             },

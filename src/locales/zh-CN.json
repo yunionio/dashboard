@@ -5124,6 +5124,8 @@
     "obj_type": "资源类型",
     "obj_id": "资源ID",
     "ops_time": "操作时间",
+    "severity": "风险级别",
+    "kind": "事件类型",
     "notes": "Notes"
   }
 }
