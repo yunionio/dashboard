@@ -5110,6 +5110,8 @@
     "obj_type": "Resource Type",
     "obj_id": "Resource ID",
     "ops_time": "Ops Time",
+    "severity": "Severity",
+    "kind": "Kind",
     "notes": "Notes"
   }
 }

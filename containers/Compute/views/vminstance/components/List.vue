@@ -228,7 +228,7 @@ export default {
               return ret
             }
             ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
+              ret.validate = this.list.selectedItems.every(item => item.status === 'ready' || item.status === 'suspend')
               return ret
             })
             return ret
