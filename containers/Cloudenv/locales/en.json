@@ -753,5 +753,14 @@
   "cloudenv.cloudprovider.sync_delete": "This operation is not supported in synchronization",
   "cloudenv.bill.data_source": "Bill data source:",
   "cloudenv.text_605": "{0} Cloud platform does not support this operation",
-  "cloudenv.nutanix.prism": "Prism Address"
+  "cloudenv.select_region": "Configure Sync Region",
+  "cloudenv.select_region_tips": "Please select the area where you want to synchronize resources. The configuration can be modified in the cloud account details page-subscription-area after the cloud account is imported, please rest assured to configure!（Synchronize all regions by default）",
+  "cloudenv.sync_account": "Sync Account",
+  "cloudenv.nutanix.prism": "Prism Address",
+  "cloudenv.modify_success": "Modified successfully ！",
+  "cloudenv.multiple_modify": "Batch Modify",
+  "cloudenv.exit_multiple_modify": "Exit Batch Modify",
+  "cloudenv.bingocloud": "BingoCloud",
+  "cloudenv.lake_of_permissions": "Lake Of Permissions",
+  "cloudenv.clear_lake_of_permissions": "Clean permisssions tip"
 }
