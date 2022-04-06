@@ -763,5 +763,7 @@
   "cloudenv.modify_success": "Modified successfully ！",
   "cloudenv.multiple_modify": "Batch Modify",
   "cloudenv.exit_multiple_modify": "Exit Batch Modify",
-  "cloudenv.bingocloud": "BingoCloud"
+  "cloudenv.bingocloud": "BingoCloud",
+  "cloudenv.lake_of_permissions": "Lake Of Permissions",
+  "cloudenv.clear_lake_of_permissions": "Clean permisssions tip"
 }
