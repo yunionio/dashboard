@@ -37,6 +37,31 @@ export default {
     return {
       discount: 0,
       discountLoaded: false,
+      clearPermissionsLoading: false,
+      permissionColumns: [
+        {
+          field: 'name',
+          width: '30%',
+          title: this.$t('cloudenv.Service'),
+          formatter: ({ row }) => {
+            return this.$te(`dictionary.res.${row.name}`) ? this.$t(`dictionary.res.${row.name}`) : row.name
+          },
+        },
+        {
+          field: 'permissions',
+          title: this.$t('cloudenv.lake_of_permissions'),
+          slots: {
+            default: ({ row }, h) => {
+              const { permissions = [] } = row
+              const ret = []
+              permissions.map(key => {
+                ret.push(<a-tag class="mb-1 mt-1">{key}</a-tag>)
+              })
+              return ret
+            },
+          },
+        },
+      ],
       baseInfo: [
         getPublicScopeTableColumn({ vm: this, resource: 'cloudaccounts' }),
         getBrandTableColumn(),
@@ -105,13 +130,63 @@ export default {
             getHostCountTableColumn(),
           ],
         },
+        {
+          title: this.$t('cloudenv.text_329'),
+          hidden: () => !this.lakeOfPermissionsData.length,
+          items: [
+            {
+              title: this.$t('common.action'),
+              field: 'action',
+              slots: {
+                default: ({ row }, h) => {
+                  return [<a-button type="link" style="height:21px;padding: 0" disabled={!this.lakeOfPermissionsData.length} loading={this.clearPermissionsLoading} onClick={this.clearPermissions.bind(this)}>{this.$t('cloudenv.clear_lake_of_permissions')}</a-button>]
+                },
+              },
+            },
+            {
+              title: this.$t('cloudenv.lake_of_permissions'),
+              field: 'lake_of_permissions',
+              slots: {
+                default: ({ row }, h) => {
+                  return [
+                    <vxe-grid class="mb-2" data={ this.lakeOfPermissionsData } columns={ this.permissionColumns } />,
+                  ]
+                },
+              },
+            },
+          ],
+        },
       ],
     }
+  },
+  computed: {
+    lakeOfPermissionsData () {
+      const { lake_of_permissions } = this.data
+      if (!lake_of_permissions) return []
+      const ret = []
+      for (const key in lake_of_permissions) {
+        ret.push({ name: key, permissions: lake_of_permissions[key].permissions })
+      }
+      return ret
+    },
   },
   created () {
     this.fetchDiscount()
   },
   methods: {
+    async clearPermissions () {
+      try {
+        this.clearPermissionsLoading = true
+        await this.onManager('update', {
+          id: this.data.id,
+          managerArgs: {
+            data: { clean_lake_of_permissions: true },
+          },
+        })
+      } finally {
+        this.clearPermissionsLoading = false
+      }
+    },
     async fetchDiscount () {
       if (!hasMeterService()) return
       try {

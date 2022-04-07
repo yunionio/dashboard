@@ -763,5 +763,7 @@
   "cloudenv.modify_success": "修改成功！",
   "cloudenv.multiple_modify": "批量修改",
   "cloudenv.exit_multiple_modify": "退出批量修改",
-  "cloudenv.bingocloud": "品高云"
+  "cloudenv.bingocloud": "品高云",
+  "cloudenv.lake_of_permissions": "缺失权限",
+  "cloudenv.clear_lake_of_permissions": "清空权限提示"
 }
