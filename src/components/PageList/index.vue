@@ -49,6 +49,7 @@
         ref="table"
         :id="id"
         :id-key="idKey"
+        :list="list"
         :data="finalData"
         :columns="columns"
         :loading="loading"
