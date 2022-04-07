@@ -2,16 +2,14 @@
   <div class="cloudaccount-create">
     <page-header :title="$t('cloudenv.text_271')" />
     <steps class="my-3" v-model="step" />
-    <keep-alive>
-      <component
-        ref="stepRef"
-        :is="currentComponent"
-        :prepareNetData="prepareNetData"
-        :current-item.sync="currentItem"
-        :account="newAccountInfo"
-        :provider="currentItem.provider"
-        :create-form-data="createCloudaccountFormData" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
-    </keep-alive>
+    <component
+      ref="stepRef"
+      :is="currentComponent"
+      :prepareNetData="prepareNetData"
+      :current-item.sync="currentItem"
+      :account="newAccountInfo"
+      :provider="currentItem.provider"
+      :create-form-data="createCloudaccountFormData" /><!-- provider 是为了 VmNetwork 的 prop 不报错 -->
     <page-footer isForm>
       <div slot="left">
         <div class="d-flex align-items-center">
