@@ -5113,5 +5113,7 @@
     "severity": "Severity",
     "kind": "Kind",
     "notes": "Notes"
-  }
+  },
+  "common.sort_asc": "Ascending {0}: lowest to highest",
+  "common.sort_desc": "Descending {0}：highest to lowest"
 }

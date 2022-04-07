@@ -177,6 +177,8 @@ export default {
         minWidth: 80,
         sortable: true,
         sortBy: 'order_by_storage',
+        // sortFields: ['', 'storage_commit_rate'],
+        // sortByList: ['order_by_storage', ''],
         slots: {
           default: ({ row }) => {
             if (this.isPreLoad && !row.storage) return [<data-loading />]
