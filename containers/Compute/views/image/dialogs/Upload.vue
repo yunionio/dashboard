@@ -157,8 +157,7 @@ export default {
           encryptEnable: [
             'encryptEnable',
             {
-              valuePropName: 'checked',
-              initialValue: false,
+              initialValue: '',
             },
           ],
           encrypt_key_id: [
@@ -259,8 +258,10 @@ export default {
           os_arch: data.os_arch,
         },
       }
-      if (data.encrypt_key_id) {
+      if (data.encryptEnable === 'existing' && data.encrypt_key_id) {
         params.encrypt_key_id = data.encrypt_key_id
+      } else if (data.encryptEnable === 'new') {
+        params.encrypt_key_new = true
       }
       return this.params.onManager('create', {
         managerArgs: {
@@ -288,8 +289,10 @@ export default {
           formData.append('name', values.name)
           formData.append('os_version', '')
           formData.append('os_arch', values.os_arch)
-          if (values.encrypt_key_id) {
+          if (values.encryptEnable === 'existing' && values.encrypt_key_id) {
             formData.append('encrypt_key_id', values.encrypt_key_id)
+          } else if (values.encryptEnable === 'new') {
+            formData.append('encrypt_key_new', true)
           }
           if (fileList.length > 0) {
             formData.append('image_size', fileList[0].size)
