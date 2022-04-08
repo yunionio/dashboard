@@ -452,6 +452,18 @@ export const PERMISSION = {
   diskbackups_perform_recovery: ['compute', 'diskbackups', 'perform', 'recovery'],
   diskbackups_perform_syncstatus: ['compute', 'diskbackups', 'perform', 'syncstatus'],
   diskbackups_perform_set_user_metadata: ['compute', 'diskbackups', 'perform', 'set-user-metadata'],
+
+  /**
+   * backupstorages
+   */
+  backupstorages_list: ['compute', 'backupstorages', 'list'],
+  backupstorages_create: ['compute', 'backupstorages', 'create'],
+  backupstorages_update: ['compute', 'backupstorages', 'update'],
+  backupstorages_delete: ['compute', 'backupstorages', 'delete'],
+  backupstorages_perform_public: ['compute', 'backupstorages', 'perform', 'public'],
+  backupstorages_perform_syncstatus: ['compute', 'backupstorages', 'perform', 'syncstatus'],
+  backupstorages_perform_set_user_metadata: ['compute', 'backupstorages', 'perform', 'set-user-metadata'],
+
   /**
    * snapshots 相关操作
    */
