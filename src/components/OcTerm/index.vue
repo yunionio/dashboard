@@ -59,7 +59,7 @@ export default {
       })
     },
     $route (to, from) {
-      if (to.path === '/auth/login/chooser') {
+      if (to.path && to.path.startsWith('/auth/login')) {
         this.$store.commit('common/SET_OPEN_CLOUDSHELL', false)
       }
     },
