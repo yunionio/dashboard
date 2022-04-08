@@ -23,7 +23,7 @@
         <loader :loading="loading" :noDataText="noDataText" />
       </template>
     </vxe-grid>
-    <template v-if="tableData.length > 0 && typeof(nextMarker) !== 'undefined'">
+    <template v-if="loadMoreShow">
       <div class="text-center mt-4">
         <a-button v-if="nextMarker" :loading="loading" type="link" @click="handleNextMarkerChange">{{ loading ? $t('common.loding') : $t('common.LoadMore') }}</a-button>
         <span v-else>{{ $t('common.load_no_more') }}</span>
@@ -41,12 +41,14 @@ import { addResizeListener, removeResizeListener } from '@/utils/resizeEvent'
 import { getTagTitle } from '@/utils/common/tag'
 import storage from '@/utils/storage'
 import Actions from '../Actions'
+import MultipleSort from './MultipleSort'
 
 export default {
   name: 'PageListTable',
   props: {
     id: String,
     idKey: String,
+    list: Object,
     data: {
       type: Object,
       required: true,
@@ -199,6 +201,9 @@ export default {
     },
     l2MenuVisibleForStore () {
       return this.$store.state.setting.l2MenuVisible
+    },
+    loadMoreShow () {
+      return this.tableData.length > 0 && (typeof this.nextMarker) !== 'undefined'
     },
   },
   watch: {
@@ -404,6 +409,16 @@ export default {
         const insertIndex = this.checkboxEnabled ? 2 : 1
         defaultColumns = R.insertAll(insertIndex, tagColumns, defaultColumns)
       }
+      // 扩展 两个字段同时排序
+      defaultColumns = defaultColumns.map(item => {
+        if (!item.sortable && (item.sortFields || item.sortByList) && (!item.slots || !item.slots.header)) {
+          item.slots = item.slots || {}
+          item.slots.header = ({ row }) => {
+            return [<span>{ item.title }</span>, <MultipleSort column={item} listParams={this.list.params || {}} onDoSort={this.handleSortChange} />]
+          }
+        }
+        return item
+      })
       return defaultColumns
     },
     handlePageChange ({ type, currentPage, pageSize }) {
