@@ -1,6 +1,7 @@
 <template>
   <a-form-item>
     <a-radio-group v-decorator="decorator" @change="handleBiosChange">
+      <a-radio-button v-if="showDefault" value="">{{ $t('compute.text_1') }}</a-radio-button>
       <a-tooltip :title="$t('compute.text_1362')" v-if="isArm">
         <a-radio-button value="BIOS" :disabled="isArm">BIOS</a-radio-button>
       </a-tooltip>
@@ -22,6 +23,9 @@ export default {
       type: Boolean,
     },
     isArm: {
+      type: Boolean,
+    },
+    showDefault: {
       type: Boolean,
     },
   },
