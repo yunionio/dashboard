@@ -20,10 +20,19 @@ export default {
     form: {
       type: Object,
     },
+    showDefault: {
+      type: Boolean,
+    },
   },
   computed: {
     vgaOptions () {
       var options = []
+      if (this.showDefault) {
+        options.push({
+          text: this.$t('compute.text_1'),
+          value: '',
+        })
+      }
       if (this.vdi === 'vnc') {
         options.push({
           text: 'Standard',
