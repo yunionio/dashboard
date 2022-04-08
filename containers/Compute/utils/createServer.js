@@ -688,7 +688,7 @@ export class GenCreateData {
     if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key) {
       ret.image_id = this.fd.image.key
     }
-    if (type === 'sys' && this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
+    if (type === 'sys' && this.fd.imageType === IMAGES_TYPE_MAP.iso.key && this.isWindows()) {
       ret.driver = 'ide'
     }
     if (item.medium) {
@@ -713,6 +713,16 @@ export class GenCreateData {
       ret.backend = ret.backend.split('-')[0]
     }
     return ret
+  }
+
+  isWindows () {
+    let isWindows = false
+    const osType = (_.get(this.fi, 'imageMsg.info.properties.os_type') || '').toLowerCase()
+    const os = (_.get(this.fd, 'os') || '').toLowerCase()
+    if (~[osType, os].indexOf('windows')) {
+      isWindows = true
+    }
+    return isWindows
   }
 
   _getDataDiskType (dataDiskTypes) {
