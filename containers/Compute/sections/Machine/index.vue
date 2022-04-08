@@ -18,10 +18,19 @@ export default {
       type: Boolean,
       required: true,
     },
+    showDefault: {
+      type: Boolean,
+    },
   },
   computed: {
     machineOptions () {
       var options = []
+      if (this.showDefault) {
+        options.push({
+          text: this.$t('compute.text_1'),
+          value: '',
+        })
+      }
       if (this.isArm) {
         options.push(
           {
