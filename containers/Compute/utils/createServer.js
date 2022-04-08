@@ -480,25 +480,25 @@ export const createVmDecorators = type => {
     bios: [
       'bios',
       {
-        initialValue: 'BIOS',
+        initialValue: '',
       },
     ],
     vdi: [
       'vdi',
       {
-        initialValue: 'vnc',
+        initialValue: '',
       },
     ],
     vga: [
       'vga',
       {
-        initialValue: 'std',
+        initialValue: '',
       },
     ],
     machine: [
       'machine',
       {
-        initialValue: 'pc',
+        initialValue: '',
       },
     ],
     backup: {

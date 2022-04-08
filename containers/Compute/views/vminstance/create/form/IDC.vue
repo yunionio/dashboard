@@ -191,16 +191,16 @@
               :cloudproviderParamsExtra="cloudproviderParamsExtra" />
           </a-form-item>
           <a-form-item :label="$t('compute.text_1155')" class="mb-0" v-if="isKvm">
-            <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" />
+            <bios :decorator="decorators.bios" :uefi="uefi" :isArm="isArm" :showDefault="true" />
           </a-form-item>
           <a-form-item :label="$t('compute.vdi_protocol')" class="mb-0" v-if="isKvm">
-            <vdi :decorator="decorators.vdi" />
+            <vdi :decorator="decorators.vdi" :showDefault="true" />
           </a-form-item>
           <a-form-item :label="$t('compute.vga')" class="mb-0" v-if="isKvm">
-            <vga :decorator="decorators.vga" :vdi="vdi" :form="form" />
+            <vga :decorator="decorators.vga" :vdi="vdi" :form="form" :showDefault="true" />
           </a-form-item>
           <a-form-item :label="$t('compute.machine')" class="mb-0" v-if="isKvm">
-            <machine :decorator="getMachineDecorator()" :isArm="isArm" />
+            <machine :decorator="getMachineDecorator()" :isArm="isArm" :showDefault="true" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm && isLocalDisk" :label="$t('compute.text_1156')" :extra="$t('compute.text_1157')">
             <backup
