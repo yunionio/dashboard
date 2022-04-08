@@ -653,8 +653,7 @@ export const createVmDecorators = type => {
       encryptEnable: [
         'encryptEnable',
         {
-          valuePropName: 'checked',
-          initialValue: false,
+          initialValue: '',
         },
       ],
       encrypt_key_id: [
@@ -728,7 +727,7 @@ export class GenCreateData {
     if (type === 'sys' && this.fd.imageType !== IMAGES_TYPE_MAP.iso.key) {
       ret.image_id = this.fd.image.key
     }
-    if (type === 'sys' && this.fd.imageType === IMAGES_TYPE_MAP.iso.key) {
+    if (type === 'sys' && this.fd.imageType === IMAGES_TYPE_MAP.iso.key && this.isWindows()) {
       ret.driver = 'ide'
     }
     if (item.medium) {
@@ -753,6 +752,16 @@ export class GenCreateData {
       ret.backend = ret.backend.split('-')[0]
     }
     return ret
+  }
+
+  isWindows () {
+    let isWindows = false
+    const osType = (_.get(this.fi, 'imageMsg.info.properties.os_type') || '').toLowerCase()
+    const os = (_.get(this.fd, 'os') || '').toLowerCase()
+    if (~[osType, os].indexOf('windows')) {
+      isWindows = true
+    }
+    return isWindows
   }
 
   _getDataDiskType (dataDiskTypes) {
@@ -1199,8 +1208,10 @@ export class GenCreateData {
       data.__meta__ = this.fd.tag
     }
     // 主机加密
-    if (this.fd.encryptEnable && this.fd.encrypt_key_id) {
+    if (this.fd.encryptEnable === 'existing' && this.fd.encrypt_key_id) {
       data.encrypt_key_id = this.fd.encrypt_key_id
+    } else if (this.fd.encryptEnable === 'new') {
+      data.encrypt_key_new = true
     }
     return data
   }

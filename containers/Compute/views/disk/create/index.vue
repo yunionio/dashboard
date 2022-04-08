@@ -45,6 +45,9 @@
           </a-col>
         </a-row>
       </a-form-item>
+      <a-form-item v-if="enableEncryption" v-bind="formItemLayout" :label="$t('compute.disk.encryption')" :extra="$t('compute.disk.encryption.extra')">
+        <encrypt-keys :decorators="decorators.encrypt_keys" />
+      </a-form-item>
       <a-form-item :label="$t('compute.text_1154')" class="mb-0" v-bind="formItemLayout">
         <tag
           v-decorator="decorators.__meta__" />
@@ -90,6 +93,7 @@ import Tag from '@/sections/Tag'
 import BottomBar from './components/BottomBar'
 import { HYPERVISORS_MAP } from '../../../../../src/constants'
 import * as CommonConstants from '../../../constants'
+import EncryptKeys from '@Compute/sections/encryptkeys'
 
 export default {
   name: 'DiskCreate',
@@ -98,6 +102,7 @@ export default {
     DomainProject,
     BottomBar,
     Tag,
+    EncryptKeys,
   },
   mixins: [DialogMixin, WindowsMixin],
   data () {
@@ -211,6 +216,17 @@ export default {
             ],
           },
         ],
+        encrypt_keys: {
+          encryptEnable: [
+            'encryptEnable',
+            {
+              initialValue: '',
+            },
+          ],
+          encrypt_key_id: [
+            'encrypt_key_id',
+          ],
+        },
       },
       formItemLayout: {
         wrapperCol: {
@@ -237,6 +253,9 @@ export default {
     }
   },
   computed: {
+    enableEncryption () {
+      return this.$appConfig.isPrivate
+    },
     tooltip () {
       return this.$t('compute.text_137', [this.minDiskData, this.maxDiskData])
     },
@@ -252,6 +271,9 @@ export default {
         return this.currentCloudregion.provider === HYPERVISORS_MAP.hcso.provider
       }
       return false
+    },
+    isKVM () {
+      return true
     },
     provider () { // 向外提供的，通过 refs 获取
       if (this.currentCloudregion && this.currentCloudregion.provider) {
@@ -271,7 +293,7 @@ export default {
     param () {
       const project_domain = { project_domain: this.form.fd.domain || this.userInfo.projectDomainId || this.userInfo.domain.id }
       if (this.diskType === 'private') {
-        return {
+        const params = {
           zone: {
             usable: true,
             show_emulated: true,
@@ -288,6 +310,7 @@ export default {
           },
           provider: {},
         }
+        return params
       } else if (this.diskType === 'public') {
         return {
           zone: {
