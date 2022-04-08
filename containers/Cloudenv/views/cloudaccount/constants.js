@@ -566,4 +566,10 @@ export const notSupportSelectRegion = [
   providerMap.s3.key,
   providerMap.xsky.key,
   providerMap.bingocloud.key,
+  providerMap.openstack.key,
+  providerMap.dstack.key,
+  providerMap.zstack.key,
+  providerMap.apsara.key,
+  providerMap.cloudpods.key,
+  providerMap.hcso.key,
 ]
