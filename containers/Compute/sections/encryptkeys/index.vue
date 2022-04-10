@@ -1,7 +1,11 @@
 <template>
   <div>
     <a-form-item class="mb-0">
-      <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-decorator="decorators.encryptEnable" @change="change" />
+      <a-radio-group v-decorator="decorators.encryptEnable" @change="change">
+        <a-radio-button value="">{{ $t('compute.text_116') }}</a-radio-button>
+        <a-radio-button value="new">{{ $t('compute.prompt.encrypt.new') }}</a-radio-button>
+        <a-radio-button value="existing">{{ $t('compute.prompt.encrypt.existing') }}</a-radio-button>
+      </a-radio-group>
     </a-form-item>
     <a-form-item v-if="showKeys">
       <a-select v-decorator="decorators.encrypt_key_id" :placeholder="$t('compute.prompt.encrypt_key')">
@@ -21,7 +25,7 @@ export default {
       type: Object,
       required: true,
       validator: val => {
-        if (val.encryptEnable && !val.encrypt_key_id) {
+        if (val.encryptEnable === 'existing' && !val.encrypt_key_id) {
           return false
         }
         return true
@@ -30,7 +34,7 @@ export default {
   },
   data () {
     return {
-      showKeys: this.decorators.encryptEnable[1].initialValue,
+      showKeys: this.decorators.encryptEnable[1].initialValue === 'existing',
       encryptKeyOptions: [],
     }
   },
@@ -41,7 +45,11 @@ export default {
   },
   methods: {
     change (val) {
-      this.showKeys = val
+      if (val.target.value === 'existing') {
+        this.showKeys = true
+      } else {
+        this.showKeys = false
+      }
     },
     async fetchEncryptKeyOptions () {
       const credManager = new this.$Manager('credentials', 'v1')
