@@ -132,7 +132,23 @@ export default {
           },
         },
       ],
-      extraInfo: [],
+      extraInfo: [
+        {
+          field: 'encrypt_key_id',
+          title: this.$t('compute.title.encryption_key'),
+          formatter: ({ callValue, row }) => {
+            if (row.encrypt_key_id) {
+              if (row.encrypt_key && row.encrypt_alg) {
+                return row.encrypt_key + ' (' + row.encrypt_key_id + ',' + row.encrypt_alg.toUpperCase() + ')'
+              } else {
+                return row.encrypt_key_id
+              }
+            } else {
+              return this.$t('compute.no_encryption')
+            }
+          },
+        },
+      ],
     }
   },
 }
