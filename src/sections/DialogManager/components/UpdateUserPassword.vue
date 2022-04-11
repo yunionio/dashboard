@@ -72,6 +72,11 @@ export default {
       if (passLevel < this.complexity || value.length < passMaxLen) {
         return callback(new Error(this.$t('validator.passwordLevel', [this.complexity === 0 ? 1 : this.complexity, passMaxLen])))
       }
+      const passwordOld = this.form.fc.getFieldValue('password_old')
+      const passwordNew = this.form.fc.getFieldValue('password_new')
+      if (passwordOld && passwordOld === passwordNew) {
+        return callback(new Error(this.$t('common.password_no_equal')))
+      }
       return callback()
     }
     return {
