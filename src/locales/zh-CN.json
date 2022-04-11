@@ -5132,5 +5132,6 @@
   "common.sort_desc": "第{0}列降序：最高到最低",
   "common.permission_tip": "权限提示",
   "common.permission_no_dashboard": "您无权访问控制台",
-  "common.view_logs": "查看日志"
+  "common.view_logs": "查看日志",
+  "common.password_no_equal": "新旧密码不能一致"
 }
