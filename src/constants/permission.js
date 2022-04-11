@@ -1280,6 +1280,8 @@ export const PERMISSION = {
 
   //
   price_infos_perform_discount: ['meter', 'price_infos', 'perform', 'discount'],
+
+  capabilities_list: ['compute', 'capabilities', 'list'],
 }
 
 // 已声明权限的资源
