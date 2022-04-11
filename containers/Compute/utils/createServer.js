@@ -656,6 +656,12 @@ export const createVmDecorators = type => {
           initialValue: '',
         },
       ],
+      encrypt_key_alg: [
+        'encrypt_key_alg',
+        {
+          initialValue: '',
+        },
+      ],
       encrypt_key_id: [
         'encrypt_key_id',
       ],
