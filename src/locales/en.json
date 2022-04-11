@@ -5118,5 +5118,6 @@
   "common.sort_desc": "Descending {0}：highest to lowest",
   "common.permission_tip": "Permission prompt",
   "common.permission_no_dashboard": "You do not have permission to access the console",
-  "common.view_logs": "View logs"
+  "common.view_logs": "View logs",
+  "common.password_no_equal": "Old and new passwords cannot be consistent"
 }
