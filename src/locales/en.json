@@ -5021,5 +5021,8 @@
   },
   "common.sort_asc": "Ascending {0}: lowest to highest",
   "common.sort_desc": "Descending {0}：highest to lowest",
-  "common.view_logs": "View logs"
+  "common.view_logs": "View logs",
+  "common.permission_tip": "Permission prompt",
+  "common.permission_no_dashboard": "You do not have permission to access the console",
+  "common.password_no_equal": "Old and new passwords cannot be consistent"
 }
