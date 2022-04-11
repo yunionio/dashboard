@@ -5034,5 +5034,6 @@
     "notes": "Notes"
   },
   "common.sort_asc": "第{0}列升序：最低到最高",
-  "common.sort_desc": "第{0}列降序：最高到最低"
+  "common.sort_desc": "第{0}列降序：最高到最低",
+  "common.view_logs": "查看日志"
 }
