@@ -28,7 +28,7 @@
         </a-form-model-item>
         <a-form-model-item :label="$t('dashboard.group_by')" prop="type">
           <a-radio-group v-model="fd.type" @change="handleType">
-            <a-radio-button value="domain">
+            <a-radio-button value="domain" v-if="isAdminMode">
               {{ $t('dictionary.domain') }}
             </a-radio-button>
             <a-radio-button value="project">
@@ -82,7 +82,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope']),
+    ...mapGetters(['scope', 'isAdminMode']),
     allServers () {
       const arr = this.data.map(item => item.count)
       return R.sum(arr)
@@ -117,6 +117,14 @@ export default {
             textAlign: 'center',
           },
         ],
+        tooltip: {
+          show: true,
+          trigger: 'item',
+          formatter: (params) => {
+            const { name, count, percent } = params.data
+            return `${name}: ${count}(${percent}%)`
+          },
+        },
         color: chartColors,
         legend: {
           type: 'scroll',
