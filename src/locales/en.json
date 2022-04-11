@@ -5020,5 +5020,6 @@
     "notes": "Notes"
   },
   "common.sort_asc": "Ascending {0}: lowest to highest",
-  "common.sort_desc": "Descending {0}：highest to lowest"
+  "common.sort_desc": "Descending {0}：highest to lowest",
+  "common.view_logs": "View logs"
 }
