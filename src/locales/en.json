@@ -5117,5 +5117,6 @@
   "common.sort_asc": "Ascending {0}: lowest to highest",
   "common.sort_desc": "Descending {0}：highest to lowest",
   "common.permission_tip": "Permission prompt",
-  "common.permission_no_dashboard": "You do not have permission to access the console"
+  "common.permission_no_dashboard": "You do not have permission to access the console",
+  "common.view_logs": "View logs"
 }

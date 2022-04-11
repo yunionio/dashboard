@@ -198,6 +198,7 @@ export default {
     },
   },
   created () {
+    this.initChangeTab()
     this.$bus.$on('agentStatusQuery', (val) => {
       if (this.agent_status === 'failed') {
         this.agent_status = 'applying'
@@ -211,6 +212,11 @@ export default {
     this.isPageDestroyed = true
   },
   methods: {
+    initChangeTab () {
+      if (this.params.tab) {
+        this.handleTabChange(this.params.tab)
+      }
+    },
     async fetchDataCallback () {
       try {
         if (!this.data.data) return
