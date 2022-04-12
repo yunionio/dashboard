@@ -1213,6 +1213,7 @@ export class GenCreateData {
     } else if (this.fd.encryptEnable === 'new') {
       data.encrypt_key_new = true
     }
+    data.encrypt_key_user_id = store.getters.userInfo.id
     return data
   }
 
