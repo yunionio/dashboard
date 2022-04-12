@@ -1556,5 +1556,6 @@
   "compute.host_use_core_tips": "该核已被使用，请选择其他核",
   "compute.create_snapshot_backup": "创建快照/备份",
   "compute.set_usb_gpu": "设置GPU卡/USB透传",
-  "compute.disk.rotate_gpssd": "通用型SSD"
+  "compute.disk.rotate_gpssd": "通用型SSD",
+  "compute.qemu_cmdline": "启动命令行"
 }
