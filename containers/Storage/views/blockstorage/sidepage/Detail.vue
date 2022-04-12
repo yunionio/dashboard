@@ -10,7 +10,6 @@
 
 <script>
 // import BrandIcon from '@/sections/BrandIcon'
-import ColumnsMixin from '../mixins/columns'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
@@ -23,6 +22,7 @@ import {
   getUserTagColumn,
   getExtTagColumn,
 } from '@/utils/common/detailColumn'
+import ColumnsMixin from '../mixins/columns'
 
 export default {
   name: 'BlockStorageDetail',
@@ -162,12 +162,23 @@ export default {
               title: 'Ceph Mon Host',
             },
             {
-              field: 'storage_conf.key',
-              title: 'Ceph Key',
-            },
-            {
               field: 'storage_conf.pool',
               title: 'Ceph Pool',
+            },
+          ],
+        })
+      }
+      if (this.data.storage_type === 'nfs') {
+        return _extraInfo.concat({
+          title: this.$t('storage.text_80'),
+          items: [
+            {
+              field: 'storage_conf.nfs_host',
+              title: 'NFS Host',
+            },
+            {
+              field: 'storage_conf.nfs_shared_dir',
+              title: 'NFS Shared Dir',
             },
           ],
         })
