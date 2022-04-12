@@ -3,7 +3,7 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('system.text_326', [i18n.t('dictionary.project')]),
+        label: i18n.t('iam.manage_res', [i18n.t('dictionary.project')]),
         action: obj => {
           this.handleOpenSidepage(obj, 'project-list')
         },
@@ -15,7 +15,7 @@ export default {
         },
       },
       {
-        label: i18n.t('system.text_326', [i18n.t('dictionary.user')]),
+        label: i18n.t('iam.manage_res', [i18n.t('dictionary.user')]),
         action: obj => {
           this.handleOpenSidepage(obj, 'user-list')
         },
