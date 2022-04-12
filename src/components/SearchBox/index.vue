@@ -163,7 +163,7 @@ export default {
           if (this.autocompleterSearch && !this.autocompleterSearch.includes(this.keySeparator)) {
             const ipKey = Object.keys(this.options).find(v => v.startsWith('ip') || v.endsWith('ip'))
 
-            if (/^\d+.*$/.test(value) && ipKey) {
+            if (/[0-9.]/.test(value) && !/[a-zA-Z]+/.test(value) && ipKey) {
               if (Array.isArray(value)) {
                 const isErrIp = value[0].split('.').some(v => v > 255)
                 if (isErrIp) {
