@@ -126,18 +126,45 @@ export default {
               field: 'hypervisor',
               title: this.$t('compute.text_636'),
             },
+          ],
+        },
+        {
+          title: this.$t('compute.title.encryption'),
+          items: [
             {
               field: 'encrypt_key_id',
               title: this.$t('compute.title.encryption_key'),
               formatter: ({ callValue, row }) => {
                 if (row.encrypt_key_id) {
                   if (row.encrypt_key && row.encrypt_alg) {
-                    return row.encrypt_key + ' (' + row.encrypt_key_id + ',' + row.encrypt_alg.toUpperCase() + ')'
+                    return row.encrypt_key + ' (' + row.encrypt_key_id + ')'
                   } else {
                     return row.encrypt_key_id
                   }
                 } else {
                   return this.$t('compute.no_encryption')
+                }
+              },
+            },
+            {
+              field: 'encrypt_alg',
+              title: this.$t('compute.title.encrypt_alg'),
+              formatter: ({ callValue, row }) => {
+                if (row.encrypt_alg) {
+                  return row.encrypt_alg.toUpperCase()
+                } else {
+                  return '-'
+                }
+              },
+            },
+            {
+              field: 'encrypt_key_user',
+              title: this.$t('compute.title.encrypt_key_user'),
+              formatter: ({ callValue, row }) => {
+                if (row.encrypt_key_user) {
+                  return row.encrypt_key_user + ' / ' + row.encrypt_key_user_domain
+                } else {
+                  return '-'
                 }
               },
             },
