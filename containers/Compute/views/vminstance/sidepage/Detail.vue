@@ -340,7 +340,7 @@ export default {
           ],
         },
       ]
-      if (this.isKvm) {
+      if (this.isKvm && this.cmdline) {
         infos[1].items.push({
           field: 'metadata',
           title: this.$t('compute.qemu_cmdline'),
