@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import 'codemirror/theme/material.css'
 import * as R from 'ramda'
 import {
   getUserTagColumn,
@@ -79,12 +80,28 @@ export default {
         },
       ],
       imageExist: false,
+      cmOptions: {
+        tabSize: 2,
+        styleActiveLine: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        line: true,
+        theme: 'material',
+        mode: 'text/x-yaml',
+        readOnly: true,
+      },
+      cmdline: '',
+      showCmdline: false,
     }
   },
   computed: {
     isOpenStack () {
       const brand = this.data.brand
       return brand === BRAND_MAP.OpenStack.brand
+    },
+    isKvm () {
+      const { brand } = this.data
+      return brand === BRAND_MAP.OneCloud.brand
     },
     diskInfos () {
       const disksInfo = this.data.disks_info
@@ -129,7 +146,7 @@ export default {
       }
     },
     extraInfo () {
-      return [
+      const infos = [
         {
           title: this.$t('compute.text_368'),
           items: [
@@ -323,6 +340,20 @@ export default {
           ],
         },
       ]
+      if (this.isKvm) {
+        infos[1].items.push({
+          field: 'metadata',
+          title: this.$t('compute.qemu_cmdline'),
+          slots: {
+            default: ({ row }, h) => {
+              return [
+                <a-button type="link" class="mb-2" style="height: 21px;padding:0" onclick={this.viewCmdline}>{ this.showCmdline ? this.$t('table.title.off') : this.$t('compute.text_958') }</a-button>,
+                <code-mirror style={{ visibility: this.showCmdline ? 'visible' : 'hidden' }} value={this.cmdline} view-height="300px" options={this.cmOptions} />]
+            },
+          },
+        })
+      }
+      return infos
     },
   },
   watch: {
@@ -341,6 +372,9 @@ export default {
       immediate: true,
       deep: true,
     },
+  },
+  created () {
+    this.initQemuInfo()
   },
   methods: {
     _diskStringify (diskObj) {
@@ -376,6 +410,25 @@ export default {
         .catch(() => {
           this.imageExist = false
         })
+    },
+    viewCmdline () {
+      this.showCmdline = !this.showCmdline
+    },
+    async initQemuInfo () {
+      try {
+        if (this.isKvm) {
+          const res = await this.onManager('getSpecific', {
+            id: this.data.id,
+            managerArgs: {
+              spec: 'qemu-info',
+            },
+          })
+          const { cmdline = '' } = res.data
+          this.cmdline = cmdline
+        }
+      } catch (err) {
+        console.error(err)
+      }
     },
   },
 }
