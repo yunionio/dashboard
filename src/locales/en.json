@@ -2505,7 +2505,7 @@
     "cloudgroupcache": "Permission group cache",
     "cloudpolicy": "Cloud Permission",
     "commonalert": "Policies",
-    "monitorresourcealerts": "Alerts Firing",
+    "monitorresourcealerts": "Shielding Resources",
     "alertrecordshields": "Block Policies",
     "monitor_commonalert": "Alerts",
     "monitor_metrics": "Metrics",

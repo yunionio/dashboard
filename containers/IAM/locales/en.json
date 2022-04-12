@@ -899,5 +899,6 @@
   "iam.others": "Other",
   "iam.idp_config_info": "Authentication source configuration information",
   "iam.action_info": "Perform action details",
-  "iam.count_items": "{0} items"
+  "iam.count_items": "{0} items",
+  "iam.manage_res": "Manage {0)"
 }

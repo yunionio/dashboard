@@ -898,5 +898,6 @@
   "iam.others": "其它",
   "iam.idp_config_info": "认证源配置信息",
   "iam.action_info": "执行操作明细",
-  "iam.count_items": "{0}项"
+  "iam.count_items": "{0}项",
+  "iam.manage_res": "管理{0)"
 }
