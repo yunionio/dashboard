@@ -19,6 +19,7 @@ export default {
       ExtraListParams: {
         tag: 'alert',
         contact_type: 'webconsole',
+        topic_type: 'security',
       },
       ExtraColumns: [
         getTimeTableColumn({
