@@ -903,5 +903,6 @@
   "iam.system_error_notify": "System exception notification",
   "iam.user_lock_notify": "User lock notification",
   "iam.checksum_error_notify": "Integrity Checksum Failure Notification",
-  "iam.security_info": "Security Information"
+  "iam.security_info": "Security Information",
+  "iam.manage_res": "Manage {0)"
 }
