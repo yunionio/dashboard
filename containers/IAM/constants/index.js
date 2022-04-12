@@ -4,6 +4,7 @@ import { arrayToObj } from '@/utils/utils'
 export const NOTIFY_TOPIC_TYPES = [
   { key: 'automated_process', label: i18n.t('system.notify.topic.type.automated_process') },
   { key: 'resource', label: i18n.t('system.notify.topic.type.resource') },
+  { key: 'security', label: i18n.t('iam.security_info') },
 ]
 
 export const NOTIFY_TOPIC_TYPES_MAP = arrayToObj(NOTIFY_TOPIC_TYPES, 'key')
@@ -28,6 +29,9 @@ export const NOTIFY_TOPIC_NAMES_MAP = {
   'resource operation failed': i18n.t('system.notify.name.resource_operation_failed'),
   'resource create or delete': i18n.t('system.notify.name.resource_create_or_delete'),
   'resource change config': i18n.t('system.notify.name.resource_change_config'),
+  'system exception event': i18n.t('iam.system_error_notify'),
+  'user lock': i18n.t('iam.user_lock_notify'),
+  'checksum test failed': i18n.t('iam.checksum_error_notify'),
 }
 
 export const NOTIFY_ROLE_SCOPES = [
