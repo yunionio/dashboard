@@ -192,6 +192,7 @@ export default {
         } else if (encryptEnable === 'new') {
           values.encrypt_key_new = true
         }
+        values.encrypt_key_user_id = this.userInfo.id
         Reflect.deleteProperty(values, 'cloudregion')
         Reflect.deleteProperty(values, 'zone')
         await this.doCreate(values)
