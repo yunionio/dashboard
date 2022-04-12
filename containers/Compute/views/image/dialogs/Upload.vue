@@ -269,6 +269,7 @@ export default {
       } else if (data.encryptEnable === 'new') {
         params.encrypt_key_new = true
       }
+      params.encrypt_key_user_id = this.userInfo.id
       return this.params.onManager('create', {
         managerArgs: {
           data: params,
@@ -300,6 +301,7 @@ export default {
           } else if (values.encryptEnable === 'new') {
             formData.append('encrypt_key_new', true)
           }
+          formData.append('encrypt_key_user_id', this.userInfo.id)
           if (fileList.length > 0) {
             formData.append('image_size', fileList[0].size)
             fileList.forEach(file => {
