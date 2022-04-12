@@ -2595,7 +2595,10 @@
     "parameters": "字典设置",
     "log_manage": "日志管理",
     "services": "全局设置",
-    "backup_storage": "备份存储"
+    "backup_storage": "备份存储",
+    "task": "任务",
+    "cloudpods_component": "组件",
+    "db_table_record": "数据库记录"
   },
   "res": {
     "role": "@:dictionary.role",

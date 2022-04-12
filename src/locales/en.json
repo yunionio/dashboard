@@ -2581,7 +2581,10 @@
     "parameters": "Dictionary",
     "log_manage": "Log Manage",
     "services": "Global Setting",
-    "backup_storage": "Backup Storage"
+    "backup_storage": "Backup Storage",
+    "task": "Task",
+    "cloudpods_component": "Component",
+    "db_table_record": "DB Table Record"
   },
   "res": {
     "role": "Role",
