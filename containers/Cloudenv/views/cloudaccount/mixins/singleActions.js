@@ -142,6 +142,7 @@ export default {
             },
             {
               label: i18n.t('cloudenv.read_only'),
+              permission: 'cloudaccounts_update',
               action: () => {
                 this.createDialog('CloudaccountSetReadOnlyDialog', {
                   data: [obj],
