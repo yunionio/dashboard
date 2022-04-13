@@ -33,6 +33,7 @@
         </div>
       </a-form-item>
       <auto-sync :fc="form.fc" :form-layout="formLayout" />
+      <read-only />
       <share-mode :fd="form.fd" />
     </a-form>
   </div>
@@ -44,6 +45,7 @@ import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
+import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 import { getCloudaccountDocs, keySecretFields, getSamlUserDocs } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
@@ -54,6 +56,7 @@ export default {
     DomainProject,
     ProxySetting,
     ShareMode,
+    ReadOnly,
   },
   mixins: [createMixin],
   data () {

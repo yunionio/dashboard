@@ -77,6 +77,7 @@
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" />
+      <read-only />
       <share-mode :fd="form.fd" />
     </a-form>
   </div>
@@ -89,6 +90,7 @@ import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
+import ReadOnly from '@Cloudenv/views/cloudaccount/components/ReadOnly'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
 
@@ -99,6 +101,7 @@ export default {
     DomainProject,
     ProxySetting,
     ShareMode,
+    ReadOnly,
   },
   mixins: [createMixin],
   data () {
