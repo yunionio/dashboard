@@ -74,10 +74,24 @@ export default {
           component: 'a-input',
           dialog: 'GlobalSettingUpdateDialog',
           parser: (val) => {
-            return val.endsWith('.') ? val.substring(0, val.length - 1) : val
+            let v = val
+            if (v.endsWith('.')) {
+              v = v.substring(0, v.length - 1)
+            }
+            if (v.endsWith('/')) {
+              v = v.substring(0, v.length - 1)
+            }
+            return v
           },
           formatter: (val) => {
-            return val.endsWith('.') ? val.substring(0, val.length - 1) : val
+            let v = val
+            if (v.endsWith('.')) {
+              v = v.substring(0, v.length - 1)
+            }
+            if (v.endsWith('/')) {
+              v = v.substring(0, v.length - 1)
+            }
+            return v
           },
           ok: (key, val, serviceId) => {
             // update store.auth.regions
