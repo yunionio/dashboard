@@ -1,17 +1,20 @@
 <template>
   <span class="sort-wrapper">
-    <div v-for="(item, index) in sortOpts" :key="index" class="sort-box">
-      <div class="sort-up-wrapper" :title="$t('common.sort_asc', [index + 1])" @click="handleSortClick(item, 'asc', item.checked && item.order === 'asc')">
-        <div class="sort-up-box">
-          <div :class="{'sort-up': true, 'active-sort': item.checked && item.order === 'asc'}" />
+    <template v-for="(item, index) in sortOpts">
+      <div :key="index" class="sort-box">
+        <div class="sort-up-wrapper" :title="$t('common.sort_asc', [index + 1])" @click="handleSortClick(item, 'asc', item.checked && item.order === 'asc')">
+          <div class="sort-up-box">
+            <div :class="{'sort-up': true, 'active-sort': item.checked && item.order === 'asc'}" />
+          </div>
+        </div>
+        <div class="sort-down-wrapper" :title="$t('common.sort_desc', [index + 1])" @click="handleSortClick(item, 'desc', item.checked && item.order === 'desc')">
+          <div class="sort-down-box">
+            <div :class="{'sort-down': true, 'active-sort': item.checked && item.order === 'desc'}" />
+          </div>
         </div>
       </div>
-      <div class="sort-down-wrapper" :title="$t('common.sort_desc', [index + 1])" @click="handleSortClick(item, 'desc', item.checked && item.order === 'desc')">
-        <div class="sort-down-box">
-          <div :class="{'sort-down': true, 'active-sort': item.checked && item.order === 'desc'}" />
-        </div>
-      </div>
-    </div>
+      <div v-if="sortOpts[index + 1]" class="split" :key="'split' + index" />
+    </template>
   </span>
 </template>
 
@@ -83,6 +86,14 @@ export default {
   display: inline-block;
   transform: translateY(4px);
   margin-left: 7px;
+  .split{
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    transform: rotate(15deg) translateY(-3px);
+    margin: 0 5px 0 -1px;
+    background: #c0c4cc;
+  }
 }
 .sort-box {
   width: 10px;
