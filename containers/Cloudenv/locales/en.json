@@ -765,5 +765,7 @@
   "cloudenv.exit_multiple_modify": "Exit Batch Modify",
   "cloudenv.bingocloud": "BingoCloud",
   "cloudenv.lake_of_permissions": "Lake Of Permissions",
-  "cloudenv.clear_lake_of_permissions": "Clean permisssions tip"
+  "cloudenv.clear_lake_of_permissions": "Clean permisssions tip",
+  "cloudenv.read_only": "read only mode",
+  "cloudenv.read_only_extra": "after being enabled, the cloud account will only synchronize resources and cannot perform other tasks, such as creating, deleting or modifying."
 }
