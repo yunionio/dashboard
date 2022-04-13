@@ -141,6 +141,16 @@ export default {
               },
             },
             {
+              label: i18n.t('cloudenv.read_only'),
+              action: () => {
+                this.createDialog('CloudaccountSetReadOnlyDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+            },
+            {
               label: i18n.t('cloudaccount.table.action.set_discount'),
               permission: 'price_infos_perform_discount',
               action: () => {

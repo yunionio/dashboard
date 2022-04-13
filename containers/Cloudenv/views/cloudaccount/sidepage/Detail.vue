@@ -98,6 +98,13 @@ export default {
         getEnabledTableColumn(),
         getStatusTableColumn({ statusModule: 'enabled', field: 'saml_auth', title: this.$t('table.title.sso_status') }),
         {
+          field: 'read_only',
+          title: this.$t('cloudenv.read_only'),
+          formatter: ({ row }) => {
+            return row.read_only ? this.$t('scope.text_251') : this.$t('scope.text_252')
+          },
+        },
+        {
           field: 'last_sync',
           title: this.$t('cloudenv.text_103'),
           formatter: ({ row }) => {
