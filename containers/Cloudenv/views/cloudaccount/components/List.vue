@@ -170,6 +170,17 @@ export default {
                 },
                 meta: () => this.syncPolicy(this.list.selectedItems), // 和【全量同步】同逻辑
               },
+              {
+                label: this.$t('cloudenv.read_only'),
+                permission: 'cloudaccounts_update',
+                action: () => {
+                  this.createDialog('CloudaccountSetReadOnlyDialog', {
+                    data: this.list.selectedItems,
+                    columns: this.columns,
+                    onManager: this.onManager,
+                  })
+                },
+              },
               ...getEnabledSwitchActions(this, undefined, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
                 actions: [
                   async (obj) => {
