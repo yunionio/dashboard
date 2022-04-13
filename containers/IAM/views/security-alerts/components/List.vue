@@ -17,13 +17,12 @@ export default {
   data () {
     return {
       ExtraListParams: {
-        tag: 'alert',
         contact_type: 'webconsole',
         topic_type: 'security',
       },
       ExtraColumns: [
         getTimeTableColumn({
-          field: 'metadata.trigger_time',
+          field: 'received_at',
           title: this.$t('system.text_590'),
         }),
         {
