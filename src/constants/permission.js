@@ -252,6 +252,7 @@ export const PERMISSION = {
   cdn_domains_perform_set_user_metadata: ['compute', 'cdn_domains', 'perform', 'set-user-metadata'],
   // 域
   domains_list: ['identity', 'domains', 'list'],
+  domains_create: ['identity', 'domains', 'create'],
   domains_get: ['identity', 'domains', 'get'],
   domains_delete: ['identity', 'domains', 'delete'],
   domains_perform_enable: ['identity', 'domains', 'perform', 'enable'],
@@ -304,6 +305,7 @@ export const PERMISSION = {
   policies_perform_public: ['identity', 'policies', 'perform', 'public'],
   // 操作日志
   log_list: ['log', 'actions', 'list'],
+  log_manage_list_splitable: ['log', 'actions', 'list', 'splitable'],
   // 消息中心
   notifications_list: ['notify', 'notifications', 'list'],
   // 消息订阅
