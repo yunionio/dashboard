@@ -93,7 +93,8 @@ export default {
             title: this.$t('compute.text_563'),
             minWidth: 100,
             showOverflow: 'title',
-            sortable: true,
+            sortFields: ['cpu_count', ''],
+            sortByList: ['', 'order_by_cpu_commit_rate'],
             slots: {
               default: ({ row }) => {
                 if (!row.cpu_commit_rate) return [<data-loading />]
@@ -105,7 +106,8 @@ export default {
             field: 'mem_size',
             title: this.$t('compute.text_564'),
             minWidth: 100,
-            sortable: true,
+            sortFields: ['mem_size', ''],
+            sortByList: ['', 'order_by_mem_commit_rate'],
             slots: {
               default: ({ row }) => {
                 if (!row.mem_commit_rate) return [<data-loading />]
@@ -117,6 +119,7 @@ export default {
             field: 'storage',
             title: this.$t('compute.text_565'),
             minWidth: 80,
+            sortByList: ['order_by_storage', 'order_by_storage_commit_rate'],
             slots: {
               default: ({ row }) => {
                 if (!row.storage) return [<data-loading />]
