@@ -110,11 +110,8 @@ export default {
       const sysDisk = {}
       let image = '-'
       let imageId
-      let sysDisks = disksInfo.filter(v => v.disk_type === 'sys')
-      if (sysDisks && sysDisks.length === 0) {
-        sysDisks = disksInfo.filter(v => v.index === 0)
-      }
-      const dataDisks = disksInfo.filter(v => v.index !== 0)
+      const sysDisks = disksInfo.filter(v => v.disk_type === 'sys' && v.index === 0)
+      const dataDisks = disksInfo.filter(v => v.index !== 0 || v.disk_type !== 'sys')
       if (sysDisks && sysDisks.length > 0) {
         const sysKey = sysDisks[0].storage_type
         image = sysDisks[0].image || '-'
