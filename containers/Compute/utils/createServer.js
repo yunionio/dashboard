@@ -1212,8 +1212,9 @@ export class GenCreateData {
       data.encrypt_key_id = this.fd.encrypt_key_id
     } else if (this.fd.encryptEnable === 'new') {
       data.encrypt_key_new = true
+      data.encrypt_key_alg = this.fd.encrypt_key_alg
+      data.encrypt_key_user_id = store.getters.userInfo.id
     }
-    data.encrypt_key_user_id = store.getters.userInfo.id
     return data
   }
 
