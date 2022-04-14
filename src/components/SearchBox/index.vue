@@ -227,7 +227,7 @@ export default {
     padding: 0;
     list-style: none;
     > li {
-      position: relative;
+      // position: relative;
       height: 20px;
       float: left;
     }
