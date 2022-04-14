@@ -386,9 +386,10 @@ export default {
 <style lang="less" scoped>
 .auto-completer-wrap {
   height: auto;
-  right: -200px;
+  left: 0px;
+  // right: -200px;
   position: absolute;
-  top: 28px;
+  top: 38px;
   text-align: left;
   width: 200px;
   box-shadow: 1px 1.73px 3px 0 rgba(0,0,0,.1);
