@@ -72,7 +72,7 @@ export default {
         default_strategy: [
           'default_strategy',
           {
-            initialValue: 'exclude',
+            initialValue: '',
           },
         ],
         resource_type: [
