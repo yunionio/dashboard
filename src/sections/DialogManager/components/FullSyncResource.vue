@@ -17,7 +17,7 @@
             ]"
             @change="handleResourceChange">
             <a-select-option v-for="v in resources" :key="v" :value="v">
-              {{ v === 'all' ? $t('cloudenv.text_297') : v }}
+              {{ v === 'all' ? $t('cloudenv.text_297') : getResourceI18n(v) }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -55,6 +55,12 @@ export default {
     }
   },
   methods: {
+    getResourceI18n (v) {
+      if (this.$te(`dictionary.${v}`)) {
+        return this.$t(`dictionary.${v}`)
+      }
+      return v
+    },
     handleResourceChange (v) {
       this.$nextTick(() => {
         if (v.join(',').endsWith('all')) {
