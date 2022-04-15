@@ -82,7 +82,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['scope', 'isAdminMode']),
+    ...mapGetters(['scope', 'isAdminMode', 'isDomainMode']),
     allServers () {
       const arr = this.data.map(item => item.count)
       return R.sum(arr)
@@ -195,6 +195,15 @@ export default {
   watch: {
     'fd.type' (val) {
       this.fetchData()
+    },
+    isDomainMode: {
+      handler (val) {
+        if (val) {
+          this.fd.name = this.$t('dashborad.server_project_numbers')
+          this.fd.type = 'project'
+        }
+      },
+      immediate: true,
     },
   },
   created () {
