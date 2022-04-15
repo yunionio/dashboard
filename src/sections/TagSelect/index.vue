@@ -74,7 +74,7 @@
               :class="{ checked: value[mouseenterKey] && value[mouseenterKey].length > 0 && value[mouseenterKey].includes(item)}"
               @click="handleKeyClick(mouseenterKey, item)">
               <div class="title d-flex align-items-center">
-                <div class="flex-fill mr-4">{{ item }}</div>
+                <div class="flex-fill mr-4">{{ getTagValue(item) }}</div>
                 <a-icon class="check-icon" type="check" />
               </div>
             </li>
@@ -90,7 +90,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 import Clickoutside from '@/directives/clickoutside'
-import { getTagTitle } from '@/utils/common/tag'
+import { getTagTitle, getTagValue } from '@/utils/common/tag'
 import i18n from '@/locales'
 
 const filterHandler = function (val, search) {
@@ -293,6 +293,7 @@ export default {
       this.filtedExtTags = this.extTags
     },
     getTagTitle,
+    getTagValue,
     handleSearchInput (val) {
       if (this.composing) return
       this.search = val

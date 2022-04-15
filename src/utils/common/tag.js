@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import i18n from '@/locales'
 import colorHash from '@/utils/colorHash'
 
 /**
@@ -97,7 +98,22 @@ export function getTagColor (key, value, type = 'hex') {
 }
 
 export function getTagTitle (key, value) {
-  let str = key
-  if (value) str += `:${value}`
-  return R.replace(/(ext:|user:|sys:)/, '', str)
+  let val = value
+  let str = R.replace(/(ext:|user:|sys:)/, '', key)
+  if (str === 'cloud_default') {
+    str = i18n.t('common_736')
+  }
+  if (value === 'cloud_default') {
+    val = i18n.t('common_736')
+  }
+  if (val) str += `:${val}`
+  return str
+}
+
+export function getTagValue (value) {
+  let val = value
+  if (value === 'cloud_default') {
+    val = i18n.t('common_736')
+  }
+  return val
 }
