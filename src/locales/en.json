@@ -2516,6 +2516,7 @@
     "loadbalancerclusters": "Load Balance-Cluster",
     "receiver": "recipient",
     "dns_zone": "DNS",
+    "dnszone": "DNS解析",
     "system": "Settings",
     "costalerts": "Resource consumption warning",
     "dns_recordsets": "DNS Recordset",
@@ -2563,6 +2564,8 @@
     "cdn": "CDN",
     "cdn_domain": "CDN Domain",
     "vpc_network": "VPC Network",
+    "inter_vpc_network": "Inter VPC Network",
+    "intervpcnetwork": "Inter VPC Network",
     "inter_vpc_network_route_sets": "VPC Network-Router",
     "vpc_peer_connect": "VPC Peer Connect",
     "dns_recordset": "DNS-Record",
@@ -2584,7 +2587,13 @@
     "backup_storage": "Backup Storage",
     "task": "Task",
     "cloudpods_component": "Component",
-    "db_table_record": "DB Table Record"
+    "db_table_record": "DB Table Record",
+    "quota": "Quota",
+    "objectstore": "Object Store",
+    "cache": "Cache",
+    "compute": "Compute",
+    "es": "ElasticSearch",
+    "app": "Web App"
   },
   "res": {
     "role": "Role",
