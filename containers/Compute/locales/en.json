@@ -441,6 +441,7 @@
   "compute.text_443": "The disk is already attached to a server",
   "compute.text_444": "The disk can only be attached when its status is ready",
   "compute.text_445": "Please attach to a server first",
+  "compute.disk_mount_mulitple_guest": "The disk has been attached to more than 1 server",
   "compute.text_446": "Cannot detach a local disk",
   "compute.text_447": "Cannot detach a system disk",
   "compute.text_448": "Cannot detach a disk of this type",
