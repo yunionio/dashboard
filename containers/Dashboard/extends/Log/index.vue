@@ -146,7 +146,7 @@ export default {
           action: 'list',
           actionArgs: {
             params: {
-              scope: this.scope,
+              // scope: this.scope,
               limit: this.form.fd.limit,
               $t: getRequestT(),
             },

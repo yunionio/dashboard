@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 position-relative">
+  <div class="h-100 position-relative" v-if="hasMeterService">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
         <div class="dashboard-card-header-left">
@@ -87,7 +87,7 @@ export default {
       currency: state => state.bill.currency,
       currencyOpts: state => state.bill.currencyOpts,
     }),
-    ...mapGetters(['scope']),
+    ...mapGetters(['scope', 'userInfo']),
     allData () {
       const arr = this.data.filter(item => item.cost_type === 'all')
       return arr[0] || {}
@@ -226,6 +226,14 @@ export default {
         return currencyItem
       })
     },
+    hasMeterService () { // 是否有计费的服务
+      const { services } = this.userInfo
+      const meterService = services.find(val => val.type === 'meter')
+      if (meterService && meterService.status === true) {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     'fd.currency' (val) {
@@ -246,6 +254,9 @@ export default {
       return this.fetchData()
     },
     async fetchData () {
+      if (!this.hasMeterService()) {
+        return
+      }
       this.loading = true
       try {
         const data = await load({
