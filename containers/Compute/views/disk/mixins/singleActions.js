@@ -108,17 +108,23 @@ export default {
                 //     tooltip: i18n.t('compute.text_446'),
                 //   }
                 // }
-                if (obj.disk_type === 'sys') {
+                if (obj.guests && obj.guests.length > 1) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.disk_mount_mulitple_guest'),
+                  }
+                }
+                if (obj.guests && obj.guests.length === 1 && obj.guests[0].index === 0) {
+                  // system disk
                   return {
                     validate: false,
                     tooltip: i18n.t('compute.text_447'),
                   }
-                } else {
-                  if (obj.portable && obj.portable === false) {
-                    return {
-                      validate: false,
-                      tooltip: i18n.t('compute.text_448'),
-                    }
+                }
+                if (obj.portable && obj.portable === false) {
+                  return {
+                    validate: false,
+                    tooltip: i18n.t('compute.text_448'),
                   }
                 }
                 return {
