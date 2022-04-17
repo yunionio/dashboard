@@ -204,7 +204,7 @@ export default {
       const values = await this.validateForm(['disk', 'name', 'storage'])
       const params = {
         disk_id: values.disk,
-        name: values.name,
+        generate_name: values.name,
         backup_storage_id: values.storage,
       }
       return this.manager.create({ data: params })
@@ -212,7 +212,7 @@ export default {
     async doCreateInstanceBackup () {
       const values = await this.validateForm(['name', 'storage'])
       const params = {
-        name: values.name,
+        generate_name: values.name,
         backup_storage_id: values.storage,
       }
       return this.params.onManager('performAction', {
