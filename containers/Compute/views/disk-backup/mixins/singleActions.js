@@ -30,9 +30,10 @@ export default {
             refresh: this.refresh,
           })
         },
-        meta: obj => {
-          return { validate: true }
-        },
+        meta: obj => ({
+          validate: obj.status === 'ready',
+          tooltip: obj.status === 'ready' ? '' : i18n.t('compute.instance_backup_not_ready_alert'),
+        }),
       },
       {
         label: i18n.t('compute.perform_delete'),

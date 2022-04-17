@@ -8,7 +8,7 @@ export default {
         permission: 'instancebackups_perform_syncstatus',
         action: obj => {
           this.onManager('performAction', {
-            steadyStatus: ['running', 'ready'],
+            steadyStatus: ['ready'],
             id: obj.id,
             managerArgs: {
               action: 'syncstatus',
@@ -34,9 +34,10 @@ export default {
                   refresh: this.refresh,
                 })
               },
-              meta: obj => {
-                return { validate: true }
-              },
+              meta: obj => ({
+                validate: obj.status === 'ready',
+                tooltip: obj.status === 'ready' ? '' : i18n.t('compute.instance_backup_not_ready_alert'),
+              }),
             },
             {
               label: this.$t('compute.unpack'),
@@ -48,6 +49,10 @@ export default {
                   refresh: this.refresh,
                 })
               },
+              meta: obj => ({
+                validate: obj.status === 'ready',
+                tooltip: obj.status === 'ready' ? '' : i18n.t('compute.instance_backup_not_ready_alert'),
+              }),
             },
             {
               label: i18n.t('compute.perform_delete'),
