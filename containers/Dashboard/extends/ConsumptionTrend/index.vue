@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100 position-relative">
+  <div class="h-100 position-relative" v-if="hasMeterService">
     <div class="dashboard-card-wrap">
       <div class="dashboard-card-header">
         <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
@@ -197,6 +197,14 @@ export default {
       }
       return {}
     },
+    hasMeterService () { // 是否有计费的服务
+      const { services } = this.userInfo
+      const meterService = services.find(val => val.type === 'meter')
+      if (meterService && meterService.status === true) {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     'form.fd' (val) {
@@ -242,6 +250,9 @@ export default {
       }
     },
     async fetchData () {
+      if (!this.hasMeterService()) {
+        return
+      }
       this.loading = true
       try {
         const envParams = this.cloudEnv(this.form.fd.cloud_env || '')
