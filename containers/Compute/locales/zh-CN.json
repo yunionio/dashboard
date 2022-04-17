@@ -441,6 +441,7 @@
   "compute.text_443": "该磁盘已挂载",
   "compute.text_444": "磁盘状态为 ready 时才可以挂载",
   "compute.text_445": "请先挂载",
+  "compute.disk_mount_mulitple_guest": "磁盘被挂载到超过1台主机",
   "compute.text_446": "本地盘不支持卸载",
   "compute.text_447": "系统盘不支持卸载",
   "compute.text_448": "该磁盘类型不允许卸载",
