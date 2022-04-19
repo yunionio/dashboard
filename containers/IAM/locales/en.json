@@ -763,6 +763,10 @@
     "common$server_delete_limit": {
       "label": "Virtual machine deletion limit switch",
       "desc": "After being turned on, the virtual machine can be deleted only when it is turned off. There is no limit after being turned off!"
+    },
+    "compute$skip_server_by_sys_tag_keys": {
+      "label": "Skip virtual machine with specified system tag",
+      "desc": "When the cloud account is synchronized, the virtual machine with the set system tag will not be synchronized"
     }
   },
   "user": {
