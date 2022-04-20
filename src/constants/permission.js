@@ -851,6 +851,7 @@ export const PERMISSION = {
   cloudaccounts_perform_disable_auto_sync: ['compute', 'cloudaccounts', 'perform', 'disable_auto_sync'],
   cloudaccounts_perform_public: ['compute', 'cloudaccounts', 'perform', 'public'],
   externalprojects_update: ['compute', 'externalprojects', 'update'], // 云账号子订阅项目 -> 更改项目
+  externalprojects_create: ['compute', 'externalprojects', 'create'],
 
   // 免密用户
   samlusers_create: ['compute', 'samlusers', 'create'],

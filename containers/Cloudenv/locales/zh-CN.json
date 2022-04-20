@@ -767,5 +767,10 @@
   "cloudenv.lake_of_permissions": "缺失权限",
   "cloudenv.clear_lake_of_permissions": "清空权限提示",
   "cloudenv.read_only": "只读模式",
-  "cloudenv.read_only_extra": "开启后，该云账号只会进行同步资源操作，无法进行其他任务操作，如新建、删除或修改等"
+  "cloudenv.read_only_extra": "开启后，该云账号只会进行同步资源操作，无法进行其他任务操作，如新建、删除或修改等",
+  "cloudenv.create_extrnal_project": "新建云上项目",
+  "cloudenv.create_local_project": "新建本地项目",
+  "cloudenv.link_local_project": "关联本地项目",
+  "cloudenv.select_local_project": "选择现有本地项目",
+  "cloudenv.brand_action_deny": "当前云平台不支持此操作"
 }
