@@ -27,34 +27,6 @@
           <help-link :href="`https://help.aliyun.com/apsara/enterprise/v_3_12_0_20200630/apsara_stack_platform/enterprise-developer-guide/obtain-the-endpoint-of-api-operations.html`">{{$t('cloudenv.text_575')}}</help-link>
         </div>
       </a-form-item>
-      <a-collapse :bordered="false">
-        <a-collapse-panel :header="$t('cloudenv.cloudaccount.apsara.other.endpoints')">
-        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.ecs_endpoint')">
-          <a-input v-decorator="decorators.ecs_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.ecs_endpoint')])" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.vpc_endpoint')">
-          <a-input v-decorator="decorators.vpc_endpoint" :placeholder="$t('common.tips.input', [$t('cloudenv.cloudaccount.apsara.vpc_endpoint')])" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.slb_endpoint')">
-          <a-input v-decorator="decorators.slb_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.slb_endpoint')])" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.oss_endpoint')">
-          <a-input v-decorator="decorators.oss_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.oss_endpoint')])" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.rds_endpoint')">
-          <a-input v-decorator="decorators.rds_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.rds_endpoint')])" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.kvs_endpoint')">
-          <a-input v-decorator="decorators.kvs_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.kvs_endpoint')])" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.metrics_endpoint')">
-          <a-input v-decorator="decorators.metrics_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.metrics_endpoint')])" />
-        </a-form-item>
-        <a-form-item :label="$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')">
-          <a-input v-decorator="decorators.action_trail_endpoint" :placeholder="$t('common.tips.optional_input', [$t('cloudenv.cloudaccount.apsara.action_trail_endpoint')])" />
-        </a-form-item>
-        </a-collapse-panel>
-      </a-collapse>
       <domain-project :fc="form.fc" :form-layout="formLayout" :decorators="{ project: decorators.project, domain: decorators.domain, auto_create_project: decorators.auto_create_project }" />
       <proxy-setting :fc="form.fc" :fd="form.fd" ref="proxySetting" />
       <auto-sync :fc="form.fc" />
@@ -153,39 +125,6 @@ export default {
               { required: true, message: this.$t('common.tips.input', [this.$t('cloudenv.cloudaccount.apsara.default_region')]) },
             ],
           },
-        ],
-        ecs_endpoint: [
-          'ecs_endpoint',
-        ],
-        rds_endpoint: [
-          'rds_endpoint',
-        ],
-        vpc_endpoint: [
-          'vpc_endpoint',
-        ],
-        kvs_endpoint: [
-          'kvs_endpoint',
-        ],
-        slb_endpoint: [
-          'slb_endpoint',
-        ],
-        oss_endpoint: [
-          'oss_endpoint',
-        ],
-        sts_endpoint: [
-          'sts_endpoint',
-        ],
-        action_trail_endpoint: [
-          'action_trail_endpoint',
-        ],
-        ram_endpoint: [
-          'ram_endpoint',
-        ],
-        metrics_endpoint: [
-          'metrics_endpoint',
-        ],
-        resourcemanager_endpoint: [
-          'resourcemanager_endpoint',
         ],
       }
       return decorators
