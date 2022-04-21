@@ -17,10 +17,12 @@ import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import {
+  getNameDescriptionTableColumn,
   getTimeTableColumn,
   getProjectDomainTableColumn,
   getStatusTableColumn,
 } from '@/utils/common/tableColumn'
+import { HYPERVISORS_MAP } from '@/constants'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
@@ -95,6 +97,24 @@ export default {
         cloudaccount_id: this.cloudaccount?.id,
       },
       groupActions: [
+        {
+          label: this.$t('cloudenv.text_104'),
+          permission: 'externalprojects_create',
+          action: obj => {
+            this.createDialog('ExternalProjectCreateDialog', {
+              cloudaccount: this.cloudaccount,
+              name: this.$t('cloudenv.text_386'),
+              onManager: this.onManager,
+            })
+          },
+          meta: () => {
+            return {
+              buttonType: 'primary',
+              validate: this.isAllowCreate,
+              tooltip: this.isAllowCreate ? '' : this.$t('cloudenv.brand_action_deny'),
+            }
+          },
+        },
         {
           label: this.$t('cloudenv.text_388'),
           permission: 'externalprojects_update',
@@ -185,10 +205,17 @@ export default {
         }
       }
       const ret = [
-        {
-          field: 'name',
+        getNameDescriptionTableColumn({
           title: this.$t('cloudenv.text_386'),
-        },
+          onManager: this.onManager,
+          hideField: true,
+          showDesc: false,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         {
           field: 'manager',
           title: this.$t('cloudevent.title.manager'),
@@ -205,6 +232,12 @@ export default {
         }),
       ]
       return ret
+    },
+    isAllowCreate () {
+      if (this.cloudaccount && [HYPERVISORS_MAP.azure.provider, HYPERVISORS_MAP.qcloud.provider, HYPERVISORS_MAP.aliyun.provider, HYPERVISORS_MAP.huawei.provider].includes(this.cloudaccount.provider)) {
+        return true
+      }
+      return false
     },
   },
   created () {

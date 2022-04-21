@@ -767,5 +767,10 @@
   "cloudenv.lake_of_permissions": "Lake Of Permissions",
   "cloudenv.clear_lake_of_permissions": "Clean permisssions tip",
   "cloudenv.read_only": "read only mode",
-  "cloudenv.read_only_extra": "after being enabled, the cloud account will only synchronize resources and cannot perform other tasks, such as creating, deleting or modifying."
+  "cloudenv.read_only_extra": "after being enabled, the cloud account will only synchronize resources and cannot perform other tasks, such as creating, deleting or modifying.",
+  "cloudenv.create_extrnal_project": "Create a cloud project",
+  "cloudenv.create_local_project": "Create a local project",
+  "cloudenv.link_local_project": "Link local project",
+  "cloudenv.select_local_project": "Select local project",
+  "cloudenv.brand_action_deny": "The current cloud platform does not support this operation"
 }
