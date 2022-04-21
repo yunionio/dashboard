@@ -123,7 +123,7 @@ export default {
           {
             // initialValue: [1],
             rules: [
-              { required: true, message: this.$t('cloudenv.text_447') },
+              { required: false, message: this.$t('cloudenv.text_447') },
             ],
           },
         ],
@@ -203,6 +203,10 @@ export default {
           minute: 59,
           second: 59,
         })
+      } else {
+        // 未设置有效时间时，有效时间为 今天-100年
+        params.cycle_timer.startTime = this.$moment()
+        params.cycle_timer.endTime = this.$moment().add('year', 100)
       }
       return params
     },
