@@ -35,7 +35,7 @@ export default {
               return (sshData) => {
                 this.webconsoleManager.performAction({
                   action: ip,
-                  data: sshData,
+                  data: { type: 'host', ...sshData },
                   id: 'ssh',
                 }).then(({ data }) => {
                   this.openWebConsole(obj, data)
@@ -66,7 +66,11 @@ export default {
                       const response = await this.webconsoleManager.performAction({
                         id: 'ssh',
                         action: ip,
-                        data,
+                        data: {
+                          type: 'host',
+                          id: obj.id,
+                          ...data,
+                        },
                       })
                       this.openWebConsole(obj, response.data)
                     },
