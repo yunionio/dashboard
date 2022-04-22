@@ -24,7 +24,7 @@ export default {
         },
       }),
       getStatusTableColumn({ statusModule: 'secgroup' }),
-      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'secgroup', columns: () => this.columns }),
+      getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'secgroups', columns: () => this.columns }),
       {
         field: 'rules',
         title: i18n.t('compute.text_1025'),
