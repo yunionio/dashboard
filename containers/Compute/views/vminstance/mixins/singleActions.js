@@ -115,13 +115,15 @@ export default {
                 return Promise.reject(Error(`unexpected ${ipInfo}`))
               }
 
-              const openWebconsole = (port) => {
+              const openWebconsole = (port, id) => {
                 fetchWebconsoleAddr(port).then(addr => {
                   return this.webconsoleManager.performAction({
                     id: 'ssh',
                     action: addr.ipAddr,
                     data: {
+                      id,
                       port: addr.port,
+                      type: 'server',
                     },
                   })
                 }).then(({ data }) => {
@@ -133,7 +135,7 @@ export default {
                 label: `SSH ${ipAddr}`,
                 permission: 'server_perform_list_forward,server_perform_open_forward',
                 action: () => {
-                  openWebconsole(22)
+                  openWebconsole(22, obj.id)
                 },
                 meta,
               })
@@ -145,7 +147,7 @@ export default {
                     title: i18n.t('compute.text_346'),
                     data: [obj],
                     callback: async (data) => {
-                      openWebconsole(data.port)
+                      openWebconsole(data.port, obj.id)
                     },
                     decorators: {
                       port: [

@@ -2608,7 +2608,8 @@
     "cache": "缓存",
     "compute": "主机",
     "es": "ElasticSearch",
-    "app": "应用程序服务"
+    "app": "应用程序服务",
+    "command_log": "命令记录"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -5146,5 +5147,7 @@
   "common.permission_tip": "权限提示",
   "common.permission_no_dashboard": "您无权访问控制台",
   "common.view_logs": "查看日志",
-  "common.password_no_equal": "新旧密码不能一致"
+  "common.password_no_equal": "新旧密码不能一致",
+  "common.command": "命令",
+  "common.login_user": "登录用户"
 }
