@@ -276,13 +276,13 @@ export default {
                   name: this.$t('dictionary.cloudaccount'),
                   onManager: this.onManager,
                   content: () => {
-                    if (supportBill) {
+                    if (supportBill && this.$appConfig.isPrivate) {
                       return <a-checkbox v-model={ this.deleteBill }>{ this.$t('cloudenv.text_497') }</a-checkbox>
                     }
                     return null
                   },
                   success: async () => {
-                    if (supportBill && this.deleteBill) {
+                    if (supportBill && this.deleteBill && this.$appConfig.isPrivate) {
                       const manager = new this.$Manager('bill_tasks', 'v1')
                       try {
                         const data = {
