@@ -24,6 +24,7 @@ export default {
       // },
       {
         label: i18n.t('compute.text_1027'),
+        permission: 'secgrouprules_list',
         action: (obj) => {
           this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
             id: obj.id,
@@ -86,6 +87,7 @@ export default {
             // },
             {
               label: i18n.t('compute.text_1028'),
+              permission: 'servers_list',
               action: (obj) => {
                 this.sidePageTriggerHandle(this, 'SecGroupSidePage', {
                   id: obj.id,
@@ -96,7 +98,7 @@ export default {
             },
             {
               label: i18n.t('compute.text_983'),
-              // permission: 'secgroups_create',
+              permission: 'secgroups_perform_clone',
               action: () => {
                 this.createDialog('CloneSecgroupDialog', {
                   data: [obj],
@@ -116,7 +118,7 @@ export default {
             },
             {
               label: i18n.t('compute.import_secgroup_rule', []),
-              permission: 'secgroups_update',
+              permission: 'secgroups_perform_import_rules',
               action: () => {
                 this.createDialog('ImportSecgroupRuleDialog', {
                   data: [obj],
@@ -136,7 +138,7 @@ export default {
             },
             {
               label: i18n.t('compute.text_1012'),
-              permission: 'secgroups_create',
+              permission: 'secgroups_perform_merge',
               action: () => {
                 this.createDialog('ConcatSecgroupDialog', {
                   data: [obj],
@@ -187,7 +189,7 @@ export default {
               scope: 'project',
               resource: 'secgroups',
             }, {
-              permission: 'secgroups_performAction',
+              permission: 'secgroups_perform_public',
             }),
             {
               label: i18n.t('compute.perform_delete'),
