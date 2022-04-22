@@ -108,7 +108,7 @@ export default {
         {
           index: 2,
           label: this.$t('compute.text_991'),
-          permission: 'secgroups_performAction',
+          permission: 'secgroups_perform_add_rules',
           action: () => {
             this.createDialog('AddRulesDialog', {
               data: this.list.selectedItems,
@@ -139,7 +139,7 @@ export default {
           scope: 'project',
           resource: 'secgroups',
         }, {
-          permission: 'secgroups_performAction',
+          permission: 'secgroups_perform_public',
           meta: () => {
             return {
               validate: this.list.selectedItems.length,
@@ -148,6 +148,7 @@ export default {
         }),
         {
           label: this.$t('table.action.set_tag'),
+          permission: 'secgroups_perform_set_user_metadata',
           action: () => {
             this.createDialog('SetTagDialog', {
               data: this.list.selectedItems,

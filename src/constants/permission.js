@@ -482,6 +482,12 @@ export const PERMISSION = {
   secgroups_update: ['compute', 'secgroups', 'update'],
   secgroups_delete: ['compute', 'secgroups', 'delete'],
   secgroups_get: ['compute', 'secgroups', 'get'],
+  secgroups_perform_clone: ['compute', 'secgroups', 'perform', 'clone'],
+  secgroups_perform_merge: ['compute', 'secgroups', 'perform', 'merge'],
+  secgroups_perform_public: ['compute', 'secgroups', 'perform', 'public'],
+  secgroups_perform_add_rules: ['compute', 'secgroups', 'perform', 'add-rules'],
+  secgroups_perform_import_rules: ['compute', 'secgroups', 'perform', 'import-rules'],
+  secgroups_perform_set_user_metadata: ['compute', 'secgroups', 'perform', 'set-user-metadata'],
   /**
    * secgroupcache 相关操作
    */
@@ -496,6 +502,7 @@ export const PERMISSION = {
   secgrouprules_update: ['compute', 'secgrouprules', 'update'],
   secgrouprules_delete: ['compute', 'secgrouprules', 'delete'],
   secgrouprules_get: ['compute', 'secgrouprules', 'get'],
+  secgrouprules_list: ['compute', 'secgrouprules', 'list'],
 
   // 报警
   nodealerts_create: ['compute', 'nodealerts', 'create'],
