@@ -306,6 +306,8 @@ export const PERMISSION = {
   // 操作日志
   log_list: ['log', 'actions', 'list'],
   log_manage_list_splitable: ['log', 'actions', 'list', 'splitable'],
+  // 命令记录
+  commandlogs_list: ['log', 'commandlogs_list', 'list'],
   // 消息中心
   notifications_list: ['notify', 'notifications', 'list'],
   // 消息订阅

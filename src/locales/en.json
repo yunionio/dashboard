@@ -2593,7 +2593,8 @@
     "cache": "Cache",
     "compute": "Compute",
     "es": "ElasticSearch",
-    "app": "Web App"
+    "app": "Web App",
+    "command_log": "Command Logs"
   },
   "res": {
     "role": "Role",
@@ -5131,5 +5132,7 @@
   "common.permission_tip": "Permission prompt",
   "common.permission_no_dashboard": "You do not have permission to access the console",
   "common.view_logs": "View logs",
-  "common.password_no_equal": "Old and new passwords cannot be consistent"
+  "common.password_no_equal": "Old and new passwords cannot be consistent",
+  "common.command": "Command",
+  "common.login_user": "Login User"
 }
