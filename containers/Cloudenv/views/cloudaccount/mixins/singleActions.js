@@ -3,13 +3,14 @@ import { changeToArr } from '@/utils/utils'
 import expectStatus from '@/constants/expectStatus'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import i18n from '@/locales'
-import { findPlatform, getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
+import { findPlatform, getDisabledProvidersActionMeta, typeClouds } from '@/utils/common/hypervisor'
 import { hasMeterService } from '@/utils/auth'
 
 const steadyStatus = {
   status: Object.values(expectStatus.cloudaccount).flat(),
   sync_status: Object.values(expectStatus.cloudaccountSyncStatus).flat(),
 }
+const providerMap = typeClouds.getProviderlowcase()
 
 export default {
   data () {
@@ -149,6 +150,18 @@ export default {
                   columns: this.columns,
                   onManager: this.onManager,
                 })
+              },
+              meta: obj => {
+                return {
+                  validate: ![
+                    providerMap.vmware.key,
+                    providerMap.jdcloud.key,
+                    providerMap.ecloud.key,
+                    providerMap.s3.key,
+                    providerMap.ceph.key,
+                    providerMap.xsky.key,
+                  ].includes(obj.brand),
+                }
               },
             },
             {

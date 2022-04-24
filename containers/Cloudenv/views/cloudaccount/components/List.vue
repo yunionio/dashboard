@@ -19,7 +19,9 @@ import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { getDisabledProvidersActionMeta } from '@/utils/common/hypervisor'
+import { getDisabledProvidersActionMeta, typeClouds } from '@/utils/common/hypervisor'
+
+const providerMap = typeClouds.getProviderlowcase()
 
 export default {
   name: 'CloudaccountList',
@@ -179,6 +181,20 @@ export default {
                     columns: this.columns,
                     onManager: this.onManager,
                   })
+                },
+                meta: () => {
+                  return {
+                    validate: !this.list.selectedItems.some(item => {
+                      return [
+                        providerMap.vmware.key,
+                        providerMap.jdcloud.key,
+                        providerMap.ecloud.key,
+                        providerMap.s3.key,
+                        providerMap.ceph.key,
+                        providerMap.xsky.key,
+                      ].includes(item.brand)
+                    }),
+                  }
                 },
               },
               ...getEnabledSwitchActions(this, undefined, ['cloudaccounts_perform_enable', 'cloudaccounts_perform_disable'], {
