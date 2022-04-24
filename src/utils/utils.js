@@ -11,6 +11,11 @@ let tIndex = 0
 
 export const UNITS = ['B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
 
+/**
+ * 驼峰式 拆分为 词语数组
+ * @param {String} camel methodsName
+ * @returns ['methods', 'name']
+ */
 export function camel2Words (camel) {
   let tmp = ''
   for (let i = 0; i < camel.length; i++) {
@@ -27,6 +32,12 @@ export function camel2Words (camel) {
   return tmp.split('-')
 }
 
+/**
+ * 获取指定长度的uuid
+ * @param {Number} len uuid长度
+ * @param {Number} radix 进制
+ * @returns '612D0EF0-7017-40FE-9A3A-2A880BBA02FB'
+ */
 export function uuid (len, radix) {
   const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
   const uuid = []
@@ -172,6 +183,12 @@ export const sizestrWithUnit = sizestrInstance.sizestrWithUnit.bind(sizestrInsta
 export const sizeToDesignatedUnit = sizestrInstance.sizeToDesignatedUnit.bind(sizestrInstance) // -> 12 GB   4.5 TB
 export const percentstr = sizestrInstance.percentStr.bind(sizestrInstance)
 
+/**
+ * 对象数组转对象
+ * @param {Array} arr 具有相同key不同value的对象数组 [{id:1, name:'x'}, {id:2, name:'y'}]
+ * @param {String} itemKey='id'
+ * @returns {Object} {1: {id:1, name:'x'}, 2: {id:2, name:'y'}}
+ */
 export const arrayToObj = (arr, itemKey = 'id') => {
   const obj = {}
   arr.forEach(item => {
@@ -180,11 +197,23 @@ export const arrayToObj = (arr, itemKey = 'id') => {
   return obj
 }
 
+/**
+ * 元素转数组
+ * @param {any} 任意输入
+ * @returns {Array}
+ * @example
+ * changeToArr(null) // 返回 [null]
+ * changeToArr([1])  // 返回 [1]
+ */
 export const changeToArr = R.unless(
   R.is(Array),
   R.of,
 )
 
+/**
+ * 判断是否为Chrome浏览器
+ * @returns {Boolean}
+ */
 export function isChrome () {
   return /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
 }
@@ -317,6 +346,13 @@ export const splitUnit = value => {
   }
 }
 
+/**
+ * 对象继承
+ * @param {Object} to
+ * @param {Object} _from
+ * @returns {Object}
+ * @example extend({name:'x'}, {age:18}) -> {name:'x', age:18}
+ */
 function extend (to, _from) {
   for (const key in _from) {
     to[key] = _from[key]
@@ -324,6 +360,11 @@ function extend (to, _from) {
   return to
 };
 
+/**
+ * 对象数组合并为对象 [{name: 'x'}, {age: 18}] -> {name: 'x', age: 18}
+ * @param {Array}
+ * @returns {Object}
+ */
 export function toObject (arr) {
   var res = {}
   for (let i = 0; i < arr.length; i++) {
