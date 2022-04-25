@@ -750,6 +750,10 @@
     "common$enable_tls_migration": {
       "label": "启用 tls 迁移",
       "desc": "启用后，KVM私有云虚拟机热迁移时使会启用 tls 加密数据。"
+    },
+    "compute$default_admin_security_group_id": {
+      "label": "管理安全组ID",
+      "desc": "若设定，此后本地idc所创建的机器默认会绑定此指定的管理安全组，若之前的虚拟机没有绑定任何管理安全组，在系统下一次重启后会绑定此安全组，此管理安全组对普通用户不可见。"
     }
   },
   "user": {

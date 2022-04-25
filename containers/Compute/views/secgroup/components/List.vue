@@ -67,6 +67,9 @@ export default {
         steadyStatus: Object.values(expectStatus.secgroup).flat(),
         filterOptions: {
           name: getNameFilter(),
+          id: {
+            label: 'ID',
+          },
           ip: {
             label: this.$t('compute.text_985'),
           },
