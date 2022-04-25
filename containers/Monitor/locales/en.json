@@ -98,7 +98,7 @@
   "monitor_metric_98": "Network usage",
   "monitor_metric_99": "Budget alert",
   "monitor_metric_100": "Amount",
-  "monitor_text00001": "Alert notifications are sent to users whose status are enabled in the @:dictionary.system - @:dictionary.contact menu, {new}",
+  "monitor_text00001": "Alert notifications are sent to users whose status are enabled in the IAM & Security - @:dictionary.notification - @:dictionary.contact menu, {new}",
   "monitor.monitor_add": "Add query",
   "monitor.monitor_metric": "Metric",
   "monitor.monitor_filters": "Filter",
