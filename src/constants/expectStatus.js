@@ -282,6 +282,11 @@ export default {
     success: ['enabled'],
     danger: [],
   },
+  ipv6_gateway: {
+    info: ['info', 'unknown'],
+    success: ['running', 'available', 'enabled'],
+    danger: [],
+  },
   lbHealth: {
     info: ['off'],
     success: ['on'],

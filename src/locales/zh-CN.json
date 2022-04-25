@@ -756,6 +756,14 @@
       "update_tags": "更新标签或名称",
       "update_tags_fail": "更新标签或名称失败"
     },
+    "ipv6_gateway": {
+      "enabled": "启用",
+      "disabled": "禁用",
+      "running": "可用",
+      "avalable": "可用",
+      "sync_status": "同步状态",
+      "sync_status_failed": "同步状态失败"
+    },
     "lbHealth": {
       "on": "已开启",
       "off": "未开启"
@@ -2609,7 +2617,8 @@
     "compute": "主机",
     "es": "ElasticSearch",
     "app": "应用程序服务",
-    "command_log": "命令记录"
+    "command_log": "命令记录",
+    "ipv6_gateway": "IPv6网关"
   },
   "res": {
     "role": "@:dictionary.role",
