@@ -767,6 +767,10 @@
     "compute$skip_server_by_sys_tag_keys": {
       "label": "Skip virtual machine with specified system tag",
       "desc": "When the cloud account is synchronized, the virtual machine with the set system tag will not be synchronized"
+    },
+    "compute$default_admin_security_group_id": {
+      "label": "Admin Security ID",
+      "desc": "If set, the machine created by the local IDC will be bound to the specified management security group by default. If the previous virtual machine is not bound to any management security group, it will be bound to the security group after the next system restart. The management security group is not visible to ordinary users."
     }
   },
   "user": {

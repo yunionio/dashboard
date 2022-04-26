@@ -45,7 +45,10 @@ export default {
           field: 'guest_cnt',
           title: this.$t('compute.text_1023'),
           formatter: ({ row }) => {
-            return <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a>
+            if (!this.$store.getters.isAdminMode || !row.admin_guest_cnt) {
+              return <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a>
+            }
+            return <span><a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a> + {row.admin_guest_cnt} <help-tooltip name="secgroupAdminGuestCnt" /></span>
           },
           hidden: () => this.hiddenColumns.includes('guest_cnt'),
         },
