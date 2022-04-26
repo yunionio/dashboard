@@ -1,5 +1,5 @@
 // import FlexNetwork from '@Network/views/flex-network'
-import Ipv6Gateway from '@Network/views/ipv6-gateway'
+// import Ipv6Gateway from '@Network/views/ipv6-gateway'
 import DnsZone from '@Network/views/dns-zone'
 import DnsZoneCreate from '@Network/views/dns-zone/create'
 import EipCreate from '@Network/views/eip/create'
@@ -417,27 +417,27 @@ export default {
             },
           ],
         },
-        {
-          path: '/ipv6-gateway',
-          meta: {
-            label: i18n.t('dictionary.ipv6_gateway'),
-            permission: 'ipv6_gateways_list',
-            hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.ipv6_gateway')) {
-                return true
-              }
-              return !hasSetupKey(['apsara'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'IPv6Gateway',
-              path: '',
-              component: Ipv6Gateway,
-            },
-          ],
-        },
+        // {
+        //   path: '/ipv6-gateway',
+        //   meta: {
+        //     label: i18n.t('dictionary.ipv6_gateway'),
+        //     permission: 'ipv6_gateways_list',
+        //     hidden: () => {
+        //       if (isScopedPolicyMenuHidden('sub_hidden_menus.ipv6_gateway')) {
+        //         return true
+        //       }
+        //       return !hasSetupKey(['apsara'])
+        //     },
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'IPv6Gateway',
+        //       path: '',
+        //       component: Ipv6Gateway,
+        //     },
+        //   ],
+        // },
       ],
     },
     /**
