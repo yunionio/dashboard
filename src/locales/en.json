@@ -748,6 +748,14 @@
       "stop_failed": "Stop failed",
       "unknown": "Unknown"
     },
+    "ipv6_gateway": {
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "running": "Avaliable",
+      "avaliable": "Avaliable",
+      "sync_status": "Sync status",
+      "sync_status_failed": "Sync status failed"
+    },
     "lbHealth": {
       "on": "Opened",
       "off": "Not open"
