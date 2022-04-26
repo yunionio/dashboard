@@ -751,6 +751,10 @@
     "common$enable_tls_migration": {
       "label": "Enable TLS migration",
       "desc": "When enabled, KVM virtual machine hot migration will use TLS to encrypt data."
+    },
+    "compute$default_admin_security_group_id": {
+      "label": "Admin Security ID",
+      "desc": "If set, the machine created by the local IDC will be bound to the specified management security group by default. If the previous virtual machine is not bound to any management security group, it will be bound to the security group after the next system restart. The management security group is not visible to ordinary users."
     }
   },
   "user": {
