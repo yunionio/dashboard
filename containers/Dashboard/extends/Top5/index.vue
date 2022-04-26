@@ -141,7 +141,7 @@ export default {
     }
     const initialOrderValue = (this.params && this.params.order) || 'TOP'
     const initialLimit = (this.params && this.params.limit) || 5
-    const initialTime = (this.params && this.params.time) || 60 * 60 * 30
+    const initialTime = (this.params && this.params.time) || 24 * 60 * 60 * 60
     return {
       data: [],
       visible: false,
@@ -171,12 +171,13 @@ export default {
         host: hostUsageOptions,
       },
       timeOptions: [
-        { label: this.$t('dashboard.text_66'), key: 60 * 60 * 5 },
-        { label: this.$t('dashboard.text_67'), key: 60 * 60 * 10 },
-        { label: this.$t('dashboard.text_68'), key: 60 * 60 * 15 },
-        { label: this.$t('dashboard.text_69'), key: 60 * 60 * 20 },
-        { label: this.$t('dashboard.text_70'), key: 60 * 60 * 25 },
-        { label: this.$t('dashboard.text_71'), key: 60 * 60 * 30 },
+        { label: this.$t('timeselect.hour', [1]), key: 60 * 60 * 60 },
+        { label: this.$t('timeselect.hours', [6]), key: 360 * 60 * 60 },
+        { label: this.$t('timeselect.hours', [12]), key: 12 * 60 * 60 * 60 },
+        { label: this.$t('timeselect.days', [1]), key: 24 * 60 * 60 * 60 },
+        { label: this.$t('timeselect.days', [7]), key: 7 * 24 * 60 * 60 * 60 },
+        { label: this.$t('timeselect.days', [14]), key: 14 * 24 * 60 * 60 * 60 },
+        { label: this.$t('timeselect.months', [1]), key: 30 * 24 * 60 * 60 * 60 },
       ],
       decorators: {
         name: [
