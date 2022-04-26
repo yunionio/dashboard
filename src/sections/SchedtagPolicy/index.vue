@@ -42,6 +42,10 @@ export default {
       type: Object,
       validator: val => !val || val.fc, // 不传 或者 传就有fc
     },
+    policyReactInSchedtag: { // 策略是否与调度标签联动
+      type: Boolean,
+      default: () => true,
+    },
   },
   data () {
     return {
@@ -60,9 +64,11 @@ export default {
             }
           }
           this.form.fc.getFieldDecorator(this.decorators.policy[0], this.decorators.policy[1])
-          this.form.fc.setFieldsValue({
-            [this.decorators.policy[0]]: defaultStrategy,
-          })
+          if (this.policyReactInSchedtag) {
+            this.form.fc.setFieldsValue({
+              [this.decorators.policy[0]]: defaultStrategy,
+            })
+          }
         }
       })
     },

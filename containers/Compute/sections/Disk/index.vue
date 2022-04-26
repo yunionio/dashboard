@@ -38,7 +38,7 @@
         <a-button class="mt-1" type="link" @click="() => showMountpoint = !showMountpoint">{{ showMountpoint ? $t('compute.text_135') : $t('compute.text_134') }}</a-button>
     </template>
     <template v-if="has('schedtag') && !showStorage">
-      <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" />
+      <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" :policyReactInSchedtag="false" />
       <a-button v-if="!disabled" v-show="!simplify" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
     </template>
     <template v-if="has('storage') && !showSchedtag">

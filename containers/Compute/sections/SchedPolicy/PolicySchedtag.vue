@@ -1,7 +1,7 @@
 <template>
   <div class="policy-schedtag">
     <div class="d-flex align-items-start mb-2" v-for="(item, i) in schedtagPolicyList" :key="item.key">
-      <schedtag-policy :form="form" class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="schedtagParams" />
+      <schedtag-policy :form="form" class="w-50" :decorators="genDecorator(item.key)" :schedtag-params="schedtagParams" :policyReactInSchedtag="false" />
       <a-button shape="circle" icon="minus" size="small" @click="decrease(item.key, i)" class="mt-2" />
     </div>
     <a-button type="primary" shape="circle" icon="plus" size="small" @click="add" />
