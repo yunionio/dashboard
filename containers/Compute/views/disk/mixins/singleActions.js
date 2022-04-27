@@ -325,6 +325,10 @@ export default {
                   ret.validate = false
                   ret.tooltip = i18n.t('compute.text_1388')
                 }
+                if (!obj.guest) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.disk_update_driver_prompt')
+                }
                 return ret
               },
               extraMeta: obj => {
