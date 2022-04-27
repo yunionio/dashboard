@@ -10,6 +10,7 @@ import { hasPermission } from '@/utils/auth'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
 import expectStatus from '@/constants/expectStatus'
+import setting from '@/config/setting'
 
 export const getProjectTableColumn = ({ vm = {}, field = 'tenant', title = i18n.t('res.project'), projectsItem = 'tenant', sortable = true, hidden = false, minWidth = 100 } = {}) => {
   return {
@@ -463,6 +464,8 @@ export const getAccountTableColumn = ({
   field = 'account',
   title = i18n.t('res.cloudaccount'),
   hidden,
+  managerField = 'manager',
+  brandField = 'brand',
   vm = {},
 } = {}) => {
   return {
@@ -479,18 +482,22 @@ export const getAccountTableColumn = ({
     },
     slots: {
       default: ({ row }, h) => {
-        const val = _.get(row, field)
+        let val = _.get(row, field)
         if (vm.isPreLoad && !val) return [<data-loading />]
+        // OneStack => oem en
+        if (row[brandField] && row[brandField] === 'OneCloud') {
+          val = setting.brand.en || val
+        }
         const ret = []
         ret.push(
-          <list-body-cell-wrap hide-field copy field={field} row={row}>
+          <list-body-cell-wrap hide-field copy field={field} row={{ [field]: val }}>
             <span style={{ color: '#0A1F44' }}>{ val || '-' }</span>
           </list-body-cell-wrap>,
         )
-        if (row.manager) {
+        if (row[managerField]) {
           ret.push(
-            <list-body-cell-wrap hide-field copy field='manager' row={row}>
-              <span style={{ color: '#53627C' }}>{ row.manager }</span>
+            <list-body-cell-wrap hide-field copy field={managerField} row={row}>
+              <span style={{ color: '#53627C' }}>{row[managerField] }</span>
             </list-body-cell-wrap>,
           )
         }
