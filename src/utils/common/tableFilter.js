@@ -5,6 +5,7 @@ import i18n from '@/locales'
 import { Manager } from '@/utils/manager'
 import { HYPERVISORS_MAP } from '@/constants'
 import { HOST_CPU_ARCHS } from '@/constants/compute'
+import setting from '@/config/setting'
 
 export function getBrandItems (key = 'brands', outBrands = []) {
   let brands = store.getters.capability[key] || []
@@ -122,14 +123,22 @@ export function getTenantFilter () {
   }
 }
 
-export function getAccountFilter () {
+export function getAccountFilter ({ distinctType = 'extra_field', field = 'account' } = {}) {
   return {
     label: i18n.t('res.cloudaccount'),
     dropdown: true,
     multiple: true,
     distinctField: {
-      type: 'extra_field',
-      key: 'account',
+      type: distinctType,
+      key: field,
+    },
+    mapper: data => {
+      return data.map(item => {
+        if (item.label && item.label === 'OneStack') {
+          item.label = setting.brand.en || item.label
+        }
+        return item
+      })
     },
     hidden: () => store.getters.isProjectMode,
   }

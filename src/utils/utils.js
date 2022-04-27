@@ -3,6 +3,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import i18n from '@/locales'
 import { numerify } from '@/filters'
+import setting from '@/config/setting'
 
 import { getLanguage } from '@/utils/common/cookie'
 // import { encodeURI } from 'js-base64'
@@ -964,3 +965,62 @@ export const escapeHTML = str =>
         '"': '&quot;',
       }[tag] || tag),
   )
+
+/**
+ * 替换云账号中OneStack为oem.brand.en
+ * @param {Object} param data: {Array|Object}
+ * @returns {Array|Object} data
+ */
+export const accountsFilterByOem = (
+  {
+    data,
+    nameKey = 'name',
+    idKey = 'id',
+    checkByName = true,
+    checkById = true,
+  },
+) => {
+  if (!data) return
+  let list = data
+  if (!R.is(Array, data)) {
+    list = [data]
+  }
+
+  const ret = list.map(item => {
+    if (checkById && item[idKey] === 'yunion' && checkByName && item[nameKey] === 'OneStack') {
+      item[nameKey] = setting.brand.en || item[nameKey]
+    } else if (checkByName && item[nameKey] === 'OneStack') {
+      item[nameKey] = setting.brand.en || item[nameKey]
+    }
+    return item
+  })
+
+  return !R.is(Array, data) ? ret[0] : ret
+}
+
+/**
+ * 替换云账号中OneCloud为oem.brand[language]
+ * @param {Object} param data: {Array|Object}
+ * @returns {Array|Object} data
+ */
+export const brandsFilterByOem = (
+  {
+    data,
+    nameKey = 'brand',
+  },
+) => {
+  if (!data) return
+  let list = data
+  if (!R.is(Array, data)) {
+    list = [data]
+  }
+
+  const ret = list.map(item => {
+    if (item[nameKey] === 'OneCloud') {
+      item[nameKey] = setting.brand.en || item[nameKey]
+    }
+    return item
+  })
+
+  return !R.is(Array, data) ? ret[0] : ret
+}
