@@ -77,6 +77,16 @@ export default {
               },
             },
             {
+              label: `${i18n.t('common.reset')}MFA`,
+              action: () => {
+                this.createDialog('ResetMFADialog', {
+                  data: [row],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                })
+              },
+            },
+            {
               label: i18n.t('system.text_129'),
               permission: 'users_delete',
               action: () => {
