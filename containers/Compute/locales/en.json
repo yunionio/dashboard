@@ -436,6 +436,7 @@
   "compute.text_437": "Permanent",
   "compute.text_438": "{0} days",
   "compute.disk_perform_detach": "Detach",
+  "compute.disk_update_driver_prompt": "Cannot change driver for detached disk",
   "compute.text_440": "Prompt: If it is a Linux host, you should first execute the umount command on the disk in the host. After the command is executed successfully, enter the console to unmount the disk from the cloud server.",
   "compute.text_442": "The local disk is not allowed to be mounted",
   "compute.text_443": "The disk is already attached to a server",

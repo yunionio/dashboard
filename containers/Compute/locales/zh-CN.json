@@ -436,6 +436,7 @@
   "compute.text_437": "永久",
   "compute.text_438": "{0}天",
   "compute.disk_perform_detach": "卸载",
+  "compute.disk_update_driver_prompt": "不能修改未挂载磁盘的驱动",
   "compute.text_440": "提示：如果是 Linux 主机，您应该先在主机里对磁盘执行 umount 命令，命令执行成功后再进入控制台从虚拟机上卸载该磁盘。",
   "compute.text_442": "本地硬盘不允许挂载",
   "compute.text_443": "该磁盘已挂载",
