@@ -27,8 +27,9 @@ Fork以下仓库，然后克隆主仓库并安装依赖
 
 ```sh
 $ git clone https://github.com/<owner>/dashboard.git
-# 这里要根据你的环境，切到对应分支，否则可能出现不兼容情况
 $ cd dashboard
+# 这里要根据你的环境，切到对应分支，否则可能出现不兼容情况
+$ git checkout release/3.8
 $ yarn
 ```
 
