@@ -1467,6 +1467,8 @@
   "compute.image.export.url.title":  "URL Information",
   "compute.image.export.url.title.tips":  "Image URL(Validity period is 24 hours):",
   "compute.image.export.url.confirm":  "Copy&Close",
+  "compute.perform_image_probe": "Probe image setting",
+  "compute.image_probe_prompt": "Invalid status",
   "compute.text_1387": "Please select a cloud subscription",
   "compute.text_1388": "This operation is not supported on the current platform",
   "compute.vdi_protocol": "Remote console",

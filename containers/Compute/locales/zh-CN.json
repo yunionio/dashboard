@@ -1467,6 +1467,8 @@
   "compute.image.export.url.title":  "URL信息",
   "compute.image.export.url.title.tips":  "镜像URL信息如下(有效期24小时):",
   "compute.image.export.url.confirm":  "复制且关闭",
+  "compute.perform_image_probe": "检测镜像",
+  "compute.image_probe_prompt": "不支持该镜像状态",
   "compute.text_1387": "请选择云订阅",
   "compute.text_1388": "当前平台暂不支持此操作",
   "compute.vdi_protocol": "远程终端协议",

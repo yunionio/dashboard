@@ -425,6 +425,7 @@ export const PERMISSION = {
   images_perform_private: ['image', 'images', 'perform', 'private'],
   images_perform_change_owner: ['image', 'images', 'perform', 'change-owner'],
   images_perform_set_user_metadata: ['image', 'images', 'perform', 'set-user-metadata'],
+  images_perform_probe: ['image', 'images', 'perform', 'probe'],
 
   // image cache
   storagecachedimages_delete: ['image', 'storagecachedimages', 'delete'],
