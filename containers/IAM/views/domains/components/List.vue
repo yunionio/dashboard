@@ -17,7 +17,6 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { getDescriptionFilter } from '@/utils/common/tableFilter'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
