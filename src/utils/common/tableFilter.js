@@ -123,9 +123,9 @@ export function getTenantFilter () {
   }
 }
 
-export function getAccountFilter ({ distinctType = 'extra_field', field = 'account' } = {}) {
-  return {
-    label: i18n.t('res.cloudaccount'),
+export function getAccountFilter ({ label = i18n.t('res.cloudaccount'), distinctType = 'extra_field', field = 'account', formatter } = {}) {
+  const options = {
+    label,
     dropdown: true,
     multiple: true,
     distinctField: {
@@ -142,6 +142,11 @@ export function getAccountFilter ({ distinctType = 'extra_field', field = 'accou
     },
     hidden: () => store.getters.isProjectMode,
   }
+  if (formatter) {
+    options.filter = true
+    options.formatter = formatter
+  }
+  return options
 }
 
 export function getCloudProviderFilter () {
