@@ -26,9 +26,10 @@ Fork以下仓库，然后克隆主仓库并安装依赖
 - [dashboard](https://github.com/yunionio/dashboard)
 
 ```sh
-git clone https://github.com/<owner>/dashboard.git
-cd dashboard
-yarn
+$ git clone https://github.com/<owner>/dashboard.git
+# 这里要根据你的环境，切到对应分支，否则可能出现不兼容情况
+$ cd dashboard
+$ yarn
 ```
 
 根据提示输入仓库的地址前缀, 如: https://github.com/yunionio
@@ -52,6 +53,7 @@ module.exports = {
   port: 8080,
   proxy: {
     '/api': {
+      // 请务必设为环境的地址, 注意是https
       target: 'https://192.168.1.10',
       ws: true,
       changeOrigin: true,

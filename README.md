@@ -28,9 +28,11 @@ Fork the following repository, then clone dashboard main repository and install 
 - [dashboard](https://github.com/yunionio/dashboard)
 
 ```sh
-git clone https://github.com/<owner>/dashboard.git
-cd dashboard
-yarn
+$ git clone https://github.com/<owner>/dashboard.git
+# Here, depending on your environment, checkout corresponding branch, otherwise you might have incompatibilities
+$ git checkout release/3.8
+$ cd dashboard
+$ yarn
 ```
 
 Note: If you are in Mainland China, execute the following command before running the command above for faster installation.
@@ -52,6 +54,7 @@ module.exports = {
   port: 8080,
   proxy: {
     '/api': {
+      // Be sure to set it to the address of the environment, which is HTTPS
       target: 'https://192.168.1.10',
       ws: true,
       changeOrigin: true,
