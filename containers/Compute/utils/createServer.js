@@ -262,7 +262,7 @@ export const createVmDecorators = type => {
       policy: [
         'systemDiskPolicy',
         {
-          initialValue: 'require',
+          initialValue: '',
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
@@ -310,7 +310,7 @@ export const createVmDecorators = type => {
       policy: i => [
         `dataDiskPolicys[${i}]`,
         {
-          initialValue: 'require',
+          initialValue: '',
           validateTrigger: ['blur', 'change'],
           rules: [{
             required: true,
