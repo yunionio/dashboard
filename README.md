@@ -29,9 +29,9 @@ Fork the following repository, then clone dashboard main repository and install 
 
 ```sh
 $ git clone https://github.com/<owner>/dashboard.git
+$ cd dashboard
 # Here, depending on your environment, checkout corresponding branch, otherwise you might have incompatibilities
 $ git checkout release/3.8
-$ cd dashboard
 $ yarn
 ```
 
