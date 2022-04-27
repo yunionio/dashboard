@@ -206,6 +206,31 @@ export default {
               },
               hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_set_public'),
             }),
+            {
+              label: i18n.t('compute.perform_image_probe'),
+              permission: 'images_perform_probe',
+              action: () => {
+                this.onManager('performAction', {
+                  steadyStatus: ['active'],
+                  id: obj.id,
+                  managerArgs: {
+                    action: 'probe',
+                  },
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                  tooltip: null,
+                }
+                if (obj.status !== 'active' && obj.status !== 'saved') {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.image_probe_prompt')
+                }
+                return ret
+              },
+              hidden: () => this.$isScopedPolicyMenuHidden('image_hidden_menus.image_perform_probe'),
+            },
             // {
             //   label: '设置共享',
             //   permission: 'images_perform_public',

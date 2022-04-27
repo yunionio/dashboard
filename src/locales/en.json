@@ -220,6 +220,7 @@
       "caching": "Cached",
       "deleting": "Deleting",
       "active": "Available",
+      "probing": "Probing",
       "deleted": "Deleted",
       "queued": "Waiting to save",
       "killed": "Status Abnormal",
