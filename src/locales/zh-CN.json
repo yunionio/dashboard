@@ -220,6 +220,7 @@
       "caching": "缓存中",
       "deleting": "正在删除",
       "active": "可用",
+      "probing": "正在检测",
       "deleted": "已删除",
       "queued": "等待保存",
       "killed": "状态异常",
