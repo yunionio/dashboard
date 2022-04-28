@@ -3,7 +3,7 @@ import LbListCell from '@Network/views/lb/components/LbListCell'
 import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
-  // getTimeTableColumn,
+  getTimeTableColumn,
   getProjectTableColumn,
   getBrandTableColumn,
   getTagTableColumn,
@@ -154,7 +154,7 @@ export default {
         },
         hidden: this.$store.getters.isProjectMode,
       },
-      // getTimeTableColumn(), // 列表太长先隐藏
+      getTimeTableColumn(),
     ]
   },
 }
