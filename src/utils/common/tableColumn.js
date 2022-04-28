@@ -417,7 +417,7 @@ export const isPublicTableColumn = ({ field = 'is_public', title = i18n.t('commo
 export const getTimeTableColumn = ({
   field = 'created_at',
   title = i18n.t('table.title.create_time'),
-  sortable = false,
+  sortable = true,
   fromNow = false,
   vm = {},
 } = {}) => {
