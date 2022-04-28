@@ -15,9 +15,9 @@
           <div class="flex-fill position-relative">
             <div class="dashboard-fco-wrap">
               <template v-for="item in seriesData">
-                <div class="mt-2 mb-2" :key="item.host">
+                <div class="mt-2 mb-2" :key="item.name">
                   <div class="d-flex mini-text">
-                    <div class="flex-fill text-truncate" :title="item.host">{{ item.host }}</div>
+                    <div class="flex-fill text-truncate" :title="item.name">{{ item.name }}</div>
                     <div class="flex-grow-0 flex-shrink-0 text-color-help ml-2">{{ getLabel(item.value) }}</div>
                   </div>
                   <a-progress :percent="getPercent(item.value)" :showInfo="false" status="normal" :strokeWidth="4" stroke-color="rgb(82, 196, 26)" />
@@ -66,6 +66,11 @@
             </i18n>
           </div>
         </a-form-item>
+        <a-form-item :label="$t('monitor.overview.aggregate')">
+          <a-select v-decorator="decorators.dimension_id">
+            <a-select-option v-for="item in dimentions" :value="item.id" :key="item.id">{{ item.label }}</a-select-option>
+          </a-select>
+        </a-form-item>
         <a-form-item label="TOP/Bottom">
           <a-select v-decorator="decorators.order">
             <a-select-option value="TOP">TOP</a-select-option>
@@ -90,7 +95,6 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import get from 'lodash/get'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { load } from '@Dashboard/utils/cache'
 import { resolveValueChangeField } from '@/utils/common/ant'
@@ -116,6 +120,9 @@ export default {
   data () {
     const serverUsageOptions = [
       { label: this.$t('dashboard.text_61'), key: 'usage_active,vm_cpu' },
+      { label: this.$t('monitor_metric_85'), key: 'used_percent,vm_mem' },
+      { label: this.$t('monitor_metric_85_agent'), key: 'used_percent,agent_mem' },
+      { label: this.$t('monitor.metrics_disk_used_percent_agent'), key: 'used_percent,agent_disk' },
       { label: this.$t('dashboard.text_62'), key: 'read_bps,vm_diskio' },
       { label: this.$t('dashboard.text_63'), key: 'write_bps,vm_diskio' },
       { label: this.$t('dashboard.text_64'), key: 'bps_recv,vm_netio' },
@@ -130,6 +137,7 @@ export default {
     const initialNameValue = (this.params && this.params.name) || 'TOP5'
     const initialBrandValue = (this.params && this.params.brand && R.split(',', this.params.brand)) || []
     const initialResTypeValue = (this.params && this.params.resType) || 'server'
+    const initialDimensionId = (this.params && this.params.dimensionId) || (initialResTypeValue === 'server' ? 'vm_id' : 'host_id')
     let initialUsage = this.params && this.params.usage
     if (!initialUsage) {
       if (initialResTypeValue === 'server') {
@@ -164,6 +172,7 @@ export default {
           order: initialOrderValue,
           limit: initialLimit,
           time: initialTime,
+          dimension_id: initialDimensionId,
         },
       },
       usageOptions: {
@@ -243,6 +252,13 @@ export default {
             ],
           },
         ],
+        dimension_id: [
+          'dimension_id',
+          {
+            initialValue: initialDimensionId,
+            rules: [{ required: true, message: '' }],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -292,23 +308,37 @@ export default {
         return env === 'private' || env === 'idc'
       })
     },
+    dimentions () {
+      const curScope = this.scope
+      const scopeLevel = Math.max(['project', 'domain', 'system'].indexOf(curScope) + 1, 0)
+      const ret = []
+      if (this.form.fd.resType === 'server') {
+        ret.push({ scope: curScope, id: 'vm_id', name: 'vm_name', label: this.$t('cloudenv.text_99') })
+      } else {
+        ret.push({ scope: curScope, id: 'host_id', name: 'host', label: this.$t('cloudenv.text_101') })
+      }
+      scopeLevel > 2 && ret.push({
+        scope: curScope,
+        id: 'domain_id',
+        name: 'project_domain',
+        label: this.$t('dictionary.domain'),
+      })
+      scopeLevel > 1 && this.form.fd.resType === 'server' && ret.push({
+        scope: curScope,
+        id: 'tenant_id',
+        name: 'tenant',
+        label: this.$t('dictionary.project'),
+      })
+      ret.push({ scope: curScope, id: 'brand', name: 'brand', label: this.$t('common.brands') })
+      ret.push({ scope: curScope, id: 'cloudregion_id', name: 'cloudregion', label: this.$t('cloudenv.text_10') })
+      ret.push({ scope: curScope, id: 'zone_id', name: 'zone', label: this.$t('cloudenv.text_11') })
+      return ret
+    },
+    dimension () {
+      return this.dimentions.filter((d) => { return d.id === this.form.fd.dimension_id })[0]
+    },
   },
   watch: {
-    // 'form.fd' (val) {
-    //   this.fetchData()
-    //   for (const key in this.decorators) {
-    //     let config = this.decorators[key][1] || {}
-    //     const initialValue = val[key]
-    //     if (key === 'brand') {
-    //       this.form.fd.brand = initialValue.split(',')
-    //     }
-    //     config = {
-    //       ...config,
-    //       initialValue,
-    //     }
-    //     this.decorators[key][1] = config
-    //   }
-    // },
     'form.fd' (val) {
       const newVal = { ...val }
       for (const key in newVal) {
@@ -318,6 +348,13 @@ export default {
       this.$nextTick(() => {
         this.fetchData()
       })
+    },
+    'form.fd.resType' (val) {
+      if (this.dimentions.filter(item => item.id === this.form.fd.dimension_id).length === 0) {
+        this.form.fc.setFieldsValue({
+          dimension_id: this.dimentions[0].id,
+        })
+      }
     },
   },
   created () {
@@ -347,12 +384,38 @@ export default {
             data: requestData,
           },
           useManager: false,
-          resPath: 'data.series[0]',
+          resPath: 'data.series',
         })
-        this.seriesData = this.seriesDataMapper(data)
+        this.seriesData = this.toHistogramChartData(data || [])
       } finally {
         this.loading = false
       }
+    },
+    toHistogramChartData (series) {
+      const { order, limit } = this.form.fd
+      let rows = series.map((item) => {
+        const lastPoint = item.points ? item.points[item.points.length - 1] : undefined
+        if (lastPoint) {
+          return {
+            name: item.tags[this.dimension.name],
+            id: item.tags[this.dimension.id],
+            value: lastPoint[0],
+            timestamp: lastPoint[1],
+            tags: item.tags,
+          }
+        }
+      })
+      rows = rows.sort((a, b) => {
+        if (order.toLowerCase() === 'bottom') {
+          return a.value - b.value
+        } else {
+          return b.value - a.value
+        }
+      })
+      if (rows.length > limit) {
+        rows = rows.slice(0, limit)
+      }
+      return rows
     },
     handleEdit () {
       this.visible = true
@@ -403,21 +466,28 @@ export default {
                   select: [
                     [
                       {
-                        type: 'func_field',
+                        type: 'field',
                         params: [usageKeys[0], 'vm_name', 'vm_ip'],
                       },
-                      {
-                        type: fd.order.toLowerCase(),
-                        params: [fd.limit],
-                      },
+                      { type: 'mean' },
+                      { type: 'abs' },
                     ],
                   ],
-                  tags: brandTags,
+                  tags: [
+                    {
+                      key: this.groupInput(),
+                      operator: '!=',
+                      value: '',
+                    },
+                    ...brandTags,
+                  ],
+                  group_by: this.groupBy(usageKeys[0]),
                 },
               },
             ],
             scope: this.scope,
             from: `${min}m`,
+            interval: `${min}m`,
             unit: true,
           }
         }
@@ -438,21 +508,28 @@ export default {
                   select: [
                     [
                       {
-                        type: 'func_field',
+                        type: 'field',
                         params: [usageKeys[0], 'vm_name', 'vm_ip'],
                       },
-                      {
-                        type: fd.order.toLowerCase(),
-                        params: [fd.limit],
-                      },
+                      { type: 'mean' },
+                      { type: 'abs' },
                     ],
                   ],
-                  tags: brandTags,
+                  tags: [
+                    {
+                      key: this.groupInput(),
+                      operator: '!=',
+                      value: '',
+                    },
+                    ...brandTags,
+                  ],
+                  group_by: this.groupBy(usageKeys[0]),
                 },
               },
             ],
             scope: this.scope,
             from: `${min}m`,
+            interval: `${min}m`,
             unit: true,
           }
         }
@@ -467,34 +544,28 @@ export default {
                   select: [
                     [
                       {
-                        type: 'func_field',
+                        type: 'field',
                         params: [usageKeys[0], 'host', 'host_ip'],
                       },
-                      {
-                        type: fd.order.toLowerCase(),
-                        params: [fd.limit],
-                      },
+                      { type: 'mean' },
+                      { type: 'abs' },
                     ],
                   ],
                   tags: [
                     {
-                      key: 'res_type',
-                      value: 'host',
-                      operator: '=',
+                      key: this.groupInput(),
+                      operator: '!=',
+                      value: '',
                     },
                     ...brandTags,
                   ],
-                  // group_by: [
-                  //   {
-                  //     type: 'tag',
-                  //     params: ['host'],
-                  //   },
-                  // ],
+                  group_by: this.groupBy(usageKeys[0]),
                 },
               },
             ],
             scope: this.scope,
             from: `${min}m`,
+            interval: `${min}m`,
             unit: true,
           }
         }
@@ -514,21 +585,27 @@ export default {
                   select: [
                     [
                       {
-                        type: 'func_field',
+                        type: 'field',
                         params: [usageKeys[0], 'vm_name', 'vm_ip'],
                       },
-                      {
-                        type: fd.order.toLowerCase(),
-                        params: [fd.limit],
-                      },
+                      { type: 'mean' },
+                      { type: 'abs' },
                     ],
                   ],
+                  tags: [
+                    {
+                      key: this.groupInput(),
+                      operator: '!=',
+                      value: '',
+                    }],
+                  group_by: this.groupBy(usageKeys[0]),
                 },
               },
             ],
             scope: this.scope,
             from: `${min}m`,
             unit: true,
+            interval: `${min}m`,
           }
         }
         if (fd.resType === 'host') {
@@ -541,34 +618,27 @@ export default {
                   select: [
                     [
                       {
-                        type: 'func_field',
+                        type: 'field',
                         params: [usageKeys[0], 'host', 'host_ip'],
                       },
-                      {
-                        type: fd.order.toLowerCase(),
-                        params: [fd.limit],
-                      },
+                      { type: 'mean' },
+                      { type: 'abs' },
                     ],
                   ],
                   tags: [
                     {
-                      key: 'res_type',
-                      value: 'host',
-                      operator: '=',
-                    },
-                  ],
-                  // group_by: [
-                  //   {
-                  //     type: 'tag',
-                  //     params: ['host'],
-                  //   },
-                  // ],
+                      key: this.groupInput(),
+                      operator: '!=',
+                      value: '',
+                    }],
+                  group_by: this.groupBy(usageKeys[0]),
                 },
               },
             ],
             scope: this.scope,
             from: `${min}m`,
             unit: true,
+            interval: `${min}m`,
           }
         }
         if (condition && condition.length > 0) {
@@ -577,23 +647,6 @@ export default {
         }
         return ret
       }
-    },
-    seriesDataMapper (series) {
-      let data = get(series, 'points', [])
-      if (data.length <= 0) return data
-      data = data.map(item => {
-        return {
-          host: item[1],
-          value: item[0],
-        }
-      })
-      data.sort((a, b) => {
-        if (this.form.fd.order === 'TOP') {
-          return b.value - a.value
-        }
-        return a.value - b.value
-      })
-      return data
     },
     getLabel (val) {
       const fixedVal = isNaN(Number(val)) ? 0 : Number(val).toFixed(2)
@@ -622,6 +675,32 @@ export default {
         }
       }
       return null
+    },
+    groupInput () {
+      if (this.form.fd.resType === 'host') {
+        return 'project_domain'
+      }
+      switch (this.dimension.scope) {
+        case 'system':
+          return 'project_domain'
+        default:
+          return 'tenant'
+      }
+    },
+    groupBy (field) {
+      const ret = []
+
+      ret.push({ type: 'field', params: [this.dimension.name] })
+      ret.push({ type: 'field', params: [this.dimension.id] })
+      if ((this.dimension.scope === 'system' || this.dimension.scope === 'domain') && this.dimension.name === 'tenant') {
+        ret.push({ type: 'field', params: ['project_domain'] })
+        ret.push({ type: 'field', params: ['domain_id'] })
+      }
+      if (this.dimension.scope === 'project' && this.dimension.name !== 'tenant') {
+        ret.push({ type: 'field', params: ['tenant'] })
+        ret.push({ type: 'field', params: ['tenant_id'] })
+      }
+      return ret
     },
     goPage () {
       this.$router.push('./monitoroverview')
