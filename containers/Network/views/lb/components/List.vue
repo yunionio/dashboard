@@ -86,7 +86,7 @@ export default {
           status: Object.values(expectStatus.lb).flat(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'account', 'cluster'],
+        hiddenColumns: ['metadata', 'account', 'cluster', 'created_at'],
       }),
       exportDataOptions: {
         items: [

@@ -1,6 +1,6 @@
 import { DBINSTANCE_CATEGORY } from '../constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getBillingTableColumn, getTagTableColumn, getAccountTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -133,6 +133,7 @@ export default {
           },
         },
       },
+      getTimeTableColumn(),
     ]
   },
 }
