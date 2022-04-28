@@ -4,6 +4,15 @@ export const usageConfig = {
   'usage_active,vm_cpu': {
     formatter: val => `${parseInt(val)}%`,
   },
+  'used_percent,vm_mem': {
+    formatter: val => `${parseInt(val)}%`,
+  },
+  'used_percent,agent_mem': {
+    formatter: val => `${parseInt(val)}%`,
+  },
+  'used_percent,agent_disk': {
+    formatter: val => `${parseInt(val)}%`,
+  },
   'read_bps,vm_diskio': {
     formatter: val => `${sizestr(val, 'B', 1024)}bps`,
   },
