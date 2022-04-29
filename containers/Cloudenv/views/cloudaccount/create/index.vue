@@ -23,8 +23,8 @@
       <div slot="right">
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">{{$t('cloudenv.text_273')}}</a-button>
         <a-button :disabled="nextDisabled" class="mr-3" type="primary"  @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
-        <test-button v-if="currentComponent === 'create-cloudaccount' || currentComponent === 'bill-form'" class="mr-3" :post="testPost" />
-        <a-button @click="cancel">{{['select-region', 'bill-form'].includes(currentComponent) ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
+        <test-button v-if="['create-cloudaccount', 'bill-form', 'big-query-bill-form'].includes(currentComponent)" class="mr-3" :post="testPost" />
+        <a-button @click="cancel">{{['select-region', 'bill-form', 'big-query-bill-form'].includes(currentComponent) ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -35,6 +35,7 @@ import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
 import SelectRegion from './form/SelectRegion'
 import BillForm from './form/BillForm'
+import BigQueryBillForm from './form/BigQueryBillForm'
 import GuestNetwork from './form/GuestNetwork'
 import HostNetwork from './form/HostNetwork'
 import { CLOUDACCOUNT_TYPES, notSupportSelectRegion } from '@Cloudenv/views/cloudaccount/constants'
@@ -50,6 +51,7 @@ export default {
     CreateCloudaccount,
     SelectRegion,
     BillForm,
+    BigQueryBillForm,
     GuestNetwork,
     HostNetwork,
     TestButton,
@@ -95,6 +97,9 @@ export default {
     },
     isBill () {
       return ['Aws', 'Aliyun', 'Google', 'Huawei', 'Azure', 'Qcloud', 'JDcloud'].indexOf(this.currentItem.provider) > -1 && this.$appConfig.isPrivate
+    },
+    isGoogle () {
+      return this.currentItem.provider === 'Google'
     },
     brand () {
       return this.currentItem.provider.toLowerCase()
@@ -155,7 +160,11 @@ export default {
         steps.push({ title: this.$t('cloudenv.select_region'), key: 'select-region' })
       }
       if (this.isBill) {
-        steps.push({ title: this.$t('cloudenv.text_279'), key: 'bill-form' })
+        if (this.isGoogle) {
+          steps.push({ title: this.$t('cloudenv.text_279'), key: 'big-query-bill-form' })
+        } else {
+          steps.push({ title: this.$t('cloudenv.text_279'), key: 'bill-form' })
+        }
       }
       this.step.steps = steps
     },
