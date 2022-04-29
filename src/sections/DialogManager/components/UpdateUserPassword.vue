@@ -12,7 +12,7 @@
         <a-form-item :label="$t('common_140')" v-bind="formItemLayout">
           <a-input-password v-decorator="decorators.com_password" :placeholder="$t('common_141')" />
         </a-form-item>
-        <a-form-item :label="$t('common_142')" v-bind="formItemLayout" v-if="userInfo.enable_mfa && userInfo.system_totp_on">
+        <a-form-item :label="$t('common_142')" v-bind="formItemLayout" v-if="userInfo.enable_mfa && auth.auth.system_totp_on">
           <a-input v-decorator="decorators.passcode" :placeholder="$t('common_142')" />
         </a-form-item>
       </a-form>
@@ -129,7 +129,7 @@ export default {
       },
     }
   },
-  computed: mapGetters(['userInfo']),
+  computed: mapGetters(['userInfo', 'auth']),
   destroyed () {
     this.manager = null
   },
