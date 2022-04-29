@@ -67,7 +67,7 @@
           </div>
         </a-form-item>
         <a-form-item :label="$t('monitor.overview.aggregate')">
-          <a-select v-decorator="decorators.dimension_id">
+          <a-select v-decorator="decorators.dimensionId">
             <a-select-option v-for="item in dimentions" :value="item.id" :key="item.id">{{ item.label }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -103,6 +103,7 @@ import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { getMetricDocs } from '@Dashboard/constants'
 import { usageConfig } from './constants'
+import setting from '@/config/setting'
 
 export default {
   name: 'Top5',
@@ -172,7 +173,7 @@ export default {
           order: initialOrderValue,
           limit: initialLimit,
           time: initialTime,
-          dimension_id: initialDimensionId,
+          dimensionId: initialDimensionId,
         },
       },
       usageOptions: {
@@ -252,8 +253,8 @@ export default {
             ],
           },
         ],
-        dimension_id: [
-          'dimension_id',
+        dimensionId: [
+          'dimensionId',
           {
             initialValue: initialDimensionId,
             rules: [{ required: true, message: '' }],
@@ -335,7 +336,7 @@ export default {
       return ret
     },
     dimension () {
-      return this.dimentions.filter((d) => { return d.id === this.form.fd.dimension_id })[0]
+      return this.dimentions.filter((d) => { return d.id === this.form.fd.dimensionId })[0]
     },
   },
   watch: {
@@ -350,9 +351,9 @@ export default {
       })
     },
     'form.fd.resType' (val) {
-      if (this.dimentions.filter(item => item.id === this.form.fd.dimension_id).length === 0) {
+      if (this.dimentions.filter(item => item.id === this.form.fd.dimensionId).length === 0) {
         this.form.fc.setFieldsValue({
-          dimension_id: this.dimentions[0].id,
+          dimensionId: this.dimentions[0].id,
         })
       }
     },
@@ -397,7 +398,7 @@ export default {
         const lastPoint = item.points ? item.points[item.points.length - 1] : undefined
         if (lastPoint) {
           return {
-            name: item.tags[this.dimension.name],
+            name: this.filterByOem(item.tags[this.dimension.name]),
             id: item.tags[this.dimension.id],
             value: lastPoint[0],
             timestamp: lastPoint[1],
@@ -416,6 +417,12 @@ export default {
         rows = rows.slice(0, limit)
       }
       return rows
+    },
+    filterByOem (name) {
+      if (this.form.fd.dimensionId === 'brand' && name === 'OneCloud') {
+        return setting.brand[setting.language] || name
+      }
+      return name
     },
     handleEdit () {
       this.visible = true
