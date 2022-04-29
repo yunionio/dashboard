@@ -891,14 +891,6 @@
   "iam.idp_config_info": "认证源配置信息",
   "iam.action_info": "执行操作明细",
   "iam.count_items": "{0}项",
-<<<<<<< HEAD
-  "iam.manage_res": "管理{0)"
-=======
-  "iam.system_error_notify": "系统异常通知",
-  "iam.user_lock_notify": "用户锁定通知",
-  "iam.checksum_error_notify": "完整性校验失败通知",
-  "iam.security_info": "安全消息",
   "iam.manage_res": "管理{0)",
   "iam.reset_mfa_tips": "重置后，用户需在登录页面需重新设置，之前信息将失效！"
->>>>>>> feat: #3747 修改密码界面增加一个退出登录的按钮
 }
