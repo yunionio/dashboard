@@ -892,14 +892,6 @@
   "iam.idp_config_info": "Authentication source configuration information",
   "iam.action_info": "Perform action details",
   "iam.count_items": "{0} items",
-<<<<<<< HEAD
-  "iam.manage_res": "Manage {0)"
-=======
-  "iam.system_error_notify": "System exception notification",
-  "iam.user_lock_notify": "User lock notification",
-  "iam.checksum_error_notify": "Integrity Checksum Failure Notification",
-  "iam.security_info": "Security Information",
   "iam.manage_res": "Manage {0)",
   "iam.reset_mfa_tips": "After reset, the user needs to reset the login page, the previous information will be invalid!"
->>>>>>> feat: #3747 修改密码界面增加一个退出登录的按钮
 }
