@@ -51,7 +51,7 @@ export default {
       params: {
         data: [],
       },
-      billform: 'bucket',
+      billform: this.isGoogle ? 'bigquery' : 'bucket',
       loading: false,
     }
   },
