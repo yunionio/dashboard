@@ -181,18 +181,19 @@ export default {
       try {
         const values = await this.validateForm()
         let data = {
-          password_confirm: Base64.encode(values.password_new),
+          password_confirm: Base64.encode(values.com_password),
           password_old: Base64.encode(values.password_old),
           password_new: Base64.encode(values.password_new),
-          com_password: Base64.encode(values.com_password),
         }
         if (this.regions.encrypt_passwd) {
           data = {
-            password_confirm: aesEncrypt(values.password_new),
+            password_confirm: aesEncrypt(values.com_password),
             password_old: aesEncrypt(values.password_old),
             password_new: aesEncrypt(values.password_new),
-            com_password: aesEncrypt(values.com_password),
           }
+        }
+        if (this.userInfo.enable_mfa && this.userInfo.system_totp_on) {
+          data.passcode = values.passcode
         }
         this.loading = true
         await this.doUpdatePassword(data)
