@@ -55,7 +55,7 @@
         <a-form-item :label="$t('cloudenv.billing_scope')" :extra="$t('cloudenv.billing_scope.extra')" v-if="billingType === 1">
           <a-radio-group v-decorator="decorators.billing_scope">
             <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
-            <a-radio-button value="all" key="all" :disabled="!isAws">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+            <a-radio-button value="all" key="all" :disabled="!isAws && !isAliyun">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <!-- google -->
@@ -152,6 +152,9 @@ export default {
     },
     isAws () {
       return this.provider === 'Aws'
+    },
+    isAliyun () {
+      return this.provider === 'Aliyun'
     },
     useBillingBucket () {
       return this.provider === 'Aliyun' || this.provider === 'Aws' || this.provider === 'Huawei' || this.provider === 'Google'
@@ -291,8 +294,8 @@ export default {
             details: true,
           },
         })
-        // azure 和 aws billing_scope 没有时选中managed，新建时选中all
-        if ((this.isAzure || this.isAws) && (!data.options || !data.options.billing_scope)) {
+        // azure 和 aws aliyun billing_scope 没有时选中managed，新建时选中all
+        if ((this.isAzure || this.isAws || this.isAliyun) && (!data.options || !data.options.billing_scope)) {
           data.options = data.options || {}
           data.options.billing_scope = 'managed'
         }
