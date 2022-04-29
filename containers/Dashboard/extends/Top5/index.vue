@@ -103,6 +103,7 @@ import { getRequestT } from '@/utils/utils'
 import { getSignature } from '@/utils/crypto'
 import { getMetricDocs } from '@Dashboard/constants'
 import { usageConfig } from './constants'
+import setting from '@/config/setting'
 
 export default {
   name: 'Top5',
@@ -397,7 +398,7 @@ export default {
         const lastPoint = item.points ? item.points[item.points.length - 1] : undefined
         if (lastPoint) {
           return {
-            name: item.tags[this.dimension.name],
+            name: this.filterByOem(item.tags[this.dimension.name]),
             id: item.tags[this.dimension.id],
             value: lastPoint[0],
             timestamp: lastPoint[1],
@@ -416,6 +417,12 @@ export default {
         rows = rows.slice(0, limit)
       }
       return rows
+    },
+    filterByOem (name) {
+      if (this.form.fd.dimensionId === 'brand' && name === 'OneCloud') {
+        return setting.brand[setting.language] || name
+      }
+      return name
     },
     handleEdit () {
       this.visible = true
