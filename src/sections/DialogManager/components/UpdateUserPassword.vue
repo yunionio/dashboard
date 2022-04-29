@@ -178,7 +178,9 @@ export default {
           password_confirm: Base64.encode(values.password_new),
           password_old: Base64.encode(values.password_old),
           password_new: Base64.encode(values.password_new),
-          com_password: Base64.encode(values.com_password),
+        }
+        if (this.userInfo.enable_mfa && this.userInfo.system_totp_on) {
+          data.passcode = values.passcode
         }
         this.loading = true
         await this.doUpdatePassword(data)
