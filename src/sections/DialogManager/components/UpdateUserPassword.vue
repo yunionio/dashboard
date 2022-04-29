@@ -22,6 +22,7 @@
     </div>
     <div slot="footer">
       <a-button type="primary" :loading="loading" @click="handleConfirm">{{ $t('dialog.ok') }}</a-button>
+      <a-button @click="handleLogout">{{ $t('common_348') }}</a-button>
     </div>
   </base-dialog>
 </template>
@@ -30,7 +31,7 @@
 import * as R from 'ramda'
 import { Base64 } from 'js-base64'
 import { mapGetters } from 'vuex'
-import { passwordLevel } from '@/utils/utils'
+import { passwordLevel, genReferRouteQuery } from '@/utils/utils'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
 
@@ -146,6 +147,18 @@ export default {
     this.manager = new this.$Manager('auth', 'v1')
   },
   methods: {
+    async handleLogout () {
+      try {
+        await this.$store.dispatch('auth/logout')
+        this.$router.push({
+          path: '/auth/login',
+          query: genReferRouteQuery(this.$route),
+        })
+        this.cancelDialog()
+      } catch (error) {
+        throw error
+      }
+    },
     checkComPassword (rule, value, callback) {
       const password = this.form.fc.getFieldValue('password_new')
       if (password !== value) {
