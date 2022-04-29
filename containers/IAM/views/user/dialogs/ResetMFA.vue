@@ -2,6 +2,7 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{action}}</div>
     <div slot="body">
+      <a-alert :message="$t('iam.reset_mfa_tips')" type="warning" class="mb-2" />
       <dialog-selected-tips :name="$t('dictionary.user')" :count="params.data.length" :action="action" />
       <dialog-table :data="params.data" :columns="params.columns.slice(0, 3)" />
     </div>
