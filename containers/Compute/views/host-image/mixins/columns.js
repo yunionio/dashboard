@@ -9,6 +9,7 @@ export default {
       getNameDescriptionTableColumn({
         width: 200,
         addLock: true,
+        addEncrypt: true,
         onManager: this.onManager,
         hideField: true,
         slotCallback: row => {
