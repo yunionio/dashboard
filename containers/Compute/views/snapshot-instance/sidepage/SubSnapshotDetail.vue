@@ -4,9 +4,10 @@
 
 <script>
 import { DISK_TYPES, STORAGE_TYPES } from '../constants'
-import { getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn } from '@/utils/common/tableColumn'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
+import { steadyStatus } from '../../snapshot/constants'
 
 export default {
   name: 'SubSnapshotDetail',
@@ -21,7 +22,16 @@ export default {
   data () {
     return {
       columns: [
-        getCopyWithContentTableColumn({ field: 'name', title: this.$t('compute.text_415') }),
+        getNameDescriptionTableColumn({
+          onManager: this.onManager,
+          hideField: true,
+          addEncrypt: true,
+          slotCallback: row => {
+            return (
+              <side-page-trigger onTrigger={ () => this.handleOpenSidepage(row) }>{ row.name }</side-page-trigger>
+            )
+          },
+        }),
         {
           field: 'size',
           title: this.$t('compute.text_422'),
@@ -56,6 +66,19 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SnapshotSidePage', {
+        id: row.id,
+        resource: 'snapshots',
+        getParams: this.getParam,
+        steadyStatus: steadyStatus,
+      }, {
+        list: this.list,
+        type: 'disk',
+      })
+    },
   },
 }
 </script>

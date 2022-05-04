@@ -35,7 +35,7 @@ export const getDiskTypeTableColumn = () => {
   return {
     field: 'disk_type',
     title: i18n.t('table.title.disk_type'),
-    width: 70,
+    width: 80,
     formatter: ({ row }) => {
       return DISK_TYPES[row.disk_type] || row.disk_type
     },
