@@ -31,6 +31,7 @@ import refresh from '../sections/select/refresh'
 import MetricOptions from './metrics'
 import { getSignature } from '@/utils/crypto'
 import { sizestr, mathRoundFix } from '@/utils/utils'
+import setting from '@/config/setting'
 
 function newChart (metircOption) {
   const chart = {
@@ -367,7 +368,7 @@ export default {
         const lastPoint = item.points ? item.points[item.points.length - 1] : undefined
         if (lastPoint) {
           return {
-            name: item.tags[this.dimension.name],
+            name: this.filterNameByOem(item.tags[this.dimension.name]),
             id: item.tags[this.dimension.id],
             value: lastPoint[0],
             timestamp: lastPoint[1],
@@ -477,6 +478,12 @@ export default {
       } finally {
         loading.stop()
       }
+    },
+    filterNameByOem (name) {
+      if (this.dimension.id === 'brand' && name === 'OneCloud') {
+        return setting.brand[setting.language] || name
+      }
+      return name
     },
   },
 }
