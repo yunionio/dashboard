@@ -34,6 +34,7 @@
             <sku
               v-decorator="decorators.sku"
               :type="type"
+              :priceUnit="skuPriceUnit"
               :sku-params="skuParam"
               :sku-filter="skuFilter"
               :require-sys-disk-type="requireSysDiskType"
@@ -525,6 +526,10 @@ export default {
         getRegionTableColumn(),
       ]
     },
+    // 是否为包年包月
+    isPackage () {
+      return this.selectedItem.billing_type === 'prepaid'
+    },
     instanceType () {
       return this.selectedItem.instance_type
     },
@@ -541,8 +546,9 @@ export default {
       if (count && this.pricesList && this.pricesList.length > 0) {
         const { month_price: month, sum_price: sum } = this.pricesList[0]
         let _price = parseFloat(sum)
-        if (this.isPackage && this.durationNum) {
-          _price = parseFloat(month) * this.durationNum
+
+        if (this.isPackage) {
+          _price = parseFloat(month) * (this.durationNum || 1)
         }
         return _price * parseFloat(count)
       }
@@ -560,8 +566,8 @@ export default {
     },
     priceTips () {
       if (this.price) {
-        if (this.isPackage && this.durationNum) {
-          const _day = (this.price / 30 / this.durationNum).toFixed(2)
+        if (this.isPackage) {
+          const _day = (this.price / 30 / (this.durationNum || 1)).toFixed(2)
           const _hour = (parseFloat(_day) / 24).toFixed(2)
           return this.$t('compute.text_1137', [this.currency, _day, this.currency, _hour])
         } else {
@@ -571,10 +577,6 @@ export default {
         }
       }
       return '--'
-    },
-    // 是否为包年包月
-    isPackage () {
-      return this.form.fd.billType === BILL_TYPES_MAP.package.key
     },
     durationNum () {
       if (this.isPackage) {
@@ -622,8 +624,8 @@ export default {
       if (this.pricesList && this.pricesList.length > 0) {
         const { month_gross_price: month, hour_gross_price: sum } = this.pricesList[0]
         let _price = parseFloat(sum)
-        if (this.isPackage && this.durationNum) {
-          _price = parseFloat(month) * this.durationNum
+        if (this.isPackage) {
+          _price = parseFloat(month) * (this.durationNum || 1)
         }
 
         return _price
@@ -668,6 +670,28 @@ export default {
         params.host_id = prefer_host
       }
       return params
+    },
+    skuPriceUnit () {
+      if (this.isPackage) {
+        return {
+          key: 'month_price',
+          unit: this.$t('compute.text_173'),
+        }
+      }
+      return {
+        key: 'hour_price',
+        unit: this.$t('compute.text_172'),
+      }
+    },
+  },
+  watch: {
+    priceTips: {
+      handler (val) {
+        let ret = `${this.currency} ${this.price && this.price.toFixed(2)}`
+        ret += !this.isPackage ? this.$t('compute.text_296') : ''
+        this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
+      },
+      immediate: true,
     },
   },
   created () {
