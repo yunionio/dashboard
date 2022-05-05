@@ -34,6 +34,7 @@
             <sku
               v-decorator="decorators.sku"
               :type="type"
+              :priceUnit="skuPriceUnit"
               :sku-params="skuParam"
               :sku-filter="skuFilter"
               :require-sys-disk-type="requireSysDiskType"
@@ -115,7 +116,7 @@ import MemRadio from '@Compute/sections/MemRadio'
 import DataDisk from '@Compute/sections/DataDisk'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import sku from '@Compute/sections/SKU'
-import { SERVER_TYPE, BILL_TYPES_MAP, EIP_TYPES_MAP } from '@Compute/constants'
+import { SERVER_TYPE, EIP_TYPES_MAP } from '@Compute/constants'
 import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import WindowsMixin from '@/mixins/windows'
@@ -545,7 +546,7 @@ export default {
     },
     // 是否为包年包月
     isPackage () {
-      return this.form.fd.billType === BILL_TYPES_MAP.package.key
+      return this.selectedItem.billing_type === 'prepaid'
     },
     durationNum () {
       if (this.isPackage) {
@@ -628,6 +629,28 @@ export default {
         params.host_id = prefer_host
       }
       return params
+    },
+    skuPriceUnit () {
+      if (this.isPackage) {
+        return {
+          key: 'month_price',
+          unit: this.$t('compute.text_173'),
+        }
+      }
+      return {
+        key: 'hour_price',
+        unit: this.$t('compute.text_172'),
+      }
+    },
+  },
+  watch: {
+    priceTips: {
+      handler (val) {
+        let ret = `${this.currency} ${this.price && this.price.toFixed(2)}`
+        ret += !this.isPackage ? this.$t('compute.text_296') : ''
+        this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
+      },
+      immediate: true,
     },
   },
   created () {
@@ -1036,7 +1059,7 @@ export default {
       if (R.isNil(f.systemDiskSize)) return
 
       const pf = new PriceFetcher()
-      pf.initialForm(this.$store.getters.scope, f.sku, f.duration, f.billType, this.isPublic, this.cloudaccountId)
+      pf.initialForm(this.$store.getters.scope, f.sku, f.duration || '1M', this.selectedItem?.billing_type, this.isPublic, this.cloudaccountId)
       // add price items
       if (!isPublic) {
         // server instance
