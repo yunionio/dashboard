@@ -17,9 +17,9 @@
       </div>
       <div slot="right">
         <a-button class="mr-3" @click="perv" v-if="!isFirstStep">{{$t('cloudenv.text_273')}}</a-button>
-        <a-button :disabled="nextDisabled" class="mr-3" type="primary"  @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
-        <test-button v-if="['create-cloudaccount', 'bill-form', 'big-query-bill-form'].includes(currentComponent)" class="mr-3" :post="testPost" />
-        <a-button @click="cancel">{{['select-region', 'bill-form', 'big-query-bill-form'].includes(currentComponent) ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
+        <a-button :disabled="nextDisabled" class="mr-3:" type="primary"  @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
+        <test-button v-if="['create-cloudaccount', 'bill-form', 'bill-file-index'].includes(currentComponent)" class="mr-3" :post="testPost" />
+        <a-button @click="cancel">{{['select-region', 'bill-form', 'bill-file-index'].includes(currentComponent) ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -29,7 +29,7 @@
 import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
 import BillForm from './form/BillForm'
-import BigQueryBillForm from './form/BigQueryBillForm'
+import BillFileIndex from './BillFileIndex'
 import GuestNetwork from './form/GuestNetwork'
 import HostNetwork from './form/HostNetwork'
 import { CLOUDACCOUNT_TYPES } from '@Cloudenv/views/cloudaccount/constants'
@@ -44,7 +44,7 @@ export default {
     SelectCloudaccount,
     CreateCloudaccount,
     BillForm,
-    BigQueryBillForm,
+    BillFileIndex,
     GuestNetwork,
     HostNetwork,
     TestButton,
@@ -148,7 +148,7 @@ export default {
         this.step.steps = [
           { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
           { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
-          { title: this.$t('cloudenv.text_279'), key: this.isGoogle ? 'big-query-bill-form' : 'bill-form' },
+          { title: this.$t('cloudenv.text_279'), key: this.isGoogle ? 'big-file-index' : 'bill-form' },
         ]
       } else {
         this.step.steps = [

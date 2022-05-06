@@ -158,6 +158,10 @@ export default {
       )
     },
     async fetchCloudAccounts () {
+      const { id } = this.$route.query
+      if (!id) {
+        return false
+      }
       this.cloudAccountLoading = true
       try {
         const params = {
