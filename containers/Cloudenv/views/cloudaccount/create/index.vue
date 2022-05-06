@@ -148,7 +148,7 @@ export default {
         this.step.steps = [
           { title: this.$t('cloudenv.text_277'), key: 'select-cloudaccount' },
           { title: this.$t('cloudenv.text_278'), key: 'create-cloudaccount' },
-          { title: this.$t('cloudenv.text_279'), key: this.isGoogle ? 'big-file-index' : 'bill-form' },
+          { title: this.$t('cloudenv.text_279'), key: this.isGoogle ? 'bill-file-index' : 'bill-form' },
         ]
       } else {
         this.step.steps = [
