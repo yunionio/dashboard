@@ -9,8 +9,9 @@
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
     :export-data-options="exportDataOptions" />
- </template>
+</template>
 <script>
+
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
@@ -81,6 +82,7 @@ export default {
             field: 'connection_str',
             title: this.$t('db.text_59'),
           }),
+          ip_addrs: getNameFilter({ field: 'ip_addrs', label: this.$t('db.intranet_ip') }),
           region: {
             label: this.$t('db.text_40'),
           },
@@ -108,6 +110,7 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: this.$t('db.text_51'), key: 'provider' },
           { label: this.$t('db.text_40'), key: 'region' },
+          { label: this.$t('db.intranet_ip'), key: 'ip_addrs' },
         ],
       },
       groupActions: [
