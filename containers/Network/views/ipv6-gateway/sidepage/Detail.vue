@@ -28,44 +28,22 @@ export default {
   data () {
     return {
       baseInfo: [
-        {
+        getCopyWithContentTableColumn({
           field: 'vpc',
           title: 'VPC',
-        },
+          hideField: true,
+          slotCallback: row => {
+            if (!row.region) return '-'
+            return [
+              <side-page-trigger permission='vpcs_get' name='VpcSidePage' id={row.vpc_id} vm={this}>{ row.vpc }</side-page-trigger>,
+            ]
+          },
+        }),
         {
           field: 'instance_type',
           title: this.$t('network.text_268'),
         },
         getBrandTableColumn(),
-        getCopyWithContentTableColumn({
-          field: 'region',
-          title: this.$t('network.text_199'),
-          hideField: true,
-          slotCallback: row => {
-            if (!row.region) return '-'
-            return [
-              <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.region_id} vm={this}>{ row.region }</side-page-trigger>,
-            ]
-          },
-        }),
-        {
-          field: 'zone',
-          title: this.$t('network.text_199'),
-          slots: {
-            default: ({ row }) => {
-              if (row.zone_1) {
-                const ret = [<div>{ row.zone }({this.$t('db.text_165')})</div>]
-                ret.push(
-                  <div>
-                    {row.zone_1_name}({this.$t('db.text_164')})
-                  </div>,
-                )
-                return ret
-              }
-              return row.zone || '-'
-            },
-          },
-        },
       ],
     }
   },
