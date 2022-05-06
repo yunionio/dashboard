@@ -506,7 +506,7 @@ export const getAccountTableColumn = ({
         let val = _.get(row, field)
         if (vm.isPreLoad && !val) return [<data-loading />]
         // OneStack => oem en
-        if (row[brandField] && row[brandField] === 'OneCloud') {
+        if (val === 'OneStack' && row[brandField] && row[brandField] === 'OneCloud') {
           val = setting.brand.en || val
         }
         const ret = []
