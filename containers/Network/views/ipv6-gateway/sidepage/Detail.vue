@@ -3,7 +3,7 @@
     :on-manager="onManager"
     :data="data"
     statusModule="ipv6_gateway"
-    resource="ipv6_gatewayss"
+    resource="ipv6_gateways"
     :base-info="baseInfo" />
 </template>
 
