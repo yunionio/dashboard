@@ -33,6 +33,7 @@
 <script>
 import * as R from 'ramda'
 import c from '@/constants/feature'
+import setting from '@/config/setting'
 
 export const LicenseFeatures = {
   model: {
@@ -60,7 +61,21 @@ export const LicenseFeatures = {
   data () {
     return {
       selectedItems: this._selectedItems(this.items),
-      options: c.items,
+      options: c.items.map(item => {
+        if (item.key === 'cloudpods') {
+          const { companyInfo = {} } = this.$store.state.app
+          const { inner_logo, inner_logo_format, inner_copyright, inner_copyright_en } = companyInfo
+          if (inner_logo && inner_logo_format) {
+            item.icon = `data:${inner_logo_format};base64,${inner_logo}`
+          }
+          if (setting.language === 'en' && inner_copyright_en) {
+            item.label = inner_copyright_en
+          } else if (setting.language === 'zh-CN' && inner_copyright) {
+            item.label = inner_copyright
+          }
+        }
+        return item
+      }),
     }
   },
   computed: {
