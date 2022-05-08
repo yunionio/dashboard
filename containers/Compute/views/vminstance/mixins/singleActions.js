@@ -346,7 +346,7 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key && obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
@@ -742,7 +742,7 @@ export default {
                 },
                 {
                   label: this.$t('compute.bind_physical_cpu'),
-                  permission: 'server_get_cpuset_cores',
+                  permission: 'server_get_cpuset_cores,server_perform_cpuset',
                   action: () => {
                     this.createDialog('BindPhysicalCpuDialog', {
                       data: [obj],

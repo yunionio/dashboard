@@ -380,6 +380,7 @@ export const PERMISSION = {
   server_perform_dissociate_eip: ['compute', 'servers', 'perform', 'dissociate-eip'],
   server_perform_reset: ['compute', 'servers', 'perform', 'reset'],
   server_perform_io_throttle: ['compute', 'servers', 'perform', 'io-throttle'],
+  server_perform_cpuset: ['compute', 'servers', 'perform', 'cpuset'],
   server_perform_snapshot_and_clone: ['compute', 'servers', 'perform', 'snapshot-and-clone'],
   server_perform_unbind_groups: ['compute', 'servers', 'perform', 'unbind-groups'],
   server_perform_bind_groups: ['compute', 'servers', 'perform', 'bind-groups'],
