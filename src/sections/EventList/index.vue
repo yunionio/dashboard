@@ -154,6 +154,32 @@ export default {
         ],
       },
       start_time: getTimeRangeFilter({ label: this.$t('common_156'), field: 'start_time' }),
+      ip: {
+        label: 'IP',
+      },
+      severity: {
+        label: this.$t('common_log_table_key.severity'),
+        dropdown: true,
+        items: [
+          { label: 'INFO', key: 'INFO' },
+          { label: 'ERROR', key: 'ERROR' },
+          { label: 'DEBUG', key: 'DEBUG' },
+          { label: 'NOTICE', key: 'NOTICE' },
+          { label: 'WARNING', key: 'WARNING' },
+          { label: 'CRITICAL', key: 'CRITICAL' },
+          { label: 'ALERT', key: 'ALERT' },
+          { label: 'EMERGENCY', key: 'EMERGENCY' },
+        ],
+      },
+      kind: {
+        label: this.$t('common_log_table_key.kind'),
+        dropdown: true,
+        items: [
+          { label: 'NORMAL', key: 'NORMAL' },
+          { label: 'ABNORMAL', key: 'ABNORMAL' },
+          { label: 'ILLEGAL', key: 'ILLEGAL' },
+        ],
+      },
     }
     if (this.$store.getters.isProjectMode) delete filterOptions.tenant
     return {
