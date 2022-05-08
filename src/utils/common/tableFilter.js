@@ -27,6 +27,10 @@ export function getBrandItems (key = 'brands', outBrands = []) {
     if (obj.label === 'OneCloud') {
       obj.label = i18n.t('brand')
     }
+    if (obj.key === 'Cloudpods') {
+      const { companyInfo = {} } = store.state.app
+      obj.label = setting.language === 'en' ? (companyInfo.inner_copyright_en || obj.label) : (companyInfo.inner_copyright || obj.label)
+    }
     return obj
   }).filter(({ key }) => {
     if (R.type(outBrands) === 'Array' && !R.isEmpty(outBrands)) {
