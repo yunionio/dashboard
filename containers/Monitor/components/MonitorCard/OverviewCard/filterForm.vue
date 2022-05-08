@@ -480,8 +480,13 @@ export default {
       }
     },
     filterNameByOem (name) {
-      if (this.dimension.id === 'brand' && name === 'OneCloud') {
-        return setting.brand[setting.language] || name
+      if (this.dimension.id === 'brand') {
+        if (name === 'OneCloud') {
+          return setting.brand[setting.language] || name
+        } else if (name === 'Cloudpods') {
+          const { companyInfo = {} } = this.$store.state.app
+          return setting.language === 'en' ? (companyInfo.inner_copyright_en || name) : (companyInfo.inner_copyright || name)
+        }
       }
       return name
     },
