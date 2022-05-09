@@ -42,8 +42,8 @@ export default {
   data () {
     return {
       loading: false,
-      time: '1h',
-      timeGroup: '5m',
+      time: '168h',
+      timeGroup: '30m',
       monitorList: [],
     }
   },
