@@ -16,7 +16,7 @@ import { ENGINE_ARCH } from '../constants/index.js'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getStatusFilter, getTenantFilter, getFilter, getDomainFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getTenantFilter, getFilter, getDomainFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -93,9 +93,10 @@ export default {
           region: {
             label: this.$t('db.text_40'),
           },
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'instance_type'],
+        hiddenColumns: ['metadata', 'instance_type', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -115,6 +116,7 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: this.$t('db.text_51'), key: 'provider' },
           { label: this.$t('db.text_40'), key: 'region' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

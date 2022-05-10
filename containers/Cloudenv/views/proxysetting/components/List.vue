@@ -10,7 +10,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDomainFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getSetPublicAction } from '@/utils/common/tableActions'
@@ -33,6 +33,7 @@ export default {
         filterOptions: {
           name: getNameFilter(),
           project_domains: getDomainFilter(),
+          created_at: getCreatedAtFilter(),
           // https_proxy: {
           //   label: 'https代理',
           // },
@@ -43,6 +44,7 @@ export default {
           //   label: '不走代理地址',
           // },
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -58,6 +60,7 @@ export default {
               return !this.$store.getters.l3PermissionEnable && (this.$store.getters.scopeResource && this.$store.getters.scopeResource.domain.includes('cloudaccounts'))
             },
           },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

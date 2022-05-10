@@ -11,7 +11,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getStatusFilter, getEnabledFilter, getRegionFilter, getBrandFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getEnabledFilter, getRegionFilter, getBrandFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import { sizestr } from '@/utils/utils'
@@ -67,8 +67,9 @@ export default {
           },
           region: getRegionFilter(),
           provider: getBrandFilter(),
+          created_at: getCreatedAtFilter(),
         },
-        hiddenColumns: ['postpaid_status'],
+        hiddenColumns: ['postpaid_status', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -79,6 +80,7 @@ export default {
           { label: this.$t('compute.text_268'), key: 'status' },
           { label: this.$t('compute.text_699', [this.$t('dictionary.server')]), key: 'total_guest_count' },
           { label: this.$t('compute.text_241'), key: 'enabled' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

@@ -44,6 +44,7 @@ export default {
           order: 'asc',
           ...this.getParams,
         },
+        hiddenColumns: ['created_at'],
       }),
       groupActions: [
         {

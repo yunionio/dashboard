@@ -15,6 +15,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import {
   getStatusFilter,
   getTenantFilter,
+  getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -60,6 +61,7 @@ export default {
             }),
           },
           projects: getTenantFilter(),
+          created_at: getCreatedAtFilter(),
         },
         hiddenColumns: ['resource_type', 'created_at'],
       }),

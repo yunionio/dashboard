@@ -13,7 +13,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { RES_TYPES } from '../utils'
 import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -47,7 +47,9 @@ export default {
               return { label: RES_TYPES[key], key }
             }),
           },
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -58,6 +60,7 @@ export default {
           { label: this.$t('cloudenv.text_417'), key: 'resource_count' },
           { label: this.$t('cloudenv.text_418'), key: 'dynamic_schedtag_count' },
           { label: this.$t('cloudenv.text_419'), key: 'schedpolicy_count' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

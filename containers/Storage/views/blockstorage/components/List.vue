@@ -16,7 +16,7 @@ import * as R from 'ramda'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getProjectDomainFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getDomainChangeOwnerAction, getSetPublicAction, getEnabledSwitchActions } from '@/utils/common/tableActions'
 import { hasServices } from '@/utils/auth'
 import expectStatus from '@/constants/expectStatus'
@@ -206,9 +206,10 @@ export default {
           zone: {
             label: this.$t('dictionary.zone'),
           },
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'storage_type', 'medium_type', 'schedtag'],
+        hiddenColumns: ['metadata', 'storage_type', 'medium_type', 'schedtag', 'created_at'],
       }),
       groupActions: !hasServices('hostagent') ? R.remove(0, 1, groupActions) : groupActions,
       exportDataOptions: {
@@ -233,6 +234,7 @@ export default {
           },
           { label: this.$t('storage.text_49', [this.$t('dictionary.domain')]), key: 'project_domain' },
           { label: this.$t('common_715'), key: 'user_tags' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       handleOpenSidepage (row, tab) {

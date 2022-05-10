@@ -13,7 +13,7 @@
 import { mapGetters } from 'vuex'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getProjectDomainFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
@@ -46,14 +46,17 @@ export default {
             },
           },
           project_domain: getProjectDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('system.text_101'), key: 'name' },
           { label: this.$t('dictionary.domain'), key: 'project_domain' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

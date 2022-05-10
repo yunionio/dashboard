@@ -8,6 +8,7 @@ import {
   getPublicScopeTableColumn,
   getProjectDomainTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -55,6 +56,7 @@ export default {
       getPublicScopeTableColumn({ vm: this, resource: 'vpcs' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

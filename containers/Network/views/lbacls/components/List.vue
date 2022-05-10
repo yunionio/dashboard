@@ -16,7 +16,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getTenantFilter, getDomainFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
 export default {
@@ -47,6 +47,7 @@ export default {
           },
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
       }),
@@ -58,6 +59,7 @@ export default {
           { label: this.$t('network.text_313'), key: 'created_at' },
           { label: this.$t('network.text_314'), key: 'updated_at' },
           { label: this.$t('dictionary.project'), key: 'tenant' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

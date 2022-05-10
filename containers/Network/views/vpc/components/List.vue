@@ -24,6 +24,7 @@ import {
   getAccountFilter,
   getProjectDomainFilter,
   getRegionFilter,
+  getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
@@ -79,6 +80,7 @@ export default {
       },
       project_domains: getProjectDomainFilter(),
       region: getRegionFilter(),
+      created_at: getCreatedAtFilter(),
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
@@ -91,7 +93,7 @@ export default {
         steadyStatus: Object.values(expectStatus.vpc).flat(),
         filterOptions,
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'wire_count'],
+        hiddenColumns: ['metadata', 'wire_count', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -113,6 +115,7 @@ export default {
           },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
           { label: this.$t('common_715'), key: 'user_tags' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

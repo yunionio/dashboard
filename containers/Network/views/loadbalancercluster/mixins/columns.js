@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getRegionTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -20,6 +21,7 @@ export default {
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'loadbalancercluster', columns: () => this.columns }),
       getRegionTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

@@ -19,7 +19,7 @@ import { cloudEnabled, cloudUnabledTip } from '../../vminstance/utils'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { disableDeleteAction } from '@/utils/common/tableActions'
-import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter, getRegionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getOsTypeFilter, getDomainFilter, getRegionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
@@ -74,6 +74,7 @@ export default {
       project_domains: getDomainFilter(),
       status: getStatusFilter({ statusModule: 'server' }),
       os_type: getOsTypeFilter(),
+      created_at: getCreatedAtFilter(),
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
@@ -86,7 +87,7 @@ export default {
         filterOptions,
         steadyStatus: Object.values(expectStatus.server).flat(),
         responseData: this.responseData,
-        hiddenColumns: ['host_sn'],
+        hiddenColumns: ['host_sn', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -105,6 +106,7 @@ export default {
           { label: this.$t('res.region'), key: 'region' },
           { label: this.$t('res.zone'), key: 'zone' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
         getParams: () => ({ hypervisor: 'baremetal' }),
       },

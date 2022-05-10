@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getAccountTableColumn, getOsArch } from '@/utils/common/tableColumn'
+import { getRegionTableColumn, getStatusTableColumn, getBrandTableColumn, getEnabledTableColumn, getNameDescriptionTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getAccountTableColumn, getOsArch, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { sizestr, percentstr } from '@/utils/utils'
 import i18n from '@/locales'
 
@@ -244,6 +244,7 @@ export default {
       getPublicScopeTableColumn({ vm: this, resource: 'hosts' }),
       getProjectDomainTableColumn({ vm: this }),
       getRegionTableColumn({ vm: this }),
+      getTimeTableColumn(),
     ]
   },
 }

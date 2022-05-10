@@ -13,7 +13,7 @@
 <script>
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getProjectDomainFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import {
   getSetPublicAction,
 } from '@/utils/common/tableActions'
@@ -55,14 +55,17 @@ export default {
             },
           },
           project_domains: getProjectDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('system.text_101'), key: 'name' },
           { label: this.$t('dictionary.domain'), key: 'project_domain' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

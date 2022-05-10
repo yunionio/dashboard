@@ -10,7 +10,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 
@@ -35,7 +35,9 @@ export default {
             label: this.$t('table.title.id'),
           },
           name: getNameFilter(),
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -45,6 +47,7 @@ export default {
           { label: this.$t('compute.text_726'), key: 'fingerprint' },
           { label: this.$t('compute.text_175'), key: 'scheme' },
           { label: this.$t('compute.text_699', [this.$t('dictionary.server')]), key: 'linked_guest_count' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

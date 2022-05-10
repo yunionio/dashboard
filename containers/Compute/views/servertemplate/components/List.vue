@@ -14,7 +14,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter, getRegionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getTenantFilter, getStatusFilter, getBrandFilter, getDomainFilter, getOsArchFilter, getRegionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -86,8 +86,9 @@ export default {
             }),
           },
           os_arch: getOsArchFilter(),
+          created_at: getCreatedAtFilter(),
         },
-        hiddenColumns: ['os_type', 'os_arch'],
+        hiddenColumns: ['os_type', 'os_arch', 'created_at'],
         responseData: this.responseData,
       }),
       exportDataOptions: {
@@ -97,6 +98,7 @@ export default {
           { label: this.$t('res.project'), key: 'tenant' },
           { label: this.$t('table.title.create_time'), key: 'created_at' },
           { label: this.$t('table.title.os_arch'), key: 'os_arch' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [
