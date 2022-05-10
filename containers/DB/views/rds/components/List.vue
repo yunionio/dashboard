@@ -15,7 +15,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getFilter, getTenantFilter, getDomainFilter, getStatusFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getFilter, getTenantFilter, getDomainFilter, getStatusFilter, getBrandFilter, getCloudProviderFilter, getAccountFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
@@ -87,9 +87,10 @@ export default {
             label: this.$t('db.text_40'),
           },
           project_domains: getDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'vcpu_count', 'account'],
+        hiddenColumns: ['metadata', 'vcpu_count', 'account', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -110,6 +111,7 @@ export default {
           { label: this.$t('dictionary.project'), key: 'tenant' },
           { label: this.$t('db.text_51'), key: 'provider' },
           { label: this.$t('db.text_40'), key: 'region' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
           // { label: this.$t('db.intranet_ip'), key: 'ip_addrs' },
         ],
       },

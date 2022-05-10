@@ -5,6 +5,7 @@ import {
   getStatusTableColumn,
   getProjectDomainTableColumn,
   getPublicScopeTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -56,7 +57,7 @@ export default {
       getBrandTableColumn({ field: 'provider' }),
       getPublicScopeTableColumn({ vm: this, resource: 'cloudgroups' }),
       getProjectDomainTableColumn(),
-
+      getTimeTableColumn(),
     ]
   },
   methods: {

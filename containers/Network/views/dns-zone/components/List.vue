@@ -21,6 +21,7 @@ import {
   getDomainFilter,
   getStatusFilter,
   getDescriptionFilter,
+  getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
@@ -65,8 +66,10 @@ export default {
             },
           },
           project_domains: getDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -84,6 +87,7 @@ export default {
             },
           },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [
