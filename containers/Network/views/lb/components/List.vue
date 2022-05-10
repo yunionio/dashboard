@@ -20,7 +20,7 @@ import { validateEnabled, validateDisable } from '../utils'
 import { surpportLb } from '@Network/views/lb/constants'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter, getCloudProviderFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter, getCloudProviderFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
 import { PROVIDER_MAP } from '@/constants'
@@ -71,6 +71,7 @@ export default {
       zone: {
         label: this.$t('compute.text_270'),
       },
+      created_at: getCreatedAtFilter(),
     }
     const { path } = this.$route
     if (path.includes('/cluster')) {
@@ -104,6 +105,7 @@ export default {
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('network.text_196'), key: 'account', hidden: this.$store.getters.isProjectMode },
           { label: this.$t('common_715'), key: 'user_tags' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
     }

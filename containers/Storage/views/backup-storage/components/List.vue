@@ -18,6 +18,7 @@ import {
   getNameFilter,
   getStatusFilter,
   getDomainFilter,
+  getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 import {
   getSetPublicAction,
@@ -53,6 +54,7 @@ export default {
           name: getNameFilter(),
           status: getStatusFilter('backupStorage'),
           project_domains: getDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
@@ -67,6 +69,7 @@ export default {
           { label: this.$t('storage.capacity'), key: 'capacity_mb' },
           { label: this.$t('common.attribution_scope'), key: 'project_domain' },
           { label: this.$t('table.title.share_range'), key: 'public_scope' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

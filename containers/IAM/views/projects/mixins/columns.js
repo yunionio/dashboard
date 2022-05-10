@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -22,6 +23,7 @@ export default {
       }),
       getTagTableColumn({ onManager: this.onManager, needExt: true, resource: 'projects', columns: () => this.columns, tipName: this.$t('dictionary.project') }),
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

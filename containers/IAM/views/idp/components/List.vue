@@ -26,7 +26,7 @@ import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
-import { getEnabledFilter, getStatusFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getEnabledFilter, getStatusFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getRequestT } from '@/utils/utils'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -88,12 +88,14 @@ export default {
               })
             }),
           },
+          created_at: getCreatedAtFilter(),
         },
         steadyStatus: {
           status: Object.values(expectStatus.idp).flat(),
           sync_status: Object.values(expectStatus.sync).flat(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -103,6 +105,7 @@ export default {
           { label: this.$t('system.text_164'), key: 'status' },
           { label: this.$t('system.text_203'), key: 'sync_status' },
           { label: this.$t('system.text_204'), key: 'driver' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

@@ -17,7 +17,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import { canIpmiProbe } from '../utils/status'
-import { getNameFilter, getStatusFilter, getEnabledFilter, getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getEnabledFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -99,9 +99,10 @@ export default {
           zone: {
             label: this.$t('compute.text_270'),
           },
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'access_mac', 'sn', 'public_scope', 'project_domain', 'region'],
+        hiddenColumns: ['metadata', 'access_mac', 'sn', 'public_scope', 'project_domain', 'region', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -126,6 +127,7 @@ export default {
             },
           },
           { label: this.$t('compute.text_506', [this.$t('dictionary.domain')]), key: 'project_domain' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
     }

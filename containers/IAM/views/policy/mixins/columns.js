@@ -4,6 +4,7 @@ import {
   getNameDescriptionTableColumn,
   getPublicScopeTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -50,6 +51,7 @@ export default {
       }),
       getPublicScopeTableColumn({ vm: this, resource: 'policies' }),
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
   methods: {

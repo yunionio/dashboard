@@ -4,6 +4,7 @@ import {
   getEnabledTableColumn,
   getProjectTableColumn,
   getPublicScopeTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import {
   getTypeTableColumn,
@@ -36,6 +37,7 @@ export default {
         title: 'Webhook/URL',
         field: 'address',
       }),
+      getTimeTableColumn(),
     ]
   },
 }

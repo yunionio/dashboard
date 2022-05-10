@@ -5,6 +5,7 @@ import {
   getStatusTableColumn,
   getBrandTableColumn,
   getRegionTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
@@ -56,6 +57,7 @@ export default {
         },
         getEnabledTableColumn(),
         getBrandTableColumn({ field: 'provider' }),
+        getTimeTableColumn(),
       ]
       if (this.cloudEnv === 'public') {
         columns.push(

@@ -10,7 +10,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getBrandFilter, getCloudProviderFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getCloudProviderFilter, getTenantFilter, getDomainFilter, getAccountFilter, getStatusFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 
@@ -54,6 +54,7 @@ export default {
       region: {
         label: this.$t('dashboard.text_101'),
       },
+      created_at: getCreatedAtFilter(),
     }
     return {
       list: this.$list.createList(this, {

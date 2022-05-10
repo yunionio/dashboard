@@ -10,6 +10,7 @@ import {
   getAccountTableColumn,
   getPublicScopeTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -139,6 +140,7 @@ export default {
         hidden: () => this.hiddenColumns.includes('region'),
         vm: this,
       }),
+      getTimeTableColumn(),
     ]
   },
   computed: {

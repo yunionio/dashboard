@@ -20,7 +20,7 @@ import { getWiresMergeAction } from '../utils/groupactions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
-import { getNameFilter, getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 
@@ -82,8 +82,10 @@ export default {
             label: this.$t('network.text_199'),
           },
           project_domains: getProjectDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -104,6 +106,7 @@ export default {
           },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
           { label: this.$t('common_715'), key: 'user_tags' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

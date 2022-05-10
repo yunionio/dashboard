@@ -3,6 +3,7 @@ import {
   getStatusTableColumn,
   getTagTableColumn,
   getPublicScopeTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 
 import {
@@ -29,6 +30,7 @@ export default {
       // getCapacityMbColumns(),
       getProjectDomainTableColumns(),
       getPublicScopeTableColumn({ vm: this, resource: 'backupstorages' }),
+      getTimeTableColumn(),
     ]
   },
 }
