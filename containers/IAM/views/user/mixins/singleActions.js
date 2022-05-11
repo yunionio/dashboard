@@ -83,6 +83,7 @@ export default {
                   onManager: this.onManager,
                 })
               },
+              hidden: true,
             },
             {
               label: i18n.t('system.text_129'),
