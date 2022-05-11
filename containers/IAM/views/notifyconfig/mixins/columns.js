@@ -3,6 +3,8 @@ import {
   getAttirubuteTableColumn,
 } from '../utils/columns'
 
+import { getTimeTableColumn } from '@/utils/common/tableColumn'
+
 export default {
   created () {
     this.columns = [
@@ -23,6 +25,7 @@ export default {
       },
       getConfigTypeTableColumn(),
       getAttirubuteTableColumn({ vm: this }),
+      getTimeTableColumn(),
     ]
   },
 }

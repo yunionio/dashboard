@@ -5,6 +5,7 @@ import {
   getProjectTableColumn,
   getRegionTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
 import i18n from '@/locales'
@@ -82,6 +83,7 @@ export default {
       getAssociateNameTableColumn({ vm: this }),
       getProjectTableColumn(),
       getRegionTableColumn({ vm: this }),
+      getTimeTableColumn(),
     ]
   },
 }

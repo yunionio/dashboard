@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { STORAGE_TYPES, MEDIUM_TYPES } from '@Storage/constants/index.js'
 import { sizestr } from '@/utils/utils'
-import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getRegionTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getEnabledTableColumn, getStatusTableColumn, getBrandTableColumn, getPublicScopeTableColumn, getProjectDomainTableColumn, getTagTableColumn, getRegionTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -98,6 +98,7 @@ export default {
       getPublicScopeTableColumn({ vm: this, resource: 'storages' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }
