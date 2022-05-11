@@ -10,8 +10,28 @@
         <a-form-item :label="$t('compute.text_1247')">
           <a-switch :checkedChildren="$t('compute.text_115')" :unCheckedChildren="$t('compute.text_116')" v-model="form.fi.isSetSpeed" />
         </a-form-item>
-        <a-form-item :label="$t('compute.text_1248')" v-show="form.fi.isSetSpeed">
-          <a-input-number :max="2048" :min="1" :step="50" v-decorator="decorators.bps" />
+        <a-form-item v-show="form.fi.isSetSpeed">
+          <span slot="label">
+            {{ $t('compute.text_1248') }}&nbsp;
+            <a-tooltip :title="$t('compute.text_1248_tip')">
+              <a-icon type="question-circle-o" />
+            </a-tooltip>
+          </span>
+          <span>
+            <a-input-number :min="1" :step="50" v-decorator="decorators.iops" />
+          </span>
+        </a-form-item>
+        <a-form-item v-show="form.fi.isSetSpeed">
+          <span slot="label">
+            {{ $t('compute.text_1248_1') }}&nbsp;
+            <a-tooltip :title="$t('compute.text_1248_1_tip')">
+              <a-icon type="question-circle-o" />
+            </a-tooltip>
+          </span>
+          <span>
+            <a-input-number :min="1" :step="50" v-decorator="decorators.bps" />
+          </span>
+          <span class="ml-2">M/s</span>
         </a-form-item>
       </a-form>
     </div>
@@ -33,6 +53,8 @@ export default {
   data () {
     const bpsVal = _.get(this.params.data[0], 'metadata.bps')
     const bps = Boolean(parseInt(bpsVal))
+    const iopsVal = _.get(this.params.data[0], 'metadata.iops')
+    const iops = Boolean(parseInt(iopsVal))
     return {
       loading: false,
       action: this.$t('compute.text_1249'),
@@ -43,13 +65,28 @@ export default {
         },
       },
       decorators: {
+        iops: [
+          'iops',
+          {
+            initialValue: iops ? parseInt(iopsVal) : 1,
+            rules: [
+              { required: true, message: this.$t('compute.text_1250') },
+            ],
+          },
+        ],
         bps: [
           'bps',
           {
             initialValue: bps ? parseInt(bpsVal) : 1,
             rules: [
-              { required: true, message: this.$t('compute.text_1250') },
+              { required: true, message: this.$t('compute.text_1250_1') },
             ],
+          },
+        ],
+        unit: [
+          'unit',
+          {
+            initialValue: 'M',
           },
         ],
       },
@@ -58,16 +95,17 @@ export default {
           span: 19,
         },
         labelCol: {
-          span: 3,
+          span: 4,
         },
       },
     }
   },
   methods: {
     async doSetSpeedSubmit (data) {
-      const params = {
-        iops: 0,
-        bps: this.form.fi.isSetSpeed ? data.bps : 0,
+      const params = { iops: 0, bps: 0 }
+      if (this.form.fi.isSetSpeed) {
+        params.bps = data.bps
+        params.iops = data.iops
       }
       const ids = this.params.data.map(item => item.id)
       return this.params.onManager('batchPerformAction', {
