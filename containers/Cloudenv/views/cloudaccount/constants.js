@@ -1,10 +1,7 @@
 import { typeClouds } from '@/utils/common/hypervisor'
 import { getDocsUrl, isCE } from '@/utils/utils'
-import store from '@/store'
-import setting from '@/config/setting'
 import i18n from '@/locales'
 const providerMap = typeClouds.getProviderlowcase()
-const { companyInfo = {} } = store.state.app
 const aliyunLogo = require('../../../../src/assets/images/providers/aliyun.svg')
 const awsLogo = require('../../../../src/assets/images/providers/aws.svg')
 const azureLogo = require('../../../../src/assets/images/providers/azure.svg')
@@ -23,16 +20,10 @@ const ctyunLogo = require('../../../../src/assets/images/providers/tianyi.svg')
 const apsaraLogo = require('../../../../src/assets/images/providers/apsara.svg')
 const ecloudLogo = require('../../../../src/assets/images/providers/ecloud.svg')
 const jdcloudLogo = require('../../../../src/assets/images/providers/jdcloud.svg')
-let cloudpodsLogo = require('../../../../src/assets/images/providers/cloudpods.svg')
+const cloudpodsLogo = require('../../../../src/assets/images/providers/cloudpods.svg')
 const hcsoLogo = require('../../../../src/assets/images/providers/hcso.svg')
 const nutanixLogo = require('../../../../src/assets/images/providers/nutanix.svg')
 const bingocloudLogo = require('../../../../src/assets/images/providers/bingocloud.svg')
-
-if (companyInfo.inner_logo && companyInfo.inner_logo_format) {
-  cloudpodsLogo = `data:${companyInfo.inner_logo_format};base64,${companyInfo.inner_logo}`
-}
-
-const cloudpodsName = setting.language === 'en' ? (companyInfo.inner_copyright_en || providerMap.cloudpods.label) : (companyInfo.inner_copyright || providerMap.cloudpods.label)
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
@@ -137,7 +128,7 @@ export const CLOUDACCOUNT_TYPES = {
       provider: providerMap.apsara.key,
     },
     cloudpods: {
-      name: cloudpodsName,
+      name: providerMap.cloudpods.label,
       logo: cloudpodsLogo,
       component: 'CloudpodsCreate',
       provider: providerMap.cloudpods.key,
