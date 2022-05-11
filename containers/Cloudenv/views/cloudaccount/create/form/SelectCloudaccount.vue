@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import setting from '@/config/setting'
 import { CLOUDACCOUNT_TYPES, ENV_TITLE } from '@Cloudenv/views/cloudaccount/constants'
 
 export default {
@@ -32,7 +33,6 @@ export default {
   },
   data () {
     return {
-      types: CLOUDACCOUNT_TYPES,
       envTitle: ENV_TITLE,
     }
   },
@@ -43,6 +43,27 @@ export default {
         return globalSetting.value.setupKeys
       }
       return undefined
+    },
+    types () {
+      const typesMap = {}
+      for (const box in CLOUDACCOUNT_TYPES) {
+        for (const brand in CLOUDACCOUNT_TYPES[box]) {
+          if (!typesMap[box]) {
+            typesMap[box] = {
+              [brand]: CLOUDACCOUNT_TYPES[box][brand],
+            }
+          } else {
+            typesMap[box][brand] = CLOUDACCOUNT_TYPES[box][brand]
+          }
+          if (brand === 'cloudpods') {
+            const { companyInfo = {} } = this.$store.state.app
+            const { inner_copyright_en, inner_copyright, inner_logo, inner_logo_format } = companyInfo
+            CLOUDACCOUNT_TYPES[box][brand].name = setting.language === 'en' ? (inner_copyright_en || CLOUDACCOUNT_TYPES[box][brand].name) : (inner_copyright || CLOUDACCOUNT_TYPES[box][brand].name)
+            CLOUDACCOUNT_TYPES[box][brand].logo = inner_logo && inner_logo_format ? `data:${inner_logo_format};base64,${inner_logo}` : CLOUDACCOUNT_TYPES[box][brand].logo
+          }
+        }
+      }
+      return typesMap
     },
   },
   watch: {
