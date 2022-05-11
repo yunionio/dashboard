@@ -38,6 +38,7 @@ import {
   getRegionFilter,
   getCloudProviderFilter,
   getDescriptionFilter,
+  getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -133,6 +134,7 @@ export default {
       // disk: {
       //   label: this.$t('table.title.disk'),
       // },
+      created_at: getCreatedAtFilter(),
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
@@ -176,6 +178,7 @@ export default {
           { label: 'CPU', key: 'vcpu_count' },
           { label: this.$t('table.title.memory_mb'), key: 'vmem_size' },
           { label: this.$t('table.title.disk_mb'), key: 'disk' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

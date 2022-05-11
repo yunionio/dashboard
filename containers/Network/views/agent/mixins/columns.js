@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getTagTableColumn,
   getRegionTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -50,6 +51,7 @@ export default {
         minWidth: 100,
       },
       getRegionTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }
