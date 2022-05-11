@@ -44,9 +44,15 @@ export default {
         },
       },
       getTagTableColumn({
-        customTitle: this.$t('common_738'),
-        title: this.$t('common_738'),
+        customTitle: this.$t('iam.project_tag'),
+        title: this.$t('iam.project_tag'),
         field: 'project_tags',
+        columns: () => this.columns,
+      }),
+      getTagTableColumn({
+        customTitle: this.$t('iam.object_tag'),
+        title: this.$t('iam.object_tag'),
+        field: 'object_tags',
         columns: () => this.columns,
       }),
       getPublicScopeTableColumn({ vm: this, resource: 'policies' }),

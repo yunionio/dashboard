@@ -913,5 +913,7 @@
   "iam.checksum_error_notify": "Integrity Checksum Failure Notification",
   "iam.security_info": "Security Information",
   "iam.manage_res": "Manage {0)",
-  "iam.reset_mfa_tips": "After reset, the user needs to reset the login page, the previous information will be invalid!"
+  "iam.reset_mfa_tips": "After reset, the user needs to reset the login page, the previous information will be invalid!",
+  "iam.project_tag": "Project Tags",
+  "iam.object_tag": "Resource Tags"
 }
