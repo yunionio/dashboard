@@ -72,6 +72,7 @@ export default {
             items: Object.values(levelMaps),
           },
         },
+        hiddenColumns: ['created_at'],
       }),
       groupActions: [
         {
@@ -119,6 +120,7 @@ export default {
           { key: 'common_alert_metric_details', label: this.$t('monitor.strategy_detail') },
           { key: 'level', label: this.$t('monitor.level') },
           { key: 'tenant', label: this.$t('monitor.text00015') },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
     }

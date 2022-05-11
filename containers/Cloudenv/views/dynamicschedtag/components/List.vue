@@ -11,7 +11,7 @@
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { ENABLED_OPTS } from '@/constants'
 import ListMixin from '@/mixins/list'
 
@@ -43,7 +43,9 @@ export default {
               return `schedtags.id(schedtag_id).name.contains("${val}")`
             },
           },
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -52,6 +54,7 @@ export default {
           { label: this.$t('cloudenv.text_97'), key: 'enabled' },
           { label: this.$t('cloudenv.text_18'), key: 'schedtag' },
           { label: this.$t('cloudenv.text_22'), key: 'condition' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

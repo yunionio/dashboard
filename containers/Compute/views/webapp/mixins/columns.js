@@ -6,6 +6,7 @@ import {
   getRegionTableColumn,
   getProjectTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import {
   getTypeTableColumn,
@@ -34,6 +35,7 @@ export default {
       getAccountTableColumn({ vm: this }),
       getRegionTableColumn(),
       getProjectTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

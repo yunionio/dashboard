@@ -14,7 +14,7 @@ import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getDomainFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
@@ -74,9 +74,10 @@ export default {
           enable_auto_sync: getEnabledFilter({ label: this.$t('cloudenv.text_83') }),
           share_mode: getPublicFilter(),
           project_domains: getDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['guest_count', 'host_count', 'enable_auto_sync', 'probe_at', 'access_url'],
+        hiddenColumns: ['guest_count', 'host_count', 'enable_auto_sync', 'probe_at', 'access_url', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -108,6 +109,7 @@ export default {
             label: this.$t('scope.text_573', [this.$t('dictionary.project')]),
             key: 'tenant',
           },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

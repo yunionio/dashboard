@@ -16,6 +16,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import { getCreatedAtFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'LoadbalancerclusterList',
@@ -46,7 +47,9 @@ export default {
           zone: {
             label: this.$t('compute.text_270'),
           },
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -54,6 +57,7 @@ export default {
           { label: this.$t('network.text_21'), key: 'name' },
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('common_715'), key: 'user_tags' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

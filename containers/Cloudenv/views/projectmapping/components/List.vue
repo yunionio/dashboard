@@ -12,7 +12,7 @@
 <script>
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getEnabledFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getStatusFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
@@ -34,12 +34,15 @@ export default {
           name: getNameFilter(),
           enabled: getEnabledFilter(),
           status: getStatusFilter({ statusModule: 'projectMapping' }),
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

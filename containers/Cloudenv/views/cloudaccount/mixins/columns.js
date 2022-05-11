@@ -12,6 +12,7 @@ import {
   getCopyWithContentTableColumn,
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -95,6 +96,7 @@ export default {
           },
         },
       },
+      getTimeTableColumn(),
     ]
   },
 }

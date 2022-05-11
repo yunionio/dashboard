@@ -17,7 +17,7 @@ import { mapGetters } from 'vuex'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
-import { getNameFilter, getStatusFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getStatusFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -41,7 +41,7 @@ export default {
     },
     hiddenColumns: {
       type: Array,
-      default: () => ([]),
+      default: () => (['created_at']),
     },
   },
   data () {
@@ -165,6 +165,7 @@ export default {
               { label: this.$t('network.text_194'), key: 'bandwidth' },
             ],
           },
+          created_at: getCreatedAtFilter(),
         },
         steadyStatus: Object.values(expectStatus.eip).flat(),
         responseData: this.responseData,
@@ -184,6 +185,7 @@ export default {
           { label: this.$t('network.text_198'), key: 'provider' },
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('common_715'), key: 'user_tags' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: groupActions,

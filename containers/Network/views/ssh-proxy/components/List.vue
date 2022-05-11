@@ -16,6 +16,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
+import { getCreatedAtFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'SshProxyList',
@@ -49,12 +50,15 @@ export default {
               return `intranet_ip_addr.contains(${val})`
             },
           },
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
           { label: 'ID', key: 'id' },
           { label: this.$t('network.text_21'), key: 'name' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [
