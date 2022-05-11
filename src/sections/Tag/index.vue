@@ -17,8 +17,8 @@
     <a-form-item :extra="extra" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select global v-model="checked" :params="params" :button-text="$t('common_110')" />
-          <a-button class="ml-2" v-if="!showForm" @click="() => showForm = true">{{$t('common_258')}}</a-button>
+          <tag-select :global="global" v-model="checked" :params="params" :multiple="multiple" :button-text="$t('common_110')" />
+          <a-button class="ml-2" v-if="!showForm && canCreate" @click="() => showForm = true">{{$t('common_258')}}</a-button>
         </div>
         <a-form
           class="ml-2"
@@ -63,6 +63,23 @@ export default {
         return {}
       },
     },
+    canCreate: {
+      type: Boolean,
+      default: true,
+    },
+    multiple: Boolean,
+    params: {
+      type: Object,
+      default () {
+        return {
+          resources: 'server',
+        }
+      },
+    },
+    global: {
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
     return {
@@ -87,11 +104,6 @@ export default {
     }
   },
   computed: {
-    params () {
-      return {
-        resources: 'server',
-      }
-    },
     tags () {
       const ret = []
       R.forEachObjIndexed((value, key) => {
@@ -116,10 +128,19 @@ export default {
       if (val && val.length > 0) {
         ret = {}
         for (let i = 0, len = val.length; i < len; i++) {
-          ret[val[i].key] = val[i].value || ''
+          if (ret.hasOwnProperty(val[i].key)) {
+            if (R.is(Array, ret[val[i].key])) {
+              ret[val[i].key].push(val[i].value || '')
+            } else {
+              ret[val[i].key] = [ret[val[i].key], val[i].value || '']
+            }
+          } else {
+            ret[val[i].key] = val[i].value || ''
+          }
         }
       }
       this.$emit('change', ret)
+      this.$emit('tagsChange', this.tags)
     },
   },
   methods: {
@@ -160,7 +181,11 @@ export default {
     },
     removeTag (item) {
       const newValue = { ...this.checked }
-      delete newValue[item.key]
+      if (R.is(Array, newValue[item.key])) {
+        newValue[item.key] = newValue[item.key].filter(value => value !== item.value)
+      } else {
+        delete newValue[item.key]
+      }
       this.checked = newValue
     },
   },

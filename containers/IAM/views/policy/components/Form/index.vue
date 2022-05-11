@@ -43,8 +43,19 @@
           </template>
         </a-radio-group>
       </a-form-model-item>
-      <a-form-model-item :label="$t('common_738')" prop="__meta__">
+      <a-form-model-item :label="$t('iam.project_tag')" prop="__meta__">
         <pairs-tag :value="tags" @change="handleTagsChange" />
+      </a-form-model-item>
+      <a-form-model-item :label="$t('iam.object_tag')" prop="object_tags">
+        <tag
+         :value="object_tags"
+         :canCreate="false"
+         extra=""
+         :multiple="true"
+         :params="{service: 'compute', user_meta: true}"
+         @change="handleObjectTagsChange"
+         @tagsChange="handleObjectTagsUpdate"
+         :global="true" />
       </a-form-model-item>
       <template v-if="editType === 'checkbox'">
         <template v-if="showPolicyCheckbox">
@@ -70,6 +81,7 @@ import { mapGetters } from 'vuex'
 import { SCOPES_MAP } from '@/constants'
 import i18n from '@/locales'
 import PairsTag from '@/sections/PairsTag'
+import Tag from '@/sections/Tag'
 import validateForm from '@/utils/validate'
 import { genPolicyGroups } from '../../utils'
 import { DEFAULT_ACTIONS_KEY } from '../../constants'
@@ -203,6 +215,7 @@ export default {
     ScopeSelect,
     PolicyRuleCheckbox,
     PairsTag,
+    Tag,
   },
   props: {
     policy: Object,
@@ -222,6 +235,21 @@ export default {
     const initialCheckboxPolicyValue = (this.policy && this.policy.policy) || {}
     const initialDescriptionValue = (this.policy && this.policy.description) || ''
     const initTagsValue = (this.policy && this.policy.project_tags) || []
+    const ret = {}
+    if (this.policy && this.policy.object_tags) {
+      const { object_tags } = this.policy
+      object_tags.map(item => {
+        if (ret.hasOwnProperty(item.key)) {
+          if (R.is(Array, ret[item.key])) {
+            ret[item.key].push(item.value || '')
+          } else {
+            ret[item.key] = [ret[item.key], item.value || '']
+          }
+        } else {
+          ret[item.key] = item.value || ''
+        }
+      })
+    }
     return {
       checkAllDisabled: false,
       scopesMap: SCOPES_MAP,
@@ -233,10 +261,15 @@ export default {
         description: initialDescriptionValue,
       },
       tags: initTagsValue,
+      object_tags: ret,
+      objectTagsArray: [],
       currentDomain: {},
       rules: {
         name: [
           { required: true, message: this.$t('common.text00042') },
+        ],
+        object_tags: [
+          { validator: validateForm('tagName') },
         ],
         __meta__: [
           { validator: validateForm('tagName') },
@@ -316,7 +349,7 @@ export default {
       try {
         await this.$refs.form.validate()
         const { name, scope, domain, description } = this.model
-        const { tags } = this
+        const { tags, objectTagsArray } = this
         let data = {}
         let policy
         if (this.editType === 'checkbox') {
@@ -354,6 +387,12 @@ export default {
           data.description = description
         }
         data.project_tags = tags
+        data.object_tags = objectTagsArray.map(item => {
+          return {
+            key: item.key,
+            value: item.value,
+          }
+        })
         return data
       } catch (error) {
         throw error
@@ -416,6 +455,12 @@ export default {
     },
     handleTagsChange (tags) {
       this.tags = tags || []
+    },
+    handleObjectTagsChange (tags) {
+      this.object_tags = tags || {}
+    },
+    handleObjectTagsUpdate (tags) {
+      this.objectTagsArray = tags
     },
   },
 }
