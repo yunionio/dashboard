@@ -21,7 +21,7 @@ export default {
         label: i18n.t('system.text_153'),
         actions: (row) => {
           return [
-            ...getEnabledSwitchActions(this, row, ['domains_perform_enable', 'disable'], {
+            ...getEnabledSwitchActions(this, row, ['domains_perform_enable', 'domains_perform_disable'], {
               actions: [
                 () => {
                   this.onManager('batchUpdate', {
