@@ -1,6 +1,7 @@
 <template>
   <div class="system-disk">
     <disk
+      diskKey="system"
       :max="max"
       :min="min"
       :form="form"
@@ -125,8 +126,8 @@ export default {
       const ret = ['disk-select']
       if (this.isIDC && !this.isServertemplate) {
         ret.push('schedtag')
-        if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
-          ret.push('storage') // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key || this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
+          ret.push('storage') // vmware,kvm 支持指定块存储
         }
       }
       return ret

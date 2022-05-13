@@ -4,6 +4,7 @@
     <template v-else>
       <div class="d-flex" v-for="(item, i) in dataDisks" :key="item.key">
         <disk
+          :diskKey="item.key"
           :max="max"
           :min="item.min || min"
           :form="form"
@@ -146,8 +147,11 @@ export default {
       if (this.hypervisor === HYPERVISORS_MAP.kvm.key) {
         ret.push('snapshot')
       }
-      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key || this.hypervisor === HYPERVISORS_MAP.esxi.key) {
-        ret.push('storage') // 这里暂时写死，因为目前只是有vmware的数据盘会指定存储
+      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key ||
+        this.hypervisor === HYPERVISORS_MAP.esxi.key ||
+        this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key ||
+        this.hypervisor === HYPERVISORS_MAP.kvm.key) {
+        ret.push('storage') // vmware,kvm支持指定存储
       }
       if (this.isIDC || this.isPrivate) {
         if (this.systemStorageShow) {
@@ -470,6 +474,17 @@ export default {
         this.form.fc.setFieldsValue({
           [`dataDiskSizes[${item.key}]`]: Math.max((dataDiskItem.min || 0), this.min),
         })
+        // 数据盘更改类型
+        if (val.key !== item.diskType?.key) {
+          const { dataDiskSizes = {} } = this.form.fd
+          for (const diskId in dataDiskSizes) {
+            if (this.form.fd[`dataDiskTypes[${diskId}]`]) {
+              this.form.fc.setFieldsValue({
+                [`dataDiskTypes[${diskId}]`]: val,
+              })
+            }
+          }
+        }
         this.setDiskMedium(val)
       })
     },
