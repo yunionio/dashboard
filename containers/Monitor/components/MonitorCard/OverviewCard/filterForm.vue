@@ -327,6 +327,7 @@ export default {
       for (const r in tr) {
         data.rows.push(tr[r])
       }
+      data.rows.sort((a, b) => { return b[curMetric.label] - a[curMetric.label] })
       return data
     },
     toChartData (series) {
