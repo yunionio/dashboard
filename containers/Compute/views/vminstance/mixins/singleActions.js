@@ -358,7 +358,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
+                  hidden: () => !(hasSetupKey(['vmware', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
                 },
                 {
                   label: i18n.t('compute.text_478'),
@@ -376,7 +376,7 @@ export default {
                       validate: false,
                       tooltip: null,
                     }
-                    if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key) {
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.esxi.key && obj.hypervisor !== typeClouds.hypervisorMap.kvm.key) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
@@ -388,7 +388,7 @@ export default {
                     ret.validate = true
                     return ret
                   },
-                  hidden: () => !(hasSetupKey(['vmware'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
+                  hidden: () => !(hasSetupKey(['vmware', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                 },
                 {
                   label: i18n.t('compute.sync_config'),
