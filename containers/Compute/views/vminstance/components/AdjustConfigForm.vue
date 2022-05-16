@@ -669,19 +669,17 @@ export default {
           dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
         }
       }
-      const { prefer_manager, schedtag, prefer_host } = this.form.fd
+      const { prefer_manager, schedtag } = this.form.fd
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
         brand: this.selectedItem.brand, // kvm,vmware支持指定存储
         manager: prefer_manager,
         host_schedtag_id: schedtag,
+        host_id: this.params.data[0].host_id,
       }
       if (dataDiskType) {
         params.filter = [`storage_type.contains("${dataDiskType}")`]
-      }
-      if (prefer_host) {
-        params.host_id = prefer_host
       }
       return params
     },

@@ -95,7 +95,9 @@
           :disabled="form.fi.sysDiskDisabled"
           :sizeDisabled="systemdiskSizeDisabled"
           :storageParams="storageParams"
-          :domain="project_domain" />
+          :storageHostParams="storageHostParams"
+          :domain="project_domain"
+          @storageHostChange="storageHostChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -115,7 +117,9 @@
           :isWindows="isWindows"
           :systemStorageShow="systemStorageShow"
           :enableMointpoint="true"
-          :storageParams="dataDiskStorageParams" />
+          :storageParams="dataDiskStorageParams"
+          :storageHostParams="storageHostParams"
+          @storageHostChange="storageHostChange" />
         <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
@@ -243,6 +247,8 @@ export default {
       isLocalDisk: true,
       timer: null,
       isFirstInit: true,
+      storageHosts: {}, // 所有磁盘的storage-host
+      storageHostParams: {}, // 第一个选择的块存储
     }
   },
   computed: {
@@ -442,7 +448,7 @@ export default {
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
-        brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }
       if (systemDiskType) {
@@ -616,6 +622,28 @@ export default {
         }
         this.setIsLocalDisk()
       })
+    },
+    storageHostChange (val) {
+      const { disk } = this.storageHostParams
+      if (val.disk) {
+        this.storageHosts[val.disk] = val
+      }
+      // 由第一块选择块存储的盘来确定块存储所在的host
+      if (!disk || disk === val.disk) { // 第一块盘选
+        if (val.storageHosts && val.storageHosts.length) {
+          this.storageHostParams = val
+        } else { // 清空操作
+          let changeNew = false
+          for (const key in this.storageHosts) {
+            if (this.storageHosts[key].storageHosts && this.storageHosts[key].storageHosts.length) {
+              this.storageHostParams = this.storageHosts[key] // 选其他已选的hosts作为新的范围
+              changeNew = true
+              break
+            }
+          }
+          if (!changeNew) this.storageHostParams = {}
+        }
+      }
     },
     setIsLocalDisk () {
       const isSysLocal = _.get(this.form, 'fd.systemDiskType.key') === 'local'
