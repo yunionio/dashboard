@@ -42,7 +42,7 @@
       <a-button v-if="!disabled" v-show="!simplify" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
     </template>
     <template v-if="has('storage') && !showSchedtag">
-      <storage style="min-width: 480px; max-width: 500px;" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" />
+      <storage style="min-width: 480px; max-width: 500px;" :diskKey="diskKey" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" />
       <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
@@ -70,6 +70,7 @@ export default {
     Storage,
   },
   props: {
+    diskKey: String,
     decorator: {
       type: Object,
       required: true,
