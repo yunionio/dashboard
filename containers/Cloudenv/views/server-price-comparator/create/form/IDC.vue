@@ -85,7 +85,8 @@
           :isWindows="isWindows"
           :systemStorageShow="systemStorageShow"
           :enableMointpoint="false"
-          :simplify="true" />
+          :simplify="true"
+          :storageParams="dataDiskStorageParams" />
         <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <bottom-bar
@@ -296,26 +297,33 @@ export default {
     },
     storageParams () {
       const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
-      const { systemDiskSize, dataDiskSizes } = this.form.fd
-      let dataSizeTotal = 0
-      if (R.is(Object, dataDiskSizes)) {
-        const list = Object.values(dataDiskSizes)
-        if (list && list.length) {
-          dataSizeTotal = list.reduce((a, b) => a + b)
-        }
-      }
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
-        brand: HYPERVISORS_MAP.esxi.brand, // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }
       if (systemDiskType) {
         params.filter = [`storage_type.contains("${systemDiskType}")`]
       }
-      const diskSize = systemDiskSize + dataSizeTotal
-      if (R.is(Number, diskSize)) {
-        params.filter = (params.filter || []).concat([`capacity.ge(${(diskSize) * 1024})`])
+      return params
+    },
+    dataDiskStorageParams () {
+      const dataDiskSizes = _.get(this.form.fd, 'dataDiskSizes')
+      let dataDiskType = ''
+      for (const key in dataDiskSizes) {
+        if (this.form.fd[`dataDiskTypes[${key}]`]) {
+          dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
+        }
+      }
+      const params = {
+        ...this.scopeParams,
+        usable: true, // 包含了 enable:true, status为online的数据
+        brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
+        manager: this.form.fd.prefer_manager,
+      }
+      if (dataDiskType) {
+        params.filter = [`storage_type.contains("${dataDiskType}")`]
       }
       return params
     },
