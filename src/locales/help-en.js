@@ -64,6 +64,8 @@ export default {
     billNegativeNumberReson: 'Negative numbers in the bill are due to refunds arising, such as early release refunds for annual and monthly machines, refunds following the use of coupons, and refunds for other benefits enjoyed by the account.',
     billCurrentYearFee: 'This year\'s consumption is displayed as the current year\'s expenses on the currently selected date and end date',
     restartNetworkToEffectIp: 'After replacing the IP, you need to restart the network card at the same time to take effect',
-    secgroupAdminGuestCnt: 'Number of virtual machines bound as management security group (Including virtual machines in Recycle Bin)',
+    billResourceSharedTip: 'After enabling, the resource cost bill of prepaid will be allocated to the specific use date. The total cost after allocation = postpaid + prepaid',
+    secgroupAdminGuestCnt: 'Number of virtual machines bound as management security group',
+    secgroupSystemGuestCnt: 'Number of virtual machines bound by security group as system resources',
   },
 }
