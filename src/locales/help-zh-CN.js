@@ -65,6 +65,7 @@ export default {
     billCurrentYearFee: '本年消费展示为当前所选日期截止日期的当年费用',
     restartNetworkToEffectIp: '更换IP后需同时重启网卡才生效',
     billResourceSharedTip: '启用后，将包年包月的资源费用账单分摊到具体使用日期，分摊后总费用 = 按量付费费用 + 包年包月分摊后费用',
-    secgroupAdminGuestCnt: '作为管理安全组绑定虚拟机数量（包含回收站内虚拟机）',
+    secgroupAdminGuestCnt: '作为管理安全组绑定虚拟机数量',
+    secgroupSystemGuestCnt: '安全组绑定作为系统资源的虚拟机数量',
   },
 }
