@@ -65,7 +65,9 @@
           :disabled="form.fi.sysDiskDisabled"
           :sizeDisabled="systemdiskSizeDisabled"
           :storageParams="storageParams"
-          :domain="project_domain" />
+          :storageHostParams="storageHostParams"
+          :domain="project_domain"
+          @storageHostChange="storageHostChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -86,7 +88,9 @@
           :systemStorageShow="systemStorageShow"
           :enableMointpoint="false"
           :simplify="true"
-          :storageParams="dataDiskStorageParams" />
+          :storageParams="dataDiskStorageParams"
+          :storageHostParams="storageHostParams"
+          @storageHostChange="storageHostChange" />
         <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <bottom-bar
@@ -121,6 +125,8 @@ export default {
   data () {
     return {
       isLocalDisk: true,
+      storageHosts: {}, // 所有磁盘的storage-host
+      storageHostParams: {}, // 第一个选择的块存储
     }
   },
   computed: {
@@ -528,6 +534,29 @@ export default {
     gpuChange (val) {
       if (!val) {
         this.form.fc.setFieldsValue({ gpu: '' })
+      }
+    },
+
+    storageHostChange (val) {
+      const { disk } = this.storageHostParams
+      if (val.disk) {
+        this.storageHosts[val.disk] = val
+      }
+      // 由第一块选择块存储的盘来确定块存储所在的host
+      if (!disk || disk === val.disk) { // 第一块盘选
+        if (val.storageHosts && val.storageHosts.length) {
+          this.storageHostParams = val
+        } else { // 清空操作
+          let changeNew = false
+          for (const key in this.storageHosts) {
+            if (this.storageHosts[key].storageHosts && this.storageHosts[key].storageHosts.length) {
+              this.storageHostParams = this.storageHosts[key] // 选其他已选的hosts作为新的范围
+              changeNew = true
+              break
+            }
+          }
+          if (!changeNew) this.storageHostParams = {}
+        }
       }
     },
   },
