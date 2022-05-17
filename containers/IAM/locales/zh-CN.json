@@ -572,7 +572,7 @@
   "system.wecom.bot": "企业微信机器人",
   "system.wecom.where_to_find_robot": "创建或获取路径：企业微信群右上角设置->群机器人->添加机器人->添加成功后获取机器人的webhook地址",
   "system.wecom": "企业微信{0}",
-  "system.text_573": "创建或获取路径：进入控制台 -> 点击用户头像 -> accesskeys",
+  "system.text_573": "创建或获取路径：登录阿里云控制台 -> 右上角头像-AccessKey 管理 -> 获取AccessKey",
   "system.text_574": "创建路径：进入控制台 -> 产品与服务 -> 短信服务 ->签名管理",
   "system.text_575": "进入控制台 -> 产品与服务 -> 短信服务 -> 国内消息 ->模板管理",
   "system.text_576": "未验证，请在用户信息处进行验证",
