@@ -196,6 +196,9 @@ export default {
     },
     typeChange (val) {
       this.$emit('diskTypeChange', val)
+      if (this.showStorage) {
+        this.$emit('storageHostChange', { disk: this.diskKey, storageHosts: [] })
+      }
       this.snapshotObj = {}
     },
     init () {
