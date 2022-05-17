@@ -30,6 +30,12 @@ export default {
       type: Object,
       validator: val => !val || val.fc, // 不传 或者 传就有fc
     },
+    storageHostParams: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
   },
   data () {
     return {
@@ -45,6 +51,7 @@ export default {
         systemDiskStorage,
         systemDiskSize,
         dataDiskSizes,
+        storageHostParams: this.storageHostParams,
       }
       if (this.diskKey !== 'system' && this.form.fd.hasOwnProperty(`dataDiskStorages[${this.diskKey}]`)) {
         ret.currentDiskStorage = this.form.fd[`dataDiskStorages[${this.diskKey}]`]
@@ -75,7 +82,19 @@ export default {
   },
   methods: {
     change (v) {
-      if (v) this.storageCache = v // 只缓存有值的时候
+      if (v) {
+        this.storageCache = v // 只缓存有值的时候
+        const disk = this.options.filter(item => item.id === v)
+        this.$emit('storageHostChange', {
+          disk: this.diskKey,
+          storageHosts: disk.length ? disk[0].hosts || [] : [],
+        })
+      } else {
+        this.$emit('storageHostChange', {
+          disk: this.diskKey,
+          storageHosts: [],
+        })
+      }
     },
     async fetchData () {
       try {
@@ -110,11 +129,23 @@ export default {
         }
         // 当前磁盘大小
         const currentDiskSize = this.diskKey === 'system' ? systemDiskSize : dataDiskSizes[this.diskKey]
-        // 保留 （容量 - 已经选用此块存储的磁盘大小 > 当前磁盘大小） 的块存储
+        // 当前系统盘块存储host
+        const { storageHosts = [], disk } = this.storageHostParams
+        // 保留 （容量 - 已经选用此块存储的磁盘大小 > 当前磁盘大小）&& 与系统盘相同host 的块存储
         filterdList = filterdList.filter(storage => {
           let needSize = currentDiskSize
           if (s_d_map[storage.id]) {
             needSize += s_d_map[storage.id]
+          }
+          if (storageHosts.length && disk && this.diskKey !== disk) {
+            let has = false
+            const { hosts = [] } = storage
+            hosts.map(host => {
+              if (storageHosts.some(item => item.id === host.id)) {
+                has = true
+              }
+            })
+            return has && storage.free_capacity > needSize * 1024
           }
           return storage.free_capacity > needSize * 1024
         })
