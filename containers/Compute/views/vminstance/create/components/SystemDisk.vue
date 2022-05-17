@@ -11,11 +11,13 @@
       :elements="elements"
       :disabled="disabled"
       :storageParams="storageParams"
+      :storageHostParams="storageHostParams"
       :schedtagParams="getSchedtagParams()"
       :size-disabled="sizeDisabled || disabled"
       :storage-status-map="storageStatusMap"
       @showStorageChange="showStorageChange"
-      @diskTypeChange="setDiskMedium" />
+      @diskTypeChange="setDiskMedium"
+      @storageHostChange="(val) => $emit('storageHostChange', val)" />
   </div>
 </template>
 
@@ -92,6 +94,7 @@ export default {
     storageParams: {
       type: Object,
     },
+    storageHostParams: Object,
     ignoreStorageStatus: {
       type: Boolean,
       default: false,

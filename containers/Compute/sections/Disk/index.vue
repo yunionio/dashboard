@@ -42,8 +42,8 @@
       <a-button v-if="!disabled" v-show="!simplify" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
     </template>
     <template v-if="has('storage') && !showSchedtag">
-      <storage style="min-width: 480px; max-width: 500px;" :diskKey="diskKey" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" />
-      <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
+      <storage style="min-width: 480px; max-width: 500px;" :diskKey="diskKey" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" :storageHostParams="storageHostParams" @storageHostChange="(val) => $emit('storageHostChange', val)" />
+      <a-button v-if="!disabled" class="mt-1" type="link" @click="storageShowClick">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
     <a-tooltip v-if="storageStatusMap.tooltip">
@@ -139,6 +139,7 @@ export default {
     storageParams: {
       type: Object,
     },
+    storageHostParams: Object,
   },
   data () {
     return {
@@ -206,6 +207,12 @@ export default {
     },
     formatterLabel (row) {
       return row.description ? `${row.name} / ${row.description}` : row.name
+    },
+    storageShowClick () {
+      if (this.showStorage) {
+        this.$emit('storageHostChange', { disk: this.diskKey, storageHosts: [] })
+      }
+      this.showStorage = !this.showStorage
     },
   },
 }
