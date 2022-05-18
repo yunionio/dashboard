@@ -20,6 +20,7 @@
           :simplify="simplify"
           :storageParams="storageParams"
           :storageHostParams="storageHostParams"
+          :isStorageShow="isStorageShow"
           @snapshotChange="val => snapshotChange(item, val, i)"
           @diskTypeChange="val => diskTypeChange(item, val)"
           @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -112,7 +113,7 @@ export default {
     defaultType: {
       type: Object,
     },
-    systemStorageShow: {
+    isStorageShow: {
       type: Boolean,
       default: false,
     },
@@ -157,11 +158,11 @@ export default {
         ret.push('storage') // vmware,kvm支持指定存储
       }
       if (this.isIDC || this.isPrivate) {
-        if (this.systemStorageShow) {
-          return ret // 指定块存储后，系统盘和数据盘均确定且不在支持设置调度标签
-        } else {
-          ret.push('schedtag')
-        }
+        // if (this.isStorageShow) {
+        //   return ret // 指定块存储后，系统盘和数据盘均确定且不在支持设置调度标签
+        // } else {
+        ret.push('schedtag')
+        // }
       }
       return ret
     },
