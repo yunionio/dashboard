@@ -15,6 +15,7 @@
       :schedtagParams="getSchedtagParams()"
       :size-disabled="sizeDisabled || disabled"
       :storage-status-map="storageStatusMap"
+      :isStorageShow="isStorageShow"
       @showStorageChange="showStorageChange"
       @diskTypeChange="setDiskMedium"
       @storageHostChange="(val) => $emit('storageHostChange', val)" />
@@ -99,6 +100,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isStorageShow: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     isPublic () {
@@ -132,6 +137,11 @@ export default {
         if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key || this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
           ret.push('storage') // vmware,kvm 支持指定块存储
         }
+        // if (this.isStorageShow) {
+        //   return ret // 指定块存储后，系统盘和数据盘均确定且不在支持设置调度标签
+        // } else {
+        //   ret.push('schedtag')
+        // }
       }
       return ret
     },
