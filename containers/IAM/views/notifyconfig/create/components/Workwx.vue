@@ -5,7 +5,9 @@
     hideRequiredMark>
     <a-form-item :label="$t('system.wecom.corp_id')">
       <template v-slot:extra>
-        <div>{{ $t('system.for_example') }}: ww2c41e47d2d3b13cb</div>
+        <div>{{ $t('system.for_example') }}: ww2c41e47d2d3b13cb
+          ，{{ $t('iam.help') }} <help-link :href="docUrl">{{ $t('common_386') }}</help-link>
+        </div>
         <div class="mb-0">{{ $t('system.wecom.where_to_find_corp_id') }}</div>
       </template>
       <a-input v-decorator="decorators.corp_id" />
@@ -49,6 +51,7 @@ export default {
       type: Object,
     },
     loading: Boolean,
+    docUrl: String,
   },
   data () {
     return {

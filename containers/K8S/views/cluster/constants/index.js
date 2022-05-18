@@ -32,7 +32,7 @@ function getDocsClusterPath (scope) {
   if (isCE()) {
     return `${docsUrl}k8s/pre_env/`
   }
-  return `${docsUrl}/user/docker/cluster/k8s-cluster/`
+  return `${docsUrl}/user/docker/cluster/k8s-cluster/#前提条件`
 }
 
 export function getClusterDocs (scope) {

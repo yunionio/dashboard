@@ -5,7 +5,9 @@
     hideRequiredMark>
     <a-form-item label="AppID">
       <template v-slot:extra>
-        <div>{{$t('system.text_279')}}</div>
+        <div>{{$t('system.text_279')}}
+          ，{{ $t('iam.help') }} <help-link :href="docUrl">{{ $t('common_386') }}</help-link>
+        </div>
         <div class="mb-0">{{ $t('system.text_571') }}</div>
       </template>
       <a-input v-decorator="decorators.app_id" />
@@ -42,6 +44,7 @@ export default {
       type: Object,
     },
     loading: Boolean,
+    docUrl: String,
   },
   data () {
     return {

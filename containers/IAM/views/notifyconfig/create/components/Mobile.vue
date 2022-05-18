@@ -5,7 +5,10 @@
     hideRequiredMark>
     <a-form-item label="Access Key ID">
       <template v-slot:extra>
-        <div>{{$t('system.text_286')}}</div>
+        <div>
+          {{$t('system.text_286')}}，
+          {{ $t('iam.help') }} <help-link :href="docUrl">{{ $t('common_386') }}</help-link>
+        </div>
         <div class="mb-0">{{ $t('system.text_573') }}</div>
       </template>
       <a-input v-decorator="decorators.access_key_id" />
@@ -110,6 +113,7 @@ export default {
       type: Object,
     },
     loading: Boolean,
+    docUrl: String,
   },
   data () {
     return {
