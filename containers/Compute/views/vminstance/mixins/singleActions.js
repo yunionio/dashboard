@@ -13,7 +13,10 @@ import { hasSetupKey } from '@/utils/auth'
 
 export default {
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'auth']),
+    enableMFA () {
+      return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
+    },
   },
   created () {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
@@ -26,24 +29,33 @@ export default {
           ret.push({
             label: i18n.t('compute.text_1274'),
             action: () => {
-              const isValidURL = str => {
-                const regex = /(\w+):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!-/]))?/
-                if (!regex.test(str)) {
-                  return false
-                } else {
-                  return true
+              const success = () => {
+                const isValidURL = str => {
+                  const regex = /(\w+):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!-/]))?/
+                  if (!regex.test(str)) {
+                    return false
+                  } else {
+                    return true
+                  }
                 }
+                this.webconsoleManager.performAction({
+                  id: 'server',
+                  action: obj.id,
+                }).then(({ data }) => {
+                  if (isValidURL(data.connect_params)) {
+                    this.open(obj, data.connect_params)
+                  } else {
+                    this.openWebConsole(obj, data)
+                  }
+                })
               }
-              this.webconsoleManager.performAction({
-                id: 'server',
-                action: obj.id,
-              }).then(({ data }) => {
-                if (isValidURL(data.connect_params)) {
-                  this.open(obj, data.connect_params)
-                } else {
-                  this.openWebConsole(obj, data)
-                }
-              })
+              if (this.enableMFA) {
+                this.createDialog('SecretVertifyDialog', {
+                  success,
+                })
+              } else {
+                success()
+              }
             },
             meta: () => {
               const ret = {
@@ -135,7 +147,16 @@ export default {
                 label: `SSH ${ipAddr}`,
                 permission: 'server_perform_list_forward,server_perform_open_forward',
                 action: () => {
-                  openWebconsole(22, obj.id)
+                  const success = () => {
+                    openWebconsole(22, obj.id)
+                  }
+                  if (this.enableMFA) {
+                    this.createDialog('SecretVertifyDialog', {
+                      success,
+                    })
+                  } else {
+                    success()
+                  }
                 },
                 meta,
               })
@@ -143,37 +164,46 @@ export default {
                 label: i18n.t('compute.text_345', [ipAddr]),
                 permission: 'server_perform_list_forward,server_perform_open_forward',
                 action: () => {
-                  this.createDialog('SmartFormDialog', {
-                    title: i18n.t('compute.text_346'),
-                    data: [obj],
-                    callback: async (data) => {
-                      openWebconsole(data.port, obj.id)
-                    },
-                    decorators: {
-                      port: [
-                        'port',
-                        {
-                          validateFirst: true,
-                          rules: [
-                            { required: true, message: i18n.t('compute.text_347') },
-                            {
-                              validator: (rule, value, _callback) => {
-                                const num = parseFloat(value)
-                                if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                  _callback(i18n.t('compute.text_348'))
-                                }
-                                _callback()
+                  const success = () => {
+                    this.createDialog('SmartFormDialog', {
+                      title: i18n.t('compute.text_346'),
+                      data: [obj],
+                      callback: async (data) => {
+                        openWebconsole(data.port, obj.id)
+                      },
+                      decorators: {
+                        port: [
+                          'port',
+                          {
+                            validateFirst: true,
+                            rules: [
+                              { required: true, message: i18n.t('compute.text_347') },
+                              {
+                                validator: (rule, value, _callback) => {
+                                  const num = parseFloat(value)
+                                  if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                    _callback(i18n.t('compute.text_348'))
+                                  }
+                                  _callback()
+                                },
                               },
-                            },
-                          ],
-                        },
-                        {
-                          label: i18n.t('compute.text_349'),
-                          placeholder: i18n.t('compute.text_350'),
-                        },
-                      ],
-                    },
-                  })
+                            ],
+                          },
+                          {
+                            label: i18n.t('compute.text_349'),
+                            placeholder: i18n.t('compute.text_350'),
+                          },
+                        ],
+                      },
+                    })
+                  }
+                  if (this.enableMFA) {
+                    this.createDialog('SecretVertifyDialog', {
+                      success,
+                    })
+                  } else {
+                    success()
+                  }
                 },
                 meta,
               })
