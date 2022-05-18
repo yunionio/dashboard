@@ -164,10 +164,16 @@ export default {
       return ret
     },
     backupDisableds () { // 高可用判断哪些宿主机可用
+      const ret = []
       if (this.form.fd.schedPolicyType === SCHED_POLICY_OPTIONS_MAP.host.key) {
-        return [this.form.fd.schedPolicyHost]
+        ret.push(this.form.fd.schedPolicyHost)
       }
-      return []
+      if (this.storageHostParams && this.storageHostParams.storageHosts && this.storageHostParams.storageHosts.length) {
+        this.storageHostParams.storageHosts.map(item => {
+          ret.push(item.id)
+        })
+      }
+      return ret
     },
     policyHostDisabled () {
       if (this.form.fd.backupEnable) {
