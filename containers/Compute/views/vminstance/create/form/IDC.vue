@@ -101,6 +101,7 @@
           :storageParams="storageParams"
           :storageHostParams="storageHostParams"
           :domain="project_domain"
+          :isStorageShow="isStorageShow"
           @storageHostChange="storageHostChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
@@ -119,12 +120,12 @@
           :defaultType="form.fd.systemDiskType"
           :domain="project_domain"
           :isWindows="isWindows"
-          :systemStorageShow="systemStorageShow"
+          :isStorageShow="isStorageShow"
           :enableMointpoint="true"
           :storageParams="dataDiskStorageParams"
           :storageHostParams="storageHostParams"
           @storageHostChange="storageHostChange" />
-        <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
+        <div slot="extra" class="warning-color" v-if="isStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <a-form-item :label="$t('compute.text_1372')" v-if="showServerAccount">
         <server-account :form="form" :hypervisor="form.fd.hypervisor" :instance_capabilities="form.fi.capability.instance_capabilities" :osType="osType" />
@@ -214,7 +215,7 @@
               :disabled-items="backupDisableds"
               :domain="form.fd.domain"
               :availableHostCount="availableHostCount"
-              :hostParams="policyHostParams" />
+              :hostParams="backupHostParams" />
           </a-form-item>
           <a-form-item v-show="!isServertemplate" v-if="isKvm" :label="$t('dictionary.instancegroup')" :extra="$t('compute.text_1158')">
             <instance-groups :decorators="decorators.groups" :params="instanceGroupsParams" />
@@ -351,11 +352,36 @@ export default {
           os_arch: HOST_CPU_ARCHS.x86.key,
           ...this.scopeParams,
         }
-        if (params.hypervisor === HYPERVISORS_MAP.esxi.key) {
+        if ([HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.kvm.key].includes(params.hypervisor)) {
           if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
             params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
           }
+          if (this.storageHostParams.disk &&
+          this.storageHostParams.disk !== 'system' &&
+          this.storageHostParams.storageHosts &&
+          this.storageHostParams.storageHosts.length &&
+          !params.storage_id) {
+            if (this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]) {
+              params.storage_id = this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]
+            }
+          }
           params.cloudprovider = this.form.fd.prefer_manager
+        }
+        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+        return params
+      }
+      return {}
+    },
+    backupHostParams () {
+      const zone = _.get(this.form.fd, 'zone.key')
+      if (zone) {
+        const params = {
+          enabled: 1,
+          usable: true,
+          zone,
+          hypervisor: this.form.fd.hypervisor,
+          os_arch: HOST_CPU_ARCHS.x86.key,
+          ...this.scopeParams,
         }
         if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
         return params
@@ -371,10 +397,19 @@ export default {
         ...this.scopeParams,
         host_type: 'hypervisor',
       }
-      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
-        params.host_type = 'esxi'
+      if ([HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.kvm.key].includes(this.form.fd.hypervisor)) {
+        params.host_type = this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key ? 'esxi' : 'kvm'
         if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
           params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+        }
+        if (this.storageHostParams.disk &&
+        this.storageHostParams.disk !== 'system' &&
+        this.storageHostParams.storageHosts &&
+        this.storageHostParams.storageHosts.length &&
+        !params.storage_id) {
+          if (this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]) {
+            params.storage_id = this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]
+          }
         }
       }
       return params
@@ -501,8 +536,21 @@ export default {
       }
       return params
     },
-    systemStorageShow () { // 系统盘是否开启了指定存储
-      return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fi.showStorage
+    isStorageShow () { // 是否开启了指定存储
+      if ([HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.kvm.key].includes(this.form.fd.hypervisor)) {
+        if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
+          return true
+        }
+        if (this.storageHostParams.disk &&
+        this.storageHostParams.disk !== 'system' &&
+        this.storageHostParams.storageHosts &&
+        this.storageHostParams.storageHosts.length) {
+          if (this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]) {
+            return true
+          }
+        }
+      }
+      return false
     },
     imageParams () {
       const params = {
