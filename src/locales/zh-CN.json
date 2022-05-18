@@ -2381,6 +2381,7 @@
   "auth.register.mobile.validate": "请输入手机",
   "auth.secret.verify.title": "登录保护已开启，请输入6位安全码",
   "auth.secret.reset.prefix": "请在手机打开OneLogin Protect APP，获取MFA安全码。无法获取，请",
+  "auth.secret.reset.prefix1": "请在手机打开OneLogin Protect APP，获取MFA安全码。",
   "auth.secret.validate": "安全码错误，请重新输入",
   "auth.secret.loading": "正在验证",
   "auth.question.title": "请设置安全问题，用以重置安全码密钥时验证身份",

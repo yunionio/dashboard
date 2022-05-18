@@ -1,3 +1,4 @@
+import { mapGetters } from 'vuex'
 import { Base64 } from 'js-base64'
 import qs from 'qs'
 import { canIpmiProbe } from '../utils/status'
@@ -10,6 +11,12 @@ export default {
   destroyed () {
     this.manager = null
   },
+  computed: {
+    ...mapGetters(['userInfo', 'auth']),
+    enableMFA () {
+      return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
+    },
+  },
   created () {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
     this.singleActions = [
@@ -18,7 +25,7 @@ export default {
         actions: obj => {
           const ret = []
           if (obj.host_type === 'baremetal') {
-            ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole))
+            ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
           }
           let ips = (obj.server_ips || '').split(',').filter(item => !!item)
           if (obj.access_ip) {
@@ -26,13 +33,22 @@ export default {
           }
           const actionGenerator = ip => {
             return (sshData) => {
-              this.webconsoleManager.performAction({
-                action: ip,
-                data: sshData,
-                id: 'ssh',
-              }).then(({ data }) => {
-                this.openWebConsole(obj, data)
-              })
+              const success = () => {
+                this.webconsoleManager.performAction({
+                  action: ip,
+                  data: sshData,
+                  id: 'ssh',
+                }).then(({ data }) => {
+                  this.openWebConsole(obj, data)
+                })
+              }
+              if (this.enableMFA) {
+                this.createDialog('SecretVertifyDialog', {
+                  success,
+                })
+              } else {
+                success()
+              }
             }
           }
           ips.forEach(ip => {
@@ -45,48 +61,57 @@ export default {
             ret.push({
               label: i18n.t('compute.text_345', [ip]),
               action: () => {
-                this.createDialog('SmartFormDialog', {
-                  title: i18n.t('compute.text_346'),
-                  data: [obj],
-                  list: this.list,
-                  callback: async (data) => {
-                    const response = await this.webconsoleManager.performAction({
-                      id: 'ssh',
-                      action: ip,
-                      data,
-                    })
-                    this.openWebConsole(obj, response.data)
-                  },
-                  decorators: {
-                    port: [
-                      'port',
-                      {
-                        validateFirst: true,
-                        rules: [
-                          { required: true, message: i18n.t('compute.text_347') },
-                          {
-                            validator: (rule, value, _callback) => {
-                              const num = parseFloat(value)
-                              if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                _callback(i18n.t('compute.text_348'))
-                              }
-                              _callback()
+                const success = () => {
+                  this.createDialog('SmartFormDialog', {
+                    title: i18n.t('compute.text_346'),
+                    data: [obj],
+                    list: this.list,
+                    callback: async (data) => {
+                      const response = await this.webconsoleManager.performAction({
+                        id: 'ssh',
+                        action: ip,
+                        data,
+                      })
+                      this.openWebConsole(obj, response.data)
+                    },
+                    decorators: {
+                      port: [
+                        'port',
+                        {
+                          validateFirst: true,
+                          rules: [
+                            { required: true, message: i18n.t('compute.text_347') },
+                            {
+                              validator: (rule, value, _callback) => {
+                                const num = parseFloat(value)
+                                if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                  _callback(i18n.t('compute.text_348'))
+                                }
+                                _callback()
+                              },
                             },
-                          },
-                        ],
-                      },
-                      {
-                        label: i18n.t('compute.text_349'),
-                        placeholder: i18n.t('compute.text_350'),
-                      },
-                    ],
-                  },
-                })
+                          ],
+                        },
+                        {
+                          label: i18n.t('compute.text_349'),
+                          placeholder: i18n.t('compute.text_350'),
+                        },
+                      ],
+                    },
+                  })
+                }
+                if (this.enableMFA) {
+                  this.createDialog('SecretVertifyDialog', {
+                    success,
+                  })
+                } else {
+                  success()
+                }
               },
               meta,
             })
           })
-          ret.push({ ...jnlpConsole(new this.$Manager('hosts', 'v2'), obj), permission: 'server_get_jnlp' })
+          ret.push({ ...jnlpConsole(new this.$Manager('hosts', 'v2'), obj, this.createDialog), permission: 'server_get_jnlp' })
           return ret
         },
       },
