@@ -1119,6 +1119,13 @@
       "init": "初始化",
       "online": "在线",
       "offline": "离线"
+    },
+    "irsOrders": {
+      "process": "流程处理中",
+      "all": "全部回执",
+      "part": "部分回执",
+      "resp_failed": "回执失败",
+      "hand": "手动回执"
     }
   },
   "skuCategoryOptions": {

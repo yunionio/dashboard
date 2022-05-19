@@ -1105,6 +1105,13 @@
       "init": "init",
       "online": "online",
       "offline": "offline"
+    },
+    "irsOrders": {
+      "process": "Process",
+      "all": "All",
+      "part": "Part",
+      "resp_failed": "Failed",
+      "hand": "Hand"
     }
   },
   "skuCategoryOptions": {
