@@ -225,8 +225,10 @@ export default {
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
+      if ([HYPERVISORS_MAP.esxi.key].includes(this.form.fd.hypervisor)) {
+        params.host_type = 'esxi'
+      }
       if ([HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.kvm.key].includes(this.form.fd.hypervisor)) {
-        params.host_type = this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key ? 'esxi' : 'kvm'
         if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
           params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
         }
