@@ -5038,5 +5038,6 @@
   "common.view_logs": "查看日志",
   "common.permission_tip": "权限提示",
   "common.permission_no_dashboard": "您无权访问控制台",
-  "common.password_no_equal": "新旧密码不能一致"
+  "common.password_no_equal": "新旧密码不能一致",
+  "common.default_search_key": "默认为{0}搜索"
 }

@@ -58,6 +58,7 @@
             :options="_filterOptions"
             :value="filter"
             :default-search-key="defaultSearchKey"
+            :placeholder="placeholder"
             :fetch-distinct-field="fetchDistinctField"
             @input="handleSearchInput" />
         </div>
@@ -106,6 +107,7 @@ export default {
     filterOptions: Object,
     filter: Object,
     defaultSearchKey: [String, Function],
+    placeholder: String,
     onManager: Function,
     params: Object,
     // 导出数据配置
