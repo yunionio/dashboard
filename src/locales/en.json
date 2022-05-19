@@ -2374,6 +2374,7 @@
   "auth.register.mobile.validate": "Please enter your mobile number",
   "auth.secret.verify.title": "Login protection is turned on, please enter the 6-digit security code",
   "auth.secret.reset.prefix": "Please open the OneLogin Protect APP on your mobile phone to obtain the MFA security code. Unable to obtain it, please",
+  "auth.secret.reset.prefix1": "Please open the OneLogin Protect APP on your mobile phone to obtain the MFA security code. ",
   "auth.secret.validate": "The security code is wrong, please re-enter",
   "auth.secret.loading": "Authenticating",
   "auth.question.title": "Please set a security question to verify your identity when resetting the security code key",
