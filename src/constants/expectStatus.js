@@ -504,4 +504,10 @@ export default {
     info: ['init'],
     danger: ['offline'],
   },
+  irsOrders: {
+    success: ['all', 'hand'],
+    warning: ['part'],
+    info: ['process'],
+    danger: ['resp_failed'],
+  },
 }
