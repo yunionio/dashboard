@@ -10,7 +10,10 @@ import { hostServerActions } from '../../../utils/hostActions'
 
 export default {
   computed: {
-    ...mapGetters(['isAdminMode', 'isDomainMode']),
+    ...mapGetters(['isAdminMode', 'isDomainMode', 'userInfo', 'auth']),
+    enableMFA () {
+      return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
+    },
   },
   destroyed () {
     this.webconsoleManager = null
@@ -23,7 +26,7 @@ export default {
         label: i18n.t('compute.text_341'),
         actions: obj => {
           let ret = []
-          ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole))
+          ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
           const mapIpActions = (ipArr, type) => {
             if (!['IP SSH', 'EIP SSH'].includes(type)) throw Error(i18n.t('compute.text_343'))
             const options = []
@@ -43,12 +46,21 @@ export default {
               options.push({
                 label: `SSH ${v}`,
                 action: () => {
-                  this.webconsoleManager.performAction({
-                    id: 'ssh',
-                    action: v,
-                  }).then(({ data }) => {
-                    this.openWebConsole(obj, data)
-                  })
+                  const success = () => {
+                    this.webconsoleManager.performAction({
+                      id: 'ssh',
+                      action: v,
+                    }).then(({ data }) => {
+                      this.openWebConsole(obj, data)
+                    })
+                  }
+                  if (this.enableMFA) {
+                    this.createDialog('SecretVertifyDialog', {
+                      success,
+                    })
+                  } else {
+                    success()
+                  }
                 },
                 meta,
               })
@@ -102,7 +114,7 @@ export default {
           eips = eips.length ? mapIpActions(eips, 'EIP SSH') : []
           ips = ips.length ? mapIpActions(ips, 'IP SSH') : []
           ret = ret.concat(eips).concat(ips)
-          ret.push({ ...jnlpConsole(new this.$Manager('servers', 'v2'), obj), permission: 'server_get_jnlp' })
+          ret.push({ ...jnlpConsole(new this.$Manager('servers', 'v2'), obj, this.createDialog), permission: 'server_get_jnlp' })
           return ret
         },
         meta: (obj) => {
