@@ -5152,5 +5152,6 @@
   "common.view_logs": "View logs",
   "common.password_no_equal": "Old and new passwords cannot be consistent",
   "common.command": "Command",
-  "common.login_user": "Login User"
+  "common.login_user": "Login User",
+  "common.remote_control": "Remote Control"
 }
