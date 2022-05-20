@@ -14,6 +14,7 @@
       :filter-options="filterOptions"
       :filter="filter"
       :default-search-key="defaultSearchKey"
+      :placeholder="placeholder"
       :on-manager="onManager"
       :params="params"
       :export-data-options="exportDataOptions"
@@ -142,6 +143,7 @@ export default {
     },
     // 不选择搜索类型情况下，默认搜索key
     defaultSearchKey: [String, Function],
+    placeholder: String,
     // 列配置
     columns: {
       type: Array,
