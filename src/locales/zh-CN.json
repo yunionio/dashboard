@@ -5168,5 +5168,6 @@
   "common.view_logs": "查看日志",
   "common.password_no_equal": "新旧密码不能一致",
   "common.command": "命令",
-  "common.login_user": "登录用户"
+  "common.login_user": "登录用户",
+  "common.remote_control": "远程控制"
 }
