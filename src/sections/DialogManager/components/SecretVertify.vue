@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{params.action || $t('common.text00104')}}</div>
+    <div slot="header">{{params.action || $t('common.remote_control')}}</div>
     <div slot="body">
       <div class="wrap-inner">
         <h5 class="auth-base-title text-center">{{ $t('auth.secret.verify.title') }}</h5>
