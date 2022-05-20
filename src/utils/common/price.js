@@ -98,7 +98,7 @@ export class PriceFetcher {
   }
 
   addEipBandwidth (sku = '', Mb = 1) {
-    this.addItem({ resource_type: 'bandwidth', resource_key: sku, amount: Mb })
+    this.addItem({ resource_type: 'eip', resource_key: sku, amount: Mb })
   }
 
   addServer (sku = '', amount = 1) {
