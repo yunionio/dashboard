@@ -46,6 +46,8 @@ export default {
       loading: false,
       catalogData: {},
       serverConfig: null,
+      project_id: '',
+      project_domain: '',
       errors: {},
       form: {
         fc: this.$form.createForm(this),
@@ -103,6 +105,8 @@ export default {
         .get({ id: this.$route.query.id })
         .then(({ data }) => {
           this.serverConfig = data.content
+          this.project_id = data.tenant_id
+          this.project_domain = data.project_domain
         })
         .catch(() => {
           this.$message.error(this.$t('compute.text_1044'))
@@ -120,7 +124,8 @@ export default {
         initiator: this.$store.getters.userInfo.id,
         description: values.reason,
         'server-create-paramter': JSON.stringify(params),
-        project: values.project_id,
+        project: this.project_id,
+        project_domain: this.project_domain,
       }
       // this._getProjectDomainInfo(variables) // !!! project_domain 暂时不加，因为后端可以从token里面获取
       return new this.$Manager('process-instances', 'v1')
