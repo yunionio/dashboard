@@ -29,14 +29,14 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import ChildrenImageList from '../../host-image/sidepage/ChildrenImage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SystemImageDetail from './Detail'
 import CacheList from './Cache'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'SystemImageSidePage',
@@ -49,7 +49,7 @@ export default {
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   computed: {
     isStandalone () {
-      if (this.data && this.data.data && this.data.data.is_guest_image) {
+      if (this.data && this.data.data && [true, 'true'].includes(this.data.data.is_guest_image)) {
         return false
       }
       return true
