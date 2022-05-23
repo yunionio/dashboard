@@ -2627,7 +2627,8 @@
     "es": "ElasticSearch",
     "app": "应用程序服务",
     "command_log": "命令记录",
-    "ipv6_gateway": "IPv6网关"
+    "ipv6_gateway": "IPv6网关",
+    "apsara": "飞天"
   },
   "res": {
     "role": "@:dictionary.role",
