@@ -956,6 +956,8 @@ export const PERMISSION = {
   dns_zonecaches_delete: ['compute', 'dns_zonecaches', 'delete'],
   // 策略相关
   scopedpolicybindings_delete: ['yunionconf', 'scopedpolicybindings', 'delete'],
+  scopedpolicybindings_list: ['yunionconf', 'scopedpolicybindings', 'list'],
+  scopedpolicybindings_create: ['yunionconf', 'scopedpolicybindings', 'create'],
   scopedpolicies_list: ['yunionconf', 'scopedpolicies', 'list'],
   scopedpolicies_create: ['yunionconf', 'scopedpolicies', 'create'],
   scopedpolicies_update: ['yunionconf', 'scopedpolicies', 'update'],
