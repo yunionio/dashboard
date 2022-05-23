@@ -2515,7 +2515,8 @@
     "price_infos": "Price Info",
     "parameters": "Dictionary",
     "log_manage": "Log Manage",
-    "services": "Global Setting"
+    "services": "Global Setting",
+    "apsara": "Apsara"
   },
   "res": {
     "role": "Role",

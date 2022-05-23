@@ -2529,7 +2529,8 @@
     "price_infos": "价格对比",
     "parameters": "字典设置",
     "log_manage": "日志管理",
-    "services": "全局设置"
+    "services": "全局设置",
+    "apsara": "飞天"
   },
   "res": {
     "role": "@:dictionary.role",
