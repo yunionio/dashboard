@@ -2611,7 +2611,9 @@
     "compute": "Compute",
     "es": "ElasticSearch",
     "app": "Web App",
-    "command_log": "Command Logs"
+    "command_log": "Command Logs",
+    "ipv6_gateway": "IPv6 Gateway",
+    "apsara": "Apsara"
   },
   "res": {
     "role": "Role",
