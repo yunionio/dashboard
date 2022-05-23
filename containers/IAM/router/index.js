@@ -320,7 +320,7 @@ export default {
           meta: {
             label: i18n.t('system.text_19'),
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.mailconfig')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.notifyconfig')) {
                 return true
               }
               if (!(store.getters.isAdminMode || store.getters.isDomainMode)) {
