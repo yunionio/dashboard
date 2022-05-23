@@ -811,7 +811,7 @@
   "system.google_oidc_doc": "how-to-get-google-related-parameters",
   "system.github_oidc_doc": "新建github认证源",
   "system.azure_oidc_doc": "新建azure-ad-oauth2认证源",
-  "system.azure_ad_saml_doc": "新建azure-ad-saml2-0认证源",
+  "system.azure_ad_saml_doc": "新建azure-ad-saml20认证源",
   "system.saml_doc": "新建通用saml认证源",
   "system.feishu_oauth2_doc": "新建飞书认证源",
   "system.dingtalk_oauth2_doc": "新建钉钉认证源",
