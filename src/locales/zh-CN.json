@@ -2627,7 +2627,8 @@
     "es": "ElasticSearch",
     "app": "应用程序服务",
     "command_log": "命令记录",
-    "ipv6_gateway": "IPv6网关"
+    "ipv6_gateway": "IPv6网关",
+    "apsara": "飞天"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -5169,5 +5170,6 @@
   "common.password_no_equal": "新旧密码不能一致",
   "common.command": "命令",
   "common.login_user": "登录用户",
-  "common.remote_control": "远程控制"
+  "common.remote_control": "远程控制",
+  "common.default_search_key": "默认为{0}搜索"
 }

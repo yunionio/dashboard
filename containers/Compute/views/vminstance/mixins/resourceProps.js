@@ -97,7 +97,7 @@ export default {
             sortByList: ['', 'order_by_cpu_commit_rate'],
             slots: {
               default: ({ row }) => {
-                if (!row.cpu_commit_rate) return [<data-loading />]
+                if (row.cpu_commit_rate === undefined) return [<data-loading />]
                 return row.cpu_count ? `${row.cpu_count}/${percentstr(row.cpu_commit_rate)}` : 'N/A'
               },
             },
@@ -110,7 +110,7 @@ export default {
             sortByList: ['', 'order_by_mem_commit_rate'],
             slots: {
               default: ({ row }) => {
-                if (!row.mem_commit_rate) return [<data-loading />]
+                if (row.mem_commit_rate === undefined) return [<data-loading />]
                 return row.mem_size ? `${sizestr(row.mem_size, 'M', 1024)}/${percentstr(row.mem_commit_rate)}` : 'N/A'
               },
             },
@@ -122,8 +122,8 @@ export default {
             sortByList: ['order_by_storage', 'order_by_storage_commit_rate'],
             slots: {
               default: ({ row }) => {
-                if (!row.storage) return [<data-loading />]
-                return row.mem_size ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
+                if (row.storage === undefined) return [<data-loading />]
+                return row.storage ? `${sizestr(row.storage, 'M', 1024)}/${percentstr(row.storage_commit_rate)}` : 'N/A'
               },
             },
           },

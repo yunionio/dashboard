@@ -2611,7 +2611,9 @@
     "compute": "Compute",
     "es": "ElasticSearch",
     "app": "Web App",
-    "command_log": "Command Logs"
+    "command_log": "Command Logs",
+    "ipv6_gateway": "IPv6 Gateway",
+    "apsara": "Apsara"
   },
   "res": {
     "role": "Role",
@@ -5153,5 +5155,6 @@
   "common.password_no_equal": "Old and new passwords cannot be consistent",
   "common.command": "Command",
   "common.login_user": "Login User",
-  "common.remote_control": "Remote Control"
+  "common.remote_control": "Remote Control",
+  "common.default_search_key": "Default is {0} search"
 }

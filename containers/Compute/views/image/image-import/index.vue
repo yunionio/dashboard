@@ -24,6 +24,14 @@
 <script>
 import { arrToObjByKey, sizestr } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
+const path = require('path')
+const imagesLogoFiles = require.context('@/assets/images/os-images', false, /.svg$/)
+const imagesLogos = []
+imagesLogoFiles.keys().forEach(key => {
+  const name = path.basename(key, '.svg') // 返回文件名 不含后缀名
+  imagesLogos.push(name)
+})
+
 export default {
   name: 'ImageImport',
   mixins: [WindowsMixin],
@@ -46,6 +54,7 @@ export default {
       },
       isImported: {},
       type: '',
+      imagesLogos,
     }
   },
   computed: {
@@ -145,7 +154,7 @@ export default {
         }
         publicImages = publicImages.filter((item) => { return item.imported === this.imported.toString() })
         publicImages.forEach(item => {
-          item.os = require(`@/assets/images/os-images/${item.os}.svg`)
+          item.os = require(`@/assets/images/os-images/${this.imagesLogos.includes(item.os) ? item.os : 'unknow'}.svg`) || ''
         })
         this.list.data = arrToObjByKey(publicImages, 'id')
       }).catch((e) => {
