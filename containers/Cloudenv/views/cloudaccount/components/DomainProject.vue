@@ -27,7 +27,7 @@
         showSearch>
           <a-select-option v-for="item of projects" :value="item.key" :key="item.key">{{ item.label }}</a-select-option>
         </a-select>
-        <a @click="fetchProjects"><a-icon :spin="projectLoading" type="sync" class="ml-2" /></a>
+        <a @click="fetchProjectsHandle"><a-icon :spin="projectLoading" type="sync" class="ml-2" /></a>
       </div>
       <div class="d-flex">
         <div class="flex-shrink-0 flex-grow-0">
@@ -194,6 +194,7 @@ export default {
         const params = {
           scope: this.scope,
         }
+
         if (domainId && !this.isDomainMode) params.domain_id = domainId
         if (this.isAdminMode) {
           params.project_domain = domainId || this.userInfo.projectDomainId
@@ -252,6 +253,10 @@ export default {
       const checked = e.target.checked
       this.disableProjectSelect = checked
       this.$bus.$emit('updateAutoCreate', checked)
+    },
+    fetchProjectsHandle (e) {
+      const domain = this.fc.getFieldValue('domain')
+      this.fetchProjects(domain?.key)
     },
   },
 }
