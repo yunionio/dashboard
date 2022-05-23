@@ -16,8 +16,9 @@ export default {
   },
   render (h, ctx) {
     let { blank, href } = ctx.props
+
     const format = path => {
-      if (path.startsWith('http')) return path
+      if (path.startsWith('http') || path.startsWith('https')) return path
       if (!path.startsWith('/')) {
         console.error(i18n.t('common_15'))
         path += '/'
@@ -28,6 +29,7 @@ export default {
       return router.resolve(path).href
     }
     href = format(href)
+
     const target = blank ? '_blank' : '_self'
     const slots = ctx.slots()
     return (
