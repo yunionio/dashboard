@@ -50,6 +50,7 @@ import VmInstanceAlertSidepage from './Alert'
 import VmSnapshotSidepage from './Snapshot'
 import SecgroupList from './Secgroup'
 import DiskListForVmInstanceSidepage from './DiskList'
+import GpuList from '@Compute/views/gpu/components/List'
 // import DiskSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot/components/List'
 // import InstanceSnapshotListForVmInstanceSidepage from '@Compute/views/snapshot-instance/components/List'
 // import EipListForVmInstanceSidepage from './EipList'
@@ -68,6 +69,7 @@ export default {
     VmInstanceMonitorSidepage,
     VmInstanceAlertSidepage,
     VmSnapshotSidepage,
+    GpuList,
     // EipListForVmInstanceSidepage,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -82,6 +84,7 @@ export default {
       { label: this.$t('compute.text_462'), key: 'vm-snapshot-sidepage' },
       // { label: this.$t('compute.text_101'), key: 'disk-snapshot-list-for-vm-instance-sidepage' },
       // { label: this.$t('compute.text_102'), key: 'instance-snapshot-list-for-vm-instance-sidepage' },
+      { label: this.$t('compute.text_113'), key: 'gpu-list' },
       { label: this.$t('compute.text_608'), key: 'vm-instance-monitor-sidepage' },
       { label: this.$t('compute.text_1301'), key: 'vm-instance-alert-sidepage' },
       { label: this.$t('compute.text_240'), key: 'event-drawer' },
@@ -131,6 +134,11 @@ export default {
       if (snapshotsTabs.includes(this.params.windowData.currentTab)) {
         return {
           server_id: this.detailData.id,
+        }
+      }
+      if (this.params.windowData.currentTab === 'gpu-list') {
+        return {
+          guest_id: this.data.id,
         }
       }
       return null
@@ -187,6 +195,8 @@ export default {
           return 'AlertLiskForVminstanceSidepage'
         case 'event-drawer':
           return 'EventListForVminstanceSidepage'
+        case 'gpu-list':
+          return 'GpuListForVminstanceSidePage'
         // case 'eip-list-for-vm-instance-sidepage':
         //   return 'EipListForVmInstanceSidepage'
         default:
