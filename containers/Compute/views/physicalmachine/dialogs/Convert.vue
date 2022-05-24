@@ -83,7 +83,8 @@
             :schedtag-params="resourcesParams.schedtag"
             :networkVpcParams="resourcesParams.vpcParams"
             :vpcResource="vpcResource"
-            :vpcResourceMapper="vpcResourceMapper" />
+            :vpcResourceMapper="vpcResourceMapper"
+            :isDialog="true" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 18, offset: 4 }" v-if="isShowNetwork">
           <a-checkbox v-model="isBonding">{{$t('compute.text_310')}}</a-checkbox>
