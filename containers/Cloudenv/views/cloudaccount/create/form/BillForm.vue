@@ -243,7 +243,7 @@ export default {
         billing_scope: [
           'billing_scope',
           {
-            initialValue: options.billing_scope || 'all',
+            initialValue: options.billing_scope || this.getDefaultBillingScope(),
             rules: [
               { required: true, message: this.$t('cloudenv.billing_scope.prompt') },
             ],
@@ -257,6 +257,13 @@ export default {
     this.fetchs()
   },
   methods: {
+    getDefaultBillingScope () {
+      if (this.isAzure || this.isAws) {
+        return 'all'
+      } else {
+        return 'managed'
+      }
+    },
     async fetchs () {
       await this.fetchCloudAccount()
       await this.fetchCloudAccounts()
@@ -294,10 +301,10 @@ export default {
             details: true,
           },
         })
-        // azure 和 aws billing_scope 没有时选中managed，新建时选中all
-        if ((this.isAzure || this.isAws) && (!data.options || !data.options.billing_scope)) {
+        // billing_scope没有默认选中一个，选中规则与新建相同
+        if (!data.options || !data.options.billing_scope) {
           data.options = data.options || {}
-          data.options.billing_scope = 'managed'
+          data.options.billing_scope = data.options.billing_scope || this.getDefaultBillingScope()
         }
         this.cloudAccount = data
         if (data && data.options && data.options.billing_bucket_account) {
