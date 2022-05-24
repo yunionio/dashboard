@@ -1569,5 +1569,6 @@
   "compute.create_snapshot_backup": "创建快照/备份",
   "compute.set_usb_gpu": "设置GPU卡/USB透传",
   "compute.disk.rotate_gpssd": "通用型SSD",
-  "compute.qemu_cmdline": "启动命令行"
+  "compute.qemu_cmdline": "启动命令行",
+  "compute.vpc_extrnal_id": "VPC云上ID"
 }
