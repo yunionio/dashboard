@@ -13,6 +13,7 @@ import {
   getStatusTableColumn,
   getBrandTableColumn,
   getRegionTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -80,15 +81,17 @@ export default {
             return this.$moment(cellValue).format()
           },
         },
-        {
-          field: 'vpc',
-          title: 'VPC',
-          minWidth: 70,
-          showOverflow: 'ellipsis',
-          formatter: ({ cellValue }) => {
-            return cellValue || '-'
+        getCopyWithContentTableColumn({
+          field: 'vpc_id',
+          title: this.$t('compute.vpc_extrnal_id'),
+          hideField: true,
+          message: (row) => {
+            return row.vpc_id || ''
           },
-        },
+          slotCallback: (row) => {
+            return row.vpc_id || '-'
+          },
+        }),
         getBrandTableColumn(),
         getRegionTableColumn(),
         {
