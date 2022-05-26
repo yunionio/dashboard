@@ -379,7 +379,8 @@
       "cancel_snapshot_failed": "Failed to unbind the snapshot policy",
       "syncing": "Syncing",
       "sync_status": "Syncing",
-      "sched_fail": "Scheduling failed"
+      "sched_fail": "Scheduling failed",
+      "ActiveSAS": "ActiveSAS"
     },
     "secgroupCache": {
       "ready": "Normal",

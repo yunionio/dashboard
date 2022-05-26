@@ -383,7 +383,8 @@
       "cancel_snapshot_failed": "解绑快照策略失败",
       "syncing": "同步中",
       "sync_status": "同步中",
-      "sched_fail": "调度失败"
+      "sched_fail": "调度失败",
+      "ActiveSAS": "ActiveSAS"
     },
     "secgroupCache": {
       "ready": "正常",
