@@ -100,7 +100,7 @@ export default {
     info: ['unknown', 'soldout'],
   },
   disk: {
-    success: ['ready', 'post_migrate'],
+    success: ['ready', 'post_migrate', 'ActiveSAS'],
     danger: ['alloc_failed', 'dealloc_failed', 'clone_failed', 'backup_alloc_failed', 'cancel_snapshot_failed'],
     info: ['unknown', 'unavailable'],
   },
