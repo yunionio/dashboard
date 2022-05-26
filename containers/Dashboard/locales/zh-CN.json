@@ -268,5 +268,6 @@
   "dashborad.server_numbers": "主机数量分布",
   "dashborad.server_domain_numbers": "各域主机数量分布",
   "dashborad.server_project_numbers": "各项目主机数量分布",
-  "dashboard.group_by": "聚合"
+  "dashboard.group_by": "聚合",
+  "dashbaord.panel_shared_tip": "共享后，所有人的默认面板都会被更新为当前面板，请谨慎操作！"
 }
