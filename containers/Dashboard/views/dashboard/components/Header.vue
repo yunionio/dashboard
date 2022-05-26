@@ -24,6 +24,7 @@
         <a-menu-item key="handleDownload"><a-icon type="download" />{{$t('dashboard.text_105')}}</a-menu-item>
         <a-menu-item key="handleImport"><a-icon type="file" />{{$t('dashboard.text_106')}}</a-menu-item>
         <a-menu-item key="handleCopy"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
+        <a-menu-item key="handleShare" v-if="isDefaultOption"><a-icon type="share-alt" />共享</a-menu-item>
         <a-menu-item key="handleDelete"><a-icon type="delete" />{{deleteText}}</a-menu-item>
       </a-menu>
     </a-dropdown>
@@ -248,6 +249,24 @@ export default {
     },
     handleRefresh () {
       this.$emit('refresh')
+    },
+    handleShare () {
+      this.createDialog('CommonDialog', {
+        header: '共享',
+        body: () => {
+          return [
+            <a-alert class="mb-2" type="warning">
+              <div slot="message">共享后，所有人的默认面板都会被更新为当前面板，请谨慎操作！</div>
+            </a-alert>,
+            <dialog-selected-tips count={1} action='共享' name={this.$t('dashboard.text_109')} />,
+          ]
+        },
+        ok: async () => {
+          await this.$store.dispatch('widgetSetting/putFetchWidgetSettingValue', {
+            [`dashboard-${this.scope}`]: this.data,
+          })
+        },
+      })
     },
   },
 }

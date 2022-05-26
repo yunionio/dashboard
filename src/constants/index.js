@@ -116,6 +116,7 @@ export const ENABLED_OPTS = [
 // 自定义字典存储配置的name
 export const GLOBAL_SETTINGS = 'global-settings'
 export const SHOW_SYSTEM_RESOURCE = 'showSystemResource'
+export const WIDGET_SETTINGS = 'widget-settings'
 
 // 标识字典允许用户自定义的key
 export const ENABLE_USER_CUSTOM_DICTIONARY = [
