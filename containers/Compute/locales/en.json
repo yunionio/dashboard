@@ -1569,6 +1569,7 @@
   "compute.create_snapshot_backup": "Create Snapshot/Backup",
   "compute.set_usb_gpu": "Set GPU Card/USB",
   "compute.disk.rotate_gpssd": "GPSSD",
+  "compute.is_daemon": "Daemon VM",
   "compute.qemu_cmdline": "Qemu Cmdline",
   "compute.vpc_extrnal_id": "VPC Extrnal ID"
 }
