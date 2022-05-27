@@ -11,15 +11,15 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { getDisabledProvidersActionMeta, typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds } from '@/utils/common/hypervisor'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 const providerMap = typeClouds.getProviderlowcase()
 
@@ -236,20 +236,6 @@ export default {
                     }
                   },
                 ],
-                extraMetas: [
-                  obj => {
-                    return getDisabledProvidersActionMeta({
-                      rows: this.list.selectedItems,
-                      disabledProviders: ['BingoCloud'],
-                    })
-                  },
-                  obj => {
-                    return getDisabledProvidersActionMeta({
-                      rows: this.list.selectedItems,
-                      disabledProviders: ['BingoCloud'],
-                    })
-                  },
-                ],
               }),
               {
                 label: this.$t('cloudenv.text_108'),
@@ -307,12 +293,6 @@ export default {
                   return {
                     validate: ownerDomain,
                   }
-                },
-                extraMeta: obj => {
-                  return getDisabledProvidersActionMeta({
-                    rows: this.list.selectedItems,
-                    disabledProviders: ['BingoCloud'],
-                  })
                 },
               },
             ]
