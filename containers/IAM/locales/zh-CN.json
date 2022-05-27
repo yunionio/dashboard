@@ -765,7 +765,9 @@
     },
     "compute$skip_server_by_sys_tag_keys": {
       "label": "跳过同步带指定系统标签的虚拟机",
-      "desc": "云账号同步时，将不同步带设置的系统标签的虚拟机"
+      "dialog_label": "指定系统标签",
+      "desc": "云账号同步时，将不同步带设置的系统标签的虚拟机",
+      "dialog_desc": "请手动输入标签键，多个标签键以英文“,”分隔，如tagkey1,tagkey2"
     },
     "compute$default_admin_security_group_id": {
       "label": "管理安全组ID",
