@@ -2,10 +2,10 @@
   <base-dialog @cancel="cancelDialog">
     <div slot="header">{{$t('system.text_22')}}</div>
     <div slot="body">
-      <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.globalsetting')" :action="$t('system.text_188', [firstData['label']])" />
+      <dialog-selected-tips :count="params.data.length" :name="$t('dictionary.globalsetting')" :action="$t('system.text_188', [firstData['dialogLabel'] || firstData['label']])" />
       <a-form
         :form="form.fc">
-        <a-form-item :label="$t('system.text_102')" v-bind="formItemLayout" :extra="firstData['desc']">
+        <a-form-item :label="$t('system.text_102')" v-bind="formItemLayout" :extra="firstData['dialogDesc'] || firstData['desc']">
           <component :is="element" v-bind="firstData.opt.props" v-decorator="decorators.value" class="w-100">
             <template v-if="element === 'a-select'">
               <a-select-option
