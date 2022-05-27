@@ -766,7 +766,9 @@
     },
     "compute$skip_server_by_sys_tag_keys": {
       "label": "Skip virtual machine with specified system tag",
-      "desc": "When the cloud account is synchronized, the virtual machine with the set system tag will not be synchronized"
+      "dialog_label": "Set system tag",
+      "desc": "When the cloud account is synchronized, the virtual machine with the set system tag will not be synchronized",
+      "dialog_desc": "Please enter the tag key manually. Multiple tag keys are separated by ',' in English, such as tagkey1 and tagkey2"
     },
     "compute$default_admin_security_group_id": {
       "label": "Admin Security ID",
