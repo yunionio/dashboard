@@ -115,6 +115,9 @@ export default {
     isIDC () {
       return this.type === 'idc'
     },
+    isVMware () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key
+    },
     imageMinDisk () {
       const image = this.image
       let minSize = 0
@@ -270,6 +273,15 @@ export default {
       }
       this.$bus.$emit('VMCreateDisabled', statusMap.isError)
       return statusMap
+    },
+  },
+  watch: {
+    imageMinDisk (val) {
+      if (this.isVMware) {
+        this.form.fc.setFieldsValue({
+          [this.decorator.size[0]]: val,
+        })
+      }
     },
   },
   created () {
