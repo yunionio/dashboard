@@ -125,9 +125,8 @@ export default {
         backup_storage_id: storage,
         project_id: project.key,
       }
-      return this.params.onManager('performClassAction', {
+      return this.params.onManager('create', {
         managerArgs: {
-          action: 'create-from-package',
           data: params,
         },
       })

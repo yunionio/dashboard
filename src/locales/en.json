@@ -1092,6 +1092,8 @@
       "deleting": "Deleting",
       "recovery": "Recovery",
       "snapshot_failed": "Fail to snapshot",
+      "creating_from_package": "Importing",
+      "create_from_package_failed": "Fail to import",
       "sync_status": "Sync Status",
       "pack": "Pack",
       "pack_failed": "Pack Failed",
