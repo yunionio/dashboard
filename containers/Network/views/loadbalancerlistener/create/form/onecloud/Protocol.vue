@@ -115,7 +115,7 @@ export default {
       },
     }),
     isDefaultVpc () {
-      return this.params.lbDetail && this.params.lbDetail.vpc_id === 'default'
+      return this.lbDetail && this.lbDetail.vpc_id === 'default'
     },
   },
   methods: {
