@@ -164,14 +164,37 @@ export default {
             initialValue: 'ipv4',
           },
         ],
-        eip: [
-          'eip',
-          {
-            rules: [
-              { required: true, message: i18n.t('network.text_278') },
-            ],
-          },
-        ],
+        eip: {
+          type: [
+            'eip_type',
+            {
+              initialValue: 'none',
+            },
+          ],
+          charge_type: [
+            'eip_charge_type',
+          ],
+          bgp_type: [
+            'eip_bgp_type',
+            {
+              initialValue: '',
+            },
+          ],
+          bandwidth: [
+            'eip_bw',
+            {
+              initialValue: 30,
+            },
+          ],
+          eip: [
+            'eip',
+            {
+              rules: [
+                { required: true, message: i18n.t('network.text_278') },
+              ],
+            },
+          ],
+        },
         __meta__: [
           '__meta__',
           {
@@ -190,6 +213,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
+    project () {
+      return this.form.fd.project ? this.form.fd.project : this.$store.getters.userInfo.projectId
+    },
     provider () {
       if (this.form.fd.provider) {
         return this.form.fd.provider.toLocaleLowerCase()
@@ -313,13 +339,20 @@ export default {
   },
   methods: {
     vpcLabelFormat (item) {
-      const { name, manager } = item
-      return (
-        <div class='d-flex'>
-          <span class='text-truncate flex-fill mr-2' title={name}>{name}</span>
-          <span style="color: #8492a6; font-size: 13px">云订阅: {manager}</span>
-        </div>
-      )
+      if (!item.cidr_block) return item.name
+      return `${item.name}（${item.account ? item.account + ', ' : ''}${item.cidr_block}）`
+    },
+    vpcFormatter (v) {
+      return {
+        key: v.id,
+        label: this.vpcLabelFormat(v),
+        rightLabel: v.manager ? this.$t('network.manager', [v.manager]) : '',
+        disabled: v.network_count === 0,
+        ...v,
+      }
+    },
+    handleVpcChange (data) {
+      this.vpcObj = data[0] ? data[0] : {}
     },
     validateIp () {
       const remainIps = this.networkObj.ports - this.networkObj.ports_used

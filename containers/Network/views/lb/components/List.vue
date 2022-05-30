@@ -277,7 +277,7 @@ export default {
                 label: this.$t('network.text_131'),
                 permission: 'lb_loadbalancers_delete',
                 action: () => {
-                  this.createDialog('DeleteResDialog', {
+                  this.createDialog('DeleteLbDialog', {
                     vm: this,
                     title: this.$t('network.text_131'),
                     data: this.list.selectedItems,
