@@ -4,6 +4,7 @@ import {
   getProjectDomainTableColumn,
   getStatusTableColumn,
   getEnabledTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
@@ -116,6 +117,7 @@ export default {
         },
       },
       getProjectDomainTableColumn({ sortable: false }),
+      getTimeTableColumn(),
     ]
   },
 }

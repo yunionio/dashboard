@@ -13,7 +13,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import GlobalSearchMixin from '@/mixins/globalSearch'
@@ -37,11 +37,13 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
+          created_at: getCreatedAtFilter(),
         },
         steadyStatus: {
           status: Object.values(expectStatus.kubecluster).flat(),
           sync_status: Object.values(expectStatus.kubecluster_sync_status).flat(),
         },
+        hiddenColumns: ['created_at'],
       }),
       groupActions: [
         {

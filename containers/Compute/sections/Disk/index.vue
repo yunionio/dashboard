@@ -37,13 +37,13 @@
         :decorators="{ filetype: decorator.filetype, mountPath: decorator.mountPath }" />
         <a-button class="mt-1" type="link" @click="() => showMountpoint = !showMountpoint">{{ showMountpoint ? $t('compute.text_135') : $t('compute.text_134') }}</a-button>
     </template>
-    <template v-if="has('schedtag') && !showStorage">
+    <template v-if="has('schedtag') && !showStorage && !isStorageShow">
       <schedtag-policy v-if="showSchedtag" :form="form" :decorators="{ schedtag: decorator.schedtag, policy: decorator.policy }" :schedtag-params="schedtagParams" :policyReactInSchedtag="false" />
       <a-button v-if="!disabled" v-show="!simplify" class="mt-1" type="link" @click="() => showSchedtag = !showSchedtag">{{ showSchedtag ? $t('compute.text_135') : $t('compute.text_1315') }}</a-button>
     </template>
     <template v-if="has('storage') && !showSchedtag">
-      <storage style="min-width: 480px; max-width: 500px;" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" />
-      <a-button v-if="!disabled" class="mt-1" type="link" @click="() => showStorage = !showStorage">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
+      <storage style="min-width: 480px; max-width: 500px;" :diskKey="diskKey" :decorators="decorator" :storageParams="storageParams" v-if="showStorage" :form="form" :storageHostParams="storageHostParams" @storageHostChange="(val) => $emit('storageHostChange', val)" />
+      <a-button v-if="!disabled" class="mt-1" type="link" @click="storageShowClick">{{ showStorage ? $t('compute.text_135') : $t('compute.text_1350') }}</a-button>
     </template>
     <!-- 磁盘容量预警信息提示 -->
     <a-tooltip v-if="storageStatusMap.tooltip">
@@ -70,6 +70,7 @@ export default {
     Storage,
   },
   props: {
+    diskKey: String,
     decorator: {
       type: Object,
       required: true,
@@ -138,6 +139,11 @@ export default {
     storageParams: {
       type: Object,
     },
+    storageHostParams: Object,
+    isStorageShow: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {
@@ -194,6 +200,9 @@ export default {
     },
     typeChange (val) {
       this.$emit('diskTypeChange', val)
+      if (this.showStorage) {
+        this.$emit('storageHostChange', { disk: this.diskKey, storageHosts: [] })
+      }
       this.snapshotObj = {}
     },
     init () {
@@ -205,6 +214,12 @@ export default {
     },
     formatterLabel (row) {
       return row.description ? `${row.name} / ${row.description}` : row.name
+    },
+    storageShowClick () {
+      if (this.showStorage) {
+        this.$emit('storageHostChange', { disk: this.diskKey, storageHosts: [] })
+      }
+      this.showStorage = !this.showStorage
     },
   },
 }

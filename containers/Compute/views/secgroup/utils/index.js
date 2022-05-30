@@ -16,6 +16,7 @@ export const exportDataOptions = {
     { label: 'CIDR', key: 'cidr' },
     { label: i18n.t('dictionary.project'), key: 'tenant' },
     { label: i18n.t('compute.text_271'), key: 'user_tags' },
+    { label: i18n.t('common.createdAt'), key: 'created_at' },
   ],
   transformParams (params) {
     if (params.filter) {

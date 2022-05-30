@@ -12,7 +12,7 @@
 import * as R from 'ramda'
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import { getNameFilter, getBrandFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getBrandFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
@@ -43,7 +43,9 @@ export default {
           name: getNameFilter(),
           description: getDescriptionFilter(),
           provider: getBrandFilter('cloud_id_brands'),
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -54,6 +56,7 @@ export default {
           { label: this.$t('table.title.brand'), key: 'provider' },
           { label: this.$t('table.title.share_range'), key: 'public_scope' },
           { label: this.$t('table.title.owner_domain'), key: 'project_domain' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

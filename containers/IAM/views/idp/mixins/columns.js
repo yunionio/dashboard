@@ -3,6 +3,7 @@ import {
   getStatusTableColumn,
   getEnabledTableColumn,
   getCopyWithContentTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -67,6 +68,7 @@ export default {
           },
         },
       },
+      getTimeTableColumn(),
     ]
   },
 }

@@ -17,7 +17,7 @@ import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 
@@ -49,8 +49,10 @@ export default {
             },
           },
           description: getDescriptionFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -59,6 +61,7 @@ export default {
           { label: this.$t('system.text_163'), key: 'enabled' },
           { label: this.$t('system.text_165'), key: 'idp' },
           { label: this.$t('table.title.user_tag'), key: 'user_tags' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

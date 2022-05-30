@@ -34,7 +34,8 @@
       <component
         ref="typeRef"
         :is="form.fd.type"
-        :form-item-layout="formItemLayout" />
+        :form-item-layout="formItemLayout"
+        :docUrl="getNotifyDocsUrl(form.fd.type)" />
     </page-body>
     <page-footer>
       <div slot="right">
@@ -54,6 +55,7 @@ import Feishu from './components/Feishu'
 import Workwx from './components/Workwx'
 import NameRepeated from '@/sections/NameRepeated/index'
 import ScopeRadio from '@/sections/ScopeRadio'
+import { getNotifyDocsUrl } from '../utils/docs'
 
 export default {
   name: 'NotifyconfigCreate',
@@ -311,6 +313,7 @@ export default {
         }
       })
     },
+    getNotifyDocsUrl,
   },
 }
 </script>

@@ -21,6 +21,7 @@ import {
   getEnabledFilter,
   getTenantFilter,
   getDomainFilter,
+  getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 
 export default {
@@ -56,8 +57,9 @@ export default {
           },
           projects: getTenantFilter(),
           project_domains: getDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
-        hiddenColumns: ['address'],
+        hiddenColumns: ['address', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -68,6 +70,7 @@ export default {
           { label: this.$t('res.project'), key: 'tenant' },
           { label: this.$t('table.title.share_range'), key: 'public_scope' },
           { label: 'Webhook/URL', key: 'address' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [{

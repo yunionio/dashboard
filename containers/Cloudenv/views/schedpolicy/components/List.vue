@@ -13,7 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import { STRATEGY_OPT } from '@Cloudenv/constants/sched'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getEnabledFilter, getFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 
 const getParams = { details: true }
 
@@ -43,7 +43,9 @@ export default {
             field: 'schedtag',
             title: this.$t('cloudenv.text_18'),
           }),
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -53,6 +55,7 @@ export default {
           { label: this.$t('cloudenv.text_413'), key: 'strategy' },
           { label: this.$t('cloudenv.text_18'), key: 'schedtag' },
           { label: this.$t('cloudenv.text_22'), key: 'condition' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

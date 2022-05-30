@@ -3,6 +3,7 @@ import {
   getProjectTableColumn,
   getPublicScopeTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -86,6 +87,7 @@ export default {
       },
       getPublicScopeTableColumn({ vm: this, resource: 'loadbalancercertificates' }),
       getProjectTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

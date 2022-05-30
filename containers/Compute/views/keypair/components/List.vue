@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { getNameFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -36,7 +36,9 @@ export default {
           },
           name: getNameFilter(),
           description: getDescriptionFilter(),
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -46,6 +48,7 @@ export default {
           { label: this.$t('compute.text_726'), key: 'fingerprint' },
           { label: this.$t('compute.text_175'), key: 'scheme' },
           { label: this.$t('compute.text_699', [this.$t('dictionary.server')]), key: 'linked_guest_count' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

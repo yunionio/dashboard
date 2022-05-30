@@ -1,6 +1,7 @@
 <template>
   <div class="system-disk">
     <disk
+      diskKey="system"
       :max="max"
       :min="min"
       :form="form"
@@ -10,11 +11,14 @@
       :elements="elements"
       :disabled="disabled"
       :storageParams="storageParams"
+      :storageHostParams="storageHostParams"
       :schedtagParams="getSchedtagParams()"
       :size-disabled="sizeDisabled || disabled"
       :storage-status-map="storageStatusMap"
+      :isStorageShow="isStorageShow"
       @showStorageChange="showStorageChange"
-      @diskTypeChange="setDiskMedium" />
+      @diskTypeChange="setDiskMedium"
+      @storageHostChange="(val) => $emit('storageHostChange', val)" />
   </div>
 </template>
 
@@ -91,7 +95,12 @@ export default {
     storageParams: {
       type: Object,
     },
+    storageHostParams: Object,
     ignoreStorageStatus: {
+      type: Boolean,
+      default: false,
+    },
+    isStorageShow: {
       type: Boolean,
       default: false,
     },
@@ -105,6 +114,9 @@ export default {
     },
     isIDC () {
       return this.type === 'idc'
+    },
+    isVMware () {
+      return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key
     },
     imageMinDisk () {
       const image = this.image
@@ -125,9 +137,14 @@ export default {
       const ret = ['disk-select']
       if (this.isIDC && !this.isServertemplate) {
         ret.push('schedtag')
-        if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
-          ret.push('storage') // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key || this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
+          ret.push('storage') // vmware,kvm 支持指定块存储
         }
+        // if (this.isStorageShow) {
+        //   return ret // 指定块存储后，系统盘和数据盘均确定且不在支持设置调度标签
+        // } else {
+        //   ret.push('schedtag')
+        // }
       }
       return ret
     },
@@ -256,6 +273,15 @@ export default {
       }
       this.$bus.$emit('VMCreateDisabled', statusMap.isError)
       return statusMap
+    },
+  },
+  watch: {
+    imageMinDisk (val) {
+      if (this.isVMware) {
+        this.form.fc.setFieldsValue({
+          [this.decorator.size[0]]: val,
+        })
+      }
     },
   },
   created () {

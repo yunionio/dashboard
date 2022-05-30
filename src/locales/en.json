@@ -379,7 +379,8 @@
       "cancel_snapshot_failed": "Failed to unbind the snapshot policy",
       "syncing": "Syncing",
       "sync_status": "Syncing",
-      "sched_fail": "Scheduling failed"
+      "sched_fail": "Scheduling failed",
+      "ActiveSAS": "ActiveSAS"
     },
     "secgroupCache": {
       "ready": "Normal",
@@ -1091,6 +1092,8 @@
       "deleting": "Deleting",
       "recovery": "Recovery",
       "snapshot_failed": "Fail to snapshot",
+      "creating_from_package": "Importing",
+      "create_from_package_failed": "Fail to import",
       "sync_status": "Sync Status",
       "pack": "Pack",
       "pack_failed": "Pack Failed",
@@ -1105,6 +1108,13 @@
       "init": "init",
       "online": "online",
       "offline": "offline"
+    },
+    "irsOrders": {
+      "process": "Process",
+      "all": "All",
+      "part": "Part",
+      "resp_failed": "Failed",
+      "hand": "Hand"
     }
   },
   "skuCategoryOptions": {
@@ -2367,6 +2377,7 @@
   "auth.register.mobile.validate": "Please enter your mobile number",
   "auth.secret.verify.title": "Login protection is turned on, please enter the 6-digit security code",
   "auth.secret.reset.prefix": "Please open the OneLogin Protect APP on your mobile phone to obtain the MFA security code. Unable to obtain it, please",
+  "auth.secret.reset.prefix1": "Please open the OneLogin Protect APP on your mobile phone to obtain the MFA security code. ",
   "auth.secret.validate": "The security code is wrong, please re-enter",
   "auth.secret.loading": "Authenticating",
   "auth.question.title": "Please set a security question to verify your identity when resetting the security code key",
@@ -2603,7 +2614,9 @@
     "compute": "Compute",
     "es": "ElasticSearch",
     "app": "Web App",
-    "command_log": "Command Logs"
+    "command_log": "Command Logs",
+    "ipv6_gateway": "IPv6 Gateway",
+    "apsara": "Apsara"
   },
   "res": {
     "role": "Role",
@@ -2682,7 +2695,7 @@
       "image_size": "Image Size",
       "checksum": "Checksum",
       "share_range": "Shared Scope",
-      "child_image": "Sub-Image",
+      "child_image": "Disk Image",
       "disk_storage": "Primary Storage",
       "disk_type": "Disk Type",
       "disk_mounted": "Mounted",
@@ -2692,7 +2705,8 @@
       "disk_guest": "Server",
       "snapshot_size": "Snapshot Size",
       "storage_type": "Storage Type",
-      "sub_snapshot": "Sub-Snapshot",
+      "sub_snapshot": "Disk Snapshot",
+      "sub_backup": "Disk Backup",
       "bind_disk_count": "Associated Disk Count",
       "res_name": "Resource Name",
       "action_result": "Result",
@@ -5143,5 +5157,7 @@
   "common.view_logs": "View logs",
   "common.password_no_equal": "Old and new passwords cannot be consistent",
   "common.command": "Command",
-  "common.login_user": "Login User"
+  "common.login_user": "Login User",
+  "common.remote_control": "Remote Control",
+  "common.default_search_key": "Default is {0} search"
 }

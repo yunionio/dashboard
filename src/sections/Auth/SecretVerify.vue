@@ -54,6 +54,7 @@ export default {
           passcode: this.securityCode,
         })
         this.loading = false
+        await this.$store.commit('auth/UPDATE_AUTH')
         if (this.$route.query.rf) {
           document.location.href = this.$route.query.rf
         } else {

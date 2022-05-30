@@ -13,7 +13,7 @@
 import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
-import { getProjectDomainFilter, getEnabledFilter } from '@/utils/common/tableFilter'
+import { getProjectDomainFilter, getEnabledFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import {
   getSetPublicAction,
 } from '@/utils/common/tableActions'
@@ -51,8 +51,10 @@ export default {
           },
           project_domain: getProjectDomainFilter(),
           enabled: getEnabledFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [

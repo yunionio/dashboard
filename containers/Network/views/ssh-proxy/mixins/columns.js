@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -47,6 +48,7 @@ export default {
       },
       { field: 'port', title: i18n.t('network.ssh-proxy.port') },
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

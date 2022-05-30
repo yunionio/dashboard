@@ -1,5 +1,5 @@
 import { levelColumn, strategyColumn, projectTableColumn, getResTypeColumn } from '../utils'
-import { getNameDescriptionTableColumn, getStatusTableColumn, getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getStatusTableColumn, getEnabledTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   created () {
@@ -21,6 +21,7 @@ export default {
       strategyColumn(),
       levelColumn,
       projectTableColumn,
+      getTimeTableColumn(),
     ]
   },
 }

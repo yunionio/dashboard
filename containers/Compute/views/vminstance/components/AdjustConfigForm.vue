@@ -34,6 +34,7 @@
             <sku
               v-decorator="decorators.sku"
               :type="type"
+              :priceUnit="skuPriceUnit"
               :sku-params="skuParam"
               :sku-filter="skuFilter"
               :require-sys-disk-type="requireSysDiskType"
@@ -44,7 +45,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
             <system-disk
-              v-if="hypervisor && form.fi.capability.storage_types && form.fd.defaultType"
+              v-if="isRenderSystemDisk"
               :decorator="decorators.systemDisk"
               :type="type"
               :hypervisor="hypervisor"
@@ -58,7 +59,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1">
             <data-disk
-              v-if="hypervisor && form.fi.capability.storage_types"
+              v-if="isRenderDataDisk"
               ref="dataDiskRef"
               :decorator="decorators.dataDisk"
               :type="type"
@@ -115,7 +116,7 @@ import MemRadio from '@Compute/sections/MemRadio'
 import DataDisk from '@Compute/sections/DataDisk'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import sku from '@Compute/sections/SKU'
-import { SERVER_TYPE, BILL_TYPES_MAP, EIP_TYPES_MAP } from '@Compute/constants'
+import { SERVER_TYPE, EIP_TYPES_MAP } from '@Compute/constants'
 import SystemIcon from '@/sections/SystemIcon'
 import { Manager } from '@/utils/manager'
 import WindowsMixin from '@/mixins/windows'
@@ -368,6 +369,14 @@ export default {
   },
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'userInfo']),
+    scopeParams () {
+      if (this.$store.getters.isAdminMode) {
+        return {
+          project_domain: this.params.data[0].domain_id,
+        }
+      }
+      return { scope: this.$store.getters.scope }
+    },
     selectedItems () {
       return this.params.data
     },
@@ -545,7 +554,7 @@ export default {
     },
     // 是否为包年包月
     isPackage () {
-      return this.form.fd.billType === BILL_TYPES_MAP.package.key
+      return this.selectedItem.billing_type === 'prepaid'
     },
     durationNum () {
       if (this.isPackage) {
@@ -612,22 +621,54 @@ export default {
       return (this.selectedItem.hypervisor === HYPERVISORS_MAP.kvm.hypervisor || this.selectedItem.hypervisor === HYPERVISORS_MAP.cloudpods.hypervisor)
     },
     dataDiskStorageParams () {
-      const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
-      const { prefer_manager, schedtag, prefer_host } = this.form.fd
+      const dataDiskSizes = _.get(this.form.fd, 'dataDiskSizes')
+      let dataDiskType = ''
+      for (const key in dataDiskSizes) {
+        if (this.form.fd[`dataDiskTypes[${key}]`]) {
+          dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
+        }
+      }
+      const { prefer_manager, schedtag } = this.form.fd
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
-        brand: HYPERVISORS_MAP.esxi.brand, // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        brand: this.selectedItem.brand, // kvm,vmware支持指定存储
         manager: prefer_manager,
         host_schedtag_id: schedtag,
+        host_id: this.params.data[0].host_id,
       }
-      if (systemDiskType) {
-        params.filter = [`storage_type.contains("${systemDiskType}")`]
-      }
-      if (prefer_host) {
-        params.host_id = prefer_host
+      if (dataDiskType) {
+        params.filter = [`storage_type.contains("${dataDiskType}")`]
       }
       return params
+    },
+    skuPriceUnit () {
+      if (this.isPackage) {
+        return {
+          key: 'month_price',
+          unit: this.$t('compute.text_173'),
+        }
+      }
+      return {
+        key: 'hour_price',
+        unit: this.$t('compute.text_172'),
+      }
+    },
+    isRenderSystemDisk () {
+      return this.hypervisor && this.form.fi.capability.storage_types && this.form.fd.defaultType
+    },
+    isRenderDataDisk () {
+      return this.hypervisor && this.form.fi.capability.storage_types && this.form.fd.sku
+    },
+  },
+  watch: {
+    priceTips: {
+      handler (val) {
+        let ret = `${this.currency} ${this.price && this.price.toFixed(2)}`
+        ret += !this.isPackage ? this.$t('compute.text_296') : ''
+        this.$bus.$emit('VMGetPrice', `${ret} ${val}`)
+      },
+      immediate: true,
     },
   },
   created () {
@@ -689,6 +730,7 @@ export default {
           [this.decorators.systemDisk.type[0]]: { key: diskKey, label: R.is(Object, storageItem) ? (_.get(storageItem, '[diskKey].key') || diskKey) : diskKey },
         }
       }
+
       const { medium_type: dataDiskMedium } = this.selectedItem.disks_info[1] || {}
       this.$nextTick(() => {
         setTimeout(() => {
@@ -696,7 +738,7 @@ export default {
             this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, sizeDisabled: true, medium: dataDiskMedium, ...v })
           })
           this.diskLoaded = true
-        }, 1000)
+        }, 2000)
         this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
       })
     },
@@ -1036,7 +1078,7 @@ export default {
       if (R.isNil(f.systemDiskSize)) return
 
       const pf = new PriceFetcher()
-      pf.initialForm(this.$store.getters.scope, f.sku, f.duration, f.billType, this.isPublic, this.cloudaccountId)
+      pf.initialForm(this.$store.getters.scope, f.sku, f.duration || '1M', this.selectedItem?.billing_type, this.isPublic, this.cloudaccountId)
       // add price items
       if (!isPublic) {
         // server instance

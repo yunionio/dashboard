@@ -114,6 +114,24 @@ export default {
             },
           },
         },
+        {
+          field: 'ip_addrs',
+          title: this.$t('db.intranet_ip'),
+          minWidth: 200,
+          slots: {
+            default: ({ row }) => {
+              const ip_addrs = (row.ip_addrs || '').split(',')
+              return [
+                ...ip_addrs.map(ip => {
+                  return (<list-body-cell-wrap hide-field copy message={ip}><span>{ip}</span></list-body-cell-wrap>)
+                }),
+              ]
+            },
+          },
+          hidden: (row) => {
+            return !row.ip_addrs
+          },
+        },
       ],
       extraInfo: [
         {

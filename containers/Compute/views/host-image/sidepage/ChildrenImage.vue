@@ -3,8 +3,9 @@
 </template>
 
 <script>
-import { getStatusTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getStatusTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import { sizestr } from '@/utils/utils'
+import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -26,11 +27,22 @@ export default {
     }
     return {
       columns: [
-        {
-          field: 'name',
-          title: this.$t('compute.text_627'),
-          width: 150,
-        },
+        getNameDescriptionTableColumn({
+          width: 200,
+          onManager: this.onManager,
+          hideField: true,
+          addLock: true,
+          addEncrypt: true,
+          slotCallback: (row, h) => {
+            return (
+              <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>
+            )
+          },
+          formRules: [
+            { required: true, message: this.$t('compute.text_210') },
+            { validator: this.$validate('imageName') },
+          ],
+        }),
         {
           field: 'type',
           title: this.$t('compute.text_628'),
@@ -57,6 +69,19 @@ export default {
       ],
       resourceData: getResourceData(),
     }
+  },
+  methods: {
+    handleOpenSidepage (row) {
+      this.sidePageTriggerHandle(this, 'SystemImageSidePage', {
+        id: row.id,
+        resource: 'images',
+        apiVersion: 'v1',
+        getParams: this.getParam,
+        steadyStatus: Object.values(expectStatus.image).flat(),
+      }, {
+        list: this.list,
+      })
+    },
   },
 }
 </script>

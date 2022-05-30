@@ -10,6 +10,7 @@ import {
   getProjectDomainTableColumn,
   getTagTableColumn,
   getStatusTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -39,6 +40,7 @@ export default {
       getStatusTableColumn({ statusModule: 'dnszone' }),
       getPublicScopeTableColumn({ vm: this, resource: 'dns_zones' }),
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

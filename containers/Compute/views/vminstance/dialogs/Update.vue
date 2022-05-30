@@ -35,6 +35,9 @@
           <a-form-item :label="$t('compute.machine')" v-bind="formItemLayout">
             <machine :decorator="decorators.machine" :isArm="isArm" />
           </a-form-item>
+          <a-form-item :label="$t('compute.is_daemon')" v-bind="formItemLayout" v-if="canAdminUpdate">
+            <a-switch v-model="is_daemon" />
+          </a-form-item>
         </template>
       </a-form>
       <a-alert :message="$t('compute.need_reboot_prompt')" banner />
@@ -49,6 +52,7 @@
 <script>
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { hasPermission } from '@/utils/auth'
 import Bios from '@Compute/sections/BIOS'
 import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
@@ -70,6 +74,7 @@ export default {
         fc: this.$form.createForm(this),
       },
       vdi: 'vnc',
+      is_daemon: false,
       decorators: {
         disable_delete: [
           'disable_delete',
@@ -161,6 +166,9 @@ export default {
     isArm () {
       return this.params.data.length >= 1 && (this.params.data[0].os_arch === 'arm' || this.params.data[0].os_arch === 'aarch64')
     },
+    canAdminUpdate () {
+      return hasPermission({ key: 'server_update', resourceData: this.params.data[0] }) && this.$store.getters.isAdminMode
+    },
   },
   created () {
     this.initFormValue(this.params.data[0])
@@ -170,6 +178,7 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
+        values.is_daemon = this.is_daemon
         const ids = this.params.data.map(item => item.id)
         await this.params.onManager('batchUpdate', {
           id: ids,
@@ -177,6 +186,15 @@ export default {
             data: values,
           },
         })
+        const syncIds = this.params.data.filter(item => item.status === 'ready').map(item => item.id)
+        if (syncIds && syncIds.length > 0) {
+          await this.params.onManager('batchPerformAction', {
+            id: syncIds,
+            managerArgs: {
+              action: 'sync',
+            },
+          })
+        }
         this.loading = false
         this.cancelDialog()
       } catch (error) {
@@ -195,6 +213,8 @@ export default {
           updateObj.vga = data.vga ? data.vga : 'std'
           this.vdi = updateObj.vdi
           updateObj.machine = data.machine ? data.machine : (this.isArm ? 'virt' : 'pc')
+          // updateObj.is_daemon = data.is_daemon
+          this.is_daemon = data.is_daemon
         }
         this.form.fc.setFieldsValue(updateObj)
       })

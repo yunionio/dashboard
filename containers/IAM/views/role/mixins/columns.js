@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
   getPublicScopeTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -49,6 +50,7 @@ export default {
       },
       getPublicScopeTableColumn({ vm: this, resource: 'roles' }),
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
   methods: {

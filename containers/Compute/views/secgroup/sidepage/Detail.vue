@@ -45,10 +45,14 @@ export default {
           field: 'guest_cnt',
           title: this.$t('compute.text_1023'),
           formatter: ({ row }) => {
-            if (!this.$store.getters.isAdminMode || !row.admin_guest_cnt) {
-              return <a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a>
+            const guestList = []
+            if (row.admin_guest_cnt && this.$store.getters.isAdminMode) {
+              guestList.push(<span> + {row.admin_guest_cnt} <help-tooltip name="secgroupAdminGuestCnt" /></span>)
             }
-            return <span><a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a> + {row.admin_guest_cnt} <help-tooltip name="secgroupAdminGuestCnt" /></span>
+            if (row.system_guest_cnt && this.$store.getters.isAdminMode) {
+              guestList.push(<span> + {row.system_guest_cnt} <help-tooltip name="secgroupSystemGuestCnt" /></span>)
+            }
+            return <span><a onClick={ () => this.$emit('tab-change', 'vminstance-list') }>{row.guest_cnt}</a>{...guestList}</span>
           },
           hidden: () => this.hiddenColumns.includes('guest_cnt'),
         },

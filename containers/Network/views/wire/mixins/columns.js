@@ -8,6 +8,7 @@ import {
   getProjectDomainTableColumn,
   getBrandTableColumn,
   getTagTableColumn, getStatusTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -92,6 +93,7 @@ export default {
       getPublicScopeTableColumn({ vm: this, resource: 'wires' }),
       getProjectDomainTableColumn(),
       getRegionTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

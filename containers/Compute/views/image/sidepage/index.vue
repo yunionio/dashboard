@@ -8,7 +8,7 @@
     :tabs="detailTabs"
     :loaded="loaded"
     @tab-change="handleTabChange">
-    <template v-slot:actions>
+    <template v-if="isStandalone" v-slot:actions>
       <actions
         :options="singleActions"
         :row="detailData"
@@ -29,14 +29,14 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import ChildrenImageList from '../../host-image/sidepage/ChildrenImage'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import SystemImageDetail from './Detail'
 import CacheList from './Cache'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'SystemImageSidePage',
@@ -48,8 +48,14 @@ export default {
   },
   mixins: [SidePageMixin, WindowsMixin, SingleActionsMixin, ColumnsMixin],
   computed: {
+    isStandalone () {
+      if (this.data && this.data.data && [true, 'true'].includes(this.data.data.is_guest_image)) {
+        return false
+      }
+      return true
+    },
     detailTabs () {
-      if (this.$store.getters.isAdminMode) {
+      if (this.$store.getters.isAdminMode && this.isStandalone) {
         return [
           { label: this.$t('compute.text_238'), key: 'system-image-detail' },
           { label: this.$t('compute.text_692'), key: 'cache-list' },

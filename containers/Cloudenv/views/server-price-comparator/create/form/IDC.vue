@@ -65,7 +65,10 @@
           :disabled="form.fi.sysDiskDisabled"
           :sizeDisabled="systemdiskSizeDisabled"
           :storageParams="storageParams"
-          :domain="project_domain" />
+          :storageHostParams="storageHostParams"
+          :domain="project_domain"
+          :isStorageShow="isStorageShow"
+          @storageHostChange="storageHostChange" />
       </a-form-item>
       <a-form-item :label="$t('compute.text_50')">
         <data-disk
@@ -83,10 +86,13 @@
           :defaultType="form.fd.systemDiskType"
           :domain="project_domain"
           :isWindows="isWindows"
-          :systemStorageShow="systemStorageShow"
+          :isStorageShow="isStorageShow"
           :enableMointpoint="false"
-          :simplify="true" />
-        <div slot="extra" class="warning-color" v-if="systemStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
+          :simplify="true"
+          :storageParams="dataDiskStorageParams"
+          :storageHostParams="storageHostParams"
+          @storageHostChange="storageHostChange" />
+        <div slot="extra" class="warning-color" v-if="isStorageShow">{{ $t('compute.select_storage_no_schetag') }}</div>
       </a-form-item>
       <bottom-bar
         ref="bottomBarRef"
@@ -120,6 +126,8 @@ export default {
   data () {
     return {
       isLocalDisk: true,
+      storageHosts: {}, // 所有磁盘的storage-host
+      storageHostParams: {}, // 第一个选择的块存储
     }
   },
   computed: {
@@ -187,28 +195,28 @@ export default {
         ...this.scopeParams,
       }
     },
-    policyHostParams () {
-      const zone = _.get(this.form.fd, 'zone.key')
-      if (zone) {
-        const params = {
-          enabled: 1,
-          usable: true,
-          zone,
-          hypervisor: this.form.fd.hypervisor,
-          os_arch: HOST_CPU_ARCHS.x86.key,
-          ...this.scopeParams,
-        }
-        if (params.hypervisor === HYPERVISORS_MAP.esxi.key) {
-          if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
-            params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
-          }
-          params.cloudprovider = this.form.fd.prefer_manager
-        }
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
-        return params
-      }
-      return {}
-    },
+    // policyHostParams () {
+    //   const zone = _.get(this.form.fd, 'zone.key')
+    //   if (zone) {
+    //     const params = {
+    //       enabled: 1,
+    //       usable: true,
+    //       zone,
+    //       hypervisor: this.form.fd.hypervisor,
+    //       os_arch: HOST_CPU_ARCHS.x86.key,
+    //       ...this.scopeParams,
+    //     }
+    //     if (params.hypervisor === HYPERVISORS_MAP.esxi.key) {
+    //       if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
+    //         params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+    //       }
+    //       params.cloudprovider = this.form.fd.prefer_manager
+    //     }
+    //     if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
+    //     return params
+    //   }
+    //   return {}
+    // },
     networkParam () {
       if (!this.cloudregionZoneParams.cloudregion) return {}
       const params = {
@@ -217,8 +225,22 @@ export default {
         ...this.cloudregionZoneParams,
         ...this.scopeParams,
       }
-      if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fd[this.decorators.systemDisk.storage[0]]) {
-        params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+      if ([HYPERVISORS_MAP.esxi.key].includes(this.form.fd.hypervisor)) {
+        params.host_type = 'esxi'
+      }
+      if ([HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.kvm.key].includes(this.form.fd.hypervisor)) {
+        if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
+          params.storage_id = this.form.fd[this.decorators.systemDisk.storage[0]]
+        }
+        if (this.storageHostParams.disk &&
+        this.storageHostParams.disk !== 'system' &&
+        this.storageHostParams.storageHosts &&
+        this.storageHostParams.storageHosts.length &&
+        !params.storage_id) {
+          if (this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]) {
+            params.storage_id = this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]
+          }
+        }
       }
       return params
     },
@@ -296,31 +318,51 @@ export default {
     },
     storageParams () {
       const systemDiskType = _.get(this.form.fd, 'systemDiskType.key')
-      const { systemDiskSize, dataDiskSizes } = this.form.fd
-      let dataSizeTotal = 0
-      if (R.is(Object, dataDiskSizes)) {
-        const list = Object.values(dataDiskSizes)
-        if (list && list.length) {
-          dataSizeTotal = list.reduce((a, b) => a + b)
-        }
-      }
       const params = {
         ...this.scopeParams,
         usable: true, // 包含了 enable:true, status为online的数据
-        brand: HYPERVISORS_MAP.esxi.brand, // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
         manager: this.form.fd.prefer_manager,
       }
       if (systemDiskType) {
         params.filter = [`storage_type.contains("${systemDiskType}")`]
       }
-      const diskSize = systemDiskSize + dataSizeTotal
-      if (R.is(Number, diskSize)) {
-        params.filter = (params.filter || []).concat([`capacity.ge(${(diskSize) * 1024})`])
+      return params
+    },
+    dataDiskStorageParams () {
+      const dataDiskSizes = _.get(this.form.fd, 'dataDiskSizes')
+      let dataDiskType = ''
+      for (const key in dataDiskSizes) {
+        if (this.form.fd[`dataDiskTypes[${key}]`]) {
+          dataDiskType = this.form.fd[`dataDiskTypes[${key}]`].key
+        }
+      }
+      const params = {
+        ...this.scopeParams,
+        usable: true, // 包含了 enable:true, status为online的数据
+        brand: HYPERVISORS_MAP[this.form.fd.hypervisor]?.brand, // kvm,vmware支持指定存储
+        manager: this.form.fd.prefer_manager,
+      }
+      if (dataDiskType) {
+        params.filter = [`storage_type.contains("${dataDiskType}")`]
       }
       return params
     },
-    systemStorageShow () { // 系统盘是否开启了指定存储
-      return this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key && this.form.fi.showStorage
+    isStorageShow () { // 是否开启了指定存储
+      if ([HYPERVISORS_MAP.esxi.key, HYPERVISORS_MAP.kvm.key].includes(this.form.fd.hypervisor)) {
+        if (this.form.fd[this.decorators.systemDisk.storage[0]]) {
+          return true
+        }
+        if (this.storageHostParams.disk &&
+        this.storageHostParams.disk !== 'system' &&
+        this.storageHostParams.storageHosts &&
+        this.storageHostParams.storageHosts.length) {
+          if (this.form.fd[`dataDiskStorages[${this.storageHostParams.disk}]`]) {
+            return true
+          }
+        }
+      }
+      return false
     },
     imageParams () {
       const params = {
@@ -520,6 +562,29 @@ export default {
     gpuChange (val) {
       if (!val) {
         this.form.fc.setFieldsValue({ gpu: '' })
+      }
+    },
+
+    storageHostChange (val) {
+      const { disk } = this.storageHostParams
+      if (val.disk) {
+        this.storageHosts[val.disk] = val
+      }
+      // 由第一块选择块存储的盘来确定块存储所在的host
+      if (!disk || disk === val.disk) { // 第一块盘选
+        if (val.storageHosts && val.storageHosts.length) {
+          this.storageHostParams = val
+        } else { // 清空操作
+          let changeNew = false
+          for (const key in this.storageHosts) {
+            if (this.storageHosts[key].storageHosts && this.storageHosts[key].storageHosts.length) {
+              this.storageHostParams = this.storageHosts[key] // 选其他已选的hosts作为新的范围
+              changeNew = true
+              break
+            }
+          }
+          if (!changeNew) this.storageHostParams = {}
+        }
       }
     },
   },

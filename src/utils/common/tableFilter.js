@@ -27,6 +27,10 @@ export function getBrandItems (key = 'brands', outBrands = []) {
     if (obj.label === 'OneCloud') {
       obj.label = i18n.t('brand')
     }
+    if (obj.key === 'Cloudpods') {
+      const { companyInfo = {} } = store.state.app
+      obj.label = setting.language === 'en' ? (companyInfo.inner_copyright_en || obj.label) : (companyInfo.inner_copyright || obj.label)
+    }
     return obj
   }).filter(({ key }) => {
     if (R.type(outBrands) === 'Array' && !R.isEmpty(outBrands)) {
@@ -370,6 +374,10 @@ function utcTime (v) {
   return moment(v).utc().format('YYYY-MM-DD HH:mm:ss')
 }
 
+function time (v) {
+  return moment(v).format('YYYY-MM-DD HH:mm:ss')
+}
+
 export function getTimeRangeFilter ({ label = '', field = '' }) {
   return {
     label: label,
@@ -384,6 +392,24 @@ export function getTimeRangeFilter ({ label = '', field = '' }) {
         return `${field}.ge("${utcTime(val)}")`
       }
       return `${field}.between("${utcTime(val[0])}", "${utcTime(val[1])}")`
+    },
+  }
+}
+
+export function getCreatedAtFilter ({ field = 'created_at', utc = true } = {}) {
+  return {
+    label: i18n.t('common.createdAt'),
+    dropdown: true,
+    date: true,
+    filter: true,
+    formatter: (val, type) => {
+      if (type === 'before') {
+        return `${field}.le("${utc ? utcTime(val) : time(val)}")`
+      }
+      if (type === 'after') {
+        return `${field}.ge("${utc ? utcTime(val) : time(val)}")`
+      }
+      return `${field}.between("${utc ? utcTime(val[0]) : time(val[0])}", "${utc ? utcTime(val[1]) : time[1]}")`
     },
   }
 }

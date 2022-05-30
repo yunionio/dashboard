@@ -572,7 +572,7 @@
   "system.wecom.bot": "企业微信机器人",
   "system.wecom.where_to_find_robot": "创建或获取路径：企业微信群右上角设置->群机器人->添加机器人->添加成功后获取机器人的webhook地址",
   "system.wecom": "企业微信{0}",
-  "system.text_573": "创建或获取路径：进入控制台 -> 点击用户头像 -> accesskeys",
+  "system.text_573": "创建或获取路径：登录阿里云控制台 -> 右上角头像-AccessKey 管理 -> 获取AccessKey",
   "system.text_574": "创建路径：进入控制台 -> 产品与服务 -> 短信服务 ->签名管理",
   "system.text_575": "进入控制台 -> 产品与服务 -> 短信服务 -> 国内消息 ->模板管理",
   "system.text_576": "未验证，请在用户信息处进行验证",
@@ -765,7 +765,9 @@
     },
     "compute$skip_server_by_sys_tag_keys": {
       "label": "跳过同步带指定系统标签的虚拟机",
-      "desc": "云账号同步时，将不同步带设置的系统标签的虚拟机"
+      "dialog_label": "指定系统标签",
+      "desc": "云账号同步时，将不同步带设置的系统标签的虚拟机",
+      "dialog_desc": "请手动输入标签键，多个标签键以英文“,”分隔，如tagkey1,tagkey2"
     },
     "compute$default_admin_security_group_id": {
       "label": "管理安全组ID",
@@ -808,13 +810,13 @@
   "system.steps_to_param_mailconfig": "企业微信平台获取参数步骤",
   "system.is_config_mail_tips": "系统未设置邮箱的通知渠道，无法发送邮件",
   "system.google_oidc_doc": "google相关参数获取方式",
-  "system.github_oidc_doc": "github相关参数获取方式",
-  "system.azure_oidc_doc": "azure-ad-oauth2相关参数获取方式",
-  "system.azure_ad_saml_doc": "azure-ad-saml20相关参数获取方式",
-  "system.saml_doc": "通用saml相关参数获取方式",
-  "system.feishu_oauth2_doc": "飞书相关参数获取方式",
-  "system.dingtalk_oauth2_doc": "钉钉相关参数获取方式",
-  "system.qywechat_oauth2_doc": "企业微信相关参数获取方式",
+  "system.github_oidc_doc": "新建github认证源",
+  "system.azure_oidc_doc": "新建azure-ad-oauth2认证源",
+  "system.azure_ad_saml_doc": "新建azure-ad-saml20认证源",
+  "system.saml_doc": "新建通用saml认证源",
+  "system.feishu_oauth2_doc": "新建飞书认证源",
+  "system.dingtalk_oauth2_doc": "新建钉钉认证源",
+  "system.qywechat_oauth2_doc": "新建企业微信认证源",
   "system.three_level_permission_description": "三级权限使用说明",
   "system.bill_budgets": "预算",
   "system.field.username": "用户名字段",
@@ -884,6 +886,10 @@
   "system.companyinfo.monitor_dashboard_logo.extra": "仅支持.png格式（宽71 * 高19)",
   "system.companyinfo.copyright": "版权信息(中文)",
   "system.companyinfo.copyright_en": "版权信息(英文)",
+  "system.companyinfo.inner_copyright": "纳管内置私有云名称(中文)",
+  "system.companyinfo.inner_copyright_en": "纳管内置私有云名称(英文)",
+  "system.companyinfo.inner_logo": "纳管内置私有云logo",
+  "system.companyinfo.inner_logo.extra": "仅支持.png格式（宽64 * 高64)",
   "system.companyinfo.font_color": "字体颜色",
   "system.companyinfo.monitor_dashboard_style": "监控大屏类型",
   "system.companyinfo.monitor_dashboard_style.overview": "云管",
@@ -911,5 +917,10 @@
   "iam.user_lock_notify": "用户锁定通知",
   "iam.checksum_error_notify": "完整性校验失败通知",
   "iam.security_info": "安全消息",
-  "iam.manage_res": "管理{0)"
+  "iam.manage_res": "管理{0)",
+  "iam.reset_mfa_tips": "重置后，用户需在登录页面需重新设置，之前信息将失效！",
+  "iam.project_tag": "项目标签",
+  "iam.object_tag": "资源标签",
+  "iam.help": "点击查看帮助",
+  "iam.get_params_help": "获取相关参数"
 }

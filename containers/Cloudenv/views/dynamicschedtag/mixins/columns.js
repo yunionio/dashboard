@@ -1,4 +1,4 @@
-import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
+import { getNameDescriptionTableColumn, getEnabledTableColumn, getCopyWithContentTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -27,6 +27,7 @@ export default {
         field: 'condition',
         title: i18n.t('cloudenv.text_22'),
       }),
+      getTimeTableColumn(),
     ]
   },
 }

@@ -5,8 +5,8 @@
       <a-divider orientation="left">{{$t('cloudenv.text_199')}}</a-divider>
       <a-form-item :label="$t('cloudenv.text_200')">
         <a-radio-group v-model="billingType">
-          <a-radio-button :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
           <a-radio-button :value="1">{{$t('cloudenv.text_201')}}</a-radio-button>
+          <a-radio-button :value="2">{{$t('cloudenv.text_202')}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_201')" v-if="billingType === 2" :extra="$t('cloudenv.text_203')">
@@ -55,7 +55,7 @@ export default {
       cloudAccounts: [],
       cloudAccountLoading: false,
       cloudAccount: {},
-      billingType: 2,
+      billingType: 1,
       form: {
         fc: this.$form.createForm(this),
       },
@@ -131,7 +131,7 @@ export default {
         billing_scope: [
           'billing_scope',
           {
-            initialValue: options.billing_scope || 'all',
+            initialValue: options.billing_scope || 'managed',
             rules: [
               { required: true, message: this.$t('cloudenv.billing_scope.prompt') },
             ],
@@ -155,6 +155,10 @@ export default {
       )
     },
     async fetchCloudAccounts () {
+      const { id } = this.$route.query
+      if (!id) {
+        return false
+      }
       this.cloudAccountLoading = true
       try {
         const params = {
@@ -182,10 +186,10 @@ export default {
             details: true,
           },
         })
-        // azure 和 aws billing_scope 没有时选中managed，新建时选中all
-        if ((this.isAzure || this.isAws) && (!data.options || !data.options.billing_scope)) {
+        // billing_scope没有时默认选中一个
+        if (!data.options || !data.options.billing_scope) {
           data.options = data.options || {}
-          data.options.billing_scope = 'managed'
+          data.options.billing_scope = data.options.billing_scope || 'managed'
         }
         this.cloudAccount = data
         if (data && data.options && data.options.billing_bucket_account) {

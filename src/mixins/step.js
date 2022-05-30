@@ -10,7 +10,7 @@ export default {
   computed: {
     isFirstStep () {
       let currentStep = 2
-      if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+      if (this.currentItem && notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
         currentStep = 3
       }
       return this.step.currentStep === 0 || (this.step.currentStep === currentStep && this.isBill)
@@ -20,7 +20,7 @@ export default {
     },
     nextStepTitle () {
       let currentStep = 2
-      if (notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
+      if (this.currentItem && notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
         currentStep = 3
       }
       if (this.isLastStep || (this.step.currentStep === currentStep && this.isBill)) return this.$t('dialog.ok')

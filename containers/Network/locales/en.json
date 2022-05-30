@@ -813,6 +813,7 @@
   "network.eip.instance_type": "Instance Type",
   "network.eip.instance_type.server": "Server",
   "network.eip.instance_type.nat": "NAT",
+  "network.eip.instance_type.lb": "LB",
   "network.nat.status.unavailable.tooltip": "NAT status not available",
   "network.snat.type.network": "IP Subnets",
   "network.snat.type.server": "Server",

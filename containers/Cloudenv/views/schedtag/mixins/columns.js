@@ -8,6 +8,7 @@ import {
 import {
   getNameDescriptionTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -62,6 +63,7 @@ export default {
           },
         },
       },
+      getTimeTableColumn(),
     ]
   },
 }

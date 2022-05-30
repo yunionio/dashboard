@@ -12,7 +12,7 @@
 <script>
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getEnabledFilter, getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getEnabledFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import SingleActionsMixin from '../mixins/singleActions'
@@ -68,8 +68,10 @@ export default {
             ],
           },
           project_domain: getProjectDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -79,6 +81,7 @@ export default {
           { label: this.$t('dictionary.domain'), key: 'project_domain' },
           { label: this.$t('system.text_163'), key: 'enabled' },
           { label: this.$t('system.text_475'), key: 'allow_web_console' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       userTotal: 0,

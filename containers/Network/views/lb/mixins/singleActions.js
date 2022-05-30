@@ -35,6 +35,68 @@ export default {
         label: i18n.t('network.text_129'),
         actions: (obj) => {
           return [
+            {
+              label: i18n.t('compute.text_1179'),
+              permission: 'lb_loadbalancers_perform_associate_eip',
+              action: () => {
+                this.createDialog('LbBindEipDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  singleRefresh: this.singleRefresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                }
+                if (!['OneCloud', 'Huawei'].includes(obj.brand) || obj.eip_mode === 'elastic_ip') {
+                  ret.validate = false
+                }
+                return ret
+              },
+            },
+            {
+              label: i18n.t('compute.text_1264'),
+              permission: 'lb_loadbalancers_perform_dissociate_eip',
+              action: () => {
+                this.createDialog('LbUnbindEipDialog', {
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  singleRefresh: this.singleRefresh,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                }
+                if (!['OneCloud', 'Huawei'].includes(obj.brand) || obj.eip_mode !== 'elastic_ip' || !obj.eip_id) {
+                  ret.validate = false
+                }
+                return ret
+              },
+            },
+            {
+              label: i18n.t('network.text_253'),
+              permission: 'lb_loadbalancers_update',
+              action: () => {
+                this.createDialog('LbUpdateCluster', {
+                  title: i18n.t('network.text_253'),
+                  data: [obj],
+                  columns: this.columns,
+                  onManager: this.onManager,
+                  refresh: this.refresh,
+                })
+              },
+              meta: () => {
+                const isOneCloud = obj.brand === 'OneCloud'
+                return {
+                  validate: isOneCloud,
+                  tooltip: !isOneCloud && i18n.t('network.text_254'),
+                }
+              },
+            },
             ...getEnabledSwitchActions(this, undefined, ['lb_loadbalancers_perform_enable', 'lb_loadbalancers_perform_disable'], {
               actions: [
                 (obj) => {
@@ -85,26 +147,6 @@ export default {
                 },
               ],
             }),
-            {
-              label: i18n.t('network.text_253'),
-              permission: 'lb_loadbalancers_update',
-              action: () => {
-                this.createDialog('LbUpdateCluster', {
-                  title: i18n.t('network.text_253'),
-                  data: [obj],
-                  columns: this.columns,
-                  onManager: this.onManager,
-                  refresh: this.refresh,
-                })
-              },
-              meta: () => {
-                const isOneCloud = obj.brand === 'OneCloud'
-                return {
-                  validate: isOneCloud,
-                  tooltip: !isOneCloud && i18n.t('network.text_254'),
-                }
-              },
-            },
             disableDeleteAction(Object.assign(this, {
               permission: 'lb_loadbalancers_update',
             }), {
@@ -114,7 +156,7 @@ export default {
               label: i18n.t('network.text_131'),
               permission: 'lb_loadbalancers_delete',
               action: () => {
-                this.createDialog('DeleteResDialog', {
+                this.createDialog('DeleteLbDialog', {
                   vm: this,
                   title: i18n.t('network.text_131'),
                   data: [obj],

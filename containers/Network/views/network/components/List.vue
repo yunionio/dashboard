@@ -16,7 +16,7 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import WindowsMixin from '@/mixins/windows.js'
-import { getNameFilter, getDescriptionFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter, getStatusFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getVpcFilter, getBrandFilter, getAccountFilter, getTenantFilter, getDomainFilter, getRegionFilter, getStatusFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import expectStatus from '@/constants/expectStatus'
@@ -126,6 +126,7 @@ export default {
           key: 'vlan_id',
         },
       },
+      created_at: getCreatedAtFilter(),
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
@@ -138,7 +139,7 @@ export default {
         steadyStatus: Object.values(expectStatus.network).flat(),
         filterOptions,
         responseData: this.responseData,
-        hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope'],
+        hiddenColumns: ['metadata', 'vpc', 'wire', 'vlan_id', 'schedtag', 'account', 'public_scope', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -158,6 +159,7 @@ export default {
           { label: this.$t('network.text_196'), key: 'account', hidden: this.$store.getters.isProjectMode },
           { label: this.$t('network.text_199'), key: 'region' },
           { label: this.$t('network.text_24'), key: 'zone' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

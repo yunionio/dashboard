@@ -38,6 +38,7 @@ import {
   getRegionFilter,
   getCloudProviderFilter,
   getDescriptionFilter,
+  getCreatedAtFilter,
 } from '@/utils/common/tableFilter'
 import { disableDeleteAction } from '@/utils/common/tableActions'
 import expectStatus from '@/constants/expectStatus'
@@ -133,6 +134,7 @@ export default {
       // disk: {
       //   label: this.$t('table.title.disk'),
       // },
+      created_at: getCreatedAtFilter(),
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
@@ -176,6 +178,7 @@ export default {
           { label: 'CPU', key: 'vcpu_count' },
           { label: this.$t('table.title.memory_mb'), key: 'vmem_size' },
           { label: this.$t('table.title.disk_mb'), key: 'disk' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [
@@ -228,7 +231,7 @@ export default {
               return ret
             }
             ret = this.$isValidateResourceLock(this.list.selectedItems, () => {
-              ret.validate = this.list.selectedItems.every(item => item.status === 'ready' || item.status === 'suspend')
+              ret.validate = this.list.selectedItems.every(item => item.status === 'ready')
               return ret
             })
             return ret
@@ -333,7 +336,7 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
+                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key || item.hypervisor === typeClouds.hypervisorMap.kvm.key)
                       const isAllRunning = this.list.selectedItems.every(item => item.status === 'running')
                       if (!isAllVMware) {
                         ret.validate = false
@@ -348,7 +351,7 @@ export default {
                       ret.validate = true
                       return ret
                     },
-                    hidden: () => !hasSetupKey(['vmware']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
+                    hidden: () => !hasSetupKey(['vmware', 'onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_suspend'),
                   },
                   {
                     label: this.$t('compute.text_478'), // 恢复
@@ -365,7 +368,7 @@ export default {
                         validate: true,
                         tooltip: null,
                       }
-                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key)
+                      const isAllVMware = this.list.selectedItems.every(item => item.hypervisor === typeClouds.hypervisorMap.esxi.key || item.hypervisor === typeClouds.hypervisorMap.kvm.key)
                       const isAllSuspend = this.list.selectedItems.every(item => item.status === 'suspend')
                       if (!isAllVMware) {
                         ret.validate = false
@@ -380,7 +383,7 @@ export default {
                       ret.validate = true
                       return ret
                     },
-                    hidden: () => !hasSetupKey(['vmware']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
+                    hidden: () => !hasSetupKey(['vmware', 'onecloud']) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_resume'),
                   },
                   {
                     label: this.$t('compute.sync_config'), // 推送配置

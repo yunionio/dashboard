@@ -10,7 +10,7 @@
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { getProjectDomainFilter } from '@/utils/common/tableFilter'
+import { getProjectDomainFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import CommonMixin from '../mixins/common'
@@ -42,6 +42,7 @@ export default {
             },
           },
           project_domain: getProjectDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
       }),
       exportDataOptions: {

@@ -1,6 +1,7 @@
 <template>
   <div class="system-disk">
     <disk
+      diskKey="system"
       :max="max"
       :min="min"
       :form="form"
@@ -10,12 +11,14 @@
       :elements="elements"
       :disabled="disabled"
       :storageParams="storageParams"
+      :storageHostParams="storageHostParams"
       :schedtagParams="getSchedtagParams()"
       :size-disabled="sizeDisabled || disabled"
       :storage-status-map="storageStatusMap"
       :simplify="true"
       @showStorageChange="showStorageChange"
-      @diskTypeChange="setDiskMedium" />
+      @diskTypeChange="setDiskMedium"
+      @storageHostChange="(val) => $emit('storageHostChange', val)" />
   </div>
 </template>
 
@@ -92,6 +95,7 @@ export default {
     storageParams: {
       type: Object,
     },
+    storageHostParams: Object,
     ignoreStorageStatus: {
       type: Boolean,
       default: false,
@@ -126,8 +130,8 @@ export default {
       const ret = ['disk-select']
       if (this.isIDC && !this.isServertemplate) {
         ret.push('schedtag')
-        if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key) {
-          ret.push('storage') // 这里暂时写死，因为目前只是有vmware的系统盘会指定存储
+        if (this.form.fd.hypervisor === HYPERVISORS_MAP.esxi.key || this.form.fd.hypervisor === HYPERVISORS_MAP.kvm.key) {
+          ret.push('storage') // kvm,vmware支持指定存储
         }
       }
       return ret

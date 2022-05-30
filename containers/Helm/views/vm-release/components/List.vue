@@ -13,6 +13,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import { getCreatedAtFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'VmReleaseList',
@@ -35,6 +36,7 @@ export default {
           name: {
             label: this.$t('helm.text_16'),
           },
+          created_at: getCreatedAtFilter(),
         },
         steadyStatus: {
           status: Object.values(expectStatus.release).flat(),

@@ -55,7 +55,7 @@
         <a-form-item :label="$t('cloudenv.billing_scope')" :extra="$t('cloudenv.billing_scope.extra')" v-if="billingType === 1">
           <a-radio-group v-decorator="decorators.billing_scope">
             <a-radio-button value="managed" key="managed">{{ $t('cloudenv.billing_scope.managed') }}</a-radio-button>
-            <a-radio-button value="all" key="all" :disabled="!isAws">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
+            <a-radio-button value="all" key="all" :disabled="!isAws && !isAliyun">{{ $t('cloudenv.billing_scope.all') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <!-- google -->
@@ -153,6 +153,9 @@ export default {
     isAws () {
       return this.provider === 'Aws'
     },
+    isAliyun () {
+      return this.provider === 'Aliyun'
+    },
     useBillingBucket () {
       return this.provider === 'Aliyun' || this.provider === 'Aws' || this.provider === 'Huawei' || this.provider === 'Google'
     },
@@ -240,7 +243,7 @@ export default {
         billing_scope: [
           'billing_scope',
           {
-            initialValue: options.billing_scope || 'all',
+            initialValue: options.billing_scope || this.getDefaultBillingScope(),
             rules: [
               { required: true, message: this.$t('cloudenv.billing_scope.prompt') },
             ],
@@ -254,6 +257,13 @@ export default {
     this.fetchs()
   },
   methods: {
+    getDefaultBillingScope () {
+      if (this.isAliyun || this.isAzure || this.isAws) {
+        return 'all'
+      } else {
+        return 'managed'
+      }
+    },
     async fetchs () {
       await this.fetchCloudAccount()
       await this.fetchCloudAccounts()
@@ -291,10 +301,10 @@ export default {
             details: true,
           },
         })
-        // azure 和 aws billing_scope 没有时选中managed，新建时选中all
-        if ((this.isAzure || this.isAws) && (!data.options || !data.options.billing_scope)) {
+        // billing_scope没有默认选中一个，选中规则与新建相同
+        if (!data.options || !data.options.billing_scope) {
           data.options = data.options || {}
-          data.options.billing_scope = 'managed'
+          data.options.billing_scope = data.options.billing_scope || this.getDefaultBillingScope()
         }
         this.cloudAccount = data
         if (data && data.options && data.options.billing_bucket_account) {

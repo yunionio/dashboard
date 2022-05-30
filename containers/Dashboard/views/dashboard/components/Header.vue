@@ -24,6 +24,7 @@
         <a-menu-item key="handleDownload"><a-icon type="download" />{{$t('dashboard.text_105')}}</a-menu-item>
         <a-menu-item key="handleImport"><a-icon type="file" />{{$t('dashboard.text_106')}}</a-menu-item>
         <a-menu-item key="handleCopy"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
+        <a-menu-item key="handleShare" v-if="isDefaultOption"><a-icon type="share-alt" />{{$t('common_104', [''])}}</a-menu-item>
         <a-menu-item key="handleDelete"><a-icon type="delete" />{{deleteText}}</a-menu-item>
       </a-menu>
     </a-dropdown>
@@ -248,6 +249,24 @@ export default {
     },
     handleRefresh () {
       this.$emit('refresh')
+    },
+    handleShare () {
+      this.createDialog('CommonDialog', {
+        header: this.$t('common_104', ['']),
+        body: () => {
+          return [
+            <a-alert class="mb-2" type="warning">
+              <div slot="message">{ this.$t('dashbaord.panel_shared_tip') }</div>
+            </a-alert>,
+            <dialog-selected-tips count={1} action={this.$t('common_104', [''])} name={this.$t('dashboard.text_109')} />,
+          ]
+        },
+        ok: async () => {
+          await this.$store.dispatch('widgetSetting/putFetchWidgetSettingValue', {
+            [`dashboard-${this.scope}`]: this.data,
+          })
+        },
+      })
     },
   },
 }

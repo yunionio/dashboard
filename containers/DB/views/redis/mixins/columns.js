@@ -1,7 +1,7 @@
 import { ENGINE_ARCH } from '../constants/index.js'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
 import { sizestr } from '@/utils/utils'
-import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getTagTableColumn, getBillingTableColumn, getAccountTableColumn } from '@/utils/common/tableColumn'
+import { getProjectTableColumn, getRegionTableColumn, getStatusTableColumn, getNameDescriptionTableColumn, getBrandTableColumn, getTagTableColumn, getBillingTableColumn, getAccountTableColumn, getTimeTableColumn } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
 export default {
@@ -115,6 +115,7 @@ export default {
       getAccountTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

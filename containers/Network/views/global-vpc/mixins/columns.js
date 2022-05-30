@@ -6,6 +6,7 @@ import {
   getBrandTableColumn,
   getAccountTableColumn,
   getTagTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -33,6 +34,7 @@ export default {
       getAccountTableColumn(),
       getPublicScopeTableColumn({ vm: this, resource: 'globalvpcs' }),
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

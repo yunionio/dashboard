@@ -11,15 +11,15 @@
 
 <script>
 import * as R from 'ramda'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import expectStatus from '@/constants/expectStatus'
-import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getEnabledFilter, getStatusFilter, getBrandFilter, getPublicFilter, getDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import GlobalSearchMixin from '@/mixins/globalSearch'
-import { getDisabledProvidersActionMeta, typeClouds } from '@/utils/common/hypervisor'
+import { typeClouds } from '@/utils/common/hypervisor'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 
 const providerMap = typeClouds.getProviderlowcase()
 
@@ -78,9 +78,10 @@ export default {
           enable_auto_sync: getEnabledFilter({ label: this.$t('cloudenv.text_83') }),
           share_mode: getPublicFilter(),
           project_domains: getDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
-        hiddenColumns: ['guest_count', 'host_count', 'enable_auto_sync', 'probe_at', 'access_url'],
+        hiddenColumns: ['guest_count', 'host_count', 'enable_auto_sync', 'probe_at', 'access_url', 'created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -112,6 +113,7 @@ export default {
             label: this.$t('scope.text_573', [this.$t('dictionary.project')]),
             key: 'tenant',
           },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [
@@ -234,20 +236,6 @@ export default {
                     }
                   },
                 ],
-                extraMetas: [
-                  obj => {
-                    return getDisabledProvidersActionMeta({
-                      rows: this.list.selectedItems,
-                      disabledProviders: ['BingoCloud'],
-                    })
-                  },
-                  obj => {
-                    return getDisabledProvidersActionMeta({
-                      rows: this.list.selectedItems,
-                      disabledProviders: ['BingoCloud'],
-                    })
-                  },
-                ],
               }),
               {
                 label: this.$t('cloudenv.text_108'),
@@ -305,12 +293,6 @@ export default {
                   return {
                     validate: ownerDomain,
                   }
-                },
-                extraMeta: obj => {
-                  return getDisabledProvidersActionMeta({
-                    rows: this.list.selectedItems,
-                    disabledProviders: ['BingoCloud'],
-                  })
                 },
               },
             ]

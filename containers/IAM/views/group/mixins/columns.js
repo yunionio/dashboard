@@ -1,6 +1,7 @@
 import {
   getNameDescriptionTableColumn,
   getProjectDomainTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -22,6 +23,7 @@ export default {
         }],
       }),
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

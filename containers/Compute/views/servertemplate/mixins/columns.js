@@ -7,6 +7,7 @@ import {
   getNameDescriptionTableColumn,
   getBillingTypeTableColumn,
   getOsArch,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import SystemIcon from '@/sections/SystemIcon'
 import { sizestr } from '@/utils/utils'
@@ -89,6 +90,7 @@ export default {
       getBrandTableColumn(),
       getProjectTableColumn(),
       getRegionTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

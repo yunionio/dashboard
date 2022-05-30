@@ -28,11 +28,13 @@ import InstanceBackupDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
+import SubBackupDetail from './SubBackupDetail'
 
 export default {
   name: 'InstanceBackupSidePage',
   components: {
     InstanceBackupDetail,
+    SubBackupDetail,
     Actions,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
@@ -40,6 +42,7 @@ export default {
     return {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'instance-backup-detail' },
+        { label: this.$t('table.title.sub_backup'), key: 'sub-backup-detail' },
         { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }

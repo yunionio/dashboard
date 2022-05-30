@@ -8,6 +8,7 @@ import AccessGroup from '@Storage/views/access-group'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
+import store from '@/store'
 import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 import BackupStorage from '@Storage/views/backup-storage'
 
@@ -163,6 +164,7 @@ export default {
             label: i18n.t('dictionary.backup_storage'),
             permission: 'backupstorages_list',
             hidden: () => {
+              if (store.getters.isProjectMode) return true
               return !hasSetupKey(['onestack'])
             },
           },

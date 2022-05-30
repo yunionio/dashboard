@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getStatusTableColumn,
   getProjectDomainTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import { HYPERVISORS_MAP } from '@/constants'
 import BrandIcon from '@/sections/BrandIcon'
@@ -142,6 +143,7 @@ export default {
         },
       },
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

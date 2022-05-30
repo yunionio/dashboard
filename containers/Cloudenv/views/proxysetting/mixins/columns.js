@@ -3,6 +3,7 @@ import {
   getCopyWithContentTableColumn,
   getProjectDomainTableColumn,
   getPublicScopeTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -48,6 +49,7 @@ export default {
       }),
       getPublicScopeTableColumn({ vm: this, resource: 'proxysettings' }),
       getProjectDomainTableColumn({ sortable: false }),
+      getTimeTableColumn(),
     ]
   },
 }

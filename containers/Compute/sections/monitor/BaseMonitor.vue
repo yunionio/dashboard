@@ -87,8 +87,8 @@ export default {
         },
       ],
       loading: false,
-      time: '1h',
-      timeGroup: '1m',
+      time: '168h',
+      timeGroup: '30m',
       monitorList: [],
     }
   },

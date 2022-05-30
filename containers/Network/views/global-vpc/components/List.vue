@@ -15,7 +15,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
-import { getStatusFilter, getProjectDomainFilter, getDescriptionFilter } from '@/utils/common/tableFilter'
+import { getStatusFilter, getProjectDomainFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import { getDomainChangeOwnerAction, getSetPublicAction } from '@/utils/common/tableActions'
 
@@ -49,7 +49,9 @@ export default {
           description: getDescriptionFilter(),
           status: getStatusFilter('globalVpc'),
           project_domains: getProjectDomainFilter(),
+          created_at: getCreatedAtFilter(),
         },
+        hiddenColumns: ['created_at'],
       }),
       exportDataOptions: {
         items: [
@@ -65,6 +67,7 @@ export default {
             },
           },
           { label: this.$t('network.text_233', [this.$t('dictionary.domain')]), key: 'project_domain' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
         ],
       },
       groupActions: [

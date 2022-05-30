@@ -383,7 +383,8 @@
       "cancel_snapshot_failed": "解绑快照策略失败",
       "syncing": "同步中",
       "sync_status": "同步中",
-      "sched_fail": "调度失败"
+      "sched_fail": "调度失败",
+      "ActiveSAS": "ActiveSAS"
     },
     "secgroupCache": {
       "ready": "正常",
@@ -1105,6 +1106,8 @@
       "deleting": "正在删除",
       "recovery": "正在回滚",
       "snapshot_failed": "快照创建失败",
+      "creating_from_package": "导入中",
+      "create_from_package_failed": "导入失败",
       "sync_status": "同步状态",
       "pack": "打包",
       "pack_failed": "打包失败",
@@ -1119,6 +1122,13 @@
       "init": "初始化",
       "online": "在线",
       "offline": "离线"
+    },
+    "irsOrders": {
+      "process": "流程处理中",
+      "all": "全部回执",
+      "part": "部分回执",
+      "resp_failed": "回执失败",
+      "hand": "手动回执"
     }
   },
   "skuCategoryOptions": {
@@ -2381,6 +2391,7 @@
   "auth.register.mobile.validate": "请输入手机",
   "auth.secret.verify.title": "登录保护已开启，请输入6位安全码",
   "auth.secret.reset.prefix": "请在手机打开OneLogin Protect APP，获取MFA安全码。无法获取，请",
+  "auth.secret.reset.prefix1": "请在手机打开OneLogin Protect APP，获取MFA安全码。",
   "auth.secret.validate": "安全码错误，请重新输入",
   "auth.secret.loading": "正在验证",
   "auth.question.title": "请设置安全问题，用以重置安全码密钥时验证身份",
@@ -2619,7 +2630,8 @@
     "es": "ElasticSearch",
     "app": "应用程序服务",
     "command_log": "命令记录",
-    "ipv6_gateway": "IPv6网关"
+    "ipv6_gateway": "IPv6网关",
+    "apsara": "飞天"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -2698,7 +2710,7 @@
       "image_size": "镜像大小",
       "checksum": "校验和",
       "share_range": "共享范围",
-      "child_image": "子镜像",
+      "child_image": "硬盘镜像",
       "disk_storage": "主存储",
       "disk_type": "磁盘类型",
       "disk_mounted": "是否挂载",
@@ -2708,7 +2720,8 @@
       "disk_guest": "@:dictionary.server",
       "snapshot_size": "快照大小",
       "storage_type": "存储类型",
-      "sub_snapshot": "子快照",
+      "sub_snapshot": "硬盘快照",
+      "sub_backup": "硬盘备份",
       "bind_disk_count": "关联硬盘数量",
       "res_name": "资源名称",
       "action_result": "结果",
@@ -5159,5 +5172,7 @@
   "common.view_logs": "查看日志",
   "common.password_no_equal": "新旧密码不能一致",
   "common.command": "命令",
-  "common.login_user": "登录用户"
+  "common.login_user": "登录用户",
+  "common.remote_control": "远程控制",
+  "common.default_search_key": "默认为{0}搜索"
 }

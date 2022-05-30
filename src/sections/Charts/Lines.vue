@@ -66,6 +66,13 @@ export default {
             color: '#7588E4',
           },
           extraCssText: 'box-shadow: 0 0 5px rgba(0,0,0,0.3)',
+          position: (point, params, dom, rect, size) => {
+            let wrapper = ''
+            if (params[0] && params[0].axisValueLabel) {
+              wrapper = `<div style="color: #5D6F80;margin-top:10px">${params[0].axisValueLabel}</div>`
+            }
+            dom.innerHTML = wrapper + dom.innerHTML
+          },
         },
         xAxis: {
           type: 'category',
@@ -78,7 +85,7 @@ export default {
             },
           },
           axisTick: {
-            show: false,
+            show: true,
           },
           axisLine: {
             lineStyle: {

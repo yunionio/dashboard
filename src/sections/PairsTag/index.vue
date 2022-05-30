@@ -44,7 +44,7 @@
 
 <script>
 // import * as R from 'ramda'
-import i18n from '@/locales'
+// import i18n from '@/locales'
 import { getTagColor, getTagTitle } from '@/utils/common/tag'
 import TreeProject from '@/sections/TreeProject'
 
@@ -56,7 +56,6 @@ export default {
   props: {
     extra: {
       type: String,
-      default: i18n.t('common_259'),
     },
     value: {
       type: Array,

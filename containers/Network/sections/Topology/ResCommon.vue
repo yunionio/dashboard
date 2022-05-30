@@ -15,6 +15,11 @@
           </template>
           <template v-else-if="type === 'host'">
             <p v-for="(obj, idx) in resSource.networks" :key="idx">{{ $t('network.waf.rule_ip') }}：{{ obj.ip_addr }}</p>
+            <div v-for="(obj, idx) in resSource.storages" :key="idx">
+              <p>{{ `${$t('network.text_708')}${$t('common.name')}`}}：{{obj.name}}</p>
+              <p>{{$t('storage.text_38')}}：{{getStorageType(obj.storage_type)}}</p>
+              <p>{{$t('storage.text_155')}}：{{getStorageSize(obj.capacity_mb)}}</p>
+            </div>
           </template>
           <template v-else-if="type === 'baremetal'">
             <p v-for="(obj, idx) in resSource.networks" :key="idx">{{ $t('network.waf.rule_ip') }}：{{ obj.ip_addr }}</p>
@@ -50,7 +55,8 @@
 <script>
 import ResMixin from '@Network/sections/Topology/ResMixin'
 import { STATUS_MAP } from './constants'
-
+import { sizestr } from '@/utils/utils'
+import { STORAGE_TYPES } from '@Storage/constants/index.js'
 export default {
   name: 'ResCommon',
   mixins: [ResMixin],
@@ -103,6 +109,12 @@ export default {
     },
     getType ({ owner_type, host_type }) {
       return owner_type || host_type
+    },
+    getStorageType (type) {
+      return STORAGE_TYPES[type] || type
+    },
+    getStorageSize (size) {
+      return sizestr(size, 'M', 1024)
     },
   },
 }

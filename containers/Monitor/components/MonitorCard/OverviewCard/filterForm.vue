@@ -31,6 +31,7 @@ import refresh from '../sections/select/refresh'
 import MetricOptions from './metrics'
 import { getSignature } from '@/utils/crypto'
 import { sizestr, mathRoundFix } from '@/utils/utils'
+import setting from '@/config/setting'
 
 function newChart (metircOption) {
   const chart = {
@@ -326,6 +327,7 @@ export default {
       for (const r in tr) {
         data.rows.push(tr[r])
       }
+      data.rows.sort((a, b) => { return b[curMetric.label] - a[curMetric.label] })
       return data
     },
     toChartData (series) {
@@ -367,7 +369,7 @@ export default {
         const lastPoint = item.points ? item.points[item.points.length - 1] : undefined
         if (lastPoint) {
           return {
-            name: item.tags[this.dimension.name],
+            name: this.filterNameByOem(item.tags[this.dimension.name]),
             id: item.tags[this.dimension.id],
             value: lastPoint[0],
             timestamp: lastPoint[1],
@@ -477,6 +479,17 @@ export default {
       } finally {
         loading.stop()
       }
+    },
+    filterNameByOem (name) {
+      if (this.dimension.id === 'brand') {
+        if (name === 'OneCloud') {
+          return setting.brand[setting.language] || name
+        } else if (name === 'Cloudpods') {
+          const { companyInfo = {} } = this.$store.state.app
+          return setting.language === 'en' ? (companyInfo.inner_copyright_en || name) : (companyInfo.inner_copyright || name)
+        }
+      }
+      return name
     },
   },
 }

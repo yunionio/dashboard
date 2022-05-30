@@ -2,6 +2,7 @@ import {
   getNameDescriptionTableColumn,
   getEnabledTableColumn,
   getProjectDomainTableColumn,
+  getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
 
@@ -40,6 +41,7 @@ export default {
         title: 'MFA',
       }),
       getProjectDomainTableColumn(),
+      getTimeTableColumn(),
     ]
   },
 }

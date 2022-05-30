@@ -64,11 +64,11 @@ export default {
         field: 'internal_connection_str',
         title: i18n.t('db.text_152'),
         minWidth: 200,
-        showOverflow: 'ellipsis',
         slots: {
           default: ({ row }) => {
             const pri = row.internal_connection_str
             const pub = row.connection_str
+            const ip_addrs = (row.ip_addrs || '').split(',')
             if (!pri && !pub) {
               return '-'
             }
@@ -93,6 +93,9 @@ export default {
             return [
               connection(i18n.t('db.text_153'), pri),
               connection(i18n.t('db.text_154'), pub),
+              ...ip_addrs.map(ip => {
+                return (<list-body-cell-wrap hide-field copy message={ip}><span>{ip}</span></list-body-cell-wrap>)
+              }),
             ]
           },
         },

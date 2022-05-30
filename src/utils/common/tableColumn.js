@@ -372,11 +372,19 @@ export const getTagTableColumn = ({
     slots: {
       default: ({ row }, h) => {
         let metadata = _.get(row, field) || {}
-        if (field === 'project_tags') {
+        if (field === 'project_tags' || field === 'object_tags') {
           metadata = {}
           const fieldValue = row[field] || []
           fieldValue.map(item => {
-            metadata[item.key] = item.value
+            if (metadata.hasOwnProperty(item.key)) {
+              if (R.is(Array, metadata[item.key])) {
+                metadata[item.key].push(item.value)
+              } else {
+                metadata[item.key] = [metadata[item.key], item.value]
+              }
+            } else {
+              metadata[item.key] = item.value
+            }
           })
         }
         return [
