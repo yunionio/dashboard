@@ -29,7 +29,7 @@ function getDocsCloudaccountPath (scope) {
   if (isCE()) {
     return `${docsUrl}multicloud/cloudaccounts`
   }
-  return `${docsUrl}/user/multiplecloud/cloudaccount/cloudaccount/`
+  return `${docsUrl}user/multiplecloud/cloudaccount/cloudaccount/`
 }
 
 export const CLOUDACCOUNT_TYPES = {
