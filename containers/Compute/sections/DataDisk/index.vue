@@ -241,6 +241,7 @@ export default {
         delete ret.local_nvme
         delete ret.local_pro
       }
+      console.log(ret)
       return ret
     },
     currentTypeObj () {
@@ -356,6 +357,7 @@ export default {
       if ((this.getHypervisor() === HYPERVISORS_MAP.kvm.key || this.getHypervisor() === HYPERVISORS_MAP.cloudpods.key) && diskType === 'local' && medium && this.isSomeLocal(Object.keys(this.typesMap))) {
         newDiskType = `${diskType}-${medium}`
       }
+      console.log(newDiskType, this.typesMap)
       const typeObj = this.typesMap[newDiskType]
       let dataDiskTypes = {
         key: _.get(this.dataDisks, '[0].diskType.key'),
