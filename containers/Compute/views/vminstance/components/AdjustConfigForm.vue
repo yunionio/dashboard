@@ -45,7 +45,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_49')" v-show="selectedItems.length === 1 && form.fd.defaultType">
             <system-disk
-              v-if="hypervisor && form.fi.capability.storage_types && form.fd.defaultType"
+              v-if="isRenderSystemDisk"
               :decorator="decorators.systemDisk"
               :type="type"
               :hypervisor="hypervisor"
@@ -59,7 +59,7 @@
           </a-form-item>
           <a-form-item :label="$t('compute.text_50')" v-show="selectedItems.length === 1">
             <data-disk
-              v-if="hypervisor && form.fi.capability.storage_types"
+              v-if="isRenderDataDisk"
               ref="dataDiskRef"
               :decorator="decorators.dataDisk"
               :type="type"
@@ -654,6 +654,12 @@ export default {
         unit: this.$t('compute.text_172'),
       }
     },
+    isRenderSystemDisk () {
+      return this.hypervisor && this.form.fi.capability.storage_types && this.form.fd.defaultType
+    },
+    isRenderDataDisk () {
+      return this.hypervisor && this.form.fi.capability.storage_types && this.form.fd.sku
+    },
   },
   watch: {
     priceTips: {
@@ -724,6 +730,7 @@ export default {
           [this.decorators.systemDisk.type[0]]: { key: diskKey, label: R.is(Object, storageItem) ? (_.get(storageItem, '[diskKey].key') || diskKey) : diskKey },
         }
       }
+
       const { medium_type: dataDiskMedium } = this.selectedItem.disks_info[1] || {}
       this.$nextTick(() => {
         setTimeout(() => {
@@ -731,7 +738,7 @@ export default {
             this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, sizeDisabled: true, medium: dataDiskMedium, ...v })
           })
           this.diskLoaded = true
-        }, 1000)
+        }, 2000)
         this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
       })
     },
