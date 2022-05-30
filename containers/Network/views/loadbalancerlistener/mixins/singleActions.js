@@ -209,6 +209,7 @@ export default {
                 tooltip: i18n.t('network.text_309', [PROVIDER_MAP[obj.provider].label]),
               }
             }
+            return { validate: true }
           },
         },
       ]
