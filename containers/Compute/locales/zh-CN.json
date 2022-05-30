@@ -1524,5 +1524,6 @@
   "compute.private_network": "私有网络",
   "compute.os.nfs": "方德",
   "compute.transfer_mutiple_dialog_alert": "有{0}个虚拟机已经在该宿主机上，本次迁移会失败，但是不影响其他虚拟机迁移！",
-  "compute.vpc_extrnal_id": "VPC云上ID"
+  "compute.vpc_extrnal_id": "VPC云上ID",
+  "compute.mainternance_in_disabled_tip": "宿主机上的虚拟机数量为0"
 }

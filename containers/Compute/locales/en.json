@@ -1524,5 +1524,6 @@
   "compute.private_network": "Private Network",
   "compute.os.nfs": "NFS",
   "compute.transfer_mutiple_dialog_alert": "There are {0} VMs already on the host, this migration will fail, but it will not affect other VMs migrations!",
-  "compute.vpc_extrnal_id": "VPC Extrnal ID"
+  "compute.vpc_extrnal_id": "VPC Extrnal ID",
+  "compute.mainternance_in_disabled_tip": "The number of virtual machines on the host is 0"
 }
