@@ -20,16 +20,17 @@
     <a-form-item :label="$t('cloudenv.text_7')">
       <a-row :gutter="9">
         <a-col :span="12">
-          <base-select
+          <oc-select
+            width="100%"
             v-decorator="decorators.vpc"
-            @change="handleVpcChange"
+            show-status
+            :status-desc="$t('compute.vpc_status_desc')"
             resource="vpcs"
-            filterable
-            need-params
-            :item.sync="vpcObj"
+            label="VPC"
+            :formatter="vpcFormatter"
             :params="vpcParams"
-            :labelFormat="vpcLabelFormat"
-            :select-props="{ placeholder: $t('network.text_274') }" />
+            :sort="(arr) => arr.sort((a, b) => a.network_count > b.network_count ? -1 : 1)"
+            :placeholder="$t('compute.text_194')" />
         </a-col>
         <a-col :span="12">
           <base-select

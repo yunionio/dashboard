@@ -67,7 +67,7 @@
           <a-form-item :label="$t('network.text_427')" v-if="['http', 'https'].includes(form.fd.listener_type)">
             <a-switch v-decorator="decorators.gzip" />
           </a-form-item>
-          <a-form-item :label="$t('network.text_442')" :extra="$t('network.text_443')" v-if="['tcp', 'http', 'https'].includes(form.fd.listener_type)">
+          <a-form-item :label="$t('network.text_442')" :extra="$t('network.text_443')" v-if="isDefaultVpc && ['tcp', 'http', 'https'].includes(form.fd.listener_type)">
             <a-select v-decorator="decorators.send_proxy">
               <a-select-option v-for="(v, k) in proxyOpts" :value="k" :key="k">
                 {{v}}
@@ -77,7 +77,7 @@
           <!-- <a-form-item :label="$t('network.text_428')" :extra="$t('network.text_429')" v-if="['http', 'https'].includes(form.fd.listener_type)">
             <a-checkbox v-decorator="decorators.xforwarded_for">X-Forwarded-For</a-checkbox>
           </a-form-item> -->
-          <a-form-item :label="$t('network.text_444')" v-if="['http', 'https'].includes(form.fd.listener_type)">
+          <a-form-item :label="$t('network.text_444')" v-if="isDefaultVpc && ['http', 'https'].includes(form.fd.listener_type)">
             <a-checkbox v-decorator="decorators.xforwarded_for">{{$t('network.text_445')}}</a-checkbox>
           </a-form-item>
         </div>
@@ -114,6 +114,9 @@ export default {
         return !!state.lbRedirected.isLbRedirected
       },
     }),
+    isDefaultVpc () {
+      return this.params.lbDetail && this.params.lbDetail.vpc_id === 'default'
+    },
   },
   methods: {
     async submit () {

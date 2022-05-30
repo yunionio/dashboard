@@ -812,6 +812,7 @@
   "network.eip.instance_type": "类型",
   "network.eip.instance_type.server": "虚拟机",
   "network.eip.instance_type.nat": "NAT网关",
+  "network.eip.instance_type.lb": "LB",
   "network.nat.status.unavailable.tooltip": "NAT网关状态异常",
   "network.snat.type.network": "IP子网",
   "network.snat.type.server": "虚拟机",

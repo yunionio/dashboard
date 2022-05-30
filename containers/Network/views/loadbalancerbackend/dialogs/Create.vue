@@ -202,11 +202,15 @@ export default {
       return params
     },
     hostParams () {
-      return {
+      const params = {
         baremetal: false,
         brand: 'OneCloud',
         'filter.0': 'status.equals(running,ready)',
       }
+      if (this.params.lbData.zone_id) {
+        params.zone = this.params.lbData.zone_id
+      }
+      return params
     },
     isPublicAliyun () {
       return this.params.lbData.address_type === 'internet' && this.params.lbBackendgroupData.brand.toLowerCase() === 'aliyun'

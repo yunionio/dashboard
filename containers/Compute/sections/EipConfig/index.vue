@@ -1,12 +1,23 @@
 <template>
   <div>
     <a-form-item :label="label" v-bind="formItemLayout">
-      <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
-        <a-radio-button
-          v-for="item of types"
-          :key="item.key"
-          :value="item.key">{{ item.label }}</a-radio-button>
-      </a-radio-group>
+      <a-row>
+        <a-radio-group v-decorator="decorators.type" @change="handleTypeChange">
+          <a-radio-button
+            v-for="item of types"
+            :key="item.key"
+            :value="item.key">{{ item.label }}</a-radio-button>
+        </a-radio-group>
+      </a-row>
+      <a-row class="mt-4" v-if="isBind">
+        <base-select
+          remote
+          v-decorator="decorators.eip"
+          resource="eips"
+          :params="params"
+          :showSync="true"
+          :select-props="{ allowClear: true, placeholder: $t('compute.text_145') }" />
+      </a-row>
     </a-form-item>
     <a-form-item :label="$t('compute.text_1359')" v-if="isNew && (cloudEnv == null || cloudEnv === 'idc' || cloudEnv === 'onpremise')"  v-show="showBgpTypes" v-bind="formItemLayout">
       <a-select v-decorator="decorators.bgp_type">
@@ -34,15 +45,6 @@
             Mbps
           </a-tooltip>
       </div>
-    </a-form-item>
-    <a-form-item :label="$t('compute.text_107')" v-if="isBind" v-bind="formItemLayout">
-      <base-select
-        remote
-        v-decorator="decorators.eip"
-        resource="eips"
-        :params="params"
-        :showSync="true"
-        :select-props="{ allowClear: true, placeholder: $t('compute.text_145') }" />
     </a-form-item>
   </div>
 </template>
@@ -98,6 +100,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    showNew: {
+      type: Boolean,
+      default: true,
+    },
     hasPublicIp: {
       type: Boolean,
       default: false,
@@ -135,6 +141,9 @@ export default {
       const ret = { ...types }
       if (!this.showBind) { // 主机创建不支持绑定已有EIP
         delete ret.bind
+      }
+      if (!this.showNew) {
+        delete ret.new
       }
       // 私有云不支持新建
       if (this.isPrivateEnv) {
@@ -218,7 +227,7 @@ export default {
     },
     label () {
       if (this.hasPublicIp) return this.$t('compute.text_1374')
-      return !this.showBind ? this.$t('compute.text_107') : this.$t('compute.text_1180')
+      return this.$t('compute.text_107')
     },
   },
   watch: {

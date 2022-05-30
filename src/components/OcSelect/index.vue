@@ -36,8 +36,13 @@
         <!-- 单列居左排布 -->
         <template v-else>
           <a-select-option v-for="obj of resOpts" :key="obj.key" :value="obj.key" :title="obj.label" :label="label ? undefined : obj.label" :disabled="obj.disabled">
-            <a-badge v-if="showStatus" :status="obj.disabled ? 'default' : 'success'" />
-            <span v-if="label" class="text-color-secondary option-prefix">{{ label }}: </span>{{ obj.label }}
+            <div class="d-flex">
+              <a-badge v-if="showStatus" :status="obj.disabled ? 'default' : 'success'" />
+              <span class="text-truncate flex-fill mr-2" :title="obj.label">
+                <span v-if="label" class="text-color-secondary option-prefix">{{ label }}: </span>{{ obj.label }}
+              </span>
+              <span style="color: #8492a6; font-size: 13px">{{ obj.rightLabel }}</span>
+            </div>
           </a-select-option>
         </template>
       </template>
@@ -134,6 +139,14 @@ export default {
   },
   watch: {
     resource: {
+      handler (v) {
+        if (v) {
+          this.fetchResourceData(v)
+        }
+      },
+      immediate: true,
+    },
+    params: {
       handler (v) {
         if (v) {
           this.fetchResourceData(v)
