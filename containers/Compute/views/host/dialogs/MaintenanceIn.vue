@@ -49,6 +49,7 @@ export default {
   },
   computed: {
     disabled () {
+      if (this.servers.length === 0) return true
       const isDisabled = this.servers.every((item) => {
         // 宿主机下的虚拟机的状态只能是ready、running、unknown三者中任意一种，否则不允许进入维护模式
         if (!['ready', 'running', 'unknown'].includes(item.status)) {
@@ -72,6 +73,7 @@ export default {
     },
     error () {
       let message = ''
+      if (this.servers.length === 0) return this.$t('compute.mainternance_in_disabled_tip')
       this.servers.map((item) => {
         // 宿主机下的虚拟机的状态只能是ready、running、unknown三者中任意一种，否则不允许进入维护模式
         if (!['ready', 'running', 'unknown'].includes(item.status)) {
