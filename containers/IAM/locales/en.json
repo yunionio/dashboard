@@ -917,5 +917,6 @@
   "iam.manage_res": "Manage {0)",
   "iam.reset_mfa_tips": "After reset, the user needs to reset the login page, the previous information will be invalid!",
   "iam.project_tag": "Project Tags",
-  "iam.object_tag": "Resource Tags"
+  "iam.object_tag": "Resource Tags",
+  "iam.notifyconfig.sender_address_extra": "The sender email address should be consistent with the username email address in general, if the mailbox has other configurations, please fill in according to the actual situation"
 }

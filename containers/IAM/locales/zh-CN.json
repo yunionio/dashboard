@@ -920,5 +920,6 @@
   "iam.manage_res": "管理{0)",
   "iam.reset_mfa_tips": "重置后，用户需在登录页面需重新设置，之前信息将失效！",
   "iam.project_tag": "项目标签",
-  "iam.object_tag": "资源标签"
+  "iam.object_tag": "资源标签",
+  "iam.notifyconfig.sender_address_extra": "发件人邮箱一般情况下应与用户名邮箱地址保持一致，如邮箱有其他配置，请按实际情况填写"
 }
