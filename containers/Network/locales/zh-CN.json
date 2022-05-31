@@ -839,5 +839,6 @@
   "network.lbcert.is_complete.true": "可用",
   "network.lbcert.is_complete.false": "部分可用",
   "network.lb.default_backendgroup.tips": "阿里云默认服务器组暂不支持该操作",
-  "network.snat.cidr": "网段"
+  "network.snat.cidr": "网段",
+  "network.eip_bind_server_tip": "经典网络类型虚拟机无需绑定EIP"
 }
