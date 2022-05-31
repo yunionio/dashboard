@@ -210,6 +210,10 @@ export default {
           onManager: this.onManager,
           hideField: true,
           showDesc: false,
+          formRules: [
+            { required: true, message: this.$t('cloudenv.text_190') },
+            { validator: this.$validate('externalProjectName') },
+          ],
           slotCallback: row => {
             return (
               <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>
