@@ -14,7 +14,7 @@
             <a-radio-button value="loadbalancer" :disabled="isLbDisabled">{{$t('network.eip.instance_type.lb')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="resource_label">
+        <a-form-item :label="resource_label" :extra="resource === 'servers' && $t('network.eip_bind_server_tip')">
           <base-select
             :remote="true"
             v-decorator="decorators.instance_id"
