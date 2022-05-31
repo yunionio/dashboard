@@ -139,6 +139,22 @@ const options = [
     w: 8,
     component: 'ServerNumberDetail',
   },
+  {
+    label: i18n.t('dashboard.optimization_suggestion'),
+    desc: '',
+    icon: 'res-user2',
+    h: 4,
+    w: 6,
+    component: 'OptimizationSuggestion',
+  },
+  {
+    label: i18n.t('dashboard.monitor'),
+    desc: '',
+    icon: 'res-user2',
+    h: 4,
+    w: 8,
+    component: 'MonitorInfo',
+  },
 ]
 
 export default options

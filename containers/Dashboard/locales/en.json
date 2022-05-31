@@ -268,5 +268,13 @@
   "dashborad.server_numbers": "Host number distribution",
   "dashborad.server_domain_numbers": "Distribution of the number of hosts in each domain",
   "dashborad.server_project_numbers": "The distribution of the number of hosts for each project",
-  "dashboard.group_by": "Group By"
+  "dashboard.group_by": "Group By",
+  "dashboard.optimization_suggestion": "优化建议",
+  "dashboard.optimization_suggestion_host_up": "宿主机可升配",
+  "dashboard.optimization_suggestion_host_down": "宿主机可降配",
+  "dashboard.optimization_suggestion_cloudhost_up": "云主机可升配",
+  "dashboard.optimization_suggestion_cloudhost_down": "云主机可降配",
+  "dashboard.text_191": "CPU",
+  "dashboard.text_192": "内存",
+  "dashboard.monitor": "监控信息"
 }

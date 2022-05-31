@@ -97,6 +97,10 @@ export default {
             shadowStyle: { color: 'rgb(77, 161, 255)', opacity: 0.1 },
           },
         },
+        grid: {
+          bottom: '10px',
+          top: '50px',
+        },
         dataZoom: {
           type: 'inside', /* 数据缩放 **/
         },

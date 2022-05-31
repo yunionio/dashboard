@@ -14,10 +14,15 @@
           </a>
         </div>
       </div>
-      <div class="dashboard-card-body d-flex align-items-center justify-content-center">
-        <div class="d-flex align-items-baseline">
-          <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
-          <div class="number-card-unit">{{ this.usage.unit }}</div>
+      <div class="dashboard-card-body d-flex align-items-center justify-content-center w-100 heightCss">
+        <div class="d-flex w-100 h-100 align-items-center justify-content-center">
+          <div class="w-100 d-flex align-items-center justify-content-center h-100">
+            <img width="auto" height="100%" src="../../../assets/icon_cpu.png" />
+          </div>
+          <div class="d-flex align-items-baseline w-100">
+            <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
+            <div class="number-card-unit">{{ this.usage.unit }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -345,5 +350,9 @@ export default {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
     animation: none;
   }
+}
+.heightCss{
+  flex: 1;
+  overflow: hidden;
 }
 </style>

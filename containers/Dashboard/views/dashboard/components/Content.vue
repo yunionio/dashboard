@@ -66,7 +66,7 @@ export default {
       const { x, y, w, h } = layout
       const colWidth = 65
       const rowHeight = 65
-      const margin = [5, 5]
+      const margin = [10, 10]
       const pos = {
         left: Math.round(colWidth * x + (x + 1) * margin[0]),
         top: Math.round(rowHeight * y + (y + 1) * margin[1]),
@@ -82,6 +82,13 @@ export default {
 
 <style lang="less" scoped>
 .item {
-  border: solid 2px #eee;
+  border-radius: 5px;
+  &:hover{
+    box-shadow: 0px 0px 8px 3px #a3a0a02e;
+    border: 0 none;
+  }
+  .dashboard-card-wrap{
+    border-radius: 4px;
+  }
 }
 </style>

@@ -85,7 +85,9 @@ export default {
   },
   data () {
     const decorators = new Decorator(SERVER_TYPE[this.type]).createDecorators()
+    console.log(decorators, 'decorators')
     const initFd = getInitialValue(decorators)
+    console.log(initFd, 'initFd')
     return {
       submiting: false,
       errors: {},

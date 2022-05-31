@@ -7,8 +7,13 @@
       </div>
       <div class="dashboard-card-body d-flex align-items-center justify-content-center">
         <div class="d-flex align-items-baseline">
-          <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
-          <div class="number-card-unit">{{ this.usage.unit }}</div>
+          <div>
+            <img src="../../../assets/icon_cpu.png" />
+          </div>
+          <div>
+            <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
+            <div class="number-card-unit">{{ this.usage.unit }}</div>
+          </div>
         </div>
       </div>
     </div>

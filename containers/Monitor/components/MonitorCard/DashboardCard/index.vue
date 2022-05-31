@@ -1,7 +1,7 @@
 <template>
-  <overview-card-layout  v-if="chart.chartData">
+  <overview-card-layout :card_style="card_style">
     <template #header>
-      <div>
+      <div v-if="!readOnly">
         <a-row type="flex">
           <a-col :span="23">{{ panel.panel_name || chart.metric.label }}</a-col>
           <a-col>
@@ -18,8 +18,11 @@
           </a-col>
         </a-row>
       </div>
+      <div v-if="selectable">
+        <a-radio :checked="focusPanelId == panel.panel_id" @click="(e)=>{chose_panel(panel.panel_id,panel.panel_name)}">{{panel.panel_name}}</a-radio>
+      </div>
     </template>
-    <overview-line style="padding-top: 10px;" :chartData="chart.chartData" :yAxisFormat="chart.metric.format" :loading="loading" />
+    <overview-line v-if="resizeStatus" :class="card_style" :chartHeigth="chartHeigth" style="padding-top: 10px;" :chartData="chart.chartData" :yAxisFormat="chart.metric && chart.metric.format ? chart.metric.format : '0.[00]'" :loading="loading" />
     <template #footer>
       <overview-table :table-data="table" :loading="tableLoading" />
     </template>
@@ -56,6 +59,9 @@ export default {
     panel: {
       type: Object,
       required: true,
+      default: () => {
+        return {}
+      },
     },
     extraParams: {
       type: Object,
@@ -65,11 +71,37 @@ export default {
       type: Function,
       required: true,
     },
+    card_style: {
+      type: String,
+    },
+    readOnly: {
+      type: Boolean,
+      default: () => {
+        return false
+      },
+    },
+    selectable: {
+      type: Boolean,
+      default: () => {
+        return false
+      },
+    },
+    focusPanelId: {
+      type: String,
+      default: () => {
+        return ''
+      },
+    },
+    chartHeigth: {
+      type: String,
+      default: '320px',
+    },
   },
   data () {
     return {
       chart: {},
       tableLoading: false,
+      resizeStatus: false,
     }
   },
   computed: {
@@ -139,6 +171,15 @@ export default {
     this.fetchChart()
   },
   methods: {
+    resize () {
+      this.resizeStatus = false
+      this.$nextTick(() => {
+        this.resizeStatus = true
+      })
+    },
+    chose_panel (id, name) {
+      this.$emit('chose_panel', { id: id, name: name })
+    },
     handleActionClick ({ key }) {
       if (this[key]) this[key]()
     },
@@ -206,7 +247,11 @@ export default {
     async fetchData (metric_query) {
       try {
         const data = this.chartQueryData
-        if (!data) return
+        if (!data) {
+          this.resizeStatus = false
+          return
+        }
+        this.resizeStatus = true
         data.signature = getSignature(data)
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
         return series
