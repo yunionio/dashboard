@@ -19,6 +19,9 @@
       <a-input-password v-decorator="decorators.password" />
     </a-form-item>
     <a-form-item :label="$t('iam.sender_address')">
+      <div slot="extra">
+        {{ $t('iam.notifyconfig.sender_address_extra') }}
+      </div>
       <a-input v-decorator="decorators.sender_address" />
     </a-form-item>
     <a-form-item v-if="false">
