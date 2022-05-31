@@ -278,7 +278,7 @@ export default {
     warning: ['exceeded'],
   },
   lb: {
-    info: ['disabled'],
+    info: ['disabled', 'associate_eip'],
     success: ['enabled'],
     danger: [],
   },

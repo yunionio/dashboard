@@ -112,6 +112,7 @@ export default {
         id: ids,
         managerArgs: {
           action: 'create-eip',
+          steadyStatus: ['running', 'ready'],
           data: {
             charge_type: values.charge_type,
             bandwidth: values.bandwidth,
@@ -123,6 +124,7 @@ export default {
     doBindEip (ids, values) {
       return this.params.onManager('batchPerformAction', {
         id: ids,
+        steadyStatus: ['running', 'ready'],
         managerArgs: {
           action: 'associate-eip',
           data: {
@@ -142,7 +144,6 @@ export default {
         if (values.type === 'bind') {
           await this.doBindEip(ids, values)
         }
-        this.params.singleRrefresh && this.params.singleRrefresh(this.params.data[0].id)
         this.cancelDialog()
       } finally {
         this.loading = false

@@ -756,7 +756,8 @@
       "stop_failed": "关闭失败",
       "unknown": "未知",
       "update_tags": "更新标签或名称",
-      "update_tags_fail": "更新标签或名称失败"
+      "update_tags_fail": "更新标签或名称失败",
+      "associate_eip": "绑定弹性公网IP"
     },
     "ipv6_gateway": {
       "enabled": "启用",

@@ -748,7 +748,8 @@
       "delete_failed": "Deletion failed",
       "start_failed": "Start failed",
       "stop_failed": "Stop failed",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "associate_eip": "Associate Eip"
     },
     "ipv6_gateway": {
       "enabled": "Enabled",
