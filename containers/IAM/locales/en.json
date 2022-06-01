@@ -920,5 +920,6 @@
   "iam.object_tag": "Resource Tags",
   "iam.help": "help",
   "iam.get_params_help": "Get related parameters",
-  "iam.notifyconfig.sender_address_extra": "The sender email address should be consistent with the username email address in general, if the mailbox has other configurations, please fill in according to the actual situation"
+  "iam.notifyconfig.sender_address_extra": "The sender email address should be consistent with the username email address in general, if the mailbox has other configurations, please fill in according to the actual situation",
+  "system.common_log_filter_tip": "Search by ID by default, and automatically match IP filter items"
 }

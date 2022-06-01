@@ -923,5 +923,6 @@
   "iam.object_tag": "资源标签",
   "iam.help": "点击查看帮助",
   "iam.get_params_help": "获取相关参数",
-  "iam.notifyconfig.sender_address_extra": "发件人邮箱一般情况下应与用户名邮箱地址保持一致，如邮箱有其他配置，请按实际情况填写"
+  "iam.notifyconfig.sender_address_extra": "发件人邮箱一般情况下应与用户名邮箱地址保持一致，如邮箱有其他配置，请按实际情况填写",
+  "system.common_log_filter_tip": "默认按ID搜索，自动匹配IP筛选项"
 }
