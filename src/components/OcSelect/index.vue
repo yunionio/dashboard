@@ -148,7 +148,7 @@ export default {
     },
     params: {
       handler (v) {
-        if (v) {
+        if (v && !this.data) {
           this.fetchResourceData(v)
         }
       },
