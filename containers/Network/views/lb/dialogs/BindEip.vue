@@ -112,7 +112,6 @@ export default {
         id: ids,
         managerArgs: {
           action: 'create-eip',
-          steadyStatus: ['running', 'ready'],
           data: {
             charge_type: values.charge_type,
             bandwidth: values.bandwidth,
@@ -124,7 +123,7 @@ export default {
     doBindEip (ids, values) {
       return this.params.onManager('batchPerformAction', {
         id: ids,
-        steadyStatus: ['running', 'ready'],
+        steadyStatus: ['enabled'],
         managerArgs: {
           action: 'associate-eip',
           data: {
