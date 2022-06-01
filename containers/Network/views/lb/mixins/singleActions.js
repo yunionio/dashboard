@@ -1,8 +1,8 @@
-import { validateEnabled, validateDisable } from '../utils'
 import expectStatus from '@/constants/expectStatus'
 import { PROVIDER_MAP } from '@/constants'
 import { getEnabledSwitchActions, disableDeleteAction } from '@/utils/common/tableActions'
 import i18n from '@/locales'
+import { validateEnabled, validateDisable } from '../utils'
 
 export default {
   created () {
@@ -52,6 +52,10 @@ export default {
                 }
                 if (!['OneCloud', 'Huawei'].includes(obj.brand) || obj.eip_mode === 'elastic_ip') {
                   ret.validate = false
+                }
+                if (obj.status === 'disabled') {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('network.text_311')
                 }
                 return ret
               },

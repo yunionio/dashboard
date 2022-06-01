@@ -91,7 +91,7 @@ export default {
         params.filter = 'status.in("available")'
         params.cloudregion_id = this.params.data[0].cloudregion_id
       } else if (this.resource === 'loadbalancers') {
-        // params.filter = 'status.in(ready)'
+        params.filter = 'status.in(enabled)'
         params.without_eip = true
         params.eip_associable = true
         params.usable_loadbalancer_for_eip = this.params.data[0].id
