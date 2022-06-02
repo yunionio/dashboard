@@ -2,7 +2,7 @@ import { Icon as AntIcon } from 'ant-design-vue'
 import { mergeProps } from 'ant-design-vue/lib/_util/props-util'
 
 const commonContext = require.context('./assets', false, /\.svg$/)
-const scopeContext = require.context('@scope/assets', false, /\.svg$/)
+const scopeContext = require.context('@scope/assets', true, /\.svg$/)
 
 const requireAll = (commonContext, scopeContext) => {
   const commonFilePath = []
