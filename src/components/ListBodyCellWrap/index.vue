@@ -2,8 +2,7 @@
   <div v-on="events" class="d-flex align-items-center list-body-cell-wrap" :title="message || row[field] || '-'">
     <span
       v-if="!hideField"
-      class="text-truncate"
-      :class="{ 'text-weak': field.includes('description'), [titleClass]: titleClass }">{{ l.get(row, field) || '-' }}</span>
+      :class="{ 'text-weak': field.includes('description'), [titleClass]: titleClass, 'text-truncate': overflow ==='ellipsis' }">{{ l.get(row, field) || '-' }}</span>
     <div class="text-truncate slot-wrap" v-if="$scopedSlots.default"><slot /></div>
     <template v-if="showDeleteLock">
       <a-icon class="ml-1" type="lock" :title="$t('common.text00008')" />
@@ -96,6 +95,10 @@ export default {
     showSuccessMessage: {
       type: Boolean,
       default: true,
+    },
+    overflow: {
+      type: String,
+      default: 'ellipsis',
     },
   },
   inject: {
