@@ -94,7 +94,7 @@ export default {
               connection(i18n.t('db.text_153'), pri),
               connection(i18n.t('db.text_154'), pub),
               ...ip_addrs.map(ip => {
-                return (<list-body-cell-wrap hide-field copy message={ip}><span>{ip}</span></list-body-cell-wrap>)
+                return (<list-body-cell-wrap hide-field copy message={ip}><span>IP: {ip}</span></list-body-cell-wrap>)
               }),
             ]
           },
