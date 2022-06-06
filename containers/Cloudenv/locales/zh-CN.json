@@ -435,7 +435,7 @@
   "cloudenv.text_394": "要求{0}",
   "cloudenv.text_395": "https代理",
   "cloudenv.text_396": "例如：http|https|socks5://proxy.example.com:8080",
-  "cloudenv.text_397": "若请求的url是https，优先使用https代理，可以为空，为空则使用http代理",
+  "cloudenv.text_397": "如果走https请求用的是https的代理，如果走http请求，用的是http的代理",
   "cloudenv.text_398": "http代理",
   "cloudenv.text_399": "例如：http|https|socks5://proxy.example.com:8081",
   "cloudenv.text_400": "建议https代理和http代理至少填写一个，可以为空，为空则代表直连",
