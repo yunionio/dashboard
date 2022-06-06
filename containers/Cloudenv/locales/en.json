@@ -437,7 +437,7 @@
   "cloudenv.text_394": "Require {0}",
   "cloudenv.text_395": "https proxy",
   "cloudenv.text_396": "E.g. http|https|socks5://proxy.example.com:8080",
-  "cloudenv.text_397": "If the requested url is https, https proxy is preferred, it can be empty, and if it is empty, http proxy is used",
+  "cloudenv.text_397": "If an HTTPS request is made, the HTTPS proxy is used; if an HTTP request is made, the HTTP proxy is used",
   "cloudenv.text_398": "http proxy",
   "cloudenv.text_399": "E.g. http|https|socks5://proxy.example.com:8081",
   "cloudenv.text_400": "It is recommended to fill in at least one of https proxy and http proxy, it can be empty, and it means direct connection",
