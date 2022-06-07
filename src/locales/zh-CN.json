@@ -832,6 +832,10 @@
       "failed": "失败",
       "reject": "拒绝"
     },
+    "scheduledtaskBillSync": {
+      "running": "进行中",
+      "finished": "已完成"
+    },
     "cloudgroup": {
       "available": "可用",
       "deleting": "删除中",

@@ -760,5 +760,7 @@
   "cloudenv.create_local_project": "新建本地项目",
   "cloudenv.link_local_project": "关联本地项目",
   "cloudenv.select_local_project": "选择现有本地项目",
-  "cloudenv.brand_action_deny": "当前云平台不支持此操作"
+  "cloudenv.brand_action_deny": "当前云平台不支持此操作",
+  "cloudenv.res_sync": "资源同步",
+  "cloudenv.bill_sync": "账单同步"
 }
