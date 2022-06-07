@@ -730,7 +730,8 @@ export default {
   line-height: 1;
   cursor: pointer;
   img {
-    width: 45px;
+    // width: 45px;
+    height: 30px;
   }
 }
 .header-title {
