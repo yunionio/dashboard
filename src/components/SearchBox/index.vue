@@ -216,7 +216,7 @@ export default {
 <style lang="less" scoped>
 .search-box-wrap {
   width: 100%;
-  height: auto;
+  height: 30px;
   position: relative;
   padding-left: 30px;
   > ul {
@@ -236,7 +236,7 @@ export default {
     position: absolute;
     font-size: 12px;
     line-height: 24px;
-    top: 7px;
+    top: 2px;
     left: 30px;
     right: 36px;
   }

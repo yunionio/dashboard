@@ -152,16 +152,25 @@ export default {
     }
     .level-3-item {
       .level-3-group-title {
-        color: rgba(0, 0, 0, .7);
+        color: #000000;
+        font-weight: 500;
       }
       .menu-item {
+        position: relative;
         color: @sidebar-light-text-color;
-        &::after {
-          background-color: @primary-color;
-        }
+        // &::after {
+        //   background-color: @primary-color;
+        // }
         &:hover, &.active {
           &::after {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(4px, -50%);
             background-color: @primary-color;
+            overflow: hidden;
           }
         }
         &:hover {
@@ -214,21 +223,21 @@ export default {
     color: @sidebar-dark-text-color;
     position: relative;
     cursor: pointer;
-    &::after {
-      position: absolute;
-      content: '';
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 1px;
-      background-color: @primary-color;
-      transition: width .2s ease;
-    }
+
     &:hover, &.active {
       text-decoration: none;
       &::after {
-        width: 4px;
+        position: absolute;
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(4px, -50%);
         background-color: @primary-color;
+        overflow: hidden;
       }
     }
     &:hover {

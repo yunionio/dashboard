@@ -28,6 +28,9 @@ const colorList = [
   {
     key: i18n.t('common_320'), color: '#A100FF',
   },
+  {
+    key: '移动专属', color: '#0099F0',
+  },
 ]
 
 const updateThemeColor = newPrimaryColor => {
