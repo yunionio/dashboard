@@ -181,7 +181,7 @@ export default {
     max-height: calc(100vh - 120px);
     overflow: auto;
     min-width: 180px;
-    max-width: 190px;
+    max-width: 180px;
   }
   &.light-theme {
     .ant-popover-inner {
@@ -210,7 +210,7 @@ export default {
   padding: 8px 0;
 }
 .l2-menu-list {
-  padding: 10px 20px 0 20px;
+  padding: 10px 10px 0 20px;
   .l2-menu-group {
     padding-bottom: 10px;
     border-bottom: 1px solid #E2E2E2;
@@ -224,13 +224,13 @@ export default {
     line-height: 24px;
     margin-bottom: 6px;
     margin-top: 6px;
-    padding: 0 16px;
+    padding: 0 2px;
   }
   .l2-menu-item {
     display: block;
     padding-bottom: 4px;
     padding-top: 4px;
-    padding-left: 24px;
+    padding-left: 18px;
     padding-right: 16px;
     font-size: 14px;
     color: @sidebar-dark-text-color;
