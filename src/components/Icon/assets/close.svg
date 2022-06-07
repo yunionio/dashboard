@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>收起</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="虚拟机-组织架构图调整备份" transform="translate(-19.000000, -19.000000)">
+            <g id="top备份" transform="translate(0.000000, -2.000000)">
+                <g id="logo" transform="translate(19.000000, 19.000000)">
+                    <g id="收起" transform="translate(0.000000, 2.000000)">
+                        <rect id="矩形" fill="#F5F5F6" x="0" y="0" width="26" height="26" rx="4"></rect>
+                        <polyline id="路径-2" stroke="#696F7C" stroke-width="2" points="6.91577148 11.3579838 4.91577148 13.7247528 6.91577148 16.0995358"></polyline>
+                        <g id="编组-6" transform="translate(5.000000, 7.000000)" stroke="#696F7C" stroke-width="2">
+                            <line x1="0.5" y1="0.5" x2="15.5" y2="0.5" id="直线-2"></line>
+                            <line x1="0.5" y1="6.5" x2="15.5" y2="6.5" id="直线-2备份"></line>
+                            <line x1="0.5" y1="12.5" x2="15.5" y2="12.5" id="直线-2备份-2"></line>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
