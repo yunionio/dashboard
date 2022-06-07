@@ -62,6 +62,7 @@
   "dashboard.text_59": "Display #lines",
   "dashboard.text_60": "Near",
   "dashboard.text_61": "CPU Usage",
+  "dashboard.text_61_agent": "CPU Usage(agent)",
   "dashboard.text_62": "Disk Read Throughput",
   "dashboard.text_63": "Disk Write Throughput",
   "dashboard.text_64": "Network inbound traffic",
