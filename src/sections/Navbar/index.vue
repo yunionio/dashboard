@@ -4,13 +4,13 @@
       <template v-if="authInfoLoaded && isShowMenu">
         <a-tooltip :title="$t('navbar.button.menu')" placement="right">
           <div class="primary-color-hover d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
-            <icon type="menu" style="font-size: 24px;" />
+            <icon :type="drawerVisible ? 'close' : 'open'" style="font-size: 24px;" />
           </div>
         </a-tooltip>
       </template>
       <template v-else>
         <div class="primary-color-hover d-flex align-items-center h-100 navbar-item-trigger flex-shrink-0 flex-grow-0">
-          <icon type="menu" style="font-size: 24px; cursor: default;" />
+          <icon :type="drawerVisible ? 'close' : 'open'" style="font-size: 24px; cursor: default;" />
         </div>
       </template>
     </div>
@@ -245,6 +245,7 @@ export default {
       'scopeResource',
       'auth',
       'workflow',
+      'common',
     ]),
     ...mapState('app', {
       computeStatus: state => state.license.status,
@@ -394,6 +395,9 @@ export default {
         return globalSetting.value.setupKeys || []
       }
       return []
+    },
+    drawerVisible () {
+      return get(this.common, 'sidebar.drawerVisible', false)
     },
   },
   watch: {
