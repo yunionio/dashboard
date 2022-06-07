@@ -52,7 +52,8 @@ export default {
         {
           field: 'bandwidth',
           title: this.$t('network.text_195'),
-          formatter: ({ cellValue }) => {
+          formatter: ({ cellValue, row }) => {
+            if (row.cloud_env === 'private' && row.brand !== 'Apsara') return '-'
             return sizestr(cellValue, 'M', 1024)
           },
         },
