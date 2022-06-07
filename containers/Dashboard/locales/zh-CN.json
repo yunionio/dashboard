@@ -62,6 +62,7 @@
   "dashboard.text_59": "显示行数",
   "dashboard.text_60": "近",
   "dashboard.text_61": "CPU使用率",
+  "dashboard.text_61_agent": "CPU使用率（agent）",
   "dashboard.text_62": "磁盘读取速度",
   "dashboard.text_63": "磁盘写入速度",
   "dashboard.text_64": "网络入流量",
