@@ -59,6 +59,7 @@
   "db.text_57": "Engine",
   "db.text_58": "Link Address-Intranet",
   "db.text_59": "Link address-extranet",
+  "db.url_ip": "Link address-IP",
   "db.text_60": "Name",
   "db.text_61": "Type",
   "db.text_62": "Memory (MB)",
