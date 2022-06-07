@@ -346,6 +346,9 @@ export default {
     success: ['succeed', 'part_succeed'],
     danger: ['failed', 'reject'],
   },
+  scheduledtaskBillSync: {
+    success: ['finished'],
+  },
   cloudgroup: {
     info: 'unknown',
     success: ['available'],

@@ -824,6 +824,10 @@
       "failed": "Failed",
       "reject": "Reject"
     },
+    "scheduledtaskBillSync": {
+      "running": "Running",
+      "finished": "Finished"
+    },
     "cloudgroup": {
       "available": "Available",
       "deleting": "Deleting",
