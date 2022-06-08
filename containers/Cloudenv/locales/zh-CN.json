@@ -762,5 +762,7 @@
   "cloudenv.select_local_project": "选择现有本地项目",
   "cloudenv.brand_action_deny": "当前云平台不支持此操作",
   "cloudenv.res_sync": "资源同步",
-  "cloudenv.bill_sync": "账单同步"
+  "cloudenv.bill_sync": "账单同步",
+  "cloudenv.resource_add_cnt": "资源新增",
+  "cloudenv.resource_del_cnt": "资源删除"
 }
