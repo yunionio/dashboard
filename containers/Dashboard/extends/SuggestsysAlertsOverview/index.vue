@@ -253,7 +253,7 @@ export default {
       return this.fetchData()
     },
     async fetchData () {
-      if (!this.hasMeterService()) {
+      if (!this.hasMeterService) {
         return
       }
       this.loading = true
