@@ -51,6 +51,16 @@ export default {
           }
         },
       },
+      {
+        label: i18n.t('cloudenv.text_463'),
+        action: obj => {
+          this.createDialog('cloudproviderregionsSyncResourceInfoDialog', {
+            title: this.$t('cloudenv.text_463'),
+            name: this.$t('cloudenv.text_10'),
+            data: [obj],
+          })
+        },
+      },
     ]
   },
 }
