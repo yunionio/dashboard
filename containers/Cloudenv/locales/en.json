@@ -762,5 +762,7 @@
   "cloudenv.select_local_project": "Select local project",
   "cloudenv.brand_action_deny": "The current cloud platform does not support this operation",
   "cloudenv.res_sync": "Resource sync",
-  "cloudenv.bill_sync": "Bill sync"
+  "cloudenv.bill_sync": "Bill sync",
+  "cloudenv.resource_add_cnt": "Add",
+  "cloudenv.resource_del_cnt": "Delete"
 }
