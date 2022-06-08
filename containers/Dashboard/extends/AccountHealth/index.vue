@@ -181,10 +181,10 @@ export default {
     font-size: 36px;
   }
   .green-color{
-    color: #52c41a;
+    color: #ADE4B6;
   }
   .red-color{
-    color: #f5222d;
+    color: #F3ADB2;
   }
 }
 </style>

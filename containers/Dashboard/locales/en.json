@@ -231,6 +231,7 @@
   "dashboard.currency": "Currency",
   "dashboard.leave_page_tips": "The current page data is not saved. Are you sure you want to leave?",
   "dashboard.color.scheme": "Color Schemes",
+  "dashboard.color.scheme.blue": "Blue 0～100%",
   "dashboard.color.scheme.default": "Green 0～60%; Yellow 60%～80%; Red 80%～100%",
   "dashboard.color.scheme.reverse": "Red 0～60%; Yellow 60%～80%; Green 80%～100%",
   "dashboard.currency_name": "USD",
