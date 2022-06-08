@@ -231,6 +231,7 @@
   "dashboard.currency": "币种",
   "dashboard.leave_page_tips": "当前页面数据未保存，确定要离开？",
   "dashboard.color.scheme": "配色方案",
+  "dashboard.color.scheme.blue": "蓝色0～100%",
   "dashboard.color.scheme.default": "绿色0～60%；黄色60%～80%；红色80%～100%",
   "dashboard.color.scheme.reverse": "红色0～60%；黄色60%～80%；绿色80%～100%",
   "dashboard.currency_name": "CNY",

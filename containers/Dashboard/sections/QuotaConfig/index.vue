@@ -171,6 +171,13 @@ export default {
       partUsageOptions: [],
       colors: [
         {
+          key: 'blue',
+          percent60: '#ADD1F3',
+          percent80: '#ADD1F3',
+          percent100: '#ADD1F3',
+          label: this.$t('dashboard.color.scheme.blue'),
+        },
+        {
           key: 'default',
           percent60: '#52c41a',
           percent80: '#faad14',
