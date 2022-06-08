@@ -181,7 +181,7 @@ export default {
             name: 'forcastAmount',
             itemStyle: {
               normal: {
-                color: '#1890ff',
+                color: '#ADD1F3',
                 label: {
                   show: false,
                 },
@@ -195,7 +195,7 @@ export default {
             value: this.suggestAmount,
             itemStyle: {
               normal: {
-                color: '#52c41a',
+                color: '#ADE4B6',
                 label: {
                   show: false,
                 },
@@ -290,3 +290,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.dashboard-card-body {
+  .success-color {
+    color: #85D793
+  }
+  .error-color {
+    color: #ADD1F3;
+  }
+}
+</style>

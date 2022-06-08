@@ -14,7 +14,7 @@
         <div class="flex-fill ml-4">
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div class="label-unit">{{ useLabel }}</div>
-            <div class="flex-number mr-2 ml-1 text-right">{{usage.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{usage.usage}}</div>
             <div class="label-unit">{{usage.unit}}</div>
           </div>
 
@@ -26,7 +26,7 @@
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showReserved">
             <div class="flex-shrink-0 flex-grow-0 label-unit">{{$t('dashboard.text_182')}}</div>
-            <div class="flex-number mr-2 ml-1 text-right">{{reserved.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{reserved.usage}}</div>
             <div class="label-unit">{{reserved.unit}}</div>
           </div>
 
@@ -34,13 +34,13 @@
             <div class="flex-shrink-0 flex-grow-0 label-unit">
               {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><icon type="help" /></a-tooltip>
             </div>
-            <div class="flex-number mr-2 ml-1 text-right">{{gpuReserved.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{gpuReserved.usage}}</div>
             <div  class="label-unit">{{gpuReserved.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div class="label-unit">{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><icon type="help" /></a-tooltip></div>
-            <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{allUsage.usage}}</div>
             <div class="label-unit">{{allUsage.unit}}</div>
           </div>
         </div>
@@ -215,7 +215,7 @@ export default {
       return USAGE_CONFIG[this.form.fd.usage_key]
     },
     colorConfig () {
-      return (this.params && this.params.color) || 'default'
+      return (this.params && this.params.color) || 'blue'
     },
     allUsage () {
       let ret = this.allUsageNumber
@@ -275,6 +275,8 @@ export default {
     },
     percentColor () {
       switch (this.colorConfig) {
+        case 'blue':
+          return '#ADD1F3'
         case 'reverse':
           if (this.percent < 60) {
             return '#f5222d'
@@ -435,14 +437,14 @@ export default {
 
 <style lang="less" scoped>
 .flex-number{
-  font-size: 18px;
-  line-height: 19px;
+  font-size: 15px;
+  line-height: 21px;
   flex: 1 1 auto;
   color: #000;
-  font-weight: bold;
+  font-weight: 600;
 }
 .label-unit{
-  color: #837F89;
+  color: #666666;
 }
 .percent-tips {
   font-size: 22px;
