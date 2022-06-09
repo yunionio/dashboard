@@ -1037,5 +1037,5 @@
   "network.topology.view": "视图",
   "network.topology.view.virtual": "虚拟拓扑",
   "network.topology.view.pysical": "物理拓扑",
-  "network.eip_bind_server_tip": "经典网络类型虚拟机无需绑定EIP"
+  "network.eip_bind_server_tip": "经典网络类型虚拟机不支持绑定EIP"
 }

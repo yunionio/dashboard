@@ -1038,5 +1038,5 @@
   "network.topology.view": "View",
   "network.topology.view.virtual": "Virtual",
   "network.topology.view.pysical": "Pysical",
-  "network.eip_bind_server_tip": "Classic network virtual machine does not need to be bound with EIP"
+  "network.eip_bind_server_tip": "Classic network virtual machine does not support to be bound with EIP"
 }
