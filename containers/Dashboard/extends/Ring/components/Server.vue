@@ -284,10 +284,10 @@ export default {
           if (this.percent < 80) {
             return '#faad14'
           }
-          return '#52c41a'
+          return '#ADE4B6'
         default:
           if (this.percent < 60) {
-            return '#52c41a'
+            return '#ADE4B6'
           }
           if (this.percent < 80) {
             return '#faad14'
@@ -447,8 +447,8 @@ export default {
   color: #666666;
 }
 .percent-tips {
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 20px;
+  // font-weight: bold;
 }
 .ring-drawer-wrapper {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
@@ -456,7 +456,7 @@ export default {
   }
 }
 .bottomborder-box{
-  border-bottom: 1px dotted #E4E4E4;
+  border-bottom: 1px solid #F2F2F2;
   margin: 10px 0;
   padding: 5px 0;
 }

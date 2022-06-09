@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="dashboard-card-body d-flex align-items-center justify-content-center">
-        <div class="d-flex align-items-baseline">
+        <div class="d-flex">
           <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
           <div class="number-card-unit">{{ this.usage.unit }}</div>
         </div>
@@ -333,12 +333,13 @@ export default {
 
 <style lang="less" scoped>
 .number-card-number {
-  font-size: 50px;
-  color: #000;
+  font-size: 76px;
+  line-height: 64px;
+  color: #000000;
 }
 .number-card-unit {
   font-size: 14px;
-  color: #4F4B53;
+  color: #000000;
   margin-left: 5px;
 }
 .drawer-wrapper {
