@@ -17,7 +17,7 @@
     <a-form-item :extra="extra" class="mt-2">
       <div class="d-flex">
         <div style="line-height: 40px;">
-          <tag-select :global="global" v-model="checked" :params="params" :multiple="multiple" :button-text="$t('common_110')" />
+          <tag-select :global="global" v-model="checked" :params="params" :managerInstance="managerInstance" :multiple="multiple" :button-text="$t('common_110')" />
           <a-button class="ml-2" v-if="!showForm && canCreate" @click="() => showForm = true">{{$t('common_258')}}</a-button>
         </div>
         <a-form
@@ -80,6 +80,7 @@ export default {
       type: Boolean,
       default: true,
     },
+    managerInstance: Object,
   },
   data () {
     return {
@@ -152,7 +153,7 @@ export default {
         if (newValue[key]) {
           if (values.value) {
             if (!newValue[key].includes(values.value)) {
-              newValue[key] = [values.value]
+              newValue[key] = this.multiple ? [...newValue[key], values.value] : [values.value]
             }
           }
         } else {
@@ -182,7 +183,12 @@ export default {
     removeTag (item) {
       const newValue = { ...this.checked }
       if (R.is(Array, newValue[item.key])) {
-        newValue[item.key] = newValue[item.key].filter(value => value !== item.value)
+        const value = newValue[item.key].filter(value => value !== item.value)
+        if (value.length) {
+          newValue[item.key] = value
+        } else {
+          delete newValue[item.key]
+        }
       } else {
         delete newValue[item.key]
       }
