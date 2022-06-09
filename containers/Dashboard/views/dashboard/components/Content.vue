@@ -82,6 +82,6 @@ export default {
 
 <style lang="less" scoped>
 .item {
-  border: solid 2px #eee;
+  border: 1px solid #E7E8EB;
 }
 </style>
