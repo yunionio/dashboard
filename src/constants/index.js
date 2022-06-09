@@ -129,7 +129,7 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'schedtag',
 ]
 
-export const chartColors = ['#ADD1F3', '#F3CBAD', '#F3ADB2', '#5ED28A', '#ff5f2e', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
+export const chartColors = ['#ADD1F3', '#F3CBAD', '#F3ADB2', '#ADAEF3', '#ADE4B6', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
 
 export const contactMap = {
   webconsole: {

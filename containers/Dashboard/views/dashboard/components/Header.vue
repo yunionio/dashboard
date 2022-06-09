@@ -257,13 +257,14 @@ export default {
 @import '~@/styles/less/theme';
 
 .wrap {
-  border-bottom: 1px solid #d8d8d8;
+  border-bottom: 1px solid #EDEDED;
 }
 .item {
   padding: 12px 16px;
   margin: 0 32px 0 0;
   cursor: pointer;
   position: relative;
+  color: rgba(0, 0, 0, 0.45);
   &:last-child {
     margin-right: 0;
   }
