@@ -1072,5 +1072,5 @@
   "network.topology.view.pysical": "Pysical",
   "network.lb_monitor_bin": "Load balancing inflow",
   "network.lb_monitor_bout": "Load balancing outflow",
-  "network.eip_bind_server_tip": "Classic network virtual machine does not need to be bound with EIP"
+  "network.eip_bind_server_tip": "Classic network virtual machine does not support to be bound with EIP"
 }
