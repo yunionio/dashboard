@@ -326,7 +326,7 @@ export default {
   }
 }
 .bottomborder-box{
-  border-bottom: 1px dotted #E4E4E4;
+  border-bottom: 1px solid #F2F2F2;
   margin: 10px 0;
   padding: 5px 0;
 }

@@ -17,7 +17,7 @@
             <div class="selected-user-name">{{$t('dashboard.text_185')}}{{ userInfo.displayname || userInfo.name }}</div>
           </div>
           <!-- <div v-for="(item, index) in userTableData" :key="index" class="user-info-text">{{item.label}}{{item.value}}</div> -->
-          <div v-for="(item, index) in userTableData" :key="index">
+          <div class="info-content" v-for="(item, index) in userTableData" :key="index">
             <div class="info-title">{{item.label}}</div>
             <div class="info-text">{{item.value}}</div>
           </div>
@@ -137,13 +137,14 @@ export default {
 .selected-user-content {
   align-items: center;
   // border: 1px solid #d9d9d9;
-  color: #3c4043;
+  color: #000000;
   display: inline-flex;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: .25px;
   max-width: 100%;
-  padding: 0 7px 5px 0;
+  padding: 0 7px 13px 0;
   margin-bottom: 10px;
+  border-bottom: 1px solid #e8e8e8;
   .selected-user-name {
     direction: ltr;
     text-align: left;
@@ -169,15 +170,17 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.info-content {
+  padding-bottom: 4px;
+  border-bottom: 1px solid #F2F2F2;
+}
 .info-title{
   font-size: 12px;
-  padding: 5px 0;
-  color: #666;
+  color: #595959;
 }
 .info-text{
   font-size: 12px;
-  padding: 5px;
-  background: rgba(0,0,0,0.05);
+  color: #9E9E9E;
   border-radius: 5px;
 }
 </style>
