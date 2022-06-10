@@ -10,7 +10,7 @@
           <p>{{ $t('common.status') }}：{{ $t('status.network.' + network.status) }}</p>
         </template>
         <icon type="res-network" />
-        <span class="name text-truncate text-center">{{ network.name }}</span>
+        <span class="name text-truncate">{{ network.name }}</span>
       </a-tooltip>
     </div>
   </div>
