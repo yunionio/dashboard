@@ -333,8 +333,8 @@ export default {
 
 <style lang="less" scoped>
 .number-card-number {
-  font-size: 76px;
-  line-height: 64px;
+  font-size: 60px;
+  line-height: 48px;
   color: #000000;
 }
 .number-card-unit {
