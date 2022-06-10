@@ -275,24 +275,24 @@ export default {
     },
     percentColor () {
       switch (this.colorConfig) {
-        case 'blue':
-          return '#ADD1F3'
-        case 'reverse':
-          if (this.percent < 60) {
-            return '#f5222d'
-          }
-          if (this.percent < 80) {
-            return '#faad14'
-          }
-          return '#ADE4B6'
-        default:
+        case 'default':
           if (this.percent < 60) {
             return '#ADE4B6'
           }
           if (this.percent < 80) {
-            return '#faad14'
+            return '#F3CBAD'
           }
-          return '#f5222d'
+          return '#F3ADB2'
+        case 'reverse':
+          if (this.percent < 60) {
+            return '#F3ADB2'
+          }
+          if (this.percent < 80) {
+            return '#F3CBAD'
+          }
+          return '#ADE4B6'
+        default:
+          return '#ADD1F3'
       }
     },
     status () {
