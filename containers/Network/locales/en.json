@@ -841,5 +841,5 @@
   "network.lbcert.is_complete.false": "Partially Available",
   "network.lb.default_backendgroup.tips": "Aliyun default backendgroup currently not support this operate",
   "network.snat.cidr": "Cidr Block",
-  "network.eip_bind_server_tip": "Classic network virtual machine does not need to be bound with EIP"
+  "network.eip_bind_server_tip": "Classic network virtual machine does not support to be bound with EIP"
 }
