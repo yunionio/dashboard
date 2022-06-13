@@ -95,10 +95,10 @@
         </template>
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <a-tooltip :title="$t('navbar.view.switch')" placement="right">
-            <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
+            <icon type="navbar-view-switch" style="font-size: 18px;" />
           </a-tooltip>
-          <span class="ml-2 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
-          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+          <span class="ml-1 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
+          <icon type="caret-down" style="font-size: 18px; line-height: normal;" />
         </div>
       </a-popover>
     </div>
@@ -107,10 +107,10 @@
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <a-tooltip :title="$t('navbar.button.external_links')" placement="right">
-            <icon type="navbar-setting" style="font-size: 24px; line-height: 1;"  />
+            <icon type="navbar-setting" style="font-size: 18px;"  />
           </a-tooltip>
-          <span class="ml-2 text-truncate products-label" style="line-height: normal;">{{$t('dictionary.endpoint')}}</span>
-          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+          <span class="ml-1 text-truncate products-label" style="line-height: normal;">{{$t('dictionary.endpoint')}}</span>
+          <icon type="caret-down" style="font-size: 18px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
           <a-menu-item v-for="(item, idx) of products" :key="`${item.key}$$${idx}`">{{ item.label }}</a-menu-item>
