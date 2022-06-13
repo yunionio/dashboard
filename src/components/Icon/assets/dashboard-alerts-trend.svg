@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>近30天告警趋势 </title>
+    <g id="云管备份" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="磁条" transform="translate(-30.000000, -1059.000000)" stroke="#0099F0" stroke-width="1.5">
+            <g id="编组-9" transform="translate(0.000000, 68.000000)">
+                <g id="编组-13备份-12" transform="translate(17.000000, 991.000000)">
+                    <g id="近30天告警趋势--2" transform="translate(13.000000, 0.000000)">
+                        <g id="编组-6" transform="translate(2.000000, 0.000000)">
+                            <rect id="矩形" x="0.75" y="33.75" width="36.5" height="6.5"></rect>
+                            <path d="M19,7.81227175 C22.7279221,7.81227175 26.1029221,9.32331072 28.5459415,11.7663302 C30.988961,14.2093497 32.5,17.5843497 32.5,21.3122717 L32.5,21.3122717 L32.5,33.7524414 L5.5,33.7524414 L5.5,21.3122717 C5.5,17.5843497 7.01103897,14.2093497 9.45405845,11.7663302 C11.8970779,9.32331072 15.2720779,7.81227175 19,7.81227175 Z" id="矩形"></path>
+                            <line x1="19" y1="-1.98379745e-13" x2="19" y2="3.72377557" id="路径-5" stroke-linejoin="round"></line>
+                            <line x1="34.0375524" y1="6.41434623" x2="31.6542969" y2="8.93747564" id="路径-5" stroke-linejoin="round"></line>
+                            <line x1="3.85042436" y1="6.41434623" x2="6.36283867" y2="8.93747564" id="路径-5" stroke-linejoin="round"></line>
+                            <path d="M12.9833984,26.0620117 L17.7070312,26.0620117 L17.7070312,21.5849609 L22.059082,21.5849609 L22.059082,18.5 L25.9833984,18.5" id="路径-3"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

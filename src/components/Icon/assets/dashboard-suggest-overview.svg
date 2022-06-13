@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>使用率</title>
+    <title>费用优化总览 </title>
     <g id="云管备份" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="磁条" transform="translate(-30.000000, -252.000000)">
+        <g id="磁条" transform="translate(-30.000000, -657.000000)">
             <g id="编组-9" transform="translate(0.000000, 68.000000)">
-                <g id="编组-13备份" transform="translate(17.000000, 182.000000)">
-                    <g id="编组-8" transform="translate(13.000000, 2.000000)">
+                <g id="编组-13备份-6" transform="translate(17.000000, 587.000000)">
+                    <g id="费用优化总览-" transform="translate(13.000000, 2.000000)">
                         <rect id="矩形" stroke="#0099F0" stroke-width="1.5" x="0.75" y="0.75" width="40.5" height="40.5" rx="20.25"></rect>
-                        <text id="%" font-family="DINAlternate-Bold, DIN Alternate" font-size="30" font-weight="bold" fill="#0099F0">
-                            <tspan x="13" y="32">%</tspan>
+                        <text id="$" font-family="EingrantchMono-Medium, Eingrantch Mono" font-size="30" font-weight="400" fill="#0099F0">
+                            <tspan x="12" y="31">$</tspan>
                         </text>
                     </g>
                 </g>
