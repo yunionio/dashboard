@@ -250,7 +250,7 @@ export default {
       }
     },
     async fetchData () {
-      if (!this.hasMeterService()) {
+      if (!this.hasMeterService) {
         return
       }
       this.loading = true
