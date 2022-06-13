@@ -77,7 +77,7 @@ const options = [
   {
     label: i18n.t('monitor.overview_alert_sum'),
     desc: '',
-    icon: 'dashboard-usage',
+    icon: 'dashboard-alert-sum',
     h: 4,
     w: 5,
     component: 'UnrecoveredAlarm',
@@ -85,7 +85,7 @@ const options = [
   {
     label: i18n.t('dashboard.consumption_percent'),
     desc: i18n.t('dashboard.consumption_percent_info'),
-    icon: 'dashboard-usage',
+    icon: 'dashboard-consumption-percent',
     h: 4,
     w: 5,
     component: 'ConsumptionPercent',
@@ -93,7 +93,7 @@ const options = [
   {
     label: i18n.t('dashboard.consmption_trend'),
     desc: '',
-    icon: 'dashboard-trend',
+    icon: 'dashboard-consmption-trend',
     h: 4,
     w: 10,
     component: 'ConsumptionTrend',
@@ -101,7 +101,7 @@ const options = [
   {
     label: i18n.t('dashboard.vm_history_count'),
     desc: '',
-    icon: 'dashboard-trend',
+    icon: 'dashboard-vmhistory-count-trend',
     h: 4,
     w: 10,
     component: 'VmHistoryCount',
@@ -109,7 +109,7 @@ const options = [
   {
     label: i18n.t('dashboard.alerts_trend'),
     desc: '',
-    icon: 'dashboard-trend',
+    icon: 'dashboard-alerts-trend',
     h: 4,
     w: 10,
     component: 'AlertsTrend',
@@ -117,7 +117,7 @@ const options = [
   {
     label: i18n.t('dashboard.cloud_account_health'),
     desc: '',
-    icon: 'dashboard-number',
+    icon: 'dashboard-cloud-account-health',
     h: 4,
     w: 5,
     scope: ['system', 'domain'],
@@ -126,7 +126,7 @@ const options = [
   {
     label: i18n.t('dashboard.userinfo'),
     desc: '',
-    icon: 'res-user2',
+    icon: 'dashboard-user-info',
     h: 4,
     w: 5,
     component: 'UserInfo',

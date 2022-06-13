@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="trigger d-flex align-items-center justify-content-center" @click="toggle">
+    <div class="trigger d-flex align-items-center justify-content-center h-100" @click="toggle">
       <a-tooltip title="CloudShell" placement="right">
         <icon type="cloudshell" class="cloudsheel-icon" />
       </a-tooltip>
@@ -34,7 +34,6 @@ export default {
   cursor: pointer;
 }
 .cloudsheel-icon {
-  padding-top: 8px;
-  font-size: 24px;
+  font-size: 18px;
 }
 </style>

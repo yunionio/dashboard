@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>虚拟机数量趋势 </title>
+    <g id="云管备份" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="磁条" transform="translate(-28.000000, -985.000000)" stroke="#0099F0" stroke-width="1.5">
+            <g id="编组-9" transform="translate(0.000000, 68.000000)">
+                <g id="编组-13备份-9" transform="translate(17.000000, 834.000000)">
+                    <g id="数字图" transform="translate(11.000000, 0.000000)">
+                        <g id="编组-4备份" transform="translate(0.000000, 83.000000)">
+                            <g id="虚拟机数量趋势-" transform="translate(0.204590, 0.864258)">
+                                <rect id="矩形" x="13" y="9.13574219" width="21" height="20"></rect>
+                                <line x1="13.2954102" y1="16.6357422" x2="26.2954102" y2="16.6357422" id="直线-5"></line>
+                                <line x1="28.7788086" y1="16.6357422" x2="30.2954102" y2="16.6357422" id="直线-5"></line>
+                                <line x1="21.2954102" y1="22.6357422" x2="34.2954102" y2="22.6357422" id="直线-5"></line>
+                                <line x1="16.7370605" y1="22.6357422" x2="18.2954102" y2="22.6357422" id="直线-5"></line>
+                                <path d="M0,35.5214844 L9.78125,35.5214844 L9.78125,20.4960938 M33.2510364,5.70214844 L33.2510364,0 L41.7954102,0" id="形状"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

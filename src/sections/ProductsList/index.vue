@@ -139,10 +139,10 @@ export default {
   }
   .l1-menu-item-icon {
     width: 64px;
-    height: 24px;
+    height: 18px;
     text-align: center;
     > i {
-      font-size: 24px;
+      font-size: 18px;
     }
   }
   .l1-menu-item-right-icon {
