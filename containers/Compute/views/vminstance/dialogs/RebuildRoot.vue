@@ -54,6 +54,7 @@
 
 <script>
 import _ from 'lodash'
+import { mapGetters } from 'vuex'
 import OsSelect from '@Compute/sections/OsSelect'
 import ServerPassword from '@Compute/sections/ServerPassword'
 import { SERVER_TYPE, LOGIN_TYPES_MAP } from '@Compute/constants'
@@ -109,6 +110,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userInfo', 'auth']),
+    enableMFA () {
+      return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
+    },
     type () {
       const brand = this.params.data[0].brand
       return findPlatform(brand)
@@ -383,9 +388,21 @@ export default {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        await this.doRebuildRootSubmit(values)
+        const success = async () => {
+          this.loading = true
+          await this.doRebuildRootSubmit(values)
+          this.loading = false
+          this.cancelDialog()
+        }
+        if (this.enableMFA) {
+          this.createDialog('SecretVertifyDialog', {
+            action: this.$t('table.title.mfa_validate'),
+            success,
+          })
+        } else {
+          success()
+        }
         this.loading = false
-        this.cancelDialog()
       } catch (error) {
         this.loading = false
       }
