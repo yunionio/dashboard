@@ -254,7 +254,7 @@ export const REGEXP = {
   externalProjectName: {
     func: value => {
       if (!value) return false
-      if (value.length < 4 || value.length > 50) return false
+      if (value.length < 3 || value.length > 50) return false
       const regexp = /^(?![0-9])[a-zA-Z0-9-]{3,50}$/
       if (regexp.test(value)) {
         return true
