@@ -1,10 +1,7 @@
 <template>
-  <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{ $t('cloudenv.text_432') }}</div>
-    <div slot="body">
-      <dialog-selected-tips :name="$t('cloudenv.text_12')" class="mt-3" :count="params.data.length" :action="$t('cloudenv.text_432')" />
-      <dialog-table v-if="columns && columns.length" :data="params.data" :columns="columns" />
-      <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
+  <div>
+    <page-body>
+      <a-form :form="form.fc" v-bind="formLayout" hideRequiredMark>
         <a-form-item :label="$t('cloudenv.text_95')">
           <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
         </a-form-item>
@@ -49,28 +46,19 @@
           </a-form-item>
         </template>
       </a-form>
-    </div>
-    <div slot="footer">
-      <a-button type="primary" @click="handleConfirm" :loading="loading">{{ $t("dialog.ok") }}</a-button>
-      <a-button @click="cancelDialog">{{ $t('dialog.cancel') }}</a-button>
-    </div>
-  </base-dialog>
+    </page-body>
+  </div>
 </template>
 
 <script>
-import {
-  getStatusTableColumn,
-  getEnabledTableColumn,
-} from '@/utils/common/tableColumn'
-import DialogMixin from '@/mixins/dialog'
-import WindowsMixin from '@/mixins/windows'
-
 export default {
-  name: 'ScheduledtaskCreateDialog',
-  mixins: [DialogMixin, WindowsMixin],
+  name: 'ScheduledSettings',
   data () {
     return {
       loading: false,
+      form: {
+        fc: this.$form.createForm(this),
+      },
       decorators: {
         name: [
           'name',
@@ -137,43 +125,26 @@ export default {
           },
         ],
       },
-      form: {
-        fc: this.$form.createForm(this),
-      },
-      columns: [
-        {
-          field: 'name',
-          title: this.$t('table.title.name'),
-          minWidth: 100,
-          slots: {
-            default: ({ row }) => {
-              return row.name
-            },
-          },
-        },
-        getStatusTableColumn({ statusModule: 'cloudaccount', minWidth: 90 }),
-        getEnabledTableColumn({ minWidth: 90 }),
-      ],
-      formItemLayout: {
+      formLayout: {
         wrapperCol: {
           md: { span: 18 },
-          xl: { span: 20 },
+          xl: { span: 19 },
           xxl: { span: 21 },
         },
         labelCol: {
-          md: { span: 6 },
-          xl: { span: 4 },
+          md: { span: 8 },
+          xl: { span: 5 },
           xxl: { span: 3 },
         },
       },
     }
   },
   methods: {
-    generateData (values) {
+    generateData (resId, values) {
       const params = {
         resource_type: 'cloudaccount',
         label_type: 'id',
-        labels: [this.params.resId],
+        labels: [resId],
         operation: 'sync',
         name: values.name,
       }
@@ -210,14 +181,13 @@ export default {
       }
       return params
     },
-    async handleConfirm () {
+    async handleConfirm (resId) {
       this.loading = true
       try {
         const values = await this.form.fc.validateFields()
-        const params = this.generateData(values)
+        const params = this.generateData(resId, values)
         await new this.$Manager('scheduledtasks', 'v1').create({ data: params })
-        this.params.callback && this.params.callback()
-        this.cancelDialog()
+        this.$router.push('/cloudaccount')
       } catch (error) {
         throw error
       } finally {
