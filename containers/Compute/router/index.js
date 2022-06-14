@@ -40,7 +40,10 @@ import ScalingGroupCreate from '@Compute/views/scaling-group/create'
 import Schedtag from '@Cloudenv/views/schedtag'
 import Schedpolicy from '@Cloudenv/views/schedpolicy'
 import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
+import TapService from '@Compute/views/tap-service'
+import TapServiceCreate from '@Compute/views/tap-service/create'
 
+import store from '@/store'
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 
@@ -273,6 +276,32 @@ export default {
               name: 'HostImage',
               path: '',
               component: HostImage,
+            },
+          ],
+        },
+        {
+          path: '/tap-service',
+          meta: {
+            label: i18n.t('dictionary.tap_service'),
+            permission: 'tapservices_list',
+            hidden: () => {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.tap_service')) {
+                return true
+              }
+              return !store.getters.isAdminMode
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'TapService',
+              path: '',
+              component: TapService,
+            },
+            {
+              name: 'TapServiceCreate',
+              path: 'create',
+              component: TapServiceCreate,
             },
           ],
         },
