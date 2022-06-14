@@ -139,8 +139,8 @@ const actionEableMap = {
       qcloud: ['running'],
       aliyun: ['running'],
       aws: false,
-      onecloud: ['running', 'block_stream'],
-      cloudpods: ['running', 'block_stream'],
+      onecloud: ['running'],
+      cloudpods: ['running'],
       vmware: ['running'],
       baremetal: false,
       huawei: ['running'],
@@ -189,8 +189,8 @@ const actionEableMap = {
       qcloud: false, // 暂时网络未打通
       aliyun: false, // 暂时网络未打通
       aws: false, // 暂时网络未打通
-      onecloud: ['running', 'block_stream'],
-      cloudpods: ['running', 'block_stream'],
+      onecloud: ['running'],
+      cloudpods: ['running'],
       vmware: ['running'],
       baremetal: ['running'],
       huawei: false, // 暂时网络未打通
