@@ -21,10 +21,10 @@
         </div>
       </div>
       <div slot="right">
-        <a-button class="mr-3" @click="perv" v-if="!isFirstStep">{{$t('cloudenv.text_273')}}</a-button>
+        <a-button class="mr-3" @click="perv" v-if="!isFirstStep && !isScheduledSetting">{{$t('cloudenv.text_273')}}</a-button>
         <a-button :disabled="nextDisabled" class="mr-3" type="primary"  @click="next" :loading="loading">{{ nextStepTitle }}</a-button>
         <test-button v-if="['create-cloudaccount', 'bill-form', 'bill-file-index'].includes(currentComponent)" class="mr-3" :post="testPost" />
-        <a-button @click="cancel">{{['select-region', 'bill-form', 'bill-file-index'].includes(currentComponent) ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
+        <a-button @click="cancel">{{['select-region', 'bill-form', 'bill-file-index', 'scheduled-settings'].includes(currentComponent) ? $t('cloudenv.text_274'): $t('cloudenv.text_170')}}</a-button>
       </div>
     </page-footer>
   </div>
@@ -34,6 +34,7 @@
 import SelectCloudaccount from './form/SelectCloudaccount'
 import CreateCloudaccount from './form/CreateCloudaccount'
 import SelectRegion from './form/SelectRegion'
+import ScheduledSettings from './form/ScheduledSettings'
 import BillForm from './form/BillForm'
 import BillFileIndex from './BillFileIndex'
 import GuestNetwork from './form/GuestNetwork'
@@ -55,6 +56,7 @@ export default {
     GuestNetwork,
     HostNetwork,
     TestButton,
+    ScheduledSettings,
   },
   mixins: [step],
   data () {
@@ -109,6 +111,9 @@ export default {
       //   return true
       // }
       return false
+    },
+    isScheduledSetting () {
+      return this.step.currentStep === this.step.steps.length - 1
     },
   },
   watch: {
@@ -166,14 +171,30 @@ export default {
           steps.push({ title: this.$t('cloudenv.text_279'), key: 'bill-form' })
         }
       }
+      steps.push({ title: this.$t('cloudenv.scheduled_settings_title'), key: 'scheduled-settings' })
       this.step.steps = steps
     },
     async cancel () {
+      const isSupportSelectRegion = notSupportSelectRegion.indexOf(this.currentItem.provider) === -1
       if (this.step.currentStep === 2 && notSupportSelectRegion.indexOf(this.currentItem.provider) === -1) {
         await this.$refs.stepRef.validateForm()
         await this.doCreateCloudaccountByRegion()
       }
-      this.$router.push('/cloudaccount')
+      if (this.isBill) {
+        if (isSupportSelectRegion && this.step.currentStep === this.step.steps.length - 2) {
+          this.step.currentStep++
+          this.currentComponent = 'scheduled-settings'
+        } else {
+          this.$router.push('/cloudaccount')
+        }
+      } else {
+        if (isSupportSelectRegion && this.step.currentStep === this.step.steps.length - 2) {
+          this.step.currentStep++
+          this.currentComponent = 'scheduled-settings'
+        } else {
+          this.$router.push('/cloudaccount')
+        }
+      }
     },
     showName (item) {
       if (item.data) {
@@ -348,6 +369,7 @@ export default {
     async validateForm () {
       try {
         let createForm = this.$refs.stepRef.$refs.createForm
+
         if (this.brand === 'vmware' && this.step.currentStep > 1) {
           createForm = this.$refs.stepRef
         }
@@ -355,8 +377,11 @@ export default {
           await this.$refs.stepRef.validateForm()
           return this.doCreateCloudaccountByRegion()
         }
-        if (this.step.currentStep === this.step.steps.length - 1 && this.isBill) {
+        if (this.step.currentStep === this.step.steps.length - 2 && this.isBill) {
           return this.fetchBillSubmit()
+        }
+        if (this.step.currentStep === this.step.steps.length - 1) {
+          return this.$refs.stepRef.handleConfirm(this.newAccountInfo.id)
         }
         if (!createForm) return false
         const values = await createForm.validateForm()
@@ -385,7 +410,7 @@ export default {
           if (this.isBill) {
             this.currentComponent = 'billConfig'
           } else {
-            this.$router.push('/cloudaccount')
+            // this.$router.push('/cloudaccount')
           }
         }
       } catch (err) {
@@ -399,6 +424,7 @@ export default {
       this.loading = true
       try {
         await BILL_FORM.doSubmit(this.newAccountInfo)
+        this.currentComponent = 'scheduled-settings'
       } catch (err) {
         throw err
       } finally {
@@ -470,9 +496,9 @@ export default {
       delete data.show_sub_accounts
       delete data.dry_run
       this.newAccountInfo = await this.doCreateCloudaccount(data)
-      if (this.step.currentStep === this.step.steps.length - 1) {
-        this.$router.push('/cloudaccount')
-      }
+      // if (this.step.currentStep === this.step.steps.length - 1) {
+      //   this.$router.push('/cloudaccount')
+      // }
     },
   },
 }
