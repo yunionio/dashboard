@@ -355,9 +355,9 @@ export default {
           }
         }
         await this.manager.update(params)
-        if (isGoCloudaccount) {
-          this.$router.push('/cloudaccount')
-        }
+        // if (isGoCloudaccount) {
+        //   this.$router.push('/cloudaccount')
+        // }
       } catch (err) {
         throw err
       }

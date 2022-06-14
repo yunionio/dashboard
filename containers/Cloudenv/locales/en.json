@@ -764,5 +764,7 @@
   "cloudenv.res_sync": "Resource sync",
   "cloudenv.bill_sync": "Bill sync",
   "cloudenv.resource_add_cnt": "Add",
-  "cloudenv.resource_del_cnt": "Delete"
+  "cloudenv.resource_del_cnt": "Delete",
+  "cloudenv.scheduled_settings_title": "Scheduled sync task settings (optional)",
+  "cloudenv.range_picker_help": "Support is empty, no selection means long-term validity"
 }
