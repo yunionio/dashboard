@@ -17,7 +17,7 @@
       <div class="dashboard-card-body d-flex align-items-center justify-content-center w-100 heightCss">
         <div class="d-flex w-100 h-100 align-items-center justify-content-center">
           <div class="w-100 d-flex align-items-center justify-content-center h-100">
-            <img width="auto" height="100%" src="../../../assets/icon_cpu.png" />
+            <icon :type="params && params.icon ? params.icon : icons[0].type" :style="`font-size:${options.h * 23}px`" />
           </div>
           <div class="d-flex align-items-baseline w-100">
             <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
@@ -43,6 +43,12 @@
               :filterable="true"
               :options="unitOpts"
               :select-props="{ placeholder: $t('common_618') }" />
+        </a-form-item>
+        <a-form-item :label="$t('common_744')">
+            <icon-picker
+              v-decorator="decorators.icon"
+              :options="icons"
+              @updateIcon="updateIcon" />
         </a-form-item>
       </a-form>
     </base-drawer>
@@ -142,6 +148,12 @@ export default {
             initialValue: initUnitValue,
           },
         ],
+        icon: [
+          'icon',
+          {
+            initialValue: this.params && this.params.icon,
+          },
+        ],
       },
       showDebuggerInfo: false,
       unitOpts: [
@@ -210,11 +222,17 @@ export default {
         this.decorators[key][1] = config
       }
     },
+    options: {
+      deep: true,
+      handler (val) {
+      },
+    },
   },
   created () {
     if (this.params && this.params.type !== 'k8s') {
       this.form.fd = this.params
     } else if (this.form.fd.usage_key) {
+      this.form.fd.icon = this.params && this.params.icon ? this.params.icon : this.icons[0].type
       this.$emit('update', this.options.i, this.form.fd)
       this.setDefaultName(this.form.fd.usage_key)
       this.refresh()
@@ -224,6 +242,11 @@ export default {
     }, this)
   },
   methods: {
+    updateIcon (val) {
+      this.form.fc.setFieldsValue({
+        icon: val,
+      })
+    },
     refresh () {
       return this.fetchUsage()
     },
@@ -273,6 +296,7 @@ export default {
       try {
         const values = await this.form.fc.validateFields()
         this.form.fd = values
+        console.log(this.options, 'this.optionsthis.options')
         this.$emit('update', this.options.i, values)
         this.updateVisible(false)
       } catch (error) {
@@ -354,5 +378,17 @@ export default {
 .heightCss{
   flex: 1;
   overflow: hidden;
+}
+.icon-content{
+  width: 80px;
+  height: 80px;
+  margin:  5px;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #ccc
+}
+.dashboard-icon {
+  font-size: 77px;
 }
 </style>

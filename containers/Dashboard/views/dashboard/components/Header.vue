@@ -20,7 +20,7 @@
       </a>
       <a-menu slot="overlay" @click="handleActionClick">
         <a-menu-item key="handleCreate"><a-icon type="plus" />{{$t('dashboard.text_103')}}</a-menu-item>
-        <a-menu-item key="handleEdit"><a-icon type="edit" />{{$t('dashboard.text_104')}}</a-menu-item>
+        <a-menu-item :disabled="isDefaultOption" key="handleEdit"><a-icon type="edit" />{{$t('dashboard.text_104')}}</a-menu-item>
         <a-menu-item key="handleDownload"><a-icon type="download" />{{$t('dashboard.text_105')}}</a-menu-item>
         <a-menu-item key="handleImport"><a-icon type="file" />{{$t('dashboard.text_106')}}</a-menu-item>
         <a-menu-item key="handleCopy"><a-icon type="copy" />{{$t('dashboard.text_107')}}</a-menu-item>
@@ -112,6 +112,9 @@ export default {
       this.$router.push({ name: 'DashboardEdit' })
     },
     handleEdit () {
+      if (this.isDefaultOption) {
+        return
+      }
       this.$router.push({ name: 'DashboardEdit', query: { id: this.current.id } })
     },
     handleDownload () {

@@ -1,7 +1,7 @@
 <template>
   <component
     ref="usage"
-    :is="type"
+    :is="componentType"
     :type="type"
     :visible.sync="visible"
     :formItemLayout="formItemLayout"
@@ -26,12 +26,14 @@
 import { hasSetupKey } from '@/utils/auth'
 import Server from './components/Server'
 import K8s from './components/K8s'
+import tenant from './components/tenant'
 
 export default {
   name: 'Ring',
   components: {
     Server,
     K8s,
+    tenant,
   },
   props: {
     options: {
@@ -50,6 +52,7 @@ export default {
     }
     return {
       type: (this.params && this.params.type) || 'server',
+      componentType: (this.$store.getters.auth.info.is_domain === 'system' && (this.params && this.params.all_usage_key === 'all.servers')) ? 'tenant' : ((this.params && this.params.type) || 'server'),
       typeOpts: typeOps,
       formItemLayout: {
         wrapperCol: {
@@ -66,6 +69,7 @@ export default {
     visible (v) {
       if (!v) { // 当关闭抽屉的时候重置type
         this.type = (this.params && this.params.type) || 'server'
+        this.componentType = (this.$store.getters.auth.info.is_domain && (this.params && this.params.all_usage_key === 'all.servers')) ? 'tenant' : ((this.params && this.params.type) || 'server')
       }
     },
   },

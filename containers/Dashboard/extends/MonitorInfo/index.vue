@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="dashboard-card-body align-items-center justify-content-center h-100 w-100">
-        <dashboard-cards ref="dashboardCard" card_style="h-100 w-100" :chartHeigth="'100%'" :panelId="fd.panelId" :selectable="false" :readOnly="true" :updated_at="updatedAt" :id="fd.dashboardId" :extraParams="extraParams"  />
+        <dashboard-cards ref="dashboardCard" card_style="h-100 w-100 border-0" :chartHeigth="'100%'" @chose_panels="chose_panels" :panelId="fd.panelId" :readOnly="true" :selectable="false" :updated_at="updatedAt" :id="fd.dashboardId" :extraParams="extraParams"  />
       </div>
     </div>
     <base-drawer :visible.sync="visible" :title="$t('dashboard.text_5')" @ok="handleSubmit">
@@ -25,14 +25,13 @@ import debounce from 'lodash/debounce'
 import { addListener, removeListener } from 'resize-detector'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import MonitorForm from './components/form'
-// import DashboardCard from '@Monitor/components/MonitorCard/DashboardCard'
 import DashboardCards from '@Monitor/components/MonitorCard/DashboardCards'
+
 export default {
   name: 'MonitorInfo',
   components: {
     BaseDrawer,
     MonitorForm,
-    // DashboardCard,
     DashboardCards,
   },
   props: {
@@ -40,10 +39,15 @@ export default {
       type: Object,
       required: true,
     },
-    params: Object,
+    params: {
+      type: Object,
+      default () {
+        return {}
+      },
+    },
   },
   data () {
-    const initNameValue = (this.params && this.params.name) || this.$t('dashboard.monitor')
+    const name = (this.params && this.params.name) || this.$t('dashboard.monitor')
     const dashboardId = (this.params && this.params.dashboardId) || ''
     const panelId = (this.params && this.params.panelId) || ''
     const panelName = (this.params && this.params.name) || ''
@@ -51,6 +55,7 @@ export default {
       uiStatus: false,
       seriesDescription: [],
       time: '1h',
+      dashboardMan: new this.$Manager('alertdashboards', 'v1'),
       updatedAt: '',
       data: [],
       panel: {},
@@ -59,7 +64,7 @@ export default {
       scope: this.$store.getters.scope,
       dashboards: [],
       fd: {
-        name: initNameValue,
+        name: name,
         dashboardId: dashboardId,
         panelId: panelId,
         panelName: panelName,
@@ -88,6 +93,14 @@ export default {
       return {}
     },
   },
+  watch: {
+    params: {
+      deep: true,
+      immediate: true,
+      async handler (val) {
+      },
+    },
+  },
   mounted () {
     this.init()
   },
@@ -111,109 +124,19 @@ export default {
     destroy () {
       removeListener(this.$el, this.__resizeHandler)
     },
+    chose_panels (panel) {
+      console.log(panel, '=============')
+      this.fd.panelName = panel.name
+      this.fd.name = panel.name
+      this.fd.panelId = panel.id
+      this.fd.dashboardId = panel.dashboardId
+      this.$emit('update', this.options.i, this.fd)
+    },
     handleEdit () {
       this.visible = true
       this.$nextTick(() => {
         this.$refs.monitor_form.getData()
       })
-    },
-    genQueryData () {
-      const ret = {
-        metric_query: [
-          {
-            model: {
-              database: 'meter_db',
-              measurement: 'meter_res_usage',
-              select: [
-                [
-                  {
-                    type: 'field',
-                    params: ['cpuCount'],
-                  },
-                  {
-                    type: 'sum',
-                    params: [],
-                  },
-                ],
-                [
-                  {
-                    type: 'field',
-                    params: ['memCount'],
-                  },
-                  {
-                    type: 'sum',
-                    params: [],
-                  },
-                ],
-                [
-                  {
-                    type: 'field',
-                    params: ['diskCount'],
-                  },
-                  {
-                    type: 'sum',
-                    params: [],
-                  },
-                ],
-                [
-                  {
-                    type: 'field',
-                    params: ['gpuCount'],
-                  },
-                  {
-                    type: 'sum',
-                    params: [],
-                  },
-                ],
-                [
-                  {
-                    type: 'field',
-                    params: ['baremetalCount'],
-                  },
-                  {
-                    type: 'sum',
-                    params: [],
-                  },
-                ],
-              ],
-              // tags: [
-              //   {
-              //     key: 'res_type',
-              //     value: 'host',
-              //     operator: '=',
-              //   },
-              // ],
-              group_by: [
-                {
-                  type: 'time',
-                  params: ['24h', '-8h'],
-                },
-                {
-                  type: 'fill',
-                  params: ['none'],
-                },
-              ],
-            },
-          },
-        ],
-        scope: this.scope,
-        from: `${30 * 24}h`,
-        now: 'now - 24h',
-        unit: true,
-      }
-      if (this.isAdminMode) {
-        // return `SELECT sum(cpuCount) AS "cpuCount", sum(memCount) AS "memCount", sum(diskCount) AS "diskCount", sum(gpuCount) AS "gpuCount", sum(baremetalCount) AS "baremetalCount" FROM meter_res_usage where time > now() - ${30 * 24}h and time <= now() - 24h GROUP BY time(24h,-8h)`
-        return ret
-      }
-      ret.metric_query[0].model.tags = [
-        {
-          key: 'projectId',
-          value: this.userInfo.projectId,
-          operator: '=',
-        },
-      ]
-      // return `SELECT sum(cpuCount) AS "cpuCount", sum(memCount) AS "memCount", sum(diskCount) AS "diskCount", sum(gpuCount) AS "gpuCount", sum(baremetalCount) AS "baremetalCount" FROM meter_res_usage where time > now() - ${30 * 24}h and time <= now() - 24h AND projectId='${this.userInfo.projectId}' GROUP BY time(24h,-8h)`
-      return ret
     },
     async handleSubmit () {
       this.fd.panelName = this.$refs.monitor_form.$data.focusPanelName
@@ -231,15 +154,13 @@ export default {
   },
 }
 </script>
-<style scoped lang='less'>
-  .ant-row{
-    width: 100%;
-    height: 100%;
-    .ant-col{
-      height: 100%;
+<style lang='less'>
+  .dashboard-card-wrap{
+    .monitor-overview-card{
+      padding: 0!important;
     }
   }
-  .monitor-overview-card{
-    padding: 0;
+  .border-0{
+    border: 0 none!important;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative h-100 w-100 overflow-auto">
+  <div class="position-relative h-100 w-100 overflow-auto dashboard_box">
     <template v-for="(item, key) of data">
       <div
         v-if="item.layout.component !== 'Quota' || (['Quota', 'ProjectQuota'].includes(item.layout.component) && globalConfig.enable_quota_check)"
@@ -64,23 +64,35 @@ export default {
     },
     getItemStyles (layout) {
       const { x, y, w, h } = layout
-      const colWidth = 65
-      const rowHeight = 65
-      const margin = [10, 10]
-      const pos = {
-        left: Math.round(colWidth * x + (x + 1) * margin[0]),
-        top: Math.round(rowHeight * y + (y + 1) * margin[1]),
-        width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
-        height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]),
+      // const colWidth = 78
+      const rowHeight = 30
+      const margin = [15, 7.5]
+      // const pos = {
+      //   left: Math.round(colWidth * x + (x + 1) * margin[0]),
+      //   top: Math.round(rowHeight * y + (y + 1) * margin[1]),
+      //   width: w === Infinity ? w : Math.round(colWidth * w + Math.max(0, w - 1) * margin[0]),
+      //   height: h === Infinity ? h : Math.round(rowHeight * h + Math.max(0, h - 1) * margin[1]),
+      // }
+      return {
+        width: `calc(${w / 32 * 100}% - 15px)`,
+        margin: `0px ${margin[1]}px`,
+        height: `calc(${rowHeight * h + Math.max(0, h - 1) * margin[0]}px)`,
+        left: `calc(${(x / 32 * 100)}%`,
+        top: Math.round(rowHeight * y) + (y + 1) * margin[0] + 'px',
+        position: 'absolute',
       }
-      const style = this.setTransform(pos.top, pos.left, pos.width, pos.height)
-      return style
+      // const style = this.setTransform(pos.top, pos.left, pos.width, pos.height)
+      // return style
     },
   },
 }
 </script>
 
 <style lang="less" scoped>
+.dashboard_box{
+  min-width: 1008px;
+  background: rgb(245, 247, 254);
+}
 .item {
   border-radius: 5px;
   &:hover{

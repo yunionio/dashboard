@@ -1297,6 +1297,8 @@
     "all.buckets": "Number of Buckets",
     "all.cpu_commit_rate.running": "Server CPU oversold ratio in running state",
     "all.disks": "Total Disk Capacity",
+    "all.disks.ssd": "Total SSD_Disk Capacity",
+    "all.disks.hdd": "Total HDD_Disk Capacity",
     "all.disks.mounted": "Total capacity of mounted disks",
     "all.disks.unmounted": "Total capacity of unmounted disks",
     "all.disks.unready": "Disk capacity in abnormal state",
@@ -2422,6 +2424,7 @@
     "image": "Images",
     "infos": "System",
     "instancegroup": "Anti-affinity Group",
+    "vip": "VIP",
     "isolated_device": "GPU transparent transmission device",
     "keypair": "Key",
     "kubecluster": "K8S-Cluster",
@@ -2603,7 +2606,10 @@
     "compute": "Compute",
     "es": "ElasticSearch",
     "app": "Web App",
-    "command_log": "Command Logs"
+    "command_log": "Command Logs",
+    "important": "Important",
+    "normal": "Normal",
+    "fatal": "Fatal"
   },
   "res": {
     "role": "Role",
@@ -5144,5 +5150,6 @@
   "common.view_logs": "View logs",
   "common.password_no_equal": "Old and new passwords cannot be consistent",
   "common.command": "Command",
-  "common.login_user": "Login User"
+  "common.login_user": "Login User",
+  "common_744": "图标"
 }

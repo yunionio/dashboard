@@ -1311,6 +1311,8 @@
     "all.buckets": "存储桶数量",
     "all.cpu_commit_rate.running": "运行状态的虚拟机CPU超售比",
     "all.disks": "磁盘总容量",
+    "all.disks.ssd": "SSD磁盘总容量",
+    "all.disks.hdd": "HDD磁盘总容量",
     "all.disks.mounted": "已挂载磁盘总容量",
     "all.disks.unmounted": "未挂载的磁盘总容量",
     "all.disks.unready": "异常状态的磁盘容量",
@@ -2436,6 +2438,7 @@
     "image": "系统镜像",
     "infos": "系统",
     "instancegroup": "反亲和组",
+    "vip": "VIP",
     "isolated_device": "GPU透传设备",
     "keypair": "密钥",
     "kubecluster": "K8S-集群",
@@ -2619,7 +2622,10 @@
     "es": "ElasticSearch",
     "app": "应用程序服务",
     "command_log": "命令记录",
-    "ipv6_gateway": "IPv6网关"
+    "ipv6_gateway": "IPv6网关",
+    "important": "重要",
+    "normal": "正常",
+    "fatal": "致命"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -5160,5 +5166,6 @@
   "common.view_logs": "查看日志",
   "common.password_no_equal": "新旧密码不能一致",
   "common.command": "命令",
-  "common.login_user": "登录用户"
+  "common.login_user": "登录用户",
+  "common_744": "图标"
 }

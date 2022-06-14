@@ -17,6 +17,7 @@
 <script>
 import DashboardCard from '../DashboardCard'
 import filterBar from './filterbar'
+import { uuid } from '@/utils/utils'
 
 export default {
   name: 'DashboardCards',
@@ -92,11 +93,14 @@ export default {
     },
   },
   watch: {
-    id () {
-      this.fetchCharts()
+    id: {
+      deep: true,
+      handler () {
+        this.fetchCharts()
+      },
     },
   },
-  created () {
+  mounted () {
     this.fetchCharts()
   },
   methods: {
@@ -112,12 +116,21 @@ export default {
     handleDelete () {
       this.fetchCharts()
     },
+    getFirstDashborad (data) {
+      for (let i = 0; i < data.length; i++) {
+        const element = data[i]
+        if (element.alert_panel_details && element.alert_panel_details.length > 0) {
+          return element
+        }
+      }
+    },
     async fetchCharts () {
       this.loading = true
       try {
         const params = {
           scope: this.scope,
           details: true,
+          $t: uuid(),
         }
         if (this.id) {
           const { data } = await this.dashboardMan.get({ id: this.id, params })
@@ -126,9 +139,10 @@ export default {
           this.$emit('chose_first_panel', first && first.length > 0 ? first[0].panel_id : '')
         } else {
           const { data: { data } } = await this.dashboardMan.list({ params })
-          this.dashboard = data && data.length > 0 ? data[0] : {}
-          const first = this.dashboard.alert_panel_details ? this.dashboard.alert_panel_details : []
-          this.$emit('chose_first_panel', { panel: first && first.length > 0 ? first[0] : '', dashboardId: this.dashboard })
+          this.dashboard = this.getFirstDashborad(data)
+          const first = this.dashboard.alert_panel_details
+          this.$emit('chose_first_panel', { panel: first[0], dashboardId: this.dashboard })
+          this.$emit('chose_panels', { id: first[0].panel_id, name: first[0].panel_name, dashboardId: this.dashboard.id })
         }
         this.updatedAt = new Date().toISOString()
         this.loading = false

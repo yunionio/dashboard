@@ -43,6 +43,10 @@
             <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
             <div class="label-unit">{{allUsage.unit}}</div>
           </div>
+          <div v-if="form.fd.all_usage_key === 'hosts.cpu.virtual' && form.fd.usage_key === 'all.servers.cpu'" class="d-flex bottomborder-box align-items-end">
+            <div class="label-unit">{{ $t('dashboard.text_194') }}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
+          </div>
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@
       </div>
       <div class="flex-fill position-relative">
         <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; background: #F5F7FE">
-          <dashboard-content ref="content" :data="dashboard" class="mt-2" />
+          <dashboard-content ref="content" :data="dashboard" style="padding: 0 7.5px" />
         </div>
       </div>
     </template>
@@ -127,7 +127,7 @@ export default {
       // 按scope维度记录选择的面板信息
       storage.set(this.optionStorageKey, option)
       this.dashboard = await this.getDashboard()
-      console.log(this.dashboard, '------------------')
+      console.log(this.dashboard, '---=-=-=-=-=-=---')
     },
     // 获取自定义面板配置
     async getCustomOptions () {

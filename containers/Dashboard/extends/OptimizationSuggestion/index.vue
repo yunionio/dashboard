@@ -5,7 +5,9 @@
         <div class="dashboard-card-header-left">{{ form.fd.name }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right">
           <slot name="actions" :handle-edit="handleEdit" />
-          <!-- <router-link v-if="!edit" to="/notice" class="ml-2">{{$t('dashboard.more')}}</router-link> -->
+          <a class="ml-2" v-if="!edit" @click="goPage">
+            <icon type="arrow-right" style="font-size:18px" />
+          </a>
         </div>
       </div>
       <div class="dashboard-card-body flex-column justify-content-center">
@@ -13,43 +15,43 @@
           <div class="flex-fill position-relative">
             <div class="dashboard-fco-wrap optimization-suggestion-row">
               <div class="optimization-suggestion p-2">
-                <div class="optimization-suggestion-title bold-weith blue-color">{{suggestionData.host_down_num}}</div>
-                <div class="optimization-suggestion-value mt-2">{{$t('dashboard.optimization_suggestion_host_down')}}
-                  <icon type="down" class="dashboard-icon" />
-                </div>
+                <div class="optimization-suggestion-title bold-weith blue-color">{{suggestionData.host_up_num}}<icon type="icon_ascent" class="dashboard-icon bg-blue-color" /></div>
+                <div class="optimization-suggestion-value mt-2">{{$t('dashboard.optimization_suggestion_host_up')}}</div>
                 <div class="optimization-suggestion-value mt-2">
-                  <span class="optimization-suggestion-tips ml-0">{{$t('dashboard.text_190')}}&lt;100%</span>
-                  <span class="optimization-suggestion-tips">{{$t('dashboard.text_191')}}&lt;100%</span>
+                  <template>
+                    <span v-if="rules&&rules.UpsizeServer&&rules.UpsizeServer[0]&&rules.UpsizeServer[0].eval_type!=='within_range'" class="optimization-suggestion-tips mr-12">{{$t('dashboard.text_191')}}{{rules.UpsizeServer[0].eval_type}}{{rules.UpsizeServer[0].threshold}}%</span>
+                    <span v-else class="optimization-suggestion-tips mr-12">{{rules.UpsizeServer[0].within_range[0]}}%&gt;{{$t('dashboard.text_191')}}&lt;{{rules.UpsizeServer[0].within_range[1]}}%</span>
+                  </template>
+                  <template>
+                    <span class="optimization-suggestion-tips mr-12">{{$t('dashboard.text_192')}}&gt;85%</span>
+                  </template>
+                </div>
+              </div>
+              <div class="optimization-suggestion p-2">
+                <div class="optimization-suggestion-title bold-weith blue-color">{{suggestionData.cloudhost_up_num}}<icon type="icon_ascent" class="dashboard-icon bg-blue-color" /></div>
+                <div class="optimization-suggestion-value mt-2">{{$t('dashboard.optimization_suggestion_cloudhost_up')}}</div>
+                <div class="optimization-suggestion-value mt-2">
+                  <span class="optimization-suggestion-tips mr-12">{{$t('dashboard.text_198')}}&gt;70%</span>
+                </div>
+              </div>
+              <div class="optimization-suggestion p-2">
+                <div class="optimization-suggestion-title bold-weith green-color">{{suggestionData.host_down_num}}<icon type="icon_decline" class="dashboard-icon bg-green-color" /></div>
+                <div class="optimization-suggestion-value mt-2">{{$t('dashboard.optimization_suggestion_host_down')}}</div>
+                <div class="optimization-suggestion-value mt-2">
+                  <template>
+                    <span v-if="rules&&rules.DownsizeServer&&rules.DownsizeServer[0]&&rules.DownsizeServer[0].eval_type!=='within_range'" class="optimization-suggestion-tips mr-12">{{$t('dashboard.text_191')}}{{rules.DownsizeServer[0].eval_type}}{{rules.DownsizeServer[0].threshold}}%</span>
+                    <span v-else class="optimization-suggestion-tips mr-12">{{rules.DownsizeServer[0].within_range[0]}}%&gt;{{$t('dashboard.text_191')}}&lt;{{rules.DownsizeServer[0].within_range[1]}}%</span>
+                  </template>
+                  <template>
+                    <span class="optimization-suggestion-tips mr-12">{{$t('dashboard.text_192')}}&lt;20%</span>
+                  </template>
                 </div>
               </div>
               <div class="optimization-suggestion p-2 ">
-                <div class="optimization-suggestion-title bold-weith blue-color">{{suggestionData.cloudhost_down_num}}</div>
-                <div class="optimization-suggestion-value mt-2">{{$t('dashboard.optimization_suggestion_cloudhost_down')}}
-                  <icon type="down" class="dashboard-icon" />
-                </div>
+                <div class="optimization-suggestion-title bold-weith green-color">{{suggestionData.cloudhost_down_num}}<icon type="icon_decline" class="dashboard-icon bg-green-color" /></div>
+                <div class="optimization-suggestion-value mt-2">{{$t('dashboard.optimization_suggestion_cloudhost_down')}}</div>
                 <div class="optimization-suggestion-value mt-2">
-                  <span class="optimization-suggestion-tips ml-0">{{$t('dashboard.text_190')}}&lt;30%</span>
-                  <span class="optimization-suggestion-tips">{{$t('dashboard.text_191')}}&lt;20%</span>
-                </div>
-              </div>
-              <div class="optimization-suggestion p-2">
-                <div class="optimization-suggestion-title bold-weith blue-color">{{suggestionData.host_up_num}}</div>
-                <div class="optimization-suggestion-value mt-2">{{$t('dashboard.optimization_suggestion_host_up')}}
-                  <icon type="up" class="dashboard-icon" />
-                </div>
-                <div class="optimization-suggestion-value mt-2">
-                  <span class="optimization-suggestion-tips ml-0">{{$t('dashboard.text_190')}}&gt;85%</span>
-                  <span class="optimization-suggestion-tips">{{$t('dashboard.text_191')}}&gt;85%</span>
-                </div>
-              </div>
-              <div class="optimization-suggestion p-2">
-                <div class="optimization-suggestion-title bold-weith blue-color">{{suggestionData.cloudhost_up_num}}</div>
-                <div class="optimization-suggestion-value mt-2">{{$t('dashboard.optimization_suggestion_cloudhost_up')}}
-                  <icon type="up" class="dashboard-icon" />
-                </div>
-                <div class="optimization-suggestion-value mt-2">
-                  <span class="optimization-suggestion-tips ml-0">{{$t('dashboard.text_190')}}&gt;70%</span>
-                  <span class="optimization-suggestion-tips">{{$t('dashboard.text_191')}}&gt;70%</span>
+                  <span class="optimization-suggestion-tips mr-12">{{$t('dashboard.text_198')}}&lt;30%</span>
                 </div>
               </div>
             </div>
@@ -79,6 +81,7 @@ import { mapGetters } from 'vuex'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { resolveValueChangeField } from '@/utils/common/ant'
 // import { uuid } from '@/utils/utils'
+import { load } from '@Dashboard/utils/cache'
 
 export default {
   name: 'OptimizationSuggestion',
@@ -100,11 +103,12 @@ export default {
       visible: false,
       loading: false,
       suggestionData: {
-        host_down_num: 1,
-        host_up_num: 2,
-        cloudhost_down_num: 1,
+        host_down_num: 0,
+        host_up_num: 0,
+        cloudhost_down_num: 0,
         cloudhost_up_num: 0,
       },
+      rules: {},
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -161,18 +165,83 @@ export default {
     this.fetchData()
   },
   methods: {
+    goPage () {
+      this.$router.push('./suggestsysalert')
+    },
     refresh () {
       return this.fetchData()
     },
-    async fetchData () {
-      this.loading = true
-      try {
+    async getRule () {
+      const params = {
+        scope: this.$store.getters.scope,
+        show_fail_reason: true,
+        details: true,
+      }
+      const data = await load({
+        res: 'suggestsysrules',
+        actionArgs: {
+          url: '/v1/suggestsysrules',
+          method: 'GET',
+          params,
+        },
+        useManager: false,
+        resPath: 'data',
+      })
+      if (data && data.data && data.data.length > 0) {
+        const rulesName = ['UpsizeServer', 'DownsizeServer']
+        for (let i = 0; i < data.data.length; i++) {
+          const element = data.data[i]
+          if (rulesName.indexOf(element.name) > -1) {
+            this.rules[element.name] = element.setting.scale_rule
+          }
+        }
+      } else {
+        this.rules = {
+          UpsizeServer: {},
+          DownsizeServer: {},
+        }
+      }
+    },
+    async getData () {
+      const params = {
+        scope: this.$store.getters.scope,
+        show_fail_reason: true,
+        rule_scope: 'cost',
+        exchanged_currency: '',
+        details: true,
+        limit: 10,
+      }
+      const data = await load({
+        res: 'suggestsysalerts',
+        actionArgs: {
+          url: '/v1/suggestsysalerts',
+          method: 'GET',
+          params,
+        },
+        useManager: false,
+        resPath: 'data',
+      })
+      if (data && data.data && data.data.length > 0) {
         this.suggestionData = {
-          host_down_num: 1,
-          host_up_num: 2,
-          cloudhost_down_num: 1,
+          host_down_num: data.data[0].rule_total.down_total,
+          host_up_num: data.data[0].rule_total.rise_total,
+          cloudhost_down_num: 0,
           cloudhost_up_num: 0,
         }
+      } else {
+        this.suggestionData = {
+          host_down_num: 0,
+          host_up_num: 0,
+          cloudhost_down_num: 0,
+          cloudhost_up_num: 0,
+        }
+      }
+    },
+    fetchData () {
+      this.loading = true
+      try {
+        this.getData()
+        this.getRule()
       } finally {
         this.loading = false
       }
@@ -203,28 +272,47 @@ export default {
   width: 50%;
   height: 50%;
   .optimization-suggestion-value{
-    font-size: 12px;
+    font-size: 14px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.85);
   }
   .optimization-suggestion-title{
     font-size: 18px;
   }
   .green-color{
-    color: #52c41a;
+    color: #5AD8A6;
   }
   .blue-color{
-    color: #118dee;
+    color: #3AA0FE;
   }
   .bold-weith{
     font-weight: bold;
   }
   .optimization-suggestion-tips{
-    background: #eee9e9;
-    color: #9d9c9c;
+    background: #fff;
+    color: #A0A0A0;
     display: inline-block;
-    margin: 0 3px;
-    padding: 0 4px;
-    border: 1px solid #bdbdbd;
+    // border: 1px solid #bdbdbd;
     border-radius: 2px;
+    font-weight: normal;
+    font-size: 12px;
+  }
+  .mr-12{
+    margin-right: 12px;
+  }
+  .dashboard-icon{
+    vertical-align: text-top;
+    padding: 3px;
+    margin-left: 7px;
+    border-radius: 50%;
+    font-size: 12px;
+  }
+  .bg-blue-color{
+    background: rgba(58, 160, 254, 0.17);
+  }
+  .bg-green-color{
+    background: rgba(90, 216, 166, 0.17);
   }
 }
 </style>

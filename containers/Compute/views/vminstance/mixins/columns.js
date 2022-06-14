@@ -246,6 +246,46 @@ export default {
         },
       },
       {
+        field: 'vcpu_count_used',
+        title: 'CPU',
+        sortable: true,
+        minWidth: 150,
+        slots: {
+          default: ({ row }) => {
+            if (row.vcpu_count) {
+              return [<a-progress percent={ row.vcpu_count } size="small" />]
+            }
+            return []
+          },
+        },
+      },
+      {
+        field: 'vmem_size_used',
+        title: i18nLocale.t('table.title.vmem_size'),
+        sortable: true,
+        minWidth: 150,
+        slots: {
+          default: ({ row }) => {
+            if (row.vmem_size) {
+              return [<a-progress percent={ row.vmem_size } size="small" />]
+            }
+            return []
+          },
+        },
+      },
+      {
+        field: 'disk_used',
+        title: i18nLocale.t('table.title.disk'),
+        sortable: true,
+        minWidth: 150,
+        slots: {
+          default: ({ row }) => {
+            if (this.isPreLoad && !row.disk) return [<data-loading />]
+            return [<a-progress percent={ row.disk } size="small" />]
+          },
+        },
+      },
+      {
         field: 'password',
         title: i18nLocale.t('table.title.init_keypair'),
         minWidth: 50,
@@ -309,6 +349,7 @@ export default {
       getRegionTableColumn(),
       getTimeTableColumn(),
     ]
+    console.log(columns, '========')
     if (this.hideColumnFields) {
       this.columns = columns.filter((column) => { return !this.hideColumnFields.includes(column.field) })
     } else {

@@ -3,7 +3,7 @@
     <template #header>
       <div v-if="!readOnly">
         <a-row type="flex">
-          <a-col :span="23">{{ panel.panel_name || chart.metric.label }}</a-col>
+          <a-col :span="23">{{ panel.panel_name || (chart.metric && chart.metric.label) }}</a-col>
           <a-col>
             <a-dropdown style="float: right" :trigger="['click']" placement="bottomRight">
               <a class="ant-dropdown-link font-weight-bold h-100 d-block action-btn" @click="e => e.preventDefault()">
@@ -163,8 +163,11 @@ export default {
     },
   },
   watch: {
-    updated_at () {
-      this.fetchChart()
+    updated_at: {
+      deep: true,
+      handler () {
+        this.fetchChart()
+      },
     },
   },
   created () {
@@ -246,13 +249,13 @@ export default {
     },
     async fetchData (metric_query) {
       try {
-        const data = this.chartQueryData
+        const data = _.cloneDeep(this.chartQueryData)
         if (!data) {
           this.resizeStatus = false
           return
         }
         this.resizeStatus = true
-        data.signature = getSignature(data)
+        data.signature = getSignature(this.chartQueryData)
         const { data: { series = [] } } = await new this.$Manager('unifiedmonitors', 'v1').performAction({ id: 'query', action: '', data, params: { $t: getRequestT() } })
         return series
       } catch (error) {

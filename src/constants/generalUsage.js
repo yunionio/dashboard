@@ -212,6 +212,46 @@ export const usageMap = {
     },
     unit: 'M',
   },
+  diskAttach_ssd: {
+    field: {
+      used: {
+        system: 'all.disks.ssd.mounted',
+        domain: 'domain.disks.ssd.mounted',
+        project: 'disks.ssd.mounted',
+      },
+      remain: {
+        system: 'all.disks.ssd.unmounted',
+        domain: 'domain.disks.ssd.unmounted',
+        project: 'disks.unmounted',
+      },
+      total: {
+        system: 'all.disks.ssd',
+        domain: 'domain.disks.ssd',
+        project: 'disks.ssd',
+      },
+    },
+    unit: 'M',
+  },
+  diskAttach_hdd: {
+    field: {
+      used: {
+        system: 'all.disks.hdd.mounted',
+        domain: 'domain.disks.hdd.mounted',
+        project: 'disks.hdd.mounted',
+      },
+      remain: {
+        system: 'all.disks.hdd.unmounted',
+        domain: 'domain.disks.hdd.unmounted',
+        project: 'disks.hdd.unmounted',
+      },
+      total: {
+        system: 'all.disks.hdd',
+        domain: 'domain.disks.hdd',
+        project: 'disks.hdd',
+      },
+    },
+    unit: 'M',
+  },
   image: {
     field: {
       img: {
