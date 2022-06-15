@@ -126,12 +126,7 @@ export default {
       this.currentOption = option
       // 按scope维度记录选择的面板信息
       storage.set(this.optionStorageKey, option)
-      this.dashboard = []
-      if (this.isDefault) {
-        this.dashboard = await this.initWidgetParamter()
-      } else {
-        this.dashboard = await this.getDashboard()
-      }
+      this.dashboard = await this.getDashboard()
     },
     // 获取自定义面板配置
     async getCustomOptions () {
@@ -163,7 +158,8 @@ export default {
       } catch (error) {
         if (error.isAxiosError && error.response && error.response.status === 404 && this.isDefault) {
           // not found system default dashboard, reinit one
-          const config = this.isPrivate ? defaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id]
+          const shareConfig = await this.initWidgetParamter()
+          const config = this.isPrivate ? (shareConfig || defaultConfig[this.scope][id]) : publicDefaultConfig[this.scope][id]
           if (!this.globalConfig.enable_quota_check) {
             // remove quota widgets
             for (var i = 0; i < config.length; i++) {

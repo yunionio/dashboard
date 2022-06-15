@@ -205,6 +205,17 @@ export default {
         throw error
       }
     },
+    async fetchDashboardWidgetParamter () {
+      try {
+        const response = await this.$store.dispatch('widgetSetting/getFetchWidgetSetting')
+
+        if (response?.value && response.value[`dashboard-${this.scope}`]) {
+          this.setData(response.value[`dashboard-${this.scope}`])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async fetchDashboard () {
       try {
         const response = await this.pm.get({ id: this.id })
@@ -212,6 +223,7 @@ export default {
           this.setData(response.data.value)
         }
       } catch (error) {
+        await this.fetchDashboardWidgetParamter()
         throw error
       }
     },
