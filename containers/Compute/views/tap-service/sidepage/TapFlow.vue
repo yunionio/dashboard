@@ -214,10 +214,10 @@ export default {
           },
         }),
         getEnabledTableColumn(),
-        {
-          title: this.$t('compute.tap'),
-          field: 'tap',
-        },
+        // {
+        //   title: this.$t('compute.tap'),
+        //   field: 'tap',
+        // },
         {
           title: this.$t('compute.text_175'),
           field: 'type',
