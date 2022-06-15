@@ -45,7 +45,7 @@
           </div>
           <div v-if="form.fd.all_usage_key === 'hosts.cpu.virtual' && form.fd.usage_key === 'all.servers.cpu'" class="d-flex bottomborder-box align-items-end">
             <div class="label-unit">{{ $t('dashboard.text_194') }}</div>
-            <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
+            <div class="flex-number mr-2 ml-1 text-right">{{overbookingRatio}}</div>
           </div>
         </div>
       </div>
@@ -208,6 +208,9 @@ export default {
     },
     allUsageNumber () {
       return (this.data && this.data[this.form.fd.all_usage_key]) || 0
+    },
+    overbookingRatio () {
+      return (this.data && (this.data['hosts.cpu'] / this.data['all.servers.cpu']).toFixed(2)) || 0
     },
     usageNumber () {
       return (this.data && this.data[this.form.fd.usage_key]) || 0
