@@ -28,7 +28,7 @@
               :select-props="{ placeholder: $t('compute.text_148', [$t('compute.target_server')]) }"
               @update:item="serverChange" />
         </a-form-item>
-        <a-form-item :label="$t('compute.target_mac')">
+        <a-form-item v-if="serverType === 'host'" :label="$t('compute.target_mac')">
           <base-select
             v-decorator="decorators.mac_addr"
             :options="macAddrs"
