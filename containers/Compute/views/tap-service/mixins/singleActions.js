@@ -9,27 +9,12 @@ export default {
   created () {
     this.singleActions = [
       {
-        label: i18n.t('compute.perform_delete'),
-        permission: 'tapservices_delete',
+        label: i18n.t('compute.add_tap_flow'),
+        permission: 'tapflows_create',
         action: (obj) => {
-          this.createDialog('DeleteResDialog', {
-            vm: this,
-            data: [obj],
-            columns: this.columns,
-            title: i18n.t('compute.perform_delete'),
-            name: this.$t('dictionary.tap_service'),
-            onManager: this.onManager,
+          this.createDialog('TapFlowCreateDialog', {
+            tapService: obj,
           })
-        },
-        meta: (obj) => {
-          const ret = {
-            validate: true,
-          }
-          if (obj.flow_count) {
-            ret.validate = false
-            ret.tooltip = i18n.t('compute.tap_service_delete_tip')
-          }
-          return ret
         },
       },
       {
@@ -54,6 +39,30 @@ export default {
               ],
               resourceName: this.$t('dictionary.tap_service'),
             }),
+            {
+              label: i18n.t('compute.perform_delete'),
+              permission: 'tapservices_delete',
+              action: () => {
+                this.createDialog('DeleteResDialog', {
+                  vm: this,
+                  data: [obj],
+                  columns: this.columns,
+                  title: i18n.t('compute.perform_delete'),
+                  name: this.$t('dictionary.tap_service'),
+                  onManager: this.onManager,
+                })
+              },
+              meta: () => {
+                const ret = {
+                  validate: true,
+                }
+                if (obj.flow_count) {
+                  ret.validate = false
+                  ret.tooltip = i18n.t('compute.tap_service_delete_tip')
+                }
+                return ret
+              },
+            },
           ]
         },
       },

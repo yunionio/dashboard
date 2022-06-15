@@ -1595,5 +1595,5 @@
   "compute.vnic": "vnic",
   "compute.vm_mac": "Vm MAC",
   "compute.tap_service_delete_tip": "The image destination of an existing image source cannot be deleted",
-  "compute.num_queues": "Num Queues"
+  "compute.add_tap_flow": "Add Tap Flow"
 }
