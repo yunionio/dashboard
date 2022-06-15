@@ -269,6 +269,9 @@ export default {
         {
           title: this.$t('compute.tap_direction'),
           field: 'direction',
+          formatter: ({ row }) => {
+            return this.$te(`compute.direction_${row.direction.toLowerCase()}`) ? this.$t(`compute.direction_${row.direction.toLowerCase()}`) : row.direction
+          },
         },
         getTimeTableColumn(),
       ],
