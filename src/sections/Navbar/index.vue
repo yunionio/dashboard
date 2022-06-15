@@ -97,8 +97,8 @@
           <a-tooltip :title="$t('navbar.view.switch')" placement="right">
             <icon type="navbar-view-switch" style="font-size: 18px;" />
           </a-tooltip>
-          <span class="ml-1 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
-          <icon type="caret-down" style="font-size: 18px; line-height: normal;" />
+          <span class="ml-1 current-view-label text-truncate" :title="viewLabel">{{ viewLabel }}</span>
+          <icon type="caret-down" style="font-size: 18px;" />
         </div>
       </a-popover>
     </div>
