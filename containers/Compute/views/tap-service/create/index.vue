@@ -130,7 +130,6 @@ export default {
     },
     macAddrs () {
       const { nic_info = [] } = this.currentHost
-      console.log(nic_info)
       return nic_info.filter(item => !item.wire_id)
     },
   },
@@ -170,7 +169,6 @@ export default {
       const manager = new this.$Manager('tap_services', 'v1')
       try {
         const values = await this.form.fc.validateFields()
-        console.log(values)
         this.loading = true
         await manager.create({
           data: values,
