@@ -1526,5 +1526,6 @@
   "compute.transfer_mutiple_dialog_alert": "There are {0} VMs already on the host, this migration will fail, but it will not affect other VMs migrations!",
   "compute.vpc_extrnal_id": "VPC Extrnal ID",
   "compute.mainternance_in_disabled_tip": "The number of virtual machines on the host is 0",
-  "compute.num_queues": "Num Queues"
+  "compute.num_queues": "Num Queues",
+  "compute.update_network.alert": "Take effect after restarting the virtual machine"
 }

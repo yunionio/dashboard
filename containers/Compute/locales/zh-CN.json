@@ -1526,5 +1526,6 @@
   "compute.transfer_mutiple_dialog_alert": "有{0}个虚拟机已经在该宿主机上，本次迁移会失败，但是不影响其他虚拟机迁移！",
   "compute.vpc_extrnal_id": "VPC云上ID",
   "compute.mainternance_in_disabled_tip": "宿主机上的虚拟机数量为0",
-  "compute.num_queues": "队列数量"
+  "compute.num_queues": "队列数量",
+  "compute.update_network.alert": "重启虚拟机后生效"
 }
