@@ -1,5 +1,8 @@
 <template>
   <div>
+    <a-button @click="handleRefresh" class="action-btn">
+      <icon type="refresh" />
+    </a-button>
     <loading-block v-if="loading" />
     <!-- <detail
       v-else
@@ -133,6 +136,9 @@ export default {
         this.loading = false
       }
     },
+    handleRefresh () {
+      this.fetchData()
+    },
   },
 }
 </script>
@@ -144,6 +150,13 @@ export default {
   }
   .detail-item-value {
     margin-left: 220px;
+  }
+}
+.action-btn {
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.65);
+  &:hover {
+    color: #40a9ff;
   }
 }
 </style>
