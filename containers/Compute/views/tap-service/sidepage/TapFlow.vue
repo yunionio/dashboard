@@ -4,7 +4,6 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
-    :export-data-options="exportDataOptions"
     :placeholder="$t('common.default_search_key', [$t('compute.text_228')])" />
 </template>
 
@@ -18,7 +17,8 @@ import {
 } from '@/utils/common/tableColumn'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getTenantFilter, getDomainFilter, getRegionFilter, getBrandFilter, getAccountFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 
 export default {
   name: 'TapFlowList',
@@ -42,27 +42,77 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
-          id: {
-            label: 'ID',
-          },
+          // id: {
+          //   label: 'ID',
+          // },
           description: getDescriptionFilter(),
-          ip: {
-            label: this.$t('compute.text_985'),
-          },
-          ports: {
-            label: this.$t('compute.text_349'),
-          },
-          region: getRegionFilter(),
-          cloudaccount: getAccountFilter(),
-          brand: getBrandFilter('brands', ['VMware', 'OneCloud']),
-          projects: getTenantFilter(),
-          project_domains: getDomainFilter(),
+          // ip: {
+          //   label: this.$t('compute.text_985'),
+          // },
+          // ports: {
+          //   label: this.$t('compute.text_349'),
+          // },
+          // region: getRegionFilter(),
+          // cloudaccount: getAccountFilter(),
+          // brand: getBrandFilter('brands', ['VMware', 'OneCloud']),
+          // projects: getTenantFilter(),
+          // project_domains: getDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
       exportDataOptions: [],
+      singleActions: [
+        {
+          label: this.$t('compute.perform_delete'),
+          permission: 'tapflows_delete',
+          action: (obj) => {
+            this.createDialog('DeleteResDialog', {
+              vm: this,
+              data: [obj],
+              columns: this.columns,
+              title: this.$t('compute.perform_delete'),
+              name: this.$t('dictionary.tap_flow'),
+              onManager: this.onManager,
+              success: () => {
+                this.$bus.$emit('tap-service-refresh')
+              },
+            })
+          },
+          meta: () => {
+            const ret = {
+              validate: true,
+            }
+            return ret
+          },
+        },
+        {
+          label: this.$t('cloudenv.text_311'),
+          actions: obj => {
+            return [
+              // 启用禁用
+              ...getEnabledSwitchActions(this, obj, ['tapflows_perform_enable', 'tapflows_perform_disable'], {
+                metas: [
+                  () => {
+                    const ret = {
+                      validate: !obj.enabled,
+                    }
+                    return ret
+                  },
+                  () => {
+                    const ret = {
+                      validate: obj.enabled,
+                    }
+                    return ret
+                  },
+                ],
+                resourceName: this.$t('dictionary.tap_flow'),
+              }),
+            ]
+          },
+        },
+      ],
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
@@ -70,11 +120,63 @@ export default {
           action: () => {
             this.createDialog('TapFlowCreateDialog', {
               tapService: this.data,
+              onManager: this.onManager,
             })
           },
           meta: () => ({
             buttonType: 'primary',
           }),
+        },
+        {
+          label: this.$t('common.batchAction'),
+          actions: () => {
+            return [
+              ...getEnabledSwitchActions(this, undefined, ['tapflows_perform_enable', 'tapflows_perform_disable'], {
+                metas: [
+                  () => {
+                    const isEnable = !!this.list.selectedItems.find(item => item.enabled)
+                    return {
+                      validate: this.list.selectedItems.length && !isEnable,
+                    }
+                  },
+                  () => {
+                    const isDisable = !!this.list.selectedItems.find(item => !item.enabled)
+                    return {
+                      validate: this.list.selectedItems.length && !isDisable,
+                    }
+                  },
+                ],
+                resourceName: this.$t('dictionary.tap_flow'),
+              }),
+              {
+                label: this.$t('cloudenv.text_108'),
+                permission: 'tapflows_delete',
+                action: () => {
+                  this.createDialog('DeleteResDialog', {
+                    vm: this,
+                    data: this.list.selectItems,
+                    columns: this.columns,
+                    title: this.$t('compute.perform_delete'),
+                    name: this.$t('dictionary.tap_flow'),
+                    onManager: this.onManager,
+                    success: () => {
+                      this.$bus.$emit('tap-service-refresh')
+                    },
+                  })
+                },
+                meta: () => {
+                  return {
+                    validate: true,
+                  }
+                },
+              },
+            ]
+          },
+          meta: () => {
+            return {
+              validate: this.list.selectedItems && this.list.selectedItems.length > 0,
+            }
+          },
         },
       ],
       columns: [
