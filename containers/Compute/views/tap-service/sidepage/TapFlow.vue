@@ -4,6 +4,7 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :export-data-options="exportDataOptions"
     :placeholder="$t('common.default_search_key', [$t('compute.text_228')])" />
 </template>
 
@@ -14,11 +15,13 @@ import {
   getNameDescriptionTableColumn,
   getTimeTableColumn,
   getEnabledTableColumn,
+  getCopyWithContentTableColumn,
 } from '@/utils/common/tableColumn'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getEnabledFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
+import validateForm from '@/utils/validate'
 
 export default {
   name: 'TapFlowList',
@@ -42,27 +45,46 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
-          // id: {
-          //   label: 'ID',
-          // },
           description: getDescriptionFilter(),
-          // ip: {
-          //   label: this.$t('compute.text_985'),
+          enabled: getEnabledFilter(),
+          // type: {
+          //   label: this.$t('compute.text_175'),
+          //   dropdown: true,
+          //   items: [
+          //     { label: this.$t('compute.vswitch'), key: 'vswitch' },
+          //     { label: this.$t('compute.vswitch'), key: 'vnic' },
+          //   ],
           // },
-          // ports: {
-          //   label: this.$t('compute.text_349'),
+          // source: getNameFilter({ field: 'source', label: this.$t('compute.source') }),
+          // mac_addr: getNameFilter({ field: 'mac_addr', label: this.$t('compute.source_mac') }),
+          // direction: {
+          //   label: this.$t('compute.tap_direction'),
+          //   dropdown: true,
+          //   items: [
+          //     { label: this.$t('compute.direction_in'), key: 'IN' },
+          //     { label: this.$t('compute.direction_out'), key: 'OUT' },
+          //     { label: this.$t('compute.direction_both'), key: 'BOTH' },
+          //   ],
           // },
-          // region: getRegionFilter(),
-          // cloudaccount: getAccountFilter(),
-          // brand: getBrandFilter('brands', ['VMware', 'OneCloud']),
-          // projects: getTenantFilter(),
-          // project_domains: getDomainFilter(),
           created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: [],
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('table.title.enable_status'), key: 'enabled' },
+          { label: this.$t('compute.text_175'), key: 'type' },
+          { label: this.$t('compute.source'), key: 'source' },
+          { label: this.$t('compute.source_ip'), key: 'source_ips' },
+          { label: this.$t('compute.source_mac'), key: 'mac_addr' },
+          { label: this.$t('compute.vlan_id'), key: 'vlan_id' },
+          { label: this.$t('compute.tap_direction'), key: 'direction' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
+        ],
+      },
       singleActions: [
         {
           label: this.$t('compute.perform_delete'),
@@ -154,7 +176,7 @@ export default {
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
-                    data: this.list.selectItems,
+                    data: this.list.selectedItems,
                     columns: this.columns,
                     title: this.$t('compute.perform_delete'),
                     name: this.$t('dictionary.tap_flow'),
@@ -185,19 +207,29 @@ export default {
           hideField: true,
           formRules: [
             { required: true, message: this.$t('compute.text_210') },
+            { validator: validateForm('serverCreateName') },
           ],
           slotCallback: row => {
             return row.name
           },
         }),
         getEnabledTableColumn(),
-        {
-          title: this.$t('compute.tap'),
-          field: 'tap',
-        },
+        // {
+        //   title: this.$t('compute.tap'),
+        //   field: 'tap',
+        // },
         {
           title: this.$t('compute.text_175'),
           field: 'type',
+          formatter: ({ row }) => {
+            if (row.type === 'vswitch') {
+              return this.$t('compute.vswitch')
+            }
+            if (row.type === 'vnic') {
+              return this.$t('compute.vnic')
+            }
+            return '-'
+          },
         },
         {
           title: this.$t('compute.source'),
@@ -206,14 +238,33 @@ export default {
         {
           title: this.$t('compute.source_ip'),
           field: 'source_ips',
+          slots: {
+            default: ({ row }) => {
+              const { source_ips = '' } = row
+              const ips = source_ips.split(',')
+              return ips.map(ip => {
+                return <list-body-cell-wrap copy field='ip' row={{ ip }} title={ip} />
+              })
+            },
+          },
         },
-        {
-          title: this.$t('compute.source_mac'),
+        getCopyWithContentTableColumn({
           field: 'mac_addr',
-        },
+          title: this.$t('compute.source_mac'),
+          hideField: true,
+          message: (row) => {
+            return row.mac_addr
+          },
+          slotCallback: (row) => {
+            return row.mac_addr
+          },
+        }),
         {
           title: this.$t('compute.vlan_id'),
           field: 'vlan_id',
+          formatter: ({ row }) => {
+            return row.vlan_id || '-'
+          },
         },
         {
           title: this.$t('compute.tap_direction'),

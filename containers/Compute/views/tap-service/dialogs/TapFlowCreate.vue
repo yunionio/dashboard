@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_1054')}}</div>
+    <div slot="header">{{$t('compute.text_709', [$t('dictionary.tap_flow')])}}</div>
     <div slot="body">
       <a-form
         v-bind="formItemLayout"
@@ -124,19 +124,44 @@ export default {
             ],
           },
         ],
-        description: ['description'],
-        direction: ['direction'],
+        description: [
+          'description',
+        ],
+        direction: [
+          'direction',
+          { initialValue: 'IN' },
+        ],
         type: [
           'type',
           {
             initialValue: 'vswitch',
           },
         ],
-        host_id: ['host_id'],
-        wire_id: ['wire_id'],
+        host_id: [
+          'host_id',
+          {
+            rules: [{ required: true, message: this.$t('compute.text_148', [this.$t('compute.text_111')]) }],
+          },
+        ],
+        wire_id: [
+          'wire_id',
+          {
+            rules: [{ required: true, message: this.$t('compute.text_148', [this.$t('compute.text_844')]) }],
+          },
+        ],
         vlan_id: ['vlan_id'],
-        guest_id: ['guest_id'],
-        mac_addr: ['mac_addr'],
+        guest_id: [
+          'guest_id',
+          {
+            rules: [{ required: true, message: this.$t('compute.text_148', [this.$t('compute.text_91')]) }],
+          },
+        ],
+        mac_addr: [
+          'mac_addr',
+          {
+            rules: [{ required: true, message: this.$t('compute.text_148', [this.$t('compute.vm_mac')]) }],
+          },
+        ],
       },
       formItemLayout: {
         wrapperCol: {

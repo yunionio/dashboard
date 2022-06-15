@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getEnabledTableColumn } from '@/utils/common/tableColumn'
+import { getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
   name: 'SkuDetail',
@@ -30,6 +30,15 @@ export default {
         {
           title: this.$t('compute.text_175'),
           field: 'type',
+          formatter: ({ row }) => {
+            if (row.type === 'host') {
+              return this.$t('compute.host_port')
+            }
+            if (row.type === 'guest') {
+              return this.$t('compute.guest_port')
+            }
+            return '-'
+          },
         },
         {
           title: this.$t('compute.target_name'),
@@ -38,11 +47,27 @@ export default {
         {
           title: this.$t('compute.target_ip'),
           field: 'target_ips',
+          slots: {
+            default: ({ row }) => {
+              const { target_ips = '' } = row
+              const ips = target_ips.split(',')
+              return ips.map(ip => {
+                return <list-body-cell-wrap copy field='ip' row={{ ip }} title={ip} />
+              })
+            },
+          },
         },
-        {
-          title: this.$t('compute.target_mac'),
+        getCopyWithContentTableColumn({
           field: 'mac_addr',
-        },
+          title: this.$t('compute.target_mac'),
+          hideField: true,
+          message: (row) => {
+            return row.mac_addr
+          },
+          slotCallback: (row) => {
+            return row.mac_addr
+          },
+        }),
         {
           title: this.$t('compute.flow_count'),
           field: 'flow_count',

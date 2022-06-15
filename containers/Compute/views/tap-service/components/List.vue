@@ -4,6 +4,7 @@
     :columns="columns"
     :group-actions="groupActions"
     :single-actions="singleActions"
+    :export-data-options="exportDataOptions"
     :placeholder="$t('common.default_search_key', [$t('compute.text_228')])" />
 </template>
 
@@ -14,7 +15,7 @@ import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
 import ListMixin from '@/mixins/list'
 import WindowsMixin from '@/mixins/windows'
-import { getNameFilter, getDescriptionFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
+import { getNameFilter, getDescriptionFilter, getEnabledFilter, getCreatedAtFilter } from '@/utils/common/tableFilter'
 import globalSearchMixins from '@/mixins/globalSearch'
 import { getEnabledSwitchActions } from '@/utils/common/tableActions'
 
@@ -39,27 +40,39 @@ export default {
         getParams: this.getParam,
         filterOptions: {
           name: getNameFilter(),
-          id: {
-            label: 'ID',
-          },
           description: getDescriptionFilter(),
-          // ip: {
-          //   label: this.$t('compute.text_985'),
+          enabled: getEnabledFilter(),
+          // type: {
+          //   label: this.$t('compute.text_175'),
+          //   dropdown: true,
+          //   items: [
+          //     { label: this.$t('compute.host_port'), key: 'host' },
+          //     { label: this.$t('compute.guest_port'), key: 'guest' },
+          //   ],
           // },
-          // ports: {
-          //   label: this.$t('compute.text_349'),
+          // target: getNameFilter({ field: 'target', label: this.$t('compute.target_name') }),
+          // target_ips: {
+          //   label: this.$t('compute.target_ip'),
           // },
-          // region: getRegionFilter(),
-          // cloudaccount: getAccountFilter(),
-          // brand: getBrandFilter('brands', ['VMware', 'OneCloud']),
-          // projects: getTenantFilter(),
-          // project_domains: getDomainFilter(),
+          mac_addr: getNameFilter({ field: 'mac_addr', label: this.$t('compute.target_mac') }),
           created_at: getCreatedAtFilter(),
         },
         responseData: this.responseData,
         hiddenColumns: ['created_at'],
       }),
-      exportDataOptions: [],
+      exportDataOptions: {
+        items: [
+          { label: 'ID', key: 'id' },
+          { label: this.$t('cloudenv.text_95'), key: 'name' },
+          { label: this.$t('table.title.enable_status'), key: 'enabled' },
+          { label: this.$t('compute.text_175'), key: 'type' },
+          { label: this.$t('compute.target_name'), key: 'target' },
+          { label: this.$t('compute.target_ip'), key: 'target_ips' },
+          { label: this.$t('compute.target_mac'), key: 'mac_addr' },
+          { label: this.$t('compute.flow_count'), key: 'flow_count' },
+          { label: this.$t('common.createdAt'), key: 'created_at' },
+        ],
+      },
       groupActions: [
         {
           label: this.$t('compute.perform_create'),
@@ -100,7 +113,7 @@ export default {
                 action: () => {
                   this.createDialog('DeleteResDialog', {
                     vm: this,
-                    data: this.list.selectItems,
+                    data: this.list.selectedItems,
                     columns: this.columns,
                     title: this.$t('compute.perform_delete'),
                     name: this.$t('dictionary.tap_service'),
@@ -108,9 +121,14 @@ export default {
                   })
                 },
                 meta: () => {
-                  return {
+                  const ret = {
                     validate: true,
                   }
+                  if (this.list.selectedItems.some(item => item.flow_count)) {
+                    ret.validate = false
+                    ret.tooltip = this.$t('compute.tap_service_delete_tip')
+                  }
+                  return ret
                 },
               },
             ]
