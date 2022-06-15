@@ -19,8 +19,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import extendsComponents from '@scope/extends'
 import { clear as clearCache } from '@Dashboard/utils/cache'
-import extendsComponents from '@Dashboard/extends'
 
 export default {
   name: 'DashboardContent',
