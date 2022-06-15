@@ -131,8 +131,10 @@ export default {
   data () {
     const serverUsageOptions = [
       { label: this.$t('dashboard.text_61'), key: 'usage_active,vm_cpu' },
+      { label: this.$t('dashboard.text_61_agent'), key: 'usage_active,agent_cpu' },
       { label: this.$t('monitor_metric_85'), key: 'used_percent,vm_mem' },
       { label: this.$t('monitor_metric_85_agent'), key: 'used_percent,agent_mem' },
+      { label: this.$t('monitor.metrics_disk_used_percent'), key: 'used_percent,vm_disk' },
       { label: this.$t('monitor.metrics_disk_used_percent_agent'), key: 'used_percent,agent_disk' },
       { label: this.$t('dashboard.text_62'), key: 'read_bps,vm_diskio' },
       { label: this.$t('dashboard.text_63'), key: 'write_bps,vm_diskio' },

@@ -302,6 +302,17 @@ export default {
               },
               hidden: () => this.$store.getters.isProjectMode,
             },
+            {
+              field: 'is_daemon',
+              title: this.$t('compute.is_daemon'),
+              formatter: ({ row }) => {
+                if (row.is_daemon) {
+                  return this.$t('table.title.on')
+                } else {
+                  return this.$t('table.title.off')
+                }
+              },
+            },
           ],
         },
         {

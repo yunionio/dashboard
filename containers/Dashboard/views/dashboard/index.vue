@@ -126,8 +126,12 @@ export default {
       this.currentOption = option
       // 按scope维度记录选择的面板信息
       storage.set(this.optionStorageKey, option)
-      this.dashboard = await this.getDashboard()
-      console.log(this.dashboard, '---=-=-=-=-=-=---')
+      this.dashboard = []
+      if (this.isDefault) {
+        this.dashboard = await this.initWidgetParamter()
+      } else {
+        this.dashboard = await this.getDashboard()
+      }
     },
     // 获取自定义面板配置
     async getCustomOptions () {
@@ -224,6 +228,19 @@ export default {
     },
     refresh () {
       this.$refs.content.refresh()
+    },
+    async initWidgetParamter () {
+      try {
+        const response = await this.$store.dispatch('widgetSetting/getFetchWidgetSetting')
+
+        if (response?.value && response.value[`dashboard-${this.scope}`]) {
+          return response.value[`dashboard-${this.scope}`]
+        } else {
+          return await this.getDashboard()
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }

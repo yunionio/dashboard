@@ -362,12 +362,13 @@ export default {
 
 <style lang="less" scoped>
 .number-card-number {
-  font-size: 50px;
-  color: #000;
+  font-size: 60px;
+  line-height: 48px;
+  color: #000000;
 }
 .number-card-unit {
   font-size: 14px;
-  color: #4F4B53;
+  color: #000000;
   margin-left: 5px;
 }
 .drawer-wrapper {

@@ -108,7 +108,14 @@ export default {
         cloudhost_down_num: 0,
         cloudhost_up_num: 0,
       },
-      rules: {},
+      rules: {
+        UpsizeServer: {
+          within_range: [],
+        },
+        DownsizeServer: {
+          within_range: [],
+        },
+      },
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: (props, values) => {
@@ -197,8 +204,12 @@ export default {
         }
       } else {
         this.rules = {
-          UpsizeServer: {},
-          DownsizeServer: {},
+          UpsizeServer: {
+            within_range: [],
+          },
+          DownsizeServer: {
+            within_range: [],
+          },
         }
       }
     },

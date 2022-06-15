@@ -165,9 +165,9 @@ export default {
               },
               percent: {
                 align: 'left',
-                color: '#1890ff',
+                color: '#ADD1F3',
                 borderWidth: 1,
-                borderColor: '#1890ff',
+                borderColor: '#ADD1F3',
                 padding: [3, 5, 3, 5],
               },
               formatted_amount: {
@@ -254,7 +254,7 @@ export default {
       return this.fetchData()
     },
     async fetchData () {
-      if (!this.hasMeterService()) {
+      if (!this.hasMeterService) {
         return
       }
       this.loading = true

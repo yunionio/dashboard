@@ -105,18 +105,16 @@ class Sizestr {
    * @param {Array} units 单位列表，从小到大
    * @returns {Number|String} 234 | 234 KB
    */
+  // 数值过小时展示为 < 0.01 MB
   sizeToDesignatedUnit (sz, originUnit, targetUnit, base = 1024, withUnit = true, precision = 2, units = UNITS) {
     if (!sz) return withUnit ? `0 ${targetUnit === 'B' ? 'B' : targetUnit + 'B'}` : 0
     const nsz = this.normalizeSize(sz, originUnit, base)
-    if (nsz < base) {
-      return withUnit ? `${nsz} ${targetUnit === 'B' ? 'B' : targetUnit + 'B'}` : nsz
-    }
     let nbase = base
     for (let i = 1; i < UNITS.length; i++) {
       nbase *= base
-      if (nsz < nbase || UNITS[i] === targetUnit) {
+      if (UNITS[i] === targetUnit) {
         const ret = this.round(nsz * base / nbase, precision)
-        return withUnit ? `${ret} ${targetUnit === 'B' ? 'B' : targetUnit + 'B'}` : ret
+        return withUnit ? `${sz && !ret ? '<0.01' : ret} ${targetUnit === 'B' ? 'B' : targetUnit + 'B'}` : (sz && !ret ? '<0.01' : ret)
       }
     }
     return 'NaN B'

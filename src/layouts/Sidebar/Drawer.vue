@@ -27,7 +27,7 @@ export default {
   },
   data () {
     return {
-      width: 220,
+      width: 200,
     }
   },
   computed: {

@@ -79,7 +79,7 @@ export default {
   text-decoration: none;
 }
 .alertresource-icon {
-  font-size: 24px;
+  font-size: 18px;
   animation: glint 1.5s infinite;
 }
 .alertresource-error {

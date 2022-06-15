@@ -89,9 +89,11 @@ export default {
       rules: {
         extrnal_project_name: [
           { required: true, message: this.$t('cloudenv.text_190') },
+          { validator: this.$validate('externalProjectName') },
         ],
         local_project_name: [
           { required: true, message: this.$t('cloudenv.text_190') },
+          { validator: this.$validate('externalProjectName') },
         ],
         project: [
           { required: true, message: this.$t('rules.project') },

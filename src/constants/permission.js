@@ -657,6 +657,8 @@ export const PERMISSION = {
   lb_loadbalancers_delete: ['compute', 'loadbalancers', 'delete'],
   lb_loadbalancers_get: ['compute', 'loadbalancers', 'get'],
   lb_loadbalancers_perform_status: ['compute', 'loadbalancers', 'perform', 'status'],
+  lb_loadbalancers_perform_associate_eip: ['compute', 'loadbalancers', 'perform', 'associate-eip'],
+  lb_loadbalancers_perform_dissociate_eip: ['compute', 'loadbalancers', 'perform', 'dissociate-eip'],
   lb_loadbalancerlisteners_create: ['compute', 'loadbalancerlisteners', 'create'],
   lb_loadbalancerlisteners_update: ['compute', 'loadbalancerlisteners', 'update'],
   lb_loadbalancerlisteners_delete: ['compute', 'loadbalancerlisteners', 'delete'],

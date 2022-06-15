@@ -379,7 +379,8 @@
       "cancel_snapshot_failed": "Failed to unbind the snapshot policy",
       "syncing": "Syncing",
       "sync_status": "Syncing",
-      "sched_fail": "Scheduling failed"
+      "sched_fail": "Scheduling failed",
+      "ActiveSAS": "ActiveSAS"
     },
     "secgroupCache": {
       "ready": "Normal",
@@ -747,7 +748,8 @@
       "delete_failed": "Deletion failed",
       "start_failed": "Start failed",
       "stop_failed": "Stop failed",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "associate_eip": "Associate Eip"
     },
     "ipv6_gateway": {
       "enabled": "Enabled",
@@ -821,6 +823,10 @@
       "part_succeed": "Partial success",
       "failed": "Failed",
       "reject": "Reject"
+    },
+    "scheduledtaskBillSync": {
+      "running": "Running",
+      "finished": "Finished"
     },
     "cloudgroup": {
       "available": "Available",
@@ -1091,6 +1097,8 @@
       "deleting": "Deleting",
       "recovery": "Recovery",
       "snapshot_failed": "Fail to snapshot",
+      "creating_from_package": "Importing",
+      "create_from_package_failed": "Fail to import",
       "sync_status": "Sync Status",
       "pack": "Pack",
       "pack_failed": "Pack Failed",
@@ -1105,6 +1113,13 @@
       "init": "init",
       "online": "online",
       "offline": "offline"
+    },
+    "irsOrders": {
+      "process": "Process",
+      "all": "All",
+      "part": "Part",
+      "resp_failed": "Failed",
+      "hand": "Hand"
     }
   },
   "skuCategoryOptions": {
@@ -1274,7 +1289,8 @@
     "dnsName": "Only the characters a-z, A-Z, 0-9, dash (-), underscore (_), period (.), @, * are supported, and the dash and period cannot appear at the beginning and end",
     "maxLength": "The length cannot exceed {0} characters",
     "nonNegativeInt": "Please enter a non-negative integer",
-    "blockStorageName": "At the beginning of a letter, a combination of numbers and letters, with a length of 2-128 characters, including '.,-_"
+    "blockStorageName": "At the beginning of a letter, a combination of numbers and letters, with a length of 2-128 characters, including '.,-_",
+    "externalProjectName": "The length is 3~50 letters or numbers, which must start with an English letter."
   },
   "dialog": {
     "ok": "OK",
@@ -2369,6 +2385,7 @@
   "auth.register.mobile.validate": "Please enter your mobile number",
   "auth.secret.verify.title": "Login protection is turned on, please enter the 6-digit security code",
   "auth.secret.reset.prefix": "Please open the OneLogin Protect APP on your mobile phone to obtain the MFA security code. Unable to obtain it, please",
+  "auth.secret.reset.prefix1": "Please open the OneLogin Protect APP on your mobile phone to obtain the MFA security code. ",
   "auth.secret.validate": "The security code is wrong, please re-enter",
   "auth.secret.loading": "Authenticating",
   "auth.question.title": "Please set a security question to verify your identity when resetting the security code key",
@@ -2609,7 +2626,9 @@
     "command_log": "Command Logs",
     "important": "Important",
     "normal": "Normal",
-    "fatal": "Fatal"
+    "fatal": "Fatal",
+    "ipv6_gateway": "IPv6 Gateway",
+    "apsara": "Apsara"
   },
   "res": {
     "role": "Role",
@@ -5151,5 +5170,8 @@
   "common.password_no_equal": "Old and new passwords cannot be consistent",
   "common.command": "Command",
   "common.login_user": "Login User",
-  "common_744": "图标"
+  "common_744": "图标",
+  "common.remote_control": "Remote Control",
+  "common.default_search_key": "Default is {0} search",
+  "common.theme.color.lake_blue": "Lake Blue"
 }

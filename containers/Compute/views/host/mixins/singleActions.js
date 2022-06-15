@@ -15,7 +15,10 @@ export default {
     this.webconsoleManager = new this.$Manager('webconsole', 'v1')
   },
   computed: {
-    ...mapGetters(['isAdminMode', 'userInfo']),
+    ...mapGetters(['isAdminMode', 'userInfo', 'auth']),
+    enableMFA () {
+      return this.userInfo.enable_mfa && this.auth.auth.system_totp_on
+    },
     singleActions () {
       const _frontSingleActions = this.frontSingleActions ? this.frontSingleActions.bind(this)() || [] : []
       return _frontSingleActions.concat([
@@ -24,8 +27,8 @@ export default {
           actions: obj => {
             const ret = []
             if (obj.is_baremetal || obj.host_type === 'baremetal') {
-              ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole))
-              ret.push({ ...jnlpConsole(this.onManager, obj), permission: 'server_get_jnlp' })
+              ret.push(solWebConsole(this.webconsoleManager, obj, this.openWebConsole, this.createDialog))
+              ret.push({ ...jnlpConsole(this.onManager, obj, this.createDialog), permission: 'server_get_jnlp' })
             }
             let ips = (obj.server_ips || '').split(',').filter(item => !!item)
             if (obj.access_ip) {
@@ -33,13 +36,22 @@ export default {
             }
             const actionGenerator = ip => {
               return (sshData) => {
-                this.webconsoleManager.performAction({
-                  action: ip,
-                  data: { type: 'host', ...sshData },
-                  id: 'ssh',
-                }).then(({ data }) => {
-                  this.openWebConsole(obj, data)
-                })
+                const success = () => {
+                  this.webconsoleManager.performAction({
+                    action: ip,
+                    data: { type: 'host', ...sshData },
+                    id: 'ssh',
+                  }).then(({ data }) => {
+                    this.openWebConsole(obj, data)
+                  })
+                }
+                if (this.enableMFA) {
+                  this.createDialog('SecretVertifyDialog', {
+                    success,
+                  })
+                } else {
+                  success()
+                }
               }
             }
             ips.forEach(ip => {
@@ -58,47 +70,56 @@ export default {
               ret.push({
                 label: i18n.t('compute.text_345', [ip]),
                 action: () => {
-                  this.createDialog('SmartFormDialog', {
-                    title: i18n.t('compute.text_346'),
-                    data: [obj],
-                    list: this.list,
-                    callback: async (data) => {
-                      const response = await this.webconsoleManager.performAction({
-                        id: 'ssh',
-                        action: ip,
-                        data: {
-                          type: 'host',
-                          id: obj.id,
-                          ...data,
-                        },
-                      })
-                      this.openWebConsole(obj, response.data)
-                    },
-                    decorators: {
-                      port: [
-                        'port',
-                        {
-                          validateFirst: true,
-                          rules: [
-                            { required: true, message: i18n.t('compute.text_347') },
-                            {
-                              validator: (rule, value, _callback) => {
-                                const num = parseFloat(value)
-                                if (!/^\d+$/.test(value) || !num || num > 65535) {
-                                  _callback(i18n.t('compute.text_348'))
-                                }
-                                _callback()
+                  const success = () => {
+                    this.createDialog('SmartFormDialog', {
+                      title: i18n.t('compute.text_346'),
+                      data: [obj],
+                      list: this.list,
+                      callback: async (data) => {
+                        const response = await this.webconsoleManager.performAction({
+                          id: 'ssh',
+                          action: ip,
+                          data: {
+                            type: 'host',
+                            id: obj.id,
+                            ...data,
+                          },
+                        })
+                        this.openWebConsole(obj, response.data)
+                      },
+                      decorators: {
+                        port: [
+                          'port',
+                          {
+                            validateFirst: true,
+                            rules: [
+                              { required: true, message: i18n.t('compute.text_347') },
+                              {
+                                validator: (rule, value, _callback) => {
+                                  const num = parseFloat(value)
+                                  if (!/^\d+$/.test(value) || !num || num > 65535) {
+                                    _callback(i18n.t('compute.text_348'))
+                                  }
+                                  _callback()
+                                },
                               },
-                            },
-                          ],
-                        },
-                        {
-                          label: i18n.t('compute.text_349'),
-                          placeholder: i18n.t('compute.text_350'),
-                        },
-                      ],
-                    },
-                  })
+                            ],
+                          },
+                          {
+                            label: i18n.t('compute.text_349'),
+                            placeholder: i18n.t('compute.text_350'),
+                          },
+                        ],
+                      },
+                    })
+                  }
+                  if (this.enableMFA) {
+                    this.createDialog('SecretVertifyDialog', {
+                      success,
+                    })
+                  } else {
+                    success()
+                  }
                 },
                 meta,
                 extraMeta: obj => {

@@ -812,6 +812,7 @@
   "network.eip.instance_type": "类型",
   "network.eip.instance_type.server": "虚拟机",
   "network.eip.instance_type.nat": "NAT网关",
+  "network.eip.instance_type.lb": "LB",
   "network.nat.status.unavailable.tooltip": "NAT网关状态异常",
   "network.snat.type.network": "IP子网",
   "network.snat.type.server": "虚拟机",
@@ -1069,5 +1070,6 @@
   "network.topology.view.virtual": "虚拟拓扑",
   "network.topology.view.pysical": "物理拓扑",
   "network.lb_monitor_bin": "负载均衡入流量",
-  "network.lb_monitor_bout": "负载均衡出流量"
+  "network.lb_monitor_bout": "负载均衡出流量",
+  "network.eip_bind_server_tip": "经典网络类型虚拟机不支持绑定EIP"
 }

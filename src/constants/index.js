@@ -116,6 +116,7 @@ export const ENABLED_OPTS = [
 // 自定义字典存储配置的name
 export const GLOBAL_SETTINGS = 'global-settings'
 export const SHOW_SYSTEM_RESOURCE = 'showSystemResource'
+export const WIDGET_SETTINGS = 'widget-settings'
 
 // 标识字典允许用户自定义的key
 export const ENABLE_USER_CUSTOM_DICTIONARY = [
@@ -129,7 +130,7 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'schedtag',
 ]
 
-export const chartColors = ['#4DA1FF', '#FFC760', '#F76F89', '#5ED28A', '#ff5f2e', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
+export const chartColors = ['#ADD1F3', '#F3CBAD', '#F3ADB2', '#ADAEF3', '#ADE4B6', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
 
 export const contactMap = {
   webconsole: {

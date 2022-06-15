@@ -224,6 +224,7 @@
   "monitor.overview_read_bps": "Average of server Disk Read Rate of the last 7 days",
   "monitor.overview_write_bps": "Average of server Disk Write Rate of the last 7 days",
   "monitor.overview_tab_usage_active": "CPU Usage",
+  "monitor.overview_tab_usage_active_agent": "CPU Usage(agent)",
   "monitor.overview_tab_bps_recv": "Network Inbound Traffic",
   "monitor.overview_tab_bps_sent": "Network Outbound Traffic",
   "monitor.overview_tab_read_bps": "Disk Read Rate",

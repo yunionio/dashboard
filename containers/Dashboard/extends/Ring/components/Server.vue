@@ -14,7 +14,7 @@
         <div class="flex-fill ml-4">
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div class="label-unit">{{ useLabel }}</div>
-            <div class="flex-number mr-2 ml-1 text-right">{{usage.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{usage.usage}}</div>
             <div class="label-unit">{{usage.unit}}</div>
           </div>
 
@@ -26,7 +26,7 @@
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle" v-if="showReserved">
             <div class="flex-shrink-0 flex-grow-0 label-unit">{{$t('dashboard.text_182')}}</div>
-            <div class="flex-number mr-2 ml-1 text-right">{{reserved.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{reserved.usage}}</div>
             <div class="label-unit">{{reserved.unit}}</div>
           </div>
 
@@ -34,13 +34,13 @@
             <div class="flex-shrink-0 flex-grow-0 label-unit">
               {{$t('dashboard.text_183')}}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.gpu_reserved_tips')"><icon type="help" /></a-tooltip>
             </div>
-            <div class="flex-number mr-2 ml-1 text-right">{{gpuReserved.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{gpuReserved.usage}}</div>
             <div  class="label-unit">{{gpuReserved.unit}}</div>
           </div>
 
           <div class="d-flex bottomborder-box align-items-end" :style="itemStyle">
             <div class="label-unit">{{ $t('dashboard.text_181') }}<a-tooltip v-if="showTips" class="ml-1" :title="$t('dashboard.all_usage_tips')"><icon type="help" /></a-tooltip></div>
-            <div class="flex-number mr-2 ml-1 text-right">{{allUsage.usage}}</div>
+            <div class="flex-number mr-1 ml-1 text-right">{{allUsage.usage}}</div>
             <div class="label-unit">{{allUsage.unit}}</div>
           </div>
           <div v-if="form.fd.all_usage_key === 'hosts.cpu.virtual' && form.fd.usage_key === 'all.servers.cpu'" class="d-flex bottomborder-box align-items-end">
@@ -222,7 +222,7 @@ export default {
       return USAGE_CONFIG[this.form.fd.usage_key]
     },
     colorConfig () {
-      return (this.params && this.params.color) || 'default'
+      return (this.params && this.params.color) || 'blue'
     },
     allUsage () {
       let ret = this.allUsageNumber
@@ -282,22 +282,24 @@ export default {
     },
     percentColor () {
       switch (this.colorConfig) {
+        case 'default':
+          if (this.percent < 60) {
+            return '#ADE4B6'
+          }
+          if (this.percent < 80) {
+            return '#F3CBAD'
+          }
+          return '#F3ADB2'
         case 'reverse':
           if (this.percent < 60) {
-            return '#f5222d'
+            return '#F3ADB2'
           }
           if (this.percent < 80) {
-            return '#faad14'
+            return '#F3CBAD'
           }
-          return '#52c41a'
+          return '#ADE4B6'
         default:
-          if (this.percent < 60) {
-            return '#52c41a'
-          }
-          if (this.percent < 80) {
-            return '#faad14'
-          }
-          return '#f5222d'
+          return '#ADD1F3'
       }
     },
     status () {
@@ -442,18 +444,18 @@ export default {
 
 <style lang="less" scoped>
 .flex-number{
-  font-size: 18px;
-  line-height: 19px;
+  font-size: 15px;
+  line-height: 21px;
   flex: 1 1 auto;
   color: #000;
-  font-weight: bold;
+  font-weight: 600;
 }
 .label-unit{
-  color: #837F89;
+  color: #666666;
 }
 .percent-tips {
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 20px;
+  // font-weight: bold;
 }
 .ring-drawer-wrapper {
   &::v-deep.ant-drawer.ant-drawer-open .ant-drawer-mask {
@@ -461,7 +463,7 @@ export default {
   }
 }
 .bottomborder-box{
-  border-bottom: 1px dotted #E4E4E4;
+  border-bottom: 1px solid #F2F2F2;
   margin: 10px 0;
   padding: 5px 0;
 }

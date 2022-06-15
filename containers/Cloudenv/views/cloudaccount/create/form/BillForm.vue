@@ -73,17 +73,17 @@
         <a-switch v-decorator="decorators.sync_info" />
       </a-form-item>
       <a-form-item :label="$t('cloudenv.text_212')" v-if="form.fc.getFieldValue('sync_info')" :extra="$t('cloudenv.text_213')">
-        <a-month-picker :disabled-date="dateDisabledStart" v-decorator="decorators.billtask_start" @change="startChange" />
+        <a-date-picker :disabled-date="dateDisabledStart" v-decorator="decorators.billtask_start" />
         <span class="ml-2 mr-2">~</span>
-        <a-month-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.billtask_end" @change="endChange" />
+        <a-date-picker :disabled-date="dateDisabledEnd" v-decorator="decorators.billtask_end" />
       </a-form-item>
     </a-form>
   </div>
 </template>
 <script>
-import { keySecretFields, getBillBucketUrlDocs, getEnrollmentNumberDocs } from '../../constants'
 import DialogMixin from '@/mixins/dialog'
 import WindowsMixin from '@/mixins/windows'
+import { keySecretFields, getBillBucketUrlDocs, getEnrollmentNumberDocs } from '../../constants'
 
 export default {
   name: 'BillConfig',
@@ -243,7 +243,7 @@ export default {
         billing_scope: [
           'billing_scope',
           {
-            initialValue: options.billing_scope || 'all',
+            initialValue: options.billing_scope || this.getDefaultBillingScope(),
             rules: [
               { required: true, message: this.$t('cloudenv.billing_scope.prompt') },
             ],
@@ -257,6 +257,13 @@ export default {
     this.fetchs()
   },
   methods: {
+    getDefaultBillingScope () {
+      if (this.isAliyun || this.isAzure || this.isAws) {
+        return 'all'
+      } else {
+        return 'managed'
+      }
+    },
     async fetchs () {
       await this.fetchCloudAccount()
       await this.fetchCloudAccounts()
@@ -294,10 +301,10 @@ export default {
             details: true,
           },
         })
-        // azure 和 aws aliyun billing_scope 没有时选中managed，新建时选中all
-        if ((this.isAzure || this.isAws || this.isAliyun) && (!data.options || !data.options.billing_scope)) {
+        // billing_scope没有默认选中一个，选中规则与新建相同
+        if (!data.options || !data.options.billing_scope) {
           data.options = data.options || {}
-          data.options.billing_scope = 'managed'
+          data.options.billing_scope = data.options.billing_scope || this.getDefaultBillingScope()
         }
         this.cloudAccount = data
         if (data && data.options && data.options.billing_bucket_account) {
@@ -317,7 +324,7 @@ export default {
           cloudaccount_id: id,
           action: 'override',
         }
-        data.end_day = billtask_end > this.$moment() ? this.$moment().format('YYYYMMDD') : billtask_end.format('YYYYMMDD')
+        data.end_day = billtask_end.format('YYYYMMDD')
         data.start_day = billtask_start.format('YYYYMMDD')
         await manager.create({
           data,
@@ -348,9 +355,9 @@ export default {
           }
         }
         await this.manager.update(params)
-        if (isGoCloudaccount) {
-          this.$router.push('/cloudaccount')
-        }
+        // if (isGoCloudaccount) {
+        //   this.$router.push('/cloudaccount')
+        // }
       } catch (err) {
         throw err
       }
@@ -382,16 +389,6 @@ export default {
         })
       } else return false
     },
-    startChange (value) {
-      this.form.fc.setFieldsValue({
-        billtask_start: value.startOf('month'),
-      })
-    },
-    endChange (value) {
-      this.form.fc.setFieldsValue({
-        billtask_end: value.endOf('month') > this.$moment() ? this.$moment() : value.endOf('month'),
-      })
-    },
     dateDisabledStart (value) {
       const dateEnd = this.form.fc.getFieldValue('billtask_end')
       if (dateEnd && value > dateEnd) return true
@@ -401,7 +398,7 @@ export default {
     dateDisabledEnd (value) {
       const dateStart = this.form.fc.getFieldValue('billtask_start')
       if (dateStart && value < dateStart) return true
-      if (value > this.$moment().endOf('month')) return true
+      if (value > this.$moment()) return true
       return false
     },
   },

@@ -53,15 +53,18 @@
     <a-form-item :label="$t('cloudenv.text_7')" v-else>
       <a-row :gutter="9">
         <a-col :span="12">
-          <base-select
+          <oc-select
+            width="100%"
             v-decorator="decorators.vpc"
+            show-status
+            :status-desc="$t('compute.vpc_status_desc')"
             resource="vpcs"
-            filterable
-            need-params
-            :item.sync="vpcObj"
+            label="VPC"
+            :formatter="vpcFormatter"
             :params="vpcParams"
-            :labelFormat="vpcLabelFormat"
-            :select-props="{ placeholder: $t('network.text_274') }" />
+            :sort="(arr) => arr.sort((a, b) => a.network_count > b.network_count ? -1 : 1)"
+            :placeholder="$t('compute.text_194')"
+            @selectChange="handleVpcChange" />
         </a-col>
         <a-col :span="12" v-if="(isQcloud && form.fd.address_type === 'intranet') || !isQcloud">
           <base-select
@@ -77,7 +80,7 @@
     </a-form-item>
     <a-form-item :label="$t('network.text_221')" v-if="isHuawei && form.fd.address_type === 'internet'">
       <base-select
-        v-decorator="decorators.eip"
+        v-decorator="decorators.eip.eip"
         resource="eips"
         need-params
         :params="eipParams"
@@ -128,15 +131,6 @@ export default {
     },
   },
   methods: {
-    vpcLabelFormat (item) {
-      if (item.manager) {
-        if (item.cidr_block) {
-          return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span v-if="item.cidr_block">（{ item.cidr_block }）</span><span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
-        }
-        return (<div><span class="text-color-secondary">VPC:</span> { item.name }<span class="ml-2 text-color-secondary">云订阅: { item.manager }</span></div>)
-      }
-      return (<div>{ item.name }</div>)
-    },
     providerFetchSuccess (list) {
       const showProvider = ['Aliyun', 'Aws', 'Qcloud', 'Huawei']
       if (list && list.length > 0) {

@@ -102,5 +102,6 @@ export default {
   .dashboard-card-wrap{
     border-radius: 4px;
   }
+  border: 1px solid #E7E8EB;
 }
 </style>

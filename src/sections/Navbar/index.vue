@@ -4,13 +4,13 @@
       <template v-if="authInfoLoaded && isShowMenu">
         <a-tooltip :title="$t('navbar.button.menu')" placement="right">
           <div class="primary-color-hover d-flex align-items-center navbar-item-trigger justify-content-center global-map-btn ml-1 flex-shrink-0 flex-grow-0" @click.stop.prevent="handleToggleSidebar">
-            <icon type="menu" style="font-size: 24px;" />
+            <icon :type="drawerVisible ? 'close' : 'open'" style="font-size: 24px;" />
           </div>
         </a-tooltip>
       </template>
       <template v-else>
         <div class="primary-color-hover d-flex align-items-center h-100 navbar-item-trigger flex-shrink-0 flex-grow-0">
-          <icon type="menu" style="font-size: 24px; cursor: default;" />
+          <icon :type="drawerVisible ? 'close' : 'open'" style="font-size: 24px; cursor: default;" />
         </div>
       </template>
     </div>
@@ -123,10 +123,10 @@
         </template>
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <a-tooltip :title="$t('navbar.view.switch')" placement="right">
-            <icon type="navbar-view-switch" style="font-size: 24px; line-height: normal;" />
+            <icon type="navbar-view-switch" style="font-size: 18px;" />
           </a-tooltip>
-          <span class="ml-2 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
-          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+          <span class="ml-1 current-view-label text-truncate" style="line-height: normal;" :title="viewLabel">{{ viewLabel }}</span>
+          <icon type="caret-down" style="font-size: 18px; line-height: normal;" />
         </div>
       </a-popover>
     </div>
@@ -135,10 +135,10 @@
       <a-dropdown :trigger="['click']" :getPopupContainer="triggerNode => triggerNode.parentNode">
         <div class="navbar-item-trigger d-flex align-items-center justify-content-center">
           <a-tooltip :title="$t('navbar.button.external_links')" placement="right">
-            <icon type="navbar-setting" style="font-size: 24px; line-height: 1;"  />
+            <icon type="navbar-setting" style="font-size: 18px;"  />
           </a-tooltip>
-          <span class="ml-2 text-truncate products-label" style="line-height: normal;">{{$t('dictionary.endpoint')}}</span>
-          <icon type="caret-down" style="font-size: 24px; line-height: normal;" />
+          <span class="ml-1 text-truncate products-label" style="line-height: normal;">{{$t('dictionary.endpoint')}}</span>
+          <icon type="caret-down" style="font-size: 18px; line-height: normal;" />
         </div>
         <a-menu slot="overlay" @click="productChange">
           <a-menu-item v-for="(item, idx) of products" :key="`${item.key}$$${idx}`">{{ item.label }}</a-menu-item>
@@ -245,6 +245,7 @@ export default {
       'scopeResource',
       'auth',
       'workflow',
+      'common',
     ]),
     ...mapState('app', {
       computeStatus: state => state.license.status,
@@ -394,6 +395,9 @@ export default {
         return globalSetting.value.setupKeys || []
       }
       return []
+    },
+    drawerVisible () {
+      return get(this.common, 'sidebar.drawerVisible', false)
     },
   },
   watch: {
@@ -694,7 +698,7 @@ export default {
 .navbar-wrap {
   color: #606266;
   height: 60px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05), 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.07);
   padding: 0;
   position: fixed;
   top: 0;
@@ -726,7 +730,8 @@ export default {
   line-height: 1;
   cursor: pointer;
   img {
-    width: 45px;
+    // width: 45px;
+    height: 30px;
   }
 }
 .header-title {

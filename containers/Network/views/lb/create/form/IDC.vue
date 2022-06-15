@@ -36,11 +36,17 @@
     <a-form-item :label="$t('network.text_211')">
       <a-row :gutter="8">
         <a-col :span="12">
-          <a-select value="default" disabled>
-            <a-select-option key="default">
-              <span class="text-color-secondary">VPC: </span>Default
-            </a-select-option>
-          </a-select>
+          <oc-select
+            width="100%"
+            v-decorator="decorators.vpc"
+            show-status
+            :status-desc="$t('compute.vpc_status_desc')"
+            resource="vpcs"
+            label="VPC"
+            :formatter="vpcFormatter"
+            :params="vpcParams"
+            :sort="(arr) => arr.sort((a, b) => a.network_count > b.network_count ? -1 : 1)"
+            :placeholder="$t('compute.text_194')" />
         </a-col>
         <a-col :span="12">
           <a-form-item>
@@ -49,6 +55,7 @@
               resource="networks"
               need-params
               filterable
+              isDefaultSelect
               :params="networkParams"
               :item.sync="networkObj"
               :select-props="{ placeholder: $t('network.text_212') }" />
@@ -56,6 +63,14 @@
         </a-col>
       </a-row>
     </a-form-item>
+    <eip-config
+      v-if="showEip"
+      :decorators="decorators.eip"
+      :eip-params="eipParams"
+      hypervisor="kvm"
+      cloud-env="idc"
+      :form="form"
+      :formItemLayout="formItemLayout" />
     <a-form-item :label="$t('table.title.tag')">
       <tag v-decorator="decorators.__meta__" />
     </a-form-item>
@@ -64,15 +79,18 @@
 
 <script>
 import * as R from 'ramda'
+import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import lbCreate from './mixin'
 import CloudregionZone from '@/sections/CloudregionZone'
+import EipConfig from '@Compute/sections/EipConfig'
 import { HYPERVISORS_MAP } from '@/constants'
 
 export default {
   name: 'LbOnecloudCreate',
   components: {
     CloudregionZone,
+    EipConfig,
   },
   mixins: [lbCreate],
   provide () {
@@ -98,14 +116,12 @@ export default {
       return params
     },
     networkParams () {
-      let params = {
-        vpc_id: 'default',
-        usable: true,
-      }
-      if (this.zoneObj && this.zoneObj.id && !R.isEmpty(this.scopeParams)) {
-        params.zone = this.zoneObj.id
+      let params = {}
+      if (this.form.fd.vpc && !R.isEmpty(this.scopeParams)) {
+        params = { ...this.scopeParams, usable: true }
         params.limit = 0
-        params = Object.assign(params, this.scopeParams)
+        params.vpc = this.form.fd.vpc
+        if (this.zoneObj && this.zoneObj.id) params.zone = this.zoneObj.id
       }
       return params
     },
@@ -120,6 +136,21 @@ export default {
     hypervisorOpts () {
       return [HYPERVISORS_MAP.kvm]
     },
+    eipParams () {
+      const cloudregion = _.get(this.form.fd, 'cloudregion.key')
+      if (!cloudregion) return {}
+      return {
+        project: this.project,
+        region: cloudregion,
+      }
+    },
+    showEip () {
+      const { vpc } = this.form.fd
+      if (!vpc || vpc === 'default') {
+        return false
+      }
+      return true
+    },
   },
   methods: {
     async submit () {
@@ -129,10 +160,19 @@ export default {
           cluster_id: values.cluster_id,
           name: values.name.trim(),
           description: values.description,
+          vpc: values.vpc,
           network: values.network,
           domain: values.domain,
           project: values.project,
           __meta__: values.__meta__,
+        }
+        if (values.eip_type === 'new') {
+          data.eip_bgp_type = values.eip_bgp_type
+          data.eip_bw = values.eip_bw
+          data.eip_charge_type = values.eip_charge_type
+        } else if (values.eip_type === 'bind') {
+          data.eip = values.eip
+          data.address_type = 'internet'
         }
         return data
       } catch (error) {

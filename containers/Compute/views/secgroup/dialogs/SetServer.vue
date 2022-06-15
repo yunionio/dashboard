@@ -83,35 +83,12 @@ export default {
       'userInfo',
     ]),
     requestParams () {
-      if (this.isAdminMode || this.isDomainMode) {
-        // if (this.requestParams.tenant) {
-        //   delete this.requestParams.tenant
-        // }
-        return {
-          limit: 0,
-          offset: 0,
-          filter: 'hypervisor.notin(container, baremetal, esxi)',
-          project_domain: this.userInfo.projectDomain,
-          project_id: this.params.data[0].project_id,
-          secgroup: `!${this.params.data[0].id}`,
-        }
-      } else {
-        // if (this.requestParams.scope) {
-        //   return {
-        //     search: '',
-        //     limit: 20,
-        //     offset: 0,
-        //     filter: 'hypervisor.notin(container, baremetal, esxi)',
-        //   }
-        // }
-        return {
-          limit: 0,
-          offset: 0,
-          filter: 'hypervisor.notin(container, baremetal, esxi)',
-          // tenant: this.params.data[0]['tenant_id'],
-          scope: this.$store.getters.scope,
-          secgroup: `!${this.params.data[0].id}`,
-        }
+      return {
+        limit: 0,
+        offset: 0,
+        filter: 'hypervisor.notin(container, baremetal, esxi)',
+        scope: this.$store.getters.scope,
+        secgroup: `!${this.params.data[0].id}`,
       }
     },
     columns () {

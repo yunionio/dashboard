@@ -104,7 +104,7 @@ export default {
       this.visible = true
     },
     async fetchData () {
-      if (!this.hasMeterService()) {
+      if (!this.hasMeterService) {
         return
       }
       this.loading = true

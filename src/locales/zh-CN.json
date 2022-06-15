@@ -383,7 +383,8 @@
       "cancel_snapshot_failed": "解绑快照策略失败",
       "syncing": "同步中",
       "sync_status": "同步中",
-      "sched_fail": "调度失败"
+      "sched_fail": "调度失败",
+      "ActiveSAS": "ActiveSAS"
     },
     "secgroupCache": {
       "ready": "正常",
@@ -755,7 +756,8 @@
       "stop_failed": "关闭失败",
       "unknown": "未知",
       "update_tags": "更新标签或名称",
-      "update_tags_fail": "更新标签或名称失败"
+      "update_tags_fail": "更新标签或名称失败",
+      "associate_eip": "绑定弹性公网IP"
     },
     "ipv6_gateway": {
       "enabled": "启用",
@@ -829,6 +831,10 @@
       "part_succeed": "部分成功",
       "failed": "失败",
       "reject": "拒绝"
+    },
+    "scheduledtaskBillSync": {
+      "running": "进行中",
+      "finished": "已完成"
     },
     "cloudgroup": {
       "available": "可用",
@@ -1105,6 +1111,8 @@
       "deleting": "正在删除",
       "recovery": "正在回滚",
       "snapshot_failed": "快照创建失败",
+      "creating_from_package": "导入中",
+      "create_from_package_failed": "导入失败",
       "sync_status": "同步状态",
       "pack": "打包",
       "pack_failed": "打包失败",
@@ -1119,6 +1127,13 @@
       "init": "初始化",
       "online": "在线",
       "offline": "离线"
+    },
+    "irsOrders": {
+      "process": "流程处理中",
+      "all": "全部回执",
+      "part": "部分回执",
+      "resp_failed": "回执失败",
+      "hand": "手动回执"
     }
   },
   "skuCategoryOptions": {
@@ -1288,7 +1303,8 @@
     "dnsName": "仅支持字符a-z、A-Z、0-9、短划线（-）、下划线（_）、句点（.）、@、*，且短划线和句点不能出现在开头和结尾",
     "maxLength": "长度不能超过{0}个字符",
     "nonNegativeInt": "请输入非负整数",
-    "blockStorageName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\""
+    "blockStorageName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\"",
+    "externalProjectName": "长度为3~50个字母或数字，必须以英文字母开头"
   },
   "dialog": {
     "ok": "确定",
@@ -2383,6 +2399,7 @@
   "auth.register.mobile.validate": "请输入手机",
   "auth.secret.verify.title": "登录保护已开启，请输入6位安全码",
   "auth.secret.reset.prefix": "请在手机打开OneLogin Protect APP，获取MFA安全码。无法获取，请",
+  "auth.secret.reset.prefix1": "请在手机打开OneLogin Protect APP，获取MFA安全码。",
   "auth.secret.validate": "安全码错误，请重新输入",
   "auth.secret.loading": "正在验证",
   "auth.question.title": "请设置安全问题，用以重置安全码密钥时验证身份",
@@ -2625,7 +2642,8 @@
     "ipv6_gateway": "IPv6网关",
     "important": "重要",
     "normal": "正常",
-    "fatal": "致命"
+    "fatal": "致命",
+    "apsara": "飞天"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -5167,5 +5185,8 @@
   "common.password_no_equal": "新旧密码不能一致",
   "common.command": "命令",
   "common.login_user": "登录用户",
-  "common_744": "图标"
+  "common_744": "图标",
+  "common.remote_control": "远程控制",
+  "common.default_search_key": "默认为{0}搜索",
+  "common.theme.color.lake_blue": "湖水蓝"
 }

@@ -27,10 +27,7 @@ const bingocloudLogo = require('../../../../src/assets/images/providers/bingoclo
 
 function getDocsCloudaccountPath (scope) {
   const docsUrl = getDocsUrl(scope)
-  if (isCE()) {
-    return `${docsUrl}multicloud/cloudaccounts`
-  }
-  return `${docsUrl}/user/multiplecloud/cloudaccount/cloudaccount/`
+  return `${docsUrl}multicloud/cloudaccounts`
 }
 
 export const CLOUDACCOUNT_TYPES = {
@@ -212,6 +209,10 @@ export function getCloudaccountDocs (scope) {
     bingocloud: i18n.t('cloudenv.create_bingocloud', [docs_path]),
   }
   if (isCE()) {
+    Object.keys(docs).forEach(v => {
+      docs[v] = `${docs_path}/tutorial/create`
+    })
+  } else {
     Object.keys(docs).forEach(v => {
       docs[v] = `${docs_path}/tutorial/create`
     })
@@ -537,7 +538,7 @@ export const keySecretFields = {
 }
 
 export function getBillBucketUrlDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope)
+  const docsUrl = getDocsCloudaccountPath(scope) + '/tutorial/billinfo'
   return {
     aliyun: i18n.t('cloudenv.text_164', [docsUrl]),
     aws: i18n.t('cloudenv.text_165', [docsUrl]),
@@ -547,15 +548,12 @@ export function getBillBucketUrlDocs (scope) {
 }
 
 export function getSamlUserDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope)
-  if (isCE) {
-    return `${docsUrl}/tutorial/cloudsso/cloudsso/`
-  }
+  const docsUrl = getDocsCloudaccountPath(scope) + '/tutorial/cloudsso/cloudsso/'
   return i18n.t('cloudenv.dentity_provider', [docsUrl])
 }
 
 export function getEnrollmentNumberDocs (scope) {
-  const docsUrl = getDocsCloudaccountPath(scope)
+  const docsUrl = getDocsCloudaccountPath(scope) + '/tutorial/billinfo'
   return docsUrl + i18n.t('cloudenv.text_219')
 }
 

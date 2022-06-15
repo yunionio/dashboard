@@ -189,7 +189,8 @@ export default {
     }
     .l2-menu-list {
       .l2-menu-group-title {
-        color: rgba(0, 0, 0, .7);
+        color: #000000;
+        font-weight: 500;
       }
       .l2-menu-item {
         color: @sidebar-light-text-color;
@@ -209,19 +210,27 @@ export default {
   padding: 8px 0;
 }
 .l2-menu-list {
+  padding: 10px 10px 0 20px;
+  .l2-menu-group {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E2E2E2;
+  }
+  &:last-child .l2-menu-group {
+    border-bottom:none
+  }
   .l2-menu-group-title {
-    font-size: 12px;
+    font-size: 14px;
     color: rgba(255, 255, 255, .7);
     line-height: 24px;
     margin-bottom: 6px;
     margin-top: 6px;
-    padding: 0 16px;
+    padding: 0 2px;
   }
   .l2-menu-item {
     display: block;
     padding-bottom: 4px;
     padding-top: 4px;
-    padding-left: 24px;
+    padding-left: 18px;
     padding-right: 16px;
     font-size: 14px;
     color: @sidebar-dark-text-color;
