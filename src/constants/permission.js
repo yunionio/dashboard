@@ -1300,6 +1300,18 @@ export const PERMISSION = {
   price_infos_perform_discount: ['meter', 'price_infos', 'perform', 'discount'],
 
   capabilities_list: ['compute', 'capabilities', 'list'],
+
+  tapservices_list: ['compute', 'tap_services', 'list'],
+  tapservices_perform_enabled: ['compute', 'tap_services', 'perform', 'enabled'],
+  tapservices_perform_disabled: ['compute', 'tap_services', 'perform', 'disabled'],
+  tapservices_delete: ['compute', 'tap_services', 'delete'],
+  tapservices_create: ['compute', 'tap_services', 'create'],
+
+  tapflows_list: ['compute', 'tap_flows', 'list'],
+  tapflows_perform_enabled: ['compute', 'tap_flows', 'perform', 'enabled'],
+  tapflows_perform_disabled: ['compute', 'tap_flows', 'perform', 'disabled'],
+  tapflows_delete: ['compute', 'tap_flows', 'delete'],
+  tapflows_create: ['compute', 'tap_flows', 'create'],
 }
 
 // 已声明权限的资源
