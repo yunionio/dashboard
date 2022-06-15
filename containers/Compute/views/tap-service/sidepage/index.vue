@@ -2,7 +2,7 @@
   <base-side-page
     @cancel="cancelSidePage"
     :title="$t('dictionary.tap_service')"
-    icon="res-secgroup"
+    icon="res-tapservice"
     :res-name="detailData.name"
     :actions="params.actions"
     :current-tab="params.windowData.currentTab"
@@ -18,7 +18,7 @@
       :res-id="data.id"
       :data="detailData"
       :getParams="getParams"
-      res-type="secgroup"
+      res-type="tap_service"
       :on-manager="onManager"
       :columns="columns"
       :hidden-columns="hiddenColumns"
@@ -29,13 +29,13 @@
 </template>
 
 <script>
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
 import SingleActionsMixin from '../mixins/singleActions'
 import ColumnsMixin from '../mixins/columns'
 import TapFlowList from './TapFlow'
 import TapServiceDetail from './Detail'
-import SidePageMixin from '@/mixins/sidePage'
-import WindowsMixin from '@/mixins/windows'
-import Actions from '@/components/PageList/Actions'
 
 export default {
   name: 'TapServiceSidePage',
@@ -50,6 +50,7 @@ export default {
       detailTabs: [
         { label: this.$t('compute.text_238'), key: 'tap-service-detail' },
         { label: this.$t('dictionary.tap_flow'), key: 'tap-flow-list' },
+        { label: this.$t('compute.text_240'), key: 'event-drawer' },
       ],
     }
   },
@@ -72,6 +73,8 @@ export default {
       switch (this.params.windowData.currentTab) {
         case 'tap-flow-list':
           return 'TapFlowListForTapServiceSidePage'
+        case 'event-drawer':
+          return 'EventListForSnapshotSidePage'
         default:
           return ''
       }

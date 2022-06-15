@@ -16,9 +16,9 @@
         </a-form-item>
         <a-form-item :label="$t('compute.tap_direction')">
           <a-radio-group v-decorator="decorators.direction">
+            <a-radio-button value="BOTH">{{ $t('compute.direction_both') }}</a-radio-button>
             <a-radio-button value="IN">{{ $t('compute.direction_in') }}</a-radio-button>
             <a-radio-button value="OUT">{{ $t('compute.direction_out') }}</a-radio-button>
-            <a-radio-button value="BOTH">{{ $t('compute.direction_both') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item :label="$t('compute.text_175')">
@@ -129,7 +129,7 @@ export default {
         ],
         direction: [
           'direction',
-          { initialValue: 'IN' },
+          { initialValue: 'BOTH' },
         ],
         type: [
           'type',
@@ -187,23 +187,36 @@ export default {
       return nics.filter(item => item.mac)
     },
     hostParams () {
-      return {
+      const ret = {
         scope: this.scope,
         filter: 'hypervisor.notin(baremetal,container)',
         brand: 'OneCloud',
         limit: 20,
         system: this.isAdminMode,
       }
+      const { type, target_id } = this.params.tapService
+      if (type === 'host') {
+        ret.filter = ['hypervisor.notin(baremetal,container)', `id.notin(${target_id})`]
+      }
+      return ret
     },
     serverParams () {
-      return {
+      const ret = {
         scope: this.scope,
         filter: 'hypervisor.notin(baremetal,container)',
         brand: 'OneCloud',
         limit: 20,
         system: this.isAdminMode,
       }
+      const { type, target_id } = this.params.tapService
+      if (type === 'guest') {
+        ret.filter = ['hypervisor.notin(baremetal,container)', `id.notin(${target_id})`]
+      }
+      return ret
     },
+  },
+  created () {
+    this.$m = new this.$Manager('tap_flows', 'v1')
   },
   methods: {
     async handleValuesChange (vm, changedFields) {
@@ -238,10 +251,8 @@ export default {
       })
     },
     doCreate (data) {
-      return this.params.onManager('create', {
-        managerArgs: {
-          data,
-        },
+      return this.$m.create({
+        data,
       })
     },
     async handleConfirm () {
