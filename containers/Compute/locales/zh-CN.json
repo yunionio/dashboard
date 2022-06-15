@@ -1594,5 +1594,6 @@
   "compute.vswitch": "虚拟交换机",
   "compute.vnic": "虚拟机网卡",
   "compute.vm_mac": "虚拟机mac地址",
-  "compute.tap_service_delete_tip": "已有镜像源的镜像目的不允许删除"
+  "compute.tap_service_delete_tip": "已有镜像源的镜像目的不允许删除",
+  "compute.num_queues": "队列数量"
 }
