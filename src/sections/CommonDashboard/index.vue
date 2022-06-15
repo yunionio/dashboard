@@ -1,16 +1,21 @@
 <template>
-  <a-spin :spinning="loading">
-    <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
-      <a-col class="mb-3" :lg="12" :xl="6" v-for="item in progressList" :key="item.label">
-        <progress-card :progress="item" />
-      </a-col>
-    </a-row>
-    <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
-      <a-col class="mb-3" :lg="12" :xl="8" v-for="item in ringCardsList" :key="item.title">
-        <ring-card :options="item" height="150px" />
-      </a-col>
-    </a-row>
-  </a-spin>
+  <div>
+    <a-button @click="handleRefresh" class="action-btn">
+      <icon type="refresh" />
+    </a-button>
+    <a-spin :spinning="loading">
+      <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
+        <a-col class="mb-3" :lg="12" :xl="6" v-for="item in progressList" :key="item.label">
+          <progress-card :progress="item" />
+        </a-col>
+      </a-row>
+      <a-row class="mb-2" :gutter="{ lg: 24, xl: 12, xxl: 24 }">
+        <a-col class="mb-3" :lg="12" :xl="8" v-for="item in ringCardsList" :key="item.title">
+          <ring-card :options="item" height="150px" />
+        </a-col>
+      </a-row>
+    </a-spin>
+  </div>
 </template>
 
 <script>
@@ -168,6 +173,19 @@ export default {
         this.loading = false
       })
     },
+    handleRefresh () {
+      this.fetchData()
+    },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.action-btn {
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.65);
+  &:hover {
+    color: #40a9ff;
+  }
+}
+</style>
