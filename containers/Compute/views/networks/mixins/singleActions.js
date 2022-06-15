@@ -2,6 +2,7 @@ import { SERVER_TYPE } from '@Compute/constants'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { PROVIDER_MAP } from '@/constants'
 import i18n from '@/locales'
+import { hasSetupKey } from '@/utils/auth'
 
 export default {
   created () {
@@ -38,6 +39,14 @@ export default {
                   refresh: this.refresh,
                 })
               },
+              meta: () => {
+                const isOneCloud = this.data.brand === 'OneCloud'
+                return {
+                  validate: isOneCloud,
+                  tooltip: !isOneCloud && i18n.t('compute.text_391'),
+                }
+              },
+              hidden: () => !hasSetupKey(['onecloud']),
             },
             {
               label: i18n.t('compute.text_390'),
