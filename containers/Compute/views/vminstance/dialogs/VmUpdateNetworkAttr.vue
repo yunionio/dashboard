@@ -4,7 +4,7 @@
     <div slot="body">
       <a-alert class="mb-2" type="warning">
         <div slot="message">
-          重启虚拟机后生效
+          {{ $t('compute.update_network.alert') }}
         </div>
       </a-alert>
       <dialog-selected-tips :name="$t('dictionary.server')" :count="params.data.length" :action="$t('compute.text_247')" />
