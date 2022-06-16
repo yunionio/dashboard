@@ -231,8 +231,6 @@ export default {
 
         if (response?.value && response.value[`dashboard-${this.scope}`]) {
           return response.value[`dashboard-${this.scope}`]
-        } else {
-          return await this.getDashboard()
         }
       } catch (error) {
         console.log(error)
