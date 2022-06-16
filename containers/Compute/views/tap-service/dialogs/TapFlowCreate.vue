@@ -1,6 +1,6 @@
 <template>
   <base-dialog @cancel="cancelDialog">
-    <div slot="header">{{$t('compute.text_709', [$t('dictionary.tap_flow')])}}</div>
+    <div slot="header">{{$t('compute.add_tap_flow')}}</div>
     <div slot="body">
       <a-form
         v-bind="formItemLayout"
@@ -32,7 +32,7 @@
             <base-select
                 v-decorator="decorators.host_id"
                 class="w-100"
-                :filterable="true"
+                remote
                 resource="hosts"
                 version="v1"
                 needParams
@@ -60,7 +60,7 @@
             <base-select
                 v-decorator="decorators.guest_id"
                 class="w-100"
-                :filterable="true"
+                remote
                 resource="servers"
                 version="v1"
                 needParams
@@ -75,7 +75,7 @@
                 class="w-100"
                 :options="vmMac"
                 idKey="mac"
-                nameKey="mac"
+                nameKey="macLabel"
                 isDefaultSelect
                 :select-props="{ placeholder: $t('compute.text_148', [$t('compute.vm_mac')]) }" />
           </a-form-item>
@@ -184,7 +184,12 @@ export default {
     },
     vmMac () {
       const { nics = [] } = this.currentServer
-      return nics.filter(item => item.mac)
+      return nics.filter(item => item.mac).map(item => {
+        return {
+          ...item,
+          macLabel: `${item.mac}${item.ip_addr ? ` (${item.ip_addr})` : ''}`,
+        }
+      })
     },
     hostParams () {
       const ret = {
@@ -264,6 +269,7 @@ export default {
         await this.doCreate(values)
         this.loading = false
         this.$bus.$emit('tap-service-refresh')
+        this.params.success && this.params.success()
         this.cancelDialog()
       } catch (error) {
         this.loading = false
