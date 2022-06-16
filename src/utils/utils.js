@@ -1022,3 +1022,19 @@ export const brandsFilterByOem = (
 
   return !R.is(Array, data) ? ret[0] : ret
 }
+
+// eslint-disable-next-line no-unused-vars
+let isFirstLoadColor = true
+export function getColorByCache () {
+  let colorArr = []
+  const colorStr = process.env.VUE_APP_CHART_COLORS
+  const initColors = ['#ADD1F3', '#F3CBAD', '#F3ADB2', '#ADE4B6', '#ADAEF3', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
+  if (!isFirstLoadColor) return colorArr
+  if (colorStr) {
+    isFirstLoadColor = false
+    colorArr = colorStr.split(',')
+  } else {
+    colorArr = initColors
+  }
+  return colorArr
+}
