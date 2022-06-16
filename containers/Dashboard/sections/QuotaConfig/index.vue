@@ -127,6 +127,7 @@ import { USAGE_CONFIG, getMetricDocs } from '@Dashboard/constants'
 import { typeClouds } from '@/utils/common/hypervisor'
 import { usageMap } from '@/constants/generalUsage'
 import UsageSelect from './UsageSelect'
+import { chartColors } from '@/constants'
 
 export default {
   name: 'QuotaConfig',
@@ -172,23 +173,23 @@ export default {
       colors: [
         {
           key: 'blue',
-          percent60: '#ADD1F3',
-          percent80: '#ADD1F3',
-          percent100: '#ADD1F3',
+          percent60: chartColors[0],
+          percent80: chartColors[0],
+          percent100: chartColors[0],
           label: this.$t('dashboard.color.scheme.blue'),
         },
         {
           key: 'default',
-          percent60: '#ADE4B6',
-          percent80: '#F3CBAD',
-          percent100: '#F3ADB2',
+          percent60: chartColors[3],
+          percent80: chartColors[1],
+          percent100: chartColors[2],
           label: this.$t('dashboard.color.scheme.default'),
         },
         {
           key: 'reverse',
-          percent60: '#F3ADB2',
-          percent80: '#F3CBAD',
-          percent100: '#ADE4B6',
+          percent60: chartColors[2],
+          percent80: chartColors[1],
+          percent100: chartColors[3],
           label: this.$t('dashboard.color.scheme.reverse'),
         },
       ],
