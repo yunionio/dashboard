@@ -140,18 +140,11 @@ export default {
         ...changedFields,
       }
       await this.$nextTick()
-      // if (changedFields.project) {
-      //   this.projectChange()
-      // }
-      // if (changedFields.brand) {
-      //   this.brandChange()
-      // }
-      // if (changedFields.guest_template_id) {
-      //   this.templateChange()
-      // }
-      // if (changedFields.vpc || Object.keys(changedFields).indexOf('vpc') > -1) {
-      //   this.vpcChange()
-      // }
+      if (changedFields.target_id && this.serverType === 'host') {
+        this.form.fc.setFieldsValue({
+          mac_addr: '',
+        })
+      }
     },
     serverChange (data) {
       if (this.serverType === 'host') {
