@@ -86,6 +86,7 @@ export default {
         ],
       },
       singleActions: [
+        ...getEnabledSwitchActions(this),
         {
           label: this.$t('compute.perform_delete'),
           permission: 'tapflows_delete',
@@ -109,40 +110,18 @@ export default {
             return ret
           },
         },
-        {
-          label: this.$t('cloudenv.text_311'),
-          actions: obj => {
-            return [
-              // 启用禁用
-              ...getEnabledSwitchActions(this, obj, ['tapflows_perform_enable', 'tapflows_perform_disable'], {
-                metas: [
-                  () => {
-                    const ret = {
-                      validate: !obj.enabled,
-                    }
-                    return ret
-                  },
-                  () => {
-                    const ret = {
-                      validate: obj.enabled,
-                    }
-                    return ret
-                  },
-                ],
-                resourceName: this.$t('dictionary.tap_flow'),
-              }),
-            ]
-          },
-        },
       ],
       groupActions: [
         {
-          label: this.$t('compute.perform_create'),
+          label: this.$t('compute.add_tap_flow'),
           permission: 'tapservices_create',
           action: () => {
             this.createDialog('TapFlowCreateDialog', {
               tapService: this.data,
               onManager: this.onManager,
+              success: () => {
+                this.list.refresh()
+              },
             })
           },
           meta: () => ({

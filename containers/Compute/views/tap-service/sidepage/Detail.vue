@@ -6,10 +6,12 @@
 </template>
 
 <script>
+import WindowsMixin from '@/mixins/windows'
 import { getEnabledTableColumn, getCopyWithContentTableColumn } from '@/utils/common/tableColumn'
 
 export default {
-  name: 'SkuDetail',
+  name: 'TapServiceDetail',
+  mixins: [WindowsMixin],
   props: {
     data: {
       type: Object,
@@ -43,6 +45,13 @@ export default {
         {
           title: this.$t('compute.target_name'),
           field: 'target',
+          slots: {
+            default: ({ row }) => {
+              return <list-body-cell-wrap copy row={ row } field='target' title={ row.target } hideField={ true }>
+                <side-page-trigger permission={row.type === 'host' ? 'hosts_get' : 'server_get'} name={row.type === 'host' ? 'HostSidePage' : 'VmInstanceSidePage'} id={row.target_id} vm={this}>{ row.target }</side-page-trigger>
+              </list-body-cell-wrap>
+            },
+          },
         },
         {
           title: this.$t('compute.target_ip'),
