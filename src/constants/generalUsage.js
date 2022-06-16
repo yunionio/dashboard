@@ -212,42 +212,30 @@ export const usageMap = {
     },
     unit: 'M',
   },
-  diskAttach_ssd: {
+  diskAttachSsd: {
     field: {
       used: {
-        system: 'all.disks.ssd.mounted',
-        domain: 'domain.disks.ssd.mounted',
-        project: 'disks.ssd.mounted',
+        system: 'storages.system.medium_type.ssd_capacity_used',
       },
       remain: {
-        system: 'all.disks.ssd.unmounted',
-        domain: 'domain.disks.ssd.unmounted',
-        project: 'disks.unmounted',
+        system: 'storages.system.medium_type.ssd_capacity_no_used',
       },
       total: {
-        system: 'all.disks.ssd',
-        domain: 'domain.disks.ssd',
-        project: 'disks.ssd',
+        system: 'storages.system.medium_type.ssd_capacity',
       },
     },
     unit: 'M',
   },
-  diskAttach_hdd: {
+  diskAttachHdd: {
     field: {
       used: {
-        system: 'all.disks.hdd.mounted',
-        domain: 'domain.disks.hdd.mounted',
-        project: 'disks.hdd.mounted',
+        system: 'storages.system.medium_type.hybrid_capacity_used',
       },
       remain: {
-        system: 'all.disks.hdd.unmounted',
-        domain: 'domain.disks.hdd.unmounted',
-        project: 'disks.hdd.unmounted',
+        system: 'storages.system.medium_type.hybrid_capacity_no_used',
       },
       total: {
-        system: 'all.disks.hdd',
-        domain: 'domain.disks.hdd',
-        project: 'disks.hdd',
+        system: 'storages.system.medium_type.hybrid_capacity',
       },
     },
     unit: 'M',

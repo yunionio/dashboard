@@ -1327,9 +1327,13 @@
     "all.buckets": "存储桶数量",
     "all.cpu_commit_rate.running": "运行状态的虚拟机CPU超售比",
     "all.disks": "磁盘总容量",
-    "all.disks.ssd": "SSD磁盘总容量",
-    "all.disks.hdd": "HDD磁盘总容量",
-    "all.disks.mounted": "已挂载磁盘总容量",
+    "storages.system.medium_type.ssd_capacity": "SSD磁盘总容量",
+    "storages.system.medium_type.ssd_capacity_used": "已挂载的SSD磁盘总容量",
+    "storages.system.medium_type.ssd_capacity_no_used": "未挂载的SSD磁盘总容量",
+    "storages.system.medium_type.hybrid_capacity": "HDD磁盘总容量",
+    "storages.system.medium_type.hybrid_capacity_used": "已挂载的HDD磁盘总容量",
+    "storages.system.medium_type.hybrid_capacity_no_used": "未挂载的HDD磁盘总容量",
+    "all.disks.mounted": "已挂载的磁盘总容量",
     "all.disks.unmounted": "未挂载的磁盘总容量",
     "all.disks.unready": "异常状态的磁盘容量",
     "all.eip": "弹性公网IP和公网IP总数",
@@ -2754,7 +2758,11 @@
       "operation_status": "状态",
       "id": "ID",
       "vmem_size": "内存",
-      "disk": "磁盘"
+      "disk": "磁盘",
+      "cpu_usage": "CPU使用率",
+      "mem_usage": "内存使用率",
+      "disk_usage": "磁盘使用率"
+
     },
     "action": {
       "save": "保存",

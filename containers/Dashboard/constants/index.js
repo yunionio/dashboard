@@ -37,42 +37,42 @@ export const USAGE_CONFIG = {
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'all.disks.ssd': {
+  'storages.system.medium_type.ssd_capacity': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'all.disks.hdd': {
+  'storages.system.medium_type.hybrid_capacity': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'all.disks.ssd.mounted': {
+  'storages.system.medium_type.ssd_capacity_used': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'all.disks.ssd.unmounted': {
+  'storages.system.medium_type.ssd_capacity_no_used': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'all.disks.hdd.mounted': {
+  'storages.system.medium_type.hybrid_capacity_used': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),
     scope: SCOPES_MAP.system.key,
     clouds: [CLOUD_ENVS.onpremise, CLOUD_ENVS.private, CLOUD_ENVS.public],
   },
-  'all.disks.hdd.unmounted': {
+  'storages.system.medium_type.hybrid_capacity_no_used': {
     formatter: val => sizestrWithUnit(val, 'M', 1024),
     canUseUserUnit: true,
     userUnitFormatter: (val, unit) => sizeToDesignatedUnit(val, 'M', unit, 1024),

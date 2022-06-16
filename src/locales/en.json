@@ -2739,7 +2739,10 @@
       "operation_status": "Status",
       "id": "ID",
       "vmem_size": "Memory",
-      "disk": "Disk"
+      "disk": "Disk",
+      "cpu_usage": "CPU USAGE",
+      "mem_usage": "MEM USAGE",
+      "disk_usage": "Disk USAGE"
     },
     "action": {
       "save": "Save",
@@ -5170,7 +5173,7 @@
   "common.password_no_equal": "Old and new passwords cannot be consistent",
   "common.command": "Command",
   "common.login_user": "Login User",
-  "common_744": "图标",
+  "common_744": "Icon",
   "common.remote_control": "Remote Control",
   "common.default_search_key": "Default is {0} search",
   "common.theme.color.lake_blue": "Lake Blue"

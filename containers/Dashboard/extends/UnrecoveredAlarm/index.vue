@@ -207,7 +207,7 @@ export default {
       try {
         Promise.all([this.getData('important'), this.getData('normal'), this.getData('fatal')]).then(res => {
           this.chartOptions.series[0].data = this.chartData.sort(function (a, b) { return a.index_key - b.index_key })
-          this.chartOptions.title[0].subtext = this.total
+          this.chartOptions.title[0].subtext = (this.total === 0 ? '0' : this.total)
         })
       } finally {
         this.loading = false

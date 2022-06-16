@@ -232,7 +232,6 @@ export default {
     async initWidgetParamter () {
       try {
         const response = await this.$store.dispatch('widgetSetting/getFetchWidgetSetting')
-
         if (response?.value && response.value[`dashboard-${this.scope}`]) {
           return response.value[`dashboard-${this.scope}`]
         } else {

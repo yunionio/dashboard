@@ -1572,7 +1572,6 @@
   "compute.qemu_cmdline": "Qemu Cmdline",
   "compute.text_1404": "VIP",
   "compute.is_daemon": "Daemon VM",
-  "compute.qemu_cmdline": "Qemu Cmdline",
   "compute.vpc_extrnal_id": "VPC Extrnal ID",
   "compute.mainternance_in_disabled_tip": "The number of virtual machines on the host is 0"
 }

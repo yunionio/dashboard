@@ -246,42 +246,44 @@ export default {
         },
       },
       {
-        field: 'vcpu_count_used',
-        title: 'CPU',
+        field: 'cpu_usage',
+        title: i18nLocale.t('table.title.cpu_usage'),
         sortable: true,
         minWidth: 150,
         slots: {
           default: ({ row }) => {
-            if (row.vcpu_count) {
-              return [<a-progress percent={ row.vcpu_count } size="small" />]
+            if (row.cpu_usage !== null || row.cpu_usage !== undefined) {
+              return [<a-progress percent={ row.cpu_usage.toFixed(4) * 100 } size="small" />]
             }
             return []
           },
         },
       },
       {
-        field: 'vmem_size_used',
-        title: i18nLocale.t('table.title.vmem_size'),
+        field: 'mem_usage',
+        title: i18nLocale.t('table.title.mem_usage'),
         sortable: true,
         minWidth: 150,
         slots: {
           default: ({ row }) => {
-            if (row.vmem_size) {
-              return [<a-progress percent={ row.vmem_size } size="small" />]
+            if (row.mem_usage !== null || row.mem_usage !== undefined) {
+              return [<a-progress percent={ row.mem_usage.toFixed(4) * 100 } size="small" />]
             }
             return []
           },
         },
       },
       {
-        field: 'disk_used',
-        title: i18nLocale.t('table.title.disk'),
+        field: 'disk_usage',
+        title: i18nLocale.t('table.title.disk_usage'),
         sortable: true,
         minWidth: 150,
         slots: {
           default: ({ row }) => {
-            if (this.isPreLoad && !row.disk) return [<data-loading />]
-            return [<a-progress percent={ row.disk } size="small" />]
+            if (row.disk_usage !== null || row.disk_usage !== undefined) {
+              return [<a-progress percent={ row.disk_usage.toFixed(4) * 100 } size="small" />]
+            }
+            return []
           },
         },
       },
