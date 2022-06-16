@@ -23,8 +23,8 @@
         </a-form-item>
         <a-form-item :label="$t('compute.text_175')">
           <a-radio-group v-decorator="decorators.type">
-            <a-radio-button value="vswitch">{{ $t('compute.vswitch') }}</a-radio-button>
             <a-radio-button value="vnic">{{ $t('compute.vnic') }}</a-radio-button>
+            <a-radio-button value="vswitch">{{ $t('compute.vswitch') }}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <template v-if="serverType === 'vswitch'">
@@ -106,7 +106,7 @@ export default {
           onValuesChange: this.handleValuesChange,
         }),
         fd: {
-          type: 'vswitch',
+          type: 'vnic',
         },
       },
       currentHost: {},
@@ -134,7 +134,7 @@ export default {
         type: [
           'type',
           {
-            initialValue: 'vswitch',
+            initialValue: 'vnic',
           },
         ],
         host_id: [
@@ -228,6 +228,19 @@ export default {
       this.form.fd = {
         ...this.form.fd,
         ...changedFields,
+      }
+      await this.$nextTick()
+      if (changedFields.guest_id) {
+        this.form.fc.setFieldsValue({
+          mac_addr: '',
+        })
+      }
+      if (changedFields.host_id) {
+        if (!this.hostWires.some(item => item.wire_id === this.form.fd.wire_id)) {
+          this.form.fc.setFieldsValue({
+            wire_id: '',
+          })
+        }
       }
     },
     hostChange (data) {
