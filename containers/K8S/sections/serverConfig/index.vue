@@ -110,6 +110,7 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { NODE_ROLE_MAP } from '../../views/cluster/constants'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { HYPERVISORS_MAP } from '@/constants'
 import { uuid } from '@/utils/utils'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import Sku from '@Compute/sections/SKU'
@@ -167,7 +168,10 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
     useImage () {
-      // TODO: support image-select
+      const hypervisor = this.$props.hypervisor
+      if (hypervisor === HYPERVISORS_MAP.kvm.key || hypervisor === HYPERVISORS_MAP.cloudpods.key) {
+        return true
+      }
       return false
     },
     serverConfigRemaining () {
@@ -338,7 +342,9 @@ export default {
       throw Error(`Not support platform ${this.platform}`)
     },
     getImageParams () {
-      return {}
+      return {
+        distributions: ['centos'],
+      }
     },
     getCacheImageParams () {
       if (!this.isPublicCloud()) {
