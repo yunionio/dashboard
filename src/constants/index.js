@@ -130,7 +130,7 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'schedtag',
 ]
 
-export const chartColors = ['#ADD1F3', '#F3CBAD', '#F3ADB2', '#ADAEF3', '#ADE4B6', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
+export const chartColors = process.env.VUE_APP_CHART_COLORS || ['#ADD1F3', '#F3CBAD', '#F3ADB2', '#ADE4B6', '#ADAEF3', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
 
 export const contactMap = {
   webconsole: {
