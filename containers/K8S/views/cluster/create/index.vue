@@ -105,11 +105,13 @@
 /* import * as R from 'ramda' */
 import { mapGetters } from 'vuex'
 import { HYPERVISORS_MAP } from '@/constants'
+import { IMAGES_TYPE_MAP } from '@/constants/compute'
 import { KUBE_PROVIDER, K8S_HYPERVISORS_MAP, getClusterDocs } from '../constants'
 import ServerConfig from '@K8S/sections/serverConfig'
 import CloudregionVpc from '@/sections/CloudregionVpc'
 import { isWithinRange, isRequired } from '@/utils/validate'
 import { findPlatform } from '@/utils/common/hypervisor'
+import i18n from '@/locales'
 
 function checkIpInSegment (i, networkData) {
   return (rule, value, _callback) => {
@@ -245,10 +247,31 @@ export default {
             },
           ],
           imageOS: i => [
-            `image[${i}]`,
+            `imageOS[${i}]`,
             {
-              rules: [
-                { validator: isRequired(true, 'id'), message: this.$t('compute.text_214') },
+              os: [
+                `os[${i}]`,
+                {
+                  initialValue: '',
+                  rules: [
+                    { required: true, message: i18n.t('compute.text_153') },
+                  ],
+                },
+              ],
+              image: [
+                `image[${i}]`,
+                {
+                  initialValue: { key: '', label: '' },
+                  rules: [
+                    { validator: isRequired(), message: i18n.t('compute.text_214') },
+                  ],
+                },
+              ],
+              imageType: [
+                `imageType[${i}]`,
+                {
+                  initialValue: IMAGES_TYPE_MAP.standard.key,
+                },
               ],
             },
           ],
@@ -610,6 +633,9 @@ export default {
         if ((hypervisor === HYPERVISORS_MAP.kvm.key || hypervisor === HYPERVISORS_MAP.cloudpods.key) && disks[0].backend.indexOf('local') !== -1) {
           disks[0].medium = disks[0].backend.split('-')[1]
           disks[0].backend = disks[0].backend.split('-')[0]
+        }
+        if (data.image && data.image[key]) {
+          disks[0].image_id = data.image[key].key
         }
         const machinesItem = {
           vm: {

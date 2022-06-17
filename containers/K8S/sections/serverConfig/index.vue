@@ -64,11 +64,15 @@
           :sku-params="skuParam(i)" />
         </a-form-item>
       <a-form-item :label="$t('compute.text_267')" v-bind="formItemLayout" class="mb-0" v-if="useImage">
-        <image-select
-          :decorator="decorator.imageOS(item.key)"
+        <os-select
+          :type="type"
+          :uefi="uefi"
+          :form="form"
+          :hypervisor="hypervisor"
+          :decorator="decorator.imageOS(item.key)[1]"
+          @updateImageMsg="updateImageMsg(i, $event)"
           :cloudType="platform"
           :imageType="getImageType()"
-          :form="form"
           :imageParams="getImageParams()"
           :cacheImageParams="getCacheImageParams()" />
       </a-form-item>
@@ -110,17 +114,18 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { NODE_ROLE_MAP } from '../../views/cluster/constants'
 import { IMAGES_TYPE_MAP } from '@/constants/compute'
+import { HYPERVISORS_MAP } from '@/constants'
 import { uuid } from '@/utils/utils'
 import SystemDisk from '@Compute/views/vminstance/create/components/SystemDisk'
 import Sku from '@Compute/sections/SKU'
-import ImageSelect from '@Compute/sections/OsSelect/ImageSelect'
+import OsSelect from '@Compute/sections/OsSelect'
 
 export default {
   name: 'K8SClusterServerConfig',
   components: {
     SystemDisk,
     Sku,
-    ImageSelect,
+    OsSelect,
   },
   props: {
     decorator: {
@@ -155,6 +160,7 @@ export default {
     }, NODE_ROLE_MAP)
     return {
       imageMock: { min_disk: 40960 }, // 通过mock image数据设置最小磁盘大小
+      selectedImage: {},
       formItemLayout: {
         wrapperCol: { span: 20 },
         labelCol: { span: 3 },
@@ -167,7 +173,10 @@ export default {
   computed: {
     ...mapGetters(['isAdminMode', 'scope', 'isDomainMode', 'userInfo', 'l3PermissionEnable']),
     useImage () {
-      // TODO: support image-select
+      const hypervisor = this.$props.hypervisor
+      if (hypervisor === HYPERVISORS_MAP.kvm.key || hypervisor === HYPERVISORS_MAP.cloudpods.key) {
+        return true
+      }
       return false
     },
     serverConfigRemaining () {
@@ -293,6 +302,14 @@ export default {
         return conf
       })
     },
+    updateImageMsg (index, { imageMsg }) {
+      this.selectedImage = imageMsg
+      this.setConfig(index, (conf) => {
+        conf.image = imageMsg
+        console.log(`set config(${index}) image to ${imageMsg.name}`)
+        return conf
+      })
+    },
     getSku (index) {
       return this.getConfig(index).sku
     },
@@ -338,7 +355,9 @@ export default {
       throw Error(`Not support platform ${this.platform}`)
     },
     getImageParams () {
-      return {}
+      return {
+        distributions: ['centos'],
+      }
     },
     getCacheImageParams () {
       if (!this.isPublicCloud()) {
