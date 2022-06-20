@@ -25,14 +25,26 @@
           :sort-config="{ sortMethod: () => {} }"
           :tooltip-config="{ showAll: false }"
           :expand-config="expandConfig"
-          :pager-config="tablePage"
           :span-method="spanMethod"
-          @page-change="handlePageChange"
           @sort-change="handleSortChange"
           v-on="dynamicEvents"
           v-bind="dynamicProps">
           <template v-slot:empty>
             <loader :loading="loading" :noDataText="noDataText" />
+          </template>
+          <template v-slot:pager>
+            <vxe-pager
+              :layouts="tablePage.layouts"
+              :current-page="tablePage.currentPage"
+              :page-size="tablePage.pageSize"
+              :total="tablePage.total"
+              @page-change="handlePageChange">
+              <template v-if="!loading && showTableOverviewIndexs" v-slot:left>
+                <div class="table-overview">
+                  {{ $t('common.table.overview') }}：{{ tableOverview }}
+                </div>
+              </template>
+            </vxe-pager>
           </template>
         </vxe-grid>
         <template v-if="loadMoreShow">
@@ -145,6 +157,9 @@ export default {
     },
     // 表格编辑配置
     editConfig: Object,
+    tableOverviewIndexs: {
+      type: Array,
+    },
   },
   data () {
     const storageKey = this.id && `__oc_${this.id}__`
@@ -193,7 +208,7 @@ export default {
       return ret
     },
     tablePage () {
-      if (this.total <= 0 || !this.showPage) return null
+      if (this.total <= 0 || !this.showPage) return {}
       const currentPage = this.finalLimit ? Math.floor(this.offset / this.finalLimit) + 1 : 1
       return {
         total: this.total,
@@ -241,6 +256,17 @@ export default {
     },
     loadMoreShow () {
       return this.tableData.length > 0 && (typeof this.nextMarker) !== 'undefined'
+    },
+    showTableOverviewIndexs () {
+      return this.tableOverviewIndexs?.length > 0
+    },
+    tableOverview () {
+      if (this.showTableOverviewIndexs) {
+        return this.tableOverviewIndexs.map(item => {
+          return `${item.key}: ${item.value}`
+        }).join('、')
+      }
+      return []
     },
   },
   watch: {
@@ -575,5 +601,13 @@ export default {
 .sortable-tree-demo .vxe-body--row.sortable-ghost,
 .sortable-tree-demo .vxe-body--row.sortable-chosen {
   background-color: #dfecfb;
+}
+.table-overview {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  font-size: 14px;
 }
 </style>

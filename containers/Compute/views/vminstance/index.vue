@@ -13,6 +13,7 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
+        :tableOverviewIndexs="tableOverviewIndexs"
         @updateCloudEnvOptions="updateCloudEnvOptions"
         @refresh="refreshHandle" />
     </page-body>
@@ -43,10 +44,15 @@ export default {
     },
   },
   created () {
-    this.fetchResStatistics({
-      scope: this.$store.getters.scope,
-      filter: 'hypervisor.notin(baremetal,container)',
-    })
+    this.queryResStatistics()
+  },
+  methods: {
+    queryResStatistics () {
+      this.fetchResStatistics({
+        scope: this.$store.getters.scope,
+        filter: 'hypervisor.notin(baremetal,container)',
+      })
+    },
   },
 }
 </script>
