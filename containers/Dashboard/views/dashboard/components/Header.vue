@@ -268,6 +268,7 @@ export default {
           await this.$store.dispatch('widgetSetting/putFetchWidgetSettingValue', {
             [`dashboard-${this.scope}`]: this.data,
           })
+          this.$message.success(this.$t('compute.text_423'))
         },
       })
     },

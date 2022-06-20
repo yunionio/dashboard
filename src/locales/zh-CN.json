@@ -2647,7 +2647,9 @@
     "important": "重要",
     "normal": "正常",
     "fatal": "致命",
-    "apsara": "飞天"
+    "apsara": "飞天",
+    "tap_service": "流量镜像",
+    "tap_flow": "镜像源"
   },
   "res": {
     "role": "@:dictionary.role",

@@ -31,7 +31,6 @@
                 :is-resizable="true"
                 :is-mirrored="false"
                 :margin="colMargin"
-                :use-style-cursor="false"
                 :use-css-transforms="true">
                 <template v-for="item in layout">
                   <grid-item
@@ -74,9 +73,9 @@ import { mapGetters } from 'vuex'
 import interact from 'interactjs'
 import VueGridLayout from 'vue-grid-layout'
 import debounce from 'lodash/debounce'
+import extendsComponents from '@scope/extends'
 import GridShadow from '@Dashboard/components/GridShadow'
 import ExtendGallery from '@Dashboard/sections/ExtendGallery'
-import extendsComponents from '@Dashboard/extends'
 import { clear as clearCache } from '@Dashboard/utils/cache'
 import { uuid } from '@/utils/utils'
 import storage from '@/utils/storage'
@@ -97,10 +96,10 @@ export default {
       dashboardParams: {},
       layout: [],
       layoutInit: [],
-      colNum: 32,
-      rowHeight: 30,
-      colMargin: [15, 15],
-      maxRows: 164,
+      colNum: 56,
+      rowHeight: 65,
+      colMargin: [5, 5],
+      maxRows: 34,
       defaultGridW: 2,
       defaultGridH: 2,
       currentOption: null,
@@ -206,6 +205,17 @@ export default {
         throw error
       }
     },
+    async fetchDashboardWidgetParamter () {
+      try {
+        const response = await this.$store.dispatch('widgetSetting/getFetchWidgetSetting')
+
+        if (response?.value && response.value[`dashboard-${this.scope}`]) {
+          this.setData(response.value[`dashboard-${this.scope}`])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async fetchDashboard () {
       try {
         const response = await this.pm.get({ id: this.id })
@@ -213,6 +223,7 @@ export default {
           this.setData(response.data.value)
         }
       } catch (error) {
+        await this.fetchDashboardWidgetParamter()
         throw error
       }
     },
@@ -453,7 +464,6 @@ export default {
           params: this.dashboardParams[layout.i],
         }
       }
-      console.log(JSON.stringify(ret), '==========ret=========')
       return ret
     },
     handleBack () {

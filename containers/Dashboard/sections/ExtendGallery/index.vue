@@ -25,8 +25,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import options from './config'
-
+import options from '@scope/extends/config'
 export default {
   name: 'ExtendGallery',
   data () {
@@ -50,7 +49,7 @@ export default {
           effective = false
         }
         // 开源版本过滤
-        if (process.env.VUE_APP_PLATFORM === 'cmp_public' && ['ConsumptionPercent', 'ConsumptionTrend', 'SuggestsysAlertsOverview', 'SuggestsysAlertsDetail', 'Quota', 'BillHistoryLine', 'ResourceHistoryLine', 'Log', 'OptimizationSuggestion'].includes(item.component)) {
+        if (process.env.VUE_APP_PLATFORM === 'cmp_public' && ['ConsumptionPercent', 'ConsumptionTrend', 'SuggestsysAlertsOverview', 'SuggestsysAlertsDetail', 'Quota', 'BillHistoryLine', 'ResourceHistoryLine', 'Log'].includes(item.component)) {
           effective = false
         }
         return effective
@@ -63,7 +62,6 @@ export default {
 
 <style lang="less" scoped>
 @import '~@/styles/less/theme';
-
 .extend-gallery-wrap {
   background-color: #fff;
   width: 300px;

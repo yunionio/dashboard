@@ -1,9 +1,9 @@
 <template>
   <div class="grid-shadow-wrap">
-    <!-- <div class="resolutionguide tips-3840x2160" /> -->
-    <!-- <div class="resolutionguide tips-1920x1080" />
+    <div class="resolutionguide tips-3840x2160" />
+    <div class="resolutionguide tips-1920x1080" />
     <div class="resolutionguide tips-1440x900" />
-    <div class="resolutionguide tips-1024x768" /> -->
+    <div class="resolutionguide tips-1024x768" />
     <div
       ref="container"
       class="grid-edit-container">
@@ -31,9 +31,8 @@ export default {
 .grid-edit-container {
   position: relative;
   min-height: 2245px;
-  min-width: 1024px;
+  min-width: 3925px;
   background: url('../../assets/grid-shadow.png') repeat 0 0;
-  background: rgb(245, 247, 254);
 }
 .resolutionguide {
   position: absolute;

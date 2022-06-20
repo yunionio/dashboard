@@ -39,7 +39,8 @@ const IP_TYPES = {
   loadbalancers: i18n.t('network.text_660'),
   servers: i18n.t('network.text_661'),
   networkinterfaces: i18n.t('network.text_241'),
-  hosts: i18n.t('network.text_662'),
+  hosts: i18n.t('network.host_ip'),
+  instancegroups: i18n.t('network.instancegroup_ip'),
 }
 export default {
   name: 'IPList',

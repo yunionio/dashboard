@@ -10,10 +10,6 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey) {
           type: 'field',
           params: [val.seleteItem],
         },
-        { // 对应 mean(val.seleteItem)
-          type: val.selectFunction || 'mean',
-          params: [],
-        },
         { // 确保后端返回columns有 val.label 的别名
           type: 'alias',
           params: [val.label],
@@ -31,6 +27,14 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey) {
       type: 'tag',
       params: [idKey],
     }],
+  }
+
+  if (model.measurement === 'agent_cpu') {
+    model.tags.push({
+      key: 'cpu',
+      value: 'cpu-total',
+      operator: '=',
+    })
   }
 
   if (val.groupBy && (val.groupBy.length !== 0)) {

@@ -20,7 +20,7 @@ import PhysicalmachineAdd from '@Compute/views/physicalmachine/add'
 import ServerRecovery from '@Compute/views/server-recovery'
 import DiskRecovery from '@Compute/views/disk-recovery'
 import ImageRecovery from '@Compute/views/image-recovery'
-import VIP from '@Compute/views/VIP'
+// import VIP from '@Compute/views/VIP'
 import InstanceGroup from '@Compute/views/instance-group'
 import SKU from '@Compute/views/sku'
 import Keypair from '@Compute/views/keypair'
@@ -41,7 +41,10 @@ import ScalingGroupCreate from '@Compute/views/scaling-group/create'
 import Schedtag from '@Cloudenv/views/schedtag'
 import Schedpolicy from '@Cloudenv/views/schedpolicy'
 import Dynamicschedtag from '@Cloudenv/views/dynamicschedtag'
+import TapService from '@Compute/views/tap-service'
+import TapServiceCreate from '@Compute/views/tap-service/create'
 
+import store from '@/store'
 import Layout from '@/layouts/RouterView'
 import i18n from '@/locales'
 
@@ -501,25 +504,51 @@ export default {
             },
           ],
         },
+        // {
+        //   path: '/VIP',
+        //   meta: {
+        //     label: i18n.t('compute.text_1404'),
+        //     permission: 'instancegroups_list',
+        //     hidden: () => {
+        //       if (isScopedPolicyMenuHidden('sub_hidden_menus.instancegroup')) {
+        //         return true
+        //       }
+        //       return !hasSetupKey(['onestack'])
+        //     },
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'VIP',
+        //       path: '',
+        //       meta: {},
+        //       component: VIP,
+        //     },
+        //   ],
+        // },
         {
-          path: '/VIP',
+          path: '/tap-service',
           meta: {
-            label: i18n.t('compute.text_1404'),
-            permission: 'instancegroups_list',
+            label: i18n.t('dictionary.tap_service'),
+            permission: 'tapservices_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.instancegroup')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.tap_service')) {
                 return true
               }
-              return !hasSetupKey(['onestack'])
+              return !store.getters.isAdminMode
             },
           },
           component: Layout,
           children: [
             {
-              name: 'VIP',
+              name: 'TapService',
               path: '',
-              meta: {},
-              component: VIP,
+              component: TapService,
+            },
+            {
+              name: 'TapServiceCreate',
+              path: 'create',
+              component: TapServiceCreate,
             },
           ],
         },
