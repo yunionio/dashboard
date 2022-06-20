@@ -426,7 +426,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.ipv6_gateway')) {
                 return true
               }
-              return !hasSetupKey(['apsara'])
+              return !hasSetupKey(['apsara', 'aliyun'])
             },
           },
           component: Layout,
