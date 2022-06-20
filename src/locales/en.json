@@ -5166,5 +5166,6 @@
   "common.login_user": "Login User",
   "common.remote_control": "Remote Control",
   "common.default_search_key": "Default is {0} search",
-  "common.theme.color.lake_blue": "Lake Blue"
+  "common.theme.color.lake_blue": "Lake Blue",
+  "common.table.overview": "Overview"
 }

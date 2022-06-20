@@ -5183,5 +5183,6 @@
   "common.login_user": "登录用户",
   "common.remote_control": "远程控制",
   "common.default_search_key": "默认为{0}搜索",
-  "common.theme.color.lake_blue": "湖水蓝"
+  "common.theme.color.lake_blue": "湖水蓝",
+  "common.table.overview": "概览"
 }
