@@ -13,7 +13,8 @@
     :defaultSearchKey="defaultSearchKey"
     :before-show-menu="beforeShowMenu"
     :refresh-method="handleListRefresh"
-    :tag-config-params="tagConfigParams" />
+    :tag-config-params="tagConfigParams"
+    :tableOverviewIndexs="tableOverviewIndexs" />
 </template>
 
 <script>
@@ -64,6 +65,9 @@ export default {
     hiddenFilterOptions: {
       type: Array,
       default: () => ([]),
+    },
+    tableOverviewIndexs: {
+      type: Array,
     },
   },
   data () {

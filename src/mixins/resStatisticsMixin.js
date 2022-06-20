@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import ResStatusTab from '@/sections/ResStatusTab'
-import { arrayToObj } from '@/utils/utils'
+import { arrayToObj, sizestr } from '@/utils/utils'
 
 export default {
   components: {
@@ -13,6 +13,7 @@ export default {
       statusArr: [],
       errorFilterStatus: [],
       otherFilterStatus: [],
+      tableOverviewIndexs: [],
     }
   },
   created () {
@@ -29,6 +30,7 @@ export default {
         const statusObj = arrayToObj(res.data.status_info, 'status')
         this.statusOpts = R.is(Function, callback) ? callback(statusObj) : this.getStatusOpts(statusObj)
         this.statusArr = Object.keys(statusObj)
+        this.generateTableOverviewIndexs(res.data)
       }).catch(err => {
         console.error(err)
         this.statusOpts = []
@@ -87,7 +89,24 @@ export default {
       }
     },
     refreshHandle () {
-      // this.fetchResStatistics()
+      this.queryResStatistics && this.queryResStatistics()
+    },
+    generateTableOverviewIndexs (resData) {
+      this.tableOverviewIndexs = []
+
+      Object.keys(resData).forEach(v => {
+        switch (v) {
+          case 'total_cpu_count':
+            this.tableOverviewIndexs.push({ key: 'CPU', value: `${resData[v]}${this.$t('common_60')}` })
+            break
+          case 'total_mem_size_mb':
+            this.tableOverviewIndexs.push({ key: this.$t('table.title.vmem_size'), value: `${sizestr(resData[v], 'M', 1024)}` })
+            break
+          case 'total_disk_size_mb':
+            this.tableOverviewIndexs.push({ key: this.$t('table.title.disk'), value: sizestr(resData[v], 'M', 1024) })
+            break
+        }
+      })
     },
   },
 }
