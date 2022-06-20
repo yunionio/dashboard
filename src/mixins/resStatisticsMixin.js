@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import ResStatusTab from '@/sections/ResStatusTab'
+import { arrayToObj } from '@/utils/utils'
 
 export default {
   components: {
@@ -25,8 +26,9 @@ export default {
       this.errorFilterStatus = []
       this.otherFilterStatus = []
       this.resStaticsManager.list({ params }).then(res => {
-        this.statusOpts = R.is(Function, callback) ? callback(res.data) : this.getStatusOpts(res.data)
-        this.statusArr = Object.keys(res.data)
+        const statusObj = arrayToObj(res.data.status_info, 'status')
+        this.statusOpts = R.is(Function, callback) ? callback(statusObj) : this.getStatusOpts(statusObj)
+        this.statusArr = Object.keys(statusObj)
       }).catch(err => {
         console.error(err)
         this.statusOpts = []
