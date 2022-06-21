@@ -1313,6 +1313,8 @@ export const PERMISSION = {
   tapflows_perform_disabled: ['compute', 'tap_flows', 'perform', 'disabled'],
   tapflows_delete: ['compute', 'tap_flows', 'delete'],
   tapflows_create: ['compute', 'tap_flows', 'create'],
+
+  tablestores_list: ['compute', 'tablestores', 'list'],
 }
 
 // 已声明权限的资源

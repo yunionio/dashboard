@@ -322,5 +322,7 @@
   "storage.text_266": "Deleting NAS access groups will not affect NAS access groups that have been synced to the public cloud platform.",
   "storage.text_267": "Deleting the cache will delete the NAS access groups that have been synced to the public cloud platform.",
   "storage.nfs_host_check_reqiure": "NFS Host must be entered",
-  "storage.nfs_host_check_valid": "Please enter a valid NFS Host, e.g., 192.168.1.1,192.168.1.2"
+  "storage.nfs_host_check_valid": "Please enter a valid NFS Host, e.g., 192.168.1.1,192.168.1.2",
+  "storage.spec": "Spec",
+  "storage.instance_model": "Instance Model"
 }
