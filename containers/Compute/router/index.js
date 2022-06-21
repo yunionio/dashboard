@@ -20,7 +20,6 @@ import PhysicalmachineAdd from '@Compute/views/physicalmachine/add'
 import ServerRecovery from '@Compute/views/server-recovery'
 import DiskRecovery from '@Compute/views/disk-recovery'
 import ImageRecovery from '@Compute/views/image-recovery'
-// import VIP from '@Compute/views/VIP'
 import InstanceGroup from '@Compute/views/instance-group'
 import SKU from '@Compute/views/sku'
 import Keypair from '@Compute/views/keypair'
@@ -504,28 +503,6 @@ export default {
             },
           ],
         },
-        // {
-        //   path: '/VIP',
-        //   meta: {
-        //     label: i18n.t('compute.text_1404'),
-        //     permission: 'instancegroups_list',
-        //     hidden: () => {
-        //       if (isScopedPolicyMenuHidden('sub_hidden_menus.instancegroup')) {
-        //         return true
-        //       }
-        //       return !hasSetupKey(['onestack'])
-        //     },
-        //   },
-        //   component: Layout,
-        //   children: [
-        //     {
-        //       name: 'VIP',
-        //       path: '',
-        //       meta: {},
-        //       component: VIP,
-        //     },
-        //   ],
-        // },
         {
           path: '/tap-service',
           meta: {
