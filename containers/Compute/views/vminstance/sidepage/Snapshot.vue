@@ -16,6 +16,8 @@
 <script>
 import DiskSnapshotList from '@Compute/views/snapshot/components/List'
 import InstanceSnapshotList from '@Compute/views/snapshot-instance/components/List'
+import { hasSetupKey } from '@/utils/auth'
+import { isScopedPolicyMenuHidden } from '@/utils/scopedPolicy'
 
 export default {
   name: 'SnapshotIndex',
@@ -31,16 +33,6 @@ export default {
   data () {
     return {
       currentComponent: 'DiskSnapshotList',
-      tabs: [
-        {
-          key: 'DiskSnapshotList',
-          label: this.$t('compute.text_101'),
-        },
-        {
-          key: 'InstanceSnapshotList',
-          label: this.$t('compute.text_102'),
-        },
-      ],
     }
   },
   computed: {
@@ -51,6 +43,21 @@ export default {
         default:
           return 'DiskSnapshotListForVminstanceSidepage'
       }
+    },
+    tabs () {
+      const ret = [
+        {
+          key: 'DiskSnapshotList',
+          label: this.$t('compute.text_101'),
+        },
+      ]
+      if (!isScopedPolicyMenuHidden('sub_hidden_menus.instance_snapshot') && hasSetupKey(['onestack', 'vmware'])) {
+        ret.push({
+          key: 'InstanceSnapshotList',
+          label: this.$t('compute.text_102'),
+        })
+      }
+      return ret
     },
   },
   methods: {
