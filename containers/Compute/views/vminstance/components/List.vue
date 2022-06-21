@@ -1,5 +1,6 @@
 <template>
   <page-list
+    :fixed="true"
     show-tag-filter
     show-tag-columns
     show-tag-config
