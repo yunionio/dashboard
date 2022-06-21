@@ -29,6 +29,7 @@
           :button-style="buttonStyle"
           @clear-selected="clearSelected" />
       </template>
+      <br v-if="fixed" :key="index" />
     </template>
   </div>
 </template>
@@ -52,6 +53,10 @@ export default {
     options: {
       type: Array,
       required: true,
+    },
+    fixed: {
+      type: Boolean,
+      default: false,
     },
     buttonType: {
       type: String,

@@ -26,7 +26,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import options from '@scope/extends/config'
-
 export default {
   name: 'ExtendGallery',
   data () {
@@ -63,7 +62,6 @@ export default {
 
 <style lang="less" scoped>
 @import '~@/styles/less/theme';
-
 .extend-gallery-wrap {
   background-color: #fff;
   width: 300px;

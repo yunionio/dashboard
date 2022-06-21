@@ -46,7 +46,9 @@
     <slot name="table-prepend" />
     <!-- 列表待config加载完成后呈现 -->
     <template v-if="configLoaded">
-      <page-list-table
+      <component
+        :is="tableName"
+        :fixed="fixed"
         ref="table"
         :id="id"
         :id-key="idKey"
@@ -100,12 +102,14 @@ import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import PageListHeader from './components/Header'
 import PageListTable from './components/Table'
+import PageListTable_fixed from './components/Table_fixed'
 
 export default {
   name: 'PageList',
   components: {
     PageListHeader,
     PageListTable,
+    PageListTable_fixed,
   },
   props: {
     // 生成的list实例store
@@ -117,6 +121,11 @@ export default {
     showSync: {
       type: Boolean,
       default: true,
+    },
+    // 是否存在固定列
+    fixed: {
+      type: Boolean,
+      default: false,
     },
     // 是否显示批量操作区域
     showGroupActions: {
@@ -233,6 +242,9 @@ export default {
   computed: {
     id () {
       return this.list.id
+    },
+    tableName () {
+      return this.fixed ? 'PageListTable_fixed' : 'PageListTable'
     },
     loading () {
       return this.list.loading

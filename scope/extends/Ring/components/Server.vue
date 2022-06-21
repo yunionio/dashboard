@@ -69,7 +69,6 @@ import { load } from '@Dashboard/utils/cache'
 import { getRequestT, sizestrWithUnit } from '@/utils/utils'
 import mixin from './mixin'
 import { chartColors } from '@/constants'
-
 export default {
   name: 'RingServer',
   components: {

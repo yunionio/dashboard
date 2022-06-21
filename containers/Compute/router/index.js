@@ -503,7 +503,6 @@ export default {
             },
           ],
         },
-
         {
           path: '/tap-service',
           meta: {
@@ -657,6 +656,42 @@ export default {
             },
           ],
         },
+        // {
+        //   path: '/gpu',
+        //   meta: {
+        //     label: i18n.t('compute.text_113'),
+        //     permission: 'isolated_devices_list',
+        //     hidden: () => {
+        //       if (isScopedPolicyMenuHidden('sub_hidden_menus.gpu')) {
+        //         return true
+        //       }
+        //       return !hasSetupKey(['onestack'])
+        //     },
+        //     // hidden: () => {
+        //     //   const hasBMAgent = hasServices('bmagent')
+        //     //   const hasHostAgent = hasServices('hostagent')
+        //     //   if (!hasBMAgent && !hasHostAgent) {
+        //     //     return true
+        //     //   }
+        //     //   return false
+        //     // },
+        //   },
+        //   component: Layout,
+        //   children: [
+        //     {
+        //       name: 'GPU',
+        //       path: '',
+        //       component: GPU,
+        //     },
+        //   ],
+        // },
+      ],
+    },
+    {
+      meta: {
+        label: i18n.t('compute.text_113'),
+      },
+      submenus: [
         {
           path: '/gpu',
           meta: {
@@ -668,14 +703,6 @@ export default {
               }
               return !hasSetupKey(['onestack'])
             },
-            // hidden: () => {
-            //   const hasBMAgent = hasServices('bmagent')
-            //   const hasHostAgent = hasServices('hostagent')
-            //   if (!hasBMAgent && !hasHostAgent) {
-            //     return true
-            //   }
-            //   return false
-            // },
           },
           component: Layout,
           children: [

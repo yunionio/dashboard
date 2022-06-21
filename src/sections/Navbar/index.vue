@@ -19,6 +19,34 @@
         <img class="logo" :src="logo" />
       </router-link>
     </div>
+    <!-- 全局搜索 -->
+    <div class="h-100 d-flex align-items-center flex-fill">
+      <div class="globar-search-wrapper px-2" v-if="showGlobalSearch">
+        <global-search />
+      </div>
+    </div>
+    <slot name="frontNavbar" />
+    <!-- 资源报警 -->
+    <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
+    <!-- 消息中心 -->
+    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
+    <!-- 工单 -->
+    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkFlow && itsmServiceEnable" />
+    <!-- 大屏监控 -->
+    <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && (isAdminMode || isDomainMode)">
+      <a-tooltip :title="$t('navbar.button.monitor')" placement="right">
+        <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
+          <icon type="daping" style="font-size: 20px;" />
+        </div>
+      </a-tooltip>
+    </div>
+    <!-- cloudsheel -->
+    <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
+    <slot name="behindNavbar" />
+    <!-- 更多 -->
+    <slot name="morePopover">
+      <more-popover class="navbar-item-icon primary-color-hover" />
+    </slot>
     <!-- 视图选择 -->
     <div class="navbar-item primary-color-hover d-flex align-items-center justify-content-end flex-shrink-0 flex-grow-0" v-if="showViewSelection">
       <a-popover
@@ -117,34 +145,6 @@
         </a-menu>
       </a-dropdown>
     </div>
-    <!-- 全局搜索 -->
-    <div class="h-100 d-flex align-items-center flex-fill">
-      <div class="globar-search-wrapper px-2" v-if="showGlobalSearch">
-        <global-search />
-      </div>
-    </div>
-    <slot name="frontNavbar" />
-    <!-- 资源报警 -->
-    <alertresource v-if="showAlertresource" :res_total="alertresource.total" :alert_total="alertrecords.total" class="navbar-item-icon primary-color-hover" />
-    <!-- 消息中心 -->
-    <notify-popover class="navbar-item-icon primary-color-hover" :notifyMenuTitleUsedText="notifyMenuTitleUsedText" v-if="showNotify" />
-    <!-- 工单 -->
-    <work-order-popover class="navbar-item-icon primary-color-hover" :workOrderMenuTitleUsedText="workOrderMenuTitleUsedText" v-if="showWorkFlow && itsmServiceEnable" />
-    <!-- 大屏监控 -->
-    <div class="navbar-item-icon primary-color-hover" v-if="isCMPPrivate && (isAdminMode || isDomainMode)">
-      <a-tooltip :title="$t('navbar.button.monitor')" placement="right">
-        <div class="d-flex align-items-center justify-content-center h-100" style="cursor: pointer;" @click="handleOpenOverview">
-          <icon type="daping" style="font-size: 20px;" />
-        </div>
-      </a-tooltip>
-    </div>
-    <!-- cloudsheel -->
-    <cloud-shell v-if="isAdminMode" class="navbar-item-icon primary-color-hover" />
-    <slot name="behindNavbar" />
-    <!-- 更多 -->
-    <slot name="morePopover">
-      <more-popover class="navbar-item-icon primary-color-hover" />
-    </slot>
     <!-- 用户 -->
     <slot name="userPopover" />
   </div>

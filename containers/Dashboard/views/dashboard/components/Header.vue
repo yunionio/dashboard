@@ -113,6 +113,9 @@ export default {
       this.$router.push({ name: 'DashboardEdit' })
     },
     handleEdit () {
+      // if (this.isDefaultOption) {
+      //   return
+      // }
       this.$router.push({ name: 'DashboardEdit', query: { id: this.current.id } })
     },
     handleDownload () {

@@ -128,7 +128,6 @@ import { typeClouds } from '@/utils/common/hypervisor'
 import { usageMap } from '@/constants/generalUsage'
 import UsageSelect from './UsageSelect'
 import { chartColors } from '@/constants'
-
 export default {
   name: 'QuotaConfig',
   components: {

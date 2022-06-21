@@ -4,6 +4,10 @@ export default {
       type: Object,
       required: true,
     },
+    icons: {
+      type: Array,
+      required: true,
+    },
     params: Object,
     formItemLayout: {
       type: Object,

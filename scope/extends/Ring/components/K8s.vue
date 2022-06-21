@@ -53,7 +53,6 @@ import { load } from '@Dashboard/utils/cache'
 import { getRequestT } from '@/utils/utils'
 import K8sConfig from '@Dashboard/sections/K8sConfig'
 import mixin from './mixin'
-
 export default {
   name: 'RingK8s',
   components: {

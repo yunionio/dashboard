@@ -1,5 +1,7 @@
 <template>
-    buttons
+  <div>
+    <button />
+  </div>
 </template>
 
 <script>
