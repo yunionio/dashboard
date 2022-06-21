@@ -351,7 +351,6 @@ export default {
       getRegionTableColumn(),
       getTimeTableColumn(),
     ]
-    console.log(columns, '========')
     if (this.hideColumnFields) {
       this.columns = columns.filter((column) => { return !this.hideColumnFields.includes(column.field) })
     } else {
