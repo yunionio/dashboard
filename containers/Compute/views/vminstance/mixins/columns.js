@@ -252,7 +252,7 @@ export default {
         minWidth: 150,
         slots: {
           default: ({ row }) => {
-            if (row.cpu_usage !== null || row.cpu_usage !== undefined) {
+            if (row.cpu_usage) {
               return [<a-progress percent={ row.cpu_usage.toFixed(4) * 100 } size="small" />]
             }
             return []
@@ -266,7 +266,7 @@ export default {
         minWidth: 150,
         slots: {
           default: ({ row }) => {
-            if (row.mem_usage !== null || row.mem_usage !== undefined) {
+            if (row.mem_usage) {
               return [<a-progress percent={ row.mem_usage.toFixed(4) * 100 } size="small" />]
             }
             return []
@@ -280,7 +280,7 @@ export default {
         minWidth: 150,
         slots: {
           default: ({ row }) => {
-            if (row.disk_usage !== null || row.disk_usage !== undefined) {
+            if (row.disk_usage) {
               return [<a-progress percent={ row.disk_usage.toFixed(4) * 100 } size="small" />]
             }
             return []
