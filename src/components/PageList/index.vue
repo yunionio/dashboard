@@ -81,6 +81,7 @@
         :tag-config-params="tagConfigParams"
         :update-config="updateConfig"
         :edit-config="editConfig"
+        :tableOverviewIndexs="tableOverviewIndexs"
         @change-current-page="changeCurrentPage"
         @change-page-size="changePageSize"
         @do-sort="doSort"
@@ -218,6 +219,9 @@ export default {
       type: Object,
     },
     editConfig: Object,
+    tableOverviewIndexs: {
+      type: Array,
+    },
   },
   provide: {
     // 声明在List中
