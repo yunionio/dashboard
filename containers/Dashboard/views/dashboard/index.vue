@@ -14,8 +14,8 @@
           @refresh="refresh" />
       </div>
       <div class="flex-fill position-relative">
-        <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0; background: #F5F7FE">
-          <dashboard-content ref="content" :data="dashboard" style="padding: 0 7.5px" />
+        <div class="position-absolute" style="top: 0; left: 0; right: 0; bottom: 0;">
+          <dashboard-content ref="content" :data="dashboard" class="mt-2" />
         </div>
       </div>
     </template>
