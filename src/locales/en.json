@@ -1120,6 +1120,9 @@
       "part": "Part",
       "resp_failed": "Failed",
       "hand": "Hand"
+    },
+    "tablestore": {
+      "running": "Running"
     }
   },
   "skuCategoryOptions": {
@@ -2622,7 +2625,8 @@
     "app": "Web App",
     "command_log": "Command Logs",
     "ipv6_gateway": "IPv6 Gateway",
-    "apsara": "Apsara"
+    "apsara": "Apsara",
+    "tablestore": "Table Storage"
   },
   "res": {
     "role": "Role",
