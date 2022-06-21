@@ -1,4 +1,3 @@
-import * as R from 'ramda'
 import debounce from 'lodash/debounce'
 import ResStatusTab from '@/sections/ResStatusTab'
 import { arrayToObj, sizestr } from '@/utils/utils'
@@ -19,10 +18,16 @@ export default {
     }
   },
   created () {
-    this.fetchResStatistics = debounce(this.fetchResStatisticsDebounce, 500)
+    this.fetchResStatistics = debounce(this.fetchResStatisticsDebounce, 2000)
+    this.$bus.$on('ListParamsChange', (params) => {
+      this.statisticsLoading = true
+      if (params && params.details) {
+        this.fetchResStatistics(params)
+      }
+    })
   },
   methods: {
-    fetchResStatisticsDebounce (params = {}, callback) {
+    fetchResStatisticsDebounce (params = {}) {
       this.errorFilterStatus = []
       this.otherFilterStatus = []
 
@@ -30,11 +35,11 @@ export default {
       this.statisticsLoading = true
       m.list({ params }).then(res => {
         const statusObj = arrayToObj(res.data.status_info, 'status')
-        this.statusOpts = R.is(Function, callback) ? callback(statusObj) : this.getStatusOpts(statusObj)
+        this.statusOpts = this.getStatusOpts(statusObj)
         this.statusArr = Object.keys(statusObj)
         this.generateTableOverviewIndexs(res.data)
-      }).catch(err => {
-        console.error(err)
+      }).catch(() => {
+        // console.error(err)
         this.statusOpts = []
       }).finally(() => {
         this.statisticsLoading = false

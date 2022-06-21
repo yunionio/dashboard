@@ -3,6 +3,7 @@
     <page-header :title="$t('compute.text_97')">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
+          :loading="statisticsLoading"
           :status-opts="statusOpts"
           @click="statusClickHandle" />
       </div>
@@ -32,14 +33,6 @@ export default {
       resStaticsResource: 'images',
       apiVersion: 'v1',
     }
-  },
-  created () {
-    this.fetchResStatistics({
-      scope: this.$store.getters.scope,
-      is_guest_image: false,
-    }, (resData) => {
-      return this.getStatusOpts(resData)
-    })
   },
   methods: {
     getStatusOpts (data) {
