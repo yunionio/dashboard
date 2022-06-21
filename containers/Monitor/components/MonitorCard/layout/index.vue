@@ -1,11 +1,11 @@
 <template>
-  <a-row>
-    <a-col style="padding-left: 6px; padding-right: 6px;" :span="24">
-      <div class="monitor-overview-card mb-2">
+  <a-row :class="card_style">
+    <a-col style="padding-left: 6px; padding-right: 6px;" :class="card_style" :span="24">
+      <div :class="['monitor-overview-card', 'mb-2', card_style]">
         <div>
           <slot name="header" />
         </div>
-        <div>
+        <div :class="card_style">
           <slot>{{ '' }}</slot>
         </div>
         <div>
@@ -19,6 +19,11 @@
 <script>
 export default {
   name: 'MonitorCardLayout',
+  props: {
+    card_style: {
+      type: String,
+    },
+  },
 }
 </script>
 
