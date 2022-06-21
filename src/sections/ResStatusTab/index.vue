@@ -2,7 +2,10 @@
   <div class="d-flex flex-row-reverse mb-3 res-status-tab">
     <ul class="res-status-list d-flex">
       <li v-for="(obj, idx) in statusOpts" :key="idx" @click="statusClickHandle(obj)" :style="{'padding-right': obj.type === 'error' ? '20px' : 0}">
-        <i :class="obj.type" /><span :title="obj.title" class="title">{{ obj.title }}</span><span class="num">{{ obj.num }}</span>
+        <i :class="obj.type" />
+        <span :title="obj.title" class="title">{{ obj.title }}</span>
+        <data-loading v-if="loading" />
+        <span v-if="!loading" class="num">{{ obj.num }}</span>
       </li>
     </ul>
   </div>
@@ -19,6 +22,10 @@ export default {
       default () {
         return []
       },
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
