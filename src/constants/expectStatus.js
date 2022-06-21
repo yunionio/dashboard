@@ -513,4 +513,7 @@ export default {
     info: ['process'],
     danger: ['resp_failed'],
   },
+  tablestore: {
+    success: ['running'],
+  },
 }
