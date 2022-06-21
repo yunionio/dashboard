@@ -1,15 +1,18 @@
 <template>
   <div>
     <a-tabs default-active-key="res-sync" @change="handleTabChange">
-      <a-tab-pane v-for="item in tabs" :key="item.key" :tab="item.label">
-        <components
+      <a-tab-pane v-for="item in tabs" :key="item.key" :tab="item.label" />
+    </a-tabs>
+    <div class="mt-2">
+      <keep-alive>
+        <component
           :is="currentTab"
           :id="id"
           :resId="resId"
           :data="data"
           :getParams="getParams" />
-      </a-tab-pane>
-    </a-tabs>
+      </keep-alive>
+    </div>
   </div>
 
 </template>
