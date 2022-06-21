@@ -43,13 +43,5 @@ export default {
       return getCloudEnvOptions('compute_engine_brands')
     },
   },
-  created () {
-    this.$bus.$on('ListParamsChange', (params) => {
-      this.statisticsLoading = true
-      if (params && params.details) {
-        this.fetchResStatistics(params)
-      }
-    })
-  },
 }
 </script>

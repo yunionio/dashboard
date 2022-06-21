@@ -3,6 +3,7 @@
     <page-header :title="$t('compute.text_112')">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
+          :loading="statisticsLoading"
           :status-opts="statusOpts"
           @click="statusClickHandle" />
       </div>
@@ -37,15 +38,6 @@ export default {
       },
       resStaticsResource: 'hosts',
     }
-  },
-  created () {
-    this.fetchResStatistics({
-      scope: this.$store.getters.scope,
-      baremetal: true,
-      host_type: 'baremetal',
-    }, (resData) => {
-      return this.getStatusOpts(resData)
-    })
   },
   methods: {
     getStatusOpts (data) {
