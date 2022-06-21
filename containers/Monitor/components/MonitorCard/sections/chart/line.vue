@@ -10,7 +10,7 @@
       :loading="loading"
       :chartEvents="chartEvents"
       :extraToolbox="extraToolbox" />
-    <download-excel v-show="false" ref="excel" :data="chartData.rows" :fields="excelColumnMap" :name="`${extraToolbox.pdf.name}.xls`" />
+    <download-excel v-show="false" ref="excel" :data="chartData && chartData.rows" :fields="excelColumnMap" :name="`${extraToolbox.pdf.name}.xls`" />
   </div>
 </template>
 
@@ -39,7 +39,7 @@ export default {
   computed: {
     excelColumnMap () {
       const columnMap = {}
-      this.chartData.columns.map(item => {
+      this.chartData && this.chartData.columns.map(item => {
         columnMap[item] = { field: item }
       })
       return columnMap
@@ -96,6 +96,10 @@ export default {
             type: 'shadow',
             shadowStyle: { color: 'rgb(77, 161, 255)', opacity: 0.1 },
           },
+        },
+        grid: {
+          bottom: '10px',
+          top: '50px',
         },
         dataZoom: {
           type: 'inside', /* 数据缩放 **/
