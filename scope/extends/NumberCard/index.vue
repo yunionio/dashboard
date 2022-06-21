@@ -6,7 +6,6 @@
     :visible.sync="visible"
     :formItemLayout="formItemLayout"
     :options="options"
-    :icons="icons"
     @update="update"
     :params="params"
     :edit="edit">
@@ -28,6 +27,7 @@
 import { hasSetupKey } from '@/utils/auth'
 import Server from './components/Server'
 import K8s from './components/K8s'
+
 export default {
   name: 'NumberCard',
   components: {
@@ -50,14 +50,7 @@ export default {
     if (hasSetupKey(['k8s'])) {
       typeOps.push({ key: 'k8s', label: this.$t('dashboard.text_26') })
     }
-    const icons = [
-      { type: 'icon_baremetal', key: 'baremetal' },
-      { type: 'icon_ram', key: 'ram' },
-      { type: 'icon_cpu', key: 'cpu' },
-      { type: 'icon_tenant', key: 'tenant' },
-    ]
     return {
-      icons: icons,
       type: (this.params && this.params.type) || 'server',
       typeOpts: typeOps,
       visible: false,

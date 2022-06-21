@@ -17,10 +17,10 @@
               <template v-for="item in seriesData">
                 <div class="mt-2 mb-2" :key="item.name">
                   <div class="d-flex mini-text">
-                    <div class="flex-fill text-truncate" :title="item.name"><i class="circle_5" :style="`border-color:${getColor(form.fd.color, 'color')}`" />{{ item.name }}</div>
-                    <div class="flex-grow-0 flex-shrink-0 text-color-help ml-2" :style="`color:${getColor(form.fd.color, 'color')}`">{{ getLabel(item.value) }}</div>
+                    <div class="flex-fill text-truncate" :title="item.name">{{ item.name }}</div>
+                    <div class="flex-grow-0 flex-shrink-0 text-color-help ml-2">{{ getLabel(item.value) }}</div>
                   </div>
-                  <a-progress :class="'background_progress_' + getColor(form.fd.color, 'trailColor')" :percent="getPercent(item.value)" :showInfo="false" status="normal" :stroke-width="4" :stroke-color="getColor(form.fd.color, 'color')" />
+                  <a-progress :percent="getPercent(item.value)" :showInfo="false" status="normal" :strokeWidth="4" stroke-color="#ADE4B6" />
                 </div>
               </template>
             </div>
@@ -87,15 +87,6 @@
             </template>
           </a-select>
         </a-form-item>
-        <a-form-item :label="colorLabel || $t('dashboard.color.scheme')" class="mb-0">
-          <a-select v-decorator="decorators.color">
-            <a-select-option v-for="item in colorOptions" :key="item.key" :value="item.key">
-              <div style="width:458px">
-                <a-progress :show-info="false" :stroke-color="item.color" :percent="100" />
-              </div>
-            </a-select-option>
-          </a-select>
-        </a-form-item>
       </a-form>
     </base-drawer>
   </div>
@@ -126,7 +117,6 @@ export default {
     },
     params: Object,
     edit: Boolean,
-    colorLabel: String,
   },
   data () {
     const serverUsageOptions = [
@@ -140,38 +130,6 @@ export default {
       { label: this.$t('dashboard.text_63'), key: 'write_bps,vm_diskio' },
       { label: this.$t('dashboard.text_64'), key: 'bps_recv,vm_netio' },
       { label: this.$t('dashboard.text_65'), key: 'bps_sent,vm_netio' },
-    ]
-    const colorOptions = [
-      {
-        key: 'color1',
-        color: '#1890FE',
-        trailColor: 'bae7fe',
-      },
-      {
-        key: 'color2',
-        color: '#2f54eb',
-        trailColor: 'd6e4ff',
-      },
-      {
-        key: 'color3',
-        color: '#712ed1',
-        trailColor: 'efdbff',
-      },
-      {
-        key: 'color4',
-        color: '#52c41b',
-        trailColor: 'd9f7be',
-      },
-      {
-        key: 'color5',
-        color: '#F9AD14',
-        trailColor: 'fff1b7',
-      },
-      {
-        key: 'color6',
-        color: '#F5222D',
-        trailColor: 'ffccc8',
-      },
     ]
     const hostUsageOptions = [
       { label: this.$t('dashboard.text_61'), key: 'usage_active,cpu' },
@@ -195,7 +153,6 @@ export default {
     const initialOrderValue = (this.params && this.params.order) || 'TOP'
     const initialLimit = (this.params && this.params.limit) || 5
     const initialTime = (this.params && this.params.time) || 24 * 60 * 60 * 60
-    const initialColor = (this.params && this.params.color) || colorOptions[0].key
     return {
       data: [],
       visible: false,
@@ -219,7 +176,6 @@ export default {
           limit: initialLimit,
           time: initialTime,
           dimensionId: initialDimensionId,
-          color: initialColor,
         },
       },
       usageOptions: {
@@ -306,12 +262,6 @@ export default {
             rules: [{ required: true, message: '' }],
           },
         ],
-        color: [
-          'color',
-          {
-            initialValue: initialColor,
-          },
-        ],
       },
       formItemLayout: {
         wrapperCol: {
@@ -322,7 +272,6 @@ export default {
         },
       },
       metricDoc: getMetricDocs(this.$store.getters.scope),
-      colorOptions: colorOptions,
     }
   },
   computed: {
@@ -418,10 +367,6 @@ export default {
     this.fetchData()
   },
   methods: {
-    getColor (val, key) {
-      const color = this.colorOptions.find(x => x.key === val)
-      return color ? color[key] : ''
-    },
     refresh () {
       return this.fetchData()
     },
@@ -777,29 +722,3 @@ export default {
   },
 }
 </script>
-<style lang="less">
-@marAndPadAndFontList: {
-    bae7fe: #bae7fe;
-    d6e4ff: #d6e4ff;
-    efdbff: #efdbff;
-    d9f7be: #d9f7be;
-    fff1b7: #fff1b7;
-    ffccc8: #ffccc8;
-}
-each(@marAndPadAndFontList, {
-    .background_progress_@{key}{
-      .ant-progress-inner{
-        background-color: @value!important;
-      }
-    }
-});
-.circle_5{
-  display: inline-block;
-  height: 6px;
-  border-radius: 50% 50%;
-  width: 6px;
-  margin-right: 7px;
-  border-width: 2px;
-  border-style: solid;
-}
-</style>

@@ -5,15 +5,10 @@
         <div class="dashboard-card-header-left">{{ form.fd.name || $t('dashboard.text_6') }}<a-icon class="ml-2" type="loading" v-if="loading" /></div>
         <div class="dashboard-card-header-right"><slot name="actions" :handle-edit="handleEdit" /></div>
       </div>
-      <div class="dashboard-card-body d-flex align-items-center justify-content-center w-100 heightCss">
-        <div class="d-flex w-100 h-100 align-items-center justify-content-center">
-          <div class="w-100 d-flex align-items-center justify-content-center h-100">
-            <icon :type="params && params.icon ? params.icon : icons[0].type" style="font-size:80px" />
-          </div>
-          <div class="d-flex align-items-baseline w-100">
-            <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
-            <div class="number-card-unit">{{ this.usage.unit }}</div>
-          </div>
+      <div class="dashboard-card-body d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-baseline">
+          <div class="number-card-number mr-1">{{ this.usage.usage }}</div>
+          <div class="number-card-unit">{{ this.usage.unit }}</div>
         </div>
       </div>
     </div>
@@ -34,12 +29,6 @@
               :filterable="true"
               :options="unitOpts"
               :select-props="{ placeholder: $t('common_618') }" />
-        </a-form-item>
-        <a-form-item :label="$t('common_744')">
-            <icon-picker
-              v-decorator="decorators.icon"
-              :options="icons"
-              @updateIcon="updateIcon" />
         </a-form-item>
       </a-form>
     </base-drawer>
@@ -105,12 +94,6 @@ export default {
             initialValue: initUnitValue,
           },
         ],
-        icon: [
-          'icon',
-          {
-            initialValue: this.params && this.params.icon,
-          },
-        ],
       },
       unitOpts: [
         { id: 'auto', name: this.$t('common_563') },
@@ -174,7 +157,6 @@ export default {
     },
   },
   created () {
-    this.form.fd.icon = this.params && this.params.icon ? this.params.icon : this.icons[0].type
     if (this.params && this.params.type === 'k8s') {
       this.form.fd = this.params
     }
@@ -183,11 +165,6 @@ export default {
     }, this)
   },
   methods: {
-    updateIcon (val) {
-      this.form.fc.setFieldsValue({
-        icon: val,
-      })
-    },
     refresh () {
       return this.fetchUsage()
     },

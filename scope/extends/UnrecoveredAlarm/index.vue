@@ -40,7 +40,6 @@
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
 import { chartColors } from '@/constants'
-import { uuid } from '@/utils/utils'
 import BaseDrawer from '@Dashboard/components/BaseDrawer'
 import { resolveValueChangeField } from '@/utils/common/ant'
 
@@ -113,6 +112,7 @@ export default {
             left: 'center',
           },
         ],
+
         tooltip: {
           trigger: 'item',
         },
@@ -140,13 +140,6 @@ export default {
             data: [],
           },
         ],
-      },
-      chartData: [],
-      total: 0,
-      sort: {
-        normal: 1,
-        important: 2,
-        fatal: 3,
       },
     }
   },
@@ -182,33 +175,25 @@ export default {
     refresh () {
       return this.fetchData()
     },
-    async getData (level) {
-      const params = {
-        scope: this.$store.getters.scope,
-        level: level,
-        $t: uuid(),
-      }
-      const { data: series = { } } = await new this.$Manager('alertrecords', 'v1').get({ id: 'total-alert', params: params })
-      if (Object.keys(series).length > 0) {
-        for (const item in series) {
-          if (item === 'cloudaccount') {
-            this.total += series[item]
-            this.chartData.push({ name: this.$t(`dictionary.${level}`), value: series[item], index_key: this.sort[level] })
-          }
-        }
-      } else {
-        this.chartData.push({ name: this.$t(`dictionary.${level}`), value: 0, index_key: this.sort[level] })
-      }
-    },
     async fetchData () {
-      this.total = 0
-      this.chartData = []
       this.loading = true
       try {
-        Promise.all([this.getData('important'), this.getData('normal'), this.getData('fatal')]).then(res => {
-          this.chartOptions.series[0].data = this.chartData.sort(function (a, b) { return a.index_key - b.index_key })
-          this.chartOptions.title[0].subtext = (this.total === 0 ? '0' : this.total)
-        })
+        const params = {
+          scope: this.$store.getters.scope,
+        }
+        const { data: series = { } } = await new this.$Manager('alertrecords', 'v1').get({ id: 'total-alert', params: params })
+        let total = 0
+        const chartData = []
+        if (Object.keys(series).length > 0) {
+          for (const item in series) {
+            total += series[item]
+            chartData.push({ name: this.$t(`dictionary.${item}`), value: series[item] })
+          }
+        } else {
+          chartData.push({ name: '', value: 0 })
+        }
+        this.chartOptions.series[0].data = chartData
+        this.chartOptions.title[0].subtext = total
       } finally {
         this.loading = false
       }
