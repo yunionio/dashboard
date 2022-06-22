@@ -246,7 +246,7 @@ export default {
       return ret
     },
     selectedTip () {
-      if (this.selectedSkuData.id) {
+      if (this.selectedSkuData?.id) {
         return this.$t('compute.text_182', [
           this.selectedSkuData.name,
           this.selectedSkuData.instance_type_category_i18n,
