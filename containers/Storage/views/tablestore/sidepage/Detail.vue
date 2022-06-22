@@ -12,6 +12,7 @@ import WindowsMixin from '@/mixins/windows'
 import {
   getBrandTableColumn,
   getCopyWithContentTableColumn,
+  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -49,10 +50,7 @@ export default {
             ]
           },
         }),
-        {
-          field: 'storage_class',
-          title: this.$t('storage.text_38'),
-        },
+        getAccountTableColumn(),
       ],
     }
   },
