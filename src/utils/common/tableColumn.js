@@ -186,7 +186,7 @@ export const getNameDescriptionTableColumn = ({
     sortable,
     showOverflow: 'ellipsis',
     minWidth,
-    fixed: 'left',
+    // fixed: 'left',
     slots: {
       default: ({ row }, h) => {
         const text = (message && R.type(message) === 'Function') ? message(row) : (message || (row[field] && row[field].toString()) || '-')
