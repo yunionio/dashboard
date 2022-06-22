@@ -98,21 +98,23 @@ export default {
       }
     },
     generateTableOverviewIndexs (resData) {
-      this.tableOverviewIndexs = []
+      const tableOverviewIndexs = []
 
       Object.keys(resData).forEach(v => {
         switch (v) {
           case 'total_cpu_count':
-            this.tableOverviewIndexs.push({ key: 'CPU', value: `${resData[v]}${this.$t('common_60')}` })
+            tableOverviewIndexs.push({ key: 'CPU', value: `${resData[v]}${this.$t('common_60')}`, order: 1 })
             break
           case 'total_mem_size_mb':
-            this.tableOverviewIndexs.push({ key: this.$t('table.title.vmem_size'), value: `${sizestr(resData[v], 'M', 1024)}` })
+            tableOverviewIndexs.push({ key: this.$t('compute.text_369'), value: `${sizestr(resData[v], 'M', 1024)}`, order: 2 })
             break
           case 'total_disk_size_mb':
-            this.tableOverviewIndexs.push({ key: this.$t('table.title.disk'), value: sizestr(resData[v], 'M', 1024) })
+            tableOverviewIndexs.push({ key: this.$t('compute.text_99'), value: sizestr(resData[v], 'M', 1024), order: 3 })
             break
         }
       })
+
+      this.tableOverviewIndexs = tableOverviewIndexs.sort((a, b) => a.order - b.order)
     },
   },
 }
