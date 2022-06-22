@@ -338,7 +338,6 @@ export default {
                 this.$createElement(Actions, {
                   props: {
                     options: this.singleActions,
-                    fixed: this.fixed,
                     row,
                     buttonType: 'link',
                     buttonSize: 'small',
