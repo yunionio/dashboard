@@ -212,6 +212,34 @@ export const usageMap = {
     },
     unit: 'M',
   },
+  diskAttachSsd: {
+    field: {
+      used: {
+        system: 'storages.system.medium_type.ssd_capacity_used',
+      },
+      remain: {
+        system: 'storages.system.medium_type.ssd_capacity_no_used',
+      },
+      total: {
+        system: 'storages.system.medium_type.ssd_capacity',
+      },
+    },
+    unit: 'M',
+  },
+  diskAttachHdd: {
+    field: {
+      used: {
+        system: 'storages.system.medium_type.hybrid_capacity_used',
+      },
+      remain: {
+        system: 'storages.system.medium_type.hybrid_capacity_no_used',
+      },
+      total: {
+        system: 'storages.system.medium_type.hybrid_capacity',
+      },
+    },
+    unit: 'M',
+  },
   image: {
     field: {
       img: {
