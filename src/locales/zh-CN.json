@@ -1134,6 +1134,9 @@
       "part": "部分回执",
       "resp_failed": "回执失败",
       "hand": "手动回执"
+    },
+    "tablestore": {
+      "running": "运行中"
     }
   },
   "skuCategoryOptions": {
@@ -2649,7 +2652,8 @@
     "fatal": "致命",
     "apsara": "飞天",
     "tap_service": "流量镜像",
-    "tap_flow": "镜像源"
+    "tap_flow": "镜像源",
+    "tablestore": "表格存储"
   },
   "res": {
     "role": "@:dictionary.role",

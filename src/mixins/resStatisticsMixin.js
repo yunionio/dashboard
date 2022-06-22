@@ -1,4 +1,4 @@
-import * as R from 'ramda'
+import debounce from 'lodash/debounce'
 import ResStatusTab from '@/sections/ResStatusTab'
 import { arrayToObj, sizestr } from '@/utils/utils'
 
@@ -8,6 +8,7 @@ export default {
   },
   data () {
     return {
+      statisticsLoading: false,
       filterParams: {},
       statusOpts: [],
       statusArr: [],
@@ -17,23 +18,31 @@ export default {
     }
   },
   created () {
-    this.resStaticsManager = new this.$Manager(`${this.resStaticsResource}/statistics`, this.apiVersion ? this.apiVersion : 'v2')
-  },
-  beforeDestroy () {
-    this.resStaticsManager = null
+    this.fetchResStatistics = debounce(this.fetchResStatisticsDebounce, 2000)
+    this.$bus.$on('ListParamsChange', (params) => {
+      this.statisticsLoading = true
+      if (params && params.details) {
+        this.fetchResStatistics(params)
+      }
+    })
   },
   methods: {
-    fetchResStatistics (params, callback) {
+    fetchResStatisticsDebounce (params = {}) {
       this.errorFilterStatus = []
       this.otherFilterStatus = []
-      this.resStaticsManager.list({ params }).then(res => {
+
+      const m = new this.$Manager(`${this.resStaticsResource}/statistics`, this.apiVersion ? this.apiVersion : 'v2')
+      this.statisticsLoading = true
+      m.list({ params }).then(res => {
         const statusObj = arrayToObj(res.data.status_info, 'status')
-        this.statusOpts = R.is(Function, callback) ? callback(statusObj) : this.getStatusOpts(statusObj)
+        this.statusOpts = this.getStatusOpts(statusObj)
         this.statusArr = Object.keys(statusObj)
         this.generateTableOverviewIndexs(res.data)
-      }).catch(err => {
-        console.error(err)
+      }).catch(() => {
+        // console.error(err)
         this.statusOpts = []
+      }).finally(() => {
+        this.statisticsLoading = false
       })
     },
     getStatusOpts (data) {
@@ -87,9 +96,6 @@ export default {
           statusArr: this.statusArr,
         }
       }
-    },
-    refreshHandle () {
-      this.queryResStatistics && this.queryResStatistics()
     },
     generateTableOverviewIndexs (resData) {
       this.tableOverviewIndexs = []
