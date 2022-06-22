@@ -244,7 +244,7 @@ export default {
       return this.list.id
     },
     tableName () {
-      return this.fixed ? 'PageListTable_fixed' : 'PageListTable'
+      return this.fixed ? 'PageListTable' : 'PageListTable'
     },
     loading () {
       return this.list.loading
