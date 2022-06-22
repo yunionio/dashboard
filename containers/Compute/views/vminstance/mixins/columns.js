@@ -255,7 +255,7 @@ export default {
             if (row.cpu_usage) {
               return [<a-progress percent={ row.cpu_usage.toFixed(4) * 100 } size="small" />]
             }
-            return []
+            return [<a-progress percent={ 0 } size="small" />]
           },
         },
       },
@@ -269,7 +269,7 @@ export default {
             if (row.mem_usage) {
               return [<a-progress percent={ row.mem_usage.toFixed(4) * 100 } size="small" />]
             }
-            return []
+            return [<a-progress percent={ 0 } size="small" />]
           },
         },
       },
@@ -283,7 +283,7 @@ export default {
             if (row.disk_usage) {
               return [<a-progress percent={ row.disk_usage.toFixed(4) * 100 } size="small" />]
             }
-            return []
+            return [<a-progress percent={ 0 } size="small" />]
           },
         },
       },
