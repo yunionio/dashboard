@@ -733,13 +733,14 @@ export default {
 
       const { medium_type: dataDiskMedium } = this.selectedItem.disks_info[1] || {}
       this.$nextTick(() => {
+        this.diskLoaded = true
+        this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
+
         setTimeout(() => {
           this.form.fd.datadisks.forEach((v, i) => {
             this.$refs.dataDiskRef.add({ size: v.value, min: v.value, diskType: v.type, disabled: true, sizeDisabled: true, medium: dataDiskMedium, ...v })
           })
-          this.diskLoaded = true
         }, 2000)
-        this.form.fc.setFieldsValue({ vcpu: this.form.fd.vcpu_count, vmem: this.form.fd.vmem })
       })
     },
     maxConfig () {
