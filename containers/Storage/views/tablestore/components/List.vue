@@ -103,10 +103,8 @@ export default {
     getParam () {
       const ret = {
         details: true,
-        with_meta: true,
         ...this.getParams,
       }
-      if (this.cloudEnv) ret.cloud_env = this.cloudEnv
       return ret
     },
     handleOpenSidepage (row) {
