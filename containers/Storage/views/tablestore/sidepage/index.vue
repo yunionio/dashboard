@@ -19,22 +19,22 @@
 
 import ColumnsMixin from '../mixins/columns'
 import SingleActionsMixin from '../mixins/singleActions'
-import Detail from './Detail'
+import TablestoreDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
 import Actions from '@/components/PageList/Actions'
 
 export default {
-  name: 'BucketStorageSidePage',
+  name: 'TablestoreSidePage',
   components: {
     Actions,
-    Detail,
+    TablestoreDetail,
   },
   mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
   data () {
     return {
       detailTabs: [
-        { label: this.$t('storage.text_81'), key: 'detail' },
+        { label: this.$t('storage.text_81'), key: 'tablestore-detail' },
         { label: this.$t('storage.text_85'), key: 'event-drawer' },
       ],
     }
