@@ -250,6 +250,7 @@ export default {
         title: i18nLocale.t('table.title.cpu_usage'),
         sortable: true,
         minWidth: 150,
+        hidden: () => true,
         slots: {
           default: ({ row }) => {
             if (row.cpu_usage) {
@@ -264,6 +265,7 @@ export default {
         title: i18nLocale.t('table.title.mem_usage'),
         sortable: true,
         minWidth: 150,
+        hidden: () => true,
         slots: {
           default: ({ row }) => {
             if (row.mem_usage) {
@@ -278,6 +280,7 @@ export default {
         title: i18nLocale.t('table.title.disk_usage'),
         sortable: true,
         minWidth: 150,
+        hidden: () => true,
         slots: {
           default: ({ row }) => {
             if (row.disk_usage) {
