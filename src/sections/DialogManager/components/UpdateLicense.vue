@@ -119,7 +119,7 @@ export default {
       if (!R.isNil(this.oemInfo.license)) {
         return this.oemInfo.license
       }
-      return 'https://cloud.yunion.cn/account/license'
+      return 'https://cloud.yunion.cn/license'
     },
   },
   created () {
