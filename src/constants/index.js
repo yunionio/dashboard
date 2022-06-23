@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import i18n from '@/locales'
-import { arrayToObj } from '@/utils/utils'
+import { arrayToObj, getColorByCache } from '@/utils/utils'
 
 // 平台的配置
 export const HYPERVISORS = [
@@ -130,7 +130,7 @@ export const ENABLE_USER_CUSTOM_DICTIONARY = [
   'schedtag',
 ]
 
-export const chartColors = ['#4DA1FF', '#FFC760', '#F76F89', '#5ED28A', '#ff5f2e', '#A593E0', '#7f9eb2', '#f6ea8c', '#a5dff9', '#77AAAD', '#E71D36', '#4ea1d3']
+export const chartColors = getColorByCache()
 
 export const contactMap = {
   webconsole: {

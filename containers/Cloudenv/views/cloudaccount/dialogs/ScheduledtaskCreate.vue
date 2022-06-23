@@ -41,7 +41,7 @@
           <a-form-item :label="$t('cloudenv.text_437')">
             <a-time-picker v-decorator="decorators.hourMinute" format="HH:mm" />
           </a-form-item>
-          <a-form-item :label="$t('cloudenv.text_438')">
+          <a-form-item :label="$t('cloudenv.text_438')" :help="$t('cloudenv.range_picker_help')">
             <a-range-picker
               v-decorator="decorators.startEndTime"
               :disabledDate="disabledDate"

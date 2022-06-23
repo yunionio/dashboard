@@ -3,6 +3,7 @@
     <page-header :title="this.$t('dictionary.cdn_domain')">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
+          :loading="statisticsLoading"
           :status-opts="statusOpts"
           @click="statusClickHandle" />
       </div>
@@ -31,13 +32,6 @@ export default {
       listId: 'DomainList',
       resStaticsResource: 'cdn_domains',
     }
-  },
-  created () {
-    this.fetchResStatistics({
-      scope: this.$store.getters.scope,
-    }, (resData) => {
-      return this.getStatusOpts(resData)
-    })
   },
   methods: {
     getStatusOpts (data) {

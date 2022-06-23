@@ -1,5 +1,6 @@
-import * as R from 'ramda'
+import debounce from 'lodash/debounce'
 import ResStatusTab from '@/sections/ResStatusTab'
+import { arrayToObj, sizestr } from '@/utils/utils'
 
 export default {
   components: {
@@ -7,29 +8,41 @@ export default {
   },
   data () {
     return {
+      statisticsLoading: false,
       filterParams: {},
       statusOpts: [],
       statusArr: [],
       errorFilterStatus: [],
       otherFilterStatus: [],
+      tableOverviewIndexs: [],
     }
   },
   created () {
-    this.resStaticsManager = new this.$Manager(`${this.resStaticsResource}/statistics`, this.apiVersion ? this.apiVersion : 'v2')
-  },
-  beforeDestroy () {
-    this.resStaticsManager = null
+    this.fetchResStatistics = debounce(this.fetchResStatisticsDebounce, 2000)
+    this.$bus.$on('ListParamsChange', (params) => {
+      this.statisticsLoading = true
+      if (params && params.details) {
+        this.fetchResStatistics(params)
+      }
+    })
   },
   methods: {
-    fetchResStatistics (params, callback) {
+    fetchResStatisticsDebounce (params = {}) {
       this.errorFilterStatus = []
       this.otherFilterStatus = []
-      this.resStaticsManager.list({ params }).then(res => {
-        this.statusOpts = R.is(Function, callback) ? callback(res.data) : this.getStatusOpts(res.data)
-        this.statusArr = Object.keys(res.data)
-      }).catch(err => {
-        console.error(err)
+
+      const m = new this.$Manager(`${this.resStaticsResource}/statistics`, this.apiVersion ? this.apiVersion : 'v2')
+      this.statisticsLoading = true
+      m.list({ params }).then(res => {
+        const statusObj = arrayToObj(res.data.status_info, 'status')
+        this.statusOpts = this.getStatusOpts(statusObj)
+        this.statusArr = Object.keys(statusObj)
+        this.generateTableOverviewIndexs(res.data)
+      }).catch(() => {
+        // console.error(err)
         this.statusOpts = []
+      }).finally(() => {
+        this.statisticsLoading = false
       })
     },
     getStatusOpts (data) {
@@ -84,8 +97,24 @@ export default {
         }
       }
     },
-    refreshHandle () {
-      // this.fetchResStatistics()
+    generateTableOverviewIndexs (resData) {
+      const tableOverviewIndexs = []
+
+      Object.keys(resData).forEach(v => {
+        switch (v) {
+          case 'total_cpu_count':
+            tableOverviewIndexs.push({ key: 'CPU', value: `${resData[v]}${this.$t('common_60')}`, order: 1 })
+            break
+          case 'total_mem_size_mb':
+            tableOverviewIndexs.push({ key: this.$t('compute.text_369'), value: `${sizestr(resData[v], 'M', 1024)}`, order: 2 })
+            break
+          case 'total_disk_size_mb':
+            tableOverviewIndexs.push({ key: this.$t('compute.text_99'), value: sizestr(resData[v], 'M', 1024), order: 3 })
+            break
+        }
+      })
+
+      this.tableOverviewIndexs = tableOverviewIndexs.sort((a, b) => a.order - b.order)
     },
   },
 }

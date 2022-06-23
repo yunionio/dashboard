@@ -437,7 +437,7 @@
   "cloudenv.text_394": "要求{0}",
   "cloudenv.text_395": "https代理",
   "cloudenv.text_396": "例如：http|https|socks5://proxy.example.com:8080",
-  "cloudenv.text_397": "若请求的url是https，优先使用https代理，可以为空，为空则使用http代理",
+  "cloudenv.text_397": "如果走https请求用的是https的代理，如果走http请求，用的是http的代理",
   "cloudenv.text_398": "http代理",
   "cloudenv.text_399": "例如：http|https|socks5://proxy.example.com:8081",
   "cloudenv.text_400": "建议https代理和http代理至少填写一个，可以为空，为空则代表直连",
@@ -760,5 +760,11 @@
   "cloudenv.create_local_project": "新建本地项目",
   "cloudenv.link_local_project": "关联本地项目",
   "cloudenv.select_local_project": "选择现有本地项目",
-  "cloudenv.brand_action_deny": "当前云平台不支持此操作"
+  "cloudenv.brand_action_deny": "当前云平台不支持此操作",
+  "cloudenv.res_sync": "资源同步",
+  "cloudenv.bill_sync": "账单同步",
+  "cloudenv.resource_add_cnt": "资源新增",
+  "cloudenv.resource_del_cnt": "资源删除",
+  "cloudenv.scheduled_settings_title": "定时同步任务设置（可选）",
+  "cloudenv.range_picker_help": "支持为空，不选择代表长期有效"
 }

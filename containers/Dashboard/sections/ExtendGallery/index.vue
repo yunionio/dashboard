@@ -25,7 +25,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import options from './config'
+import options from '@scope/extends/config'
 
 export default {
   name: 'ExtendGallery',

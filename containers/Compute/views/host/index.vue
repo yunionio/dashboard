@@ -3,6 +3,7 @@
     <page-header :title="$t('compute.text_111')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
+          :loading="statisticsLoading"
           :status-opts="statusOpts"
           @click="statusClickHandle" />
       </div>
@@ -36,14 +37,6 @@ export default {
       },
       resStaticsResource: 'hosts',
     }
-  },
-  created () {
-    this.fetchResStatistics({
-      scope: this.$store.getters.scope,
-      baremetal: false,
-    }, (resData) => {
-      return this.getStatusOpts(resData)
-    })
   },
   methods: {
     getStatusOpts (data) {

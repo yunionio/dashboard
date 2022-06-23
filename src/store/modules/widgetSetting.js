@@ -43,8 +43,10 @@ export default {
      */
     async putFetchWidgetSettingValue ({ state, commit, dispatch }, payload = {}) {
       try {
-        if (state && state.id) {
-          const stateValue = state.value ? { ...state.value } : {}
+        const { data: resData } = await http.get(`/v1/rpc/parameters/${WIDGET_SETTINGS}`)
+
+        if (resData && resData.id) {
+          const stateValue = resData.value ? { ...resData.value } : {}
           const params = {
             service: 'yunionagent',
             value: {
@@ -52,7 +54,7 @@ export default {
               ...payload,
             },
           }
-          const { data } = await http.put(`/v1/parameters/${state.id}`, params)
+          const { data } = await http.put(`/v1/parameters/${resData.id}`, params)
           commit('UPDATE', data)
           return Promise.resolve(data)
         } else {

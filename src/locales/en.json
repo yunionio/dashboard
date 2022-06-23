@@ -748,7 +748,8 @@
       "delete_failed": "Deletion failed",
       "start_failed": "Start failed",
       "stop_failed": "Stop failed",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "associate_eip": "Associate Eip"
     },
     "ipv6_gateway": {
       "enabled": "Enabled",
@@ -822,6 +823,10 @@
       "part_succeed": "Partial success",
       "failed": "Failed",
       "reject": "Reject"
+    },
+    "scheduledtaskBillSync": {
+      "running": "Running",
+      "finished": "Finished"
     },
     "cloudgroup": {
       "available": "Available",
@@ -1115,6 +1120,9 @@
       "part": "Part",
       "resp_failed": "Failed",
       "hand": "Hand"
+    },
+    "tablestore": {
+      "running": "Running"
     }
   },
   "skuCategoryOptions": {
@@ -1284,7 +1292,8 @@
     "dnsName": "Only the characters a-z, A-Z, 0-9, dash (-), underscore (_), period (.), @, * are supported, and the dash and period cannot appear at the beginning and end",
     "maxLength": "The length cannot exceed {0} characters",
     "nonNegativeInt": "Please enter a non-negative integer",
-    "blockStorageName": "At the beginning of a letter, a combination of numbers and letters, with a length of 2-128 characters, including '.,-_"
+    "blockStorageName": "At the beginning of a letter, a combination of numbers and letters, with a length of 2-128 characters, including '.,-_",
+    "externalProjectName": "The length is 3~50 letters or numbers, which must start with an English letter."
   },
   "dialog": {
     "ok": "OK",
@@ -1307,6 +1316,8 @@
     "all.buckets": "Number of Buckets",
     "all.cpu_commit_rate.running": "Server CPU oversold ratio in running state",
     "all.disks": "Total Disk Capacity",
+    "all.disks.ssd": "Total SSD_Disk Capacity",
+    "all.disks.hdd": "Total HDD_Disk Capacity",
     "all.disks.mounted": "Total capacity of mounted disks",
     "all.disks.unmounted": "Total capacity of unmounted disks",
     "all.disks.unready": "Disk capacity in abnormal state",
@@ -2433,6 +2444,7 @@
     "image": "Images",
     "infos": "System",
     "instancegroup": "Anti-affinity Group",
+    "vip": "VIP",
     "isolated_device": "GPU transparent transmission device",
     "keypair": "Key",
     "kubecluster": "K8S-Cluster",
@@ -2615,8 +2627,12 @@
     "es": "ElasticSearch",
     "app": "Web App",
     "command_log": "Command Logs",
+    "important": "Important",
+    "normal": "Normal",
+    "fatal": "Fatal",
     "ipv6_gateway": "IPv6 Gateway",
-    "apsara": "Apsara"
+    "apsara": "Apsara",
+    "tablestore": "Table Storage"
   },
   "res": {
     "role": "Role",
@@ -2727,7 +2743,10 @@
       "operation_status": "Status",
       "id": "ID",
       "vmem_size": "Memory",
-      "disk": "Disk"
+      "disk": "Disk",
+      "cpu_usage": "CPU USAGE",
+      "mem_usage": "MEM USAGE",
+      "disk_usage": "Disk USAGE"
     },
     "action": {
       "save": "Save",
@@ -5158,6 +5177,9 @@
   "common.password_no_equal": "Old and new passwords cannot be consistent",
   "common.command": "Command",
   "common.login_user": "Login User",
+  "common_744": "Icon",
   "common.remote_control": "Remote Control",
-  "common.default_search_key": "Default is {0} search"
+  "common.default_search_key": "Default is {0} search",
+  "common.theme.color.lake_blue": "Lake Blue",
+  "common.table.overview": "Overview"
 }

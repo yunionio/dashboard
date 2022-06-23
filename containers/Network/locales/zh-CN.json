@@ -661,7 +661,8 @@
   "network.text_659": "全文搜索",
   "network.text_660": "负载均衡IP",
   "network.text_661": "虚拟机IP",
-  "network.text_662": "宿主机IP",
+  "network.host_ip": "宿主机IP",
+  "network.instancegroup_ip": "反亲和组IP",
   "network.text_663": "资源类型",
   "network.text_664": "资源名称",
   "network.text_665": "操作",
@@ -1070,5 +1071,6 @@
   "network.topology.view.virtual": "虚拟拓扑",
   "network.topology.view.pysical": "物理拓扑",
   "network.lb_monitor_bin": "负载均衡入流量",
-  "network.lb_monitor_bout": "负载均衡出流量"
+  "network.lb_monitor_bout": "负载均衡出流量",
+  "network.eip_bind_server_tip": "经典网络类型虚拟机不支持绑定EIP"
 }

@@ -57,6 +57,15 @@ export default {
         //   },
         // },
       },
+      {
+        field: 'num_queues',
+        title: i18n.t('compute.num_queues'),
+        slots: {
+          default: ({ row }) => {
+            return row.num_queues
+          },
+        },
+      },
       getTimeTableColumn(),
     ]
   },

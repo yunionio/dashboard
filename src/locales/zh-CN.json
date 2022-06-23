@@ -756,7 +756,8 @@
       "stop_failed": "关闭失败",
       "unknown": "未知",
       "update_tags": "更新标签或名称",
-      "update_tags_fail": "更新标签或名称失败"
+      "update_tags_fail": "更新标签或名称失败",
+      "associate_eip": "绑定弹性公网IP"
     },
     "ipv6_gateway": {
       "enabled": "启用",
@@ -830,6 +831,10 @@
       "part_succeed": "部分成功",
       "failed": "失败",
       "reject": "拒绝"
+    },
+    "scheduledtaskBillSync": {
+      "running": "进行中",
+      "finished": "已完成"
     },
     "cloudgroup": {
       "available": "可用",
@@ -1129,6 +1134,9 @@
       "part": "部分回执",
       "resp_failed": "回执失败",
       "hand": "手动回执"
+    },
+    "tablestore": {
+      "running": "运行中"
     }
   },
   "skuCategoryOptions": {
@@ -1298,7 +1306,8 @@
     "dnsName": "仅支持字符a-z、A-Z、0-9、短划线（-）、下划线（_）、句点（.）、@、*，且短划线和句点不能出现在开头和结尾",
     "maxLength": "长度不能超过{0}个字符",
     "nonNegativeInt": "请输入非负整数",
-    "blockStorageName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\""
+    "blockStorageName": "字母开头，数字和字母大小写组合，长度为2-128个字符，可含\".\",\"-\",\"_\"",
+    "externalProjectName": "长度为3~50个字母或数字，必须以英文字母开头"
   },
   "dialog": {
     "ok": "确定",
@@ -1321,7 +1330,13 @@
     "all.buckets": "存储桶数量",
     "all.cpu_commit_rate.running": "运行状态的虚拟机CPU超售比",
     "all.disks": "磁盘总容量",
-    "all.disks.mounted": "已挂载磁盘总容量",
+    "storages.system.medium_type.ssd_capacity": "SSD磁盘总容量",
+    "storages.system.medium_type.ssd_capacity_used": "已挂载的SSD磁盘总容量",
+    "storages.system.medium_type.ssd_capacity_no_used": "未挂载的SSD磁盘总容量",
+    "storages.system.medium_type.hybrid_capacity": "HDD磁盘总容量",
+    "storages.system.medium_type.hybrid_capacity_used": "已挂载的HDD磁盘总容量",
+    "storages.system.medium_type.hybrid_capacity_no_used": "未挂载的HDD磁盘总容量",
+    "all.disks.mounted": "已挂载的磁盘总容量",
     "all.disks.unmounted": "未挂载的磁盘总容量",
     "all.disks.unready": "异常状态的磁盘容量",
     "all.eip": "弹性公网IP和公网IP总数",
@@ -2447,6 +2462,7 @@
     "image": "系统镜像",
     "infos": "系统",
     "instancegroup": "反亲和组",
+    "vip": "VIP",
     "isolated_device": "GPU透传设备",
     "keypair": "密钥",
     "kubecluster": "K8S-集群",
@@ -2631,7 +2647,13 @@
     "app": "应用程序服务",
     "command_log": "命令记录",
     "ipv6_gateway": "IPv6网关",
-    "apsara": "飞天"
+    "important": "重要",
+    "normal": "正常",
+    "fatal": "致命",
+    "apsara": "飞天",
+    "tap_service": "流量镜像",
+    "tap_flow": "镜像源",
+    "tablestore": "表格存储"
   },
   "res": {
     "role": "@:dictionary.role",
@@ -2742,7 +2764,11 @@
       "operation_status": "状态",
       "id": "ID",
       "vmem_size": "内存",
-      "disk": "磁盘"
+      "disk": "磁盘",
+      "cpu_usage": "CPU使用率",
+      "mem_usage": "内存使用率",
+      "disk_usage": "磁盘使用率"
+
     },
     "action": {
       "save": "保存",
@@ -5173,6 +5199,9 @@
   "common.password_no_equal": "新旧密码不能一致",
   "common.command": "命令",
   "common.login_user": "登录用户",
+  "common_744": "图标",
   "common.remote_control": "远程控制",
-  "common.default_search_key": "默认为{0}搜索"
+  "common.default_search_key": "默认为{0}搜索",
+  "common.theme.color.lake_blue": "湖水蓝",
+  "common.table.overview": "概览"
 }

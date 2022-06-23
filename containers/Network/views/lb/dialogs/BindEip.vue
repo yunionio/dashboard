@@ -123,6 +123,7 @@ export default {
     doBindEip (ids, values) {
       return this.params.onManager('batchPerformAction', {
         id: ids,
+        steadyStatus: ['enabled'],
         managerArgs: {
           action: 'associate-eip',
           data: {
@@ -142,7 +143,6 @@ export default {
         if (values.type === 'bind') {
           await this.doBindEip(ids, values)
         }
-        this.params.singleRrefresh && this.params.singleRrefresh(this.params.data[0].id)
         this.cancelDialog()
       } finally {
         this.loading = false

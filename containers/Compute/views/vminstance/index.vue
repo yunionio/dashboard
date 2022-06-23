@@ -3,6 +3,7 @@
     <page-header :title="$t('compute.text_91')" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv">
       <div slot="res-status-tab" style="position: absolute; right: 0; top: 14px;">
         <res-status-tab
+          :loading="statisticsLoading"
           :status-opts="statusOpts"
           @click="statusClickHandle" />
       </div>
@@ -13,8 +14,8 @@
         :cloud-env="cloudEnv"
         :cloudEnvOptions="cloudEnvOptions"
         :filterParams="filterParams"
-        @updateCloudEnvOptions="updateCloudEnvOptions"
-        @refresh="refreshHandle" />
+        :tableOverviewIndexs="tableOverviewIndexs"
+        @updateCloudEnvOptions="updateCloudEnvOptions" />
     </page-body>
   </div>
 </template>
@@ -41,12 +42,6 @@ export default {
     cloudEnvOptions: () => {
       return getCloudEnvOptions('compute_engine_brands')
     },
-  },
-  created () {
-    this.fetchResStatistics({
-      scope: this.$store.getters.scope,
-      filter: 'hypervisor.notin(baremetal,container)',
-    })
   },
 }
 </script>

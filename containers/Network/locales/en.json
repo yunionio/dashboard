@@ -662,7 +662,8 @@
   "network.text_659": "Full Text Search",
   "network.text_660": "LB IP",
   "network.text_661": "Server IP",
-  "network.text_662": "Host IP",
+  "network.host_ip": "Host IP",
+  "network.instancegroup_ip": "Instance Group IP",
   "network.text_663": "Resource Type",
   "network.text_664": "Resource Name",
   "network.text_665": "Operation",
@@ -1071,5 +1072,6 @@
   "network.topology.view.virtual": "Virtual",
   "network.topology.view.pysical": "Pysical",
   "network.lb_monitor_bin": "Load balancing inflow",
-  "network.lb_monitor_bout": "Load balancing outflow"
+  "network.lb_monitor_bout": "Load balancing outflow",
+  "network.eip_bind_server_tip": "Classic network virtual machine does not support to be bound with EIP"
 }

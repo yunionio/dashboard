@@ -24,7 +24,7 @@
           <p>{{ $t('common.status') }}：{{ $t('status.wire.' + dataSource.status) }}</p>
         </template>
         <icon type="res-broadcast" />
-        <span class="name text-truncate text-center">{{ dataSource.name }}</span>
+        <span class="name text-truncate">{{ dataSource.name }}</span>
       </a-tooltip>
     </div>
   </div>

@@ -1,0 +1,59 @@
+<template>
+  <base-side-page
+   @cancel="cancelSidePage"
+    :title="$t('dictionary.tablestore')"
+    icon="res-tablestore"
+    :res-name="detailData.name"
+    :tabs="detailTabs"
+    :current-tab="params.windowData.currentTab"
+    :loaded="loaded"
+    @tab-change="handleTabChange">
+    <template v-slot:actions>
+      <actions :options="singleActions" :row="detailData" button-type="link" button-size="small" />
+    </template>
+    <component :columns="columns" :is="params.windowData.currentTab" :data="detailData" :on-manager="onManager" :refresh="refresh" :getParams="getParams" :params="getParams" :res-id="getParams.storage" :id="listId" />
+  </base-side-page>
+</template>
+
+<script>
+
+import ColumnsMixin from '../mixins/columns'
+import SingleActionsMixin from '../mixins/singleActions'
+import TablestoreDetail from './Detail'
+import SidePageMixin from '@/mixins/sidePage'
+import WindowsMixin from '@/mixins/windows'
+import Actions from '@/components/PageList/Actions'
+
+export default {
+  name: 'TablestoreSidePage',
+  components: {
+    Actions,
+    TablestoreDetail,
+  },
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  data () {
+    return {
+      detailTabs: [
+        { label: this.$t('storage.text_81'), key: 'tablestore-detail' },
+        { label: this.$t('storage.text_85'), key: 'event-drawer' },
+      ],
+    }
+  },
+  computed: {
+    getParams () {
+      return {
+        storage: this.data.id,
+        details: true,
+      }
+    },
+    listId () {
+      switch (this.params.windowData.currentTab) {
+        case 'event-drawer':
+          return 'EventListForBucketStorageSidePage'
+        default:
+          return ''
+      }
+    },
+  },
+}
+</script>
