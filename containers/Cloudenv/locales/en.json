@@ -766,5 +766,7 @@
   "cloudenv.resource_add_cnt": "Add",
   "cloudenv.resource_del_cnt": "Delete",
   "cloudenv.scheduled_settings_title": "Scheduled sync task settings (optional)",
-  "cloudenv.range_picker_help": "Support is empty, no selection means long-term validity"
+  "cloudenv.range_picker_help": "Support is empty, no selection means long-term validity",
+  "cloudenv.incloudsphere": "InCloudSphere",
+  "cloudenv.console_url": "Console Url"
 }
