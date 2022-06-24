@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('storage.filesystem.create')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form
         class="mt-3"
         v-bind="formItemLayout"

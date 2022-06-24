@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('network.text_769')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form
         class="mt-3"
         :form="form.fc">

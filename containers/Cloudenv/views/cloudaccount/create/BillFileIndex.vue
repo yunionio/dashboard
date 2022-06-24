@@ -5,7 +5,7 @@
     <a-spin v-if="isUpdate" :spinning="!isRender">
       <content-info :params="params" v-if="isRender" />
     </a-spin>
-    <page-body>
+    <page-body needMarginBottom>
       <div>
         <div v-if="isGoogle" style="margin-bottom: 8px;">
           <span style="width: 190px;margin-right: 45px">{{ $t('cloudenv.bill.data_source') }}</span>

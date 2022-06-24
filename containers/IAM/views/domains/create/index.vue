@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('system.text_167', [$t('dictionary.domain')])" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('system.text_101')">
           <a-input v-decorator="decorators.name" :placeholder="$t('system.text_168')" />
