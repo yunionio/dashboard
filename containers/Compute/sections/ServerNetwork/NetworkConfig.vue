@@ -335,7 +335,7 @@ export default {
     fetchVpcSuccessHandle (data, item) {
       item.vpc = data[0]
       this.$nextTick(() => {
-        this.form.fc.setFieldsValue({ [`vpcs[${item.key}]`]: data?.[0]?.key })
+        this.form.fc.setFieldsValue({ [`vpcs[${item.key}]`]: data?.[0]?.key, vpcs: { [item.key]: data?.[0]?.key } })
       })
       // this.fetchNetworkOpts(this.networkParamsC, item)
     },
