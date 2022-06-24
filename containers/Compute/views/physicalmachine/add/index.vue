@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('compute.text_804')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-alert class="mb-3" :message="$t('compute.physicalmachine_add')" />
       <a-form :form="form.fc" v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_805')" :extra="desc">

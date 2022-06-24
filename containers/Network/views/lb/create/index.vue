@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="headerTitle" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
-    <page-body>
+    <page-body needMarginBottom>
       <component :is="component" :type="type" ref="formRef" />
     </page-body>
     <page-footer>

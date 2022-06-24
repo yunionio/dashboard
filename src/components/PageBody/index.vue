@@ -1,5 +1,5 @@
 <template>
-  <div class="page-body">
+  <div class="page-body" :style="`margin-bottom:${needMarginBottom ? '74px' : ''}`">
     <slot />
   </div>
 </template>
@@ -7,11 +7,17 @@
 <script>
 export default {
   name: 'PageBody',
+  props: {
+    needMarginBottom: {
+      type: Boolean,
+      default: false,
+    },
+  },
 }
 </script>
 
 <style lang="less" scoped>
 .page-body {
-  margin: 20px 0 74px 0;
+  margin-top: 20px;
 }
 </style>

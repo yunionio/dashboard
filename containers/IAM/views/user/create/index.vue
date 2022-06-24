@@ -2,7 +2,7 @@
   <div>
     <page-header :title="$t('system.text_487')" />
     <steps class="my-3" v-model="step" />
-    <page-body>
+    <page-body needMarginBottom>
       <component :is="stepComponent" :domain="domain" ref="stepForm" />
     </page-body>
     <page-footer>
