@@ -10,6 +10,11 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey) {
           type: 'field',
           params: [val.seleteItem],
         },
+        {
+          // 因为有 interval ，所以取平均值
+          type: 'mean',
+          params: null,
+        },
         { // 确保后端返回columns有 val.label 的别名
           type: 'alias',
           params: [val.label],
