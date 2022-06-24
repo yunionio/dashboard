@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('monitor.text_120', [$t('dictionary.commonalert')])" />
-    <page-body>
+    <page-body needMarginBottom>
       <alert ref="alertRef" :isUpdate="true" :commonalertId="$route.params.id" :loading.sync="loading" />
     </page-body>
     <page-footer>

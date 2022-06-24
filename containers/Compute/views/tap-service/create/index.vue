@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('compute.create_tap_service')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form :form="form.fc" class="mt-3" v-bind="formItemLayout">
         <a-form-item :label="$t('compute.text_228')">
           <a-input :placeholder="$t('validator.serverCreateName')" v-decorator="decorators.name" />

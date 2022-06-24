@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('monitor.text_13')" />
-    <page-body>
+    <page-body needMarginBottom>
       <alert ref="alertRef" :loading.sync="loading" />
     </page-body>
     <page-footer>

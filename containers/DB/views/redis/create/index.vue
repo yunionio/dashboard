@@ -1,7 +1,7 @@
 <template>
   <div class="redis-create-index db-create-index pb-5">
     <page-header :title="$t('db.text_280')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form
         class="mt-3"
         v-bind="formItemLayout"
