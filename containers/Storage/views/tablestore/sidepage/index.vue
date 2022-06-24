@@ -18,7 +18,7 @@
 <script>
 
 import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
+// import SingleActionsMixin from '../mixins/singleActions'
 import TablestoreDetail from './Detail'
 import SidePageMixin from '@/mixins/sidePage'
 import WindowsMixin from '@/mixins/windows'
@@ -30,7 +30,7 @@ export default {
     Actions,
     TablestoreDetail,
   },
-  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin, SingleActionsMixin],
+  mixins: [SidePageMixin, WindowsMixin, ColumnsMixin],
   data () {
     return {
       detailTabs: [
