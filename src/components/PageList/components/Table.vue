@@ -26,6 +26,7 @@
           :tooltip-config="{ showAll: false }"
           :expand-config="expandConfig"
           :span-method="spanMethod"
+          :sync-resize="treeToggleOpen"
           @sort-change="handleSortChange"
           v-on="dynamicEvents"
           v-bind="dynamicProps">

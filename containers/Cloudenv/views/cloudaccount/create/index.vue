@@ -197,12 +197,8 @@ export default {
       }
     },
     showName (item) {
-      if (item.data) {
-        if (item.data.hiddenName === true) {
-          return false
-        } else {
-          return true
-        }
+      if ((item.data && item.data.hiddenName) || item.hiddenName) {
+        return false
       } else {
         return true
       }
