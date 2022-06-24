@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('k8s.text_230')" />
-    <page-body>
+    <page-body needMarginBottom>
       <!-- <a-tabs v-model="activeTab">
         <a-tab-pane v-for="item in tabs" :tab="item.label" :key="item.component">
           <component :is="activeTab" resource="deployments" :ref="`${activeTab}Ref`" />

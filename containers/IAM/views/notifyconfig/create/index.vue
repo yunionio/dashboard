@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('system.text_130', [$t('system.notify_channels')])" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form
         class="mt-3"
         :form="form.fc"
