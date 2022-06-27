@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tag-list">
-      <template v-for="item of tags">
+      <template v-for="(item, index) of tags">
         <span
           class="tag mb-1 d-inline-block"
           :title="item.title"
@@ -9,7 +9,7 @@
           :style="{ backgroundColor: item.backgroundColor, color: item.color, borderColor: item.color }">
           <div class="d-flex align-items-center">
             <span class="flex-fill text-truncate">{{ item.title }}</span>
-            <!-- <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click="removeTag(item)" /> -->
+            <a-icon class="ml-1 remove-tag flex-grow-0 flex-shrink-0" type="close" @click="removeTag(index)" />
           </div>
         </span>
       </template>
@@ -103,6 +103,11 @@ export default {
         key,
         value,
       }
+    },
+    removeTag (idx) {
+      const ret = this.checked.filter((item, index) => index < idx)
+      this.$emit('change', ret)
+      this.checked = ret
     },
     handleVisibleChange (visible) {
       if (visible) {
