@@ -94,6 +94,36 @@ export default {
         },
       ],
     },
+
+    /**
+     * 表格存储
+     */
+    {
+      meta: {
+        label: i18n.t('dictionary.tablestore'),
+      },
+      submenus: [
+        {
+          path: '/table-storage',
+          meta: {
+            label: i18n.t('dictionary.tablestore'),
+            permission: 'tablestores_list',
+            hidden: () => {
+              if (store.getters.isProjectMode) return true
+              return !hasSetupKey(['apsara', 'aliyun'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'TableStorage',
+              path: '',
+              component: Tablestore,
+            },
+          ],
+        },
+      ],
+    },
     /**
      * 文件存储
      */
@@ -175,35 +205,6 @@ export default {
               name: 'BackupStorage',
               path: '',
               component: BackupStorage,
-            },
-          ],
-        },
-      ],
-    },
-    /**
-     * 表格存储
-     */
-    {
-      meta: {
-        label: i18n.t('dictionary.tablestore'),
-      },
-      submenus: [
-        {
-          path: '/table-storage',
-          meta: {
-            label: i18n.t('dictionary.tablestore'),
-            permission: 'tablestores_list',
-            hidden: () => {
-              if (store.getters.isProjectMode) return true
-              return !hasSetupKey(['apsara', 'aliyun'])
-            },
-          },
-          component: Layout,
-          children: [
-            {
-              name: 'TableStorage',
-              path: '',
-              component: Tablestore,
             },
           ],
         },

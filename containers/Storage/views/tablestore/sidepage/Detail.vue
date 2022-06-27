@@ -11,8 +11,6 @@
 import WindowsMixin from '@/mixins/windows'
 import {
   getBrandTableColumn,
-  getCopyWithContentTableColumn,
-  getAccountTableColumn,
 } from '@/utils/common/tableColumn'
 
 export default {
@@ -39,18 +37,6 @@ export default {
     return {
       baseInfo: [
         getBrandTableColumn(),
-        getCopyWithContentTableColumn({
-          field: 'cloudregion',
-          title: this.$t('storage.text_47'),
-          hideField: true,
-          slotCallback: row => {
-            if (!row.cloudregion) return '-'
-            return [
-              <side-page-trigger permission='areas_get' name='CloudregionSidePage' id={row.cloudregion_id} vm={this}>{ row.cloudregion }</side-page-trigger>,
-            ]
-          },
-        }),
-        getAccountTableColumn(),
       ],
     }
   },
