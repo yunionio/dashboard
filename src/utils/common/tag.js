@@ -49,12 +49,12 @@ export function filterUserTag ({
       value = JSON.parse(value)
     } catch (err) { }
 
-    if (R.is(String, value)) {
-      values.push(value)
-    } else if (R.is(Array, value)) {
+    if (R.is(Array, value)) {
       value.map(item => {
         values.push(item)
       })
+    } else {
+      values.push(value)
     }
     values.map(item => {
       arr.push({
@@ -98,12 +98,12 @@ export function filterExtTag ({
       value = JSON.parse(value)
     } catch (err) { }
 
-    if (R.is(String, value)) {
-      values.push(value)
-    } else if (R.is(Array, value)) {
+    if (R.is(Array, value)) {
       value.map(item => {
         values.push(item)
       })
+    } else {
+      values.push(value)
     }
     values.map(item => {
       arr.push({
