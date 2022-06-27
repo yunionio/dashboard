@@ -595,4 +595,5 @@ export const notSupportSelectRegion = [
   providerMap.apsara.key,
   providerMap.cloudpods.key,
   providerMap.hcso.key,
+  providerMap.incloudsphere.key,
 ]
