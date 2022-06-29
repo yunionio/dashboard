@@ -118,7 +118,7 @@
       </a-dropdown>
     </div>
     <!-- 全局搜索 -->
-    <div class="h-100 d-flex align-items-center flex-fill">
+    <div class="h-100 d-flex align-items-center flex-fill justify-content-center">
       <div class="globar-search-wrapper px-2" v-if="showGlobalSearch">
         <global-search />
       </div>
