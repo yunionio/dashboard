@@ -17,6 +17,10 @@ const aliyun = require('./assets/aliyun.png')
 const tencent = require('./assets/tencent.png')
 const kylin = require('./assets/kylin.png')
 const nfs = require('./assets/nfs.png')
+const uos = require('./assets/uos.svg')
+const android = require('./assets/android.png')
+const vmware = require('./assets/vmware.png')
+const cirros = require('./assets/cirros.png')
 
 export default {
   name: 'ImageIcon',
@@ -54,6 +58,11 @@ export default {
         return {
           ...CUSTOME_IMG[image],
           isUnknow: false,
+        }
+      } else if (image.indexOf('esxi') > -1 || image.indexOf('vcenter') > -1) {
+        return {
+          label: tps,
+          url: 'vmware',
         }
       } else {
         return {
@@ -106,6 +115,18 @@ export default {
             break
           case 'nfs':
             curImg = nfs
+            break
+          case 'uos':
+            curImg = uos
+            break
+          case 'android':
+            curImg = android
+            break
+          case 'vmware':
+            curImg = vmware
+            break
+          case 'cirros':
+            curImg = cirros
             break
           default:
             break
