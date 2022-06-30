@@ -82,5 +82,10 @@ export default {
   created () {
     if (this.params.tab) this.handleTabChange(this.params.tab)
   },
+  methods: {
+    handleOpenSidepage (row, tab) {
+      this.handleTabChange(tab)
+    },
+  },
 }
 </script>
