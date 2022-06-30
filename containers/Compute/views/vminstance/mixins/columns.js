@@ -246,6 +246,51 @@ export default {
         },
       },
       {
+        field: 'cpu_usage',
+        title: i18nLocale.t('table.title.cpu_usage'),
+        sortable: true,
+        minWidth: 150,
+        hidden: () => true,
+        slots: {
+          default: ({ row }) => {
+            if (row.cpu_usage) {
+              return [<a-progress percent={ row.cpu_usage.toFixed(4) * 100 } size="small" />]
+            }
+            return [<a-progress percent={ 0 } size="small" />]
+          },
+        },
+      },
+      {
+        field: 'mem_usage',
+        title: i18nLocale.t('table.title.mem_usage'),
+        sortable: true,
+        minWidth: 150,
+        hidden: () => true,
+        slots: {
+          default: ({ row }) => {
+            if (row.mem_usage) {
+              return [<a-progress percent={ row.mem_usage.toFixed(4) * 100 } size="small" />]
+            }
+            return [<a-progress percent={ 0 } size="small" />]
+          },
+        },
+      },
+      {
+        field: 'disk_usage',
+        title: i18nLocale.t('table.title.disk_usage'),
+        sortable: true,
+        minWidth: 150,
+        hidden: () => true,
+        slots: {
+          default: ({ row }) => {
+            if (row.disk_usage) {
+              return [<a-progress percent={ row.disk_usage.toFixed(4) * 100 } size="small" />]
+            }
+            return [<a-progress percent={ 0 } size="small" />]
+          },
+        },
+      },
+      {
         field: 'password',
         title: i18nLocale.t('table.title.init_keypair'),
         minWidth: 50,

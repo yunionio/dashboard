@@ -158,7 +158,8 @@ export default {
       } catch (error) {
         if (error.isAxiosError && error.response && error.response.status === 404 && this.isDefault) {
           // not found system default dashboard, reinit one
-          const config = this.isPrivate ? defaultConfig[this.scope][id] : publicDefaultConfig[this.scope][id]
+          const shareConfig = await this.initWidgetParamter()
+          const config = this.isPrivate ? (shareConfig || defaultConfig[this.scope][id]) : publicDefaultConfig[this.scope][id]
           if (!this.globalConfig.enable_quota_check) {
             // remove quota widgets
             for (var i = 0; i < config.length; i++) {
@@ -223,6 +224,17 @@ export default {
     },
     refresh () {
       this.$refs.content.refresh()
+    },
+    async initWidgetParamter () {
+      try {
+        const response = await this.$store.dispatch('widgetSetting/getFetchWidgetSetting')
+
+        if (response?.value && response.value[`dashboard-${this.scope}`]) {
+          return response.value[`dashboard-${this.scope}`]
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 }

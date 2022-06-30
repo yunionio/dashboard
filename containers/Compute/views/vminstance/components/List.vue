@@ -1,5 +1,6 @@
 <template>
   <page-list
+    :fixed="true"
     show-tag-filter
     show-tag-columns
     show-tag-config
@@ -13,15 +14,13 @@
     :defaultSearchKey="defaultSearchKey"
     :before-show-menu="beforeShowMenu"
     :refresh-method="handleListRefresh"
-    :tag-config-params="tagConfigParams" />
+    :tag-config-params="tagConfigParams"
+    :tableOverviewIndexs="tableOverviewIndexs" />
 </template>
 
 <script>
 import * as R from 'ramda'
 import { mapGetters } from 'vuex'
-import { cloudEnabled, cloudUnabledTip, commonEnabled } from '../utils'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
 import { SERVER_TYPE } from '@Compute/constants'
 import ListMixin from '@/mixins/list'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
@@ -47,6 +46,9 @@ import { typeClouds, findPlatform } from '@/utils/common/hypervisor'
 import GlobalSearchMixin from '@/mixins/globalSearch'
 import regexp from '@/utils/regexp'
 import { hasSetupKey } from '@/utils/auth'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
+import { cloudEnabled, cloudUnabledTip, commonEnabled } from '../utils'
 
 export default {
   name: 'VmInstanceList',
@@ -64,6 +66,9 @@ export default {
     hiddenFilterOptions: {
       type: Array,
       default: () => ([]),
+    },
+    tableOverviewIndexs: {
+      type: Array,
     },
   },
   data () {
@@ -1176,7 +1181,6 @@ export default {
       }
     },
     handleListRefresh () {
-      this.$emit('refresh')
       this.list.refresh()
       // 新建按钮无法点击时，刷新云资源情况
       this.cloudEnvEmpty && this.$store.dispatch('auth/getCapabilities')

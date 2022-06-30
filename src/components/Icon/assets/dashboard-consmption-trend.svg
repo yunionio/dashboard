@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>近30天消费趋势 </title>
+    <g id="云管备份" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="磁条" transform="translate(-28.000000, -902.000000)">
+            <g id="编组-9" transform="translate(0.000000, 68.000000)">
+                <g id="编组-13备份-9" transform="translate(17.000000, 834.000000)">
+                    <g id="数字图" transform="translate(11.000000, 0.000000)">
+                        <g id="编组-2" transform="translate(0.204590, 0.000000)">
+                            <text id="$" font-family="EingrantchMono-Medium, Eingrantch Mono" font-size="30" font-weight="400" fill="#0099F0">
+                                <tspan x="13.7954102" y="31">$</tspan>
+                            </text>
+                            <path d="M0,39.3857422 L9.78125,39.3857422 L9.78125,24.3603516 L13.0664063,24.3603516 M33.2510364,16.9379883 L33.2510364,3.86425781 L41.7954102,3.86425781" id="形状" stroke="#0099F0" stroke-width="1.5"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

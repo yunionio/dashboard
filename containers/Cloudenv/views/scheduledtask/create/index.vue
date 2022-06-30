@@ -1,7 +1,7 @@
 <template>
   <div class="scheduletask">
     <page-header :title="$t('cloudenv.text_432')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form :form="form.fc" v-bind="formItemLayout" hideRequiredMark>
         <a-form-item :label="$t('cloudenv.text_410', [$t('dictionary.project')])" class="mt-3 mb-0" v-bind="formItemLayout">
           <domain-project :fc="form.fc" :decorators="{ project: decorators.project, domain: decorators.domain }" />

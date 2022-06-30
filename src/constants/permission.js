@@ -657,6 +657,8 @@ export const PERMISSION = {
   lb_loadbalancers_delete: ['compute', 'loadbalancers', 'delete'],
   lb_loadbalancers_get: ['compute', 'loadbalancers', 'get'],
   lb_loadbalancers_perform_status: ['compute', 'loadbalancers', 'perform', 'status'],
+  lb_loadbalancers_perform_associate_eip: ['compute', 'loadbalancers', 'perform', 'associate-eip'],
+  lb_loadbalancers_perform_dissociate_eip: ['compute', 'loadbalancers', 'perform', 'dissociate-eip'],
   lb_loadbalancerlisteners_create: ['compute', 'loadbalancerlisteners', 'create'],
   lb_loadbalancerlisteners_update: ['compute', 'loadbalancerlisteners', 'update'],
   lb_loadbalancerlisteners_delete: ['compute', 'loadbalancerlisteners', 'delete'],
@@ -1299,6 +1301,20 @@ export const PERMISSION = {
   price_infos_perform_discount: ['meter', 'price_infos', 'perform', 'discount'],
 
   capabilities_list: ['compute', 'capabilities', 'list'],
+
+  tapservices_list: ['compute', 'tap_services', 'list'],
+  tapservices_perform_enabled: ['compute', 'tap_services', 'perform', 'enabled'],
+  tapservices_perform_disabled: ['compute', 'tap_services', 'perform', 'disabled'],
+  tapservices_delete: ['compute', 'tap_services', 'delete'],
+  tapservices_create: ['compute', 'tap_services', 'create'],
+
+  tapflows_list: ['compute', 'tap_flows', 'list'],
+  tapflows_perform_enabled: ['compute', 'tap_flows', 'perform', 'enabled'],
+  tapflows_perform_disabled: ['compute', 'tap_flows', 'perform', 'disabled'],
+  tapflows_delete: ['compute', 'tap_flows', 'delete'],
+  tapflows_create: ['compute', 'tap_flows', 'create'],
+
+  tablestores_list: ['compute', 'tablestores', 'list'],
 }
 
 // 已声明权限的资源

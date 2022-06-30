@@ -9,11 +9,12 @@
         :form="form.fc">
         <a-form-item :label="$t('network.eip.instance_type')">
           <a-radio-group v-decorator="decorators.instance_type" @change="onAssociateTypeChanged">
-            <a-radio value="server">{{$t('network.eip.instance_type.server')}}</a-radio>
-            <a-radio value="natgateway" :disabled="isNatDisabled">{{$t('network.eip.instance_type.nat')}}</a-radio>
+            <a-radio-button value="server">{{$t('network.eip.instance_type.server')}}</a-radio-button>
+            <a-radio-button value="natgateway" :disabled="isNatDisabled">{{$t('network.eip.instance_type.nat')}}</a-radio-button>
+            <a-radio-button value="loadbalancer" :disabled="isLbDisabled">{{$t('network.eip.instance_type.lb')}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item :label="resource_label">
+        <a-form-item :label="resource_label" :extra="resource === 'servers' && $t('network.eip_bind_server_tip')">
           <base-select
             :remote="true"
             v-decorator="decorators.instance_id"
@@ -89,12 +90,23 @@ export default {
       } else if (this.resource === 'natgateways') {
         params.filter = 'status.in("available")'
         params.cloudregion_id = this.params.data[0].cloudregion_id
+      } else if (this.resource === 'loadbalancers') {
+        params.filter = 'status.in(enabled)'
+        params.without_eip = true
+        params.eip_associable = true
+        params.usable_loadbalancer_for_eip = this.params.data[0].id
       }
       if (this.isAdminMode || this.isDomainMode) params.project_id = this.params.data[0].project_id
       return params
     },
     isNatDisabled () {
       if (this.params.data[0].provider === 'Aliyun') {
+        return false
+      }
+      return true
+    },
+    isLbDisabled () {
+      if (['OneCloud', 'Huawei'].includes(this.params.data[0].provider)) {
         return false
       }
       return true
@@ -108,6 +120,9 @@ export default {
       } else if (e.target.value === 'natgateway') {
         this.resource = 'natgateways'
         this.resource_label = this.$t('dictionary.nat')
+      } else if (e.target.value === 'loadbalancer') {
+        this.resource = 'loadbalancers'
+        this.resource_label = 'LB'
       }
     },
     doBind (data) {

@@ -33,6 +33,14 @@ function genServerQueryData (vmId, val, scope, from, interval, idKey) {
     }],
   }
 
+  if (model.measurement === 'agent_cpu') {
+    model.tags.push({
+      key: 'cpu',
+      value: 'cpu-total',
+      operator: '=',
+    })
+  }
+
   if (val.groupBy && (val.groupBy.length !== 0)) {
     val.groupBy.forEach(group => {
       model.group_by.push({

@@ -5,6 +5,7 @@ import BlockStorage from '@Storage/views/blockstorage'
 import Bucket from '@Storage/views/bucket'
 import FileSystem from '@Storage/views/file-system'
 import AccessGroup from '@Storage/views/access-group'
+import Tablestore from '@Storage/views/tablestore'
 import Layout from '@/layouts/RouterView'
 import { hasSetupKey } from '@/utils/auth'
 import i18n from '@/locales'
@@ -88,6 +89,36 @@ export default {
               name: 'BucketSetStaticWebsit',
               path: 'setstaticwebsit',
               component: BucketSetStaticWebsit,
+            },
+          ],
+        },
+      ],
+    },
+
+    /**
+     * 表格存储
+     */
+    {
+      meta: {
+        label: i18n.t('dictionary.tablestore'),
+      },
+      submenus: [
+        {
+          path: '/table-storage',
+          meta: {
+            label: i18n.t('dictionary.tablestore'),
+            permission: 'tablestores_list',
+            hidden: () => {
+              if (store.getters.isProjectMode) return true
+              return !hasSetupKey(['apsara', 'aliyun'])
+            },
+          },
+          component: Layout,
+          children: [
+            {
+              name: 'TableStorage',
+              path: '',
+              component: Tablestore,
             },
           ],
         },

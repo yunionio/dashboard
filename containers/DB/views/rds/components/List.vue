@@ -8,6 +8,7 @@
     :single-actions="singleActions"
     :showSearchbox="showSearchbox"
     :showGroupActions="showGroupActions"
+    :defaultSearchKey="defaultSearchKey"
     :export-data-options="exportDataOptions" />
 </template>
 <script>
@@ -22,6 +23,7 @@ import WindowsMixin from '@/mixins/windows'
 import globalSearchMixins from '@/mixins/globalSearch'
 import ResStatusFilterMixin from '@/mixins/resStatusFilterMixin'
 import { HYPERVISORS_MAP } from '@/constants'
+import regexp from '@/utils/regexp'
 
 export default {
   name: 'RDSList',
@@ -82,7 +84,7 @@ export default {
             field: 'connection_str',
             title: this.$t('db.text_59'),
           }),
-          // ip_addrs: getNameFilter({ field: 'ip_addrs', label: this.$t('db.intranet_ip') }),
+          ip_addr: { label: this.$t('db.url_ip') },
           region: {
             label: this.$t('db.text_40'),
           },
@@ -355,6 +357,12 @@ export default {
     },
     refresh () {
       this.list.refresh()
+    },
+    defaultSearchKey (search) {
+      if (regexp.isIPv4(search)) {
+        return 'ip_addr'
+      }
+      return 'name'
     },
   },
 }

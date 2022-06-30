@@ -8,6 +8,9 @@
         <a-form-item :label="$t('cloudenv.text_95')">
           <a-input :placeholder="$t('cloudenv.text_190')" v-decorator="decorators.name" />
         </a-form-item>
+        <a-form-item :label="$t('cloudenv.text_360')">
+          {{ $t('cloudenv.sync_account') }}
+        </a-form-item>
         <a-form-item :label="$t('cloudenv.text_433')">
           <a-radio-group v-decorator="decorators.cycle_type">
             <a-radio-button v-for="(v, k) in $t('cloudenvScheduledtaskGroupCycleType')" :key="k" :value="k">{{v}}</a-radio-button>
@@ -41,7 +44,7 @@
           <a-form-item :label="$t('cloudenv.text_437')">
             <a-time-picker v-decorator="decorators.hourMinute" format="HH:mm" />
           </a-form-item>
-          <a-form-item :label="$t('cloudenv.text_438')">
+          <a-form-item :label="$t('cloudenv.text_438')" :help="$t('cloudenv.range_picker_help')">
             <a-range-picker
               v-decorator="decorators.startEndTime"
               :disabledDate="disabledDate"

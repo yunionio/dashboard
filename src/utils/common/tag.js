@@ -43,15 +43,30 @@ export function filterUserTag ({
       (ignoreKeys.length > 0 && ignoreKeys.includes(key)) ||
       (!ignorePrefix && (needExt ? (!isUserTag(key) && !isExtTag(key)) : !isUserTag(key)))
     ) continue
-    arr.push({
-      key,
-      value: metadata[key],
-    })
-    if (obj[key]) {
-      if (!obj.key.includes(metadata[key])) obj[key].push(metadata[key])
+    let value = metadata[key]
+    const values = []
+    try {
+      value = JSON.parse(value)
+    } catch (err) { }
+
+    if (R.is(Array, value)) {
+      value.map(item => {
+        values.push(item)
+      })
     } else {
-      obj[key] = [metadata[key]]
+      values.push(value)
     }
+    values.map(item => {
+      arr.push({
+        key,
+        value: item,
+      })
+      if (obj[key]) {
+        if (!obj[key].includes(item)) obj[key].push(item)
+      } else {
+        obj[key] = [item]
+      }
+    })
   }
   return { arr, obj }
 }
@@ -76,15 +91,31 @@ export function filterExtTag ({
       (ignoreKeys.length > 0 && ignoreKeys.includes(key)) ||
       (!ignorePrefix && (needUser ? (!isUserTag(key) && !isExtTag(key)) : !isExtTag(key)))
     ) continue
-    arr.push({
-      key,
-      value: metadata[key],
-    })
-    if (obj[key]) {
-      if (!obj.key.includes(metadata[key])) obj[key].push(metadata[key])
+
+    let value = metadata[key]
+    const values = []
+    try {
+      value = JSON.parse(value)
+    } catch (err) { }
+
+    if (R.is(Array, value)) {
+      value.map(item => {
+        values.push(item)
+      })
     } else {
-      obj[key] = [metadata[key]]
+      values.push(value)
     }
+    values.map(item => {
+      arr.push({
+        key,
+        value: item,
+      })
+      if (obj[key]) {
+        if (!obj[key].includes(item)) obj[key].push(item)
+      } else {
+        obj[key] = [item]
+      }
+    })
   }
   return { arr, obj }
 }

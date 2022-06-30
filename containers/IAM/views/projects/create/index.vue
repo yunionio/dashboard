@@ -2,7 +2,7 @@
   <div>
     <page-header :title="$t('system.text_167', [$t('dictionary.project')])" />
     <steps class="my-3" v-model="step" />
-    <page-body>
+    <page-body needMarginBottom>
       <component :is="stepComponent" :domainId="projectMsg.domain_id" ref="stepForm" />
     </page-body>
     <page-footer>

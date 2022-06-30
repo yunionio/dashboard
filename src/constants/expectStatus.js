@@ -100,7 +100,7 @@ export default {
     info: ['unknown', 'soldout'],
   },
   disk: {
-    success: ['ready', 'post_migrate'],
+    success: ['ready', 'post_migrate', 'ActiveSAS'],
     danger: ['alloc_failed', 'dealloc_failed', 'clone_failed', 'backup_alloc_failed', 'cancel_snapshot_failed'],
     info: ['unknown', 'unavailable'],
   },
@@ -346,6 +346,9 @@ export default {
     success: ['succeed', 'part_succeed'],
     danger: ['failed', 'reject'],
   },
+  scheduledtaskBillSync: {
+    success: ['finished'],
+  },
   cloudgroup: {
     info: 'unknown',
     success: ['available'],
@@ -509,5 +512,8 @@ export default {
     warning: ['part'],
     info: ['process'],
     danger: ['resp_failed'],
+  },
+  tablestore: {
+    success: ['running'],
   },
 }

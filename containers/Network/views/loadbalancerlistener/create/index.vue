@@ -1,7 +1,7 @@
 <template>
   <div v-loading="true">
     <page-header :title="$t('network.text_465', [isUpdate ? $t('network.text_130') : $t('network.text_26')])" />
-    <page-body>
+    <page-body needMarginBottom>
       <steps v-show="!isLbRedirected" v-model="step" />
       <components :is="component" :step="step" ref="formRef" :isUpdate="isUpdate" />
     </page-body>

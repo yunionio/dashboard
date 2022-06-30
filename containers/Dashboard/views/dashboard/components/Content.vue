@@ -19,8 +19,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import * as R from 'ramda'
+import extendsComponents from '@scope/extends'
 import { clear as clearCache } from '@Dashboard/utils/cache'
-import extendsComponents from '@Dashboard/extends'
 
 export default {
   name: 'DashboardContent',
@@ -82,6 +82,6 @@ export default {
 
 <style lang="less" scoped>
 .item {
-  border: solid 2px #eee;
+  border: 1px solid #E7E8EB;
 }
 </style>

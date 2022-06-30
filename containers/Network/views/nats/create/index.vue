@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('network.create_nat')" />
-    <page-body>
+    <page-body needMarginBottom>
       <a-form
         class="mt-3"
         v-bind="formItemLayout"

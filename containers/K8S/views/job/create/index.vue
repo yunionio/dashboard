@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('k8s.text_241')" />
-    <page-body>
+    <page-body needMarginBottom>
       <form-create ref="FormCreateRef" />
     </page-body>
     <page-footer>
