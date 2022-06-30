@@ -180,6 +180,10 @@ export default {
           disk: this.form.fd.disk_id,
           cache_mode: values.cache_mode,
         }
+        if (!params.server || !params.disk) {
+          this.loading = false
+          return
+        }
         await this.doUpdate(params)
         this.loading = false
         this.$message.success(this.$t('common.success'))
