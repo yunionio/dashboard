@@ -32,7 +32,7 @@
           <template v-slot:empty>
             <loader :loading="loading" :noDataText="noDataText" />
           </template>
-          <template v-slot:pager>
+          <template v-if="!loadMoreShow" v-slot:pager>
             <vxe-pager
               :layouts="tablePage.layouts"
               :current-page="tablePage.currentPage"
