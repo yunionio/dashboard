@@ -6,9 +6,9 @@
         v-bind="formItemLayout"
         :form="form.fc">
         <a-form-item :label="$t('compute.text_1051')" :extra="$t('compute.text_1055')">
-          <a-input-number :min="1" :max="256" v-decorator="decorators.cpu_core_count" /> {{$t('compute.text_167')}}</a-form-item>
+          <a-input-number :min="1" :max="255" v-decorator="decorators.cpu_core_count" /> {{$t('compute.text_167')}}</a-form-item>
         <a-form-item :label="$t('compute.text_1052')" :extra="$t('compute.text_1056')">
-          <a-input-number :min="0.5" :max="512" v-decorator="decorators.memory_size_mb" /> GB
+          <a-input-number :min="0.5" :max="1024" v-decorator="decorators.memory_size_mb" /> GB
         </a-form-item>
         <a-form-item :label="$t('common.description')">
           <a-textarea :auto-size="{ minRows: 1, maxRows: 3 }" v-decorator="decorators.description" :placeholder="$t('common_367')" />
