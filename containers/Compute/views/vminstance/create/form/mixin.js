@@ -117,6 +117,7 @@ export default {
         validateStatus: '',
         errorMsg: '',
       },
+      custom_data: [],
     }
   },
   provide () {
@@ -353,17 +354,25 @@ export default {
         .then(async formData => {
           this.submiting = true
           const genCreteData = new GenCreateData(formData, this.form.fi)
+          const data = genCreteData.all()
+          if (data.custom_data_type) {
+            delete data.custom_data_type
+            const { customData } = this.$refs.customData
+            if (customData.length) {
+              data.deploy_configs = customData
+            }
+          }
           if (this.isServertemplate) { // 创建主机模板
-            this.doCreateServertemplate(genCreteData)
+            this.doCreateServertemplate(data)
           } else if (this.isOpenWorkflow) { // 提交工单
-            await this.checkCreateData(genCreteData)
-            this.doForecast(genCreteData)
+            await this.checkCreateData(data)
+            this.doForecast(genCreteData, data)
               .then(() => {
-                this.doCreateWorkflow(genCreteData)
+                this.doCreateWorkflow(data)
               })
           } else { // 创建主机
-            await this.checkCreateData(genCreteData)
-            this.doForecast(genCreteData)
+            await this.checkCreateData(data)
+            this.doForecast(genCreteData, data)
               .then((data) => {
                 this.createServer(data)
               })
@@ -375,8 +384,7 @@ export default {
           throw error
         })
     },
-    doCreateServertemplate (genCreateData) {
-      const data = genCreateData.all()
+    doCreateServertemplate (data) {
       const { project_id, description, ...rest } = data
       const templateData = {
         name: this.form.fc.getFieldValue('servertemplate_name'),
@@ -419,9 +427,8 @@ export default {
           throw error
         })
     },
-    async checkCreateData (genCreateData) {
+    async checkCreateData (data) {
       try {
-        const data = genCreateData.all()
         const res = new this.$Manager('servers').performAction({ id: 'check-create-data', action: '', data })
         return res
       } catch (error) {
@@ -429,8 +436,7 @@ export default {
         throw error
       }
     },
-    doForecast (genCreateData) {
-      const data = genCreateData.all()
+    doForecast (genCreateData, data) {
       this.submiting = true
       return new Promise((resolve, reject) => {
         this.schedulerM.rpc({ methodname: 'DoForecast', params: data })
