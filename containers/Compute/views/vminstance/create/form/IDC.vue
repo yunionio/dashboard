@@ -223,6 +223,9 @@
           <a-form-item v-show="!isServertemplate" v-if="isKvm && enableEncryption" :label="$t('compute.server.encryption')" :extra="$t('compute.server.encryption.extra')">
             <encrypt-keys :decorators="decorators.encrypt_keys" />
           </a-form-item>
+          <template v-if="isKvm">
+            <custom-data ref="customData" :decorators="decorators" :form="form" />
+          </template>
         </a-collapse-panel>
       </a-collapse>
       <bottom-bar
@@ -250,6 +253,7 @@ import OsArch from '@/sections/OsArch'
 import Vdi from '@Compute/sections/VDI'
 import Vga from '@Compute/sections/VGA'
 import Machine from '@Compute/sections/Machine'
+import CustomData from '../components/CustomData'
 import { NETWORK_OPTIONS_MAP } from '@Compute/constants'
 import mixin from './mixin'
 
@@ -263,6 +267,7 @@ export default {
     Vga,
     Machine,
     EncryptKeys,
+    CustomData,
   },
   mixins: [mixin],
   data () {
