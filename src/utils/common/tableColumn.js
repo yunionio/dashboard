@@ -464,7 +464,7 @@ export const getTimeRangeColumn = ({
   end_field = 'end_time',
   title = i18n.t('table.title.create_time'),
   sortable = false,
-  format = 'YYYY-MM-DD hh:mm:ss',
+  format = 'YYYY-MM-DD HH:mm:ss',
 } = {}) => {
   return {
     field,
