@@ -1603,5 +1603,6 @@
   "compute.custom_data_file": "以文件形式",
   "compute.custom_data_file_limit": "只能上传json文件，且大小不超过32KB",
   "compute.custom_data_error1": "内容格式错误",
-  "compute.custom_data_temp": "文本或文件格式模板遵循：[{\"action\":\"取值为create或append\",\"path\":\"虚拟机内路径如：/root/usr\",\"content\":\"内容\"}]"
+  "compute.custom_data_temp": "文本或文件格式模板遵循：[{\"action\":\"取值为create或append\",\"path\":\"虚拟机内路径如：/root/usr\",\"content\":\"内容\"}]",
+  "compute.max_iops": "最大IOPS"
 }

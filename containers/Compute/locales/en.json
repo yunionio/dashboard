@@ -1603,5 +1603,6 @@
   "compute.custom_data_file": "File",
   "compute.custom_data_file_limit": "Only JSON files can be uploaded, and the size is no more than 32KB",
   "compute.custom_data_error1": "Content format error",
-  "compute.custom_data_temp": "Text or file format templates follow：[{\"action\":\"create or append\",\"path\":\"The path in the virtual machine is as follows:：/root/usr\",\"content\":\"content\"}]"
+  "compute.custom_data_temp": "Text or file format templates follow：[{\"action\":\"create or append\",\"path\":\"The path in the virtual machine is as follows:：/root/usr\",\"content\":\"content\"}]",
+  "compute.max_iops": "Max IOPS"
 }
