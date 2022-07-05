@@ -134,7 +134,7 @@ export function getTagTitle (key, value) {
   if (str === 'cloud_default') {
     str = i18n.t('common_736')
   }
-  if (value === 'cloud_default' || val === '__no_value__') {
+  if (value === 'cloud_default' || val === '___no_value__') {
     val = i18n.t('common_736')
   }
   if (val) str += `:${val}`
@@ -143,7 +143,7 @@ export function getTagTitle (key, value) {
 
 export function getTagValue (value) {
   let val = value
-  if (value === 'cloud_default' || val === '__no_value__') {
+  if (value === 'cloud_default' || val === '___no_value__') {
     val = i18n.t('common_736')
   }
   return val
