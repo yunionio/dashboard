@@ -8,12 +8,16 @@ export default {
     isPreLoad () {
       return this.list?.isPreLoad
     },
+    isOperateInSidepage () {
+      const listId = this.list?.id
+      return listId && listId.endsWith('Sidepage')
+    },
   },
   watch: {
     'list.params': {
       handler: function (val) {
         if (val) {
-          this.$bus.$emit('ListParamsChange', val)
+          !this.isOperateInSidepage && this.$bus.$emit('ListParamsChange', val)
         }
       },
       deep: true,
@@ -24,7 +28,7 @@ export default {
       return this.list.onManager(...arguments)
     },
     refresh () {
-      this.$bus.$emit('ListParamsChange', { ...arguments })
+      !this.isOperateInSidepage && this.$bus.$emit('ListParamsChange', { ...arguments })
       return this.list.refresh(...arguments)
     },
     singleRefresh () {
