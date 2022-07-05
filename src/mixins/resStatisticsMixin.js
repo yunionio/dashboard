@@ -19,6 +19,7 @@ export default {
   },
   created () {
     this.fetchResStatistics = debounce(this.fetchResStatisticsDebounce, 2000)
+    this.$bus.$off('ListParamsChange')
     this.$bus.$on('ListParamsChange', (params) => {
       this.statisticsLoading = true
       if (params && params.details) {
