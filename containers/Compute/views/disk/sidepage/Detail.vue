@@ -61,6 +61,13 @@ export default {
           },
         },
         {
+          field: 'iops',
+          title: this.$t('compute.max_iops'),
+          formatter: ({ row }) => {
+            return row.iops || '-'
+          },
+        },
+        {
           field: 'disk_type',
           title: this.$t('compute.text_381'),
           formatter: ({ cellValue }) => {
