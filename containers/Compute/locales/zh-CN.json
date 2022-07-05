@@ -1597,5 +1597,6 @@
   "compute.tap_service_delete_tip": "已有镜像源的流量镜像不允许删除",
   "compute.num_queues": "队列数量",
   "compute.add_tap_flow": "添加镜像源",
-  "compute.update_network.alert": "重启虚拟机后生效"
+  "compute.update_network.alert": "重启虚拟机后生效",
+  "compute.max_iops": "最大IOPS"
 }

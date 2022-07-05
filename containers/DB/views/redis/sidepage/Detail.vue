@@ -125,6 +125,24 @@ export default {
                 },
               },
             },
+            {
+              field: 'connections',
+              title: this.$t('db.max_connections'),
+              slots: {
+                default: ({ row }) => {
+                  return row.connections || '-'
+                },
+              },
+            },
+            {
+              field: 'bandwidth',
+              title: this.$t('db.max_ip_bandwidth'),
+              slots: {
+                default: ({ row }) => {
+                  return row.bandwidth || '-'
+                },
+              },
+            },
           ],
         },
         {
