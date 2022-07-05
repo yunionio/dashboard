@@ -7,6 +7,7 @@
       :value="tagFilter"
       :managerInstance="tagManagerInstance"
       :show-ext-tags="showExtTags"
+      show-no-value
       @change="handleTagFilterChange">
       <template v-slot:trigger>
         <a-button class="flex-shrink-0" style="margin-right: -1px;"><icon type="res-tag" />{{$t('common.text00012')}}</a-button>
