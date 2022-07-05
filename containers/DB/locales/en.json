@@ -408,5 +408,7 @@
   "db.text_393": "When it expires, the Redis instance of the corresponding platform will be deleted. There is a certain error between the actual release time and the setting time, and the specific release time shall be subject to the actual.",
   "db.zone_single": "Single zone",
   "db.zone_multi": "Multiple zones",
-  "db.intranet_ip": "Intranet Ip"
+  "db.intranet_ip": "Intranet Ip",
+  "db.max_connections": "Max connections",
+  "db.max_ip_bandwidth": "Max private network bandwidth"
 }
