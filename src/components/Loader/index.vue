@@ -7,7 +7,7 @@
       <div class="loading-description">{{$t('common.loding')}}</div>
     </div>
     <div v-else class="text-center">
-      <data-empty />
+      <data-empty :noDataText="noDataText" />
     </div>
   </div>
 </template>
