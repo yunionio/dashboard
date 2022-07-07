@@ -441,12 +441,13 @@ export const getTimeTableColumn = ({
   title = i18n.t('table.title.create_time'),
   sortable = true,
   fromNow = false,
+  minWidth = 180,
   vm = {},
 } = {}) => {
   return {
     field,
     title,
-    width: 160,
+    minWidth: minWidth,
     sortable,
     slots: {
       default: ({ row }, h) => {
