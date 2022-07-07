@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 
 export default {
+  inject: ['inBaseSidePage'],
   computed: {
     cloudEnvEmpty () {
       return R.isEmpty(this.cloudEnvOptions && this.cloudEnvOptions.filter(v => !!v.key))
@@ -9,8 +10,7 @@ export default {
       return this.list?.isPreLoad
     },
     isOperateInSidepage () {
-      const listId = this.list?.id
-      return listId && listId.endsWith('Sidepage')
+      return this.inBaseSidePage
     },
   },
   watch: {
