@@ -191,6 +191,9 @@ export default {
             model: {
               measurement: val.fromItem,
               select,
+              group_by: [
+                { type: 'tag', params: ['host_id'] },
+              ],
               tags: [
                 {
                   key: 'host_id',
