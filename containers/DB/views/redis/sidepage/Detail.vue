@@ -20,7 +20,7 @@ import {
   getSwitchTableColumn,
   getBillingTypeTableColumn,
 } from '@/utils/common/tableColumn'
-import { sizestr } from '@/utils/utils'
+import { sizestr, sizestrWithUnit } from '@/utils/utils'
 import WindowsMixin from '@/mixins/windows'
 
 export default {
@@ -139,7 +139,7 @@ export default {
               title: this.$t('db.max_ip_bandwidth'),
               slots: {
                 default: ({ row }) => {
-                  return row.bandwidth || '-'
+                  return row.bandwidth ? sizestrWithUnit(row.bandwidth, 'M', 1024) + '/s' : '-'
                 },
               },
             },
