@@ -31,6 +31,7 @@
             :tag-filter="tagFilter"
             :extTagParams="extTagParams"
             :show-ext-tags="showExtTags"
+            :show-no-value="showNoValue"
             @tag-filter-change="(tagFilter) => $emit('tag-filter-change', tagFilter)" />
         </template>
       </div>
@@ -162,6 +163,7 @@ export default {
     showTagConfig: Boolean,
     tagConfigParams: Object,
     treeToggleOpen: Boolean,
+    showNoValue: Boolean,
   },
   computed: {
     _filterOptions () {

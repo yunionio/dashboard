@@ -34,6 +34,7 @@
       :show-tag-config="showTagConfigCheck"
       :tag-config-params="tagConfigParams"
       :treeToggleOpen="treeToggleOpen"
+      :show-no-value="showNoValue"
       @refresh="refresh"
       @clear-selected="clearSelected"
       @tag-filter-change="tagFilterChange"
@@ -222,6 +223,7 @@ export default {
     tableOverviewIndexs: {
       type: Array,
     },
+    showNoValue: Boolean,
   },
   provide: {
     // 声明在List中
