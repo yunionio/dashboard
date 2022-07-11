@@ -35,7 +35,9 @@ export default {
         const serie = this.genSerie(row.name, colors[index], row.yData)
         series.push(serie)
         // construct legendData
-        legendData.push(row.name)
+        if (!row.hideLegend) {
+          legendData.push(row.name)
+        }
         xAxisData = row.xData
       })
       return { series, xAxisData, legendData }
