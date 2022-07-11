@@ -134,7 +134,8 @@ export const KVM_MONITOR_OPTS = [
   {
     name: 'cpu',
     label: i18n.t('compute.text_523'),
-    seleteItem: 'usage_active,usage_idle,usage_user,usage_system,usage_iowait',
+    // seleteItem: 'usage_active,usage_idle,usage_user,usage_system,usage_iowait',
+    seleteItem: 'usage_active',
     fromItem: 'cpu',
     as: i18n.t('compute.text_528'),
     unit: '%',
