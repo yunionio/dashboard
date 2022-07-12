@@ -81,13 +81,13 @@
 
 <script>
 import _ from 'lodash'
-import DomainProject from '../../../components/DomainProject'
-import createMixin from './createMixin'
 import AutoSync from '@Cloudenv/views/cloudaccount/components/AutoSync'
 import ProxySetting from '@Cloudenv/views/cloudaccount/components/ProxySetting'
 import ShareMode from '@Cloudenv/views/cloudaccount/components/ShareMode'
 import { getCloudaccountDocs, keySecretFields } from '@Cloudenv/views/cloudaccount/constants'
 import { isRequired } from '@/utils/validate'
+import createMixin from './createMixin'
+import DomainProject from '../../../components/DomainProject'
 
 export default {
   name: 'HCSO',
@@ -137,7 +137,7 @@ export default {
             validateFirst: true,
             rules: [
               { required: true, message: this.$t('cloudenv.text_190') },
-              { validator: this.$validate('resourceName') },
+              // { validator: this.$validate('resourceName') },
             ],
           },
         ],
