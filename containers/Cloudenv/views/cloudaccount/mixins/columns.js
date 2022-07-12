@@ -1,11 +1,4 @@
 import {
-  getAccessUrlTableColumn,
-  getBalanceTableColumn,
-  getGuestCountTableColumn,
-  getHostCountTableColumn,
-  getPublicScopeTableColumn,
-} from '../utils/columns'
-import {
   getBrandTableColumn,
   getStatusTableColumn,
   getEnabledTableColumn,
@@ -15,6 +8,13 @@ import {
   getTimeTableColumn,
 } from '@/utils/common/tableColumn'
 import i18n from '@/locales'
+import {
+  getAccessUrlTableColumn,
+  getBalanceTableColumn,
+  getGuestCountTableColumn,
+  getHostCountTableColumn,
+  getPublicScopeTableColumn,
+} from '../utils/columns'
 
 export default {
   created () {
@@ -22,6 +22,9 @@ export default {
       getNameDescriptionTableColumn({
         onManager: this.onManager,
         hideField: true,
+        formRules: [
+          { required: true, message: this.$t('common.text00042') },
+        ],
         slotCallback: row => {
           return (
             <side-page-trigger onTrigger={() => this.handleOpenSidepage(row)}>{ row.name }</side-page-trigger>
