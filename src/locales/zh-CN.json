@@ -2925,7 +2925,22 @@
       "input": "请输入{0}",
       "optional_input": "选填，请输入{0}"
     },
-    "adv_config": "高级配置"
+    "adv_config": "高级配置",
+    "date_time": {
+      "week": "本周",
+      "last_week": "上周",
+      "month": "本月",
+      "last_month": "上月",
+      "quarter": "本季度",
+      "last_quarter": "上季度",
+      "year": "本年",
+      "last_year": "去年",
+      "last": "最近",
+      "quick": "快捷",
+      "custom": "自定义",
+      "advanced": "高级",
+      "please_select": "请选择"
+    }
   },
   "navbar": {
     "view": {
