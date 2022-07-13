@@ -298,11 +298,11 @@ export const RDS_MONITOR_OPTS = {
       transfer: 1,
     },
     {
-      name: 'diskio',
-      label: i18n.t('db.text_385'), // io使用率
+      name: 'mem',
+      label: i18n.t('db.text_12'),
       seleteItem: 'used_percent',
-      fromItem: 'rds_diskio',
-      as: i18n.t('db.text_385'),
+      fromItem: 'rds_mem',
+      as: i18n.t('db.text_12'),
       unit: '%',
       transfer: 1,
     },
@@ -312,6 +312,15 @@ export const RDS_MONITOR_OPTS = {
       seleteItem: 'used_percent',
       as: i18n.t('db.text_13'),
       fromItem: 'rds_disk',
+      unit: '%',
+      transfer: 1,
+    },
+    {
+      name: 'diskio',
+      label: i18n.t('db.text_385'), // io使用率
+      seleteItem: 'used_percent',
+      fromItem: 'rds_diskio',
+      as: i18n.t('db.text_385'),
       unit: '%',
       transfer: 1,
     },
