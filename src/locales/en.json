@@ -2904,7 +2904,22 @@
       "input": "Please enter {0}",
       "optional_input": "Optional, Please enter {0}"
     },
-    "adv_config": "Advanced configuration"
+    "adv_config": "Advanced configuration",
+    "date_time": {
+      "week": "This Week",
+      "last_week": "Last Week",
+      "month": "This Month",
+      "last_month": "Last Month",
+      "quarter": "This Quarter",
+      "last_quarter": "Last Quarter",
+      "year": "This Year",
+      "last_year": "Last Year",
+      "last": "Last",
+      "quick": "Quick",
+      "custom": "Custom",
+      "advanced": "Advanced",
+      "please_select": "Please Select"
+    }
   },
   "navbar": {
     "view": {
