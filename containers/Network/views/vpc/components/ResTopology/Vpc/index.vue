@@ -8,13 +8,20 @@
         <template v-if="classic">
           <li class="item d-flex" v-for="(wire, nidx) in wires" :key="nidx">
               <res-wire :physical="physical" :dataSource="wire" />
+              <template>
+                <res-share-storage
+                  v-for="storage of getShareStorages(wire)"
+                  :key="storage.id"
+                  :dataSource="storage" />
+              </template>
               <div v-for="(obj, idx) in getHost(wire)" :key="idx">
                 <res-common
                   v-if="!obj.hidden"
                   :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
                   :dataSource="obj"
                   :isExist="isHostExist(wires, nidx, obj)"
-                  :schedTagColorsMap="schedTagColorsMap" />
+                  :schedTagColorsMap="schedTagColorsMap"
+                  :showStorageTag="true" />
               </div>
           </li>
         </template>
@@ -42,6 +49,7 @@ import ResMixin from '@Network/sections/Topology/ResMixin'
 import ResVpc from '../ResVpc'
 import ResWire from '../ResWire'
 import ResIpsubnet from '../ResIpsubnet'
+import ResShareStorage from '../ResShareStorage'
 
 const COLORS = ['#E45826', '#874356', '#0E3EDA', '#139487', '#464E2E', '#A1B57D', '#6E3CBC', '#6FB2D2', '#C5D8A4', '#F473B9', '#D18CE0', '#203239']
 
@@ -52,6 +60,7 @@ export default {
     ResWire,
     ResCommon,
     ResIpsubnet,
+    ResShareStorage,
   },
   mixins: [ResMixin],
   props: {
@@ -160,6 +169,24 @@ export default {
       }
 
       return isExist
+    },
+    getShareStorages (wire) {
+      const shareStorages = []
+
+      if (wire.hosts && wire.hosts.length > 0) {
+        for (const host of wire.hosts) {
+          if (host.storages && host.storages.length > 0) {
+            for (const storage of host.storages) {
+              const isExsit = shareStorages.find(item => item.id === storage.id)
+              if (!isExsit && storage.storage_type !== 'local') {
+                shareStorages.push(storage)
+              }
+            }
+          }
+        }
+      }
+
+      return shareStorages
     },
   },
 }
