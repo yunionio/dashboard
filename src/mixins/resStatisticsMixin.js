@@ -21,7 +21,8 @@ export default {
     this.fetchResStatistics = debounce(this.fetchResStatisticsDebounce, 2000)
     this.$bus.$off('ListParamsChange')
     this.$bus.$on('ListParamsChange', (params) => {
-      this.statisticsLoading = true
+      this.tableOverviewIndexs = []
+      this.resetStatusOpts()
       if (params && params.details) {
         this.fetchResStatistics(params)
       }
@@ -116,6 +117,13 @@ export default {
       })
 
       this.tableOverviewIndexs = tableOverviewIndexs.sort((a, b) => a.order - b.order)
+    },
+    resetStatusOpts () {
+      if (this.statusOpts) {
+        this.statusOpts.forEach(item => {
+          item.num = 0
+        })
+      }
     },
   },
 }
