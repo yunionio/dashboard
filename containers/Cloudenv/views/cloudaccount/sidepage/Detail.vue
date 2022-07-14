@@ -4,6 +4,7 @@
     :onManager="onManager"
     :base-info="baseInfo"
     :extra-info="extraInfo"
+    :nameRules="[{ required: true, message: this.$t('common.text00042') }]"
     status-module="cloudaccount" />
 </template>
 
