@@ -24,3 +24,5 @@ export const STATUS_MAP = {
   vminstance: 'server',
   baremetal: 'host',
 }
+
+export const COLORS = ['#f5222d', '#fa541c', '#faad14', '#13c2c2', '#52c41a', '#1890ff', '#2f54eb', '#a100ff', '#0099f0']
