@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import debounce from 'lodash/debounce'
 import ResStatusTab from '@/sections/ResStatusTab'
 
 export default {
@@ -15,21 +16,30 @@ export default {
     }
   },
   created () {
-    this.resStaticsManager = new this.$Manager(`${this.resStaticsResource}/statistics`, this.apiVersion ? this.apiVersion : 'v2')
-  },
-  beforeDestroy () {
-    this.resStaticsManager = null
+    this.fetchResStatistics = debounce(this.fetchResStatisticsDebounce, 2000)
+    this.$bus.$off('ListParamsChange')
+    this.$bus.$on('ListParamsChange', (params) => {
+      this.resetStatusOpts()
+      if (params && params.details) {
+        this.fetchResStatistics(params)
+      }
+    })
   },
   methods: {
-    fetchResStatistics (params, callback) {
+    fetchResStatisticsDebounce (params, callback) {
       this.errorFilterStatus = []
       this.otherFilterStatus = []
-      this.resStaticsManager.list({ params }).then(res => {
+
+      const m = new this.$Manager(`${this.resStaticsResource}/statistics`, this.apiVersion ? this.apiVersion : 'v2')
+      this.statisticsLoading = true
+      m.list({ params }).then(res => {
         this.statusOpts = R.is(Function, callback) ? callback(res.data) : this.getStatusOpts(res.data)
         this.statusArr = Object.keys(res.data)
       }).catch(err => {
         console.error(err)
         this.statusOpts = []
+      }).finally(() => {
+        this.statisticsLoading = false
       })
     },
     getStatusOpts (data) {
@@ -84,8 +94,12 @@ export default {
         }
       }
     },
-    refreshHandle () {
-      // this.fetchResStatistics()
+    resetStatusOpts () {
+      if (this.statusOpts) {
+        this.statusOpts.forEach(item => {
+          item.num = 0
+        })
+      }
     },
   },
 }

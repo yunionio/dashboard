@@ -8,12 +8,26 @@ export default {
     isPreLoad () {
       return this.list?.isPreLoad
     },
+    isOperateInSidepage () {
+      return this.inBaseSidePage
+    },
+  },
+  watch: {
+    'list.params': {
+      handler: function (val) {
+        if (val) {
+          !this.isOperateInSidepage && this.$bus.$emit('ListParamsChange', val)
+        }
+      },
+      deep: true,
+    },
   },
   methods: {
     onManager () {
       return this.list.onManager(...arguments)
     },
     refresh () {
+      !this.isOperateInSidepage && this.$bus.$emit('ListParamsChange', { ...arguments })
       return this.list.refresh(...arguments)
     },
     singleRefresh () {
