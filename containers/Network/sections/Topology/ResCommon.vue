@@ -34,10 +34,13 @@
           </template>
         </template>
         <div class="d-flex">
-          <icon v-if="!showSchedTag" :type="iconType" />
+          <icon v-if="!showSchedTag && !showStorage" :type="iconType" />
           <div v-else class="res-box">
             <icon :type="iconType" class="mt-2 mb-1" style="border:none;font-size:40px" />
             <div class="tag-list tag-list-limit d-flex align-items-center flex-wrap justify-content-center">
+              <template v-if="showStorageTag">
+                <div v-for="(item,index) in resStorages" class="tag storage-tag" :key="index" :style="{background: item.background}">{{item.name}}</div>
+              </template>
               <template v-for="(item,index) in resSchedTags">
                 <div class="tag" :key="index" :style="{background: item.background}" v-if="index<2">{{item.name}}</div>
               </template>
@@ -54,7 +57,7 @@
 
 <script>
 import ResMixin from '@Network/sections/Topology/ResMixin'
-import { STATUS_MAP } from './constants'
+import { STATUS_MAP, COLORS } from './constants'
 import { sizestr } from '@/utils/utils'
 import { STORAGE_TYPES } from '@Storage/constants/index.js'
 export default {
@@ -66,6 +69,10 @@ export default {
     type: String,
     isExist: Boolean,
     schedTagColorsMap: Object,
+    showStorageTag: {
+      type: Boolean,
+      default: false,
+    },
   },
   data () {
     return {}
@@ -73,6 +80,9 @@ export default {
   computed: {
     showSchedTag () {
       return this.type === 'host' || this.type === 'baremetal'
+    },
+    showStorage () {
+      return this.type === 'host'
     },
     iconType () {
       return `res-${this.type}`
@@ -97,6 +107,19 @@ export default {
         return a.name.length - b.name.length
       })
       return tags
+    },
+    resStorages () {
+      const { storages = [] } = this.resSource
+      const localStorage = []
+      storages.forEach((item, idx) => {
+        if (item.storage_type === 'local') {
+          localStorage.push({
+            name: item.name,
+            background: COLORS[idx % 8],
+          })
+        }
+      })
+      return localStorage
     },
   },
   methods: {
