@@ -105,8 +105,33 @@ export const recipientsColumn = recipientList => ({
     default: ({ row }, h) => {
       if (!row.recipients || !row.recipients.length) return '-'
       const recipientsMap = arrayToObj(recipientList, 'id')
-      const recipientNames = row.recipients.map(val => recipientsMap[val].name)
+      const recipientNames = []
+      row.recipients.map(val => {
+        if (recipientsMap[val]) {
+          recipientNames.push(recipientsMap[val].name)
+        }
+      })
       return recipientNames.map(val => {
+        return h('a-tag', val)
+      })
+    },
+  },
+})
+
+export const rolesColumn = roleList => ({
+  field: 'role_ids',
+  title: i18n.t('monitor.role'),
+  slots: {
+    default: ({ row }, h) => {
+      if (!row.role_ids || !row.role_ids.length) return '-'
+      const rolesMap = arrayToObj(roleList, 'id')
+      const roleNames = []
+      row.role_ids.map(val => {
+        if (rolesMap[val]) {
+          roleNames.push(rolesMap[val].name)
+        }
+      })
+      return roleNames.map(val => {
         return h('a-tag', val)
       })
     },

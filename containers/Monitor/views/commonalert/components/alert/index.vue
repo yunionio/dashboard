@@ -250,7 +250,9 @@ export default {
         if (fd.enabled_contact_types) {
           data.channel.push(...fd.enabled_contact_types)
         }
-
+        if (fd.roles) {
+          data.roles = fd.roles
+        }
         if (fd.domain || fd.domain_id) data.domain_id = (fd.domain || fd.domain_id)
         if (fd.project) data.project_id = fd.project
         if (this.time === 'custom') { // 自定义时间
