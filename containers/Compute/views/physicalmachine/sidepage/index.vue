@@ -73,6 +73,7 @@ export default {
           details: true,
           with_meta: true,
           limit: 20,
+          host_id: this.data.id,
         }
       } else if (this.params.windowData.currentTab === 'gpu-list') {
         return {
