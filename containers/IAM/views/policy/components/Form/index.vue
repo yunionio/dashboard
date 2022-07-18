@@ -35,13 +35,13 @@
         </template>
         <template v-else>{{ $t(`policyScopeLabel.${model.scope}`) }}</template>
       </a-form-model-item>
-      <a-form-model-item :label="$t('system.text_324')">
+      <!-- <a-form-model-item :label="$t('system.text_324')">
         <a-radio-group :default-value="editType" :value="editType" @change="e => $emit('edit-type-change', e.target.value)">
           <template v-for="item of editTypeOptions">
             <a-radio-button :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
           </template>
         </a-radio-group>
-      </a-form-model-item>
+      </a-form-model-item> -->
       <template v-if="editType === 'checkbox'">
         <template v-if="showPolicyCheckbox">
           <a-form-model-item :label="$t('system.text_327', [$t('dictionary.policy')])">
@@ -239,7 +239,7 @@ export default {
       },
       editTypeOptions: [
         { key: 'yaml', label: this.$t('system.policy_edit_type_yaml') },
-        { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
+        // { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
       ],
       yamlPolicy: initialYamlPolicyValue,
       checkboxPolicy: initialCheckboxPolicyValue,
