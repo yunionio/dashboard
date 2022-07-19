@@ -32,10 +32,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    dateReplace: {
-      type: Boolean,
-      default: false,
-    },
     start: {
       type: String,
       default: 'start_date',
@@ -79,6 +75,12 @@ export default {
     canSelectTodayAfter: {
       type: Boolean,
       default: false,
+    },
+    formatter: {
+      type: Function,
+      default: (time) => {
+        return this.$moment(time).format('YYYYMMDD')
+      },
     },
   },
   data () {
@@ -136,8 +138,8 @@ export default {
       this.time.date = [start, end]
       const params = {
         ...this.getParams,
-        [this.start]: this.dateReplace ? this.time.date[0].format('YYYYMMDD') : this.time.date[0].format('YYYY-MM-DD') + 'TZ',
-        [this.end]: this.dateReplace ? this.time.date[1].format('YYYYMMDD') : this.time.date[1].format('YYYY-MM-DD') + 'TZ',
+        [this.start]: this.formatter(this.time.date[0]),
+        [this.end]: this.formatter(this.time.date[1]),
       }
       if (this.supportDatatype) {
         if (this.time.dateMode !== 'custom') {
@@ -160,8 +162,8 @@ export default {
       this.time.dateMode = ''
       const params = {
         ...this.getParams,
-        [this.start]: this.dateReplace ? this.$moment(this.time.date[0]).format('YYYYMMDD') : this.$moment(this.time.date[0]).format('YYYY-MM-DD') + 'TZ',
-        [this.end]: this.dateReplace ? this.$moment(this.time.date[1]).format('YYYYMMDD') : this.$moment(this.time.date[1]).format('YYYY-MM-DD') + 'TZ',
+        [this.start]: this.formatter(this.time.date[0]),
+        [this.end]: this.formatter(this.time.date[1]),
       }
       if (this.supportDatatype) {
         params.data_type = TIME_SIZE.month
