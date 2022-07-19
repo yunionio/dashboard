@@ -56,6 +56,12 @@ export default {
         return !hidden()
       }
       return !hidden
+    }).map(item => {
+      return {
+        key: item.key || item.field,
+        label: item.label || item.title,
+        ...item,
+      }
     })
     let allExportKeys = exportOptionItems.map(item => item.key)
     const exportTags = (this.params.showTagColumns && this.params.config.showTagKeys) || []
@@ -229,8 +235,7 @@ export default {
           })
           const data = res.data || []
           // 生成数据
-          const { items } = this.params.options
-          this.localExport(items, data)
+          this.localExport(this.exportOptionItems, data)
         }
         this.cancelDialog()
       } catch (error) {
@@ -306,9 +311,10 @@ export default {
           columns.map(column => {
             let colData = ''
             if (column.formatter) {
-              colData = column.formatter(list[i - 1])
+              colData = column.formatter({ row: list[i - 1] })
+            } else {
+              colData = list[i - 1][column.key] || ''
             }
-            colData = list[i - 1][column.key] || ''
             row.push(colData)
           })
           sheetDatas.push(row)
@@ -320,7 +326,13 @@ export default {
         // 生成单行数据
         const row = []
         columns.map(column => {
-          row.push(list[i - 1][column.key] || '')
+          let colData = ''
+          if (column.formatter) {
+            colData = column.formatter({ row: list[i - 1] })
+          } else {
+            colData = list[i - 1][column.key] || ''
+          }
+          row.push(colData)
         })
         sheetDatas.push(row)
       }
