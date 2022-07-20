@@ -48,7 +48,14 @@
         <a-radio-button v-for="item in levelOpts" :value="item.key" :key="item.key">{{ item.label }}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label="$t('monitor.recipient')" style="white-space: nowrap;">
+    <a-form-item :label="$t('monitor.notification_type')">
+      <a-checkbox-group v-decorator="decorators.notify_type">
+        <a-checkbox value="recipient">{{ $t('monitor.recipient') }}</a-checkbox>
+        <a-checkbox v-if="currentScope!=='project'" value="role">{{ $t('monitor.role') }}</a-checkbox>
+        <a-checkbox value="robot">{{ $t('monitor.text_11') }}</a-checkbox>
+      </a-checkbox-group>
+    </a-form-item>
+    <a-form-item v-if="notifyTypes.includes('recipient')" :label="$t('monitor.recipient')" style="white-space: nowrap;">
       <template #extra style="width: 1200px;" v-if="scope !== 'project'">
         <i18n tag="div" path="monitor_text00001">
           <help-link slot="new" href="/contact">{{$t('monitor.text_15')}}</help-link>
@@ -66,7 +73,7 @@
         :select-props="{ mode: 'multiple', placeholder: $t('compute.text_741') }"
         :params="contactParams" />
     </a-form-item>
-    <a-form-item :label="$t('monitor.channel')">
+    <a-form-item v-if="notifyTypes.includes('recipient')" :label="$t('monitor.channel')">
       <a-checkbox-group
         v-decorator="decorators.channel">
         <a-checkbox
@@ -88,8 +95,19 @@
         </a-checkbox>
       </a-checkbox-group>
     </a-form-item>
+    <a-form-item v-if="notifyTypes.includes('role') && currentScope!=='project'" :label="$t('monitor.role')">
+      <base-select
+        v-decorator="decorators.roles"
+        resource="roles"
+        version="v1"
+        filterable
+        show-sync
+        :select-props="{ mode: 'multiple', placeholder: $t('compute.text_741') }"
+        :params="rolesParams" />
+    </a-form-item>
     <notify-types
-      :label="$t('monitor_metric_95')"
+      v-if="notifyTypes.includes('robot')"
+      :label="$t('monitor.text_11')"
       :placeholder="$t('common.tips.select', [$t('monitor.text_11')])"
       :decorator="decorators.robot_ids" />
   </a-form>
@@ -152,6 +170,7 @@ export default {
       recipients: [],
       robot_ids: [],
       channel: ['webconsole'],
+      notifyTypes: [],
     }
     if (R.is(Object, this.alertData)) {
       initialValue.name = this.alertData.name
@@ -165,8 +184,18 @@ export default {
       initialValue.metric_key = _.get(this.alertData, 'settings.conditions[0].query.model.measurement')
       initialValue.metric_value = _.get(this.alertData, 'settings.conditions[0].query.model.select[0][0].params[0]')
       initialValue.threshold = _.get(this.alertData, 'settings.conditions[0].evaluator.params[0]')
-      if (this.alertData.robot_ids && this.alertData.robot_ids.length) initialValue.robot_ids = this.alertData.robot_ids
-      if (this.alertData.recipients && this.alertData.recipients.length) initialValue.recipients = this.alertData.recipients
+      if (this.alertData.robot_ids && this.alertData.robot_ids.length) {
+        initialValue.robot_ids = this.alertData.robot_ids
+        initialValue.notifyTypes.push('robot')
+      }
+      if (this.alertData.recipients && this.alertData.recipients.length) {
+        initialValue.recipients = this.alertData.recipients
+        initialValue.notifyTypes.push('recipient')
+      }
+      if (this.alertData.role_ids && this.alertData.role_ids.length) {
+        initialValue.roles = this.alertData.role_ids
+        initialValue.notifyTypes.push('role')
+      }
       if (this.alertData.channel && this.alertData.channel.length) {
         if (this.alertData.channel.indexOf('webconsole') < 0) {
           initialValue.channel.push(...this.alertData.channel.filter((c) => !c.endsWith('robot')))
@@ -191,12 +220,17 @@ export default {
         initialValue.scope = 'project'
       }
     }
+
+    if (!initialValue.notifyTypes.length) {
+      initialValue.notifyTypes.push('recipient')
+    }
     return {
       form: {
         fc: this.$form.createForm(this, {
           onValuesChange: this.onValuesChange,
         }),
         fd: {
+          notify_type: initialValue.notifyTypes,
         },
       },
       formScopeParams: {
@@ -358,6 +392,21 @@ export default {
             initialValue: initialValue.level,
           },
         ],
+        notify_type: [
+          'notify_type',
+          {
+            initialValue: initialValue.notifyTypes,
+            rules: [
+              { required: true, message: this.$t('common.select') },
+            ],
+          },
+        ],
+        roles: [
+          'roles',
+          {
+            initialValue: initialValue.roles,
+          },
+        ],
         recipients: [
           'recipients',
           {
@@ -410,6 +459,8 @@ export default {
       contactArrOpts: [],
       res_type_measurements: {},
       res_types: [],
+      currentScope: initialValue.scope,
+      notifyTypes: initialValue.notifyTypes,
       label: this.$t('monitor.text00015'),
     }
   },
@@ -426,6 +477,12 @@ export default {
         }
       }
       return true
+    },
+    rolesParams () {
+      return {
+        scope: this.currentScope,
+        limit: 0,
+      }
     },
   },
   watch: {
@@ -536,6 +593,7 @@ export default {
     scopeChange (scopeParams) {
       this.getMeasurement(scopeParams)
       this.$emit('scopeChange', scopeParams)
+      this.currentScope = scopeParams.scope
     },
     async getMeasurement (params = {}) {
       try {
@@ -586,6 +644,9 @@ export default {
       this.$nextTick(this.toParams)
       if ((values.hasOwnProperty('metric_key') && !values.metric_key) || (values.hasOwnProperty('metric_value') && !values.metric_value)) {
         this.resetChart()
+      }
+      if (newField.hasOwnProperty('notify_type')) {
+        this.notifyTypes = newField.notify_type
       }
     },
     async getMetricInfo ({ metricKey, mertric, mertricItem, metricKeyItem }) {

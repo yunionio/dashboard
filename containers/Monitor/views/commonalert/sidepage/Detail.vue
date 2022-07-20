@@ -19,6 +19,7 @@ import {
   getResTypeColumn,
   getVerifiedContactTypesTableColumn,
   robotsColumn,
+  rolesColumn,
 } from '../utils'
 import { getEnabledTableColumn, getProjectTableColumn } from '@/utils/common/tableColumn'
 
@@ -54,6 +55,7 @@ export default {
   created () {
     this.getRobots()
     this.getRecipients()
+    this.getRoles()
   },
   methods: {
     async getRecipients () {
@@ -84,6 +86,21 @@ export default {
             },
           })
         this.baseInfo.push(robotsColumn(robotList))
+      } catch (error) {
+        console.error(error)
+        return []
+      }
+    },
+    async getRoles () {
+      try {
+        const { data: { data: roleList } } = await new this.$Manager('roles', 'v1')
+          .list({
+            params: {
+              scope: this.$store.getters.scope,
+              limit: 0,
+            },
+          })
+        this.baseInfo.push(rolesColumn(roleList))
       } catch (error) {
         console.error(error)
         return []

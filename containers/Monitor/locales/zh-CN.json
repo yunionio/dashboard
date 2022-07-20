@@ -288,5 +288,7 @@
   "monitor.text_132": "网络每秒接受字节数",
   "monitor.text_133": "网络接口发送数据包总数",
   "monitor.text_134": "网络接口接收数据包总数",
-  "monitor.text_135": "网络接口丢包总数"
+  "monitor.text_135": "网络接口丢包总数",
+  "monitor.notification_type": "通知类型",
+  "monitor.role": "角色"
 }
