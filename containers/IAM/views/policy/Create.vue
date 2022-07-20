@@ -1,7 +1,7 @@
 <template>
   <div>
     <page-header :title="$t('system.text_167', [$t('dictionary.policy')])" />
-    <page-body>
+    <page-body need-margin-bottom>
       <policy-form ref="policyForm" :edit-type="editType" @edit-type-change="val => editType = val" />
     </page-body>
     <page-footer>
@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       submiting: false,
-      editType: 'yaml',
+      editType: 'checkbox',
     }
   },
   methods: {
