@@ -1,20 +1,25 @@
 <template>
   <div>
-    <a-checkbox
+    <div class="d-flex align-items-center">
+      <a-checkbox
       :checked="checkAll"
       @change="handleCheckAllChange"
       :indeterminate="isIndeterminate"
       :disabled="checkAllDisabled">{{$t('system.text_321', [$t('dictionary.policy')])}}</a-checkbox>
+      <a-input class="ml-2" v-model="searchString" :placeholder="$t('iam.policy_search_placeholder')" style="max-width:200px" allow-clear />
+    </div>
     <div class="mt-1">
       <template v-for="(item, idx) of options">
         <group
           v-if="showGroup(item)"
+          v-show="hasSearchString(item)"
           :key="idx"
           :group="item"
           @groupCheckChange="groupCheckChange"
           :permissions="permissions"
           :scope="scope"
-          :policy="policy" />
+          :policy="policy"
+          :searchString="searchString" />
       </template>
     </div>
   </div>
@@ -45,6 +50,7 @@ export default {
       checkAll: false,
       isIndeterminate: false,
       options: this.data,
+      searchString: '',
     }
   },
   watch: {
@@ -154,6 +160,18 @@ export default {
         return show
       })
       return isShow
+    },
+    hasSearchString (group) {
+      if (!this.searchString) {
+        return true
+      }
+      if (group.label && group.label.includes(this.searchString)) {
+        return true
+      }
+      if (group.resources && group.resources.filter(item => item.label.includes(this.searchString)).length) {
+        return true
+      }
+      return false
     },
   },
 }

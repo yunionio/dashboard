@@ -284,8 +284,8 @@ export default {
         },
       },
       editTypeOptions: [
-        { key: 'yaml', label: this.$t('system.policy_edit_type_yaml') },
         { key: 'checkbox', label: this.$t('system.policy_edit_type_checkbox') },
+        { key: 'yaml', label: this.$t('system.policy_edit_type_yaml') },
       ],
       yamlPolicy: initialYamlPolicyValue,
       checkboxPolicy: initialCheckboxPolicyValue,
