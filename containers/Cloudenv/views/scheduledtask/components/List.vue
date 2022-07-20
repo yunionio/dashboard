@@ -1,16 +1,15 @@
 <template>
   <page-list
     :list="list"
-    :columns="columns"
+    :columns="filterColumns"
     :group-actions="groupActions"
-    :single-actions="singleActions"
+    :single-actions="!hiddenSingleActions && singleActions"
     :export-data-options="exportDataOptions" />
 </template>
 
 <script>
 // import { mapGetters } from 'vuex'
-import ColumnsMixin from '../mixins/columns'
-import SingleActionsMixin from '../mixins/singleActions'
+import * as R from 'ramda'
 import {
   getStatusFilter,
   getTenantFilter,
@@ -19,6 +18,8 @@ import {
 } from '@/utils/common/tableFilter'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
+import SingleActionsMixin from '../mixins/singleActions'
+import ColumnsMixin from '../mixins/columns'
 // import expectStatus from '@/constants/expectStatus'
 
 export default {
@@ -26,6 +27,15 @@ export default {
   mixins: [WindowsMixin, ListMixin, ColumnsMixin, SingleActionsMixin],
   props: {
     id: String,
+    getParams: {
+      type: Function || Object,
+      default: {},
+    },
+    hiddenColumns: {
+      type: Array,
+      default: () => { return [] },
+    },
+    hiddenSingleActions: Boolean,
   },
   data () {
     return {
@@ -33,7 +43,7 @@ export default {
         id: this.id,
         apiVersion: 'v1',
         resource: 'scheduledtasks',
-        getParams: { details: true, utc_offset: this.$moment().utcOffset() / 60 },
+        getParams: this.getParam,
         filterOptions: {
           name: {
             label: this.$t('cloudenv.text_95'),
@@ -156,6 +166,11 @@ export default {
       ],
     }
   },
+  computed: {
+    filterColumns () {
+      return this.columns.filter(item => !this.hiddenColumns.includes(item.field))
+    },
+  },
   created () {
     this.initSidePageTab('scheduledtask-detail')
     this.list.fetchData()
@@ -174,6 +189,13 @@ export default {
       }, {
         list: this.list,
       })
+    },
+    getParam () {
+      return {
+        details: true,
+        utc_offset: this.$moment().utcOffset() / 60,
+        ...(R.is(Function, this.getParams) ? this.getParams() : this.getParams),
+      }
     },
   },
 }
