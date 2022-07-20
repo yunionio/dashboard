@@ -19,14 +19,14 @@
     </div>
     <a-card v-show="showContent">
       <template v-for="(item, idx) of group.resources">
-        <item
-          v-if="showResource(item)"
-          :key="idx"
-          :resource="item"
-          @resourceCheckChange="resourceCheckChange"
-          :permissions="permissions"
-          :scope="scope"
-          :itemPolicy="getItemPolicy(item)" />
+        <div v-if="showResource(item)" v-show="hasSearchString(item)" :key="idx">
+          <item
+            :resource="item"
+            @resourceCheckChange="resourceCheckChange"
+            :permissions="permissions"
+            :scope="scope"
+            :itemPolicy="getItemPolicy(item)" />
+        </div>
       </template>
     </a-card>
   </div>
@@ -48,6 +48,7 @@ export default {
     permissions: Object,
     scope: String,
     policy: Object,
+    searchString: String,
   },
   data () {
     return {
@@ -157,6 +158,15 @@ export default {
         }
       }
       return {}
+    },
+    hasSearchString (item) {
+      if (!this.searchString) {
+        return true
+      }
+      if (item.label && item.label.includes(this.searchString)) {
+        return true
+      }
+      return false
     },
   },
 }
