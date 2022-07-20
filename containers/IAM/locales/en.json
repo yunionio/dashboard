@@ -919,5 +919,6 @@
   "iam.project_tag": "Project Tags",
   "iam.object_tag": "Resource Tags",
   "iam.notifyconfig.sender_address_extra": "The sender email address should be consistent with the username email address in general, if the mailbox has other configurations, please fill in according to the actual situation",
-  "system.common_log_filter_tip": "Search by ID by default, and automatically match IP filter items"
+  "system.common_log_filter_tip": "Search by ID by default, and automatically match IP filter items",
+  "iam.policy_search_placeholder": "Enter policy to search"
 }
