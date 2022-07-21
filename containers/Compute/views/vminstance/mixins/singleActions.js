@@ -1478,7 +1478,10 @@ export default {
                   label: i18n.t('compute.text_1127'),
                   permission: 'server_perform_migrate,server_perform_live_migrate',
                   action: () => {
-                    this.createDialog('VmTransferDialog', {
+                    const dialog = obj.hypervisor === typeClouds.hypervisorMap.esxi.key
+                      ? 'VmV2vTransferDialog' : 'VmTransferDialog'
+
+                    this.createDialog(dialog, {
                       data: [obj],
                       columns: this.columns,
                       onManager: this.onManager,
@@ -1502,7 +1505,9 @@ export default {
                       ret.tooltip = i18n.t('migration.project.error')
                       return ret
                     }
-                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key && obj.hypervisor !== typeClouds.hypervisorMap.openstack.key) {
+                    if (obj.hypervisor !== typeClouds.hypervisorMap.kvm.key &&
+                      obj.hypervisor !== typeClouds.hypervisorMap.esxi.key &&
+                      obj.hypervisor !== typeClouds.hypervisorMap.openstack.key) {
                       ret.tooltip = i18n.t('compute.text_473', [PROVIDER_MAP[provider].label])
                       return ret
                     }
@@ -1510,7 +1515,7 @@ export default {
                     ret.tooltip = cloudUnabledTip('transfer', obj)
                     return ret
                   },
-                  hidden: () => !(hasSetupKey(['openstack', 'onecloud'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
+                  hidden: () => !(hasSetupKey(['openstack', 'onecloud', 'esxi'])) || this.$isScopedPolicyMenuHidden('vminstance_hidden_menus.server_perform_transfer'),
                 },
               ],
             },
