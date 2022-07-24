@@ -11,7 +11,7 @@
       <a-radio-group v-decorator="decorators.encrypt_key_alg">
         <a-radio-button value="">{{ $t('compute.text_1') }}</a-radio-button>
         <a-radio-button value="aes-256">AES256</a-radio-button>
-        <a-radio-button value="sm4">SM4</a-radio-button>
+        <!--a-radio-button value="sm4">SM4</a-radio-button-->
       </a-radio-group>
     </a-form-item>
     <a-form-item v-if="showKeys">
