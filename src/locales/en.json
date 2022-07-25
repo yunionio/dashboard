@@ -5195,5 +5195,6 @@
   "common.remote_control": "Remote Control",
   "common.default_search_key": "Default is {0} search",
   "common.theme.color.lake_blue": "Lake Blue",
-  "common.table.overview": "Overview"
+  "common.table.overview": "Overview",
+  "common.auth.bindsecret.andriod": "Open the app store and search for OneLogin Project to download the app, or download the app store to search for OneLogin Project to download the app"
 }
