@@ -176,10 +176,9 @@ export default {
     },
     doBatchTransfer (ids, values) {
       const data = {
-        guest_ids: ids,
         prefer_host: values.host,
       }
-      return this.params.onManager('performClassAction', {
+      return this.params.onManager('batchPerformAction', {
         id: ids,
         steadyStatus: ['running', 'ready'],
         managerArgs: {
