@@ -1029,6 +1029,8 @@ export const PERMISSION = {
 
   elastic_search_delete: ['compute', 'elastic_searchs', 'delete'],
   elastic_search_set_user_metadata: ['compute', 'elastic_searchs', 'perform', 'set-user-metadata'],
+
+  capabilities_list: ['compute', 'capabilities', 'list'],
 }
 
 // 已声明权限的资源
