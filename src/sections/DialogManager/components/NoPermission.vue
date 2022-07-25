@@ -25,6 +25,14 @@ export default {
     async handleConfirm () {
       try {
         this.cancelDialog()
+        await this.$store.commit('auth/UPDATE_LOGGED_USERS', {
+          key: this.$store.getters['auth/currentLoggedUserKey'],
+          action: 'delete',
+        })
+        await this.$store.commit('auth/UPDATE_HISTORY_USERS', {
+          key: this.$store.getters['auth/currentHistoryUserKey'],
+          action: 'delete',
+        })
         await this.$store.dispatch('auth/logout')
         this.$router.push('/auth')
       } finally {
