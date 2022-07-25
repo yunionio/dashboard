@@ -15,11 +15,14 @@
                 <div class="mt-1"><a-icon type="apple" theme="filled" style="font-size: 20px" /></div>
               </div>
               <div class="d-flex flex-column align-items-center">
-                <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrAndroid})` }" />
+                <!-- <div class="qr-code-bg-wrap" :style="{ backgroundImage: `url(${oneloginprotectAppQrAndroid})` }" /> -->
+                <div class="qr-code-bg-wrap qr-code-andriod">
+                  {{ $t('common.auth.bindsecret.andriod') }}
+                </div>
                 <div class="mt-1"><a-icon type="android" theme="filled" style="font-size: 20px" /></div>
               </div>
             </div>
-            <div class="qr-tip">{{$t('common_85')}}</div>
+            <!-- <div class="qr-tip">{{$t('common_85')}}</div> -->
           </div>
           <div class="setup-tip">
             <div>
@@ -195,6 +198,11 @@ export default {
         font-size: 12px;
         cursor: pointer;
       }
+    }
+    .qr-code-andriod {
+      color: #000;
+      font-size: 10px;
+      transform: scale(0.8) translateY(-10px);
     }
     > p {
       color: #666;
