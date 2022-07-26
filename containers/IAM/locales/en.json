@@ -748,6 +748,10 @@
       "label": "External Syslog Server URL",
       "desc": "Export audit log to external syslog server, address format is proto://<ip>:<port>@idstr, e.g. tcp://192.168.2.100:514@cloud"
     },
+    "yunionapi$enable_syslog_webservice": {
+      "label": "Enable Syslog WebService",
+      "desc": "Enable Syslog WebService, external audit system can fetch audit logs from this web service"
+    },
     "common$enable_tls_migration": {
       "label": "Enable TLS migration",
       "desc": "When enabled, KVM virtual machine hot migration will use TLS to encrypt data."
