@@ -9,12 +9,16 @@
           <base-select
             class="w-100"
             @update:options="onServerSucceed"
-            filterable
+            remote
             v-decorator="decorators.sergroups"
             resource="servers"
             :mapper="mapperServers"
             :params="requestParams"
-            :select-props="{ allowClear: true, placeholder: $t('compute.text_1022', [$t('dictionary.server')]), mode: 'multiple', defaultValue }" />
+            :select-props="{
+              allowClear: true,
+              placeholder: $t('compute.text_1022', [$t('dictionary.server')]),
+              mode: 'multiple', defaultValue,
+            }" />
         </a-form-item>
       </a-form>
     </div>
