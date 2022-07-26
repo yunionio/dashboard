@@ -164,7 +164,7 @@ export default {
           const obj = data[key].data
           if (hostIds.includes(obj.id)) {
             delete data[obj.id]
-            this.resourceProps.list.total--
+            --this.resourceProps.list.total
           }
         }
       }

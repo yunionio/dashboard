@@ -140,7 +140,7 @@ export default {
     },
   },
   created () {
-    // this.isSingle && this.queryForcastData()
+    this.isSingle && this.queryForcastData()
     this.queryHosts()
   },
   methods: {
@@ -158,7 +158,9 @@ export default {
       return manager.performAction({
         id: this.firstData.id,
         action: 'migrate-forecast',
-        data: {},
+        data: {
+          convert_to_kvm: true,
+        },
       })
     },
     doSingleTransfer (ids, values) {
