@@ -513,7 +513,7 @@ export default {
               if (isScopedPolicyMenuHidden('sub_hidden_menus.tap_service')) {
                 return true
               }
-              return !store.getters.isAdminMode
+              return !(hasSetupKey(['onestack']) && store.getters.isAdminMode)
             },
           },
           component: Layout,
