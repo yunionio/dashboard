@@ -22,7 +22,7 @@
             <res-share-storage
               :key="item.storage.id"
               :dataSource="item.storage" />
-            <div v-for="(obj, idx) in item.hosts" :key="idx">
+            <div v-for="(obj, idx) in getHosts(wires, item.storage.id)" :key="idx">
               <res-common
                 v-if="!obj.hidden"
                 :type="RES_ICON_MAP[obj.host_type] || obj.host_type"
@@ -179,8 +179,9 @@ export default {
 
       return isExist
     },
-    getShareStorages (wires) {
+    getShareStoragesAndHosts (wires) {
       const shareStorages = []
+      const storageHosts = []
 
       for (const wire of wires) {
         if (wire.hosts && wire.hosts.length > 0) {
@@ -188,17 +189,32 @@ export default {
           for (const host of wire.hosts) {
             if (host.storages && host.storages.length > 0) {
               for (const storage of host.storages) {
-                const isExsit = shareStorages.find(item => item.id === storage.id)
+                const isExsit = shareStorages.find(item => item.storage.id === storage.id)
                 if (KVM_SHARE_STORAGES.includes(storage.storage_type)) {
                   hosts.push(host)
-                  !isExsit && shareStorages.push({ storage, hosts })
+                  storageHosts.push({ key: storage.id, value: hosts })
+                  !isExsit && shareStorages.push({ storage })
                 }
               }
             }
           }
         }
       }
-      return shareStorages
+
+      return [shareStorages, storageHosts]
+    },
+    getShareStorages (wires) {
+      return this.getShareStoragesAndHosts(wires)[0]
+    },
+    getHosts (wires, storageId) {
+      const storageHosts = this.getShareStoragesAndHosts(wires)[1]
+      const originHosts = []
+      const hosts = storageHosts.filter(item => item.key === storageId).map(item => item.value).flat()
+      hosts.forEach(item => {
+        const isExist = originHosts.find(v => v.id === item.id)
+        !isExist && originHosts.push(item)
+      })
+      return originHosts
     },
   },
 }
