@@ -76,7 +76,7 @@ export default {
         name: [
           'name',
           {
-            initialValue: this.params.title === this.$t('compute.text_318') ? this.params.selectedArea.name : '',
+            initialValue: this.params.title === this.$t('compute.text_318') ? this.params.selectedArea.name : '/opt/cloud/workspace',
             validateTrigger: ['change', 'blur'],
             validateFirst: true,
             rules: [
