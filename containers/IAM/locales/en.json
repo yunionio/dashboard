@@ -752,6 +752,14 @@
       "label": "Enable Syslog WebService",
       "desc": "Enable Syslog WebService, external audit system can fetch audit logs from this web service"
     },
+    "yunionapi$syslog_webservice_username": {
+      "label": "Syslog WebService Account",
+      "desc": "After Syslog WebService is enabled，you need to add Syslog WebService account"
+    },
+    "yunionapi$syslog_webservice_password": {
+      "label": "Syslog WebService Password",
+      "desc": "After Syslog WebService is enabled，you need to add Syslog WebService password"
+    },
     "common$enable_tls_migration": {
       "label": "Enable TLS migration",
       "desc": "When enabled, KVM virtual machine hot migration will use TLS to encrypt data."
