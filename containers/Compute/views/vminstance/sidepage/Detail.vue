@@ -29,7 +29,7 @@ import WindowsMixin from '@/mixins/windows'
 import { findPlatform } from '@/utils/common/hypervisor'
 import { BRAND_MAP, HYPERVISORS_MAP } from '@/constants'
 import PasswordFetcher from '@Compute/sections/PasswordFetcher'
-import { sizestr } from '@/utils/utils'
+import { sizestr, sizestrWithUnit } from '@/utils/utils'
 
 export default {
   name: 'VmInstanceDetail',
@@ -311,6 +311,15 @@ export default {
                 } else {
                   return this.$t('table.title.off')
                 }
+              },
+            },
+            {
+              field: 'bandwidth',
+              title: this.$t('compute.max_bandwidth'),
+              slots: {
+                default: ({ row }) => {
+                  return row.internet_max_bandwidth_out ? sizestrWithUnit(row.internet_max_bandwidth_out, 'M', 1024) + '/s' : '-'
+                },
               },
             },
           ],
