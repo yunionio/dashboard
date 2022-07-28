@@ -4969,7 +4969,7 @@
   "license.provider.hcso": "@:cloudPrvidersMap.HCSO",
   "license.provider.nutanix": "@:cloudPrvidersMap.Nutanix",
   "license.provider.bingocloud": "品高云",
-  "license.provider.incloudshpere": "InCloudShpere",
+  "license.provider.incloudsphere": "InCloudShpere",
   "license.provider.s3": "S3",
   "license.provider.ceph": "Ceph",
   "license.provider.xsky": "XSKY",
